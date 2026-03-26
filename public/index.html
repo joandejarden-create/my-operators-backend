@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/">
+  <title>Dealality | Confidential Hotel Deal Platform for Strategic Expansion</title>
+  <meta name="description" content="The confidential platform connecting qualified hotel owners, brands, operators, and advisors. Rolling out in Caribbean and Latin America, Canada, Europe, and North America.">
+  <link rel="canonical" href="https://dealcapture.com/">
+  <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" sizes="any">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dealcapture.com/">
+  <meta property="og:title" content="Dealality | Confidential Hotel Deal Platform">
+  <meta property="og:description" content="The confidential platform connecting qualified hotel owners, brands, operators, and advisors. Rolling out in Caribbean and Latin America, Canada, Europe, and North America.">
+  <meta property="og:image" content="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png">
+  <meta property="og:site_name" content="Dealality">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dealality | Confidential Hotel Deal Platform">
+  <meta name="twitter:description" content="The confidential platform connecting qualified hotel owners, brands, operators, and advisors.">
+  <meta name="twitter:image" content="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/mona-sans@5.0.0/index.min.css" as="style">
+  <link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/mona-sans@5.0.0/index.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --neutral--800: #080f25;
+      --neutral--700: #212c4d;
+      --neutral--600: #37446b;
+      --neutral--500: #7e89ac;
+      --neutral--400: #aeb9e1;
+      --neutral--300: #d1dbf9;
+      --neutral--200: #d9e1fa;
+      --neutral--100: #ffffff;
+      --accent--primary-1: #6c72ff;
+      --secondary--color-1: #0f1729;
+      --secondary--color-4: #343b4f;
+      --color-primary: var(--neutral--800);
+      --color-primary-light: var(--secondary--color-1);
+      --color-accent: var(--accent--primary-1);
+      --color-accent-hover: #5a5fe6;
+      --color-text: var(--neutral--400);
+      --color-text-muted: var(--neutral--500);
+      --color-bg: var(--secondary--color-1);
+      --color-white: var(--neutral--100);
+      --font-sans: 'Mona Sans Variable', 'Mona Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --container: 100%;
+      --section-pad: 80px;
+      --radius: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 24px;
+      z-index: 1000;
+      padding: 12px 24px;
+      background: var(--color-accent);
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: top 0.2s;
+    }
+    .skip-link:focus {
+      top: 24px;
+      outline: 2px solid white;
+      outline-offset: 2px;
+    }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: var(--neutral--300);
+      background-color: var(--neutral--800);
+    }
+
+    /* Nav - Axial-style dark blue */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--color-primary);
+      padding: 14px 24px;
+    }
+    .nav-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--color-white);
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+    .nav-logo span { color: rgba(255,255,255,0.9); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.95);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav-links a:hover { color: white; }
+    .nav-item-dropdown {
+      position: relative;
+    }
+    .nav-item-dropdown > a .nav-chevron {
+      font-size: 10px;
+      opacity: 0.9;
+      transition: transform 0.2s;
+    }
+    .nav-item-dropdown:hover > a .nav-chevron { transform: rotate(180deg); }
+    .nav-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      min-width: 420px;
+      background: #f8f9fc;
+      border-radius: 8px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      padding: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s 0.05s, visibility 0.2s 0.05s, transform 0.2s 0.05s;
+      z-index: 200;
+      border: 1px solid rgba(0,0,0,0.08);
+      margin-top: 8px;
+      padding-top: 8px; /* hover bridge so mouse can reach panel from trigger */
+    }
+    .nav-item-dropdown:hover .nav-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+      transition-delay: 0s;
+    }
+    .nav-dropdown::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid #f8f9fc;
+    }
+    .nav-dropdown-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .nav-dropdown-header h4 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #080f25;
+    }
+    .nav-dropdown-header p {
+      margin: 0;
+      font-size: 14px;
+      color: #37446b;
+      line-height: 1.5;
+    }
+    .nav-dropdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 16px 24px 20px;
+    }
+    .nav-dropdown-col a {
+      display: block;
+      padding: 12px 0;
+      color: #080f25 !important;
+      border-radius: 4px;
+      margin: 0 -8px;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .nav-dropdown-col a:hover {
+      background: rgba(108,114,255,0.08);
+      color: var(--accent--primary-1) !important;
+    }
+    .nav-dropdown-col a strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .nav-dropdown-col a span {
+      font-size: 13px;
+      font-weight: 400;
+      color: #5a6580;
+      line-height: 1.45;
+    }
+    .nav-phone {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.95);
+      font-size: 16px;
+      text-decoration: none;
+    }
+    .nav-phone:hover { color: white; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-nav-outline {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .btn-nav-outline:hover { background: rgba(255,255,255,0.25); border-color: white; }
+    .btn-nav-primary {
+      background: var(--color-accent);
+      color: white;
+      gap: 8px;
+    }
+    .btn-nav-primary:hover { background: var(--color-accent-hover); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 600;
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--color-accent);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent--primary-1);
+      border: 2px solid var(--color-accent);
+    }
+    .btn-secondary:hover {
+      background: var(--color-accent);
+      color: white;
+    }
+
+    /* Hero - dark theme with geometric pattern + glow */
+    .hero {
+      background: var(--neutral--800);
+      padding: 100px 24px 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%236c72ff' stroke-width='0.3' stroke-opacity='0.06'%3E%3Cpath d='M0 40h80M40 0v80M10 10l60 60M70 10L10 70M20 0l0 80M60 0l0 80M0 20l80 0M0 60l80 0'/%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(108,114,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-logo {
+      margin-bottom: 24px;
+    }
+    .hero-logo img {
+      height: 64px;
+      width: auto;
+      display: inline-block;
+    }
+    .hero h1 {
+      font-size: clamp(42px, 5.5vw, 64px);
+      font-weight: 700;
+      margin: 0 0 16px;
+      line-height: 1.2;
+      color: var(--neutral--100);
+    }
+    .hero-rotate-wrap {
+      position: relative;
+      display: inline-block;
+      min-width: 180px;
+      min-height: 1.2em;
+      text-align: left;
+    }
+    .hero-rotate {
+      color: var(--accent--primary-1);
+      font-weight: 700;
+    }
+    .hero-rotate-faded {
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--neutral--500);
+      font-weight: 500;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--neutral--300);
+      margin: 0 0 32px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero .btn-primary { background: var(--color-accent); color: white; }
+    .hero .btn-primary:hover { background: var(--color-accent-hover); }
+    .hero .btn-secondary { border-color: var(--color-accent); color: var(--color-accent); background: transparent; }
+    .hero .btn-secondary:hover { background: var(--color-accent); color: white; }
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(108,114,255,0.25);
+      border: 1px solid rgba(108,114,255,0.5);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 20px;
+    }
+    .hero-scroll-cue {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-top: 48px;
+      color: var(--neutral--500);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .hero-scroll-cue svg {
+      width: 24px;
+      height: 24px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* Section defaults */
+    section {
+      padding: var(--section-pad) 24px;
+      max-width: var(--container);
+      margin: 0 auto;
+      scroll-margin-top: 70px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    section.alt {
+      background: var(--secondary--color-1);
+    }
+    .section-header {
+      text-align: center;
+      max-width: 880px;
+      margin: 0 auto 48px;
+    }
+    .section-header h2 {
+      font-size: clamp(34px, 5vw, 48px);
+      font-weight: 800;
+      color: var(--neutral--100);
+      margin: 0 0 16px;
+      letter-spacing: -0.02em;
+    }
+    .section-header p {
+      font-size: 18px;
+      color: var(--neutral--300);
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    /* What Is - dark left / accent right */
+    .what-is { padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 400px; scroll-margin-top: 70px; }
+    .what-is-text {
+      background: var(--secondary--color-1);
+      padding: 80px 48px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--neutral--600);
+    }
+    .what-is-text-inner { max-width: 560px; }
+    .what-is-text h2 { text-align: left; margin-bottom: 20px; color: var(--neutral--100); }
+    .what-is-text p { text-align: left; font-size: 16px; color: var(--neutral--300); margin: 0 0 20px; line-height: 1.65; }
+    .what-is-criteria {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .what-is-criteria li {
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+      font-size: 16px;
+      color: var(--neutral--300);
+    }
+    .what-is-criteria li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--accent--primary-1);
+    }
+    .what-is-stats {
+      background: var(--color-accent);
+      padding: 80px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .what-is-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(255,255,255,0.3);
+      border-radius: var(--radius);
+      overflow: hidden;
+      max-width: 480px;
+    }
+    .stat-box {
+      background: var(--color-accent);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .stat-box .stat-value {
+      font-size: clamp(14px, 2.5vw, 24px);
+      font-weight: 700;
+      color: white;
+      margin: 0 0 4px;
+      line-height: 1.3;
+    }
+    .stat-box .stat-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      margin: 0;
+    }
+    @media (max-width: 900px) {
+      .what-is { grid-template-columns: 1fr; }
+      .what-is-text { padding: 60px 24px; }
+      .what-is-stats { padding: 60px 24px; }
+    }
+    @media (max-width: 900px) {
+      .trust-grid { grid-template-columns: 1fr !important; }
+    }
+
+    /* Why We Exist - Axial style: full-width blue, frosted card */
+    .why-we-exist-axial {
+      scroll-margin-top: 70px;
+      background: var(--color-accent);
+      padding: 80px 24px;
+      position: relative;
+      min-height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .why-we-exist-axial::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23fff' stroke-width='0.2' stroke-opacity='0.1'%3E%3Cpath d='M0 30h60M30 0v60M10 10l40 40M50 10L10 50'/%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+    .why-we-exist-card {
+      position: relative;
+      max-width: 720px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 48px 56px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    .why-we-exist-card h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--neutral--800);
+      margin: 0 0 24px;
+    }
+    .why-we-exist-card p {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--neutral--600);
+      margin: 0 0 20px;
+      font-style: italic;
+    }
+    .why-we-exist-attribution {
+      font-style: normal !important;
+      font-weight: 600;
+      color: var(--neutral--800);
+      margin: 0 !important;
+    }
+
+    /* Problem - dark cards */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .problem-card {
+      background: var(--neutral--700);
+      border: 1px solid var(--neutral--600);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: all 0.25s ease;
+    }
+    .problem-card:hover {
+      border-color: var(--accent--primary-1);
+      box-shadow: 0 8px 24px rgba(108,114,255,0.2);
+      transform: translateY(-2px);
+    }
+    .problem-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--neutral--100);
+      margin: 0 0 12px;
+    }
+    .problem-card p { margin: 0; font-size: 16px; color: var(--neutral--300); line-height: 1.65; }
+
+    /* Solution */
+    .solution-pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .pillar {
+      text-align: center;
+      padding: 24px 16px;
+    }
+    .pillar h4 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--neutral--100);
+      margin: 0 0 8px;
+    }
+    .pillar p { margin: 0; font-size: 16px; color: var(--neutral--300); line-height: 1.65; }
+
+    /* Audience sections */
+    .audience-tabs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .audience-tab {
+      padding: 14px 28px;
+      border: 2px solid var(--neutral--600);
+      background: var(--neutral--700);
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--neutral--400);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .audience-tab:hover,
+    .audience-tab.active {
+      border-color: var(--accent--primary-1);
+      color: var(--accent--primary-1);
+      background: rgba(108,114,255,0.1);
+    }
+    .audience-panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .audience-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .audience-panel h3 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--neutral--100);
+      margin: 0 0 16px;
+      text-align: center;
+    }
+    .audience-panel .audience-sub {
+      text-align: center;
+      color: var(--neutral--500);
+      margin-bottom: 32px;
+    }
+    .audience-list {
+      max-width: 760px;
+      margin: 0 auto 32px;
+    }
+    .audience-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 17px;
+    }
+    .audience-list li::before {
+      content: '✓';
+      color: var(--accent--primary-1);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* How it works - two-column Axial style */
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+    .how-visual {
+      background: var(--neutral--800);
+      border-radius: var(--radius);
+      padding: 32px;
+      color: white;
+      font-size: 16px;
+    }
+    .how-visual-title {
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .how-visual-badge { background: #14ca74; padding: 3px 10px; border-radius: 4px; font-size: 12px; }
+    .how-visual-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .how-visual-tabs span {
+      padding: 8px 14px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.1);
+      font-size: 14px;
+    }
+    .how-visual-tabs span.active { background: var(--accent--primary-1); }
+    .how-visual-table {
+      background: rgba(0,0,0,0.2);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .how-visual-table div {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .how-visual-table div:last-child { border-bottom: none; }
+    .how-text h2 { text-align: left; margin-bottom: 16px; }
+    .how-text p { text-align: left; margin: 0 0 20px; color: var(--neutral--300); font-size: 16px; line-height: 1.65; }
+    .how-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .how-list li {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      font-size: 16px;
+      color: var(--neutral--300);
+      line-height: 1.6;
+    }
+    .how-list-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--color-accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    @media (max-width: 900px) {
+      .how-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--neutral--700);
+      border: 1px solid var(--neutral--600);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: all 0.25s ease;
+    }
+    .feature-card:hover {
+      border-color: var(--color-accent);
+      box-shadow: 0 8px 24px rgba(108,114,255,0.2);
+      transform: translateY(-2px);
+    }
+    .feature-card h4 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--neutral--100);
+      margin: 0 0 8px;
+    }
+    .feature-card p { margin: 0; font-size: 16px; color: var(--neutral--300); line-height: 1.65; }
+
+    /* Values - Reference layout: title left, two-column grid right, centered block */
+    .values-axial {
+      padding: 120px 24px;
+    }
+    .values-axial.alt {
+      background: var(--secondary--color-1);
+    }
+    .values-axial-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      gap: 120px;
+      align-items: flex-start;
+      padding: 0 24px;
+    }
+    .values-axial-title {
+      flex-shrink: 0;
+      width: 300px;
+    }
+    .values-axial-title h2 {
+      font-size: clamp(38px, 5vw, 56px);
+      font-weight: 800;
+      color: var(--neutral--100);
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+    }
+    .values-axial-title p {
+      margin: 24px 0 0;
+      font-size: 17px;
+      color: var(--neutral--300);
+      line-height: 1.65;
+      max-width: 260px;
+    }
+    .values-grid-axial {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px 80px;
+      flex: 1;
+      min-width: 0;
+      align-content: start;
+    }
+    .value-block-axial {
+      background: transparent;
+    }
+    .value-block-axial h4 {
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--accent--primary-1);
+      margin: 0 0 14px;
+      line-height: 1.4;
+    }
+    .value-block-axial .value-num {
+      display: inline;
+      margin-right: 4px;
+      font-weight: 700;
+    }
+    .value-block-axial p {
+      margin: 0;
+      font-size: 17px;
+      color: var(--neutral--400);
+      line-height: 1.65;
+      padding-left: 0;
+    }
+    @media (max-width: 900px) {
+      .values-axial-wrap {
+        flex-direction: column;
+        gap: 48px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .values-axial-title {
+        width: 100%;
+      }
+      .values-axial-title p {
+        max-width: none;
+      }
+      .values-grid-axial {
+        grid-template-columns: 1fr;
+        gap: 48px 0;
+      }
+    }
+
+    /* Legacy value-card for features etc */
+    .value-card {
+      background: var(--neutral--700);
+      border-radius: var(--radius);
+      padding: 28px;
+      border-left: 4px solid var(--color-accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .value-card h4 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--neutral--100);
+      margin: 0 0 8px;
+    }
+    .value-card p { margin: 0; font-size: 16px; color: var(--neutral--300); line-height: 1.65; }
+
+    /* Vision / Mission split */
+    .vision-mission {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--neutral--600);
+    }
+    .vision-box, .mission-box {
+      padding: 48px;
+      background: var(--neutral--700);
+      border: 1px solid var(--neutral--600);
+    }
+    .mission-box { background: var(--secondary--color-1); color: var(--neutral--300); border-left: none; }
+    .vision-box h3, .mission-box h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 0 0 16px;
+      color: var(--neutral--500);
+    }
+    .mission-box h3 { color: var(--neutral--300); }
+    .vision-box p, .mission-box p {
+      font-size: 19px;
+      line-height: 1.65;
+      margin: 0;
+      color: var(--neutral--300);
+    }
+    @media (max-width: 768px) {
+      .vision-mission { grid-template-columns: 1fr; }
+    }
+
+    /* Impact stats */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+    .impact-card {
+      text-align: center;
+      padding: 24px;
+      background: var(--neutral--700);
+      border-radius: var(--radius);
+      border: 1px solid var(--neutral--600);
+    }
+    .impact-value {
+      font-size: clamp(24px, 4vw, 38px);
+      font-weight: 700;
+      color: var(--accent--primary-1);
+      margin: 0 0 4px;
+    }
+    .impact-label { font-size: 16px; color: var(--neutral--300); margin: 0; line-height: 1.6; }
+
+    /* CTA section */
+    .cta-section {
+      background: var(--neutral--800);
+      color: white;
+      text-align: center;
+      padding: 80px 24px;
+      border-radius: var(--radius);
+    }
+    .cta-section h2 {
+      font-size: 42px;
+      margin: 0 0 16px;
+    }
+    .cta-section p {
+      font-size: 20px;
+      opacity: 0.9;
+      margin: 0 0 32px;
+    }
+    .cta-section .btn-primary { background: var(--neutral--100); color: var(--neutral--800); }
+
+    /* Footer */
+    footer {
+      background: var(--neutral--800);
+      color: white;
+      padding: 60px 24px 40px;
+    }
+    .footer-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-col h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 16px;
+      opacity: 0.9;
+    }
+    .footer-col ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .footer-col a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 16px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .footer-col a:hover { color: white; }
+    .footer-bottom {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      font-size: 16px;
+      opacity: 0.8;
+    }
+    .footer-bottom a:hover { color: white !important; opacity: 1; }
+    .footer-top {
+      max-width: var(--container);
+      margin: 0 auto 0;
+    }
+    .footer-logo {
+      margin-bottom: 32px;
+    }
+    .footer-logo img {
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+
+    /* Trust section - dark theme */
+    .trust-section { background: var(--secondary--color-1); }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .trust-card {
+      background: var(--neutral--700);
+      border: 1px solid var(--neutral--600);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .trust-card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--neutral--600);
+    }
+    .trust-badges { display: flex; gap: 16px; flex-wrap: wrap; }
+    .trust-badge {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--neutral--600);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent--primary-1);
+    }
+    .trust-badge span { font-size: 12px; color: var(--neutral--500); font-weight: 500; }
+
+    /* Chat widget */
+    .chat-widget {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+    }
+    .chat-bubble {
+      position: absolute;
+      bottom: 60px;
+      right: 0;
+      background: var(--neutral--700);
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      max-width: 280px;
+      border: 1px solid var(--neutral--600);
+      display: none;
+    }
+    .chat-bubble.open { display: block; }
+    .chat-bubble p { margin: 0 0 12px; font-size: 14px; color: var(--neutral--300); }
+    .chat-bubble-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--neutral--500);
+    }
+    .chat-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(108,114,255,0.4);
+      transition: transform 0.2s;
+    }
+    .chat-btn:hover { transform: scale(1.05); }
+
+    /* Our Team - Axial style: full-width blue, white cards */
+    .team-axial {
+      scroll-margin-top: 70px;
+      background: var(--color-accent);
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .team-axial-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: white;
+      margin: 0 0 48px;
+    }
+    .team-cards {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+    .team-card-axial {
+      background: var(--neutral--100);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      width: 220px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .team-card-axial:hover { transform: translateY(-4px); }
+    .team-avatar-placeholder {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+      margin: 0 auto 16px;
+    }
+    .team-card-axial h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 0 0 4px;
+    }
+    .team-card-axial p {
+      font-size: 14px;
+      color: var(--neutral--500);
+      margin: 0;
+    }
+
+    /* Join Our Team */
+    .join-team-axial {
+      background: var(--secondary--color-1);
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .join-team-axial h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 0 0 16px;
+    }
+    .join-team-axial p {
+      font-size: 18px;
+      color: var(--neutral--500);
+      margin: 0 0 24px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 24px;
+    }
+    .btn-light {
+      background: var(--neutral--100) !important;
+      color: var(--neutral--800) !important;
+      border: 2px solid var(--accent--primary-1);
+    }
+    .btn-light:hover {
+      background: var(--accent--primary-1) !important;
+      color: var(--neutral--100) !important;
+    }
+
+    /* Mobile nav - hamburger */
+    .nav-hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: white;
+      font-size: 24px;
+      line-height: 1;
+    }
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(8,15,37,0.95);
+      z-index: 99;
+      padding: 80px 24px 24px;
+    }
+    .nav-overlay.open { display: block; }
+    .nav-overlay ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-overlay a {
+      display: block;
+      padding: 16px 0;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .nav-overlay .nav-actions-mobile {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .nav-overlay .nav-actions-mobile .btn { width: 100%; justify-content: center; }
+    .nav-overlay-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 90px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      z-index: 98;
+      box-shadow: 0 4px 12px rgba(108,114,255,0.4);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .back-to-top:hover { transform: scale(1.05); }
+    .back-to-top.visible { display: flex; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-actions { display: none; }
+      .nav-hamburger { display: block; }
+      section { padding: 60px 24px; }
+      .hero-badge { font-size: 11px; padding: 5px 12px; }
+      .hero-scroll-cue { margin-top: 32px; }
+    }
+
+    /* FAQ Section */
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: var(--neutral--700);
+      border: 1px solid var(--neutral--600);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .faq-item:hover {
+      border-color: var(--accent--primary-1);
+    }
+    .faq-item.open {
+      border-color: var(--accent--primary-1);
+      box-shadow: 0 4px 16px rgba(108,114,255,0.15);
+    }
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 28px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .faq-question h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--neutral--100);
+      margin: 0;
+      flex: 1;
+      padding-right: 16px;
+    }
+    .faq-toggle {
+      background: var(--accent--primary-1);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 24px;
+      font-weight: 300;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .faq-item.open .faq-toggle {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 28px;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 500px;
+      padding: 0 28px 24px;
+    }
+    .faq-answer p {
+      margin: 0;
+      font-size: 16px;
+      color: var(--neutral--300);
+      line-height: 1.65;
+    }
+    @media (max-width: 768px) {
+      .faq-question {
+        padding: 20px;
+      }
+      .faq-question h3 {
+        font-size: 16px;
+      }
+      .faq-answer {
+        padding: 0 20px;
+      }
+      .faq-item.open .faq-answer {
+        padding: 0 20px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <!-- Nav - Axial-style dark blue -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" width="120" height="40" loading="lazy"></a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">☰</button>
+      <ul class="nav-links">
+        <li class="nav-item-dropdown">
+          <a href="#for-owners">Owners <span class="nav-chevron" aria-hidden="true">▼</span></a>
+          <div class="nav-dropdown" role="menu">
+            <div class="nav-dropdown-header">
+              <h4>Unlock Better Brand & Operator Matches</h4>
+              <p>Submit your project and let brands bid for the partnership. Close deals smarter.</p>
+            </div>
+            <div class="nav-dropdown-grid">
+              <div class="nav-dropdown-col">
+                <a href="#for-owners"><strong>Submit Your Project</strong><span>Share your opportunity. Get matched with qualified brands.</span></a>
+                <a href="#how-it-works"><strong>How It Works</strong><span>Step-by-step from submission to closing.</span></a>
+              </div>
+              <div class="nav-dropdown-col">
+                <a href="exit-your-project.html"><strong>Exit Your Project</strong><span>Find the right partner. Avoid costly mistakes.</span></a>
+                <a href="for-owners.html"><strong>For Owners</strong><span>Benefits, workflow, and what you control.</span></a>
+                <a href="/signup"><strong>Request Early Access</strong><span>Join the platform. We'll reach out within 48 hours.</span></a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item-dropdown">
+          <a href="#for-brands">Brands <span class="nav-chevron" aria-hidden="true">▼</span></a>
+          <div class="nav-dropdown" role="menu">
+            <div class="nav-dropdown-header">
+              <h4>Stop Chasing Ghosts</h4>
+              <p>Get in front of deal-ready owners before your competition.</p>
+            </div>
+            <div class="nav-dropdown-grid">
+              <div class="nav-dropdown-col">
+                <a href="/signup"><strong>Request Membership</strong><span>Apply for access to qualified deal flow.</span></a>
+                <a href="how-it-works-brands.html"><strong>How It Works</strong><span>Grow your deal pipeline. Stop chasing ghosts.</span></a>
+              </div>
+              <div class="nav-dropdown-col">
+                <a href="#for-brands"><strong>For Brands</strong><span>Benefits, matching criteria, and workflow.</span></a>
+                <a href="for-brands-operators.html"><strong>Platform Access</strong><span>Partner with us. Source qualified projects.</span></a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item-dropdown">
+          <a href="#for-service-partners">Partners <span class="nav-chevron" aria-hidden="true">▼</span></a>
+          <div class="nav-dropdown" role="menu">
+            <div class="nav-dropdown-header">
+              <h4>Plug Into Real Deals</h4>
+              <p>Integrate your services at the moment you're needed most.</p>
+            </div>
+            <div class="nav-dropdown-grid">
+              <div class="nav-dropdown-col">
+                <a href="/signup"><strong>Create Your Profile</strong><span>Join as a service partner. Get discovered by owners.</span></a>
+                <a href="#how-it-works"><strong>How It Works</strong><span>See where advisors fit in the deal flow.</span></a>
+              </div>
+              <div class="nav-dropdown-col">
+                <a href="#for-service-partners"><strong>For Service Partners</strong><span>Benefits, deal integration, and opportunities.</span></a>
+                <a href="reviews.html"><strong>Reviews</strong><span>Why industry leaders choose Dealality.</span></a>
+                <a href="/signup"><strong>Request Early Access</strong><span>Apply for the platform. We'll be in touch.</span></a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="#" class="btn btn-nav-outline">Sign In</a>
+        <a href="/signup" class="btn btn-primary btn-nav-primary">Request Early Access →</a>
+      </div>
+    </div>
+  </nav>
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="nav-overlay">
+    <button class="nav-overlay-close" id="nav-overlay-close" aria-label="Close menu">×</button>
+    <ul>
+      <li><a href="#for-owners" onclick="document.getElementById('nav-overlay').classList.remove('open')">Owners</a></li>
+      <li><a href="#for-brands" onclick="document.getElementById('nav-overlay').classList.remove('open')">Brands</a></li>
+      <li><a href="#for-service-partners" onclick="document.getElementById('nav-overlay').classList.remove('open')">Partners</a></li>
+      <li><a href="#how-it-works" onclick="document.getElementById('nav-overlay').classList.remove('open')">How It Works</a></li>
+      <li><a href="reviews.html" onclick="document.getElementById('nav-overlay').classList.remove('open')">Reviews</a></li>
+      <li><a href="#about" onclick="document.getElementById('nav-overlay').classList.remove('open')">About</a></li>
+    </ul>
+    <div class="nav-actions-mobile">
+      <a href="#" class="btn btn-nav-outline">Sign In</a>
+      <a href="/signup" class="btn btn-primary btn-nav-primary">Request Early Access →</a>
+    </div>
+  </div>
+
+  <!-- Hero - Axial-style light with geometric pattern -->
+  <main id="main">
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="hero-badge">Launching Soon · Early Access Open</span>
+      <h1>The confidential platform where hotel owners and brands discover each other.</h1>
+      <p>The confidential platform connecting qualified owners, brands, operators, and advisors. Rolling out in Caribbean and Latin America, Canada, Europe, and North America.</p>
+      <div class="hero-btns">
+        <a href="/signup" class="btn btn-primary">Request Early Access</a>
+        <a href="#what-is" class="btn btn-secondary">Learn More</a>
+      </div>
+      <p style="font-size:14px;color:var(--neutral--500);margin-top:8px">Join qualified owners, brands & advisors. We'll reach out within 48 hours.</p>
+      <a href="#what-is" class="hero-scroll-cue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        Scroll to explore
+      </a>
+    </div>
+  </header>
+
+  <!-- What Is Dealality - Axial style: white left / blue right -->
+  <section class="what-is" id="what-is">
+    <div class="what-is-text">
+      <div class="what-is-text-inner">
+        <h2>What Is Dealality</h2>
+        <p>Dealality is the hospitality industry's first confidential, end-to-end deal platform built to accelerate growth by connecting vetted hotel opportunities with the right brands, operators, and investors. Beyond simple listings, we offer smart matching, AI-generated deal summaries, virtual deal rooms with embedded NDA workflows, and dynamic pipeline tracking—all inside a secure, purpose-built ecosystem. It's not just a marketplace; it's the next-generation operating system for hotel development.</p>
+        <p style="margin-top:20px">We're rolling out internationally first—starting with Caribbean and Latin America, Canada, Europe, and North America.</p>
+      </div>
+    </div>
+    <div class="what-is-stats">
+      <div class="what-is-stats-grid">
+        <div class="stat-box"><div class="stat-value">International</div><div class="stat-label">First Rollout</div></div>
+        <div class="stat-box"><div class="stat-value">Caribbean & Latin America</div><div class="stat-label">Canada · Europe · NA</div></div>
+        <div class="stat-box"><div class="stat-value">Franchise · MA</div><div class="stat-label">Conversion · New Build</div></div>
+        <div class="stat-box"><div class="stat-value">Confidential</div><div class="stat-label">First Platform</div></div>
+        <div class="stat-box"><div class="stat-value">Criteria-Based</div><div class="stat-label">Matching</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem & Solution -->
+  <section class="alt" id="problem">
+    <div class="section-header">
+      <h2>The Problem & Our Approach</h2>
+      <p>Today's fragmented system wasn't built for smarter hotel deals. Dealality is an operating system for hotel development—confidential, purpose-built, and designed by hotel experts.</p>
+    </div>
+    <div class="problem-grid" style="margin-bottom:48px">
+      <div class="problem-card">
+        <h3>For Owners — Too Many Options. Not Enough Clarity.</h3>
+        <p>Chasing multiple brands, repeating your story, no centralized control. <strong>Result:</strong> Delays, confusion, missed leverage.</p>
+      </div>
+      <div class="problem-card">
+        <h3>For Brands — Chasing Ghosts, a Step Behind.</h3>
+        <p>Cold outreach, broker roulette, missed introductions. Many owners don't know your brand exists. <strong>Result:</strong> Wasted time, missed opportunities.</p>
+      </div>
+      <div class="problem-card">
+        <h3>For Mgmt. Cos. — Always Behind or Too Early.</h3>
+        <p>Deals too early to price or too late to shape. Competing without full context. <strong>Result:</strong> Unpredictable pipelines, rushed proposals.</p>
+      </div>
+      <div class="problem-card">
+        <h3>For Service Partners — Brought In Late or Left Out.</h3>
+        <p>Loop in after key discussions, or chase scattered deal info across emails and NDAs. <strong>Result:</strong> Limited influence, missed opportunities.</p>
+      </div>
+    </div>
+    <div class="section-header" style="margin-bottom:24px">
+      <h2 style="font-size:28px">Not a Broker. Not a Listing Site.</h2>
+      <p><strong>An Operating System for Hotel Development.</strong> Confidential-first. Modular. Designed by hotel development experts.</p>
+    </div>
+    <div class="solution-pillars">
+      <div class="pillar">
+        <h4>Empowered Owners</h4>
+        <p>Owners submit projects once; brands centrally bid to win the partnership. You control whom to engage, when, and how. No more repeating your story to dozens of unqualified prospects.</p>
+      </div>
+      <div class="pillar">
+        <h4>Pre-Qualified Deal Flow</h4>
+        <p>Brands and operators gain access to deal-ready projects matched to their criteria. Standardized intake and scoring mean you spend time only on viable opportunities—no more chasing ghosts.</p>
+      </div>
+      <div class="pillar">
+        <h4>Transparent & Competitive</h4>
+        <p>Commercial terms submitted in a structured format. Clear visibility into all bids. Consistent process across brands. Owners compare offers side-by-side; brands compete on a level playing field.</p>
+      </div>
+      <div class="pillar">
+        <h4>Your Neutral Platform</h4>
+        <p>We facilitate the process—we don't advise on brand choice. Fairness, trust, and efficiency are built in. Virtual deal rooms, NDA automation, and closing support keep everyone aligned.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Owners - full section -->
+  <section class="alt" id="for-owners">
+    <div class="section-header">
+      <h2>For Owners & Investors</h2>
+      <p>Unlock Better Brand & Operator Matches. Close Deals Smarter. Zero Risk Upfront.</p>
+    </div>
+    <p style="max-width:800px;margin:0 auto 32px;color:var(--neutral--300);font-size:17px;line-height:1.65">Unlike traditional consultants who charge $25K–$50K+ before you see results, Dealality is <strong>success-based</strong>: $0 to post, and fees only due when you sign an LOI with a selected brand or operator. Our per-key fee model ($125–$500+ depending on chain scale) scales with your project—$15K flat for small deals, transparent pricing for institutional-grade projects. Digital-first: shortlists in days, not 6–12 weeks.</p>
+    <div class="problem-grid" style="margin-bottom:32px">
+      <div class="problem-card">
+        <h3>Pre-Screened Partners</h3>
+        <p>Your deal gets seen only by brands who meet your goals. Our matching engine scores opportunities against brand profiles—no noise, no wasted time chasing the wrong fit.</p>
+      </div>
+      <div class="problem-card">
+        <h3>Total Control & Privacy</h3>
+        <p>Confidential listings. Share only what you want, when you want. No public search; you select whom to engage. Optional "blind teaser" posting keeps your identity protected until you're ready.</p>
+      </div>
+      <div class="problem-card">
+        <h3>Maximize Leverage</h3>
+        <p>Brands submit commercial terms in a structured format. Compare offers side-by-side before the first call. Position your deal to command stronger offers—90% of our fee is due at LOI signing, 10% at executed agreement.</p>
+      </div>
+    </div>
+    <div style="text-align:center"><a href="/signup" class="btn btn-primary">Submit Your Project</a></div>
+  </section>
+
+  <!-- For Brands & Operators - full section -->
+  <section id="for-brands">
+    <div class="section-header">
+      <h2>For Brands & Operators</h2>
+      <p>Stop Chasing Ghosts. Get in Front of Deal-Ready Owners Before Your Competition Does.</p>
+    </div>
+    <div style="max-width:900px;margin:0 auto 32px;color:var(--neutral--300)">
+      <h3 style="font-size:22px;margin:0 0 16px;color:var(--neutral--100)">4 Reasons to Join</h3>
+      <p><strong>1. Source relevant deals as they go to market</strong> — Our matching engine surfaces opportunities aligned to your criteria, size, and market. No more cold outreach or broker roulette.</p>
+      <p style="margin-top:12px"><strong>2. Build relationships with qualified owners</strong> — Owners come to you through the platform. Many don't know your brand exists yet; Dealality puts you on their radar at the right moment.</p>
+      <p style="margin-top:12px"><strong>3. Save time with deal tools</strong> — Standardized intake, AI summaries, franchise fee estimators, and brand comparison tools. Spend time on viable deals, not data gathering.</p>
+      <p style="margin-top:12px"><strong>4. Get found by owners and brokers</strong> — Your profile and value proposition are visible to owners selecting brands to engage. Co-brokerage listing credits prioritize broker-attributed deals.</p>
+      <p style="margin-top:16px">Rolling out in Caribbean and Latin America, Canada, Europe, and North America.</p>
+    </div>
+    <div id="pricing" class="section-header">
+      <h3>Pricing — Subscription Tiers That Scale With You</h3>
+      <p>Starter for emerging brands · Growth for regional players scaling across markets · Enterprise for national/global players seeking deal flow and data insights. $0 success fee for brands—pay only for platform access. Earn credits for future deals.</p>
+    </div>
+    <blockquote style="background:var(--neutral--700);border-left:4px solid var(--accent--primary-1);padding:24px 32px;margin:32px auto;max-width:900px;font-style:italic;font-size:18px;color:var(--neutral--300)">Dealality turbo-charged our development efforts. The team really listened to our goals and created precisely-targeted opportunities. We could not be happier with the service. <span style="font-style:normal;font-size:13px;color:var(--neutral--500);display:block;margin-top:12px">*Representative of the value we aim to deliver.*</span></blockquote>
+    <div style="text-align:center"><a href="/signup" class="btn btn-primary">Request Membership</a></div>
+  </section>
+
+  <!-- For Service Partners - full section -->
+  <section class="alt" id="for-service-partners">
+    <div class="section-header">
+      <h2>For Service Partners</h2>
+      <p>Plug Into Real Deals. At the Moment You're Needed Most.</p>
+    </div>
+    <p style="text-align:center;max-width:880px;margin:0 auto 24px;font-size:17px;color:var(--neutral--300);line-height:1.65">Advisors, brokers, lenders, PIP consultants, and attorneys often enter the deal flow after key brand or operator discussions have already happened—or get left out entirely. Dealality changes that. Integrate your services directly into deal workflows. Replace cold outreach with warm leads from owners and brands in live negotiations. Use branded profiles and lead scoring to stand out at decision-making. Get embedded in active development pipelines with featured listings, referral revenue, and optional marketplace integration. We partner with brokers as key users and prioritize broker-attributed deals in searches.</p>
+    <div style="text-align:center;margin-bottom:24px">
+      <span style="background:var(--neutral--700);color:var(--neutral--300);border:1px solid var(--neutral--600);padding:10px 20px;border-radius:999px;margin:4px;display:inline-block;font-size:14px">M&A Advisors</span>
+      <span style="background:var(--neutral--700);color:var(--neutral--300);border:1px solid var(--neutral--600);padding:10px 20px;border-radius:999px;margin:4px;display:inline-block;font-size:14px">Brokers</span>
+      <span style="background:var(--neutral--700);color:var(--neutral--300);border:1px solid var(--neutral--600);padding:10px 20px;border-radius:999px;margin:4px;display:inline-block;font-size:14px">Lenders</span>
+      <span style="background:var(--neutral--700);color:var(--neutral--300);border:1px solid var(--neutral--600);padding:10px 20px;border-radius:999px;margin:4px;display:inline-block;font-size:14px">PIP Consultants</span>
+      <span style="background:var(--neutral--700);color:var(--neutral--300);border:1px solid var(--neutral--600);padding:10px 20px;border-radius:999px;margin:4px;display:inline-block;font-size:14px">Attorneys</span>
+    </div>
+    <div style="text-align:center"><a href="/signup" class="btn btn-primary">Create Your Profile</a></div>
+  </section>
+
+  <!-- How It Works - Axial style: text left, visual right -->
+  <section id="how-it-works">
+    <div class="how-grid">
+      <div class="how-text">
+        <h2>How The Platform Works</h2>
+        <p>Dealality reflects how hotel transactions get done—privately and confidentially. Unlike public listing sites, owners retain total control over whom, how, and when they approach the market. From submission to signing, seamlessly.</p>
+        <ol class="how-list">
+          <li><span class="how-list-num">1</span><strong>Deal intake:</strong> Owner submits project via guided intake; platform captures scope, filters, and goals.</li>
+          <li><span class="how-list-num">2</span><strong>Brand/operator matching:</strong> Our engine scores and aligns opportunities with brand/operator profiles.</li>
+          <li><span class="how-list-num">3</span><strong>Owner offer request:</strong> Owner selects which brands/operators to engage; platform notifies them to respond.</li>
+          <li><span class="how-list-num">4</span><strong>Pre-LOI term comparison:</strong> Brands submit commercial terms in a structured format; owner compares and shortlists finalists.</li>
+          <li><span class="how-list-num">5</span><strong>Deal room launch:</strong> Platform opens secure virtual room for finalists; NDAs executed, confidential materials shared.</li>
+          <li><span class="how-list-num">6</span><strong>Platform exit:</strong> Brand and owner move offline for MA/FA drafting and legal steps—readiness confirmed.</li>
+        </ol>
+      </div>
+      <div class="how-visual">
+        <div class="how-visual-title">DEALALITY <span class="how-visual-badge">LIVE</span></div>
+        <p style="font-size:12px;color:rgba(255,255,255,0.6);margin:0 0 12px">(Preview)</p>
+        <div class="how-visual-tabs">
+          <span>Deal Info</span>
+          <span class="active">Master List</span>
+          <span>Contacted</span>
+        </div>
+        <div class="how-visual-table">
+          <div><span>Example Partner</span><span>Family Office</span></div>
+          <div><span>Example Partner</span><span>Private Equity</span></div>
+          <div><span>Example Partner</span><span>Strategic</span></div>
+          <div><span>Example Partner</span><span>Corporation</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="alt" id="features">
+    <div class="section-header">
+      <h2>Tools That Drive Smarter, Faster Deal Wins</h2>
+      <p>Purpose-built for hospitality. Every feature designed to remove friction and accelerate decisions.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h4>Smart Matching</h4>
+        <p>Match deals to your brand profile based on size, segment, and market. Standardized intake and scoring help you focus on viable opportunities—ordered by relevance.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Virtual Deal Rooms + NDA</h4>
+        <p>Secure space for confidential materials (brochures, PIP, pro formas) only accessible after NDAs are signed digitally through the platform. All sending is direct—no public listing or deal-searching capabilities.</p>
+      </div>
+      <div class="feature-card">
+        <h4>AI Deal Summaries</h4>
+        <p>Auto-generates clean, executive-ready one-page deal teasers based on owner submissions. Save hours of manual data compilation and get to the right conversation faster.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Brand Comparison Tool</h4>
+        <p>Side-by-side comparison of key brand terms: initial fees, royalty percentages, PIP requirements, territory protections. Owners compare offers; brands see where they stand.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Franchise Fee Estimators</h4>
+        <p>Estimates total franchise costs based on brand parameters and owner-provided revenue assumptions. Reduces speculative feasibility work and gives owners clarity before they engage.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Pipeline Reporting + Deal Heatmaps</h4>
+        <p>Track all viewed, active, and declined deals; post private comments; assign internal leads—all in-platform. Deal activity heatmaps visualize flow by geography, brand fit, and status. Future: CRM integration (Salesforce, HubSpot, custom systems).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Next Best Brand -->
+  <section>
+    <div class="section-header">
+      <h2>Every Deal Has a Plan B — No Opportunity Left Behind</h2>
+      <p>When a deal is passed by a top-choice brand, Dealality automatically suggests next-best brand options based on brand strategy, fees, and standards. Owners get alternatives fast—saving months of lost opportunity. Brands down the pecking order get fresh deal flow. No deal dies unnecessarily. It's the kind of intelligence that turns passed deals into closed deals.</p>
+    </div>
+  </section>
+
+  <!-- Trust section -->
+  <section class="alt trust-section">
+    <div class="section-header">
+      <h2>Enhancing Visibility and Trust in Hospitality</h2>
+      <p>Dealality revolutionizes reputation in the lower middle market, setting a new standard for visibility of expertise and experience. Our platform credibility, deal tracking, and reputation tools make it simpler for market participants to demonstrate credibility and engage with appropriate levels of trust.</p>
+    </div>
+    <div class="trust-grid" style="max-width: var(--container); margin: 0 auto;">
+      <div>
+        <h3 style="font-size: 26px; margin: 0 0 16px; color: var(--neutral--100);">Reputation & Deal Credibility</h3>
+        <p style="margin: 0 0 20px; color: var(--neutral--300); font-size: 16px; line-height: 1.65;">Our leaderboards, closed-deal badges, platform metrics, and publishing tools help members convey credibility and engage with appropriate levels of trust. Stand out to owners, brands, and partners—showcase your achievements and let your track record speak for you.</p>
+        <a href="/signup" class="btn btn-primary">Request Early Access</a>
+      </div>
+      <div class="trust-card">
+        <div class="trust-card-header">
+          <strong>Sample Partner Profile</strong>
+        </div>
+        <p style="font-size: 16px; color: var(--neutral--500); margin: 0 0 16px;">Example of what members will see—closed deals build trust:</p>
+        <div class="trust-badges">
+          <div class="trust-badge">Year 1<br><span>EXAMPLE</span></div>
+          <div class="trust-badge">Year 2<br><span>EXAMPLE</span></div>
+          <div class="trust-badge">Year 3<br><span>EXAMPLE</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why We Exist - Axial style: blue bg with frosted card -->
+  <section class="why-we-exist-axial" id="about">
+    <div class="why-we-exist-card">
+      <h2>Why We Exist</h2>
+      <p>The hospitality industry is the backbone of travel and commerce, but it's still hamstrung by capital inefficiencies and fragmented deal channels. We need a new way for great owners and great brands to discover each other—where transparency meets confidentiality. The old playbook of cold calls and scattered brokers was never good enough. We need a 21st century solution. That's why we built Dealality.</p>
+      <p class="why-we-exist-attribution"><strong>— Mr. Joan Dejarden</strong></p>
+    </div>
+  </section>
+
+  <!-- Our Values -->
+  <section class="values-axial alt">
+    <div class="values-axial-wrap">
+      <div class="values-axial-title">
+        <h2>Our<br>Values</h2>
+        <p>Our core values guide every deal, decision, and detail. We built Dealality to serve—not to replace—the relationships that make hospitality thrive.</p>
+      </div>
+      <div class="values-grid-axial">
+        <div class="value-block-axial">
+          <h4><span class="value-num">01</span> We Are at the Service of Others</h4>
+          <p>We lead by serving—clients, partners, teammates. We uplift, empower, and honor through every interaction.</p>
+        </div>
+        <div class="value-block-axial">
+          <h4><span class="value-num">02</span> We Build With Purpose</h4>
+          <p>We measure impact by what we give and the value that continues after the deal is done.</p>
+        </div>
+        <div class="value-block-axial">
+          <h4><span class="value-num">03</span> We Lead with Wisdom</h4>
+          <p>We seek input, invite counsel, and stay open. Strong decisions are shaped by collaboration—not pride.</p>
+        </div>
+        <div class="value-block-axial">
+          <h4><span class="value-num">04</span> We Steward What Matters</h4>
+          <p>Resources and influence are responsibilities. We manage each with care, clarity, and long-term vision.</p>
+        </div>
+        <div class="value-block-axial">
+          <h4><span class="value-num">05</span> Integrity in Every Detail</h4>
+          <p>Every deal reflects our values. Integrity earns trust—and trust builds partnerships that stand the test of time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision & Mission -->
+  <section>
+    <div class="vision-mission">
+      <div class="vision-box">
+        <h3>Vision</h3>
+        <p>To drive productive and lasting connections that shape a more positive future in hospitality.</p>
+      </div>
+      <div class="mission-box">
+        <h3>Mission</h3>
+        <p>We empower others to be more agile, think smarter, and unlock greater possibilities with unwavering integrity, relentless excellence, and a commitment to serving others. Through bold innovation and honesty, we're elevating the future of hospitality.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Impact -->
+  <section class="alt">
+    <div class="section-header">
+      <h2>Your Deal Process. Just Better.</h2>
+      <p>Dealality seeks to eliminate or shorten up to 50% of the time and effort in early-to-mid stages—deal sourcing, matching, and early negotiations. Brands and operators focus only on real opportunities. Owners get faster, more competitive offers. <strong>Our goals:</strong></p>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-card"><div class="impact-value">Target: 80%</div><div class="impact-label">Less first-stage deal analysis — Owners submit pre-qualified info; brands only pursue aligned assets</div></div>
+      <div class="impact-card"><div class="impact-value">Target: 40%</div><div class="impact-label">Reduced feasibility studies — Better data upfront; less speculative work wasted</div></div>
+      <div class="impact-card"><div class="impact-value">Target: 50%</div><div class="impact-label">Less architectural analysis — Pre-vetted for brand fit; full PIP site visits only for serious brands</div></div>
+      <div class="impact-card"><div class="impact-value">Target: 30%</div><div class="impact-label">Faster LOI drafting — Offers presented upfront; key terms compared side-by-side before legal</div></div>
+    </div>
+  </section>
+
+  <!-- Our Team - Axial style: blue bg, white cards -->
+  <section class="team-axial" id="team">
+    <h2 class="team-axial-title">Our Team</h2>
+    <p style="max-width:600px;margin:0 auto 48px;color:rgba(255,255,255,0.9);font-size:18px">Meet the team building the future of hotel dealmaking.</p>
+    <div class="team-cards">
+      <div class="team-card-axial">
+        <div class="team-avatar-placeholder"></div>
+        <h4>Leadership</h4>
+        <p>Principal</p>
+      </div>
+      <div class="team-card-axial">
+        <div class="team-avatar-placeholder"></div>
+        <h4>Operations</h4>
+        <p>VP of Operations</p>
+      </div>
+      <div class="team-card-axial">
+        <div class="team-avatar-placeholder"></div>
+        <h4>Go-to-Market</h4>
+        <p>VP of Go-to-Market</p>
+      </div>
+      <div class="team-card-axial">
+        <div class="team-avatar-placeholder"></div>
+        <h4>Product</h4>
+        <p>Director of Product</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join Our Team -->
+  <section class="join-team-axial">
+    <h2>Join Our Team</h2>
+    <p>Help us create the indispensable platform for success in the private capital markets. We're building the future of hotel dealmaking—and we want people who think big, speak up, and take intelligent risks.</p>
+    <a href="mailto:contact@dealcapture.com?subject=Careers" class="btn btn-primary btn-light">Interested in Joining? Contact Us</a>
+  </section>
+
+  <!-- Final CTA -->
+  <section id="get-started">
+    <div class="cta-section">
+      <h2>Partner With Dealality</h2>
+      <p>Timing matters—early partners will shape the future of hotel dealmaking. First-mover advantage in digital deal flow. Smarter pipelines, better-qualified deals, less friction. Partnering now gives your brand a long-term strategic edge.</p>
+      <p style="margin-top:16px;font-size:17px">Join the confidential platform where qualified hotel owners, operators, and advisors connect. Submit your details to begin the quick approval process. Membership is limited to those actively involved in hotel development, brand expansion, or operational growth—capital-side, operator-side, or advisory members. Let's accelerate your growth story together.</p>
+      <a href="/signup" class="btn btn-primary">Request Early Access</a>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="alt" id="faq">
+    <div class="section-header">
+      <h2>Frequently Asked Questions</h2>
+      <p>Everything you need to know about Dealality. Still have questions? Contact us directly.</p>
+    </div>
+    <div class="faq-container">
+      <div class="faq-item">
+        <div class="faq-question">
+          <h3>What is Dealality?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">+</button>
+        </div>
+        <div class="faq-answer">
+          <p>Dealality is the hospitality industry's first confidential, end-to-end deal platform that connects vetted hotel opportunities with qualified brands, operators, and investors. We provide smart matching, AI-generated deal summaries, virtual deal rooms with embedded NDA workflows, and dynamic pipeline tracking—all in a secure, purpose-built ecosystem.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <h3>How does the matching process work?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">+</button>
+        </div>
+        <div class="faq-answer">
+          <p>Our intelligent matching engine scores opportunities against brand profiles based on size, segment, market preferences, and strategic criteria. Owners submit their project once, and the platform automatically surfaces relevant brands and operators who meet their goals—no more repeating your story to dozens of unqualified prospects.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <h3>Is my deal information confidential?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">+</button>
+        </div>
+        <div class="faq-answer">
+          <p>Yes, absolutely. Confidentiality is built into every layer of the platform. All connections require NDA execution before sensitive materials are shared. You control who sees your deal, when they see it, and what information to share at every stage. Optional "blind teaser" posting keeps your identity protected until you're ready to engage.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <h3>What are the fees for owners?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">+</button>
+        </div>
+        <div class="faq-answer">
+          <p>Dealality operates on a success-based model: $0 to post your project, and fees are only due when you sign an LOI with a selected brand or operator. Our per-key fee model ($125–$500+ depending on chain scale) scales with your project size. 90% of the fee is due at LOI signing, 10% at executed agreement. No upfront consulting fees like traditional advisors who charge $25K–$50K+ before results.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <h3>Can I integrate this with my existing CRM?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">+</button>
+        </div>
+        <div class="faq-answer">
+          <p>Yes! Dealality supports seamless integration with leading CRM systems including Salesforce, HubSpot, and custom platforms. Our API enables you to sync deal activity, pipeline tracking, and contact information directly with your existing workflows. Future enhancements include expanded webhook support and custom field mapping.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">
+          <h3>How long does it take to get matched with brands?</h3>
+          <button class="faq-toggle" aria-label="Toggle answer">+</button>
+        </div>
+        <div class="faq-answer">
+          <p>Once your project passes our verification process (typically 24-48 hours), the platform immediately begins matching you with relevant brands and operators. You can review matched profiles and select whom to engage within days—not the 6-12 weeks traditional consultants require. Our digital-first approach delivers shortlists faster while maintaining quality and confidentiality.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-logo"><img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" width="140" height="44" loading="lazy"></div>
+    </div>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>For Owners</h4>
+        <ul><li><a href="/signup">Submit Your Project</a></li><li><a href="exit-your-project.html">Exit Your Project</a></li><li><a href="#how-it-works">How It Works</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Brands & Operators</h4>
+        <ul><li><a href="/signup">Partner With Us</a></li><li><a href="how-it-works-brands.html">How It Works</a></li><li><a href="#pricing">Platform Access</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Service Partners</h4>
+        <ul><li><a href="/signup">Create Profile</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul><li><a href="#about">About</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="#team">Our Team</a></li><li><a href="mailto:contact@dealcapture.com">Contact</a></li><li><a href="mailto:contact@dealcapture.com?subject=Careers">Careers</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © Dealality | Mr. Joan Dejarden | <a href="/terms.html" style="color:inherit;text-decoration:underline">Terms of Service</a> | <a href="/privacy.html" style="color:inherit;text-decoration:underline">Privacy Policy</a> | <a href="mailto:contact@dealcapture.com" style="color:inherit;text-decoration:underline">Contact</a>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+  <!-- Chat / Contact widget -->
+  <div class="chat-widget">
+    <div class="chat-bubble" id="chat-bubble">
+      <button class="chat-bubble-close" onclick="document.getElementById('chat-bubble').classList.remove('open')">×</button>
+      <p>Questions? We're here to help.</p>
+      <a href="mailto:contact@dealcapture.com" style="color:var(--color-accent);font-weight:600">Contact us</a>
+    </div>
+    <button class="chat-btn" onclick="document.getElementById('chat-bubble').classList.toggle('open')" aria-label="Contact">💬</button>
+  </div>
+
+  <!-- Analytics: Add your tracking script here (e.g. Google Analytics, Plausible) -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  -->
+  <script>
+    // Mobile nav
+    const hamburger = document.getElementById('nav-hamburger');
+    const overlay = document.getElementById('nav-overlay');
+    const overlayClose = document.getElementById('nav-overlay-close');
+    if (hamburger && overlay) {
+      hamburger.addEventListener('click', () => overlay.classList.add('open'));
+      overlayClose && overlayClose.addEventListener('click', () => overlay.classList.remove('open'));
+    }
+
+    // Back to top
+    const backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+      window.addEventListener('scroll', () => {
+        backToTop.classList.toggle('visible', window.scrollY > 400);
+      });
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        
+        // Close all other FAQ items
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('open');
+          }
+        });
+        
+        // Toggle current item
+        item.classList.toggle('open');
+      });
+    });
+
+  </script>
+</body>
+</html>

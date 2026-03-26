@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - Dealality Platform</title>
+    <style>
+        :root {
+            --neutral--800: #080f25;
+            --neutral--400: #aeb9e1;
+            --neutral--100: white;
+            --accent--primary-1: #6c72ff;
+            --secondary--color-4: #343b4f;
+            --secondary--color-1: #101935;
+            --secondary--color-2: #9a91fb;
+            --secondary--color-5: #fdb52a;
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --neutral--200: #d9e1fa;
+            --neutral--300: #d1dbf9;
+            --system--green-300: #14ca74;
+            --system--300: #ff5a65;
+            --system--red-400: #dc2b2b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Mona sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.5em;
+            min-height: 100vh;
+        }
+        .page-wrapper { min-height: 100vh; display: flex; }
+        .sidebar-wrapper {
+            z-index: 500;
+            border-right: 0.6px solid var(--neutral--600);
+            background-color: var(--neutral--800);
+            width: 300px;
+            min-width: 300px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .sidebar-wrapper h2 { color: var(--neutral--100); margin-bottom: 30px; font-size: 1.25rem; font-weight: 600; }
+        .sidebar-wrapper nav { display: flex; flex-direction: column; gap: 8px; }
+        .sidebar-wrapper nav a {
+            color: var(--neutral--400);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .sidebar-wrapper nav a:hover { background-color: var(--neutral--700); color: var(--neutral--100); }
+        .sidebar-wrapper nav a.active {
+            background-color: rgba(102, 126, 234, 0.15);
+            color: var(--neutral--100);
+            border-left: 3px solid #667eea;
+            padding-left: 13px;
+        }
+        .embed-mode .sidebar-wrapper { display: none !important; }
+        .embed-mode .dashboard-main-section { margin-left: 0 !important; }
+        .embed-mode .intake-container { max-width: 100% !important; }
+        .dashboard-main-section { flex: 1; margin-left: 300px; min-width: 0; }
+        .intake-container { max-width: 100%; margin: 0 auto; padding: 30px; }
+        .intake-header { margin: 0 -30px 40px -30px; padding: 10px 30px; background: var(--neutral--800); }
+        .intake-title-container { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .deal-capture-logo { height: 32px; display: flex; align-items: center; }
+        .deal-capture-logo img { height: 100%; width: auto; max-width: 120px; object-fit: contain; }
+        .intake-header h1 { color: var(--neutral--100); margin: 0; font-size: 2rem; font-weight: 700; line-height: 1.2em; }
+        .intake-header p { color: var(--neutral--400); font-size: 0.875rem; font-weight: 400; line-height: 1.5; max-width: 800px; margin-top: 12px; }
+        .form-section-title { color: var(--neutral--100); font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-section-subtitle { color: var(--neutral--400); font-size: 0.875rem; font-weight: 400; margin-bottom: 16px; line-height: 1.4; }
+        .required-note { color: var(--neutral--400); font-size: 12px; margin-bottom: 12px; }
+        .required { color: var(--system--300) !important; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 16px; margin-bottom: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .project-fit-subheader {
+            font-size: 16px; font-weight: 600; color: var(--secondary--color-2);
+            margin: 16px 0 4px 0; padding-bottom: 6px;
+            border-bottom: 2px solid rgba(158, 150, 255, 0.4); letter-spacing: 0.02em;
+        }
+        .project-fit-subheader:first-child { margin-top: 0; }
+        .form-label { color: var(--neutral--100); font-weight: 500; font-size: 14px; }
+        .form-label .help-text { color: var(--neutral--500); font-weight: 400; font-size: 12px; margin-top: 4px; display: block; }
+        .form-input, .form-select, .form-textarea {
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--neutral--100);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent--primary-1);
+            box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
+        }
+        .form-input::placeholder { color: var(--neutral--500); }
+        .form-input[readonly] { opacity: 0.8; cursor: default; }
+        .form-textarea { min-height: 80px; resize: vertical; line-height: 1.4; }
+        .form-select option { background: var(--secondary--color-1); color: var(--neutral--100); }
+        .label-spacing { margin-top: 6px; }
+        .section-break { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px 12px; margin-top: 8px; }
+        .checkbox-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 10px;
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .checkbox-item:hover { border-color: var(--accent--primary-1); background: var(--neutral--700); }
+        .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent--primary-1); }
+        .checkbox-item label { color: var(--neutral--100); cursor: pointer; font-size: 13px; flex: 1; }
+        .form-actions { display: flex; justify-content: flex-end; margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--neutral--600); }
+        .form-actions-right { display: flex; gap: 12px; }
+        .btn {
+            padding: 8px 20px; border-radius: 6px; font-weight: 600; font-size: 14px;
+            cursor: pointer; transition: all 0.3s ease; border: none; font-family: inherit;
+            min-height: 36px; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-primary { background: var(--accent--primary-1); color: var(--neutral--100); }
+        .btn-primary:hover { background: var(--secondary--color-2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3); }
+        .btn-warning { background: var(--secondary--color-5); color: var(--neutral--100); }
+        .btn-warning:hover { background: #e49b20; box-shadow: 0 4px 12px rgba(253, 181, 42, 0.3); transform: translateY(-1px); }
+        .success-message { background: rgba(20, 202, 116, 0.15); border: 1px solid var(--system--green-300); border-radius: 8px; padding: 16px 20px; margin-bottom: 30px; display: none; }
+        .success-message.show { display: block; }
+        .success-message p { color: var(--system--green-300); font-size: 14px; margin: 0; }
+        .error-message { background: rgba(220, 43, 43, 0.15); border: 1px solid var(--system--red-400); border-radius: 8px; padding: 16px 20px; margin-bottom: 30px; display: none; }
+        .error-message.show { display: block; }
+        .error-message p { color: var(--system--red-400); font-size: 14px; margin: 0; }
+        .btn.loading { opacity: 0.6; cursor: not-allowed; position: relative; }
+        .btn.loading::after {
+            content: ''; position: absolute; width: 16px; height: 16px; top: 50%; left: 50%;
+            margin-left: -8px; margin-top: -8px;
+            border: 2px solid var(--neutral--100); border-top-color: transparent; border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .profile-image-upload { margin-top: 12px; }
+        .profile-image-upload input[type="file"] { color: var(--neutral--400); font-size: 13px; }
+        .other-field-container.hidden { display: none; }
+        @media (max-width: 768px) {
+            .intake-container { padding: 20px; }
+            .sidebar-wrapper { display: none; }
+            .dashboard-main-section { margin-left: 0; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-actions { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+    <div class="page-wrapper">
+        <div class="sidebar-wrapper">
+            <div class="sidebar-padding" style="padding: 20px;">
+                <h2>Settings</h2>
+                <nav>
+                    <a href="/profile-settings" class="active">Profile Settings</a>
+                    <a href="/company-settings">Company Settings</a>
+                    <a href="/user-management">User Management</a>
+                    <a href="/brand-setup">Brand Setup</a>
+                    <a href="/my-brands">My Brands</a>
+                </nav>
+            </div>
+        </div>
+        <div class="dashboard-main-section">
+            <div class="intake-container">
+                <div class="intake-header">
+                    <div class="intake-title-container">
+                        <div class="deal-capture-logo">
+                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+                        </div>
+                        <h1>Profile Settings</h1>
+                    </div>
+                    <p>Account Settings — Enter the official business and contact information shared with hotel brands and operating companies during the deal process.</p>
+                </div>
+                <div class="success-message" id="successMessage">
+                    <p>Profile Info Updated! Please refresh the page.</p>
+                </div>
+                <div class="error-message" id="errorMessage">
+                    <p>Oops! Something went wrong while submitting the form.</p>
+                </div>
+
+                <form class="intake-form" id="profileSettingsForm">
+                    <h2 class="form-section-title">Applicant Information</h2>
+                    <p class="form-section-subtitle">Official business information shared with hotel brands and operating companies during the deal process. This is your official contact information for our records. Do not include your attorney or advisors here. Your address may not be the Hotel or a P.O. Box.</p>
+                    <p class="required-note">* Marked fields are Required</p>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label">Name of Applicant <span class="required">*</span></label>
+                            <span class="help-text">Entity name may not include any hotel/brand marks or variations</span>
+                            <input type="text" class="form-input" id="nameOfApplicant" name="nameOfApplicant" required placeholder="Enter legal entity or individual name">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Principal Business Street Address <span class="required">*</span></label>
+                            <span class="help-text">Or permanent residence if individual</span>
+                            <input type="text" class="form-input" id="principalStreetAddress" name="principalStreetAddress" required placeholder="Street address">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">City, Zip/Postal Code <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="cityZip" name="cityZip" required placeholder="e.g. New York, 10001">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">State/Province <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="stateProvince" name="stateProvince" required placeholder="e.g. NY">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Country <span class="required">*</span></label>
+                            <select class="form-select" id="applicantCountry" name="applicantCountry" required>
+                                <option value="">Select country...</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="GB">United Kingdom</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="MX">Mexico</option>
+                                <option value="BR">Brazil</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Title <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="applicantTitle" name="applicantTitle" required placeholder="e.g. Managing Director">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Email <span class="required">*</span></label>
+                            <input type="email" class="form-input" id="companyEmail" name="companyEmail" required placeholder="email@company.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Applicant Type <span class="required">*</span></label>
+                            <select class="form-select" id="applicantType" name="applicantType" required>
+                                <option value="">Select one...</option>
+                                <option value="Corporation">Corporation</option>
+                                <option value="Individual">Individual</option>
+                                <option value="Limited Partnership">Limited Partnership</option>
+                                <option value="Trust">Trust</option>
+                                <option value="General Partnership">General Partnership</option>
+                                <option value="LLC">Limited Liability Company (LLC)</option>
+                                <option value="LLP">Limited Liability Partnership (LLP)</option>
+                                <option value="Other">Other (Specify)</option>
+                            </select>
+                            <div class="other-field-container hidden" id="applicantTypeOtherContainer">
+                                <input type="text" class="form-input" id="applicantTypeOther" name="applicantTypeOther" placeholder="Specify other applicant type">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Birth or Formation Information (Month/Day/Year) <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="birthOrFormationDate" name="birthOrFormationDate" required placeholder="e.g. 01/15/2010">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">US SSN (last 4 only) / EIN / Canada SIN / Gov't ID # <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="ssnEinLast4" name="ssnEinLast4" required placeholder="Last 4 digits only" maxlength="4" pattern="[0-9]{4}" title="4 digits only">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number <span class="required">*</span></label>
+                            <input type="tel" class="form-input" id="applicantPhone" name="applicantPhone" required placeholder="e.g. +1 (555) 123-4567">
+                        </div>
+                    </div>
+
+                    <h2 class="form-section-title section-break">Principal Correspondent For Legal Notices</h2>
+                    <p class="form-section-subtitle">Designate the individual for receiving formal legal notices related to your participation on the platform.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="correspondentName" name="correspondentName" required placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="correspondentCompanyName" name="correspondentCompanyName" required placeholder="Company name">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Street Address <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="correspondentStreetAddress" name="correspondentStreetAddress" required placeholder="Street address">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">City, State/Province, Zip/Postal Code</label>
+                            <input type="text" class="form-input" id="correspondentCityStateZip" name="correspondentCityStateZip" placeholder="City, State, Zip">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <select class="form-select" id="correspondentCountry" name="correspondentCountry">
+                                <option value="">Select country...</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="GB">United Kingdom</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telephone # <span class="required">*</span></label>
+                            <input type="tel" class="form-input" id="correspondentTelephone" name="correspondentTelephone" required placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fax #</label>
+                            <input type="tel" class="form-input" id="correspondentFax" name="correspondentFax" placeholder="Optional">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email <span class="required">*</span></label>
+                            <input type="email" class="form-input" id="correspondentEmail" name="correspondentEmail" required placeholder="email@company.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Website</label>
+                            <input type="url" class="form-input" id="correspondentWebsite" name="correspondentWebsite" placeholder="https://">
+                        </div>
+                    </div>
+
+                    <h2 class="form-section-title section-break">Platform Profile Information</h2>
+                    <p class="form-section-subtitle">Contact and company details used internally for managing your account on the platform.</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">First Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="platformFirstName" name="platformFirstName" required placeholder="First name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="platformLastName" name="platformLastName" required placeholder="Last name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="platformCompanyName" name="platformCompanyName" required placeholder="Company name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Email <span class="required">*</span></label>
+                            <input type="email" class="form-input" id="platformCompanyEmail" name="platformCompanyEmail" required placeholder="email@company.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number <span class="required">*</span></label>
+                            <input type="tel" class="form-input" id="platformPhone" name="platformPhone" required placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Type <span class="required">*</span></label>
+                            <select class="form-select" id="platformCompanyType" name="platformCompanyType" required>
+                                <option value="">Select one...</option>
+                                <option value="Brand">Hotel Brand</option>
+                                <option value="Operator">Third-Party Operator</option>
+                                <option value="Owner">Owner / Developer / Investor</option>
+                                <option value="Advisor">Broker / Consultant / Service Provider</option>
+                                <option value="Lender">Lender / Legal / Advisory</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Regions Where You Operate / Invest</label>
+                            <span class="help-text">Select all that apply</span>
+                            <div class="checkbox-group" id="platformRegionsGroup">
+                                <div class="checkbox-item"><input type="checkbox" id="reg-us" name="platformRegions" value="United States"><label for="reg-us">United States</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-ca" name="platformRegions" value="Canada"><label for="reg-ca">Canada</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-mx" name="platformRegions" value="Mexico"><label for="reg-mx">Mexico</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-camerica" name="platformRegions" value="Central America"><label for="reg-camerica">Central America</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-caribbean" name="platformRegions" value="Caribbean"><label for="reg-caribbean">Caribbean</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-samerica" name="platformRegions" value="South America"><label for="reg-samerica">South America</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-latin" name="platformRegions" value="Latin America (Broad)"><label for="reg-latin">Latin America (Broad)</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-me" name="platformRegions" value="Middle East"><label for="reg-me">Middle East</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-weurope" name="platformRegions" value="Western Europe"><label for="reg-weurope">Western Europe</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-eeurope" name="platformRegions" value="Eastern Europe"><label for="reg-eeurope">Eastern Europe</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-seurope" name="platformRegions" value="Southern Europe"><label for="reg-seurope">Southern Europe</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-neurope" name="platformRegions" value="Northern Europe"><label for="reg-neurope">Northern Europe</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="reg-global" name="platformRegions" value="Other / Global"><label for="reg-global">Other / Global</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">What best describes your Company Entity? <span class="required">*</span></label>
+                            <select class="form-select" id="companyEntity" name="companyEntity" required>
+                                <option value="">Select one...</option>
+                                <option value="Developer - Regional">Developer - Regional</option>
+                                <option value="Developer - National">Developer - National</option>
+                                <option value="Developer - Local">Developer - Local</option>
+                                <option value="Investment Manager">Investment Manager</option>
+                                <option value="Corporation">Corporation</option>
+                                <option value="Private REIT">Private REIT</option>
+                                <option value="Family Office">Family Office</option>
+                                <option value="Sole Owner">Sole Owner</option>
+                                <option value="Joint Venture (JV)">Joint Venture (JV)</option>
+                                <option value="Franchisee">Franchisee</option>
+                                <option value="Operator-Owned">Operator-Owned</option>
+                                <option value="Institutional">Institutional</option>
+                                <option value="Bank">Bank</option>
+                                <option value="Other - Private">Other - Private</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Language Preferences <span class="required">*</span></label>
+                            <select class="form-select" id="languagePreferences" name="languagePreferences" required>
+                                <option value="English">English</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="French">French</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Time Zone</label>
+                            <select class="form-select" id="timeZone" name="timeZone">
+                                <option value="Eastern Standard Time">Eastern Standard Time</option>
+                                <option value="Central Standard Time">Central Standard Time</option>
+                                <option value="Mountain Standard Time">Mountain Standard Time</option>
+                                <option value="Pacific Standard Time">Pacific Standard Time</option>
+                                <option value="UTC">UTC</option>
+                                <option value="GMT">GMT</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Units of Measurement</label>
+                            <select class="form-select" id="unitsOfMeasurement" name="unitsOfMeasurement">
+                                <option value="Square Feet">Square Feet</option>
+                                <option value="Square Meters">Square Meters</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password Last Changed Date</label>
+                            <input type="text" class="form-input" id="passwordLastChanged" name="passwordLastChanged" readonly placeholder="—" value="—">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Account Created Date</label>
+                            <input type="text" class="form-input" id="accountCreatedDate" name="accountCreatedDate" readonly placeholder="—" value="—">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Two-Factor Authentication</label>
+                            <input type="text" class="form-input" id="twoFactorAuth" name="twoFactorAuth" readonly placeholder="—" value="—">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Account Verification</label>
+                            <select class="form-select" id="accountVerification" name="accountVerification">
+                                <option value="Not Verified">Not Verified</option>
+                                <option value="Verified">Verified</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Onboarding Stage</label>
+                            <input type="text" class="form-input" id="onboardingStage" name="onboardingStage" readonly placeholder="—" value="—">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Submitted Deals</label>
+                            <input type="text" class="form-input" id="submittedDeals" name="submittedDeals" readonly placeholder="—" value="—">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Closed/Archived Deals</label>
+                            <input type="text" class="form-input" id="closedArchivedDeals" name="closedArchivedDeals" readonly placeholder="—" value="—">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <div class="form-actions-right">
+                            <button type="button" class="btn btn-warning" id="resetBtn">Reset Form</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Save Profile</button>
+                        </div>
+                    </div>
+                </form>
+
+                <h2 class="form-section-title section-break">Update Profile Image</h2>
+                <div class="profile-image-upload">
+                    <label class="form-label">Upload Image</label>
+                    <input type="file" id="profileImageUpload" name="profileImageUpload" accept="image/*">
+                </div>
+
+                <h2 class="form-section-title section-break">Update Password</h2>
+                <p class="form-section-subtitle">Use the form below to update your password.</p>
+                <form id="updatePasswordForm" class="intake-form" style="max-width: 480px;">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" class="form-input" id="currentPassword" name="currentPassword" placeholder="Current password">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-input" id="newPassword" name="newPassword" placeholder="New password">
+                        </div>
+                    </div>
+                    <div class="form-actions" style="border: none; padding-top: 16px;">
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </div>
+                </form>
+                <div class="success-message" id="passwordSuccessMessage" style="margin-top: 16px;">
+                    <p>Thank you! Your submission has been received!</p>
+                </div>
+                <div class="error-message" id="passwordErrorMessage" style="margin-top: 16px;">
+                    <p>Oops! Something went wrong while submitting the form.</p>
+                </div>
+
+                <h2 class="form-section-title section-break">Create a New Password</h2>
+                <p class="form-section-subtitle">If you do not have any password, click below to create a new password.</p>
+                <form id="createPasswordForm" class="intake-form" style="max-width: 480px;">
+                    <div class="form-group">
+                        <label class="form-label">New Password</label>
+                        <input type="password" class="form-input" id="createNewPassword" name="createNewPassword" placeholder="New password">
+                    </div>
+                    <div class="form-actions" style="border: none; padding-top: 16px;">
+                        <button type="submit" class="btn btn-primary">Create Password</button>
+                    </div>
+                </form>
+                <div class="success-message" id="createPasswordSuccessMessage" style="margin-top: 16px;">
+                    <p>Thank you! Your submission has been received!</p>
+                </div>
+                <div class="error-message" id="createPasswordErrorMessage" style="margin-top: 16px;">
+                    <p>Oops! Something went wrong while submitting the form.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            var form = document.getElementById('profileSettingsForm');
+            var successMessage = document.getElementById('successMessage');
+            var errorMessage = document.getElementById('errorMessage');
+            var submitBtn = document.getElementById('submitBtn');
+            var resetBtn = document.getElementById('resetBtn');
+            var applicantType = document.getElementById('applicantType');
+            var applicantTypeOtherContainer = document.getElementById('applicantTypeOtherContainer');
+            var applicantTypeOther = document.getElementById('applicantTypeOther');
+
+            function toggleApplicantTypeOther() {
+                if (applicantType && applicantType.value === 'Other') {
+                    applicantTypeOtherContainer.classList.remove('hidden');
+                } else {
+                    applicantTypeOtherContainer.classList.add('hidden');
+                }
+            }
+            if (applicantType) {
+                applicantType.addEventListener('change', toggleApplicantTypeOther);
+                toggleApplicantTypeOther();
+            }
+
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    errorMessage.classList.remove('show');
+                    submitBtn.classList.add('loading');
+                    submitBtn.disabled = true;
+                    setTimeout(function () {
+                        successMessage.classList.add('show');
+                        submitBtn.classList.remove('loading');
+                        submitBtn.disabled = false;
+                    }, 600);
+                });
+            }
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function () {
+                    if (form) form.reset();
+                    successMessage.classList.remove('show');
+                    errorMessage.classList.remove('show');
+                    toggleApplicantTypeOther();
+                });
+            }
+
+            document.getElementById('updatePasswordForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                document.getElementById('passwordErrorMessage').classList.remove('show');
+                document.getElementById('passwordSuccessMessage').classList.add('show');
+            });
+
+            document.getElementById('createPasswordForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                document.getElementById('createPasswordErrorMessage').classList.remove('show');
+                document.getElementById('createPasswordSuccessMessage').classList.add('show');
+            });
+        })();
+    </script>
+</body>
+</html>

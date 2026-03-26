@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inbox - Outreach Hub | Dealality Platform</title>
+  <link rel="stylesheet" href="/outreach-hub.css">
+</head>
+<body>
+  <script>(function(){ document.documentElement.classList.add('embed-mode'); })();</script>
+  <div class="page-wrapper">
+    <div class="dashboard-main-section">
+      <div class="outreach-hub-container">
+        <div class="outreach-hub__header">
+          <div class="breadcrumb">
+            <a href="/app">Home</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <a href="/outreach-plans">Outreach Hub</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <span>Inbox</span>
+          </div>
+          <div class="outreach-hub-title-container">
+            <div class="deal-capture-logo">
+              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+            </div>
+            <h1>Inbox</h1>
+          </div>
+          <p>Threads that need your attention. Select a thread to read the conversation.</p>
+        </div>
+
+        <div class="inbox-layout">
+          <div class="inbox-thread-list">
+            <div class="inbox-thread-list-header">
+              <input type="text" id="inbox-search" class="inbox-search" placeholder="Search threads…" autocomplete="off" aria-label="Search threads">
+              <div class="inbox-thread-list-header-row">
+                <select id="inbox-filter" class="form-select" title="Filter threads">
+                  <option value="attention">Needs attention</option>
+                  <option value="all">All threads</option>
+                </select>
+                <span id="inbox-count" class="inbox-count">—</span>
+              </div>
+            </div>
+            <div id="inbox-loading" class="oh-loading" style="padding: 20px; display: none;">Loading threads…</div>
+            <div id="inbox-empty" class="oh-muted" style="padding: 20px; display: none;">No threads match. Open Plans to view all.</div>
+            <div id="inbox-thread-list-scroll" class="inbox-thread-list-scroll" style="display: none;"></div>
+          </div>
+          <div class="inbox-reading-pane">
+            <div id="inbox-reading-empty" class="inbox-reading-pane-empty">
+              <div class="inbox-empty-state">
+                <span class="inbox-empty-icon" aria-hidden="true">✉</span>
+                <p class="inbox-empty-title">Select a conversation</p>
+                <p class="inbox-empty-text">Choose a thread from the list to read messages.</p>
+              </div>
+            </div>
+            <div id="inbox-reading-content" style="display: none;">
+              <div class="inbox-reading-header">
+                <h2 id="inbox-reading-title" class="inbox-reading-title">—</h2>
+                <div id="inbox-reading-subtitle" class="inbox-reading-subtitle"></div>
+              </div>
+              <div id="inbox-msg-loading" class="oh-loading" style="padding: 20px; display: none;">Loading messages…</div>
+              <div id="inbox-reading-messages" class="inbox-reading-messages"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function() {
+  var API = '/api/outreach-hub';
+  var threads = [];
+  var selectedThreadId = null;
+  var filter = 'attention';
+  var allMessagesCache = null;
+
+  function messageBelongsToThread(msg, threadId) {
+    var f = msg.fields || {};
+    var link = f.Thread || f.Threads || [];
+    if (!Array.isArray(link)) link = link ? [link] : [];
+    return link.some(function(x) {
+      var id = typeof x === 'string' ? x : (x && x.id);
+      return id === threadId;
+    });
+  }
+
+  function qs(s) { return document.querySelector(s); }
+  function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
+
+  function needsAttention(t) {
+    var f = t.fields || {};
+    var status = (f.thread_status || '').toLowerCase();
+    var stage = (f.counterparty_stage || '').toLowerCase();
+    return status === 'waiting on reply' || status === 'meeting scheduled' || status === 'waiting on us' ||
+           stage === 'engaged' || stage === 'meeting' || stage === 'active negotiation';
+  }
+
+  function getThreadDisplayName(t) {
+    var f = t.fields || {};
+    return f.thread_name || ('Thread ' + (t.id || '').slice(-6));
+  }
+
+  function getPreview(t) {
+    var f = t.fields || {};
+    var p = (f.last_message_preview || '').trim();
+    return p ? (p.length > 80 ? p.slice(0, 80) + '…' : p) : 'No messages yet';
+  }
+
+  function formatTime(iso) {
+    if (!iso) return '—';
+    var d = new Date(iso);
+    var now = new Date();
+    var diffMs = now - d;
+    var diffMins = Math.floor(diffMs / 60000);
+    var diffHours = Math.floor(diffMs / 3600000);
+    var sameDay = d.toDateString() === now.toDateString();
+    if (sameDay && diffMins < 1) return 'Just now';
+    if (sameDay && diffMins < 60) return diffMins + ' min ago';
+    if (sameDay && diffHours < 24) return diffHours + ' hr ago';
+    if (sameDay) return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    var yesterday = new Date(now); yesterday.setDate(yesterday.getDate() - 1);
+    if (d.toDateString() === yesterday.toDateString()) return 'Yesterday';
+    if (d.getFullYear() === now.getFullYear()) return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    return d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function getInitials(name) {
+    if (!name || !name.trim()) return '?';
+    var parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return name.slice(0, 2).toUpperCase();
+  }
+
+  function renderThreadList() {
+    var search = (qs('#inbox-search') && qs('#inbox-search').value || '').trim().toLowerCase();
+    var list = threads.filter(function(t) {
+      if (filter === 'attention' && !needsAttention(t)) return false;
+      if (search) {
+        var name = (getThreadDisplayName(t) + ' ' + getPreview(t)).toLowerCase();
+        if (name.indexOf(search) === -1) return false;
+      }
+      return true;
+    });
+    var container = qs('#inbox-thread-list-scroll');
+    var loading = qs('#inbox-loading');
+    var empty = qs('#inbox-empty');
+    container.innerHTML = '';
+    show(loading, false);
+    show(empty, list.length === 0);
+    show(container, list.length > 0);
+    qs('#inbox-count').textContent = list.length + (filter === 'attention' ? ' need attention' : ' threads');
+
+    list.forEach(function(t) {
+      var f = t.fields || {};
+      var row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'inbox-thread-row' + (t.id === selectedThreadId ? ' selected' : '') + (needsAttention(t) ? ' unread' : '');
+      row.setAttribute('data-thread-id', t.id);
+      var name = getThreadDisplayName(t);
+      var preview = getPreview(t);
+      var time = formatTime(f.last_activity_at || f.last_message_at);
+      var meta = [f.thread_status, f.counterparty_stage].filter(Boolean).join(' · ') || '—';
+      row.innerHTML =
+        '<span class="inbox-thread-avatar">' + getInitials(name) + '</span>' +
+        '<div class="inbox-thread-body">' +
+          '<div class="inbox-thread-from">' + escapeHtml(name) + '</div>' +
+          '<div class="inbox-thread-preview">' + escapeHtml(preview) + '</div>' +
+          '<div class="inbox-thread-meta">' +
+            '<span>' + escapeHtml(meta) + '</span>' +
+            '<span class="inbox-thread-time">' + escapeHtml(time) + '</span>' +
+          '</div>' +
+        '</div>';
+      row.addEventListener('click', function() { selectThread(t.id); });
+      container.appendChild(row);
+    });
+  }
+
+  function escapeHtml(s) {
+    if (s == null) return '';
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function selectThread(threadId) {
+    selectedThreadId = threadId;
+    renderThreadList();
+    show(qs('#inbox-reading-empty'), false);
+    show(qs('#inbox-reading-content'), true);
+    var t = threads.find(function(x) { return x.id === threadId; });
+    if (!t) return;
+    var f = t.fields || {};
+    qs('#inbox-reading-title').textContent = getThreadDisplayName(t);
+    var badges = [];
+    if (f.thread_status) badges.push('<span class="badge">' + escapeHtml(f.thread_status) + '</span>');
+    if (f.counterparty_stage) badges.push('<span class="badge">' + escapeHtml(f.counterparty_stage) + '</span>');
+    if (f.next_action) badges.push('<span class="badge">' + escapeHtml(f.next_action) + '</span>');
+    qs('#inbox-reading-subtitle').innerHTML = badges.length ? badges.join(' ') : '—';
+    loadMessages(threadId);
+  }
+
+  function renderMessagesFromRecords(records) {
+    var wrap = qs('#inbox-reading-messages');
+    show(qs('#inbox-msg-loading'), false);
+    wrap.innerHTML = '';
+    records.sort(function(a, b) {
+      var af = a.fields || {};
+      var bf = b.fields || {};
+      var ta = new Date(af.sent_at || af['Created time'] || 0).getTime();
+      var tb = new Date(bf.sent_at || bf['Created time'] || 0).getTime();
+      return ta - tb;
+    });
+    if (records.length === 0) {
+      var thread = threads.find(function(t) { return t.id === selectedThreadId; });
+      var preview = thread && thread.fields && (thread.fields.last_message_preview || '').trim();
+      if (preview) {
+        wrap.innerHTML = '<p class="oh-muted" style="padding: 12px 0;">No message records in the Messages table for this thread. Latest preview from thread:</p>' +
+          '<div class="inbox-msg inbound"><div class="inbox-msg-header"><span class="inbox-msg-from">Preview</span><span class="inbox-msg-direction-tag">From thread</span></div><div class="inbox-msg-body">' + escapeHtml(preview) + '</div></div>';
+      } else {
+        wrap.innerHTML = '<p class="oh-muted" style="padding: 20px;">No messages in this thread yet.</p>';
+      }
+      return;
+    }
+    records.forEach(function(m) {
+      var f = m.fields || {};
+      var dir = (f.direction || '').toLowerCase();
+      var isInbound = dir === 'inbound';
+      var fromVal = isInbound ? (f.recipient_contact_id ? 'Contact' : 'Them') : 'You';
+      var toVal = isInbound ? 'You' : (f.recipient_contact_id ? 'Contact' : 'Them');
+      var dateVal = f.sent_at || f.logged_sent_at || f['Created time'] || '—';
+      var dateStr = typeof dateVal === 'string' && dateVal.length > 10 ? formatTime(dateVal) : (dateVal || '—');
+      var subject = (f.subject || '').trim() ? f.subject : '';
+      var body = (f.body_merged_preview || f.body_raw_template || '').trim() || 'No content';
+      var dirClass = isInbound ? 'inbound' : 'outbound';
+      var card = document.createElement('div');
+      card.className = 'inbox-msg ' + dirClass;
+      card.innerHTML =
+        '<div class="inbox-msg-header-row">' +
+          '<span class="inbox-msg-label">From:</span> <span class="inbox-msg-from">' + escapeHtml(fromVal) + '</span>' +
+          '<span class="inbox-msg-date">' + escapeHtml(dateStr) + '</span>' +
+        '</div>' +
+        '<div class="inbox-msg-header-row">' +
+          '<span class="inbox-msg-label">To:</span> <span class="inbox-msg-to">' + escapeHtml(toVal) + '</span>' +
+        '</div>' +
+        (subject ? '<div class="inbox-msg-subject-row"><span class="inbox-msg-label">Subject:</span> ' + escapeHtml(subject) + '</div>' : '') +
+        '<div class="inbox-msg-body">' + escapeHtml(body) + '</div>';
+      wrap.appendChild(card);
+    });
+  }
+
+  function loadMessages(threadId) {
+    var wrap = qs('#inbox-reading-messages');
+    show(qs('#inbox-msg-loading'), true);
+    wrap.innerHTML = '';
+
+    function done(records) {
+      var forThread = (records || []).filter(function(m) { return messageBelongsToThread(m, threadId); });
+      renderMessagesFromRecords(forThread);
+    }
+
+    if (allMessagesCache) {
+      done(allMessagesCache);
+      return;
+    }
+    fetch(API + '/messages?pageSize=200')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.success && d.records) allMessagesCache = d.records;
+        done(allMessagesCache || []);
+      })
+      .catch(function() {
+        show(qs('#inbox-msg-loading'), false);
+        wrap.innerHTML = '<p class="oh-error" style="padding: 20px;">Could not load messages.</p>';
+      });
+  }
+
+  function getUrlParams() {
+    var params = {};
+    var search = (window.location.search || '').slice(1);
+    search.split('&').forEach(function(pair) {
+      var i = pair.indexOf('=');
+      if (i > 0) params[decodeURIComponent(pair.slice(0, i))] = decodeURIComponent(pair.slice(i + 1));
+    });
+    return params;
+  }
+
+  function loadThreads() {
+    show(qs('#inbox-loading'), true);
+    show(qs('#inbox-thread-list-scroll'), false);
+    show(qs('#inbox-empty'), false);
+    var urlParams = getUrlParams();
+    var dealId = (urlParams.dealId || '').trim();
+    var brand = (urlParams.brand || '').trim();
+    if (dealId) {
+      filter = 'all';
+      var filterEl = qs('#inbox-filter');
+      if (filterEl) filterEl.value = 'all';
+    }
+    var apiUrl = API + '/threads?pageSize=100';
+    if (dealId && /^rec[a-zA-Z0-9]+$/.test(dealId)) {
+      apiUrl += '&filterByFormula=' + encodeURIComponent("FIND('" + dealId + "', ARRAYJOIN({Deal})) > 0");
+    }
+    fetch(apiUrl)
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        show(qs('#inbox-loading'), false);
+        var raw = (d.success && d.records) ? d.records : [];
+        if (brand) {
+          var brandLower = brand.toLowerCase();
+          threads = raw.filter(function(t) {
+            var name = ((t.fields || {}).thread_name || '').toLowerCase();
+            return name.indexOf(brandLower) >= 0;
+          });
+          if (threads.length === 0 && raw.length > 0) {
+            threads = raw;
+          }
+        } else {
+          threads = raw;
+        }
+        threads.sort(function(a, b) {
+          var ta = new Date((a.fields || {}).last_activity_at || 0).getTime();
+          var tb = new Date((b.fields || {}).last_activity_at || 0).getTime();
+          return tb - ta;
+        });
+        renderThreadList();
+        var hash = (window.location.hash || '').match(/#thread=([a-zA-Z0-9]+)/);
+        if (hash && threads.some(function(t) { return t.id === hash[1]; })) {
+          selectThread(hash[1]);
+        } else if (threads.length > 0 && !hash) {
+          if (dealId && brand) {
+            var brandLower = brand.toLowerCase();
+            var match = threads.find(function(t) {
+              var name = ((t.fields || {}).thread_name || '').toLowerCase();
+              return name.indexOf(brandLower) >= 0;
+            });
+            selectThread((match || threads[0]).id);
+          } else {
+            selectThread(threads[0].id);
+          }
+        }
+      })
+      .catch(function() {
+        show(qs('#inbox-loading'), false);
+        show(qs('#inbox-empty'), true);
+      });
+  }
+
+  qs('#inbox-filter').addEventListener('change', function() {
+    filter = this.value;
+    renderThreadList();
+  });
+  if (qs('#inbox-search')) {
+    qs('#inbox-search').addEventListener('input', function() { renderThreadList(); });
+  }
+
+  loadThreads();
+})();
+  </script>
+</body>
+</html>

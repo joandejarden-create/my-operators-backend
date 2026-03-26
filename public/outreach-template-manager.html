@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template Manager - Outreach Hub | Dealality Platform</title>
+  <link rel="stylesheet" href="/outreach-hub.css">
+</head>
+<body>
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1){document.documentElement.classList.add('embed-mode');}})();</script>
+  <div class="page-wrapper">
+    <div class="sidebar-wrapper">
+      <div class="sidebar-padding">
+        <h2>Dealality</h2>
+        <nav>
+          <a href="/app">Home</a>
+          <a href="/outreach-plans">Plans</a>
+          <a href="/outreach-inbox">Inbox</a>
+          <a href="/outreach-templates" class="active">Templates</a>
+          <a href="/outreach-sequences">Sequences</a>
+          <a href="/outreach-analytics">Analytics</a>
+          <a href="/partner-directory">Partner Directory</a>
+        </nav>
+      </div>
+    </div>
+    <div class="dashboard-main-section">
+      <div class="outreach-hub-container">
+        <div class="outreach-hub__header">
+          <div class="breadcrumb">
+            <a href="/app">Home</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <a href="/outreach-plans">Outreach Hub</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <span>Templates</span>
+          </div>
+          <div class="outreach-hub-title-container">
+            <div class="deal-capture-logo">
+              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+            </div>
+            <h1>Template Manager</h1>
+          </div>
+          <p>Browse template packs (folders) and templates; use tags to filter. Preview with tokens, clone/edit, share with team. Platform pack templates can be locked.</p>
+        </div>
+
+        <div class="oh-grid-2">
+          <div class="oh-section">
+            <h2 class="oh-section-title">Template Packs</h2>
+            <ul id="pack-list" class="oh-list"></ul>
+            <p id="pack-loading" class="oh-loading" style="display:none;">Loading packs…</p>
+          </div>
+          <div class="oh-section">
+            <h2 class="oh-section-title">Templates</h2>
+            <p id="pack-hint" class="oh-muted oh-section-subtitle">Select a pack to list templates.</p>
+            <ul id="template-list" class="oh-list" style="display:none;"></ul>
+            <p id="template-loading" class="oh-loading" style="display:none;">Loading templates…</p>
+          </div>
+        </div>
+
+        <div id="template-detail" class="oh-section" style="display:none;">
+          <h2 class="oh-section-title" id="detail-name"></h2>
+          <p id="detail-meta" class="oh-muted oh-section-subtitle"></p>
+          <p id="detail-tags" class="oh-muted" style="font-size:12px; margin-bottom:12px;"></p>
+          <p id="detail-scope-lock" class="oh-muted" style="font-size:12px; margin-bottom:12px;"></p>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <div id="detail-subject" class="oh-preview"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Body (with sample token preview)</label>
+            <div id="detail-body-preview" class="oh-preview"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tokens used</label>
+            <div id="detail-tokens" class="oh-muted" style="font-size:13px;"></div>
+          </div>
+          <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn btn-secondary" id="btn-edit">Edit template</button>
+            <button type="button" class="btn btn-secondary" id="btn-clone">Clone</button>
+          </div>
+          <div id="edit-form" style="display:none; margin-top:20px; padding-top:20px; border-top:1px solid var(--neutral--600);">
+            <div class="form-group">
+              <label class="form-label">Subject template</label>
+              <textarea id="edit-subject" class="form-textarea" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Body template</label>
+              <textarea id="edit-body" class="form-textarea" rows="12"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-save">Save</button>
+            <button type="button" class="btn btn-secondary" id="btn-cancel-edit">Cancel</button>
+          </div>
+        </div>
+        <p id="detail-error" class="oh-error" style="display:none;"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function() {
+  const API = '/api/outreach-hub';
+  const SAMPLE_TOKENS = {
+    '{{DealName}}': 'Riverside Inn',
+    '{{ContactFirstName}}': 'Jordan',
+    '{{ContactLastName}}': 'Smith',
+    '{{LocationCity}}': 'Austin',
+    '{{LocationCountry}}': 'USA',
+    '{{Keys}}': '186',
+    '{{AssetType}}': 'Urban Full-Service',
+    '{{TargetOpening}}': 'Q2 2026',
+    '{{DealStage}}': 'Design Phase',
+    '{{CompanyName}}': 'Acme Hospitality',
+    '{{ContactRole}}': 'VP Development',
+    '{{SenderName}}': 'You',
+    '{{SenderTitle}}': 'Deal Owner',
+    '{{SenderCompany}}': 'Dealality',
+    '{{SenderPhone}}': '+1 555 000 0000',
+    '{{CalendarLink}}': 'https://calendly.com/example',
+  };
+
+  let selectedPackId = null;
+  let selectedTemplateId = null;
+  let allTemplates = [];
+  let allTemplatesCache = null;
+
+  function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
+  function qs(s) { return document.querySelector(s); }
+  function qsa(s) { return document.querySelectorAll(s); }
+
+  function templateBelongsToPack(rec, packId) {
+    var f = rec.fields || {};
+    var link = f['Template Pack'] || f['TemplatePack'] || [];
+    if (!Array.isArray(link)) link = link ? [link] : [];
+    return link.some(function(x) {
+      var id = typeof x === 'string' ? x : (x && x.id);
+      return id === packId;
+    });
+  }
+
+  function previewBody(body) {
+    if (!body) return '';
+    let out = body;
+    Object.keys(SAMPLE_TOKENS).forEach(function(tok) {
+      out = out.split(tok).join(SAMPLE_TOKENS[tok]);
+    });
+    return out;
+  }
+
+  function renderPacks() {
+    const list = qs('#pack-list');
+    const loading = qs('#pack-loading');
+    show(loading, true);
+    list.innerHTML = '';
+    fetch(API + '/template-packs?pageSize=50')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        show(loading, false);
+        if (!data.success || !data.records.length) {
+          list.innerHTML = '<li class="oh-muted">No template packs found.</li>';
+          return;
+        }
+        var seen = {};
+        var records = (data.records || []).filter(function(rec) {
+          if (seen[rec.id]) return false;
+          seen[rec.id] = true;
+          return true;
+        });
+        records.forEach(function(rec) {
+          const name = (rec.fields && rec.fields.pack_name) || rec.id;
+          const li = document.createElement('li');
+          li.textContent = name;
+          li.dataset.id = rec.id;
+          li.addEventListener('click', function() {
+            qsa('#pack-list li').forEach(function(l) { l.classList.remove('selected'); });
+            li.classList.add('selected');
+            selectedPackId = rec.id;
+            loadTemplates();
+            show(qs('#template-detail'), false);
+          });
+          list.appendChild(li);
+        });
+      })
+      .catch(function(e) {
+        show(loading, false);
+        list.innerHTML = '<li class="oh-error">Failed to load packs: ' + e.message + '</li>';
+      });
+  }
+
+  function loadTemplates() {
+    const list = qs('#template-list');
+    const hint = qs('#pack-hint');
+    const loading = qs('#template-loading');
+    show(hint, false);
+    show(list, false);
+    show(loading, true);
+    list.innerHTML = '';
+    if (!selectedPackId) { show(loading, false); show(hint, true); return; }
+
+    function renderTemplatesFromRecords(records) {
+      allTemplates = records.filter(function(rec) { return templateBelongsToPack(rec, selectedPackId); });
+      show(loading, false);
+      show(list, true);
+      if (!allTemplates.length) {
+        list.innerHTML = '<li class="oh-muted">No templates in this pack.</li>';
+        return;
+      }
+      allTemplates.forEach(function(rec) {
+        const name = (rec.fields && rec.fields.template_name) || rec.id;
+        const li = document.createElement('li');
+        li.textContent = name;
+        li.dataset.id = rec.id;
+        li.addEventListener('click', function() {
+          qsa('#template-list li').forEach(function(l) { l.classList.remove('selected'); });
+          li.classList.add('selected');
+          selectedTemplateId = rec.id;
+          showDetail(rec);
+        });
+        list.appendChild(li);
+      });
+    }
+
+    if (allTemplatesCache) {
+      renderTemplatesFromRecords(allTemplatesCache);
+      return;
+    }
+    fetch(API + '/templates?pageSize=200')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var records = (data.success && data.records) ? data.records : [];
+        allTemplatesCache = records;
+        renderTemplatesFromRecords(records);
+      })
+      .catch(function(e) {
+        show(loading, false);
+        show(list, true);
+        list.innerHTML = '<li class="oh-error">Failed: ' + (e.message || 'Could not load templates') + '</li>';
+      });
+  }
+
+  function showDetail(rec) {
+    const f = rec.fields || {};
+    const name = f.template_name || rec.id;
+    const subject = f.subject_template || '';
+    const body = f.body_template || '';
+    const tokens = f.tokens_used || '';
+    const type = f.template_type || '';
+    const useCase = f.use_case || '';
+    const scope = f.scope || '';
+    const isLocked = !!f.is_locked;
+    const industryTags = Array.isArray(f.industry_tags) ? f.industry_tags.join(', ') : (f.industry_tags || '');
+    qs('#detail-name').textContent = name;
+    qs('#detail-meta').textContent = [type, useCase].filter(Boolean).join(' · ') || '—';
+    qs('#detail-tags').textContent = 'Tags: ' + [industryTags, useCase].filter(Boolean).join(' · ') || '—';
+    qs('#detail-scope-lock').textContent = 'Scope: ' + (scope || '—') + (isLocked ? ' · Locked (platform pack)' : '');
+    qs('#detail-subject').textContent = subject || '(none)';
+    qs('#detail-body-preview').textContent = previewBody(body) || '(empty)';
+    qs('#detail-tokens').textContent = tokens || '(none)';
+    qs('#edit-subject').value = subject;
+    qs('#edit-body').value = body;
+    qs('#btn-edit').disabled = isLocked;
+    qs('#btn-edit').title = isLocked ? 'Platform pack template is locked' : '';
+    show(qs('#template-detail'), true);
+    show(qs('#edit-form'), false);
+    show(qs('#detail-error'), false);
+  }
+
+  qs('#btn-edit').addEventListener('click', function() {
+    if (this.disabled) return;
+    show(qs('#edit-form'), true);
+  });
+  qs('#btn-clone').addEventListener('click', function() {
+    if (!selectedTemplateId) return;
+    var rec = allTemplates.find(function(r) { return r.id === selectedTemplateId; });
+    if (!rec || !rec.fields) return;
+    var f = rec.fields;
+    var packId = f['Template Pack'] && f['Template Pack'][0] ? f['Template Pack'][0] : selectedPackId;
+    if (!packId) { qs('#detail-error').textContent = 'Select a pack first'; show(qs('#detail-error'), true); return; }
+    var fields = {
+      template_name: 'Copy of ' + (f.template_name || 'template'),
+      'Template Pack': [packId],
+      subject_template: f.subject_template || '',
+      body_template: f.body_template || '',
+      template_type: f.template_type || 'Email',
+      use_case: f.use_case || '',
+      scope: 'Private',
+      is_locked: false,
+      is_active: true
+    };
+    if (f.tokens_used) fields.tokens_used = f.tokens_used;
+    fetch(API + '/templates', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (!data.success) throw new Error(data.error || 'Clone failed');
+        show(qs('#detail-error'), false);
+        if (allTemplatesCache) allTemplatesCache.push(data.record);
+        allTemplates.push(data.record);
+        selectedTemplateId = data.record.id;
+        loadTemplates();
+        showDetail(data.record);
+      })
+      .catch(function(e) {
+        qs('#detail-error').textContent = e.message || 'Clone failed';
+        show(qs('#detail-error'), true);
+      });
+  });
+  qs('#btn-cancel-edit').addEventListener('click', function() {
+    show(qs('#edit-form'), false);
+  });
+  qs('#btn-save').addEventListener('click', function() {
+    const subject = qs('#edit-subject').value;
+    const body = qs('#edit-body').value;
+    const errEl = qs('#detail-error');
+    fetch(API + '/templates/' + selectedTemplateId, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fields: {
+          subject_template: subject,
+          body_template: body,
+        },
+      }),
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (!data.success) throw new Error(data.error || 'Save failed');
+        show(errEl, false);
+        show(qs('#edit-form'), false);
+        var rec = data.record;
+        rec.fields = rec.fields || {};
+        rec.fields.subject_template = subject;
+        rec.fields.body_template = body;
+        showDetail(rec);
+      })
+      .catch(function(e) {
+        errEl.textContent = e.message || 'Save failed';
+        show(errEl, true);
+      });
+  });
+
+  renderPacks();
+})();
+  </script>
+</body>
+</html>

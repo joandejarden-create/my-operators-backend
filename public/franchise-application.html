@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Franchise Application - Dealality Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --neutral--800: #080f25;
+            --neutral--400: #aeb9e1;
+            --neutral--100: white;
+            --accent--primary-1: #6c72ff;
+            --secondary--color-4: #343b4f;
+            --secondary--color-1: #101935;
+            --secondary--color-2: #9a91fb;
+            --secondary--color-5: #fdb52a;
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --neutral--300: #d1dbf9;
+            --neutral--200: #d9e1fa;
+            --system--green-300: #14ca74;
+            --system--300: #ff5a65;
+            --system--orange-400: #d5691b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Mona sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.5em;
+            min-height: 100vh;
+        }
+        .page-wrapper { min-height: 100vh; display: flex; }
+        .dashboard-main-section { flex: 1; margin-left: 0; min-width: 0; overflow-x: hidden; }
+        .intake-container { max-width: 100%; min-width: 0; margin: 0 auto; padding: 30px; }
+
+        .intake-header { margin: 0 -30px 40px -30px; padding: 10px 30px; background: var(--neutral--800); }
+        .back-to-links { margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 12px; }
+        .back-to-links a {
+            color: var(--accent--primary-1); text-decoration: none; font-size: 14px; font-weight: 500;
+        }
+        .back-to-links a:hover { color: var(--secondary--color-2); text-decoration: underline; }
+        .intake-title-container { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .deal-capture-logo { height: 32px; }
+        .deal-capture-logo img { height: 100%; width: auto; max-width: 120px; object-fit: contain; }
+        .intake-header h1 { color: var(--neutral--100); margin: 0; font-size: 2rem; font-weight: 700; }
+        .intake-header p { color: var(--neutral--400); font-size: 0.875rem; margin-top: 12px; max-width: 800px; }
+
+        .intake-form { background: transparent; margin-bottom: 30px; }
+
+        /* Section nav – matches My Deals (SVP) look, size, style */
+        .section-nav {
+            display: flex;
+            gap: 0;
+            margin-bottom: 30px;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--neutral--800);
+            padding: 0;
+            margin-left: 0;
+            margin-right: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .section-nav::-webkit-scrollbar {
+            display: none;
+        }
+        .section-nav .section-nav-item {
+            min-width: 90px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #aeb9e1;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 10px;
+            font-weight: 600;
+            position: relative;
+            border: none;
+            background: none;
+            font-family: inherit;
+            padding: 10px 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: color 0.2s;
+            margin-bottom: -1px;
+        }
+        .section-nav .section-nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aeb9e1;
+            background: transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .section-nav .section-nav-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .section-nav .section-nav-label {
+            text-align: center;
+            line-height: 1.3;
+            white-space: nowrap;
+            font-size: 10px;
+        }
+        .section-nav .section-nav-item:hover {
+            color: #fff;
+        }
+        .section-nav .section-nav-item:hover .section-nav-icon {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+        .section-nav .section-nav-item.active {
+            color: #6c72ff;
+        }
+        .section-nav .section-nav-item.active .section-nav-icon {
+            border-color: #6c72ff;
+            border-width: 2px;
+            background: transparent;
+            color: #6c72ff;
+        }
+        .section-nav .section-nav-item.completed .section-nav-icon {
+            border-color: var(--system--green-300);
+            color: var(--system--green-300);
+        }
+
+        .form-sections-wrap { max-width: 920px; padding-top: 8px; }
+        .form-section { display: none; margin-bottom: 40px; }
+        .form-section.active { display: block; }
+        .form-section-title { color: var(--neutral--100); font-size: 1.375rem; font-weight: 700; margin-bottom: 6px; }
+        .form-section-subtitle { color: var(--neutral--500); font-size: 0.875rem; margin-bottom: 20px; line-height: 1.45; max-width: 720px; }
+        .required-note { color: var(--neutral--500); font-size: 0.75rem; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--neutral--600); }
+        .required-note .required { color: var(--system--300); }
+        .project-fit-subheader {
+            font-size: 1rem; font-weight: 600; color: var(--secondary--color-2);
+            margin: 28px 0 12px 0; padding-bottom: 8px; border-bottom: 2px solid rgba(158,150,255,0.35);
+        }
+        .project-fit-subheader:first-child { margin-top: 0; }
+        .section-progress { color: var(--neutral--500); font-size: 0.8rem; margin-bottom: 4px; }
+
+        .form-label .help-text { display: block; font-weight: 400; color: var(--neutral--500); font-size: 0.8125rem; margin-top: 4px; }
+        .label-spacing { margin-top: 6px; }
+        .economics-grid {
+            display: grid; grid-template-columns: repeat(3, minmax(260px, 1fr)); gap: 16px;
+            margin-top: 16px; align-items: start;
+        }
+        .economics-grid .full-span { grid-column: 1 / -1; }
+        @media (max-width: 1024px) { .economics-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 640px) { .economics-grid { grid-template-columns: 1fr; } }
+        .form-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 20px; min-width: 0;
+        }
+        .form-grid.cols-1 { grid-template-columns: 1fr; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-label { color: var(--neutral--100); font-weight: 600; font-size: 0.875rem; }
+        .form-label .required { color: var(--system--300); margin-left: 4px; }
+        .form-input, .form-select, .form-textarea {
+            background: var(--secondary--color-1); border: 1px solid rgba(255,255,255,0.18);
+            color: var(--neutral--100); padding: 10px 14px; border-radius: 8px;
+            font-size: 0.875rem; font-family: inherit; width: 100%;
+        }
+        .form-textarea { min-height: 88px; resize: vertical; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none; border-color: var(--accent--primary-1); box-shadow: 0 0 0 2px rgba(108,114,255,0.2);
+        }
+        .form-input::placeholder { color: var(--neutral--500); }
+        /* Keep dark background when field is filled / autofilled (match Deal Setup, Company Settings) */
+        .form-input:-webkit-autofill,
+        .form-input:-webkit-autofill:hover,
+        .form-input:-webkit-autofill:focus,
+        .form-input:-webkit-autofill:active,
+        .form-select:-webkit-autofill,
+        .form-select:-webkit-autofill:hover,
+        .form-select:-webkit-autofill:focus,
+        .form-select:-webkit-autofill:active,
+        .form-textarea:-webkit-autofill,
+        .form-textarea:-webkit-autofill:hover,
+        .form-textarea:-webkit-autofill:focus,
+        .form-textarea:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px var(--secondary--color-1) inset !important;
+            box-shadow: 0 0 0 1000px var(--secondary--color-1) inset !important;
+            -webkit-text-fill-color: var(--neutral--100) !important;
+            color: var(--neutral--100);
+        }
+        .form-input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.85; cursor: pointer; }
+        .form-select option { background: var(--secondary--color-1); color: var(--neutral--100); }
+        .form-checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .form-checkbox-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent--primary-1); }
+
+        .form-actions { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--neutral--600); flex-wrap: wrap; gap: 12px; }
+        .form-actions-left, .form-actions-right { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .btn {
+            padding: 8px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer;
+            border: none; font-family: inherit; min-height: 36px; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-primary { background: var(--accent--primary-1); color: var(--neutral--100); }
+        .btn-primary:hover { background: var(--secondary--color-2); box-shadow: 0 4px 12px rgba(108,114,255,0.3); }
+        .btn-secondary { background: var(--secondary--color-4); color: var(--neutral--100); border: 1px solid var(--neutral--600); }
+        .btn-secondary:hover { background: var(--neutral--700); border-color: var(--neutral--500); }
+        .btn.loading { opacity: 0.7; cursor: not-allowed; }
+
+        .hidden { display: none !important; }
+        .flex-inline { display: inline-flex !important; }
+
+        .fa-loading {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            background: rgba(0,0,0,0.85); color: white; padding: 20px 24px; border-radius: 12px;
+            z-index: 9999; min-width: 280px; display: none;
+        }
+        .fa-loading.show { display: block !important; }
+        /* Toast – matching My Deals style */
+        .fa-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            display: none;
+            backdrop-filter: blur(12px);
+            min-width: 280px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .fa-toast.show {
+            display: block !important;
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .fa-toast .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .fa-toast .toast-wave-container {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+        .fa-toast .wave-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            border: 2px solid #888;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+        .fa-toast .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+        .fa-toast .wave-1 {
+            height: 40%;
+            background: linear-gradient(45deg, #d69e2e, #f4d03f);
+            animation: fa-toast-wave-1 2s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+        .fa-toast .wave-2 {
+            height: 60%;
+            background: linear-gradient(45deg, #b8860b, #d69e2e);
+            animation: fa-toast-wave-2 2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+        .fa-toast .wave-3 {
+            height: 80%;
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+            animation: fa-toast-wave-3 2s ease-in-out infinite;
+            animation-delay: 0.6s;
+        }
+        .fa-toast .wave-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .fa-toast .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #d69e2e;
+            border-radius: 50%;
+            animation: fa-toast-particle-float 3s ease-in-out infinite;
+            box-shadow: 0 0 4px #d69e2e;
+        }
+        .fa-toast .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .fa-toast .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .fa-toast .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .fa-toast .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+        .fa-toast .toast-message {
+            flex: 1;
+            font-weight: 500;
+        }
+        @keyframes fa-toast-wave-1 {
+            0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; }
+            50% { transform: translateX(0%) scaleY(1.2); opacity: 1; }
+        }
+        @keyframes fa-toast-wave-2 {
+            0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; }
+            50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; }
+        }
+        @keyframes fa-toast-wave-3 {
+            0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; }
+            50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; }
+        }
+        @keyframes fa-toast-particle-float {
+            0% { transform: translateY(100%) scale(0); opacity: 0; }
+            20% { transform: translateY(80%) scale(1); opacity: 1; }
+            80% { transform: translateY(20%) scale(1); opacity: 1; }
+            100% { transform: translateY(0%) scale(0); opacity: 0; }
+        }
+
+        .fa-instructions-content { color: var(--neutral--400); font-size: 0.875rem; line-height: 1.65; }
+        .fa-instructions-content ol { padding-left: 24px; margin: 0 0 20px 0; }
+        .fa-instructions-content ol li { margin-bottom: 14px; }
+        .fa-instructions-content ol li:last-child { margin-bottom: 0; }
+        .fa-instructions-content strong { color: var(--secondary--color-2); }
+        .fa-instructions-table-wrap { overflow-x: auto; margin: 12px 0 24px 0; }
+        .fa-instructions-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+        .fa-instructions-table th, .fa-instructions-table td { padding: 10px 14px; text-align: left; border: 1px solid var(--neutral--600); }
+        .fa-instructions-table th { background: var(--neutral--700); color: var(--neutral--100); font-weight: 600; }
+        .fa-instructions-table td { color: var(--neutral--400); }
+        .fa-instructions-table input.form-input, .fa-instructions-table input { background: var(--neutral--800); border: 1px solid var(--neutral--600); color: var(--neutral--100); padding: 6px 10px; font-size: 0.8rem; min-width: 0; }
+        .fa-instructions-note { background: rgba(253,181,42,0.1); border: 1px solid var(--secondary--color-5); border-radius: 8px; padding: 16px; margin-top: 24px; color: var(--neutral--100); font-size: 0.8rem; }
+
+        .org-chart-wrap { margin-top: 24px; }
+        .org-chart-diagram { display: flex; flex-direction: column; align-items: center; gap: 0; position: relative; }
+        .org-level { display: flex; justify-content: center; align-items: flex-start; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+        .org-level:first-child { margin-bottom: 0; }
+        .org-node { background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 10px; padding: 16px; min-width: 260px; max-width: 320px; position: relative; }
+        .org-node.applicant { border-color: var(--accent--primary-1); background: rgba(108, 114, 255, 0.08); }
+        .org-node-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--neutral--500); margin-bottom: 8px; font-weight: 600; }
+        .org-node-fields { display: flex; flex-direction: column; gap: 10px; }
+        .org-node-fields input { padding: 8px 12px; font-size: 0.8125rem; background: var(--neutral--800); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); width: 100%; }
+        .org-node-fields input::placeholder { color: var(--neutral--500); }
+        .org-node-fields input:focus { outline: none; border-color: var(--accent--primary-1); }
+        .org-node-fields input[type="number"] { max-width: 80px; }
+        .org-connector { width: 2px; min-height: 24px; background: linear-gradient(to bottom, var(--neutral--600), var(--neutral--500)); margin: 0 auto 4px; }
+        .org-connector-h { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; }
+        .org-connector-h span { width: 2px; height: 20px; background: var(--neutral--600); }
+        .org-children { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 12px; }
+        .org-child-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+        .org-section { margin-bottom: 20px; }
+        .org-section-title { margin: 0 0 4px; font-size: 1rem; color: var(--neutral--200); }
+        .org-section-desc { margin: 0 0 12px; font-size: 0.8rem; color: var(--neutral--500); }
+        .org-owners-pool, .org-entities { display: flex; flex-wrap: wrap; gap: 12px; }
+        .org-owners-pool .org-node, .org-entities .org-entity-node { min-width: 240px; }
+        .org-entities .org-entity-node { flex: 1; min-width: 280px; max-width: 420px; }
+        .org-add-btn { margin-top: 12px; padding: 6px 14px; font-size: 0.8rem; background: transparent; border: 1px dashed var(--neutral--600); color: var(--neutral--400); border-radius: 6px; cursor: pointer; }
+        .org-add-btn:hover { border-color: var(--accent--primary-1); color: var(--accent--primary-1); }
+        .org-remove-btn { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; padding: 0; background: transparent; border: none; color: var(--neutral--500); cursor: pointer; font-size: 18px; line-height: 1; }
+        .org-remove-btn:hover { color: var(--system--300); }
+        .org-assign-table { width: 100%; margin-top: 12px; font-size: 0.8rem; }
+        .org-assign-table th, .org-assign-table td { padding: 8px; text-align: left; }
+        .org-assign-table th { color: var(--neutral--500); font-weight: 600; }
+        .org-assign-table select { min-width: 180px; padding: 6px 10px; background: var(--neutral--800); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); }
+        .org-assign-table input[type="number"] { width: 70px; padding: 6px; }
+        .org-assign-add { margin-top: 8px; font-size: 0.75rem; }
+        .app-letter-preview-wrap { background: var(--neutral--700); border: 1px solid var(--neutral--600); border-radius: 8px; min-height: 420px; overflow: hidden; }
+        .app-letter-preview-placeholder { padding: 48px 24px; text-align: center; color: var(--neutral--500); }
+        .app-letter-pdf-frame { width: 100%; min-height: 420px; border: none; background: #fff; }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="dashboard-main-section">
+            <div class="intake-container">
+                <div class="intake-header">
+                    <div class="back-to-links">
+                        <a href="/my-deals.html" id="backToMyDeals">Back to My Deals (Franchise Application)</a>
+                    </div>
+                    <div class="intake-title-container">
+                        <div class="deal-capture-logo">
+                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+                        </div>
+                        <h1 id="pageTitle">Franchise Application</h1>
+                    </div>
+                    <p>Complete your franchise application for this project. Changes can be saved as draft. Download PDF when ready.</p>
+                </div>
+
+                <div class="fa-beta-notice" role="status" style="padding:10px 16px;margin-bottom:24px;background:rgba(253,181,42,0.12);border:1px solid var(--secondary--color-5);border-radius:8px;color:var(--neutral--100);font-size:0.8125rem;">
+                    <strong>Beta</strong> — This section is in development. We&rsquo;re gathering feedback from brands and operators to improve it before a full release.
+                </div>
+
+                <div class="fa-loading" id="faLoading" aria-live="polite">
+                    <span id="faLoadingText">Loading…</span>
+                </div>
+                <div class="fa-toast" id="faToast" role="status" aria-live="polite">
+                    <div class="toast-content">
+                        <div class="toast-wave-container">
+                            <div class="wave-container">
+                                <div class="wave wave-1"></div>
+                                <div class="wave wave-2"></div>
+                                <div class="wave wave-3"></div>
+                                <div class="wave-particles">
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="toast-message"></div>
+                    </div>
+                </div>
+
+                <div id="faError" class="hidden" style="padding:16px;background:rgba(255,90,101,0.15);border:1px solid var(--system--300);border-radius:8px;margin-bottom:24px;color:var(--neutral--100);"></div>
+
+                <div id="faFormWrap" class="hidden">
+                    <nav class="section-nav" id="sectionNav" aria-label="Franchise application sections">
+                        <div class="section-nav-item active" data-section="0"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></div><span class="section-nav-label">Instructions</span></div>
+                        <div class="section-nav-item" data-section="1"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><span class="section-nav-label">Checklist &<br>Disclosure</span></div>
+                        <div class="section-nav-item" data-section="2"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div><span class="section-nav-label">Application<br>Letter</span></div>
+                        <div class="section-nav-item" data-section="3"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="section-nav-label">Applicant &<br>Contacts</span></div>
+                        <div class="section-nav-item" data-section="4"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><span class="section-nav-label">Management</span></div>
+                        <div class="section-nav-item" data-section="5"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><span class="section-nav-label">Ownership<br>Structure</span></div>
+                        <div class="section-nav-item" data-section="6"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><span class="section-nav-label">Hotel /<br>Site</span></div>
+                        <div class="section-nav-item" data-section="7"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><span class="section-nav-label">Site<br>Control</span></div>
+                        <div class="section-nav-item" data-section="8"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><span class="section-nav-label">Financial &<br>Timeline</span></div>
+                        <div class="section-nav-item" data-section="9"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/></svg></div><span class="section-nav-label">Due<br>Diligence</span></div>
+                        <div class="section-nav-item" data-section="10"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div><span class="section-nav-label">Attachments</span></div>
+                    </nav>
+
+                    <form id="faForm" class="intake-form">
+                        <p class="section-progress" id="sectionProgress">Step 1 of 11</p>
+                        <div class="form-sections-wrap">
+                            <!-- 0. Instructions -->
+                            <div class="form-section active" data-section="0">
+                                <h2 class="form-section-title">Instructions for Submitting an Application</h2>
+                                <div class="fa-instructions-content">
+                                    <ol class="fa-instructions-list">
+                                        <li><strong>Signing and Disclosure Document.</strong> The applicant's required signer must sign and date the "Receipt" page at the end of the current Franchise Disclosure Document ("Disclosure Document") for the specific brand. This document must then be returned immediately by mail to the development representative.</li>
+                                        <li><strong>Application Completion.</strong> Every part of the application must be completed, and additional pages can be attached if necessary. All information must be legible, in English, and either typed or printed. The application can be filled out electronically, saved, and printed. However, a signed hard copy, along with the Application Fee (as detailed in Paragraph 5), must be submitted to the development representative.</li>
+                                        <li><strong>Supporting Documents.</strong> Applicants must attach all supporting documents and information indicated in each section of the application. If any part of the application is incomplete or supporting documentation is missing, a written explanation for the incompleteness or absence of documents must be provided. Incomplete applications will not be considered.</li>
+                                        <li><strong>Organizational Chart and Ownership.</strong> The applicant can be a natural person or an existing legal entity. A <em>complete organizational chart</em> must be provided, showing the structure up to the ultimate owning entity/entities and all ultimate individual beneficial owners of the applicant. Additionally, relevant Participant Information forms (Part 4) are required for the applicant and for any person or entity holding a 25% or greater ownership interest, or a controlling interest (e.g., general partner, managing member).</li>
+                                        <li><strong>Application Fee.</strong> A check or wire transfer for the "Application Fee" must accompany the application. Application fees vary by brand. Consult the Franchise Disclosure Document and fee schedule for each brand you intend to apply to. Fee information may also be available in the Dealality Brand Library. When you generate an Application Letter for a specific brand (see Part 2), you can reference that brand's fee requirements.</li>
+                                    </ol>
+                                    <p class="project-fit-subheader">Required Signatures</p>
+                                    <p>The Application Letter must be signed and dated by the Applicant, or on behalf of the Applicant, by a person or persons with the capacity and authority to do so. The signatures required for valid execution of the Application Letter may vary depending on the laws under which the Applicant is established or resident. These laws must be complied with. Minimum requirements for signatures are as follows:</p>
+                                    <div class="fa-instructions-table-wrap"><table class="fa-instructions-table">
+                                        <thead><tr><th>Applicant</th><th>Signers</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>Individual(s)</td><td>Each Individual</td></tr>
+                                            <tr><td>Corporate Entity</td><td>President, Vice President or other authorized officer</td></tr>
+                                            <tr><td>General Partnership</td><td>Each General Partner</td></tr>
+                                            <tr><td>Limited Partnership</td><td>Any General Partner</td></tr>
+                                            <tr><td>Limited Liability Company</td><td>Managing Member(s) or other authorized Member(s)</td></tr>
+                                            <tr><td>Trust</td><td>Trustee(s)</td></tr>
+                                            <tr><td>Estate</td><td>Executor or Administrator</td></tr>
+                                        </tbody>
+                                    </table></div>
+                                    <p class="fa-instructions-note"><strong>NOTE: APPLICANT SHOULD NOT SIGN OR SUBMIT THIS APPLICATION OR PAYMENT OF THE APPLICATION FEE UNTIL AT LEAST THE DAY AFTER THE 10TH FULL CALENDAR DAY AFTER THE DATE APPLICANT RECEIVED THE DISCLOSURE DOCUMENT AND SIGNED A RECEIPT.</strong></p>
+                                </div>
+                            </div>
+                            <!-- 1. Checklist & Disclosure (Part 1) -->
+                            <div class="form-section" data-section="1">
+                                <h2 class="form-section-title">Part 1: Application Checklist</h2>
+                                <p class="form-section-subtitle">Required items for a complete Franchise Application. Additional information may be requested as deemed appropriate.</p>
+                                <p class="required-note"><span class="required">*</span> Required</p>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Disclosure Document Receipt Date <span class="required">*</span><span class="help-text">Signed and dated or submitted electronically by Applicant (see page 1)</span></label>
+                                        <input type="date" class="form-input" name="Disclosure Document Receipt Date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Disclosure Document Signed<span class="help-text">Applicant acknowledged receipt of the Disclosure Document</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Disclosure Document Signed" value="Yes"> Applicant acknowledged receipt</div>
+                                    </div>
+                                </div>
+                                <p class="project-fit-subheader">Checklist Items</p>
+                                <div class="form-grid cols-1">
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Disclosure Receipt" value="Yes"> 1. Disclosure Document Receipt (signed and dated or electronic)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Application Letter" value="Yes"> 2. Application Letter (signed and dated with completed Application pages)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Application Fee" value="Yes"> 3. Franchise Application Fee (dated/received no earlier than day after 14th full calendar day after Disclosure receipt; e.g. if received Jan 1, earliest payment is Jan 16)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Certification Formation" value="Yes"> 4. Certification of Formation (evidence of Applicant Entity status in jurisdiction of formation)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Ownership Structure" value="Yes"> 5. Complete Ownership Structure Form (Applicant and all underlying ownership entities)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Ownership Structure Fee Holder" value="Yes"> 6. Complete Ownership Structure Form for fee title holder/lessor/sublessor (if related to Applicant)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Market Study" value="Yes"> 7. Market or Feasibility Study (if available or upon request)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Site Control" value="Yes"> 8. Site Control Document and all amendments (recorded deed, ground lease, purchase option, binding LOI, or purchase agreement; in Applicant or affiliate name)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Site Plan" value="Yes"> 9. Site Plan, Aerial and Location Map (site clearly identified; consult Developer for requirements)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist List of Hotels" value="Yes"> 10. List of Hotels (all hotels currently owned or managed by Applicant)</div>
+                                </div>
+                                <p class="project-fit-subheader">Conversion Projects – Additional Items</p>
+                                <div class="form-grid cols-1">
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist Conversion Indemnity" value="Yes"> Conversion Indemnity Letter (if applicable)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="Checklist 3yr Stats" value="Yes"> 3 Years&rsquo; Hotel Operating Statistics (Summary Statement)</div>
+                                </div>
+                            </div>
+
+                            <!-- 2. Application Letter (Part 2) -->
+                            <div class="form-section" data-section="2">
+                                <h2 class="form-section-title">Part 2: Application Letter</h2>
+                                <p class="form-section-subtitle">Name of Applicant and Location. Brand can be specified when generating the Application Letter for a specific brand. The Application Letter must be signed by authorized signatory; see Instructions for required signatories.</p>
+                                <p class="required-note"><span class="required">*</span> Required</p>
+                                <div class="form-grid">
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Name of Applicant ("Applicant") <span class="required">*</span><span class="help-text">Entity name may not include any franchisor marks or variations</span></label>
+                                        <input type="text" class="form-input" name="Applicant Name" placeholder="Entity name may not include any franchisor marks or variations">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Location ("Location") <span class="required">*</span><span class="help-text">Location of the hotel project</span></label>
+                                        <input type="text" class="form-input" name="Project Location" placeholder="Location of the hotel project">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Application Type <span class="required">*</span><span class="help-text">New Development, Conversion, Change of Ownership, or Relicensing</span></label>
+                                        <select class="form-select" name="Application Type">
+                                            <option value="">Select…</option>
+                                            <option value="New Development">New Development</option>
+                                            <option value="Conversion">Conversion</option>
+                                            <option value="Change of Ownership">Change of Ownership</option>
+                                            <option value="Relicensing">Relicensing</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Brand <span class="help-text">Optional. Leave blank to complete a generic application. Use "Generate for Brand" below to create a brand-specific Application Letter when submitting to a brand.</span></label>
+                                        <select class="form-input" name="Target Brand" id="targetBrandSelect">
+                                            <option value="">— Not specified (generic application) —</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <p class="project-fit-subheader">Application Letter Acknowledgment</p>
+                                        <p class="form-section-subtitle" style="font-size:0.8rem;">By signing, Applicant acknowledges: (1) all information is true and complete; (2) authority to apply and enter Franchise Agreement; (3) receipt of Franchise Information and confidentiality; (4) no oral agreements exist. Application governed by laws of State of New York.</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Signature<span class="help-text">Typed name or initials for electronic submission</span></label>
+                                        <input type="text" class="form-input" name="Application Signature" placeholder="Typed name or initials for electronic submission">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Individual&rsquo;s Name<span class="help-text">Full name of signatory</span></label>
+                                        <input type="text" class="form-input" name="Application Signer Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Entity Name, if any<span class="help-text">Legal entity name if signing on behalf of entity</span></label>
+                                        <input type="text" class="form-input" name="Application Entity Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Date<span class="help-text">Date Application Letter was signed</span></label>
+                                        <input type="date" class="form-input" name="Application Letter Signed Date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Position<span class="help-text">e.g. President, Managing Member, Trustee</span></label>
+                                        <input type="text" class="form-input" name="Application Signer Position" placeholder="e.g. President, Managing Member">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Application Fee Amount (US$)<span class="help-text">Per fee schedule in Instructions tab</span></label>
+                                        <input type="number" class="form-input" name="Application Fee Amount" placeholder="0" min="0" step="0.01">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Application Fee Paid Date<span class="help-text">Must be no earlier than day after 14th calendar day after Disclosure receipt</span></label>
+                                        <input type="date" class="form-input" name="Application Fee Paid Date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Application Fee Received<span class="help-text">Check when fee has been received</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Application Fee Received" value="Yes"> Fee received</div>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <p class="project-fit-subheader">Application Letter Preview</p>
+                                        <p class="form-section-subtitle" style="font-size:0.8rem;">Generate a PDF of the Application Letter based on your entries. Review before signing and submitting.</p>
+                                        <div class="app-letter-preview-wrap">
+                                            <div class="app-letter-preview-placeholder" id="appLetterPreviewPlaceholder">
+                                                <p>Click "Preview Application Letter" to generate the PDF.</p>
+                                            </div>
+                                            <iframe id="appLetterPdfFrame" class="app-letter-pdf-frame" title="Application Letter PDF preview" style="display:none;"></iframe>
+                                        </div>
+                                        <div class="app-letter-actions" style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+                                            <label class="form-label" style="margin:0;white-space:nowrap;">Brand for letter:</label>
+                                            <select class="form-input" id="appLetterBrandSelect" style="max-width:240px;margin:0;">
+                                                <option value="">— Generic (no brand) —</option>
+                                            </select>
+                                            <button type="button" class="btn btn-secondary" id="previewAppLetterBtn">Preview Application Letter</button>
+                                            <button type="button" class="btn btn-secondary" id="generateForBrandBtn">Generate for Brand</button>
+                                            <button type="button" class="btn btn-secondary" id="downloadAppLetterBtn" style="display:none;">Download Application Letter PDF</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. Applicant & Contacts (Part 3) -->
+                            <div class="form-section" data-section="3">
+                                <h2 class="form-section-title">Part 3: Application Form – Applicant, Principal Correspondent, Management</h2>
+                                <p class="form-section-subtitle">Applicant entity details, principal correspondent for legal notices, and management information.</p>
+                                <p class="required-note"><span class="required">*</span> Required</p>
+                                <p class="project-fit-subheader">APPLICANT</p>
+                                <div class="economics-grid">
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Name of Applicant <span class="required">*</span><span class="help-text">Entity name may not include any franchisor marks or variations</span></label>
+                                        <input type="text" class="form-input" name="Applicant Name" placeholder="Applicant entity or individual">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">State in which Applicant&rsquo;s principal business address is located<span class="help-text">If individual: state of permanent residence</span></label>
+                                        <input type="text" class="form-input" name="Applicant State Province" placeholder="If individual: permanent residence">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Type<span class="help-text">Legal structure of Applicant</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="ApplicantType_Corp" value="Corporation"> Corporation</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="ApplicantType_Individual" value="Individual"> Individual</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="ApplicantType_LP" value="Limited Partnership"> Limited Partnership</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="ApplicantType_Trust" value="Trust"> Trust</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="ApplicantType_GP" value="General Partnership"> General Partnership</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="ApplicantType_Other" value="Other"> Other (specify): <input type="text" class="form-input" name="Applicant Type Other" style="max-width:120px;display:inline-block;"></div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="ApplicantType_LLC" value="LLC"> Limited Liability Company</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="ApplicantType_LLP" value="LLP"> Limited Liability Partnership</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Birth or Formation Information – Date (Month/Day/Year)<span class="help-text">Date of incorporation, formation, or birth if individual</span></label>
+                                        <input type="date" class="form-input" name="Applicant Formation Date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">State/Province, Country<span class="help-text">Jurisdiction of formation or birth</span></label>
+                                        <input type="text" class="form-input" name="Applicant Formation Place" placeholder="State/Province, Country">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">U.S. SSN (last 4 only)/EIN/Canada SIN/Gov&rsquo;t ID#<span class="help-text">Last 4 digits for SSN; full EIN or government ID for entities</span></label>
+                                        <input type="text" class="form-input" name="Applicant ID" placeholder="Last 4 digits or full EIN">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <p class="project-fit-subheader">PRINCIPAL CORRESPONDENT – FOR LEGAL NOTICES*</p>
+                                        <p class="form-section-subtitle" style="font-size:0.75rem;margin-bottom:8px;">*Note: This is your official contact for our records. Do not include attorney or advisors. Address may not be the Hotel or a P.O. Box.</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Name<span class="help-text">Contact person for legal notices</span></label>
+                                        <input type="text" class="form-input" name="Legal Contact Name">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Street Address<span class="help-text">Principal correspondent street address</span></label>
+                                        <input type="text" class="form-input" name="Legal Contact Street">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">City<span class="help-text">City for legal notices</span></label>
+                                        <input type="text" class="form-input" name="Legal Contact City">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">State/Province<span class="help-text">State or province for legal notices</span></label>
+                                        <input type="text" class="form-input" name="Legal Contact State">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Zip/Postal Code<span class="help-text">Zip or postal code</span></label>
+                                        <input type="text" class="form-input" name="Legal Contact Zip Postal">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Country<span class="help-text">Country for legal notices</span></label>
+                                        <input type="text" class="form-input" name="Legal Contact Country">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Telephone<span class="help-text">Primary phone for legal notices</span></label>
+                                        <input type="tel" class="form-input" name="Legal Contact Phone">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Fax<span class="help-text">Fax number if applicable</span></label>
+                                        <input type="text" class="form-input" name="Legal Contact Fax">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Email<span class="help-text">Email for legal notices</span></label>
+                                        <input type="email" class="form-input" name="Legal Contact Email">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <p class="project-fit-subheader">For Day-to-Day Communications</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Day-to-Day Contact Name<span class="help-text">Primary contact for day-to-day communications</span></label>
+                                        <input type="text" class="form-input" name="Day-to-Day Contact Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Day-to-Day Contact Email<span class="help-text">Email for routine communications</span></label>
+                                        <input type="email" class="form-input" name="Day-to-Day Contact Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Day-to-Day Contact Phone<span class="help-text">Phone for routine communications</span></label>
+                                        <input type="tel" class="form-input" name="Day-to-Day Contact Phone">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 4. Management (Part 3 continued) -->
+                            <div class="form-section" data-section="4">
+                                <h2 class="form-section-title">Management Information</h2>
+                                <p class="form-section-subtitle">The proposed hotel will be managed by:</p>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Management Type<span class="help-text">How the proposed hotel will be managed</span></label>
+                                        <select class="form-select" name="Management Type" id="managementTypeSelect">
+                                            <option value="">Select…</option>
+                                            <option value="Direct GM">Direct GM (Applicant-employed)</option>
+                                            <option value="Management Group">Management Group</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="gmWillBeBlock">
+                                        <label class="form-label">GM Will Be<span class="help-text">e.g. employed by Applicant</span></label>
+                                        <input type="text" class="form-input" name="GM Will Be" placeholder="e.g. employed by Applicant">
+                                    </div>
+                                    <div class="form-group" id="mgmtCompanyBlock">
+                                        <label class="form-label">Management Company Name<span class="help-text">Name of management group if applicable</span></label>
+                                        <input type="text" class="form-input" name="Management Company Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Management Company Address<span class="help-text">Full address of management company</span></label>
+                                        <textarea class="form-textarea" name="Management Company Address" rows="2"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Management Company Phone<span class="help-text">Primary phone number</span></label>
+                                        <input type="tel" class="form-input" name="Management Company Phone">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Management Company Email<span class="help-text">Primary email address</span></label>
+                                        <input type="email" class="form-input" name="Management Company Email">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <p class="form-section-subtitle" style="font-size:0.8rem;margin-top:12px;">Approval of this Application does not mean that your proposed management is approved. You must obtain Franchisor&rsquo;s separate written approval of the proposed management of the Hotel.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 5. Ownership Structure - Org Chart -->
+                            <div class="form-section" data-section="5">
+                                <h2 class="form-section-title">Ownership Structure of Applicant Entity</h2>
+                                <p class="form-section-subtitle">Provide a complete breakdown of the owners of the Applicant Entity and any related entity that holds/will hold fee title to the Hotel. For complex structures, attach a detailed organizational chart. If owners are other legal entities, include breakdown of their underlying ownership (all individuals who own and/or control). Copy form as needed for multiple structures.</p>
+                                <p class="required-note">Each node: Entity/Person Name, SSN/EIN/Gov&rsquo;t ID (last 4), Description of Interest (e.g. General Partner, Shareholder, Trustee), % Interest, Business Address &amp; Phone.</p>
+                                <div class="org-chart-wrap">
+                                    <div class="org-chart-diagram" id="orgChartDiagram">
+                                        <!-- Ultimate Owners pool -->
+                                        <div class="org-section">
+                                            <h3 class="org-section-title">Ultimate Owners</h3>
+                                            <p class="org-section-desc">Add individuals/entities that hold ownership. Assign them to entities below.</p>
+                                            <div class="org-level org-owners-pool" id="orgOwnersPool"></div>
+                                            <button type="button" class="org-add-btn" id="orgAddOwner">+ Add ultimate owner</button>
+                                        </div>
+                                        <div class="org-connector"></div>
+                                        <!-- Entities (shareholders of Applicant) with assignments -->
+                                        <div class="org-section">
+                                            <h3 class="org-section-title">Entities (shareholders of Applicant)</h3>
+                                            <p class="org-section-desc">Add entities that own the Applicant. For each entity, assign which ultimate owners hold interest.</p>
+                                            <div class="org-level org-entities" id="orgEntities"></div>
+                                            <button type="button" class="org-add-btn" id="orgAddEntity">+ Add entity/shareholder</button>
+                                        </div>
+                                        <div class="org-connector"></div>
+                                        <!-- Applicant -->
+                                        <div class="org-level" id="orgLevel0">
+                                            <div class="org-node applicant">
+                                                <div class="org-node-label">Applicant</div>
+                                                <div class="org-node-fields">
+                                                    <input type="text" name="Org_Applicant" id="orgApplicantName" placeholder="Applicant entity name (or see Application Letter)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 6. Hotel / Site -->
+                            <div class="form-section" data-section="6">
+                                <h2 class="form-section-title">HOTEL/SITE/SITE CONTROL INFORMATION</h2>
+                                <p class="form-section-subtitle">Location, brand, development type, facilities, and amenities.</p>
+                                <p class="required-note"><span class="required">*</span> Required</p>
+                                <p class="project-fit-subheader">Location of Hotel/Hotel Site</p>
+                                <div class="economics-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Hotel Street Address<span class="help-text">Street address or coordinates</span></label>
+                                        <input type="text" class="form-input" name="Hotel Street Address">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hotel City<span class="help-text">City of hotel or hotel site</span></label>
+                                        <input type="text" class="form-input" name="Hotel City">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hotel State/Province<span class="help-text">State or province</span></label>
+                                        <input type="text" class="form-input" name="Hotel State Province">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hotel Zip/Postal<span class="help-text">Zip or postal code</span></label>
+                                        <input type="text" class="form-input" name="Hotel Zip Postal">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hotel Country<span class="help-text">Country of hotel location</span></label>
+                                        <input type="text" class="form-input" name="Hotel Country">
+                                    </div>
+                                </div>
+                                <p class="project-fit-subheader">Hotel Facilities (existing and/or proposed)</p>
+                                <div class="economics-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Total Guest Units <span class="required">*</span><span class="help-text">Total number of guest rooms and suites</span></label>
+                                        <input type="number" class="form-input" name="Total Guest Units" min="0" placeholder="e.g. 150">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Standard Rooms<span class="help-text">Number of standard guest rooms</span></label>
+                                        <input type="number" class="form-input" name="Standard Rooms" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Suites<span class="help-text">Number of suite units</span></label>
+                                        <input type="number" class="form-input" name="Suites" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Number of Stories<span class="help-text">Number of building stories</span></label>
+                                        <input type="number" class="form-input" name="Number of Stories" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Year Built<span class="help-text">Year built for existing/open hotel only</span></label>
+                                        <input type="number" class="form-input" name="Year Built" min="1800" max="2099" placeholder="Open hotel only">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Meeting Space?<span class="help-text">Square footage if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Meeting Space No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Meeting Space Yes" value="Yes"> Yes: <input type="number" class="form-input" name="Meeting Space Sq Ft" min="0" placeholder="sq ft" style="max-width:100px;display:inline-block;"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label"># of Mtg Rms<span class="help-text">Number of meeting rooms</span></label>
+                                        <input type="number" class="form-input" name="Meeting Rooms Count" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Ballroom?<span class="help-text">Description and square footage if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Ballroom No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Ballroom Yes" value="Yes"> Yes/Description, sq ft: <input type="text" class="form-input" name="Ballroom Description" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Fitness Center?<span class="help-text">Description if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Fitness No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Fitness Yes" value="Yes"> Yes/Description: <input type="text" class="form-input" name="Fitness Description" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Spa?<span class="help-text">Description if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Spa No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Spa Yes" value="Yes"> Yes/Description: <input type="text" class="form-input" name="Spa Description" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Swimming Pool?<span class="help-text">Description if yes</span></label>
+                                        <input type="text" class="form-input" name="Swimming Pool" placeholder="Description if yes">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hot Tub/Jacuzzi?<span class="help-text">Description if yes</span></label>
+                                        <input type="text" class="form-input" name="Hot Tub" placeholder="Description if yes">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Food &amp; Beverage Facilities<span class="help-text">Outlets, capacity, meals served, operated/leased, brand names</span></label>
+                                        <textarea class="form-textarea" name="Food Beverage Facilities" rows="2" placeholder="Outlets, capacity, meals served, operated/leased, current/planned brand names"></textarea>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Other Retail Outlets<span class="help-text">Type, operated/leased, current or planned brand names</span></label>
+                                        <textarea class="form-textarea" name="Other Retail Outlets" rows="2" placeholder="Type, operated/leased, current/planned brand names"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Shared Facilities?<span class="help-text">Description if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Shared Facilities No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Shared Facilities Yes" value="Yes"> Yes/Description: <input type="text" class="form-input" name="Shared Facilities Desc" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Condo Residences?<span class="help-text">Number if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Condo No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Condo Yes" value="Yes"> Yes (#): <input type="number" class="form-input" name="Condo Count" min="0" style="max-width:80px;display:inline-block;"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hotel Rental Program?<span class="help-text">Description if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Rental Program No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Rental Program Yes" value="Yes"> Yes/Description: <input type="text" class="form-input" name="Rental Program Desc" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                </div>
+                                <p class="project-fit-subheader">Development Type</p>
+                                <div class="form-grid cols-1" style="margin-bottom:16px;">
+                                    <div class="form-checkbox-row"><input type="checkbox" name="DevType_New" value="New Development"> New Development* (new build/adaptive reuse)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="DevType_Conversion" value="Conversion"> Conversion</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="DevType_ChangeOwnership" value="Change of Ownership"> Change of Ownership</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="DevType_Relicensing" value="Relicensing"> Relicensing</div>
+                                </div>
+                                <p class="project-fit-subheader">Hotel Affiliation (for New Development/Conversion only)</p>
+                                <div class="economics-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Prior franchise, branded mgmt, affiliation for this hotel/site?<span class="help-text">For New Development/Conversion applications only. Describe if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Prior Franchise No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Prior Franchise Yes" value="Yes"> Yes/Describe: <input type="text" class="form-input" name="Prior Franchise Affiliation" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hotel currently under contract with another chain?<span class="help-text">Specify chain name if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Currently Under Contract No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Currently Under Contract Yes" value="Yes"> Yes/Specify: <input type="text" class="form-input" name="Currently Under Contract" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                </div>
+                                <p class="project-fit-subheader">List of Hotels Owned and/or Operated by Applicant and Equity Owners</p>
+                                <p class="form-section-subtitle" style="font-size:0.8rem;margin-bottom:12px;">(Attach additional pages if necessary)</p>
+                                <div class="fa-instructions-table-wrap">
+                                    <table class="fa-instructions-table" id="hotelsPortfolioTable">
+                                        <thead><tr><th>Owner/Operator Name</th><th>Brand/Property Name, City/State</th><th>Description of Interest</th><th>% Equity</th></tr></thead>
+                                        <tbody>
+                                            <tr><td><input type="text" class="form-input" name="HotelPortfolio_1_Owner" placeholder="Name"></td><td><input type="text" class="form-input" name="HotelPortfolio_1_Property" placeholder="Brand, property, city, state"></td><td><input type="text" class="form-input" name="HotelPortfolio_1_Interest" placeholder="e.g. Owner"></td><td><input type="number" class="form-input" name="HotelPortfolio_1_Equity" min="0" max="100" step="0.01" placeholder="%"></td></tr>
+                                            <tr><td><input type="text" class="form-input" name="HotelPortfolio_2_Owner" placeholder="Name"></td><td><input type="text" class="form-input" name="HotelPortfolio_2_Property" placeholder="Brand, property, city, state"></td><td><input type="text" class="form-input" name="HotelPortfolio_2_Interest" placeholder="e.g. Owner"></td><td><input type="number" class="form-input" name="HotelPortfolio_2_Equity" min="0" max="100" step="0.01" placeholder="%"></td></tr>
+                                            <tr><td><input type="text" class="form-input" name="HotelPortfolio_3_Owner" placeholder="Name"></td><td><input type="text" class="form-input" name="HotelPortfolio_3_Property" placeholder="Brand, property, city, state"></td><td><input type="text" class="form-input" name="HotelPortfolio_3_Interest" placeholder="e.g. Owner"></td><td><input type="number" class="form-input" name="HotelPortfolio_3_Equity" min="0" max="100" step="0.01" placeholder="%"></td></tr>
+                                            <tr><td><input type="text" class="form-input" name="HotelPortfolio_4_Owner" placeholder="Name"></td><td><input type="text" class="form-input" name="HotelPortfolio_4_Property" placeholder="Brand, property, city, state"></td><td><input type="text" class="form-input" name="HotelPortfolio_4_Interest" placeholder="e.g. Owner"></td><td><input type="number" class="form-input" name="HotelPortfolio_4_Equity" min="0" max="100" step="0.01" placeholder="%"></td></tr>
+                                            <tr><td><input type="text" class="form-input" name="HotelPortfolio_5_Owner" placeholder="Name"></td><td><input type="text" class="form-input" name="HotelPortfolio_5_Property" placeholder="Brand, property, city, state"></td><td><input type="text" class="form-input" name="HotelPortfolio_5_Interest" placeholder="e.g. Owner"></td><td><input type="number" class="form-input" name="HotelPortfolio_5_Equity" min="0" max="100" step="0.01" placeholder="%"></td></tr>
+                                            <tr><td><input type="text" class="form-input" name="HotelPortfolio_6_Owner" placeholder="Name"></td><td><input type="text" class="form-input" name="HotelPortfolio_6_Property" placeholder="Brand, property, city, state"></td><td><input type="text" class="form-input" name="HotelPortfolio_6_Interest" placeholder="e.g. Owner"></td><td><input type="number" class="form-input" name="HotelPortfolio_6_Equity" min="0" max="100" step="0.01" placeholder="%"></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 7. Site Control / Hotel Site Building Information -->
+                            <div class="form-section" data-section="7">
+                                <h2 class="form-section-title">Hotel Site / Building Information &amp; Site Control</h2>
+                                <p class="form-section-subtitle">Site details, Applicant&rsquo;s form of site control, and owner information if different from Applicant.</p>
+                                <p class="project-fit-subheader">Hotel Site / Building Information</p>
+                                <div class="economics-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Total sq footage of site<span class="help-text">Total square footage of hotel site</span></label>
+                                        <input type="number" class="form-input" name="Site Sq Footage" min="0" placeholder="sq ft">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Zoned for hotel development?<span class="help-text">Whether site is zoned for hotel use</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Zoned Hotel No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Zoned Hotel Yes" value="Yes"> Yes</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Max height allowed by zoning<span class="help-text">Maximum height in feet permitted by zoning</span></label>
+                                        <input type="number" class="form-input" name="Max Height Stories" min="0" placeholder="Ft.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Stories<span class="help-text">Number of stories for site/building</span></label>
+                                        <input type="number" class="form-input" name="Number of Stories" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Site/Development Restrictions?<span class="help-text">Describe restrictions if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Site Restrictions No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Site Restrictions Yes" value="Yes"> Yes/Describe: <input type="text" class="form-input" name="Site Restrictions Description" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                </div>
+                                <p class="project-fit-subheader">Applicant&rsquo;s current form of site control</p>
+                                <p class="form-section-subtitle" style="font-size:0.8rem;margin-bottom:8px;">Select all that apply. Attach required documents.</p>
+                                <div class="form-grid cols-1" style="margin-bottom:16px;">
+                                    <div class="form-checkbox-row"><input type="checkbox" name="SiteControl_Owned" value="Owned"> Owned by Applicant (attach copy of recorded deed)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="SiteControl_GroundLease" value="Ground Lease"> Ground lease (attach copy of recorded ground lease)</div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="SiteControl_Option" value="Binding Option"> Binding option agreement (attach copy of recorded agreement) – Expiration Date: <input type="date" class="form-input" name="Option Expiration Date" style="max-width:140px;display:inline-block;"> Exercise Deadline: <input type="date" class="form-input" name="Option Exercise Deadline" style="max-width:140px;display:inline-block;"></div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="SiteControl_Purchase" value="Binding Purchase"> Binding purchase agreement (attach copy of executed agreement) – Closing Deadline: <input type="date" class="form-input" name="Purchase Closing Deadline" style="max-width:140px;display:inline-block;"></div>
+                                    <div class="form-checkbox-row"><input type="checkbox" name="SiteControl_Other" value="Other"> Other/Describe: <input type="text" class="form-input" name="Site Control Other" style="max-width:200px;display:inline-block;"></div>
+                                </div>
+                                <p class="project-fit-subheader">If Hotel or Hotel Site is currently owned by someone other than Applicant</p>
+                                <div class="economics-grid">
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Hotel/Hotel Site owner name<span class="help-text">If currently owned by someone other than Applicant</span></label>
+                                        <input type="text" class="form-input" name="Current Owner Name">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Street Address<span class="help-text">Current owner street address</span></label>
+                                        <input type="text" class="form-input" name="Current Owner Street">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">City<span class="help-text">Current owner city</span></label>
+                                        <input type="text" class="form-input" name="Current Owner City">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">State/Province<span class="help-text">Current owner state or province</span></label>
+                                        <input type="text" class="form-input" name="Current Owner State">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Zip/Postal Code<span class="help-text">Current owner zip or postal code</span></label>
+                                        <input type="text" class="form-input" name="Current Owner Zip">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Country<span class="help-text">Current owner country</span></label>
+                                        <input type="text" class="form-input" name="Current Owner Country">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Telephone<span class="help-text">Current owner phone</span></label>
+                                        <input type="tel" class="form-input" name="Current Owner Phone">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Fax<span class="help-text">Current owner fax</span></label>
+                                        <input type="text" class="form-input" name="Current Owner Fax">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Email<span class="help-text">Current owner email</span></label>
+                                        <input type="email" class="form-input" name="Current Owner Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Related to Applicant?<span class="help-text">Describe relationship if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Current Owner Related No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Current Owner Related Yes" value="Yes"> Yes/Describe: <input type="text" class="form-input" name="Current Owner Related Describe" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                </div>
+                                <p class="project-fit-subheader">If Hotel or Hotel Site will, upon close of purchase, be owned by someone other than Applicant</p>
+                                <div class="economics-grid">
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Fee owner/Lessor name<span class="help-text">If hotel will be owned by someone other than Applicant after purchase close</span></label>
+                                        <input type="text" class="form-input" name="Future Owner Name">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Street Address<span class="help-text">Future fee owner/lessor street address</span></label>
+                                        <input type="text" class="form-input" name="Future Owner Street">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">City, State/Province<span class="help-text">Future fee owner city and state</span></label>
+                                        <input type="text" class="form-input" name="Future Owner City State">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Zip/Postal Code<span class="help-text">Future fee owner zip or postal code</span></label>
+                                        <input type="text" class="form-input" name="Future Owner Zip">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Country<span class="help-text">Future fee owner country</span></label>
+                                        <input type="text" class="form-input" name="Future Owner Country">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Telephone<span class="help-text">Future fee owner phone</span></label>
+                                        <input type="tel" class="form-input" name="Future Owner Phone">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Fax<span class="help-text">Future fee owner fax</span></label>
+                                        <input type="text" class="form-input" name="Future Owner Fax">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Email<span class="help-text">Future fee owner email</span></label>
+                                        <input type="email" class="form-input" name="Future Owner Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Related to Applicant?<span class="help-text">Describe and provide ownership structure if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Future Owner Related No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Future Owner Related Yes" value="Yes"> Yes/Describe and provide ownership structure of fee owner: <input type="text" class="form-input" name="Future Owner Related Describe" style="max-width:180px;display:inline-block;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 8. Financial & Timeline -->
+                            <div class="form-section" data-section="8">
+                                <h2 class="form-section-title">FINANCIAL INFORMATION / PROJECT TIMELINE</h2>
+                                <p class="form-section-subtitle">Estimated project costs, timeline, operating projections, and financing.</p>
+                                <p class="project-fit-subheader">Estimated Project Costs – New Development Project</p>
+                                <div class="fa-instructions-table-wrap" style="margin-bottom:24px;">
+                                    <table class="fa-instructions-table">
+                                        <thead><tr><th></th><th>Overall (US$)</th><th>Per Key (US$)</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>Land</td><td><input type="number" class="form-input" name="Cost_Land_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_Land_PerKey" min="0" step="0.01"></td></tr>
+                                            <tr><td>Construction</td><td><input type="number" class="form-input" name="Cost_Construction_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_Construction_PerKey" min="0" step="0.01"></td></tr>
+                                            <tr><td>FF&amp;E</td><td><input type="number" class="form-input" name="Cost_FFE_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_FFE_PerKey" min="0" step="0.01"></td></tr>
+                                            <tr><td>Other</td><td><input type="number" class="form-input" name="Cost_Other_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_Other_PerKey" min="0" step="0.01"></td></tr>
+                                            <tr><td><strong>Total Project Costs</strong></td><td><input type="number" class="form-input" name="Cost_Total_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_Total_PerKey" min="0" step="0.01"></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="project-fit-subheader">Estimated Project Costs – Conversion or Change of Ownership (existing hotel)</p>
+                                <div class="fa-instructions-table-wrap" style="margin-bottom:24px;">
+                                    <table class="fa-instructions-table">
+                                        <thead><tr><th></th><th>Aggregate (US$)</th><th>Per Key (US$)</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>Purchase Price / Current Market Value</td><td><input type="number" class="form-input" name="Cost_Purchase_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_Purchase_PerKey" min="0" step="0.01"></td></tr>
+                                            <tr><td>Renovations / Upgrades</td><td><input type="number" class="form-input" name="Cost_Renovations_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_Renovations_PerKey" min="0" step="0.01"></td></tr>
+                                            <tr><td>Other</td><td><input type="number" class="form-input" name="Cost_ConvOther_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_ConvOther_PerKey" min="0" step="0.01"></td></tr>
+                                            <tr><td><strong>Total Project Costs</strong></td><td><input type="number" class="form-input" name="Cost_ConvTotal_Total" min="0" step="0.01"></td><td><input type="number" class="form-input" name="Cost_ConvTotal_PerKey" min="0" step="0.01"></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="project-fit-subheader">Estimated Project Timeline</p>
+                                <div class="economics-grid" style="margin-bottom:24px;">
+                                    <div class="form-group">
+                                        <label class="form-label">Forecasted Construction/Renovation Start Date<span class="help-text">Expected start date</span></label>
+                                        <input type="date" class="form-input" name="Forecasted Start Date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Forecasted Construction/Renovation Completion Date<span class="help-text">Expected completion date</span></label>
+                                        <input type="date" class="form-input" name="Forecasted Completion Date">
+                                    </div>
+                                </div>
+                                <p class="project-fit-subheader">Operating Projections</p>
+                                <div class="fa-instructions-table-wrap" style="margin-bottom:24px;">
+                                    <table class="fa-instructions-table">
+                                        <thead><tr><th>Assumptions</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 4</th><th>Year 5</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>% Occupancy</td><td><input type="number" class="form-input" name="Occupancy Yr1" min="0" max="100" step="0.1"></td><td><input type="number" class="form-input" name="Occupancy Yr2" min="0" max="100" step="0.1"></td><td><input type="number" class="form-input" name="Occupancy Yr3" min="0" max="100" step="0.1"></td><td><input type="number" class="form-input" name="Occupancy Yr4" min="0" max="100" step="0.1"></td><td><input type="number" class="form-input" name="Occupancy Yr5" min="0" max="100" step="0.1"></td></tr>
+                                            <tr><td>Avg Daily Rate (US$)</td><td><input type="number" class="form-input" name="ADR Yr1" min="0" step="0.01"></td><td><input type="number" class="form-input" name="ADR Yr2" min="0" step="0.01"></td><td><input type="number" class="form-input" name="ADR Yr3" min="0" step="0.01"></td><td><input type="number" class="form-input" name="ADR Yr4" min="0" step="0.01"></td><td><input type="number" class="form-input" name="ADR Yr5" min="0" step="0.01"></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p class="project-fit-subheader">Financing / Refinancing Information</p>
+                                <div class="economics-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Do you have a loan or loan commitment for this project?<span class="help-text">Check Yes to provide financing details below</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Has Loan No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Has Loan Yes" value="Yes"> Yes (continue)</div>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Name of Lender(s)<span class="help-text">Lender or lenders providing financing</span></label>
+                                        <input type="text" class="form-input" name="Lender Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Loan Amount (US$)<span class="help-text">Total loan amount</span></label>
+                                        <input type="number" class="form-input" name="Loan Amount" min="0" step="0.01">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Percentage Equity (%)<span class="help-text">Percentage of project financed by equity</span></label>
+                                        <input type="number" class="form-input" name="Percentage Equity" min="0" max="100" step="0.1">
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Description<span class="help-text">Additional financing details</span></label>
+                                        <textarea class="form-textarea" name="Financing Description" rows="2"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Loan status<span class="help-text">New or existing loan</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Loan New" value="New"> New</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Loan Existing" value="Existing"> Existing</div>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Is the loan (or will it be) cross-collateralized by other hotels/real estate or cross-defaulted to other loan(s)?<span class="help-text">Describe if yes</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="CrossCollateral No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="CrossCollateral Yes" value="Yes"> Yes/Describe: <input type="text" class="form-input" name="CrossCollateral Describe" style="max-width:300px;display:inline-block;"></div>
+                                    </div>
+                                </div>
+                                <p class="project-fit-subheader">Deadlines</p>
+                                <div class="economics-grid">
+                                    <div class="form-group full-span">
+                                        <label class="form-label">Critical deadlines (e.g. purchase closings, financing commitments)<span class="help-text">Describe any critical dates we should know</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Critical Deadlines No" value="No"> No</div>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Critical Deadlines Yes" value="Yes"> Yes/Describe: <input type="text" class="form-input" name="Critical Deadlines Describe" style="max-width:400px;display:inline-block;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 9. Due Diligence (Participants) -->
+                            <div class="form-section" data-section="9">
+                                <h2 class="form-section-title">Due Diligence – Participants</h2>
+                                <p class="form-section-subtitle">Individual and entity participant information forms required for applicant, 25%+ owners, and controlling interest. Complete Part 4 forms as attachments if needed.</p>
+                                <p class="required-note">Participant forms (Individual and Business Entity) are required for applicant and each 25%+ or controlling interest. Attach completed forms in the Attachments section.</p>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Organizational Chart Attached<span class="help-text">Confirm full organizational chart is provided</span></label>
+                                        <div class="form-checkbox-row"><input type="checkbox" name="Org Chart Attached" value="Yes"> Full organizational chart provided</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Participant Forms Count<span class="help-text">Number of Individual + Entity participant forms</span></label>
+                                        <input type="number" class="form-input" name="Participant Forms Count" min="0" placeholder="Number of Individual + Entity forms">
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label class="form-label">Notes<span class="help-text">List participants and forms submitted</span></label>
+                                        <textarea class="form-textarea" name="Due Diligence Notes" rows="3" placeholder="List participants and forms submitted"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 10. Attachments -->
+                            <div class="form-section" data-section="10">
+                                <h2 class="form-section-title">Attachments</h2>
+                                <p class="form-section-subtitle">Upload supporting documents: site control, organizational chart, financial statements, participant forms, market study, etc.</p>
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label class="form-label">Supporting Documents<span class="help-text">PDF, DOC, XLS, or images. Multiple files allowed.</span></label>
+                                        <input type="file" class="form-input" name="Upload Supporting Docs" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" style="padding:8px;">
+                                        <span class="help-text">PDF, DOC, XLS, or images. Multiple files allowed.</span>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label class="form-label">Notes<span class="help-text">Internal notes or attachment descriptions</span></label>
+                                        <textarea class="form-textarea" name="Notes" rows="3" placeholder="Internal notes"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-actions-left">
+                                <button type="button" class="btn btn-secondary" id="prevBtn">← Previous</button>
+                                <button type="button" class="btn btn-secondary" id="nextBtn">Next →</button>
+                            </div>
+                            <div class="form-actions-right">
+                                <button type="button" class="btn btn-secondary" id="downloadPdfBtn">Download PDF</button>
+                                <button type="button" class="btn btn-primary" id="saveBtn">Save Draft</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+(function () {
+    var form = document.getElementById("faForm");
+    var sectionNav = document.getElementById("sectionNav");
+    var formSections = document.querySelectorAll(".form-section");
+    var navItems = document.querySelectorAll(".section-nav-item");
+    var loadingEl = document.getElementById("faLoading");
+    var formWrap = document.getElementById("faFormWrap");
+    var errorEl = document.getElementById("faError");
+    var pageTitle = document.getElementById("pageTitle");
+    var prevBtn = document.getElementById("prevBtn");
+    var nextBtn = document.getElementById("nextBtn");
+    var saveBtn = document.getElementById("saveBtn");
+    var downloadPdfBtn = document.getElementById("downloadPdfBtn");
+    var backToMyDeals = document.getElementById("backToMyDeals");
+    var dealId = null;
+    var projectName = "";
+    var currentSection = 0;
+    var totalSections = formSections.length;
+
+    function getParam(name) {
+        var m = new URLSearchParams(window.location.search);
+        return m.get(name) || "";
+    }
+
+    function showLoading(show, text) {
+        loadingEl.classList.toggle("show", !!show);
+        if (text) document.getElementById("faLoadingText").textContent = text;
+    }
+    function showForm(show) { formWrap.classList.toggle("hidden", !show); }
+    function showError(msg) {
+        errorEl.textContent = msg || "";
+        errorEl.classList.toggle("hidden", !msg);
+    }
+    var faToastTimeout = null;
+    function showToast(msg, success) {
+        var toast = document.getElementById("faToast");
+        if (!toast) return;
+        if (faToastTimeout) { clearTimeout(faToastTimeout); }
+        var messageEl = toast.querySelector(".toast-message");
+        if (messageEl) messageEl.textContent = msg;
+        toast.style.display = "block";
+        setTimeout(function () { toast.classList.add("show"); }, 10);
+        faToastTimeout = setTimeout(function () {
+            toast.classList.remove("show");
+            setTimeout(function () { toast.style.display = "none"; }, 300);
+        }, 2500);
+    }
+
+    function switchSection(index) {
+        index = Math.max(0, Math.min(index, totalSections - 1));
+        currentSection = index;
+        formSections.forEach(function (sec, i) { sec.classList.toggle("active", i === index); });
+        navItems.forEach(function (item, i) {
+            item.classList.remove("active", "completed");
+            if (i === index) item.classList.add("active");
+            else if (i < index) item.classList.add("completed");
+        });
+        var progressEl = document.getElementById("sectionProgress");
+        if (progressEl) progressEl.textContent = "Step " + (index + 1) + " of " + totalSections;
+        if (prevBtn) prevBtn.classList.toggle("hidden", index === 0);
+    }
+
+    function getFieldValues() {
+        var fields = {};
+        form.querySelectorAll("[name]").forEach(function (el) {
+            var name = el.getAttribute("name");
+            if (!name) return;
+            if (el.type === "checkbox") {
+                fields[name] = el.checked ? (el.value || "Yes") : null;
+            } else if (el.type === "number") {
+                var v = el.value;
+                fields[name] = (v === "" || v === null) ? null : Number(el.value);
+            } else {
+                fields[name] = (el.value || "").trim() || null;
+            }
+        });
+        return fields;
+    }
+
+    function setFieldValues(fields) {
+        if (!fields || typeof fields !== "object") return;
+        form.querySelectorAll("[name]").forEach(function (el) {
+            var name = el.getAttribute("name");
+            if (!name || !Object.prototype.hasOwnProperty.call(fields, name)) return;
+            var val = fields[name];
+            if (val == null || val === "") return; // Skip null/empty so we don't overwrite with blank
+            if (el.type === "checkbox") {
+                el.checked = (Array.isArray(val) && val.indexOf(el.value) !== -1) || (val === el.value) || (val === "Yes" && el.value === "Yes") || (val === true);
+            } else if (el.tagName === "SELECT") {
+                var opt = Array.from(el.options).find(function (o) { return o.value === String(val).trim(); });
+                if (opt) el.value = opt.value;
+            } else if (el.type === "number") {
+                el.value = String(val);
+            } else {
+                el.value = String(val).trim();
+            }
+        });
+    }
+
+    function updateManagementVisibility() {
+        var sel = document.getElementById("managementTypeSelect");
+        var gmBlock = document.getElementById("gmWillBeBlock");
+        var mgmtBlock = document.getElementById("mgmtCompanyBlock");
+        if (!sel || !gmBlock || !mgmtBlock) return;
+        var v = (sel.value || "").trim();
+        gmBlock.classList.toggle("hidden", v !== "Direct GM");
+        mgmtBlock.classList.toggle("hidden", v !== "Management Group");
+    }
+    if (document.getElementById("managementTypeSelect")) {
+        document.getElementById("managementTypeSelect").addEventListener("change", updateManagementVisibility);
+    }
+
+    var brandsReadyPromise = (function initBrandSelect() {
+        var targetSel = document.getElementById("targetBrandSelect");
+        var letterSel = document.getElementById("appLetterBrandSelect");
+        var selects = [targetSel, letterSel].filter(Boolean);
+        if (!selects.length) return Promise.resolve();
+        return fetch("/api/brand-library/brands")
+            .then(function (r) { return r.json().catch(function () { return {}; }); })
+            .then(function (data) {
+                if (!data.success || !Array.isArray(data.brands)) return;
+                data.brands.forEach(function (b) {
+                    var name = (b.name || "").trim();
+                    if (!name) return;
+                    selects.forEach(function (sel) {
+                        var opt = document.createElement("option");
+                        opt.value = name;
+                        opt.textContent = name;
+                        sel.appendChild(opt);
+                    });
+                });
+            })
+            .catch(function () { /* ignore */ });
+    })();
+
+    (function initOrgChart() {
+        var diagram = document.getElementById("orgChartDiagram");
+        var ownersPool = document.getElementById("orgOwnersPool");
+        var entitiesContainer = document.getElementById("orgEntities");
+        var addOwnerBtn = document.getElementById("orgAddOwner");
+        var addEntityBtn = document.getElementById("orgAddEntity");
+        if (!diagram || !ownersPool || !entitiesContainer || !addOwnerBtn || !addEntityBtn) return;
+
+        function ownerNodeHtml(idx) {
+            return '<div class="org-node org-owner" data-owner-idx="' + idx + '">' +
+                '<button type="button" class="org-remove-btn org-remove-owner" data-owner-idx="' + idx + '" title="Remove">&times;</button>' +
+                '<div class="org-node-label">Ultimate Owner</div>' +
+                '<div class="org-node-fields">' +
+                '<input type="text" name="Org_Owner_' + idx + '_Name" placeholder="Entity/Person Name">' +
+                '<input type="text" name="Org_Owner_' + idx + '_ID" placeholder="SSN/EIN/Gov\'t ID (last 4)">' +
+                '<input type="text" name="Org_Owner_' + idx + '_Desc" placeholder="e.g. Trustee, Beneficiary">' +
+                '<input type="text" name="Org_Owner_' + idx + '_Addr" placeholder="Address &amp; Phone">' +
+                '</div></div>';
+        }
+
+        function ownerSelectOptions() {
+            var opts = '<option value="">— Select owner —</option>';
+            ownersPool.querySelectorAll(".org-owner").forEach(function (node) {
+                var idx = node.getAttribute("data-owner-idx");
+                var name = (node.querySelector('input[name="Org_Owner_' + idx + '_Name"]') || {}).value || ("Owner " + (parseInt(idx, 10) + 1));
+                opts += '<option value="' + idx + '">' + (name || ("Owner " + (parseInt(idx, 10) + 1))) + '</option>';
+            });
+            return opts;
+        }
+
+        function assignRowHtml(entityIdx, assignIdx) {
+            var opts = ownerSelectOptions();
+            return '<tr class="org-assign-row" data-entity-idx="' + entityIdx + '" data-assign-idx="' + assignIdx + '">' +
+                '<td><select name="Org_Entity_' + entityIdx + '_Assign_' + assignIdx + '_Owner">' + opts + '</select></td>' +
+                '<td><input type="number" name="Org_Entity_' + entityIdx + '_Assign_' + assignIdx + '_Pct" placeholder="%" min="0" max="100" step="0.01"> %</td>' +
+                '<td><button type="button" class="org-remove-btn org-remove-assign" style="position:static;">&times;</button></td></tr>';
+        }
+
+        function entityNodeHtml(entityIdx) {
+            var labels = ["Entity A", "Entity B", "Entity C", "Entity D", "Entity E", "Entity F", "Entity G", "Entity H"];
+            var label = labels[entityIdx] || ("Entity " + (entityIdx + 1));
+            var tbody = '<tbody>' + assignRowHtml(entityIdx, 0) + '</tbody>';
+            return '<div class="org-node org-entity-node" data-entity-idx="' + entityIdx + '">' +
+                '<button type="button" class="org-remove-btn org-remove-entity" data-entity-idx="' + entityIdx + '" title="Remove">&times;</button>' +
+                '<div class="org-node-label">' + label + ' (shareholder of Applicant)</div>' +
+                '<div class="org-node-fields">' +
+                '<input type="text" name="Org_Entity_' + entityIdx + '_Name" placeholder="Entity/Person Name">' +
+                '<input type="text" name="Org_Entity_' + entityIdx + '_ID" placeholder="SSN/EIN/Gov\'t ID (last 4)">' +
+                '<input type="text" name="Org_Entity_' + entityIdx + '_Desc" placeholder="e.g. General Partner, Limited Partner">' +
+                '<div><input type="number" name="Org_Entity_' + entityIdx + '_Pct" placeholder="%" min="0" max="100" step="0.01"> % shareholder of Applicant</div>' +
+                '<input type="text" name="Org_Entity_' + entityIdx + '_Addr" placeholder="Address &amp; Phone">' +
+                '<div class="org-assignments"><strong>Assigned Ultimate Owners</strong>' +
+                '<table class="org-assign-table"><thead><tr><th>Owner</th><th>%</th><th></th></tr></thead>' + tbody + '</table>' +
+                '<button type="button" class="org-add-btn org-assign-add org-add-assign" data-entity-idx="' + entityIdx + '">+ Add assignment</button></div>' +
+                '</div></div>';
+        }
+
+        function nextOwnerIndex() { return ownersPool.querySelectorAll(".org-owner").length; }
+        function nextEntityIndex() { return entitiesContainer.querySelectorAll(".org-entity-node").length; }
+        function nextAssignIndex(entityIdx) {
+            var node = entitiesContainer.querySelector('.org-entity-node[data-entity-idx="' + entityIdx + '"]');
+            if (!node) return 0;
+            return node.querySelectorAll(".org-assign-row").length;
+        }
+
+        function refreshOwnerDropdowns() {
+            var opts = ownerSelectOptions();
+            diagram.querySelectorAll(".org-assign-row select").forEach(function (sel) {
+                var v = sel.value;
+                sel.innerHTML = opts;
+                var opt = sel.querySelector('option[value="' + v + '"]');
+                sel.value = opt ? v : "";
+            });
+        }
+
+        function addOwner() {
+            var idx = nextOwnerIndex();
+            var div = document.createElement("div");
+            div.innerHTML = ownerNodeHtml(idx);
+            ownersPool.appendChild(div.firstChild);
+            refreshOwnerDropdowns();
+            bindOrgBtns();
+        }
+
+        function removeOwner(btn) {
+            if (ownersPool.querySelectorAll(".org-owner").length <= 1) return;
+            var idx = btn.getAttribute("data-owner-idx");
+            ownersPool.querySelector('.org-owner[data-owner-idx="' + idx + '"]').remove();
+            refreshOwnerDropdowns();
+            bindOrgBtns();
+        }
+
+        function addEntity() {
+            var idx = nextEntityIndex();
+            var div = document.createElement("div");
+            div.innerHTML = entityNodeHtml(idx);
+            entitiesContainer.appendChild(div.firstChild);
+            bindOrgBtns();
+        }
+
+        function removeEntity(btn) {
+            if (entitiesContainer.querySelectorAll(".org-entity-node").length <= 1) return;
+            var idx = btn.getAttribute("data-entity-idx");
+            entitiesContainer.querySelector('.org-entity-node[data-entity-idx="' + idx + '"]').remove();
+            reindexEntities();
+            bindOrgBtns();
+        }
+
+        function reindexEntities() {
+            entitiesContainer.querySelectorAll(".org-entity-node").forEach(function (node, i) {
+                node.setAttribute("data-entity-idx", i);
+                var labels = ["Entity A", "Entity B", "Entity C", "Entity D", "Entity E", "Entity F", "Entity G", "Entity H"];
+                var label = node.querySelector(".org-node-label");
+                if (label) label.textContent = (labels[i] || ("Entity " + (i + 1))) + " (shareholder of Applicant)";
+                var rem = node.querySelector(".org-remove-entity");
+                if (rem) rem.setAttribute("data-entity-idx", i);
+                node.querySelectorAll("input, select").forEach(function (el) {
+                    var n = el.getAttribute("name");
+                    if (n && n.indexOf("Org_Entity_") === 0) {
+                        var parts = n.split("_");
+                        var rest = parts.slice(3).join("_");
+                        el.setAttribute("name", "Org_Entity_" + i + "_" + rest);
+                    }
+                });
+                var addAssign = node.querySelector(".org-add-assign");
+                if (addAssign) addAssign.setAttribute("data-entity-idx", i);
+                node.querySelectorAll(".org-assign-row").forEach(function (row, j) {
+                    row.setAttribute("data-entity-idx", i);
+                    row.setAttribute("data-assign-idx", j);
+                    var sel = row.querySelector("select");
+                    var inp = row.querySelector('input[type="number"]');
+                    if (sel) sel.setAttribute("name", "Org_Entity_" + i + "_Assign_" + j + "_Owner");
+                    if (inp) inp.setAttribute("name", "Org_Entity_" + i + "_Assign_" + j + "_Pct");
+                });
+            });
+        }
+
+        function addAssign(btn) {
+            var entityIdx = btn.getAttribute("data-entity-idx");
+            var assignIdx = nextAssignIndex(parseInt(entityIdx, 10));
+            var tbody = diagram.querySelector('.org-entity-node[data-entity-idx="' + entityIdx + '"] .org-assign-table tbody');
+            if (!tbody) return;
+            var tr = document.createElement("tr");
+            tr.className = "org-assign-row";
+            tr.setAttribute("data-entity-idx", entityIdx);
+            tr.setAttribute("data-assign-idx", assignIdx);
+            var opts = ownerSelectOptions();
+            tr.innerHTML = '<td><select name="Org_Entity_' + entityIdx + '_Assign_' + assignIdx + '_Owner">' + opts + '</select></td>' +
+                '<td><input type="number" name="Org_Entity_' + entityIdx + '_Assign_' + assignIdx + '_Pct" placeholder="%" min="0" max="100" step="0.01"> %</td>' +
+                '<td><button type="button" class="org-remove-btn org-remove-assign" style="position:static;">&times;</button></td>';
+            tbody.appendChild(tr);
+            bindOrgBtns();
+        }
+
+        function removeAssign(btn) {
+            var row = btn.closest(".org-assign-row");
+            var tbody = row && row.parentElement;
+            if (!tbody || tbody.querySelectorAll(".org-assign-row").length <= 1) return;
+            row.remove();
+            var entityIdx = tbody.closest(".org-entity-node").getAttribute("data-entity-idx");
+            tbody.querySelectorAll(".org-assign-row").forEach(function (r, j) {
+                r.setAttribute("data-assign-idx", j);
+                var sel = r.querySelector("select");
+                var inp = r.querySelector('input[type="number"]');
+                if (sel) sel.setAttribute("name", "Org_Entity_" + entityIdx + "_Assign_" + j + "_Owner");
+                if (inp) inp.setAttribute("name", "Org_Entity_" + entityIdx + "_Assign_" + j + "_Pct");
+            });
+            bindOrgBtns();
+        }
+
+        function bindOrgBtns() {
+            diagram.querySelectorAll(".org-remove-owner").forEach(function (b) {
+                b.onclick = function () { removeOwner(b); };
+            });
+            diagram.querySelectorAll(".org-remove-entity").forEach(function (b) {
+                b.onclick = function () { removeEntity(b); };
+            });
+            diagram.querySelectorAll(".org-remove-assign").forEach(function (b) {
+                b.onclick = function () { removeAssign(b); };
+            });
+            diagram.querySelectorAll(".org-add-assign").forEach(function (b) {
+                b.onclick = function () { addAssign(b); };
+            });
+            ownersPool.querySelectorAll("input").forEach(function (inp) {
+                if (inp.name && inp.name.indexOf("Org_Owner_") === 0 && inp.name.indexOf("_Name") > 0) {
+                    inp.removeEventListener("input", updateOwnerSelectLabels);
+                    inp.addEventListener("input", updateOwnerSelectLabels);
+                }
+            });
+        }
+        function updateOwnerSelectLabels() { refreshOwnerDropdowns(); }
+
+        addOwnerBtn.onclick = addOwner;
+        addEntityBtn.onclick = addEntity;
+
+        addOwner();
+        addEntity();
+        bindOrgBtns();
+    })();
+
+    function load() {
+        dealId = getParam("dealId") || getParam("id");
+        if (backToMyDeals && dealId && dealId.startsWith("rec")) {
+            backToMyDeals.href = "/my-deals.html?tab=franchise-application&deal=" + encodeURIComponent(dealId);
+        }
+        if (!dealId || !dealId.startsWith("rec")) {
+            showLoading(false);
+            showForm(false);
+            showError("No valid deal ID in URL. Open this page from Deal Setup or My Deals.");
+            pageTitle.textContent = "Franchise Application";
+            return;
+        }
+        showLoading(true, "Loading…");
+        showForm(false);
+        showError("");
+        Promise.all([
+            fetch("/api/my-deals/" + encodeURIComponent(dealId)).then(function (r) { return r.json().catch(function () { return {}; }); }),
+            fetch("/api/franchise-application/" + encodeURIComponent(dealId)).then(function (r) { return r.json().catch(function () { return {}; }); }),
+            typeof brandsReadyPromise !== "undefined" ? brandsReadyPromise : Promise.resolve()
+        ]).then(function (results) {
+            var data = results[0];
+            var appData = results[1];
+            showLoading(false);
+            var prefill = {};
+                if (data.success && data.deal && data.deal.fields) {
+                    var f = data.deal.fields;
+                    projectName = f["Property Name"] || f["Project Name"] || f["Name"] || "Project";
+                    pageTitle.textContent = "Franchise Application – " + projectName;
+
+                    // From Deals + Contact & Uploads (merged into deal.fields)
+                    prefill["Applicant Name"] = f["Entity or Company Name"] || null;
+                    prefill["Org_Applicant"] = f["Entity or Company Name"] || null;
+                    prefill["Legal Contact Name"] = f["Main Contact Name"] || null;
+                    prefill["Legal Contact Email"] = f["Email Address"] || null;
+                    prefill["Day-to-Day Contact Name"] = f["Main Contact Name"] || null;
+                    prefill["Day-to-Day Contact Email"] = f["Email Address"] || null;
+                    prefill["Application Type"] = (f["Project Type"] === "New Build") ? "New Development" : (f["Project Type"] === "Conversion / Reflag") ? "Conversion" : f["Project Type"] || null;
+                    var priorFranchise = (f["Has there ever been a franchise, branded management, affiliation or similar agreeement pertaining to the proposed hotel or site?"] || "").toString().trim();
+                    var currentlyBranded = (f["Is the hotel currently branded?"] || "").toString().trim();
+                    prefill["Prior Franchise Affiliation"] = priorFranchise && priorFranchise.toLowerCase() !== "no" ? priorFranchise : null;
+                    prefill["Currently Under Contract"] = currentlyBranded && currentlyBranded.toLowerCase() !== "no" ? currentlyBranded : null;
+                    if (priorFranchise && priorFranchise.toLowerCase() !== "no") prefill["Prior Franchise Yes"] = "Yes";
+                    else if (priorFranchise.toLowerCase() === "no") prefill["Prior Franchise No"] = "No";
+                    if (currentlyBranded && currentlyBranded.toLowerCase() !== "no") prefill["Currently Under Contract Yes"] = "Yes";
+                    else if (currentlyBranded.toLowerCase() === "no") prefill["Currently Under Contract No"] = "No";
+
+                    // From Location & Property (normalized.expandedLocation uses Deal Setup form keys)
+                    var loc = data.normalized && data.normalized.expandedLocation ? data.normalized.expandedLocation : null;
+                    if (loc) {
+                        var fullAddr = (loc["Full Address"] || "").toString().trim();
+                        var cityState = (loc["City & State"] || "").toString().trim();
+                        var country = (loc["Country"] || "").toString().trim();
+                        var addrParts = [fullAddr, cityState, country].filter(Boolean);
+                        prefill["Project Location"] = addrParts.length ? addrParts.join(", ") : null;
+                        prefill["Hotel Street Address"] = fullAddr || null;
+                        if (cityState) {
+                            var commaIdx = cityState.indexOf(",");
+                            if (commaIdx > 0) {
+                                prefill["Hotel City"] = cityState.substring(0, commaIdx).trim();
+                                prefill["Hotel State Province"] = cityState.substring(commaIdx + 1).trim();
+                            } else {
+                                prefill["Hotel City"] = cityState;
+                            }
+                        }
+                        prefill["Hotel Country"] = country || null;
+                        var v = function (k) { var x = loc[k]; return (x != null && x !== "") ? x : null; };
+                        prefill["Total Guest Units"] = v("Total Number of Rooms/Keys");
+                        prefill["Standard Rooms"] = v("Number of Standard Rooms");
+                        prefill["Suites"] = v("Number of Suites");
+                        prefill["Number of Stories"] = v("Number of Stories") || v("# of Stories");
+                        prefill["Year Built"] = v("Year Built (Years Open as a Hotel)");
+                        prefill["Site Sq Footage"] = v("Total Site Size");
+                        prefill["Max Height Stories"] = v("Max height Allowed By Zoning") || v("Max Height Allowed By Zoning");
+                        prefill["Site Restrictions Description"] = v("Site/Development Restrictions Description");
+                        var zoned = (loc["Zoned for Hotel Development"] || "").toString().trim().toLowerCase();
+                        if (zoned === "yes" || zoned === "y" || zoned === "true" || zoned === "1") {
+                            prefill["Zoned Hotel Yes"] = "Yes";
+                        } else if (zoned === "no" || zoned === "n" || zoned === "false" || zoned === "0") {
+                            prefill["Zoned Hotel No"] = "No";
+                        }
+                        var siteRest = (loc["Site/Development Restrictions?"] || "").toString().trim().toLowerCase();
+                        if (siteRest === "yes" || siteRest === "y" || siteRest === "true" || siteRest === "1") {
+                            prefill["Site Restrictions Yes"] = "Yes";
+                        } else if (siteRest === "no" || siteRest === "n" || siteRest === "false" || siteRest === "0") {
+                            prefill["Site Restrictions No"] = "No";
+                        }
+                        var siteControl = (loc["Current Form of Site Control"] || "").toString().trim();
+                        if (siteControl) {
+                            var scLower = siteControl.toLowerCase();
+                            if (scLower.indexOf("own") !== -1) prefill["SiteControl_Owned"] = "Owned";
+                            else if (scLower.indexOf("ground") !== -1 || scLower.indexOf("lease") !== -1) prefill["SiteControl_GroundLease"] = "Ground Lease";
+                            else if (scLower.indexOf("option") !== -1) prefill["SiteControl_Option"] = "Binding Option";
+                            else if (scLower.indexOf("purchase") !== -1) prefill["SiteControl_Purchase"] = "Binding Purchase";
+                            else {
+                                prefill["SiteControl_Other"] = "Other";
+                                prefill["Site Control Other"] = v("Current Form of Site Control Other Text") || siteControl;
+                            }
+                        }
+                        var meetingSpaceVal = v("Meeting Space");
+                        if (meetingSpaceVal != null) prefill["Meeting Space Sq Ft"] = meetingSpaceVal;
+                        var mtgRooms = v("Number of Meeting Rooms");
+                        if (mtgRooms != null) prefill["Meeting Rooms Count"] = mtgRooms;
+                        var msStr = (loc["Meeting Space"] || "").toString().trim();
+                        if (msStr && msStr !== "0" && msStr.toLowerCase() !== "no") prefill["Meeting Space Yes"] = "Yes";
+                        else if (!msStr || msStr === "0" || msStr.toLowerCase() === "no") prefill["Meeting Space No"] = "No";
+                        var condo = (loc["Condo Residences?"] || "").toString().trim().toLowerCase();
+                        if (condo === "yes" || condo === "y" || condo === "true" || condo === "1") prefill["Condo Yes"] = "Yes";
+                        else if (condo === "no" || condo === "n" || condo === "false" || condo === "0") prefill["Condo No"] = "No";
+                        var rental = (loc["Hotel Rental Program?"] || "").toString().trim().toLowerCase();
+                        if (rental === "yes" || rental === "y" || rental === "true" || rental === "1") prefill["Rental Program Yes"] = "Yes";
+                        else if (rental === "no" || rental === "n" || rental === "false" || rental === "0") prefill["Rental Program No"] = "No";
+                        var fbParts = [];
+                        var fbYes = (loc["F&B Outlets?"] || "").toString().trim().toLowerCase();
+                        if (fbYes === "yes" || fbYes === "y") {
+                            var numFb = v("Number of F&B Outlets");
+                            if (numFb != null) fbParts.push(numFb + " outlet(s)");
+                            var outletNames = (loc["Outlet Names / Concepts"] || "").toString().trim();
+                            if (outletNames) fbParts.push(outletNames);
+                            var fbProg = loc["F&B Program Type"];
+                            if (fbProg) {
+                                var arr = Array.isArray(fbProg) ? fbProg : [fbProg];
+                                var progStr = arr.map(function (x) { return (x && (x.name || x)) ? String(x.name || x).trim() : ""; }).filter(Boolean).join(", ");
+                                if (progStr) fbParts.push(progStr);
+                            }
+                            var fbSize = v("Total F&B Outlet Size");
+                            var fbUnit = (loc["Total F&B Outlet Size Unit"] || "Sq. Ft.").toString().trim();
+                            if (fbSize != null) fbParts.push(fbSize + " " + (fbUnit || "sq ft"));
+                        }
+                        if (fbParts.length) prefill["Food Beverage Facilities"] = fbParts.join("; ");
+                    }
+                    if (!loc) prefill["Project Location"] = null;
+
+                    // From Market - Performance (merged into deal.fields)
+                    prefill["Critical Deadlines"] = f["Critical deadlines for application"] || null;
+                    prefill["Critical Deadlines Describe"] = f["Critical Deadlines Description"] || null;
+
+                } else {
+                    pageTitle.textContent = "Franchise Application";
+                }
+                var merged = Object.assign({}, prefill, (appData && appData.success && appData.fields) ? appData.fields : {});
+                setFieldValues(merged);
+                showForm(true);
+                updateManagementVisibility();
+            })
+            .catch(function (err) {
+                showLoading(false);
+                pageTitle.textContent = "Franchise Application";
+                showForm(true);
+                updateManagementVisibility();
+            });
+    }
+
+    function save() {
+        if (!dealId) { showToast("No deal selected.", false); return; }
+        var fields = getFieldValues();
+        fields._dealId = dealId;
+        fields._savedAt = new Date().toISOString();
+        saveBtn.classList.add("loading");
+        var apiUrl = "/api/franchise-application/" + encodeURIComponent(dealId);
+        fetch(apiUrl, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(fields)
+        }).then(function (r) {
+            var json = r.json ? r.json() : Promise.resolve({});
+            return json.then(function (data) {
+                if (r.ok && (data.success !== false)) {
+                    showToast("Draft saved.", true);
+                } else {
+                    showToast(data.error || "Save failed.", false);
+                }
+            });
+        }).catch(function (err) {
+            showToast("Could not save: " + (err.message || "Network error"), false);
+        }).finally(function () {
+            saveBtn.classList.remove("loading");
+        });
+    }
+
+    function generateApplicationLetterPdf(brandOverride) {
+        var fields = getFieldValues();
+        var brandSel = document.getElementById("appLetterBrandSelect");
+        var brand = (brandOverride != null ? brandOverride : (brandSel && brandSel.value ? brandSel.value.trim() : null)) || (fields["Target Brand"] || "").trim() || "_________________________________";
+        var franchisorName = brand && brand !== "_________________________________" ? brand : "the Franchisor";
+        var franchisorRef = franchisorName + " (\"Franchisor\")";
+
+        var jspdfMod = window.jspdf;
+        var DocClass = jspdfMod && (jspdfMod.jsPDF || jspdfMod.default);
+        var doc = DocClass ? new DocClass({ orientation: "portrait", unit: "pt", format: "a4" }) : null;
+        if (!doc) return null;
+        var margin = 50;
+        var pageW = doc.internal.pageSize.getWidth();
+        var textW = pageW - margin * 2;
+        var y = margin;
+        var lineH = 14;
+        var smallH = 11;
+
+        function addParagraph(text, fontSize) {
+            doc.setFontSize(fontSize || 10);
+            var lines = doc.splitTextToSize(text, textW);
+            lines.forEach(function (line) {
+                if (y > doc.internal.pageSize.getHeight() - 60) { doc.addPage(); y = margin; }
+                doc.text(line, margin, y);
+                y += lineH;
+            });
+        }
+
+        function addBlank(n) { y += (n || 1) * lineH; }
+
+        var applicant = (fields["Applicant Name"] || "").trim() || "_________________________________";
+        var location = (fields["Project Location"] || "").trim() || "_________________________________";
+
+        doc.setFontSize(16);
+        doc.setFont(undefined, "bold");
+        doc.text("Part 2: Application Letter", pageW / 2, y, { align: "center" });
+        y += 24;
+        doc.setFont(undefined, "normal");
+
+        doc.setFontSize(10);
+        doc.text("Name of Applicant:", margin, y); y += lineH;
+        doc.text(applicant + ' ("Applicant")', margin, y); y += lineH;
+        doc.text("Location:", margin, y); y += lineH;
+        doc.text(location + ' ("Location")', margin, y); y += lineH;
+        doc.text("Brand: " + brand, margin, y); y += lineH;
+        addBlank(1);
+
+        var intro = "This franchise application letter (\"Application Letter\") is provided to " + franchisorRef + ", authorized to consider and process an application for a franchise to operate a hotel under the Brand at the Location (\"Hotel\"). \"Entities\" means the present and future subsidiaries and affiliates of the Franchisor. The Applicant understands that the Franchisor will rely on the information provided in this application and all documents submitted. The Applicant agrees to supply any additional information and represents, warrants, and undertakes to the Franchisor and the Entities as set forth below.";
+        addParagraph(intro);
+
+        addParagraph("1. All information contained in the Application must be true, correct, and complete as of the date of this Application Letter. The Applicant will promptly inform the Franchisor of any changes to such information.", smallH);
+        addParagraph("2. The Applicant and the undersigned have full power and authority to make this Application and to enter into a Franchise Agreement for the proposed Hotel. The making of this Application and the execution and delivery of any Franchise Agreement will not conflict with or result in a breach of any agreement to which the Applicant or the undersigned is a party.", smallH);
+        addParagraph("3. Franchise Information (Disclosure Document, manual, and Franchise Agreement) has been or will be made available to the Applicant. The Applicant is familiar with such Franchise Information and undertakes to keep it confidential. The Applicant acknowledges that Franchise Information is the property of the Franchisor and the Entities, and the Applicant obtains no right, title, or interest unless a Franchise Agreement is executed.", smallH);
+        addParagraph("4. The Franchisor and the Entities do not enter into oral agreements or understandings regarding the Franchise Agreement. The Applicant confirms that no such oral agreements exist as of the date of this Application Letter.", smallH);
+        addParagraph("5. Franchise Application Fee: The application fee must be enclosed or paid promptly after the mandatory waiting period. Fee amount and refund terms are specified in the Franchise Disclosure Document for the Brand. The Franchisor reserves the sole right to approve or disapprove. If approved, the Applicant must provide additional information, meet requirements, and sign the Franchise Agreement within the specified timeframe. Failure may result in termination and retention of the fee.", smallH);
+        addParagraph("6. The Applicant authorizes credit agencies, financial institutions, companies, and individuals to disclose information to the Franchisor and the Entities for credit and background investigations related to this application and any Franchise Agreement.", smallH);
+        addParagraph("7. The Applicant agrees to jointly and severally indemnify and defend the Franchisor, the Entities, and their officers, directors, employees, agents, representatives, and assignees against all losses connected with the Application and Location, including breaches of representations or warranties, and all claims, demands, suits, liabilities, and expenses (including legal and accounting fees). The Franchisor Indemnitees have sole control over defense and settlement.", smallH);
+        addParagraph("8. This Application Letter may be executed in counterparts. It must be signed by an authorized signatory for the Applicant. See Guidelines for Submitting a Franchise Application for required signatories.", smallH);
+        addParagraph("9. This application is governed by and construed in accordance with the substantive laws of the State of New York.", smallH);
+
+        addBlank(2);
+
+        var sig = (fields["Application Signature"] || "").trim() || "_____________________________";
+        var signerName = (fields["Application Signer Name"] || "").trim() || "_____________________________";
+        var entityName = (fields["Application Entity Name"] || "").trim() || "_____________________________";
+        var signedDate = (fields["Application Letter Signed Date"] || "").trim() || "_____________________________";
+        var position = (fields["Application Signer Position"] || "").trim() || "_____________________________";
+
+        doc.setFontSize(10);
+        doc.text("Signature:", margin, y); doc.text("Date:", pageW - margin - 80, y); y += lineH;
+        doc.text(sig, margin, y); doc.text(signedDate, pageW - margin - 80, y); y += lineH + 4;
+        doc.text("Individual's Name:", margin, y); doc.text("Position:", pageW - margin - 80, y); y += lineH;
+        doc.text(signerName, margin, y); doc.text(position, pageW - margin - 80, y); y += lineH + 4;
+        doc.text("Entity Name, if any:", margin, y); y += lineH;
+        doc.text(entityName, margin, y);
+
+        return doc;
+    }
+
+    function previewApplicationLetter() {
+        var doc = generateApplicationLetterPdf();
+        if (!doc) { showToast("PDF library not loaded.", false); return; }
+        var blob = doc.output("blob");
+        var url = URL.createObjectURL(blob);
+        var frame = document.getElementById("appLetterPdfFrame");
+        var placeholder = document.getElementById("appLetterPreviewPlaceholder");
+        var downloadBtn = document.getElementById("downloadAppLetterBtn");
+        if (frame && placeholder && downloadBtn) {
+            if (frame._blobUrl) URL.revokeObjectURL(frame._blobUrl);
+            frame._blobUrl = url;
+            placeholder.style.display = "none";
+            frame.style.display = "block";
+            frame.src = url;
+            downloadBtn.style.display = "inline-block";
+        }
+        showToast("Application Letter preview generated.", true);
+    }
+
+    function downloadApplicationLetter() {
+        var doc = generateApplicationLetterPdf();
+        if (!doc) { showToast("PDF library not loaded.", false); return; }
+        var brandSel = document.getElementById("appLetterBrandSelect");
+        var brandPart = (brandSel && brandSel.value && brandSel.value.trim()) ? "-" + brandSel.value.replace(/[^a-zA-Z0-9]/g, "-") : "";
+        var fn = "Application-Letter-" + (projectName || "Project").replace(/[^a-zA-Z0-9]/g, "-") + brandPart + "-" + new Date().toISOString().slice(0, 10) + ".pdf";
+        doc.save(fn);
+        showToast("Application Letter PDF downloaded.", true);
+    }
+
+    function generateForBrand() {
+        var brandSel = document.getElementById("appLetterBrandSelect");
+        var brand = brandSel && brandSel.value ? brandSel.value.trim() : "";
+        if (!brand) {
+            showToast("Select a brand from the dropdown before generating.", false);
+            return;
+        }
+        var doc = generateApplicationLetterPdf(brand);
+        if (!doc) { showToast("PDF library not loaded.", false); return; }
+        var fn = "Application-Letter-" + (projectName || "Project").replace(/[^a-zA-Z0-9]/g, "-") + "-" + brand.replace(/[^a-zA-Z0-9]/g, "-") + "-" + new Date().toISOString().slice(0, 10) + ".pdf";
+        doc.save(fn);
+        showToast("Application Letter for " + brand + " downloaded.", true);
+    }
+
+    function humanizeFieldName(name) {
+        if (!name) return "";
+        var s = String(name).replace(/_/g, " ").replace(/\s+/g, " ").trim();
+        var m = s.match(/^Org Owner (\d+) (.*)$/i);
+        if (m) return "Ultimate Owner " + (parseInt(m[1], 10) + 1) + " " + (m[2] || "").replace(/_/g, " ");
+        var m2 = s.match(/^Org Entity (\d+) (.*)$/i);
+        if (m2) return "Entity " + (parseInt(m2[1], 10) + 1) + " " + (m2[2] || "").replace(/_/g, " ");
+        var m3 = s.match(/^HotelPortfolio_?(\d+)_?(.*)$/i);
+        if (m3) return "Hotel Portfolio " + (parseInt(m3[1], 10) + 1) + " " + (m3[2] || "").replace(/_/g, " ");
+        return s;
+    }
+
+    function downloadPdf() {
+        try {
+            var fields = getFieldValues();
+            var jspdfMod = window.jspdf;
+            var DocClass = jspdfMod && (jspdfMod.jsPDF || jspdfMod.default);
+            var doc = DocClass ? new DocClass({ orientation: "portrait", unit: "pt", format: "a4" }) : null;
+            if (!doc) {
+                showToast("PDF library not loaded. Try Print (Ctrl+P) to save as PDF.", false);
+                return;
+            }
+            var margin = 40;
+            var pageW = doc.internal.pageSize.getWidth();
+            var pageH = doc.internal.pageSize.getHeight();
+            var textW = pageW - margin * 2;
+            var y = margin;
+            var lineH = 10;
+            var sectionH = 14;
+
+            function checkPage() {
+                if (y > pageH - 50) { doc.addPage(); y = margin; }
+            }
+            function addSection(title) {
+                checkPage();
+                doc.setFontSize(12);
+                doc.setFont(undefined, "bold");
+                doc.text(title, margin, y);
+                y += sectionH;
+                doc.setFont(undefined, "normal");
+                doc.setFontSize(9);
+            }
+            function addField(label, value) {
+                if (value == null || value === "" || (typeof value === "object" && !Array.isArray(value))) return;
+                var displayVal = Array.isArray(value) ? value.join(", ") : String(value).trim();
+                if (!displayVal && value !== true && value !== false) return;
+                if (value === true || value === "Yes") displayVal = "Yes";
+                if (value === false) displayVal = "No";
+                checkPage();
+                var full = label + ": " + displayVal;
+                var lines = doc.splitTextToSize(full, textW);
+                lines.forEach(function (line) {
+                    checkPage();
+                    doc.text(line, margin, y);
+                    y += lineH;
+                });
+                y += 2;
+            }
+
+            doc.setFontSize(16);
+            doc.setFont(undefined, "bold");
+            doc.text("Franchise Application", margin, y);
+            y += 18;
+            doc.setFont(undefined, "normal");
+            doc.setFontSize(9);
+            doc.text("Generated: " + new Date().toLocaleString(), margin, y);
+            y += lineH;
+            doc.text("Deal ID: " + (dealId || "—"), margin, y);
+            y += lineH;
+            doc.text("Project: " + (projectName || fields["Project Location"] || "—"), margin, y);
+            y += 20;
+
+            var sections = Array.from(form.querySelectorAll(".form-section[data-section]"));
+            sections.forEach(function (sectionEl) {
+                var sectionIdx = sectionEl.getAttribute("data-section");
+                var titleEl = sectionEl.querySelector(".form-section-title");
+                var sectionTitle = titleEl ? titleEl.textContent.trim() : "Section " + (parseInt(sectionIdx, 10) + 1);
+                if (parseInt(sectionIdx, 10) === 0) return;
+                var items = [];
+                sectionEl.querySelectorAll("input[name], select[name], textarea[name]").forEach(function (el) {
+                    var name = el.getAttribute("name");
+                    if (!name || name === "Upload Supporting Docs") return;
+                    var val = fields[name];
+                    var label = humanizeFieldName(name);
+                    var group = el.closest(".form-group");
+                    if (group) {
+                        var lbl = group.querySelector(".form-label");
+                        if (lbl) label = lbl.textContent.replace(/\s*\*+\s*/g, "").replace(/\s*\([^)]*\)\s*/g, "").replace(/\s*<[^>]+>.*/g, "").trim();
+                    }
+                    var row = el.closest(".form-checkbox-row");
+                    if (row && !group) {
+                        var txt = row.textContent.replace(/\s+/g, " ").trim();
+                        var beforeInput = txt.split(el.value || "Yes")[0].trim();
+                        if (beforeInput) label = beforeInput;
+                    }
+                    items.push({ label: label || humanizeFieldName(name), value: val });
+                });
+                if (items.length) {
+                    addSection(sectionTitle);
+                    items.forEach(function (item) { addField(item.label, item.value); });
+                }
+            });
+
+            doc.save("Franchise-Application-" + (projectName || "Project").replace(/[^a-zA-Z0-9]/g, "-") + "-" + new Date().toISOString().slice(0, 10) + ".pdf");
+            showToast("PDF downloaded.", true);
+        } catch (e) {
+            showToast("PDF export failed: " + (e.message || "Error"), false);
+        }
+    }
+
+    sectionNav.addEventListener("click", function (e) {
+        var item = e.target.closest(".section-nav-item");
+        if (item && item.dataset.section != null) {
+            switchSection(parseInt(item.dataset.section, 10));
+        }
+    });
+    if (prevBtn) prevBtn.addEventListener("click", function () { switchSection(currentSection - 1); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { switchSection(currentSection + 1); });
+    if (saveBtn) saveBtn.addEventListener("click", save);
+    if (downloadPdfBtn) downloadPdfBtn.addEventListener("click", downloadPdf);
+    var previewAppLetterBtn = document.getElementById("previewAppLetterBtn");
+    var downloadAppLetterBtn = document.getElementById("downloadAppLetterBtn");
+    if (previewAppLetterBtn) previewAppLetterBtn.addEventListener("click", previewApplicationLetter);
+    if (downloadAppLetterBtn) downloadAppLetterBtn.addEventListener("click", downloadApplicationLetter);
+    var generateForBrandBtn = document.getElementById("generateForBrandBtn");
+    if (generateForBrandBtn) generateForBrandBtn.addEventListener("click", generateForBrand);
+
+    load();
+})();
+    </script>
+</body>
+</html>

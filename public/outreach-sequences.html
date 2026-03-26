@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sequences - Outreach Hub | Dealality Platform</title>
+  <link rel="stylesheet" href="/outreach-hub.css">
+  <style>
+    .seq-step-row { display: grid; grid-template-columns: 24px 1fr 80px 140px 1fr auto; gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--neutral--600); border-radius: 8px; margin-bottom: 8px; background: var(--secondary--color-1); }
+    .seq-step-row.dragging { opacity: 0.5; }
+    .seq-step-row .seq-step-drag { cursor: grab; color: var(--neutral--500); }
+    .seq-step-row .seq-step-name { font-weight: 600; color: var(--neutral--100); }
+    .seq-step-row .form-select, .seq-step-row .form-input { margin: 0; min-width: 0; }
+    @media (max-width: 900px) { .seq-step-row { grid-template-columns: 24px 1fr 80px auto; } .seq-step-row .seq-step-template { grid-column: 2 / -1; } }
+  </style>
+</head>
+<body>
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1){document.documentElement.classList.add('embed-mode');}})();</script>
+  <div class="page-wrapper">
+    <div class="sidebar-wrapper">
+      <div class="sidebar-padding">
+        <h2>Dealality</h2>
+        <nav>
+          <a href="/app">Home</a>
+          <a href="/outreach-plans">Plans</a>
+          <a href="/outreach-inbox">Inbox</a>
+          <a href="/outreach-templates">Templates</a>
+          <a href="/outreach-sequences" class="active">Sequences</a>
+          <a href="/outreach-analytics">Analytics</a>
+          <a href="/partner-directory">Partner Directory</a>
+        </nav>
+      </div>
+    </div>
+    <div class="dashboard-main-section">
+      <div class="outreach-hub-container">
+        <div class="outreach-hub__header">
+          <div class="breadcrumb">
+            <a href="/app">Home</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <a href="/outreach-plans">Outreach Hub</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <span>Sequences</span>
+          </div>
+          <div class="outreach-hub-title-container">
+            <div class="deal-capture-logo">
+              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+            </div>
+            <h1>Sequence Builder</h1>
+          </div>
+          <p>Build sequences with drag-drop steps. Set timing, channel, and template per step.</p>
+        </div>
+
+        <div class="oh-board-layout">
+          <div class="oh-pane">
+            <h3>Sequences</h3>
+            <p id="seq-loading" class="oh-loading" style="display:none;">Loading…</p>
+            <ul id="seq-list" class="oh-list"></ul>
+            <button type="button" class="btn btn-secondary" id="btn-new-sequence" style="margin-top:12px;">+ New sequence</button>
+          </div>
+          <div class="oh-pane">
+            <div id="steps-empty" class="oh-muted">Select a sequence to edit steps.</div>
+            <div id="steps-panel" style="display:none;">
+              <h3 id="steps-sequence-name"></h3>
+              <p id="steps-loading" class="oh-loading" style="display:none;">Loading steps…</p>
+              <div id="steps-list"></div>
+              <button type="button" class="btn btn-primary" id="btn-add-step" style="margin-top:12px;">+ Add step</button>
+            </div>
+          </div>
+        </div>
+        <p id="seq-error" class="oh-error" style="display:none;"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function() {
+  var API = '/api/outreach-hub';
+  var sequences = [], steps = [], templates = [], selectedSequenceId = null;
+  var allStepsCache = null;
+  var CHANNELS = ['Email', 'In-platform', 'LinkedIn Script', 'WhatsApp Script', 'Phone'];
+  function qs(s) { return document.querySelector(s); }
+  function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
+  function showErr(msg) { var e = qs('#seq-error'); e.textContent = msg || ''; show(e, !!msg); }
+
+  function stepBelongsToSequence(step, sequenceId) {
+    var f = step.fields || {};
+    var link = f.Sequence || f.Sequences || [];
+    if (!Array.isArray(link)) link = link ? [link] : [];
+    return link.some(function(x) {
+      var id = typeof x === 'string' ? x : (x && x.id);
+      return id === sequenceId;
+    });
+  }
+
+  function getSequenceDisplayName(s) {
+    var f = s && s.fields;
+    if (!f) return 'Unnamed sequence';
+    var name = f.sequence_name || f['Sequence Name'] || f.Name || f.name || '';
+    if (typeof name === 'string' && name.trim()) return name.trim();
+    return 'Unnamed sequence';
+  }
+
+  function loadSequences() {
+    show(qs('#seq-loading'), true);
+    fetch(API + '/sequences?pageSize=50').then(function(r) { return r.json(); }).then(function(d) {
+      show(qs('#seq-loading'), false);
+      if (!d.success) { showErr(d.error); return; }
+      var raw = d.records || [];
+      var seen = {};
+      sequences = raw.filter(function(s) {
+        if (seen[s.id]) return false;
+        seen[s.id] = true;
+        return true;
+      });
+      var list = qs('#seq-list');
+      list.innerHTML = '';
+      sequences.forEach(function(s) {
+        var li = document.createElement('li');
+        li.className = 'oh-list-item' + (selectedSequenceId === s.id ? ' active' : '');
+        li.textContent = getSequenceDisplayName(s);
+        li.dataset.id = s.id;
+        li.title = s.id;
+        li.addEventListener('click', function() { selectSequence(s.id); });
+        list.appendChild(li);
+      });
+    }).catch(function(e) { show(qs('#seq-loading'), false); showErr(e.message); });
+  }
+
+  function loadTemplates() {
+    fetch(API + '/templates?pageSize=100').then(function(r) { return r.json(); }).then(function(d) {
+      if (d.success && d.records) templates = d.records;
+    });
+  }
+
+  function selectSequence(id) {
+    selectedSequenceId = id;
+    loadSequences();
+    show(qs('#steps-empty'), false);
+    show(qs('#steps-panel'), true);
+    var seq = sequences.find(function(s) { return s.id === id; });
+    qs('#steps-sequence-name').textContent = seq ? getSequenceDisplayName(seq) : id;
+    loadSteps();
+  }
+
+  function loadSteps() {
+    if (!selectedSequenceId) return;
+    show(qs('#steps-loading'), true);
+
+    function renderFromRecords(records) {
+      steps = records.filter(function(s) { return stepBelongsToSequence(s, selectedSequenceId); }).slice().sort(function(a, b) {
+        var oa = (a.fields && a.fields.step_order) != null ? Number(a.fields.step_order) : 999;
+        var ob = (b.fields && b.fields.step_order) != null ? Number(b.fields.step_order) : 999;
+        return oa - ob;
+      });
+      show(qs('#steps-loading'), false);
+      renderSteps();
+    }
+
+    if (allStepsCache) {
+      renderFromRecords(allStepsCache);
+      return;
+    }
+    fetch(API + '/sequence-steps?pageSize=200').then(function(r) { return r.json(); }).then(function(d) {
+      if (d.success && d.records) allStepsCache = d.records;
+      renderFromRecords(allStepsCache || []);
+    }).catch(function() { show(qs('#steps-loading'), false); });
+  }
+
+  function renderSteps() {
+    var container = qs('#steps-list');
+    container.innerHTML = '';
+    steps.forEach(function(step, idx) {
+      var f = step.fields || {};
+      var row = document.createElement('div');
+      row.className = 'seq-step-row';
+      row.draggable = true;
+      row.dataset.stepId = step.id;
+      row.dataset.index = String(idx);
+      var channelVal = f.channel || 'Email';
+      var templateVal = (f.Template && f.Template[0]) ? f.Template[0] : '';
+      row.innerHTML =
+        '<span class="seq-step-drag" aria-label="Drag">⋮⋮</span>' +
+        '<input type="text" class="form-input seq-step-name" placeholder="Step name" value="' + (f.step_name || '') + '">' +
+        '<input type="number" class="form-input seq-step-delay" placeholder="Days" min="0" value="' + (f.delay_days_from_previous != null ? f.delay_days_from_previous : '') + '">' +
+        '<select class="form-select seq-step-channel">' + CHANNELS.map(function(c) { return '<option value="' + c + '"' + (channelVal === c ? ' selected' : '') + '>' + c + '</option>'; }).join('') + '</select>' +
+        '<select class="form-select seq-step-template"><option value="">— Template —</option></select>' +
+        '<button type="button" class="btn btn-secondary seq-step-delete">Remove</button>';
+      var templateSel = row.querySelector('.seq-step-template');
+      templates.forEach(function(t) {
+        var opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = (t.fields && t.fields.template_name) || t.id;
+        if (templateVal === t.id) opt.selected = true;
+        templateSel.appendChild(opt);
+      });
+      row.querySelector('.seq-step-name').onchange = function() { saveStep(step.id, { step_name: this.value }); };
+      row.querySelector('.seq-step-delay').onchange = function() { saveStep(step.id, { delay_days_from_previous: this.value ? parseInt(this.value, 10) : undefined }); };
+      row.querySelector('.seq-step-channel').onchange = function() { saveStep(step.id, { channel: this.value }); };
+      templateSel.onchange = function() { saveStep(step.id, { Template: this.value ? [this.value] : undefined }); };
+      row.querySelector('.seq-step-delete').addEventListener('click', function() { deleteStep(step.id); });
+      row.addEventListener('dragstart', function(e) { e.dataTransfer.setData('text/plain', step.id); row.classList.add('dragging'); });
+      row.addEventListener('dragend', function() { row.classList.remove('dragging'); });
+      row.addEventListener('dragover', function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+      row.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var fromId = e.dataTransfer.getData('text/plain');
+        var toIdx = parseInt(row.dataset.index, 10);
+        reorderStep(fromId, toIdx);
+      });
+      container.appendChild(row);
+    });
+  }
+
+  function saveStep(stepId, fields) {
+    fetch(API + '/sequence-steps/' + stepId, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.success && d.record) {
+          var s = steps.find(function(x) { return x.id === stepId; });
+          if (s && s.fields) Object.assign(s.fields, fields);
+        }
+      });
+  }
+
+  function deleteStep(stepId) {
+    if (!confirm('Remove this step?')) return;
+    fetch(API + '/sequence-steps/' + stepId, { method: 'DELETE' }).then(function(r) { return r.json(); }).then(function(d) {
+      if (d.success) {
+        if (allStepsCache) allStepsCache = allStepsCache.filter(function(s) { return s.id !== stepId; });
+        steps = steps.filter(function(s) { return s.id !== stepId; });
+        renderSteps();
+      }
+    });
+  }
+
+  function reorderStep(fromId, toIdx) {
+    var fromIdx = steps.findIndex(function(s) { return s.id === fromId; });
+    if (fromIdx < 0 || fromIdx === toIdx) return;
+    var step = steps.splice(fromIdx, 1)[0];
+    steps.splice(toIdx, 0, step);
+    steps.forEach(function(s, i) {
+      saveStep(s.id, { step_order: i + 1 });
+    });
+    renderSteps();
+  }
+
+  qs('#btn-add-step').addEventListener('click', function() {
+    if (!selectedSequenceId) return;
+    var order = steps.length + 1;
+    var fields = {
+      step_name: 'Step ' + order,
+      Sequence: [selectedSequenceId],
+      step_order: order,
+      delay_days_from_previous: 0,
+      channel: 'Email',
+      is_active: true
+    };
+    fetch(API + '/sequence-steps', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.success && d.record) {
+          if (allStepsCache) allStepsCache.push(d.record);
+          steps.push(d.record);
+          renderSteps();
+        } else showErr(d.error);
+      }).catch(function(e) { showErr(e.message); });
+  });
+
+  qs('#btn-new-sequence').addEventListener('click', function() {
+    var name = prompt('Sequence name');
+    if (!name) return;
+    fetch(API + '/sequences', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: { sequence_name: name } }) })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.success && d.record) { sequences.push(d.record); loadSequences(); selectSequence(d.record.id); }
+        else showErr(d.error);
+      }).catch(function(e) { showErr(e.message); });
+  });
+
+  loadTemplates();
+  loadSequences();
+})();
+  </script>
+</body>
+</html>

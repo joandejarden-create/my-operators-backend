@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deal Room (Owner) - Dealality</title>
+  <style>
+    :root {
+      --neutral--800: #080f25;
+      --neutral--600: #37446b;
+      --neutral--500: #7e89ac;
+      --neutral--400: #aeb9e1;
+      --neutral--100: #ffffff;
+      --accent--primary-1: #6c72ff;
+      --secondary--color-1: #101935;
+      --system--green-300: #14ca74;
+      --system--red-400: #c53030;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    html { background: var(--neutral--800); }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--neutral--800);
+      color: var(--neutral--400);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: auto;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      color: var(--neutral--100);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .subtitle {
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      color: var(--neutral--500);
+      line-height: 1.4;
+    }
+    .panel {
+      border: 1px solid rgba(55, 68, 107, 0.9);
+      background: rgba(16, 25, 53, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .row > .grow { flex: 1; min-width: 220px; }
+    label { color: var(--neutral--400); font-size: 13px; }
+    input[type="text"], input[type="url"], select {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--secondary--color-1);
+      border: 1px solid var(--neutral--600);
+      border-radius: 6px;
+      color: var(--neutral--100);
+      font-size: 14px;
+      outline: none;
+    }
+    .inline-input { min-width: 280px; }
+    button {
+      padding: 10px 12px;
+      background: var(--neutral--700, #212c4d);
+      border: 1px solid var(--neutral--600);
+      color: var(--neutral--100);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    button.primary {
+      background: rgba(108, 114, 255, 0.18);
+      border-color: rgba(108, 114, 255, 0.6);
+      color: var(--neutral--100);
+    }
+    button.secondary {
+      background: var(--secondary--color-1);
+    }
+    button:disabled { opacity: 0.65; cursor: not-allowed; }
+    .banner {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid;
+      margin-bottom: 14px;
+    }
+    .banner.success { display: block; background: rgba(20, 202, 116, 0.12); border-color: rgba(20, 202, 116, 0.55); color: var(--system--green-300); }
+    .banner.error { display: block; background: rgba(255, 90, 101, 0.12); border-color: rgba(255, 90, 101, 0.55); color: var(--system--red-400); }
+    .banner.info { display: block; background: rgba(255, 255, 255, 0.06); border-color: rgba(55, 68, 107, 0.9); color: var(--neutral--400); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(55, 68, 107, 0.7);
+      vertical-align: top;
+      font-size: 13px;
+      color: var(--neutral--400);
+    }
+    th { color: var(--neutral--100); font-weight: 700; background: rgba(16, 25, 53, 0.35); }
+    .table-wrap { overflow-x: auto; }
+    .small { font-size: 12px; color: var(--neutral--500); }
+    .btn-link {
+      display: inline-block;
+      padding: 8px 10px;
+      background: rgba(55, 68, 107, 0.35);
+      border: 1px solid rgba(55, 68, 107, 0.9);
+      border-radius: 8px;
+      color: var(--neutral--100);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-action {
+      padding: 8px 10px;
+      background: rgba(55, 68, 107, 0.35);
+      border: 1px solid rgba(55, 68, 107, 0.9);
+      border-radius: 8px;
+      color: var(--neutral--100);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+    .btn-action:hover { border-color: rgba(108, 114, 255, 0.7); }
+    ul.file-list { list-style: none; padding-left: 0; margin: 0; }
+    ul.file-list li { margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Deal Room (Owner)</h1>
+    <p class="subtitle">Pick a deal from the list (or use `dealId`) to manage NDA status/actions and create/upload Deal Room documents.</p>
+
+    <div id="dealRoomOwnerBanner" class="banner info" role="status" aria-live="polite"></div>
+
+    <div class="panel">
+      <div class="row" style="margin-bottom:12px;">
+        <div class="grow">
+          <label for="drOwnerDealSelect">Deals</label>
+          <select id="drOwnerDealSelect">
+            <option value="">Loading deals...</option>
+          </select>
+          <div class="small" style="margin-top:6px;">Select a deal name, then click Load.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="grow">
+          <label for="drOwnerDealIdInput">Deal ID</label>
+          <input id="drOwnerDealIdInput" type="text" placeholder="recXXXX" value="">
+          <div class="small" style="margin-top:6px;">Tip: open this page from `My Deals` (deal pencil) if you already have the deal id, or paste it here.</div>
+        </div>
+        <div style="min-width: 180px;">
+          <button id="drOwnerLoadBtn" class="primary" style="width:100%;">Load</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="ownerContent" style="display:none;">
+      <div class="panel">
+        <h2 style="color: var(--neutral--100); margin: 0 0 10px 0; font-size: 16px;">Deal Room Settings</h2>
+        <div class="row">
+          <div class="grow">
+            <label class="small" for="drOwnerDealRoomEnabledToggle">Deal Room Enabled</label>
+            <div class="row" style="gap: 10px;">
+              <input type="checkbox" id="drOwnerDealRoomEnabledToggle" style="width:18px;height:18px;accent-color: var(--accent--primary-1);">
+              <span id="drOwnerDealRoomEnabledText" class="small" style="color: var(--neutral--400); font-weight: 700;">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 12px;"></div>
+        <div class="row" style="align-items:flex-start;">
+          <div class="grow">
+            <label>NDA Template File</label>
+            <ul id="drOwnerNdaTemplateFiles" class="file-list"></ul>
+            <div id="drOwnerNdaTemplateEmpty" class="small" style="display:block; margin-top: 6px;">None yet.</div>
+          </div>
+          <div style="min-width: 320px; max-width: 380px;">
+            <label for="drOwnerNdaTemplateUrl">Public URL</label>
+            <input id="drOwnerNdaTemplateUrl" type="url" placeholder="https://example.com/nda-template.pdf">
+            <div style="height: 8px;"></div>
+            <label for="drOwnerNdaTemplateFilename">Filename</label>
+            <input id="drOwnerNdaTemplateFilename" type="text" placeholder="NDA-Template.pdf" value="NDA-Template.pdf">
+            <div style="height: 12px;"></div>
+            <button id="drOwnerAttachTemplateBtn" class="primary" style="width:100%;">Attach/Replace Template</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 style="color: var(--neutral--100); margin: 0 0 10px 0; font-size: 16px;">Brand Deal Requests</h2>
+        <div class="table-wrap">
+          <table class="deals-table">
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th>NDA Status</th>
+                <th>Deal Room Access</th>
+                <th>NDA Signed File</th>
+                <th>Proposal</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="drOwnerBdrTableBody"></tbody>
+          </table>
+        </div>
+        <div id="drOwnerBdrEmpty" class="small" style="margin-top: 12px; display:none;">No brand deal requests found for this deal.</div>
+
+        <details style="margin-top:16px; padding:12px; background: rgba(16, 25, 53, 0.35); border-radius: 10px; border: 1px solid rgba(55, 68, 107, 0.9);">
+          <summary style="cursor:pointer; color: var(--neutral--100); font-weight: 800;">Attach Signed NDA (select brand row first)</summary>
+          <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+            <div style="flex: 1; min-width: 260px;">
+              <label for="drOwnerSignedUrl">Public URL</label>
+              <input id="drOwnerSignedUrl" type="url" placeholder="https://example.com/signed.pdf">
+            </div>
+            <div style="min-width: 220px;">
+              <label for="drOwnerSignedFilename">Filename</label>
+              <input id="drOwnerSignedFilename" type="text" placeholder="signed-nda.pdf" value="signed-nda.pdf">
+            </div>
+            <div style="min-width: 180px;">
+              <button id="drOwnerAttachSignedBtn" class="primary" style="width:100%;">Attach Signed NDA</button>
+            </div>
+          </div>
+          <div id="drOwnerAttachSignedStatus" class="small" style="margin-top: 10px;" aria-live="polite"></div>
+        </details>
+      </div>
+
+      <div class="panel">
+        <h2 style="color: var(--neutral--100); margin: 0 0 10px 0; font-size: 16px;">Deal Room Documents</h2>
+        <div class="table-wrap">
+          <table class="deals-table">
+            <thead>
+              <tr>
+                <th>Document</th>
+                <th>Category</th>
+                <th>Confidentiality</th>
+                <th>File</th>
+              </tr>
+            </thead>
+            <tbody id="drOwnerDocsTableBody"></tbody>
+          </table>
+        </div>
+        <div id="drOwnerDocsEmpty" class="small" style="margin-top: 12px; display:none;">No documents yet.</div>
+
+        <div style="height: 14px;"></div>
+        <div class="row" style="align-items:flex-end;">
+          <div style="flex: 1; min-width: 230px;">
+            <label for="drOwnerDocName">Document Name</label>
+            <input id="drOwnerDocName" type="text" placeholder="e.g. Financial Summary">
+          </div>
+          <div style="min-width: 190px;">
+            <label for="drOwnerDocCategory">Category</label>
+            <select id="drOwnerDocCategory">
+              <option value="">Select</option>
+              <option value="Financials">Financials</option>
+              <option value="Plans">Plans</option>
+              <option value="Photos">Photos</option>
+              <option value="PIP">PIP</option>
+              <option value="Legal">Legal</option>
+              <option value="Market">Market</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div style="min-width: 200px;">
+            <label for="drOwnerDocConf">Confidentiality</label>
+            <select id="drOwnerDocConf">
+              <option value="">Select</option>
+              <option value="Public Teaser">Public Teaser</option>
+              <option value="NDA Only">NDA Only</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="height: 10px;"></div>
+        <div class="row" style="align-items:flex-end;">
+          <div style="flex: 1; min-width: 260px;">
+            <label for="drOwnerDocUrl">Public URL</label>
+            <input id="drOwnerDocUrl" type="url" placeholder="https://example.com/doc.pdf">
+          </div>
+          <div style="min-width: 220px;">
+            <label for="drOwnerDocFilename">Filename</label>
+            <input id="drOwnerDocFilename" type="text" placeholder="document.pdf" value="document.pdf">
+          </div>
+          <div style="min-width: 180px;">
+            <button id="drOwnerCreateDocBtn" class="primary" style="width:100%;">Create Document</button>
+          </div>
+        </div>
+        <div id="drOwnerCreateDocStatus" class="small" style="margin-top: 10px;" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search || "");
+      var dealId = (params.get("dealId") || "").trim();
+      if (!dealId) {
+        try { dealId = (localStorage.getItem("dealRoomOwnerLastDealId") || "").trim(); } catch (e) {}
+      }
+      var selectedBdrId = null;
+
+      var banner = document.getElementById("dealRoomOwnerBanner");
+      var ownerContent = document.getElementById("ownerContent");
+
+      var dealIdInput = document.getElementById("drOwnerDealIdInput");
+      var dealSelect = document.getElementById("drOwnerDealSelect");
+      var loadBtn = document.getElementById("drOwnerLoadBtn");
+
+      var dealRoomEnabledToggle = document.getElementById("drOwnerDealRoomEnabledToggle");
+      var dealRoomEnabledText = document.getElementById("drOwnerDealRoomEnabledText");
+
+      var ndaTemplateFilesUl = document.getElementById("drOwnerNdaTemplateFiles");
+      var ndaTemplateEmpty = document.getElementById("drOwnerNdaTemplateEmpty");
+      var ndaTemplateUrl = document.getElementById("drOwnerNdaTemplateUrl");
+      var ndaTemplateFilename = document.getElementById("drOwnerNdaTemplateFilename");
+      var attachTemplateBtn = document.getElementById("drOwnerAttachTemplateBtn");
+
+      var bdrTableBody = document.getElementById("drOwnerBdrTableBody");
+      var bdrEmpty = document.getElementById("drOwnerBdrEmpty");
+      var attachSignedBtn = document.getElementById("drOwnerAttachSignedBtn");
+      var signedUrl = document.getElementById("drOwnerSignedUrl");
+      var signedFilename = document.getElementById("drOwnerSignedFilename");
+      var attachSignedStatus = document.getElementById("drOwnerAttachSignedStatus");
+
+      var docsTableBody = document.getElementById("drOwnerDocsTableBody");
+      var docsEmpty = document.getElementById("drOwnerDocsEmpty");
+      var docName = document.getElementById("drOwnerDocName");
+      var docCategory = document.getElementById("drOwnerDocCategory");
+      var docConf = document.getElementById("drOwnerDocConf");
+      var docUrl = document.getElementById("drOwnerDocUrl");
+      var docFilename = document.getElementById("drOwnerDocFilename");
+      var createDocBtn = document.getElementById("drOwnerCreateDocBtn");
+      var createDocStatus = document.getElementById("drOwnerCreateDocStatus");
+
+      function setBanner(type, msg) {
+        if (!banner) return;
+        banner.classList.remove("success", "error", "info");
+        if (!msg) {
+          banner.style.display = "none";
+          return;
+        }
+        banner.style.display = "block";
+        banner.classList.add(type || "info");
+        banner.textContent = msg;
+      }
+
+      function setOwnerContentLoaded(loaded) {
+        ownerContent.style.display = loaded ? "block" : "none";
+      }
+
+      function setSelectedBdr(id) {
+        selectedBdrId = id || null;
+        if (attachSignedStatus) attachSignedStatus.textContent = selectedBdrId ? "Selected." : "";
+      }
+
+      function safeText(v) {
+        if (v === undefined || v === null) return "";
+        return String(v);
+      }
+
+      function dealLabel(d) {
+        if (!d || typeof d !== "object") return "";
+        var parts = [];
+        var name = d.dealName || d.projectName || d.propertyName || d.name || "";
+        var status = d.dealStatus || d.status || "";
+        var dealType = d.dealType || "";
+        if (name) parts.push(name);
+        if (dealType) parts.push(dealType);
+        if (status) parts.push("[" + status + "]");
+        return parts.join(" - ") || (d.id || "");
+      }
+
+      async function loadDealOptions() {
+        if (!dealSelect) return;
+        dealSelect.innerHTML = '<option value="">Loading deals...</option>';
+        try {
+          var res = await fetch("/api/my-deals").then(function (r) { return r.json(); });
+          var deals = Array.isArray(res && res.deals) ? res.deals.slice() : [];
+          deals.sort(function (a, b) {
+            return dealLabel(a).localeCompare(dealLabel(b));
+          });
+
+          if (!deals.length) {
+            dealSelect.innerHTML = '<option value="">No deals found</option>';
+            return;
+          }
+
+          dealSelect.innerHTML = '<option value="">Select a deal...</option>';
+          deals.forEach(function (d) {
+            var opt = document.createElement("option");
+            opt.value = d.id || "";
+            opt.textContent = dealLabel(d);
+            dealSelect.appendChild(opt);
+          });
+
+          if (dealId) {
+            dealSelect.value = dealId;
+          } else {
+            dealSelect.selectedIndex = 1;
+            dealId = dealSelect.value || "";
+            if (dealIdInput) dealIdInput.value = dealId;
+          }
+        } catch (err) {
+          dealSelect.innerHTML = '<option value="">Failed to load deals</option>';
+          setBanner("error", "Could not load deals list. You can still paste a dealId manually.");
+        }
+      }
+
+      function renderFileLink(a) {
+        if (!a || !a.url) return "—";
+        var fn = a.filename || "file";
+        return '<a href="' + a.url + '" target="_blank" rel="noopener" style="color: var(--accent--primary-1); text-decoration: none;">' + fn + '</a>';
+      }
+
+      async function loadDealRoom() {
+        if (!dealId || !dealId.startsWith("rec")) {
+          setBanner("error", "Enter a valid `dealId` (Airtable record like recXXXX).");
+          return;
+        }
+
+        setBanner("info", "Loading Deal Room…");
+        try {
+          var [dealRes, bdrRes, docsRes] = await Promise.all([
+            fetch("/api/my-deals/" + encodeURIComponent(dealId)).then(function (r) { return r.json(); }),
+            fetch("/api/brand-deal-requests?dealIds=" + encodeURIComponent(dealId)).then(function (r) { return r.json(); }),
+            fetch("/api/deal-room-documents?dealId=" + encodeURIComponent(dealId)).then(function (r) { return r.json(); })
+          ]);
+
+          var fields = (dealRes.deal && dealRes.deal.fields) ? dealRes.deal.fields : {};
+
+          // Deal-level settings
+          var drEnabled = !!fields["Deal Room Enabled"];
+          if (dealRoomEnabledToggle) dealRoomEnabledToggle.checked = drEnabled;
+          if (dealRoomEnabledText) dealRoomEnabledText.textContent = drEnabled ? "Yes" : "No";
+
+          var tplFiles = fields["NDA Template File"] || [];
+          ndaTemplateFilesUl.innerHTML = "";
+          if (Array.isArray(tplFiles) && tplFiles.length > 0) {
+            ndaTemplateEmpty.style.display = "none";
+            tplFiles.forEach(function (a) {
+              var li = document.createElement("li");
+              var fileUrl = (a && a.url) ? a.url : null;
+              var fileName = (a && a.filename) ? a.filename : "file";
+              if (fileUrl) {
+                var el = document.createElement("a");
+                el.href = fileUrl;
+                el.target = "_blank";
+                el.rel = "noopener";
+                el.style.color = "var(--accent--primary-1)";
+                el.style.textDecoration = "none";
+                el.textContent = fileName;
+                li.appendChild(el);
+              } else {
+                li.textContent = fileName;
+              }
+              ndaTemplateFilesUl.appendChild(li);
+            });
+          } else {
+            ndaTemplateEmpty.style.display = "block";
+          }
+
+          // BDR table
+          var bdrs = bdrRes.contacted || bdrRes.requests || [];
+          bdrTableBody.innerHTML = "";
+          bdrEmpty.style.display = bdrs.length ? "none" : "block";
+
+          var priorSelected = selectedBdrId;
+          selectedBdrId = null;
+
+          if (bdrs.length) {
+            // keep selection when possible
+            var ids = bdrs.map(function (b) { return b.id; });
+            var shouldSelect = !priorSelected || ids.indexOf(priorSelected) === -1;
+            if (!priorSelected || shouldSelect) selectedBdrId = ids[0];
+            var tbody = bdrTableBody;
+
+            bdrs.forEach(function (b) {
+              var tr = document.createElement("tr");
+              tr.style.cursor = "pointer";
+              tr.setAttribute("data-bdr-id", b.id);
+              if (b.id === selectedBdrId) tr.style.background = "rgba(108, 114, 255, 0.18)";
+              tr.addEventListener("click", function () {
+                tbody.querySelectorAll("tr").forEach(function (r) { r.style.background = ""; });
+                tr.style.background = "rgba(108, 114, 255, 0.18)";
+                setSelectedBdr(b.id);
+              });
+
+              var signedFiles = b.ndaSignedFile || [];
+              var signed = signedFiles && signedFiles[0] ? signedFiles[0] : null;
+              var signedLink = signed ? renderFileLink(signed) : "—";
+              var proposalStatus = (b.proposal && b.proposal.proposalStatus) ? b.proposal.proposalStatus : "";
+              var proposalLink = '<a class="btn-link" href="/brand-deal-request.html?requestId=' + encodeURIComponent(b.id) + '" target="_blank" rel="noopener">Submit Proposal</a>';
+              if (proposalStatus === "Submitted") proposalLink = '<span class="small" style="font-weight:800;color: var(--system--green-300);">Submitted</span>';
+
+              tr.innerHTML =
+                '<td>' + safeText(b.brandName || "—") + '</td>' +
+                '<td>' + safeText(b.ndaStatus || "") + '</td>' +
+                '<td>' + safeText(b.dealRoomAccess || "") + '</td>' +
+                '<td>' + signedLink + '</td>' +
+                '<td>' + proposalLink + '</td>' +
+                '<td>' +
+                  '<button type="button" class="btn-action" data-action="sendNda" data-bdr-id="' + safeText(b.id) + '">Send NDA</button>' +
+                  '<button type="button" class="btn-action" data-action="markSigned" data-bdr-id="' + safeText(b.id) + '">Mark Signed</button>' +
+                  '<button type="button" class="btn-action" data-action="grantAccess" data-bdr-id="' + safeText(b.id) + '">Grant</button>' +
+                  '<button type="button" class="btn-action" data-action="revokeAccess" data-bdr-id="' + safeText(b.id) + '">Revoke</button>' +
+                '</td>';
+
+              tbody.appendChild(tr);
+            });
+
+            setSelectedBdr(selectedBdrId);
+          } else {
+            setSelectedBdr(null);
+          }
+
+          // docs table
+          var docs = docsRes.documents || [];
+          docsTableBody.innerHTML = "";
+          docsEmpty.style.display = docs.length ? "none" : "block";
+          docs.forEach(function (d) {
+            var tr = document.createElement("tr");
+            var fileArr = d.file || [];
+            var file = fileArr && fileArr[0] ? fileArr[0] : null;
+            var docFileLink = file ? renderFileLink(file) : "—";
+            tr.innerHTML = '<td>' + safeText(d.documentName || "—") + '</td>' +
+              '<td>' + safeText(d.category || "—") + '</td>' +
+              '<td>' + safeText(d.confidentiality || "—") + '</td>' +
+              '<td>' + docFileLink + '</td>';
+            docsTableBody.appendChild(tr);
+          });
+
+          setOwnerContentLoaded(true);
+          setBanner("success", "Loaded Deal Room data.");
+          setTimeout(function () { setBanner("", ""); }, 1500);
+        } catch (err) {
+          setOwnerContentLoaded(false);
+          setBanner("error", "Failed to load: " + (err && err.message ? err.message : "unknown error"));
+          throw err;
+        }
+      }
+
+      // Actions: BDR status changes
+      bdrTableBody.addEventListener("click", function (e) {
+        var btn = e.target.closest("button[data-action][data-bdr-id]");
+        if (!btn) return;
+        e.stopPropagation();
+        var bdrId = btn.getAttribute("data-bdr-id");
+        var action = btn.getAttribute("data-action");
+        var label = action === "sendNda" ? "Send NDA" :
+          action === "markSigned" ? "Mark Signed" :
+          action === "grantAccess" ? "Grant Access" :
+          action === "revokeAccess" ? "Revoke Access" : action;
+        setBanner("info", "Working: " + label + "…");
+        fetch("/api/brand-deal-requests/" + encodeURIComponent(bdrId), {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: action })
+        }).then(function (r) { return r.json(); }).then(function (res) {
+          if (res.success) {
+            loadDealRoom();
+            setBanner("success", "Done: " + label);
+          } else {
+            setBanner("error", res.error || ("Failed: " + label));
+          }
+        }).catch(function (err) {
+          setBanner("error", err && err.message ? err.message : "Request failed");
+        });
+      });
+
+      function patchSelectedBdr({ ndaSignedFile }) {
+        if (!selectedBdrId) {
+          attachSignedStatus.textContent = "Select a brand row first.";
+          return Promise.resolve();
+        }
+        return fetch("/api/brand-deal-requests/" + encodeURIComponent(selectedBdrId), {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ndaSignedFile: ndaSignedFile })
+        }).then(function (r) { return r.json(); }).then(function (res) {
+          if (!res.success) throw new Error(res.error || "Failed to attach signed NDA");
+        });
+      }
+
+      // Owner: attach/replace deal-level NDA template
+      attachTemplateBtn.addEventListener("click", function () {
+        if (!dealId) return;
+        var url = (ndaTemplateUrl.value || "").trim();
+        var fn = (ndaTemplateFilename.value || "").trim() || "nda-template.pdf";
+        if (!url) {
+          setBanner("error", "Enter a public URL for the NDA template file.");
+          return;
+        }
+
+        setBanner("info", "Attaching NDA template…");
+        var body = {
+          dealRoomEnabled: !!dealRoomEnabledToggle.checked,
+          ndaTemplateFile: [{ url: url, filename: fn }]
+        };
+        fetch("/api/my-deals/" + encodeURIComponent(dealId), {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        }).then(function (r) { return r.json(); }).then(function (res) {
+          if (res.success) {
+            loadDealRoom();
+            setBanner("success", "NDA template attached.");
+          } else {
+            setBanner("error", res.error || "Failed to attach template");
+          }
+        }).catch(function (err) {
+          setBanner("error", err && err.message ? err.message : "Request failed");
+        });
+      });
+
+      // Owner: attach signed NDA to the selected brand deal request
+      attachSignedBtn.addEventListener("click", function () {
+        if (!selectedBdrId) {
+          attachSignedStatus.textContent = "Select a brand row first.";
+          setBanner("error", "Select a brand row first.");
+          return;
+        }
+        var url = (signedUrl.value || "").trim();
+        var fn = (signedFilename.value || "").trim() || "signed-nda.pdf";
+        if (!url) {
+          attachSignedStatus.textContent = "Enter a public URL for the signed NDA.";
+          setBanner("error", "Enter public URL for signed NDA.");
+          return;
+        }
+        attachSignedStatus.textContent = "Working…";
+        fetch("/api/brand-deal-requests/" + encodeURIComponent(selectedBdrId), {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ndaSignedFile: [{ url: url, filename: fn }] })
+        }).then(function (r) { return r.json(); }).then(function (res) {
+          if (res.success) {
+            attachSignedStatus.textContent = "Attached. Reloading…";
+            loadDealRoom();
+            setTimeout(function () { attachSignedStatus.textContent = ""; }, 1500);
+          } else {
+            attachSignedStatus.textContent = res.error || "Failed.";
+            setBanner("error", res.error || "Failed to attach signed NDA");
+          }
+        }).catch(function (err) {
+          attachSignedStatus.textContent = err && err.message ? err.message : "Failed.";
+          setBanner("error", err && err.message ? err.message : "Request failed");
+        });
+      });
+
+      // Owner: create Deal Room document
+      createDocBtn.addEventListener("click", function () {
+        if (!dealId) return;
+        var name = (docName.value || "").trim();
+        var cat = (docCategory.value || "").trim();
+        var conf = (docConf.value || "").trim();
+        var url = (docUrl.value || "").trim();
+        var fn = (docFilename.value || "").trim() || "document.pdf";
+        if (!name) { createDocStatus.textContent = "Enter document name."; setBanner("error", "Enter document name."); return; }
+        if (!url) { createDocStatus.textContent = "Enter public URL."; setBanner("error", "Enter public URL."); return; }
+
+        createDocStatus.textContent = "Creating…";
+        fetch("/api/deal-room-documents", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            dealId: dealId,
+            documentName: name,
+            category: cat || undefined,
+            confidentiality: conf || undefined,
+            file: [{ url: url, filename: fn }],
+            uploadedBy: "Owner"
+          })
+        }).then(function (r) { return r.json(); }).then(function (res) {
+          if (res.success) {
+            createDocStatus.textContent = "Created. Reloading…";
+            loadDealRoom();
+            setTimeout(function () {
+              createDocStatus.textContent = "";
+              docName.value = "";
+              docUrl.value = "";
+            }, 1500);
+          } else {
+            createDocStatus.textContent = res.error || "Failed.";
+            setBanner("error", res.error || "Failed to create document");
+          }
+        }).catch(function (err) {
+          createDocStatus.textContent = err && err.message ? err.message : "Failed.";
+          setBanner("error", err && err.message ? err.message : "Request failed");
+        });
+      });
+
+      loadBtn.addEventListener("click", function () {
+        dealId = (dealIdInput.value || "").trim();
+        if (!dealId) {
+          dealId = (dealSelect && dealSelect.value ? String(dealSelect.value).trim() : "");
+        }
+        if (!dealId) {
+          setBanner("error", "Select a deal first.");
+          return;
+        }
+        if (dealIdInput) dealIdInput.value = dealId;
+        if (dealSelect && dealSelect.value !== dealId) dealSelect.value = dealId;
+        try { localStorage.setItem("dealRoomOwnerLastDealId", dealId); } catch (e) {}
+        // Keep dealId in URL for easy reload
+        try {
+          var u = new URL(window.location.href);
+          u.searchParams.set("dealId", dealId);
+          window.history.replaceState({}, "", u.toString());
+        } catch (e) {}
+        loadDealRoom();
+      });
+
+      if (dealSelect) {
+        dealSelect.addEventListener("change", function () {
+          var nextId = (dealSelect.value || "").trim();
+          if (!nextId) return;
+          dealId = nextId;
+          if (dealIdInput) dealIdInput.value = nextId;
+        });
+      }
+
+      // init
+      loadDealOptions();
+      if (dealId) {
+        if (dealIdInput) dealIdInput.value = dealId;
+        if (dealSelect) dealSelect.value = dealId;
+        try { localStorage.setItem("dealRoomOwnerLastDealId", dealId); } catch (e) {}
+        loadDealRoom();
+      }
+    })();
+  </script>
+</body>
+</html>
+

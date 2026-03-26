@@ -1,0 +1,14 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const file = path.join(__dirname, 'topo-path.svg.svg');
+const s = fs.readFileSync(file, 'utf8');
+const re = /d="([^"]+)"/g;
+let m;
+const all = [];
+while ((m = re.exec(s)) !== null) all.push(m[1]);
+const curved = all.filter(d => /[CQSQTA]/.test(d) || d.length > 500);
+const best = curved.length ? curved.sort((a,b) => b.length - a.length)[0] : (all.sort((a,b) => b.length - a.length)[0] || '');
+if (best) console.log(best);
+else console.log('NO_MATCH');

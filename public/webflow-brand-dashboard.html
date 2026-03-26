@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Review Dashboard</title>
+    <style>
+        /* Webflow-specific styles */
+        .webflow-dashboard {
+            font-family: 'Mona sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #080F25;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #aeb9e1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+        }
+        
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+        
+        .brand-selector {
+            background: #1a1a2e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #ffffff;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+        
+        .dashboard-tabs {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dashboard-tab {
+            color: #aeb9e1;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 1rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .dashboard-tab:hover,
+        .dashboard-tab.active {
+            color: #ffffff;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-count {
+            background: rgba(255, 255, 255, 0.1);
+            color: #aeb9e1;
+            border-radius: 12px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .dashboard-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .bulk-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .brand-selection-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .bulk-select {
+            background: #1a1a2e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn {
+            background: #d69e2e;
+            border: 1px solid #d69e2e;
+            color: #fff;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover {
+            background: #b8860b;
+            border-color: #b8860b;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        
+        .deals-table {
+            background: #1a1a2e;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .table-header {
+            background: #080f25;
+            padding: 0.75rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1.5fr 1.75fr 1fr 1fr 1fr;
+            gap: 0.25rem;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .table-header-item {
+            color: #aeb9e1;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+            padding-left: 0;
+        }
+        
+        /* Sortable header styles */
+        .table-header-item.sortable {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .table-header-item.sortable:hover {
+            color: #ffffff;
+        }
+        
+        .sort-arrows {
+            display: flex;
+            flex-direction: column;
+            margin-right: 0.5rem;
+            gap: 1px;
+        }
+        
+        .sort-arrow {
+            font-size: 0.6rem;
+            color: #aeb9e1;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+        
+        .sort-arrow:hover {
+            color: #ffffff;
+        }
+        
+        .sort-arrow.active {
+            color: #667eea;
+        }
+        
+        .table-row {
+            padding: 0.0075rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1.5fr 1.75fr 1fr 1fr 1fr;
+            gap: 0.25rem;
+            align-items: center;
+            transition: all 0.3s ease;
+            min-height: auto;
+            font-family: 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .table-row.status-new {
+            font-weight: bold;
+        }
+        
+        .table-row.status-viewed-by-brand {
+            font-weight: normal;
+        }
+        
+        .table-row:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .table-row:last-child {
+            border-bottom: none;
+        }
+        
+        .status-text {
+            font-size: 14px;
+            font-weight: normal;
+            letter-spacing: 0.3px;
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        .status-new {
+            color: #22c55e;
+        }
+        
+        .status-viewed-by-brand,
+        .status-deal-received,
+        .status-closed-won,
+        .status-closed-lost,
+        .status-awarded,
+        .status-in-negotiation,
+        .status-shortlisting,
+        .status-in-discovery,
+        .status-on-hold,
+        .status-deferred,
+        .status-expired,
+        .status-archived,
+        .status-active,
+        .status-declined {
+            color: #ffffff;
+        }
+        
+        .brand-match {
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        .match-score {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin: 0 auto;
+        }
+        
+        .match-score-disabled {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin: 0 auto;
+            color: #666;
+            background-color: #333;
+            border: 1px solid #555;
+        }
+        
+        .score-high {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .score-medium {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        .score-low {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .match-score-with-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .match-score-info-btn {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateX(-30px);
+            width: 26px;
+            height: 26px;
+        }
+
+        .match-score-info-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .match-score-info-btn:disabled {
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        .match-score-info-btn:disabled:hover {
+            color: #666;
+            background: transparent;
+        }
+
+        .match-score-info-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .deal-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-name {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-title {
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-company {
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        /* Deal Headline Styles */
+        .deal-headline {
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 1.2;
+            width: 100%;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            display: block;
+            padding: 0.1rem 0;
+        }
+
+        /* Responsiveness Badge Styles */
+        .responsiveness-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: fit-content;
+        }
+
+        .responsiveness-icons {
+            font-size: 0.8rem;
+        }
+
+        .responsiveness-label {
+            color: #ffffff;
+            font-size: 0.7rem;
+            white-space: nowrap;
+        }
+
+        /* Responsiveness Badge Color Variations */
+        .responsiveness-badge[data-score="90-100"] {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .responsiveness-badge[data-score="70-89"] {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .responsiveness-badge[data-score="50-69"] {
+            background: rgba(251, 191, 36, 0.2);
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+
+        .responsiveness-badge[data-score="30-49"] {
+            background: rgba(249, 115, 22, 0.2);
+            border-color: rgba(249, 115, 22, 0.4);
+        }
+
+        .responsiveness-badge[data-score="0-29"] {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        /* Match Score Info Icon */
+        .info-icon {
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-left: 0.25rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .info-icon:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .match-score-with-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            padding: 0;
+        }
+        
+        /* Center Match Score column header and content */
+        .table-header-item:nth-child(3),
+        .table-row > div:nth-child(3) {
+            text-align: center;
+            padding-left: 0;
+            padding-right: 0;
+            justify-content: center;
+        }
+        
+        /* Center Call to Action column header and content */
+        .table-header-item:nth-child(8),
+        .table-row > div:nth-child(8) {
+            text-align: center;
+            padding-left: 0;
+            padding-right: 0;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Move Response Times header 10px to the left */
+        .table-header-item:nth-child(6) {
+            transform: translateX(-10px);
+        }
+        
+        /* Move Deal Details header 10px to the left */
+        .table-header-item:nth-child(7) {
+            transform: translateX(-10px);
+        }
+        
+        /* Move Match Score header 10px to the left */
+        .table-header-item:nth-child(3) {
+            transform: translateX(-10px);
+        }
+
+        /* Scoring Breakdown Modal */
+        .scoring-breakdown-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+        }
+
+        .scoring-breakdown-content {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .scoring-breakdown-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .scoring-breakdown-title {
+            color: #ffffff;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .scoring-breakdown-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .scoring-breakdown-close:hover {
+            opacity: 1;
+        }
+
+        .scoring-breakdown-total {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .scoring-breakdown-total-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .scoring-breakdown-total-label {
+            color: #ffffff;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .scoring-criteria {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .scoring-criterion {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid transparent;
+        }
+
+        .scoring-criterion.excellent {
+            border-left-color: #10b981;
+        }
+
+        .scoring-criterion.good {
+            border-left-color: #3b82f6;
+        }
+
+        .scoring-criterion.average {
+            border-left-color: #f59e0b;
+        }
+
+        .scoring-criterion.poor {
+            border-left-color: #ef4444;
+        }
+
+        .criterion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .criterion-name {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .criterion-score {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .criterion-score.excellent {
+            color: #10b981;
+        }
+
+        .criterion-score.good {
+            color: #3b82f6;
+        }
+
+        .criterion-score.average {
+            color: #f59e0b;
+        }
+
+        .criterion-score.poor {
+            color: #ef4444;
+        }
+
+        .criterion-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .criterion-weight {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Learn More Modal */
+        .learn-more-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            backdrop-filter: blur(4px);
+        }
+
+        .learn-more-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 95vw;
+            max-height: 95vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            width: 1000px;
+        }
+
+        /* Match Score Details Modal */
+        .match-score-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10002;
+            backdrop-filter: blur(4px);
+        }
+
+        .match-score-content {
+            background: #1f2937;
+            border-radius: 12px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            width: 90%;
+            padding: 24px;
+        }
+
+        .match-score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #374151;
+        }
+
+        .match-score-title {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .match-score-close {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .match-score-close:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .match-score-overview {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .match-score-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .match-score-info {
+            flex: 1;
+        }
+
+        .match-score-value {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+        }
+
+        .match-score-description {
+            color: #9ca3af;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .match-score-breakdown {
+            margin-bottom: 24px;
+        }
+
+        .breakdown-title {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+        }
+
+        .score-factor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            border-left: 4px solid;
+        }
+
+        .score-factor.high {
+            border-left-color: #22c55e;
+        }
+
+        .score-factor.medium {
+            border-left-color: #fbbf24;
+        }
+
+        .score-factor.low {
+            border-left-color: #ef4444;
+        }
+
+        .factor-info {
+            flex: 1;
+        }
+
+        .factor-name {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0 0 2px 0;
+        }
+
+        .factor-description {
+            color: #9ca3af;
+            font-size: 12px;
+            margin: 0;
+        }
+        
+        .factor-commentary {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            border-left: 3px solid #666;
+            line-height: 1.4;
+            white-space: pre-line;
+        }
+        
+        .factor-commentary:before {
+            content: "💡 ";
+            margin-right: 4px;
+        }
+
+        .factor-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .factor-value {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .factor-weight {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        /* Dealality Header */
+        .deal-capture-header {
+            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10001;
+            min-height: 120px;
+        }
+
+        .header-left {
+            flex: 0 0 auto;
+        }
+
+        .deal-capture-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-circle {
+            width: 50px;
+            height: 50px;
+            background: #20B2AA;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-image {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-weight: bold;
+        }
+
+        .logo-line-1 {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .logo-line-2 {
+            font-size: 14px;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        .header-center {
+            flex: 1;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .brand-name {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .property-location {
+            font-size: 16px;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .deal-type {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right {
+            flex: 0 0 auto;
+            text-align: right;
+            position: relative;
+            padding-right: 50px;
+        }
+
+        .target-info {
+            font-size: 14px;
+            margin-bottom: 4px;
+            opacity: 0.9;
+        }
+
+        .room-info {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .learn-more-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10002;
+            line-height: 1;
+        }
+
+        .learn-more-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .deal-overview {
+            padding: 30px;
+            background: white;
+        }
+
+        .deal-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #D4AF37;
+        }
+        
+        /* Interactions Table Styling */
+        .interactions-table-container {
+            margin-top: 1rem;
+            overflow-x: auto;
+        }
+        
+        .interactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .interactions-table th {
+            background: #667eea;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .interactions-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            vertical-align: top;
+        }
+        
+        .interactions-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .interactions-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .deal-section h3 {
+            color: #2c3e50;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e9ecef;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .deal-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+
+        .deal-field:not(:last-child) {
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .deal-field-label {
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+            min-width: 40%;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .deal-field-value {
+            color: #212529;
+            font-size: 0.9rem;
+            text-align: right;
+            max-width: 55%;
+            word-wrap: break-word;
+        }
+
+        .deal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding: 20px 30px;
+            background: transparent;
+            border-top: none;
+        }
+
+        .deal-action-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 120px;
+        }
+
+        .deal-action-btn.approve {
+            background: #28a745;
+            color: white;
+            border: 2px solid #28a745;
+        }
+
+        .deal-action-btn.approve:hover {
+            background: #218838;
+            border-color: #218838;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .deal-action-btn.decline {
+            background: #dc3545;
+            color: white;
+            border: 2px solid #dc3545;
+        }
+
+        .deal-action-btn.decline:hover {
+            background: #c82333;
+            border-color: #c82333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .deal-action-btn.close {
+            background: #6c757d;
+            color: white;
+            border: 2px solid #6c757d;
+        }
+
+        .deal-action-btn.close:hover {
+            background: #5a6268;
+            border-color: #5a6268;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        .deal-action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .deal-overview {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .learn-more-content {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            
+            .deal-actions {
+                flex-direction: column;
+            }
+        }
+        
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: opacity 0.2s ease;
+        }
+        
+        .contact-avatar img:hover {
+            opacity: 0.9;
+        }
+        
+        .contact-avatar-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .respond-time {
+            font-size: 14px;
+            text-align: left;
+            padding-left: 0;
+        }
+        
+        .respond-green {
+            color: #22c55e;
+        }
+        
+        .respond-orange {
+            color: #fbbf24;
+        }
+        
+        .respond-red {
+            color: #ef4444;
+        }
+        
+        .deal-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            transform: translateY(-10px);
+        }
+        
+        .deal-actions button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+        }
+        
+        .deal-actions button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .deal-actions button img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+        
+        .deal-details {
+            text-align: left;
+            padding-left: 0;
+        }
+
+        /* Compact Modal Styles */
+        .learn-more-content-compact {
+            max-width: 98vw;
+            max-height: 98vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 12px;
+        }
+
+        .deal-capture-header-compact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left-compact {
+            display: flex;
+            align-items: center;
+        }
+
+        .deal-capture-logo-compact {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-circle-compact {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-image-compact {
+            width: 24px;
+            height: 24px;
+        }
+
+        .logo-text-compact {
+            color: #ffffff;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .logo-line-1-compact {
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .logo-line-2-compact {
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .header-center-compact {
+            text-align: center;
+            flex: 1;
+        }
+
+        .brand-name-compact {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .property-location-compact {
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        .header-right-compact {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .room-info-compact {
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        .learn-more-close-compact {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .learn-more-close-compact:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Action Buttons at Top */
+        .deal-actions-top {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .deal-action-btn-top {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .deal-action-btn-top.pursue {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .deal-action-btn-top.pursue:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+            transform: translateY(-2px);
+        }
+
+        .deal-action-btn-top.decline {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .deal-action-btn-top.decline:hover {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            transform: translateY(-2px);
+        }
+
+        .deal-action-btn-top.close {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .deal-action-btn-top.close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Compact Grid Layout */
+        .modal-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.75rem;
+            padding: 1rem;
+            max-height: calc(98vh - 200px);
+            overflow: hidden;
+        }
+
+        .modal-column-compact {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .deal-section-compact {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+        }
+
+        .section-title-compact {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 0 0 0.5rem 0;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .compact-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.25rem;
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .field-label-compact {
+            color: #cccccc;
+            font-weight: 500;
+            min-width: 60px;
+            flex-shrink: 0;
+            margin-right: 0.5rem;
+        }
+
+        .field-value-compact {
+            color: #ffffff;
+            text-align: right;
+            word-break: break-word;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1600px) {
+            .modal-grid-compact {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .modal-grid-compact {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .modal-grid-compact {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .modal-grid-compact {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .modal-grid-compact {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* NEW Deal Highlighting Styles */
+        .table-row.status-new {
+            background: rgba(255, 255, 0, 0.08) !important;
+            border-left: 3px solid #ffeb3b !important;
+        }
+
+        /* Loading Wave Animation for Deals Container */
+        .loading-wave-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            min-height: 200px;
+        }
+
+        .loading-wave-spinner {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .loading-wave-container-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            border: 2px solid #888;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .loading-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A, #4CAF50);
+            background-size: 200% 200%;
+            animation: wave-flow 2s ease-in-out infinite;
+        }
+
+        .loading-wave-1 {
+            height: 40%;
+            background: linear-gradient(45deg, #d69e2e, #f4d03f);
+            animation: wave-1 2s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+
+        .loading-wave-2 {
+            height: 60%;
+            background: linear-gradient(45deg, #b8860b, #d69e2e);
+            animation: wave-2 2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .loading-wave-3 {
+            height: 80%;
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+            animation: wave-3 2s ease-in-out infinite;
+            animation-delay: 0.6s;
+        }
+
+        .loading-wave-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .loading-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #f4d03f;
+            border-radius: 50%;
+            animation: particle-float 3s ease-in-out infinite;
+        }
+
+        .loading-particle:nth-child(1) {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .loading-particle:nth-child(2) {
+            top: 60%;
+            right: 30%;
+            animation-delay: 0.8s;
+        }
+
+        .loading-particle:nth-child(3) {
+            bottom: 30%;
+            left: 60%;
+            animation-delay: 1.6s;
+        }
+
+        .loading-particle:nth-child(4) {
+            top: 40%;
+            right: 20%;
+            animation-delay: 2.4s;
+        }
+
+        .loading-wave-text {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .learn-more-btn {
+            background: #d69e2e;
+            border: 1px solid #d69e2e;
+            color: #fff;
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .learn-more-btn:hover {
+            background: #b8860b;
+            border-color: #b8860b;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        
+        .chat-btn, .email-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+        
+        .chat-btn:hover, .email-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .deal-menu-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+        
+        .deal-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #aeb9e1;
+        }
+        
+        /* System Status Indicator - Small Top Right Box (from Brand Presence Mapping) */
+        .system-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateX(0);
+            transition: transform 0.3s ease-in-out;
+            min-width: 200px;
+            max-width: 280px;
+        }
+
+        .system-status.show {
+            transform: translateX(0);
+        }
+
+        .status-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-spinner {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .wave-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            border: 2px solid #888;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A, #4CAF50);
+            background-size: 200% 200%;
+            animation: wave-flow 2s ease-in-out infinite;
+        }
+
+        .wave-1 {
+            height: 40%;
+            background: linear-gradient(45deg, #d69e2e, #f4d03f);
+            animation: wave-1 2s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+
+        .wave-2 {
+            height: 60%;
+            background: linear-gradient(45deg, #b8860b, #d69e2e);
+            animation: wave-2 2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .wave-3 {
+            height: 80%;
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+            animation: wave-3 2s ease-in-out infinite;
+            animation-delay: 0.6s;
+        }
+
+        .wave-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #f4d03f;
+            border-radius: 50%;
+            animation: particle-float 3s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            top: 60%;
+            left: 70%;
+            animation-delay: 0.5s;
+        }
+
+        .particle:nth-child(3) {
+            top: 40%;
+            left: 50%;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(4) {
+            top: 80%;
+            left: 30%;
+            animation-delay: 1.5s;
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .status-text div:first-child {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .status-time {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .status-progress {
+            margin-top: 6px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1px;
+            overflow: hidden;
+        }
+
+        .status-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d69e2e, #f4d03f);
+            width: 45%;
+            animation: progress-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes wave-1 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes wave-2 {
+            0%, 100% { 
+                transform: translateX(100%) scaleY(1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.1);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes wave-3 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.4;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.3);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes particle-float {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-4px);
+            }
+        }
+
+        @keyframes progress-pulse {
+            0%, 100% { width: 30%; }
+            50% { width: 70%; }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #aeb9e1;
+        }
+        
+        .empty-state h3 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr 1fr 1fr 1.5fr 1.5fr 1fr 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+            
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+                gap: 0.5rem;
+            }
+            
+            .table-header-item:nth-child(7),
+            .table-row > div:nth-child(7) {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .dashboard-tabs {
+                gap: 1rem;
+            }
+            
+            .dashboard-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 0.5rem;
+            }
+            
+            .table-header-item:nth-child(4),
+            .table-header-item:nth-child(5),
+            .table-header-item:nth-child(6),
+            .table-header-item:nth-child(7),
+            .table-row > div:nth-child(4),
+            .table-row > div:nth-child(5),
+            .table-row > div:nth-child(6),
+            .table-row > div:nth-child(7) {
+                display: none;
+            }
+        }
+
+        /* Call to Action Section Styles */
+        .call-to-action-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0 0 0.75rem 0;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        .cta-separator {
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .cta-icon {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+        }
+
+        .cta-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .cta-icon img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+    </style>
+</head>
+<body class="webflow-dashboard">
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Brand Review Dashboard</h1>
+            <div class="header-actions">
+            </div>
+        </div>
+        
+        <!-- Dashboard Tabs -->
+        <div class="dashboard-tabs">
+            <a href="#" class="dashboard-tab active" data-tab="new">
+                NEW DEALS <span class="tab-count" id="newCount">0</span>
+            </a>
+            <a href="#" class="dashboard-tab" data-tab="active">
+                ACTIVE DEALS <span class="tab-count" id="activeCount">0</span>
+            </a>
+            <a href="#" class="dashboard-tab" data-tab="archives">
+                ARCHIVES <span class="tab-count" id="archivesCount">0</span>
+            </a>
+            <a href="#" class="dashboard-tab" data-tab="deal-log">
+                DEAL LOG <span class="tab-count" id="dealLogCount">0</span>
+            </a>
+        </div>
+        
+        <!-- Dashboard Controls -->
+        <div class="dashboard-controls">
+            <div class="bulk-actions">
+                <select class="bulk-select" id="bulkActions">
+                    <option value="">Bulk Actions</option>
+                    <option value="approve">Approve Selected</option>
+                    <option value="decline">Decline Selected</option>
+                    <option value="request-info">Request More Info</option>
+                </select>
+                <button class="filter-btn" id="filterBtn">Filter</button>
+                <button class="filter-btn" onclick="dashboard.debugAmenitiesFields()" style="background: #dc2626;">Debug Amenities</button>
+                <button class="filter-btn" onclick="dashboard.debugBrandData()" style="background: #059669;">Debug Brand Data</button>
+                <button class="filter-btn" onclick="dashboard.debugProjectFitFields()" style="background: #dc2626;">Debug Project Fit</button>
+            </div>
+            <div class="brand-selection-right">
+                <select class="bulk-select" id="brandSelector">
+                    <option value="">Select Brand</option>
+                    <option value="Courtyard by Marriott">Courtyard by Marriott</option>
+                    <option value="Waldorf Astoria">Waldorf Astoria</option>
+                    <option value="Ritz-Carlton">Ritz-Carlton</option>
+                    <option value="Tapestry Collection">Tapestry Collection</option>
+                    <option value="Moxy Hotels">Moxy Hotels</option>
+                    <option value="Hyatt Centric">Hyatt Centric</option>
+                    <option value="Andaz">Andaz</option>
+                    <option value="Hilton Hotels & Resorts">Hilton Hotels & Resorts</option>
+                    <option value="Kimpton Hotels">Kimpton Hotels</option>
+                    <option value="Radisson Blu">Radisson Blu</option>
+                    <option value="InterContinental">InterContinental</option>
+                    <option value="JW Marriott">JW Marriott</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Deals Table -->
+        <div class="deals-table">
+        <div class="table-header">
+            <div class="table-header-item sortable" data-sort="status">
+                <div class="sort-arrows">
+                    <span class="sort-arrow up" onclick="dashboard.sortDeals('status', 'asc').catch(console.error)">▲</span>
+                    <span class="sort-arrow down" onclick="dashboard.sortDeals('status', 'desc').catch(console.error)">▼</span>
+                </div>
+                Deal Status
+            </div>
+            <div class="table-header-item sortable" data-sort="brandMatch">
+                <div class="sort-arrows">
+                    <span class="sort-arrow up" onclick="dashboard.sortDeals('brandMatch', 'asc').catch(console.error)">▲</span>
+                    <span class="sort-arrow down" onclick="dashboard.sortDeals('brandMatch', 'desc').catch(console.error)">▼</span>
+                </div>
+                Brand Match
+            </div>
+            <div class="table-header-item sortable" data-sort="matchScore">
+                <div class="sort-arrows">
+                    <span class="sort-arrow up" onclick="dashboard.sortDeals('matchScore', 'asc').catch(console.error)">▲</span>
+                    <span class="sort-arrow down" onclick="dashboard.sortDeals('matchScore', 'desc').catch(console.error)">▼</span>
+                </div>
+                Match Score
+            </div>
+            <div class="table-header-item sortable" data-sort="dealHeadline">
+                <div class="sort-arrows">
+                    <span class="sort-arrow up" onclick="dashboard.sortDeals('dealHeadline', 'asc').catch(console.error)">▲</span>
+                    <span class="sort-arrow down" onclick="dashboard.sortDeals('dealHeadline', 'desc').catch(console.error)">▼</span>
+                </div>
+                Deal Headline
+            </div>
+            <div class="table-header-item sortable" data-sort="dealContact">
+                <div class="sort-arrows">
+                    <span class="sort-arrow up" onclick="dashboard.sortDeals('dealContact', 'asc').catch(console.error)">▲</span>
+                    <span class="sort-arrow down" onclick="dashboard.sortDeals('dealContact', 'desc').catch(console.error)">▼</span>
+                </div>
+                Deal Contact
+            </div>
+            <div class="table-header-item">Respond Times</div>
+            <div class="table-header-item">Deal Details</div>
+            <div class="table-header-item">Call to Action</div>
+        </div>
+            <div id="dealsContainer">
+                <div class="loading-wave-container">
+                    <div class="loading-wave-spinner">
+                        <div class="loading-wave-container-inner">
+                            <div class="loading-wave loading-wave-1"></div>
+                            <div class="loading-wave loading-wave-2"></div>
+                            <div class="loading-wave loading-wave-3"></div>
+                            <div class="loading-wave-particles">
+                                <div class="loading-particle"></div>
+                                <div class="loading-particle"></div>
+                                <div class="loading-particle"></div>
+                                <div class="loading-particle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loading-wave-text">Loading deals...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Status Indicator (Top Right Loading Box) -->
+    <div id="systemStatus" class="system-status" style="display: none;">
+        <div class="status-content">
+            <div class="status-spinner">
+                <div class="wave-container">
+                    <div class="wave wave-1"></div>
+                    <div class="wave wave-2"></div>
+                    <div class="wave wave-3"></div>
+                    <div class="wave-particles">
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="status-text">
+                <div>Processing...</div>
+                <div class="status-time">Estimated time: 2-3 seconds</div>
+            </div>
+        </div>
+        <div class="status-progress">
+            <div class="status-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Hidden elements for Webflow integration -->
+    <div id="airtable-user-id" style="display: none;">recdfzCykLRYRJfp9</div>
+    <div id="airtable-brand-id" style="display: none;">Quality Inn</div>
+    
+    <!-- Performance Monitoring Button -->
+    <div id="performance-monitor" style="position: fixed; top: 10px; right: 10px; z-index: 10000; background: rgba(255,255,255,0.9); padding: 5px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+        <button onclick="showPerformanceDashboard()" 
+                style="background: #17a2b8; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;"
+                title="View Performance Dashboard">
+            📊 Performance
+        </button>
+    </div>
+    
+    <script>
+        // Fallback function to show performance dashboard
+        function showPerformanceDashboard() {
+            if (window.dashboard && typeof window.dashboard.showPerformanceDashboard === 'function') {
+                window.dashboard.showPerformanceDashboard();
+            } else {
+                console.log('Dashboard not ready yet. Trying again in 1 second...');
+                setTimeout(() => {
+                    if (window.dashboard && typeof window.dashboard.showPerformanceDashboard === 'function') {
+                        window.dashboard.showPerformanceDashboard();
+                    } else {
+                        alert('Performance dashboard not available. Please wait for the page to fully load.');
+                    }
+                }, 1000);
+            }
+        }
+        
+        // Also expose it globally for console access
+        window.showPerformanceDashboard = showPerformanceDashboard;
+    </script>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="production-brand-dashboard.js?v=53"></script>
+</body>
+</html>

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Brief - Dealality</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        /* Deal Summary – platform color scheme (match Deal Setup / app) */
+        .brochure-root {
+            --neutral--800: #080f25;
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --neutral--400: #aeb9e1;
+            --neutral--300: #d1dbf9;
+            --neutral--200: #d9e1fa;
+            --neutral--100: #ffffff;
+            --accent--primary-1: #6c72ff;
+            --secondary--color-1: #101935;
+            --secondary--color-2: #9a91fb;
+            --secondary--color-4: #343b4f;
+            --secondary--color-5: #fdb52a; /* platform yellow */
+        }
+        .brochure-root {
+            font-family: "Mona sans", "Inter", system-ui, sans-serif;
+            background: var(--neutral--800);
+            color: var(--neutral--400);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        .brochure-no-print {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--secondary--color-1);
+            border-bottom: 1px solid var(--neutral--600);
+        }
+        .brochure-no-print a {
+            color: var(--secondary--color-2);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .brochure-no-print a:hover { text-decoration: underline; }
+        .brochure-print-btn {
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            border: none;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .brochure-print-btn:hover { background: #5a5fe8; }
+
+        .brochure-page {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Page-turn viewport (screen only) – height so cover (logo + turn button) fits in one screen below nav */
+        .brochure-viewport {
+            position: relative;
+            height: calc(100vh - 56px);
+            max-width: 960px;
+            margin: 0 auto;
+            perspective: 2200px;
+            overflow: hidden;
+        }
+        .brochure-pages-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+        .brochure-page-wrap {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            transition: transform 0.75s ease-in-out;
+        }
+        .brochure-page-wrap.brochure-page-1 {
+            transform-origin: left center;
+            z-index: 2;
+        }
+        .brochure-page-wrap.brochure-page-2 {
+            transform-origin: right center;
+            transform: rotateY(180deg);
+            z-index: 1;
+        }
+        .brochure-viewport.flipped .brochure-page-wrap.brochure-page-1 {
+            transform: rotateY(-180deg);
+        }
+        .brochure-viewport.flipped .brochure-page-wrap.brochure-page-2 {
+            transform: rotateY(0);
+        }
+        .brochure-page-wrap .brochure-page {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        .brochure-turn-btn {
+            position: absolute;
+            top: 50%;
+            right: 1.5rem;
+            transform: translateY(-50%);
+            background: transparent;
+            color: var(--secondary--color-5);
+            border: none;
+            padding: 0.5rem 0.25rem;
+            font-size: 2.5rem;
+            font-weight: 300;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.9;
+            line-height: 1;
+        }
+        .brochure-turn-btn:hover {
+            opacity: 1;
+            color: var(--secondary--color-5);
+        }
+        .brochure-turn-btn.prev {
+            right: auto;
+            left: 1.5rem;
+        }
+        .brochure-page-indicator {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--neutral--400);
+            letter-spacing: 0.05em;
+            z-index: 10;
+        }
+        @media print {
+            .brochure-viewport { height: auto; overflow: visible; perspective: none; }
+            .brochure-pages-inner { transform-style: flat; }
+            .brochure-page-wrap {
+                position: static;
+                transform: none !important;
+                backface-visibility: visible;
+                transition: none;
+            }
+            .brochure-turn-btn, .brochure-page-indicator { display: none !important; }
+            .brochure-page-wrap .brochure-page { overflow: visible; height: auto; }
+            .brochure-page.brochure-cover {
+                page-break-after: always;
+                min-height: 273mm;
+                height: 273mm;
+                max-height: 273mm;
+                overflow: hidden;
+            }
+            .brochure-page.brochure-content-page {
+                page-break-after: auto;
+                min-height: 273mm;
+                max-height: 273mm;
+                height: 273mm;
+                overflow: hidden;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            .brochure-page.brochure-content-page > .brochure-highlights { flex: 0 0 auto !important; }
+            .brochure-page.brochure-content-page > .brochure-detail-strip { flex: 1 1 auto !important; min-height: 0 !important; overflow: hidden !important; }
+            .brochure-page.brochure-content-page > .brochure-two-cols-wrap { flex: 0 0 auto !important; }
+        }
+
+        /* Page 1 – Cover: design-forward full-bleed */
+        .brochure-cover {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--neutral--800);
+            position: relative;
+            overflow: hidden;
+        }
+        .brochure-cover::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -15%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(ellipse at center, var(--neutral--700) 0%, transparent 70%);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .brochure-cover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent--primary-1), var(--secondary--color-2));
+            pointer-events: none;
+        }
+        .brochure-cover-geometric {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 1;
+        }
+        .brochure-cover-geometric::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.09) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .brochure-cover-geometric::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.07) 50%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255,255,255,0.07) 50%, transparent 52%);
+            background-size: 40px 40px;
+        }
+        .brochure-cover-confidential {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            font-size: 0.55rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--neutral--500);
+            margin: 0;
+            z-index: 1;
+        }
+        .brochure-cover-doc-type {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--neutral--400);
+            margin: 0 0 0.75rem 0;
+        }
+        .brochure-cover-deal-hook {
+            font-size: 0.95rem;
+            color: var(--neutral--300);
+            margin: 0 0 1rem 0;
+            letter-spacing: 0.02em;
+        }
+        .brochure-cover-date {
+            font-size: 7.5pt;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--secondary--color-5);
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .brochure-cover-block {
+            flex: 1;
+            padding: 2rem 2.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        .brochure-cover-title {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--neutral--100);
+            margin-bottom: 1rem;
+            max-width: 14ch;
+        }
+        .brochure-cover-location {
+            font-size: 1.25rem;
+            color: var(--neutral--500);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            margin-bottom: 2.5rem;
+        }
+        .brochure-cover-accent-line {
+            width: 48px;
+            height: 3px;
+            background: var(--accent--primary-1);
+            border-radius: 2px;
+            margin-bottom: 2rem;
+        }
+        .brochure-cover-sub {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--neutral--500);
+            margin: 0 0 0.35rem 0;
+        }
+        .brochure-cover-disclaimer {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 2rem;
+            font-size: 0.6rem;
+            color: var(--neutral--500);
+            letter-spacing: 0.04em;
+            line-height: 1.4;
+            max-width: min(36em, 75%);
+            margin: 0;
+            z-index: 1;
+        }
+        .brochure-cover-hero {
+            padding: 2rem 2.5rem 2.5rem;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 1;
+        }
+        .brochure-cover-logo-block {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .brochure-cover-logo-img {
+            max-width: 140px;
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            opacity: 0.95;
+        }
+        @media (max-width: 700px) {
+            .brochure-cover-block { padding: 1.5rem 1.5rem 2rem; }
+            .brochure-cover-title { max-width: none; }
+            .brochure-cover-hero { padding: 1.5rem; justify-content: flex-start; }
+            .brochure-cover-logo-img { max-width: 112px; }
+        }
+
+        /* Page 2 content: highlights + details + contact */
+        .brochure-content-page {
+            padding: 0;
+        }
+        .brochure-highlights {
+            padding: 0.75rem 1.5rem 0.5rem;
+        }
+        .brochure-icon-strip {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        .brochure-icon-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--neutral--100);
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: capitalize;
+        }
+        .brochure-icon-item strong { color: var(--neutral--100); }
+        .brochure-icon-item .icon { width: 20px; height: 20px; background: var(--accent--primary-1); border-radius: 4px; opacity: 0.9; }
+        .brochure-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            align-items: stretch;
+        }
+        @media (max-width: 800px) {
+            .brochure-cards { grid-template-columns: 1fr; }
+        }
+        .brochure-card {
+            background: var(--neutral--700);
+            border: 1px solid var(--neutral--600);
+            padding: 0.9rem 1.25rem;
+            border-radius: 8px;
+            min-width: 0;
+            min-height: 7.5rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        /* All three cards: same title size, white text */
+        .brochure-card-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--secondary--color-5);
+            margin-bottom: 0.35rem;
+        }
+        .brochure-card-body {
+            font-size: 0.78rem;
+            line-height: 1.35;
+            color: var(--neutral--100);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .brochure-card-body .card-line {
+            margin-bottom: 0.2rem;
+            font-size: 0.78rem;
+            color: var(--neutral--100);
+        }
+        .brochure-card-body .card-line:first-child {
+            font-size: 0.8rem;
+            color: var(--neutral--100);
+            font-weight: 600;
+        }
+        .brochure-card-body .card-line:not(:first-child) {
+            font-size: 0.74rem;
+            color: var(--neutral--200);
+        }
+        .brochure-card-body .card-line:last-child { margin-bottom: 0; }
+        .brochure-card-body .stat { font-weight: 600; color: var(--neutral--100); }
+        .brochure-card-body .card-label { color: var(--neutral--400); font-weight: 600; }
+
+        .brochure-detail-strip {
+            background: #ffffff;
+            color: var(--secondary--color-1);
+            padding: 0.75rem 1.5rem 1rem;
+        }
+        .brochure-detail-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent--primary-1);
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+        .brochure-detail-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+        @media (max-width: 700px) {
+            .brochure-detail-cols { grid-template-columns: 1fr; }
+        }
+        .brochure-detail-row.exec-summary-text .v {
+            white-space: pre-line;
+            display: block;
+            margin-top: 0.2rem;
+        }
+        .brochure-detail-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--secondary--color-1);
+            margin-bottom: 0.4rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 2px solid var(--accent--primary-1);
+            font-weight: 700;
+        }
+        .brochure-detail-row {
+            font-size: 0.75rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            gap: 0.5rem;
+            align-items: baseline;
+        }
+        .brochure-detail-row.last-in-section { border-bottom: none; }
+        .brochure-detail-row .l { flex: 0 0 38%; color: var(--secondary--color-4); font-weight: 600; }
+        .brochure-detail-row .v { flex: 1; color: var(--secondary--color-1); }
+        .brochure-detail-row .v.empty { color: var(--neutral--500); font-style: italic; }
+
+        .brochure-two-cols-wrap {
+            padding: 0.75rem 1.5rem 1rem;
+        }
+        .brochure-two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        @media (max-width: 700px) {
+            .brochure-two-cols { grid-template-columns: 1fr; }
+        }
+        .brochure-section {
+            margin-bottom: 0.75rem;
+        }
+        .brochure-section-title {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--secondary--color-2);
+            margin-bottom: 0.4rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid var(--neutral--600);
+            font-weight: 700;
+        }
+        .brochure-contact-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .brochure-contact-detail { flex: 1; min-width: 200px; }
+        .brochure-contact-cta-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+            text-align: right;
+        }
+        .brochure-contact-cta-wrap .brochure-cta-logo {
+            width: 80px;
+            height: auto;
+        }
+        .brochure-contact-cta-wrap .brochure-cta {
+            margin: 0;
+            font-size: 0.7rem;
+            color: var(--secondary--color-2);
+            font-weight: 600;
+            max-width: 160px;
+        }
+        @media (max-width: 600px) {
+            .brochure-contact-row { flex-direction: column; }
+            .brochure-contact-cta-wrap { text-align: left; }
+        }
+        .brochure-section .brochure-detail-row .l { color: var(--neutral--500); }
+        .brochure-section .brochure-detail-row .v { color: var(--neutral--300); }
+        .brochure-section .brochure-detail-row .v.empty { color: var(--neutral--500); }
+        .brochure-footer {
+            margin-top: 0.75rem;
+            padding-top: 0.5rem;
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--neutral--500);
+            letter-spacing: 0.06em;
+        }
+
+        .brochure-error, .brochure-loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--neutral--500);
+        }
+        .brochure-error { color: #ff5a65; }
+
+        /* Blur contact info for preview (add ?blur=1 to URL) */
+        .brochure-root.blur-contact #detailContact {
+            filter: blur(6px);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 12mm;
+            }
+            .brochure-no-print { display: none !important; }
+            body.brochure-root,
+            .brochure-root,
+            .brochure-viewport,
+            .brochure-page-wrap,
+            .brochure-page,
+            .brochure-cover,
+            .brochure-content-page,
+            .brochure-highlights,
+            .brochure-detail-strip,
+            .brochure-two-cols-wrap,
+            .brochure-section {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .brochure-root {
+                padding: 0;
+                min-height: 0;
+            }
+            .brochure-root * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body.brochure-root {
+                text-rendering: geometricPrecision;
+                -webkit-font-smoothing: antialiased;
+            }
+            .brochure-cover::before { display: none !important; }
+            .brochure-cover-geometric { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .brochure-cover-geometric::before,
+            .brochure-cover-geometric::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .brochure-cover-confidential { font-size: 0.5rem !important; top: 12mm !important; left: 12mm !important; color: #7e89ac !important; }
+            .brochure-cover-deal-hook { font-size: 0.82rem !important; color: #d1dbf9 !important; }
+            .brochure-cover-disclaimer { font-size: 0.55rem !important; color: #7e89ac !important; bottom: 12mm !important; left: 12mm !important; max-width: min(36em, 75%) !important; }
+            .brochure-cover-date { font-size: 7.5pt !important; color: #fdb52a !important; text-transform: uppercase !important; }
+            .brochure-cover {
+                background: #080f25 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .brochure-cover-block {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .brochure-content-page {
+                background: #080f25 !important;
+            }
+            .brochure-cover-doc-type { font-size: 0.65rem !important; margin-bottom: 0.5rem !important; }
+            .brochure-cover-title { font-size: 1.75rem !important; margin-bottom: 0.4rem !important; }
+            .brochure-cover-location { font-size: 0.9rem !important; margin-bottom: 0.75rem !important; }
+            .brochure-cover-accent-line { margin-bottom: 0.75rem !important; }
+            .brochure-cover-sub { font-size: 0.72rem !important; }
+            .brochure-cover-hero { padding: 1rem 1.5rem !important; }
+            .brochure-cover-logo-img { max-width: 98px !important; }
+            .brochure-highlights {
+                padding: 0.4rem 0.9rem 0.35rem !important;
+            }
+            .brochure-icon-strip { gap: 0.5rem 0.9rem !important; margin-bottom: 0.5rem !important; padding-bottom: 0.5rem !important; flex-wrap: nowrap !important; overflow: visible !important; justify-content: center !important; }
+            .brochure-icon-item { font-size: 0.68rem !important; white-space: nowrap !important; flex-shrink: 0 !important; text-transform: capitalize !important; }
+            .brochure-icon-item .icon { width: 14px; height: 14px; }
+            .brochure-cards { grid-template-columns: repeat(3, 1fr) !important; gap: 0.5rem !important; }
+            .brochure-card {
+                padding: 0.5rem 0.65rem !important;
+                background: #212c4d !important;
+                border-color: #37446b !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .brochure-card-title { font-size: 0.82rem !important; margin-bottom: 0.25rem !important; font-weight: 700 !important; color: #fdb52a !important; }
+            .brochure-card-body { font-size: 0.72rem !important; line-height: 1.35 !important; color: #ffffff !important; }
+            .brochure-card-body .card-line:first-child { font-size: 0.76rem !important; color: #ffffff !important; }
+            .brochure-card-body .card-line:not(:first-child) { font-size: 0.66rem !important; color: #e8ecfc !important; }
+            .brochure-detail-strip {
+                padding: 0.35rem 0.9rem 0.4rem !important;
+                background: #ffffff !important;
+                color: #101935 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .brochure-detail-title { font-size: 0.64rem !important; margin-bottom: 0.3rem !important; color: #6c72ff !important; }
+            .brochure-detail-cols { gap: 0.6rem !important; }
+            .brochure-detail-section-title { font-size: 0.74rem !important; margin-bottom: 0.2rem !important; padding-bottom: 0.15rem !important; color: #101935 !important; border-bottom-color: #6c72ff !important; }
+            .brochure-detail-row { font-size: 0.64rem !important; padding: 0.12rem 0 !important; }
+            .brochure-detail-row.last-in-section { border-bottom: none !important; }
+            .brochure-detail-row .l { color: #343b4f !important; }
+            .brochure-detail-row .v { color: #101935 !important; }
+            .brochure-detail-row .l { flex: 0 0 36% !important; }
+            .brochure-two-cols-wrap {
+                padding: 0.35rem 0.9rem 0.4rem !important;
+                background: #080f25 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .brochure-contact-full .brochure-contact-detail,
+            .brochure-contact-full .brochure-contact-cta-wrap { color: #d1dbf9 !important; }
+            .brochure-two-cols { gap: 0.5rem !important; }
+            .brochure-section { margin-bottom: 0.4rem !important; }
+            .brochure-section-title { font-size: 0.62rem !important; margin-bottom: 0.2rem !important; padding-bottom: 0.15rem !important; color: #9a91fb !important; }
+            .brochure-section .brochure-detail-row { font-size: 0.64rem !important; padding: 0.12rem 0 !important; }
+            .brochure-section .brochure-detail-row .l { color: #7e89ac !important; }
+            .brochure-section .brochure-detail-row .v { color: #d1dbf9 !important; }
+            .brochure-cta { color: #9a91fb !important; font-size: 0.62rem !important; margin: 0 !important; line-height: 1.35 !important; }
+            .brochure-contact-cta-wrap .brochure-cta-logo { max-width: 64px !important; }
+            .brochure-two-cols-wrap { page-break-inside: avoid !important; }
+            .brochure-footer { padding-top: 0.25rem !important; font-size: 0.56rem !important; color: #7e89ac !important; }
+            .brochure-highlights { color: #aeb9e1 !important; }
+            .brochure-icon-item { color: #ffffff !important; }
+            .brochure-icon-item strong { color: #ffffff !important; }
+        }
+    </style>
+</head>
+<body class="brochure-root">
+    <div class="brochure-no-print">
+        <a href="/my-deals.html" id="brochureBackLink">← Back to My Deals</a>
+        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <button type="button" class="brochure-print-btn" id="printPdfBtn">Print / Save as PDF</button>
+            <span style="font-size: 0.75rem; color: var(--neutral--500); max-width: 320px;">Tip: In the print dialog, turn off <strong>Headers and footers</strong> (to remove date, title, URL) and turn on <strong>Background graphics</strong> so colors match the page.</span>
+        </div>
+    </div>
+
+    <div id="brochureContent" style="display: none;">
+        <div class="brochure-viewport" id="brochureViewport">
+            <div class="brochure-pages-inner">
+                <!-- Page 1 – Cover -->
+                <div class="brochure-page-wrap brochure-page-1">
+                    <div class="brochure-page brochure-cover">
+                        <div class="brochure-cover-geometric" aria-hidden="true"></div>
+                        <p class="brochure-cover-confidential" id="coverConfidential">Confidential · For recipient only</p>
+                        <div class="brochure-cover-block">
+                            <p class="brochure-cover-doc-type">Deal Brief</p>
+                            <h1 class="brochure-cover-title" id="coverTitle">—</h1>
+                            <p class="brochure-cover-location" id="coverLocation">—</p>
+                            <div class="brochure-cover-accent-line"></div>
+                            <p class="brochure-cover-deal-hook" id="coverDealHook">—</p>
+                            <p class="brochure-cover-sub" id="coverSub">For brands & operators</p>
+                            <p class="brochure-cover-date" id="coverDatePrepared">—</p>
+                        </div>
+                        <p class="brochure-cover-disclaimer">This brief was prepared by Dealality on behalf of the company and is intended for informational purposes only.</p>
+                        <div class="brochure-cover-hero">
+                            <div class="brochure-cover-logo-block">
+                                <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" class="brochure-cover-logo-img" width="140" height="auto">
+                            </div>
+                        </div>
+                        <button type="button" class="brochure-turn-btn no-print" id="turnNextBtn" aria-label="Next page">›</button>
+                        <span class="brochure-page-indicator no-print" id="pageIndicator">1 of 2</span>
+                    </div>
+                </div>
+
+                <!-- Page 2 – All content -->
+                <div class="brochure-page-wrap brochure-page-2">
+                    <div class="brochure-page brochure-content-page">
+            <div class="brochure-highlights">
+                <div class="brochure-icon-strip">
+                    <div class="brochure-icon-item"><span class="icon"></span> <strong id="hlRooms">—</strong> Rooms</div>
+                    <div class="brochure-icon-item"><span class="icon"></span> <strong id="hlDealType">—</strong> Deal Type</div>
+                    <div class="brochure-icon-item"><span class="icon"></span> <strong id="hlBids">—</strong> Who Receives Bids</div>
+                </div>
+                <div class="brochure-cards">
+                    <div class="brochure-card">
+                        <div class="brochure-card-title">The Opportunity</div>
+                        <div class="brochure-card-body" id="cardOpportunity">—</div>
+                    </div>
+                    <div class="brochure-card">
+                        <div class="brochure-card-title">Property at a Glance</div>
+                        <div class="brochure-card-body" id="cardProperty">—</div>
+                    </div>
+                    <div class="brochure-card">
+                        <div class="brochure-card-title">Deal Structure</div>
+                        <div class="brochure-card-body" id="cardDeal">—</div>
+                    </div>
+                </div>
+            </div>
+            <div class="brochure-detail-strip">
+                <div class="brochure-detail-cols">
+                    <div id="detailCol1"></div>
+                    <div id="detailCol2"></div>
+                    <div id="detailCol3"></div>
+                </div>
+            </div>
+            <div class="brochure-two-cols-wrap">
+                <div class="brochure-section brochure-contact-full" id="contactSectionWrap">
+                    <div class="brochure-section-title">Contact & Next Steps</div>
+                    <div class="brochure-contact-row">
+                        <div class="brochure-contact-detail" id="detailContact"></div>
+                        <div class="brochure-contact-cta-wrap">
+                            <p class="brochure-cta">Visit Dealality to learn more and submit a proposal.</p>
+                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" class="brochure-cta-logo" width="80" height="auto">
+                        </div>
+                    </div>
+                </div>
+                <div class="brochure-footer">Deal Brief · Dealality</div>
+            </div>
+                        <button type="button" class="brochure-turn-btn prev no-print" id="turnPrevBtn" aria-label="Previous page">‹</button>
+                        <span class="brochure-page-indicator no-print" id="pageIndicator2">2 of 2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="brochureLoading" class="brochure-loading">Loading deal…</div>
+    <div id="brochureError" class="brochure-error" style="display: none;"></div>
+
+    <script>
+        (function() {
+            function getParam(name) {
+                var p = new URLSearchParams(window.location.search);
+                return p.get(name) || '';
+            }
+            if (getParam('blur') === '1' || getParam('blur') === 'true') {
+                document.body.classList.add('blur-contact');
+            }
+            var backLink = document.getElementById('brochureBackLink');
+            if (backLink && getParam('from') === 'bdd') {
+                backLink.href = '/brand-development-dashboard.html';
+                backLink.textContent = '\u2190 Back to My Brand Deals';
+            }
+            function escapeHtml(s) {
+                if (s == null) return '';
+                var t = document.createElement('div');
+                t.textContent = s;
+                return t.innerHTML;
+            }
+            function formatFieldValue(val) {
+                if (val == null || val === '') return '';
+                if (Array.isArray(val)) {
+                    var parts = val.map(function(v) {
+                        if (v && typeof v === 'object' && typeof v.name === 'string') return v.name;
+                        return String(v).trim();
+                    }).filter(Boolean);
+                    return parts.join(', ');
+                }
+                if (typeof val === 'string') return val.trim();
+                if (typeof val === 'object' && val !== null && typeof val.name === 'string') return val.name;
+                if (val instanceof Date || (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val))) {
+                    try {
+                        var d = new Date(val);
+                        if (!isNaN(d.getTime())) return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    } catch (e) {}
+                }
+                return String(val);
+            }
+            function getField(fields, keys) {
+                for (var i = 0; i < keys.length; i++) {
+                    var v = fields[keys[i]];
+                    if (v != null && v !== '') return formatFieldValue(v);
+                }
+                return '';
+            }
+
+            /* Detail columns: 1 = Executive Summary + Project Info + Property, 2 = Market + Deal, 3 = Strategic */
+            var detailSections = [
+                { title: 'Executive Summary', col: 1, rows: [
+                    ['Executive summary', ['Company Executive Summary']],
+                    ['Experience', ['Ownership/Brand History or Track Record']],
+                    ['Portfolio size', ['Portfolio Size']]
+                ]},
+                /* Project Information: omit Full Address & Submarket (in Opportunity card) */
+                { title: 'Project Information', col: 1, rows: [
+                    ['Currently branded?', ['Is the hotel currently branded?']],
+                    ['Current brand/operator', ['Parent Company Name', 'Current Brand Affiliation', 'Operator Name Current']],
+                    ['Chain Scale', ['Hotel Chain Scale']],
+                    ['Hotel Type', ['Hotel Type', 'Property Type']],
+                    ['Service Model', ['Hotel Service Model']]
+                ]},
+                { title: 'Property Details', col: 1, rows: [
+                    ['Room breakdown', ['Number of Standard Rooms', 'Number of Suites']],
+                    ['Building Type', ['Building Type']],
+                    ['Stories', ['Number of Stories']],
+                    ['Meeting Space', ['Meeting Space', 'Meeting Space Unit']],
+                    ['F&B Outlets?', ['F&B Outlets?']],
+                    ['F&B Concept', ['Outlet Names / Concepts']],
+                    ['Parking', ['Parking Amenities?']],
+                    ['Additional Amenities', ['Additional Amenities']]
+                ]},
+                { title: 'Market & Ownership', col: 2, rows: [
+                    ['Demand Drivers', ['Primary Demand Drivers']],
+                    ['Key Competitors', ['Key Competitors']],
+                    ['Regulatory Issues?', ['Regulatory or Permitting Issues?']],
+                    ['Preferred Brands', ['Preferred Brands (up to 4)']],
+                    ['Preferred Chain Scales', ['Preferred Chain Scales']]
+                ]},
+                { title: 'Deal & Capital Structure', col: 2, rows: [
+                    ['Ownership Structure', ['Ownership Structure']],
+                    ['Preferred Deal Structure', ['Preferred Deal Structure']],
+                    ['PIP/CapEx Status', ['PIP / CapEx Status']],
+                    ['Lease Type', ['Lease Type']],
+                    ['Initial Lease Term', ['Initial Lease Term (years)']],
+                    ['Lease Start Date', ['Lease Start Date (or Availability)']],
+                    ['Lease End Date', ['Lease Expiration or End Date']],
+                    ['Base Rent', ['Base Rent (annual or structure)']],
+                    ['Percentage Rent', ['Percentage Rent (if applicable)']],
+                    ['CAM / Insurance / Tax', ['CAM Insurance Tax Responsibility']],
+                    ['Key Money / TI Allowance', ['Key Money or TI Allowance']],
+                    ['Renewal Options', ['Renewal Options']],
+                    ['Early Termination / Break', ['Early Termination or Break Clause']],
+                    ['Security Deposit / Guarantees', ['Security Deposit or Guarantees']],
+                    ['Lease Structure Notes', ['Lease Structure Notes']],
+                    ['Total Project Cost Range', ['Total Project Cost Range']],
+                    ['Equity vs Debt Split', ['Equity vs Debt Split']],
+                    ['PIP Budget (if conversion)', ['PIP Budget Range (if conversion)']],
+                    ['IRR/Yield Goals', ['IRR/Yield Goals']],
+                    ['Soft vs Hard Brand', ['Soft vs Hard Brand Preference']],
+                    ['Plan to Self-Manage or Third Party?', ['Plan to Self-Manage or Hire Third Party?']]
+                ]},
+                { title: 'Strategic & Priorities', col: 3, rows: [
+                    ['Top Success Metrics', ['Top 3 Success Metrics']],
+                    ['Top Priorities', ['Top Priorities for Project']],
+                    ['Top Concerns', ['Top Concerns for this Project']],
+                    ['Deal breakers', ['Top 3 Deal Breakers']],
+                    ['Must-haves from brand/operator', ['Must-haves From Brand or Operator']],
+                    ['Must-haves (other)', ['Must-haves From Brand or Operator Other']],
+                    ['Planned Hold Period', ['Planned Hold Period']],
+                    ['Primary Goal for the Hotel', ['Primary Goal for the Hotel']],
+                    ['Brand Flexibility vs Prestige', ['Brand Flexibility vs Prestige']],
+                    ['Decision Timeline', ['Decision Timeline for Brand/Operator']],
+                    ['Proposal Deadline', ['Proposal Deadline']]
+                ]},
+                { title: 'Contact & Next Steps', col: 'contact', rows: [
+                    ['Main Contact', ['Main Contact Name']],
+                    ['Company', ['Entity or Company Name']]
+                ]}
+            ];
+
+            function hasValue(val) {
+                if (val == null) return false;
+                if (typeof val === 'string' && val.trim() === '') return false;
+                return true;
+            }
+            function renderDetailSection(fields, section, skipTitle) {
+                var visible = [];
+                section.rows.forEach(function(r) {
+                    var label = r[0], keys = r[1];
+                    var val = getField(fields, keys);
+                    if (val === 'Franchise + Third-Party Management') val = 'Franchise + 3rd Party Mgmt.';
+                    if (label === 'Current brand/operator') {
+                        var parent = (fields['Parent Company Name'] != null && fields['Parent Company Name'] !== '') ? String(fields['Parent Company Name']).trim() : '';
+                        var brand = (fields['Current Brand Affiliation'] != null && fields['Current Brand Affiliation'] !== '') ? String(fields['Current Brand Affiliation']).trim() : '';
+                        var op = (fields['Operator Name Current'] != null && fields['Operator Name Current'] !== '') ? String(fields['Operator Name Current']).trim() : '';
+                        val = [parent && ('Parent: ' + parent), brand && ('Brand: ' + brand), op && ('Operator: ' + op)].filter(Boolean).join(' · ') || '';
+                    }
+                    if (label === 'Room breakdown') {
+                        var std = (fields['Number of Standard Rooms'] != null && fields['Number of Standard Rooms'] !== '') ? String(fields['Number of Standard Rooms']) : '';
+                        var suite = (fields['Number of Suites'] != null && fields['Number of Suites'] !== '') ? String(fields['Number of Suites']) : '';
+                        val = [std && (std + ' Standard'), suite && (suite + ' Suites')].filter(Boolean).join(', ') || '';
+                    }
+                    if (label === 'Meeting Space') {
+                        val = (fields['Meeting Space'] != null && fields['Meeting Space'] !== '') ? (String(fields['Meeting Space']) + (fields['Meeting Space Unit'] ? ' ' + formatFieldValue(fields['Meeting Space Unit']) : '')) : '';
+                    }
+                    if (!hasValue(val)) return;
+                    visible.push({ label: label, val: val });
+                });
+                if (visible.length === 0) return '';
+                var html = skipTitle ? '' : '<div class="brochure-detail-section-title">' + escapeHtml(section.title) + '</div>';
+                visible.forEach(function(item, i) {
+                    var label = item.label, val = item.val;
+                    var rowClass = (label === 'Executive summary') ? ' brochure-detail-row exec-summary-text' : ' brochure-detail-row';
+                    if (i === visible.length - 1) rowClass += ' last-in-section';
+                    html += '<div class="' + rowClass.trim() + '"><span class="l">' + escapeHtml(label) + '</span><span class="v">' + escapeHtml(val) + '</span></div>';
+                });
+                return html;
+            }
+
+            function render(fields, normalized) {
+                var projectName = normalized.projectName || getField(fields, ['Project Name', 'Property Name']) || '—';
+                var location = normalized.hotelLocation || '—';
+                var roomKeys = getField(fields, ['Total Number of Rooms/Keys']);
+                var opening = normalized.targetOpeningDate || getField(fields, ['Expected Opening or Rebranding Date', 'Target Opening Date']) || '—';
+                var projectType = normalized.projectType || getField(fields, ['Project Type']) || '—';
+                var dealBidRaw = getField(fields, ['Who should receive bids for this project?']);
+                var dealBid = dealBidRaw || (normalized.dealBidType === 'Both' ? 'Both brands and third-party operators' : normalized.dealBidType) || '—';
+                var dealBidDisplay = (dealBid === 'Both brands and third-party operators' || dealBid === 'Both') ? 'Both Brands & 3rd Party Ops.' : dealBid;
+
+                document.getElementById('coverTitle').textContent = projectName;
+                document.getElementById('coverLocation').textContent = location;
+                var dealHookParts = [];
+                if (roomKeys) dealHookParts.push(roomKeys + ' keys');
+                if (projectType && projectType !== '—') dealHookParts.push(projectType);
+                if (opening && opening !== '—') dealHookParts.push('Target ' + opening);
+                if (normalized.dealStructureLabel) dealHookParts.push(normalized.dealStructureLabel);
+                document.getElementById('coverDealHook').textContent = dealHookParts.length ? dealHookParts.join(' · ') : '—';
+                var prepDate = new Date();
+                document.getElementById('coverDatePrepared').textContent = 'Prepared ' + prepDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                document.getElementById('hlRooms').textContent = roomKeys || '—';
+                document.getElementById('hlDealType').textContent = projectType;
+                document.getElementById('hlBids').textContent = dealBidDisplay;
+
+                /* Opportunity card: submarket, address, chain scale, hotel type, target opening */
+                var submarket = getField(fields, ["Hotel Submarket & Location", "Hotel's Submarket & Location", "Hotel's submarket & location"]);
+                var address = getField(fields, ['Full Address']);
+                var chainScale = getField(fields, ['Hotel Chain Scale']);
+                var hotelType = getField(fields, ['Hotel Type', 'Property Type']);
+                var oppLines = [];
+                if (submarket) oppLines.push('<div class="card-line"><span class="stat">' + escapeHtml(submarket) + '</span></div>');
+                if (address) oppLines.push('<div class="card-line">' + escapeHtml(address) + '</div>');
+                if (chainScale || hotelType) oppLines.push('<div class="card-line">' + escapeHtml([chainScale, hotelType].filter(Boolean).join(' · ')) + '</div>');
+                if (opening && opening !== '—') oppLines.push('<div class="card-line">Target opening: ' + escapeHtml(opening) + '</div>');
+                document.getElementById('cardOpportunity').innerHTML = oppLines.length ? oppLines.join('') : '<div class="card-line">See Project Information below.</div>';
+
+                /* Property card: building, F&B, parking, room breakdown, stories, meeting space */
+                var building = getField(fields, ['Building Type']);
+                var fbCount = getField(fields, ['Number of F&B Outlets']);
+                var parking = getField(fields, ['Parking Amenities?']);
+                var stdRooms = fields['Number of Standard Rooms'] != null && fields['Number of Standard Rooms'] !== '' ? String(fields['Number of Standard Rooms']) : '';
+                var suites = fields['Number of Suites'] != null && fields['Number of Suites'] !== '' ? String(fields['Number of Suites']) : '';
+                var roomBreakdown = [stdRooms && (stdRooms + ' Standard'), suites && (suites + ' Suites')].filter(Boolean).join(', ') || '';
+                var stories = getField(fields, ['Number of Stories']);
+                var meetingSpace = (fields['Meeting Space'] != null && fields['Meeting Space'] !== '') ? (String(fields['Meeting Space']) + (fields['Meeting Space Unit'] ? ' ' + fields['Meeting Space Unit'] : '')) : '';
+                var propParts = [];
+                if (building) propParts.push(building);
+                if (fbCount) propParts.push(fbCount + ' F&B');
+                if (parking) propParts.push('Parking');
+                var propLines = [];
+                if (propParts.length) propLines.push('<div class="card-line"><span class="stat">' + escapeHtml(propParts.join(' · ')) + '</span></div>');
+                if (roomBreakdown) propLines.push('<div class="card-line">' + escapeHtml(roomBreakdown) + '</div>');
+                if (stories) propLines.push('<div class="card-line">' + escapeHtml(stories) + ' stories</div>');
+                if (meetingSpace) propLines.push('<div class="card-line">Meeting: ' + escapeHtml(meetingSpace) + '</div>');
+                document.getElementById('cardProperty').innerHTML = propLines.length ? propLines.join('') : '<div class="card-line">See Property Details column below.</div>';
+
+                /* Deal card: deal structure, ownership, PIP status, PIP budget, lease type, project cost; when Lease, add term/rent/renewal */
+                var dealStructRaw = getField(fields, ['Preferred Deal Structure']);
+                var dealStruct = (dealStructRaw === 'Franchise + Third-Party Management') ? 'Franchise + 3rd Party Mgmt.' : dealStructRaw;
+                var isLeaseDeal = (dealStructRaw && (String(dealStructRaw).toLowerCase() === 'lease' || String(dealStructRaw).toLowerCase() === 'flexible/open'));
+                var ownership = getField(fields, ['Ownership Structure']);
+                var pipStatus = getField(fields, ['PIP / CapEx Status']);
+                var pipBudget = getField(fields, ['PIP Budget Range (if conversion)']);
+                var leaseType = getField(fields, ['Lease Type']);
+                var leaseTerm = getField(fields, ['Initial Lease Term (years)']);
+                var baseRent = getField(fields, ['Base Rent (annual or structure)']);
+                var renewalOpts = getField(fields, ['Renewal Options']);
+                var projectCost = getField(fields, ['Total Project Cost Range']);
+                var dealLines = [];
+                if (dealStruct) dealLines.push('<div class="card-line"><span class="stat">' + escapeHtml(dealStruct) + '</span></div>');
+                if (ownership) dealLines.push('<div class="card-line">' + escapeHtml(ownership) + '</div>');
+                if (pipStatus) dealLines.push('<div class="card-line"><span class="card-label">PIP/CapEx:</span> ' + escapeHtml(pipStatus) + '</div>');
+                if (pipBudget) dealLines.push('<div class="card-line"><span class="card-label">PIP budget:</span> ' + escapeHtml(pipBudget) + '</div>');
+                if (leaseType) dealLines.push('<div class="card-line"><span class="card-label">Lease:</span> ' + escapeHtml(leaseType) + '</div>');
+                if (isLeaseDeal && leaseTerm) dealLines.push('<div class="card-line"><span class="card-label">Lease term:</span> ' + escapeHtml(leaseTerm) + '</div>');
+                if (isLeaseDeal && baseRent) dealLines.push('<div class="card-line"><span class="card-label">Base rent:</span> ' + escapeHtml(baseRent) + '</div>');
+                if (isLeaseDeal && renewalOpts) dealLines.push('<div class="card-line"><span class="card-label">Renewal:</span> ' + escapeHtml(renewalOpts) + '</div>');
+                if (projectCost) dealLines.push('<div class="card-line"><span class="card-label">Total cost:</span> ' + escapeHtml(projectCost) + '</div>');
+                document.getElementById('cardDeal').innerHTML = dealLines.length ? dealLines.join('') : '<div class="card-line">See Deal & Capital Structure column below.</div>';
+
+                var c1 = '', c2 = '', c3 = '';
+                detailSections.forEach(function(s) {
+                    var skipTitle = (s.col === 'contact');
+                    var block = renderDetailSection(fields, s, skipTitle);
+                    if (s.col === 1) c1 += block;
+                    else if (s.col === 2) c2 += block;
+                    else if (s.col === 3) c3 += block;
+                    else if (s.col === 'contact') {
+                        document.getElementById('detailContact').innerHTML = block;
+                        var wrap = document.getElementById('contactSectionWrap');
+                        if (wrap) wrap.style.display = block ? '' : 'none';
+                    }
+                });
+                document.getElementById('detailCol1').innerHTML = c1;
+                document.getElementById('detailCol2').innerHTML = c2;
+                document.getElementById('detailCol3').innerHTML = c3;
+            }
+
+            /* Full sample data for Alcove Gloria – preview with all fields filled */
+            var alcoveGloriaDemo = {
+                fields: {
+                    'Project Name': 'Alcove Gloria',
+                    'Property Name': 'Alcove Gloria',
+                    'Project Type': 'Conversion',
+                    'Stage of Development': 'Pre-Development',
+                    'Expected Opening or Rebranding Date': '2026-03-15',
+                    'Is the hotel currently branded?': 'Yes',
+                    'Parent Company Name': 'Independent ownership',
+                    'Current Brand Affiliation': 'Independent (legacy flag)',
+                    'Operator Name Current': 'Local management company',
+                    'Is the hotel currently managed by a third-party operator?': 'Yes',
+                    'Full Address': '124 Ocean Drive, Miami Beach, FL 33139',
+                    "Hotel Submarket & Location": 'South Beach, Oceanfront',
+                    'Hotel Chain Scale': 'Upscale',
+                    'Hotel Type': 'Resort',
+                    'Hotel Service Model': 'Lifestyle / Boutique',
+                    'Who should receive bids for this project?': 'Both brands and third-party operators',
+                    'Total Number of Rooms/Keys': '132',
+                    'Number of Standard Rooms': '108',
+                    'Number of Suites': '24',
+                    'Building Type': 'Urban High-Rise',
+                    'Number of Stories': '12',
+                    'Meeting Space': 4200,
+                    'Meeting Space Unit': 'Sq. Ft.',
+                    'F&B Outlets?': 'Yes',
+                    'Outlet Names / Concepts': 'Full-service restaurant, rooftop bar, in-room dining',
+                    'Number of F&B Outlets': '3',
+                    'F&B Program Type': 'Signature restaurant + bar',
+                    'Parking Amenities?': 'Valet and self-park, 85 spaces',
+                    'Additional Amenities': 'Rooftop pool, fitness center, spa, business center',
+                    'Primary Demand Drivers': 'Leisure / Tourism, Corporate / Business Travel, Meetings',
+                    'Key Competitors': 'The Setai, 1 Hotel South Beach, The Confidante',
+                    'Regulatory or Permitting Issues?': 'No',
+                    'Ownership Structure': 'Private Partnership',
+                    'Preferred Deal Structure': 'Franchise + 3rd Party Mgmt.',
+                    'PIP / CapEx Status': 'Budgeted – $2.1M over 18 months',
+                    'Lease Type': '',
+                    'Total Project Cost Range': '$18–22M',
+                    'Equity vs Debt Split': '65% equity, 35% debt',
+                    'PIP Budget Range (if conversion)': '$2–2.5M',
+                    'IRR/Yield Goals': '15-20%',
+                    'Soft vs Hard Brand Preference': 'Open to both',
+                    'Plan to Self-Manage or Hire Third Party?': 'Third-party managed',
+                    'Preferred Brands (up to 4)': 'Marriott (Autograph Collection), Hyatt (Unbound), Hilton (Curio), IHG (Vignette)',
+                    'Preferred Chain Scales': 'Upscale, Upper Upscale',
+                    'Top 3 Success Metrics': 'RevPAR Index, Guest satisfaction (NPS), Brand fit',
+                    'Top Priorities for Project': 'Speed to market, Brand alignment, Operator track record',
+                    'Top Concerns for this Project': 'Pipeline timing, Key money expectations',
+                    'Top 3 Deal Breakers': ['No key money / TI support', 'Inflexible contract terms', 'Exit restrictions or long lock-in'],
+                    'Top 3 Deal Breakers Other': '',
+                    'Must-haves From Brand or Operator': ['Key money or TI contribution', 'Monthly or frequent reporting', 'Design approval rights', 'Experienced operator (e.g. 10+ years)'],
+                    'Must-haves From Brand or Operator Other': 'Quarterly business reviews with brand/operator; access to brand revenue management and CRS tools; clear PIP approval process and timeline.',
+                    'Planned Hold Period': '5-10 years',
+                    'Primary Goal for the Hotel': 'Long-term hold, Maximize cash flow',
+                    'Brand Flexibility vs Prestige': 'Prioritizing brand flexibility to adapt to our existing asset and operational model.',
+                    'Decision Timeline for Brand/Operator': 'Q2 2025',
+                    'Proposal Deadline': 'May 15, 2025',
+                    'Company Executive Summary': 'Privately held owner/developer of upscale and lifestyle hotels in coastal and urban markets. Seeking franchise brand + 3rd party operator. Track record in conversions and repositioning; prefers strong operator partnerships and brand-aligned growth.',
+                    'Ownership/Brand History or Track Record': 'Experienced owner',
+                    'Portfolio Size': '8 hotels, ~1,200 keys',
+                    'Main Contact Name': 'Sarah Chen',
+                    'Entity or Company Name': 'Gloria Hospitality Group',
+                    'Email Address': 'sarah.chen@gloriahospitality.com',
+                    'Company HQ Location': 'Miami, FL',
+                    'Working with Broker/Advisor?': 'Yes – CBRE Hotels'
+                },
+                normalized: {
+                    projectName: 'Alcove Gloria',
+                    hotelLocation: 'Miami Beach, FL',
+                    projectType: 'Conversion',
+                    targetOpeningDate: 'Mar 15, 2026',
+                    dealBidType: 'Both',
+                    dealStructureLabel: 'Franchise + 3rd Party Management'
+                }
+            };
+
+            /* Attach nav/print listeners once (works for both demo and API-loaded content) */
+            document.getElementById('printPdfBtn').addEventListener('click', function() { window.print(); });
+            var viewport = document.getElementById('brochureViewport');
+            function goNext() {
+                if (viewport && !viewport.classList.contains('flipped')) viewport.classList.add('flipped');
+            }
+            function goPrev() {
+                if (viewport && viewport.classList.contains('flipped')) viewport.classList.remove('flipped');
+            }
+            var nextBtn = document.getElementById('turnNextBtn');
+            var prevBtn = document.getElementById('turnPrevBtn');
+            if (nextBtn) nextBtn.addEventListener('click', goNext);
+            if (prevBtn) prevBtn.addEventListener('click', goPrev);
+
+            var dealId = getParam('id');
+            if (!dealId) {
+                document.getElementById('brochureLoading').style.display = 'none';
+                document.getElementById('brochureError').style.display = 'block';
+                document.getElementById('brochureError').textContent = 'Invalid or missing deal ID. Open from My Deals (eye icon) or use ?id=demo for Alcove Gloria sample.';
+                return;
+            }
+
+            if (dealId === 'demo') {
+                document.getElementById('brochureLoading').style.display = 'none';
+                document.getElementById('brochureContent').style.display = 'block';
+                render(alcoveGloriaDemo.fields, alcoveGloriaDemo.normalized);
+                return;
+            }
+
+            if (!dealId.startsWith('rec')) {
+                document.getElementById('brochureLoading').style.display = 'none';
+                document.getElementById('brochureError').style.display = 'block';
+                document.getElementById('brochureError').textContent = 'Invalid deal ID. Use ?id=demo for sample or open from My Deals (eye icon).';
+                return;
+            }
+            fetch('/api/my-deals/' + encodeURIComponent(dealId))
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    document.getElementById('brochureLoading').style.display = 'none';
+                    if (!data.success || !data.deal) {
+                        document.getElementById('brochureError').style.display = 'block';
+                        document.getElementById('brochureError').textContent = data.error || 'Deal not found.';
+                        return;
+                    }
+                    document.getElementById('brochureContent').style.display = 'block';
+                    var fields = data.deal.fields || {};
+                    if (data.normalized && data.normalized.expandedLocation) {
+                        var loc = data.normalized.expandedLocation;
+                        fields = Object.assign({}, fields, {
+                            'Full Address': loc.fullAddress,
+                            'City & State': loc.city,
+                            'Country': loc.country,
+                            'Hotel Type': loc.hotelType,
+                            'Hotel Chain Scale': loc.hotelChainScale,
+                            'Hotel Submarket & Location': loc.submarket,
+                            'Hotel Service Model': loc.hotelServiceModel,
+                            'Company Executive Summary': loc.companyExecutiveSummary,
+                            'Portfolio Size': loc.portfolioSize,
+                            'Ownership/Brand History or Track Record': loc.ownershipTrackRecord,
+                            'Total Site Size': loc.totalSiteSize,
+                            'Total Site Size Unit': loc.totalSiteSizeUnit,
+                            'Max Height Allowed By Zoning': loc.maxHeightAllowedByZoning,
+                            'Max Height Allowed By Zoning Unit': loc.maxHeightAllowedByZoningUnit,
+                            'Ownership Type': Array.isArray(loc.ownershipType) ? loc.ownershipType.join(', ') : loc.ownershipType,
+                            'Current Form of Site Control': loc.currentFormOfSiteControl,
+                            'Current Form of Site Control Other Text': loc.currentFormOfSiteControlOtherText,
+                            'Zoning Status': loc.zoningStatus,
+                            'Zoning Status Other Text': loc.zoningStatusOtherText,
+                            'Parking Ratio': loc.parkingRatio,
+                            'Access to Transit or Highway': Array.isArray(loc.accessToTransit) ? loc.accessToTransit.join(', ') : loc.accessToTransit,
+                            'Access to Transit / Highway Other Text': loc.accessToTransitOtherText,
+                            'Total Number of Rooms/Keys': (loc.totalNumberOfRoomsKeys || loc['Total Number of Rooms/Keys']) || fields['Total Number of Rooms/Keys'],
+                            'Number of Standard Rooms': loc.numberStandardRooms,
+                            'Number of Suites': loc.numberSuites,
+                            'Number of Stories': loc.numberStories,
+                            'Building Type': loc.buildingType,
+                            'Year Built (Years Open as a Hotel)': loc.yearBuilt,
+                            'PMS or Tech is in Place': loc.pmsOrTech,
+                            'Ceiling Heights': loc.ceilingHeights,
+                            'Ceiling Heights Unit': loc.ceilingHeightsUnit,
+                            'Column Spacing': loc.columnSpacing,
+                            'Column Spacing Unit': loc.columnSpacingUnit,
+                            'Existing MEP Capacity (Conversion)': loc.existingMEPCapacity
+                        });
+                    }
+                    render(fields, data.normalized || {});
+                })
+                .catch(function(err) {
+                    document.getElementById('brochureLoading').style.display = 'none';
+                    document.getElementById('brochureError').style.display = 'block';
+                    document.getElementById('brochureError').textContent = 'Failed to load deal: ' + (err.message || 'Network error');
+                });
+        })();
+    </script>
+</body>
+</html>

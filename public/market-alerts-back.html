@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BACK MARKET ALERT PAGE - Dealality</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dc-bg: #080f25;
+            --dc-bg-card: rgba(16, 25, 53, 0.9);
+            --dc-text: #e2e8f0;
+            --dc-text-muted: #94a3b8;
+            --dc-accent: #6c72ff;
+            --dc-space-2: 8px;
+            --dc-space-3: 12px;
+        }
+
+        .alerts-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 24px;
+            background: var(--dc-bg);
+            min-height: 100vh;
+            color: var(--dc-text-muted);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: var(--dc-text-muted);
+            font-size: 12px;
+        }
+
+        .breadcrumb a {
+            color: var(--dc-accent);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .alerts-header {
+            margin: 0 -24px 24px -24px;
+            padding: 10px 24px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: var(--dc-bg);
+        }
+
+        .alerts-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+
+        .alerts-subtitle {
+            color: var(--dc-text-muted);
+            font-size: 0.875rem;
+            margin-top: 6px;
+        }
+
+        .demo-banner {
+            background: rgba(108, 114, 255, 0.12);
+            border: 1px solid rgba(108, 114, 255, 0.35);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 20px;
+            color: var(--dc-accent);
+            font-size: 12px;
+            display: none;
+        }
+
+        .demo-banner.visible {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prefs-card {
+            background: var(--dc-bg-card);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 16px 18px 18px;
+            margin-bottom: 20px;
+        }
+
+        .prefs-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .prefs-title {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prefs-description {
+            color: var(--dc-text-muted);
+            font-size: 12px;
+            margin: 2px 0 0 0;
+        }
+
+        /* Shared filters layout – matches My Deals / Radar / Clause Library */
+        .filters-section {
+            background: rgba(3, 10, 32, 0.9);
+            border: 1px solid rgba(148,163,184,0.3);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: flex-end;
+            gap: 10px;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            color-scheme: dark;
+            overflow-x: auto;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+            flex: 1 1 0%;
+        }
+
+        .filter-group--compact {
+            flex: 0 0 auto;
+        }
+
+        .filter-label {
+            color: var(--dc-text-muted);
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .filter-select {
+            background: rgba(10,16,40,0.9);
+            border: 1px solid rgba(148,163,184,0.6);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 12px;
+            min-height: 32px;
+        }
+
+        .pref-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 10px;
+        }
+
+        .pref-checkboxes label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--dc-text-muted);
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .pref-checkboxes input { accent-color: var(--dc-accent); }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-size: 12px;
+            background: var(--dc-bg-card);
+            color: var(--dc-text);
+        }
+
+        .btn-primary {
+            background: var(--dc-accent);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--dc-text-muted);
+        }
+
+        .btn-secondary:hover { border-color: var(--dc-accent); color: #fff; }
+
+        .save-prefs { margin-top: 0; }
+
+        .feed-section {
+            background: var(--dc-bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .feed-section__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .feed-section__body {
+            padding: var(--dc-space-2) var(--dc-space-3) var(--dc-space-3);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filters-bar select {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .filter-label { color: var(--dc-text-muted); font-size: 12px; }
+
+        /* Activity feed – same as Market Intelligence in command center */
+        .dc-activity-feed {
+            margin: 0;
+            padding: var(--dc-space-2) 0;
+            list-style: none;
+            position: relative;
+        }
+
+        .dc-activity-feed::before {
+            content: '';
+            position: absolute;
+            left: 21px;
+            top: var(--dc-space-3);
+            bottom: var(--dc-space-3);
+            width: 2px;
+            background: rgba(148, 163, 184, 0.25);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dc-activity-feed__item {
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 0 var(--dc-space-3);
+            padding: var(--dc-space-3) 0;
+            position: relative;
+            z-index: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: start;
+        }
+
+        .dc-activity-feed__item:last-child { border-bottom: none; }
+
+        .dc-activity-feed__line { display: none; }
+
+        .dc-activity-feed__icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            justify-self: center;
+            z-index: 1;
+            position: relative;
+            background: var(--dc-bg-card);
+            border: 1.5px solid var(--dc-accent);
+            color: var(--dc-accent);
+        }
+
+        .dc-activity-feed__icon svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .dc-activity-feed__content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dc-activity-feed__link {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+            min-width: 0;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .dc-activity-feed__link:hover .dc-activity-feed__event { color: var(--dc-accent); }
+
+        .dc-activity-feed__time {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--dc-text-muted);
+            order: -1;
+        }
+
+        .dc-activity-feed__event {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--dc-text);
+            line-height: 1.4;
+        }
+
+        .dc-activity-feed__tag {
+            font-size: 10px;
+            color: var(--dc-text-muted);
+            opacity: 0.85;
+        }
+
+        .dc-activity-feed__deal {
+            font-size: 11px;
+            color: var(--dc-text-muted);
+            margin-top: 2px;
+        }
+
+        .dc-activity-log__empty {
+            font-size: 12px;
+            color: var(--dc-text-muted);
+            padding: 24px 0;
+        }
+
+        .dc-link {
+            font-size: 11px;
+            color: var(--dc-accent);
+            text-decoration: none;
+        }
+
+        .dc-link:hover { text-decoration: underline; }
+
+        .feed-item-actions {
+            margin-top: 6px;
+        }
+
+        .feed-item-actions .btn {
+            padding: 4px 10px;
+            font-size: 11px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--dc-text-muted);
+            font-size: 13px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--dc-text-muted);
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top-color: var(--dc-accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .prefs-grid { grid-template-columns: 1fr; }
+            .feed-section__body { max-height: 60vh; }
+        }
+    </style>
+</head>
+<body>
+    <div class="alerts-container">
+        <div class="breadcrumb">
+            <a href="/app">Platform</a>
+            <span>&gt;</span>
+            <span>Market Alerts (backup)</span>
+        </div>
+
+        <header class="alerts-header">
+            <div>
+                <h1 class="alerts-title">Market Intelligence <em style="font-weight:400;color:var(--dc-text-muted)">(BACK MARKET ALERT PAGE)</em></h1>
+                <p class="alerts-subtitle">Activity feed: industry news, market alerts, and deal signals in one timeline</p>
+            </div>
+        </header>
+
+        <div id="demoBanner" class="demo-banner">
+            <span>ℹ️</span>
+            <span>Showing demo alerts. Connect Airtable (see AIRTABLE_MARKET_ALERTS_SCHEMA.md) to store real alerts and preferences.</span>
+        </div>
+
+        <!-- Preferences – formatted like My Deals / Radar / Clause Library filters -->
+        <section class="prefs-card">
+            <div class="prefs-card-header">
+                <div>
+                    <h2 class="prefs-title">🔔 Alert preferences</h2>
+                    <p class="prefs-description">Control which market alerts show up in your activity feed.</p>
+                </div>
+            </div>
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label class="filter-label">Categories</label>
+                    <div id="prefCategories" class="pref-checkboxes"></div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Regions</label>
+                    <select id="prefRegions" class="filter-select">
+                        <option value="all">All regions</option>
+                        <option value="Global">Global</option>
+                        <option value="North America">North America</option>
+                        <option value="United States">United States</option>
+                        <option value="Europe">Europe</option>
+                        <option value="Asia Pacific">Asia Pacific</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Property types</label>
+                    <select id="prefPropertyTypes" class="filter-select">
+                        <option value="all">All types</option>
+                        <option value="Luxury">Luxury</option>
+                        <option value="Select-Service">Select-Service</option>
+                        <option value="Full-Service">Full-Service</option>
+                        <option value="All">All</option>
+                    </select>
+                </div>
+                <div class="filter-group filter-group--compact">
+                    <button type="button" class="btn btn-primary save-prefs" id="savePrefsBtn">Save preferences</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Single activity feed (news + alerts, like command center Market Intelligence) -->
+        <section class="feed-section">
+            <div class="feed-section__header">
+                <div>
+                    <h2 class="prefs-title" style="margin: 0;">Activity feed</h2>
+                    <p class="alerts-subtitle" style="margin: 4px 0 0 0;">Industry news and your market alerts in one timeline</p>
+                </div>
+                <div class="filters-bar">
+                    <span class="filter-label">Category:</span>
+                    <select id="filterCategory">
+                        <option value="all">All</option>
+                    </select>
+                    <span class="filter-label">Region:</span>
+                    <select id="filterRegion">
+                        <option value="all">All</option>
+                        <option value="Global">Global</option>
+                        <option value="North America">North America</option>
+                        <option value="United States">United States</option>
+                        <option value="Europe">Europe</option>
+                    </select>
+                    <button type="button" class="btn btn-primary" id="refreshNewsBtn">Refresh news</button>
+                    <button type="button" class="btn btn-secondary" id="refreshAlertsBtn">Refresh</button>
+                </div>
+            </div>
+
+            <div id="feedLoading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+
+            <div class="feed-section__body" id="feedSectionBody" style="display: none;">
+                <ul id="marketIntelFeed" class="dc-activity-feed"></ul>
+            </div>
+
+            <div id="feedEmpty" class="empty-state" style="display: none;">
+                <p>No items in the feed. Adjust filters or click Refresh.</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="market-alerts-back.js"></script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Board - Outreach Hub | Dealality Platform</title>
+  <link rel="stylesheet" href="/outreach-hub.css">
+</head>
+<body>
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1){document.documentElement.classList.add('embed-mode');}})();</script>
+  <div class="page-wrapper">
+    <div class="sidebar-wrapper">
+      <div class="sidebar-padding">
+        <h2>Dealality</h2>
+        <nav>
+          <a href="#">&nbsp;Home</a>
+          <a href="#">&nbsp;Deals</a>
+          <a href="#">&nbsp;Market Intelligence</a>
+          <a href="#">&nbsp;Deal Room</a>
+          <a href="/outreach-template-manager.html">Template Manager</a>
+          <a href="/outreach-plan-wizard.html">Plan Wizard</a>
+          <a href="/outreach-plan-board.html" class="active">Plan Board</a>
+          <a href="partner-directory.html">Partner Directory</a>
+          <a href="#">&nbsp;Platform Resources</a>
+          <a href="#">&nbsp;Reports</a>
+          <a href="#">&nbsp;Support</a>
+          <a href="#">&nbsp;Settings</a>
+        </nav>
+      </div>
+    </div>
+    <div class="dashboard-main-section">
+      <div class="outreach-hub-container">
+        <div class="outreach-hub__header">
+          <div class="breadcrumb">
+            <a href="#">Home</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <a href="/outreach-template-manager.html">Outreach Hub</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <span>Plan Board</span>
+          </div>
+          <div class="outreach-hub-title-container">
+            <div class="deal-capture-logo">
+              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+            </div>
+            <h1>Plan Board</h1>
+          </div>
+          <p>List plans by deal and status; open a plan to see targets and threads, then open a thread to view and compose messages. Copy to email and mark as Logged as Sent when done.</p>
+        </div>
+
+        <div class="oh-section" style="margin-bottom:16px;">
+          <label class="form-label">Filter plans by status</label>
+          <select id="filter-status" class="form-select" style="max-width:200px;">
+            <option value="">All</option>
+            <option value="Draft">Draft</option>
+            <option value="Active">Active</option>
+            <option value="Paused">Paused</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+
+        <div class="oh-board-layout">
+          <div class="oh-pane">
+            <h3>Plans</h3>
+            <p id="plans-loading" class="oh-loading" style="display:none;">Loading…</p>
+            <ul id="plan-list" class="oh-list"></ul>
+            <p id="plans-empty" class="oh-muted" style="display:none; font-size:13px;">No plans. Use Plan Wizard to create one.</p>
+          </div>
+          <div class="oh-pane">
+            <div id="plan-detail-empty" class="oh-muted">Select a plan to see targets and threads.</div>
+            <div id="plan-detail" style="display:none;">
+              <h3 id="plan-detail-name"></h3>
+              <p id="plan-detail-meta" class="oh-muted" style="font-size:13px; margin-bottom:12px;"></p>
+              <div class="oh-grid-2" style="gap:16px;">
+                <div>
+                  <h4>Targets</h4>
+                  <ul id="target-list" class="oh-list"></ul>
+                </div>
+                <div>
+                  <h4>Threads</h4>
+                  <ul id="thread-list" class="oh-list"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="thread-panel" class="oh-section" style="display:none; margin-top:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <h2 class="oh-section-title" id="thread-panel-title">Thread</h2>
+            <button type="button" class="btn btn-secondary" id="btn-close-thread">Close thread</button>
+          </div>
+          <p id="thread-loading" class="oh-loading" style="display:none;">Loading messages…</p>
+          <div id="message-list"></div>
+          <div class="oh-compose-bar">
+            <h4 class="oh-section-title" style="margin-bottom:12px;">Compose from template</h4>
+            <div class="form-group">
+              <label class="form-label">Template</label>
+              <select id="compose-template" class="form-select">
+                <option value="">— Select template —</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-create-message">Create draft message</button>
+          </div>
+        </div>
+
+        <div id="message-compose-modal" class="oh-section" style="display:none; margin-top:16px;">
+          <h3 class="oh-section-title">Draft message</h3>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <div id="compose-subject" class="oh-preview"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Body (merged)</label>
+            <div id="compose-body" class="oh-preview" style="white-space:pre-wrap;"></div>
+          </div>
+          <div class="oh-message-actions">
+            <button type="button" class="btn btn-primary" id="btn-copy-compose">Copy body to clipboard</button>
+            <button type="button" class="btn btn-secondary" id="btn-mark-logged-sent">Mark as Logged as Sent</button>
+          </div>
+          <p id="compose-message-id" style="display:none;"></p>
+        </div>
+
+        <p id="board-error" class="oh-error" style="display:none;"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function() {
+  const API = '/api/outreach-hub';
+  const MY_DEALS = '/api/my-deals';
+  const SAMPLE_TOKENS = {
+    '{{DealName}}': 'Riverside Inn',
+    '{{ContactFirstName}}': 'Jordan',
+    '{{ContactLastName}}': 'Smith',
+    '{{LocationCity}}': 'Austin',
+    '{{LocationCountry}}': 'USA',
+    '{{Keys}}': '186',
+    '{{AssetType}}': 'Urban Full-Service',
+    '{{TargetOpening}}': 'Q2 2026',
+    '{{DealStage}}': 'Design Phase',
+  };
+
+  function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
+  function qs(s) { return document.querySelector(s); }
+  function qsa(s) { return Array.from(document.querySelectorAll(s)); }
+
+  function mergeTokens(text, tokens) {
+    if (!text) return '';
+    var out = text;
+    Object.keys(tokens).forEach(function(k) { out = out.split(k).join(tokens[k]); });
+    return out;
+  }
+
+  function showErr(msg) {
+    var el = qs('#board-error');
+    el.textContent = msg || '';
+    show(el, !!msg);
+  }
+
+  function encodeFormula(field, recordId) {
+    return encodeURIComponent("FIND('" + recordId + "', ARRAYJOIN({" + field + "}))");
+  }
+
+  var state = {
+    plans: [],
+    selectedPlanId: null,
+    planTargets: [],
+    threads: [],
+    selectedThreadId: null,
+    messages: [],
+    threadContext: null,
+    dealMap: {},
+    contactMap: {},
+    templatesByPack: {},
+  };
+
+  function loadPlans() {
+    show(qs('#plans-loading'), true);
+    show(qs('#plans-empty'), false);
+    var status = qs('#filter-status').value;
+    var url = API + '/plans?pageSize=100';
+    if (status) url += '&filterByFormula=' + encodeURIComponent("{status}='" + status.replace(/'/g, "\\'") + "'");
+    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+      show(qs('#plans-loading'), false);
+      if (!data.success) { showErr(data.error); return; }
+      state.plans = data.records || [];
+      renderPlanList();
+      if (state.plans.length === 0) show(qs('#plans-empty'), true);
+    }).catch(function(e) { showErr(e.message); show(qs('#plans-loading'), false); });
+  }
+
+  function renderPlanList() {
+    var list = qs('#plan-list');
+    list.innerHTML = '';
+    state.plans.forEach(function(rec) {
+      var f = rec.fields || {};
+      var name = f.plan_name || rec.id;
+      var status = f.status || '';
+      var li = document.createElement('li');
+      li.className = 'oh-list-item' + (state.selectedPlanId === rec.id ? ' active' : '');
+      li.innerHTML = '<span>' + name + '</span><small>' + status + '</small>';
+      li.dataset.planId = rec.id;
+      li.addEventListener('click', function() { selectPlan(rec.id); });
+      list.appendChild(li);
+    });
+  }
+
+  function selectPlan(planId) {
+    state.selectedPlanId = planId;
+    state.selectedThreadId = null;
+    renderPlanList();
+    show(qs('#plan-detail-empty'), false);
+    show(qs('#plan-detail'), true);
+    show(qs('#thread-panel'), false);
+    var plan = state.plans.find(function(p) { return p.id === planId; });
+    if (!plan) return;
+    var f = plan.fields || {};
+    qs('#plan-detail-name').textContent = f.plan_name || planId;
+    qs('#plan-detail-meta').textContent = 'Status: ' + (f.status || '—') + ' | Deal: ' + (f.Deal && f.Deal[0] ? f.Deal[0] : '—');
+    loadPlanTargetsAndThreads(planId);
+  }
+
+  function loadPlanTargetsAndThreads(planId) {
+    var formulaPlan = encodeFormula('Plan', planId);
+    Promise.all([
+      fetch(API + '/plan-targets?pageSize=50&filterByFormula=' + formulaPlan).then(function(r) { return r.json(); }),
+      fetch(API + '/threads?pageSize=50&filterByFormula=' + formulaPlan).then(function(r) { return r.json(); }),
+    ]).then(function([targetRes, threadRes]) {
+      state.planTargets = (targetRes.success && targetRes.records) ? targetRes.records : [];
+      state.threads = (threadRes.success && threadRes.records) ? threadRes.records : [];
+      renderTargetList();
+      renderThreadList();
+    });
+  }
+
+  function renderTargetList() {
+    var list = qs('#target-list');
+    list.innerHTML = '';
+    state.planTargets.forEach(function(rec) {
+      var f = rec.fields || {};
+      var li = document.createElement('li');
+      li.className = 'oh-list-item';
+      li.textContent = f.target_name || (f.Company && f.Company[0] ? f.Company[0] : rec.id);
+      list.appendChild(li);
+    });
+  }
+
+  function renderThreadList() {
+    var list = qs('#thread-list');
+    list.innerHTML = '';
+    state.threads.forEach(function(rec) {
+      var f = rec.fields || {};
+      var li = document.createElement('li');
+      li.className = 'oh-list-item' + (state.selectedThreadId === rec.id ? ' active' : '');
+      li.innerHTML = '<span>' + (f.thread_name || rec.id) + '</span><small>' + (f.thread_status || '') + '</small>';
+      li.dataset.threadId = rec.id;
+      li.addEventListener('click', function() { selectThread(rec.id); });
+      list.appendChild(li);
+    });
+  }
+
+  function selectThread(threadId) {
+    state.selectedThreadId = threadId;
+    state.threadContext = state.threads.find(function(t) { return t.id === threadId; });
+    renderThreadList();
+    show(qs('#thread-panel'), true);
+    qs('#thread-panel-title').textContent = (state.threadContext && state.threadContext.fields && state.threadContext.fields.thread_name) || threadId;
+    loadMessages(threadId);
+    loadTemplatesForCompose();
+    var ctx = state.threadContext && state.threadContext.fields;
+    var dealId = ctx && ctx.Deal && ctx.Deal[0] ? ctx.Deal[0] : null;
+    var contactId = ctx && ctx.primary_contact_id && ctx.primary_contact_id[0] ? ctx.primary_contact_id[0] : null;
+    if (dealId) {
+      fetch(MY_DEALS + '/' + dealId).then(function(r) { return r.json(); }).then(function(d) {
+        if (d.success) {
+          var name = (d.normalized && d.normalized.projectName) || (d.deal && d.deal.fields && (d.deal.fields['Project Name'] || d.deal.fields.projectName));
+          if (name) state.dealMap[dealId] = { projectName: name };
+          renderMessageList();
+        }
+      }).catch(function() {});
+    }
+    if (contactId) {
+      fetch(API + '/contacts/' + contactId).then(function(r) { return r.json(); }).then(function(c) {
+        if (c.success && c.record && c.record.fields) {
+          var f = c.record.fields;
+          state.contactMap[contactId] = { first_name: f.first_name, last_name: f.last_name };
+          renderMessageList();
+        }
+      }).catch(function() {});
+    }
+  }
+
+  function loadMessages(threadId) {
+    show(qs('#thread-loading'), true);
+    var formula = encodeFormula('Thread', threadId);
+    fetch(API + '/messages?pageSize=50&filterByFormula=' + formula).then(function(r) { return r.json(); }).then(function(data) {
+      show(qs('#thread-loading'), false);
+      state.messages = (data.success && data.records) ? data.records : [];
+      renderMessageList();
+    }).catch(function() { show(qs('#thread-loading'), false); });
+  }
+
+  function getTokensForThread() {
+    var ctx = state.threadContext;
+    if (!ctx || !ctx.fields) return SAMPLE_TOKENS;
+    var dealId = ctx.fields.Deal && ctx.fields.Deal[0] ? ctx.fields.Deal[0] : null;
+    var contactId = ctx.fields.primary_contact_id && ctx.fields.primary_contact_id[0] ? ctx.fields.primary_contact_id[0] : null;
+    var tokens = Object.assign({}, SAMPLE_TOKENS);
+    if (state.dealMap[dealId] && state.dealMap[dealId].projectName) tokens['{{DealName}}'] = state.dealMap[dealId].projectName;
+    if (state.contactMap[contactId]) {
+      var c = state.contactMap[contactId];
+      if (c.first_name) tokens['{{ContactFirstName}}'] = c.first_name;
+      if (c.last_name) tokens['{{ContactLastName}}'] = c.last_name;
+    }
+    return tokens;
+  }
+
+  function renderMessageList() {
+    var container = qs('#message-list');
+    container.innerHTML = '';
+    var tokens = getTokensForThread();
+    state.messages.forEach(function(rec) {
+      var f = rec.fields || {};
+      var card = document.createElement('div');
+      card.className = 'oh-message-card';
+      var subject = f.subject || '(no subject)';
+      var body = f.body_merged_preview || f.body_raw_template || '';
+      var merged = mergeTokens(body, tokens);
+      var status = f.status || 'Draft';
+      card.innerHTML =
+        '<h4>' + (f.message_label || rec.id) + ' <small style="font-weight:normal;">' + status + '</small></h4>' +
+        '<div class="oh-muted" style="font-size:13px;">Subject: ' + mergeTokens(subject, tokens) + '</div>' +
+        '<div class="oh-preview" style="margin-top:8px; white-space:pre-wrap;">' + escapeHtml(merged || '(no body)') + '</div>' +
+        '<div class="oh-message-actions"></div>';
+      var actions = card.querySelector('.oh-message-actions');
+      var copyBtn = document.createElement('button');
+      copyBtn.type = 'button';
+      copyBtn.className = 'btn btn-secondary';
+      copyBtn.textContent = 'Copy body';
+      copyBtn.addEventListener('click', function() {
+        navigator.clipboard.writeText(merged).then(function() { copyBtn.textContent = 'Copied'; });
+      });
+      actions.appendChild(copyBtn);
+      if (status !== 'Logged as Sent' && status !== 'Sent') {
+        var markBtn = document.createElement('button');
+        markBtn.type = 'button';
+        markBtn.className = 'btn btn-primary';
+        markBtn.textContent = 'Mark as Logged as Sent';
+        markBtn.addEventListener('click', function() { markLoggedSent(rec.id); });
+        actions.appendChild(markBtn);
+      }
+      container.appendChild(card);
+    });
+  }
+
+  function escapeHtml(s) {
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function markLoggedSent(messageId) {
+    var payload = {
+      fields: {
+        status: 'Logged as Sent',
+        manual_send_confirmed: true,
+        logged_sent_at: new Date().toISOString(),
+      },
+    };
+    fetch(API + '/messages/' + messageId, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success) loadMessages(state.selectedThreadId);
+        else showErr(data.error);
+      })
+      .catch(function(e) { showErr(e.message); });
+  }
+
+  function loadTemplatesForCompose() {
+    fetch(API + '/templates?pageSize=100').then(function(r) { return r.json(); }).then(function(data) {
+      var sel = qs('#compose-template');
+      sel.innerHTML = '<option value="">— Select template —</option>';
+      if (data.success && data.records) {
+        data.records.forEach(function(rec) {
+          var opt = document.createElement('option');
+          opt.value = rec.id;
+          opt.textContent = (rec.fields && rec.fields.template_name) || rec.id;
+          sel.appendChild(opt);
+        });
+      }
+    });
+  }
+
+  var composingMessageId = null;
+  qs('#btn-create-message').addEventListener('click', function() {
+    var templateId = qs('#compose-template').value;
+    if (!templateId) { showErr('Select a template.'); return; }
+    if (!state.selectedThreadId || !state.threadContext) return;
+    var ctx = state.threadContext.fields;
+    var planId = ctx.Plan && ctx.Plan[0] ? ctx.Plan[0] : '';
+    var dealId = ctx.Deal && ctx.Deal[0] ? ctx.Deal[0] : '';
+    var planTargetId = ctx['Plan Target'] && ctx['Plan Target'][0] ? ctx['Plan Target'][0] : '';
+    fetch(API + '/templates/' + templateId).then(function(r) { return r.json(); }).then(function(tRes) {
+      if (!tRes.success || !tRes.record) { showErr('Template not found'); return; }
+      var tf = tRes.record.fields || {};
+      var subject = tf.subject_template || '';
+      var body = tf.body_template || '';
+      var tokens = getTokensForThread();
+      var fields = {
+        message_label: 'Draft from template',
+        Thread: [state.selectedThreadId],
+        Plan: [planId],
+        Deal: [dealId],
+        subject: mergeTokens(subject, tokens),
+        body_merged_preview: mergeTokens(body, tokens),
+        body_raw_template: body,
+        Template: [templateId],
+        status: 'Draft',
+        message_type: 'Email',
+        channel: 'Email',
+        direction: 'Outbound',
+      };
+      if (planTargetId) fields['Plan Target'] = [planTargetId];
+      if (ctx.primary_contact_id && ctx.primary_contact_id[0]) fields.recipient_contact_id = [ctx.primary_contact_id[0]];
+      fetch(API + '/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) })
+        .then(function(r) { return r.json(); })
+        .then(function(mRes) {
+          if (!mRes.success || !mRes.record) { showErr(mRes.error || 'Failed to create message'); return; }
+          composingMessageId = mRes.record.id;
+          qs('#compose-subject').textContent = mergeTokens(subject, tokens);
+          qs('#compose-body').textContent = mergeTokens(body, tokens);
+          qs('#compose-message-id').textContent = composingMessageId;
+          show(qs('#message-compose-modal'), true);
+        })
+        .catch(function(e) { showErr(e.message); });
+    });
+  });
+
+  qs('#btn-copy-compose').addEventListener('click', function() {
+    var body = qs('#compose-body').textContent;
+    navigator.clipboard.writeText(body).then(function() { qs('#btn-copy-compose').textContent = 'Copied'; });
+  });
+
+  qs('#btn-mark-logged-sent').addEventListener('click', function() {
+    if (!composingMessageId) return;
+    markLoggedSent(composingMessageId);
+    composingMessageId = null;
+    show(qs('#message-compose-modal'), false);
+    loadMessages(state.selectedThreadId);
+  });
+
+  qs('#btn-close-thread').addEventListener('click', function() {
+    state.selectedThreadId = null;
+    show(qs('#thread-panel'), false);
+  });
+
+  qs('#filter-status').addEventListener('change', loadPlans);
+  loadPlans();
+})();
+  </script>
+</body>
+</html>

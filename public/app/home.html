@@ -1,0 +1,199 @@
+<!--
+  Dealality Command Center – Redesigned per dashboard principles
+  ROUTE: /app/home | URL: http://localhost:3000/app/home.html
+  Layout: Hero → Work → Context → Tools. Charts, funnel, asymmetric grid.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Center – Dealality</title>
+  <link rel="stylesheet" href="/app/dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dc-dashboard-page" id="dc-dashboard-page">
+  <div id="dc-dashboard">
+    <!-- Header: logo, title, description (matches intake-header pattern) -->
+    <header class="dc-header">
+      <div class="dc-header__brand">
+        <div class="dc-header__title-row">
+          <h1 class="dc-header__page-title">Today's Deal Pulse</h1>
+        </div>
+        <p class="dc-header__description">Your command center for deal metrics, pipeline status, signals, and next actions.</p>
+        <div class="dc-header__warning" role="note" aria-live="polite">
+          <span class="dc-header__warning-icon" aria-hidden="true">⚠</span>
+          <span class="dc-header__warning-text">Mock Data Display: This dashboard shows sample data to demonstrate the intended presentation format.</span>
+        </div>
+      </div>
+      <div class="dc-header__right">
+        <div class="dc-role-switch" role="group" aria-label="View as role">
+          <span class="dc-role-switch__label">View as:</span>
+          <div class="dc-role-switch__toggle" id="dc-role-toggle">
+            <button type="button" class="dc-role-btn active" data-role="owner" aria-pressed="true">Owner</button>
+            <button type="button" class="dc-role-btn" data-role="brand" aria-pressed="false">Brand</button>
+            <button type="button" class="dc-role-btn" data-role="operator" aria-pressed="false">Operator</button>
+          </div>
+        </div>
+        <span class="dc-header__sync" id="dc-sync"></span>
+        <div class="dc-header__actions" id="dc-header-actions"></div>
+      </div>
+    </header>
+
+    <!-- Two columns: Left (Insights + Content) | Right (Recent Activity - full height, starts at top) -->
+    <div class="dc-main dc-main--activity-top">
+      <!-- Top row: three section labels aligned across the screen -->
+      <header class="dc-main__header" role="banner">
+        <div class="dc-step-label">Key Insights</div>
+        <div class="dc-step-label">Pipeline Snapshot</div>
+        <div class="dc-step-label">Recent Activity</div>
+      </header>
+      <div class="dc-main__content">
+        <!-- Key Insights row – KPIs + separator + Pipeline (term review, closed shifted left) -->
+        <div class="dc-section-wrap dc-section-wrap--insights">
+          <div class="dc-insights-wrapper dc-insights-wrapper--narrow" role="region" aria-label="Key metrics and pipeline">
+          <div class="dc-insights-kpis" id="dc-kpi-strip">
+            <!-- Active Deals, Needs Action, New Inquiries, Under Review, Shared Brands, Shared Operators -->
+          </div>
+          <div class="dc-insights-sep" aria-hidden="true"></div>
+          <div class="dc-insights-pipeline-wrap">
+            <div class="dc-insights-pipeline" id="dc-pipeline">
+              <!-- Pipeline stages: Submitted, Under Review, Shared, Bid Submitted, Negotiation, Closed -->
+            </div>
+          </div>
+        </div>
+        </div>
+        <!-- Row: Signals Today (left) | Next Actions (right) -->
+        <div class="dc-main__row">
+          <div class="dc-section-wrap">
+            <div class="dc-step-label">Signals Today</div>
+            <section class="dc-section dc-section--signals">
+              <div class="dc-section__body" id="dc-signals"></div>
+              <div class="dc-section__footer">
+                <a href="/market-alerts" class="dc-link">▾ View All</a>
+              </div>
+            </section>
+          </div>
+          <div class="dc-section-wrap">
+            <div class="dc-step-label">Next Actions</div>
+            <section class="dc-section dc-section--actions">
+              <div class="dc-section__body" id="dc-next-actions"></div>
+              <div class="dc-section__footer">
+                <a href="/my-deals" class="dc-link">▾ View All</a>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Row: LOI Deal Volume vs The Region | Market Intelligence | Map -->
+        <div class="dc-main__row dc-main__row--three">
+          <div class="dc-section-wrap">
+            <div class="dc-step-label dc-step-label--loi">
+              <span>LOI Deal Volume vs The Region</span>
+              <span class="dc-loi-share" id="dc-loi-share" aria-live="polite"></span>
+            </div>
+            <section class="dc-section dc-section--chart">
+              <div class="dc-section__body dc-hero dc-hero--chart-only">
+                <div class="dc-hero__chart" id="dc-trend-chart">
+                  <canvas id="dc-trend-chart-canvas" aria-label="LOI Deal Volume vs The Region"></canvas>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="dc-section-wrap">
+            <div class="dc-step-label">Signed LOI Rooms by Region</div>
+            <section class="dc-section dc-section--chart">
+              <div class="dc-section__body dc-hero dc-hero--chart-only dc-hero--map dc-map-wrap">
+                <img src="../deal-capture-globe.svg" alt="Deals by country map" class="dc-map-img" />
+                <div class="dc-map-marker dc-map-marker--1" aria-hidden="true"></div>
+                <div class="dc-map-marker dc-map-marker--2" aria-hidden="true"></div>
+                <div class="dc-map-marker dc-map-marker--3" aria-hidden="true"></div>
+                <div class="dc-map-overlay-card" aria-hidden="true">
+                  <div class="dc-map-overlay__circle">
+                    <span class="dc-map-overlay__value" id="dc-map-overlay-value">2.1 K</span>
+                  </div>
+                  <span class="dc-map-overlay__label" id="dc-map-overlay-label">Mexico</span>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="dc-section-wrap">
+            <div class="dc-step-label">Market Intelligence</div>
+            <section class="dc-section dc-section--signals">
+              <div class="dc-section__body" id="dc-market-intel"></div>
+              <div class="dc-section__footer">
+                <button type="button" id="dc-market-intel-toggle" class="dc-link dc-link-btn" aria-pressed="false">Pause Scroll</button>
+                <a href="/market-alerts" class="dc-link">▾ View All</a>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Deal Toolbox – full width horizontal row -->
+        <div class="dc-section-wrap dc-section-wrap--toolbox-full">
+          <div class="dc-step-label">Deal Toolbox</div>
+          <section class="dc-widget dc-widget--toolbox">
+            <div class="dc-widget__body" id="dc-toolbox"></div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Recent Activity + Execution Reliability -->
+      <aside class="dc-sidebar dc-sidebar--activity-full">
+        <section class="dc-widget dc-widget--activity dc-widget--activity-full">
+          <div class="dc-widget__body" id="dc-recent-activity"></div>
+          <div class="dc-widget__footer">
+            <a href="/app#/outreach-deal-activity-log" target="_top" class="dc-link">▾ View All</a>
+          </div>
+        </section>
+        <div class="dc-exec-wrap">
+          <div class="dc-step-label">
+            <span>My Execution Reliability</span>
+          </div>
+          <section class="dc-widget dc-widget--exec" aria-label="Execution reliability">
+            <button type="button" class="dc-exec-why-btn" id="dc-exec-why-btn" aria-label="Why it matters" title="Why it matters">ℹ</button>
+            <div class="dc-widget__body dc-widget__body--exec" id="dc-responsiveness"></div>
+            <div class="dc-widget__footer">
+              <a href="#" class="dc-link">Open responsiveness →</a>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="dc-modal" id="dc-exec-why-modal" role="dialog" aria-labelledby="dc-exec-why-modal-title" aria-modal="true" hidden>
+    <div class="dc-modal__backdrop"></div>
+    <div class="dc-modal__panel">
+      <h3 id="dc-exec-why-modal-title" class="dc-modal__title">Why Execution Reliability Matters</h3>
+      <p class="dc-modal__body" id="dc-exec-why-modal-body"></p>
+      <div class="dc-modal__footer">
+        <button type="button" class="dc-btn dc-btn--primary dc-modal__close" id="dc-exec-why-modal-close">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dc-modal" id="dc-at-risk-why-modal" role="dialog" aria-labelledby="dc-at-risk-why-modal-title" aria-modal="true" hidden>
+    <div class="dc-modal__backdrop"></div>
+    <div class="dc-modal__panel">
+      <h3 id="dc-at-risk-why-modal-title" class="dc-modal__title">What Is At Risk?</h3>
+      <p class="dc-modal__body" id="dc-at-risk-why-modal-body"></p>
+      <div class="dc-modal__footer">
+        <button type="button" class="dc-btn dc-btn--primary dc-modal__close" id="dc-at-risk-why-modal-close">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('embed') === '1') {
+        document.getElementById('dc-dashboard-page').classList.add('embed-mode');
+      }
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/app/dashboard-adapter.js"></script>
+  <script src="/app/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriott Branded White Space Label - Dealality</title>
+    <style>
+        /* CSS Variables - Marriott Branding */
+        :root {
+            --neutral--800: #080f25;
+            --neutral--400: #aeb9e1;
+            --neutral--100: white;
+            --accent--primary-1: #d4af37; /* Marriott Gold */
+            --secondary--color-4: #343b4f;
+            --secondary--color-1: #101935;
+            --general--shadow-01: #14142b0f;
+            --secondary--color-2: #d4af37; /* Marriott Gold */
+            --secondary--color-3: #57c3ff;
+            --secondary--color-5: #d4af37; /* Marriott Gold */
+            --marriott-red: #c8102e; /* Marriott Red */
+            --marriott-gold: #d4af37; /* Marriott Gold */
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --neutral--200: #d9e1fa;
+            --system--green-300: #14ca74;
+            --system--300: #ff5a65;
+            --system--blue-400: #086cd9;
+            --system--green-400: #11845b;
+            --system--orange-400: #d5691b;
+            --general--shadow-03: #14142b1a;
+            --system--red-100: #ffeff0;
+            --neutral--300: #d1dbf9;
+            --general--shadow-02: #14142b14;
+            --system--red-400: #dc2b2b;
+            --system--blue-100: #eaf4ff;
+            --system--blue-300: #1d88fe;
+            --system--blue-200: #8fc3ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5em;
+            min-height: 100vh;
+        }
+
+        /* Page Wrapper */
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-wrapper {
+            z-index: 500;
+            border-right: 0.6px solid var(--neutral--600);
+            background-color: var(--neutral--800);
+            width: 300px;
+            min-width: 300px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-wrapper h2 {
+            color: var(--neutral--100);
+            margin-bottom: 30px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .sidebar-wrapper nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-wrapper nav a {
+            color: var(--neutral--400);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .sidebar-wrapper nav a:hover {
+            background-color: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .sidebar-wrapper nav a.active {
+            background-color: rgba(212, 175, 55, 0.15);
+            color: var(--marriott-gold);
+            border-left: 3px solid var(--marriott-gold);
+            padding-left: 13px;
+        }
+
+        /* Main Content Layout */
+        .dashboard-main-section {
+            flex: 1;
+            margin-left: 300px;
+            min-width: 0;
+        }
+
+        /* Main Container */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Header Section - Marriott Branded */
+        .dashboard-header {
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: stretch;
+            border-bottom: 3px solid var(--marriott-red);
+            padding-bottom: 20px;
+        }
+
+        .dashboard-title-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .deal-capture-logo {
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .deal-capture-logo img {
+            height: 100%;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+        }
+
+        .marriott-logo {
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .marriott-logo img {
+            height: 100%;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+        }
+
+        .dashboard-header h1 {
+            color: var(--marriott-gold);
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2em;
+        }
+
+        .dashboard-header-left {
+            flex: 1;
+        }
+
+        .dashboard-header p {
+            color: var(--neutral--100);
+            font-size: 0.75rem;
+            font-weight: 300;
+            line-height: 1.3;
+            max-width: 100%;
+            margin-top: 5px;
+        }
+
+        .marriott-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--marriott-red) 0%, #a00d23 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 3px solid var(--marriott-gold);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr minmax(120px, auto);
+            gap: 12px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .filter-label {
+            color: var(--neutral--400);
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .filter-select,
+        .filter-input {
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .filter-select:focus,
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--marriott-gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .filter-select option {
+            background: var(--secondary--color-1);
+            color: #ffffff;
+        }
+
+        .btn-clear {
+            padding: 8px 16px;
+            background: var(--marriott-gold);
+            border: 1px solid var(--marriott-gold);
+            color: var(--neutral--800);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-clear:hover {
+            background: #f5d475;
+            border-color: #f5d475;
+            transform: translateY(-1px);
+        }
+
+        .deals-table-container {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .deals-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            table-layout: fixed;
+        }
+
+        /* Set column widths */
+        .deals-table th:nth-child(1),
+        .deals-table td:nth-child(1) {
+            width: 12%;
+        }
+
+        .deals-table th:nth-child(2),
+        .deals-table td:nth-child(2) {
+            width: 18%;
+        }
+
+        .deals-table th:nth-child(3),
+        .deals-table td:nth-child(3) {
+            width: 14%;
+        }
+
+        .deals-table th:nth-child(4),
+        .deals-table td:nth-child(4) {
+            width: 10%;
+        }
+
+        .deals-table th:nth-child(5),
+        .deals-table td:nth-child(5) {
+            width: 8%;
+        }
+
+        .deals-table th:nth-child(6),
+        .deals-table td:nth-child(6) {
+            width: 6%;
+        }
+
+        .deals-table th:nth-child(7),
+        .deals-table td:nth-child(7) {
+            width: 12%;
+        }
+
+        .deals-table th:nth-child(8),
+        .deals-table td:nth-child(8) {
+            width: 12%;
+        }
+
+        .deals-table th:nth-child(9),
+        .deals-table td:nth-child(9) {
+            width: 8%;
+        }
+
+        .deals-table th:nth-child(10),
+        .deals-table td:nth-child(10) {
+            width: 7%;
+        }
+
+        .deals-table thead {
+            background: var(--neutral--700);
+        }
+
+        .deals-table th {
+            color: var(--neutral--100);
+            font-weight: 600;
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--neutral--600);
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.3;
+            max-height: 48px;
+            overflow: hidden;
+        }
+
+        .deals-table th:not(.no-sort):hover {
+            background: var(--neutral--600);
+        }
+
+        .sort-indicator {
+            display: inline-flex;
+            flex-direction: column;
+            margin-left: 6px;
+            vertical-align: middle;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .deals-table th:hover .sort-indicator {
+            opacity: 1;
+        }
+
+        .deals-table th.sort-asc .sort-indicator,
+        .deals-table th.sort-desc .sort-indicator {
+            opacity: 1;
+        }
+
+        .sort-indicator svg {
+            width: 10px;
+            height: 10px;
+            display: block;
+        }
+
+        .sort-indicator-arrow {
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            margin: 1px 0;
+        }
+
+        .sort-indicator-arrow-up {
+            border-bottom: 5px solid var(--neutral--400);
+        }
+
+        .sort-indicator-arrow-up.active {
+            border-bottom-color: var(--marriott-gold);
+        }
+
+        .sort-indicator-arrow-down {
+            border-top: 5px solid var(--neutral--400);
+        }
+
+        .sort-indicator-arrow-down.active {
+            border-top-color: var(--marriott-gold);
+        }
+
+        .deals-table th.sort-asc .sort-indicator-arrow-up {
+            border-bottom-color: var(--marriott-gold);
+        }
+
+        .deals-table th.sort-desc .sort-indicator-arrow-down {
+            border-top-color: var(--marriott-gold);
+        }
+
+        .deals-table tbody tr {
+            transition: background-color 0.2s;
+            border-bottom: 1px solid var(--neutral--600);
+            max-height: 80px;
+            height: auto;
+        }
+
+        .deals-table tbody tr:hover {
+            background: var(--neutral--700);
+        }
+
+        .deals-table td {
+            padding: 10px 8px;
+            color: var(--neutral--400);
+            vertical-align: top;
+            line-height: 1.4;
+            box-sizing: border-box;
+            border-bottom: none;
+            max-height: 80px;
+            overflow: visible;
+        }
+
+        .match-score-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 6px;
+            min-height: 60px;
+        }
+
+        .match-score-badge {
+            min-width: 50px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 16px;
+            text-align: center;
+            display: inline-block;
+            line-height: 1.2;
+            height: fit-content;
+            flex-shrink: 0;
+        }
+
+        .match-score-high {
+            background: var(--system--green-400);
+            color: white;
+        }
+
+        .match-score-medium {
+            background: var(--system--orange-400);
+            color: white;
+        }
+
+        .match-score-low {
+            background: var(--system--red-400);
+            color: white;
+        }
+
+        .match-score-details-btn {
+            background: transparent;
+            border: 1px solid var(--marriott-gold);
+            color: var(--marriott-gold);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+            line-height: 1.2;
+            height: fit-content;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .match-score-details-btn:hover {
+            background: var(--marriott-gold);
+            color: var(--neutral--800);
+        }
+
+        .deal-details-btn {
+            background: var(--marriott-red);
+            color: var(--neutral--100);
+            border: none;
+            padding: 5px 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .deal-details-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+            background: #a00d23;
+        }
+
+        .property-name {
+            color: var(--neutral--100);
+            font-weight: 600;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.3;
+            max-height: 2.6em;
+            width: 100%;
+        }
+
+        .deal-headline {
+            color: var(--neutral--400);
+            font-size: 13px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 2.8em;
+        }
+
+        .preferred-brand-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        .preferred-brand-name {
+            color: var(--neutral--100);
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .no-preferred-brand {
+            color: var(--neutral--500);
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        .better-match-indicator {
+            margin-left: 6px;
+            font-size: 14px;
+            cursor: help;
+        }
+
+        .suggest-alternative-btn {
+            background: var(--marriott-gold);
+            color: var(--neutral--800);
+            border: none;
+            padding: 5px 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .suggest-alternative-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            background: #f5d475;
+        }
+
+        .suggest-alternative-btn:disabled {
+            background: var(--neutral--600);
+            color: var(--neutral--500);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .deals-table td:has(.suggest-alternative-btn),
+        .deals-table td:has(.deal-details-btn) {
+            padding: 12px 6px;
+            overflow: hidden;
+        }
+
+        .alternative-brands-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .alternative-brand-item {
+            background: var(--neutral--700);
+            border: 1px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .alternative-brand-item.better-match {
+            border-color: var(--system--green-400);
+            border-width: 2px;
+        }
+
+        .alternative-brand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .alternative-brand-name {
+            color: var(--neutral--100);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .alternative-brand-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .improvement-badge {
+            background: var(--system--green-400);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .alternative-brand-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .compare-btn, .recommend-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .compare-btn {
+            background: transparent;
+            border: 1px solid var(--marriott-gold);
+            color: var(--marriott-gold);
+        }
+
+        .compare-btn:hover {
+            background: var(--marriott-gold);
+            color: var(--neutral--800);
+        }
+
+        .recommend-btn {
+            background: var(--marriott-red);
+            color: white;
+        }
+
+        .recommend-btn:hover {
+            background: #a00d23;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+        }
+
+        .deal-contact {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        .contact-avatar-wrapper {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            flex-shrink: 0;
+        }
+
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--neutral--600);
+            flex-shrink: 0;
+            display: block;
+        }
+
+        .contact-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            border-radius: 50%;
+            background: var(--neutral--700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral--400);
+            font-weight: 600;
+            font-size: 14px;
+            border: 2px solid var(--neutral--600);
+            flex-shrink: 0;
+        }
+
+        .contact-avatar-wrapper .contact-avatar-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .contact-name {
+            color: var(--neutral--100);
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .contact-title {
+            color: var(--neutral--500);
+            font-size: 12px;
+        }
+
+        .contact-company {
+            color: var(--neutral--400);
+            font-size: 12px;
+        }
+
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 280px;
+            max-width: 320px;
+        }
+
+        .loading-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .loading .wave-container {
+            width: 32px;
+            height: 32px;
+            position: relative;
+            background: var(--neutral--700);
+            border-radius: 50%;
+            border: 2px solid var(--neutral--600);
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .loading .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+
+        .loading .wave-1 {
+            height: 40%;
+            background: linear-gradient(45deg, var(--marriott-gold), #f5d475);
+            animation: wave-1 2s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+
+        .loading .wave-2 {
+            height: 60%;
+            background: linear-gradient(45deg, #b8941f, var(--marriott-gold));
+            animation: wave-2 2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .loading .wave-3 {
+            height: 80%;
+            background: linear-gradient(45deg, #f5d475, #fae4a3);
+            animation: wave-3 2s ease-in-out infinite;
+            animation-delay: 0.6s;
+        }
+
+        .loading .wave-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .loading .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--marriott-gold);
+            border-radius: 50%;
+            animation: particle-float 3s ease-in-out infinite;
+            box-shadow: 0 0 4px var(--marriott-gold);
+        }
+
+        .loading .particle:nth-child(1) {
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .loading .particle:nth-child(2) {
+            left: 40%;
+            animation-delay: 0.5s;
+        }
+
+        .loading .particle:nth-child(3) {
+            left: 60%;
+            animation-delay: 1s;
+        }
+
+        .loading .particle:nth-child(4) {
+            left: 80%;
+            animation-delay: 1.5s;
+        }
+
+        .loading-text {
+            flex: 1;
+        }
+
+        .loading-text-main {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neutral--100);
+            margin-bottom: 4px;
+        }
+
+        .loading-text-time {
+            font-size: 12px;
+            color: var(--neutral--400);
+        }
+
+        .loading-progress {
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--marriott-gold), var(--system--orange-400));
+            border-radius: 2px;
+            animation: progress-animation 3s ease-in-out infinite;
+            box-shadow: 0 0 4px rgba(212, 175, 55, 0.5);
+        }
+
+        @keyframes progress-animation {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes wave-1 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes wave-2 {
+            0%, 100% { 
+                transform: translateX(100%) scaleY(1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.1);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes wave-3 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.4;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.3);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes particle-float {
+            0% { 
+                transform: translateY(100%) scale(0);
+                opacity: 0;
+            }
+            20% { 
+                transform: translateY(80%) scale(1);
+                opacity: 1;
+            }
+            80% { 
+                transform: translateY(20%) scale(1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(0%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(8, 15, 37, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .modal-content {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            max-width: 900px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+
+        .modal-header h2 {
+            color: var(--neutral--100);
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--neutral--400);
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .modal-section {
+            margin-bottom: 30px;
+        }
+
+        .modal-section h3 {
+            color: var(--neutral--100);
+            font-size: 18px;
+            margin: 0 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-item label {
+            color: var(--neutral--500);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item value {
+            color: var(--neutral--100);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .match-score-breakdown {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .score-category {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+
+        .score-category:last-child {
+            border-bottom: none;
+        }
+
+        .score-category-name {
+            color: var(--neutral--400);
+            font-size: 14px;
+        }
+
+        .score-category-value {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-bar {
+            width: 200px;
+            height: 8px;
+            background: var(--neutral--600);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .score-bar-fill.high {
+            background: var(--system--green-400);
+        }
+
+        .score-bar-fill.medium {
+            background: var(--system--orange-400);
+        }
+
+        .score-bar-fill.low {
+            background: var(--system--red-400);
+        }
+
+        .score-number {
+            color: var(--neutral--100);
+            font-weight: 600;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .qualitative-insights {
+            margin-top: 20px;
+        }
+
+        .insight-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid;
+        }
+
+        .insight-item.positive {
+            background: rgba(17, 132, 91, 0.1);
+            border-color: var(--system--green-400);
+        }
+
+        .insight-item.negative {
+            background: rgba(220, 43, 43, 0.1);
+            border-color: var(--system--red-400);
+        }
+
+        .insight-item.neutral {
+            background: rgba(213, 105, 27, 0.1);
+            border-color: var(--system--orange-400);
+        }
+
+        .insight-item strong {
+            color: var(--neutral--100);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .insight-item span {
+            color: var(--neutral--400);
+            font-size: 13px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--neutral--400);
+        }
+
+        .empty-state h3 {
+            color: var(--neutral--100);
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            line-height: 1.417em;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .mi-brands-notice {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--marriott-gold);
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mi-brands-notice-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .mi-brands-notice-text {
+            color: var(--neutral--100);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .mi-brands-notice-text strong {
+            color: var(--marriott-gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .filters-section {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .filters-section {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px;
+            }
+
+            .sidebar-wrapper {
+                display: none;
+            }
+
+            .dashboard-main-section {
+                margin-left: 0;
+            }
+
+            .dashboard-header {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-section {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .deals-table {
+                font-size: 12px;
+            }
+
+            .deals-table th,
+            .deals-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Left Sidebar Navigation -->
+        <div class="sidebar-wrapper">
+            <div style="padding: 20px;">
+                <h2>Dealality</h2>
+                <nav>
+                    <a href="#">🏠 Home</a>
+                    <a href="#">📊 Deals</a>
+                    <a href="#">📈 Market Intelligence</a>
+                    <a href="#">🏢 Deal Room</a>
+                    <a href="#">🤝 Outreach Hub</a>
+                    <a href="clause-library.html">📚 Legal Library</a>
+                    <a href="/brand-development-dashboard">🎯 Brand Development</a>
+                    <a href="/marriott-white-space-label" class="active">🏨 Marriott White Space</a>
+                    <a href="#">👥 Partner Directory</a>
+                    <a href="#">📋 Platform Resources</a>
+                    <a href="#">📊 Reports</a>
+                    <a href="#">❓ Support</a>
+                    <a href="#">⚙️ Settings</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-main-section">
+            <div class="dashboard-container">
+                <!-- Header Section -->
+                <div class="dashboard-header">
+                    <div class="dashboard-header-left">
+                        <div class="dashboard-title-container">
+                            <div class="marriott-logo">
+                                <img src="https://www.marriott.com/images/marriott-logo.svg" alt="Marriott" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span style="display:none; color: var(--marriott-gold); font-weight: 700; font-size: 1.5rem;">Marriott</span>
+                            </div>
+                            <h1>Branded White Space Label</h1>
+                            <span class="marriott-badge">MI BRANDS ONLY</span>
+                        </div>
+                        <p>Explore opportunities with Marriott International brands. This view is designed for owners to evaluate deals exclusively through MI brand options.</p>
+                    </div>
+                </div>
+
+                <!-- MI Brands Notice -->
+                <div class="mi-brands-notice">
+                    <span class="mi-brands-notice-icon">ℹ️</span>
+                    <div class="mi-brands-notice-text">
+                        <strong>Marriott International Brands Only:</strong> This dashboard shows only brands from Marriott International. Match scores and alternative suggestions are calculated exclusively from MI brand portfolio.
+                    </div>
+                </div>
+
+                <!-- Filters Section -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label class="filter-label">MI Brand (for Match Score)</label>
+                        <select class="filter-select" id="brandFilter">
+                            <option value="">Select MI Brand</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Match Score</label>
+                        <select class="filter-select" id="scoreFilter">
+                            <option value="">All Scores</option>
+                            <option value="high">High (80-100)</option>
+                            <option value="medium">Medium (50-79)</option>
+                            <option value="low">Low (0-49)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Property Type</label>
+                        <select class="filter-select" id="propertyTypeFilter">
+                            <option value="">All Types</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Country</label>
+                        <select class="filter-select" id="countryFilter">
+                            <option value="">All Countries</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button class="btn-clear" onclick="if(window.dashboard) window.dashboard.clearAllFilters()">Clear Filters</button>
+                    </div>
+                </div>
+
+                <div class="deals-table-container">
+                    <table class="deals-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="propertyName">
+                                    <span style="display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px;">
+                                        <span>Property Name</span>
+                                        <span class="sort-indicator">
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-up"></span>
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-down"></span>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th data-sort="headline">
+                                    <span style="display: inline-flex; align-items: center; white-space: nowrap;">
+                                        <span>Deal Headline</span>
+                                        <span class="sort-indicator">
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-up"></span>
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-down"></span>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th data-sort="contactName">
+                                    <span style="display: inline-flex; align-items: center; white-space: nowrap;">
+                                        <span>Deal Contact</span>
+                                        <span class="sort-indicator">
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-up"></span>
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-down"></span>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th data-sort="location">
+                                    <span style="display: inline-flex; align-items: center; white-space: nowrap;">
+                                        <span>Location</span>
+                                        <span class="sort-indicator">
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-up"></span>
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-down"></span>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th data-sort="propertyType">
+                                    <span style="display: inline-flex; align-items: center; white-space: nowrap;">
+                                        <span>Property Type</span>
+                                        <span class="sort-indicator">
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-up"></span>
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-down"></span>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th data-sort="rooms">
+                                    <span style="display: inline-flex; align-items: center; white-space: nowrap;">
+                                        <span>Rooms</span>
+                                        <span class="sort-indicator">
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-up"></span>
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-down"></span>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th data-sort="preferredBrandScore">
+                                    <span style="display: inline-flex; align-items: center; white-space: nowrap;">
+                                        <span>Preferred Brand</span>
+                                        <span class="sort-indicator">
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-up"></span>
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-down"></span>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th data-sort="matchScore">
+                                    <span style="display: inline-flex; align-items: center; white-space: nowrap;">
+                                        <span>Match Score</span>
+                                        <span class="sort-indicator">
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-up"></span>
+                                            <span class="sort-indicator-arrow sort-indicator-arrow-down"></span>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th class="no-sort" style="white-space: normal;">
+                                    <span>Alternatives</span>
+                                </th>
+                                <th class="no-sort">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dealsTableBody">
+                            <tr>
+                                <td colspan="10" style="padding: 60px 20px; text-align: center;">
+                                    <div class="loading">
+                                        <div class="loading-content">
+                                            <div class="wave-container">
+                                                <div class="wave wave-1"></div>
+                                                <div class="wave wave-2"></div>
+                                                <div class="wave wave-3"></div>
+                                                <div class="wave-particles">
+                                                    <div class="particle"></div>
+                                                    <div class="particle"></div>
+                                                    <div class="particle"></div>
+                                                    <div class="particle"></div>
+                                                </div>
+                                            </div>
+                                            <div class="loading-text">
+                                                <div class="loading-text-main">Loading MI brand opportunities...</div>
+                                                <div class="loading-text-time">Please wait</div>
+                                            </div>
+                                        </div>
+                                        <div class="loading-progress">
+                                            <div class="loading-progress-bar"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Match Score Details Modal -->
+    <div class="modal-overlay" id="scoreDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Match Score Breakdown</h2>
+                <button class="modal-close" onclick="closeScoreDetailsModal()">&times;</button>
+            </div>
+            <div id="scoreDetailsContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Deal Details Modal -->
+    <div class="modal-overlay" id="dealDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Deal Details</h2>
+                <button class="modal-close" onclick="closeDealDetailsModal()">&times;</button>
+            </div>
+            <div id="dealDetailsContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Alternative Brands Modal -->
+    <div class="modal-overlay" id="alternativeBrandsModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h2>Alternative MI Brand Suggestions</h2>
+                <button class="modal-close" onclick="closeAlternativeBrandsModal()">&times;</button>
+            </div>
+            <div id="alternativeBrandsContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="marriott-white-space-label.js"></script>
+</body>
+</html>

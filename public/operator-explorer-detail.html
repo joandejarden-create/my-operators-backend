@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Detail - Dealality Platform</title>
+    <style>
+        :root {
+          --neutral--800: #080f25;
+          --neutral--400: #aeb9e1;
+          --neutral--100: white;
+          --accent--primary-1: #6c72ff;
+          --secondary--color-4: #343b4f;
+          --secondary--color-1: #101935;
+          --secondary--color-2: #9a91fb;
+          --secondary--color-3: #57c3ff;
+          --secondary--color-5: #fdb52a;
+          --neutral--700: #212c4d;
+          --neutral--600: #37446b;
+          --neutral--500: #7e89ac;
+          --neutral--300: #d1dbf9;
+          --system--green-300: #14ca74;
+          --system--blue-400: #086cd9;
+          --system--orange-400: #d5691b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar-track { background: #080f25; }
+        *::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
+        *::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            overflow-x: hidden;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5em;
+            min-height: 100vh;
+        }
+
+        .page-wrapper { min-height: 100vh; display: flex; }
+
+        .sidebar-wrapper {
+            z-index: 500;
+            border-right: 0.6px solid var(--neutral--600);
+            background-color: var(--neutral--800);
+            width: 300px;
+            min-width: 300px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-padding { padding: 20px; }
+        .sidebar-wrapper h2 { color: var(--neutral--100); margin-bottom: 30px; font-size: 1.25rem; font-weight: 600; }
+        .sidebar-wrapper nav { display: flex; flex-direction: column; gap: 8px; }
+        .sidebar-wrapper nav a {
+            color: var(--neutral--400);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .sidebar-wrapper nav a:hover { background-color: var(--neutral--700); color: var(--neutral--100); }
+        .sidebar-wrapper nav a.active {
+            background-color: rgba(108, 114, 234, 0.15);
+            color: var(--neutral--100);
+            border-left: 3px solid #667eea;
+            padding-left: 13px;
+        }
+
+        .embed-mode .sidebar-wrapper { display: none !important; }
+        .embed-mode .dashboard-main-section { margin-left: 0 !important; }
+        .embed-mode .operator-detail-container { max-width: 100% !important; }
+
+        .dashboard-main-section { flex: 1; margin-left: 300px; min-width: 0; }
+
+        .operator-detail-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--neutral--500);
+        }
+        .breadcrumb a { color: var(--neutral--400); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--neutral--100); }
+        .breadcrumb-separator { color: var(--neutral--600); }
+
+        /* Hero / Header */
+        .operator-header {
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 4px solid var(--accent--primary-1);
+            border-radius: 8px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+        }
+
+        .operator-header__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .operator-header__title-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .operator-header__logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 8px;
+            background: var(--neutral--700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral--100);
+            font-size: 28px;
+            font-weight: 600;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .operator-header__logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 6px;
+        }
+        .operator-header__logo .operator-header__logo-initial {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .operator-header__logo img.loaded + .operator-header__logo-initial { display: none; }
+
+        .operator-header__title-section h1 {
+            color: var(--neutral--100);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .operator-header__meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            color: var(--neutral--400);
+            font-size: 13px;
+        }
+
+        .operator-header__meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .operator-header__badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge--operator { background: rgba(108, 114, 255, 0.2); color: #9a91fb; border: 1px solid rgba(108, 114, 255, 0.3); }
+        .badge--segment { background: rgba(87, 195, 255, 0.2); color: #57c3ff; border: 1px solid rgba(87, 195, 255, 0.3); }
+
+        .operator-header__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: var(--accent--primary-1);
+            color: #fff;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .btn-action:hover { background: #9a91fb; color: #fff; }
+        .btn-action--secondary {
+            background: var(--neutral--700);
+            border: 1px solid var(--neutral--600);
+        }
+        .btn-action--secondary:hover { background: var(--neutral--600); }
+
+        /* Stat cards */
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-card__value {
+            color: var(--accent--primary-1);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-card__label {
+            color: var(--neutral--500);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tabs */
+        .tabs-section {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--neutral--600);
+            margin-bottom: 24px;
+            overflow-x: auto;
+            position: sticky;
+            top: 0;
+            background: var(--neutral--800);
+            z-index: 100;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--neutral--400);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+        .tab:hover { color: var(--neutral--100); }
+        .tab.active {
+            color: var(--accent--primary-1);
+            border-bottom-color: var(--accent--primary-1);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Info cards */
+        .info-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-card__title {
+            color: var(--neutral--100);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-card__content {
+            color: var(--neutral--400);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .info-item__label {
+            color: var(--neutral--500);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-item__value {
+            color: var(--neutral--100);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .capability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+        }
+
+        .capability-item {
+            padding: 12px 16px;
+            background: var(--neutral--700);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent--primary-1);
+        }
+
+        .capability-item__label { color: var(--neutral--500); font-size: 11px; text-transform: uppercase; margin-bottom: 6px; }
+        .capability-item__value { color: var(--neutral--400); font-size: 13px; line-height: 1.5; }
+
+        .fit-list { list-style: none; padding: 0; }
+        .fit-list li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--neutral--400);
+            font-size: 13px;
+        }
+        .fit-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent--primary-1);
+            font-weight: 600;
+        }
+
+        .case-study-card {
+            background: var(--neutral--700);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .case-study-card__meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 11px;
+            color: var(--neutral--500);
+            text-transform: uppercase;
+        }
+
+        .case-study-card__outcome {
+            color: var(--neutral--400);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .case-study-card__relevance {
+            font-size: 12px;
+            color: var(--secondary--color-3);
+            font-style: italic;
+        }
+
+        .diligence-category {
+            margin-bottom: 20px;
+        }
+
+        .diligence-category__title {
+            color: var(--neutral--100);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .diligence-question {
+            padding: 10px 14px;
+            background: var(--neutral--700);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            color: var(--neutral--400);
+            font-size: 13px;
+        }
+
+        .fit-panel {
+            background: rgba(108, 114, 255, 0.08);
+            border: 1px solid rgba(108, 114, 255, 0.25);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .fit-panel--empty {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: var(--neutral--600);
+        }
+
+        .fit-panel__title { color: var(--neutral--100); font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+        .fit-panel__text { color: var(--neutral--400); font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+
+        .empty-state-msg {
+            color: var(--neutral--500);
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--neutral--400);
+        }
+        .error { color: #ff5a65; }
+
+        .right-rail {
+            position: sticky;
+            top: 24px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+        }
+
+        @media (max-width: 1200px) {
+            .two-column { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-wrapper { display: none; }
+            .dashboard-main-section { margin-left: 0; }
+            .operator-header__top { flex-direction: column; }
+            .operator-header__actions { width: 100%; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="sidebar-wrapper">
+            <div class="sidebar-padding">
+                <h2>Dealality</h2>
+                <nav>
+                    <a href="/app">🏠 Home</a>
+                    <a href="brand-library.html">🏨 Brand Explorer</a>
+                    <a href="operator-explorer.html" class="active">🏭 Operator Explorer</a>
+                    <a href="brand-library-compare.html">⚖️ Compare Brands</a>
+                    <a href="partner-directory.html">👥 Partner Directory</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="dashboard-main-section">
+            <div class="operator-detail-container">
+                <div class="breadcrumb">
+                    <a href="operator-explorer.html">Operator Explorer</a>
+                    <span class="breadcrumb-separator">></span>
+                    <span id="breadcrumbName">Operator</span>
+                </div>
+
+                <div id="loadingState" class="loading">
+                    <p>Loading operator information...</p>
+                </div>
+
+                <div id="errorState" class="error" style="display: none;">
+                    <h3>Error loading operator</h3>
+                    <p id="errorMessage"></p>
+                </div>
+
+                <div id="operatorContent" style="display: none;">
+                    <!-- Header -->
+                    <div class="operator-header">
+                        <div class="operator-header__top">
+                            <div class="operator-header__title-section">
+                                <div class="operator-header__logo" id="operatorLogo">
+                                    <span class="operator-header__logo-initial" id="operatorLogoInitial">O</span>
+                                </div>
+                                <div>
+                                    <h1 id="operatorName">Operator Name</h1>
+                                    <div class="operator-header__meta">
+                                        <span class="operator-header__meta-item" id="metaParent"></span>
+                                        <span class="operator-header__meta-item" id="metaHQ"></span>
+                                        <span class="operator-header__meta-item" id="metaWebsite"></span>
+                                        <span class="operator-header__meta-item" id="metaMember"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="operator-header__actions">
+                                <div class="operator-header__badges" id="headerBadges"></div>
+                                <button type="button" class="btn-action">Match to My Deal</button>
+                                <button type="button" class="btn-action btn-action--secondary">Compare</button>
+                                <button type="button" class="btn-action btn-action--secondary">Save Operator</button>
+                                <button type="button" class="btn-action btn-action--secondary">Contact</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat cards -->
+                    <div class="stat-cards" id="statCards"></div>
+
+                    <!-- Tabs -->
+                    <div class="tabs-section">
+                        <button class="tab active" data-tab="overview">Overview</button>
+                        <button class="tab" data-tab="capabilities">Operating Capabilities</button>
+                        <button class="tab" data-tab="experience">Experience & Fit</button>
+                        <button class="tab" data-tab="brands">Brands & Portfolio</button>
+                        <button class="tab" data-tab="casestudies">Case Studies</button>
+                        <button class="tab" data-tab="diligence">Owner Questions / Diligence</button>
+                        <button class="tab" data-tab="fit">Fit to My Deal</button>
+                    </div>
+
+                    <div class="two-column">
+                        <div>
+                            <!-- Tab: Overview -->
+                            <div class="tab-content active" id="tab-overview">
+                                <div class="info-card">
+                                    <div class="info-card__title">Operator Classification</div>
+                                    <div class="info-grid" id="overviewClassification"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Company Overview</div>
+                                    <div class="info-card__content" id="overviewCompany"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Footprint</div>
+                                    <div class="info-grid" id="overviewFootprint"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Operator Positioning / Identity</div>
+                                    <div class="info-card__content" id="overviewPositioning"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Asset Types & Chain Scale Coverage</div>
+                                    <div class="info-grid" id="overviewAssetTypes"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Branded vs Independent Experience</div>
+                                    <div class="info-card__content" id="overviewBrandedIndependent"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Geographic Coverage</div>
+                                    <div class="info-card__content" id="overviewGeography"></div>
+                                </div>
+                            </div>
+
+                            <!-- Tab: Operating Capabilities -->
+                            <div class="tab-content" id="tab-capabilities">
+                                <div class="capability-grid" id="capabilitiesGrid"></div>
+                            </div>
+
+                            <!-- Tab: Experience & Fit -->
+                            <div class="tab-content" id="tab-experience">
+                                <div class="info-card">
+                                    <div class="info-card__title">Best Fit For</div>
+                                    <ul class="fit-list" id="fitBestFor"></ul>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Less Proven / Ask More About</div>
+                                    <ul class="fit-list" id="fitLessProven"></ul>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Asset Type Expertise</div>
+                                    <div class="info-card__content" id="fitAssetTypes"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Situation Experience</div>
+                                    <div class="info-card__content" id="fitSituations"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Ownership Fit</div>
+                                    <div class="info-card__content" id="fitOwnership"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Market Fit</div>
+                                    <div class="info-card__content" id="fitMarket"></div>
+                                </div>
+                            </div>
+
+                            <!-- Tab: Brands & Portfolio -->
+                            <div class="tab-content" id="tab-brands">
+                                <div class="info-card">
+                                    <div class="info-card__title">Brands Managed / Supported</div>
+                                    <div class="info-card__content" id="brandsManaged"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Branded vs Independent Breakdown</div>
+                                    <div class="info-card__content" id="brandsBreakdown"></div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Portfolio Mix</div>
+                                    <div class="info-grid" id="portfolioMix"></div>
+                                </div>
+                            </div>
+
+                            <!-- Tab: Case Studies -->
+                            <div class="tab-content" id="tab-casestudies">
+                                <div id="caseStudiesContainer"></div>
+                            </div>
+
+                            <!-- Tab: Owner Questions / Diligence -->
+                            <div class="tab-content" id="tab-diligence">
+                                <div id="diligenceContainer"></div>
+                                <div class="info-card">
+                                    <div class="info-card__title">Diligence Checklist</div>
+                                    <div class="info-card__content">
+                                        <p>Downloadable diligence checklist coming soon.</p>
+                                        <button type="button" class="btn-action btn-action--secondary" style="margin-top: 12px;" disabled>Download Checklist (Coming Soon)</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab: Fit to My Deal -->
+                            <div class="tab-content" id="tab-fit">
+                                <div class="fit-panel fit-panel--empty" id="fitPanel">
+                                    <div class="fit-panel__title">Fit to My Deal</div>
+                                    <div class="fit-panel__text">
+                                        <p id="fitPanelText">No active deal selected. Match this operator to a deal to see fit score, strengths, and watchouts.</p>
+                                        <button type="button" class="btn-action">Match to My Deal</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right rail -->
+                        <div class="right-rail">
+                            <div class="info-card">
+                                <div class="info-card__title">Quick Actions</div>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <button type="button" class="btn-action">Match to My Deal</button>
+                                    <button type="button" class="btn-action btn-action--secondary">Compare</button>
+                                    <button type="button" class="btn-action btn-action--secondary">Save Operator</button>
+                                    <button type="button" class="btn-action btn-action--secondary">Contact</button>
+                                </div>
+                            </div>
+                            <div class="info-card" id="quickFitCard" style="display: none;">
+                                <div class="info-card__title">Quick Best-Fit Summary</div>
+                                <ul class="fit-list" id="quickFitList"></ul>
+                            </div>
+                            <div class="info-card" id="quickWatchoutsCard" style="display: none;">
+                                <div class="info-card__title">Watchouts</div>
+                                <ul class="fit-list" id="quickWatchoutsList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let operatorId = urlParams.get('id') ? decodeURIComponent(urlParams.get('id')) : null;
+            let operatorName = urlParams.get('name') ? decodeURIComponent(urlParams.get('name')) : null;
+
+            if (!operatorId && !operatorName) {
+                showError('Operator ID or name is required');
+                return;
+            }
+
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    const content = document.getElementById('tab-' + targetTab);
+                    if (content) content.classList.add('active');
+                });
+            });
+
+            const identifier = operatorId || operatorName;
+            fetchOperatorDetails(identifier, operatorName);
+
+            function splitCsv(input) {
+                if (!input) return [];
+                return String(input).split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+            }
+
+            function normalizeThirdPartyOperator(row) {
+                const companyName = row.companyName || row.operator_name || 'Unknown Operator';
+                const regions = splitCsv(row.regionsSupported || row.geography || '');
+                const scales = splitCsv(row.chainScale || '');
+                const brands = splitCsv(row.brandsManaged || '');
+                const serviceModels = splitCsv(row.primaryServiceModel || '');
+                const caseStudies = Array.isArray(row.caseStudiesDetail) ? row.caseStudiesDetail : [];
+                const assetClasses = [...new Set(caseStudies.map(function(cs) { return cs && cs.hotel_type ? String(cs.hotel_type).trim() : ''; }).filter(Boolean))];
+                const situations = [...new Set(caseStudies.map(function(cs) { return cs && cs.situation ? String(cs.situation).trim() : ''; }).filter(Boolean))];
+                const capabilityTags = splitCsv(row.companyDescription || '').slice(0, 6);
+                const brandedExperience = brands.length > 0;
+                const independentExperience = brands.some(function(b) { return /independent/i.test(b); });
+                return {
+                    id: row.id,
+                    operator_name: companyName,
+                    logo_url: row.logo || row.logo_url || '',
+                    company_type: '3rd Party Operator',
+                    parent_company: row.primaryServiceModel || row.parent_company || '',
+                    website: row.website || '',
+                    member_since: '',
+                    overview_short: row.companyDescription || row.overview_short || '',
+                    overview_long: row.companyDescription || row.overview_long || '',
+                    hotels_managed_count: Number(row.totalProperties || row.hotels_managed_count || 0) || 0,
+                    rooms_managed_count: Number(row.totalRooms || row.rooms_managed_count || 0) || 0,
+                    regions_served: regions.length || null,
+                    countries_served: null,
+                    top_markets: regions.slice(0, 3),
+                    years_in_operation: Number(row.yearsInBusiness || row.years_in_operation || 0) || null,
+                    asset_classes: assetClasses,
+                    chain_scales: scales,
+                    branded_experience: brandedExperience,
+                    independent_experience: independentExperience,
+                    operating_situations: situations,
+                    service_models: serviceModels,
+                    capability_tags: capabilityTags,
+                    brands_managed: brands,
+                    geography: regions,
+                    case_studies: caseStudies
+                };
+            }
+
+            async function fetchOperatorFromThirdPartyList(id, nameHint) {
+                const response = await fetch('/api/third-party-operators');
+                if (!response.ok) return null;
+                const data = await response.json().catch(function() { return {}; });
+                const normalized = (data.operators || []).map(normalizeThirdPartyOperator);
+                const idStr = String(id || '').toLowerCase();
+                const nameStr = String(nameHint || '').toLowerCase();
+                return normalized.find(function(op) {
+                    if (idStr && String(op.id || '').toLowerCase() === idStr) return true;
+                    if (idStr && String(op.operator_name || '').toLowerCase() === idStr) return true;
+                    if (nameStr && String(op.operator_name || '').toLowerCase() === nameStr) return true;
+                    return false;
+                }) || null;
+            }
+
+            async function fetchOperatorDetails(id, nameHint) {
+                try {
+                    const params = new URLSearchParams();
+                    params.append('operatorId', id);
+                    const response = await fetch('/api/operator-explorer/operator?' + params.toString());
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            const fallbackOperator = await fetchOperatorFromThirdPartyList(id, nameHint);
+                            if (fallbackOperator) {
+                                displayOperator(fallbackOperator);
+                                return;
+                            }
+                        }
+                        const err = await response.json().catch(() => ({}));
+                        throw new Error(err.error || 'Failed to fetch operator');
+                    }
+                    const data = await response.json();
+                    if (data.success && data.operator) {
+                        displayOperator(data.operator);
+                    } else {
+                        const fallbackOperator = await fetchOperatorFromThirdPartyList(id, nameHint);
+                        if (fallbackOperator) {
+                            displayOperator(fallbackOperator);
+                            return;
+                        }
+                        throw new Error(data.error || 'Operator not found');
+                    }
+                } catch (error) {
+                    console.error('Error fetching operator:', error);
+                    showError(error.message);
+                }
+            }
+
+            function displayOperator(op) {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('operatorContent').style.display = 'block';
+
+                document.getElementById('operatorName').textContent = op.operator_name;
+                document.getElementById('breadcrumbName').textContent = op.operator_name;
+
+                // Logo
+                const logoEl = document.getElementById('operatorLogo');
+                const initialEl = document.getElementById('operatorLogoInitial');
+                initialEl.textContent = (op.operator_name || 'O').charAt(0).toUpperCase();
+                initialEl.style.display = 'flex';
+                if (op.logo_url && op.logo_url.startsWith('http')) {
+                    const img = document.createElement('img');
+                    img.src = op.logo_url;
+                    img.alt = op.operator_name;
+                    img.onerror = () => { img.style.display = 'none'; initialEl.style.display = 'flex'; };
+                    img.onload = () => img.classList.add('loaded');
+                    logoEl.insertBefore(img, initialEl);
+                }
+
+                // Meta
+                document.getElementById('metaParent').textContent = op.parent_company ? 'Parent: ' + op.parent_company : '';
+                document.getElementById('metaHQ').textContent = [op.hq_city, op.hq_country].filter(Boolean).join(', ') ? 'HQ: ' + [op.hq_city, op.hq_country].join(', ') : '';
+                const webWrap = document.getElementById('metaWebsite');
+                if (op.website && op.website.startsWith('http')) {
+                    webWrap.innerHTML = '<a href="' + escapeHtml(op.website) + '" target="_blank" rel="noopener" style="color: var(--secondary--color-3);">Website</a>';
+                } else webWrap.textContent = '';
+                document.getElementById('metaMember').textContent = op.member_since ? 'Member since ' + op.member_since : '';
+
+                // Badges
+                const badges = document.getElementById('headerBadges');
+                badges.innerHTML = '';
+                const badgeValues = op.capability_tags || op.chain_scales || [];
+                badgeValues.slice(0, 6).forEach(b => {
+                    const span = document.createElement('span');
+                    span.className = 'badge badge--operator';
+                    span.textContent = b;
+                    badges.appendChild(span);
+                });
+                if (op.company_type) {
+                    const span = document.createElement('span');
+                    span.className = 'badge badge--segment';
+                    span.textContent = op.company_type;
+                    badges.appendChild(span);
+                }
+
+                // Stat cards
+                const statCards = document.getElementById('statCards');
+                statCards.innerHTML = [
+                    { value: op.hotels_managed_count != null ? op.hotels_managed_count.toLocaleString() : '-', label: 'Hotels Managed' },
+                    { value: op.rooms_managed_count != null ? op.rooms_managed_count.toLocaleString() : '-', label: 'Rooms Managed' },
+                    { value: op.regions_served != null ? op.regions_served : '-', label: 'Regions Served' },
+                    { value: op.years_in_operation != null ? op.years_in_operation : '-', label: 'Years in Operation' },
+                ].map(s => '<div class="stat-card"><div class="stat-card__value">' + s.value + '</div><div class="stat-card__label">' + s.label + '</div></div>').join('');
+
+                // Overview tab
+                document.getElementById('overviewClassification').innerHTML = renderInfoGrid([
+                    { label: 'Company Type', value: op.company_type },
+                    { label: 'Parent Company', value: op.parent_company },
+                    { label: 'Year Founded', value: op.year_founded },
+                ]);
+                document.getElementById('overviewCompany').textContent = op.overview_long || op.overview_short || 'Information not yet provided.';
+                document.getElementById('overviewFootprint').innerHTML = renderInfoGrid([
+                    { label: 'Hotels Managed', value: op.hotels_managed_count != null ? op.hotels_managed_count : '-' },
+                    { label: 'Rooms Managed', value: op.rooms_managed_count != null ? op.rooms_managed_count.toLocaleString() : '-' },
+                    { label: 'Regions', value: op.regions_served },
+                    { label: 'Countries', value: op.countries_served },
+                    { label: 'Top Markets', value: Array.isArray(op.top_markets) ? op.top_markets.join(', ') : op.top_markets },
+                ]);
+                document.getElementById('overviewPositioning').textContent = op.overview_short || 'Information not yet provided.';
+                document.getElementById('overviewAssetTypes').innerHTML = renderInfoGrid([
+                    { label: 'Asset Classes', value: Array.isArray(op.asset_classes) ? op.asset_classes.join(', ') : op.asset_classes },
+                    { label: 'Chain Scales', value: Array.isArray(op.chain_scales) ? op.chain_scales.join(', ') : op.chain_scales },
+                    { label: 'Hotel Types', value: Array.isArray(op.hotel_types) ? op.hotel_types.join(', ') : op.hotel_types },
+                ]);
+                const branded = [];
+                if (op.branded_experience) branded.push('Branded');
+                if (op.independent_experience) branded.push('Independent');
+                document.getElementById('overviewBrandedIndependent').textContent = branded.length ? branded.join(' and ') : 'Information not yet provided.';
+                document.getElementById('overviewGeography').textContent = Array.isArray(op.geography) ? op.geography.join(', ') : (op.geography || 'Information not yet provided.');
+
+                // Capabilities tab
+                const caps = [
+                    { label: 'Day-to-Day Hotel Operations', value: 'Full management of daily hotel operations.' },
+                    { label: 'Revenue Management', value: op.revenue_management_support || 'Information not yet provided.' },
+                    { label: 'Sales & Marketing Support', value: op.sales_support || 'Information not yet provided.' },
+                    { label: 'Training & Talent', value: op.training_platform || 'Information not yet provided.' },
+                    { label: 'Food & Beverage Operations', value: op.food_beverage_capability || 'Information not yet provided.' },
+                    { label: 'QA / Brand Standards', value: op.qa_support || 'Information not yet provided.' },
+                    { label: 'Reporting & Owner Communication', value: (op.reporting_style || '') + (op.owner_reporting_cadence ? ' ' + op.owner_reporting_cadence : '') || 'Information not yet provided.' },
+                    { label: 'Procurement / Technical / Engineering', value: (op.procurement_support || '') + (op.engineering_support ? ' ' + op.engineering_support : '') || 'Information not yet provided.' },
+                    { label: 'Systems / Tech Stack', value: Array.isArray(op.systems_stack) ? op.systems_stack.join(', ') : (op.systems_stack || 'Information not yet provided.') },
+                    { label: 'Marketing Support', value: op.marketing_support || 'Information not yet provided.' },
+                ];
+                document.getElementById('capabilitiesGrid').innerHTML = caps.map(c => '<div class="capability-item"><div class="capability-item__label">' + escapeHtml(c.label) + '</div><div class="capability-item__value">' + escapeHtml(c.value || '-') + '</div></div>').join('');
+
+                // Experience & Fit tab
+                renderList('fitBestFor', op.best_fit_for);
+                renderList('fitLessProven', op.less_proven_areas);
+                document.getElementById('fitAssetTypes').textContent = Array.isArray(op.asset_classes) ? op.asset_classes.join(', ') : (op.asset_classes || 'Information not yet provided.');
+                document.getElementById('fitSituations').textContent = Array.isArray(op.operating_situations) ? op.operating_situations.join(', ') : (op.operating_situations || 'Information not yet provided.');
+                document.getElementById('fitOwnership').textContent = Array.isArray(op.ownership_fit) ? op.ownership_fit.join(', ') : (op.ownership_fit || 'Information not yet provided.');
+                document.getElementById('fitMarket').textContent = Array.isArray(op.market_fit) ? op.market_fit.join(', ') : (op.market_fit || 'Information not yet provided.');
+
+                // Brands tab
+                document.getElementById('brandsManaged').textContent = Array.isArray(op.brands_managed) ? op.brands_managed.join(', ') : (op.brands_managed || 'Information not yet provided.');
+                const br = [];
+                if (op.branded_experience) br.push('Branded');
+                if (op.independent_experience) br.push('Independent');
+                document.getElementById('brandsBreakdown').textContent = br.length ? br.join(', ') : 'Information not yet provided.';
+                document.getElementById('portfolioMix').innerHTML = renderInfoGrid([
+                    { label: 'By Chain Scale', value: Array.isArray(op.chain_scales) ? op.chain_scales.join(', ') : op.chain_scales },
+                    { label: 'By Hotel Type', value: Array.isArray(op.hotel_types) ? op.hotel_types.join(', ') : op.hotel_types },
+                ]);
+
+                // Case studies
+                const csContainer = document.getElementById('caseStudiesContainer');
+                if (op.case_studies && op.case_studies.length > 0) {
+                    csContainer.innerHTML = op.case_studies.map(cs => {
+                        const meta = [cs.hotel_type, cs.region, cs.branded ? 'Branded' : 'Independent', cs.situation_type].filter(Boolean).join(' · ');
+                        return '<div class="case-study-card"><div class="case-study-card__meta">' + escapeHtml(meta) + '</div><div class="case-study-card__outcome">' + escapeHtml(cs.outcome || '') + '</div>' + (cs.owner_relevance ? '<div class="case-study-card__relevance">Owner relevance: ' + escapeHtml(cs.owner_relevance) + '</div>' : '') + '</div>';
+                    }).join('');
+                } else {
+                    csContainer.innerHTML = '<div class="info-card"><div class="info-card__content empty-state-msg">Case studies and comparable experience details coming soon.</div></div>';
+                }
+
+                // Diligence
+                const dilContainer = document.getElementById('diligenceContainer');
+                if (op.owner_questions && op.owner_questions.length > 0) {
+                    dilContainer.innerHTML = op.owner_questions.map(cat => {
+                        let qs = (cat.questions || []).map(q => '<div class="diligence-question">' + escapeHtml(q) + '</div>').join('');
+                        return '<div class="diligence-category"><div class="diligence-category__title">' + escapeHtml(cat.category) + '</div>' + qs + '</div>';
+                    }).join('');
+                } else {
+                    dilContainer.innerHTML = '<div class="info-card"><div class="info-card__content empty-state-msg">Diligence questions will be populated from operator data.</div></div>';
+                }
+
+                // Right rail quick fit
+                if (op.best_fit_for && op.best_fit_for.length > 0) {
+                    document.getElementById('quickFitCard').style.display = 'block';
+                    renderList('quickFitList', op.best_fit_for.slice(0, 4));
+                }
+                if (op.less_proven_areas && op.less_proven_areas.length > 0) {
+                    document.getElementById('quickWatchoutsCard').style.display = 'block';
+                    renderList('quickWatchoutsList', op.less_proven_areas);
+                }
+            }
+
+            function renderInfoGrid(items) {
+                return (items || []).filter(i => i.value !== undefined && i.value !== '' && i.value !== null).map(i =>
+                    '<div class="info-item"><div class="info-item__label">' + escapeHtml(i.label) + '</div><div class="info-item__value">' + escapeHtml(String(i.value)) + '</div></div>'
+                ).join('') || '<div class="empty-state-msg">Information not yet provided.</div>';
+            }
+
+            function renderList(id, arr) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                if (Array.isArray(arr) && arr.length > 0) {
+                    el.innerHTML = arr.map(a => '<li>' + escapeHtml(a) + '</li>').join('');
+                } else {
+                    el.innerHTML = '<li class="empty-state-msg">Information not yet provided.</li>';
+                }
+            }
+
+            function escapeHtml(text) {
+                if (text == null) return '';
+                const div = document.createElement('div');
+                div.textContent = String(text);
+                return div.innerHTML;
+            }
+
+            function showError(msg) {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('errorState').style.display = 'block';
+                document.getElementById('errorMessage').textContent = msg;
+            }
+        });
+    </script>
+</body>
+</html>

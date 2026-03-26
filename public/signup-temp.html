@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https:; script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdn.prod.website-files.com; font-src https://fonts.gstatic.com https://cdn.prod.website-files.com data:; img-src 'self' data: https:;">
+    <title>Join Dealality - Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/css/mvp-deal-capture.webflow.shared.36895bd16.css" rel="stylesheet" type="text/css">
+    <style>
+        /* Hide success/error messages until after submit (temp page only) */
+        .w-form-done, .w-form-fail { display: none !important; }
+        .w-form-done.is-visible, .w-form-fail.is-visible { display: block !important; }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="dashboard-main-section">
+            <div class="dashboard-content">
+                <div class="dashboard-main-content sales-page min-h-90vh">
+                    <div class="signup-wrapper">
+                        <!-- Left Side - Registration Form -->
+                        <div class="signup-left">
+                            <div class="form-block v2">
+                                <div class="logo-holder">
+                                    <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" loading="lazy" alt="">
+                                </div>
+                                <h3 class="display-4 medium mg-bottom-12px upppercase">JOIN DEAL CAPTURE™</h3>
+                                <p class="paragraph-large mg-bottom-32px">Join the confidential platform where qualified hotel owners, operators, and advisors connect. Submit your details to begin the quick approval process.</p>
+                                
+                                <div class="login-form-block v2 w-form">
+                                    <form method="get" data-ms-form="signup" name="wf-form-Signup-Form" data-name="Signup Form" id="wf-form-Signup-Form" aria-label="Signup Form">
+                                        <div class="form-field-wrap">
+                                            <div>
+                                                <input class="input w-input" maxlength="256" name="First-Name" data-name="First Name" placeholder="First Name*" type="text" id="First-Name" required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <div>
+                                                <input class="input w-input" maxlength="256" name="Last-Name" data-name="Last Name" placeholder="Last Name*" type="text" id="Last-Name" required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <input class="input w-input" maxlength="256" name="Company-Name" data-name="Company Name" placeholder="Company Name*" type="text" id="Company-Name" required="">
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <input class="input w-input" maxlength="256" name="Title" data-name="Title" placeholder="Title*" type="text" id="Title" required="" aria-required="true">
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <input class="input w-input" maxlength="256" name="Email-Id" data-name="Email Id" placeholder="Company Email*" type="email" id="Email-Id" required="">
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <input class="input w-input" maxlength="256" name="Phone" data-name="Phone" placeholder="Phone Number*" type="tel" id="Phone" required="">
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <select id="Company-Type" name="Company-Type" data-name="Company Type" required="" class="input w-select company-type-select">
+                                                <option value="">Company Type*</option>
+                                                <option value="Hotel Owner">Hotel Owner</option>
+                                                <option value="Developer Investor">Developer & Investor</option>
+                                                <option value="Private Equity Firm">Private Equity Firm</option>
+                                                <option value="Real Estate Broker">Real Estate Broker</option>
+                                                <option value="Hotel Brand">Hotel Brand (Franchise)</option>
+                                                <option value="Hotel Management Company">Hotel Management Company</option>
+                                                <option value="Asset Manager">Asset Manager</option>
+                                                <option value="Legal Advisor">Legal Advisor</option>
+                                                <option value="Lenders Underwriter">Lender & Underwriter</option>
+                                                <option value="Service Provider">Service Provider (Design, Tech, Procure., etc.)</option>
+                                                <option value="Hospitality Consultant">Hospitality Consultant</option>
+                                                <option value="Research Firm">Research Firm (e.g., JLL, STR, CoStar)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <textarea class="input textarea w-input" maxlength="5000" name="Reason-to-Join-Platform" data-name="Reason to Join Platform" placeholder="Tell us why you care to join the platform.*" id="Reason-to-Join-Platform" required=""></textarea>
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <textarea class="input textarea w-input" maxlength="5000" name="How-Did-You-Hear" data-name="How Did You Hear" placeholder="How Did You Hear About Us?" id="How-Did-You-Hear"></textarea>
+                                        </div>
+                                        <input type="password" class="hidden" autocomplete="off" readonly="readonly">
+                                        <div class="submit-wrapper">
+                                            <div class="form-field-wrap mg-bottom-0">
+                                                <label class="w-checkbox">
+                                                    <input type="checkbox" name="Agree-with-Terms" id="Agree-with-Terms" data-name="Agree with Terms" required="" class="w-checkbox-input">
+                                                    <span class="w-form-label" for="Agree-with-Terms">I agree with the <a href="#" class="entry-link">Terms</a> & <a href="#" class="entry-link">Privacy Policy</a>.</span>
+                                                </label>
+                                            </div>
+                                            <input type="submit" data-wait="Please wait..." class="btn-primary large v2 w-button" value="Submit">
+                                        </div>
+                                        <p>By providing a telephone number and submitting the form you are consenting to be contacted by SMS text message. Message & data rates may apply. Reply STOP to opt out of further messaging.</p>
+                                    </form>
+                                    <div class="w-form-done" tabindex="-1" role="region" aria-label="Signup Form success">
+                                        <div>Thank you! Your submission has been received!</div>
+                                        <p style="margin-top: 1rem;"><a href="/" class="entry-link">← Back to Dealality</a></p>
+                                    </div>
+                                    <div class="w-form-fail" tabindex="-1" role="region" aria-label="Signup Form failure">
+                                        <div>Oops! Something went wrong while submitting the form.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side - Membership Eligibility -->
+                        <div class="signup-right">
+                            <h3 class="display-4 medium mg-bottom-12px upppercase">DEAL CAPTURE™ MEMBERSHIP ELIGIBILITY CRITERIA</h3>
+                            <p class="paragraph-large mg-bottom-32px">Dealality is a private-access platform designed to connect qualified hospitality players across North America, Latin America, the Caribbean, Middle East, and Europe. Membership is limited to those actively involved in hotel development, brand expansion, or operational growth. You must meet one or more of the following criteria:</p>
+                            
+                            <h3 class="display-4 medium mg-bottom-12px upppercase mg-bottom-0">CAPITAL-SIDE MEMBERS</h3>
+                            <h3 class="display-4 medium mg-bottom-12px">(Hotel Owners, Developers, Investors, and Capital Platforms)</h3>
+                            <div class="paragraph-large w-richtext">
+                                <ul role="list">
+                                    <li>You own, operate, or control one or more hotel or resort assets generating at least $1M in annual revenue, or are actively developing a hotel or mixed-use project.</li>
+                                    <li>You are seeking a qualified brand or operator partner for a new build, conversion, or repositioning project within the next 24 months.</li>
+                                    <li>You represent a real estate investment group, family office, developer, or capital platform with a clear hospitality strategy and an active pipeline of projects.</li>
+                                </ul>
+                            </div>
+                            
+                            <h3 class="display-4 medium mg-bottom-12px upppercase mg-bottom-0">Operator-Side Members</h3>
+                            <h3 class="display-4 medium mg-bottom-12px">(Hotel Brands, Soft Brands, and Third-Party Management Companies)</h3>
+                            <div class="paragraph-large w-richtext">
+                                <ul role="list">
+                                    <li>You are a hotel brand, soft brand, or independent operator actively expanding in the Americas, Middle East or Europe, with a focus on franchise or management agreements.</li>
+                                    <li>You have executed at least 3 qualified hotel agreements in the last 3 years, or can demonstrate current growth momentum and delivery capability.</li>
+                                    <li>You offer a clear value proposition and support model for hotel owners and can engage in structured deal conversations.</li>
+                                </ul>
+                            </div>
+                            
+                            <h3 class="display-4 medium mg-bottom-12px upppercase mg-bottom-0">Advisory & Support Members</h3>
+                            <h3 class="display-4 medium mg-bottom-12px">(Consultants, Legal Advisors, Technical Experts)</h3>
+                            <div class="paragraph-large w-richtext">
+                                <p>You are a consultant or advisor with a proven track record supporting hotel projects, and have been directly engaged in helping owners or operators identify and structure brand or operator partnerships.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/68108c2a063eeb5d1bd7b095_sales-home-hero-bg-dashdark-webflow-template.svg" loading="eager" alt="" class="sales-home-hero-bg-image full-height">
+                </div>
+                <div class="dashboard-footer-wrapper">
+                    <div class="container-default w-container">
+                        <div class="text-200 medium">2025 Copyright © Dealality</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        // Initialize Select2 for dropdowns (same as signup page)
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.company-type-select').select2({
+                    placeholder: 'Company Type*',
+                    allowClear: true,
+                    width: '100%'
+                });
+            }, 100);
+        });
+
+        // Temp page only: standardize email, submit to Airtable via /api/signup
+        (function () {
+            var form = document.getElementById('wf-form-Signup-Form');
+            var emailInput = document.getElementById('Email-Id');
+            var submitBtn = form ? form.querySelector('input[type="submit"]') : null;
+            var doneEl = document.querySelector('.w-form-done');
+            var failEl = document.querySelector('.w-form-fail');
+            if (!form || !emailInput) return;
+
+            function standardizeEmail(value) {
+                if (value == null || typeof value !== 'string') return '';
+                return value.trim().toLowerCase();
+            }
+
+            function getVal(id) {
+                var el = document.getElementById(id);
+                return el ? (el.value || '').trim() : '';
+            }
+
+            emailInput.addEventListener('blur', function () {
+                var raw = emailInput.value;
+                if (!raw) return;
+                var standardized = standardizeEmail(raw);
+                if (standardized !== raw) emailInput.value = standardized;
+            });
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (emailInput.value) emailInput.value = standardizeEmail(emailInput.value);
+
+                var payload = {
+                    firstName: getVal('First-Name'),
+                    lastName: getVal('Last-Name'),
+                    companyName: getVal('Company-Name'),
+                    title: getVal('Title'),
+                    email: getVal('Email-Id'),
+                    phone: getVal('Phone'),
+                    companyType: getVal('Company-Type'),
+                    reasonToJoin: getVal('Reason-to-Join-Platform'),
+                    howDidYouHear: getVal('How-Did-You-Hear')
+                };
+
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.value = 'Please wait...'; }
+                if (failEl) failEl.classList.remove('is-visible');
+
+                fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(function (res) {
+                    return res.json().then(function (data) {
+                        if (!res.ok) throw new Error(data.details || data.error || 'Signup failed');
+                        return data;
+                    });
+                })
+                .then(function () {
+                    form.style.display = 'none';
+                    if (doneEl) doneEl.classList.add('is-visible');
+                })
+                .catch(function (err) {
+                    if (failEl) {
+                        failEl.querySelector('div').textContent = err.message || 'Something went wrong. Please try again.';
+                        failEl.classList.add('is-visible');
+                    }
+                    form.style.display = '';
+                })
+                .finally(function () {
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.value = 'Submit'; }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

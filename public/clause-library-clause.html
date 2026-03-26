@@ -1,0 +1,2893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clause Detail - Dealality Platform</title>
+    <style>
+        /* CSS Variables - Matching Radar/Brand Review styling */
+        :root {
+          --neutral--800: #080f25;
+          --neutral--400: #aeb9e1;
+          --neutral--100: white;
+          --accent--primary-1: #6c72ff;
+          --secondary--color-4: #343b4f;
+          --secondary--color-1: #101935;
+          --general--shadow-01: #14142b0f;
+          --secondary--color-2: #9a91fb;
+          --secondary--color-3: #57c3ff;
+          --secondary--color-5: #fdb52a;
+          --neutral--700: #212c4d;
+          --neutral--600: #37446b;
+          --neutral--500: #7e89ac;
+          --neutral--200: #d9e1fa;
+          --system--green-300: #14ca74;
+          --system--300: #ff5a65;
+          --system--blue-400: #086cd9;
+          --system--green-400: #11845b;
+          --system--orange-400: #d5691b;
+          --general--shadow-03: #14142b1a;
+          --system--red-100: #ffeff0;
+          --neutral--300: #d1dbf9;
+          --general--shadow-02: #14142b14;
+          --system--red-400: #dc2b2b;
+          --system--blue-100: #eaf4ff;
+          --system--blue-300: #1d88fe;
+          --system--blue-200: #8fc3ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5em;
+            min-height: 100vh;
+        }
+
+        /* Page Wrapper */
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Main Content Layout - no sidebar (parent app provides nav) */
+        .dashboard-main-section {
+            flex: 1;
+            margin-left: 0;
+            min-width: 0;
+        }
+
+        /* Main Container */
+        .clause-detail-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Breadcrumb - Matching My Deals Style */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #aeb9e1;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .breadcrumb a {
+            color: #aeb9e1;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+            color: #ffffff;
+        }
+
+        .breadcrumb-separator {
+            color: #aeb9e1;
+        }
+
+        .breadcrumb span:not(.breadcrumb-separator) {
+            color: #aeb9e1;
+        }
+
+        /* Header Section */
+        .clause-detail__header {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 3px solid var(--accent--primary-1);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Sticky Header - NEW */
+        .clause-detail__header.sticky {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8, 15, 37, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--neutral--600);
+            margin-bottom: 20px;
+        }
+
+        /* Quick Actions - NEW */
+        .header-actions {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.6px solid var(--neutral--600);
+            color: var(--neutral--400);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            background: var(--neutral--700);
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .action-btn.active {
+            background: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        /* Reading Progress Bar - NEW */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent--primary-1);
+            z-index: 10000;
+            transition: width 0.1s ease;
+        }
+
+        /* Table of Contents - NEW */
+        .table-of-contents {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(8, 15, 37, 0.95);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 15px;
+            max-width: 250px;
+            max-height: 70vh;
+            overflow-y: auto;
+            z-index: 200;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .table-of-contents.show {
+            display: block;
+        }
+
+        .toc-title {
+            color: var(--neutral--100);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+
+        .toc-item {
+            display: block;
+            color: var(--neutral--400);
+            font-size: 12px;
+            padding: 6px 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .toc-item:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .toc-item.active {
+            background: rgba(108, 114, 255, 0.2);
+            color: var(--accent--primary-1);
+            border-left: 2px solid var(--accent--primary-1);
+            padding-left: 10px;
+        }
+
+        /* Section Expand/Collapse - NEW */
+        .content-section__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-toggle {
+            background: none;
+            border: none;
+            color: var(--neutral--400);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: all 0.2s;
+        }
+
+        .section-toggle:hover {
+            color: var(--neutral--100);
+        }
+
+        .content-section.collapsed .content-section__body {
+            display: none;
+        }
+
+        .content-section.collapsed .section-toggle::before {
+            content: '▶';
+        }
+
+        .content-section:not(.collapsed) .section-toggle::before {
+            content: '▼';
+        }
+
+        /* Enhanced Breadcrumb - NEW */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #aeb9e1;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .breadcrumb a {
+            color: #aeb9e1;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+            color: #ffffff;
+        }
+
+        .breadcrumb-category {
+            color: var(--accent--primary-1);
+        }
+
+        /* Reading Time - NEW */
+        .reading-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--neutral--500);
+            font-size: 12px;
+            margin-left: 12px;
+        }
+
+        /* Print Styles - NEW */
+        @media print {
+            .header-actions,
+            .table-of-contents,
+            .navigation-controls,
+            .reading-progress {
+                display: none !important;
+            }
+
+            .clause-detail-container {
+                max-width: 100%;
+                padding: 20px;
+            }
+
+            .clause-detail__content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .content-section {
+                page-break-inside: avoid;
+            }
+        }
+
+        .clause-detail__header h2 {
+            color: var(--neutral--100);
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.3em;
+            letter-spacing: -0.5px;
+        }
+
+        .clause-detail__meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .clause-detail__meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--neutral--400);
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .clause-detail__meta-label {
+            font-weight: 500;
+            color: var(--neutral--400);
+            letter-spacing: 0.3px;
+        }
+
+        .clause-detail__meta-value {
+            color: var(--neutral--100);
+            font-weight: 400;
+        }
+
+        .clause-detail__meta-separator {
+            color: var(--neutral--500);
+        }
+
+        .clause-detail__badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .badge--risk-low {
+            background: rgba(20, 202, 116, 0.2);
+            color: #14ca74;
+            border: 1px solid rgba(20, 202, 116, 0.3);
+        }
+
+        .badge--risk-medium {
+            background: rgba(253, 181, 42, 0.2);
+            color: #fdb52a;
+            border: 1px solid rgba(253, 181, 42, 0.3);
+        }
+
+        .badge--risk-high {
+            background: rgba(220, 43, 43, 0.2);
+            color: #dc2b2b;
+            border: 1px solid rgba(220, 43, 43, 0.3);
+        }
+
+        .badge--lean-neutral {
+            background: rgba(174, 185, 225, 0.2);
+            color: #aeb9e1;
+            border: 1px solid rgba(174, 185, 225, 0.3);
+        }
+
+        .badge--lean-owner {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .badge--lean-brand {
+            background: rgba(214, 158, 46, 0.2);
+            color: #d69e2e;
+            border: 1px solid rgba(214, 158, 46, 0.3);
+        }
+
+        .badge--prevalence-common {
+            background: rgba(20, 202, 116, 0.2);
+            color: #14ca74;
+            border: 1px solid rgba(20, 202, 116, 0.3);
+        }
+
+        .badge--prevalence-sometimes {
+            background: rgba(253, 181, 42, 0.2);
+            color: #fdb52a;
+            border: 1px solid rgba(253, 181, 42, 0.3);
+        }
+
+        .badge--prevalence-rare {
+            background: rgba(174, 185, 225, 0.2);
+            color: #aeb9e1;
+            border: 1px solid rgba(174, 185, 225, 0.3);
+        }
+
+        /* Single-Column Layout (center sidebar removed) */
+        .clause-detail__content-wrapper {
+            display: block;
+            margin-top: 30px;
+        }
+
+        /* Left Column - Main Content */
+        .clause-detail__content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background: rgba(255, 255, 255, 0.01);
+            padding: 0;
+        }
+
+        /* Two-column section for Summary and Why It Matters */
+        .content-sections-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .content-sections-row .content-section {
+            margin: 0;
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-top: 2px solid rgba(108, 114, 255, 0.3);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .content-section__title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neutral--100);
+            margin-bottom: 5px;
+            padding-bottom: 0;
+            border-bottom: none;
+            letter-spacing: 0.2px;
+        }
+
+        .content-section__description {
+            color: var(--neutral--100);
+            font-size: 0.75rem;
+            font-weight: 300;
+            line-height: 1.3;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+
+        .content-section__body {
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        .content-section__body p {
+            margin-bottom: 15px;
+        }
+
+        .content-section__body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section__body ul,
+        .content-section__body ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .content-section__body li {
+            margin-bottom: 8px;
+            line-height: 1.8;
+        }
+
+        .content-section__body ul {
+            list-style-type: disc;
+        }
+
+        .content-section__body ul ul {
+            list-style-type: circle;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .content-section__body .text-header {
+            color: var(--neutral--100);
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .content-section__body .text-header:first-child {
+            margin-top: 0;
+        }
+
+        /* Comparison table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+            table-layout: fixed; /* Ensure equal column widths */
+            border-left: 2px solid rgba(108, 114, 255, 0.3);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border: 0.6px solid var(--neutral--600);
+            vertical-align: top;
+        }
+
+        /* Spacer column for rotated header */
+        .comparison-table th.spacer,
+        .comparison-table td.spacer {
+            width: 40px;
+            min-width: 40px;
+            max-width: 40px;
+            padding: 0;
+            border: none;
+            background: transparent;
+        }
+
+        /* Main content columns - equal width when spacer exists */
+        .comparison-table th.spacer ~ th,
+        .comparison-table td.spacer ~ td {
+            width: calc((100% - 40px) / 3);
+        }
+
+        /* Main content columns - equal width when no spacer (3 columns) */
+        .comparison-table:not(:has(.spacer)) th:not(.rationale-header),
+        .comparison-table:not(:has(.spacer)) td:not(.rationale-header) {
+            width: 33.33%;
+        }
+
+        .comparison-table th {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--neutral--100);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: rgba(108, 114, 255, 0.05);
+        }
+
+        /* Removed colored left borders - using standard cell borders only */
+
+        .comparison-table ul {
+            list-style-type: disc;
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .comparison-table li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+            color: var(--neutral--100);
+        }
+
+        .comparison-table p {
+            margin-bottom: 10px;
+        }
+
+        .comparison-table p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Rotated header for Rationale row */
+        .comparison-table .position-header,
+        .comparison-table .rationale-header {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            white-space: nowrap;
+            padding: 12px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--neutral--100);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            vertical-align: middle;
+            text-align: center;
+            width: 40px;
+            min-width: 40px;
+            max-width: 40px;
+            border: 0.6px solid var(--neutral--600);
+            height: auto;
+        }
+
+
+        .comparison-table .position-row td,
+        .comparison-table .rationale-row td {
+            vertical-align: top;
+        }
+
+        /* Clause Text - Monospace style */
+        .clause-text {
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 3px solid var(--neutral--500);
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--neutral--200);
+            white-space: pre-wrap;
+            overflow-x: auto;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Right Column - Sidebar */
+        .clause-detail__sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 2px solid rgba(174, 185, 225, 0.4);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            overflow: visible; /* Allow table wrapper to handle scrolling */
+            width: 100%;
+            box-sizing: border-box;
+            min-width: 0; /* Allow card to shrink */
+        }
+
+        .sidebar-card__title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral--100);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--neutral--600);
+            letter-spacing: 0.3px;
+        }
+
+        .sidebar-card__content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow: visible; /* Allow table wrapper to handle its own scrolling */
+            width: 100%;
+            min-width: 0; /* Allow flex children to shrink below content size */
+        }
+
+        .sidebar-card__item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .sidebar-card__label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--neutral--400);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .sidebar-card__value {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--neutral--100);
+        }
+
+        /* Disclaimer Card */
+        .disclaimer-card {
+            margin-top: 20px;
+        }
+
+        .disclaimer-text {
+            color: var(--neutral--400);
+            font-size: 11px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Tags as Chips */
+        .tag-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-chip {
+            padding: 6px 12px;
+            background: rgba(108, 114, 255, 0.15);
+            border: 0.6px solid var(--accent--primary-1);
+            color: var(--accent--primary-1);
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        /* Variables Table */
+        .variables-table-container {
+            margin-top: 10px;
+        }
+
+        /* Variables table container - allow horizontal scrolling */
+        .variables-table-container {
+            width: 100%;
+            overflow: hidden; /* Hide overflow at container level */
+        }
+
+        .variables-table-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: scroll !important; /* Force horizontal scrollbar */
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            display: block;
+            position: relative;
+            /* Force scrollbar to be visible */
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: var(--neutral--600) var(--neutral--800); /* Firefox - neutral thumb, dark track */
+            /* Ensure wrapper can scroll */
+            min-width: 0; /* Allow shrinking */
+        }
+
+        .variables-search {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 2px solid rgba(108, 114, 255, 0.3);
+            border-radius: 6px;
+            color: var(--neutral--100);
+            font-size: 13px;
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+
+        .variables-search:focus {
+            outline: none;
+            border-color: var(--accent--primary-1);
+            border-left: 2px solid var(--accent--primary-1);
+            box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
+        }
+
+        .variables-search::placeholder {
+            color: var(--neutral--500);
+        }
+
+        .variables-table {
+            width: 425px; /* 50% of original 850px - still wider than sidebar (350px) to force horizontal scroll */
+            min-width: 425px !important; /* Ensure minimum width */
+            border-collapse: collapse;
+            font-size: 12px;
+            table-layout: fixed; /* Use fixed layout so column widths are respected */
+            /* Table will be wider than container, forcing horizontal scroll */
+        }
+
+        .variables-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .variables-table th {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            font-weight: 600;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--neutral--600);
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            font-size: 12px;
+            text-transform: none; /* Changed from uppercase to sentence case */
+            letter-spacing: 0.3px;
+            white-space: normal; /* Allow header text to wrap */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .variables-table th:nth-child(1),
+        .variables-table td:nth-child(1) {
+            min-width: 125px !important; /* Variable column - 50% of 250px */
+            width: 125px;
+        }
+
+        .variables-table th:nth-child(2),
+        .variables-table td:nth-child(2) {
+            min-width: 200px !important; /* Description column - 50% of 400px */
+            width: 200px;
+        }
+
+        .variables-table th:nth-child(3),
+        .variables-table td:nth-child(3) {
+            min-width: 100px !important; /* Range/Options column - 50% of 200px */
+            width: 100px;
+        }
+
+        .variables-table th:hover {
+            background: var(--neutral--600);
+        }
+
+        .variables-table th.sortable::after {
+            content: ' ↕';
+            opacity: 0.5;
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        .variables-table th.sort-asc::after {
+            content: ' ↑';
+            opacity: 1;
+        }
+
+        .variables-table th.sort-desc::after {
+            content: ' ↓';
+            opacity: 1;
+        }
+
+        .variables-table td {
+            padding: 10px 12px;
+            border-bottom: 0.6px solid var(--neutral--600);
+            color: var(--neutral--200);
+            vertical-align: top;
+            font-size: 12px;
+            word-wrap: break-word; /* Allow long words to wrap */
+            overflow-wrap: break-word;
+            white-space: normal; /* Allow text to wrap to multiple lines */
+            line-height: 1.5; /* Better line spacing for readability */
+        }
+
+        /* Column widths are set above with th and td selectors */
+
+        .variables-table tbody tr:hover {
+            background: var(--neutral--700);
+        }
+
+        .variables-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .variable-token {
+            font-family: 'Courier New', monospace;
+            color: var(--secondary--color-3);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .variable-description {
+            color: var(--neutral--300);
+            font-size: 12px;
+            line-height: 1.6; /* Better line spacing for readability */
+            min-width: 200px; /* 50% of original 400px */
+            max-width: none; /* Remove max-width to allow full text display */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal; /* Allow text to wrap */
+        }
+
+        .variable-range {
+            color: var(--neutral--400);
+            font-size: 12px;
+            min-width: 100px; /* 50% of original 200px */
+            white-space: normal; /* Allow wrapping if needed */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .variable-token {
+            white-space: normal; /* Allow variable names to wrap if very long */
+            word-wrap: break-word;
+        }
+
+        .variable-example {
+            font-family: 'Courier New', monospace;
+            color: var(--secondary--color-5);
+            font-size: 12px;
+        }
+
+        .variables-empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--neutral--500);
+            font-size: 13px;
+        }
+
+        .variables-count {
+            font-size: 11px;
+            color: var(--neutral--500);
+            margin-bottom: 8px;
+        }
+
+        /* Responsive table scrolling */
+        .variables-table-container > div {
+            border: 0.6px solid var(--neutral--600);
+            border-left: 2px solid rgba(108, 114, 255, 0.4);
+            border-radius: 6px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Scrollbar - Partner Directory popup style */
+        .variables-table-wrapper::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .variables-table-wrapper::-webkit-scrollbar-track {
+            background: var(--neutral--800);
+            border-left: 1px solid rgba(87, 195, 255, 0.35);
+        }
+
+        .variables-table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--neutral--600);
+            border-radius: 0;
+        }
+
+        .variables-table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: var(--neutral--500);
+        }
+
+        .variables-table-wrapper::-webkit-scrollbar-corner {
+            background: var(--neutral--800);
+        }
+
+        /* Top Navigation Bar - NEW */
+        .top-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            gap: 8px;
+        }
+
+        .top-navigation__left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-navigation__right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top-nav-btn {
+            padding: 5px 12px;
+            background: var(--secondary--color-4);
+            border: 0.6px solid var(--neutral--600);
+            color: var(--neutral--100);
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .top-nav-btn:hover {
+            background: var(--neutral--700);
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .top-nav-btn:disabled,
+        .top-nav-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .top-nav-btn--primary {
+            background: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .top-nav-btn--primary:hover {
+            background: var(--accent--primary-2);
+            border-color: var(--accent--primary-2);
+        }
+
+        /* Navigation Controls */
+        .navigation-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 0.6px solid var(--neutral--600);
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: var(--secondary--color-4);
+            border: 0.6px solid var(--neutral--600);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: var(--neutral--700);
+            border-color: var(--accent--primary-1);
+        }
+
+        .nav-btn--primary {
+            background: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
+        }
+
+        .nav-btn--primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+            background: var(--secondary--color-2);
+        }
+
+        /* Loading State - Matching Clause Library */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 280px;
+            max-width: 320px;
+        }
+
+        .loading-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .loading .wave-container {
+            width: 32px;
+            height: 32px;
+            position: relative;
+            background: var(--neutral--700);
+            border-radius: 50%;
+            border: 2px solid var(--neutral--600);
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .loading .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+
+        .loading .wave-1 {
+            height: 40%;
+            background: linear-gradient(45deg, #d69e2e, #f4d03f);
+            animation: wave-1 2s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+
+        .loading .wave-2 {
+            height: 60%;
+            background: linear-gradient(45deg, #b8860b, #d69e2e);
+            animation: wave-2 2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .loading .wave-3 {
+            height: 80%;
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+            animation: wave-3 2s ease-in-out infinite;
+            animation-delay: 0.6s;
+        }
+
+        .loading .wave-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .loading .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #d69e2e;
+            border-radius: 50%;
+            animation: particle-float 3s ease-in-out infinite;
+            box-shadow: 0 0 4px #d69e2e;
+        }
+
+        .loading .particle:nth-child(1) {
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .loading .particle:nth-child(2) {
+            left: 40%;
+            animation-delay: 0.5s;
+        }
+
+        .loading .particle:nth-child(3) {
+            left: 60%;
+            animation-delay: 1s;
+        }
+
+        .loading .particle:nth-child(4) {
+            left: 80%;
+            animation-delay: 1.5s;
+        }
+
+        .loading-text {
+            flex: 1;
+        }
+
+        .loading-text-main {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neutral--100);
+            margin-bottom: 4px;
+        }
+
+        .loading-text-time {
+            font-size: 12px;
+            color: var(--neutral--400);
+        }
+
+        .loading-progress {
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary--color-5), var(--system--orange-400));
+            border-radius: 2px;
+            animation: progress-animation 3s ease-in-out infinite;
+            box-shadow: 0 0 4px rgba(214, 158, 46, 0.5);
+        }
+
+        @keyframes progress-animation {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes wave-1 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes wave-2 {
+            0%, 100% { 
+                transform: translateX(100%) scaleY(1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.1);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes wave-3 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.4;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.05);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes particle-float {
+            0%, 100% {
+                transform: translateY(100%) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--neutral--400);
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 3px solid rgba(220, 43, 43, 0.5);
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .error-state h2 {
+            color: var(--system--red-400);
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            line-height: 1.417em;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .clause-detail__content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .content-sections-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .clause-detail-container {
+                padding: 20px;
+            }
+
+            .dashboard-main-section {
+                margin-left: 0;
+            }
+
+            .clause-detail__meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1){document.documentElement.classList.add('embed-mode');}})();</script>
+    <div class="page-wrapper">
+        <!-- Main Content (parent app provides left nav) -->
+        <div class="dashboard-main-section">
+            <!-- Main Container -->
+            <div class="clause-detail-container">
+        <!-- Title -->
+        <h1 style="color: #ffffff; font-size: 1rem; font-weight: 600; margin: 0 0 8px 0; line-height: 1.2em;">Clause Library Detail</h1>
+        
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="clause-library.html">Clause Library</a>
+            <span class="breadcrumb-separator">></span>
+            <span id="clauseNameBreadcrumb">Clause Detail</span>
+        </div>
+
+        <!-- Reading Progress Bar - NEW -->
+        <div class="reading-progress" id="readingProgress"></div>
+
+        <!-- Top Navigation Bar - NEW -->
+        <div class="top-navigation" id="topNavigation">
+            <div class="top-navigation__left">
+                <a href="clause-library.html" class="top-nav-btn">
+                    ← Back to Library
+                </a>
+            </div>
+            <div class="top-navigation__right">
+                <a href="#" class="top-nav-btn" onclick="previousClause(); return false;" id="topPrevClauseBtn">
+                    ← Previous
+                </a>
+                <a href="#" class="top-nav-btn top-nav-btn--primary" onclick="nextClause(); return false;" id="topNextClauseBtn">
+                    Next →
+                </a>
+            </div>
+        </div>
+
+        <!-- Header Section -->
+        <div class="clause-detail__header" id="clauseHeader" style="margin-top: 20px;">
+            <div class="header-actions">
+                <button class="action-btn" id="bookmarkBtn" title="Bookmark this clause">
+                    <span>🔖</span>
+                    <span>Bookmark</span>
+                </button>
+                <button class="action-btn" id="shareBtn" title="Share this clause">
+                    <span>🔗</span>
+                    <span>Share</span>
+                </button>
+                <button class="action-btn" id="printBtn" title="Print this clause">
+                    <span>🖨️</span>
+                    <span>Print</span>
+                </button>
+                <button class="action-btn" id="tocToggle" title="Toggle table of contents">
+                    <span>📑</span>
+                    <span>TOC</span>
+                </button>
+            </div>
+            <h2 id="clauseName">Loading...</h2>
+            <div class="clause-detail__meta">
+                <div class="clause-detail__meta-item">
+                    <span class="clause-detail__meta-label">ID:</span>
+                    <span class="clause-detail__meta-value" id="clauseId">Loading...</span>
+                </div>
+                <span class="clause-detail__meta-separator">|</span>
+                <div class="clause-detail__meta-item">
+                    <span class="clause-detail__meta-label">Type:</span>
+                    <span class="clause-detail__meta-value" id="agreementType">Loading...</span>
+                </div>
+                <span class="clause-detail__meta-separator">|</span>
+                <div class="clause-detail__meta-item">
+                    <span class="clause-detail__meta-label">Category:</span>
+                    <span class="clause-detail__meta-value" id="category">Loading...</span>
+                </div>
+                <span class="clause-detail__meta-separator">|</span>
+                <div class="clause-detail__meta-item">
+                    <span class="clause-detail__meta-label">Phase:</span>
+                    <span class="clause-detail__meta-value" id="phase">Loading...</span>
+                </div>
+                <span class="clause-detail__meta-separator">|</span>
+                <div class="clause-detail__meta-item">
+                    <span class="clause-detail__meta-label">Status:</span>
+                    <span class="clause-detail__meta-value" id="status">Loading...</span>
+                    <span style="margin-left: 8px; color: #aeb9e1;" id="version"></span>
+                </div>
+                <span class="clause-detail__meta-separator">|</span>
+                <div class="clause-detail__meta-item">
+                    <span class="clause-detail__meta-label">Last Reviewed:</span>
+                    <span class="clause-detail__meta-value" id="lastReviewed">Loading...</span>
+                </div>
+            </div>
+            <div class="clause-detail__badges">
+                <span class="badge badge--risk-medium">Medium Risk</span>
+                <span class="badge badge--lean-neutral">Neutral</span>
+                <span class="badge badge--prevalence-common" id="prevalenceBadge">Common</span>
+            </div>
+        </div>
+
+        <!-- Two-Column Layout -->
+        <div class="clause-detail__content-wrapper">
+            <!-- Left Column - Main Content -->
+            <div class="clause-detail__content">
+                <!-- Plain-English Summary and Why It Matters - Side by Side -->
+                <div class="content-sections-row">
+                    <!-- Plain-English Summary -->
+                    <div class="content-section" id="plain-english-summary">
+                        <div class="content-section__header">
+                            <div>
+                                <h2 class="content-section__title">Plain-English Summary</h2>
+                                <p class="content-section__description">A concise explanation of what this clause does and how it works, written in clear, non-legal language.</p>
+                            </div>
+                            <button class="section-toggle" title="Expand/Collapse section"></button>
+                        </div>
+                        <div class="content-section__body" id="plainEnglishSummary">
+                            <p>This clause establishes a performance measurement system using RevPAR Index (Revenue Per Available Room relative to a competitive set). The property must maintain a RevPAR Index above a specified threshold (typically 90-95%) during the operations phase. If performance falls below this threshold for consecutive periods, it triggers defined remedies including potential PIP requirements, fee adjustments, or in extreme cases, termination rights.</p>
+                            <p>The competitive set is defined at contract signing and typically includes 5-8 comparable properties in the same market segment and geographic area. The RevPAR Index calculation excludes extraordinary items and uses a rolling 12-month measurement period to smooth seasonal variations.</p>
+                        </div>
+                    </div>
+
+                    <!-- Why It Matters -->
+                    <div class="content-section" id="why-it-matters">
+                        <div class="content-section__header">
+                            <div>
+                                <h2 class="content-section__title">Why It Matters</h2>
+                                <p class="content-section__description">The business and financial implications of this clause for owners, brands, and other stakeholders.</p>
+                            </div>
+                            <button class="section-toggle" title="Expand/Collapse section"></button>
+                        </div>
+                        <div class="content-section__body" id="whyItMatters">
+                            <p>Performance tests directly impact both owner and brand economics. For owners, failure to meet thresholds can result in:</p>
+                            <ul>
+                                <li>Mandatory PIP investments with associated capital costs</li>
+                                <li>Reduced operational flexibility due to increased brand oversight</li>
+                                <li>Potential fee escalations or penalty payments</li>
+                                <li>Risk of termination if performance doesn't improve</li>
+                            </ul>
+                            <p>For brands, performance tests protect brand standards and ensure the property contributes positively to system-wide metrics. However, poorly negotiated thresholds can create unnecessary pressure on owners, especially during market downturns beyond their control.</p>
+                            <p>The competitive set selection is critical—an improperly defined set can create unfair performance expectations. Owners should negotiate set composition, review frequency, and the right to challenge set membership during the term.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clause Text -->
+                <div class="content-section" id="clause-text">
+                    <div class="content-section__header">
+                        <div>
+                            <h2 class="content-section__title">Clause Text</h2>
+                            <p class="content-section__description">The actual legal language of the clause as it typically appears in agreements.</p>
+                        </div>
+                        <button class="section-toggle" title="Expand/Collapse section"></button>
+                    </div>
+                    <div class="content-section__body">
+                        <div class="clause-text" id="clauseText">
+3.1 Performance Test. During the Operating Term, Owner shall maintain a RevPAR Index of not less than ninety percent (90%) measured against the Competitive Set (the "Performance Threshold").
+
+3.2 Calculation Methodology. RevPAR Index shall be calculated on a rolling twelve (12) month basis, excluding extraordinary items as defined in Section 8.4. The calculation shall use STR data or, if unavailable, a mutually acceptable alternative source.
+
+3.3 Competitive Set. The Competitive Set, consisting of no fewer than five (5) and no more than eight (8) comparable properties, shall be established within sixty (60) days of Opening Date. The Competitive Set may be reviewed and adjusted annually upon mutual agreement of the Parties, provided such adjustment is commercially reasonable.
+
+3.4 Failure to Meet Threshold. If the Property fails to meet the Performance Threshold for three (3) consecutive twelve (12) month measurement periods, Owner shall be required to implement a Performance Improvement Plan as set forth in Section 5.2. Continued failure to meet the Performance Threshold following completion of the PIP may trigger termination rights as set forth in Section 12.3.
+
+3.5 Cure Period. Owner shall have a right to cure any Performance Threshold deficiency within ninety (90) days following the measurement period in which such deficiency occurred, provided such cure is not attributable to Market Conditions (as defined in Section 10.1).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Negotiation Notes -->
+                <div class="content-section" id="negotiation-notes">
+                    <div class="content-section__header">
+                        <div>
+                            <h2 class="content-section__title">Negotiation Notes</h2>
+                            <p class="content-section__description">Practical guidance on negotiating this clause, including trade-offs, compromise options, and market considerations.</p>
+                        </div>
+                        <button class="section-toggle" title="Expand/Collapse section"></button>
+                    </div>
+                    <div class="content-section__body" id="negotiationNotes">
+                        <p><strong>Threshold Negotiation:</strong> The 90% threshold is standard but can vary by market. In competitive markets, owners may push for 85%, while brands in strong markets may require 95%. Consider negotiating market-specific thresholds or inflation adjustments.</p>
+                        <p><strong>Competitive Set Protection:</strong> Include provisions allowing owners to challenge set membership if properties close, rebrand, or significantly renovate. Require brand to provide rationale for set inclusion and allow for independent validation.</p>
+                        <p><strong>Measurement Periods:</strong> The rolling 12-month period helps smooth seasonality. Some owners prefer shorter periods (6 months) for faster detection, while brands prefer longer periods to avoid false triggers. Consider industry-specific seasonality patterns.</p>
+                        <p><strong>Cure Provisions:</strong> The 90-day cure period is reasonable, but ensure it doesn't reset if a PIP is already in progress. Clarify that cure remedies cannot be cumulative—i.e., completing one PIP doesn't reset the failure clock if a subsequent failure occurs.</p>
+                    </div>
+                </div>
+
+                <!-- Red Flags -->
+                <div class="content-section" id="red-flags">
+                    <div class="content-section__header">
+                        <div>
+                            <h2 class="content-section__title">Red Flags</h2>
+                            <p class="content-section__description">Warning signs and problematic language to watch for that could be unfavorable to owners.</p>
+                        </div>
+                        <button class="section-toggle" title="Expand/Collapse section"></button>
+                    </div>
+                    <div class="content-section__body" id="redFlags">
+                        <ul>
+                            <li><strong>No market condition carve-out:</strong> Ensure the clause excludes performance failures due to market-wide downturns, natural disasters, or force majeure events beyond owner control.</li>
+                            <li><strong>Competitive set locked in:</strong> Avoid clauses that prevent competitive set adjustments during the term, especially in dynamic markets where comparables change.</li>
+                            <li><strong>Consecutive period requirement too strict:</strong> Three consecutive periods may be too lenient for brands but too strict for owners. Consider negotiating "three out of four" or "two consecutive plus one non-consecutive" triggers.</li>
+                            <li><strong>PIP costs not capped:</strong> Ensure that any required PIP has reasonable cost caps and doesn't become an open-ended capital requirement.</li>
+                            <li><strong>No owner-initiated competitive set review:</strong> Verify that owners have the right to request competitive set reviews, not just respond to brand-initiated changes.</li>
+                            <li><strong>STR data availability:</strong> In markets where STR data is unavailable or unreliable, ensure alternative calculation methods are defined upfront.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Common Positions -->
+                <div class="content-section" id="common-positions">
+                    <div class="content-section__header">
+                        <div>
+                            <h2 class="content-section__title">Common Positions</h2>
+                            <p class="content-section__description">Typical positions taken by owners, brands, and balanced approaches, with operational rationale for each.</p>
+                        </div>
+                        <button class="section-toggle" title="Expand/Collapse section"></button>
+                    </div>
+                    <div class="content-section__body" id="commonPositions">
+                        <p>Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Variables Referenced Card (inlined, center sidebar removed) -->
+            <div class="clause-detail__sidebar" style="margin-top: 30px; max-width: 100%;">
+                <div class="sidebar-card">
+                    <h3 class="sidebar-card__title">Variables Referenced</h3>
+                    <div class="sidebar-card__content">
+                        <div class="variables-table-container" id="variablesContainer" style="display: none;">
+                            <div class="variables-count" id="variablesCount"></div>
+                            <input type="text" class="variables-search" id="variablesSearch" placeholder="Search variables...">
+                            <div class="variables-table-wrapper">
+                                <table class="variables-table" id="variablesTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="sortable" data-sort="variable">Variable</th>
+                                            <th class="sortable" data-sort="description">Description</th>
+                                            <th class="sortable" data-sort="range">Range/Options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="variablesTableBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="variablesEmpty" class="variables-empty" style="display: none;">
+                            No variables found for this clause.
+                        </div>
+                        <ul class="variables-list" id="variablesList" style="display: none;">
+                            <!-- Fallback list for tokens only -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Disclaimer Card -->
+                <div class="sidebar-card disclaimer-card">
+                    <h3 class="sidebar-card__title">Disclaimer</h3>
+                    <div class="sidebar-card__content">
+                        <p class="disclaimer-text">This Clause Library is provided for general informational and educational purposes only and does not constitute legal advice. Dealality is not a law firm and does not provide legal services. You should consult qualified legal counsel before using, relying on, or incorporating any clause language into a contract. Use of this content does not create an attorney-client relationship or any other professional relationship.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table of Contents - NEW -->
+        <div class="table-of-contents" id="tableOfContents">
+            <div class="toc-title">Table of Contents</div>
+            <a href="#plain-english-summary" class="toc-item" data-section="plain-english-summary">Plain-English Summary</a>
+            <a href="#why-it-matters" class="toc-item" data-section="why-it-matters">Why It Matters</a>
+            <a href="#clause-text" class="toc-item" data-section="clause-text">Clause Text</a>
+            <a href="#negotiation-notes" class="toc-item" data-section="negotiation-notes">Negotiation Notes</a>
+            <a href="#red-flags" class="toc-item" data-section="red-flags">Red Flags</a>
+            <a href="#common-positions" class="toc-item" data-section="common-positions">Common Positions</a>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="navigation-controls">
+            <a href="clause-library.html" class="nav-btn">← Back to results</a>
+            <div style="display: flex; gap: 12px;">
+                <a href="#" class="nav-btn" onclick="previousClause(); return false;" id="prevClauseBtn">← Previous clause</a>
+                <a href="#" class="nav-btn nav-btn--primary" onclick="nextClause(); return false;" id="nextClauseBtn">Next clause →</a>
+            </div>
+        </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Use server API (credentials in env) instead of direct Airtable
+        const API_BASE = window.location.origin;
+
+        async function fetchClauseFromServer(clauseId) {
+            const res = await fetch(API_BASE + '/api/clause-library/clause?id=' + encodeURIComponent(clauseId || ''));
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || err.message || 'Failed to load clause (' + res.status + ')');
+            }
+            return res.json();
+        }
+
+        async function fetchVariablesFromServer(clauseId) {
+            const res = await fetch(API_BASE + '/api/clause-library/variables?clauseId=' + encodeURIComponent(clauseId || ''));
+            if (!res.ok) return [];
+            return res.json();
+        }
+
+        async function fetchAllClauseIdsFromServer() {
+            let res = await fetch(API_BASE + '/api/clause-library/clause-ids');
+            if (res.ok) return res.json();
+            // Fallback: use clauses endpoint if clause-ids not yet deployed (404)
+            if (res.status === 404) {
+                res = await fetch(API_BASE + '/api/clause-library/clauses?pageSize=50000');
+                if (!res.ok) throw new Error('Failed to load clause IDs');
+                const data = await res.json();
+                const ids = (data.records || []).map(function(r) { return r.clauseId; }).filter(Boolean).sort();
+                return ids;
+            }
+            throw new Error('Failed to load clause IDs');
+        }
+
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Get clause ID from URL querystring
+            const urlParams = new URLSearchParams(window.location.search);
+            const clauseId = urlParams.get('id');
+
+            if (!clauseId) {
+                showError('Clause ID is required');
+                return;
+            }
+
+            // Show loading state (hide content, show loading overlay)
+            const container = document.querySelector('.clause-detail-container');
+            const contentWrapper = document.querySelector('.clause-detail__content-wrapper');
+            const header = document.querySelector('.clause-detail__header');
+            const navControls = document.querySelector('.navigation-controls');
+            
+            // Hide existing content
+            if (contentWrapper) contentWrapper.style.display = 'none';
+            if (header) header.style.display = 'none';
+            if (navControls) navControls.style.display = 'none';
+            
+            // Show loading overlay (fixed position, matching Clause Library)
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.innerHTML = `
+                <div class="loading-content">
+                    <div class="wave-container">
+                        <div class="wave wave-1"></div>
+                        <div class="wave wave-2"></div>
+                        <div class="wave wave-3"></div>
+                        <div class="wave-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                    <div class="loading-text">
+                        <div class="loading-text-main">Loading clause details...</div>
+                        <div class="loading-text-time">Estimated time: 2-3 seconds</div>
+                    </div>
+                </div>
+                <div class="loading-progress">
+                    <div class="loading-progress-bar"></div>
+                </div>
+            `;
+            document.body.appendChild(loadingDiv);
+
+            try {
+                // Fetch clause from server API
+                const clause = await fetchClauseFromServer(clauseId);
+                
+                if (clause.clauseId !== clauseId) {
+                    console.error('[Clause Library] Mismatch: requested', clauseId, 'but received', clause.clauseId);
+                }
+
+                // Remove loading overlay
+                if (loadingDiv && loadingDiv.parentNode) {
+                    loadingDiv.remove();
+                }
+                
+                // Show content
+                if (contentWrapper) contentWrapper.style.display = '';
+                if (header) header.style.display = '';
+                if (navControls) navControls.style.display = '';
+                
+                // Store clause for later use
+                window.currentClause = clause;
+                
+                // Populate the page with clause data
+                populateClauseDetail(clause);
+
+                // Initialize enhanced features
+                initializeEnhancedFeatures(clause);
+
+                // Fetch variables from server API
+                setTimeout(async () => {
+                    try {
+                        const variables = await fetchVariablesFromServer(clause.clauseId || clauseId);
+                        populateVariables(variables);
+                    } catch (error) {
+                        console.warn('Could not fetch variables:', error);
+                        populateVariables([]);
+                    }
+                }, 0);
+
+            } catch (error) {
+                console.error('Error fetching clause:', error);
+                // Remove loading overlay
+                if (loadingDiv && loadingDiv.parentNode) {
+                    loadingDiv.remove();
+                }
+                showError(error.message || 'Failed to load clause details');
+            }
+
+            // Escape HTML helper - defined at higher scope so all functions can use it
+            function escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function populateClauseDetail(clause) {
+
+                // Helper to format arrays as chips
+                function formatAsChips(value) {
+                    if (!value) return '';
+                    }
+                    
+                    // Handle different input types
+                    let items = [];
+                    
+                    if (Array.isArray(value)) {
+                        // If it's already an array, use it directly
+                        items = value.filter(item => item && item.trim && item.trim().length > 0);
+                    } else if (typeof value === 'string') {
+                        const separator = value.includes(';') ? ';' : ',';
+                        items = value.split(separator).map(item => item.trim()).filter(item => item);
+                    } else {
+                        return '';
+                    }
+                    
+                    if (items.length === 0) return '';
+                    
+                    const result = items.map(item => `<span class="tag-chip">${escapeHtml(item)}</span>`).join('');
+                    return result;
+                }
+
+                // Helper to format text as paragraphs with bullet point lists
+                function formatTextAsParagraphs(text) {
+                    if (!text) return '';
+                    
+                    // Split by double newlines to get paragraphs/blocks
+                    const blocks = text.split(/\n\n+/).filter(block => block.trim());
+                    
+                    return blocks.map(block => {
+                        const trimmedBlock = block.trim();
+                        const lines = trimmedBlock.split(/\n/).filter(line => line.trim());
+                        
+                        // Check if this block contains bullet points
+                        const hasBullets = lines.some(line => {
+                            const trimmed = line.trim();
+                            return trimmed.startsWith('•') || 
+                                   trimmed.startsWith('-') || 
+                                   trimmed.startsWith('*') ||
+                                   /^[🔴⚫❌⚠️]/.test(trimmed);
+                        });
+                        
+                        if (hasBullets) {
+                            // Process as a mixed block (paragraphs + lists)
+                            let result = '';
+                            let currentList = [];
+                            let currentParagraph = '';
+                            
+                            // Helper to detect if a line is a header
+                            function isHeader(line) {
+                                const trimmed = line.trim();
+                                // Remove emoji indicators for checking
+                                const withoutEmoji = trimmed.replace(/^[🔴⚫❌⚠️]\s*/, '');
+                                // Check for all caps text ending with colon (common header pattern)
+                                if (/^[A-Z\s:]+:$/.test(withoutEmoji)) return true;
+                                // Check for text wrapped in ** (markdown bold)
+                                if (/^\*\*.*\*\*:?\s*$/.test(withoutEmoji)) return true;
+                                // Check for text that's mostly uppercase with colon
+                                const letters = withoutEmoji.match(/[A-Za-z]/g) || [];
+                                if (letters.length > 0) {
+                                    const upperCaseRatio = (withoutEmoji.match(/[A-Z]/g) || []).length / letters.length;
+                                    if (upperCaseRatio > 0.7 && withoutEmoji.endsWith(':')) return true;
+                                }
+                                return false;
+                            }
+                            
+                            lines.forEach((line, index) => {
+                                const trimmed = line.trim();
+                                const isHeaderLine = isHeader(trimmed);
+                                // Check for bullet - but exclude emoji-only headers
+                                const isBullet = !isHeaderLine && (
+                                    trimmed.startsWith('•') || 
+                                    trimmed.startsWith('-') || 
+                                    trimmed.startsWith('*') ||
+                                    /^[🔴⚫❌⚠️]/.test(trimmed)
+                                );
+                                
+                                if (isHeaderLine) {
+                                    // Handle headers first - they take priority
+                                    // If we have accumulated list items, output them
+                                    if (currentList.length > 0) {
+                                        result += `<ul>${currentList.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+                                        currentList = [];
+                                    }
+                                    
+                                    // If we have accumulated paragraph text, output it
+                                    if (currentParagraph.trim()) {
+                                        result += `<p>${escapeHtml(currentParagraph.trim())}</p>`;
+                                        currentParagraph = '';
+                                    }
+                                    
+                                    // Format header - remove emoji, remove markdown bold, remove colon if at end
+                                    let headerText = trimmed.replace(/^[🔴⚫❌⚠️]\s*/, '')
+                                                           .replace(/\*\*(.*?)\*\*/g, '$1')
+                                                           .replace(/:$/, '')
+                                                           .trim();
+                                    result += `<span class="text-header">${escapeHtml(headerText)}</span>`;
+                                } else if (isBullet) {
+                                    // If we have accumulated paragraph text, output it
+                                    if (currentParagraph.trim()) {
+                                        result += `<p>${escapeHtml(currentParagraph.trim())}</p>`;
+                                        currentParagraph = '';
+                                    }
+                                    
+                                    // Extract bullet text (remove bullet character and emoji)
+                                    let bulletText = trimmed.replace(/^[•\-\*]/, '').replace(/^[🔴⚫❌⚠️]\s*/, '').trim();
+                                    // Remove markdown bold formatting if present
+                                    bulletText = bulletText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                                    currentList.push(bulletText);
+                                } else {
+                                    // If we have accumulated list items, output them
+                                    if (currentList.length > 0) {
+                                        result += `<ul>${currentList.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+                                        currentList = [];
+                                    }
+                                    
+                                    // Add to current paragraph
+                                    if (currentParagraph) {
+                                        currentParagraph += ' ' + trimmed;
+                                    } else {
+                                        currentParagraph = trimmed;
+                                    }
+                                }
+                            });
+                            
+                            // Output any remaining list
+                            if (currentList.length > 0) {
+                                result += `<ul>${currentList.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+                            }
+                            
+                            // Output any remaining paragraph
+                            if (currentParagraph.trim()) {
+                                result += `<p>${escapeHtml(currentParagraph.trim())}</p>`;
+                            }
+                            
+                            return result;
+                        } else {
+                            // No bullets, treat as regular paragraph(s)
+                            return `<p>${escapeHtml(trimmedBlock.replace(/\n/g, ' '))}</p>`;
+                        }
+                    }).join('');
+                }
+
+                // Update breadcrumb
+                const breadcrumbElement = document.getElementById('clauseNameBreadcrumb');
+                if (breadcrumbElement) {
+                    breadcrumbElement.textContent = clause.clauseName || clause.clauseId;
+                }
+
+                // Update header
+                const clauseNameEl = document.getElementById('clauseName');
+                const clauseIdEl = document.getElementById('clauseId');
+                const agreementTypeEl = document.getElementById('agreementType');
+                const categoryEl = document.getElementById('category');
+                const phaseEl = document.getElementById('phase');
+                const statusEl = document.getElementById('status');
+                const versionEl = document.getElementById('version');
+                const lastReviewedEl = document.getElementById('lastReviewed');
+                
+                if (clauseNameEl) clauseNameEl.textContent = clause.clauseName || 'Clause Name Not Available';
+                if (clauseIdEl) clauseIdEl.textContent = clause.clauseId || 'N/A';
+                if (agreementTypeEl) agreementTypeEl.textContent = clause.agreementType || 'N/A';
+                if (categoryEl) categoryEl.textContent = clause.category || 'N/A';
+                if (phaseEl) phaseEl.textContent = clause.lifecyclePhase || 'N/A';
+                if (statusEl) statusEl.textContent = clause.status || 'Approved';
+                if (versionEl) versionEl.textContent = clause.version ? `v${clause.version}` : '';
+                if (lastReviewedEl) {
+                    if (clause.lastReviewed) {
+                        try {
+                            lastReviewedEl.textContent = new Date(clause.lastReviewed).toLocaleDateString();
+                        } catch (e) {
+                            lastReviewedEl.textContent = clause.lastReviewed;
+                        }
+                    } else {
+                        lastReviewedEl.textContent = 'N/A';
+                    }
+                }
+
+                // Update badges
+                const badgesContainer = document.querySelector('.clause-detail__badges');
+                const riskClassMap = {
+                    'Low': 'badge--risk-low',
+                    'Medium': 'badge--risk-medium',
+                    'High': 'badge--risk-high'
+                };
+                const leanClassMap = {
+                    'Neutral': 'badge--lean-neutral',
+                    'Owner-friendly': 'badge--lean-owner',
+                    'Brand-friendly': 'badge--lean-brand'
+                };
+
+                const prevalenceClassMap = {
+                    'Common': 'badge--prevalence-common',
+                    'Sometimes': 'badge--prevalence-sometimes',
+                    'Rare': 'badge--prevalence-rare'
+                };
+
+                const riskClass = riskClassMap[clause.riskLevel] || 'badge--risk-medium';
+                const leanClass = leanClassMap[clause.lean] || 'badge--lean-neutral';
+                const prevalenceClass = prevalenceClassMap[clause.prevalence] || 'badge--prevalence-common';
+                const riskLabel = clause.riskLevel || 'Medium';
+                const leanLabel = clause.lean || 'Neutral';
+                const prevalenceLabel = clause.prevalence || 'Common';
+
+                badgesContainer.innerHTML = `
+                    <span class="badge ${riskClass}">${escapeHtml(riskLabel)} Risk</span>
+                    <span class="badge ${leanClass}">${escapeHtml(leanLabel)}</span>
+                    <span class="badge ${prevalenceClass}">${escapeHtml(prevalenceLabel)}</span>
+                `;
+
+                // Helper to format bullet points in text as HTML list
+                function formatBulletsInText(text) {
+                    if (!text) return '';
+                    
+                    // Helper to format a single bullet item - bold labels (text ending with colon) in all caps
+                    function formatBulletItem(item) {
+                        // Check if item has a label pattern (text ending with colon)
+                        const labelMatch = item.match(/^([^:]+:)\s*(.*)$/);
+                        if (labelMatch) {
+                            const label = labelMatch[1].toUpperCase(); // Convert label to all caps
+                            const description = labelMatch[2];
+                            return `<strong>${escapeHtml(label)}</strong> ${escapeHtml(description)}`;
+                        }
+                        return escapeHtml(item);
+                    }
+                    
+                    // Split by lines
+                    const lines = text.split(/\n/).filter(line => line.trim());
+                    const result = [];
+                    let currentList = [];
+                    let currentParagraph = '';
+                    
+                    lines.forEach(line => {
+                        const trimmed = line.trim();
+                        // Check if line starts with bullet point indicators
+                        const isBullet = /^[•\-\*]\s+/.test(trimmed) || /^\d+[\.\)]\s+/.test(trimmed);
+                        
+                        if (isBullet) {
+                            // If we have accumulated paragraph text, output it
+                            if (currentParagraph.trim()) {
+                                result.push(`<p>${escapeHtml(currentParagraph.trim())}</p>`);
+                                currentParagraph = '';
+                            }
+                            
+                            // Extract bullet text (remove bullet character)
+                            const bulletText = trimmed.replace(/^[•\-\*]\s+/, '').replace(/^\d+[\.\)]\s+/, '').trim();
+                            currentList.push(bulletText);
+                        } else {
+                            // If we have accumulated list items, output them
+                            if (currentList.length > 0) {
+                                result.push(`<ul>${currentList.map(item => `<li>${formatBulletItem(item)}</li>`).join('')}</ul>`);
+                                currentList = [];
+                            }
+                            
+                            // Add to current paragraph
+                            if (currentParagraph) {
+                                currentParagraph += ' ' + trimmed;
+                            } else {
+                                currentParagraph = trimmed;
+                            }
+                        }
+                    });
+                    
+                    // Output any remaining list
+                    if (currentList.length > 0) {
+                        result.push(`<ul>${currentList.map(item => `<li>${formatBulletItem(item)}</li>`).join('')}</ul>`);
+                    }
+                    
+                    // Output any remaining paragraph
+                    if (currentParagraph.trim()) {
+                        result.push(`<p>${escapeHtml(currentParagraph.trim())}</p>`);
+                    }
+                    
+                    return result.join('');
+                }
+
+                // Helper to format Negotiation Notes as comparison table
+                // Now uses structured fields instead of parsing text
+                function formatNegotiationNotesAsTable(clause) {
+                    // Check if we have new structured fields
+                    if (clause.negotiationNote || clause.negotiationTradeoff || clause.negotiationCompromise || clause.negotiationMarketNote) {
+                        const note = clause.negotiationNote || 'Not specified';
+                        const tradeoff = clause.negotiationTradeoff || 'Not specified';
+                        const compromise = clause.negotiationCompromise || 'Not specified';
+                        const marketNote = clause.negotiationMarketNote || 'Not specified';
+                        
+                        // Format text fields - use plain text formatting (escapeHtml) for consistency
+                        const noteFormatted = note !== 'Not specified' ? `<p>${escapeHtml(note)}</p>` : note;
+                        const tradeoffFormatted = tradeoff !== 'Not specified' ? `<p>${escapeHtml(tradeoff)}</p>` : tradeoff;
+                        const compromiseFormatted = compromise !== 'Not specified' ? `<p>${escapeHtml(compromise)}</p>` : compromise;
+                        const marketNoteFormatted = marketNote !== 'Not specified' ? `<p>${escapeHtml(marketNote)}</p>` : marketNote;
+                        
+                        // Build table with structured data
+                        return `
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Note</th>
+                                        <th>Trade-off</th>
+                                        <th>Compromise</th>
+                                        <th>Market Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>${noteFormatted}</td>
+                                        <td>${tradeoffFormatted}</td>
+                                        <td>${compromiseFormatted}</td>
+                                        <td>${marketNoteFormatted}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        `;
+                    }
+                    
+                    // Fallback to legacy parsing if new fields not available
+                    const text = clause.negotiationNotes || '';
+                    if (!text) return '';
+                    
+                    // Parse the negotiation notes text which may have format:
+                    // Format 1: • Main point. Trade-off: ...\n• Compromise: ...\n• Market note: ...
+                    // Format 2: Note: ...\nCompromise: ...\nMarket Note: ...
+                    
+                    // Try to detect format - check if it starts with Note: or has bullet points
+                    const hasBullets = text.includes('•');
+                    const hasLabelFormat = /^\s*Note\s*:/im.test(text) || /Note\s*:/i.test(text);
+                    
+                    let rows = [];
+                    
+                    if (hasLabelFormat && !hasBullets) {
+                        // Format 2: Label format (Note:, Trade-off:, Compromise:, Market Note:)
+                        // Extract sections using regex to find Note:, Trade-off:, Compromise:, and Market Note: labels
+                        const noteMatch = text.match(/Note\s*:\s*(.*?)(?=\s*(?:Trade-off|Compromise|Market Note)\s*:|$)/is);
+                        const tradeoffMatch = text.match(/Trade-off\s*:\s*(.*?)(?=\s*(?:Compromise|Market Note)\s*:|$)/is);
+                        const compromiseMatch = text.match(/Compromise\s*:\s*(.*?)(?=\s*Market Note\s*:|$)/is);
+                        const marketNoteMatch = text.match(/Market Note\s*:\s*(.*?)$/is);
+                        
+                        const note = noteMatch ? noteMatch[1].trim() : 'Not specified';
+                        const tradeoff = tradeoffMatch ? tradeoffMatch[1].trim() : 'Not specified';
+                        const compromise = compromiseMatch ? compromiseMatch[1].trim() : 'Not specified';
+                        const marketNote = marketNoteMatch ? marketNoteMatch[1].trim() : 'Not specified';
+                        
+                        if (note !== 'Not specified' || tradeoff !== 'Not specified' || compromise !== 'Not specified' || marketNote !== 'Not specified') {
+                            rows = [{ note, tradeoff, compromise, marketNote }];
+                        }
+                    } else {
+                        // Format 1: Bullet point format
+                        // Split by lines - each bullet line is separate
+                        const lines = text.split('\n').map(line => line.trim()).filter(line => line && line.startsWith('•'));
+                        
+                        if (lines.length === 0) {
+                            return formatTextAsParagraphs(text);
+                        }
+                        
+                        // Group consecutive lines: Note line (may include Trade-off), then Compromise line, then Market note line = ONE row
+                        let currentRow = { note: 'Not specified', tradeoff: 'Not specified', compromise: 'Not specified', marketNote: 'Not specified' };
+                        
+                        lines.forEach(line => {
+                            // Remove bullet marker
+                            const content = line.replace(/^•\s*/, '').trim();
+                            
+                            // Check if this is a "Compromise:" line
+                            if (content.match(/^Compromise:/i)) {
+                                const match = content.match(/^Compromise:\s*(.*)$/i);
+                                currentRow.compromise = match ? match[1].trim() : '';
+                                return;
+                            }
+                            
+                            // Check if this is a "Market note:" line
+                            if (content.match(/^Market note:/i)) {
+                                const match = content.match(/^Market note:\s*(.*)$/i);
+                                currentRow.marketNote = match ? match[1].trim() : '';
+                                // Market note is the last line in a row, so save this row
+                                rows.push(currentRow);
+                                // Start a new row
+                                currentRow = { note: 'Not specified', tradeoff: 'Not specified', compromise: 'Not specified', marketNote: 'Not specified' };
+                                return;
+                            }
+                            
+                            // This is a main note line (may include "Trade-off:")
+                            // Extract note text (everything before "Trade-off:") and tradeoff text (everything after "Trade-off:")
+                            const tradeoffMatch = content.match(/^(.*?)(?:\s+Trade-off\s*:\s*(.*))?$/i);
+                            if (tradeoffMatch) {
+                                currentRow.note = tradeoffMatch[1].trim();
+                                if (tradeoffMatch[2]) {
+                                    currentRow.tradeoff = tradeoffMatch[2].trim();
+                                }
+                            } else {
+                                currentRow.note = content;
+                            }
+                        });
+                        
+                        // Add the last row if it wasn't closed by a Market note line
+                        if (currentRow.note !== 'Not specified' || currentRow.tradeoff !== 'Not specified' || currentRow.compromise !== 'Not specified' || currentRow.marketNote !== 'Not specified') {
+                            rows.push(currentRow);
+                        }
+                    }
+                    
+                    // If no rows were created, fallback
+                    if (rows.length === 0) {
+                        return formatTextAsParagraphs(text);
+                    }
+                    
+                    // Build table rows
+                    let tableRows = '';
+                    rows.forEach(row => {
+                        const noteFormatted = row.note !== 'Not specified' ? `<p>${escapeHtml(row.note)}</p>` : row.note;
+                        const tradeoffFormatted = row.tradeoff !== 'Not specified' ? `<p>${escapeHtml(row.tradeoff)}</p>` : row.tradeoff;
+                        const compromiseFormatted = row.compromise !== 'Not specified' ? `<p>${escapeHtml(row.compromise)}</p>` : row.compromise;
+                        const marketNoteFormatted = row.marketNote !== 'Not specified' ? `<p>${escapeHtml(row.marketNote)}</p>` : row.marketNote;
+                        
+                        tableRows += `
+                            <tr>
+                                <td>${noteFormatted}</td>
+                                <td>${tradeoffFormatted}</td>
+                                <td>${compromiseFormatted}</td>
+                                <td>${marketNoteFormatted}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    return `
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Note</th>
+                                    <th>Trade-off</th>
+                                    <th>Compromise</th>
+                                    <th>Market Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tableRows}
+                            </tbody>
+                        </table>
+                    `;
+                }
+
+                // Helper to format Common Positions as comparison table
+                // Now uses structured fields instead of parsing text
+                function formatCommonPositionsAsTable(clause) {
+                    // Check if we have new structured fields
+                    if (clause.commonPositionsOwner || clause.commonPositionsBrand || clause.commonPositionsBalanced) {
+                        const owner = clause.commonPositionsOwner || 'Not specified';
+                        const ownerRationale = clause.commonPositionsOwnerRationale || '';
+                        const brand = clause.commonPositionsBrand || 'Not specified';
+                        const brandRationale = clause.commonPositionsBrandRationale || '';
+                        const balanced = clause.commonPositionsBalanced || 'Not specified';
+                        const balancedRationale = clause.commonPositionsBalancedRationale || '';
+                        
+                        // Format positions as plain text (no bullets, no HTML lists)
+                        // Remove bullets and convert to plain text
+                        const formatAsPlainText = (text) => {
+                            if (!text || text === 'Not specified') return text;
+                            // Remove bullet markers
+                            let cleaned = text.replace(/^[•\-\*]\s+/gm, '').replace(/\n[•\-\*]\s+/g, '\n');
+                            // Remove numbered bullets
+                            cleaned = cleaned.replace(/^\d+[\.\)]\s+/gm, '').replace(/\n\d+[\.\)]\s+/g, '\n');
+                            // Replace newlines with spaces for single paragraph
+                            cleaned = cleaned.replace(/\n+/g, ' ').trim();
+                            // Escape HTML and wrap in paragraph
+                            return cleaned ? `<p>${escapeHtml(cleaned)}</p>` : text;
+                        };
+                        
+                        const ownerFormatted = formatAsPlainText(owner);
+                        const brandFormatted = formatAsPlainText(brand);
+                        const balancedFormatted = formatAsPlainText(balanced);
+                        
+                        // Format rationales as plain text, removing "RATIONALE:" prefix if present
+                        const formatRationale = (text) => {
+                            if (!text || !text.trim()) return '';
+                            // Remove "RATIONALE:" prefix (case insensitive, with or without colon)
+                            let cleaned = text.replace(/^RATIONALE\s*:\s*/i, '').trim();
+                            // Remove any remaining bullet markers
+                            cleaned = cleaned.replace(/^[•\-\*]\s+/gm, '').replace(/\n[•\-\*]\s+/g, '\n');
+                            // Remove numbered bullets
+                            cleaned = cleaned.replace(/^\d+[\.\)]\s+/gm, '').replace(/\n\d+[\.\)]\s+/g, '\n');
+                            // Clean up whitespace
+                            cleaned = cleaned.replace(/\n{2,}/g, '\n\n').trim();
+                            // Escape HTML and wrap in paragraph
+                            return cleaned ? `<p>${escapeHtml(cleaned)}</p>` : '';
+                        };
+                        
+                        const ownerRationaleFormatted = formatRationale(ownerRationale);
+                        const brandRationaleFormatted = formatRationale(brandRationale);
+                        const balancedRationaleFormatted = formatRationale(balancedRationale);
+                        
+                        // Always show both Position and Rationale rows for consistent formatting
+                        // Build table rows - always include Position and Rationale rows
+                        const positionRow = `
+                            <tr class="position-row">
+                                <td class="position-header">Position</td>
+                                <td class="col-owner">${ownerFormatted}</td>
+                                <td class="col-brand">${brandFormatted}</td>
+                                <td class="col-balanced">${balancedFormatted}</td>
+                            </tr>
+                        `;
+                        
+                        // Always show rationale row, even if empty
+                        const rationaleRow = `
+                            <tr class="rationale-row">
+                                <td class="rationale-header">Rationale</td>
+                                <td class="col-owner">${ownerRationaleFormatted || '<span style="color: var(--neutral--500);">Not specified</span>'}</td>
+                                <td class="col-brand">${brandRationaleFormatted || '<span style="color: var(--neutral--500);">Not specified</span>'}</td>
+                                <td class="col-balanced">${balancedRationaleFormatted || '<span style="color: var(--neutral--500);">Not specified</span>'}</td>
+                            </tr>
+                        `;
+                        
+                        // Header row - always include spacer for rotated labels
+                        const headerRow = `
+                            <tr>
+                                <th class="spacer"></th>
+                                <th class="col-owner">Owner-Friendly</th>
+                                <th class="col-brand">Brand-Friendly</th>
+                                <th class="col-balanced">Balanced</th>
+                            </tr>
+                        `;
+                        
+                        // Always use has-rationale class for consistent styling
+                        const tableClass = 'comparison-table has-rationale';
+                        
+                        return `
+                            <table class="${tableClass}">
+                                <thead>
+                                    ${headerRow}
+                                </thead>
+                                <tbody>
+                                    ${positionRow}
+                                    ${rationaleRow}
+                                </tbody>
+                            </table>
+                        `;
+                    }
+                    
+                    // If no structured fields exist, return empty table
+                    return `
+                        <table class="comparison-table has-rationale">
+                            <thead>
+                                <tr>
+                                    <th class="spacer"></th>
+                                    <th class="col-owner">Owner-Friendly</th>
+                                    <th class="col-brand">Brand-Friendly</th>
+                                    <th class="col-balanced">Balanced</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="position-row">
+                                    <td class="position-header">Position</td>
+                                    <td class="col-owner"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                    <td class="col-brand"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                    <td class="col-balanced"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                </tr>
+                                <tr class="rationale-row">
+                                    <td class="rationale-header">Rationale</td>
+                                    <td class="col-owner"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                    <td class="col-brand"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                    <td class="col-balanced"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                    // Look for various patterns:
+                    // - "OWNER POSITION:" / "BRAND POSITION:" / "BALANCED POSITION:" (multi-line format)
+                    // - "Owner ask:" / "Brand position:" / "Operator position:" / "Counterparty position:" (single or multi-line)
+                    
+                    let ownerText = '';
+                    let brandText = '';
+                    let balancedText = '';
+                    
+                    // Try pattern 1: "OWNER POSITION:", "BRAND POSITION:", "BALANCED POSITION:" (multi-line format)
+                    let ownerMatch = text.match(/(?:OWNER[_\s-]*(?:FRIENDLY[_\s-]*)?POSITION|Owner[_\s-]*(?:Friendly[_\s-]*)?Position):\s*([\s\S]*?)(?=\n\n*(?:BRAND|Brand|BALANCED|Balanced|OPERATOR|Operator|COUNTERPARTY|Counterparty)[_\s-]*(?:FRIENDLY[_\s-]*)?(?:POSITION|position|ask):|$)/i);
+                    let brandMatch = text.match(/(?:BRAND[_\s-]*(?:FRIENDLY[_\s-]*)?POSITION|Brand[_\s-]*(?:Friendly[_\s-]*)?Position):\s*([\s\S]*?)(?=\n\n*(?:BALANCED|Balanced|OWNER|Owner|OPERATOR|Operator|COUNTERPARTY|Counterparty)[_\s-]*(?:FRIENDLY[_\s-]*)?(?:POSITION|position|ask):|$)/i);
+                    let balancedMatch = text.match(/(?:BALANCED[_\s-]*POSITION|Balanced[_\s-]*Position):\s*([\s\S]*?)(?=\n\n*(?:OWNER|Owner|BRAND|Brand|OPERATOR|Operator|COUNTERPARTY|Counterparty)[_\s-]*(?:FRIENDLY[_\s-]*)?(?:POSITION|position|ask):|$)/i);
+                    
+                    if (ownerMatch || brandMatch || balancedMatch) {
+                        ownerText = (ownerMatch ? ownerMatch[1] : '').trim();
+                        brandText = (brandMatch ? brandMatch[1] : '').trim();
+                        balancedText = (balancedMatch ? balancedMatch[1] : '').trim();
+                    } else {
+                        // Try pattern 2: "Owner ask:", "Brand position:", "Operator position:", etc.
+                        // Handle both single-line (semicolon-separated) and multi-line formats
+                        // Example: "Owner ask: cap + clear formula; Brand position: remaining-term economics..."
+                        
+                        // Find all position patterns in the text
+                        const positionPatterns = text.matchAll(/(?:Owner\s+(?:ask|position)|Brand\s+position|Operator\s+position|Counterparty\s+position|BALANCED\s+POSITION|Balanced\s+Position):\s*([^;]+?)(?=;\s*(?:Owner|Brand|Operator|Counterparty|BALANCED|Balanced)\s+(?:ask|position|POSITION):|$)/gi);
+                        
+                        const positions = [];
+                        for (const match of positionPatterns) {
+                            const label = match[0].split(':')[0].trim();
+                            const content = match[1].trim();
+                            positions.push({ label: label.toLowerCase(), content: content });
+                        }
+                        
+                        // Map positions to owner/brand/balanced
+                        positions.forEach(pos => {
+                            if (pos.label.includes('owner')) {
+                                ownerText = pos.content;
+                            } else if (pos.label.includes('brand') || pos.label.includes('operator') || pos.label.includes('counterparty')) {
+                                brandText = pos.content;
+                            } else if (pos.label.includes('balanced')) {
+                                balancedText = pos.content;
+                            }
+                        });
+                        
+                        if (!ownerText && !brandText && !balancedText) {
+                            // If no clear patterns found, fallback to regular formatting
+                            return formatTextAsParagraphs(text);
+                        }
+                    }
+                    
+                    // Clean up extracted text
+                    ownerText = ownerText.replace(/^["']|["']$/g, '').trim();
+                    brandText = brandText.replace(/^["']|["']$/g, '').trim();
+                    balancedText = balancedText.replace(/^["']|["']$/g, '').trim();
+                    
+                    // Only create table if we have at least one position
+                    if (ownerText || brandText || balancedText) {
+                        // Format each position with bullets
+                        // Format as plain text (no bullets)
+                        const formatAsPlainText = (text) => {
+                            if (!text || text === 'Not specified') return text;
+                            // Remove bullet markers
+                            let cleaned = text.replace(/^[•\-\*]\s+/gm, '').replace(/\n[•\-\*]\s+/g, '\n');
+                            // Remove numbered bullets
+                            cleaned = cleaned.replace(/^\d+[\.\)]\s+/gm, '').replace(/\n\d+[\.\)]\s+/g, '\n');
+                            // Replace newlines with spaces for single paragraph
+                            cleaned = cleaned.replace(/\n+/g, ' ').trim();
+                            // Escape HTML and wrap in paragraph
+                            return cleaned ? `<p>${escapeHtml(cleaned)}</p>` : text;
+                        };
+                        
+                        const ownerFormatted = formatAsPlainText(ownerText || 'Not specified');
+                        const brandFormatted = formatAsPlainText(brandText || 'Not specified');
+                        const balancedFormatted = formatAsPlainText(balancedText || 'Not specified');
+                        
+                        // Always show both Position and Rationale rows for consistency
+                        return `
+                            <table class="comparison-table has-rationale">
+                                <thead>
+                                    <tr>
+                                        <th class="spacer"></th>
+                                        <th class="col-owner">Owner-Friendly</th>
+                                        <th class="col-brand">Brand-Friendly</th>
+                                        <th class="col-balanced">Balanced</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="position-row">
+                                        <td class="position-header">Position</td>
+                                        <td class="col-owner">${ownerFormatted}</td>
+                                        <td class="col-brand">${brandFormatted}</td>
+                                        <td class="col-balanced">${balancedFormatted}</td>
+                                    </tr>
+                                    <tr class="rationale-row">
+                                        <td class="rationale-header">Rationale</td>
+                                        <td class="col-owner"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                        <td class="col-brand"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                        <td class="col-balanced"><span style="color: var(--neutral--500);">Not specified</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        `;
+                    }
+                    
+                    // Fallback to regular formatting if table format doesn't match
+                    return formatTextAsParagraphs(text);
+                }
+
+                // Update content sections
+                document.getElementById('plainEnglishSummary').innerHTML = formatTextAsParagraphs(clause.plainEnglishSummary);
+                document.getElementById('whyItMatters').innerHTML = formatTextAsParagraphs(clause.whyItMatters);
+                document.getElementById('clauseText').textContent = clause.clauseText || '';
+                document.getElementById('negotiationNotes').innerHTML = formatNegotiationNotesAsTable(clause);
+                document.getElementById('redFlags').innerHTML = formatTextAsParagraphs(clause.redFlags);
+                document.getElementById('commonPositions').innerHTML = formatCommonPositionsAsTable(clause);
+
+                // Sidebar (Clause Details card) removed; metadata shown in header
+                
+                const jurisdictionTags = document.getElementById('jurisdictionTags');
+                if (jurisdictionTags) {
+                    jurisdictionTags.innerHTML = formatAsChips(clause.jurisdictionTags);
+                }
+
+                const ownerGoalTags = document.getElementById('ownerGoalTags');
+                if (ownerGoalTags) {
+                    ownerGoalTags.innerHTML = formatAsChips(clause.ownerGoalTags);
+                }
+
+                // Update variables list
+                if (clause.variablesTokens) {
+                    const variablesList = document.getElementById('variablesList');
+                    if (variablesList) {
+                        const vars = clause.variablesTokens.split('\n').filter(v => v.trim());
+                        variablesList.innerHTML = vars.map(v => `<li>${escapeHtml(v.trim())}</li>`).join('');
+                    }
+                }
+            }
+
+            // Initialize variables arrays before populateVariables is called
+            let allVariables = [];
+            let filteredVariables = [];
+            let currentSort = { column: null, direction: 'asc' };
+
+            function populateVariables(variables) {
+                const container = document.getElementById('variablesContainer');
+                const emptyState = document.getElementById('variablesEmpty');
+                const fallbackList = document.getElementById('variablesList');
+                const tableBody = document.getElementById('variablesTableBody');
+                const countElement = document.getElementById('variablesCount');
+
+                // Always use interactive table format for consistency
+                // If API returned variables, use them; otherwise try to get from tokens
+                let variablesToDisplay = variables || [];
+                
+                // If no variables from API, check tokens from clause
+                if (!variablesToDisplay || variablesToDisplay.length === 0) {
+                    const clause = window.currentClause;
+                    if (clause && clause.variablesTokens) {
+                        // Parse tokens and create variable objects for interactive table
+                        const tokenStrings = clause.variablesTokens.split(/[;,\n]/).filter(v => v.trim());
+                        if (tokenStrings.length > 0) {
+                            // Convert tokens to variable objects for interactive display
+                            variablesToDisplay = tokenStrings.map(token => {
+                                const cleaned = token.trim().replace(/[{}]/g, '');
+                                return {
+                                    variable: `{${cleaned}}`,
+                                    variableName: cleaned,
+                                    description: '',
+                                    typicalRange: '',
+                                    exampleValue: '',
+                                    units: ''
+                                };
+                            });
+                        }
+                    }
+                }
+                
+                // Display variables in interactive table if we have any
+                if (variablesToDisplay && variablesToDisplay.length > 0) {
+                    allVariables = variablesToDisplay;
+                    filteredVariables = [...variablesToDisplay];
+                    container.style.display = 'block';
+                    emptyState.style.display = 'none';
+                    fallbackList.style.display = 'none';
+
+                    renderVariablesTable();
+                    setupVariablesSearch();
+                    setupVariablesSort();
+                } else {
+                    // No variables at all
+                    container.style.display = 'none';
+                    fallbackList.style.display = 'none';
+                    emptyState.style.display = 'block';
+                }
+            }
+
+            function renderVariablesTable() {
+                const tableBody = document.getElementById('variablesTableBody');
+                const countElement = document.getElementById('variablesCount');
+
+                if (!tableBody) return;
+
+                countElement.textContent = `Showing ${filteredVariables.length} of ${allVariables.length} variables`;
+
+                if (filteredVariables.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--neutral--500); padding: 20px;">No variables match your search</td></tr>`;
+                    return;
+                }
+
+                tableBody.innerHTML = filteredVariables.map(v => {
+                    const variable = v.variable || v.variableName || '';
+                    const description = v.description || v.variableDescription || '';
+                    const range = v.typicalRange || '';
+                    const example = v.exampleValue || '';
+                    const units = v.units ? ` ${v.units}` : '';
+
+                    return `
+                        <tr>
+                            <td>
+                                <span class="variable-token">${escapeHtml(variable)}</span>
+                                ${example ? `<div class="variable-example" style="margin-top: 4px;">Example: ${escapeHtml(example)}${units}</div>` : ''}
+                            </td>
+                            <td>
+                                <div class="variable-description">${escapeHtml(description)}</div>
+                            </td>
+                            <td>
+                                <div class="variable-range">${escapeHtml(range)}</div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            function setupVariablesSearch() {
+                const searchInput = document.getElementById('variablesSearch');
+                if (!searchInput) return;
+
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+                    
+                    if (!searchTerm) {
+                        filteredVariables = [...allVariables];
+                    } else {
+                        filteredVariables = allVariables.filter(v => {
+                            const variable = (v.variable || v.variableName || '').toLowerCase();
+                            const description = (v.description || v.variableDescription || '').toLowerCase();
+                            const range = (v.typicalRange || '').toLowerCase();
+                            return variable.includes(searchTerm) || 
+                                   description.includes(searchTerm) || 
+                                   range.includes(searchTerm);
+                        });
+                    }
+
+                    renderVariablesTable();
+                });
+            }
+
+            function setupVariablesSort() {
+                const headers = document.querySelectorAll('.variables-table th.sortable');
+                headers.forEach(header => {
+                    header.addEventListener('click', function() {
+                        const column = this.dataset.sort;
+                        
+                        // Update sort direction
+                        if (currentSort.column === column) {
+                            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            currentSort.column = column;
+                            currentSort.direction = 'asc';
+                        }
+
+                        // Update header classes
+                        headers.forEach(h => {
+                            h.classList.remove('sort-asc', 'sort-desc');
+                        });
+                        this.classList.add(`sort-${currentSort.direction}`);
+
+                        // Sort variables
+                        filteredVariables.sort((a, b) => {
+                            let aVal = '';
+                            let bVal = '';
+
+                            switch(column) {
+                                case 'variable':
+                                    aVal = (a.variable || a.variableName || '').toLowerCase();
+                                    bVal = (b.variable || b.variableName || '').toLowerCase();
+                                    break;
+                                case 'description':
+                                    aVal = (a.description || a.variableDescription || '').toLowerCase();
+                                    bVal = (b.description || b.variableDescription || '').toLowerCase();
+                                    break;
+                                case 'range':
+                                    aVal = (a.typicalRange || '').toLowerCase();
+                                    bVal = (b.typicalRange || '').toLowerCase();
+                                    break;
+                            }
+
+                            if (currentSort.direction === 'asc') {
+                                return aVal.localeCompare(bVal);
+                            } else {
+                                return bVal.localeCompare(aVal);
+                            }
+                        });
+
+                        renderVariablesTable();
+                    });
+                });
+            }
+
+            // Initialize Enhanced Features - NEW
+            function initializeEnhancedFeatures(clause) {
+                // Sticky Header
+                const header = document.getElementById('clauseHeader');
+                let lastScroll = 0;
+                window.addEventListener('scroll', () => {
+                    const currentScroll = window.pageYOffset;
+                    if (currentScroll > 200) {
+                        header.classList.add('sticky');
+                    } else {
+                        header.classList.remove('sticky');
+                    }
+                    lastScroll = currentScroll;
+                });
+
+                // Reading Progress
+                const progressBar = document.getElementById('readingProgress');
+                window.addEventListener('scroll', () => {
+                    const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrolled = (window.pageYOffset / windowHeight) * 100;
+                    progressBar.style.width = scrolled + '%';
+                });
+
+                // Table of Contents
+                const tocToggle = document.getElementById('tocToggle');
+                const toc = document.getElementById('tableOfContents');
+                tocToggle.addEventListener('click', () => {
+                    toc.classList.toggle('show');
+                });
+
+                // Update TOC active item on scroll
+                const sections = document.querySelectorAll('.content-section[id]');
+                const tocItems = document.querySelectorAll('.toc-item');
+                window.addEventListener('scroll', () => {
+                    let current = '';
+                    sections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        const sectionHeight = section.clientHeight;
+                        if (window.pageYOffset >= sectionTop - 200) {
+                            current = section.getAttribute('id');
+                        }
+                    });
+                    tocItems.forEach(item => {
+                        item.classList.remove('active');
+                        if (item.dataset.section === current) {
+                            item.classList.add('active');
+                        }
+                    });
+                });
+
+                // TOC click handlers
+                tocItems.forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = item.dataset.section;
+                        const target = document.getElementById(targetId);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                });
+
+                // Section Expand/Collapse
+                document.querySelectorAll('.section-toggle').forEach(toggle => {
+                    toggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const section = toggle.closest('.content-section');
+                        section.classList.toggle('collapsed');
+                    });
+                });
+
+                // Bookmark functionality
+                const bookmarkBtn = document.getElementById('bookmarkBtn');
+                const bookmarks = JSON.parse(localStorage.getItem('clauseBookmarks') || '[]');
+                if (bookmarks.includes(clause.clauseId)) {
+                    bookmarkBtn.classList.add('active');
+                }
+                bookmarkBtn.addEventListener('click', () => {
+                    const bookmarks = JSON.parse(localStorage.getItem('clauseBookmarks') || '[]');
+                    const index = bookmarks.indexOf(clause.clauseId);
+                    if (index > -1) {
+                        bookmarks.splice(index, 1);
+                        bookmarkBtn.classList.remove('active');
+                    } else {
+                        bookmarks.push(clause.clauseId);
+                        bookmarkBtn.classList.add('active');
+                    }
+                    localStorage.setItem('clauseBookmarks', JSON.stringify(bookmarks));
+                });
+
+                // Share functionality
+                document.getElementById('shareBtn').addEventListener('click', async () => {
+                    const url = window.location.href;
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: clause.clauseName,
+                                text: `Check out this clause: ${clause.clauseName}`,
+                                url: url
+                            });
+                        } catch (err) {
+                            console.error('Share failed:', err);
+                        }
+                    } else {
+                        // Fallback: copy to clipboard
+                        navigator.clipboard.writeText(url).then(() => {
+                            const btn = document.getElementById('shareBtn');
+                            const originalText = btn.innerHTML;
+                            btn.innerHTML = '<span>✓</span><span>Copied!</span>';
+                            setTimeout(() => {
+                                btn.innerHTML = originalText;
+                            }, 2000);
+                        });
+                    }
+                });
+
+                // Print functionality
+                document.getElementById('printBtn').addEventListener('click', () => {
+                    window.print();
+                });
+
+                // Calculate and display reading time
+                let readingTime;
+                if (clause.readingTime !== null && clause.readingTime !== undefined && clause.readingTime > 0) {
+                    readingTime = Math.ceil(clause.readingTime);
+                } else {
+                    const allText = document.querySelector('.clause-detail__content').innerText;
+                    readingTime = Math.ceil((allText.split(/\s+/).length) / 200);
+                }
+                
+                // Remove any existing reading time element first
+                const clauseNameEl = document.getElementById('clauseName');
+                if (clauseNameEl) {
+                    const existingReadingTime = clauseNameEl.querySelector('.reading-time');
+                    if (existingReadingTime) {
+                        existingReadingTime.remove();
+                    }
+                    
+                    const readingTimeEl = document.createElement('span');
+                    readingTimeEl.className = 'reading-time';
+                    readingTimeEl.innerHTML = `⏱️ ${readingTime} min read`;
+                    clauseNameEl.appendChild(readingTimeEl);
+                }
+
+                // Enhanced breadcrumb with category
+                const breadcrumbCategory = document.querySelector('.breadcrumb');
+                if (breadcrumbCategory && clause.category) {
+                    const categoryLink = document.createElement('a');
+                    categoryLink.href = `clause-library.html?category=${encodeURIComponent(clause.category)}`;
+                    categoryLink.className = 'breadcrumb-category';
+                    categoryLink.textContent = clause.category;
+                    breadcrumbCategory.innerHTML = `
+                        <a href="clause-library.html">Clause Library</a>
+                        <span class="breadcrumb-separator">></span>
+                        ${categoryLink.outerHTML}
+                        <span class="breadcrumb-separator">></span>
+                        <span id="clauseNameBreadcrumb">${escapeHtml(clause.clauseName)}</span>
+                    `;
+                }
+            }
+
+            function showError(message) {
+                const container = document.querySelector('.clause-detail-container');
+                container.innerHTML = `
+                    <div class="error-state">
+                        <h2>Clause Not Found</h2>
+                        <p>${escapeHtml(message)}</p>
+                        <a href="clause-library.html" class="nav-btn nav-btn--primary" style="margin-top: 20px;">Return to Clause Library</a>
+                    </div>
+                `;
+            }
+
+            // Store all clause IDs for navigation
+            let allClauseIds = [];
+            let currentClauseIndex = -1;
+            // Reuse clauseId from outer scope (already defined above)
+            const currentClauseId = clauseId;
+
+            // Fetch all clause IDs from server API
+            async function fetchAllClauseIds() {
+                try {
+                    allClauseIds = await fetchAllClauseIdsFromServer();
+                    // Find current clause index
+                    currentClauseIndex = allClauseIds.indexOf(currentClauseId);
+                    
+                    // Update button states
+                    updateNavigationButtons();
+                } catch (error) {
+                    console.error('Error fetching clause IDs:', error);
+                }
+            }
+
+            // Update navigation button states
+            function updateNavigationButtons() {
+                // Bottom navigation buttons
+                const prevBtn = document.querySelector('.nav-btn[onclick*="previousClause"]');
+                const nextBtn = document.querySelector('.nav-btn[onclick*="nextClause"]');
+                
+                // Top navigation buttons
+                const topPrevBtn = document.getElementById('topPrevClauseBtn');
+                const topNextBtn = document.getElementById('topNextClauseBtn');
+                
+                const canGoPrev = currentClauseIndex > 0;
+                const canGoNext = currentClauseIndex >= 0 && currentClauseIndex < allClauseIds.length - 1;
+                
+                // Update bottom buttons
+                if (prevBtn) {
+                    prevBtn.style.opacity = canGoPrev ? '1' : '0.5';
+                    prevBtn.style.pointerEvents = canGoPrev ? 'auto' : 'none';
+                }
+                
+                if (nextBtn) {
+                    nextBtn.style.opacity = canGoNext ? '1' : '0.5';
+                    nextBtn.style.pointerEvents = canGoNext ? 'auto' : 'none';
+                }
+                
+                // Update top buttons
+                if (topPrevBtn) {
+                    if (canGoPrev) {
+                        topPrevBtn.classList.remove('disabled');
+                    } else {
+                        topPrevBtn.classList.add('disabled');
+                    }
+                }
+                
+                if (topNextBtn) {
+                    if (canGoNext) {
+                        topNextBtn.classList.remove('disabled');
+                    } else {
+                        topNextBtn.classList.add('disabled');
+                    }
+                }
+            }
+
+            // Fetch clause IDs on page load
+            fetchAllClauseIds();
+
+            function previousClause() {
+                if (allClauseIds.length === 0) {
+                    console.warn('Clause IDs not loaded yet');
+                    return false;
+                }
+                
+                if (currentClauseIndex <= 0) {
+                    // Already at first clause
+                    return false;
+                }
+                
+                const previousIndex = currentClauseIndex - 1;
+                const previousClauseId = allClauseIds[previousIndex];
+                window.location.href = `clause-library-clause.html?id=${encodeURIComponent(previousClauseId)}`;
+                return false;
+            }
+
+            function nextClause() {
+                if (allClauseIds.length === 0) {
+                    console.warn('Clause IDs not loaded yet');
+                    return false;
+                }
+                
+                if (currentClauseIndex < 0 || currentClauseIndex >= allClauseIds.length - 1) {
+                    // Already at last clause
+                    return false;
+                }
+                
+                const nextIndex = currentClauseIndex + 1;
+                const nextClauseId = allClauseIds[nextIndex];
+                window.location.href = `clause-library-clause.html?id=${encodeURIComponent(nextClauseId)}`;
+                return false;
+            }
+
+            window.previousClause = previousClause;
+            window.nextClause = nextClause;
+        });
+    </script>
+</body>
+</html>

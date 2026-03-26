@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Dealality Radar (with Ranked List) - Dealality</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <style>
+        :root {
+            --neutral--800: #080f25;
+            --neutral--400: #aeb9e1;
+            --neutral--100: white;
+            --accent--primary-1: #6c72ff;
+            --secondary--color-1: #101935;
+            --secondary--color-2: #9a91fb;
+            --secondary--color-5: #fdb52a;
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --system--orange-400: #d5691b;
+            --system--green-400: #11845b;
+            --system--red-400: #c53030;
+        }
+        body { background: var(--neutral--800); color: var(--neutral--400); font-size: 14px; color-scheme: dark; min-height: 100vh; }
+
+        .mapping-container {
+            max-width: 100vw;
+            margin: 0;
+            padding: 0;
+            background: var(--neutral--800);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mapping-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #080f25;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .mapping-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .mapping-subtitle {
+            color: #ffffff;
+            font-size: 0.75rem;
+            margin-top: 5px;
+            margin-bottom: 16px;
+            font-weight: 300;
+            line-height: 1.3;
+            max-width: 650px;
+        }
+
+        @media (max-width: 768px) {
+            .mapping-subtitle {
+                max-width: 400px;
+                font-size: 0.7rem;
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #888;
+        }
+
+        .breadcrumb a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .controls-panel {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 0;
+            min-width: 0;
+            color-scheme: dark;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .control-group.radar-tabs-wrap {
+            min-width: 0;
+        }
+
+        .control-label {
+            color: var(--neutral--400);
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .control-input, .control-select {
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .control-input:focus, .control-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        /* Fix dropdown option styling */
+        .control-select option {
+            background: var(--secondary--color-1) !important;
+            color: #ffffff !important;
+        }
+
+        .control-select option:hover {
+            background: #667eea !important;
+            color: #ffffff !important;
+        }
+
+        .control-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            font-size: 14px;
+            white-space: nowrap;
+            min-width: 80px;
+            min-height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #d69e2e;
+            border: 1px solid #d69e2e;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #b8860b;
+            border-color: #b8860b;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* Match Clause Library "Reset View" button styling */
+        .filter-group-reset {
+            overflow: visible !important;
+        }
+
+        .btn-clear {
+            padding: 8px 16px;
+            background: var(--secondary--color-5);
+            border: 1px solid var(--secondary--color-5);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-clear:hover {
+            background: var(--system--orange-400);
+            border-color: var(--system--orange-400);
+            transform: translateY(-1px);
+        }
+
+        .filter-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            margin: 0;
+            z-index: 10;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            background: var(--neutral--800);
+            margin-top: -5px;
+            padding: 0 20px 20px;
+            box-sizing: border-box;
+        }
+
+        .map-container {
+            flex: 1;
+            position: relative;
+            background: var(--neutral--800);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Leaflet controls: keep clickable, and always BELOW sticky header/toggles */
+        #map .leaflet-control-container { pointer-events: none; }
+        #map .leaflet-control-container .leaflet-control { pointer-events: auto; }
+
+        /* Default to a sensible offset; JS will set --radar-map-controls-top */
+        #map { --radar-map-controls-top: 12px; }
+
+        /* Ensure top-left controls are pushed down into the visible map */
+        #map .leaflet-top.leaflet-left {
+            top: var(--radar-map-controls-top) !important;
+            left: 14px !important;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: var(--neutral--800);
+            border-left: 0.6px solid var(--neutral--600);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .sidebar-section {
+            padding: 12px 15px;
+            border-bottom: 0.6px solid var(--neutral--600);
+            background: var(--neutral--800);
+        }
+
+        .sidebar-title {
+            color: #ffffff;
+            font-size: 1.0rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+
+        .stat-card {
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            padding: 4px;
+            text-align: center;
+            transition: all 0.2s;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-card:hover {
+            background: rgba(16, 25, 53, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            color: #fdb52a;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .stat-subvalue {
+            color: #fdb52a;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .stat-sublabel {
+            color: #a0a0a0;
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .enhanced-stats {
+            margin-top: 3px;
+            padding-top: 3px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .enhanced-stats .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 40px;
+            padding: 3px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .enhanced-stats .stat-value {
+            color: #e0e0e0;
+            font-size: 1.0rem;
+        }
+
+        .enhanced-stats .stat-subvalue {
+            color: #b0b0b0;
+            font-size: 0.8rem;
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-title {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* Brand Distribution - Rounded Box Style */
+        .brand-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 4px 0;
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .brand-item:hover {
+            background: rgba(16, 25, 53, 0.9);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .brand-name {
+            color: #ffffff;
+            font-weight: 400;
+            flex: 1;
+            margin-right: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .brand-count {
+            color: #ffffff;
+            font-weight: 400;
+            font-size: 11px;
+        }
+
+        .filter-chip {
+            background: #2a2a3e;
+            border: 1px solid #4a5568;
+            color: #aeb9e1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-chip.active {
+            background: #4a9eff;
+            color: #fff;
+            border-color: #4a9eff;
+        }
+
+        .filter-chip:hover:not(.active) {
+            border-color: #4a9eff;
+            color: #fff;
+        }
+
+        .insights-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .insight-item {
+            padding: 12px 0 12px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+        
+        .insight-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .insight-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .insight-content {
+            flex: 1;
+        }
+        
+        .insight-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        
+        .insight-description {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+        
+        .loading-message {
+            text-align: center;
+            padding: 20px;
+            color: #4a9eff;
+            font-weight: 500;
+        }
+        
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #4a9eff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+
+        .insight-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .insight-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .insight-content {
+            flex: 1;
+        }
+
+        .insight-title {
+            color: #fff;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .insight-description {
+            color: #e0e0e0;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* Export UI removed */
+
+
+        /* Leaflet zoom controls: hard-pin to top-left of the MAP viewport */
+        #map { --radar-map-zoom-top: 12px; --radar-map-zoom-left: 12px; }
+        .leaflet-control-zoom {
+            position: fixed !important;
+            top: var(--radar-map-zoom-top) !important;
+            left: var(--radar-map-zoom-left) !important;
+            z-index: 2000 !important;
+        }
+        .leaflet-control-zoom a { text-decoration: none; }
+
+        
+
+        /* Map Hint Animation */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* System Status Indicator - Small Top Right Box */
+        .system-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            min-width: 200px;
+            max-width: 280px;
+        }
+
+        .system-status.show {
+            transform: translateX(0);
+        }
+
+        .status-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-spinner {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .wave-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            border: 2px solid #888;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A, #4CAF50);
+            background-size: 200% 200%;
+            animation: wave-flow 2s ease-in-out infinite;
+        }
+
+        .wave-1 {
+            height: 40%;
+            background: linear-gradient(45deg, #d69e2e, #f4d03f);
+            animation: wave-1 2s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+
+        .wave-2 {
+            height: 60%;
+            background: linear-gradient(45deg, #b8860b, #d69e2e);
+            animation: wave-2 2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .wave-3 {
+            height: 80%;
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+            animation: wave-3 2s ease-in-out infinite;
+            animation-delay: 0.6s;
+        }
+
+        .wave-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #d69e2e;
+            border-radius: 50%;
+            animation: particle-float 3s ease-in-out infinite;
+            box-shadow: 0 0 4px #d69e2e;
+        }
+
+        .particle:nth-child(1) {
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            left: 40%;
+            animation-delay: 0.5s;
+        }
+
+        .particle:nth-child(3) {
+            left: 60%;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(4) {
+            left: 80%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes wave-1 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes wave-2 {
+            0%, 100% { 
+                transform: translateX(100%) scaleY(1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.1);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes wave-3 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.4;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.3);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes particle-float {
+            0% { 
+                transform: translateY(100%) scale(0);
+                opacity: 0;
+            }
+            20% { 
+                transform: translateY(80%) scale(1);
+                opacity: 1;
+            }
+            80% { 
+                transform: translateY(20%) scale(1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(0%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .status-text {
+            flex: 1;
+            line-height: 1.3;
+        }
+
+        .status-time {
+            font-size: 10px;
+            color: #b0b0b0;
+            margin-top: 2px;
+        }
+
+        .status-progress {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 1px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .status-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d69e2e, #f4d03f);
+            border-radius: 1px;
+            transition: width 0.3s ease;
+            width: 0%;
+            box-shadow: 0 0 4px rgba(214, 158, 46, 0.5);
+        }
+
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            color: #888;
+        }
+
+        .loading .wave-container {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .map-legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 26, 26, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px 16px 12px 12px;
+            color: #fff;
+            font-size: 12px;
+            z-index: 500;
+            min-width: 200px;
+            max-width: 240px;
+            width: fit-content;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            flex-wrap: nowrap;
+            min-height: 18px;
+        }
+
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-section {
+            margin: 12px 0 6px 0;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #444;
+            color: #fff;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .legend-section:first-child {
+            margin-top: 0;
+        }
+        
+        /* Force Chain Scale section to be hidden by default */
+        #chainScaleLegendSection {
+            display: none !important;
+        }
+        
+        #chainScaleLegendItem1,
+        #chainScaleLegendItem2,
+        #chainScaleLegendItem3,
+        #chainScaleLegendItem4,
+        #chainScaleLegendItem5,
+        #chainScaleLegendItem6,
+        #chainScaleLegendItem7 {
+            display: none !important;
+        }
+        
+        /* Show Chain Scale section only when explicitly enabled */
+        .chain-scale-enabled #chainScaleLegendSection {
+            display: block !important;
+        }
+        
+        .chain-scale-enabled #chainScaleLegendItem1,
+        .chain-scale-enabled #chainScaleLegendItem2,
+        .chain-scale-enabled #chainScaleLegendItem3,
+        .chain-scale-enabled #chainScaleLegendItem4,
+        .chain-scale-enabled #chainScaleLegendItem5,
+        .chain-scale-enabled #chainScaleLegendItem6,
+        .chain-scale-enabled #chainScaleLegendItem7 {
+            display: flex !important;
+        }
+
+        .legend-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-marker.open {
+            background: #2563eb;
+            border-radius: 50%;
+        }
+
+        .legend-marker.pipeline {
+            background: #dc2626;
+            border-radius: 50%;
+        }
+
+        .legend-marker.candidate {
+            background: #7c3aed;
+            border-radius: 50%;
+        }
+
+        .legend-marker.white-space-high {
+            background: #4CAF50;
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+
+        .legend-marker.white-space-medium {
+            background: #ffeb3b;
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+
+        .legend-marker.white-space-low {
+            background: #f44336;
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+
+
+        .legend-marker.pipeline-high {
+            background: #ff4757;
+            border-radius: 0;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 12px solid #ff4757;
+        }
+
+        .legend-marker.pipeline-medium {
+            background: #ffa502;
+            border-radius: 0;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 12px solid #ffa502;
+        }
+
+        .legend-marker.pipeline-low {
+            background: #2ed573;
+            border-radius: 0;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 12px solid #2ed573;
+        }
+
+        /* Travel Infrastructure markers */
+        .legend-marker.infrastructure-airport {
+            background: #9c27b0;
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .legend-marker.infrastructure-cruise {
+            background: #e91e63;
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .legend-marker.infrastructure-convention {
+            background: #00bcd4;
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Different shapes for different overlays */
+
+        .legend-marker.pipeline-triangle {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 10px solid;
+            background: transparent;
+        }
+
+        .legend-marker.pipeline-triangle.pipeline-high {
+            border-bottom-color: #ff4757;
+        }
+
+        .legend-marker.pipeline-triangle.pipeline-medium {
+            border-bottom-color: #ffa502;
+        }
+
+        .legend-marker.pipeline-triangle.pipeline-low {
+            border-bottom-color: #2ed573;
+        }
+
+        /* Toggle Switch Styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: default;
+            font-size: 11px;
+            font-weight: 600;
+            color: #ffffff;
+            padding: 3px 20px 3px 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            min-width: 120px;
+            justify-content: space-between;
+        }
+
+        .toggle-switch:hover {
+            /* Removed hover animation */
+        }
+
+        .toggle-switch input[type="checkbox"] {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: relative;
+            display: inline-block;
+            width: 28px;
+            height: 14px;
+            background-color: #555;
+            border-radius: 14px;
+            transition: 0.3s;
+            margin-left: 0px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 10px;
+            width: 10px;
+            left: 1px;
+            bottom: 1px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.3s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(14px);
+        }
+
+        .toggle-label {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 10px;
+            margin-left: 8px;
+        }
+
+        /* Toggles – contained wrapper like Clause Library */
+        .radar-toggles-section {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            overflow-x: auto;
+            overflow-y: hidden;
+            color-scheme: dark;
+            scrollbar-width: thin;
+            scrollbar-color: var(--neutral--600) var(--neutral--800);
+        }
+
+        .radar-toggles-section::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .radar-toggles-section::-webkit-scrollbar-track {
+            background: var(--neutral--800);
+            border-top: 1px solid rgba(87, 195, 255, 0.35);
+        }
+
+        .radar-toggles-section::-webkit-scrollbar-thumb {
+            background: var(--neutral--600);
+            border-radius: 0;
+        }
+
+        .radar-toggles-section::-webkit-scrollbar-thumb:hover {
+            background: var(--neutral--500);
+        }
+
+        .overlay-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: nowrap;
+            min-width: 0;
+        }
+
+        .overlay-controls .toggle-switch {
+            background: var(--secondary--color-1);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            min-width: 140px;
+            justify-content: space-between;
+        }
+
+        .overlay-controls .toggle-switch:hover {
+            /* Removed hover animation */
+        }
+
+        .overlay-controls .toggle-switch input:checked + .toggle-slider {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+
+
+        .info-tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 4px;
+        }
+
+        .info-icon {
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: all 0.2s ease;
+            margin-left: 4px;
+            position: relative;
+            z-index: 1000;
+            pointer-events: auto;
+        }
+
+        .info-icon:hover {
+            opacity: 0.8;
+        }
+
+        /* SVG Icon Styles */
+        .svg-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        .svg-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tooltip-content {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute !important;
+            z-index: 999999 !important;
+            background: #101935;
+            color: #ffffff;
+            text-align: left;
+            border-radius: 8px;
+            padding: 12px 40px;
+            border: 1px solid #343b4e;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            width: 300px;
+            font-size: 12px;
+            font-weight: 300;
+            line-height: 1.4;
+            transition: all 0.3s ease;
+            /* Fixed position on left side of screen */
+            left: 20px !important;
+            top: 20px !important;
+            /* Prevent tooltip from going off-screen */
+            max-width: calc(100vw - 40px);
+            word-wrap: break-word;
+            /* Ensure tooltip appears above everything */
+            pointer-events: auto;
+            /* Force tooltip to be above all elements */
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .tooltip-content strong {
+            font-weight: 600;
+        }
+
+        .tooltip-close-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #343b4e;
+            border: none;
+            color: #ffffff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            line-height: 1;
+            transition: background-color 0.2s ease;
+        }
+
+        .tooltip-close-btn:hover {
+            background: #475569;
+        }
+
+        /* Smart positioning - show on left if too far right */
+        .info-tooltip:nth-child(3) .tooltip-content {
+            left: auto;
+            right: 0;
+            transform: none;
+        }
+
+        .tooltip-content::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            margin-bottom: -1px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #101935 transparent;
+        }
+
+        /* Arrow for right-aligned tooltips */
+        .info-tooltip:nth-child(3) .tooltip-content::after {
+            left: auto;
+            right: 20px;
+        }
+
+        .info-tooltip.active .tooltip-content {
+            visibility: visible !important;
+            opacity: 1 !important;
+            display: block !important;
+        }
+
+        /* Responsive tooltip positioning */
+        @media (max-width: 768px) {
+            .tooltip-content {
+                width: 250px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .info-tooltip:nth-child(3) .tooltip-content {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 300px;
+            }
+            
+            .controls-panel {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .controls-panel {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+        
+        .mapping-title-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .deal-capture-logo {
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .deal-capture-logo img {
+            height: 100%;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+        }
+
+        /* Custom cluster styling for better visibility */
+        .marker-cluster {
+            background: rgba(102, 126, 234, 0.8) !important;
+            border: 2px solid #667eea !important;
+            border-radius: 50% !important;
+            color: white !important;
+            font-weight: bold !important;
+            text-align: center !important;
+            font-size: 12px !important;
+            line-height: 1 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .cluster-icon {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 50% !important;
+        }
+
+        .cluster-small {
+            background: rgba(102, 126, 234, 0.8) !important;
+            border: 2px solid #667eea !important;
+        }
+
+        .cluster-medium {
+            background: rgba(255, 165, 0, 0.8) !important;
+            border: 2px solid #ffa500 !important;
+        }
+
+        .cluster-large {
+            background: rgba(220, 53, 69, 0.8) !important;
+            border: 2px solid #dc3545 !important;
+        }
+
+        /* White Space Heat Map Styling */
+        .white-space-heatmap {
+            transition: all 0.3s ease;
+        }
+        
+        .white-space-heatmap:hover {
+            fill-opacity: 0.6 !important;
+            stroke-width: 3px !important;
+        }
+
+        /* Tabs: Radar (default) | Ranked list – segmented control style */
+        .radar-main-tabs {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px;
+            background: rgba(30, 30, 45, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            gap: 0;
+            align-self: flex-end;
+        }
+        .radar-main-tab {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            background: transparent;
+            color: #9ca3af;
+        }
+        .radar-main-tab .radar-tab-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.85;
+        }
+        .radar-main-tab:hover {
+            color: #c5cae1;
+        }
+        .radar-main-tab:hover .radar-tab-icon {
+            opacity: 1;
+        }
+        .radar-main-tab.active {
+            background: #6c72ff;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(108, 114, 255, 0.35);
+        }
+        .radar-main-tab.active .radar-tab-icon {
+            opacity: 1;
+        }
+        /* Radar tab icon: default to stroked shapes, only explicit fills get filled */
+        .radar-main-tab .radar-tab-icon path,
+        .radar-main-tab .radar-tab-icon circle {
+            fill: none;
+            stroke: currentColor;
+        }
+        .radar-main-tab .radar-tab-icon [data-fill="1"] {
+            fill: currentColor;
+            stroke: none;
+        }
+        .radar-tab-panel, .ranked-list-tab-panel { display: flex; flex: 1; min-height: 0; flex-direction: column; }
+        .ranked-list-tab-panel.hidden { display: none !important; }
+        .radar-tab-panel.hidden { display: none !important; }
+        .ranked-list-inner { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 20px; }
+        .ranked-list-summary { color: #fff; font-size: 0.75rem; font-weight: 300; }
+        .ranked-list-summary span { color: #fdb52a; font-weight: 600; }
+        /* Ranked list table – match My Deals table */
+        .ranked-table-wrap { background: var(--neutral--800); overflow-x: auto; overflow-y: hidden; border: 0.6px solid var(--neutral--600); border-radius: 8px; margin-bottom: 20px; }
+        .ranked-table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-left: 0; font-size: 13px; }
+        .ranked-table thead { background: var(--neutral--700); }
+        .ranked-table th {
+            color: var(--neutral--100);
+            font-weight: 600;
+            padding: 12px 2px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--neutral--600);
+        }
+        .ranked-table th[data-sort] { cursor: pointer; user-select: none; }
+        .ranked-table th[data-sort]:hover { background: var(--neutral--600); }
+        .ranked-table th .sort-indicator { display: inline-flex; flex-direction: column; margin-left: 6px; vertical-align: middle; opacity: 0.5; transition: opacity 0.2s; flex-shrink: 0; line-height: 1; }
+        .ranked-table th:hover .sort-indicator,
+        .ranked-table th.sort-asc .sort-indicator,
+        .ranked-table th.sort-desc .sort-indicator { opacity: 1; }
+        .ranked-table th .sort-indicator-arrow { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; margin: 1px 0; }
+        .ranked-table th .sort-indicator-arrow-up { border-bottom: 5px solid var(--neutral--400); }
+        .ranked-table th .sort-indicator-arrow-down { border-top: 5px solid var(--neutral--400); }
+        .ranked-table th.sort-asc .sort-indicator-arrow-up { border-bottom-color: var(--accent--primary-1); }
+        .ranked-table th.sort-desc .sort-indicator-arrow-down { border-top-color: var(--accent--primary-1); }
+        .ranked-table tbody tr { border-bottom: 1px solid var(--neutral--600); }
+        .ranked-table tbody tr:hover { background: var(--neutral--700); }
+        .ranked-table td { padding: 10px 2px; color: var(--neutral--400); vertical-align: middle; }
+        .rank-col { width: 48px; font-weight: 700; color: #fdb52a; font-size: 14px; white-space: nowrap; }
+        .rank-col .rank-number { display: inline-flex; align-items: center; justify-content: center; min-width: 14px; }
+        .operator-name-cell { display: flex; align-items: center; gap: 12px; }
+        .operator-initial-thumb { width: 36px; height: 36px; border-radius: 6px; background: var(--neutral--600); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--neutral--400); font-weight: 600; flex-shrink: 0; }
+        .operator-name-text { color: var(--neutral--100); font-weight: 600; }
+        .operator-row-expand, .simple-row-expand { cursor: pointer; }
+        .row-expand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #aeb9e1;
+            font-size: 10px;
+            transition: color 0.2s;
+            vertical-align: middle;
+            margin-left: 2px; /* ~0.5-1px more breathing room than before */
+            transform: translateY(-1px);
+        }
+        .operator-row-expand:hover .row-expand-icon, .simple-row-expand:hover .row-expand-icon { color: #6c72ff; }
+        .row-expand-icon-open { display: none; }
+        .operator-row-expand.expanded .row-expand-icon-closed, .simple-row-expand.expanded .row-expand-icon-closed { display: none; }
+        .operator-row-expand.expanded .row-expand-icon-open, .simple-row-expand.expanded .row-expand-icon-open { display: inline-flex; color: #6c72ff; }
+        .breakdown-row-content { display: flex; flex-wrap: wrap; gap: 24px; padding: 10px 0 0 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 6px; }
+        .breakdown-panel { flex: 1; min-width: 260px; max-width: 480px; }
+        .expansion-summary-blocks { width: 100%; flex: 0 0 100%; margin-bottom: 8px; }
+        .expansion-summary-header { font-size: 11px; font-weight: 600; color: #aeb9e1; margin-bottom: 10px; text-transform: uppercase; }
+        .expansion-summary-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .expansion-summary-card { min-width: 0; }
+        .expansion-summary-card .affiliation-breakdown-title { margin-bottom: 6px; }
+        .expansion-pipeline-line { font-size: 11px; color: #aeb9e1; margin: 8px 0 0 0; }
+        .affiliation-breakdown-title, .country-breakdown-title { font-size: 11px; font-weight: 600; color: #aeb9e1; margin-bottom: 8px; text-transform: uppercase; }
+        .affiliation-breakdown-table, .country-breakdown-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+        .affiliation-breakdown-table th, .country-breakdown-table th { text-align: left; color: #aeb9e1; font-weight: 600; padding: 4px 12px 4px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .affiliation-breakdown-table td, .country-breakdown-table td { color: #e0e0e0; padding: 6px 12px 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .affiliation-breakdown-table .breakdown-keys, .country-breakdown-table .breakdown-keys { color: #fdb52a; font-weight: 600; }
+        .ranked-list-empty { text-align: center; padding: 32px 24px; background: #1a1a2e; border: 1px solid #333; border-radius: 12px; color: #888; }
+        .ranked-list-summary-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: nowrap; }
+        .ranked-list-summary-row .ranked-list-summary { margin-bottom: 0; }
+        .ranked-list-summary-row .rl-rank-by-wrap { display: flex; align-items: center; gap: 8px; flex-shrink: 0; white-space: nowrap; }
+        .ranked-list-summary-row .rl-rank-by-wrap label { color: #aeb9e1; font-size: 12px; font-weight: 600; margin: 0; }
+        .ranked-list-loading { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 24px; color: #888; }
+        .ranked-list-loading .rl-loading-wave { width: 32px; height: 32px; flex-shrink: 0; }
+        .ranked-list-loading .rl-loading-wave .wave-container { width: 100%; height: 100%; position: relative; background: #2a2a2a; border-radius: 50%; border: 2px solid #888; overflow: hidden; box-shadow: 0 0 8px rgba(255, 255, 255, 0.1); }
+        .ranked-list-loading .rl-loading-wave .wave { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; }
+        .ranked-list-loading .rl-loading-wave .wave-1 { height: 40%; background: linear-gradient(45deg, #d69e2e, #f4d03f); animation: wave-1 2s ease-in-out infinite; animation-delay: 0s; }
+        .ranked-list-loading .rl-loading-wave .wave-2 { height: 60%; background: linear-gradient(45deg, #b8860b, #d69e2e); animation: wave-2 2s ease-in-out infinite; animation-delay: 0.3s; }
+        .ranked-list-loading .rl-loading-wave .wave-3 { height: 80%; background: linear-gradient(45deg, #f4d03f, #f7dc6f); animation: wave-3 2s ease-in-out infinite; animation-delay: 0.6s; }
+        .ranked-list-loading .rl-loading-wave .wave-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .ranked-list-loading .rl-loading-wave .particle { position: absolute; width: 2px; height: 2px; background: #d69e2e; border-radius: 50%; animation: particle-float 3s ease-in-out infinite; box-shadow: 0 0 4px #d69e2e; }
+        .ranked-list-loading .rl-loading-wave .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .ranked-list-loading .rl-loading-wave .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .ranked-list-loading .rl-loading-wave .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .ranked-list-loading .rl-loading-wave .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+        .rl-hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <!-- SVG Icons Sprite -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <!-- Statistics Icon -->
+      <symbol id="stats-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3v18h18V3H3zm16 16H5V5h14v14z" fill="white"/>
+        <path d="M7 7h2v10H7V7zm4-2h2v12h-2V5zm4 4h2v8h-2V9z" fill="white"/>
+      </symbol>
+      
+      <!-- Target Icon -->
+      <symbol id="target-icon" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/>
+        <circle cx="12" cy="12" r="6" stroke="white" stroke-width="2" fill="none"/>
+        <circle cx="12" cy="12" r="2" fill="white"/>
+      </symbol>
+      
+      <!-- Lightbulb Icon -->
+      <symbol id="lightbulb-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z" fill="white"/>
+        <path d="M12 2C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="white"/>
+      </symbol>
+      
+      <!-- Crown Icon -->
+      <symbol id="crown-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M5 16L3 8l5.5 5L12 4l3.5 9L21 8l-2 8H5z" fill="white"/>
+        <path d="M5 16v2h14v-2H5z" fill="white"/>
+      </symbol>
+      
+      <!-- Trending Up Icon -->
+      <symbol id="trending-up-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z" fill="white"/>
+      </symbol>
+      
+      <!-- Target Icon -->
+      <symbol id="target-icon" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/>
+        <circle cx="12" cy="12" r="6" stroke="white" stroke-width="2" fill="none"/>
+        <circle cx="12" cy="12" r="2" fill="white"/>
+      </symbol>
+      
+      <!-- Map Icon -->
+      <symbol id="map-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z" fill="white"/>
+      </symbol>
+      
+      <!-- Building Icon -->
+      <symbol id="building-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10z" fill="white"/>
+      </symbol>
+      
+      <!-- Home Icon -->
+      <symbol id="home-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="white"/>
+      </symbol>
+      
+      <!-- Info Icon -->
+      <symbol id="info-icon" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/>
+        <path d="M12 16v-4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="12" cy="8" r="1" fill="white"/>
+      </symbol>
+      
+      <!-- Lightning Icon (High Priority) -->
+      <symbol id="lightning-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white"/>
+      </symbol>
+      
+      <!-- Chart Icon (Medium Priority) -->
+      <symbol id="chart-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3v18h18V3H3zm16 16H5V5h14v14z" fill="white"/>
+        <path d="M7 7h2v10H7V7zm4-2h2v12h-2V5zm4 4h2v8h-2V9z" fill="white"/>
+      </symbol>
+      
+      <!-- Search Icon (Low Priority) -->
+      <symbol id="search-icon" viewBox="0 0 24 24" fill="none">
+        <circle cx="11" cy="11" r="8" stroke="white" stroke-width="2" fill="none"/>
+        <path d="m21 21-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      
+      <!-- Market Leader Icon -->
+      <symbol id="market-leader-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="white"/>
+      </symbol>
+      
+      <!-- Development Activity Icon -->
+      <symbol id="development-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="white" stroke-width="2" fill="none"/>
+        <polyline points="14,2 14,8 20,8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="16" y1="13" x2="8" y2="13" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <line x1="16" y1="17" x2="8" y2="17" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <polyline points="10,9 9,9 8,9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      
+      <!-- White Space Icon -->
+      <symbol id="white-space-icon" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="3" width="18" height="18" rx="2" stroke="white" stroke-width="2" fill="none"/>
+        <path d="M9 9h6v6H9z" fill="white"/>
+      </symbol>
+      
+      <!-- Regional Concentration Icon -->
+      <symbol id="regional-icon" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="white" stroke-width="2" fill="none"/>
+      </symbol>
+      
+      <!-- Large Scale Development Icon -->
+      <symbol id="large-scale-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M3 21h18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <path d="M5 21V7l8-4v18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <path d="M19 21V11l-6-4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      
+      <!-- Boutique Market Icon -->
+      <symbol id="boutique-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="white" stroke-width="2" fill="none"/>
+        <path d="M3.27 6.96L12 12.01l8.73-5.05" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <path d="M12 22.08V12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+    </svg>
+
+    <div class="mapping-container">
+        <header class="mapping-header">
+            
+            <div class="header-top">
+                <div>
+                    <div class="mapping-title-container">
+                        <div class="deal-capture-logo">
+                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+                        </div>
+                        <h1 class="mapping-title">Dealality Radar</h1>
+                    </div>
+                    <p class="mapping-subtitle">A dynamic mapping platform that visualizes where hotel brands operate today, where they're growing, and where untapped opportunities exist — helping owners and brands align on the best development strategy.</p>
+                    
+                    <!-- System Status Indicator -->
+                    <div id="systemStatus" class="system-status" style="display: none;">
+                        <div class="status-content">
+                            <div class="status-spinner">
+                                <div class="wave-container">
+                                    <div class="wave wave-1"></div>
+                                    <div class="wave wave-2"></div>
+                                    <div class="wave wave-3"></div>
+                                    <div class="wave-particles">
+                                        <div class="particle"></div>
+                                        <div class="particle"></div>
+                                        <div class="particle"></div>
+                                        <div class="particle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="status-text">
+                                <div>Processing...</div>
+                                <div class="status-time">Estimated time: 2-3 seconds</div>
+                            </div>
+                        </div>
+                        <div class="status-progress">
+                            <div class="status-progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="overlay-controls">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="hotelVisibilityToggle" onchange="toggleHotelVisibility()" checked>
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Show Hotels</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>Show Hotels</strong><br>
+                                    Toggle the visibility of hotel markers on the map. When enabled, displays all hotels with their current status and property information.<br><br>
+                                    <strong>Hotel Status Colors:</strong><br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #3b82f6; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Open Hotels: Currently operating<br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #ef4444; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Pipeline: Under development<br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #8b5cf6; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Candidate/LOI: Potential opportunities<br><br>
+                                    <strong>Use case:</strong> View the current hotel landscape and development pipeline.
+                                </div>
+                            </div>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="chainScaleToggle" onchange="toggleChainScaleView()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Chain Scale View</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>Chain Scale View</strong><br>
+                                    Toggle between status colors (Open/Pipeline/Candidate) and chain scale colors (Luxury/Upscale/Midscale/Economy).<br><br>
+                    <strong>Chain Scale Colors:</strong><br>
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #68B0AB; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Luxury: Ultra-premium properties<br>
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #FF785A; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Upper Upscale: High-end properties<br>
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #8EF21F; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Upscale: Premium properties<br>
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #8e44ad; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Upper Midscale: Mid-range properties<br>
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #daa520; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Midscale: Standard properties<br>
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #694A38; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Economy: Budget properties<br>
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #34495e; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Independent: Non-chain properties<br><br>
+                                    <strong>Use case:</strong> Analyze market positioning and competitive landscape by chain scale.
+                                </div>
+                            </div>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="cityAggregationToggle" onchange="toggleCityAggregation()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">City Aggregation</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>City Aggregation</strong><br>
+                                    When enabled, shows one deterministic marker per city/country that summarizes total hotels, keys, status mix, and top brands. Markers stay visible at all zoom levels so you can click for the summary anytime; at higher zoom, individual hotel markers are also shown.<br><br>
+                                    <strong>Use case:</strong> Reduce map clutter and view city/country summaries at any zoom level.
+                                </div>
+                            </div>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="whiteSpaceToggle" onchange="toggleWhiteSpace()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">White Space</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>White Space (Context-Aware)</strong><br>
+                                    Identifies opportunity areas where the selected segment is under-represented versus the baseline within the current filters.<br><br>
+                                    <strong>Which mode you’re in:</strong><br>
+                                    - <strong>General White Space</strong>: no <em>Brand Filter</em> and no <em>Chain Scale</em> filter selected.<br>
+                                    - <strong>Brand White Space</strong>: <em>Brand Filter</em> is selected.<br>
+                                    - <strong>Chain Scale White Space</strong>: <em>Chain Scale</em> filter is selected.<br><br>
+                                    <strong>What the colors mean:</strong><br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #4CAF50; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); margin-right: 6px; vertical-align: middle;"></span> High Opportunity<br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #ffeb3b; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); margin-right: 6px; vertical-align: middle;"></span> Medium Opportunity<br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #f44336; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); margin-right: 6px; vertical-align: middle;"></span> Low Opportunity (saturated)<br><br>
+                                    <strong>Brand/Chain thresholds (used in those modes):</strong><br>
+                                    High: selected segment is 0 OR share &lt; 10%<br>
+                                    Medium: share between 10% and 25%<br>
+                                    Low: share &gt;= 25%<br><br>
+                                    <strong>Use case:</strong> Spot where you can find the biggest opportunity for new development.
+                                </div>
+                            </div>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="penetrationToggle" onchange="togglePenetrationHeatmap()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Brand Penetration</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>Brand Penetration Analysis</strong><br>
+                                    Shows the percentage of branded vs independent hotels in each city.<br><br>
+                                    <strong>What it shows:</strong><br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #ff6b6b; border-radius: 0; margin-right: 6px; vertical-align: middle;"></span> High Penetration: 70%+ branded hotels (saturated)<br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #ffd93d; border-radius: 0; margin-right: 6px; vertical-align: middle;"></span> Medium Penetration: 40-70% branded hotels<br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #6bcf7f; border-radius: 0; margin-right: 6px; vertical-align: middle;"></span> Low Penetration: 20-40% branded hotels (opportunity)<br><br>
+                                    <strong>Use case:</strong> Identify markets where brand affiliation could add value.
+                                </div>
+                            </div>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="pipelineToggle" onchange="togglePipelinePressure()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Pipeline Pressure</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>Pipeline Pressure Indicator (Key-Weighted)</strong><br>
+                                    Shows pipeline pressure using <strong>key pressure</strong> (rooms-weighted). Classification is based on keys, not just units.<br><br>
+                                    <strong>What it shows:</strong><br>
+                                    <span style="display: inline-block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #ff4757; margin-right: 6px; vertical-align: middle;"></span> High Key Pressure: pipeline keys &gt;= open keys (oversupply risk)<br>
+                                    <span style="display: inline-block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #ffa502; margin-right: 6px; vertical-align: middle;"></span> Medium Key Pressure: pipeline keys are 50%–99% of existing supply<br>
+                                    <span style="display: inline-block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #2ed573; margin-right: 6px; vertical-align: middle;"></span> Low Key Pressure: pipeline keys &lt; 50% of existing supply (more stable)<br><br>
+                                    <strong>Also shown in the popup:</strong> unit pressure (pipeline hotels vs open hotels) and key pressure (pipeline rooms vs open rooms).<br>
+                                    <strong>Note:</strong> it can show high key pressure even when unit count pressure looks modest (i.e., larger projects).
+                                    <br><br>
+                                    <strong>Use case:</strong> Avoid oversupply risk or identify markets where pipeline is manageable.
+                                </div>
+                            </div>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="infrastructureToggle" onchange="toggleTravelInfrastructure()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Travel Infrastructure</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>Travel Infrastructure Layer</strong><br>
+                                    Overlay airports, cruise ports, convention centers to see which brands cluster around demand generators.<br><br>
+                                    <strong>What it shows:</strong><br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #9c27b0; border-radius: 0; clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); margin-right: 6px; vertical-align: middle;"></span> Airports: Major international and domestic airports<br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #e91e63; border-radius: 0; clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); margin-right: 6px; vertical-align: middle;"></span> Cruise Ports: Major cruise ship terminals<br>
+                                    <span style="display: inline-block; width: 12px; height: 12px; background: #00bcd4; border-radius: 0; clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); margin-right: 6px; vertical-align: middle;"></span> Convention Centers: Major conference facilities<br><br>
+                                    <strong>Use case:</strong> Identify where brands cluster around demand generators and where gaps remain.
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="control-group radar-tabs-wrap">
+                    <label class="control-label" style="visibility:hidden;">View</label>
+                    <div class="radar-main-tabs">
+                        <button type="button" class="radar-main-tab active" data-tab="radar" title="Radar">
+                            <svg class="radar-tab-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" opacity="0.85" fill="none"></circle>
+                                <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="1.6" opacity="0.55" fill="none"></circle>
+                                <path d="M12 12 L19 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"></path>
+                                <circle cx="19" cy="9" r="1.3" fill="currentColor" data-fill="1"></circle>
+                            </svg>
+                            <span>Radar</span>
+                        </button>
+                        <button type="button" class="radar-main-tab" data-tab="rankedlist" title="Ranked list">
+                            <svg class="radar-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                            <span>Ranked list</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Search Location</label>
+                    <input type="text" class="control-input" id="locationSearch" placeholder="Search city, country, or property...">
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Parent Company</label>
+                    <select class="control-select" id="parentCompanyFilter">
+                        <option value="">All Parent Companies</option>
+                        <!-- Dynamic options will be populated here -->
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Brand Filter</label>
+                    <select class="control-select" id="brandFilter">
+                        <option value="">All Brands</option>
+                        <!-- Dynamic options will be populated here -->
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Status Filter</label>
+                    <select class="control-select" id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="Open">Open Hotels</option>
+                        <option value="Pipeline">Pipeline</option>
+                        <option value="Candidate">Candidate/LOI</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Chain Scale</label>
+                    <select class="control-select" id="propertyTypeFilter">
+                        <option value="">All Chain Scales</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Region</label>
+                    <select class="control-select" id="regionFilter">
+                        <option value="">All Regions</option>
+                        <option value="Caribbean & Latin America">Caribbean & Latin America</option>
+                        <option value="North America">North America</option>
+                        <option value="Europe">Europe</option>
+                        <option value="Middle East & Africa">Middle East & Africa</option>
+                        <option value="Asia Pacific">Asia Pacific</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Location Type</label>
+                    <select class="control-select" id="locationTypeFilter">
+                        <option value="">All Location Types</option>
+                        <!-- Dynamic options will be populated here -->
+                    </select>
+                </div>
+                
+                <div class="control-group filter-group-reset">
+                    <button class="btn-clear" onclick="resetView()">Reset View<span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span></button>
+                </div>
+            </div>
+
+            <div id="radarTogglesMount" class="radar-toggles-section" aria-label="Radar overlays"></div>
+        </header>
+
+        <div class="main-content">
+            <div id="radarTabPanel" class="radar-tab-panel" style="display: flex; flex: 1; min-height: 0; flex-direction: row; width: 100%;">
+            <div class="map-container">
+                <div id="map"></div>
+                
+                
+                <div class="map-legend">
+                    <div class="legend-section" id="statusLegendSection">
+                        <strong>Hotel Status</strong>
+                    </div>
+                    <div class="legend-item" id="statusLegendItem1">
+                        <div class="legend-marker open"></div>
+                        <span>Open Hotels</span>
+                    </div>
+                    <div class="legend-item" id="statusLegendItem2">
+                        <div class="legend-marker pipeline"></div>
+                        <span>Pipeline</span>
+                    </div>
+                    <div class="legend-item" id="statusLegendItem3">
+                        <div class="legend-marker candidate"></div>
+                        <span>Candidate/LOI</span>
+                    </div>
+                    <div class="legend-section" id="chainScaleLegendSection" style="display: none !important;">
+                        <strong>Chain Scale</strong>
+                    </div>
+                    <div class="legend-item" id="chainScaleLegendItem1" style="display: none !important;">
+                        <div class="legend-marker" style="background: #68B0AB; border-radius: 50%;"></div>
+                        <span>Luxury</span>
+                    </div>
+                    <div class="legend-item" id="chainScaleLegendItem2" style="display: none !important;">
+                        <div class="legend-marker" style="background: #FF785A; border-radius: 50%;"></div>
+                        <span>Upper Upscale</span>
+                    </div>
+                    <div class="legend-item" id="chainScaleLegendItem3" style="display: none !important;">
+                        <div class="legend-marker" style="background: #8EF21F; border-radius: 50%;"></div>
+                        <span>Upscale</span>
+                    </div>
+                    <div class="legend-item" id="chainScaleLegendItem4" style="display: none !important;">
+                        <div class="legend-marker" style="background: #8e44ad; border-radius: 50%;"></div>
+                        <span>Upper Midscale</span>
+                    </div>
+                    <div class="legend-item" id="chainScaleLegendItem5" style="display: none !important;">
+                        <div class="legend-marker" style="background: #daa520; border-radius: 50%;"></div>
+                        <span>Midscale</span>
+                    </div>
+                    <div class="legend-item" id="chainScaleLegendItem6" style="display: none !important;">
+                        <div class="legend-marker" style="background: #694A38; border-radius: 50%;"></div>
+                        <span>Economy</span>
+                    </div>
+                    <div class="legend-item" id="chainScaleLegendItem7" style="display: none !important;">
+                        <div class="legend-marker" style="background: #34495e; border-radius: 50%;"></div>
+                        <span>Independent</span>
+                    </div>
+                    <div class="legend-section" id="whiteSpaceSection" style="display: none !important;">
+                        <strong>White Space Opportunities</strong>
+                    </div>
+                    <div class="legend-item" id="whiteSpaceLegend" style="display: none !important;">
+                        <div class="legend-marker white-space-high"></div>
+                        <span>High Opportunity</span>
+                    </div>
+                    <div class="legend-item" id="whiteSpaceLegend2" style="display: none !important;">
+                        <div class="legend-marker white-space-medium"></div>
+                        <span>Medium Opportunity</span>
+                    </div>
+                    <div class="legend-item" id="whiteSpaceLegend3" style="display: none !important;">
+                        <div class="legend-marker white-space-low"></div>
+                        <span>Low Opportunity</span>
+                    </div>
+                    <div class="legend-section" id="penetrationSection" style="display: none !important;">
+                        <strong>BRAND PENETRATION</strong>
+                    </div>
+                    <div class="legend-item" id="penetrationLegend" style="display: none !important;">
+                        <div class="legend-marker" style="background: #ff6b6b; border-radius: 50%;"></div>
+                        <span>High Penetration</span>
+                    </div>
+                    <div class="legend-item" id="penetrationLegend2" style="display: none !important;">
+                        <div class="legend-marker" style="background: #ffd93d; border-radius: 50%;"></div>
+                        <span>Medium Penetration</span>
+                    </div>
+                    <div class="legend-item" id="penetrationLegend3" style="display: none !important;">
+                        <div class="legend-marker" style="background: #6bcf7f; border-radius: 50%;"></div>
+                        <span>Low Penetration</span>
+                    </div>
+                    <div class="legend-section" id="pipelineSection" style="display: none !important;">
+                        <strong>Pipeline Pressure</strong>
+                    </div>
+                    <div class="legend-item" id="pipelineLegend" style="display: none !important;">
+                        <div class="legend-marker pipeline-high pipeline-triangle"></div>
+                        <span>High Pipeline Pressure</span>
+                    </div>
+                    <div class="legend-item" id="pipelineLegend2" style="display: none !important;">
+                        <div class="legend-marker pipeline-medium pipeline-triangle"></div>
+                        <span>Medium Pipeline Pressure</span>
+                    </div>
+                    <div class="legend-item" id="pipelineLegend3" style="display: none !important;">
+                        <div class="legend-marker pipeline-low pipeline-triangle"></div>
+                        <span>Low Pipeline Pressure</span>
+                    </div>
+                    <div class="legend-section" id="infrastructureSection" style="display: none !important;">
+                        <strong>Travel Infrastructure</strong>
+                    </div>
+                    <div class="legend-item" id="infrastructureLegend" style="display: none !important;">
+                        <div class="legend-marker infrastructure-airport"></div>
+                        <span>Airports</span>
+                    </div>
+                    <div class="legend-item" id="infrastructureLegend2" style="display: none !important;">
+                        <div class="legend-marker infrastructure-cruise"></div>
+                        <span>Cruise Ports</span>
+                    </div>
+                    <div class="legend-item" id="infrastructureLegend3" style="display: none !important;">
+                        <div class="legend-marker infrastructure-convention"></div>
+                        <span>Convention Centers</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div id="loadingMessage" class="loading-message" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <div>Loading hotel data from Airtable...</div>
+                </div>
+                
+                
+                <div id="whiteSpaceLoading" class="loading-message" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <div>Generating white space analysis...</div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <span class="svg-icon">
+                            <svg><use href="#stats-icon"></use></svg>
+                        </span> Summary Statistics
+                    </h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalHotels">-</div>
+                            <div class="stat-label">Total Hotels</div>
+                            <div class="stat-subvalue" id="totalRooms">-</div>
+                            <div class="stat-sublabel">Total Rooms</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="openHotels">-</div>
+                            <div class="stat-label">Open Hotels</div>
+                            <div class="stat-subvalue" id="openRooms">-</div>
+                            <div class="stat-sublabel">Open Rooms</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="pipelineHotels">-</div>
+                            <div class="stat-label">Pipeline</div>
+                            <div class="stat-subvalue" id="pipelineRooms">-</div>
+                            <div class="stat-sublabel">Pipeline Rooms</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="candidateHotels">-</div>
+                            <div class="stat-label">Candidates</div>
+                            <div class="stat-subvalue" id="candidateRooms">-</div>
+                            <div class="stat-sublabel">Candidate Rooms</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Enhanced Statistics Section -->
+                    <div class="stats-grid enhanced-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="chainAffiliated">-</div>
+                            <div class="stat-label">Chain Affiliated</div>
+                            <div class="stat-subvalue" id="chainAffiliatedPct">-</div>
+                            <div class="stat-sublabel">% of Total</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="independentHotels">-</div>
+                            <div class="stat-label">Independent</div>
+                            <div class="stat-subvalue" id="independentPct">-</div>
+                            <div class="stat-sublabel">% of Total</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="avgRoomsPerHotel">-</div>
+                            <div class="stat-label">Avg Rooms/Hotel</div>
+                            <div class="stat-subvalue" id="totalCountries">-</div>
+                            <div class="stat-sublabel">Countries</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="pipelineRatio">-</div>
+                            <div class="stat-label">Pipeline Ratio</div>
+                            <div class="stat-subvalue" id="candidateRatio">-</div>
+                            <div class="stat-sublabel">Candidate Ratio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <span class="svg-icon">
+                            <svg><use href="#target-icon"></use></svg>
+                        </span> Brand Distribution
+                    </h3>
+                    <div class="filter-section">
+                        <div class="filter-title">Top Brands by Unit Count (Open & Pipeline)</div>
+                        <div class="filter-options" id="brandChips">
+                            <!-- Dynamic brand chips will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <span class="svg-icon">
+                            <svg><use href="#lightbulb-icon"></use></svg>
+                        </span> Market Insights
+                    </h3>
+                    <ul class="insights-list" id="insightsList">
+                        <div class="loading">
+                            <div class="wave-container">
+                                <div class="wave wave-1"></div>
+                                <div class="wave wave-2"></div>
+                                <div class="wave wave-3"></div>
+                                <div class="wave-particles">
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+
+            </div>
+            </div>
+            <div id="rankedListTabPanel" class="ranked-list-tab-panel rl-hidden">
+                <div class="ranked-list-inner">
+                    <div class="ranked-list-summary-row">
+                        <p class="ranked-list-summary"><span id="rlRankCount">0</span> <span id="rlRankLabel">operators</span> · <span id="rlPropertyCount">0</span> properties with operator<span id="rlFullDataset"></span></p>
+                        <div class="rl-rank-by-wrap">
+                            <label class="control-label" for="rlRankBy">Rank by</label>
+                            <select id="rlRankBy" class="control-select" style="min-width:180px;"><option value="operator">Operator</option><option value="brand">Brand / Affiliation</option><option value="parent_company">Parent Company</option><option value="region">Region</option><option value="chain_scale">Chain Scale</option><option value="status">Status</option></select>
+                        </div>
+                    </div>
+                    <div id="rlLoading" class="ranked-list-loading rl-hidden"><div class="rl-loading-wave"><div class="wave-container"><div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div><div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div></div></div><span>Loading ranked list...</span></div>
+                    <div id="rlTableWrap" class="ranked-table-wrap rl-hidden"><table class="ranked-table" id="rlTable"><thead id="rlTableHead"><tr><th class="rank-col">#</th><th>Name</th><th>Units</th><th>Keys</th></tr></thead><tbody id="rlTableBody"></tbody></table></div>
+                    <div id="rlEmpty" class="ranked-list-empty rl-hidden"><p>No data. Adjust filters and try again.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dedicated tooltip container outside map area -->
+    <div id="tooltipContainer" style="position: fixed; top: 20px; left: 20px; z-index: 999999; pointer-events: none;"></div>
+
+    <script src="radar-page.js"></script>
+    <script src="brand-presence-mapping.js?v=196&t=1737210600&force=true&clean=true"></script>
+</body>
+</html>

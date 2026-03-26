@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Proposal - Dealality</title>
+    <style>
+        :root { --neutral--800: #080f25; --neutral--400: #aeb9e1; --neutral--100: white; --accent--primary-1: #6c72ff; --neutral--700: #212c4d; --neutral--600: #37446b; --neutral--500: #7e89ac; --secondary--color-1: #101935; --system--green-300: #14ca74; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { background: var(--neutral--800); }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--neutral--800); color: var(--neutral--400); min-height: 100vh; padding: 24px; }
+        html.embed, html.embed body { height: 100%; min-height: 100%; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: var(--neutral--100); margin-bottom: 8px; font-size: 1.5rem; }
+        .subtitle { color: var(--neutral--500); font-size: 14px; margin-bottom: 24px; }
+        .form-row { display: grid; grid-template-columns: 240px 1fr; gap: 12px 20px; align-items: center; margin-bottom: 16px; }
+        .form-row .form-label { color: var(--neutral--400); font-size: 13px; }
+        .form-row .form-controls { display: flex; gap: 12px; align-items: center; min-width: 0; }
+        .form-row .form-controls input, .form-row .form-controls select, .form-row .form-controls textarea {
+            padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600);
+            border-radius: 6px; color: var(--neutral--100); font-size: 14px; flex: 1; min-width: 0; text-align: left;
+        }
+        .form-row .form-controls textarea { min-height: 60px; resize: vertical; }
+        .form-row.form-row-textarea { align-items: start; }
+        .form-row.form-row-textarea .form-controls { flex-direction: column; align-items: stretch; }
+        .incentives-grid {
+            display: grid;
+            grid-template-columns: 240px auto 1fr;
+            gap: 8px 16px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+        .incentives-grid .incentive-header { color: var(--neutral--400); font-size: 13px; }
+        .incentive-row {
+            display: contents;
+        }
+        .incentive-label { color: var(--neutral--400); font-size: 14px; }
+        .incentive-check {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            cursor: pointer;
+        }
+        .incentive-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent--primary-1);
+            flex-shrink: 0;
+        }
+        .incentive-detail {
+            width: 100%;
+            min-height: 40px;
+            resize: vertical;
+            padding: 8px 10px;
+            background: var(--secondary--color-1);
+            border: 1px solid var(--neutral--600);
+            border-radius: 6px;
+            color: var(--neutral--100);
+            font-size: 13px;
+        }
+        @media (max-width: 600px) {
+            .incentives-grid {
+                grid-template-columns: 1fr auto 1fr;
+            }
+        }
+        .form-row-3col { display: grid; grid-template-columns: 240px 1fr 1fr; gap: 12px 20px; align-items: center; margin-bottom: 16px; }
+        .form-row-term-renewal { display: grid; grid-template-columns: 240px 1fr; gap: 12px 20px; align-items: center; margin-bottom: 16px; }
+        .form-row-term-renewal .form-label { color: var(--neutral--400); font-size: 13px; }
+        .form-term-controls { display: grid; grid-template-columns: 140px 100px 140px 1fr; gap: 0 8px; align-items: center; min-width: 0; }
+        .form-term-controls input { width: 100%; padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; box-sizing: border-box; }
+        .form-term-controls select { width: 100px; padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; }
+        .form-term-controls .duration-wrap { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+        .form-row-3col .form-label { color: var(--neutral--400); font-size: 13px; }
+        .form-row-3col input, .form-row-3col select, .form-row-3col textarea { width: 100%; padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; }
+        .form-application-fee-subrow { margin-top: 12px; margin-bottom: 4px; padding-left: 0; margin-left: 0; }
+        .form-application-fee-subrow-inner { display: grid; grid-template-columns: 240px 1fr 200px 1fr; gap: 12px 20px; align-items: center; }
+        .form-application-fee-subrow-inner .form-label { color: var(--neutral--400); font-size: 13px; }
+        .form-application-fee-subrow-inner input { padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; width: 100%; }
+        .form-row-3col #proposalReservationBasisOtherWrap { min-width: 0; }
+        .form-row-3col textarea { min-height: 60px; resize: vertical; }
+        .form-row-royalty-schedule { display: grid; grid-template-columns: 240px repeat(5, 1fr) minmax(100px, 1fr); gap: 12px 20px; align-items: end; margin-bottom: 16px; }
+        .form-row-royalty-schedule .form-label { color: var(--neutral--400); font-size: 13px; }
+        .form-row-royalty-schedule .year-cell { display: flex; flex-direction: column; gap: 4px; }
+        .form-row-royalty-schedule .year-cell .small-label { font-size: 11px; color: var(--neutral--500); }
+        .form-row-royalty-schedule .year-cell input { width: 100%; padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; text-align: left; }
+        .form-row-royalty-schedule select { padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; text-align: left; }
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .status-draft { background: rgba(253, 181, 42, 0.2); color: var(--system--green-300); }
+        .status-submitted { background: rgba(20, 202, 116, 0.2); color: var(--system--green-300); }
+        .btn { padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; }
+        .btn-primary { background: var(--accent--primary-1); color: white; }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-secondary { background: var(--neutral--700); color: var(--neutral--100); border: 1px solid var(--neutral--600); }
+        .btn-secondary:hover { background: var(--neutral--600); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; justify-content: flex-end; }
+        .error { color: #ff5a65; font-size: 13px; margin-top: 8px; }
+        .success { color: var(--system--green-300); font-size: 13px; margin-top: 8px; }
+        .section-title { color: var(--neutral--100); font-size: 15px; font-weight: 600; margin: 28px 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid var(--neutral--600); }
+        .section-title:first-of-type { margin-top: 0; }
+        /* Toast - same style as My Deals (top right) */
+        .bdr-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            display: none;
+            backdrop-filter: blur(12px);
+            min-width: 280px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .bdr-toast.show {
+            display: block !important;
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .bdr-toast .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .bdr-toast .toast-wave-container {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+        .bdr-toast .wave-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            border: 2px solid #888;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+        .bdr-toast .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+        .bdr-toast .wave-1 { height: 40%; background: linear-gradient(45deg, #d69e2e, #f4d03f); animation: bdr-toast-wave-1 2s ease-in-out infinite; }
+        .bdr-toast .wave-2 { height: 60%; background: linear-gradient(45deg, #b8860b, #d69e2e); animation: bdr-toast-wave-2 2s ease-in-out infinite; animation-delay: 0.3s; }
+        .bdr-toast .wave-3 { height: 80%; background: linear-gradient(45deg, #f4d03f, #f7dc6f); animation: bdr-toast-wave-3 2s ease-in-out infinite; animation-delay: 0.6s; }
+        .bdr-toast .wave-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .bdr-toast .particle { position: absolute; width: 2px; height: 2px; background: #d69e2e; border-radius: 50%; animation: bdr-toast-particle-float 3s ease-in-out infinite; box-shadow: 0 0 4px #d69e2e; }
+        .bdr-toast .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .bdr-toast .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .bdr-toast .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .bdr-toast .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+        .bdr-toast .toast-message { flex: 1; font-weight: 500; }
+        .bdr-toast.error .toast-message { color: #f4a0a0; }
+        @keyframes bdr-toast-wave-1 { 0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; } 50% { transform: translateX(0%) scaleY(1.2); opacity: 1; } }
+        @keyframes bdr-toast-wave-2 { 0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; } 50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; } }
+        @keyframes bdr-toast-wave-3 { 0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; } 50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; } }
+        @keyframes bdr-toast-particle-float { 0% { transform: translateY(100%) scale(0); opacity: 0; } 20% { transform: translateY(80%) scale(1); opacity: 1; } 80% { transform: translateY(20%) scale(1); opacity: 1; } 100% { transform: translateY(0%) scale(0); opacity: 0; } }
+    </style>
+</head>
+<body>
+    <script>
+        if (/[?&]embed=1/.test(window.location.search)) {
+            document.documentElement.classList.add('embed');
+            document.body.classList.add('embed');
+        }
+    </script>
+    <div class="bdr-toast" id="bdrToast" role="status" aria-live="polite">
+        <div class="toast-content">
+            <div class="toast-wave-container">
+                <div class="wave-container">
+                    <div class="wave wave-1"></div>
+                    <div class="wave wave-2"></div>
+                    <div class="wave wave-3"></div>
+                    <div class="wave-particles">
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="toast-message"></div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Submit Proposal</h1>
+        <p class="subtitle" id="subtitle">Loading...</p>
+        <div id="statusWrap" style="margin-bottom: 16px;"></div>
+        <div id="formWrap" style="display:none;">
+            <div class="form-row" style="margin-bottom: 20px;">
+                <span class="form-label">Agreement Type</span>
+                <div class="form-controls">
+                    <select id="proposalAgreementType">
+                        <option value="">— Select —</option>
+                    </select>
+                </div>
+            </div>
+            <div class="section-title">Term & Renewal</div>
+            <div class="form-row-term-renewal">
+                <span class="form-label">Term Quantity</span>
+                <div class="form-term-controls">
+                    <input type="number" id="proposalInitialTermQuantity" step="1" placeholder="1">
+                    <span class="form-label">Term Length</span>
+                    <input type="number" id="proposalInitialTermLength" step="0.5" placeholder="15">
+                    <span class="duration-wrap">
+                        <span class="form-label">Duration</span>
+                        <select id="proposalInitialTermDuration"><option value="">—</option><option value="Years">Years</option><option value="Months">Months</option></select>
+                    </span>
+                </div>
+            </div>
+            <div class="form-row-term-renewal">
+                <span class="form-label">Renewal Quantity</span>
+                <div class="form-term-controls">
+                    <input type="number" id="proposalRenewalOptionQuantity" step="1" placeholder="2">
+                    <span class="form-label">Renewal Length</span>
+                    <input type="number" id="proposalRenewalOptionLength" step="0.5" placeholder="5">
+                    <span class="duration-wrap">
+                        <span class="form-label">Duration</span>
+                        <select id="proposalRenewalOptionDuration"><option value="">—</option><option value="Years">Years</option><option value="Months">Months</option></select>
+                    </span>
+                </div>
+            </div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Typical Renewal Conditions</span>
+                <div class="form-controls">
+                    <textarea id="proposalRenewalConditions" placeholder="e.g. Automatic if in good standing, no defaults"></textarea>
+                </div>
+            </div>
+
+            <div id="franchiseSection">
+            <div class="section-title">Royalty & Marketing</div>
+            <div class="form-row">
+                <span class="form-label">Royalty</span>
+                <div class="form-controls">
+                    <select id="proposalRoyaltyType">
+                        <option value="single">Single %</option>
+                        <option value="schedule">Escalating schedule</option>
+                    </select>
+                </div>
+            </div>
+            <div id="royaltySingleWrap" class="form-row-3col">
+                <span class="form-label">Royalty %</span>
+                <input type="number" id="proposalRoyaltyPct" step="0.1" placeholder="e.g. 5">
+                <select id="proposalRoyaltyBasis">
+                    <option value="">Basis...</option>
+                    <option value="% of Gross Revenue">% of Gross Revenue</option>
+                    <option value="% of Rooms Revenue">% of Rooms Revenue</option>
+                    <option value="% of Total Revenue">% of Total Revenue</option>
+                </select>
+            </div>
+            <div id="royaltyScheduleWrap" class="form-row-royalty-schedule" style="display:none;">
+                <span class="form-label">Royalty Schedule (%)</span>
+                <div class="year-cell">
+                    <span class="small-label">Year 1</span>
+                    <input type="number" id="proposalRoyaltyYear1" step="0.01" placeholder="4">
+                </div>
+                <div class="year-cell">
+                    <span class="small-label">Year 2</span>
+                    <input type="number" id="proposalRoyaltyYear2" step="0.01" placeholder="4.25">
+                </div>
+                <div class="year-cell">
+                    <span class="small-label">Year 3</span>
+                    <input type="number" id="proposalRoyaltyYear3" step="0.01" placeholder="4.5">
+                </div>
+                <div class="year-cell">
+                    <span class="small-label">Year 4</span>
+                    <input type="number" id="proposalRoyaltyYear4" step="0.01" placeholder="4.75">
+                </div>
+                <div class="year-cell">
+                    <span class="small-label">Year 5+</span>
+                    <input type="number" id="proposalRoyaltyYear5Plus" step="0.01" placeholder="5">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                    <span class="small-label">Basis</span>
+                    <select id="proposalRoyaltyScheduleBasis">
+                    <option value="">Basis...</option>
+                    <option value="% of Gross Revenue">% of Gross Revenue</option>
+                    <option value="% of Rooms Revenue">% of Rooms Revenue</option>
+                    <option value="% of Total Revenue">% of Total Revenue</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row-3col">
+                <span class="form-label">Marketing %</span>
+                <input type="number" id="proposalMarketingPct" step="0.1" placeholder="e.g. 2">
+                <select id="proposalMarketingBasis">
+                    <option value="">Basis...</option>
+                    <option value="% of Gross Revenue">% of Gross Revenue</option>
+                    <option value="% of Rooms Revenue">% of Rooms Revenue</option>
+                    <option value="% of Total Revenue">% of Total Revenue</option>
+                </select>
+            </div>
+            </div>
+
+            <div id="managementSection" style="display:none;">
+            <div class="section-title">Management Fees</div>
+            <div class="form-row-3col">
+                <span class="form-label">Management Fee (%)</span>
+                <input type="number" id="proposalManagementFee" step="0.1" placeholder="e.g. 3">
+                <select id="proposalManagementFeeBasis">
+                    <option value="">Basis...</option>
+                    <option value="% of Gross Revenue">% of Gross Revenue</option>
+                    <option value="% of Rooms Revenue">% of Rooms Revenue</option>
+                    <option value="% of Total Revenue">% of Total Revenue</option>
+                </select>
+            </div>
+            <div class="form-row-3col">
+                <span class="form-label">Incentive Fee (%)</span>
+                <input type="number" id="proposalIncentiveFee" step="0.1" placeholder="e.g. 10">
+                <select id="proposalIncentiveFeeBasis">
+                    <option value="">Basis...</option>
+                    <option value="% of Net Operating Income">% of Net Operating Income</option>
+                    <option value="% of Adjusted NOI">% of Adjusted NOI</option>
+                    <option value="Over Preferred Return">Over Preferred Return</option>
+                    <option value="Over Budget / Hurdle">Over Budget / Hurdle</option>
+                </select>
+            </div>
+            <div class="form-row-3col">
+                <span class="form-label">Incentive Fee Excess (%)</span>
+                <input type="text" id="proposalIncentiveFeeExcess" placeholder="e.g. 3% above hurdle">
+                <select id="proposalIncentiveFeeExcessBasis">
+                    <option value="">Basis...</option>
+                    <option value="% of NOI above hurdle">% of NOI above hurdle</option>
+                    <option value="% of cash flow above preferred return">% of cash flow above preferred return</option>
+                </select>
+            </div>
+            </div>
+
+            <div class="section-title">Fees</div>
+            <div id="franchiseFeesSection" class="form-row-3col">
+                <span class="form-label">Application Fee ($)</span>
+                <input type="text" class="format-number" id="proposalApplicationFee" inputmode="numeric" placeholder="e.g. 15,000">
+                <select id="proposalApplicationFeeBasis">
+                    <option value="">Basis...</option>
+                    <option value="One-Time">One-Time</option>
+                    <option value="Per Application">Per Application</option>
+                    <option value="Per Property">Per Property</option>
+                    <option value="Base + Per Room Over Threshold">Base + Per Room Over Threshold</option>
+                </select>
+                <div id="proposalApplicationFeePerRoomRow" class="form-application-fee-subrow" style="display:none; grid-column: 1 / -1;">
+                    <div class="form-application-fee-subrow-inner">
+                        <label class="form-label">Application Fee Per Unit Over Threshold ($)</label>
+                        <input type="text" class="format-number" id="proposalApplicationFeePerUnitOverThreshold" inputmode="numeric" placeholder="e.g. 300">
+                        <label class="form-label">Application Fee Threshold (Units)</label>
+                        <input type="number" id="proposalApplicationFeeThresholdUnits" min="0" step="1" placeholder="e.g. 250">
+                    </div>
+                </div>
+                <span class="form-label">Initial Franchise Fee ($)</span>
+                <input type="text" class="format-number" id="proposalInitialFranchiseFee" inputmode="numeric" placeholder="e.g. 75,000">
+                <select id="proposalInitialFranchiseFeeBasis">
+                    <option value="">Basis...</option>
+                    <option value="One-Time">One-Time</option>
+                    <option value="Per Application">Per Application</option>
+                    <option value="Per Property">Per Property</option>
+                    <option value="Base + Per Room Over Threshold">Base + Per Room Over Threshold</option>
+                </select>
+                <span class="form-label">Key Money Amount ($)</span>
+                <input type="text" class="format-number" id="proposalKeyMoneyAmount" inputmode="numeric" placeholder="e.g. 500,000">
+                <textarea id="proposalKeyMoneyTerms" placeholder="e.g. Staggered payments, repayment terms"></textarea>
+                <span class="form-label">Reservation / Distribution Fee</span>
+                <div id="proposalReservationBasisOtherWrap">
+                    <input type="text" id="proposalReservationBasisOther" placeholder="e.g. $2, 2%, or specify" />
+                </div>
+                <select id="proposalReservationBasis">
+                    <option value="">— Select —</option>
+                    <option value="Per Reservation / Per Booking">Per Reservation / Per Booking</option>
+                    <option value="Per Room / Month">Per Room / Month</option>
+                    <option value="% of Gross Revenue">% of Gross Revenue</option>
+                    <option value="% of Rooms Revenue">% of Rooms Revenue</option>
+                    <option value="% of Total Revenue">% of Total Revenue</option>
+                    <option value="Fixed Fee">Fixed Fee</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            </div>
+            <div class="form-row">
+                <span class="form-label">PIP / Capex Estimate</span>
+                <div class="form-controls">
+                    <input type="text" class="format-number" id="proposalPIPCapex" inputmode="numeric" placeholder="e.g. $12,000/room or range">
+                </div>
+            </div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Design Review Fee</span>
+                <div class="form-controls">
+                    <textarea id="proposalDesignReviewFee" placeholder="e.g. $117,500 (design review services). $10,000 discount if qualified ID firm hired"></textarea>
+                </div>
+            </div>
+            <div class="form-row-3col">
+                <span class="form-label">Tech / Platform Fees</span>
+                <input type="text" class="format-number" id="proposalTechPlatformFees" placeholder="e.g. $6,000 or $85/room/yr">
+                <select id="proposalTechFeeBasis">
+                    <option value="">Basis...</option>
+                    <option value="Per Room / Year">Per Room / Year</option>
+                    <option value="Per Property">Per Property</option>
+                    <option value="% Of Revenue">% Of Revenue</option>
+                </select>
+            </div>
+            <div class="form-row-3col">
+                <span class="form-label">Training Fee ($)</span>
+                <input type="text" class="format-number" id="proposalTrainingFees" placeholder="e.g. $8,000 or Included">
+                <select id="proposalTrainingFeeBasis">
+                    <option value="">Basis...</option>
+                    <option value="One-Time">One-Time</option>
+                    <option value="Per Property">Per Property</option>
+                    <option value="Per Room">Per Room</option>
+                    <option value="Per Room / Year">Per Room / Year</option>
+                    <option value="Per Application">Per Application</option>
+                    <option value="Included">Included</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="section-title">Incentives</div>
+            <p class="subtitle" style="margin: 0 0 12px 0; font-size: 13px;">Select which incentives apply to this proposal and add details for each. These will appear in Deal Compare.</p>
+            <div class="incentives-grid">
+                <span class="form-label incentive-header">Incentive Types</span>
+                <span></span>
+                <span class="form-label incentive-header">Details</span>
+                <div class="incentive-row">
+                    <span class="incentive-label">Territorial Exclusivity / Radius</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Territorial Exclusivity / Radius">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Territorial Exclusivity / Radius" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">Reduced Royalty Period</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Reduced Royalty Period">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Reduced Royalty Period" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">Reduced Marketing Fee Period</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Reduced Marketing Fee Period">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Reduced Marketing Fee Period" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">Reduced / Waived Tech Fee Period</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Reduced / Waived Tech Fee Period">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Reduced / Waived Tech Fee Period" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">PIP Contribution by Brand</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="PIP Contribution by Brand">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="PIP Contribution by Brand" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">Sign-on / Conversion Incentive</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Sign-on / Conversion Incentive">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Sign-on / Conversion Incentive" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">Application Fee Credit</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Application Fee Credit">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Application Fee Credit" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">Opening / FF&E Support</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Opening / FF&E Support">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Opening / FF&E Support" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">Marketing Allowance (one-time or recurring)</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Marketing Allowance (one-time or recurring)">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Marketing Allowance (one-time or recurring)" placeholder="Details for this incentive (optional)"></textarea>
+                </div>
+                <div class="incentive-row">
+                    <span class="incentive-label">Other</span>
+                    <label class="incentive-check">
+                        <input type="checkbox" name="proposalIncentiveTypes" value="Other">
+                    </label>
+                    <textarea class="incentive-detail" data-incentive-detail="Other" placeholder="Describe any other incentives (optional)"></textarea>
+                </div>
+            </div>
+
+            <div class="section-title">LOI Key Terms</div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Territorial Restriction</span>
+                <div class="form-controls">
+                    <textarea id="proposalTerritorialRestriction" placeholder="e.g. 5-km radius from Hotel. Restricted until 9 yrs from execution or 7 yrs from opening. Burn-off: 75% occupancy over 18 months"></textarea>
+                </div>
+            </div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Operations Requirements</span>
+                <div class="form-controls">
+                    <textarea id="proposalOperationsRequirements" placeholder="e.g. Hotel operator must be brand-approved"></textarea>
+                </div>
+            </div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Guaranty</span>
+                <div class="form-controls">
+                    <textarea id="proposalGuaranty" placeholder="e.g. Franchisee obligations guaranteed by [Parent Entity]"></textarea>
+                </div>
+            </div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Manager Acknowledgment</span>
+                <div class="form-controls">
+                    <textarea id="proposalManagerAcknowledgment" placeholder="e.g. Management company will operate Hotel; Franchise Agreement controls in conflict"></textarea>
+                </div>
+            </div>
+
+            <div class="section-title">Additional Terms</div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Brand Standards Flexibility / Exceptions</span>
+                <div class="form-controls">
+                    <textarea id="proposalBrandStandardsFlexibility" placeholder="Optional"></textarea>
+                </div>
+            </div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Required Programs / Add-ons</span>
+                <div class="form-controls">
+                    <textarea id="proposalRequiredPrograms" placeholder="Optional"></textarea>
+                </div>
+            </div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Support Package Summary</span>
+                <div class="form-controls">
+                    <textarea id="proposalSupportSummary" placeholder="Optional"></textarea>
+                </div>
+            </div>
+
+            <div class="section-title">Attachment & Notes</div>
+            <div class="form-row">
+                <span class="form-label">Public URL</span>
+                <div class="form-controls">
+                    <input type="url" id="proposalFileUrl" placeholder="https://example.com/proposal.pdf">
+                </div>
+            </div>
+            <div class="form-row">
+                <span class="form-label">Filename</span>
+                <div class="form-controls">
+                    <input type="text" id="proposalFileFilename" placeholder="proposal.pdf">
+                </div>
+            </div>
+            <div class="form-row form-row-textarea">
+                <span class="form-label">Proposal Notes</span>
+                <div class="form-controls">
+                    <textarea id="proposalNotes" placeholder="Optional notes"></textarea>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="btn btn-secondary" id="saveDraftBtn">Save Draft</button>
+                <button type="button" class="btn btn-primary" id="submitBtn">Submit Proposal</button>
+            </div>
+            <div id="formMessage"></div>
+        </div>
+        <div id="loadingEl" style="color:var(--neutral--500);">Loading proposal...</div>
+        <div id="errorEl" class="error" style="display:none;"></div>
+    </div>
+    <script>
+(function () {
+    var requestId = (function () {
+        var m = /[?&]requestId=([^&]+)/.exec(window.location.search);
+        return m ? decodeURIComponent(m[1]) : '';
+    })();
+    if (!requestId) {
+        document.getElementById('loadingEl').style.display = 'none';
+        document.getElementById('errorEl').textContent = 'Missing requestId. Open this page with ?requestId=recXXX';
+        document.getElementById('errorEl').style.display = 'block';
+        document.getElementById('subtitle').textContent = 'Invalid link';
+        return;
+    }
+
+    var formWrap = document.getElementById('formWrap');
+    var loadingEl = document.getElementById('loadingEl');
+    var errorEl = document.getElementById('errorEl');
+    var statusWrap = document.getElementById('statusWrap');
+    var subtitle = document.getElementById('subtitle');
+    var formMessage = document.getElementById('formMessage');
+
+    function showError(msg) {
+        errorEl.textContent = msg || 'An error occurred';
+        errorEl.style.display = 'block';
+    }
+    function hideError() {
+        errorEl.style.display = 'none';
+    }
+    var bdrToastTimeout = null;
+    function showBdrToast(message, isSuccess) {
+        var toast = document.getElementById('bdrToast');
+        if (!toast) return;
+        if (bdrToastTimeout) clearTimeout(bdrToastTimeout);
+        var msgEl = toast.querySelector('.toast-message');
+        if (msgEl) msgEl.textContent = message;
+        toast.classList.toggle('error', !isSuccess);
+        toast.style.display = 'block';
+        setTimeout(function() { toast.classList.add('show'); }, 10);
+        bdrToastTimeout = setTimeout(function() {
+            toast.classList.remove('show');
+            setTimeout(function() { toast.style.display = 'none'; }, 300);
+        }, 2500);
+    }
+    function showFormMessage(msg, isSuccess) {
+        showBdrToast(msg, isSuccess);
+    }
+
+    var RESERVATION_BASIS_OPTIONS = ['Per Reservation / Per Booking','Per Room / Month','% of Gross Revenue','% of Rooms Revenue','% of Total Revenue','Fixed Fee','Other'];
+
+    function formatNumberWithCommas(val) {
+        if (val === '' || val === null || val === undefined) return '';
+        var s = String(val).replace(/,/g, '');
+        var num = parseFloat(s);
+        if (Number.isNaN(num) && s !== '') return val;
+        if (s === '' || s === '-') return val;
+        var parts = String(num).split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+    }
+
+    function populateForm(data) {
+        var p = data.proposal || {};
+        var prep = data.prepopulated || {};
+        var fields = ['proposalAgreementType','proposalRoyaltyPct','proposalMarketingPct','proposalRoyaltyBasis','proposalMarketingBasis','proposalApplicationFee','proposalApplicationFeeBasis','proposalInitialFranchiseFee','proposalInitialFranchiseFeeBasis','proposalApplicationFeePerUnitOverThreshold','proposalApplicationFeeThresholdUnits','proposalReservationBasis','proposalReservationBasisOther','proposalInitialTermQuantity','proposalInitialTermLength','proposalInitialTermDuration','proposalRenewalOptionQuantity','proposalRenewalOptionLength','proposalRenewalOptionDuration','proposalRenewalConditions','proposalKeyMoneyAmount','proposalKeyMoneyTerms','proposalRoyaltyYear1','proposalRoyaltyYear2','proposalRoyaltyYear3','proposalRoyaltyYear4','proposalRoyaltyYear5Plus','proposalKeyMoneyTerms','proposalManagementFee','proposalManagementFeeBasis','proposalIncentiveFee','proposalIncentiveFeeBasis','proposalIncentiveFeeExcess','proposalIncentiveFeeExcessBasis','proposalPIPCapex','proposalDesignReviewFee','proposalTechPlatformFees','proposalTechFeeBasis','proposalTrainingFees','proposalTrainingFeeBasis','proposalBrandStandardsFlexibility','proposalRequiredPrograms','proposalSupportSummary','proposalTerritorialRestriction','proposalOperationsRequirements','proposalGuaranty','proposalManagerAcknowledgment','proposalNotes'];
+        fields.forEach(function (f) {
+            var el = document.getElementById(f);
+            if (!el) return;
+            var v = p[f] ?? prep[f] ?? '';
+            v = v !== null && v !== undefined ? String(v).trim() : '';
+            if (f === 'proposalTrainingFees' && /[\d,$]+\s*-\s*[\d,$]/.test(String(v))) {
+                v = (prep[f] != null && String(prep[f]).trim() !== '') ? String(prep[f]).trim() : v;
+            }
+            if (f === 'proposalReservationBasis') {
+                var reservationAmount = (p.proposalReservationBasisOther || prep.proposalReservationBasisOther || '').toString().trim();
+                if (RESERVATION_BASIS_OPTIONS.indexOf(v) >= 0) {
+                    el.value = v;
+                    var otherInput = document.getElementById('proposalReservationBasisOther');
+                    if (otherInput) otherInput.value = reservationAmount;
+                } else if (v) {
+                    var otherInput = document.getElementById('proposalReservationBasisOther');
+                    if (otherInput) {
+                        el.value = 'Other';
+                        otherInput.value = (reservationAmount || v).trim();
+                    } else {
+                        el.value = 'Other';
+                    }
+                } else {
+                    el.value = '';
+                    var otherInput = document.getElementById('proposalReservationBasisOther');
+                    if (otherInput) otherInput.value = reservationAmount;
+                }
+                if (el.tagName === 'SELECT' && v && el.value !== v) {
+                    var want = String(v).trim().toLowerCase();
+                    for (var i = 0; i < el.options.length; i++) {
+                        if (el.options[i].value.trim().toLowerCase() === want) {
+                            el.value = el.options[i].value;
+                            break;
+                        }
+                    }
+                }
+            } else if (f === 'proposalReservationBasisOther') {
+                var otherInput = document.getElementById('proposalReservationBasisOther');
+                if (otherInput) otherInput.value = v;
+            } else if (f === 'proposalInitialTermDuration' || f === 'proposalRenewalOptionDuration') {
+                var normalized = v ? (/year/i.test(v) ? 'Years' : /month/i.test(v) ? 'Months' : v) : '';
+                el.value = (normalized === 'Years' || normalized === 'Months') ? normalized : '';
+            } else if (f === 'proposalTrainingFeeBasis' && el.tagName === 'SELECT') {
+                el.value = v;
+                if (v && el.value !== v) {
+                    var want = String(v).trim().toLowerCase();
+                    for (var i = 0; i < el.options.length; i++) {
+                        if (el.options[i].value.trim().toLowerCase() === want) {
+                            el.value = el.options[i].value;
+                            break;
+                        }
+                    }
+                }
+            } else if ((f === 'proposalManagementFeeBasis' || f === 'proposalIncentiveFeeBasis' || f === 'proposalIncentiveFeeExcessBasis') && el.tagName === 'SELECT') {
+                el.value = v;
+                if (v && el.value !== v) {
+                    var want = String(v).trim().toLowerCase();
+                    for (var i = 0; i < el.options.length; i++) {
+                        if (el.options[i].value.trim().toLowerCase() === want) {
+                            el.value = el.options[i].value;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                el.value = (el.classList && el.classList.contains('format-number') && v) ? formatNumberWithCommas(v) : v;
+            }
+        });
+        var incentiveTypes = p.proposalIncentiveTypes ?? prep.proposalIncentiveTypes;
+        if (Array.isArray(incentiveTypes)) {
+            document.querySelectorAll('input[name="proposalIncentiveTypes"]').forEach(function (cb) {
+                cb.checked = incentiveTypes.indexOf(cb.value) >= 0;
+            });
+        } else {
+            document.querySelectorAll('input[name="proposalIncentiveTypes"]').forEach(function (cb) { cb.checked = false; });
+        }
+        var rawIncentiveDetails = p.proposalIncentiveDetails ?? prep.proposalIncentiveDetails ?? '';
+        var detailByLabel = {};
+        if (rawIncentiveDetails) {
+            rawIncentiveDetails.split(/\n+/).forEach(function (line) {
+                var trimmed = String(line || '').trim();
+                if (!trimmed) return;
+                var idx = trimmed.indexOf(':');
+                var label = idx >= 0 ? trimmed.slice(0, idx).trim() : trimmed;
+                var text = idx >= 0 ? trimmed.slice(idx + 1).trim() : '';
+                if (label) detailByLabel[label] = text;
+            });
+        }
+        document.querySelectorAll('.incentive-row').forEach(function (row) {
+            var labelEl = row.querySelector('.incentive-label');
+            var detailEl = row.querySelector('.incentive-detail');
+            if (!labelEl || !detailEl) return;
+            var lbl = labelEl.textContent.trim();
+            detailEl.value = detailByLabel[lbl] || '';
+        });
+        if (Array.isArray(p.proposalFile) && p.proposalFile.length) {
+            var u = p.proposalFile[0];
+            var urlEl = document.getElementById('proposalFileUrl');
+            var fnEl = document.getElementById('proposalFileFilename');
+            if (urlEl) urlEl.value = u.url || '';
+            if (fnEl) fnEl.value = u.filename || '';
+        }
+        var hasSchedule = [p.proposalRoyaltyYear1, p.proposalRoyaltyYear2, p.proposalRoyaltyYear3, p.proposalRoyaltyYear4, p.proposalRoyaltyYear5Plus].some(function(v) {
+            return v != null && String(v).trim() !== '';
+        });
+        var typeEl = document.getElementById('proposalRoyaltyType');
+        var singleWrap = document.getElementById('royaltySingleWrap');
+        var scheduleWrap = document.getElementById('royaltyScheduleWrap');
+        var scheduleBasisEl = document.getElementById('proposalRoyaltyScheduleBasis');
+        if (typeEl) typeEl.value = hasSchedule ? 'schedule' : 'single';
+        if (singleWrap) singleWrap.style.display = hasSchedule ? 'none' : 'grid';
+        if (scheduleWrap) scheduleWrap.style.display = hasSchedule ? 'grid' : 'none';
+        if (scheduleBasisEl && (p.proposalRoyaltyBasis || prep.proposalRoyaltyBasis)) scheduleBasisEl.value = (p.proposalRoyaltyBasis || prep.proposalRoyaltyBasis || '').toString().trim();
+        document.querySelectorAll('#formWrap input.format-number').forEach(function(el) {
+            if (el.value) {
+                var formatted = formatNumberWithCommas(el.value);
+                if (formatted !== el.value) el.value = formatted;
+            }
+        });
+    }
+
+    function setupRoyaltyTypeToggle() {
+        var typeSel = document.getElementById('proposalRoyaltyType');
+        var singleWrap = document.getElementById('royaltySingleWrap');
+        var scheduleWrap = document.getElementById('royaltyScheduleWrap');
+        if (!typeSel || !singleWrap || !scheduleWrap) return;
+        typeSel.addEventListener('change', function () {
+            var isSchedule = typeSel.value === 'schedule';
+            singleWrap.style.display = isSchedule ? 'none' : 'grid';
+            scheduleWrap.style.display = isSchedule ? 'grid' : 'none';
+            if (isSchedule) {
+                document.getElementById('proposalRoyaltyPct').value = '';
+            } else {
+                ['proposalRoyaltyYear1','proposalRoyaltyYear2','proposalRoyaltyYear3','proposalRoyaltyYear4','proposalRoyaltyYear5Plus'].forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+            }
+        });
+    }
+
+    function setupReservationBasisOtherToggle() {
+        var sel = document.getElementById('proposalReservationBasis');
+        var otherInput = document.getElementById('proposalReservationBasisOther');
+        if (!sel || !otherInput) return;
+        sel.addEventListener('change', function () {
+            if (sel.value !== 'Other') otherInput.value = '';
+        });
+    }
+
+    function toggleApplicationFeePerRoomRow() {
+        var appBasis = document.getElementById('proposalApplicationFeeBasis');
+        var iffBasis = document.getElementById('proposalInitialFranchiseFeeBasis');
+        var row = document.getElementById('proposalApplicationFeePerRoomRow');
+        if (!row) return;
+        var show = (appBasis && appBasis.value === 'Base + Per Room Over Threshold') ||
+            (iffBasis && iffBasis.value === 'Base + Per Room Over Threshold');
+        row.style.display = show ? '' : 'none';
+    }
+
+    function toggleAgreementTypeSections() {
+        var sel = document.getElementById('proposalAgreementType');
+        var franchiseSection = document.getElementById('franchiseSection');
+        var franchiseFeesSection = document.getElementById('franchiseFeesSection');
+        var managementSection = document.getElementById('managementSection');
+        if (!sel || !franchiseSection || !franchiseFeesSection || !managementSection) return;
+        var v = (sel.value || '').trim();
+        var isFranchise = v === 'Franchise';
+        var isManagement = v === 'Management';
+        var isHybrid = v === 'Hybrid';
+        var isLease = v === 'Lease';
+        var showFranchise = isFranchise || isHybrid || !v;
+        var showManagement = isManagement || isHybrid || isLease;
+        franchiseSection.style.display = showFranchise ? '' : 'none';
+        franchiseFeesSection.style.display = showFranchise ? '' : 'none';
+        managementSection.style.display = showManagement ? '' : 'none';
+    }
+
+    function populateAgreementTypeOptions(options) {
+        var sel = document.getElementById('proposalAgreementType');
+        if (!sel) return;
+        var currentVal = sel.value;
+        sel.innerHTML = '<option value="">— Select —</option>';
+        (options || ['Franchise', 'Management', 'Hybrid', 'Lease']).forEach(function (opt) {
+            var o = document.createElement('option');
+            o.value = opt;
+            o.textContent = opt;
+            sel.appendChild(o);
+        });
+        if (currentVal && options && options.indexOf(currentVal) >= 0) sel.value = currentVal;
+    }
+
+    function loadDraft() {
+        hideError();
+        fetch('/api/brand-deal-requests/' + encodeURIComponent(requestId) + '/proposal-draft')
+            .then(function (r) {
+                return r.json().then(function (data) {
+                    if (!r.ok) {
+                        var msg = (data && data.error) ? data.error : ('Server error ' + r.status);
+                        showError(msg);
+                        loadingEl.style.display = 'none';
+                        return;
+                    }
+                    return data;
+                });
+            })
+            .then(function (data) {
+                if (!data) return;
+                loadingEl.style.display = 'none';
+                if (!data.success) {
+                    showError(data.error || 'Failed to load');
+                    return;
+                }
+                var proj = (data.projectName || '').trim();
+                subtitle.textContent = proj ? (proj + ' – Deal request – submit your proposal') : 'Deal request – submit your proposal';
+                populateAgreementTypeOptions(data.agreementTypeOptions);
+                if (data.submitted) {
+                    var submittedStr = data.proposalSubmittedAt ? 'Submitted at ' + new Date(data.proposalSubmittedAt).toLocaleString() : 'Submitted';
+                    var updatedStr = data.proposalUpdatedAt ? ' • Last updated ' + new Date(data.proposalUpdatedAt).toLocaleString() : '';
+                    statusWrap.innerHTML = '<span class="status-badge status-submitted">Submitted</span> ' + submittedStr + updatedStr;
+                    formWrap.style.display = 'block';
+                    populateForm(data);
+                    toggleApplicationFeePerRoomRow();
+                    toggleAgreementTypeSections();
+                    var saveBtn = document.getElementById('saveDraftBtn');
+                    saveBtn.textContent = 'Update Proposal';
+                    saveBtn.className = 'btn btn-primary';
+                    saveBtn.style.display = '';
+                    document.getElementById('submitBtn').style.display = 'none';
+                } else {
+                    statusWrap.innerHTML = data.proposalStatus === 'Draft' ? '<span class="status-badge status-draft">Draft</span>' : '';
+                    formWrap.style.display = 'block';
+                    var merged = { proposal: data.proposal || {}, prepopulated: data.prepopulated || {} };
+                    Object.keys(merged.prepopulated).forEach(function (k) {
+                        if (merged.proposal[k] === undefined || merged.proposal[k] === '') merged.proposal[k] = merged.prepopulated[k];
+                    });
+                    populateForm(merged);
+                    toggleApplicationFeePerRoomRow();
+                    toggleAgreementTypeSections();
+                }
+            })
+            .catch(function (err) {
+                loadingEl.style.display = 'none';
+                showError(err.message || 'Failed to load');
+            });
+    }
+
+    function collectBody() {
+        var body = {};
+        var isSchedule = document.getElementById('proposalRoyaltyType') && document.getElementById('proposalRoyaltyType').value === 'schedule';
+        var map = { proposalAgreementType: 'proposalAgreementType', proposalMarketingPct: 'proposalMarketingPct', proposalMarketingBasis: 'proposalMarketingBasis', proposalApplicationFee: 'proposalApplicationFee', proposalApplicationFeeBasis: 'proposalApplicationFeeBasis', proposalInitialFranchiseFee: 'proposalInitialFranchiseFee', proposalInitialFranchiseFeeBasis: 'proposalInitialFranchiseFeeBasis', proposalApplicationFeePerUnitOverThreshold: 'proposalApplicationFeePerUnitOverThreshold', proposalApplicationFeeThresholdUnits: 'proposalApplicationFeeThresholdUnits', proposalReservationBasis: 'proposalReservationBasis', proposalReservationBasisOther: 'proposalReservationBasisOther', proposalInitialTermQuantity: 'proposalInitialTermQuantity', proposalInitialTermLength: 'proposalInitialTermLength', proposalInitialTermDuration: 'proposalInitialTermDuration', proposalRenewalOptionQuantity: 'proposalRenewalOptionQuantity', proposalRenewalOptionLength: 'proposalRenewalOptionLength', proposalRenewalOptionDuration: 'proposalRenewalOptionDuration', proposalRenewalConditions: 'proposalRenewalConditions', proposalKeyMoneyAmount: 'proposalKeyMoneyAmount', proposalKeyMoneyTerms: 'proposalKeyMoneyTerms', proposalRoyaltyYear1: 'proposalRoyaltyYear1', proposalRoyaltyYear2: 'proposalRoyaltyYear2', proposalRoyaltyYear3: 'proposalRoyaltyYear3', proposalRoyaltyYear4: 'proposalRoyaltyYear4', proposalRoyaltyYear5Plus: 'proposalRoyaltyYear5Plus', proposalManagementFee: 'proposalManagementFee', proposalManagementFeeBasis: 'proposalManagementFeeBasis', proposalIncentiveFee: 'proposalIncentiveFee', proposalIncentiveFeeBasis: 'proposalIncentiveFeeBasis', proposalIncentiveFeeExcess: 'proposalIncentiveFeeExcess', proposalIncentiveFeeExcessBasis: 'proposalIncentiveFeeExcessBasis', proposalPIPCapex: 'proposalPIPCapex', proposalDesignReviewFee: 'proposalDesignReviewFee', proposalTechPlatformFees: 'proposalTechPlatformFees', proposalTechFeeBasis: 'proposalTechFeeBasis', proposalTrainingFees: 'proposalTrainingFees', proposalTrainingFeeBasis: 'proposalTrainingFeeBasis', proposalBrandStandardsFlexibility: 'proposalBrandStandardsFlexibility', proposalRequiredPrograms: 'proposalRequiredPrograms', proposalSupportSummary: 'proposalSupportSummary', proposalTerritorialRestriction: 'proposalTerritorialRestriction', proposalOperationsRequirements: 'proposalOperationsRequirements', proposalGuaranty: 'proposalGuaranty', proposalManagerAcknowledgment: 'proposalManagerAcknowledgment', proposalNotes: 'proposalNotes' };
+        Object.keys(map).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) {
+                var val = el.value.trim();
+                if (el.classList && el.classList.contains('format-number') && val) val = String(val).replace(/,/g, '');
+                body[map[id]] = val;
+            }
+        });
+        if (isSchedule) {
+            body.proposalRoyaltyPct = '';
+            body.proposalRoyaltyBasis = (document.getElementById('proposalRoyaltyScheduleBasis') || {}).value || '';
+            body.proposalRoyaltyYear1 = (document.getElementById('proposalRoyaltyYear1') || {}).value || '';
+            body.proposalRoyaltyYear2 = (document.getElementById('proposalRoyaltyYear2') || {}).value || '';
+            body.proposalRoyaltyYear3 = (document.getElementById('proposalRoyaltyYear3') || {}).value || '';
+            body.proposalRoyaltyYear4 = (document.getElementById('proposalRoyaltyYear4') || {}).value || '';
+            body.proposalRoyaltyYear5Plus = (document.getElementById('proposalRoyaltyYear5Plus') || {}).value || '';
+        } else {
+            body.proposalRoyaltyPct = (document.getElementById('proposalRoyaltyPct') || {}).value || '';
+            body.proposalRoyaltyBasis = (document.getElementById('proposalRoyaltyBasis') || {}).value || '';
+            body.proposalRoyaltyYear1 = body.proposalRoyaltyYear2 = body.proposalRoyaltyYear3 = body.proposalRoyaltyYear4 = body.proposalRoyaltyYear5Plus = '';
+        }
+        var url = document.getElementById('proposalFileUrl').value.trim();
+        var fn = document.getElementById('proposalFileFilename').value.trim() || 'proposal.pdf';
+        if (url) body.proposalFile = [{ url: url, filename: fn }];
+        var incentiveCheckboxes = document.querySelectorAll('input[name="proposalIncentiveTypes"]:checked');
+        body.proposalIncentiveTypes = Array.prototype.map.call(incentiveCheckboxes, function (cb) { return cb.value; });
+        var detailLines = [];
+        document.querySelectorAll('.incentive-row').forEach(function (row) {
+            var cb = row.querySelector('input[name="proposalIncentiveTypes"]');
+            var labelEl = row.querySelector('.incentive-label');
+            var detailEl = row.querySelector('.incentive-detail');
+            if (!cb || !labelEl || !detailEl) return;
+            if (!cb.checked) return;
+            var label = labelEl.textContent.trim();
+            var txt = detailEl.value.trim();
+            if (txt) {
+                detailLines.push(label + ': ' + txt);
+            } else {
+                detailLines.push(label);
+            }
+        });
+        body.proposalIncentiveDetails = detailLines.join('\n');
+        return body;
+    }
+
+    document.getElementById('saveDraftBtn').addEventListener('click', function () {
+        var body = collectBody();
+        if (Object.keys(body).filter(function (k) { return body[k] !== '' && (Array.isArray(body[k]) ? body[k].length : true); }).length === 0) {
+            showFormMessage('Enter at least one field to save', false);
+            return;
+        }
+        showFormMessage('Saving...', true);
+        fetch('/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.assign({ action: 'saveProposalDraft' }, body))
+        }).then(function (r) { return r.json(); }).then(function (data) {
+            if (data.success) {
+                showFormMessage(data.proposalUpdatedAt ? 'Proposal updated' : 'Draft saved', true);
+                loadDraft();
+            } else {
+                showFormMessage(data.error || 'Save failed', false);
+            }
+        }).catch(function () {
+            showFormMessage('Save failed', false);
+        });
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', function () {
+        var body = collectBody();
+        showFormMessage('Submitting...', true);
+        fetch('/api/brand-deal-requests/' + encodeURIComponent(requestId) + '/submit-proposal', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        }).then(function (r) { return r.json(); }).then(function (data) {
+            if (data.success) {
+                showFormMessage('Proposal submitted', true);
+                loadDraft();
+            } else {
+                showFormMessage(data.error || 'Submit failed', false);
+            }
+        }).catch(function () {
+            showFormMessage('Submit failed', false);
+        });
+    });
+
+    setupReservationBasisOtherToggle();
+    setupRoyaltyTypeToggle();
+    (function setupAgreementTypeToggle() {
+        var sel = document.getElementById('proposalAgreementType');
+        if (sel) sel.addEventListener('change', toggleAgreementTypeSections);
+    })();
+    (function setupApplicationFeePerRoomToggle() {
+        var appBasis = document.getElementById('proposalApplicationFeeBasis');
+        var iffBasis = document.getElementById('proposalInitialFranchiseFeeBasis');
+        var toggle = toggleApplicationFeePerRoomRow;
+        if (appBasis) appBasis.addEventListener('change', toggle);
+        if (iffBasis) iffBasis.addEventListener('change', toggle);
+    })();
+    var formWrap = document.getElementById('formWrap');
+    if (formWrap) {
+        formWrap.addEventListener('input', function (e) {
+            var el = e.target;
+            if (!el || !el.classList || !el.classList.contains('format-number')) return;
+            var val = el.value;
+            if (!val) return;
+            var start = el.selectionStart;
+            var digitsBeforeCursor = val.substring(0, start).replace(/\D/g, '').length;
+            var formatted = formatNumberWithCommas(val);
+            if (formatted === val) return;
+            el.value = formatted;
+            var count = 0;
+            var newPos = formatted.length;
+            for (var i = 0; i < formatted.length; i++) {
+                if (/\d/.test(formatted[i])) {
+                    count++;
+                    if (count > digitsBeforeCursor) {
+                        newPos = i;
+                        break;
+                    }
+                    newPos = i + 1;
+                }
+            }
+            el.setSelectionRange(newPos, newPos);
+        }, true);
+    }
+    loadDraft();
+})();
+    </script>
+</body>
+</html>

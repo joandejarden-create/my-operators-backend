@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealality Realistic Valuation Widget</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #080f25;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .valuation-container {
+            max-width: 100vw;
+            margin: 0;
+            padding: 0;
+            background: #080f25;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mapping-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #080f25;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .mapping-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .mapping-subtitle {
+            color: #ffffff;
+            font-size: 0.75rem;
+            margin-top: 5px;
+            font-weight: 300;
+            line-height: 1.3;
+            max-width: 650px;
+        }
+
+        .controls-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+            gap: 10px;
+            align-items: end;
+            background: #080f25;
+            padding: 10px 15px;
+            margin-top: -15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .control-label {
+            color: #aeb9e1;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .control-input, .control-select {
+            background: #080f25;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.2s;
+            min-width: 0;
+        }
+
+        .control-input:focus, .control-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .control-select option {
+            background: #080f25 !important;
+            color: #ffffff !important;
+        }
+
+        .control-input::placeholder {
+            color: #a0a0a0;
+        }
+
+        .btn {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 10px;
+            white-space: nowrap;
+            min-width: 80px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #d69e2e;
+            border: 1px solid #d69e2e;
+            color: #fff;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            background: #080f25;
+            margin-top: -5px;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: #080f25;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar-section {
+            padding: 6px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-title {
+            color: #ffffff;
+            font-size: 1.0rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 4px;
+            text-align: center;
+            transition: all 0.2s;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            color: #fdb52a;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .stat-subvalue {
+            color: #fdb52a;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .stat-sublabel {
+            color: #a0a0a0;
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .chart-container {
+            height: 300px;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 11px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-table th {
+            background: rgba(255, 255, 255, 0.05);
+            color: #aeb9e1;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .results-table td {
+            color: #ffffff;
+        }
+
+        .table-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        .insight-panel {
+            background: rgba(253, 181, 42, 0.1);
+            border: 1px solid rgba(253, 181, 42, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+
+        .insight-title {
+            color: #fdb52a;
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .insight-text {
+            color: #ffffff;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .brand-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 4px 0;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .brand-name {
+            color: #ffffff;
+            font-weight: 400;
+            flex: 1;
+            margin-right: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .brand-count {
+            color: #ffffff;
+            font-weight: 400;
+            font-size: 11px;
+        }
+
+        .disclaimer {
+            font-size: 10px;
+            color: #aeb9e1;
+            line-height: 1.4;
+            margin-top: 15px;
+            opacity: 0.8;
+        }
+
+        .range-input {
+            width: 100%;
+            margin: 8px 0;
+            accent-color: #fdb52a;
+        }
+
+        .range-value {
+            color: #fdb52a;
+            font-weight: 600;
+            font-size: 11px;
+            text-align: right;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 300px;
+            }
+            
+            .controls-panel {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="valuation-container">
+        <header class="mapping-header">
+            <div class="header-top">
+                <div>
+                    <h1 class="mapping-title">Dealality Valuation Widget</h1>
+                    <p class="mapping-subtitle">Realistic hotel investment analysis with industry-accurate assumptions, comprehensive financial modeling, and market-based valuations.</p>
+                </div>
+            </div>
+            
+            <div class="controls-panel">
+                <div class="control-group">
+                    <label class="control-label">Property Type</label>
+                    <select class="control-select" id="propertyType">
+                        <option value="luxury">Luxury</option>
+                        <option value="upscale">Upscale</option>
+                        <option value="midscale" selected>Midscale</option>
+                        <option value="economy">Economy</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Market Tier</label>
+                    <select class="control-select" id="marketTier">
+                        <option value="tier1">Tier 1 (NYC, LA, SF)</option>
+                        <option value="tier2" selected>Tier 2 (Major Cities)</option>
+                        <option value="tier3">Tier 3 (Secondary)</option>
+                        <option value="tier4">Tier 4 (Tertiary)</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Rooms</label>
+                    <input type="number" class="control-input" id="rooms" value="150" min="50" max="1000">
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">ADR ($)</label>
+                    <input type="number" class="control-input" id="adr" value="120" min="50" max="500">
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Occupancy (%)</label>
+                    <input type="number" class="control-input" id="occupancy" value="65" min="30" max="95">
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Cap Rate (%)</label>
+                    <input type="number" class="control-input" id="capRate" value="7.5" min="4" max="12" step="0.1">
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">LTV (%)</label>
+                    <input type="number" class="control-input" id="ltv" value="65" min="50" max="85">
+                </div>
+                
+                <div class="control-group">
+                    <button class="btn btn-secondary" onclick="resetInputs()">Reset</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Market Assumptions</h3>
+                    <div class="insight-panel">
+                        <div class="insight-title">📊 Industry Benchmarks</div>
+                        <div class="insight-text" id="marketInsights">
+                            Based on current market data and industry standards. Assumptions adjust automatically based on property type and market tier.
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="revparValue">$78</div>
+                            <div class="stat-label">RevPAR</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="opexValue">72%</div>
+                            <div class="stat-label">OpEx Ratio</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="noiValue">$2.1M</div>
+                            <div class="stat-label">Annual NOI</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="valuationValue">$28.0M</div>
+                            <div class="stat-label">Property Value</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Brand Analysis</h3>
+                    <div id="brandGroups">
+                        <!-- Brands populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Sensitivity Analysis</h3>
+                    <div class="control-group">
+                        <label class="control-label">ADR Impact (±%)</label>
+                        <div style="position: relative;">
+                            <div class="range-value" id="adrSensitivity">±0%</div>
+                            <input type="range" class="range-input" id="adrSensitivitySlider" min="-20" max="20" step="1" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">Occupancy Impact (±%)</label>
+                        <div style="position: relative;">
+                            <div class="range-value" id="occSensitivity">±0%</div>
+                            <input type="range" class="range-input" id="occSensitivitySlider" min="-15" max="15" step="1" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="flex: 1; padding: 20px; background: #080f25;">
+                <div class="chart-container">
+                    <canvas id="valuationChart"></canvas>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Brand</th>
+                                <th>RevPAR</th>
+                                <th>OpEx %</th>
+                                <th>NOI Margin</th>
+                                <th>Cap Rate</th>
+                                <th>Value/Key</th>
+                                <th>Total Value</th>
+                                <th>Yield</th>
+                                <th>IRR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody">
+                            <!-- Results populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="insight-panel">
+                    <div class="insight-title">💡 Investment Insights</div>
+                    <div class="insight-text" id="investmentInsights">
+                        Select brands to see detailed financial analysis and investment recommendations.
+                    </div>
+                </div>
+
+                <div class="disclaimer">
+                    † This analysis uses industry-standard assumptions and current market data. Actual performance may vary based on specific market conditions, property characteristics, and operational factors. Consult with qualified professionals for investment decisions.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Realistic brand data based on industry standards (2024)
+        const REALISTIC_BRAND_DATA = {
+            "Luxury": [
+                { 
+                    name: "Ritz-Carlton", 
+                    opexPct: 0.65, 
+                    capRate: 0.045, 
+                    pricePerKey: 650000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.02,
+                    riskLevel: "Low",
+                    marketPosition: "Ultra-Luxury"
+                },
+                { 
+                    name: "Waldorf Astoria", 
+                    opexPct: 0.64, 
+                    capRate: 0.045, 
+                    pricePerKey: 680000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.02,
+                    riskLevel: "Low",
+                    marketPosition: "Ultra-Luxury"
+                },
+                { 
+                    name: "Four Seasons", 
+                    opexPct: 0.63, 
+                    capRate: 0.042, 
+                    pricePerKey: 750000, 
+                    franchiseFee: 0.04,
+                    managementFee: 0.04,
+                    marketingFee: 0.015,
+                    riskLevel: "Low",
+                    marketPosition: "Ultra-Luxury"
+                }
+            ],
+            "Upscale": [
+                { 
+                    name: "Marriott", 
+                    opexPct: 0.72, 
+                    capRate: 0.065, 
+                    pricePerKey: 320000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "Low",
+                    marketPosition: "Upper-Upscale"
+                },
+                { 
+                    name: "Hilton", 
+                    opexPct: 0.71, 
+                    capRate: 0.065, 
+                    pricePerKey: 310000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "Low",
+                    marketPosition: "Upper-Upscale"
+                },
+                { 
+                    name: "Hyatt Regency", 
+                    opexPct: 0.70, 
+                    capRate: 0.062, 
+                    pricePerKey: 340000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "Low",
+                    marketPosition: "Upper-Upscale"
+                }
+            ],
+            "Midscale": [
+                { 
+                    name: "Courtyard", 
+                    opexPct: 0.78, 
+                    capRate: 0.075, 
+                    pricePerKey: 180000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "Medium",
+                    marketPosition: "Midscale"
+                },
+                { 
+                    name: "Hampton Inn", 
+                    opexPct: 0.77, 
+                    capRate: 0.075, 
+                    pricePerKey: 175000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "Medium",
+                    marketPosition: "Midscale"
+                },
+                { 
+                    name: "Holiday Inn", 
+                    opexPct: 0.79, 
+                    capRate: 0.078, 
+                    pricePerKey: 160000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "Medium",
+                    marketPosition: "Midscale"
+                }
+            ],
+            "Economy": [
+                { 
+                    name: "Holiday Inn Express", 
+                    opexPct: 0.82, 
+                    capRate: 0.085, 
+                    pricePerKey: 120000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "High",
+                    marketPosition: "Economy"
+                },
+                { 
+                    name: "Comfort Inn", 
+                    opexPct: 0.83, 
+                    capRate: 0.088, 
+                    pricePerKey: 110000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "High",
+                    marketPosition: "Economy"
+                },
+                { 
+                    name: "Quality Inn", 
+                    opexPct: 0.84, 
+                    capRate: 0.090, 
+                    pricePerKey: 95000, 
+                    franchiseFee: 0.05,
+                    managementFee: 0.03,
+                    marketingFee: 0.025,
+                    riskLevel: "High",
+                    marketPosition: "Economy"
+                }
+            ]
+        };
+
+        // Market tier adjustments
+        const MARKET_TIER_ADJUSTMENTS = {
+            tier1: { adrMultiplier: 1.8, capRateAdjustment: -0.015, opexAdjustment: -0.02 },
+            tier2: { adrMultiplier: 1.2, capRateAdjustment: -0.005, opexAdjustment: -0.01 },
+            tier3: { adrMultiplier: 1.0, capRateAdjustment: 0.000, opexAdjustment: 0.00 },
+            tier4: { adrMultiplier: 0.7, capRateAdjustment: 0.010, opexAdjustment: 0.02 }
+        };
+
+        let charts = {};
+
+        // Initialize the widget
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeWidget();
+            setupEventListeners();
+            buildBrandSelection();
+            createCharts();
+            calculate();
+        });
+
+        function initializeWidget() {
+            updateMarketAssumptions();
+        }
+
+        function updateMarketAssumptions() {
+            const propertyType = document.getElementById('propertyType').value;
+            const marketTier = document.getElementById('marketTier').value;
+            const rooms = parseInt(document.getElementById('rooms').value) || 150;
+            
+            // Get base assumptions for property type
+            const baseAssumptions = getBaseAssumptions(propertyType);
+            const marketAdjustment = MARKET_TIER_ADJUSTMENTS[marketTier];
+            
+            // Apply market adjustments
+            const adjustedADR = baseAssumptions.adr * marketAdjustment.adrMultiplier;
+            const adjustedCapRate = baseAssumptions.capRate + marketAdjustment.capRateAdjustment;
+            const adjustedOpex = baseAssumptions.opex + marketAdjustment.opexAdjustment;
+            
+            // Update form values
+            document.getElementById('adr').value = Math.round(adjustedADR);
+            document.getElementById('capRate').value = (adjustedCapRate * 100).toFixed(1);
+            
+            calculate();
+        }
+
+        function getBaseAssumptions(propertyType) {
+            const assumptions = {
+                luxury: { adr: 350, opex: 0.65, capRate: 0.045 },
+                upscale: { adr: 180, opex: 0.72, capRate: 0.065 },
+                midscale: { adr: 120, opex: 0.78, capRate: 0.075 },
+                economy: { adr: 80, opex: 0.82, capRate: 0.085 }
+            };
+            return assumptions[propertyType] || assumptions.midscale;
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('input, select').forEach(el => {
+                el.addEventListener('input', calculate);
+                el.addEventListener('change', calculate);
+            });
+
+            // Sensitivity sliders
+            document.getElementById('adrSensitivitySlider').addEventListener('input', function() {
+                const value = this.value;
+                document.getElementById('adrSensitivity').textContent = `±${value}%`;
+                calculate();
+            });
+
+            document.getElementById('occSensitivitySlider').addEventListener('input', function() {
+                const value = this.value;
+                document.getElementById('occSensitivity').textContent = `±${value}%`;
+                calculate();
+            });
+        }
+
+        function buildBrandSelection() {
+            const container = document.getElementById('brandGroups');
+            const propertyType = document.getElementById('propertyType').value;
+            const brands = REALISTIC_BRAND_DATA[propertyType.charAt(0).toUpperCase() + propertyType.slice(1)] || REALISTIC_BRAND_DATA.Midscale;
+            
+            container.innerHTML = '';
+            
+            brands.forEach(brand => {
+                const brandDiv = document.createElement('div');
+                brandDiv.className = 'brand-item';
+                brandDiv.innerHTML = `
+                    <div class="brand-name">${brand.name}</div>
+                    <div class="brand-count">${brand.marketPosition}</div>
+                `;
+                brandDiv.onclick = () => selectBrand(brand);
+                container.appendChild(brandDiv);
+            });
+        }
+
+        function selectBrand(brand) {
+            // Toggle selection
+            const brandDiv = event.currentTarget;
+            brandDiv.classList.toggle('selected');
+            
+            if (brandDiv.classList.contains('selected')) {
+                brandDiv.style.background = 'rgba(253, 181, 42, 0.2)';
+                brandDiv.style.borderColor = '#fdb52a';
+            } else {
+                brandDiv.style.background = 'rgba(255, 255, 255, 0.08)';
+                brandDiv.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+            }
+            
+            calculate();
+        }
+
+        function getSelectedBrands() {
+            const selected = [];
+            const propertyType = document.getElementById('propertyType').value;
+            const brands = REALISTIC_BRAND_DATA[propertyType.charAt(0).toUpperCase() + propertyType.slice(1)] || REALISTIC_BRAND_DATA.Midscale;
+            
+            document.querySelectorAll('.brand-item.selected').forEach((div, index) => {
+                selected.push(brands[index]);
+            });
+            
+            return selected;
+        }
+
+        function calculate() {
+            const rooms = parseInt(document.getElementById('rooms').value) || 150;
+            const baseADR = parseFloat(document.getElementById('adr').value) || 120;
+            const baseOccupancy = parseFloat(document.getElementById('occupancy').value) || 65;
+            const baseCapRate = parseFloat(document.getElementById('capRate').value) / 100 || 0.075;
+            const ltv = parseFloat(document.getElementById('ltv').value) / 100 || 0.65;
+            
+            // Apply sensitivity adjustments
+            const adrSensitivity = parseFloat(document.getElementById('adrSensitivitySlider').value) / 100 || 0;
+            const occSensitivity = parseFloat(document.getElementById('occSensitivitySlider').value) / 100 || 0;
+            
+            const adr = baseADR * (1 + adrSensitivity);
+            const occupancy = Math.min(Math.max(baseOccupancy * (1 + occSensitivity), 30), 95);
+            
+            // Calculate RevPAR and NOI
+            const revpar = adr * (occupancy / 100);
+            const annualRevenue = revpar * 365 * rooms;
+            
+            // Update summary stats
+            document.getElementById('revparValue').textContent = `$${revpar.toFixed(0)}`;
+            document.getElementById('opexValue').textContent = `${(0.75 * 100).toFixed(0)}%`;
+            
+            const selectedBrands = getSelectedBrands();
+            const results = [];
+            
+            selectedBrands.forEach(brand => {
+                const opexRate = brand.opexPct;
+                const franchiseFees = brand.franchiseFee + brand.managementFee + brand.marketingFee;
+                
+                const grossOperatingProfit = annualRevenue * (1 - opexRate);
+                const netOperatingIncome = grossOperatingProfit * (1 - franchiseFees);
+                const noiMargin = annualRevenue > 0 ? netOperatingIncome / annualRevenue : 0;
+                
+                const capRate = baseCapRate;
+                const propertyValue = netOperatingIncome / capRate;
+                const valuePerKey = propertyValue / rooms;
+                
+                const yieldOnCost = valuePerKey > 0 ? netOperatingIncome / propertyValue : 0;
+                
+                // More realistic IRR calculation
+                const loanAmount = propertyValue * ltv;
+                const equity = propertyValue - loanAmount;
+                const annualDebtService = loanAmount * 0.065; // 6.5% interest rate
+                const cashFlow = netOperatingIncome - annualDebtService;
+                const cashOnCash = equity > 0 ? cashFlow / equity : 0;
+                
+                // IRR approximation based on cash flow and appreciation
+                const annualAppreciation = 0.02; // 2% annual appreciation
+                const irr = cashOnCash + annualAppreciation;
+                
+                results.push({
+                    brand: brand.name,
+                    revpar: revpar,
+                    opexPct: opexRate * 100,
+                    noiMargin: noiMargin * 100,
+                    capRate: capRate * 100,
+                    valuePerKey: valuePerKey,
+                    totalValue: propertyValue,
+                    yield: yieldOnCost * 100,
+                    irr: irr * 100,
+                    riskLevel: brand.riskLevel
+                });
+            });
+            
+            updateResultsTable(results);
+            updateCharts(results);
+            updateInsights(results);
+            updateSummaryStats(results);
+        }
+
+        function updateResultsTable(results) {
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = '';
+
+            results.forEach(result => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.brand}</td>
+                    <td>$${result.revpar.toFixed(0)}</td>
+                    <td>${result.opexPct.toFixed(1)}%</td>
+                    <td>${result.noiMargin.toFixed(1)}%</td>
+                    <td>${result.capRate.toFixed(2)}%</td>
+                    <td>$${formatNumber(result.valuePerKey)}</td>
+                    <td>$${formatNumber(result.totalValue)}</td>
+                    <td>${result.yield.toFixed(2)}%</td>
+                    <td>${result.irr.toFixed(2)}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateCharts(results) {
+            if (results.length === 0) return;
+            
+            const labels = results.map(r => r.brand);
+            const yieldData = results.map(r => r.yield);
+            const irrData = results.map(r => r.irr);
+            
+            charts.valuation.data.labels = labels;
+            charts.valuation.data.datasets[0].data = yieldData;
+            charts.valuation.data.datasets[1].data = irrData;
+            charts.valuation.update();
+        }
+
+        function updateInsights(results) {
+            const insights = document.getElementById('investmentInsights');
+            
+            if (results.length === 0) {
+                insights.textContent = 'Select brands to see detailed financial analysis and investment recommendations.';
+                return;
+            }
+            
+            const bestYield = results.reduce((max, r) => r.yield > max.yield ? r : max);
+            const bestIRR = results.reduce((max, r) => r.irr > max.irr ? r : max);
+            const avgYield = results.reduce((sum, r) => sum + r.yield, 0) / results.length;
+            
+            let insightText = `Selected ${results.length} brand(s). `;
+            insightText += `<strong>${bestYield.brand}</strong> offers the highest yield at ${bestYield.yield.toFixed(2)}%. `;
+            insightText += `<strong>${bestIRR.brand}</strong> provides the best IRR at ${bestIRR.irr.toFixed(2)}%. `;
+            
+            if (avgYield > 8) {
+                insightText += 'Strong investment opportunity with above-average returns.';
+            } else if (avgYield > 6) {
+                insightText += 'Moderate investment opportunity with market-competitive returns.';
+            } else {
+                insightText += 'Consider market conditions and operational efficiency improvements.';
+            }
+            
+            insights.innerHTML = insightText;
+        }
+
+        function updateSummaryStats(results) {
+            if (results.length === 0) return;
+            
+            const avgNOI = results.reduce((sum, r) => sum + (r.noiMargin / 100 * r.revpar * 365 * parseInt(document.getElementById('rooms').value)), 0) / results.length;
+            const avgValue = results.reduce((sum, r) => sum + r.totalValue, 0) / results.length;
+            
+            document.getElementById('noiValue').textContent = `$${(avgNOI / 1000000).toFixed(1)}M`;
+            document.getElementById('valuationValue').textContent = `$${(avgValue / 1000000).toFixed(1)}M`;
+        }
+
+        function createCharts() {
+            const ctx = document.getElementById('valuationChart').getContext('2d');
+            charts.valuation = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Yield on Cost (%)',
+                        data: [],
+                        backgroundColor: 'rgba(253, 181, 42, 0.6)',
+                        borderColor: '#fdb52a',
+                        borderWidth: 1
+                    }, {
+                        label: 'IRR (%)',
+                        data: [],
+                        backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                        borderColor: '#667eea',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#aeb9e1'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#aeb9e1'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(0) + 'K';
+            }
+            return num.toFixed(0);
+        }
+
+        function resetInputs() {
+            document.getElementById('propertyType').value = 'midscale';
+            document.getElementById('marketTier').value = 'tier2';
+            document.getElementById('rooms').value = '150';
+            document.getElementById('adr').value = '120';
+            document.getElementById('occupancy').value = '65';
+            document.getElementById('capRate').value = '7.5';
+            document.getElementById('ltv').value = '65';
+            document.getElementById('adrSensitivitySlider').value = '0';
+            document.getElementById('occSensitivitySlider').value = '0';
+            document.getElementById('adrSensitivity').textContent = '±0%';
+            document.getElementById('occSensitivity').textContent = '±0%';
+            
+            // Clear brand selections
+            document.querySelectorAll('.brand-item').forEach(item => {
+                item.classList.remove('selected');
+                item.style.background = 'rgba(255, 255, 255, 0.08)';
+                item.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+            });
+            
+            updateMarketAssumptions();
+        }
+    </script>
+</body>
+</html>
+
+
+
+

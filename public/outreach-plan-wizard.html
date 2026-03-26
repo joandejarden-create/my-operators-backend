@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Wizard - Outreach Hub | Dealality Platform</title>
+  <link rel="stylesheet" href="/outreach-hub.css">
+</head>
+<body>
+  <script>(function(){ document.documentElement.classList.add('embed-mode'); })();</script>
+  <div class="page-wrapper">
+    <div class="dashboard-main-section">
+      <div class="outreach-hub-container">
+        <div class="outreach-hub__header">
+          <div class="breadcrumb">
+            <a href="#">Home</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <a href="/outreach-template-manager.html">Outreach Hub</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <span>Plan Wizard</span>
+          </div>
+          <div class="outreach-hub-title-container">
+            <div class="deal-capture-logo">
+              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+            </div>
+            <h1>Plan Wizard</h1>
+          </div>
+          <p>Create an outreach plan: pick a deal, review effective setup, choose sequence and template pack, then add targets (companies and contacts). Optionally create a thread per target.</p>
+        </div>
+
+        <div class="wizard-steps" id="wizard-steps"></div>
+        <p id="wizard-error" class="oh-error" style="display:none;"></p>
+
+        <div id="step-1" class="oh-section" style="margin-bottom:24px;">
+          <h2 class="oh-section-title">1. Select a deal</h2>
+          <div class="form-group">
+            <label class="form-label">Deal</label>
+            <select id="deal-select" class="form-select">
+              <option value="">— Load deals —</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="step-2" class="oh-section" style="display:none; margin-bottom:24px;">
+          <h2 class="oh-section-title">2. Effective outreach setup</h2>
+          <p class="oh-muted oh-section-subtitle">Rules that will apply to this plan (default or deal override).</p>
+          <div id="setup-summary" class="oh-preview" style="margin-top:12px;"></div>
+        </div>
+
+        <div id="step-3" class="oh-section" style="display:none; margin-bottom:24px;">
+          <h2 class="oh-section-title">3. Sequence & template pack</h2>
+          <div class="form-group">
+            <label class="form-label">Sequence</label>
+            <select id="sequence-select" class="form-select">
+              <option value="">— Load sequences —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Template Pack</label>
+            <select id="pack-select" class="form-select">
+              <option value="">— Load packs —</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="step-4" class="oh-section" style="display:none; margin-bottom:24px;">
+          <h2 class="oh-section-title">4. Add targets (companies / contacts)</h2>
+          <div id="target-rows"></div>
+          <button type="button" class="btn btn-secondary" id="btn-add-target">+ Add target</button>
+          <div class="form-group" style="margin-top:20px;">
+            <label class="form-label">Plan name</label>
+            <input type="text" id="plan-name" class="form-input" placeholder="e.g. Riverside – Brand Outreach">
+          </div>
+          <div class="form-group" style="margin-top:12px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; color: var(--neutral--100); font-weight: 500;">
+              <input type="checkbox" id="create-threads" checked>
+              <span>Create a thread for each target</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="wizard-actions" id="wizard-actions">
+          <button type="button" class="btn btn-secondary" id="btn-back" style="display:none;">Back</button>
+          <button type="button" class="btn btn-primary" id="btn-next">Next</button>
+          <button type="button" class="btn btn-primary" id="btn-submit" style="display:none;">Create plan</button>
+        </div>
+        <p id="submit-success" class="oh-section" style="display:none; color: var(--system--green-400); padding: 20px;"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function() {
+  const API = '/api/outreach-hub';
+  const MY_DEALS = '/api/my-deals';
+  let step = 1;
+  const state = {
+    dealId: '',
+    dealName: '',
+    setup: null,
+    sequenceId: '',
+    sequenceName: '',
+    packId: '',
+    packName: '',
+    targets: [{ companyId: '', contactId: '' }],
+    companies: [],
+    contacts: [],
+    sequences: [],
+    packs: [],
+    deals: [],
+  };
+
+  function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
+  function qs(s) { return document.querySelector(s); }
+  function qsa(s) { return Array.from(document.querySelectorAll(s)); }
+  function setStep(s) {
+    step = s;
+    [1,2,3,4].forEach(function(i) { show(qs('#step-' + i), i === step); });
+    qs('#btn-back').style.display = step > 1 ? '' : 'none';
+    qs('#btn-next').style.display = step < 4 ? '' : 'none';
+    qs('#btn-submit').style.display = step === 4 ? '' : 'none';
+    qsa('.wizard-step').forEach(function(el, i) {
+      el.classList.toggle('active', i + 1 === step);
+      el.classList.toggle('done', i + 1 < step);
+    });
+  }
+
+  function showErr(msg) {
+    const el = qs('#wizard-error');
+    el.textContent = msg || '';
+    show(el, !!msg);
+  }
+
+  // Step 1: Load deals from My Deals API (same Airtable base / Deals table)
+  function loadDeals() {
+    const sel = qs('#deal-select');
+    sel.innerHTML = '<option value="">Loading deals…</option>';
+    showErr('');
+    fetch(MY_DEALS)
+      .then(function(r) {
+        if (!r.ok) throw new Error(r.status === 500 ? 'Server error loading deals. Check Airtable (Deals table and API key).' : 'Failed to load deals (' + r.status + ').');
+        return r.json();
+      })
+      .then(function(data) {
+        if (!data || data.success === false) {
+          showErr(data && data.error ? data.error : 'Failed to load deals.');
+          sel.innerHTML = '<option value="">— No deals available —</option>';
+          return;
+        }
+        const list = Array.isArray(data.deals) ? data.deals : [];
+        state.deals = list;
+        sel.innerHTML = '<option value="">— Select deal —</option>';
+        if (list.length === 0) {
+          const empty = document.createElement('option');
+          empty.value = '';
+          empty.disabled = true;
+          empty.textContent = 'No deals in Airtable. Add deals in My Deals first.';
+          sel.appendChild(empty);
+        } else {
+          list.forEach(function(d) {
+            const opt = document.createElement('option');
+            opt.value = d.id;
+            opt.textContent = (d.projectName || d.id) + ' (' + d.id + ')';
+            sel.appendChild(opt);
+          });
+        }
+      })
+      .catch(function(e) {
+        showErr(e.message || 'Could not load deals.');
+        sel.innerHTML = '<option value="">— No deals available —</option>';
+      });
+  }
+
+  // Step 2: Load outreach setup for deal
+  function loadSetup() {
+    if (!state.dealId) return;
+    showErr('');
+    fetch('/api/my-deals/' + state.dealId + '/outreach-setup').then(function(r) { return r.json(); }).then(function(data) {
+      if (!data.success) { showErr(data.error || 'Failed to load setup'); return; }
+      state.setup = data.fields || data;
+      const lines = [];
+      Object.keys(state.setup).forEach(function(k) {
+        if (state.setup[k] != null && state.setup[k] !== '') lines.push(k + ': ' + state.setup[k]);
+      });
+      qs('#setup-summary').textContent = lines.length ? lines.join('\n') : 'Using default (no overrides).';
+    }).catch(function(e) { showErr(e.message); });
+  }
+
+  // Step 3: Load sequences and packs
+  function loadSequenceAndPacks() {
+    showErr('');
+    Promise.all([
+      fetch(API + '/sequences?pageSize=50').then(function(r) { return r.json(); }),
+      fetch(API + '/template-packs?pageSize=50').then(function(r) { return r.json(); }),
+    ]).then(function([seqData, packData]) {
+      if (seqData.success && seqData.records) {
+        state.sequences = seqData.records;
+        const sel = qs('#sequence-select');
+        sel.innerHTML = '<option value="">— Select sequence —</option>';
+        seqData.records.forEach(function(rec) {
+          const opt = document.createElement('option');
+          opt.value = rec.id;
+          opt.textContent = (rec.fields && rec.fields.sequence_name) || rec.id;
+          sel.appendChild(opt);
+        });
+      }
+      if (packData.success && packData.records) {
+        state.packs = packData.records;
+        const sel = qs('#pack-select');
+        sel.innerHTML = '<option value="">— Select template pack —</option>';
+        packData.records.forEach(function(rec) {
+          const opt = document.createElement('option');
+          opt.value = rec.id;
+          opt.textContent = (rec.fields && rec.fields.pack_name) || rec.id;
+          sel.appendChild(opt);
+        });
+      }
+    }).catch(function(e) { showErr(e.message); });
+  }
+
+  // Step 4: Load companies and contacts
+  function loadCompaniesAndContacts() {
+    showErr('');
+    Promise.all([
+      fetch(API + '/companies?pageSize=200').then(function(r) { return r.json(); }),
+      fetch(API + '/contacts?pageSize=500').then(function(r) { return r.json(); }),
+    ]).then(function([companyData, contactData]) {
+      if (companyData.success && companyData.records) state.companies = companyData.records;
+      if (contactData.success && contactData.records) state.contacts = contactData.records;
+      renderTargetRows();
+    }).catch(function(e) { showErr(e.message); });
+  }
+
+  function renderTargetRows() {
+    const container = qs('#target-rows');
+    container.innerHTML = '';
+    state.targets.forEach(function(t, i) {
+      const row = document.createElement('div');
+      row.className = 'target-row';
+      const selCompany = document.createElement('select');
+      selCompany.className = 'form-select';
+      selCompany.dataset.index = String(i);
+      selCompany.dataset.field = 'companyId';
+      selCompany.innerHTML = '<option value="">— Company —</option>';
+      state.companies.forEach(function(c) {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = (c.fields && c.fields.company_name) || c.id;
+        if (t.companyId === c.id) opt.selected = true;
+        selCompany.appendChild(opt);
+      });
+      const selContact = document.createElement('select');
+      selContact.className = 'form-select';
+      selContact.dataset.index = String(i);
+      selContact.dataset.field = 'contactId';
+      selContact.innerHTML = '<option value="">— Contact (optional) —</option>';
+      state.contacts.forEach(function(c) {
+        const f = c.fields || {};
+        const name = [f.first_name, f.last_name].filter(Boolean).join(' ') || f.email || c.id;
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = name;
+        if (t.contactId === c.id) opt.selected = true;
+        selContact.appendChild(opt);
+      });
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-secondary';
+      btn.textContent = 'Remove';
+      btn.addEventListener('click', function() {
+        state.targets.splice(i, 1);
+        if (state.targets.length === 0) state.targets.push({ companyId: '', contactId: '' });
+        renderTargetRows();
+      });
+      row.appendChild(selCompany);
+      row.appendChild(selContact);
+      row.appendChild(btn);
+      container.appendChild(row);
+    });
+    container.querySelectorAll('select').forEach(function(sel) {
+      sel.addEventListener('change', function() {
+        const i = parseInt(sel.dataset.index, 10);
+        const field = sel.dataset.field;
+        if (state.targets[i]) state.targets[i][field] = sel.value || '';
+      });
+    });
+  }
+
+  function collectTargetsFromForm() {
+    const rows = qsa('#target-rows .target-row');
+    rows.forEach(function(row, i) {
+      if (!state.targets[i]) return;
+      const companySel = row.querySelector('select[data-field="companyId"]');
+      const contactSel = row.querySelector('select[data-field="contactId"]');
+      if (companySel) state.targets[i].companyId = companySel.value || '';
+      if (contactSel) state.targets[i].contactId = contactSel.value || '';
+    });
+  }
+
+  function submitPlan() {
+    collectTargetsFromForm();
+    const planName = qs('#plan-name').value.trim() || (state.dealName + ' – Plan');
+    const sequenceId = qs('#sequence-select').value;
+    const packId = qs('#pack-select').value;
+    const createThreads = qs('#create-threads').checked;
+    if (!sequenceId || !packId) { showErr('Select a sequence and a template pack.'); return; }
+    const validTargets = state.targets.filter(function(t) { return t.companyId; });
+    if (!validTargets.length) { showErr('Add at least one target (company).'); return; }
+    showErr('');
+    const planPayload = {
+      fields: {
+        plan_name: planName,
+        Deal: [state.dealId],
+        Sequence: [sequenceId],
+        'Template Pack': [packId],
+        status: 'Draft',
+        approval_required: false,
+        approval_status: 'Not Required',
+      },
+    };
+    fetch(API + '/plans', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(planPayload) })
+      .then(function(r) { return r.json(); })
+      .then(function(planRes) {
+        if (!planRes.success || !planRes.record) throw new Error(planRes.error || 'Failed to create plan');
+        const planId = planRes.record.id;
+        const targetPromises = validTargets.map(function(t) {
+          const company = state.companies.find(function(c) { return c.id === t.companyId; });
+          const companyName = (company && company.fields && company.fields.company_name) || t.companyId;
+          const fields = {
+            target_name: companyName + ' – ' + planName,
+            Plan: [planId],
+            Deal: [state.dealId],
+            Company: [t.companyId],
+            is_active: true,
+          };
+          if (t.contactId) fields.Contact = [t.contactId];
+          return fetch(API + '/plan-targets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) }).then(function(r) { return r.json(); });
+        });
+        return Promise.all(targetPromises).then(function(targetResults) {
+          const planTargetIds = targetResults.map(function(r) { return r.success && r.record ? r.record.id : null; }).filter(Boolean);
+          if (!createThreads || !planTargetIds.length) return { planId, planName };
+          const threadPromises = planTargetIds.map(function(ptId, idx) {
+            const t = validTargets[idx];
+            const fields = {
+              thread_name: 'Thread ' + (idx + 1),
+              Plan: [planId],
+              Deal: [state.dealId],
+              'Plan Target': [ptId],
+              Company: [t.companyId],
+              thread_status: 'Draft',
+            };
+            if (t.contactId) fields.primary_contact_id = [t.contactId];
+            return fetch(API + '/threads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) }).then(function(r) { return r.json(); });
+          });
+          return Promise.all(threadPromises).then(function() { return { planId, planName }; });
+        });
+      })
+      .then(function(result) {
+        qs('#submit-success').textContent = 'Plan created: ' + result.planName + '. ID: ' + result.planId + '. Open Plan Board to view.';
+        show(qs('#submit-success'), true);
+        show(qs('#step-4'), false);
+        show(qs('#wizard-actions'), false);
+      })
+      .catch(function(e) {
+        showErr(e.message || 'Failed to create plan');
+      });
+  }
+
+  // Wizard steps UI
+  ['1. Deal', '2. Setup', '3. Sequence & Pack', '4. Targets'].forEach(function(label, i) {
+    const el = document.createElement('div');
+    el.className = 'wizard-step' + (i === 0 ? ' active' : '');
+    el.textContent = label;
+    el.addEventListener('click', function() {
+      if (i + 1 <= step || (i > 0 && step > i + 1)) setStep(i + 1);
+    });
+    qs('#wizard-steps').appendChild(el);
+  });
+
+  qs('#deal-select').addEventListener('change', function() {
+    state.dealId = this.value;
+    const deal = state.deals.find(function(d) { return d.id === state.dealId; });
+    state.dealName = deal ? (deal.projectName || deal.id) : '';
+  });
+  qs('#btn-next').addEventListener('click', function() {
+    if (step === 1) {
+      if (!state.dealId) { showErr('Select a deal.'); return; }
+      loadSetup();
+      setStep(2);
+    } else if (step === 2) {
+      setStep(3);
+      loadSequenceAndPacks();
+    } else if (step === 3) {
+      state.sequenceId = qs('#sequence-select').value;
+      state.packId = qs('#pack-select').value;
+      if (!state.sequenceId || !state.packId) { showErr('Select sequence and template pack.'); return; }
+      setStep(4);
+      loadCompaniesAndContacts();
+      qs('#plan-name').placeholder = state.dealName + ' – ' + (state.sequences.find(function(s) { return s.id === state.sequenceId; })?.fields?.sequence_name || 'Plan');
+    }
+    showErr('');
+  });
+  qs('#btn-back').addEventListener('click', function() {
+    setStep(step - 1);
+    showErr('');
+  });
+  qs('#btn-submit').addEventListener('click', submitPlan);
+  qs('#btn-add-target').addEventListener('click', function() {
+    state.targets.push({ companyId: '', contactId: '' });
+    renderTargetRows();
+  });
+
+  setStep(1);
+  loadDeals();
+})();
+  </script>
+</body>
+</html>

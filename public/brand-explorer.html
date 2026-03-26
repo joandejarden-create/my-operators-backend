@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Explorer - Dealality Platform</title>
+    <style>
+        :root {
+            --neutral--800: #080f25;
+            --neutral--400: #aeb9e1;
+            --neutral--100: white;
+            --accent--primary-1: #6c72ff;
+            --secondary--color-4: #343b4f;
+            --secondary--color-1: #101935;
+            --secondary--color-2: #9a91fb;
+            --secondary--color-5: #fdb52a;
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --system--green-300: #14ca74;
+            --system--blue-400: #086cd9;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--neutral--800); color: var(--neutral--400); font-size: 14px; min-height: 100vh; }
+        .page-wrapper { min-height: 100vh; display: flex; }
+        .sidebar-wrapper { width: 260px; min-width: 260px; border-right: 1px solid var(--neutral--600); background: var(--neutral--800); padding: 20px; }
+        .sidebar-wrapper h2 { color: var(--neutral--100); margin-bottom: 20px; font-size: 1.1rem; }
+        .sidebar-wrapper nav { display: flex; flex-direction: column; gap: 6px; }
+        .sidebar-wrapper nav a, .sidebar-wrapper nav button { color: var(--neutral--400); text-decoration: none; padding: 10px 12px; border-radius: 6px; font-size: 14px; background: none; border: none; cursor: pointer; text-align: left; font-family: inherit; width: 100%; transition: all 0.2s; }
+        .sidebar-wrapper nav a:hover, .sidebar-wrapper nav button:hover { background: var(--neutral--700); color: var(--neutral--100); }
+        .sidebar-wrapper nav a.active, .sidebar-wrapper nav button.active { background: rgba(108,114,255,0.2); color: var(--neutral--100); border-left: 3px solid var(--accent--primary-1); padding-left: 9px; }
+        .main-content { flex: 1; padding: 24px; overflow-y: auto; }
+        .breadcrumb { display: flex; gap: 8px; margin-bottom: 16px; font-size: 12px; color: var(--neutral--500); }
+        .breadcrumb a { color: var(--neutral--400); }
+        .breadcrumb a:hover { color: var(--neutral--100); }
+        .page-title { font-size: 1.5rem; font-weight: 700; color: var(--neutral--100); margin-bottom: 20px; }
+        .filters-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 20px; }
+        .filter-group { display: flex; flex-direction: column; gap: 4px; }
+        .filter-label { font-size: 11px; color: var(--neutral--500); text-transform: uppercase; }
+        .filter-input, .filter-select { background: var(--secondary--color-1); border: 1px solid var(--neutral--600); color: var(--neutral--100); padding: 8px 12px; border-radius: 6px; font-size: 13px; min-width: 140px; }
+        .filter-input:focus, .filter-select:focus { outline: none; border-color: var(--accent--primary-1); }
+        .btn { padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; transition: all 0.2s; }
+        .btn-primary { background: var(--accent--primary-1); color: var(--neutral--100); }
+        .btn-primary:hover { background: var(--secondary--color-2); }
+        .btn-secondary { background: var(--neutral--700); color: var(--neutral--100); }
+        .btn-secondary:hover { background: var(--neutral--600); }
+        .brands-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+        .brand-card { background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 8px; padding: 16px; cursor: pointer; transition: all 0.2s; display: flex; gap: 12px; align-items: flex-start; }
+        .brand-card:hover { border-color: var(--accent--primary-1); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .brand-card__logo { width: 48px; height: 48px; border-radius: 6px; background: var(--neutral--700); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--neutral--100); }
+        .brand-card__logo img { width: 100%; height: 100%; object-fit: contain; }
+        .brand-card__info { flex: 1; min-width: 0; }
+        .brand-card__name { font-size: 15px; font-weight: 600; color: var(--neutral--100); margin-bottom: 4px; }
+        .brand-card__meta { font-size: 12px; color: var(--neutral--500); margin-bottom: 6px; }
+        .brand-card__tags { display: flex; flex-wrap: wrap; gap: 4px; }
+        .tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--neutral--700); color: var(--neutral--400); }
+        .tag.conversion { background: rgba(20,202,116,0.2); color: var(--system--green-300); }
+        .results-count { color: var(--neutral--400); font-size: 13px; margin-bottom: 16px; }
+        .hidden { display: none !important; }
+        .loading { text-align: center; padding: 40px; color: var(--neutral--400); }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--neutral--400); }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--accent--primary-1); text-decoration: none; margin-bottom: 16px; font-size: 13px; }
+        .back-link:hover { text-decoration: underline; }
+        .detail-section { background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+        .detail-section h3 { font-size: 14px; font-weight: 600; color: var(--neutral--100); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dna-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .dna-item { padding: 12px; background: var(--neutral--800); border-radius: 6px; }
+        .dna-item label { font-size: 11px; color: var(--neutral--500); display: block; margin-bottom: 4px; }
+        .dna-item .value { font-size: 13px; color: var(--neutral--100); }
+        .accordion { border: 1px solid var(--neutral--600); border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
+        .accordion-header { padding: 14px 16px; background: var(--neutral--700); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--neutral--100); }
+        .accordion-header:hover { background: var(--neutral--600); }
+        .accordion-content { padding: 16px; background: var(--secondary--color-1); font-size: 13px; line-height: 1.6; color: var(--neutral--400); }
+        .accordion-content pre { white-space: pre-wrap; word-break: break-word; }
+        .updates-list { list-style: none; }
+        .updates-list li { padding: 12px 0; border-bottom: 1px solid var(--neutral--600); }
+        .updates-list li:last-child { border-bottom: none; }
+        .update-date { font-size: 11px; color: var(--neutral--500); margin-bottom: 4px; }
+        .compare-table { width: 100%; border-collapse: collapse; }
+        .compare-table th, .compare-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--neutral--600); }
+        .compare-table th { font-size: 11px; color: var(--neutral--500); text-transform: uppercase; }
+        .compare-table td { font-size: 13px; color: var(--neutral--400); }
+        .compare-table .brand-col { font-weight: 600; color: var(--neutral--100); min-width: 140px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal { background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 12px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 20px; border-bottom: 1px solid var(--neutral--600); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 1.2rem; color: var(--neutral--100); }
+        .modal-close { background: none; border: none; color: var(--neutral--400); font-size: 24px; cursor: pointer; padding: 0; line-height: 1; }
+        .modal-close:hover { color: var(--neutral--100); }
+        .modal-body { padding: 20px; }
+        .dimension-bar { margin-bottom: 16px; }
+        .dimension-bar label { display: block; font-size: 12px; color: var(--neutral--400); margin-bottom: 4px; }
+        .dimension-bar .bar-wrap { height: 8px; background: var(--neutral--700); border-radius: 4px; overflow: hidden; }
+        .dimension-bar .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent--primary-1), var(--secondary--color-2)); border-radius: 4px; transition: width 0.3s; }
+        .evidence-list { list-style: none; margin: 8px 0; }
+        .evidence-list li { font-size: 12px; color: var(--neutral--400); padding: 4px 0; padding-left: 12px; position: relative; }
+        .evidence-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent--primary-1); }
+        .fit-questions { margin-top: 16px; }
+        .fit-questions h4 { font-size: 12px; color: var(--neutral--500); margin-bottom: 8px; text-transform: uppercase; }
+        .fit-questions ol { padding-left: 18px; color: var(--neutral--400); font-size: 13px; line-height: 1.8; }
+        .embed-mode .sidebar-wrapper { display: none; }
+        .embed-mode .main-content { margin-left: 0; }
+    </style>
+</head>
+<body>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+    <div class="page-wrapper">
+        <div class="sidebar-wrapper">
+            <h2>Brand Explorer</h2>
+            <nav>
+                <a href="#" class="nav-link active" data-view="directory">📂 Directory</a>
+                <a href="#" class="nav-link" data-view="compare">⚖️ Compare</a>
+                <button type="button" class="nav-link fit-to-deal-trigger">🎯 Fit to My Deal</button>
+            </nav>
+        </div>
+        <div class="main-content">
+            <!-- Directory View -->
+            <div id="viewDirectory" class="view-panel">
+                <div class="breadcrumb"><a href="/">Home</a><span>></span><a href="/brand-library">Deal Toolbox</a><span>></span><span>Brand Explorer</span></div>
+                <h1 class="page-title">Brand Directory</h1>
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label class="filter-label">Search</label>
+                        <input type="text" class="filter-input" id="searchInput" placeholder="Brand name, parent...">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Chain Scale</label>
+                        <select class="filter-select" id="chainScaleFilter"><option value="">All</option></select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Conversion-friendly</label>
+                        <select class="filter-select" id="conversionFilter"><option value="">All</option><option value="1">Yes</option></select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Support Intensity</label>
+                        <select class="filter-select" id="supportFilter"><option value="">All</option><option value="High">High</option><option value="Moderate">Moderate</option><option value="Standard">Standard</option></select>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="resetFiltersBtn">Reset</button>
+                    <button type="button" class="btn btn-primary" id="compareSelectedBtn">Compare Selected (0)</button>
+                </div>
+                <div class="results-count" id="resultsCount">Loading...</div>
+                <div class="loading" id="loadingState">Loading brands...</div>
+                <div class="brands-grid hidden" id="brandsGrid"></div>
+                <div class="empty-state hidden" id="emptyState"><p>No brands match your filters.</p></div>
+            </div>
+            <!-- Brand Detail View -->
+            <div id="viewDetail" class="view-panel hidden">
+                <a href="#" class="back-link" id="backToDirectory">← Back to Directory</a>
+                <div id="detailContent"></div>
+            </div>
+            <!-- Compare View -->
+            <div id="viewCompare" class="view-panel hidden">
+                <a href="#" class="back-link" id="backToDirectoryCompare">← Back to Directory</a>
+                <h1 class="page-title">Compare Brands</h1>
+                <p style="color:var(--neutral--500);margin-bottom:16px;">Select up to 3 brands from the directory, then click Compare Selected.</p>
+                <div id="compareContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fit to My Deal Modal -->
+    <div id="fitModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Fit to My Deal</h2>
+                <button type="button" class="modal-close" aria-label="Close" id="fitModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="filter-group" style="margin-bottom:16px;">
+                    <label class="filter-label">Brand</label>
+                    <select class="filter-select" id="fitBrandSelect"><option value="">Select brand...</option></select>
+                </div>
+                <div class="filter-group" style="margin-bottom:16px;">
+                    <label class="filter-label">Deal (optional)</label>
+                    <select class="filter-select" id="fitDealSelect"><option value="">Use manual attributes...</option></select>
+                </div>
+                <button type="button" class="btn btn-primary" id="runFitBtn">Run Fit Analysis</button>
+                <div id="fitResults" class="hidden" style="margin-top:24px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+(function() {
+    const escapeHtml = (s) => (s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    let allBrands = [];
+    let filteredBrands = [];
+    let selectedForCompare = new Set();
+    let deals = [];
+
+    const views = { directory: 'viewDirectory', detail: 'viewDetail', compare: 'viewCompare' };
+    function showView(name) {
+        Object.keys(views).forEach(k => { document.getElementById(views[k]).classList.toggle('hidden', k !== name); });
+        document.querySelectorAll('.nav-link').forEach(el => { el.classList.toggle('active', el.dataset.view === name); });
+    }
+
+    async function fetchBrands() {
+        const loading = document.getElementById('loadingState');
+        const grid = document.getElementById('brandsGrid');
+        const empty = document.getElementById('emptyState');
+        loading.classList.remove('hidden');
+        grid.classList.add('hidden');
+        empty.classList.add('hidden');
+        try {
+            const res = await fetch('/api/brand-explorer/brands');
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error || 'Failed');
+            allBrands = data.brands || [];
+            filteredBrands = [...allBrands];
+            populateChainScaleFilter(data.filterOptions?.chain_scales || []);
+            renderBrands();
+            populateFitBrandSelect();
+        } catch (e) {
+            document.getElementById('resultsCount').textContent = 'Error: ' + (e.message || 'Failed to load');
+            empty.querySelector('p').textContent = 'Error loading brands. ' + (e.message || '');
+            empty.classList.remove('hidden');
+        } finally {
+            loading.classList.add('hidden');
+        }
+    }
+
+    function populateChainScaleFilter(opts) {
+        const sel = document.getElementById('chainScaleFilter');
+        sel.innerHTML = '<option value="">All</option>';
+        (opts || []).forEach(o => { const opt = document.createElement('option'); opt.value = o; opt.textContent = o; sel.appendChild(opt); });
+    }
+
+    function applyFilters() {
+        const q = (document.getElementById('searchInput').value || '').toLowerCase();
+        const chain = (document.getElementById('chainScaleFilter').value || '').toLowerCase();
+        const conv = document.getElementById('conversionFilter').value;
+        const sup = document.getElementById('supportFilter').value;
+        filteredBrands = allBrands.filter(b => {
+            if (q && !(b.name || '').toLowerCase().includes(q) && !(b.parent_company || '').toLowerCase().includes(q)) return false;
+            if (chain && (b.chain_scale || '').toLowerCase() !== chain) return false;
+            if (conv === '1' && !(b.tags || []).some(t => (t || '').toLowerCase().includes('conversion'))) return false;
+            if (sup && !(b.tags || []).some(t => (t || '').includes(sup))) return false;
+            return true;
+        });
+        renderBrands();
+    }
+
+    function renderBrands() {
+        const grid = document.getElementById('brandsGrid');
+        const empty = document.getElementById('emptyState');
+        const countEl = document.getElementById('resultsCount');
+        countEl.textContent = 'Showing ' + filteredBrands.length + ' of ' + allBrands.length + ' brands';
+        if (filteredBrands.length === 0) {
+            grid.classList.add('hidden');
+            empty.classList.remove('hidden');
+            return;
+        }
+        empty.classList.add('hidden');
+        grid.classList.remove('hidden');
+        grid.innerHTML = filteredBrands.map(b => {
+            const key = (b.brand_key || '').replace(/"/g,'');
+            const checked = selectedForCompare.has(key);
+            const tags = (b.tags || []).map(t => {
+                const cls = (t || '').toLowerCase().includes('conversion') ? 'tag conversion' : 'tag';
+                return '<span class="' + cls + '">' + escapeHtml(t) + '</span>';
+            }).join('');
+            return '<div class="brand-card" data-brand-key="' + escapeHtml(key) + '">' +
+                '<div class="brand-card__logo">' + (b.logo ? '<img src="' + escapeHtml(b.logo) + '" alt="">' : '<span>' + escapeHtml((b.name||'?').charAt(0)) + '</span>') + '</div>' +
+                '<div class="brand-card__info">' +
+                '<div class="brand-card__name">' + escapeHtml(b.name || 'Unknown') + '</div>' +
+                '<div class="brand-card__meta">' + escapeHtml(b.parent_company || '') + (b.chain_scale ? ' · ' + escapeHtml(b.chain_scale) : '') + '</div>' +
+                '<div class="brand-card__tags">' + tags + '</div>' +
+                '</div>' +
+                '<label style="flex-shrink:0;"><input type="checkbox" data-compare="' + escapeHtml(key) + '" ' + (checked ? 'checked' : '') + '> Add to compare</label>' +
+                '</div>';
+        }).join('');
+        grid.querySelectorAll('.brand-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (e.target.type === 'checkbox') return;
+                openBrandDetail(card.dataset.brandKey);
+            });
+        });
+        grid.querySelectorAll('input[data-compare]').forEach(cb => {
+            cb.addEventListener('change', function() {
+                const k = this.dataset.compare;
+                if (this.checked) selectedForCompare.add(k);
+                else selectedForCompare.delete(k);
+                document.getElementById('compareSelectedBtn').textContent = 'Compare Selected (' + selectedForCompare.size + ')';
+            });
+        });
+        document.getElementById('compareSelectedBtn').textContent = 'Compare Selected (' + selectedForCompare.size + ')';
+    }
+
+    async function openBrandDetail(brandKey) {
+        showView('detail');
+        const content = document.getElementById('detailContent');
+        content.innerHTML = '<div class="loading">Loading brand...</div>';
+        try {
+            const res = await fetch('/api/brand-explorer/brand/' + encodeURIComponent(brandKey));
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error || 'Not found');
+            renderBrandDetail(data, content);
+        } catch (e) {
+            content.innerHTML = '<p style="color:var(--neutral--400);">Error: ' + escapeHtml(e.message) + '</p>';
+        }
+    }
+
+    function renderBrandDetail(data, container) {
+        const dna = data.dna_card?.override || data.dna_card?.derived;
+        const owner = data.owner_lens?.override || data.owner_lens?.derived;
+        const pp = data.partner_page || {};
+        const dk = data.diligence_toolkit || {};
+        const updates = data.updates || [];
+        const lastUp = data.last_updated ? 'Last updated: ' + data.last_updated : '';
+
+        let html = '<div class="page-title">' + escapeHtml(pp.brand_name || data.brand_key) + (lastUp ? ' <span style="font-size:12px;font-weight:400;color:var(--neutral--500);">' + escapeHtml(lastUp) + '</span>' : '') + '</div>';
+
+        html += '<div class="detail-section"><h3>DNA Card</h3>';
+        if (typeof dna === 'string') {
+            html += '<pre>' + escapeHtml(dna) + '</pre>';
+        } else if (dna && typeof dna === 'object') {
+            html += '<div class="dna-grid">';
+            ['who_for_guest','who_for_owner','positioning','guest_promises','non_negotiables','where_it_wins'].forEach(k => {
+                const v = dna[k];
+                if (v) html += '<div class="dna-item"><label>' + escapeHtml(k.replace(/_/g,' ')) + '</label><div class="value">' + (Array.isArray(v) ? v.join(', ') : escapeHtml(String(v))) + '</div></div>';
+            });
+            if (dna.pillars && dna.pillars.length) html += '<div class="dna-item" style="grid-column:1/-1;"><label>Pillars</label><div class="value">' + dna.pillars.map(p => escapeHtml(p)).join(' • ') + '</div></div>';
+            html += '</div>';
+        } else html += '<p style="color:var(--neutral--500);">No DNA data.</p>';
+        html += '</div>';
+
+        html += '<div class="detail-section"><h3>Owner Lens</h3>';
+        if (typeof owner === 'string') {
+            html += '<pre>' + escapeHtml(owner) + '</pre>';
+        } else if (owner && typeof owner === 'object') {
+            Object.keys(owner).forEach(k => {
+                const v = owner[k];
+                if (v && (typeof v === 'object' ? Object.keys(v).length : true)) {
+                    html += '<div class="accordion"><div class="accordion-header">' + escapeHtml(k.replace(/_/g,' ')) + '</div><div class="accordion-content"><pre>' + escapeHtml(JSON.stringify(v, null, 2)) + '</pre></div></div>';
+                }
+            });
+        } else html += '<p style="color:var(--neutral--500);">No Owner Lens data.</p>';
+        html += '</div>';
+
+        html += '<div class="detail-section"><h3>Diligence Toolkit</h3>';
+        html += '<p style="margin-bottom:8px;">Key questions:</p><ol style="padding-left:18px;margin-bottom:12px;">' + (dk.questions || []).slice(0,10).map(q => '<li>' + escapeHtml(q) + '</li>').join('') + '</ol>';
+        html += '<p style="margin-bottom:4px;">Attachments checklist:</p><ul style="padding-left:18px;">' + (dk.attachments_checklist || []).map(a => '<li>' + escapeHtml(a) + '</li>').join('') + '</ul>';
+        if (dk.friction_points && dk.friction_points.length) html += '<p style="margin-top:12px;margin-bottom:4px;">Friction points:</p><ul style="padding-left:18px;">' + dk.friction_points.map(f => '<li>' + escapeHtml(f) + '</li>').join('') + '</ul>';
+        html += '</div>';
+
+        html += '<div class="detail-section"><h3>Partner Page</h3>';
+        html += '<p>' + (pp.website ? '<a href="' + escapeHtml(pp.website) + '" target="_blank" rel="noopener" style="color:var(--accent--primary-1);">' + escapeHtml(pp.website) + '</a>' : '—') + '</p>';
+        html += '<p style="margin-top:8px;">Parent: ' + escapeHtml(pp.parent_company || '—') + '</p></div>';
+
+        if (updates.length) {
+            html += '<div class="detail-section"><h3>Updates</h3><ul class="updates-list">';
+            updates.forEach(u => {
+                html += '<li><div class="update-date">' + escapeHtml(u.published_date || u.last_updated || '') + '</div><strong>' + escapeHtml(u.title || '') + '</strong><div>' + escapeHtml((u.body || '').slice(0,200)) + (u.body && u.body.length > 200 ? '…' : '') + '</div></li>';
+            });
+            html += '</ul></div>';
+        }
+
+        container.innerHTML = html;
+        container.querySelectorAll('.accordion-header').forEach(h => {
+            h.addEventListener('click', () => {
+                const content = h.nextElementSibling;
+                content.style.display = content.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    }
+
+    function openCompare() {
+        showView('compare');
+        const content = document.getElementById('compareContent');
+        if (selectedForCompare.size === 0) {
+            content.innerHTML = '<p style="color:var(--neutral--400);">Select brands from the directory, then click Compare Selected.</p>';
+            return;
+        }
+        const keys = Array.from(selectedForCompare).slice(0, 3);
+        content.innerHTML = '<div class="loading">Loading compare data...</div>';
+        Promise.all(keys.map(k => fetch('/api/brand-explorer/brand/' + encodeURIComponent(k)).then(r => r.json())))
+            .then(results => {
+                const compareData = results.filter(r => r.success).map(r => ({ key: r.brand_key, name: r.partner_page?.brand_name || r.brand_key, cf: r.compare_fields || {} }));
+                const fields = ['brand_name','parent_company','chain_scale','royalty_range','marketing_range','initial_term','pip_conversions','acceptable_project_types','room_range'];
+                let html = '<table class="compare-table"><thead><tr><th>Field</th>' + compareData.map(c => '<th class="brand-col">' + escapeHtml(c.name) + '</th>').join('') + '</tr></thead><tbody>';
+                fields.forEach(f => {
+                    html += '<tr><td>' + escapeHtml(f.replace(/_/g,' ')) + '</td>';
+                    compareData.forEach(c => { html += '<td>' + escapeHtml(String(c.cf[f] || '—')) + '</td>'; });
+                    html += '</tr>';
+                });
+                html += '</tbody></table>';
+                content.innerHTML = html;
+            })
+            .catch(e => { content.innerHTML = '<p style="color:var(--neutral--400);">Error: ' + escapeHtml(e.message) + '</p>'; });
+    }
+
+    function populateFitBrandSelect() {
+        const sel = document.getElementById('fitBrandSelect');
+        sel.innerHTML = '<option value="">Select brand...</option>';
+        allBrands.forEach(b => {
+            const opt = document.createElement('option');
+            opt.value = b.brand_key;
+            opt.textContent = b.name || b.brand_key;
+            sel.appendChild(opt);
+        });
+    }
+
+    async function loadDeals() {
+        try {
+            const res = await fetch('/api/my-deals');
+            const data = await res.json();
+            deals = (data.deals || []).slice(0, 100);
+            const sel = document.getElementById('fitDealSelect');
+            sel.innerHTML = '<option value="">Use manual attributes...</option>';
+            deals.forEach(d => {
+                const id = d.recordId || d.id;
+                const name = (d.projectName || d.dealName || d.name || id || 'Deal').toString();
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = name.length > 50 ? name.slice(0,47) + '…' : name;
+                sel.appendChild(opt);
+            });
+        } catch (_) {}
+    }
+
+    async function runFitAnalysis() {
+        const brandKey = document.getElementById('fitBrandSelect').value;
+        const dealId = document.getElementById('fitDealSelect').value;
+        if (!brandKey) { alert('Please select a brand.'); return; }
+        const resultsEl = document.getElementById('fitResults');
+        resultsEl.innerHTML = '<div class="loading">Running fit analysis...</div>';
+        resultsEl.classList.remove('hidden');
+        try {
+            const res = await fetch('/api/brand-explorer/fit-to-deal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ brand_key: brandKey, deal_id: dealId || undefined }),
+            });
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error || 'Failed');
+            const dims = data.dimensions || [];
+            let html = '<h4 style="color:var(--neutral--100);margin-bottom:12px;">' + escapeHtml(data.brand_name || brandKey) + '</h4>';
+            dims.forEach(d => {
+                html += '<div class="dimension-bar"><label>' + escapeHtml(d.label) + ' (' + (d.score || 0) + ')</label><div class="bar-wrap"><div class="bar-fill" style="width:' + (d.score || 0) + '%"></div></div>';
+                if (d.evidence && d.evidence.length) html += '<ul class="evidence-list">' + d.evidence.map(e => '<li>' + escapeHtml(e) + '</li>').join('') + '</ul>';
+                html += '</div>';
+            });
+            html += '<div class="fit-questions"><h4>Top Questions</h4><ol>' + (data.top_questions || []).map(q => '<li>' + escapeHtml(q) + '</li>').join('') + '</ol></div>';
+            resultsEl.innerHTML = html;
+        } catch (e) {
+            resultsEl.innerHTML = '<p style="color:#ff5a65;">Error: ' + escapeHtml(e.message) + '</p>';
+        }
+    }
+
+    document.querySelector('.nav-link[data-view="directory"]').addEventListener('click', () => { showView('directory'); });
+    document.querySelector('.nav-link[data-view="compare"]').addEventListener('click', openCompare);
+    document.querySelector('.fit-to-deal-trigger').addEventListener('click', () => {
+        document.getElementById('fitModal').classList.remove('hidden');
+        loadDeals();
+    });
+    document.getElementById('fitModalClose').addEventListener('click', () => document.getElementById('fitModal').classList.add('hidden'));
+    document.getElementById('runFitBtn').addEventListener('click', runFitAnalysis);
+    document.getElementById('backToDirectory').addEventListener('click', (e) => { e.preventDefault(); showView('directory'); });
+    document.getElementById('backToDirectoryCompare').addEventListener('click', (e) => { e.preventDefault(); showView('directory'); });
+    document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('chainScaleFilter').value = '';
+        document.getElementById('conversionFilter').value = '';
+        document.getElementById('supportFilter').value = '';
+        applyFilters();
+    });
+    document.getElementById('compareSelectedBtn').addEventListener('click', openCompare);
+    document.getElementById('searchInput').addEventListener('input', () => { clearTimeout(window._fe); window._fe = setTimeout(applyFilters, 200); });
+    document.getElementById('chainScaleFilter').addEventListener('change', applyFilters);
+    document.getElementById('conversionFilter').addEventListener('change', applyFilters);
+    document.getElementById('supportFilter').addEventListener('change', applyFilters);
+
+    document.getElementById('fitModal').addEventListener('click', function(e) { if (e.target === this) this.classList.add('hidden'); });
+
+    fetchBrands();
+})();
+    </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealality – App</title>
+    <link rel="stylesheet" href="app.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="deal-capture-logo">
+                    <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c1b01260955aa2357ee675_Dealality%20Full%20Logo%20w%20Text%20(Transparant).png" alt="Dealality" loading="lazy">
+                </div>
+                <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Collapse sidebar">
+                    <span class="chevron left">&lt;</span>
+                    <span class="chevron right">&gt;</span>
+                </button>
+            </div>
+            <div class="search-wrap">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+                <input type="text" class="search-input" placeholder="Search for..." aria-label="Search">
+            </div>
+            <nav class="sidebar-nav" aria-label="Main navigation">
+                <a class="nav-item" data-href="/" data-page="Home">
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
+                    <span class="nav-label">Home</span>
+                    <span class="nav-arrow">&gt;</span>
+                </a>
+
+                <div class="nav-group" data-dropdown>
+                    <button type="button" class="nav-item nav-item-parent" data-href="/deal-compare" data-dropdown-trigger aria-expanded="false">
+                        <span class="nav-icon" aria-hidden="true">▦</span>
+                        <span class="nav-label">Deals</span>
+                        <span class="nav-arrow nav-arrow-dropdown">▾</span>
+                    </button>
+                    <div class="nav-dropdown">
+                        <a class="nav-item nav-item-child" data-href="/new-deal-setup">Add New Deal</a>
+                        <a class="nav-item nav-item-child" data-href="/my-deals.html">My Deals</a>
+                        <a class="nav-item nav-item-child" data-href="/brand-development-dashboard">My Brand Deals</a>
+                    </div>
+                </div>
+
+                <div class="nav-group" data-dropdown>
+                    <button type="button" class="nav-item nav-item-parent" data-href="/deal-capture-radar-with-ranked-list" data-dropdown-trigger aria-expanded="false">
+                        <span class="nav-icon" aria-hidden="true">◉</span>
+                        <span class="nav-label">Market Intelligence</span>
+                        <span class="nav-arrow nav-arrow-dropdown">▾</span>
+                    </button>
+                    <div class="nav-dropdown">
+                        <a class="nav-item nav-item-child" data-href="/deal-capture-radar-with-ranked-list">The Radar</a>
+                        <a class="nav-item nav-item-child" data-href="/loi-database-dashboard">LOI Market Hub</a>
+                        <a class="nav-item nav-item-child" data-href="/market-alerts">Market Alerts</a>
+                    </div>
+                </div>
+
+                <div class="nav-group" data-dropdown>
+                    <button type="button" class="nav-item nav-item-parent" data-href="/my-deals.html" data-dropdown-trigger aria-expanded="false">
+                        <span class="nav-icon" aria-hidden="true">🏢</span>
+                        <span class="nav-label">Deal Room</span>
+                        <span class="nav-arrow nav-arrow-dropdown">▾</span>
+                    </button>
+                    <div class="nav-dropdown">
+                        <a class="nav-item nav-item-child" data-href="/deal-room-owner.html">Deal Room (Owner)</a>
+                        <a class="nav-item nav-item-child" data-href="/deal-room-brand.html">Deal Room (Brand)</a>
+                    </div>
+                </div>
+
+                <div class="nav-group" data-dropdown>
+                    <button type="button" class="nav-item nav-item-parent" data-href="/outreach-plans" data-dropdown-trigger aria-expanded="false">
+                        <span class="nav-icon" aria-hidden="true">⚇</span>
+                        <span class="nav-label">Outreach Hub</span>
+                        <span class="nav-arrow nav-arrow-dropdown">▾</span>
+                    </button>
+                    <div class="nav-dropdown">
+                        <a class="nav-item nav-item-child" data-href="/outreach-plans">Plans</a>
+                        <a class="nav-item nav-item-child" data-href="/outreach-inbox">Inbox</a>
+                        <a class="nav-item nav-item-child" data-href="/outreach-templates">Templates</a>
+                        <a class="nav-item nav-item-child" data-href="/outreach-sequences">Sequences</a>
+                        <a class="nav-item nav-item-child" data-href="/outreach-analytics">Analytics</a>
+                        <a class="nav-item nav-item-child" data-href="/outreach-deal-activity-log">Deal Activity Log</a>
+                    </div>
+                </div>
+
+                <div class="nav-group" data-dropdown>
+                    <button type="button" class="nav-item nav-item-parent" data-href="/clause-library" data-dropdown-trigger aria-expanded="false">
+                        <span class="nav-icon" aria-hidden="true">▤</span>
+                        <span class="nav-label">Deal Toolbox</span>
+                        <span class="nav-arrow nav-arrow-dropdown">▾</span>
+                    </button>
+                    <div class="nav-dropdown">
+                        <a class="nav-item nav-item-child" data-href="/clause-library">Clause Library</a>
+                        <a class="nav-item nav-item-child" data-href="/financial-term-library">Financial Term Library</a>
+                        <a class="nav-item nav-item-child" data-href="/brand-library">Brand Explorer</a>
+                        <a class="nav-item nav-item-child" data-href="/operator-explorer">Operator Explorer</a>
+                        <a class="nav-item nav-item-child" data-href="/franchise-fee-estimator">Fee Estimator</a>
+                    </div>
+                </div>
+
+                <a class="nav-item" data-href="/partner-directory" data-page="Partner Directory">
+                    <span class="nav-icon" aria-hidden="true">👤</span>
+                    <span class="nav-label">Partner Directory</span>
+                    <span class="nav-arrow">&gt;</span>
+                </a>
+
+                <div class="nav-group" data-dropdown>
+                    <button type="button" class="nav-item nav-item-parent" data-href="/brand-library" data-dropdown-trigger aria-expanded="false">
+                        <span class="nav-icon" aria-hidden="true">▥</span>
+                        <span class="nav-label">Platform Resources</span>
+                        <span class="nav-arrow nav-arrow-dropdown">▾</span>
+                    </button>
+                    <div class="nav-dropdown">
+                        <a class="nav-item nav-item-child" data-href="/index.html">Landing (Find your next)</a>
+                        <a class="nav-item nav-item-child" data-href="/new-landing.html">New Landing Page</a>
+                        <a class="nav-item nav-item-child" data-href="/valuation-widget-enhanced">Valuation Benchmark</a>
+                        <a class="nav-item nav-item-child" data-href="/signup">Sign Up</a>
+                    </div>
+                </div>
+
+                <a class="nav-item" data-href="/market-analytics" data-page="Reports">
+                    <span class="nav-icon" aria-hidden="true">▁▂▃</span>
+                    <span class="nav-label">Reports</span>
+                    <span class="nav-arrow">&gt;</span>
+                </a>
+                <a class="nav-item" data-href="#" data-page="Support">
+                    <span class="nav-icon" aria-hidden="true">?</span>
+                    <span class="nav-label">Support</span>
+                    <span class="nav-arrow">&gt;</span>
+                </a>
+
+                <div class="nav-group" data-dropdown>
+                    <button type="button" class="nav-item nav-item-parent" data-href="#" data-dropdown-trigger aria-expanded="false">
+                        <span class="nav-icon" aria-hidden="true">⚙</span>
+                        <span class="nav-label">Settings</span>
+                        <span class="nav-arrow nav-arrow-dropdown">▾</span>
+                    </button>
+                    <div class="nav-dropdown">
+                        <a class="nav-item nav-item-child" data-href="/profile-settings">Profile Settings</a>
+                        <a class="nav-item nav-item-child" data-href="/company-settings">Company Settings</a>
+                        <a class="nav-item nav-item-child" data-href="/user-management">User Management</a>
+                        <a class="nav-item nav-item-child" data-href="/my-brands">My Brands</a>
+                        <a class="nav-item nav-item-child" data-href="/brand-setup">Brand Setup</a>
+                        <a class="nav-item nav-item-child" data-href="/my-third-party-operators">My Operators</a>
+                        <a class="nav-item nav-item-child" data-href="/third-party-operator-intake">Operator Setup</a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer" id="accountDropdownWrap">
+                <button type="button" class="user-block account-dropdown-trigger" id="accountDropdownTrigger" aria-haspopup="true" aria-expanded="false" aria-label="Account settings">
+                    <span class="user-avatar" aria-hidden="true">P</span>
+                    <div class="user-info">
+                        <span class="user-name">Account</span>
+                        <span class="user-meta">Account settings</span>
+                    </div>
+                    <span class="nav-arrow nav-arrow-dropdown" aria-hidden="true">▾</span>
+                </button>
+                <div class="account-dropdown" id="accountDropdownMenu" role="menu" aria-hidden="true">
+                    <div class="account-dropdown-header">
+                        <span class="user-avatar" aria-hidden="true">P</span>
+                        <div class="user-info">
+                            <span class="user-name">Account</span>
+                            <span class="user-meta">Account settings</span>
+                        </div>
+                    </div>
+                    <a class="account-dropdown-item" href="/profile-settings" data-href="/profile-settings" role="menuitem">
+                        <span class="account-dropdown-icon" aria-hidden="true">⚙</span>
+                        Profile settings
+                    </a>
+                    <a class="account-dropdown-item" href="#" data-href="#" role="menuitem">
+                        <span class="account-dropdown-icon" aria-hidden="true">🏨</span>
+                        Hotel Ownership
+                    </a>
+                    <a class="account-dropdown-item" href="#" data-href="#" role="menuitem">
+                        <span class="account-dropdown-icon" aria-hidden="true">🔔</span>
+                        Notifications
+                    </a>
+                    <div class="account-dropdown-divider" role="separator"></div>
+                    <a class="account-dropdown-item" href="#" data-href="#" role="menuitem">
+                        <span class="account-dropdown-icon" aria-hidden="true">ℹ</span>
+                        Help center
+                    </a>
+                    <a class="account-dropdown-item" href="#" data-href="#" role="menuitem">
+                        <span class="account-dropdown-icon" aria-hidden="true">🎧</span>
+                        Support
+                    </a>
+                    <button type="button" class="account-dropdown-item account-dropdown-logout" id="accountLogout" role="menuitem">
+                        <span class="account-dropdown-icon" aria-hidden="true">⎋</span>
+                        Log out
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="frameContainer" class="frame-container"></div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

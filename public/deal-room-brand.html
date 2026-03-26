@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deal Room (Brand) - Dealality</title>
+  <style>
+    :root {
+      --neutral--800: #080f25;
+      --neutral--600: #37446b;
+      --neutral--500: #7e89ac;
+      --neutral--400: #aeb9e1;
+      --neutral--100: #ffffff;
+      --accent--primary-1: #6c72ff;
+      --secondary--color-1: #101935;
+      --system--green-300: #14ca74;
+      --system--red-400: #c53030;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    html { background: var(--neutral--800); }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--neutral--800);
+      color: var(--neutral--400);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: auto;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      color: var(--neutral--100);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .subtitle {
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      color: var(--neutral--500);
+      line-height: 1.4;
+    }
+    .panel {
+      border: 1px solid rgba(55, 68, 107, 0.9);
+      background: rgba(16, 25, 53, 0.35);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .banner {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid;
+      margin-bottom: 14px;
+    }
+    .banner.success { display: block; background: rgba(20, 202, 116, 0.12); border-color: rgba(20, 202, 116, 0.55); color: var(--system--green-300); }
+    .banner.error { display: block; background: rgba(255, 90, 101, 0.12); border-color: rgba(255, 90, 101, 0.55); color: var(--system--red-400); }
+    .banner.info { display: block; background: rgba(255, 255, 255, 0.06); border-color: rgba(55, 68, 107, 0.9); color: var(--neutral--400); }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .grow { flex: 1; min-width: 220px; }
+    label { color: var(--neutral--400); font-size: 13px; }
+    input[type="text"], input[type="url"], select {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--secondary--color-1);
+      border: 1px solid var(--neutral--600);
+      border-radius: 6px;
+      color: var(--neutral--100);
+      font-size: 14px;
+      outline: none;
+    }
+    button {
+      padding: 10px 12px;
+      background: var(--neutral--700, #212c4d);
+      border: 1px solid var(--neutral--600);
+      color: var(--neutral--100);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    button.primary {
+      background: rgba(108, 114, 255, 0.18);
+      border-color: rgba(108, 114, 255, 0.6);
+      color: var(--neutral--100);
+    }
+    button:disabled { opacity: 0.65; cursor: not-allowed; }
+    .small { font-size: 12px; color: var(--neutral--500); line-height: 1.4; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(55, 68, 107, 0.7);
+      vertical-align: top;
+      font-size: 13px;
+      color: var(--neutral--400);
+    }
+    th { color: var(--neutral--100); font-weight: 700; background: rgba(16, 25, 53, 0.35); }
+    .table-wrap { overflow-x: auto; }
+    .file-link {
+      color: var(--accent--primary-1);
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Deal Room (Brand)</h1>
+    <p class="subtitle">Upload your signed NDA and view Deal Room documents once access is granted by the owner.</p>
+
+    <div id="dealRoomBrandBanner" class="banner info" role="status" aria-live="polite"></div>
+
+    <div class="panel">
+      <div class="row" style="margin-bottom:12px;">
+        <div class="grow">
+          <label for="drBrandRequestSelect">Brand Requests</label>
+          <select id="drBrandRequestSelect">
+            <option value="">Loading brand requests...</option>
+          </select>
+          <div class="small" style="margin-top:6px;">Select a brand request, then click Load.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="grow">
+          <label for="drBrandRequestIdInput">Request ID (requestId)</label>
+          <input id="drBrandRequestIdInput" type="text" placeholder="recXXXX" value="">
+          <div class="small" style="margin-top:6px;">Open with: `?requestId=recBDRXXXX`.</div>
+        </div>
+        <div style="min-width:180px;">
+          <button id="drBrandLoadBtn" class="primary" style="width:100%;">Load</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="brandContent" style="display:none;">
+      <div class="panel">
+        <h2 style="color: var(--neutral--100); margin: 0 0 10px 0; font-size: 16px;">NDA Gate</h2>
+        <div class="small" style="margin-bottom:12px;" aria-live="polite">
+          NDA Status: <span id="drBrandNdaStatus" style="font-weight:800;color:var(--neutral--100);">—</span><br>
+          Deal Room Access: <span id="drBrandDealRoomAccess" style="font-weight:800;color:var(--neutral--100);">—</span>
+        </div>
+
+        <div class="row" style="align-items:flex-start;">
+          <div class="grow">
+            <label>NDA Sent File</label>
+            <div id="drBrandNdaSentFile" class="small">—</div>
+          </div>
+          <div class="grow">
+            <label>NDA Signed File</label>
+            <div id="drBrandNdaSignedFile" class="small">—</div>
+          </div>
+        </div>
+
+        <div style="height: 12px;"></div>
+        <details open style="background: rgba(16, 25, 53, 0.2); border: 1px solid rgba(55, 68, 107, 0.9); border-radius: 10px; padding: 12px;">
+          <summary style="cursor:pointer; color: var(--neutral--100); font-weight: 800;">Upload Signed NDA (public URL)</summary>
+          <div style="margin-top: 12px;" class="row">
+            <div style="flex: 1; min-width: 280px;">
+              <label for="drBrandSignedUrl">Public URL</label>
+              <input id="drBrandSignedUrl" type="url" placeholder="https://example.com/signed.pdf">
+            </div>
+            <div style="min-width:220px;">
+              <label for="drBrandSignedFilename">Filename</label>
+              <input id="drBrandSignedFilename" type="text" placeholder="signed-nda.pdf" value="signed-nda.pdf">
+            </div>
+            <div style="min-width:180px;">
+              <button id="drBrandAttachSignedBtn" class="primary" style="width:100%;">Attach</button>
+            </div>
+          </div>
+          <div id="drBrandAttachStatus" class="small" style="margin-top: 10px;" aria-live="polite"></div>
+        </details>
+      </div>
+
+      <div class="panel">
+        <h2 style="color: var(--neutral--100); margin: 0 0 10px 0; font-size: 16px;">Deal Room Documents</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Document</th>
+                <th>Category</th>
+                <th>Confidentiality</th>
+                <th>File</th>
+              </tr>
+            </thead>
+            <tbody id="drBrandDocsTableBody"></tbody>
+          </table>
+        </div>
+        <div id="drBrandDocsEmpty" class="small" style="margin-top: 12px; display:none;">No documents available yet.</div>
+        <div id="drBrandAccessHint" class="small" style="margin-top: 12px; display:none; font-weight:700;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search || "");
+      var requestId = (params.get("requestId") || "").trim();
+      if (!requestId) {
+        try { requestId = (localStorage.getItem("dealRoomBrandLastRequestId") || "").trim(); } catch (e) {}
+      }
+      var banner = document.getElementById("dealRoomBrandBanner");
+      var brandContent = document.getElementById("brandContent");
+
+      var requestIdInput = document.getElementById("drBrandRequestIdInput");
+      var requestSelect = document.getElementById("drBrandRequestSelect");
+      var loadBtn = document.getElementById("drBrandLoadBtn");
+
+      var ndaStatusEl = document.getElementById("drBrandNdaStatus");
+      var dealRoomAccessEl = document.getElementById("drBrandDealRoomAccess");
+      var ndaSentFileEl = document.getElementById("drBrandNdaSentFile");
+      var ndaSignedFileEl = document.getElementById("drBrandNdaSignedFile");
+
+      var attachSignedBtn = document.getElementById("drBrandAttachSignedBtn");
+      var signedUrl = document.getElementById("drBrandSignedUrl");
+      var signedFilename = document.getElementById("drBrandSignedFilename");
+      var attachStatus = document.getElementById("drBrandAttachStatus");
+
+      var docsTableBody = document.getElementById("drBrandDocsTableBody");
+      var docsEmpty = document.getElementById("drBrandDocsEmpty");
+      var accessHint = document.getElementById("drBrandAccessHint");
+
+      function setBanner(type, msg) {
+        if (!banner) return;
+        banner.classList.remove("success", "error", "info");
+        if (!msg) {
+          banner.style.display = "none";
+          return;
+        }
+        banner.style.display = "block";
+        banner.classList.add(type || "info");
+        banner.textContent = msg;
+      }
+
+      function requestLabel(r) {
+        if (!r || typeof r !== "object") return "";
+        var brand = r.brandName || "Brand";
+        var status = r.status || "";
+        var nda = r.ndaStatus || "";
+        var access = r.dealRoomAccess || "";
+        var dealId = r.dealId || "";
+        var bits = [brand];
+        if (status) bits.push("[" + status + "]");
+        if (nda || access) bits.push("NDA:" + (nda || "—") + ", Access:" + (access || "—"));
+        if (dealId) bits.push("(" + dealId + ")");
+        return bits.join(" ");
+      }
+
+      async function loadRequestOptions() {
+        if (!requestSelect) return;
+        requestSelect.innerHTML = '<option value="">Loading brand requests...</option>';
+        try {
+          var res = await fetch("/api/brand-deal-requests?all=1").then(function (r) { return r.json(); });
+          var rows = Array.isArray(res && res.requests) ? res.requests.slice() : [];
+          rows.sort(function (a, b) {
+            return requestLabel(a).localeCompare(requestLabel(b));
+          });
+
+          if (!rows.length) {
+            requestSelect.innerHTML = '<option value="">No brand requests found</option>';
+            return;
+          }
+
+          requestSelect.innerHTML = '<option value="">Select a request...</option>';
+          rows.forEach(function (r) {
+            var opt = document.createElement("option");
+            opt.value = r.id || "";
+            opt.textContent = requestLabel(r);
+            requestSelect.appendChild(opt);
+          });
+
+          if (requestId) {
+            requestSelect.value = requestId;
+          } else {
+            requestSelect.selectedIndex = 1;
+            requestId = requestSelect.value || "";
+            if (requestIdInput) requestIdInput.value = requestId;
+          }
+        } catch (err) {
+          requestSelect.innerHTML = '<option value="">Failed to load requests</option>';
+          setBanner("error", "Could not load brand requests list. You can still paste a requestId manually.");
+        }
+      }
+
+      function renderFileCell(fileArr) {
+        if (!Array.isArray(fileArr) || fileArr.length === 0 || !fileArr[0] || !fileArr[0].url) return "—";
+        var f = fileArr[0];
+        var fn = f.filename || "file";
+        return '<a class="file-link" href="' + f.url + '" target="_blank" rel="noopener">' + fn + '</a>';
+      }
+
+      async function loadBrandDealRoom() {
+        if (!requestId || !requestId.startsWith("rec")) {
+          setBanner("error", "Enter a valid requestId (Airtable record like recXXXX).");
+          return;
+        }
+
+        setBanner("info", "Loading Deal Room…");
+        setAccessHint("", false);
+        try {
+          var bdrRes = await fetch("/api/brand-deal-requests/" + encodeURIComponent(requestId)).then(function (r) { return r.json(); });
+          if (!bdrRes || !bdrRes.request) throw new Error(bdrRes.error || "Request not found");
+          var bdr = bdrRes.request;
+
+          var docsRes = await fetch("/api/deal-room-documents/brand/" + encodeURIComponent(requestId)).then(function (r) { return r.json(); });
+          var docs = (docsRes && docsRes.documents) ? docsRes.documents : [];
+
+          var ndaStatus = bdr.ndaStatus || "";
+          var dealRoomAccess = bdr.dealRoomAccess || "";
+          var canViewNdaOnly = !!bdr.canViewNdaOnlyDocs;
+
+          ndaStatusEl.textContent = ndaStatus || "—";
+          dealRoomAccessEl.textContent = dealRoomAccess || "—";
+          ndaSentFileEl.innerHTML = renderFileCell(bdr.ndaSentFile || []);
+          ndaSignedFileEl.innerHTML = renderFileCell(bdr.ndaSignedFile || []);
+
+          docsTableBody.innerHTML = "";
+          docsEmpty.style.display = docs.length ? "none" : "block";
+          docs.forEach(function (d) {
+            var fileArr = d.file || [];
+            var file = fileArr && fileArr[0] ? fileArr[0] : null;
+            var fileCell = file && file.url ? ('<a class="file-link" href="' + file.url + '" target="_blank" rel="noopener">' + (file.filename || "file") + '</a>') : "—";
+            var tr = document.createElement("tr");
+            tr.innerHTML =
+              '<td>' + (d.documentName || "—") + '</td>' +
+              '<td>' + (d.category || "—") + '</td>' +
+              '<td>' + (d.confidentiality || "—") + '</td>' +
+              '<td>' + fileCell + '</td>';
+            docsTableBody.appendChild(tr);
+          });
+
+          if (canViewNdaOnly) {
+            setBanner("success", "Deal Room unlocked. Documents are available.");
+            setAccessHint("", false);
+          } else {
+            setBanner("info", "NDA Only documents are locked until the owner grants access.");
+            var hint = "";
+            if (ndaStatus !== "Signed - Owner Confirmed") hint = "You must provide/submit a signed NDA first.";
+            else if (dealRoomAccess !== "Granted") hint = "Your NDA is signed, but access is still pending. The owner will grant access shortly.";
+            setAccessHint(hint, true);
+          }
+
+          brandContent.style.display = "block";
+        } catch (err) {
+          brandContent.style.display = "none";
+          setBanner("error", "Failed to load: " + (err && err.message ? err.message : "unknown error"));
+          throw err;
+        }
+      }
+
+      function setAccessHint(msg, show) {
+        accessHint.style.display = show ? "block" : "none";
+        accessHint.textContent = msg || "";
+      }
+
+      attachSignedBtn.addEventListener("click", function () {
+        if (!requestId || !requestId.startsWith("rec")) return;
+        var url = (signedUrl.value || "").trim();
+        var fn = (signedFilename.value || "").trim() || "signed-nda.pdf";
+        if (!url) {
+          attachStatus.textContent = "Enter a public URL for your signed NDA.";
+          setBanner("error", "Enter public URL for signed NDA.");
+          return;
+        }
+        attachStatus.textContent = "Attaching…";
+        fetch("/api/brand-deal-requests/" + encodeURIComponent(requestId), {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ndaSignedFile: [{ url: url, filename: fn }] })
+        }).then(function (r) { return r.json(); }).then(function (res) {
+          if (res.success) {
+            attachStatus.textContent = "Attached. Reloading…";
+            loadBrandDealRoom();
+            setTimeout(function () { attachStatus.textContent = ""; }, 1500);
+          } else {
+            attachStatus.textContent = res.error || "Failed.";
+            setBanner("error", res.error || "Failed to attach signed NDA");
+          }
+        }).catch(function (err) {
+          attachStatus.textContent = err && err.message ? err.message : "Failed.";
+          setBanner("error", err && err.message ? err.message : "Request failed");
+        });
+      });
+
+      loadBtn.addEventListener("click", function () {
+        requestId = (requestIdInput.value || "").trim();
+        if (!requestId) {
+          requestId = (requestSelect && requestSelect.value ? String(requestSelect.value).trim() : "");
+        }
+        if (!requestId) {
+          setBanner("error", "Select a request first.");
+          return;
+        }
+        if (requestIdInput) requestIdInput.value = requestId;
+        if (requestSelect && requestSelect.value !== requestId) requestSelect.value = requestId;
+        try { localStorage.setItem("dealRoomBrandLastRequestId", requestId); } catch (e) {}
+        try {
+          var u = new URL(window.location.href);
+          u.searchParams.set("requestId", requestId);
+          window.history.replaceState({}, "", u.toString());
+        } catch (e) {}
+        loadBrandDealRoom();
+      });
+
+      if (requestSelect) {
+        requestSelect.addEventListener("change", function () {
+          var nextId = (requestSelect.value || "").trim();
+          if (!nextId) return;
+          requestId = nextId;
+          if (requestIdInput) requestIdInput.value = nextId;
+        });
+      }
+
+      // init
+      loadRequestOptions();
+      if (requestId) {
+        requestIdInput.value = requestId;
+        if (requestSelect) requestSelect.value = requestId;
+        try { localStorage.setItem("dealRoomBrandLastRequestId", requestId); } catch (e) {}
+        loadBrandDealRoom();
+      }
+    })();
+  </script>
+</body>
+</html>
+

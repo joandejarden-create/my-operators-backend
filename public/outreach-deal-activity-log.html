@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deal Activity Log - Outreach Hub | Dealality Platform</title>
+  <link rel="stylesheet" href="/outreach-hub.css">
+  <style>
+    .my-brands-page .dashboard-header {
+      background: var(--neutral--800);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      margin: 0 -30px 20px -30px;
+    }
+    .my-brands-page .dashboard-header h1 { color: var(--neutral--100); margin: 0 0 8px 0; font-size: 2rem; font-weight: 700; }
+    .my-brands-page .dashboard-header p {
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 300;
+      line-height: 1.3;
+      max-width: 650px;
+      margin: 0;
+      margin-top: 5px;
+    }
+
+    .my-brands-page .filters-section {
+      background: var(--neutral--800);
+      border: 0.6px solid var(--neutral--600);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: minmax(250px, 1.4fr) minmax(180px, 1fr) minmax(180px, 1fr) minmax(180px, 1fr) minmax(120px, auto);
+      gap: 12px;
+      align-items: end;
+      min-width: 0;
+    }
+    .my-brands-page .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .my-brands-page .filter-label {
+      color: var(--neutral--400);
+      font-weight: 500;
+      font-size: 12px;
+    }
+    .my-brands-page .filter-select,
+    .my-brands-page .filter-input {
+      width: 100%;
+      background: var(--secondary--color-1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border-radius: 6px;
+      font-size: 13px;
+      padding: 8px 12px;
+      min-height: 36px;
+      box-sizing: border-box;
+    }
+    .my-brands-page .filter-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+    .my-brands-page .filter-select option { background: var(--secondary--color-1); color: #ffffff; }
+    .my-brands-page .filter-select:focus,
+    .my-brands-page .filter-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    .my-brands-page .filter-group-reset { position: relative; overflow: visible !important; }
+    .my-brands-page .btn-clear {
+      min-height: 36px;
+      background: var(--secondary--color-5);
+      border: 1px solid var(--secondary--color-5);
+      color: var(--neutral--100);
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .my-brands-page .btn-clear:hover {
+      background: var(--system--orange-400);
+      border-color: var(--system--orange-400);
+    }
+    .my-brands-page .filter-count-badge {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      margin: 0;
+      border-radius: 10px;
+      padding: 0 6px;
+      background: var(--accent--primary-1);
+      color: var(--neutral--100);
+      font-size: 11px;
+      font-weight: 600;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      z-index: 10;
+    }
+    .results-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .results-count { margin-bottom: 0; color: var(--neutral--400); font-size: 13px; }
+    .results-count strong { color: var(--neutral--100); font-weight: 600; }
+
+    .my-brands-page .deals-table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 0.6px solid var(--neutral--600);
+      border-radius: 8px;
+      background: var(--neutral--800);
+    }
+    .my-brands-page .deals-table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .my-brands-page .deals-table th,
+    .my-brands-page .deals-table td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      vertical-align: top;
+    }
+    .my-brands-page .deals-table thead { background: var(--neutral--700); }
+    .my-brands-page .deals-table th {
+      color: var(--neutral--100);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+      white-space: nowrap;
+      border-bottom: 2px solid var(--neutral--600);
+      user-select: none;
+      cursor: pointer;
+    }
+    .my-brands-page .deals-table th:hover { background: var(--neutral--600); }
+    .my-brands-page .deals-table th .sort-indicator {
+      display: inline-flex;
+      flex-direction: column;
+      margin-left: 6px;
+      vertical-align: middle;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      line-height: 1;
+    }
+    .my-brands-page .deals-table th:hover .sort-indicator,
+    .my-brands-page .deals-table th.sort-asc .sort-indicator,
+    .my-brands-page .deals-table th.sort-desc .sort-indicator { opacity: 1; }
+    .sort-indicator-arrow {
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      margin: 1px 0;
+    }
+    .sort-indicator-arrow-up { border-bottom: 5px solid var(--neutral--400); }
+    .sort-indicator-arrow-down { border-top: 5px solid var(--neutral--400); }
+    .my-brands-page .deals-table th.sort-asc .sort-indicator-arrow-up { border-bottom-color: var(--accent--primary-1); }
+    .my-brands-page .deals-table th.sort-desc .sort-indicator-arrow-down { border-top-color: var(--accent--primary-1); }
+    .my-brands-page .deals-table th.no-sort {
+      cursor: default;
+    }
+    .my-brands-page .deals-table th.no-sort:hover {
+      background: transparent;
+    }
+    .my-brands-page .deals-table td {
+      color: var(--neutral--400);
+      font-size: 13px;
+    }
+    .my-brands-page .deals-table tbody tr:hover td {
+      background: var(--neutral--700);
+    }
+    .activity-col-time {
+      color: var(--neutral--500);
+      white-space: nowrap;
+      min-width: 86px;
+    }
+    .activity-col-action {
+      color: var(--neutral--100);
+      font-weight: 600;
+      min-width: 170px;
+    }
+    .activity-col-deal { min-width: 240px; }
+    .activity-col-details { color: var(--neutral--400); }
+    .activity-empty-row td {
+      text-align: center;
+      color: var(--neutral--500);
+      padding: 24px 12px;
+    }
+    @media (max-width: 960px) {
+      .my-brands-page .filters-section {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="my-brands-page">
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1){document.documentElement.classList.add('embed-mode');}})();</script>
+  <div class="page-wrapper">
+    <div class="dashboard-main-section">
+      <div class="outreach-hub-container">
+        <div class="dashboard-header">
+          <div class="outreach-hub-title-container">
+            <div class="deal-capture-logo">
+              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+            </div>
+            <h1>Deal Activity Log</h1>
+          </div>
+          <p>Review all recent activities associated with your deals in one place. Filter by deal or search terms, then use Reset View to quickly return to the full activity list.</p>
+        </div>
+
+        <section>
+          <div class="filters-section">
+            <div class="filter-group filter-group-search">
+              <label class="form-label" for="activitySearchInput">Search</label>
+              <input id="activitySearchInput" class="filter-input" type="text" placeholder="Search action, deal, or details...">
+            </div>
+            <div class="filter-group">
+              <label class="form-label" for="activityDealFilter">Deal</label>
+              <select id="activityDealFilter" class="filter-select">
+                <option value="">All deals</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label class="form-label" for="activityActionFilter">Action</label>
+              <select id="activityActionFilter" class="filter-select">
+                <option value="">All actions</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label class="form-label" for="activityTimeframeFilter">Timeframe</label>
+              <select id="activityTimeframeFilter" class="filter-select">
+                <option value="">All time</option>
+                <option value="24h">Last 24 hours</option>
+                <option value="7d">Last 7 days</option>
+                <option value="30d">Last 30 days</option>
+                <option value="90d">Last 90 days</option>
+              </select>
+            </div>
+            <div class="filter-group filter-group-reset">
+              <button type="button" class="btn-clear" id="activityResetBtn">Reset View
+                <span class="filter-count-badge" id="activityCountBadge">0</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="results-row">
+            <div class="results-count" id="activityMeta">Showing <strong>0</strong> activities</div>
+          </div>
+
+          <div class="deals-table-container">
+            <table class="deals-table" aria-label="Deal activity table">
+              <thead>
+                <tr>
+                  <th data-sort="createdAt" style="width:11%;"><span style="display:inline-flex;align-items:center;">Time<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                  <th data-sort="action" style="width:18%;"><span style="display:inline-flex;align-items:center;">Action<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                  <th data-sort="stakeholder" style="width:14%;"><span style="display:inline-flex;align-items:center;">Stakeholder<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                  <th data-sort="dealName" style="width:22%;"><span style="display:inline-flex;align-items:center;">Deal<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                  <th class="no-sort">Details</th>
+                </tr>
+              </thead>
+              <tbody id="activityTableBody">
+                <tr class="activity-empty-row"><td colspan="5">Loading activity...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var allEntries = [];
+      var tableBody = document.getElementById('activityTableBody');
+      var metaEl = document.getElementById('activityMeta');
+      var countBadgeEl = document.getElementById('activityCountBadge');
+      var dealFilterEl = document.getElementById('activityDealFilter');
+      var actionFilterEl = document.getElementById('activityActionFilter');
+      var timeframeFilterEl = document.getElementById('activityTimeframeFilter');
+      var searchEl = document.getElementById('activitySearchInput');
+      var resetBtn = document.getElementById('activityResetBtn');
+      var sortState = { key: 'createdAt', dir: 'desc' };
+
+      function escapeHtml(s) {
+        var div = document.createElement('div');
+        div.textContent = s == null ? '' : String(s);
+        return div.innerHTML;
+      }
+
+      function normalize(v) {
+        return String(v == null ? '' : v).trim().toLowerCase();
+      }
+
+      function renderRows(entries) {
+        if (!entries.length) {
+          tableBody.innerHTML = '<tr class="activity-empty-row"><td colspan="5">No deal activity found for this view.</td></tr>';
+          return;
+        }
+        tableBody.innerHTML = entries.map(function (e) {
+          return '<tr>' +
+            '<td class="activity-col-time">' + escapeHtml(e.timeAgo || '') + '</td>' +
+            '<td class="activity-col-action">' + escapeHtml(e.action || e.title || 'Activity Updated') + '</td>' +
+            '<td>' + escapeHtml(e.stakeholder || 'Owner') + '</td>' +
+            '<td class="activity-col-deal">' + escapeHtml(e.dealName || e.contextLabel || 'Untitled Deal') + '</td>' +
+            '<td class="activity-col-details">' + escapeHtml(e.details || '—') + '</td>' +
+          '</tr>';
+        }).join('');
+      }
+
+      function populateDealFilter(entries) {
+        var seen = new Set();
+        var options = [];
+        for (var i = 0; i < entries.length; i++) {
+          var e = entries[i];
+          var id = String(e.dealId || '').trim();
+          if (!id || seen.has(id)) continue;
+          seen.add(id);
+          options.push({ id: id, label: e.dealName || e.contextLabel || id });
+        }
+        options.sort(function (a, b) { return a.label.localeCompare(b.label); });
+        dealFilterEl.innerHTML = '<option value="">All deals</option>' + options.map(function (o) {
+          return '<option value="' + escapeHtml(o.id) + '">' + escapeHtml(o.label) + '</option>';
+        }).join('');
+      }
+
+      function populateActionFilter(entries) {
+        var seen = new Set();
+        var options = [];
+        for (var i = 0; i < entries.length; i++) {
+          var action = String(entries[i].action || entries[i].title || '').trim();
+          if (!action || seen.has(action)) continue;
+          seen.add(action);
+          options.push(action);
+        }
+        options.sort(function (a, b) { return a.localeCompare(b); });
+        actionFilterEl.innerHTML = '<option value="">All actions</option>' + options.map(function (a) {
+          return '<option value="' + escapeHtml(a) + '">' + escapeHtml(a) + '</option>';
+        }).join('');
+      }
+
+      function parseDate(v) {
+        var d = new Date(v || '');
+        return Number.isNaN(d.getTime()) ? 0 : d.getTime();
+      }
+
+      function inTimeframe(entry, timeframe) {
+        if (!timeframe) return true;
+        var created = parseDate(entry.createdAt);
+        if (!created) return false;
+        var now = Date.now();
+        var day = 24 * 60 * 60 * 1000;
+        if (timeframe === '24h') return now - created <= day;
+        if (timeframe === '7d') return now - created <= (7 * day);
+        if (timeframe === '30d') return now - created <= (30 * day);
+        if (timeframe === '90d') return now - created <= (90 * day);
+        return true;
+      }
+
+      function applySort(entries) {
+        var key = sortState.key;
+        var dir = sortState.dir === 'asc' ? 1 : -1;
+        return entries.slice().sort(function (a, b) {
+          if (key === 'createdAt') {
+            return (parseDate(a.createdAt) - parseDate(b.createdAt)) * dir;
+          }
+          var av = String((a[key] || '')).toLowerCase();
+          var bv = String((b[key] || '')).toLowerCase();
+          if (av < bv) return -1 * dir;
+          if (av > bv) return 1 * dir;
+          return 0;
+        });
+      }
+
+      function updateSortIndicators() {
+        var ths = document.querySelectorAll('.deals-table th[data-sort]');
+        ths.forEach(function (th) {
+          th.classList.remove('sort-asc', 'sort-desc');
+          var key = th.getAttribute('data-sort');
+          if (key === sortState.key) th.classList.add(sortState.dir === 'asc' ? 'sort-asc' : 'sort-desc');
+        });
+      }
+
+      function bindSortHandlers() {
+        var ths = document.querySelectorAll('.deals-table th[data-sort]');
+        ths.forEach(function (th) {
+          th.addEventListener('click', function () {
+            var key = th.getAttribute('data-sort');
+            if (!key) return;
+            if (sortState.key === key) {
+              sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
+            } else {
+              sortState.key = key;
+              sortState.dir = key === 'createdAt' ? 'desc' : 'asc';
+            }
+            updateSortIndicators();
+            applyFilters();
+          });
+        });
+      }
+
+      function applyFilters() {
+        var selectedDeal = dealFilterEl.value;
+        var selectedAction = actionFilterEl.value;
+        var selectedTimeframe = timeframeFilterEl.value;
+        var q = normalize(searchEl.value);
+        var filtered = allEntries.filter(function (e) {
+          if (selectedDeal && String(e.dealId || '') !== selectedDeal) return false;
+          if (selectedAction && String(e.action || e.title || '') !== selectedAction) return false;
+          if (!inTimeframe(e, selectedTimeframe)) return false;
+          if (!q) return true;
+          var hay = normalize((e.action || '') + ' ' + (e.dealName || '') + ' ' + (e.details || ''));
+          return hay.indexOf(q) !== -1;
+        });
+        filtered = applySort(filtered);
+        metaEl.innerHTML = 'Showing <strong>' + filtered.length + '</strong> activities';
+        if (countBadgeEl) {
+          countBadgeEl.textContent = String(filtered.length);
+          countBadgeEl.style.display = (selectedDeal || selectedAction || selectedTimeframe || q) ? 'inline-flex' : 'none';
+        }
+        renderRows(filtered);
+      }
+
+      function fetchActivity() {
+        metaEl.innerHTML = 'Loading activity...';
+        tableBody.innerHTML = '<tr class="activity-empty-row"><td colspan="5">Loading activity...</td></tr>';
+        fetch('/api/outreach/deal-activity-log?limit=200')
+          .then(function (res) { return res.json(); })
+          .then(function (json) {
+            allEntries = (json && json.success !== false && Array.isArray(json.entries)) ? json.entries : [];
+            populateDealFilter(allEntries);
+            populateActionFilter(allEntries);
+            applyFilters();
+          })
+          .catch(function () {
+            allEntries = [];
+            metaEl.innerHTML = 'Unable to load activity';
+            tableBody.innerHTML = '<tr class="activity-empty-row"><td colspan="5">Unable to load activity right now.</td></tr>';
+          });
+      }
+
+      dealFilterEl.addEventListener('change', applyFilters);
+      actionFilterEl.addEventListener('change', applyFilters);
+      timeframeFilterEl.addEventListener('change', applyFilters);
+      searchEl.addEventListener('input', applyFilters);
+      resetBtn.addEventListener('click', function () {
+        dealFilterEl.value = '';
+        actionFilterEl.value = '';
+        timeframeFilterEl.value = '';
+        searchEl.value = '';
+        sortState = { key: 'createdAt', dir: 'desc' };
+        updateSortIndicators();
+        applyFilters();
+      });
+
+      bindSortHandlers();
+      updateSortIndicators();
+      fetchActivity();
+    })();
+  </script>
+</body>
+</html>

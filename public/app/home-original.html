@@ -1,0 +1,95 @@
+<!--
+  Dealality Command Center – Original version
+  ROUTE: /app/home-original | URL: http://localhost:3000/app/home-original.html
+  Layout: Header + KPI strip | Row 2: Signals | Next Actions | Execution Reliability | Row 3: Pipeline | Market Intel | Row 4: Toolbox
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Center – Dealality (Original)</title>
+  <link rel="stylesheet" href="/app/dashboard-original.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dc-dashboard-page dc-dashboard-page--original" id="dc-dashboard-page">
+  <div id="dc-dashboard">
+    <!-- Header: greeting, sync, actions -->
+    <header class="dc-header">
+      <div class="dc-header__brand">
+        <span class="dc-header__title">TODAY'S DEAL PULSE</span>
+        <span class="dc-header__greeting" id="dc-greeting"></span>
+      </div>
+      <div class="dc-header__right">
+        <span class="dc-header__sync" id="dc-sync"></span>
+        <div class="dc-header__actions" id="dc-header-actions"></div>
+      </div>
+    </header>
+
+    <!-- Key insights: 6 KPI cards -->
+    <div class="dc-kpis-row" id="dc-kpi-strip" role="region" aria-label="Key metrics">
+      <!-- Active Deals, Needs Action, New Inquiries, Under Review, Shared Brands, Shared Operators -->
+    </div>
+
+    <!-- Row 2: Signals Today | Next Actions | Execution Reliability -->
+    <div class="dc-row2">
+      <section class="dc-card dc-card--signals">
+        <h3 class="dc-card__title">Signals Today</h3>
+        <div class="dc-card__body" id="dc-signals"></div>
+        <div class="dc-card__footer">
+          <a href="/market-alerts" class="dc-link">View All</a>
+        </div>
+      </section>
+      <section class="dc-card dc-card--actions">
+        <h3 class="dc-card__title">Next Actions</h3>
+        <div class="dc-card__body" id="dc-next-actions"></div>
+        <div class="dc-card__footer">
+          <a href="/my-deals" class="dc-link">View All</a>
+        </div>
+      </section>
+      <section class="dc-card dc-card--responsiveness">
+        <h3 class="dc-card__title">Execution Reliability</h3>
+        <div class="dc-card__body" id="dc-responsiveness"></div>
+        <div class="dc-card__footer">
+          <a href="#" class="dc-link">Open responsiveness</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Row 3: Pipeline Snapshot | Market Intelligence -->
+    <div class="dc-row3">
+      <section class="dc-card dc-card--pipeline">
+        <h3 class="dc-card__title">Pipeline Snapshot</h3>
+        <div class="dc-card__body" id="dc-pipeline"></div>
+        <div class="dc-card__footer">
+          <a href="/my-deals" class="dc-link">View My Deals</a>
+        </div>
+      </section>
+      <section class="dc-card dc-card--market">
+        <h3 class="dc-card__title">Market Intelligence</h3>
+        <div class="dc-card__body" id="dc-market-intel"></div>
+        <div class="dc-card__footer">
+          <a href="/market-alerts" class="dc-link">View All</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Row 4: Deal Toolbox -->
+    <section class="dc-widget dc-widget--toolbox">
+      <h3 class="dc-widget__title">Deal Toolbox</h3>
+      <div class="dc-widget__body" id="dc-toolbox"></div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('embed') === '1') {
+        document.getElementById('dc-dashboard-page').classList.add('embed-mode');
+      }
+    })();
+  </script>
+  <script src="/app/dashboard-adapter.js"></script>
+  <script src="/app/dashboard-original.js"></script>
+</body>
+</html>

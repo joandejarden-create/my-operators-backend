@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Status Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #17a2b8; }
+        .warning { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Image Status Test</h1>
+        <p>Test the current status of specific contacts mentioned by the user.</p>
+        
+        <div>
+            <button onclick="testSpecificContacts()">Test All Specific Contacts</button>
+            <button onclick="checkDashboardStatus()">Check Dashboard Status</button>
+            <button onclick="clearOutput()">Clear Output</button>
+        </div>
+        
+        <div id="status"></div>
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        let output = document.getElementById('output');
+        let status = document.getElementById('status');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+            output.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearOutput() {
+            output.innerHTML = '';
+            status.innerHTML = '';
+        }
+
+        function checkDashboardStatus() {
+            clearOutput();
+            log('Checking dashboard status...', 'info');
+            
+            if (typeof window.dashboard === 'undefined') {
+                log('ERROR: Dashboard not found. Make sure the main dashboard is loaded.', 'error');
+                return;
+            }
+            
+            log('Dashboard found!', 'success');
+            log(`Total deals loaded: ${window.dashboard.deals ? window.dashboard.deals.length : 'Unknown'}`, 'info');
+            log(`Filtered deals: ${window.dashboard.filteredDeals ? window.dashboard.filteredDeals.length : 'Unknown'}`, 'info');
+            
+            if (window.dashboard.cache && window.dashboard.cache.userData) {
+                log(`Cached user data entries: ${window.dashboard.cache.userData.size}`, 'info');
+            }
+        }
+
+        function testSpecificContacts() {
+            clearOutput();
+            log('Testing specific contacts...', 'info');
+            
+            if (typeof window.dashboard === 'undefined') {
+                log('ERROR: Dashboard not found. Make sure the main dashboard is loaded.', 'error');
+                return;
+            }
+            
+            const targetContacts = [
+                'Olive Ray', 'Preetam Skyram', 'Ana Silva', 'David Chen',
+                'Maria Elena Vargas', 'Ryan Murphy', 'Pierre Dubois', 'Hans van der Berg'
+            ];
+            
+            log('🎯 ===== SPECIFIC CONTACT STATUS TEST =====', 'info');
+            
+            let foundContacts = 0;
+            let contactsWithImages = 0;
+            let contactsWithoutImages = 0;
+            let multiBrandContacts = 0;
+            
+            targetContacts.forEach(contactName => {
+                const deals = window.dashboard.deals.filter(deal =>
+                    deal.ownerName && deal.ownerName.toLowerCase().includes(contactName.toLowerCase())
+                );
+
+                if (deals.length > 0) {
+                    foundContacts++;
+                    log(`\n✅ ${contactName} (${deals.length} deal(s)):`, 'success');
+                    
+                    if (deals.length > 1) {
+                        multiBrandContacts++;
+                        log(`  - 🔄 MULTI-BRAND CONTACT: Found ${deals.length} deals for this contact`, 'info');
+                    }
+                    
+                    let contactHasImage = false;
+                    let dealsWithImages = 0;
+                    
+                    deals.forEach((deal, index) => {
+                        log(`  - Deal ${index + 1}: ${deal.id} (Brand: ${deal.brandMatch})`, 'info');
+                        log(`    - Owner Email: ${deal.ownerEmail}`, 'info');
+                        
+                        // Check if image was loaded for this specific deal
+                        const avatarElement = document.querySelector(`[data-deal-id="${deal.id}"] .contact-avatar img`);
+                        const fallbackElement = document.querySelector(`[data-deal-id="${deal.id}"] .contact-avatar .contact-avatar-fallback`);
+                        
+                        if (avatarElement && avatarElement.src && !avatarElement.src.includes('data:image/svg')) {
+                            dealsWithImages++;
+                            if (!contactHasImage) contactHasImage = true;
+                            log(`    - ✅ Image loaded: ${avatarElement.src.substring(0, 50)}...`, 'success');
+                            log(`    - Image dimensions: ${avatarElement.naturalWidth}x${avatarElement.naturalHeight}`, 'info');
+                        } else if (fallbackElement && fallbackElement.style.display !== 'none') {
+                            log(`    - ❌ No image loaded (showing fallback)`, 'error');
+                        } else {
+                            log(`    - ⚠️ No avatar element found for deal ${deal.id}`, 'warning');
+                        }
+                    });
+                    
+                    if (contactHasImage) {
+                        contactsWithImages++;
+                        if (deals.length > 1) {
+                            log(`  - ✅ MULTI-BRAND SUCCESS: Contact has images in ${dealsWithImages}/${deals.length} deals`, 'success');
+                        }
+                    } else {
+                        contactsWithoutImages++;
+                        log(`  - ❌ No images loaded for any deals of this contact`, 'error');
+                        
+                        // Check cache for this contact
+                        const extractedEmail = window.dashboard.extractEmailFromDeal(deals[0]);
+                        if (extractedEmail) {
+                            const cacheKey = `profile_${extractedEmail}`;
+                            const cachedResult = window.dashboard.cache.userData ? window.dashboard.cache.userData.get(cacheKey) : null;
+                            log(`  - Cached result: ${cachedResult ? 'Found' : 'Not found'}`, 'info');
+                        }
+                    }
+                } else {
+                    log(`\n❌ ${contactName}: NOT FOUND in deals data`, 'error');
+                }
+            });
+            
+            log('\n📊 ===== SUMMARY =====', 'info');
+            log(`Total contacts found: ${foundContacts}/${targetContacts.length}`, foundContacts === targetContacts.length ? 'success' : 'warning');
+            log(`Contacts with images: ${contactsWithImages}`, contactsWithImages > 0 ? 'success' : 'error');
+            log(`Contacts without images: ${contactsWithoutImages}`, contactsWithoutImages === 0 ? 'success' : 'warning');
+            log(`Multi-brand contacts: ${multiBrandContacts}`, 'info');
+            
+            if (contactsWithoutImages > 0) {
+                log('\n💡 To retry failed image loads, run: window.dashboard.retryFailedImageLoads()', 'info');
+            }
+            
+            // Test the specific Hans van der Berg multi-brand scenario
+            if (multiBrandContacts > 0) {
+                log('\n🔄 ===== MULTI-BRAND TEST =====', 'info');
+                log('Testing if contact images work across multiple brand splits...', 'info');
+                
+                const hansDeals = window.dashboard.deals.filter(deal =>
+                    deal.ownerName && deal.ownerName.toLowerCase().includes('hans van der berg')
+                );
+                
+                if (hansDeals.length > 1) {
+                    log(`✅ Found ${hansDeals.length} deals for Hans van der Berg:`, 'success');
+                    hansDeals.forEach((deal, index) => {
+                        const hasImage = deal.contactImage || document.querySelector(`[data-deal-id="${deal.id}"] .contact-avatar img`)?.src;
+                        log(`  - Deal ${index + 1}: ${deal.brandMatch} - Image: ${hasImage ? '✅' : '❌'}`, hasImage ? 'success' : 'error');
+                    });
+                }
+            }
+            
+            log('🎯 ===== END CONTACT STATUS TEST =====', 'info');
+        }
+
+        // Auto-check dashboard status on load
+        window.addEventListener('load', function() {
+            setTimeout(checkDashboardStatus, 1000);
+        });
+    </script>
+</body>
+</html>

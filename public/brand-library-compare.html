@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Brands - Dealality Platform</title>
+    <style>
+        /* CSS Variables - Matching Partner Directory */
+        :root {
+          --neutral--800: #080f25;
+          --neutral--400: #aeb9e1;
+          --neutral--100: white;
+          --accent--primary-1: #6c72ff;
+          --secondary--color-4: #343b4f;
+          --secondary--color-1: #101935;
+          --secondary--color-2: #9a91fb;
+          --secondary--color-3: #57c3ff;
+          --secondary--color-5: #fdb52a;
+          --neutral--700: #212c4d;
+          --neutral--600: #37446b;
+          --neutral--500: #7e89ac;
+          --system--green-300: #14ca74;
+          --system--blue-400: #086cd9;
+          --system--orange-400: #d5691b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
+        *::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
+        *::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
+        *::-webkit-scrollbar-corner { background: #080f25; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            overflow-x: hidden;
+            font-size: 14px;
+            min-height: 100vh;
+            scrollbar-gutter: stable;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar-wrapper {
+            z-index: 500;
+            border-right: 0.6px solid var(--neutral--600);
+            background-color: var(--neutral--800);
+            width: 300px;
+            min-width: 300px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-padding { padding: 20px; }
+
+        .sidebar-wrapper h2 {
+            color: var(--neutral--100);
+            margin-bottom: 30px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .sidebar-wrapper nav { display: flex; flex-direction: column; gap: 8px; }
+
+        .sidebar-wrapper nav a {
+            color: var(--neutral--400);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .sidebar-wrapper nav a:hover {
+            background-color: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .sidebar-wrapper nav a.active {
+            background-color: rgba(108, 114, 255, 0.15);
+            color: var(--neutral--100);
+            border-left: 3px solid #667eea;
+            padding-left: 13px;
+        }
+
+        .embed-mode .sidebar-wrapper { display: none !important; }
+        .embed-mode .dashboard-main-section { margin-left: 0 !important; }
+        .embed-mode .compare-container { max-width: 100% !important; }
+
+        .dashboard-main-section {
+            flex: 1;
+            margin-left: 300px;
+            min-width: 0;
+        }
+
+        .compare-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--neutral--500);
+        }
+
+        .breadcrumb a { color: var(--neutral--400); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--neutral--100); }
+        .breadcrumb-separator { color: var(--neutral--600); }
+
+        .page-header { margin-bottom: 24px; }
+
+        .compare-title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            margin-bottom: 8px;
+        }
+
+        .page-header h1 {
+            color: var(--neutral--100);
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2em;
+        }
+
+        .page-header p {
+            color: var(--neutral--100);
+            font-size: 0.75rem;
+            font-weight: 300;
+            line-height: 1.3;
+            max-width: 100%;
+            margin: 0;
+            margin-top: 5px;
+        }
+
+        /* Tabs - My Deals style: icon-label-number vertical stack */
+        .tabs-section {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--neutral--800);
+            padding: 0;
+            margin-top: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tabs-section::-webkit-scrollbar { display: none; }
+        .tabs-section .section-nav-item {
+            min-width: 90px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: var(--neutral--400);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 10px;
+            font-weight: 600;
+            border: none;
+            background: none;
+            font-family: inherit;
+            padding: 10px 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: color 0.2s;
+        }
+        .tabs-section a.section-nav-item {
+            text-decoration: none;
+        }
+        .tabs-section .section-nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral--400);
+            font-size: 16px;
+            background: transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .tabs-section .section-nav-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .tabs-section .section-nav-label {
+            text-align: center;
+            line-height: 1.3;
+            white-space: nowrap;
+            font-size: 10px;
+        }
+        .tabs-section .section-nav-item:hover {
+            color: var(--neutral--100);
+        }
+        .tabs-section .section-nav-item:hover .section-nav-icon {
+            color: var(--neutral--100);
+        }
+        .tabs-section .section-nav-item.active {
+            color: var(--accent--primary-1);
+        }
+        .tabs-section .section-nav-item.active .section-nav-icon {
+            border-color: var(--accent--primary-1);
+            border-width: 2px;
+            color: var(--accent--primary-1);
+        }
+        .tabs-section .section-nav-item .tab-count {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--neutral--400);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .tabs-section .section-nav-item.active .tab-count {
+            background: transparent;
+            border-color: var(--accent--primary-1);
+            color: var(--accent--primary-1);
+        }
+
+        /* Brand selector - Deal Compare style */
+        .brand-selector-section { margin-bottom: 24px; }
+        .brand-selector-filters {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 16px;
+        }
+        .brand-selector-filters .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+        .brand-selector-filters .filter-group-search { flex: 1; min-width: 160px; max-width: 280px; }
+        .brand-add-group { min-width: 180px; }
+        .filter-group-priority { min-width: 180px; }
+        .filter-priority-select {
+            width: 100%;
+            padding: 10px 32px 10px 12px;
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            background: var(--secondary--color-1);
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aeb9e1' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+        .brand-dropdown-wrap { position: relative; }
+        .brand-dropdown-trigger {
+            width: 100%;
+            padding: 10px 32px 10px 12px;
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            background: var(--secondary--color-1);
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aeb9e1' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+        .brand-dropdown-trigger:hover { border-color: var(--accent--primary-1); color: var(--neutral--100); }
+        .brand-dropdown-list {
+            position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px;
+            max-height: 220px; overflow-y: auto;
+            background: var(--secondary--color-1);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+        .brand-dropdown-list[aria-hidden="true"] { display: none; }
+        .brand-dropdown-list[aria-hidden="false"] { display: block; }
+        .brand-dropdown-item {
+            padding: 10px 12px;
+            font-size: 14px;
+            color: var(--neutral--400);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            border: none; background: none;
+            width: 100%; text-align: left;
+        }
+        .brand-dropdown-item:hover { background: var(--neutral--700); color: var(--neutral--100); }
+        .brand-dropdown-item:disabled { opacity: 0.5; cursor: not-allowed; }
+        .brand-chips-row {
+            flex: 1 1 auto;
+            min-width: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            align-self: flex-end;
+        }
+        .brand-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: rgba(108, 114, 255, 0.15);
+            border: 0.6px solid var(--accent--primary-1);
+            border-radius: 6px;
+            color: var(--neutral--100);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .brand-chip button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            border: none;
+            background: var(--neutral--600);
+            color: var(--neutral--100);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .brand-chip button:hover { background: var(--system--300); }
+        .brand-selector-filters .filter-label { color: var(--neutral--400); font-weight: 500; font-size: 12px; }
+        .brand-selector-filters .filter-search-input {
+            background: var(--secondary--color-1);
+            border: 0.6px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            width: 100%;
+            min-width: 200px;
+            max-width: 280px;
+            box-sizing: border-box;
+        }
+        .brand-selector-filters .filter-search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+        .filter-reset-btn {
+            padding: 8px 12px;
+            background: var(--secondary--color-5);
+            border: 1px solid var(--secondary--color-5);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-height: 36px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .filter-reset-btn:hover {
+            background: var(--system--orange-400);
+            border-color: var(--system--orange-400);
+            transform: translateY(-1px);
+        }
+        .selected-count { font-size: 12px; color: var(--neutral--500); display: inline-block; line-height: 1.4; min-height: 40px; vertical-align: middle; }
+        .filter-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-left: auto; }
+
+        /* Comparison table - Deal Compare style */
+        .table-wrapper {
+            background: var(--secondary--color-1);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            overflow: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .comparison-table {
+            min-width: 900px;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--neutral--600);
+            vertical-align: middle;
+        }
+        .comparison-table thead th {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            font-weight: 600;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .comparison-table thead th:first-child { min-width: 260px; position: sticky; left: 0; z-index: 3; background: var(--neutral--700); }
+        .comparison-table tbody td:first-child {
+            background: var(--neutral--700);
+            color: var(--neutral--300);
+            font-weight: 500;
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+        .comparison-table tbody tr:nth-child(even) td:first-child { background: var(--neutral--600); }
+        .comparison-table tbody td { color: var(--neutral--200); }
+        .comparison-table tbody tr:nth-child(even) td { background: rgba(55, 68, 107, 0.2); }
+        .section-header-row th {
+            background: var(--secondary--color-1) !important;
+            color: var(--neutral--100) !important;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+        .metric-label, .brand-col { min-width: 140px; }
+        .cell-best { background: rgba(20, 202, 116, 0.15) !important; color: var(--system--green-300) !important; font-weight: 600; }
+        .cell-best::after { content: " ✓"; font-size: 0.85em; }
+        .comparison-section { margin-top: 8px; }
+        .comparison-content { margin-top: 0; }
+        .comparison-legend { font-size: 12px; color: var(--neutral--500); margin-bottom: 12px; }
+        .comparison-legend span { margin-right: 16px; }
+        .comparison-legend .legend-best { color: var(--system--green-300); font-weight: 500; }
+        .comparison-data-source { margin-top: 12px; font-size: 12px; color: var(--neutral--500); }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--neutral--400);
+            border: 0.6px dashed var(--neutral--600);
+            border-radius: 8px;
+            background: rgba(55, 68, 107, 0.15);
+        }
+        .empty-state h3 {
+            color: var(--neutral--100);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .chart-container {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .comparison-header {
+            display: grid;
+            grid-template-columns: 250px repeat(var(--brand-count, 2), 1fr);
+            background: var(--neutral--700);
+            border-bottom: 1px solid var(--neutral--600);
+        }
+
+        .comparison-header-cell {
+            padding: 20px;
+            color: var(--neutral--100);
+            font-weight: 600;
+            border-right: 1px solid var(--neutral--600);
+        }
+
+        .comparison-header-cell:last-child {
+            border-right: none;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 250px repeat(var(--brand-count, 2), 1fr);
+            border-bottom: 1px solid var(--neutral--600);
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-label {
+            padding: 15px 20px;
+            background: var(--neutral--700);
+            color: var(--neutral--400);
+            font-weight: 500;
+            border-right: 1px solid var(--neutral--600);
+            font-size: 13px;
+        }
+
+        .comparison-cell {
+            padding: 15px 20px;
+            color: var(--neutral--100);
+            border-right: 1px solid var(--neutral--600);
+        }
+
+        .comparison-row:last-child .comparison-cell,
+        .comparison-row:last-child .comparison-label {
+            border-bottom: none;
+        }
+
+        .comparison-cell:last-child {
+            border-right: none;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: var(--neutral--100);
+        }
+
+        .metric-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .badge-high {
+            background: rgba(20, 202, 116, 0.2);
+            color: #14ca74;
+        }
+
+        .badge-medium {
+            background: rgba(253, 181, 42, 0.2);
+            color: #fdb52a;
+        }
+
+        .badge-low {
+            background: rgba(174, 185, 225, 0.2);
+            color: #aeb9e1;
+        }
+
+        .chart-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+        }
+
+        .chart-title {
+            color: var(--neutral--100);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bar-label {
+            min-width: 150px;
+            color: var(--neutral--400);
+            font-size: 13px;
+        }
+
+        .bar-wrapper {
+            flex: 1;
+            height: 30px;
+            background: var(--neutral--700);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        .bar-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral--100);
+            font-size: 11px;
+            font-weight: 600;
+            transition: width 0.3s ease;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--neutral--400);
+        }
+
+        .empty-state h3 {
+            color: var(--neutral--100);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            justify-content: flex-end;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-wrapper {
+                display: none;
+            }
+
+            .dashboard-main-section {
+                margin-left: 0;
+            }
+
+            .comparison-header,
+            .comparison-row {
+                grid-template-columns: 150px repeat(var(--brand-count, 2), 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+    <div class="page-wrapper">
+        <div class="sidebar-wrapper">
+            <div class="sidebar-padding">
+                <h2>Dealality</h2>
+                <nav>
+                    <a href="#">🏠 Home</a>
+                    <a href="#">📊 Deals</a>
+                    <a href="#">📈 Market Intelligence</a>
+                    <a href="#">🏢 Deal Room</a>
+                    <a href="#">🤝 Outreach Hub</a>
+                    <a href="clause-library.html">📚 Legal Library</a>
+                    <a href="brand-library.html">🏨 Brand Library</a>
+                    <a href="brand-library-compare.html" class="active">⚖️ Compare Brands</a>
+                    <a href="partner-directory.html">👥 Partner Directory</a>
+                    <a href="#">📋 Platform Resources</a>
+                    <a href="#">📊 Reports</a>
+                    <a href="#">❓ Support</a>
+                    <a href="#">⚙️ Settings</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="dashboard-main-section">
+            <div class="compare-container">
+                <div class="page-header">
+                    <div class="compare-title-container">
+                        <h1>Brand Explorer</h1>
+                        <p>Browse and compare hotel brands across chain scales. Search, filter by parent company or brand model, and click View Brand for full details.</p>
+                    </div>
+                </div>
+
+                <nav class="tabs-section" aria-label="Brand Explorer sections">
+                    <a href="brand-library.html" class="section-nav-item" data-tab="brands" title="Brands">
+                        <div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+                        <span class="section-nav-label">Brands</span>
+                    </a>
+                    <button type="button" class="section-nav-item active" data-tab="compare" title="Compare Brands">
+                        <div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 2 5-6"/><path d="M18 17v-4"/><path d="M15 13l-3 3 3 3"/></svg></div>
+                        <span class="section-nav-label">Compare<br>Brands</span>
+                    </button>
+                </nav>
+
+                <div id="brandSelectorSection" class="brand-selector-section">
+                    <div class="brand-selector-filters">
+                        <div class="filter-group filter-group-search">
+                            <label class="filter-label" for="brandSearchInput">Search</label>
+                            <input type="text" id="brandSearchInput" class="filter-search-input" placeholder="Search by brand name..." aria-label="Search brands">
+                        </div>
+                        <div class="filter-group brand-add-group">
+                            <label class="filter-label" for="brandDropdownTrigger">Add brand</label>
+                            <div class="brand-dropdown-wrap">
+                                <button type="button" class="brand-dropdown-trigger" id="brandDropdownTrigger" aria-haspopup="listbox" aria-expanded="false">Add brand...</button>
+                                <div class="brand-dropdown-list" id="brandDropdownList" role="listbox" aria-hidden="true"></div>
+                            </div>
+                        </div>
+                        <div class="filter-group filter-group-priority">
+                            <label class="filter-label" for="prioritySelect">Owner priority</label>
+                            <select id="prioritySelect" class="filter-priority-select" aria-label="Owner priority">
+                                <option value="">All metrics</option>
+                                <option value="fee">Minimize fees</option>
+                                <option value="term">Prefer long term / stability</option>
+                                <option value="exit">Exit flexibility</option>
+                                <option value="conversion">Conversion-friendly</option>
+                            </select>
+                        </div>
+                        <div class="brand-chips-row" id="brandChipsRow"></div>
+                        <div class="filter-actions">
+                            <button type="button" class="filter-reset-btn" id="resetViewBtn">Reset View</button>
+                            <span class="selected-count" id="selectedCount">0 brands selected (min. 2)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="comparisonSection" class="comparison-section">
+                    <div id="comparisonContent" class="comparison-content" style="display: none;">
+                        <p class="comparison-legend" id="comparisonLegend"><span class="legend-best">✓ = Best in row</span></p>
+                        <div class="table-wrapper">
+                            <table class="comparison-table" id="comparisonTable">
+                                <thead id="comparisonThead"></thead>
+                                <tbody id="comparisonTbody"></tbody>
+                            </table>
+                        </div>
+                        <p class="comparison-data-source" id="comparisonDataSource">Data from Brand Setup (Brand Basics, Fee Structure, Footprint, Project Fit, Brand Standards, Portfolio & Performance, Operational Support, Sustainability). No deal terms included.</p>
+                    </div>
+                    <div id="emptyState" class="empty-state">
+                        <h3>Executive summary</h3>
+                        <p>Select 2 or more brands above to see the side-by-side comparison</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            let allBrands = [];
+            let selectedBrandIds = [];
+            let brandDetailsCache = {};
+
+            const brandChipsRowEl = document.getElementById('brandChipsRow');
+            const brandDropdownTriggerEl = document.getElementById('brandDropdownTrigger');
+            const brandDropdownListEl = document.getElementById('brandDropdownList');
+            const resetViewBtnEl = document.getElementById('resetViewBtn');
+            const selectedCountEl = document.getElementById('selectedCount');
+            const comparisonContentEl = document.getElementById('comparisonContent');
+            const emptyStateEl = document.getElementById('emptyState');
+            const comparisonTheadEl = document.getElementById('comparisonThead');
+            const comparisonTbodyEl = document.getElementById('comparisonTbody');
+
+            function escapeHtml(s) {
+                if (s == null || s === undefined) return '';
+                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+
+            function noFallback(val, key, i, n) {
+                return (val !== '' && val != null && val !== undefined && String(val).trim() !== '') ? String(val).trim() : 'N/A';
+            }
+
+            function row(label, values, naIfEmpty, opts) {
+                opts = opts || {};
+                const bestIdx = opts.getNumeric ? (() => {
+                    const nums = opts.getNumeric();
+                    let idx = -1;
+                    let best = opts.lowerIsBetter ? Infinity : -Infinity;
+                    nums.forEach((n, i) => {
+                        if (n != null && !isNaN(n)) {
+                            const isBetter = opts.lowerIsBetter ? (n < best) : (n > best);
+                            if (isBetter) { best = n; idx = i; }
+                        }
+                    });
+                    return idx;
+                })() : -1;
+                let tds = values.map((v, i) => {
+                    const display = (naIfEmpty && (v === '' || v == null || v === 'N/A' || String(v).trim() === '')) ? 'N/A' : escapeHtml(String(v ?? '').trim() || 'N/A');
+                    const cls = (bestIdx >= 0 && i === bestIdx) ? ' class="cell-best"' : '';
+                    return '<td' + cls + '><span class="cell-value">' + display + '</span></td>';
+                });
+                const section = opts.section ? ' data-section="' + escapeHtml(opts.section) + '"' : '';
+                const priority = opts.priority ? ' data-priority="' + escapeHtml(opts.priority) + '"' : '';
+                return '<tr' + section + priority + '><th class="metric-label">' + escapeHtml(label) + '</th>' + tds.join('') + '</tr>';
+            }
+
+            function loadBrandDetail(brandId) {
+                if (brandDetailsCache[brandId]) return Promise.resolve(brandDetailsCache[brandId]);
+                return fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(brandId))
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success && data.brand) {
+                            brandDetailsCache[brandId] = data.brand;
+                            return data.brand;
+                        }
+                        return null;
+                    })
+                    .catch(err => { console.error('Error loading brand:', err); return null; });
+            }
+
+            function buildTable(brands) {
+                const theadHtml = '<tr><th class="metric-label">Metric</th>' +
+                    brands.map(b => '<th class="brand-col">' + escapeHtml(b.brandName || b.name || '') + '</th>').join('') + '</tr>';
+                comparisonTheadEl.innerHTML = theadHtml;
+
+                let tbodyHtml = '';
+
+                // Brand Basics
+                tbodyHtml += '<tr class="section-header-row" data-section="basics"><th colspan="' + (brands.length + 1) + '">BRAND BASICS</th></tr>';
+                tbodyHtml += row('Parent Company', brands.map(b => b.parentCompany || ''), false, { section: 'basics' });
+                tbodyHtml += row('Chain Scale', brands.map(b => b.hotelChainScale || b.chainScale || ''), false, { section: 'basics' });
+                tbodyHtml += row('Brand Architecture', brands.map(b => b.brandArchitecture || ''), false, { section: 'basics' });
+                tbodyHtml += row('Brand Model', brands.map(b => b.brandModelFormat || b.brandModel || ''), false, { section: 'basics' });
+                tbodyHtml += row('Service Model', brands.map(b => b.hotelServiceModel || b.serviceModel || ''), false, { section: 'basics' });
+                tbodyHtml += row('Year Launched', brands.map(b => b.yearBrandLaunched || b.yearLaunched || ''), false, { section: 'basics' });
+                tbodyHtml += row('Development Stage', brands.map(b => b.brandDevelopmentStage || b.developmentStage || ''), false, { section: 'basics' });
+                tbodyHtml += row('Brand Status', brands.map(b => b.brandStatus || ''), false, { section: 'basics' });
+
+                // Fee Structure (no deal terms)
+                tbodyHtml += '<tr class="section-header-row" data-section="fees"><th colspan="' + (brands.length + 1) + '">FEE STRUCTURE</th></tr>';
+                const royalties = brands.map(b => {
+                    const fs = b.feeStructure || {};
+                    const min = fs.typicalRoyaltyPercentMin ?? fs.typicalRoyaltyFeeMin ?? fs.royaltyMin;
+                    const max = fs.typicalRoyaltyPercentMax ?? fs.typicalRoyaltyFeeMax ?? fs.royaltyMax;
+                    let v = '';
+                    if (min != null && min !== '' && max != null && max !== '') v = min + ' – ' + max + '%';
+                    else if (min != null && min !== '') v = min + '%';
+                    else if (max != null && max !== '') v = max + '%';
+                    return v || 'N/A';
+                });
+                tbodyHtml += row('Ongoing Royalties', royalties, true, {
+                    section: 'fees', lowerIsBetter: true, priority: 'fee',
+                    getNumeric: () => brands.map(b => {
+                        const fs = b.feeStructure || {};
+                        const n = parseFloat(fs.typicalRoyaltyPercentMin ?? fs.typicalRoyaltyFeeMin ?? fs.typicalRoyaltyPercentMax ?? fs.typicalRoyaltyFeeMax);
+                        return (n != null && !isNaN(n)) ? n : null;
+                    })
+                });
+                const mktFees = brands.map(b => {
+                    const fs = b.feeStructure || {};
+                    const min = fs.typicalMarketingFeePercentMin ?? fs.typicalMarketingFeeMin ?? fs.marketingMin;
+                    const max = fs.typicalMarketingFeePercentMax ?? fs.typicalMarketingFeeMax ?? fs.marketingMax;
+                    let v = '';
+                    if (min != null && min !== '' && max != null && max !== '') v = min + ' – ' + max + '%';
+                    else if (min != null && min !== '') v = min + '%';
+                    else if (max != null && max !== '') v = max + '%';
+                    return v || 'N/A';
+                });
+                tbodyHtml += row('Marketing Fees', mktFees, true, {
+                    section: 'fees', lowerIsBetter: true, priority: 'fee',
+                    getNumeric: () => brands.map(b => {
+                        const fs = b.feeStructure || {};
+                        const n = parseFloat(fs.typicalMarketingFeePercentMin ?? fs.typicalMarketingFeeMin ?? fs.typicalMarketingFeePercentMax ?? fs.typicalMarketingFeeMax);
+                        return (n != null && !isNaN(n)) ? n : null;
+                    })
+                });
+                tbodyHtml += row('Application Fee', brands.map(b => {
+                    const fs = b.feeStructure || {};
+                    const min = fs.typicalApplicationFeeMin;
+                    const max = fs.typicalApplicationFeeMax;
+                    const basis = fs.typicalApplicationFeeBasis;
+                    if (min != null && min !== '' && max != null && max !== '') return min + ' – ' + max + (basis ? ' (' + basis + ')' : '');
+                    if (min != null && min !== '') return min + (basis ? ' (' + basis + ')' : '');
+                    return '';
+                }), true, { section: 'fees' });
+                tbodyHtml += row('Tech / Reservation Fee', brands.map(b => {
+                    const fs = b.feeStructure || {};
+                    const rMin = fs.typicalReservationFeeMin;
+                    const rMax = fs.typicalReservationFeeMax;
+                    const tMin = fs.typicalTechnologyFeeMin;
+                    const tMax = fs.typicalTechnologyFeeMax;
+                    const basis = fs.typicalReservationFeeBasis ?? fs.typicalTechnologyFeeBasis;
+                    if (rMin != null || rMax != null) return (rMin ?? '') + (rMin != null && rMax != null ? ' – ' : '') + (rMax ?? '') + (basis ? ' ' + basis : '');
+                    if (tMin != null || tMax != null) return (tMin ?? '') + (tMin != null && tMax != null ? ' – ' : '') + (tMax ?? '') + (basis ? ' ' + basis : '');
+                    return '';
+                }), true, { section: 'fees' });
+                tbodyHtml += row('Loyalty Program Fee', brands.map(b => {
+                    const fs = b.feeStructure || {};
+                    const min = fs.typicalLoyaltyFeePercentMin;
+                    const max = fs.typicalLoyaltyFeePercentMax;
+                    if (min != null && min !== '' && max != null && max !== '') return min + ' – ' + max + '%';
+                    if (min != null && min !== '') return min + '%';
+                    if (max != null && max !== '') return max + '%';
+                    return '';
+                }), true, { section: 'fees' });
+
+                // Footprint & Portfolio
+                tbodyHtml += '<tr class="section-header-row" data-section="footprint"><th colspan="' + (brands.length + 1) + '">FOOTPRINT &amp; PORTFOLIO</th></tr>';
+                tbodyHtml += row('Total Hotels', brands.map(b => {
+                    const fp = b.footprint || {};
+                    return fp.totalExistingHotels != null ? Number(fp.totalExistingHotels).toLocaleString() : '';
+                }), true, { section: 'footprint' });
+                tbodyHtml += row('Total Rooms', brands.map(b => {
+                    const fp = b.footprint || {};
+                    return fp.totalExistingRooms != null ? Number(fp.totalExistingRooms).toLocaleString() : '';
+                }), true, { section: 'footprint' });
+                tbodyHtml += row('New Build %', brands.map(b => {
+                    const fp = b.footprint || {};
+                    return fp.newBuildPercent != null ? parseFloat(fp.newBuildPercent).toFixed(1) + '%' : '';
+                }), true, { section: 'footprint' });
+                tbodyHtml += row('Conversion %', brands.map(b => {
+                    const fp = b.footprint || {};
+                    return fp.conversionPercent != null ? parseFloat(fp.conversionPercent).toFixed(1) + '%' : '';
+                }), true, { section: 'footprint' });
+                tbodyHtml += row('Managed %', brands.map(b => {
+                    const fp = b.footprint || {};
+                    return fp.managedPercent != null ? parseFloat(fp.managedPercent).toFixed(1) + '%' : '';
+                }), true, { section: 'footprint' });
+                tbodyHtml += row('Franchised %', brands.map(b => {
+                    const fp = b.footprint || {};
+                    return fp.franchisedPercent != null ? parseFloat(fp.franchisedPercent).toFixed(1) + '%' : '';
+                }), true, { section: 'footprint' });
+
+                // Project Fit
+                tbodyHtml += '<tr class="section-header-row" data-section="project-fit"><th colspan="' + (brands.length + 1) + '">PROJECT FIT</th></tr>';
+                const pfForm = (b) => (b.projectFit || {}).formValues || {};
+                tbodyHtml += row('Ideal Room Count', brands.map(b => {
+                    const pf = pfForm(b);
+                    const min = pf.idealRoomCountMin;
+                    const max = pf.idealRoomCountMax;
+                    if (min != null && min !== '' && max != null && max !== '') return min + ' – ' + max;
+                    if (min != null && min !== '') return min + '+';
+                    if (max != null && max !== '') return '≤ ' + max;
+                    return '';
+                }), true, { section: 'project-fit' });
+                tbodyHtml += row('Ideal Project Size (rooms)', brands.map(b => {
+                    const pf = pfForm(b);
+                    const min = pf.idealProjectSizeMin;
+                    const max = pf.idealProjectSizeMax;
+                    if (min != null && min !== '' && max != null && max !== '') return min + ' – ' + max;
+                    if (min != null && min !== '') return min + '+';
+                    if (max != null && max !== '') return '≤ ' + max;
+                    return '';
+                }), true, { section: 'project-fit' });
+                tbodyHtml += row('Acceptable Project Types', brands.map(b => {
+                    const pf = pfForm(b);
+                    const types = pf.idealProjectTypes;
+                    return Array.isArray(types) ? types.join(', ') : (types || '');
+                }), true, { section: 'project-fit' });
+                tbodyHtml += row('Min Lead Time (months)', brands.map(b => pfForm(b).minLeadTimeMonths || ''), true, { section: 'project-fit' });
+
+                // Brand Standards / Amenities
+                tbodyHtml += '<tr class="section-header-row" data-section="standards"><th colspan="' + (brands.length + 1) + '">BRAND STANDARDS &amp; AMENITIES</th></tr>';
+                const amenityLabels = { lobby: 'Lobby', barBeverage: 'Bar/Beverage', fitnessCenter: 'Fitness', pool: 'Pool', meetingEventSpace: 'Meeting Space', coworking: 'Co-Working', grabGo: 'Grab & Go', onsiteParking: 'Parking' };
+                for (const [key, label] of Object.entries(amenityLabels)) {
+                    tbodyHtml += row(label, brands.map(b => {
+                        const bs = b.brandStandards || {};
+                        const v = bs[key];
+                        if (v === true || v === 'Yes' || v === 'Required' || v === 'yes' || v === 'required') return 'Yes';
+                        if (v === false || v === 'No' || v === 'no') return 'No';
+                        return v ? String(v) : '';
+                    }), true, { section: 'standards' });
+                }
+
+                // Portfolio & Performance
+                tbodyHtml += '<tr class="section-header-row" data-section="portfolio"><th colspan="' + (brands.length + 1) + '">PORTFOLIO &amp; PERFORMANCE</th></tr>';
+                const pp = (b) => b.portfolioPerformance || {};
+                tbodyHtml += row('Min Property Size (rooms)', brands.map(b => pp(b).minPropertySize || ''), true, { section: 'portfolio' });
+                tbodyHtml += row('Max Property Size (rooms)', brands.map(b => pp(b).maxPropertySize || ''), true, { section: 'portfolio' });
+                tbodyHtml += row('Typical RevPAR Improvement', brands.map(b => pp(b).revparImprovement || ''), true, { section: 'portfolio' });
+                tbodyHtml += row('Typical Occupancy Improvement', brands.map(b => pp(b).occupancyImprovement || ''), true, { section: 'portfolio' });
+                tbodyHtml += row('Franchisee Retention Rate', brands.map(b => pp(b).ownerRetention || ''), true, { section: 'portfolio' });
+
+                // Operational Support
+                tbodyHtml += '<tr class="section-header-row" data-section="support"><th colspan="' + (brands.length + 1) + '">OPERATIONAL SUPPORT</th></tr>';
+                tbodyHtml += row('Typical Incentives Offered', brands.map(b => (b.feeStructure || {}).typicalIncentivesOffered || ''), true, { section: 'support' });
+                tbodyHtml += row('Incentive Types', brands.map(b => {
+                    const t = (b.operationalSupport || {}).typesOfIncentives;
+                    return Array.isArray(t) ? t.join(', ') : (t || '');
+                }), true, { section: 'support' });
+                tbodyHtml += row('Revenue Management', brands.map(b => (b.operationalSupport || {}).revenueManagementServices || ''), true, { section: 'support' });
+                tbodyHtml += row('Sales & Marketing Support', brands.map(b => (b.operationalSupport || {}).salesMarketingSupport || ''), true, { section: 'support' });
+                tbodyHtml += row('Willing to Negotiate Incentives', brands.map(b => (b.operationalSupport || {}).willingToNegotiateIncentives || ''), true, { section: 'support' });
+
+                // Sustainability
+                tbodyHtml += '<tr class="section-header-row" data-section="sustainability"><th colspan="' + (brands.length + 1) + '">SUSTAINABILITY &amp; ESG</th></tr>';
+                tbodyHtml += row('Sustainability Programs', brands.map(b => b.sustainabilityPrograms || ''), true, { section: 'sustainability' });
+                tbodyHtml += row('ESG Reporting', brands.map(b => b.esgReporting || ''), true, { section: 'sustainability' });
+                tbodyHtml += row('Sustainability Positioning', brands.map(b => b.sustainabilityPositioning || ''), true, { section: 'sustainability' });
+
+                comparisonTbodyEl.innerHTML = tbodyHtml;
+                document.getElementById('comparisonLegend').style.display = 'block';
+            }
+
+            function runCompare() {
+                if (selectedBrandIds.length < 2) {
+                    comparisonContentEl.style.display = 'none';
+                    emptyStateEl.style.display = 'block';
+                    return;
+                }
+                comparisonContentEl.style.display = 'block';
+                emptyStateEl.style.display = 'none';
+                Promise.all(selectedBrandIds.map(loadBrandDetail))
+                    .then(details => {
+                        const brands = details.filter(Boolean);
+                        if (brands.length === 0) {
+                            comparisonContentEl.style.display = 'none';
+                            emptyStateEl.style.display = 'block';
+                            return;
+                        }
+                        buildTable(brands);
+                    });
+            }
+
+            function updateSelectionUI() {
+                selectedCountEl.textContent = selectedBrandIds.length + ' brands selected (min. 2)';
+                runCompare();
+            }
+
+            function renderChips() {
+                brandChipsRowEl.innerHTML = '';
+                selectedBrandIds.forEach(id => {
+                    const b = allBrands.find(x => x.id === id);
+                    const name = b ? (b.name || id) : id;
+                    const chip = document.createElement('div');
+                    chip.className = 'brand-chip';
+                    chip.innerHTML = escapeHtml(name) + '<button type="button" aria-label="Remove ' + escapeHtml(name) + '">&times;</button>';
+                    const removeBtn = chip.querySelector('button');
+                    removeBtn.addEventListener('click', () => {
+                        selectedBrandIds = selectedBrandIds.filter(x => x !== id);
+                        renderChips();
+                        renderDropdownList();
+                        updateSelectionUI();
+                    });
+                    brandChipsRowEl.appendChild(chip);
+                });
+            }
+
+            function closeDropdown() {
+                if (brandDropdownListEl) brandDropdownListEl.setAttribute('aria-hidden', 'true');
+                if (brandDropdownTriggerEl) brandDropdownTriggerEl.setAttribute('aria-expanded', 'false');
+            }
+
+            function openDropdown() {
+                if (brandDropdownListEl) brandDropdownListEl.setAttribute('aria-hidden', 'false');
+                if (brandDropdownTriggerEl) brandDropdownTriggerEl.setAttribute('aria-expanded', 'true');
+            }
+
+            function renderDropdownList() {
+                const search = (document.getElementById('brandSearchInput') || {}).value || '';
+                const q = search.toLowerCase().trim();
+                const selectedSet = new Set(selectedBrandIds);
+                const filtered = allBrands.filter(b => {
+                    if (selectedSet.has(b.id)) return false;
+                    if (q && !(b.name || '').toLowerCase().includes(q)) return false;
+                    return true;
+                });
+                brandDropdownListEl.innerHTML = '';
+                filtered.slice(0, 50).forEach(b => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'brand-dropdown-item';
+                    btn.role = 'option';
+                    btn.textContent = b.name || b.id || '';
+                    btn.addEventListener('click', () => {
+                        if (selectedBrandIds.length < 6) {
+                            selectedBrandIds.push(b.id);
+                            renderChips();
+                            renderDropdownList();
+                            updateSelectionUI();
+                        }
+                        closeDropdown();
+                    });
+                    brandDropdownListEl.appendChild(btn);
+                });
+                if (filtered.length === 0) {
+                    const empty = document.createElement('div');
+                    empty.className = 'brand-dropdown-item';
+                    empty.style.pointerEvents = 'none';
+                    empty.textContent = 'No brands available';
+                    brandDropdownListEl.appendChild(empty);
+                }
+            }
+
+            function resetView() {
+                selectedBrandIds = [];
+                closeDropdown();
+                renderChips();
+                renderDropdownList();
+                const prioritySelect = document.getElementById('prioritySelect');
+                if (prioritySelect) prioritySelect.value = '';
+                comparisonContentEl.style.display = 'none';
+                emptyStateEl.style.display = 'block';
+                selectedCountEl.textContent = '0 brands selected (min. 2)';
+            }
+
+            resetViewBtnEl.addEventListener('click', e => { e.preventDefault(); resetView(); });
+
+            brandDropdownTriggerEl.addEventListener('click', e => {
+                e.stopPropagation();
+                const isOpen = brandDropdownListEl.getAttribute('aria-hidden') !== 'true';
+                if (isOpen) closeDropdown(); else openDropdown();
+            });
+
+            document.addEventListener('click', () => closeDropdown());
+            document.querySelector('.brand-dropdown-wrap')?.addEventListener('click', e => e.stopPropagation());
+
+            document.getElementById('brandSearchInput')?.addEventListener('input', () => {
+                if (brandDropdownListEl.getAttribute('aria-hidden') === 'false') renderDropdownList();
+            });
+
+            document.getElementById('prioritySelect')?.addEventListener('change', function() {
+                const val = this.value || '';
+                const table = document.getElementById('comparisonTable');
+                if (table) table.setAttribute('data-priority', val);
+            });
+
+            fetch('/api/brand-library/brands')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success && data.brands) {
+                        allBrands = data.brands;
+                        renderDropdownList();
+                    }
+                })
+                .catch(err => console.error('Error loading brands:', err));
+        })();
+    </script>
+</body>
+</html>

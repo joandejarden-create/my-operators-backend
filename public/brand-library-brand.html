@@ -1,0 +1,3360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Detail - Dealality Platform</title>
+    <style>
+        /* CSS Variables - Matching Partner Directory */
+        :root {
+          --neutral--800: #080f25;
+          --neutral--400: #aeb9e1;
+          --neutral--100: white;
+          --accent--primary-1: #6c72ff;
+          --secondary--color-4: #343b4f;
+          --secondary--color-1: #101935;
+          --secondary--color-2: #9a91fb;
+          --secondary--color-3: #57c3ff;
+          --secondary--color-5: #fdb52a;
+          --neutral--700: #212c4d;
+          --neutral--600: #37446b;
+          --neutral--500: #7e89ac;
+          --neutral--300: #d1dbf9;
+          --system--green-300: #14ca74;
+          --system--blue-400: #086cd9;
+          --system--orange-400: #d5691b;
+          --general--shadow-01: #14142b0f;
+          --general--shadow-02: #14142b14;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
+        *::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
+        *::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
+        *::-webkit-scrollbar-corner { background: #080f25; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            overflow-x: hidden;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5em;
+            min-height: 100vh;
+            scrollbar-gutter: stable;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar-wrapper {
+            z-index: 500;
+            border-right: 0.6px solid var(--neutral--600);
+            background-color: var(--neutral--800);
+            width: 300px;
+            min-width: 300px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-wrapper h2 {
+            color: var(--neutral--100);
+            margin-bottom: 30px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .sidebar-wrapper nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-wrapper nav a {
+            color: var(--neutral--400);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .sidebar-wrapper nav a:hover {
+            background-color: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .sidebar-wrapper nav a.active {
+            background-color: rgba(108, 114, 234, 0.15);
+            color: var(--neutral--100);
+            border-left: 3px solid #667eea;
+            padding-left: 13px;
+        }
+
+        .embed-mode .sidebar-wrapper { display: none !important; }
+        .embed-mode .dashboard-main-section { margin-left: 0 !important; }
+        .embed-mode .brand-detail-container { max-width: 100% !important; }
+
+        .dashboard-main-section {
+            flex: 1;
+            margin-left: 300px;
+            min-width: 0;
+        }
+
+        .brand-detail-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--neutral--500);
+        }
+
+        .breadcrumb a { color: var(--neutral--400); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--neutral--100); }
+        .breadcrumb-separator { color: var(--neutral--600); }
+
+        /* Brand detail header — investment brief cover (Layer 1, all tabs) */
+        .brand-header {
+            background: linear-gradient(165deg, rgba(16, 25, 53, 0.97) 0%, rgba(8, 15, 37, 0.99) 40%, rgba(12, 18, 42, 1) 100%);
+            border: 0.6px solid rgba(55, 68, 107, 0.9);
+            border-left: 4px solid var(--accent--primary-1);
+            border-radius: 10px;
+            padding: 0;
+            margin-bottom: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .invest-cover__hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+            gap: 24px 32px;
+            padding: 22px 26px 18px;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .invest-cover__hero { grid-template-columns: 1fr; }
+        }
+
+        .invest-cover__left {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            min-width: 0;
+        }
+
+        .brand-header__title-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            min-width: 0;
+        }
+
+        .brand-header__logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 8px;
+            background: var(--neutral--700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral--100);
+            font-size: 24px;
+            font-weight: 600;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .brand-header__logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .brand-header__logo .brand-header__logo-initial {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hide fallback initial once logo has loaded (use :has so we don’t rely on img+span adjacency only) */
+        .brand-header__logo:has(img.loaded) .brand-header__logo-initial,
+        .brand-header__logo img.loaded + .brand-header__logo-initial {
+            display: none !important;
+        }
+
+        .invest-cover__title-block {
+            min-width: 0;
+        }
+
+        .brand-header__title-section h1 {
+            color: var(--neutral--100);
+            font-size: clamp(22px, 2.4vw, 28px);
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+        }
+
+        .invest-cover__definition {
+            color: var(--neutral--200);
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.48;
+            max-width: 38rem;
+            margin: 0 0 10px 0;
+        }
+
+        .invest-cover__bestfor {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--secondary--color-3);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin: 0 0 12px 0;
+            line-height: 1.4;
+        }
+
+        .invest-cover__meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            color: var(--neutral--500);
+            font-size: 12px;
+        }
+
+        .invest-cover__meta-row strong {
+            color: var(--neutral--300);
+            font-weight: 600;
+        }
+
+        .invest-cover__right {
+            border-left: 1px solid rgba(55, 68, 107, 0.65);
+            padding-left: 24px;
+            min-width: 0;
+        }
+        @media (max-width: 900px) {
+            .invest-cover__right {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid rgba(55, 68, 107, 0.65);
+                padding-top: 16px;
+            }
+        }
+
+        .invest-cover__chip-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--neutral--500);
+            margin-bottom: 8px;
+        }
+
+        .brand-header__badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .invest-cover__dl {
+            display: grid;
+            gap: 8px 12px;
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .invest-cover__dl > div {
+            display: grid;
+            grid-template-columns: 108px 1fr;
+            gap: 8px;
+            align-items: baseline;
+        }
+
+        .invest-cover__dl dt {
+            margin: 0;
+            color: var(--neutral--500);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.06em;
+        }
+
+        .invest-cover__dl dd {
+            margin: 0;
+            color: var(--neutral--100);
+            font-weight: 500;
+        }
+
+        .invest-summary-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 1px solid rgba(55, 68, 107, 0.75);
+            background: rgba(0, 0, 0, 0.22);
+        }
+        @media (max-width: 768px) {
+            .invest-summary-strip { grid-template-columns: 1fr; }
+        }
+
+        .invest-summary-strip__cell {
+            padding: 14px 20px;
+            border-right: 1px solid rgba(55, 68, 107, 0.5);
+            min-height: 72px;
+        }
+        @media (max-width: 768px) {
+            .invest-summary-strip__cell {
+                border-right: none;
+                border-bottom: 1px solid rgba(55, 68, 107, 0.5);
+            }
+            .invest-summary-strip__cell:last-child { border-bottom: none; }
+        }
+        .invest-summary-strip__cell:last-child { border-right: none; }
+
+        .invest-summary-strip__label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--neutral--500);
+            margin-bottom: 6px;
+        }
+
+        .invest-summary-strip__value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--neutral--100);
+            line-height: 1.45;
+            max-width: 28rem;
+        }
+
+        .invest-summary-strip__value--muted {
+            color: var(--neutral--400);
+            font-weight: 500;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge--chain-scale {
+            background: rgba(108, 114, 255, 0.2);
+            color: #667eea;
+            border: 1px solid rgba(108, 114, 255, 0.3);
+        }
+
+        .badge--service-model {
+            background: rgba(87, 195, 255, 0.2);
+            color: #57c3ff;
+            border: 1px solid rgba(87, 195, 255, 0.3);
+        }
+
+        .badge--brand-model {
+            background: rgba(253, 181, 42, 0.2);
+            color: #fdb52a;
+            border: 1px solid rgba(253, 181, 42, 0.3);
+        }
+
+        /* Quick Stats Row */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quick-stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .quick-stat-value {
+            color: var(--accent--primary-1);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .quick-stat-label {
+            color: var(--neutral--500);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tab Navigation - My Deals style (SVG icon, label in two rows) */
+        .brand-detail-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 30px;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--neutral--800);
+            padding: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .brand-detail-tabs::-webkit-scrollbar { display: none; }
+        .brand-detail-tabs .tab {
+            min-width: 90px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #aeb9e1;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 10px;
+            font-weight: 600;
+            border: none;
+            background: none;
+            font-family: inherit;
+            padding: 10px 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: color 0.2s;
+            margin-bottom: -1px;
+        }
+        .brand-detail-tabs .tab .section-nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aeb9e1;
+            font-size: 16px;
+            background: transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .brand-detail-tabs .tab .section-nav-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .brand-detail-tabs .tab .section-nav-label {
+            text-align: center;
+            line-height: 1.3;
+            white-space: nowrap;
+            font-size: 10px;
+        }
+        .brand-detail-tabs .tab:hover { color: #fff; }
+        .brand-detail-tabs .tab.active { color: #6c72ff; }
+        .brand-detail-tabs .tab.active .section-nav-icon {
+            border-color: #6c72ff;
+            border-width: 2px;
+            background: transparent;
+            color: #6c72ff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Brand Profile — same vocabulary as Overview / Portfolio (info-card, distribution-item) */
+        .brand-profile {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .brand-profile__microcopy {
+            font-size: 11px;
+            color: var(--neutral--500);
+            margin: 12px 0 0 0;
+            line-height: 1.45;
+        }
+        .brand-profile__tag {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--neutral--500);
+            margin-bottom: 10px;
+        }
+        .brand-profile__tag--curated { color: var(--accent--primary-1); }
+        .brand-profile-table-wrap { overflow-x: auto; margin-top: 8px; }
+        .brand-profile-table {
+            width: 100%;
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+        .brand-profile-table th, .brand-profile-table td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+        .brand-profile-table th {
+            color: var(--neutral--500);
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .brand-profile-table td { color: var(--neutral--300); }
+        .brand-profile-table tr:last-child td { border-bottom: none; }
+        .brand-profile__pillars-list {
+            margin: 0;
+            padding-left: 1.2em;
+            color: var(--neutral--400);
+            font-size: 13px;
+            line-height: 1.65;
+        }
+        .brand-profile__pillars-list li { margin-bottom: 8px; }
+        .brand-profile__pillars-list li:last-child { margin-bottom: 0; }
+        .brand-profile-footnote {
+            font-size: 11px;
+            color: var(--neutral--500);
+            line-height: 1.5;
+            padding: 14px 16px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            border: 1px solid var(--neutral--600);
+        }
+        .brand-profile details.brand-profile-method {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--neutral--500);
+        }
+        .brand-profile details.brand-profile-method summary {
+            cursor: pointer;
+            color: var(--neutral--300);
+            font-weight: 600;
+        }
+        .brand-profile details.brand-profile-method ul { margin: 10px 0 0 18px; line-height: 1.6; }
+
+        .brand-profile-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--neutral--500);
+            margin: 18px 0 8px 0;
+        }
+        .brand-profile-section-label:first-child { margin-top: 0; }
+
+        .brand-profile-print-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+        }
+        .brand-profile-print-bar__hint {
+            font-size: 12px;
+            color: var(--neutral--500);
+            margin: 0;
+            max-width: 520px;
+            line-height: 1.45;
+        }
+        .brand-profile-print-btn {
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: inherit;
+        }
+        .brand-profile-print-btn:hover { filter: brightness(1.08); }
+
+        .brand-profile-dual-tables {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 4px;
+        }
+        @media (max-width: 768px) {
+            .brand-profile-dual-tables { grid-template-columns: 1fr; }
+        }
+
+        /* ----- Overview: 12-col brief canvas (Layer 2–3) ----- */
+        .invest-overview {
+            display: block;
+        }
+
+        .invest-brief-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px 18px;
+            align-items: start;
+        }
+
+        /* Layer 2: one dashboard slab (not three separate cards) */
+        .invest-dashboard-deck {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(55, 68, 107, 0.95);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .invest-dashboard-deck__cell {
+            grid-column: span 4;
+            padding: 16px 18px 18px;
+            border-left: 1px solid rgba(55, 68, 107, 0.75);
+            min-width: 0;
+        }
+        .invest-dashboard-deck__cell:first-child {
+            border-left: none;
+        }
+        @media (max-width: 1100px) {
+            .invest-dashboard-deck__cell {
+                grid-column: span 6;
+                border-left: none;
+                border-top: 1px solid rgba(55, 68, 107, 0.75);
+            }
+            .invest-dashboard-deck__cell:nth-child(-n + 2) {
+                border-top: none;
+            }
+            .invest-dashboard-deck__cell:nth-child(odd) {
+                border-right: 1px solid rgba(55, 68, 107, 0.5);
+            }
+        }
+        @media (max-width: 640px) {
+            .invest-dashboard-deck__cell {
+                grid-column: span 12;
+                border-right: none !important;
+            }
+        }
+
+        .invest-dash-mod__title {
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--neutral--500);
+            margin: 0 0 12px 0;
+        }
+
+        .invest-snapshot-mod--footprint .invest-stat-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 20px;
+        }
+
+        .invest-stat-block {
+            flex: 1 1 72px;
+            min-width: 0;
+        }
+
+        .invest-stat-block__num {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--neutral--100);
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+        }
+
+        .invest-stat-block__lbl {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--neutral--500);
+            margin-top: 4px;
+        }
+
+        .invest-snapshot-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .invest-snapshot-lines span { color: var(--neutral--500); }
+        .invest-snapshot-lines strong {
+            color: var(--neutral--100);
+            font-weight: 600;
+        }
+
+        .invest-mix-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .invest-mix-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .invest-mix-row__label { color: var(--neutral--500); }
+
+        .invest-mix-bar {
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            background: var(--neutral--700);
+        }
+
+        .invest-mix-bar__a { height: 100%; transition: width 0.25s; }
+        .invest-mix-bar__b { height: 100%; transition: width 0.25s; }
+
+        .invest-panel {
+            border-radius: 10px;
+            padding: 18px 20px;
+        }
+
+        .invest-panel--editorial {
+            background: rgba(255, 255, 255, 0.02);
+            border: 0.6px solid rgba(55, 68, 107, 0.85);
+        }
+
+        .invest-panel--story {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(55, 68, 107, 0.75);
+            border-radius: 10px;
+            padding: 16px 18px 18px;
+        }
+
+        .invest-panel--intel {
+            background: rgba(4, 8, 22, 0.72);
+            border: 1px solid rgba(55, 68, 107, 0.95);
+            border-radius: 10px;
+            padding: 14px 16px 16px;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .invest-panel--pillars {
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .invest-section-h {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--neutral--100);
+            margin: 0 0 14px 0;
+            padding-left: 12px;
+            border-left: 3px solid var(--accent--primary-1);
+        }
+
+        .invest-split-row {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px 22px;
+            align-items: start;
+        }
+
+        .invest-split-row__story {
+            grid-column: span 7;
+            min-width: 0;
+        }
+
+        .invest-split-row__intel {
+            grid-column: span 5;
+            min-width: 0;
+        }
+
+        @media (max-width: 1050px) {
+            .invest-split-row__story,
+            .invest-split-row__intel {
+                grid-column: span 12;
+            }
+        }
+
+        .invest-panel__eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent--primary-1);
+            margin: 0 0 12px 0;
+        }
+
+        .invest-excerpt-wrap details.invest-readmore {
+            margin-top: 4px;
+        }
+
+        .invest-readmore summary {
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--secondary--color-3);
+            list-style: none;
+            user-select: none;
+        }
+
+        .invest-readmore summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .invest-excerpt {
+            margin: 0;
+        }
+
+        .invest-excerpt--clamp {
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .invest-table-compact .brand-profile-table th,
+        .invest-table-compact .brand-profile-table td {
+            padding: 5px 8px;
+            font-size: 11px;
+        }
+
+        .invest-table-compact .brand-profile-section-label {
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+
+        .invest-editorial-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 24px 40px;
+        }
+        @media (max-width: 860px) {
+            .invest-editorial-grid { grid-template-columns: 1fr; }
+        }
+
+        .invest-prose {
+            color: var(--neutral--400);
+            font-size: 13px;
+            line-height: 1.55;
+            max-width: 36rem;
+        }
+
+        .invest-prose p { margin: 0 0 10px 0; }
+        .invest-prose p:last-child { margin-bottom: 0; }
+
+        .invest-prose-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--neutral--500);
+            margin: 16px 0 6px 0;
+        }
+
+        .invest-prose-label:first-child { margin-top: 0; }
+
+        .invest-tagline-pick {
+            font-style: italic;
+            color: var(--neutral--300);
+            font-size: 13px;
+            line-height: 1.45;
+            max-width: 32rem;
+        }
+
+        .invest-markets-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 12px 16px;
+            align-items: start;
+        }
+        @media (max-width: 520px) {
+            .invest-markets-grid { grid-template-columns: 1fr; }
+        }
+
+        .invest-markets-bars .distribution-item { margin-bottom: 8px; }
+        .invest-markets-bars .distribution-item:last-child { margin-bottom: 0; }
+
+        .invest-footprint-highlights {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 11px;
+            line-height: 1.45;
+            color: var(--neutral--400);
+        }
+
+        .invest-footprint-highlights strong { color: var(--neutral--100); }
+
+        .invest-pillars-rail {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            scrollbar-width: thin;
+        }
+
+        .invest-pillar-card {
+            flex: 0 0 min(240px, 85vw);
+            background: rgba(255, 255, 255, 0.03);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .invest-pillar-card__n {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 6px;
+            border-radius: 6px;
+            background: rgba(108, 114, 255, 0.22);
+            color: var(--secondary--color-2);
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .invest-pillar-card__title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--neutral--100);
+            margin: 0 0 6px 0;
+            line-height: 1.3;
+        }
+
+        .invest-pillar-card__body {
+            font-size: 12px;
+            color: var(--neutral--500);
+            line-height: 1.45;
+        }
+
+        .invest-strategic-band {
+            grid-column: 1 / -1;
+            margin-top: 2px;
+        }
+
+        .invest-callouts {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px;
+        }
+
+        .invest-callouts--hero .invest-callout {
+            grid-column: span 4;
+            min-height: 132px;
+            padding: 18px 20px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(108, 114, 255, 0.32);
+            border-left: 4px solid var(--accent--primary-1);
+            background: linear-gradient(165deg, rgba(108, 114, 255, 0.16) 0%, rgba(6, 10, 26, 0.94) 48%);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+        }
+
+        .invest-callouts--hero .invest-callout.invest-callout--accent {
+            border-left-color: var(--secondary--color-3);
+            border-color: rgba(87, 195, 255, 0.28);
+            background: linear-gradient(165deg, rgba(87, 195, 255, 0.12) 0%, rgba(6, 10, 26, 0.94) 48%);
+        }
+
+        @media (max-width: 1000px) {
+            .invest-callouts--hero .invest-callout { grid-column: span 6; }
+        }
+        @media (max-width: 640px) {
+            .invest-callouts--hero .invest-callout { grid-column: span 12; }
+        }
+
+        .invest-callout__title {
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--neutral--500);
+            margin: 0 0 12px 0;
+        }
+
+        .invest-callouts--hero .invest-callout__title {
+            color: var(--neutral--400);
+        }
+
+        .invest-callout__body {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--neutral--100);
+            line-height: 1.45;
+        }
+
+        .invest-callout__body--soft {
+            font-weight: 500;
+            color: var(--neutral--200);
+        }
+
+        .invest-similar {
+            margin-top: 4px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(55, 68, 107, 0.6);
+        }
+
+        .invest-similar__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .invest-similar__title {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--neutral--500);
+            margin: 0;
+        }
+
+        .invest-similar__link {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--secondary--color-3);
+            text-decoration: none;
+        }
+
+        .invest-similar__link:hover { color: var(--neutral--100); }
+
+        .similar-brands-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 0;
+        }
+        .similar-brand-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px 4px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 0.6px solid rgba(55, 68, 107, 0.85);
+            border-radius: 999px;
+            text-decoration: none;
+            color: inherit;
+            font-size: 11px;
+            transition: border-color 0.2s, background 0.2s;
+            max-width: 100%;
+        }
+        .similar-brand-chip:hover {
+            border-color: rgba(87, 195, 255, 0.35);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .similar-brand-chip__name {
+            font-weight: 600;
+            color: var(--neutral--100);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px;
+        }
+        .similar-brand-chip__meta {
+            font-size: 10px;
+            color: var(--neutral--500);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        /* ----- Print: one-page brief (Letter), align with Deal Summary / PDF-friendly output ----- */
+        @media print {
+            @page {
+                size: letter portrait;
+                margin: 10mm 12mm;
+            }
+            html, body {
+                background: #fff !important;
+                color: #1a1a1a !important;
+                font-size: 9.5pt;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .sidebar-wrapper,
+            .breadcrumb,
+            .brand-profile-print-bar,
+            .brand-detail-tabs,
+            .invest-similar__link {
+                display: none !important;
+            }
+            .dashboard-main-section {
+                margin-left: 0 !important;
+            }
+            .brand-detail-container {
+                padding: 0 !important;
+                max-width: none !important;
+            }
+            .tab-content {
+                display: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #tab-overview.tab-content {
+                display: block !important;
+            }
+            .brand-header {
+                background: #fff !important;
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin-bottom: 8px !important;
+                page-break-after: avoid;
+            }
+            .invest-cover__hero {
+                padding: 10px 12px !important;
+            }
+            .invest-cover__right {
+                border-color: #ddd !important;
+            }
+            .brand-header h1 {
+                color: #111 !important;
+                font-size: 16pt !important;
+            }
+            .invest-cover__definition,
+            .invest-cover__bestfor,
+            .invest-cover__meta-row,
+            .invest-cover__meta-row strong,
+            .invest-cover__meta-row a {
+                color: #333 !important;
+            }
+            .invest-cover__definition {
+                font-size: 10pt !important;
+                max-width: none !important;
+            }
+            .invest-summary-strip {
+                border-top-color: #ccc !important;
+                background: #f3f4f6 !important;
+            }
+            .invest-summary-strip__value {
+                color: #111 !important;
+            }
+            .invest-cover__dl dt {
+                color: #555 !important;
+            }
+            .invest-cover__dl dd {
+                color: #111 !important;
+            }
+            .brand-header__logo {
+                background: #f3f4f6 !important;
+                border: 1px solid #ddd !important;
+            }
+            .brand-header__logo-initial {
+                color: #374151 !important;
+            }
+            .info-card,
+            .invest-panel,
+            .invest-callout {
+                background: #fff !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                padding: 10px 12px !important;
+                margin-bottom: 8px !important;
+                page-break-inside: avoid;
+                box-shadow: none !important;
+            }
+            .invest-panel--pillars {
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+            .invest-dashboard-deck {
+                display: block !important;
+                background: #fff !important;
+                border: 1px solid #ccc !important;
+                border-radius: 4px !important;
+                margin-bottom: 8px !important;
+                page-break-inside: avoid;
+                box-shadow: none !important;
+            }
+            .invest-dashboard-deck__cell {
+                border: none !important;
+                border-top: 1px solid #ddd !important;
+                padding: 8px 12px !important;
+                page-break-inside: avoid;
+            }
+            .invest-dashboard-deck__cell:first-child {
+                border-top: none !important;
+            }
+            .invest-brief-grid {
+                display: block !important;
+            }
+            .invest-split-row {
+                display: block !important;
+            }
+            .invest-split-row__intel {
+                margin-top: 8px !important;
+            }
+            .invest-section-h {
+                color: #111 !important;
+                border-left-color: #333 !important;
+            }
+            .invest-stat-block__num {
+                color: #111 !important;
+                font-size: 14pt !important;
+            }
+            .invest-callout,
+            .invest-callout--accent {
+                background: #f9fafb !important;
+                border-color: #ccc !important;
+            }
+            .invest-callout__title {
+                color: #333 !important;
+            }
+            .invest-callout__body,
+            .invest-callout__body--soft {
+                color: #222 !important;
+            }
+            .invest-prose,
+            .invest-prose-label,
+            .invest-tagline-pick,
+            .invest-footprint-highlights {
+                color: #222 !important;
+            }
+            .invest-footprint-highlights {
+                background: #f6f7f9 !important;
+            }
+            .info-card__title,
+            .brand-profile-section-label {
+                page-break-after: avoid;
+            }
+            .info-card__title,
+            .invest-panel__eyebrow {
+                color: #111 !important;
+                font-size: 8.5pt !important;
+                margin-bottom: 6px !important;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 4px;
+            }
+            .invest-panel__eyebrow {
+                letter-spacing: 0.06em !important;
+            }
+            .info-grid-compact {
+                gap: 6px 12px !important;
+            }
+            .info-item-compact__label {
+                color: #555 !important;
+                font-size: 7.5pt !important;
+            }
+            .info-item-compact__value {
+                color: #111 !important;
+                font-size: 9.5pt !important;
+            }
+            .brand-profile-section-label {
+                color: #444 !important;
+                margin-top: 10px !important;
+                margin-bottom: 4px !important;
+                font-size: 7.5pt !important;
+            }
+            .info-card__content,
+            .info-card__content--readable,
+            .brand-profile__pillars-list,
+            .list-compact li {
+                color: #222 !important;
+                font-size: 9pt !important;
+                line-height: 1.35 !important;
+            }
+            .brand-profile__microcopy,
+            .brand-profile-footnote,
+            .brand-profile__tag {
+                color: #555 !important;
+                font-size: 7.5pt !important;
+            }
+            .brand-profile-footnote {
+                border-color: #ccc !important;
+                background: #f9f9f9 !important;
+                padding: 8px !important;
+                margin-top: 6px !important;
+            }
+            .distribution-item {
+                margin-bottom: 4px !important;
+                gap: 8px !important;
+            }
+            .distribution-label {
+                color: #333 !important;
+                font-size: 8pt !important;
+                min-width: 72px !important;
+            }
+            .distribution-bar {
+                height: 10px !important;
+                background: #e5e5e5 !important;
+            }
+            .distribution-bar-fill {
+                background: #4b5563 !important;
+            }
+            .distribution-value {
+                color: #111 !important;
+                font-size: 8pt !important;
+                min-width: 36px !important;
+            }
+            .brand-profile-table th,
+            .brand-profile-table td {
+                border-color: #ccc !important;
+                padding: 3px 6px !important;
+                font-size: 8pt !important;
+            }
+            .brand-profile-table th {
+                color: #333 !important;
+            }
+            details.brand-profile-method {
+                display: none !important;
+            }
+            .brand-profile-dual-tables {
+                gap: 10px !important;
+            }
+            .similar-brand-chip {
+                border: 1px solid #ccc !important;
+                background: #fff !important;
+            }
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 18px;
+        }
+
+        .info-card__title {
+            color: var(--neutral--100);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-card__content {
+            color: var(--neutral--400);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .info-card__content p {
+            margin-bottom: 10px;
+        }
+
+        .info-card__content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-card__content--readable {
+            max-width: 720px;
+            line-height: 1.65;
+        }
+
+        .info-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .info-item-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-item-compact__label {
+            color: var(--neutral--500);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-item-compact__value {
+            color: var(--neutral--100);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Distribution Charts */
+        .distribution-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .distribution-label {
+            min-width: 100px;
+            color: var(--neutral--400);
+            font-size: 12px;
+        }
+
+        .distribution-bar {
+            flex: 1;
+            height: 20px;
+            background: var(--neutral--700);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .distribution-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent--primary-1), var(--secondary--color-2));
+            transition: width 0.3s ease;
+        }
+
+        .distribution-value {
+            min-width: 70px;
+            text-align: right;
+            color: var(--neutral--100);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .list-compact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .list-compact li {
+            padding: 6px 0;
+            padding-left: 16px;
+            position: relative;
+            color: var(--neutral--400);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .list-compact li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent--primary-1);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Loading – same wave box as My Deals */
+        .loading-deals {
+            padding: 40px 20px 60px;
+            text-align: center;
+        }
+        .loading-deals .loading {
+            position: relative;
+            top: auto;
+            left: auto;
+            transform: none;
+            margin: 0 auto;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 20px 24px;
+            border-radius: 12px;
+            min-width: 280px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .loading-deals .loading-content { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .loading-deals .loading .wave-container {
+            width: 32px;
+            height: 32px;
+            position: relative;
+            background: var(--neutral--700);
+            border-radius: 50%;
+            border: 2px solid var(--neutral--600);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .loading-deals .loading .wave { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; }
+        .loading-deals .loading .wave-1 { height: 40%; background: linear-gradient(45deg, #d69e2e, #f4d03f); animation: bl-wave-1 2s ease-in-out infinite; animation-delay: 0s; }
+        .loading-deals .loading .wave-2 { height: 60%; background: linear-gradient(45deg, #b8860b, #d69e2e); animation: bl-wave-2 2s ease-in-out infinite; animation-delay: 0.3s; }
+        .loading-deals .loading .wave-3 { height: 80%; background: linear-gradient(45deg, #f4d03f, #f7dc6f); animation: bl-wave-3 2s ease-in-out infinite; animation-delay: 0.6s; }
+        .loading-deals .loading .wave-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .loading-deals .loading .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #d69e2e;
+            border-radius: 50%;
+            animation: bl-particle-float 3s ease-in-out infinite;
+            box-shadow: 0 0 4px #d69e2e;
+        }
+        .loading-deals .loading .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .loading-deals .loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .loading-deals .loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .loading-deals .loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+        .loading-deals .loading-text-main { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 4px; }
+        .loading-deals .loading-text-time { font-size: 12px; color: var(--neutral--400); }
+        .loading-deals .loading-progress { width: 100%; height: 3px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+        .loading-deals .loading-progress-bar { height: 100%; background: linear-gradient(90deg, #fdb52a, #d5691b); border-radius: 2px; animation: bl-progress 3s ease-in-out infinite; }
+        @keyframes bl-progress { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
+        @keyframes bl-wave-1 { 0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; } 50% { transform: translateX(0%) scaleY(1.2); opacity: 1; } }
+        @keyframes bl-wave-2 { 0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; } 50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; } }
+        @keyframes bl-wave-3 { 0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; } 50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; } }
+        @keyframes bl-particle-float {
+            0% { transform: translateY(100%) scale(0); opacity: 0; }
+            20% { transform: translateY(80%) scale(1); opacity: 1; }
+            80% { transform: translateY(20%) scale(1); opacity: 1; }
+            100% { transform: translateY(0%) scale(0); opacity: 0; }
+        }
+
+        .error {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--system--300);
+        }
+
+        @media (max-width: 1024px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid-compact {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-wrapper {
+                display: none;
+            }
+
+            .dashboard-main-section {
+                margin-left: 0;
+            }
+
+            .invest-cover__hero {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+    <div class="page-wrapper">
+        <div class="sidebar-wrapper">
+            <div class="sidebar-padding">
+                <h2>Dealality</h2>
+                <nav>
+                    <a href="#">🏠 Home</a>
+                    <a href="#">📊 Deals</a>
+                    <a href="#">📈 Market Intelligence</a>
+                    <a href="#">🏢 Deal Room</a>
+                    <a href="#">🤝 Outreach Hub</a>
+                    <a href="clause-library.html">📚 Legal Library</a>
+                    <a href="brand-library.html" class="active">🏨 Brand Library</a>
+                    <a href="brand-library-compare.html">⚖️ Compare Brands</a>
+                    <a href="partner-directory.html">👥 Partner Directory</a>
+                    <a href="#">📋 Platform Resources</a>
+                    <a href="#">📊 Reports</a>
+                    <a href="#">❓ Support</a>
+                    <a href="#">⚙️ Settings</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="dashboard-main-section">
+            <div class="brand-detail-container">
+                <div class="breadcrumb">
+                    <a href="brand-library.html">Brand Library</a>
+                    <span class="breadcrumb-separator">></span>
+                    <span id="breadcrumbBrandName">Brand</span>
+                </div>
+
+                <div class="loading-deals" id="loadingState">
+                    <div class="loading">
+                        <div class="loading-content">
+                            <div class="wave-container">
+                                <div class="wave wave-1"></div>
+                                <div class="wave wave-2"></div>
+                                <div class="wave wave-3"></div>
+                                <div class="wave-particles">
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                    <div class="particle"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="loading-text-main">Loading brand…</div>
+                                <div class="loading-text-time">Estimated time: 5–20 seconds</div>
+                            </div>
+                        </div>
+                        <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                    </div>
+                </div>
+
+                <div id="errorState" class="error" style="display: none;">
+                    <h3>Error loading brand</h3>
+                    <p id="errorMessage"></p>
+                </div>
+
+                <div id="brandContent" style="display: none;">
+                    <!-- Layer 1: Investment brief cover (all tabs) -->
+                    <div class="brand-header">
+                        <div class="invest-cover__hero">
+                            <div class="invest-cover__left">
+                                <div class="brand-header__title-section">
+                                    <div class="brand-header__logo" id="brandHeaderLogo">
+                                        <span class="brand-header__logo-initial" id="brandHeaderLogoInitial">B</span>
+                                    </div>
+                                    <div class="invest-cover__title-block">
+                                        <h1 id="brandName">Brand Name</h1>
+                                        <p class="invest-cover__definition" id="investCoverDefinition" style="display: none;" aria-label="Brand definition"></p>
+                                        <p class="invest-cover__bestfor" id="investCoverBestFor" style="display: none;"></p>
+                                        <div class="invest-cover__meta-row" id="investCoverMetaRow"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="invest-cover__right">
+                                <div class="invest-cover__chip-label">Classification</div>
+                                <div class="brand-header__badges" id="badgesContainer"></div>
+                                <dl class="invest-cover__dl" id="investCoverFacts"></dl>
+                            </div>
+                        </div>
+                        <div class="invest-summary-strip">
+                            <div class="invest-summary-strip__cell">
+                                <div class="invest-summary-strip__label">Best for</div>
+                                <div class="invest-summary-strip__value" id="investStripBestFor">—</div>
+                            </div>
+                            <div class="invest-summary-strip__cell">
+                                <div class="invest-summary-strip__label">What sets it apart</div>
+                                <div class="invest-summary-strip__value" id="investStripApart">—</div>
+                            </div>
+                            <div class="invest-summary-strip__cell">
+                                <div class="invest-summary-strip__label">Typical fit</div>
+                                <div class="invest-summary-strip__value" id="investStripTypical">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Navigation - My Deals style (SVG icon, label in two rows) -->
+                    <div class="brand-detail-tabs">
+                        <button type="button" class="tab active" data-tab="overview" title="Overview">
+                            <div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+                            <span class="section-nav-label">Overview</span>
+                        </button>
+                        <button type="button" class="tab" data-tab="brand-profile" title="Brand Profile">
+                            <div class="section-nav-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
+                            <span class="section-nav-label">Brand<br>Profile</span>
+                        </button>
+                        <button type="button" class="tab" data-tab="portfolio" title="Portfolio & Distribution">
+                            <div class="section-nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                            <span class="section-nav-label">Portfolio &<br>Distribution</span>
+                        </button>
+                        <button type="button" class="tab" data-tab="financial" title="Financial Information">
+                            <div class="section-nav-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                            <span class="section-nav-label">Financial<br>Information</span>
+                        </button>
+                        <button type="button" class="tab" data-tab="requirements" title="Requirements & Standards">
+                            <div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+                            <span class="section-nav-label">Reqs. &<br>Standards</span>
+                        </button>
+                        <button type="button" class="tab" data-tab="deal-terms" title="Deal Terms Overview">
+                            <div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+                            <span class="section-nav-label">Deal Terms<br>Overview</span>
+                        </button>
+                        <button type="button" class="tab" data-tab="support-legal" title="Support & Legal">
+                            <div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 10h14"/><path d="M5 14h14"/><path d="M8 7l4-4 4 4"/><path d="M8 21l4 4 4-4"/></svg></div>
+                            <span class="section-nav-label">Support &<br>Legal</span>
+                        </button>
+                        <button type="button" class="tab" data-tab="differentiators" title="Differentiators">
+                            <div class="section-nav-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                            <span class="section-nav-label">Differentiators</span>
+                        </button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="tab-content active" id="tab-overview">
+                        <div class="brand-profile-print-bar">
+                            <p class="brand-profile-print-bar__hint">Owner-facing brand brief. Use <strong>Print brief</strong> for a clean letter-sized summary (save as PDF from the print dialog).</p>
+                            <button type="button" class="brand-profile-print-btn" id="overviewPrintBtn">Print brief</button>
+                        </div>
+                        <div id="overviewBriefMount" class="invest-overview"></div>
+                        <div id="overviewSimilarBrandsSection" class="invest-similar">
+                            <div class="invest-similar__head">
+                                <p class="invest-similar__title">Also consider</p>
+                                <a class="invest-similar__link" href="brand-library-compare.html">Compare brands →</a>
+                            </div>
+                            <div id="similarBrandsContent" class="similar-brands-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-brand-profile">
+                        <p class="brand-profile-print-bar__hint" style="margin: 0 0 14px 0; max-width: 52rem;">Extended profile: curated commentary, portfolio benchmarks, and loyalty where available. The <strong>Overview</strong> tab is the executive summary.</p>
+                        <div id="brandProfileMount"></div>
+                        <div class="brand-profile-footnote" style="margin-top: 4px;">
+                            Data sources: Dealality Brand Setup (Brand Basics, Footprint, Portfolio &amp; Performance, and related tables). Figures depend on completeness of each brand’s records.
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="tab-portfolio">
+                        <div class="info-card" style="margin-bottom: 20px;">
+                            <div class="info-card__title">Portfolio Statistics</div>
+                            <div class="quick-stats" id="portfolioStats"></div>
+                        </div>
+                        <div class="two-column">
+                            <div class="info-card">
+                                <div class="info-card__title">Regional Distribution</div>
+                                <div id="regionalChart" style="margin-top: 15px;"></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card__title">Location Type Distribution</div>
+                                <div id="locationChart" style="margin-top: 15px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-content" id="tab-differentiators">
+                        <div class="two-column">
+                            <div class="info-card">
+                                <div class="info-card__title">Brand Pillars</div>
+                                <div class="info-card__content" id="brandPillarsContent">-</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card__title">Key Differentiators</div>
+                                <div class="info-card__content" id="differentiatorsContent">-</div>
+                            </div>
+                            <div class="info-card" id="sustainabilityCard" style="display: none;">
+                                <div class="info-card__title">Sustainability Positioning</div>
+                                <div class="info-card__content" id="sustainabilityContent">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Information Tab -->
+                    <div class="tab-content" id="tab-financial">
+                        <div class="info-card" style="margin-bottom: 20px;">
+                            <div class="info-card__title">Fee Structure</div>
+                            <div id="feeStructureContent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Requirements & Standards Tab -->
+                    <div class="tab-content" id="tab-requirements">
+                        <div class="two-column">
+                            <div class="info-card">
+                                <div class="info-card__title">Required Amenities</div>
+                                <div id="amenitiesContent"></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card__title">Room Requirements</div>
+                                <div id="roomRequirementsContent"></div>
+                            </div>
+                            <div class="info-card" style="grid-column: 1 / -1;">
+                                <div class="info-card__title">Brand Standards</div>
+                                <div class="info-card__content" id="brandStandardsContent">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deal Terms Overview Tab -->
+                    <div class="tab-content" id="tab-deal-terms">
+                        <div class="two-column">
+                            <div class="info-card">
+                                <div class="info-card__title">Term Length</div>
+                                <div id="termLengthContent"></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card__title">Renewal Terms</div>
+                                <div id="renewalTermsContent"></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card__title">Performance Requirements</div>
+                                <div id="performanceRequirementsContent"></div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card__title">Property Improvement Plans</div>
+                                <div id="pipContent"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Support & Legal Tab -->
+                    <div class="tab-content" id="tab-support-legal">
+                        <div class="info-card" style="margin-bottom: 20px;">
+                            <div class="info-card__title">Operational Support</div>
+                            <div id="operationalSupportContent" class="info-grid-compact"></div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card__title">Legal Terms</div>
+                            <div id="legalTermsContent" class="info-grid-compact"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let brandId = urlParams.get('id');
+            let brandName = urlParams.get('name');
+
+            // Decode URL parameters
+            if (brandId) brandId = decodeURIComponent(brandId);
+            if (brandName) brandName = decodeURIComponent(brandName);
+
+            if (!brandId && !brandName) {
+                showError('Brand ID or name is required');
+                return;
+            }
+
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    // Update active states
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(`tab-${targetTab}`).classList.add('active');
+                });
+            });
+
+            document.getElementById('overviewPrintBtn')?.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach((c) => c.classList.remove('active'));
+                const overviewTab = document.querySelector('.tab[data-tab="overview"]');
+                const overviewPane = document.getElementById('tab-overview');
+                if (overviewTab) overviewTab.classList.add('active');
+                if (overviewPane) overviewPane.classList.add('active');
+                setTimeout(function() { window.print(); }, 200);
+            });
+
+            // Prioritize ID over name, but use whichever is available
+            const identifier = brandId || brandName;
+            console.log('Fetching brand with identifier:', identifier);
+            fetchBrandDetails(identifier);
+
+            async function fetchBrandDetails(identifier) {
+                try {
+                    // Properly encode the identifier
+                    const encodedIdentifier = encodeURIComponent(identifier);
+                    const params = new URLSearchParams();
+                    params.append('brandId', encodedIdentifier);
+                    
+                    const response = await fetch(`/api/brand-library/brand?${params.toString()}`);
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.error || `Server returned ${response.status}: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    console.log('API Response received:', {
+                        success: data.success,
+                        hasBrand: !!data.brand,
+                        brandKeys: data.brand ? Object.keys(data.brand) : [],
+                        hasDealTerms: !!(data.brand && data.brand.dealTerms),
+                        dealTermsKeys: data.brand && data.brand.dealTerms ? Object.keys(data.brand.dealTerms) : [],
+                        hasFootprint: !!(data.brand && data.brand.footprint),
+                        footprintKeys: data.brand && data.brand.footprint ? Object.keys(data.brand.footprint) : []
+                    });
+                    
+                    if (data.success && data.brand) {
+                        displayBrand(data.brand);
+                    } else {
+                        throw new Error(data.error || 'Brand not found');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error fetching brand details:', error);
+                    showError(error.message);
+                }
+            }
+
+            function displayBrand(brand) {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('brandContent').style.display = 'block';
+
+                document.getElementById('brandName').textContent = brand.name;
+                document.getElementById('breadcrumbBrandName').textContent = brand.name;
+
+                // Logo (from Brand Setup Logo column)
+                const logoEl = document.getElementById('brandHeaderLogo');
+                const initialEl = document.getElementById('brandHeaderLogoInitial');
+                if (initialEl) {
+                    initialEl.textContent = (brand.name && brand.name.trim()) ? brand.name.trim().charAt(0).toUpperCase() : 'B';
+                    initialEl.style.display = 'flex';
+                }
+                if (logoEl) {
+                    const oldImg = logoEl.querySelector('img');
+                    if (oldImg) oldImg.remove();
+                    if (brand.logo && typeof brand.logo === 'string' && brand.logo.startsWith('http')) {
+                        const img = document.createElement('img');
+                        function markLogoReady() {
+                            img.classList.add('loaded');
+                            if (initialEl) initialEl.style.display = 'none';
+                        }
+                        img.alt = brand.name;
+                        img.loading = 'eager';
+                        img.referrerPolicy = 'no-referrer';
+                        img.onerror = function() {
+                            this.style.display = 'none';
+                            if (initialEl) initialEl.style.display = 'flex';
+                        };
+                        img.onload = markLogoReady;
+                        logoEl.insertBefore(img, initialEl || logoEl.firstChild);
+                        img.src = brand.logo;
+                        // Cached images often finish before onload is observable; hide initial immediately.
+                        if (img.complete && img.naturalWidth > 0) markLogoReady();
+                    }
+                }
+
+                // Badges (API returns hotelChainScale, hotelServiceModel, brandModelFormat)
+                const badgesContainer = document.getElementById('badgesContainer');
+                badgesContainer.innerHTML = '';
+                const chainScale = brand.hotelChainScale || brand.chainScale;
+                const serviceModel = brand.hotelServiceModel || brand.serviceModel;
+                const brandModel = brand.brandModelFormat || brand.brandModel;
+                if (chainScale) {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge badge--chain-scale';
+                    badge.textContent = String(chainScale).replace(/\s*Chain\s*/i, '').trim() || chainScale;
+                    badgesContainer.appendChild(badge);
+                }
+                if (serviceModel) {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge badge--service-model';
+                    badge.textContent = serviceModel;
+                    badgesContainer.appendChild(badge);
+                }
+                if (brandModel) {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge badge--brand-model';
+                    badge.textContent = brandModel;
+                    badgesContainer.appendChild(badge);
+                }
+
+                renderInvestBriefHeader(brand);
+
+                renderOverviewBrief(brand);
+
+                // Portfolio Tab
+                if (brand.footprint && Object.keys(brand.footprint).length > 0) {
+                    const fp = brand.footprint;
+                    const portfolioStats = document.getElementById('portfolioStats');
+                    portfolioStats.innerHTML = `
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-value">${formatNumber(fp.totalExistingHotels || 0)}</div>
+                            <div class="quick-stat-label">Total Hotels</div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-value">${formatNumber(fp.totalExistingRooms || 0)}</div>
+                            <div class="quick-stat-label">Total Rooms</div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-value">${(fp.newBuildPercent || 0).toFixed(1)}%</div>
+                            <div class="quick-stat-label">New Build</div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-value">${(fp.conversionPercent || 0).toFixed(1)}%</div>
+                            <div class="quick-stat-label">Conversion</div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-value">${(fp.managedPercent || 0).toFixed(1)}%</div>
+                            <div class="quick-stat-label">Managed</div>
+                        </div>
+                        <div class="quick-stat-card">
+                            <div class="quick-stat-value">${(fp.franchisedPercent || 0).toFixed(1)}%</div>
+                            <div class="quick-stat-label">Franchised</div>
+                        </div>
+                    `;
+
+                    // Regional Distribution with visual charts
+                    if (fp.regionalDistribution && Object.keys(fp.regionalDistribution).length > 0) {
+                        const regionalChart = document.getElementById('regionalChart');
+                        regionalChart.innerHTML = '';
+                        Object.entries(fp.regionalDistribution).forEach(([region, data]) => {
+                            // Safely get all values with defaults
+                            const hotels = data.hotels || 0;
+                            const rooms = data.rooms || 0;
+                            const percentage = (data.percentage || 0);
+                            const roomsPercentage = (data.roomsPercentage || 0);
+                            const newBuildHotels = data.newBuildHotels || 0;
+                            const conversionHotels = data.conversionHotels || 0;
+                            const newBuildRooms = data.newBuildRooms || 0;
+                            const conversionRooms = data.conversionRooms || 0;
+                            const newBuildHotelsPercent = data.newBuildHotelsPercent || 0;
+                            const conversionHotelsPercent = data.conversionHotelsPercent || 0;
+                            const newBuildRoomsPercent = data.newBuildRoomsPercent || 0;
+                            const conversionRoomsPercent = data.conversionRoomsPercent || 0;
+                            const managedHotels = data.managedHotels || 0;
+                            const franchisedHotels = data.franchisedHotels || 0;
+                            const managedRooms = data.managedRooms || 0;
+                            const franchisedRooms = data.franchisedRooms || 0;
+                            const managedHotelsPercent = data.managedHotelsPercent || 0;
+                            const franchisedHotelsPercent = data.franchisedHotelsPercent || 0;
+                            const managedRoomsPercent = data.managedRoomsPercent || 0;
+                            const franchisedRoomsPercent = data.franchisedRoomsPercent || 0;
+
+                            const regionCard = document.createElement('div');
+                            regionCard.style.cssText = 'margin-bottom: 20px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--neutral--600); border-radius: 8px;';
+                            regionCard.innerHTML = `
+                                <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--neutral--600);">
+                                    <div style="font-weight: 600; color: var(--neutral--100); font-size: 18px; margin-bottom: 10px;">${region}</div>
+                                    <div style="display: flex; gap: 30px; color: var(--neutral--400); font-size: 14px;">
+                                        <div>
+                                            <span style="color: var(--neutral--500); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Units:</span> 
+                                            <strong style="color: var(--neutral--100); font-size: 16px; margin-left: 8px;">${formatNumber(hotels)}</strong>
+                                            <span style="color: var(--neutral--500); margin-left: 4px;">(${percentage.toFixed(1)}%)</span>
+                                        </div>
+                                        <div>
+                                            <span style="color: var(--neutral--500); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Rooms:</span> 
+                                            <strong style="color: var(--neutral--100); font-size: 16px; margin-left: 8px;">${formatNumber(rooms)}</strong>
+                                            <span style="color: var(--neutral--500); margin-left: 4px;">(${roomsPercentage.toFixed(1)}%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                                    <!-- New Build vs Conversion -->
+                                    <div>
+                                        <div style="font-size: 11px; color: var(--neutral--500); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">New Build vs Conversion</div>
+                                        
+                                        <div style="margin-bottom: 20px;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                                <span style="color: var(--neutral--400); font-size: 13px; font-weight: 500;">Units</span>
+                                                <div style="display: flex; gap: 15px; font-size: 12px;">
+                                                    <span style="color: var(--system--green-300);">New Build: <strong>${newBuildHotelsPercent.toFixed(1)}%</strong></span>
+                                                    <span style="color: var(--secondary--color-3);">Conversion: <strong>${conversionHotelsPercent.toFixed(1)}%</strong></span>
+                                                </div>
+                                            </div>
+                                            <div style="height: 10px; background: var(--neutral--700); border-radius: 5px; overflow: hidden; display: flex;">
+                                                <div style="background: var(--system--green-300); width: ${newBuildHotelsPercent}%; transition: width 0.3s;"></div>
+                                                <div style="background: var(--secondary--color-3); width: ${conversionHotelsPercent}%; transition: width 0.3s;"></div>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: var(--neutral--500);">
+                                                <span>${formatNumber(newBuildHotels)} units</span>
+                                                <span>${formatNumber(conversionHotels)} units</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                                <span style="color: var(--neutral--400); font-size: 13px; font-weight: 500;">Rooms</span>
+                                                <div style="display: flex; gap: 15px; font-size: 12px;">
+                                                    <span style="color: var(--system--green-300);">New Build: <strong>${newBuildRoomsPercent.toFixed(1)}%</strong></span>
+                                                    <span style="color: var(--secondary--color-3);">Conversion: <strong>${conversionRoomsPercent.toFixed(1)}%</strong></span>
+                                                </div>
+                                            </div>
+                                            <div style="height: 10px; background: var(--neutral--700); border-radius: 5px; overflow: hidden; display: flex;">
+                                                <div style="background: var(--system--green-300); width: ${newBuildRoomsPercent}%; transition: width 0.3s;"></div>
+                                                <div style="background: var(--secondary--color-3); width: ${conversionRoomsPercent}%; transition: width 0.3s;"></div>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: var(--neutral--500);">
+                                                <span>${formatNumber(newBuildRooms)} rooms</span>
+                                                <span>${formatNumber(conversionRooms)} rooms</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Managed vs Franchised -->
+                                    <div>
+                                        <div style="font-size: 11px; color: var(--neutral--500); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Managed vs Franchised</div>
+                                        
+                                        <div style="margin-bottom: 20px;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                                <span style="color: var(--neutral--400); font-size: 13px; font-weight: 500;">Units</span>
+                                                <div style="display: flex; gap: 15px; font-size: 12px;">
+                                                    <span style="color: var(--secondary--color-2);">Managed: <strong>${managedHotelsPercent.toFixed(1)}%</strong></span>
+                                                    <span style="color: var(--secondary--color-5);">Franchised: <strong>${franchisedHotelsPercent.toFixed(1)}%</strong></span>
+                                                </div>
+                                            </div>
+                                            <div style="height: 10px; background: var(--neutral--700); border-radius: 5px; overflow: hidden; display: flex;">
+                                                <div style="background: var(--secondary--color-2); width: ${managedHotelsPercent}%; transition: width 0.3s;"></div>
+                                                <div style="background: var(--secondary--color-5); width: ${franchisedHotelsPercent}%; transition: width 0.3s;"></div>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: var(--neutral--500);">
+                                                <span>${formatNumber(managedHotels)} units</span>
+                                                <span>${formatNumber(franchisedHotels)} units</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                                <span style="color: var(--neutral--400); font-size: 13px; font-weight: 500;">Rooms</span>
+                                                <div style="display: flex; gap: 15px; font-size: 12px;">
+                                                    <span style="color: var(--secondary--color-2);">Managed: <strong>${managedRoomsPercent.toFixed(1)}%</strong></span>
+                                                    <span style="color: var(--secondary--color-5);">Franchised: <strong>${franchisedRoomsPercent.toFixed(1)}%</strong></span>
+                                                </div>
+                                            </div>
+                                            <div style="height: 10px; background: var(--neutral--700); border-radius: 5px; overflow: hidden; display: flex;">
+                                                <div style="background: var(--secondary--color-2); width: ${managedRoomsPercent}%; transition: width 0.3s;"></div>
+                                                <div style="background: var(--secondary--color-5); width: ${franchisedRoomsPercent}%; transition: width 0.3s;"></div>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: var(--neutral--500);">
+                                                <span>${formatNumber(managedRooms)} rooms</span>
+                                                <span>${formatNumber(franchisedRooms)} rooms</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            regionalChart.appendChild(regionCard);
+                        });
+                    } else {
+                        document.getElementById('regionalChart').innerHTML = '<div style="color: var(--neutral--500); font-size: 12px;">No regional data available</div>';
+                    }
+
+                    // Location Distribution
+                    if (fp.locationDistribution && Object.keys(fp.locationDistribution).length > 0) {
+                        const locationChart = document.getElementById('locationChart');
+                        locationChart.innerHTML = '';
+                        Object.entries(fp.locationDistribution).forEach(([location, percentage]) => {
+                            locationChart.appendChild(createDistributionItem(location, percentage));
+                        });
+                    } else {
+                        document.getElementById('locationChart').innerHTML = '<div style="color: var(--neutral--500); font-size: 12px;">No location data available</div>';
+                    }
+                } else {
+                    document.getElementById('portfolioStats').innerHTML = '<div style="color: var(--neutral--500); padding: 20px; text-align: center;">No portfolio data available</div>';
+                }
+
+                // Differentiators Tab (API: keyBrandDifferentiators, sustainabilityPositioning)
+                renderDifferentiatorsPillars(brand);
+                setContent('differentiatorsContent', brand.keyBrandDifferentiators || brand.differentiators);
+                
+                const sustainabilityVal = brand.sustainabilityPositioning || brand.sustainability;
+                if (sustainabilityVal) {
+                    setContent('sustainabilityContent', sustainabilityVal);
+                    document.getElementById('sustainabilityCard').style.display = 'block';
+                }
+
+                // Financial Information Tab
+                renderFeeStructure(brand.feeStructure);
+
+                // Requirements & Standards Tab
+                renderBrandStandards(brand.brandStandards);
+
+                // Deal Terms Tab
+                renderDealTerms(brand.dealTerms);
+
+                // Support & Legal Tab (Operational Support, Legal Terms)
+                renderSupportAndLegal(brand.operationalSupport, brand.legalTerms);
+
+                // Brand Profile tab (one-page snapshot)
+                renderBrandProfile(brand);
+
+                // Similar Brands
+                fetchSimilarBrands(brand);
+            }
+
+            const BP_REGION_LABELS = { AM: 'Americas', CALA: 'CALA', EU: 'Europe', MEA: 'MEA', APAC: 'APAC' };
+
+            function computeHeroTagline(brand) {
+                const pos = (brand.brandPositioning || brand.positioning || '').trim();
+                if (pos) {
+                    const m = pos.match(/^.{1,220}?(?:[.!?](?=\s|$)|$)/);
+                    const one = (m ? m[0] : pos).trim();
+                    return one.length > 160 ? one.slice(0, 157) + '…' : one;
+                }
+                const t = (brand.brandTaglineMotto || brand.tagline || '').trim();
+                if (t) return t.length > 160 ? t.slice(0, 157) + '…' : t;
+                const v = (brand.brandValueProposition || brand.valueProposition || '').trim();
+                if (v) return v.length > 160 ? v.slice(0, 157) + '…' : v;
+                return '';
+            }
+
+            function computeBrandDefinitionSentence(brand) {
+                const line = computeHeroTagline(brand);
+                if (!line) return '';
+                return line.length > 135 ? line.slice(0, 132) + '…' : line;
+            }
+
+            function deriveHeroBestForLine(brand) {
+                const seg = brand.targetGuestSegments || brand.targetSegments;
+                if (Array.isArray(seg) && seg.length) {
+                    const j = seg
+                        .slice(0, 2)
+                        .map((s) => String(s).trim())
+                        .filter(Boolean)
+                        .join(' · ');
+                    if (j) return 'When guest profile aligns with: ' + j + (seg.length > 2 ? '…' : '');
+                }
+                const psycho = (brand.guestPsychographics || '').trim();
+                if (psycho) return psycho.length > 118 ? psycho.slice(0, 115) + '…' : psycho;
+                return '';
+            }
+
+            function deriveInvestSummaryStrip(brand) {
+                const seg = brand.targetGuestSegments || brand.targetSegments;
+                let bestFor = '';
+                if (Array.isArray(seg) && seg.length) {
+                    bestFor = seg
+                        .slice(0, 3)
+                        .map((s) => String(s).trim())
+                        .filter(Boolean)
+                        .join(' · ');
+                    if (seg.length > 3) bestFor += '…';
+                } else {
+                    const p = (brand.guestPsychographics || '').trim();
+                    if (p) bestFor = p.length > 92 ? p.slice(0, 89) + '…' : p;
+                }
+                const diff = (brand.keyBrandDifferentiators || brand.differentiators || '').trim();
+                const tag = (brand.brandTaglineMotto || brand.tagline || '').trim();
+                let apart = '';
+                if (diff) apart = diff.length > 108 ? diff.slice(0, 105) + '…' : diff;
+                else if (tag) apart = tag.length > 96 ? tag.slice(0, 93) + '…' : tag;
+                const scale = String(brand.hotelChainScale || brand.chainScale || '')
+                    .replace(/\s*Chain\s*/i, '')
+                    .trim();
+                const svc = brand.hotelServiceModel || brand.serviceModel || '';
+                const model = brand.brandModelFormat || brand.brandModel || '';
+                const typical = [scale && scale + ' chain', svc, model].filter(Boolean).join(' · ');
+                return { bestFor, apart, typical };
+            }
+
+            function renderInvestBriefHeader(brand) {
+                const def = computeBrandDefinitionSentence(brand);
+                const defEl = document.getElementById('investCoverDefinition');
+                if (defEl) {
+                    if (def) {
+                        defEl.textContent = def;
+                        defEl.style.display = '';
+                    } else {
+                        defEl.textContent = '';
+                        defEl.style.display = 'none';
+                    }
+                }
+                const bestLine = deriveHeroBestForLine(brand);
+                const bestEl = document.getElementById('investCoverBestFor');
+                if (bestEl) {
+                    if (bestLine) {
+                        bestEl.textContent = bestLine;
+                        bestEl.style.display = '';
+                    } else {
+                        bestEl.textContent = '';
+                        bestEl.style.display = 'none';
+                    }
+                }
+
+                const metaParts = [];
+                const parent = (brand.parentCompany || '').trim();
+                if (parent) metaParts.push(`<span>Parent <strong>${escapeHtml(parent)}</strong></span>`);
+                const yr = brand.yearBrandLaunched || brand.yearLaunched;
+                if (yr) metaParts.push(`<span>Launched <strong>${escapeHtml(String(yr))}</strong></span>`);
+                const st = (brand.brandStatus || brand.status || '').trim();
+                if (st) metaParts.push(`<span>Status <strong>${escapeHtml(st)}</strong></span>`);
+                let webPart = '';
+                if (brand.brandWebsite && typeof brand.brandWebsite === 'string' && brand.brandWebsite.trim().startsWith('http')) {
+                    try {
+                        const url = brand.brandWebsite.trim();
+                        const host = new URL(url).hostname.replace(/^www\./, '');
+                        webPart = `<span>Web <strong><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" style="color:var(--secondary--color-3);text-decoration:none;">${escapeHtml(host)}</a></strong></span>`;
+                    } catch (e) {
+                        webPart = '';
+                    }
+                }
+                const metaRow = document.getElementById('investCoverMetaRow');
+                if (metaRow) {
+                    const sep = '<span style="color:var(--neutral--600);margin:0 6px;">·</span>';
+                    let html = metaParts.join(sep);
+                    if (webPart) html += (html ? sep : '') + webPart;
+                    metaRow.innerHTML = html || '<span style="color:var(--neutral--500);font-size:12px;">Add Brand Basics to complete identity lines.</span>';
+                }
+
+                const scale = brand.hotelChainScale || brand.chainScale || '';
+                const svc = brand.hotelServiceModel || brand.serviceModel || '';
+                const model = brand.brandModelFormat || brand.brandModel || '';
+                const stage = brand.brandDevelopmentStage || brand.developmentStage || '';
+                const statusStr = (brand.brandStatus || brand.status || '').trim();
+                const facts = document.getElementById('investCoverFacts');
+                if (facts) {
+                    const rows = [];
+                    const push = (dt, dd) => {
+                        const v = (dd != null && String(dd).trim() !== '' ? String(dd).trim() : '') || '—';
+                        rows.push(`<div><dt>${escapeHtml(dt)}</dt><dd>${escapeHtml(v)}</dd></div>`);
+                    };
+                    push('Chain scale', scale);
+                    push('Service model', svc);
+                    push('Brand model', model);
+                    const stageLine = [stage, statusStr].filter(Boolean).join(' · ') || '';
+                    push('Stage / status', stageLine || '—');
+                    facts.innerHTML = rows.join('');
+                }
+
+                const strip = deriveInvestSummaryStrip(brand);
+                const setStrip = (id, text) => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    const t = (text || '').trim();
+                    el.textContent = t || '—';
+                    el.classList.toggle('invest-summary-strip__value--muted', !t);
+                };
+                setStrip('investStripBestFor', strip.bestFor);
+                setStrip('investStripApart', strip.apart);
+                setStrip('investStripTypical', strip.typical);
+            }
+
+            function sumPipelineFromFootprint(fp) {
+                if (!fp || !fp.regionalDistribution || typeof fp.regionalDistribution !== 'object') return null;
+                let sum = 0;
+                let any = false;
+                Object.values(fp.regionalDistribution).forEach((d) => {
+                    if (d && d.pipelineHotels != null && !Number.isNaN(Number(d.pipelineHotels))) {
+                        sum += Number(d.pipelineHotels);
+                        any = true;
+                    }
+                });
+                return any ? sum : null;
+            }
+
+            function buildRegionalDistributionTablesHtml(fp) {
+                const regions = ['AM', 'CALA', 'EU', 'MEA', 'APAC'];
+                const rd = fp && fp.regionalDistribution && typeof fp.regionalDistribution === 'object' ? fp.regionalDistribution : {};
+                let locRows = '';
+                let pipeRows = '';
+                let totalH = 0;
+                let totalR = 0;
+                regions.forEach((code) => {
+                    const d = rd[code];
+                    const label = BP_REGION_LABELS[code] || code;
+                    const h = d && d.hotels != null ? d.hotels : 0;
+                    const r = d && d.rooms != null ? d.rooms : 0;
+                    const avg = h > 0 ? Math.round(r / h) : '—';
+                    totalH += h;
+                    totalR += r;
+                    locRows += `<tr><td>${escapeHtml(label)}</td><td>${formatNumber(h)}</td><td>${formatNumber(r)}</td><td>${avg === '—' ? '—' : formatNumber(avg)}</td></tr>`;
+                    const ph = d && d.pipelineHotels != null ? d.pipelineHotels : 0;
+                    pipeRows += `<tr><td>${escapeHtml(label)}</td><td>${formatNumber(ph)}</td></tr>`;
+                });
+                locRows += `<tr><td><strong>Total</strong></td><td><strong>${formatNumber(totalH)}</strong></td><td><strong>${formatNumber(totalR)}</strong></td><td>${totalH > 0 ? formatNumber(Math.round(totalR / totalH)) : '—'}</td></tr>`;
+                return { locRows, pipeRows, hasRegional: Object.keys(rd).length > 0, totalH, totalR };
+            }
+
+            function splitPillarLines(text) {
+                if (!text || !String(text).trim()) return [];
+                const t = String(text).trim();
+                const parts = t.split(/\n(?=\s*\d+[\.\)]\s)/);
+                if (parts.length > 1) return parts.map((s) => s.trim()).filter(Boolean);
+                return t.split(/\n+/).map((s) => s.trim()).filter(Boolean);
+            }
+
+            function formatCuratedAnalysisParagraphs(text) {
+                if (!text || !String(text).trim()) return '';
+                return String(text)
+                    .trim()
+                    .split(/\n\n+/)
+                    .map((p) => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`)
+                    .join('');
+            }
+
+            /** Auto takeaways only — avoids repeating at-a-glance metrics, positioning, and segments already on this page. */
+            function synthesizeBrandProfileTakeaways(brand) {
+                const parts = [];
+                const vpv = (brand.brandValueProposition || brand.valueProposition || '').trim();
+                if (vpv) {
+                    const slice = vpv.length > 420 ? vpv.slice(0, 420) + '…' : vpv;
+                    parts.push(`<p><strong>Value proposition.</strong> ${escapeHtml(slice)}</p>`);
+                }
+                const diff = (brand.keyBrandDifferentiators || brand.differentiators || '').trim();
+                if (diff) {
+                    const slice = diff.length > 420 ? diff.slice(0, 420) + '…' : diff;
+                    parts.push(`<p><strong>What sets it apart.</strong> ${escapeHtml(slice)}</p>`);
+                }
+                const psycho = (brand.guestPsychographics || '').trim();
+                if (psycho && parts.length < 2) {
+                    const slice = psycho.length > 360 ? psycho.slice(0, 360) + '…' : psycho;
+                    parts.push(`<p><strong>Guest lens.</strong> ${escapeHtml(slice)}</p>`);
+                }
+                if (parts.length === 0) {
+                    return '<p style="color:var(--neutral--500);font-size:13px;margin:0;">No extra narrative fields to summarize here. Add <strong>Brand Profile Analysis</strong> on Brand Basics for custom commentary, or fill value proposition / differentiators / psychographics.</p>';
+                }
+                return `<div class="info-card__content info-card__content--readable">${parts.join('')}</div>`;
+            }
+
+            function brandProfileDistributionBarsHtml(entries) {
+                if (!entries.length) {
+                    return '<p style="color:var(--neutral--500);font-size:13px;margin:0;">No location-type distribution in footprint.</p>';
+                }
+                return entries
+                    .map(({ k, v }) => {
+                        const label = k.replace(/\s*-\s*Existing Systemwide Location/i, '');
+                        const pct = typeof v === 'number' ? v : parseFloat(v) || 0;
+                        return `<div class="distribution-item">
+                            <div class="distribution-label">${escapeHtml(label)}</div>
+                            <div class="distribution-bar"><div class="distribution-bar-fill" style="width: ${pct}%"></div></div>
+                            <div class="distribution-value">${pct.toFixed(0)}%</div>
+                        </div>`;
+                    })
+                    .join('');
+            }
+
+            function parsePillarLine(line) {
+                const clean = line.replace(/^\d+[\.\)]\s*/, '').trim();
+                if (!clean) return { title: 'Pillar', body: '' };
+                const colon = clean.indexOf(':');
+                const mdash = clean.indexOf('—');
+                const hy = clean.indexOf(' - ');
+                let at = -1;
+                if (colon > 0 && colon < 52) at = colon;
+                else if (mdash > 0 && mdash < 52) at = mdash;
+                else if (hy > 0 && hy < 52) at = hy;
+                if (at > 0) {
+                    const title = clean.slice(0, at).trim();
+                    const body = clean
+                        .slice(at + 1)
+                        .replace(/^[\s:—-]+/, '')
+                        .trim();
+                    return { title: title || 'Pillar', body: body || clean };
+                }
+                const words = clean.split(/\s+/);
+                if (words.length > 7) {
+                    return { title: words.slice(0, 4).join(' '), body: clean };
+                }
+                return { title: 'Focus', body: clean };
+            }
+
+            function buildFootprintHighlightsHtml(fp, totalH, totalR) {
+                const pipeline = sumPipelineFromFootprint(fp);
+                const parts = [];
+                if (totalH > 0) parts.push(`<strong>${formatNumber(totalH)}</strong> hotels on file`);
+                if (totalR > 0) parts.push(`<strong>${formatNumber(totalR)}</strong> rooms`);
+                const avg = totalH > 0 ? Math.round(totalR / totalH) : null;
+                if (avg) parts.push(`~<strong>${formatNumber(avg)}</strong> keys / hotel (avg)`);
+                if (pipeline != null && pipeline > 0) parts.push(`<strong>${formatNumber(pipeline)}</strong> pipeline hotels (regional sum)`);
+                const nb = fp.newBuildPercent;
+                const conv = fp.conversionPercent;
+                const man = fp.managedPercent;
+                const fran = fp.franchisedPercent;
+                if (nb != null && conv != null && !Number.isNaN(Number(nb)) && !Number.isNaN(Number(conv))) {
+                    parts.push(`~<strong>${Number(nb).toFixed(0)}%</strong> new build · ~<strong>${Number(conv).toFixed(0)}%</strong> conversion`);
+                }
+                if (man != null && fran != null && !Number.isNaN(Number(man)) && !Number.isNaN(Number(fran))) {
+                    parts.push(`~<strong>${Number(man).toFixed(0)}%</strong> managed · ~<strong>${Number(fran).toFixed(0)}%</strong> franchised`);
+                }
+                if (!parts.length) return '<span style="color:var(--neutral--500)">No footprint metrics on file.</span>';
+                return parts.join('<br>');
+            }
+
+            function editorialHtmlWithOptionalExpand(label, text) {
+                if (!text || !String(text).trim()) return '';
+                const raw = String(text).trim();
+                const long = raw.length > 280 || raw.split(/\n/).length > 5;
+                const escaped = escapeHtml(raw).replace(/\n/g, '<br>');
+                const body = long
+                    ? `<div class="invest-excerpt-wrap"><p class="invest-excerpt invest-excerpt--clamp">${escaped}</p><details class="invest-readmore"><summary>Show full text</summary><div class="invest-prose" style="margin-top:10px"><p class="invest-excerpt">${escaped}</p></div></details></div>`
+                    : `<div class="invest-prose"><p class="invest-excerpt">${escaped}</p></div>`;
+                const labelHtml =
+                    label && String(label).trim()
+                        ? `<div class="invest-prose-label">${escapeHtml(String(label).trim())}</div>`
+                        : '';
+                return labelHtml + body;
+            }
+
+            function buildStrategicCalloutTiles(brand) {
+                const tiles = [];
+                const curated = (brand.brandProfileAnalysis || '').trim();
+                const vpv = (brand.brandValueProposition || brand.valueProposition || '').trim();
+                const pos = (brand.brandPositioning || brand.positioning || '').trim();
+                const defCover = computeBrandDefinitionSentence(brand);
+                const fp = brand.footprint && typeof brand.footprint === 'object' ? brand.footprint : {};
+                const seg = brand.targetGuestSegments || brand.targetSegments;
+                const hasSeg = Array.isArray(seg) && seg.length > 0;
+                const scale = brand.hotelChainScale || brand.chainScale || '';
+                const svc = brand.hotelServiceModel || brand.serviceModel || '';
+
+                let know = '';
+                if (curated) {
+                    const first = curated.split(/\n\n+/)[0].trim();
+                    know = first.length > 260 ? first.slice(0, 257) + '…' : first;
+                } else if (vpv) {
+                    know = vpv.length > 240 ? vpv.slice(0, 237) + '…' : vpv;
+                } else if (pos) {
+                    const paras = pos
+                        .split(/\n\n+/)
+                        .map((p) => p.trim())
+                        .filter(Boolean);
+                    if (paras.length > 1) {
+                        know = paras[1].length > 240 ? paras[1].slice(0, 237) + '…' : paras[1];
+                    } else if (defCover && paras[0] && paras[0].slice(0, 72) !== defCover.slice(0, 72)) {
+                        know = paras[0].length > 240 ? paras[0].slice(0, 237) + '…' : paras[0];
+                    }
+                }
+                if (know && defCover) {
+                    const a = know.replace(/\s+/g, ' ').trim().slice(0, 88);
+                    const b = defCover.replace(/\s+/g, ' ').trim().slice(0, 88);
+                    if (a === b) know = '';
+                }
+                if (know) tiles.push({ title: 'What owners should know', body: know, accent: false });
+
+                let fit = '';
+                if (hasSeg) {
+                    const man = fp.managedPercent;
+                    const fr = fp.franchisedPercent;
+                    const nb = fp.newBuildPercent;
+                    const cv = fp.conversionPercent;
+                    if (
+                        man != null &&
+                        fr != null &&
+                        !Number.isNaN(Number(man)) &&
+                        !Number.isNaN(Number(fr))
+                    ) {
+                        fit = `Roughly ${Number(man).toFixed(0)}% managed vs ${Number(fr).toFixed(0)}% franchised hotels on file`;
+                        if (nb != null && cv != null && !Number.isNaN(Number(nb)) && !Number.isNaN(Number(cv))) {
+                            fit += `; development mix ~${Number(nb).toFixed(0)}% new build and ~${Number(cv).toFixed(0)}% conversion.`;
+                        } else {
+                            fit += '.';
+                        }
+                        fit += ' Guest targeting summarized in the strip above.';
+                    } else if (scale || svc) {
+                        fit =
+                            'Guest segments on file (see strip). Classification: ' +
+                            [scale, svc].filter(Boolean).join(' · ') +
+                            '.';
+                    }
+                } else if (scale || svc) {
+                    fit = 'On file as ' + [scale, svc].filter(Boolean).join(' · ') + ' — use cover classification for full context.';
+                }
+                if (fit) tiles.push({ title: 'Where it tends to fit', body: fit, accent: true });
+
+                const diff = (brand.keyBrandDifferentiators || brand.differentiators || '').trim();
+                const tag = (brand.brandTaglineMotto || brand.tagline || '').trim();
+                let dist = '';
+                if (diff) dist = diff.length > 260 ? diff.slice(0, 257) + '…' : diff;
+                else if (tag) dist = tag.length > 140 ? tag.slice(0, 137) + '…' : tag;
+                if (dist) tiles.push({ title: 'What makes it distinctive', body: dist, accent: false });
+
+                if (!tiles.length) {
+                    tiles.push({
+                        title: 'What owners should know',
+                        body: 'Add Brand Profile Analysis, positioning, or value proposition in Brand Setup to unlock a strategic read beyond the cover snapshot.',
+                        accent: false
+                    });
+                }
+                return tiles.slice(0, 3);
+            }
+
+            function renderOverviewBrief(brand) {
+                const mount = document.getElementById('overviewBriefMount');
+                if (!mount) return;
+
+                const fp = brand.footprint && typeof brand.footprint === 'object' ? brand.footprint : {};
+                const parent = (brand.parentCompany || '').trim();
+                const scale = brand.hotelChainScale || brand.chainScale || '';
+                const svc = brand.hotelServiceModel || brand.serviceModel || '';
+                const arch = (brand.brandArchitecture || brand.architecture || '').trim();
+                const hotelsN = fp.totalExistingHotels;
+                const roomsN = fp.totalExistingRooms;
+                const pipelineSum = sumPipelineFromFootprint(fp);
+                const nb = fp.newBuildPercent;
+                const conv = fp.conversionPercent;
+                const man = fp.managedPercent;
+                const fran = fp.franchisedPercent;
+
+                const { locRows, pipeRows, totalH, totalR } = buildRegionalDistributionTablesHtml(fp);
+                const avgKeys = totalH > 0 ? Math.round(totalR / totalH) : null;
+
+                const identityCell = `
+                    <div class="invest-dashboard-deck__cell">
+                        <h3 class="invest-dash-mod__title">Identity</h3>
+                        <div class="invest-snapshot-lines">
+                            <div><span>Parent</span> <strong>${escapeHtml(parent || '—')}</strong></div>
+                            <div><span>Chain scale</span> <strong>${escapeHtml(scale || '—')}</strong></div>
+                            <div><span>Service</span> <strong>${escapeHtml(svc || '—')}</strong></div>
+                            <div><span>Architecture</span> <strong>${escapeHtml(arch || '—')}</strong></div>
+                        </div>
+                    </div>`;
+
+                const hotelsDisp = hotelsN != null ? formatNumber(hotelsN) : '—';
+                const roomsDisp = roomsN != null ? formatNumber(roomsN) : '—';
+                const pipeDisp = pipelineSum != null ? formatNumber(pipelineSum) : '—';
+                const avgDisp = avgKeys != null ? formatNumber(avgKeys) : '—';
+
+                const footprintCell = `
+                    <div class="invest-dashboard-deck__cell invest-snapshot-mod--footprint">
+                        <h3 class="invest-dash-mod__title">Footprint</h3>
+                        <div class="invest-stat-row">
+                            <div class="invest-stat-block">
+                                <div class="invest-stat-block__num">${escapeHtml(hotelsDisp)}</div>
+                                <div class="invest-stat-block__lbl">Hotels</div>
+                            </div>
+                            <div class="invest-stat-block">
+                                <div class="invest-stat-block__num">${escapeHtml(roomsDisp)}</div>
+                                <div class="invest-stat-block__lbl">Rooms</div>
+                            </div>
+                            <div class="invest-stat-block">
+                                <div class="invest-stat-block__num">${escapeHtml(pipeDisp)}</div>
+                                <div class="invest-stat-block__lbl">Pipeline</div>
+                            </div>
+                            <div class="invest-stat-block">
+                                <div class="invest-stat-block__num">${escapeHtml(avgDisp)}</div>
+                                <div class="invest-stat-block__lbl">Avg keys</div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                const manW = man != null && !Number.isNaN(Number(man)) ? Number(man) : 0;
+                const frW = fran != null && !Number.isNaN(Number(fran)) ? Number(fran) : 0;
+                const nbW = nb != null && !Number.isNaN(Number(nb)) ? Number(nb) : 0;
+                const cvW = conv != null && !Number.isNaN(Number(conv)) ? Number(conv) : 0;
+
+                const mixCell = `
+                    <div class="invest-dashboard-deck__cell">
+                        <h3 class="invest-dash-mod__title">Model mix</h3>
+                        <div class="invest-mix-compact">
+                            <div class="invest-mix-row">
+                                <span class="invest-mix-row__label">Managed ${manW.toFixed(0)}% · Franchised ${frW.toFixed(0)}%</span>
+                                <div class="invest-mix-bar" style="max-width:100%">
+                                    <div class="invest-mix-bar__a" style="width:${manW}%;background:var(--secondary--color-2)"></div>
+                                    <div class="invest-mix-bar__b" style="width:${frW}%;background:var(--secondary--color-5)"></div>
+                                </div>
+                            </div>
+                            <div class="invest-mix-row">
+                                <span class="invest-mix-row__label">New build ${nbW.toFixed(0)}% · Conversion ${cvW.toFixed(0)}%</span>
+                                <div class="invest-mix-bar" style="max-width:100%">
+                                    <div class="invest-mix-bar__a" style="width:${nbW}%;background:var(--system--green-300)"></div>
+                                    <div class="invest-mix-bar__b" style="width:${cvW}%;background:var(--secondary--color-3)"></div>
+                                </div>
+                            </div>
+                            <p style="margin:4px 0 0;font-size:9px;color:var(--neutral--500);text-transform:uppercase;letter-spacing:0.08em;">Brand Setup footprint</p>
+                        </div>
+                    </div>`;
+
+                const dashboardDeck = `<div class="invest-dashboard-deck">${identityCell}${footprintCell}${mixCell}</div>`;
+
+                const pos = (brand.brandPositioning || brand.positioning || '').trim();
+                const vp = (brand.brandValueProposition || brand.valueProposition || '').trim();
+                const cp = (brand.brandCustomerPromise || brand.customerPromise || '').trim();
+                const tl = (brand.brandTaglineMotto || brand.tagline || '').trim();
+                const seg = brand.targetGuestSegments || brand.targetSegments;
+                const gpsy = (brand.guestPsychographics || '').trim();
+
+                let editorialLeft = '';
+                if (pos) editorialLeft += editorialHtmlWithOptionalExpand('Positioning', pos);
+                if (vp) editorialLeft += editorialHtmlWithOptionalExpand('Value proposition', vp);
+
+                let editorialRight = '';
+                if (Array.isArray(seg) && seg.length) {
+                    editorialRight += `<div class="invest-prose-label">Target segments</div><ul class="list-compact" style="margin:0;padding-left:1.1rem;color:var(--neutral--400);font-size:13px;line-height:1.45;">${seg
+                        .map((s) => `<li>${escapeHtml(String(s))}</li>`)
+                        .join('')}</ul>`;
+                }
+                if (gpsy) editorialRight += editorialHtmlWithOptionalExpand('Guest psychographics', gpsy);
+                if (cp) editorialRight += editorialHtmlWithOptionalExpand('Customer promise', cp);
+                const tagMeaningful = tl && tl.length <= 96;
+                if (tagMeaningful) {
+                    editorialRight += `<div class="invest-prose-label">Tagline</div><p class="invest-tagline-pick">${escapeHtml(tl)}</p>`;
+                }
+
+                const locDist = fp.locationDistribution && typeof fp.locationDistribution === 'object' ? fp.locationDistribution : {};
+                const locEntries = Object.entries(locDist)
+                    .map(([k, v]) => ({ k, v: typeof v === 'number' ? v : parseFloat(v) || 0 }))
+                    .sort((a, b) => b.v - a.v);
+                const marketsBarsHtml = brandProfileDistributionBarsHtml(locEntries);
+
+                const hasFootprintSignal =
+                    locEntries.length > 0 ||
+                    (fp.totalExistingHotels != null && fp.totalExistingHotels > 0) ||
+                    (fp.totalExistingRooms != null && fp.totalExistingRooms > 0) ||
+                    Object.keys(fp).length > 0;
+
+                const highlightsHtml = buildFootprintHighlightsHtml(fp, totalH, totalR);
+
+                let marketsInner = '';
+                if (hasFootprintSignal) {
+                    marketsInner = `
+                            <div class="invest-markets-grid">
+                                <div class="invest-markets-bars">${marketsBarsHtml}</div>
+                                <div class="invest-footprint-highlights">${highlightsHtml}</div>
+                            </div>
+                            <div class="brand-profile-dual-tables invest-table-compact" style="margin-top:10px;">
+                                <div>
+                                    <div class="brand-profile-section-label" style="margin-top:0;">Regional footprint</div>
+                                    <div class="brand-profile-table-wrap">
+                                        <table class="brand-profile-table">
+                                            <thead><tr><th>Region</th><th>Hotels</th><th>Rooms</th><th>Avg keys</th></tr></thead>
+                                            <tbody>${locRows}</tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="brand-profile-section-label" style="margin-top:0;">Pipeline</div>
+                                    <div class="brand-profile-table-wrap">
+                                        <table class="brand-profile-table">
+                                            <thead><tr><th>Region</th><th>Pipeline</th></tr></thead>
+                                            <tbody>${pipeRows}</tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>`;
+                } else {
+                    marketsInner =
+                        '<p style="color:var(--neutral--500);font-size:12px;margin:0;line-height:1.45;">No footprint summary in Brand Setup yet.</p>';
+                }
+
+                const hasStory = !!(editorialLeft || editorialRight);
+                let splitRowHtml = '';
+                if (hasStory && marketsInner) {
+                    splitRowHtml = `
+                        <div class="invest-split-row">
+                            <div class="invest-split-row__story invest-panel invest-panel--story">
+                                <h2 class="invest-section-h">Positioning &amp; audience</h2>
+                                <div class="invest-editorial-grid">
+                                    <div>${editorialLeft || '<span style="color:var(--neutral--500);font-size:12px;">—</span>'}</div>
+                                    <div>${editorialRight || '<span style="color:var(--neutral--500);font-size:12px;">—</span>'}</div>
+                                </div>
+                            </div>
+                            <div class="invest-split-row__intel invest-panel invest-panel--intel">
+                                <h2 class="invest-section-h" style="border-left-color:var(--secondary--color-3)">Markets &amp; footprint</h2>
+                                ${marketsInner}
+                            </div>
+                        </div>`;
+                } else if (hasStory) {
+                    splitRowHtml = `
+                        <div class="invest-split-row">
+                            <div class="invest-split-row__story invest-panel invest-panel--story" style="grid-column:1/-1">
+                                <h2 class="invest-section-h">Positioning &amp; audience</h2>
+                                <div class="invest-editorial-grid">
+                                    <div>${editorialLeft || '—'}</div>
+                                    <div>${editorialRight || '—'}</div>
+                                </div>
+                            </div>
+                        </div>`;
+                } else {
+                    splitRowHtml = `
+                        <div class="invest-split-row">
+                            <div class="invest-split-row__intel invest-panel invest-panel--intel" style="grid-column:1/-1">
+                                <h2 class="invest-section-h" style="border-left-color:var(--secondary--color-3)">Markets &amp; footprint</h2>
+                                ${marketsInner}
+                            </div>
+                        </div>`;
+                }
+
+                const pillarItems = splitPillarLines(brand.brandPillars || '').slice(0, 5);
+                let pillarsSection = '';
+                if (pillarItems.length) {
+                    pillarsSection =
+                        `<div class="invest-panel invest-panel--pillars" style="grid-column:1/-1">
+                            <h2 class="invest-section-h">Brand pillars</h2>
+                            <div class="invest-pillars-rail">` +
+                        pillarItems
+                            .map((line, i) => {
+                                const { title, body } = parsePillarLine(line);
+                                return `<div class="invest-pillar-card">
+                                    <span class="invest-pillar-card__n">${i + 1}</span>
+                                    <div class="invest-pillar-card__title">${escapeHtml(title)}</div>
+                                    <div class="invest-pillar-card__body">${escapeHtml(body)}</div>
+                                </div>`;
+                            })
+                            .join('') +
+                        `</div></div>`;
+                }
+
+                const callouts = buildStrategicCalloutTiles(brand);
+                const calloutsHtml = `
+                    <div class="invest-strategic-band">
+                        <h2 class="invest-section-h">Executive takeaways</h2>
+                        <div class="invest-callouts invest-callouts--hero">
+                            ${callouts
+                                .map(
+                                    (t) =>
+                                        `<div class="invest-callout${t.accent ? ' invest-callout--accent' : ''}">
+                                            <div class="invest-callout__title">${escapeHtml(t.title)}</div>
+                                            <div class="invest-callout__body invest-callout__body--soft">${escapeHtml(t.body)}</div>
+                                        </div>`
+                                )
+                                .join('')}
+                        </div>
+                    </div>`;
+
+                const hist = (brand.companyHistory || '').trim();
+                const historySection = hist
+                    ? `<div class="invest-panel invest-panel--story" style="grid-column:1/-1">
+                            <h2 class="invest-section-h">Brand history</h2>
+                            ${editorialHtmlWithOptionalExpand('', hist)}
+                        </div>`
+                    : '';
+
+                mount.innerHTML = `
+                    <div class="invest-brief-grid">
+                        ${dashboardDeck}
+                        ${splitRowHtml}
+                        ${pillarsSection}
+                        ${calloutsHtml}
+                        ${historySection}
+                    </div>`;
+            }
+
+            function renderDifferentiatorsPillars(brand) {
+                const el = document.getElementById('brandPillarsContent');
+                if (!el) return;
+                const items = splitPillarLines(brand.brandPillars || '');
+                if (!items.length) {
+                    el.innerHTML = '<p style="color:var(--neutral--500);font-size:13px;margin:0;">No pillars captured in Brand Setup.</p>';
+                    return;
+                }
+                el.innerHTML =
+                    '<div class="invest-pillars-rail" style="flex-wrap:wrap;">' +
+                    items.slice(0, 8).map((line, i) => {
+                        const { title, body } = parsePillarLine(line);
+                        return `<div class="invest-pillar-card" style="flex:1 1 200px;">
+                            <span class="invest-pillar-card__n">${i + 1}</span>
+                            <div class="invest-pillar-card__title">${escapeHtml(title)}</div>
+                            <div class="invest-pillar-card__body">${escapeHtml(body)}</div>
+                        </div>`;
+                    }).join('') +
+                    '</div>';
+            }
+
+            function renderBrandProfile(brand) {
+                const mount = document.getElementById('brandProfileMount');
+                if (!mount) return;
+
+                const pp = brand.portfolioPerformance && typeof brand.portfolioPerformance === 'object' ? brand.portfolioPerformance : {};
+                const lc = brand.loyaltyCommercial && typeof brand.loyaltyCommercial === 'object' ? brand.loyaltyCommercial : null;
+                const fv = lc && lc.formValues && typeof lc.formValues === 'object' ? lc.formValues : {};
+
+                const rev =
+                    pp.revparImprovement != null && String(pp.revparImprovement).trim() !== '' ? String(pp.revparImprovement).trim() : '—';
+                const occ =
+                    pp.occupancyImprovement != null && String(pp.occupancyImprovement).trim() !== ''
+                        ? String(pp.occupancyImprovement).trim()
+                        : '—';
+                const noi = pp.noiImprovement != null && String(pp.noiImprovement).trim() !== '' ? String(pp.noiImprovement).trim() : '—';
+
+                const curated = (brand.brandProfileAnalysis || '').trim();
+                const analysisSection = curated
+                    ? `<div class="info-card">
+                            <div class="info-card__title">Brand Profile Analysis</div>
+                            <div class="brand-profile__tag brand-profile__tag--curated">Curated · Brand Basics</div>
+                            <div class="info-card__content info-card__content--readable">${formatCuratedAnalysisParagraphs(curated)}</div>
+                        </div>`
+                    : `<div class="info-card">
+                            <div class="info-card__title">Brand Profile Analysis</div>
+                            <p style="color:var(--neutral--500);font-size:13px;margin:0;line-height:1.5;">No long-form analysis on file. Add <strong>Brand Profile Analysis</strong> in Brand Basics, or use the <strong>Overview</strong> tab for the auto-generated executive brief.</p>
+                        </div>`;
+
+                const loyaltyEntries = Object.entries(fv).filter(([, v]) => v != null && String(v).trim() !== '');
+                const loyaltySection =
+                    loyaltyEntries.length > 0
+                        ? `<div class="info-card">
+                            <div class="info-card__title">Loyalty &amp; commercial</div>
+                            <div class="info-grid-compact">
+                                ${loyaltyEntries
+                                    .map(([k, v]) => {
+                                        const label = String(k).replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase());
+                                        return `<div class="info-item-compact"><div class="info-item-compact__label">${escapeHtml(label.trim())}</div><div class="info-item-compact__value">${escapeHtml(String(v))}</div></div>`;
+                                    })
+                                    .join('')}
+                            </div>
+                        </div>`
+                        : '';
+
+                mount.innerHTML = `
+                    <div class="brand-profile">
+                        ${analysisSection}
+                        <div class="info-card">
+                            <div class="info-card__title">Portfolio &amp; performance benchmarks</div>
+                            <div class="info-grid-compact">
+                                <div class="info-item-compact"><div class="info-item-compact__label">RevPAR Δ</div><div class="info-item-compact__value">${escapeHtml(rev)}</div></div>
+                                <div class="info-item-compact"><div class="info-item-compact__label">Occ. Δ</div><div class="info-item-compact__value">${escapeHtml(occ)}</div></div>
+                                <div class="info-item-compact"><div class="info-item-compact__label">NOI Δ</div><div class="info-item-compact__value">${escapeHtml(noi)}</div></div>
+                            </div>
+                            <p class="brand-profile__microcopy">Δ values are from Portfolio &amp; Performance in Brand Setup (not live STR ADR/RevPAR/Occ).</p>
+                        </div>
+                        ${loyaltySection}
+                    </div>`;
+            }
+
+            function renderSupportAndLegal(operationalSupport, legalTerms) {
+                function renderKeyValueGrid(containerId, data) {
+                    const container = document.getElementById(containerId);
+                    if (!container) return;
+                    if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+                        container.innerHTML = '<div style="color: var(--neutral--500);">No data available</div>';
+                        return;
+                    }
+                    const html = Object.entries(data).map(([key, value]) => {
+                        const label = key.replace(/\s*-\s*/g, ' – ').trim();
+                        const val = (value != null && String(value).trim() !== '') ? String(value).trim() : '—';
+                        return `
+                            <div class="info-item-compact">
+                                <div class="info-item-compact__label">${escapeHtml(label)}</div>
+                                <div class="info-item-compact__value">${escapeHtml(val)}</div>
+                            </div>`;
+                    }).join('');
+                    container.innerHTML = html;
+                }
+                renderKeyValueGrid('operationalSupportContent', operationalSupport);
+                renderKeyValueGrid('legalTermsContent', legalTerms);
+            }
+
+            function escapeHtml(text) {
+                if (text == null || text === '') return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function setContent(id, content, italic = false) {
+                const element = document.getElementById(id);
+                if (content && content.trim()) {
+                    element.textContent = content;
+                    if (italic) {
+                        element.style.fontStyle = 'italic';
+                    }
+                } else {
+                    element.textContent = '-';
+                    element.style.color = 'var(--neutral--500)';
+                }
+            }
+
+            function createDistributionItem(label, percentage, count = null) {
+                const item = document.createElement('div');
+                item.className = 'distribution-item';
+                
+                const displayLabel = label.replace(/\s*-\s*Existing Systemwide Location/i, '');
+                const displayValue = count !== null ? `${percentage.toFixed(1)}% (${formatNumber(count)})` : `${percentage.toFixed(1)}%`;
+                
+                item.innerHTML = `
+                    <div class="distribution-label">${displayLabel}</div>
+                    <div class="distribution-bar">
+                        <div class="distribution-bar-fill" style="width: ${percentage}%"></div>
+                    </div>
+                    <div class="distribution-value">${displayValue}</div>
+                `;
+                
+                return item;
+            }
+
+            function formatNumber(num) {
+                return new Intl.NumberFormat().format(num);
+            }
+
+            function createDistributionBar(value1, value2, label1, label2) {
+                const total = value1 + value2;
+                const percent1 = total > 0 ? (value1 / total) * 100 : 0;
+                const percent2 = total > 0 ? (value2 / total) * 100 : 0;
+                const color1 = 'var(--system--green-300)';
+                const color2 = 'var(--secondary--color-3)';
+                
+                return `
+                    <div style="margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 12px;">
+                            <span style="color: ${color1};">${label1}: ${value1.toFixed(1)}%</span>
+                            <span style="color: ${color2};">${label2}: ${value2.toFixed(1)}%</span>
+                        </div>
+                        <div style="display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--neutral--700);">
+                            <div style="background: ${color1}; width: ${percent1}%; transition: width 0.3s;"></div>
+                            <div style="background: ${color2}; width: ${percent2}%; transition: width 0.3s;"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function showError(message) {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('errorState').style.display = 'block';
+                document.getElementById('errorMessage').textContent = message;
+            }
+
+            function renderFeeStructure(feeStructure) {
+                if (!feeStructure || Object.keys(feeStructure).length === 0) {
+                    document.getElementById('feeStructureContent').innerHTML = '<div style="color: var(--neutral--500);">Fee structure information not available</div>';
+                    return;
+                }
+
+                const fees = feeStructure;
+                let html = '<div class="info-grid-compact">';
+                
+                if (fees.applicationFeeMin || fees.applicationFeeMax) {
+                    html += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Application Fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(fees.applicationFeeMin, fees.applicationFeeMax, fees.applicationFeeBasis)}</div>
+                        </div>
+                    `;
+                }
+                
+                if (fees.royaltyMin || fees.royaltyMax) {
+                    html += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Royalty Fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(fees.royaltyMin, fees.royaltyMax, fees.royaltyBasis)}</div>
+                        </div>
+                    `;
+                }
+                
+                if (fees.marketingMin || fees.marketingMax) {
+                    html += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Marketing Fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(fees.marketingMin, fees.marketingMax, fees.marketingBasis)}</div>
+                        </div>
+                    `;
+                }
+                
+                if (fees.technicalFeeMin || fees.technicalFeeMax) {
+                    html += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Technical Services Fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(fees.technicalFeeMin, fees.technicalFeeMax, fees.technicalFeeBasis)}</div>
+                        </div>
+                    `;
+                }
+                
+                if (fees.techFeeMin || fees.techFeeMax) {
+                    html += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Technology Fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(fees.techFeeMin, fees.techFeeMax, fees.techFeeBasis)}</div>
+                        </div>
+                    `;
+                }
+                
+                if (fees.loyaltyMin || fees.loyaltyMax) {
+                    html += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Loyalty Program Fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(fees.loyaltyMin, fees.loyaltyMax, fees.loyaltyBasis)}</div>
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+                
+                if (fees.descriptionOfFee) {
+                    html += `<div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--neutral--600);"><div class="info-card__content">${escapeHtml(fees.descriptionOfFee)}</div></div>`;
+                }
+                
+                document.getElementById('feeStructureContent').innerHTML = html;
+            }
+
+            function formatFeeRange(min, max, basis) {
+                if (!min && !max) return '-';
+                const minVal = min ? formatFeeValue(min) : '';
+                const maxVal = max ? formatFeeValue(max) : '';
+                const range = minVal && maxVal ? `${minVal} - ${maxVal}` : (minVal || maxVal);
+                return basis ? `${range} (${basis})` : range;
+            }
+
+            function formatFeeValue(value) {
+                if (typeof value === 'string' && value.includes('%')) return value;
+                if (typeof value === 'number') return `$${formatNumber(value)}`;
+                if (typeof value === 'string' && value.includes('$')) return value;
+                return value;
+            }
+
+            function renderBrandStandards(standards) {
+                if (!standards || Object.keys(standards).length === 0) {
+                    document.getElementById('amenitiesContent').innerHTML = '<div style="color: var(--neutral--500);">Standards information not available</div>';
+                    document.getElementById('roomRequirementsContent').innerHTML = '<div style="color: var(--neutral--500);">Room requirements not available</div>';
+                    return;
+                }
+
+                // Amenities
+                let amenitiesHtml = '<div class="info-grid-compact">';
+                const amenityFields = [
+                    { key: 'lobby', label: 'Lobby', value: standards.lobby },
+                    { key: 'barBeverage', label: 'Bar / Beverage', value: standards.barBeverage },
+                    { key: 'fitnessCenter', label: 'Fitness Center', value: standards.fitnessCenter },
+                    { key: 'pool', label: 'Pool', value: standards.pool },
+                    { key: 'onsiteParking', label: 'Onsite Parking', value: standards.onsiteParking },
+                    { key: 'meetingEventSpace', label: 'Meeting / Event Space', value: standards.meetingEventSpace },
+                    { key: 'coworking', label: 'Co-Working Space', value: standards.coworking },
+                    { key: 'grabGo', label: 'Grab & Go', value: standards.grabGo }
+                ];
+                
+                amenityFields.forEach(field => {
+                    if (field.value) {
+                        amenitiesHtml += `
+                            <div class="info-item-compact">
+                                <div class="info-item-compact__label">${field.label}</div>
+                                <div class="info-item-compact__value">${field.value === 'Yes' ? '✓ Required' : field.value === 'No' ? '✗ Not Required' : field.value}</div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                if (standards.lobbyDescription) {
+                    amenitiesHtml += `
+                        <div class="info-item-compact" style="grid-column: 1 / -1; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--neutral--600);">
+                            <div class="info-item-compact__label">Lobby Description</div>
+                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(standards.lobbyDescription)}</div>
+                        </div>
+                    `;
+                }
+                
+                amenitiesHtml += '</div>';
+                document.getElementById('amenitiesContent').innerHTML = amenitiesHtml;
+
+                // Room Requirements
+                let roomHtml = '<div class="info-grid-compact">';
+                if (standards.minimumRoomSize) {
+                    roomHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Minimum Room Size</div>
+                            <div class="info-item-compact__value">${standards.minimumRoomSize} sq ft</div>
+                        </div>
+                    `;
+                }
+                if (standards.minimumRoomSizeMeters) {
+                    roomHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Minimum Room Size</div>
+                            <div class="info-item-compact__value">${standards.minimumRoomSizeMeters} sq m</div>
+                        </div>
+                    `;
+                }
+                roomHtml += '</div>';
+                document.getElementById('roomRequirementsContent').innerHTML = roomHtml || '<div style="color: var(--neutral--500);">Room requirements not specified</div>';
+                
+                setContent('brandStandardsContent', standards.brandStandards);
+            }
+
+            function renderDealTerms(terms) {
+                console.log('Rendering deal terms:', terms);
+                // Check if terms object exists and has any non-empty values
+                const hasData = terms && Object.keys(terms).some(key => {
+                    const value = terms[key];
+                    return value !== null && value !== undefined && value !== '' && value !== false;
+                });
+                
+                if (!hasData) {
+                    console.log('No deal terms data available');
+                    document.getElementById('termLengthContent').innerHTML = '<div style="color: var(--neutral--500);">Deal terms information not available</div>';
+                    return;
+                }
+
+                // Term Length
+                let termHtml = '<div class="info-grid-compact">';
+                if (terms.minInitialTerm) {
+                    termHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Minimum Initial Term</div>
+                            <div class="info-item-compact__value">${terms.minInitialTerm} years</div>
+                        </div>
+                    `;
+                }
+                termHtml += '</div>';
+                document.getElementById('termLengthContent').innerHTML = termHtml;
+
+                // Renewal Terms
+                let renewalHtml = '<div class="info-grid-compact">';
+                if (terms.renewalOption) {
+                    renewalHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Renewal Option</div>
+                            <div class="info-item-compact__value">${terms.renewalOption} years</div>
+                        </div>
+                    `;
+                }
+                if (terms.renewalOptionLength) {
+                    renewalHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Renewal Option Length</div>
+                            <div class="info-item-compact__value">${terms.renewalOptionLength}</div>
+                        </div>
+                    `;
+                }
+                if (terms.renewalNoticePeriod) {
+                    const duration = terms.renewalNoticeType && terms.renewalNoticeType !== 'Owner/Franchisee to Brand' 
+                        ? terms.renewalNoticeType 
+                        : 'months';
+                    renewalHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Renewal Notice Period</div>
+                            <div class="info-item-compact__value">${terms.renewalNoticePeriod} ${duration}</div>
+                        </div>
+                    `;
+                }
+                if (terms.renewalNoticeType && terms.renewalNoticeType === 'Owner/Franchisee to Brand') {
+                    renewalHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Renewal Notice Responsibility</div>
+                            <div class="info-item-compact__value">${terms.renewalNoticeType}</div>
+                        </div>
+                    `;
+                }
+                if (terms.renewalConditions) {
+                    renewalHtml += `
+                        <div class="info-item-compact" style="grid-column: 1 / -1; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--neutral--600);">
+                            <div class="info-item-compact__label">Typical Renewal Conditions</div>
+                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(terms.renewalConditions)}</div>
+                        </div>
+                    `;
+                }
+                renewalHtml += '</div>';
+                document.getElementById('renewalTermsContent').innerHTML = renewalHtml;
+
+                // Performance Requirements
+                let perfHtml = '<div class="info-grid-compact">';
+                if (terms.performanceTest) {
+                    perfHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Performance Test Required</div>
+                            <div class="info-item-compact__value">${terms.performanceTest}</div>
+                        </div>
+                    `;
+                }
+                if (terms.performanceTestText) {
+                    perfHtml += `
+                        <div class="info-item-compact" style="grid-column: 1 / -1; margin-top: 10px;">
+                            <div class="info-item-compact__label">Performance Test Details</div>
+                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(terms.performanceTestText)}</div>
+                        </div>
+                    `;
+                }
+                if (terms.curePeriod) {
+                    perfHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Cure Period</div>
+                            <div class="info-item-compact__value">${terms.curePeriod} months</div>
+                        </div>
+                    `;
+                }
+                perfHtml += '</div>';
+                document.getElementById('performanceRequirementsContent').innerHTML = perfHtml;
+
+                // PIP
+                let pipHtml = '<div class="info-grid-compact">';
+                if (terms.mandatoryPIPRenewal) {
+                    pipHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Mandatory PIP at Renewal</div>
+                            <div class="info-item-compact__value">${terms.mandatoryPIPRenewal}</div>
+                        </div>
+                    `;
+                }
+                if (terms.mandatoryPIPConversion) {
+                    pipHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Mandatory PIP at Conversion</div>
+                            <div class="info-item-compact__value">${terms.mandatoryPIPConversion}</div>
+                        </div>
+                    `;
+                }
+                if (terms.conversionMaxTime) {
+                    pipHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Conversion Max Time</div>
+                            <div class="info-item-compact__value">${terms.conversionMaxTime} years</div>
+                        </div>
+                    `;
+                }
+                if (terms.renewalMaxTime) {
+                    pipHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Renewal Max Time</div>
+                            <div class="info-item-compact__value">${terms.renewalMaxTime} years</div>
+                        </div>
+                    `;
+                }
+                pipHtml += '</div>';
+                document.getElementById('pipContent').innerHTML = pipHtml;
+            }
+
+            async function fetchSimilarBrands(currentBrand) {
+                try {
+                    const response = await fetch('/api/brand-library/brands');
+                    const data = await response.json();
+
+                    const container = document.getElementById('similarBrandsContent');
+                    if (!container) return;
+
+                    if (data.success && data.brands) {
+                        const curScale = currentBrand.hotelChainScale || currentBrand.chainScale;
+                        const curSvc = currentBrand.hotelServiceModel || currentBrand.serviceModel;
+                        const curParent = (currentBrand.parentCompany || '').trim();
+
+                        const similar = data.brands
+                            .filter(
+                                (b) =>
+                                    b.id !== currentBrand.id &&
+                                    b.status &&
+                                    String(b.status).toLowerCase().includes('active')
+                            )
+                            .map((b) => {
+                                let similarity = 0;
+                                if (curScale && b.chainScale === curScale) similarity += 3;
+                                if (curSvc && b.serviceModel === curSvc) similarity += 2;
+                                if (curParent && (b.parentCompany || '').trim() === curParent) similarity += 1;
+                                return { ...b, similarity };
+                            })
+                            .filter((b) => b.similarity > 0)
+                            .sort((a, b) => b.similarity - a.similarity)
+                            .slice(0, 6);
+
+                        if (similar.length > 0) {
+                            container.innerHTML = similar
+                                .map((b) => {
+                                    const scaleShort = b.chainScale ? String(b.chainScale).replace(/\s*Chain\s*/i, '').trim() : '';
+                                    const metaLine = [scaleShort, b.serviceModel || ''].filter(Boolean).join(' · ');
+                                    return `<a class="similar-brand-chip" href="brand-library-brand.html?id=${encodeURIComponent(b.id)}" title="${escapeHtml(b.name)}">
+                                        <span class="similar-brand-chip__name">${escapeHtml(b.name)}</span>
+                                        <span class="similar-brand-chip__meta">${escapeHtml(metaLine || 'View')}</span>
+                                    </a>`;
+                                })
+                                .join('');
+                        } else {
+                            container.innerHTML =
+                                '<p style="color: var(--neutral--500); font-size: 13px; margin: 0;">No similar brands found</p>';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching similar brands:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

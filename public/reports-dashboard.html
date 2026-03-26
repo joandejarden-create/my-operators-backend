@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Dealality</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* CSS Variables from Webflow */
+        :root {
+            --neutral--800: #080f25;
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --neutral--400: #aeb9e1;
+            --neutral--300: #d1dbf9;
+            --neutral--200: #d9e1fa;
+            --neutral--100: white;
+            --accent--primary-1: #6c72ff;
+            --secondary--color-1: #101935;
+            --secondary--color-2: #9a91fb;
+            --secondary--color-3: #57c3ff;
+            --secondary--color-4: #343b4f;
+            --secondary--color-5: #fdb52a;
+            --system--green-300: #14ca74;
+            --system--green-400: #11845b;
+            --system--red-300: #ff5a65;
+            --system--red-400: #dc2b2b;
+            --system--blue-400: #086cd9;
+            --general--shadow-01: rgba(20, 20, 43, 0.06);
+            --general--shadow-02: rgba(20, 20, 43, 0.08);
+            --general--shadow-03: rgba(20, 20, 43, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            font-family: "Mona sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.5em;
+            margin: 0;
+            min-height: 100%;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .dashboard-main-section {
+            flex: 1;
+            display: flex;
+        }
+
+        .dashboard-content {
+            flex: 1;
+        }
+
+        .dashboard-main-content {
+            padding-top: 48px;
+            padding-bottom: 64px;
+        }
+
+        .container-default {
+            max-width: 1094px;
+            padding-left: 24px;
+            padding-right: 24px;
+            margin: 0 auto;
+        }
+
+        /* Utilities */
+        .mg-bottom-16px { margin-bottom: 16px; }
+        .mg-bottom-24px { margin-bottom: 24px; }
+        .mg-bottom-32px { margin-bottom: 32px; }
+        .mg-bottom-40px { margin-bottom: 40px; }
+        .mg-bottom-4px { margin-bottom: 4px; }
+        .mg-bottom-10px { margin-bottom: 10px; }
+        .mg-bottom-0 { margin-bottom: 0; }
+        .mg-top-2px { margin-top: 2px; }
+        .width-100 { width: 100%; }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            color: var(--neutral--100);
+            margin: 0;
+        }
+
+        .display-4 {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.333em;
+            color: var(--neutral--100);
+        }
+
+        .text-100 { font-size: 12px; font-weight: 400; line-height: 1.167em; }
+        .text-100.medium { font-weight: 500; }
+        .text-200 { font-size: 14px; font-weight: 400; line-height: 1.143em; }
+        .text-200.medium { font-weight: 500; }
+        .text-300 { font-size: 16px; font-weight: 400; line-height: 1.125em; }
+        .text-300.medium { font-weight: 500; }
+        .paragraph-small { font-size: 10px; line-height: 1.4em; }
+        
+        .color-neutral-100 { color: var(--neutral--100); }
+        .color-neutral-200 { color: var(--neutral--200); }
+        .color-neutral-500 { color: var(--neutral--500); }
+
+        /* Flex Utilities */
+        .flex { display: flex; }
+        .flex-horizontal { display: flex; justify-content: center; align-items: center; }
+        .flex.align-center { align-items: center; }
+        .flex.justify-space-between { justify-content: space-between; }
+        .gap-column-4px { grid-column-gap: 4px; }
+        .gap-column-6px { grid-column-gap: 6px; }
+        .gap-column-8px { grid-column-gap: 8px; }
+        .gap-column-16px { grid-column-gap: 16px; }
+        .gap-column-20px { grid-column-gap: 20px; }
+        .gap-column-24px { grid-column-gap: 24px; }
+        .gap-row-4px { grid-row-gap: 4px; }
+        .gap-row-24px { grid-row-gap: 24px; }
+
+        /* 2-Items Wrap Container */
+        ._2-items-wrap-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px 40px;
+        }
+
+        ._2-items-wrap-container.align-end {
+            align-items: flex-end;
+        }
+
+        /* Grid Utilities */
+        .grid-1-column {
+            grid-template-rows: auto;
+            grid-template-columns: 1fr;
+            grid-auto-columns: 1fr;
+            display: grid;
+        }
+
+        .grid-2-columns {
+            grid-column-gap: 24px;
+            grid-row-gap: 24px;
+            grid-template-rows: auto;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-columns: 1fr;
+            display: grid;
+        }
+
+        .grid-2-columns._1-82fr---1fr {
+            grid-template-columns: 1.82fr 1fr;
+        }
+
+        .grid-2-columns.gap-20px {
+            grid-column-gap: 20px;
+            grid-row-gap: 20px;
+        }
+
+        .grid-2-columns.gap-0 {
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+        }
+
+        .grid-2-columns._1fr---2-05fr {
+            grid-template-columns: 1fr 2.05fr;
+        }
+
+        ._2-small-sections-grid {
+            grid-row-gap: 0px;
+        }
+
+        /* Card Styles */
+        .card {
+            border: 0.6px solid var(--secondary--color-4);
+            background-color: var(--secondary--color-1);
+            box-shadow: 0 2px 7px 0 var(--general--shadow-01);
+            border-radius: 12px;
+        }
+
+        .card.top-details {
+            grid-row-gap: 16px;
+            border-radius: 8px;
+            flex-direction: column;
+            padding: 20px;
+            display: flex;
+            position: relative;
+        }
+
+        .card.pd-30px---36px {
+            padding: 30px 36px;
+        }
+
+        .card.overflow-hidden {
+            overflow: hidden;
+        }
+
+        /* Small Details Card Grid */
+        .small-details-card-grid {
+            grid-column-gap: 8px;
+            grid-row-gap: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            display: grid;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            grid-column-gap: 2px;
+            border: 0.6px solid transparent;
+            border-radius: 2px;
+            justify-content: center;
+            align-items: center;
+            padding: 2px 4px;
+            display: flex;
+        }
+
+        .status-badge.green {
+            color: var(--system--green-300);
+            background-color: #05c16833;
+            border-color: #05c16833;
+        }
+
+        .status-badge.red {
+            color: var(--system--red-300);
+            background-color: #ff5a6533;
+            border-color: #ff5a6533;
+        }
+
+        .status-badge.yellow {
+            color: var(--secondary--color-5);
+            background-color: #ffb01633;
+            border-color: #ffb01633;
+        }
+
+        /* Small Dots */
+        .small-dot {
+            background-color: var(--accent--primary-1);
+            border-radius: 100%;
+            min-width: 8px;
+            max-width: 8px;
+            min-height: 8px;
+            max-height: 8px;
+        }
+
+        .small-dot._4px {
+            min-width: 4px;
+            max-width: 4px;
+            min-height: 4px;
+            max-height: 4px;
+        }
+
+        .small-dot.bg-green-300 { background-color: var(--system--green-300); }
+        .small-dot.bg-secondary-2 { background-color: var(--secondary--color-2); }
+        .small-dot.bg-secondary-3 { background-color: var(--secondary--color-3); }
+        .small-dot.bg-secondary-5 { background-color: var(--secondary--color-5); }
+        .small-dot.bg-neutral-200 { background-color: var(--neutral--200); }
+        .small-dot.bg-neutral-500 { background-color: var(--neutral--500); }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+            text-align: center;
+            border-radius: 4px;
+            justify-content: center;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.125em;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--neutral--700);
+        }
+
+        .btn-secondary {
+            background-color: var(--neutral--700);
+            color: var(--neutral--100);
+            text-align: center;
+            border-radius: 4px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.125em;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent--primary-1);
+        }
+
+        .buttons-row {
+            grid-column-gap: 12px;
+            grid-row-gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            display: flex;
+        }
+
+        .max-h-16px { max-height: 16px; }
+        .max-h-12px { max-height: 12px; }
+        .btn-icon-right { margin-left: 4px; }
+
+        /* Icon Styles */
+        .dashdark-custom-icon {
+            font-family: "Dashdark custom icon font", sans-serif;
+            font-weight: 400;
+        }
+
+        .dashdark-custom-icon.details-icon {
+            color: var(--neutral--200);
+            cursor: pointer;
+            min-width: 16px;
+            max-width: 16px;
+            min-height: 16px;
+            max-height: 16px;
+            margin-left: 8px;
+            font-size: 16px;
+            line-height: 1em;
+            transition: color 0.3s;
+        }
+
+        .dashdark-custom-icon.details-icon:hover {
+            color: var(--accent--primary-1);
+        }
+
+        .dashdark-custom-icon.icon-size-9px {
+            font-size: 9px;
+            line-height: 1em;
+        }
+
+        .dashdark-custom-icon.line-height-1em {
+            line-height: 1em;
+        }
+
+        .line-rounded-icon {
+            font-family: "Line Rounded Icons", sans-serif;
+        }
+
+        .line-rounded-icon.card-dropdown-arrow {
+            line-height: 1em;
+        }
+
+        /* Graph Sections */
+        .graph-large-section-container {
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            display: flex;
+        }
+
+        .graph-small-section-container {
+            flex-direction: column;
+            padding: 24px 28px;
+            display: flex;
+        }
+
+        .border-right-6px---secondary-4 {
+            border-right: 0.6px solid var(--secondary--color-4);
+        }
+
+        .border-bottom-6---secondary-4 {
+            border-bottom: 0.6px solid var(--secondary--color-4);
+        }
+
+        /* Divider */
+        .divider {
+            background-color: var(--neutral--600);
+            min-height: 0.6px;
+            margin-top: 14px;
+            margin-bottom: 14px;
+        }
+
+        /* Dropdown */
+        .small-dropdown-toggle {
+            grid-column-gap: 12px;
+            border: 1px solid var(--neutral--600);
+            background-color: var(--neutral--700);
+            color: var(--neutral--400);
+            border-radius: 4px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            transition: color 0.3s, border-color 0.3s;
+            display: flex;
+            cursor: pointer;
+        }
+
+        .small-dropdown-toggle:hover {
+            border-color: var(--neutral--500);
+            color: var(--neutral--300);
+        }
+
+        .text-decoration-none {
+            text-decoration: none;
+        }
+
+        /* Progress Bars */
+        .progress-bar {
+            background-color: var(--neutral--600);
+            border-radius: 0.8px;
+            width: 100%;
+            max-width: 244px;
+            min-height: 4px;
+            max-height: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inner-progress-bar {
+            background-color: var(--accent--primary-1);
+            position: absolute;
+            inset: 0;
+        }
+
+        .inner-progress-bar.width-30 { width: 30%; }
+        .inner-progress-bar.width-20 { width: 20%; }
+        .inner-progress-bar.width-15 { width: 15%; }
+        .inner-progress-bar.bg-neutral-500 { background-color: var(--neutral--500); }
+        .inner-progress-bar.bg-secondary-2 { background-color: var(--secondary--color-2); }
+        .inner-progress-bar.bg-secondary-3 { background-color: var(--secondary--color-3); }
+        .inner-progress-bar.bg-neutral-200 { background-color: var(--neutral--200); }
+
+        /* Inner Container */
+        .inner-container._252px { max-width: 252px; }
+        .inner-container._562px { max-width: 562px; }
+        .inner-container.center { margin-left: auto; margin-right: auto; }
+
+        /* Table Styles */
+        .table-main-container {
+            margin-bottom: -0.6px;
+            padding-bottom: 0.6px;
+            overflow: auto;
+        }
+
+        .recent-orders-table-row {
+            grid-column-gap: 10px;
+            border-bottom: 0.6px solid var(--neutral--600);
+            grid-template-rows: auto;
+            grid-template-columns: 1.1fr 1fr 0.6fr 0.6fr;
+            grid-auto-columns: 1fr;
+            align-items: center;
+            min-width: 400px;
+            min-height: 48px;
+            margin-bottom: -0.6px;
+            padding: 12px 28px;
+            display: grid;
+        }
+
+        .recent-orders-table-row.table-header {
+            min-height: 28px;
+            padding-top: 0;
+            padding-bottom: 16px;
+        }
+
+        .text-50 { font-size: 10px; font-weight: 400; line-height: 1em; }
+        .text-50.medium { font-weight: 500; }
+        .text-50.semibold { font-weight: 600; }
+
+        .mg-bottom-auto { margin-bottom: auto; }
+        .mg-sides-0 { margin-left: 0; margin-right: 0; }
+        .position-relative---z-index-1 { z-index: 1; position: relative; }
+
+        .percentage-bars-small-section-container {
+            border-right: 0.6px solid var(--neutral--600);
+            padding: 28px;
+        }
+
+        .pd-20px---52px {
+            padding: 20px 52px;
+        }
+
+        ._2-items-wrap-container.pd-32px---28px {
+            padding: 32px 28px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-container.large {
+            height: 400px;
+        }
+
+        /* Footer */
+        .dashboard-footer-wrapper {
+            border-top: 0.6px solid var(--neutral--600);
+            text-align: center;
+            padding-top: 32px;
+            padding-bottom: 32px;
+        }
+
+        .d-inline { display: inline; }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .small-details-card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-2-columns,
+            .grid-2-columns._1-82fr---1fr {
+                grid-template-columns: 1fr;
+            }
+
+            .border-right-6px---secondary-4 {
+                border-right: none;
+                border-bottom: 0.6px solid var(--secondary--color-4);
+            }
+
+            .graph-large-section-container {
+                padding: 24px;
+            }
+
+            .percentage-bars-small-section-container {
+                border-right: none;
+                border-bottom: 0.6px solid var(--secondary--color-4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="dashboard-main-section">
+            <div class="dashboard-content">
+                <div class="dashboard-main-content">
+                    <div class="container-default">
+                        <!-- Header Section -->
+                        <div class="mg-bottom-32px">
+                            <div class="_2-items-wrap-container">
+                                <div>
+                                    <h1 class="display-4 mg-bottom-4px">Welcome back, John</h1>
+                                    <p class="mg-bottom-0">Measure your advertising ROI and report website traffic.</p>
+                                </div>
+                                <div class="buttons-row">
+                                    <a href="#" class="btn-secondary">
+                                        <div class="flex-horizontal gap-column-6px">
+                                            <div>Export data</div>
+                                            <span class="btn-icon-right">↓</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="btn-primary">
+                                        <div class="flex-horizontal gap-column-6px">
+                                            <div>Create report</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Metrics Cards -->
+                        <div class="mg-bottom-16px">
+                            <div class="small-details-card-grid">
+                                <!-- Pageviews Card -->
+                                <div class="card top-details">
+                                    <div class="flex-horizontal justify-space-between">
+                                        <div class="flex align-center gap-column-4px">
+                                            <span class="max-h-16px">👁️</span>
+                                            <div class="text-100 medium mg-top-2px">Pageviews</div>
+                                        </div>
+                                        <div class="dashdark-custom-icon details-icon">ℹ</div>
+                                    </div>
+                                    <div class="flex align-center gap-column-6px">
+                                        <div class="display-4">50.8K</div>
+                                        <div>
+                                            <div class="status-badge green">
+                                                <div class="flex align-center gap-column-4px">
+                                                    <div class="paragraph-small">28.4%</div>
+                                                </div>
+                                                <div class="dashdark-custom-icon icon-size-9px">↑</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Monthly Users Card -->
+                                <div class="card top-details">
+                                    <div class="flex-horizontal justify-space-between">
+                                        <div class="flex align-center gap-column-4px">
+                                            <span class="max-h-16px">👤</span>
+                                            <div class="text-100 medium mg-top-2px">Monthly users</div>
+                                        </div>
+                                        <div class="dashdark-custom-icon details-icon">ℹ</div>
+                                    </div>
+                                    <div class="flex align-center gap-column-6px">
+                                        <div class="display-4">23.6K</div>
+                                        <div>
+                                            <div class="status-badge red">
+                                                <div class="flex align-center gap-column-4px">
+                                                    <div class="paragraph-small">12.6%</div>
+                                                </div>
+                                                <div class="dashdark-custom-icon icon-size-9px">↓</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- New Sign Ups Card -->
+                                <div class="card top-details">
+                                    <div class="flex-horizontal justify-space-between">
+                                        <div class="flex align-center gap-column-4px">
+                                            <span class="max-h-16px">➕</span>
+                                            <div class="text-100 medium mg-top-2px">New sign ups</div>
+                                        </div>
+                                        <div class="dashdark-custom-icon details-icon">ℹ</div>
+                                    </div>
+                                    <div class="flex align-center gap-column-6px">
+                                        <div class="display-4">756</div>
+                                        <div>
+                                            <div class="status-badge green">
+                                                <div class="flex align-center gap-column-4px">
+                                                    <div class="paragraph-small">3.1%</div>
+                                                </div>
+                                                <div class="dashdark-custom-icon icon-size-9px">↑</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Subscriptions Card -->
+                                <div class="card top-details">
+                                    <div class="flex-horizontal justify-space-between">
+                                        <div class="flex align-center gap-column-4px">
+                                            <span class="max-h-16px">⭐</span>
+                                            <div class="text-100 medium mg-top-2px">Subscriptions</div>
+                                        </div>
+                                        <div class="dashdark-custom-icon details-icon">ℹ</div>
+                                    </div>
+                                    <div class="flex align-center gap-column-6px">
+                                        <div class="display-4">2.3K</div>
+                                        <div>
+                                            <div class="status-badge green">
+                                                <div class="flex align-center gap-column-4px">
+                                                    <div class="paragraph-small">11.3%</div>
+                                                </div>
+                                                <div class="dashdark-custom-icon icon-size-9px">↑</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Charts Section -->
+                        <div class="mg-bottom-40px">
+                            <div class="card">
+                                <div class="grid-2-columns _1-82fr---1fr gap-0">
+                                    <!-- Total Revenue Chart -->
+                                    <div class="border-right-6px---secondary-4">
+                                        <div class="graph-large-section-container">
+                                            <div class="_2-items-wrap-container mg-bottom-24px">
+                                                <div>
+                                                    <div class="text-200 medium mg-bottom-10px">Total revenue</div>
+                                                    <div class="flex align-center gap-column-6px">
+                                                        <div class="display-4">$240.8K</div>
+                                                        <div>
+                                                            <div class="status-badge green">
+                                                                <div class="flex align-center gap-column-4px">
+                                                                    <div class="small-dot _4px bg-green-300"></div>
+                                                                    <div class="paragraph-small">24.6%</div>
+                                                                </div>
+                                                                <div class="dashdark-custom-icon icon-size-9px">↑</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="_2-items-wrap-container gap-column-16px">
+                                                    <div class="flex align-center gap-column-24px">
+                                                        <div class="flex align-center gap-column-8px">
+                                                            <div class="small-dot"></div>
+                                                            <div class="text-100 medium">Revenue</div>
+                                                        </div>
+                                                        <div class="flex align-center gap-column-8px">
+                                                            <div class="small-dot bg-secondary-3"></div>
+                                                            <div class="text-100 medium">Expenses</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mg-sides-0 position-relative---z-index-1">
+                                                        <div class="small-dropdown-toggle">
+                                                            <div class="flex align-center gap-column-4px">
+                                                                <div class="dashdark-custom-icon line-height-1em">📅</div>
+                                                                <div class="text-50 medium">Jan 2024 - Dec 2024</div>
+                                                            </div>
+                                                            <div class="line-rounded-icon card-dropdown-arrow">▼</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chart-container large">
+                                                <canvas id="revenueChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Column: Total Profit & Total Sessions -->
+                                    <div class="grid-1-column _2-small-sections-grid">
+                                        <!-- Total Profit Chart -->
+                                        <div class="border-bottom-6---secondary-4">
+                                            <div class="graph-small-section-container">
+                                                <div class="mg-bottom-4px">
+                                                    <div class="flex align-center gap-column-4px">
+                                                        <span class="max-h-16px">💰</span>
+                                                        <div class="text-100 medium mg-top-2px">Total profit</div>
+                                                    </div>
+                                                </div>
+                                                <div class="mg-bottom-24px">
+                                                    <div class="flex align-center gap-column-6px">
+                                                        <div class="display-4">$144.6K</div>
+                                                        <div>
+                                                            <div class="status-badge green">
+                                                                <div class="flex align-center gap-column-4px">
+                                                                    <div class="small-dot _4px bg-green-300"></div>
+                                                                    <div class="paragraph-small">28.5%</div>
+                                                                </div>
+                                                                <div class="dashdark-custom-icon icon-size-9px">↑</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="chart-container">
+                                                    <canvas id="profitChart"></canvas>
+                                                </div>
+                                                <div class="divider"></div>
+                                                <div class="_2-items-wrap-container">
+                                                    <div class="text-100">Last 12 months</div>
+                                                    <a href="#" class="text-100 text-decoration-none">View report</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Total Sessions Chart -->
+                                        <div class="graph-small-section-container">
+                                            <div class="mg-bottom-4px">
+                                                <div class="flex align-center gap-column-4px">
+                                                    <span class="max-h-16px">📊</span>
+                                                    <div class="text-100 medium mg-top-2px">Total sessions</div>
+                                                </div>
+                                            </div>
+                                            <div class="mg-bottom-24px">
+                                                <div class="flex align-center gap-column-6px">
+                                                    <div class="display-4">400</div>
+                                                    <div>
+                                                        <div class="status-badge green">
+                                                            <div class="flex align-center gap-column-4px">
+                                                                <div class="paragraph-small">16.8%</div>
+                                                            </div>
+                                                            <div class="dashdark-custom-icon icon-size-9px">↑</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chart-container">
+                                                <canvas id="sessionsChart"></canvas>
+                                            </div>
+                                            <div class="divider"></div>
+                                            <div class="_2-items-wrap-container">
+                                                <div class="flex align-center gap-column-6px">
+                                                    <div class="status-badge green">
+                                                        <div class="flex align-center gap-column-4px">
+                                                            <div class="small-dot _4px bg-green-300"></div>
+                                                            <div class="paragraph-small">Live</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-100 medium color-neutral-500">10k visitors</div>
+                                                </div>
+                                                <a href="#" class="text-100 text-decoration-none">View report</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reports Overview Section -->
+                        <div class="mg-bottom-24px">
+                            <div class="_2-items-wrap-container align-end">
+                                <div>
+                                    <h2 class="display-4">Reports overview</h2>
+                                </div>
+                                <div class="buttons-row">
+                                    <a href="#" class="btn-secondary">
+                                        <div class="flex-horizontal gap-column-6px">
+                                            <div>Export data</div>
+                                            <span class="btn-icon-right">↓</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="btn-primary">
+                                        <div class="flex-horizontal gap-column-6px">
+                                            <div>Create report</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Users by Country -->
+                        <div class="card">
+                            <div class="grid-2-columns _1fr---2-05fr gap-0">
+                                <div class="percentage-bars-small-section-container">
+                                    <div class="_2-items-wrap-container mg-bottom-24px">
+                                        <div class="grid-1-column gap-row-4px">
+                                            <div class="text-300 medium color-neutral-100">Users by country</div>
+                                            <div class="flex align-center gap-column-6px">
+                                                <div class="display-4">12.4 K</div>
+                                                <div>
+                                                    <div class="status-badge green">
+                                                        <div class="flex align-center gap-column-4px">
+                                                            <div class="small-dot _4px bg-green-300"></div>
+                                                            <div class="paragraph-small">28.5%</div>
+                                                        </div>
+                                                        <div class="dashdark-custom-icon icon-size-9px">↑</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="btn-secondary">
+                                            <div class="flex-horizontal gap-column-6px">
+                                                <div>Export</div>
+                                                <span class="btn-icon-right">↓</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="grid-1-column gap-row-24px">
+                                        <div>
+                                            <div class="text-100">United states</div>
+                                            <div class="flex align-center gap-column-20px">
+                                                <div class="progress-bar">
+                                                    <div class="inner-progress-bar width-30"></div>
+                                                </div>
+                                                <div class="text-100">30%</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="text-100">United Kingdom</div>
+                                            <div class="flex align-center gap-column-20px">
+                                                <div class="progress-bar">
+                                                    <div class="inner-progress-bar width-20 bg-neutral-500"></div>
+                                                </div>
+                                                <div class="text-100">20%</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="text-100">Canada</div>
+                                            <div class="flex align-center gap-column-20px">
+                                                <div class="progress-bar">
+                                                    <div class="inner-progress-bar width-20 bg-secondary-2"></div>
+                                                </div>
+                                                <div class="text-100">20%</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="text-100">Australia</div>
+                                            <div class="flex align-center gap-column-20px">
+                                                <div class="progress-bar">
+                                                    <div class="inner-progress-bar width-15 bg-secondary-3"></div>
+                                                </div>
+                                                <div class="text-100">15%</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="text-100">Spain</div>
+                                            <div class="flex align-center gap-column-20px">
+                                                <div class="progress-bar">
+                                                    <div class="inner-progress-bar width-15 bg-neutral-200"></div>
+                                                </div>
+                                                <div class="text-100">15%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pd-20px---52px">
+                                    <div class="inner-container _562px">
+                                        <div style="width: 100%; height: 300px; background: var(--neutral--700); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--neutral--500);">
+                                            [World Map]
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="dashboard-footer-wrapper">
+                    <div class="container-default">
+                        <div class="text-200 medium d-inline">
+                            <script>document.write(new Date().getFullYear());</script>
+                            Copyright © Dealality
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Revenue Chart (Area chart with two datasets)
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [
+                    {
+                        label: 'Revenue',
+                        data: [50, 80, 110, 140, 150, 125, 155, 175, 200, 180, 160, 140],
+                        borderColor: '#9a91fb',
+                        backgroundColor: 'rgba(154, 145, 251, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#9a91fb',
+                        pointHoverBorderColor: '#fff',
+                        pointHoverBorderWidth: 2
+                    },
+                    {
+                        label: 'Expenses',
+                        data: [30, 50, 70, 90, 100, 95, 85, 75, 70, 65, 60, 55],
+                        borderColor: '#57c3ff',
+                        backgroundColor: 'rgba(87, 195, 255, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#57c3ff',
+                        pointHoverBorderColor: '#fff',
+                        pointHoverBorderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#080f25',
+                        bodyColor: '#37446b',
+                        borderColor: '#d9e1fa',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#7e89ac',
+                            font: { size: 11 }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(126, 137, 172, 0.1)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#7e89ac',
+                            font: { size: 11 },
+                            callback: function(value) {
+                                return value + 'K';
+                            },
+                            stepSize: 25
+                        },
+                        max: 250
+                    }
+                }
+            }
+        });
+
+        // Profit Chart (Vertical bar chart)
+        const profitCtx = document.getElementById('profitChart').getContext('2d');
+        const hourlyProfitData = [];
+        for (let i = 0; i < 24; i++) {
+            hourlyProfitData.push(Math.random() * 8000 + 2000);
+        }
+        
+        const profitChart = new Chart(profitCtx, {
+            type: 'bar',
+            data: {
+                labels: Array.from({length: 24}, (_, i) => i),
+                datasets: [{
+                    data: hourlyProfitData,
+                    backgroundColor: '#6c72ff',
+                    borderRadius: 2,
+                    barThickness: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#080f25',
+                        bodyColor: '#37446b',
+                        borderColor: '#d9e1fa',
+                        borderWidth: 1,
+                        padding: 8,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: {
+                            color: '#7e89ac',
+                            font: { size: 10 },
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 4
+                        }
+                    },
+                    y: {
+                        display: false,
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Sessions Chart (Line chart)
+        const sessionsCtx = document.getElementById('sessionsChart').getContext('2d');
+        const hourlySessionsData = [];
+        for (let i = 0; i < 24; i++) {
+            const baseValue = 150 + Math.sin(i / 3) * 100;
+            hourlySessionsData.push(baseValue + (Math.random() * 150));
+        }
+        
+        const sessionsChart = new Chart(sessionsCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 24}, (_, i) => i),
+                datasets: [{
+                    data: hourlySessionsData,
+                    borderColor: '#9a91fb',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.1,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: '#9a91fb',
+                    pointHoverBorderColor: '#fff',
+                    pointHoverBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#080f25',
+                        bodyColor: '#37446b',
+                        borderColor: '#d9e1fa',
+                        borderWidth: 1,
+                        padding: 8,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false, drawBorder: false },
+                        ticks: {
+                            color: '#7e89ac',
+                            font: { size: 10 },
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 4
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(126, 137, 172, 0.1)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#7e89ac',
+                            font: { size: 10 },
+                            stepSize: 100
+                        },
+                        max: 500
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

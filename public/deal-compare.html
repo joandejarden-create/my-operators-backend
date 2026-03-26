@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Compare - Dealality Platform</title>
+    <style>
+        /* CSS Variables - Matching Partner Directory, Clause Library, Financial Terms */
+        :root {
+            --neutral--800: #080f25;
+            --neutral--400: #aeb9e1;
+            --neutral--100: white;
+            --accent--primary-1: #6c72ff;
+            --secondary--color-4: #343b4f;
+            --secondary--color-1: #101935;
+            --general--shadow-01: #14142b0f;
+            --secondary--color-2: #9a91fb;
+            --secondary--color-3: #57c3ff;
+            --secondary--color-5: #fdb52a;
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --neutral--200: #d9e1fa;
+            --system--green-300: #14ca74;
+            --system--300: #ff5a65;
+            --system--blue-400: #086cd9;
+            --system--green-400: #11845b;
+            --system--orange-400: #d5691b;
+            --general--shadow-03: #14142b1a;
+            --system--red-100: #ffeff0;
+            --neutral--300: #d1dbf9;
+            --general--shadow-02: #14142b14;
+            --system--red-400: #dc2b2b;
+            --system--blue-100: #eaf4ff;
+            --system--blue-300: #1d88fe;
+            --system--blue-200: #8fc3ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scrollbar-gutter: stable; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            overflow-x: hidden;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5em;
+            min-height: 100vh;
+            scrollbar-gutter: stable;
+        }
+
+        .page-wrapper { min-height: 100vh; display: flex; }
+
+        .sidebar-wrapper {
+            z-index: 500;
+            border-right: 0.6px solid var(--neutral--600);
+            background-color: var(--neutral--800);
+            width: 300px;
+            min-width: 300px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-padding { padding: 20px; }
+
+        .sidebar-wrapper h2 {
+            color: var(--neutral--100);
+            margin-bottom: 30px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .sidebar-wrapper nav { display: flex; flex-direction: column; gap: 8px; }
+
+        .sidebar-wrapper nav a {
+            color: var(--neutral--400);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .sidebar-wrapper nav a:hover {
+            background-color: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .sidebar-wrapper nav a.active {
+            background-color: rgba(102, 126, 234, 0.15);
+            color: var(--neutral--100);
+            border-left: 3px solid #667eea;
+            padding-left: 13px;
+        }
+
+        .embed-mode .sidebar-wrapper { display: none !important; }
+        .embed-mode .dashboard-main-section { margin-left: 0 !important; }
+        .embed-mode .deal-compare-container { max-width: 100% !important; }
+        .embed-mode #brandSelectorSection { display: none !important; }
+
+        .dashboard-main-section {
+            flex: 1;
+            margin-left: 300px;
+            min-width: 0;
+        }
+
+        .deal-compare-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .deal-compare__header { margin-bottom: 24px; }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--neutral--500);
+        }
+
+        .breadcrumb a { color: var(--neutral--400); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--neutral--100); }
+        .breadcrumb-separator { color: var(--neutral--600); }
+
+        .deal-compare-title-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .deal-capture-logo {
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .deal-capture-logo img {
+            height: 100%;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+        }
+
+        .deal-compare__header h1 {
+            color: var(--neutral--100);
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2em;
+        }
+
+        .deal-compare__header p {
+            color: var(--neutral--400);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Brand selector – same structure/size as Partner Directory filters + results grid */
+        .brand-selector-section {
+            margin-bottom: 24px;
+        }
+
+        .brand-selector-section .section-title {
+            color: var(--neutral--100);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .brand-selector-section .section-desc {
+            color: var(--neutral--400);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        /* Filter wrapper – compact; search, add-brand dropdown, actions, then chips row */
+        .brand-selector-filters {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 16px;
+        }
+
+        .brand-selector-filters .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .brand-selector-filters .filter-group-search {
+            flex: 1;
+            min-width: 160px;
+            max-width: 280px;
+        }
+
+        .brand-add-group {
+            min-width: 180px;
+        }
+
+        .filter-group-priority {
+            min-width: 180px;
+        }
+
+        .filter-priority-select {
+            width: 100%;
+            padding: 10px 32px 10px 12px;
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            background: var(--secondary--color-1);
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aeb9e1' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        .filter-priority-select:hover {
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .filter-priority-select:focus {
+            outline: none;
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .brand-dropdown-wrap {
+            position: relative;
+        }
+
+        .brand-dropdown-trigger {
+            width: 100%;
+            padding: 10px 32px 10px 12px;
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            background: var(--secondary--color-1);
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aeb9e1' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .brand-dropdown-trigger:hover {
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .brand-dropdown-trigger[aria-expanded="true"] {
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .brand-dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            max-height: 220px;
+            overflow-y: auto;
+            background: var(--secondary--color-1);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .brand-dropdown-list[aria-hidden="true"] {
+            display: none;
+        }
+
+        .brand-dropdown-list[aria-hidden="false"] {
+            display: block;
+        }
+
+        .brand-dropdown-item {
+            padding: 10px 12px;
+            font-size: 14px;
+            color: var(--neutral--400);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .brand-dropdown-item:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .brand-dropdown-item:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .brand-chips-row {
+            flex: 1 1 auto;
+            min-width: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            align-self: flex-end;
+        }
+
+        .brand-chips-row:empty {
+            display: none;
+        }
+
+        .brand-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: rgba(108, 114, 255, 0.15);
+            border: 0.6px solid var(--accent--primary-1);
+            border-radius: 6px;
+            color: var(--neutral--100);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .brand-chip button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            border: none;
+            background: var(--neutral--600);
+            color: var(--neutral--100);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+
+        .brand-chip button:hover {
+            background: var(--system--300);
+        }
+
+        .brand-selector-filters .filter-label {
+            color: var(--neutral--400);
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .brand-selector-filters .filter-search-input {
+            background: var(--secondary--color-1);
+            border: 0.6px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            width: 100%;
+            min-width: 200px;
+            max-width: 280px;
+            box-sizing: border-box;
+        }
+
+        .brand-selector-filters .filter-search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .brand-selector-filters .filter-search-input::placeholder {
+            color: var(--neutral--500);
+        }
+
+        .brand-selector-filters .filter-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+
+        .compare-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--secondary--color-2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+        }
+
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-secondary {
+            background: var(--secondary--color-4);
+            color: var(--neutral--100);
+            border: 0.6px solid var(--neutral--600);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+            background: var(--neutral--700);
+        }
+
+        .selected-count {
+            font-size: 12px;
+            color: var(--neutral--500);
+            display: inline-block;
+            max-width: 88px;
+            line-height: 1.4;
+            min-height: 40px;
+            vertical-align: middle;
+        }
+
+        .bulk-actions-btn, .filters-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 0.6px solid var(--neutral--600);
+            background: var(--secondary--color-4);
+            color: var(--neutral--400);
+            transition: all 0.3s;
+        }
+
+        .bulk-actions-btn:hover, .filters-btn:hover {
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+            background: var(--neutral--700);
+        }
+
+        .filters-btn { display: inline-flex; align-items: center; gap: 8px; }
+
+        .filter-reset-btn {
+            padding: 8px 12px;
+            background: var(--secondary--color-5);
+            border: 1px solid var(--secondary--color-5);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .filter-reset-btn:hover {
+            background: var(--system--orange-400);
+            border-color: var(--system--orange-400);
+            transform: translateY(-1px);
+        }
+        .filter-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            margin: 0;
+            z-index: 10;
+        }
+        .brand-selector-filters .filter-group:has(.filter-reset-btn) {
+            overflow: visible;
+        }
+
+        /* Comparison table - dark theme (Partner/Clause style) */
+        .table-wrapper {
+            background: var(--secondary--color-1);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            overflow: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .comparison-table {
+            min-width: 900px;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--neutral--600);
+            vertical-align: middle;
+        }
+
+        .comparison-table thead th {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            font-weight: 600;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .comparison-table thead th:first-child {
+            min-width: 260px;
+            position: sticky;
+            left: 0;
+            z-index: 3;
+            background: var(--neutral--700);
+        }
+
+        .comparison-table tbody td:first-child {
+            background: var(--neutral--700);
+            color: var(--neutral--300);
+            font-weight: 500;
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+
+        .comparison-table tbody tr:nth-child(even) td:first-child {
+            background: var(--neutral--600);
+        }
+
+        .comparison-table tbody td {
+            color: var(--neutral--200);
+        }
+
+        .comparison-table tbody tr:nth-child(even) td { background: rgba(55, 68, 107, 0.2); }
+
+        .section-header-row th {
+            background: var(--secondary--color-1) !important;
+            color: var(--neutral--100) !important;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+
+        .section-header-row th:first-child { background: var(--secondary--color-1) !important; }
+
+        .metric-label, .metric-label-cell { min-width: 260px; }
+        .metric-label[title], .metric-label-cell .metric-label-text[title] { cursor: help; }
+        .metric-label-cell { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px; }
+        .metric-tooltip-icon { cursor: help; font-size: 0.85em; opacity: 0.85; margin-left: 4px; color: var(--neutral--500); font-weight: 600; border: none; background: none; }
+        .metric-tooltip-icon:hover { color: var(--accent--primary-1); }
+        .cell-value { font-weight: 500; }
+        .cell-na { color: var(--neutral--500); font-style: italic; }
+        .brand-col { min-width: 140px; }
+        .cell-best { background: rgba(20, 202, 116, 0.15) !important; color: var(--system--green-300) !important; font-weight: 600; }
+        .cell-best::after { content: " ✓"; font-size: 0.85em; }
+        .cell-worst { background: rgba(126, 137, 172, 0.2) !important; color: var(--neutral--400); }
+
+        .comparison-section {
+            margin-top: 8px;
+        }
+
+        .comparison-content {
+            margin-top: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--neutral--400);
+            border: 0.6px dashed var(--neutral--600);
+            border-radius: 8px;
+            background: rgba(55, 68, 107, 0.15);
+        }
+
+        .empty-state h3 {
+            color: var(--neutral--100);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        /* Loading animation – same as other tabs */
+        .loading-deals { padding: 40px; text-align: center; }
+        .loading-deals .loading {
+            position: relative; top: auto; left: auto; transform: none;
+            margin: 0 auto; display: inline-block;
+        }
+        .loading { position: relative; background: rgba(0,0,0,0.85); color: #fff; padding: 20px 24px; border-radius: 12px; min-width: 280px; border: 1px solid rgba(255,255,255,0.1); }
+        .loading-content { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .loading .wave-container { width: 32px; height: 32px; position: relative; background: var(--neutral--700); border-radius: 50%; border: 2px solid var(--neutral--600); overflow: hidden; flex-shrink: 0; }
+        .loading .wave { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; }
+        .loading .wave-1 { height: 40%; background: linear-gradient(45deg, #d69e2e, #f4d03f); animation: dc-wave-1 2s ease-in-out infinite; animation-delay: 0s; }
+        .loading .wave-2 { height: 60%; background: linear-gradient(45deg, #b8860b, #d69e2e); animation: dc-wave-2 2s ease-in-out infinite; animation-delay: 0.3s; }
+        .loading .wave-3 { height: 80%; background: linear-gradient(45deg, #f4d03f, #f7dc6f); animation: dc-wave-3 2s ease-in-out infinite; animation-delay: 0.6s; }
+        .loading .wave-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .loading .particle { position: absolute; width: 2px; height: 2px; background: #d69e2e; border-radius: 50%; animation: dc-particle-float 3s ease-in-out infinite; box-shadow: 0 0 4px #d69e2e; }
+        .loading .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+        .loading-text-main { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 4px; }
+        .loading-text-time { font-size: 12px; color: var(--neutral--400); }
+        .loading-progress { width: 100%; height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+        .loading-progress-bar { height: 100%; background: linear-gradient(90deg, #fdb52a, #d5691b); border-radius: 2px; animation: dc-progress 3s ease-in-out infinite; }
+        @keyframes dc-progress { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
+        @keyframes dc-wave-1 { 0%,100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; } 50% { transform: translateX(0%) scaleY(1.2); opacity: 1; } }
+        @keyframes dc-wave-2 { 0%,100% { transform: translateX(100%) scaleY(1); opacity: 0.6; } 50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; } }
+        @keyframes dc-wave-3 { 0%,100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; } 50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; } }
+        @keyframes dc-particle-float { 0% { transform: translateY(100%) scale(0); opacity: 0; } 20% { transform: translateY(80%) scale(1); opacity: 1; } 80% { transform: translateY(20%) scale(1); opacity: 1; } 100% { transform: translateY(0%) scale(0); opacity: 0; } }
+
+        .comparison-table[data-priority] tbody tr[data-priority] { opacity: 1; }
+        .comparison-table[data-priority] tbody tr:not([data-priority]) { opacity: 0.4; }
+        .comparison-table[data-priority] tbody tr[data-priority] td { background: rgba(108, 114, 255, 0.12) !important; }
+
+        .summary-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .summary-card {
+            background: var(--secondary--color-1);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 4px solid var(--accent--primary-1);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .summary-card__name { color: var(--neutral--100); font-weight: 700; font-size: 15px; margin-bottom: 12px; }
+        .summary-card__list { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+        .summary-card__list li { padding: 4px 0; padding-left: 14px; position: relative; color: var(--neutral--300); }
+        .summary-card__list li::before { content: "•"; position: absolute; left: 0; color: var(--accent--primary-1); }
+        .summary-card__strengths li::before { color: var(--system--green-300); }
+        .summary-card__considerations { margin-top: 12px; }
+        .summary-card__considerations .summary-card__list li::before { color: var(--system--orange-400); }
+        .summary-card__section-title { font-size: 11px; font-weight: 600; color: var(--neutral--400); text-transform: uppercase; margin-bottom: 6px; }
+
+        .comparison-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+        .comparison-tab {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--neutral--400);
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            margin-bottom: -1px;
+        }
+        .comparison-tab:hover { color: var(--neutral--100); }
+        .comparison-tab.comparison-tab--active {
+            color: var(--accent--primary-1);
+            border-bottom-color: var(--accent--primary-1);
+        }
+        .comparison-tab-panel { display: none; }
+        .comparison-tab-panel.comparison-tab-panel--active { display: block; }
+        .analysis-extra { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--neutral--600); }
+        .analysis-extra .fee-index-title { font-size: 15px; margin-bottom: 8px; }
+        .analysis-extra .fee-index-desc { font-size: 13px; }
+
+        .fee-index-section {
+            background: rgba(108, 114, 255, 0.06);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .fee-index-title { color: var(--neutral--100); font-size: 16px; margin-bottom: 6px; }
+        .fee-index-desc { color: var(--neutral--500); font-size: 12px; margin-bottom: 12px; }
+        .fee-index-assumptions { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; }
+        .fee-index-assumptions label { display: flex; align-items: center; gap: 8px; color: var(--neutral--400); font-size: 13px; }
+        .fee-index-input { width: 80px; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--neutral--600); background: var(--neutral--700); color: var(--neutral--100); }
+        .fee-index-results { display: flex; flex-wrap: wrap; gap: 12px; }
+        .fee-index-brand { background: var(--neutral--700); padding: 10px 14px; border-radius: 6px; font-size: 13px; }
+        .fee-index-brand strong { color: var(--neutral--100); }
+        .fee-index-brand span { color: var(--neutral--400); margin-left: 6px; }
+
+        .comparison-data-source {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--neutral--500);
+        }
+
+        .filter-label--with-help { cursor: help; }
+        .filter-label-help {
+            margin-left: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--neutral--500);
+            border: 1px solid var(--neutral--500);
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+        }
+        .filter-label--with-help:hover .filter-label-help { color: var(--accent--primary-1); border-color: var(--accent--primary-1); }
+
+        .jump-to-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 16px;
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            background: rgba(55, 68, 107, 0.25);
+            border-radius: 6px;
+            border: 0.6px solid var(--neutral--600);
+        }
+        .jump-to-section__label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--neutral--400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .jump-to-section__links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+        }
+        .jump-to-section__links a {
+            font-size: 13px;
+            color: var(--neutral--300);
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .jump-to-section__links a:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+        .jump-to-section__expand-collapse {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 8px;
+            padding-right: 12px;
+            border-right: 1px solid var(--neutral--600);
+        }
+        .jump-to-section__expand-collapse button {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 0.6px solid var(--neutral--600);
+            background: var(--secondary--color-4);
+            color: var(--neutral--300);
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .jump-to-section__expand-collapse button:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            border-color: var(--accent--primary-1);
+        }
+
+        .comparison-legend {
+            font-size: 12px;
+            color: var(--neutral--500);
+            margin-bottom: 12px;
+        }
+        .comparison-legend span { margin-right: 16px; }
+        .comparison-legend .legend-best { color: var(--system--green-300); font-weight: 500; }
+        .comparison-legend .legend-consider { color: var(--neutral--400); }
+
+        .section-header-row th { position: relative; }
+        .section-header-row[data-collapsible="true"] th { cursor: pointer; padding-right: 36px; }
+        .section-header-row .section-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: var(--neutral--100);
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .section-header-row .section-toggle:hover { background: rgba(255,255,255,0.25); }
+        .comparison-table.collapsed-executive-summary tbody tr[data-section="executive-summary"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-incentives tbody tr[data-section="incentives"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-footprint tbody tr[data-section="footprint"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-loyalty tbody tr[data-section="loyalty"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-commercial tbody tr[data-section="commercial"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-customer-acquisition tbody tr[data-section="customer-acquisition"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-exit tbody tr[data-section="exit"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-capital-pip tbody tr[data-section="capital-pip"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-support-training tbody tr[data-section="support-training"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-territory tbody tr[data-section="territory"]:not(.section-header-row) { display: none; }
+        .comparison-table.collapsed-renewal-risk tbody tr[data-section="renewal-risk"]:not(.section-header-row) { display: none; }
+
+        .fee-index-period { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+        .fee-index-period label { display: flex; align-items: center; gap: 6px; color: var(--neutral--400); font-size: 13px; cursor: pointer; }
+        .fee-index-period input[type="radio"] { cursor: pointer; }
+
+        @media print {
+            .sidebar-wrapper, .brand-selector-section, .btn, .fee-index-section, .no-print { display: none !important; }
+            .comparison-section, .comparison-content, .table-wrapper { display: block !important; }
+            body { background: #fff; color: #111; }
+            .comparison-table td, .comparison-table th { color: #111; background: #f5f5f5 !important; }
+            .comparison-table .cell-best { background: #e6f7ed !important; color: #0d6b30; }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar-wrapper { display: none; }
+            .dashboard-main-section { margin-left: 0; }
+            .back-to-top { right: 16px; bottom: 16px; width: 40px; height: 40px; font-size: 18px; }
+        }
+    </style>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="sidebar-wrapper">
+            <div class="sidebar-padding">
+                <h2>Dealality</h2>
+                <nav>
+                    <a href="#">🏠 Home</a>
+                    <a href="#">📊 Deals</a>
+                    <a href="market-alerts.html">📈 Market Alerts</a>
+                    <a href="#">🏢 Deal Room</a>
+                    <a href="#">🤝 Outreach Hub</a>
+                    <a href="clause-library.html">📚 Legal Library</a>
+                    <a href="brand-library.html">🏨 Brand Library</a>
+                    <a href="deal-compare.html" class="active">⚖️ Deal Compare</a>
+                    <a href="partner-directory.html">👥 Partner Directory</a>
+                    <a href="#">📋 Platform Resources</a>
+                    <a href="#">📊 Reports</a>
+                    <a href="#">❓ Support</a>
+                    <a href="#">⚙️ Settings</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="dashboard-main-section">
+            <div class="deal-compare-container">
+                <div id="brandSelectorSection" class="brand-selector-section">
+                    <div class="brand-selector-filters">
+                        <div class="filter-group filter-group-search">
+                            <label class="filter-label" for="brandSearchInput">Search</label>
+                            <input type="text" id="brandSearchInput" class="filter-search-input" placeholder="Search by brand name..." aria-label="Search brands">
+                        </div>
+                        <div class="filter-group brand-add-group">
+                            <label class="filter-label" for="brandDropdownTrigger">Add brand</label>
+                            <div class="brand-dropdown-wrap">
+                                <button type="button" class="brand-dropdown-trigger" id="brandDropdownTrigger" aria-haspopup="listbox" aria-expanded="false">Add brand...</button>
+                                <div class="brand-dropdown-list" id="brandDropdownList" role="listbox" aria-hidden="true"></div>
+                            </div>
+                        </div>
+                        <div class="filter-group filter-group-priority">
+                            <label class="filter-label filter-label--with-help" for="prioritySelect" title="Choosing a priority reorders rows so the metrics that matter most to you appear first in each section.">Owner priority<span class="filter-label-help" aria-label="Help">?</span></label>
+                            <select id="prioritySelect" class="filter-priority-select" aria-label="Owner priority">
+                                <option value="">All metrics</option>
+                                <option value="fee">Minimize fees</option>
+                                <option value="term">Prefer long term / stability</option>
+                                <option value="exit">Exit flexibility</option>
+                                <option value="conversion">Conversion-friendly</option>
+                            </select>
+                        </div>
+                        <div class="brand-chips-row" id="brandChipsRow"></div>
+                        <div class="filter-actions">
+                            <button type="button" class="filter-reset-btn" id="resetViewBtn">Reset View<span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span></button>
+                            <span class="selected-count" id="selectedCount">0 brands selected (min. 2)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="comparisonSection" class="comparison-section">
+                    <div id="comparisonContent" class="comparison-content" style="display: none;">
+                        <div id="panelSummary" class="comparison-tab-panel comparison-tab-panel--active" role="tabpanel">
+                            <div id="summaryCardsContainer" class="summary-cards-container"></div>
+                            <div id="comparisonTableNav" class="jump-to-section" style="display: none;" aria-label="Jump to table section"></div>
+                            <p class="comparison-legend" id="comparisonLegend" style="display: none;"><span class="legend-best">✓ = Best in row</span><span class="legend-consider">Muted = Consider (e.g. highest fee or shortest term)</span></p>
+                            <div class="table-wrapper">
+                                <table class="comparison-table" id="comparisonTable">
+                                    <thead id="comparisonThead"></thead>
+                                    <tbody id="comparisonTbody"></tbody>
+                                </table>
+                            </div>
+                            <p class="comparison-data-source" id="comparisonDataSource">Data provided by brands. Last updated: —</p>
+                        </div>
+                    </div>
+                    <div id="emptyState" class="empty-state">
+                        <h3>Executive summary</h3>
+                        <p>Select 2 or more brands above to see the side-by-side comparison</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            let allBrands = [];
+            let selectedBrandIds = [];
+            let brandDetailsCache = {};
+            let dealIdFromUrl = (function () {
+                var m = /[?&]dealId=([^&]+)/.exec(window.location.search);
+                return m ? decodeURIComponent(m[1]) : '';
+            })();
+
+            const brandChipsRowEl = document.getElementById('brandChipsRow');
+            const brandDropdownTriggerEl = document.getElementById('brandDropdownTrigger');
+            const brandDropdownListEl = document.getElementById('brandDropdownList');
+            const resetViewBtnEl = document.getElementById('resetViewBtn');
+            const filterCountBadgeEl = document.getElementById('filterCountBadge');
+            const selectedCountEl = document.getElementById('selectedCount');
+            const comparisonContentEl = document.getElementById('comparisonContent');
+            const emptyStateEl = document.getElementById('emptyState');
+            const comparisonTheadEl = document.getElementById('comparisonThead');
+            const comparisonTbodyEl = document.getElementById('comparisonTbody');
+
+            function formatFee(val, suffix) {
+                if (val === '' || val === null || val === undefined) return 'N/A';
+                const s = String(val).trim();
+                if (!s) return 'N/A';
+                if (suffix === '%') return s + '%';
+                if (suffix === '$') return '$' + (s.includes(',') ? s : Number(s).toLocaleString());
+                return s;
+            }
+
+            function formatTerm(val) {
+                if (val === '' || val === null || val === undefined) return 'N/A';
+                const s = String(val).trim();
+                return s || 'N/A';
+            }
+
+            var metricTooltips = {
+                'Parent Company': 'Parent company of the brand. Affects resources, standards, and market positioning.',
+                'Chain Scale': 'Positioning (e.g. Luxury, Upper Upscale). Affects guest expectations and investment level.',
+                'Brand Model': 'Franchise, managed, or hybrid. Affects control, fees, and operator involvement.',
+                'Initial Franchise Fee': 'One-time initial franchise fee from the submitted proposal. Lower is better for upfront cost.',
+                'Application Fee': 'Application fee from the submitted proposal. Lower is better for upfront cost.',
+                'Ongoing Royalties': 'Recurring royalty paid to the brand. Lower improves cash flow.',
+                'Marketing Fees': 'Contribution to brand marketing. Compare with loyalty and distribution benefits.',
+                'Technology Fees': 'Technology/reservation system fees. Lower reduces fixed cost.',
+                'Reservation Fees': 'Reservation or distribution fee. Lower reduces variable cost.',
+                'Initial Term': 'Length of the first term. Longer can mean more stability; shorter more flexibility.',
+                'Notice Period (Months)': 'How far in advance you must give notice to renew or exit. Shorter = more flexibility.',
+                'Performance Test Required': 'Whether renewal depends on meeting performance targets. Yes = higher renewal risk.',
+                'Cure Period (Performance Failure)': 'Time allowed to fix performance before termination. Longer = more owner protection.',
+                'Mandatory PIP at Renewal': 'Required property improvement at renewal. Can mean significant capital outlay.',
+                'Mandatory PIP for Conversions': 'Required PIP when converting to the brand. Affects conversion cost and timeline.',
+                'Conversion – Max Time Allowed': 'Maximum time to complete conversion. Shorter = tighter timeline.',
+                'Renewal – Max Time (PIP Completion)': 'Time allowed to complete renewal PIP. Affects renewal feasibility.',
+                'Loyalty Program Fee': 'Fee or contribution tied to the brand’s loyalty program. Lower = lower recurring cost.',
+                'Total Hotels': 'Brand scale. Often correlates with distribution and loyalty strength.',
+                'Total Rooms': 'Total room count. Indicates system size and CRS strength.',
+                'New Build %': 'Share of portfolio that is new build. Higher may mean more new-build experience.',
+                'Conversion %': 'Share of portfolio that is conversion. Higher may mean more conversion experience for your project.',
+                'Managed %': 'Share of portfolio that is managed (vs franchised). Affects brand operating model.',
+                'Franchised %': 'Share of portfolio that is franchised. Higher = more franchisee-focused support.',
+                'Loyalty Program Name': 'Brand’s loyalty program. Strong programs can drive direct bookings and repeat stays.',
+                'Total Global Members (Approx. Millions)': 'Approximate loyalty program size. Larger programs often mean stronger distribution.',
+                'Total Regional Members (Approx. Millions)': 'Regional loyalty membership. Relevant for market-specific demand.',
+                'Loyalty Program Cost per Stay (Approximate)': 'Estimated cost per stay for loyalty. Lower = lower recurring cost.',
+                'Cen. Res. System (CRS) Usage (% of bookings flowing through)': 'Share of bookings through central reservation system. Higher can mean better rate and inventory control.',
+                'Management Fee (if managed)': 'Fee when brand manages the property. Compare with franchise royalty.',
+                'Incentive Fee (% of Net Op. Income)': 'Fee on net operating income when managed. Lower improves upside to owner.',
+                'Incentive Fee Excess (% Adjusted Basis)': 'Incentive fee above a hurdle. Affects managed deal economics.',
+                'Extended Term': 'Length of each renewal option. Longer options can mean more flexibility.',
+                'Potential Total Term (Years)': 'Maximum possible term if all options exercised. Longer = more security.',
+                'Termination for Convenience (Y/N)': 'Whether the owner can terminate without cause. Yes = more exit flexibility.',
+                'Buyout / Transfer Provisions': 'Terms for buying out the agreement or transferring the franchise. Affects liquidity and exit options.',
+                'Assignment Restrictions': 'Restrictions on assigning or transferring the agreement. Brand approval often required.',
+                'Typical PIP Range ($/room or %)': 'Typical property improvement plan range. Lower = lower capital burden.',
+                'Who Pays for PIP': 'Who bears PIP cost (owner vs brand). Affects upfront and renewal capex.',
+                'Training Fee': 'One-time or recurring training cost. Lower or included = lower total cost.',
+                'Ongoing Support Included': 'Support included (e.g. revenue management, QA). More support = better operations.',
+                'Radius Protection': 'Territory protection (e.g. miles). Protects market from same-brand competition.',
+                'CRS / Central Res. Participation': 'Central reservation system participation. Affects distribution and rate control.',
+                'GDS Participation': 'Global distribution system participation. Affects reach to travel agents and corporate.',
+                'Key Money / Upfront Incentive': 'Cash or upfront incentive from brand to owner (e.g. to secure the deal or support conversion). Higher or “Yes” = more owner-friendly.',
+                'Territorial Exclusivity / Radius': 'Territory or radius within which the brand will not approve another same-brand property. Protects your market.',
+                'Reduced Royalty Period': 'Period during which royalty is waived or reduced (e.g. first 12 months). Longer or more generous = lower early-year cost.',
+                'Reduced Marketing Fee Period': 'Period during which marketing fee is waived or reduced. Reduces early-year cash flow burden.',
+                'Reduced / Waived Tech Fee Period': 'Period during which technology/reservation fees are waived or reduced. Lowers fixed cost in early years.',
+                'PIP Contribution by Brand': 'Whether the brand contributes to PIP cost (e.g. % or cap). Reduces owner’s capital burden.',
+                'Sign-on / Conversion Incentive': 'One-time payment or credit for signing or converting (e.g. conversion credit). Offsets upfront cost.',
+                'Application Fee Credit': 'Credit against the application fee (e.g. for conversion or multi-unit). Lowers one-time cost.',
+                'Opening / FF&E Support': 'Allowance or support for opening or FF&E. Reduces upfront capital.',
+                'Marketing Allowance (one-time or recurring)': 'One-time or recurring marketing allowance from brand. Offsets marketing spend.'
+            };
+
+            function row(label, values, naIfEmpty, opts) {
+                opts = opts || {};
+                const getNumeric = opts.getNumeric;
+                const lowerIsBetter = opts.lowerIsBetter === true;
+                const title = opts.title || metricTooltips[label];
+                const priority = opts.priority || '';
+                let bestIdx = -1, worstIdx = -1;
+                if (getNumeric && values.length > 0) {
+                    const nums = getNumeric();
+                    const valid = nums.map(function (n, i) { return n != null && !isNaN(n) ? { i: i, n: n } : null; }).filter(Boolean);
+                    if (valid.length >= 2) {
+                        const sorted = valid.slice().sort(function (a, b) { return a.n - b.n; });
+                        bestIdx = lowerIsBetter ? sorted[0].i : sorted[sorted.length - 1].i;
+                        worstIdx = lowerIsBetter ? sorted[sorted.length - 1].i : sorted[0].i;
+                    }
+                }
+                const labelAttr = title ? ' title="' + escapeHtml(title) + '"' : '';
+                const priorityAttr = priority ? ' data-priority="' + escapeHtml(priority) + '"' : '';
+                const sectionAttr = opts.section ? ' data-section="' + escapeHtml(opts.section) + '"' : '';
+                const cells = values.map(function (v, i) {
+                    const empty = v === '' || v === null || v === undefined || (typeof v === 'string' && !v.trim());
+                    const display = empty ? (naIfEmpty ? 'N/A' : '—') : v;
+                    let cls = display === 'N/A' || display === '—' ? 'cell-na' : 'cell-value';
+                    if (i === bestIdx) cls += ' cell-best';
+                    else if (i === worstIdx) cls += ' cell-worst';
+                    return '<td class="brand-col ' + cls + '">' + escapeHtml(display) + '</td>';
+                });
+                var labelCell = '<td class="metric-label-cell">' +
+                    '<span class="metric-label-text"' + labelAttr + '>' + escapeHtml(label) + '</span>' +
+                    (title ? '<span class="metric-tooltip-icon" title="' + escapeHtml(title) + '" aria-label="Why it matters">?</span>' : '') +
+                    '</td>';
+                return '<tr' + priorityAttr + sectionAttr + '>' + labelCell + cells.join('') + '</tr>';
+            }
+
+            function escapeHtml(s) {
+                if (s === null || s === undefined) return '';
+                const t = document.createElement('textarea');
+                t.textContent = s;
+                return t.innerHTML;
+            }
+
+            function noFallback(realVal) {
+                // No mock fallback – show empty so unlinked metrics are visible
+                if (realVal !== '' && realVal != null && realVal !== undefined && String(realVal).trim() !== '' && String(realVal).trim() !== '—') return realVal;
+                return '';
+            }
+
+            var sectionNavConfig = [
+                { slug: 'executive-summary', label: 'Executive summary' },
+                { slug: 'incentives', label: 'Incentives' },
+                { slug: 'footprint', label: 'Footprint' },
+                { slug: 'loyalty', label: 'Loyalty' },
+                { slug: 'commercial', label: 'Commercial' },
+                { slug: 'customer-acquisition', label: 'Customer acquisition' },
+                { slug: 'exit', label: 'Exit' },
+                { slug: 'capital-pip', label: 'Capital & PIP' },
+                { slug: 'support-training', label: 'Support & training' },
+                { slug: 'territory', label: 'Territory' },
+                { slug: 'renewal-risk', label: 'Renewal risk' }
+            ];
+
+            function buildTable(brands) {
+                const theadHtml = '<tr><th class="metric-label">Metric</th>' +
+                    brands.map(function (b) { return '<th class="brand-col">' + escapeHtml(b.name) + '</th>'; }).join('') + '</tr>';
+
+                let tbodyHtml = '';
+                var currentSection = 'executive-summary';
+                function rowWithSection(label, values, naIfEmpty, opts) {
+                    opts = opts || {};
+                    opts.section = currentSection;
+                    return row(label, values, naIfEmpty, opts);
+                }
+
+                // —— Proposal Status / Submitted At (when viewing deal proposals) ——
+                if (brands.some(function (b) { return b.proposalStatus != null || b.proposalSubmittedAt != null; })) {
+                    tbodyHtml += row('Proposal Status', brands.map(function (b) { return b.proposalStatus || '—'; }), false);
+                    tbodyHtml += row('Submitted At', brands.map(function (b) {
+                        var d = b.proposalSubmittedAt;
+                        return d ? new Date(d).toLocaleString() : '—';
+                    }), false);
+                }
+                // —— DEALALITY EXECUTIVE SUMMARY ——
+                tbodyHtml += '<tr id="section-executive-summary" class="section-header-row section-header-row--collapsible" data-section="executive-summary" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">DEALALITY EXECUTIVE SUMMARY<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+
+                tbodyHtml += rowWithSection('Parent Company', brands.map(function (b, i) { return noFallback(b.parentCompany || '', 'parentCompany', i, brands.length); }), false);
+                tbodyHtml += rowWithSection('Chain Scale', brands.map(function (b, i) { return noFallback(b.chainScale || '', 'chainScale', i, brands.length); }), false);
+                tbodyHtml += rowWithSection('Brand Model', brands.map(function (b, i) { return noFallback(b.brandModel || '', 'brandModel', i, brands.length); }), false);
+
+                const initialFranchiseFees = brands.map(function (b, i) {
+                    const fs = b.feeStructure || {};
+                    const val = fs.initialFranchiseFee;
+                    const basis = (fs.initialFranchiseFeeBasis || '').toString().trim();
+                    var v = '';
+                    if (val != null && val !== '') {
+                        var num = parseFloat(val);
+                        v = !isNaN(num) ? formatFee(val, '$') : String(val).trim();
+                        if (basis) v += ' – ' + basis;
+                    }
+                    return noFallback(v, 'initialFranchiseFee', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Initial Franchise Fee', initialFranchiseFees, true, {
+                    lowerIsBetter: true,
+                    priority: 'fee',
+                    getNumeric: function () { return brands.map(function (b, i) { var fs = b.feeStructure || {}; var n = parseFloat(fs.initialFranchiseFee); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                const appFees = brands.map(function (b, i) {
+                    const fs = b.feeStructure || {};
+                    const val = fs.applicationFee;
+                    const basis = (fs.applicationFeeBasis || '').toString().trim();
+                    var v = '';
+                    if (val != null && val !== '') {
+                        var num = parseFloat(val);
+                        v = !isNaN(num) ? formatFee(val, '$') : String(val).trim();
+                        if (basis) v += ' – ' + basis;
+                    }
+                    return noFallback(v, 'applicationFee', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Application Fee', appFees, true, {
+                    lowerIsBetter: true,
+                    priority: 'fee',
+                    getNumeric: function () { return brands.map(function (b, i) { var fs = b.feeStructure || {}; var n = parseFloat(fs.applicationFee); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                const royalties = brands.map(function (b, i) {
+                    const fs = b.feeStructure || {};
+                    const min = fs.royaltyMin;
+                    const max = fs.royaltyMax;
+                    const basis = (fs.royaltyBasis || '').toString().trim();
+                    var v = '';
+                    if (min != null && min !== '' && max != null && max !== '') {
+                        var mn = parseFloat(min), mx = parseFloat(max);
+                        v = (!isNaN(mn) && !isNaN(mx) && mn === mx) ? formatFee(min, '%') : (formatFee(min, '%') + ' – ' + formatFee(max, '%'));
+                    } else if (min != null && min !== '') v = formatFee(min, '%');
+                    else if (max != null && max !== '') v = formatFee(max, '%');
+                    if (v && basis) v += ' – ' + basis;
+                    return noFallback(v, 'royalty', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Ongoing Royalties', royalties, true, {
+                    lowerIsBetter: true,
+                    priority: 'fee',
+                    getNumeric: function () { return brands.map(function (b, i) { var fs = b.feeStructure || {}; var n = parseFloat(fs.royaltyMin) || parseFloat(fs.royaltyMax); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                tbodyHtml += rowWithSection('Management Fee (if managed)', brands.map(function (b, i) { return noFallback((b.feeStructure || {}).managementFee || '', 'managementFee', i, brands.length); }), true);
+
+                tbodyHtml += rowWithSection('Incentive Fee (% of Net Op. Income)', brands.map(function (b, i) { return noFallback((b.feeStructure || {}).incentiveFee || '', 'incentiveFee', i, brands.length); }), true);
+
+                tbodyHtml += rowWithSection('Incentive Fee Excess (% Adjusted Basis)', brands.map(function (b, i) { return noFallback((b.feeStructure || {}).incentiveExcess || '', 'incentiveExcess', i, brands.length); }), true);
+
+                const mktFees = brands.map(function (b, i) {
+                    const fs = b.feeStructure || {};
+                    const min = fs.marketingMin;
+                    const max = fs.marketingMax;
+                    const basis = (fs.marketingBasis || '').toString().trim();
+                    var v = '';
+                    if (min != null && min !== '' && max != null && max !== '') {
+                        var mn = parseFloat(min), mx = parseFloat(max);
+                        v = (!isNaN(mn) && !isNaN(mx) && mn === mx) ? formatFee(min, '%') : (formatFee(min, '%') + ' – ' + formatFee(max, '%'));
+                    } else if (min != null && min !== '') v = formatFee(min, '%');
+                    else if (max != null && max !== '') v = formatFee(max, '%');
+                    if (v && basis) v += ' – ' + basis;
+                    return noFallback(v, 'marketing', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Marketing Fees', mktFees, true, {
+                    lowerIsBetter: true,
+                    priority: 'fee',
+                    getNumeric: function () { return brands.map(function (b, i) { var fs = b.feeStructure || {}; var n = parseFloat(fs.marketingMin) || parseFloat(fs.marketingMax); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                tbodyHtml += rowWithSection('Reservation Fees', brands.map(function (b, i) { return noFallback((b.feeStructure || {}).reservationFee || '', 'reservation', i, brands.length); }), true, {
+                    lowerIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var fs = b.feeStructure || {}; var n = parseFloat(String(fs.reservationFee || '').replace(/[^0-9.]/g, '')); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                const techFees = brands.map(function (b, i) {
+                    const fs = b.feeStructure || {};
+                    const min = fs.techFeeMin || fs.technicalFeeMin;
+                    const max = fs.techFeeMax || fs.technicalFeeMax;
+                    const basis = (fs.techFeeBasis || '').toString().trim();
+                    var v = '';
+                    var minNum = parseFloat(min);
+                    var maxNum = parseFloat(max);
+                    if (min != null && min !== '' && max != null && max !== '') {
+                        if (!isNaN(minNum) && !isNaN(maxNum) && minNum === maxNum) v = formatFee(min, '$');
+                        else if (!isNaN(minNum) && !isNaN(maxNum)) v = formatFee(min, '$') + ' – ' + formatFee(max, '$');
+                        else v = String(min).trim() + (String(max).trim() && String(min).trim() !== String(max).trim() ? ' – ' + String(max).trim() : '');
+                    } else if (min != null && min !== '') v = !isNaN(minNum) ? formatFee(min, '$') : String(min).trim();
+                    else if (max != null && max !== '') v = !isNaN(maxNum) ? formatFee(max, '$') : String(max).trim();
+                    if (v && basis) v += ' – ' + basis;
+                    else if (v && !basis && (min != null || max != null) && (!isNaN(minNum) || !isNaN(maxNum))) v += ' (ann.)';
+                    return noFallback(v, 'techFee', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Technology Fees', techFees, true, {
+                    lowerIsBetter: true,
+                    priority: 'fee',
+                    getNumeric: function () { return brands.map(function (b, i) { var fs = b.feeStructure || {}; var n = parseFloat(fs.techFeeMin) || parseFloat(fs.technicalFeeMin) || parseFloat(fs.techFeeMax) || parseFloat(fs.technicalFeeMax); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                const initialTerms = brands.map(function (b, i) {
+                    const dt = b.dealTerms || {};
+                    return noFallback(formatTerm(dt.minInitialTerm), 'initialTerm', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Initial Term', initialTerms, true, {
+                    priority: 'term',
+                    higherIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var dt = b.dealTerms || {}; var n = parseFloat(dt.minInitialTerm); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                const extTerms = brands.map(function (b, i) {
+                    const dt = b.dealTerms || {};
+                    const qty = dt.renewalOption != null ? parseFloat(dt.renewalOption) : null;
+                    const len = dt.renewalOptionLength != null ? parseFloat(dt.renewalOptionLength) : null;
+                    var v = '';
+                    if (!isNaN(qty) && !isNaN(len) && qty > 0 && len > 0) v = qty + ' x ' + len + ' Years';
+                    else if (!isNaN(len) && len > 0) v = String(len);
+                    return noFallback(v ? formatTerm(v) : formatTerm(dt.renewalOptionLength), 'extendedTerm', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Extended Term', extTerms, true, {
+                    higherIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var dt = b.dealTerms || {}; var n = parseFloat(dt.renewalOptionLength); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                function parseTermToYears(val) {
+                    if (val == null || val === '') return null;
+                    var s = String(val).trim();
+                    var nxm = s.match(/^(\d+)\s*x\s*(\d+)/i);
+                    if (nxm) return parseInt(nxm[1], 10) * parseInt(nxm[2], 10);
+                    var num = parseFloat(s.replace(/[^0-9.]/g, ''));
+                    return !isNaN(num) ? num : null;
+                }
+                const potentialTerms = brands.map(function (b, i) {
+                    var dt = b.dealTerms || {};
+                    var initialYrs = parseTermToYears(dt.minInitialTerm);
+                    var qty = dt.renewalOption != null ? parseFloat(dt.renewalOption) : null;
+                    var len = dt.renewalOptionLength != null ? parseFloat(dt.renewalOptionLength) : null;
+                    var extendedYrs = (!isNaN(qty) && qty > 0 && !isNaN(len) && len > 0) ? (qty * len) : parseTermToYears(dt.renewalOptionLength);
+                    var total = null;
+                    if (initialYrs != null && extendedYrs != null) total = initialYrs + extendedYrs;
+                    else if (initialYrs != null) total = initialYrs;
+                    else if (extendedYrs != null) total = extendedYrs;
+                    return noFallback(total != null ? String(total) : '', 'potentialTerm', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Potential Total Term (Years)', potentialTerms, true, {
+                    higherIsBetter: true,
+                    getNumeric: function () {
+                        return brands.map(function (b, i) {
+                            var dt = b.dealTerms || {};
+                            var initialYrs = parseTermToYears(dt.minInitialTerm);
+                            var qty = dt.renewalOption != null ? parseFloat(dt.renewalOption) : null;
+                            var len = dt.renewalOptionLength != null ? parseFloat(dt.renewalOptionLength) : null;
+                            var extendedYrs = (!isNaN(qty) && qty > 0 && !isNaN(len) && len > 0) ? (qty * len) : parseTermToYears(dt.renewalOptionLength);
+                            if (initialYrs != null && extendedYrs != null) return initialYrs + extendedYrs;
+                            if (initialYrs != null) return initialYrs;
+                            if (extendedYrs != null) return extendedYrs;
+                            return null;
+                        });
+                    }
+                });
+
+                const renewalTerms = brands.map(function (b, i) {
+                    const dt = b.dealTerms || {};
+                    const v = (dt.renewalConditions || '').toString().trim();
+                    return noFallback(v, 'renewalTerms', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Renewal Terms', renewalTerms, false, { priority: 'term' });
+
+                const noticePeriods = brands.map(function (b, i) {
+                    const dt = b.dealTerms || {};
+                    return noFallback(formatTerm(dt.renewalNoticePeriod), 'noticePeriod', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Notice Period (Months)', noticePeriods, true, {
+                    lowerIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var dt = b.dealTerms || {}; var n = parseFloat(dt.renewalNoticePeriod); return !isNaN(n) ? n : null; }); }
+                });
+
+                tbodyHtml += rowWithSection('Performance Test Required', brands.map(function (b, i) { var dt = b.dealTerms || {}; var v = dt.performanceTest; var disp = v === true || (typeof v === 'string' && v.toLowerCase() === 'yes') ? 'Yes' : (v === false || (typeof v === 'string' && v.toLowerCase() === 'no') ? 'No' : formatTerm(v)); return noFallback(disp, 'performanceTest', i, brands.length); }), true, { priority: 'exit' });
+                tbodyHtml += rowWithSection('Cure Period (Performance Failure)', brands.map(function (b, i) { var dt = b.dealTerms || {}; return noFallback(formatTerm(dt.curePeriod), 'curePeriod', i, brands.length); }), true, {
+                    priority: 'exit',
+                    getNumeric: function () { return brands.map(function (b, i) { var dt = b.dealTerms || {}; var v = String(dt.curePeriod || ''); var n = parseFloat(v.replace(/\D/g, '')); return !isNaN(n) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Mandatory PIP at Renewal', brands.map(function (b, i) { var dt = b.dealTerms || {}; return noFallback(formatTerm(dt.mandatoryPIPRenewal), 'pipRenewal', i, brands.length); }), true, { priority: 'exit' });
+                tbodyHtml += rowWithSection('Mandatory PIP for Conversions', brands.map(function (b, i) { var dt = b.dealTerms || {}; return noFallback(formatTerm(dt.mandatoryPIPConversion), 'pipConversion', i, brands.length); }), true, {
+                    priority: 'conversion',
+                    lowerIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var dt = b.dealTerms || {}; var v = String(dt.mandatoryPIPConversion || ''); var n = parseFloat(v.replace(/[^0-9.]/g, '')); return !isNaN(n) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Conversion – Max Time Allowed', brands.map(function (b, i) { var dt = b.dealTerms || {}; return noFallback(formatTerm(dt.conversionMaxTime), 'conversionMax', i, brands.length); }), true, {
+                    priority: 'conversion',
+                    getNumeric: function () { return brands.map(function (b, i) { var dt = b.dealTerms || {}; var v = String(dt.conversionMaxTime || ''); var n = parseFloat(v.replace(/\D/g, '')); return !isNaN(n) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Renewal – Max Time (PIP Completion)', brands.map(function (b, i) { var dt = b.dealTerms || {}; return noFallback(formatTerm(dt.renewalMaxTime), 'renewalMax', i, brands.length); }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var dt = b.dealTerms || {}; var v = String(dt.renewalMaxTime || ''); var n = parseFloat(v.replace(/\D/g, '')); return !isNaN(n) ? n : null; }); }
+                });
+
+                // —— INCENTIVES (Executive Summary) ——
+                currentSection = 'incentives';
+                tbodyHtml += '<tr id="section-incentives" class="section-header-row section-header-row--collapsible" data-section="incentives" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">INCENTIVES<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                tbodyHtml += rowWithSection('Key Money / Upfront Incentive', brands.map(function (b, i) {
+                    return noFallback((b.incentives || {}).keyMoney || '', 'keyMoney', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Territorial Exclusivity / Radius', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.territorialExclusivity;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'territorialExclusivity', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Reduced Royalty Period', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.reducedRoyaltyPeriod;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'reducedRoyaltyPeriod', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Reduced Marketing Fee Period', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.reducedMarketingPeriod;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'reducedMarketingPeriod', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Reduced / Waived Tech Fee Period', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.techFeeWaiver;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'techFeeWaiver', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('PIP Contribution by Brand', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.pipContributionByBrand;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'pipContributionByBrand', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Sign-on / Conversion Incentive', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.signOnConversionIncentive;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'signOnConversionIncentive', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Application Fee Credit', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.applicationFeeCredit;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'applicationFeeCredit', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Opening / FF&E Support', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.openingFFESupport;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'openingFFESupport', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Marketing Allowance (one-time or recurring)', brands.map(function (b, i) {
+                    var inc = b.incentives || {};
+                    var raw = inc.marketingAllowance;
+                    var v = '';
+                    if (raw != null && raw !== '') {
+                        var s = String(raw).trim();
+                        v = /^yes\b/i.test(s) ? s : ('Yes – ' + s);
+                    }
+                    return noFallback(v, 'marketingAllowance', i, brands.length);
+                }), false);
+
+                // —— BRAND FIT & FOOTPRINT ——
+                currentSection = 'footprint';
+                tbodyHtml += '<tr id="section-footprint" class="section-header-row section-header-row--collapsible" data-section="footprint" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">BRAND FIT & FOOTPRINT<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                tbodyHtml += rowWithSection('Total Hotels', brands.map(function (b, i) { var f = b.footprint || {}; var n = f.totalExistingHotels; var v = n != null && n !== '' ? String(Number(n).toLocaleString()) : ''; return noFallback(v, 'totalHotels', i, brands.length); }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var f = b.footprint || {}; var n = parseFloat(f.totalExistingHotels); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Total Rooms', brands.map(function (b, i) { var f = b.footprint || {}; var n = f.totalExistingRooms; var v = n != null && n !== '' ? String(Number(n).toLocaleString()) : ''; return noFallback(v, 'totalRooms', i, brands.length); }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var f = b.footprint || {}; var n = parseFloat(String(f.totalExistingRooms || '').replace(/,/g, '')); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('New Build %', brands.map(function (b, i) { var f = b.footprint || {}; var n = f.newBuildPercent; var v = n != null && n !== '' ? (Number(n).toFixed(1) + '%') : ''; return noFallback(v, 'newBuildPct', i, brands.length); }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var f = b.footprint || {}; var n = parseFloat(f.newBuildPercent); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Conversion %', brands.map(function (b, i) { var f = b.footprint || {}; var n = f.conversionPercent; var v = n != null && n !== '' ? (Number(n).toFixed(1) + '%') : ''; return noFallback(v, 'conversionPct', i, brands.length); }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var f = b.footprint || {}; var n = parseFloat(f.conversionPercent); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Managed %', brands.map(function (b, i) { var f = b.footprint || {}; var n = f.managedPercent; var v = n != null && n !== '' ? (Number(n).toFixed(1) + '%') : ''; return noFallback(v, 'managedPct', i, brands.length); }), true, {
+                    higherIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var f = b.footprint || {}; var n = parseFloat(f.managedPercent); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Franchised %', brands.map(function (b, i) { var f = b.footprint || {}; var n = f.franchisedPercent; var v = n != null && n !== '' ? (Number(n).toFixed(1) + '%') : ''; return noFallback(v, 'franchisedPct', i, brands.length); }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var f = b.footprint || {}; var n = parseFloat(f.franchisedPercent); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+
+                // —— LOYALTY PROGRAM STRENGTH ——
+                currentSection = 'loyalty';
+                tbodyHtml += '<tr id="section-loyalty" class="section-header-row section-header-row--collapsible" data-section="loyalty" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">LOYALTY PROGRAM STRENGTH<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                const loyaltyFees = brands.map(function (b, i) {
+                    const fs = b.feeStructure || {};
+                    const min = fs.loyaltyMin;
+                    const max = fs.loyaltyMax;
+                    const basis = (fs.loyaltyBasis || '').toString().trim();
+                    var v = '';
+                    if (min != null && min !== '' && max != null && max !== '') v = (min + ' – ' + max) + (basis ? ' ' + basis : '');
+                    else if (min != null && min !== '') v = String(min) + (basis ? ' ' + basis : '');
+                    else if (max != null && max !== '') v = String(max);
+                    return noFallback(v || '—', 'loyaltyFee', i, brands.length);
+                });
+                tbodyHtml += rowWithSection('Loyalty Program Fee', loyaltyFees, true, {
+                    lowerIsBetter: true,
+                    priority: 'fee',
+                    getNumeric: function () { return brands.map(function (b, i) { var fs = b.feeStructure || {}; var n = parseFloat(fs.loyaltyMin) || parseFloat(fs.loyaltyMax); return (n != null && !isNaN(n)) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Loyalty Program Name', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    return noFallback(l.typicalLoyaltyProgramName || '');
+                }), true);
+                tbodyHtml += rowWithSection('Total Global Members (Approx. Millions)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    return noFallback(l.totalGlobalMembersMillions != null ? String(l.totalGlobalMembersMillions) : '');
+                }), true);
+                tbodyHtml += rowWithSection('Total Regional Members (Approx. Millions)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    var fields = ['regionalMembersMillions_na', 'regionalMembersMillions_cala', 'regionalMembersMillions_eu', 'regionalMembersMillions_mea', 'regionalMembersMillions_apac'];
+                    var sum = fields.reduce(function (acc, key) {
+                        var v = parseFloat(l[key]);
+                        return acc + (isNaN(v) ? 0 : v);
+                    }, 0);
+                    var display = sum > 0 ? String(sum) : '';
+                    return noFallback(display);
+                }), true);
+                tbodyHtml += rowWithSection('Loyalty Contribution (% of Rooms Sold)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    var v = l.typicalLoyaltyRoomsPercent;
+                    var display = (v != null && v !== '' && !isNaN(v)) ? (Number(v).toFixed(1).replace(/\.0$/, '') + '%') : '';
+                    return noFallback(display);
+                }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var l = b.loyalty || {}; var v = Number(l.typicalLoyaltyRoomsPercent); return !isNaN(v) ? v : null; }); }
+                });
+                tbodyHtml += rowWithSection('Loyalty Program Cost per Stay (Approximate)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    return noFallback(l.loyaltyCostPerStay || '');
+                }), true);
+
+                // —— COMMERCIAL PERFORMANCE ——
+                currentSection = 'commercial';
+                tbodyHtml += '<tr id="section-commercial" class="section-header-row section-header-row--collapsible" data-section="commercial" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">COMMERCIAL PERFORMANCE<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                tbodyHtml += rowWithSection('Direct Booking Contribution (% of Total)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    var v = l.typicalDirectBookingPercent;
+                    var display = (v != null && v !== '' && !isNaN(v)) ? (Number(v).toFixed(1).replace(/\.0$/, '') + '%') : '';
+                    return noFallback(display);
+                }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var l = b.loyalty || {}; var v = Number(l.typicalDirectBookingPercent); return !isNaN(v) ? v : null; }); }
+                });
+                tbodyHtml += rowWithSection('OTA Reliance Rate (% of Bookings)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    var v = l.typicalOTAReliancePercent;
+                    var display = (v != null && v !== '' && !isNaN(v)) ? (Number(v).toFixed(1).replace(/\.0$/, '') + '%') : '';
+                    return noFallback(display);
+                }), true, {
+                    lowerIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var l = b.loyalty || {}; var v = Number(l.typicalOTAReliancePercent); return !isNaN(v) ? v : null; }); }
+                });
+                tbodyHtml += rowWithSection('OTA Commission (Typical % of Reservation)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    var v = l.otaCommissionPercent;
+                    var display = (v != null && v !== '' && !isNaN(v)) ? (Number(v).toFixed(1).replace(/\.0$/, '') + '%') : '';
+                    return noFallback(display);
+                }), true, {
+                    lowerIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var l = b.loyalty || {}; var v = Number(l.otaCommissionPercent); return !isNaN(v) ? v : null; }); }
+                });
+                tbodyHtml += rowWithSection('Cen. Res. System (CRS) Usage (% of bookings flowing through)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    var v = l.crsUsagePercent;
+                    var display = (v != null && v !== '' && !isNaN(v)) ? (Number(v).toFixed(1).replace(/\.0$/, '') + '%') : '';
+                    return noFallback(display);
+                }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var l = b.loyalty || {}; var v = Number(l.crsUsagePercent); return !isNaN(v) ? v : null; }); }
+                });
+                tbodyHtml += rowWithSection('Distribution Cost (Per Reservation)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    return noFallback(l.distributionCostPerReservation || '');
+                }), true, {
+                    lowerIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var l = b.loyalty || {}; var v = String(l.distributionCostPerReservation || '').replace(/[^0-9.]/g, ''); var n = parseFloat(v); return !isNaN(n) ? n : null; }); }
+                });
+                tbodyHtml += rowWithSection('Website/App Conv. Rates (%)', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    var v = l.websiteAppConvRatesPercent;
+                    var display = (v != null && v !== '' && !isNaN(v)) ? (Number(v).toFixed(1).replace(/\.0$/, '') + '%') : '';
+                    return noFallback(display);
+                }), true, {
+                    getNumeric: function () { return brands.map(function (b, i) { var l = b.loyalty || {}; var v = Number(l.websiteAppConvRatesPercent); return !isNaN(v) ? v : null; }); }
+                });
+
+                // —— CUSTOMER ACQUISITION & COST EFFICIENCY ——
+                currentSection = 'customer-acquisition';
+                tbodyHtml += '<tr id="section-customer-acquisition" class="section-header-row section-header-row--collapsible" data-section="customer-acquisition" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">CUSTOMER ACQUISITION & COST EFFICIENCY<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                tbodyHtml += rowWithSection('Avg. Cost of Cust. Acquisition', brands.map(function (b, i) {
+                    var l = b.loyalty || {};
+                    return noFallback(l.avgCustomerAcquisitionCost || '');
+                }), true, {
+                    lowerIsBetter: true,
+                    getNumeric: function () { return brands.map(function (b, i) { var l = b.loyalty || {}; var v = String(l.avgCustomerAcquisitionCost || '').replace(/[^0-9.]/g, ''); var n = parseFloat(v); return !isNaN(n) ? n : null; }); }
+                });
+
+                // —— EXIT & FLEXIBILITY ——
+                currentSection = 'exit';
+                tbodyHtml += '<tr id="section-exit" class="section-header-row section-header-row--collapsible" data-section="exit" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">EXIT & FLEXIBILITY<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                tbodyHtml += rowWithSection('Termination for Convenience (Y/N)', brands.map(function (b, i) { var lt = b.legalTerms || {}; var v = lt.terminationForConvenience; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'terminationForConvenience', i, brands.length); }), true, { priority: 'exit' });
+                tbodyHtml += rowWithSection('Buyout / Transfer Provisions', brands.map(function (b, i) { var lt = b.legalTerms || {}; var v = lt.buyoutTransferProvisions; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'buyoutTransfer', i, brands.length); }), false, { priority: 'exit' });
+                tbodyHtml += rowWithSection('Assignment Restrictions', brands.map(function (b, i) { var lt = b.legalTerms || {}; var v = lt.assignmentRestrictions; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'assignmentRestrictions', i, brands.length); }), false, { priority: 'exit' });
+
+                // —— CAPITAL & PIP ——
+                currentSection = 'capital-pip';
+                tbodyHtml += '<tr id="section-capital-pip" class="section-header-row section-header-row--collapsible" data-section="capital-pip" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">CAPITAL & PIP<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                tbodyHtml += rowWithSection('Typical PIP Range ($/room or %)', brands.map(function (b, i) { var pf = b.projectFit || {}; var v = pf.typicalPIPRange; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'pipRange', i, brands.length); }), false, { priority: 'conversion' });
+                tbodyHtml += rowWithSection('Who Pays for PIP', brands.map(function (b, i) { var pf = b.projectFit || {}; var v = pf.whoPaysForPIP; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'pipWhoPays', i, brands.length); }), false);
+
+                // —— SUPPORT & TRAINING ——
+                currentSection = 'support-training';
+                tbodyHtml += '<tr id="section-support-training" class="section-header-row section-header-row--collapsible" data-section="support-training" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">SUPPORT & TRAINING<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                tbodyHtml += rowWithSection('Training Fee ($)', brands.map(function (b, i) {
+                    var v = b.proposalTrainingFees;
+                    return noFallback(v != null && v !== '' ? String(v).trim() : '', 'trainingFee', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Tech / Platform Fees', brands.map(function (b, i) {
+                    var v = b.proposalTechPlatformFees;
+                    return noFallback(v != null && v !== '' ? String(v).trim() : '', 'techPlatformFees', i, brands.length);
+                }), false);
+                tbodyHtml += rowWithSection('Ongoing Support Included', brands.map(function (b, i) { var o = b.operationalSupport || {}; var v = o.ongoingSupportIncluded; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'ongoingSupport', i, brands.length); }), false);
+
+                // —— TERRITORY & DISTRIBUTION ——
+                currentSection = 'territory';
+                tbodyHtml += '<tr id="section-territory" class="section-header-row section-header-row--collapsible" data-section="territory" data-collapsible="true"><th colspan="' + (brands.length + 1) + '">TERRITORY & DISTRIBUTION<button type="button" class="section-toggle" aria-label="Collapse section" title="Collapse section">−</button></th></tr>';
+                tbodyHtml += rowWithSection('Radius Protection', brands.map(function (b, i) { var lt = b.legalTerms || {}; var v = lt.radiusProtection; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'radiusProtection', i, brands.length); }), false);
+                tbodyHtml += rowWithSection('CRS / Central Res. Participation', brands.map(function (b, i) { var o = b.operationalSupport || {}; var v = o.crsParticipation; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'crsParticipation', i, brands.length); }), false);
+                tbodyHtml += rowWithSection('GDS Participation', brands.map(function (b, i) { var o = b.operationalSupport || {}; var v = o.gdsParticipation; return noFallback(v != null && v !== '' ? String(v).trim() : '', 'gdsParticipation', i, brands.length); }), false);
+
+                comparisonTheadEl.innerHTML = theadHtml;
+                comparisonTbodyEl.innerHTML = tbodyHtml;
+                var priorityVal = (document.getElementById('prioritySelect') && document.getElementById('prioritySelect').value) || '';
+                if (priorityVal) {
+                    comparisonTableEl.setAttribute('data-priority', priorityVal);
+                    sortTableRowsByPriority(comparisonTableEl, priorityVal);
+                }
+                buildSummaryCards(brands);
+                setupJumpNavAndCollapse();
+            }
+
+            function setupJumpNavAndCollapse() {
+                var navEl = document.getElementById('comparisonTableNav');
+                var legendEl = document.getElementById('comparisonLegend');
+                var tableEl = document.getElementById('comparisonTable');
+                if (!navEl || !legendEl || !tableEl) return;
+                navEl.style.display = 'flex';
+                legendEl.style.display = 'block';
+                var linksHtml = '<div class="jump-to-section__expand-collapse"><button type="button" id="expandAllSectionsBtn">Expand all</button><button type="button" id="collapseAllSectionsBtn">Collapse all</button></div><span class="jump-to-section__label">Jump to:</span><div class="jump-to-section__links">';
+                sectionNavConfig.forEach(function (cfg) {
+                    var target = document.getElementById('section-' + cfg.slug);
+                    if (target) linksHtml += '<a href="#section-' + cfg.slug + '">' + escapeHtml(cfg.label) + '</a>';
+                });
+                linksHtml += '</div>';
+                navEl.innerHTML = linksHtml;
+                navEl.querySelectorAll('.jump-to-section__links a').forEach(function (a) {
+                    a.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        var id = a.getAttribute('href').slice(1);
+                        var el = document.getElementById(id);
+                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                });
+                var expandAllBtn = document.getElementById('expandAllSectionsBtn');
+                var collapseAllBtn = document.getElementById('collapseAllSectionsBtn');
+                if (expandAllBtn) expandAllBtn.addEventListener('click', function () {
+                    sectionNavConfig.forEach(function (cfg) {
+                        var headerRow = document.getElementById('section-' + cfg.slug);
+                        if (!headerRow) return;
+                        var btn = headerRow.querySelector('.section-toggle');
+                        if (btn && tableEl.classList.contains('collapsed-' + cfg.slug)) {
+                            tableEl.classList.remove('collapsed-' + cfg.slug);
+                            headerRow.classList.remove('collapsed');
+                            btn.textContent = '−';
+                            btn.setAttribute('aria-label', 'Collapse section');
+                        }
+                    });
+                });
+                if (collapseAllBtn) collapseAllBtn.addEventListener('click', function () {
+                    sectionNavConfig.forEach(function (cfg) {
+                        var headerRow = document.getElementById('section-' + cfg.slug);
+                        if (!headerRow) return;
+                        var btn = headerRow.querySelector('.section-toggle');
+                        if (btn && !tableEl.classList.contains('collapsed-' + cfg.slug)) {
+                            tableEl.classList.add('collapsed-' + cfg.slug);
+                            headerRow.classList.add('collapsed');
+                            btn.textContent = '+';
+                            btn.setAttribute('aria-label', 'Expand section');
+                        }
+                    });
+                });
+                tableEl.querySelectorAll('.section-header-row[data-collapsible="true"]').forEach(function (headerRow) {
+                    var section = headerRow.getAttribute('data-section');
+                    var btn = headerRow.querySelector('.section-toggle');
+                    if (!btn || !section) return;
+                    headerRow.addEventListener('click', function (e) {
+                        if (e.target === btn || btn.contains(e.target)) return;
+                        toggleSection(tableEl, section, headerRow, btn);
+                    });
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleSection(tableEl, section, headerRow, btn);
+                    });
+                });
+            }
+
+            function toggleSection(tableEl, section, headerRow, btn) {
+                var collapsedClass = 'collapsed-' + section;
+                var isCollapsed = tableEl.classList.contains(collapsedClass);
+                if (isCollapsed) {
+                    tableEl.classList.remove(collapsedClass);
+                    headerRow.classList.remove('collapsed');
+                    btn.textContent = '−';
+                    btn.setAttribute('aria-label', 'Collapse section');
+                } else {
+                    tableEl.classList.add(collapsedClass);
+                    headerRow.classList.add('collapsed');
+                    btn.textContent = '+';
+                    btn.setAttribute('aria-label', 'Expand section');
+                }
+            }
+
+            function buildSummaryCards(brands) {
+                var container = document.getElementById('summaryCardsContainer');
+                if (!container || brands.length === 0) return;
+                var strengths = [], considerations = [];
+                var i, b, fs, dt, v, n;
+                var getMin = function (arr) { var valid = arr.filter(function (x) { return x != null && !isNaN(x); }); return valid.length === 0 ? null : Math.min.apply(null, valid); };
+                var getMax = function (arr) { var valid = arr.filter(function (x) { return x != null && !isNaN(x); }); return valid.length === 0 ? null : Math.max.apply(null, valid); };
+                function num(b, i, apiFn) {
+                    var val = apiFn(b);
+                    return (val != null && !isNaN(val)) ? val : null;
+                }
+                var appFees = brands.map(function (b, i) { return num(b, i, function (x) { var f = x.feeStructure || {}; return parseFloat(f.applicationFeeMin) || parseFloat(f.applicationFeeMax); }); });
+                var royFees = brands.map(function (b, i) { return num(b, i, function (x) { var f = x.feeStructure || {}; return parseFloat(f.royaltyMin) || parseFloat(f.royaltyMax); }); });
+                var mktFees = brands.map(function (b, i) { return num(b, i, function (x) { var f = x.feeStructure || {}; return parseFloat(f.marketingMin) || parseFloat(f.marketingMax); }); });
+                var techFees = brands.map(function (b, i) { return num(b, i, function (x) { var f = x.feeStructure || {}; return parseFloat(f.techFeeMin) || parseFloat(f.technicalFeeMin) || parseFloat(f.techFeeMax) || parseFloat(f.technicalFeeMax); }); });
+                var loyaltyFees = brands.map(function (b, i) { return num(b, i, function (x) { var f = x.feeStructure || {}; return parseFloat(f.loyaltyMin) || parseFloat(f.loyaltyMax); }); });
+                var notices = brands.map(function (b, i) { dt = b.dealTerms || {}; n = parseFloat(dt.renewalNoticePeriod); return !isNaN(n) ? n : null; });
+                var initialTerms = brands.map(function (b, i) { dt = b.dealTerms || {}; n = parseFloat(dt.minInitialTerm); return !isNaN(n) ? n : null; });
+                var potentialTerms = brands.map(function (b, i) { return null; });
+                var pipConversion = brands.map(function (b, i) { dt = b.dealTerms || {}; v = String(dt.mandatoryPIPConversion || ''); n = parseFloat(v.replace(/[^0-9.]/g, '')); return !isNaN(n) ? n : null; });
+                var directBooking = brands.map(function (b, i) { return null; });
+                var otaReliance = brands.map(function (b, i) { return null; });
+                var perfTest = brands.map(function (b, i) { dt = b.dealTerms || {}; v = dt.performanceTest; if (v === true || (typeof v === 'string' && v.toLowerCase() === 'yes')) return true; if (v === false || (typeof v === 'string' && v.toLowerCase() === 'no')) return false; return null; });
+                var pipRenewal = brands.map(function (b, i) { dt = b.dealTerms || {}; v = (dt.mandatoryPIPRenewal || '').toString().trim(); return (v && v !== 'N/A' && v !== '—'); });
+                var minApp = getMin(appFees), minRoy = getMin(royFees), minMkt = getMin(mktFees), minTech = getMin(techFees), minLoyalty = getMin(loyaltyFees), minNotice = getMin(notices);
+                var maxApp = getMax(appFees), maxRoy = getMax(royFees), maxMkt = getMax(mktFees), maxTech = getMax(techFees), maxLoyalty = getMax(loyaltyFees), maxNotice = getMax(notices);
+                var minInitial = getMin(initialTerms), maxInitial = getMax(initialTerms), minPotential = getMin(potentialTerms), maxPotential = getMax(potentialTerms);
+                var minPipConv = getMin(pipConversion), maxPipConv = getMax(pipConversion);
+                var minDirect = getMin(directBooking), maxDirect = getMax(directBooking), minOta = getMin(otaReliance), maxOta = getMax(otaReliance);
+                var html = '';
+                for (i = 0; i < brands.length; i++) {
+                    b = brands[i];
+                    strengths = [];
+                    considerations = [];
+                    if (appFees[i] != null && appFees[i] === minApp && minApp !== maxApp) strengths.push('Lowest application fee in set ($' + Number(appFees[i]).toLocaleString() + ')');
+                    else if (appFees[i] != null && appFees[i] === maxApp && maxApp !== minApp) considerations.push('Highest application fee in set ($' + Number(appFees[i]).toLocaleString() + ')');
+                    if (royFees[i] != null && royFees[i] === minRoy && minRoy !== maxRoy) strengths.push('Lowest royalty in set (' + royFees[i] + '%)');
+                    else if (royFees[i] != null && royFees[i] === maxRoy && maxRoy !== minRoy) considerations.push('Highest royalty in set (' + royFees[i] + '%)');
+                    if (mktFees[i] != null && mktFees[i] === minMkt && minMkt !== maxMkt) strengths.push('Lowest marketing fee in set (' + mktFees[i] + '%)');
+                    else if (mktFees[i] != null && mktFees[i] === maxMkt && maxMkt !== minMkt) considerations.push('Highest marketing fee in set (' + mktFees[i] + '%)');
+                    if (techFees[i] != null && techFees[i] === minTech && minTech !== maxTech) strengths.push('Lowest technology fee in set ($' + Number(techFees[i]).toLocaleString() + '/yr)');
+                    else if (techFees[i] != null && techFees[i] === maxTech && maxTech !== minTech) considerations.push('Highest technology fee in set ($' + Number(techFees[i]).toLocaleString() + '/yr)');
+                    if (loyaltyFees[i] != null && loyaltyFees[i] === minLoyalty && minLoyalty !== maxLoyalty) strengths.push(loyaltyFees[i] === 0 ? 'Loyalty fee included (no extra %)' : 'Lowest loyalty fee in set (' + loyaltyFees[i] + '%)');
+                    else if (loyaltyFees[i] != null && loyaltyFees[i] === maxLoyalty && maxLoyalty !== minLoyalty) considerations.push('Highest loyalty fee in set (' + loyaltyFees[i] + '%)');
+                    if (notices[i] != null && notices[i] === minNotice && minNotice !== maxNotice) strengths.push('Shortest notice period (' + notices[i] + ' months) – more exit flexibility');
+                    else if (notices[i] != null && notices[i] === maxNotice && maxNotice !== minNotice) considerations.push('Longest notice period (' + notices[i] + ' months) – less exit flexibility');
+                    if (initialTerms[i] != null && initialTerms[i] === maxInitial && maxInitial !== minInitial) strengths.push('Longest initial term (' + initialTerms[i] + ' years)');
+                    if (potentialTerms[i] != null && potentialTerms[i] === maxPotential && maxPotential !== minPotential) strengths.push('Longest potential total term (' + potentialTerms[i] + ' years)');
+                    if (pipConversion[i] != null && pipConversion[i] === minPipConv && minPipConv !== maxPipConv) strengths.push('Lowest conversion PIP in set ($' + Number(pipConversion[i]).toLocaleString() + '/room)');
+                    else if (pipConversion[i] != null && pipConversion[i] === maxPipConv && maxPipConv !== minPipConv) considerations.push('Highest conversion PIP in set ($' + Number(pipConversion[i]).toLocaleString() + '/room)');
+                    if (directBooking[i] != null && directBooking[i] === maxDirect && maxDirect !== minDirect) strengths.push('Highest direct booking % in set (' + directBooking[i] + '%)');
+                    if (otaReliance[i] != null && otaReliance[i] === minOta && minOta !== maxOta) strengths.push('Lowest OTA reliance in set (' + otaReliance[i] + '%)');
+                    else if (otaReliance[i] != null && otaReliance[i] === maxOta && maxOta !== minOta) considerations.push('Highest OTA reliance in set (' + otaReliance[i] + '%)');
+                    if (perfTest[i] === false) strengths.push('No performance test at renewal');
+                    else if (perfTest[i] === true) considerations.push('Performance test required at renewal');
+                    if (pipRenewal[i]) considerations.push('Mandatory PIP at renewal');
+                    if (strengths.length === 0) strengths.push('Compare key metrics in the table below');
+                    var priorityVal = (document.getElementById('prioritySelect') && document.getElementById('prioritySelect').value) || '';
+                    if (priorityVal) {
+                        var priorityKeywords = { fee: ['fee', 'royalty', 'marketing', 'application', 'technology', 'loyalty', 'lowest', 'highest'], term: ['term', 'initial', 'potential', 'renewal', 'years'], exit: ['notice', 'exit', 'flexibility', 'performance', 'pip'], conversion: ['conversion', 'pip'] };
+                        var keywords = priorityKeywords[priorityVal] || [];
+                        strengths.sort(function (a, b) {
+                            var aMatch = keywords.some(function (k) { return a.toLowerCase().indexOf(k) !== -1; }) ? 0 : 1;
+                            var bMatch = keywords.some(function (k) { return b.toLowerCase().indexOf(k) !== -1; }) ? 0 : 1;
+                            return aMatch - bMatch;
+                        });
+                    }
+                    html += '<div class="summary-card" data-brand-id="' + escapeHtml((b.id || b.name || '').toString()) + '"><div class="summary-card__name">' + escapeHtml(b.name) + '</div>';
+                    html += '<div class="summary-card__strengths"><div class="summary-card__section-title">Strengths</div><ul class="summary-card__list">';
+                    strengths.forEach(function (s) { html += '<li>' + escapeHtml(s) + '</li>'; });
+                    html += '</ul></div>';
+                    html += '<div class="summary-card__considerations"><div class="summary-card__section-title">Considerations</div><ul class="summary-card__list">';
+                    considerations.forEach(function (c) { html += '<li>' + escapeHtml(c) + '</li>'; });
+                    if (considerations.length === 0) html += '<li>None highlighted for this set</li>';
+                    html += '</ul></div></div>';
+                }
+                container.innerHTML = html;
+            }
+
+            function getActiveFilterCount() {
+                var n = selectedBrandIds.length;
+                var prioritySelect = document.getElementById('prioritySelect');
+                if (prioritySelect && prioritySelect.value) n += 1;
+                return n;
+            }
+
+            function updateFilterCountBadge() {
+                if (!filterCountBadgeEl) return;
+                var count = getActiveFilterCount();
+                if (count === 0) {
+                    filterCountBadgeEl.style.display = 'none';
+                } else {
+                    filterCountBadgeEl.textContent = String(count);
+                    filterCountBadgeEl.style.display = 'inline-flex';
+                }
+            }
+
+            function updateSelectionUI() {
+                const n = selectedBrandIds.length;
+                selectedCountEl.textContent = n + ' brand' + (n === 1 ? '' : 's') + ' selected (min. 2)';
+                updateFilterCountBadge();
+                runCompare();
+            }
+
+            function getFilteredBrands() {
+                var searchEl = document.getElementById('brandSearchInput');
+                var query = (searchEl && searchEl.value) ? searchEl.value.trim().toLowerCase() : '';
+                return query ? allBrands.filter(function (b) { return (b.name || '').toLowerCase().indexOf(query) !== -1; }) : allBrands;
+            }
+
+            function closeDropdown() {
+                // Move focus to trigger before hiding so no focused element is inside aria-hidden (a11y)
+                if (brandDropdownTriggerEl && document.activeElement && brandDropdownListEl && brandDropdownListEl.contains(document.activeElement)) {
+                    brandDropdownTriggerEl.focus();
+                }
+                if (brandDropdownListEl) {
+                    brandDropdownListEl.setAttribute('aria-hidden', 'true');
+                    brandDropdownListEl.style.display = 'none';
+                }
+                if (brandDropdownTriggerEl) brandDropdownTriggerEl.setAttribute('aria-expanded', 'false');
+            }
+
+            function openDropdown() {
+                renderDropdownList();
+                if (brandDropdownListEl) {
+                    brandDropdownListEl.setAttribute('aria-hidden', 'false');
+                    brandDropdownListEl.style.display = 'block';
+                }
+                if (brandDropdownTriggerEl) brandDropdownTriggerEl.setAttribute('aria-expanded', 'true');
+            }
+
+            function renderDropdownList() {
+                if (!brandDropdownListEl) return;
+                var list = getFilteredBrands();
+                brandDropdownListEl.innerHTML = '';
+                list.forEach(function (brand) {
+                    var id = brand.id;
+                    var name = brand.name;
+                    var alreadySelected = selectedBrandIds.indexOf(id) !== -1;
+                    var atMax = selectedBrandIds.length >= 5;
+                    var btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'brand-dropdown-item';
+                    btn.setAttribute('role', 'option');
+                    btn.textContent = name;
+                    btn.disabled = alreadySelected || atMax;
+                    if (alreadySelected) btn.textContent = name + ' (added)';
+                    btn.addEventListener('click', function () {
+                        if (alreadySelected || atMax) return;
+                        selectedBrandIds.push(id);
+                        closeDropdown();
+                        renderChips();
+                        updateSelectionUI();
+                    });
+                    brandDropdownListEl.appendChild(btn);
+                });
+            }
+
+            function renderChips() {
+                if (!brandChipsRowEl) return;
+                brandChipsRowEl.innerHTML = '';
+                selectedBrandIds.forEach(function (id) {
+                    var brand = allBrands.find(function (b) { return b.id === id; });
+                    var name = (brand && brand.name) ? brand.name : id;
+                    var chip = document.createElement('span');
+                    chip.className = 'brand-chip';
+                    chip.innerHTML = escapeHtml(name) + ' <button type="button" aria-label="Remove ' + escapeHtml(name) + '">&times;</button>';
+                    var removeBtn = chip.querySelector('button');
+                    removeBtn.addEventListener('click', function () {
+                        selectedBrandIds = selectedBrandIds.filter(function (x) { return x !== id; });
+                        renderChips();
+                        renderDropdownList();
+                        updateSelectionUI();
+                    });
+                    brandChipsRowEl.appendChild(chip);
+                });
+            }
+
+            function renderBrandSelector() {
+                renderDropdownList();
+                renderChips();
+                updateSelectionUI();
+            }
+
+            function loadBrands() {
+                return fetch('/api/brand-library/brands')
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (data.success && data.brands) {
+                            allBrands = data.brands;
+                            renderBrandSelector();
+                        }
+                    })
+                    .catch(function (err) { console.error('Error loading brands:', err); });
+            }
+
+            function loadBrandDetail(brandId) {
+                if (brandDetailsCache[brandId]) return Promise.resolve(brandDetailsCache[brandId]);
+                return fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(brandId))
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (data.success && data.brand) {
+                            brandDetailsCache[brandId] = data.brand;
+                            return data.brand;
+                        }
+                        return null;
+                    })
+                    .catch(function (err) { console.error('Error loading brand:', err); return null; });
+            }
+
+            function runCompare() {
+                if (selectedBrandIds.length < 2) {
+                    comparisonContentEl.style.display = 'none';
+                    emptyStateEl.style.display = 'block';
+                    return;
+                }
+                comparisonContentEl.style.display = 'block';
+                emptyStateEl.style.display = 'none';
+                Promise.all(selectedBrandIds.map(loadBrandDetail))
+                    .then(function (details) {
+                        const brands = details.filter(Boolean);
+                        if (brands.length === 0) {
+                            comparisonContentEl.style.display = 'none';
+                            emptyStateEl.style.display = 'block';
+                            updateBackToTopVisibility();
+                            return;
+                        }
+                        buildTable(brands);
+                        updateBackToTopVisibility();
+                    });
+            }
+
+            function resetView() {
+                selectedBrandIds = [];
+                closeDropdown();
+                renderChips();
+                renderDropdownList();
+                var prioritySelect = document.getElementById('prioritySelect');
+                if (prioritySelect) { prioritySelect.value = ''; }
+                var comparisonTableEl = document.getElementById('comparisonTable');
+                if (comparisonTableEl) comparisonTableEl.removeAttribute('data-priority');
+                updateSelectionUI();
+            }
+
+            if (resetViewBtnEl) resetViewBtnEl.addEventListener('click', function (e) { e.preventDefault(); resetView(); });
+
+            if (brandDropdownTriggerEl) {
+                brandDropdownTriggerEl.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var isOpen = brandDropdownListEl && brandDropdownListEl.getAttribute('aria-hidden') !== 'true';
+                    if (isOpen) closeDropdown(); else openDropdown();
+                });
+            }
+
+            document.addEventListener('click', function () {
+                closeDropdown();
+            });
+
+            var dropdownWrap = document.querySelector('.brand-dropdown-wrap');
+            if (dropdownWrap) dropdownWrap.addEventListener('click', function (e) { e.stopPropagation(); });
+
+            var brandSearchInputEl = document.getElementById('brandSearchInput');
+            if (brandSearchInputEl) {
+                brandSearchInputEl.addEventListener('input', function () {
+                    if (brandDropdownListEl && brandDropdownListEl.getAttribute('aria-hidden') === 'false') renderDropdownList();
+                });
+            }
+
+            var prioritySelectEl = document.getElementById('prioritySelect');
+            var comparisonTableEl = document.getElementById('comparisonTable');
+            if (prioritySelectEl && comparisonTableEl) {
+                prioritySelectEl.addEventListener('change', function () {
+                    var val = this.value || '';
+                    comparisonTableEl.setAttribute('data-priority', val);
+                    sortTableRowsByPriority(comparisonTableEl, val);
+                    updateFilterCountBadge();
+                });
+            }
+
+            function sortTableRowsByPriority(table, priorityValue) {
+                var tbody = table && table.querySelector('tbody');
+                if (!tbody || !priorityValue) return;
+                var trs = Array.prototype.slice.call(tbody.children);
+                var blocks = [];
+                var i, tr, currentBlock;
+                for (i = 0; i < trs.length; i++) {
+                    tr = trs[i];
+                    if (tr.classList && tr.classList.contains('section-header-row')) {
+                        currentBlock = { header: tr, rows: [] };
+                        blocks.push(currentBlock);
+                    } else if (currentBlock) {
+                        currentBlock.rows.push(tr);
+                    }
+                }
+                blocks.forEach(function (block) {
+                    block.rows.sort(function (a, b) {
+                        var aMatch = (a.getAttribute('data-priority') || '') === priorityValue ? 0 : 1;
+                        var bMatch = (b.getAttribute('data-priority') || '') === priorityValue ? 0 : 1;
+                        return aMatch - bMatch;
+                    });
+                });
+                var newOrder = [];
+                blocks.forEach(function (block) {
+                    newOrder.push(block.header);
+                    block.rows.forEach(function (r) { newOrder.push(r); });
+                });
+                newOrder.forEach(function (node) { tbody.appendChild(node); });
+            }
+
+            var backToTopBtnEl = document.getElementById('backToTopBtn');
+            var BACK_TO_TOP_THRESHOLD = 150;
+            function getScrollTop() {
+                return window.scrollY != null ? window.scrollY : (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop || 0;
+            }
+            function updateBackToTopVisibility() {
+                if (!backToTopBtnEl) return;
+                var contentEl = document.getElementById('comparisonContent');
+                var isComparisonVisible = contentEl && (contentEl.style.display === '' || contentEl.style.display === 'block');
+                var scrollTop = getScrollTop();
+                var scrolledEnough = scrollTop > BACK_TO_TOP_THRESHOLD;
+                if (isComparisonVisible && scrolledEnough) {
+                    backToTopBtnEl.classList.add('visible');
+                } else {
+                    backToTopBtnEl.classList.remove('visible');
+                }
+            }
+            if (backToTopBtnEl) {
+                backToTopBtnEl.addEventListener('click', function () {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+                window.addEventListener('resize', updateBackToTopVisibility);
+                updateBackToTopVisibility();
+            }
+
+            function loadProposalsForDeal() {
+                if (!dealIdFromUrl) return Promise.resolve();
+                var sel = document.getElementById('brandSelectorSection');
+                if (sel) sel.style.display = 'none';
+                comparisonContentEl.style.display = 'block';
+                emptyStateEl.style.display = 'none';
+                comparisonTbodyEl.innerHTML = '<tr><td colspan="20" style="padding:40px;text-align:center;vertical-align:middle;"><div class="loading-deals"><div class="loading"><div class="loading-content"><div class="wave-container"><div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div><div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div></div><div><div class="loading-text-main">Loading proposals...</div><div class="loading-text-time">Estimated time: 5–15 seconds</div></div></div><div class="loading-progress"><div class="loading-progress-bar"></div></div></div></div></td></tr>';
+                return fetch('/api/deal-compare/proposals?dealId=' + encodeURIComponent(dealIdFromUrl))
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (!data.success || !data.brands) {
+                            comparisonTbodyEl.innerHTML = '<tr><td colspan="2" style="color:var(--neutral--500);padding:24px;">Failed to load proposals.</td></tr>';
+                            return;
+                        }
+                        var brands = data.brands;
+                        if (brands.length === 0) {
+                            emptyStateEl.style.display = 'block';
+                            emptyStateEl.innerHTML = '<p>No contacted brands for this deal. Add brands from Matched Brands and send communications.</p>';
+                            comparisonContentEl.style.display = 'none';
+                            return;
+                        }
+                        buildTable(brands);
+                        updateBackToTopVisibility();
+                    })
+                    .catch(function (err) {
+                        comparisonTbodyEl.innerHTML = '<tr><td colspan="2" style="color:var(--system--300);padding:24px;">Error: ' + (err.message || 'Failed to load') + '</td></tr>';
+                    });
+            }
+
+            if (dealIdFromUrl) {
+                loadProposalsForDeal();
+            } else {
+                loadBrands().then(function () {
+                    if (allBrands.length === 0 && brandChipsRowEl) {
+                        brandChipsRowEl.innerHTML = '<p style="color: var(--neutral--500); padding: 8px 0;">No brands available. Check API and Airtable connection.</p>';
+                    }
+                });
+            }
+        })();
+    </script>
+    <button type="button" class="back-to-top" id="backToTopBtn" aria-label="Scroll back to top" title="Back to top">↑</button>
+</body>
+</html>

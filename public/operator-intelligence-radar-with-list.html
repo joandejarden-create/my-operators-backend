@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Operator Intelligence (Radar + List) | Dealality</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <style>
+        /* Match Dealality Radar styling */
+        .mapping-container {
+            max-width: 100vw;
+            margin: 0;
+            padding: 0;
+            background: #080f25;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .mapping-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #080f25;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .mapping-title { font-size: 2rem; font-weight: 700; color: #ffffff; margin: 0 0 6px 0; }
+        .mapping-subtitle { color: rgba(255,255,255,0.85); font-size: 0.75rem; font-weight: 300; line-height: 1.3; max-width: 650px; }
+        .breadcrumb { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: #888; font-size: 14px; }
+        .breadcrumb a { color: #4a9eff; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        /* Match Radar controls-panel exactly */
+        .controls-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+            gap: 10px;
+            align-items: end;
+            background: #101935;
+            padding: 10px 15px;
+            margin-top: -15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 0;
+            overflow-x: auto;
+        }
+        .controls-panel .control-group {
+            min-width: 0;
+            margin-bottom: 0;
+        }
+        .control-input, .control-select {
+            background: #101935;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.2s;
+            min-width: 0;
+        }
+        .control-input:focus, .control-select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2); }
+        .control-input::placeholder { color: #a0a0a0; }
+        /* Match company setup: keep dark background when filled / autofilled (no white input) */
+        .control-input:-webkit-autofill,
+        .control-input:-webkit-autofill:hover,
+        .control-input:-webkit-autofill:focus,
+        .control-input:-webkit-autofill:active,
+        .control-select:-webkit-autofill,
+        .control-select:-webkit-autofill:hover,
+        .control-select:-webkit-autofill:focus,
+        .control-select:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 100px #101935 inset !important;
+            box-shadow: 0 0 0 100px #101935 inset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            color: #ffffff;
+        }
+        .control-select option { background: #101935 !important; color: #ffffff !important; }
+        .btn-secondary {
+            background: #d69e2e;
+            border: 1px solid #d69e2e;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 10px;
+            white-space: nowrap;
+            min-width: 80px;
+        }
+        .btn-secondary:hover {
+            background: #b8860b;
+            border-color: #b8860b;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        .main-content { display: flex; flex: 1; min-height: 0; background: #080f25; }
+        .operators-main {
+            flex: 1;
+            min-width: 0;
+            padding: 16px 20px;
+            overflow-y: auto;
+        }
+        .sidebar {
+            width: 350px;
+            background: #101935;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+        .sidebar-section { padding: 12px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .sidebar-title { color: #ffffff; font-size: 1rem; font-weight: 600; margin-bottom: 10px; }
+        .control-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+        .control-label { color: #aeb9e1; font-weight: bold; font-size: 12px; }
+        .control-select {
+            background: #101935;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 0;
+        }
+        .control-select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2); }
+        .control-select option { background: #101935; color: #fff; }
+        .btn { padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; font-size: 13px; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; margin-top: 0; }
+        .btn-primary:hover { background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%); transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .results-toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+        .results-toolbar .view-tabs { margin-bottom: 0; }
+        .toolbar-controls { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+        .results-toolbar .rank-by-group { margin-bottom: 0; min-width: 220px; }
+        .results-toolbar .sort-group { margin-bottom: 0; min-width: 180px; }
+        .results-toolbar .sort-group .control-select,
+        .results-toolbar .rank-by-group .control-select { max-width: 100%; }
+        .view-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .view-tab {
+            background: #2a2a3e;
+            border: 1px solid #4a5568;
+            color: #aeb9e1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-tab:hover { border-color: #4a9eff; color: #fff; }
+        .view-tab.active { background: #4a9eff; color: #fff; border-color: #4a9eff; }
+        .results-summary { color: #fff; font-size: 0.75rem; font-weight: 300; line-height: 1.3; margin-bottom: 12px; }
+        .results-summary span { color: #fdb52a; font-weight: 600; }
+        .ranked-table-wrap {
+            overflow-x: auto;
+            background: #212c4d;
+            border: 0.6px solid #37446b;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .ranked-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; }
+        .ranked-table thead { background: #212c4d; }
+        .ranked-table th {
+            color: #fff; font-weight: 600; padding: 12px 8px; text-align: left; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #37446b;
+        }
+        /* Sort arrows: match My Brands page */
+        .ranked-table th[data-sort] { cursor: pointer; user-select: none; }
+        .ranked-table th[data-sort]:hover { background: #37446b; }
+        .ranked-table th[data-sort]:hover .sort-indicator { opacity: 1; }
+        .ranked-table th .sort-indicator {
+            display: inline-flex; flex-direction: column; margin-left: 6px; vertical-align: middle;
+            opacity: 0.5; transition: opacity 0.2s; flex-shrink: 0; line-height: 1;
+        }
+        .ranked-table th.sort-asc .sort-indicator,
+        .ranked-table th.sort-desc .sort-indicator { opacity: 1; }
+        .ranked-table th .sort-indicator-arrow {
+            width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent;
+            margin: 1px 0;
+        }
+        .ranked-table th .sort-indicator-arrow-up { border-bottom: 5px solid #aeb9e1; }
+        .ranked-table th .sort-indicator-arrow-down { border-top: 5px solid #aeb9e1; }
+        .ranked-table th.sort-asc .sort-indicator-arrow-up { border-bottom-color: #6c72ff; }
+        .ranked-table th.sort-desc .sort-indicator-arrow-down { border-top-color: #6c72ff; }
+        .ranked-table tbody tr { border-bottom: 1px solid #37446b; }
+        .ranked-table tbody tr:hover { background: #37446b; }
+        .ranked-table td { padding: 10px 8px; color: #aeb9e1; vertical-align: middle; }
+        .rank-col { width: 44px; font-weight: 700; color: #fdb52a; font-size: 14px; }
+        .rank-col .rank-number { margin-right: 4px; }
+        .operator-name-cell { display: flex; align-items: center; gap: 12px; }
+        .operator-initial-thumb {
+            width: 36px; height: 36px; border-radius: 6px; background: #37446b;
+            display: flex; align-items: center; justify-content: center; font-size: 14px;
+            color: #aeb9e1; font-weight: 600; flex-shrink: 0;
+        }
+        .operator-name-text { color: #fff; font-weight: 600; }
+        .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+        .badge { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #aeb9e1; padding: 4px 8px; border-radius: 8px; font-size: 11px; }
+        .operator-row-expand { cursor: pointer; }
+        .row-expand-icon { display: inline-flex; align-items: center; justify-content: center; color: #aeb9e1; font-size: 10px; transition: color 0.2s; vertical-align: middle; }
+        .operator-row-expand:hover .row-expand-icon { color: #6c72ff; }
+        .row-expand-icon-open { display: none; }
+        .operator-row-expand.expanded .row-expand-icon-closed { display: none; }
+        .operator-row-expand.expanded .row-expand-icon-open { display: inline-flex; color: #6c72ff; }
+        .simple-row-expand { cursor: pointer; }
+        .simple-row-expand:hover .row-expand-icon { color: #6c72ff; }
+        .simple-row-expand.expanded .row-expand-icon-closed { display: none; }
+        .simple-row-expand.expanded .row-expand-icon-open { display: inline-flex; color: #6c72ff; }
+        .breakdown-row-content { display: flex; flex-wrap: wrap; gap: 24px; padding: 10px 0 0 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 6px; align-items: flex-start; }
+        .breakdown-panel { flex: 1; min-width: 260px; max-width: 480px; }
+        .affiliation-breakdown-title,
+        .country-breakdown-title { font-size: 11px; font-weight: 600; color: #aeb9e1; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .affiliation-breakdown-table,
+        .country-breakdown-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+        .affiliation-breakdown-table th,
+        .country-breakdown-table th { text-align: left; color: #aeb9e1; font-weight: 600; padding: 4px 12px 4px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .affiliation-breakdown-table td,
+        .country-breakdown-table td { color: #e0e0e0; padding: 6px 12px 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .affiliation-breakdown-table tr:last-child td,
+        .country-breakdown-table tr:last-child td { border-bottom: none; }
+        .affiliation-breakdown-table .breakdown-name,
+        .country-breakdown-table .breakdown-name { color: #fff; font-weight: 500; }
+        .affiliation-breakdown-table .breakdown-units,
+        .country-breakdown-table .breakdown-units { color: #aeb9e1; }
+        .affiliation-breakdown-table .breakdown-keys,
+        .country-breakdown-table .breakdown-keys { color: #fdb52a; font-weight: 600; }
+        .map-wrap {
+            margin-bottom: 20px;
+            position: relative;
+            background: #101935;
+            display: none;
+        }
+        .map-wrap:not(.hidden) {
+            display: block;
+            min-height: 55vh;
+            height: 55vh;
+        }
+        .map-container-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        /* Radar-style map legend */
+        .map-legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 26, 26, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px 16px 12px 12px;
+            color: #fff;
+            font-size: 12px;
+            z-index: 500;
+            min-width: 200px;
+            max-width: 240px;
+            width: fit-content;
+        }
+        .map-legend .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            white-space: nowrap;
+        }
+        .map-legend .legend-item:last-child { margin-bottom: 0; }
+        .map-legend .legend-section {
+            margin: 12px 0 6px 0;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #444;
+            color: #fff;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .map-legend .legend-section:first-child { margin-top: 0; }
+        .map-legend .legend-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .map-legend .legend-marker.open { background: #2563eb; }
+        .map-legend .legend-marker.pipeline { background: #dc2626; }
+        .map-legend .legend-marker.candidate { background: #7c3aed; }
+        /* Radar-style marker clusters */
+        .marker-cluster {
+            background: rgba(102, 126, 234, 0.8) !important;
+            border: 2px solid #667eea !important;
+            border-radius: 50% !important;
+            color: white !important;
+            font-weight: bold !important;
+            text-align: center !important;
+            font-size: 12px !important;
+            line-height: 1 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+        .cluster-icon {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 50% !important;
+        }
+        .cluster-small { background: rgba(102, 126, 234, 0.8) !important; border: 2px solid #667eea !important; }
+        .cluster-medium { background: rgba(255, 165, 0, 0.8) !important; border: 2px solid #ffa500 !important; }
+        .cluster-large { background: rgba(220, 53, 69, 0.8) !important; border: 2px solid #dc3545 !important; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+        .stat-value { color: #fdb52a; font-size: 1.2rem; font-weight: 700; }
+        .stat-label { color: #a0a0a0; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+        .insight-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #9ca3af; }
+        .insight-item:last-child { border-bottom: none; }
+        .insight-item strong { color: #fdb52a; }
+        .state-empty, .state-loading, .state-error {
+            text-align: center;
+            padding: 48px 24px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #888;
+        }
+        .state-empty .state-icon, .state-loading .state-icon, .state-error .state-icon { font-size: 3rem; margin-bottom: 16px; }
+        .state-empty .state-title, .state-loading .state-title, .state-error .state-title { color: #fff; font-size: 1.2rem; font-weight: 600; margin-bottom: 8px; }
+        /* Radar loading: wave in black circle (same as deal-capture-radar-standalone) */
+        .state-loading .loading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+            color: #888;
+        }
+        .state-loading .wave-container {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            border: 2px solid #888;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+        .state-loading .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+        .state-loading .wave-1 {
+            height: 40%;
+            background: linear-gradient(45deg, #d69e2e, #f4d03f);
+            animation: wave-1 2s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+        .state-loading .wave-2 {
+            height: 60%;
+            background: linear-gradient(45deg, #b8860b, #d69e2e);
+            animation: wave-2 2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+        .state-loading .wave-3 {
+            height: 80%;
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+            animation: wave-3 2s ease-in-out infinite;
+            animation-delay: 0.6s;
+        }
+        .state-loading .wave-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .state-loading .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #d69e2e;
+            border-radius: 50%;
+            animation: particle-float 3s ease-in-out infinite;
+            box-shadow: 0 0 4px #d69e2e;
+        }
+        .state-loading .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .state-loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .state-loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .state-loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+        .state-loading .loading-text {
+            margin-top: 16px;
+            color: #888;
+            font-weight: 500;
+        }
+        @keyframes wave-1 {
+            0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; }
+            50% { transform: translateX(0%) scaleY(1.2); opacity: 1; }
+        }
+        @keyframes wave-2 {
+            0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; }
+            50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; }
+        }
+        @keyframes wave-3 {
+            0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; }
+            50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; }
+        }
+        @keyframes particle-float {
+            0% { transform: translateY(100%) scale(0); opacity: 0; }
+            20% { transform: translateY(80%) scale(1); opacity: 1; }
+            80% { transform: translateY(20%) scale(1); opacity: 1; }
+            100% { transform: translateY(0%) scale(0); opacity: 0; }
+        }
+        /* Radar system-status: top-right loading box (wave + progress bar) */
+        .system-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            min-width: 200px;
+            max-width: 280px;
+        }
+        .system-status.show { transform: translateX(0); }
+        .system-status .status-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .system-status .status-spinner {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .system-status .wave-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #2a2a2a;
+            border-radius: 50%;
+            border: 2px solid #888;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+        .system-status .wave { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; }
+        .system-status .wave-1 { height: 40%; background: linear-gradient(45deg, #d69e2e, #f4d03f); animation: wave-1 2s ease-in-out infinite; }
+        .system-status .wave-2 { height: 60%; background: linear-gradient(45deg, #b8860b, #d69e2e); animation: wave-2 2s ease-in-out infinite; animation-delay: 0.3s; }
+        .system-status .wave-3 { height: 80%; background: linear-gradient(45deg, #f4d03f, #f7dc6f); animation: wave-3 2s ease-in-out infinite; animation-delay: 0.6s; }
+        .system-status .wave-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .system-status .particle {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: #d69e2e;
+            border-radius: 50%;
+            animation: particle-float 3s ease-in-out infinite;
+            box-shadow: 0 0 4px #d69e2e;
+        }
+        .system-status .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .system-status .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .system-status .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .system-status .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+        .system-status .status-text { flex: 1; line-height: 1.3; }
+        .system-status .status-time { font-size: 10px; color: #b0b0b0; margin-top: 2px; }
+        .system-status .status-progress {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 1px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        .system-status .status-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d69e2e, #f4d03f);
+            border-radius: 1px;
+            transition: width 0.3s ease;
+            width: 0%;
+            box-shadow: 0 0 4px rgba(214, 158, 46, 0.5);
+        }
+        .hidden { display: none !important; }
+        /* Radar + List combined layout: map on top, list below, both always visible */
+        .radar-with-list-page #resultsPanel .radar-with-list-results { display: flex; flex-direction: column; gap: 0; }
+        .radar-with-list-page #mapView { display: block !important; margin-bottom: 16px; height: 400px; min-height: 400px; }
+        .radar-with-list-page #mapView .map-container-inner { min-height: 380px; height: 100%; }
+        .radar-with-list-page #mapView #map { min-height: 380px; height: 100%; }
+        .radar-with-list-page .view-tabs { display: none; }
+        @media (max-width: 900px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; border-left: none; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        }
+    </style>
+</head>
+<body class="radar-with-list-page">
+    <div class="mapping-container">
+        <!-- Radar-style loading: top-right black box with wave + progress bar -->
+        <div id="systemStatus" class="system-status" style="display: none;">
+            <div class="status-content">
+                <div class="status-spinner">
+                    <div class="wave-container">
+                        <div class="wave wave-1"></div>
+                        <div class="wave wave-2"></div>
+                        <div class="wave wave-3"></div>
+                        <div class="wave-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="status-text">
+                    <div>May take 15-30 seconds for full dataset</div>
+                </div>
+            </div>
+            <div class="status-progress">
+                <div class="status-progress-bar"></div>
+            </div>
+        </div>
+        <header class="mapping-header">
+            <div class="breadcrumb">
+                <a href="/app">Platform</a>
+                <span>/</span>
+                <a href="/largest-operators-by-brand">Operator Intelligence</a>
+                <span>/</span>
+                <span>Radar + List (preview)</span>
+            </div>
+            <div class="header-top">
+                <div>
+                    <h1 class="mapping-title">Operator Intelligence (Radar + List)</h1>
+                    <p class="mapping-subtitle">Map and ranked list shown together. Try this layout before adding it to the main radar.</p>
+                </div>
+            </div>
+
+            <form id="filterForm" class="controls-panel">
+                <div class="control-group">
+                    <label class="control-label" for="locationSearch">Search Location</label>
+                    <input type="text" class="control-input" id="locationSearch" name="search" placeholder="Search city, country, or property...">
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="parentCompany">Parent Company</label>
+                    <select id="parentCompany" name="parentCompany" class="control-select">
+                        <option value="">All Parent Companies</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="brandFilter">Brand Filter</label>
+                    <select id="brandFilter" name="brand" class="control-select">
+                        <option value="">All Brands</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="statusFilter">Status Filter</label>
+                    <select id="statusFilter" name="status" class="control-select">
+                        <option value="">All Status</option>
+                        <option value="Open">Open Hotels</option>
+                        <option value="Pipeline">Pipeline</option>
+                        <option value="Candidate">Candidate/LOI</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="chainScaleFilter">Chain Scale</label>
+                    <select id="chainScaleFilter" name="chainScale" class="control-select">
+                        <option value="">All Chain Scales</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="regionFilter">Region</label>
+                    <select id="regionFilter" name="region" class="control-select">
+                        <option value="">All Regions</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="locationTypeFilter">Location Type</label>
+                    <select id="locationTypeFilter" name="locationType" class="control-select">
+                        <option value="">All Location Types</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="operationTypeFilter">Operation Type</label>
+                    <select id="operationTypeFilter" name="operationType" class="control-select">
+                        <option value="">All Operation Types</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <button type="button" class="btn btn-secondary" id="btnResetView">Reset View</button>
+                </div>
+            </form>
+        </header>
+
+        <div class="main-content">
+            <div class="operators-main">
+                <div id="resultsPanel" class="hidden">
+                    <div class="results-toolbar">
+                        <div class="toolbar-controls">
+                            <div class="control-group rank-by-group">
+                                <label class="control-label" for="rankBy">Rank by</label>
+                                <select id="rankBy" class="control-select" aria-label="What to rank">
+                                    <option value="operator">Operator</option>
+                                    <option value="brand">Brand / Affiliation</option>
+                                    <option value="parent_company">Parent Company</option>
+                                    <option value="region">Region</option>
+                                    <option value="chain_scale">Chain Scale</option>
+                                    <option value="status">Status</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="radar-with-list-results">
+                        <div id="mapView" class="map-wrap">
+                            <div class="map-container-inner">
+                                <div id="map"></div>
+                                <div class="map-legend">
+                                    <div class="legend-section"><strong>Hotel Status</strong></div>
+                                    <div class="legend-item">
+                                        <div class="legend-marker open"></div>
+                                        <span>Open Hotels</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-marker pipeline"></div>
+                                        <span>Pipeline</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-marker candidate"></div>
+                                        <span>Candidate/LOI</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="results-summary"><span id="rankCount">0</span> <span id="rankLabel">operators</span> · <span id="propertyCount">0</span> properties with operator<span id="fullDatasetWrap"></span></p>
+                        <div id="tableView" class="ranked-table-wrap">
+                            <table class="ranked-table" id="rankedTable">
+                                <thead id="rankedTableHead">
+                                    <tr>
+                                        <th class="rank-col">#</th>
+                                        <th>Operator</th>
+                                        <th>Units</th>
+                                        <th>Keys</th>
+                                        <th>Affiliation</th>
+                                        <th>Hotel types</th>
+                                        <th>Recent openings</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rankedTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="state-empty" id="stateEmpty">
+                    <div class="state-icon">📊</div>
+                    <div class="state-title">No results</div>
+                    <p>Adjust the filters above to see ranked 3rd-party operators. Results update automatically as you change filters.</p>
+                </div>
+                <div class="state-loading hidden" id="stateLoading">
+                    <div class="loading">
+                        <div class="wave-container">
+                            <div class="wave wave-1"></div>
+                            <div class="wave wave-2"></div>
+                            <div class="wave wave-3"></div>
+                            <div class="wave-particles">
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="state-error hidden" id="stateError">
+                    <div class="state-icon">⚠️</div>
+                    <div class="state-title">Could not load data</div>
+                    <p id="stateErrorText"></p>
+                </div>
+            </div>
+
+            <aside class="sidebar">
+                <div class="sidebar-section" id="insightsBlock">
+                    <h2 class="sidebar-title">Insights</h2>
+                    <div id="insightsList"></div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+(function () {
+    const form = document.getElementById('filterForm');
+    const resultsPanel = document.getElementById('resultsPanel');
+    const rankCount = document.getElementById('rankCount');
+    const rankLabel = document.getElementById('rankLabel');
+    const propertyCount = document.getElementById('propertyCount');
+    const fullDatasetWrap = document.getElementById('fullDatasetWrap');
+    const rankedTableHead = document.getElementById('rankedTableHead');
+    const rankedTableBody = document.getElementById('rankedTableBody');
+    const stateEmpty = document.getElementById('stateEmpty');
+    const stateLoading = document.getElementById('stateLoading');
+    const stateError = document.getElementById('stateError');
+    const stateErrorText = document.getElementById('stateErrorText');
+    const insightsList = document.getElementById('insightsList');
+    const tableView = document.getElementById('tableView');
+    const mapView = document.getElementById('mapView');
+    const mapEl = document.getElementById('map');
+    let map = null;
+    let markersCluster = null;
+    let lastData = null;
+    let loadingAbort = null;
+    let statusProgressInterval = null;
+    let statusStartTime = null;
+    let tableSortColumn = null;
+    let tableSortDirection = 'desc';
+    var sortIndicatorHtml = '<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span>';
+    function thWithSort(label, dataSort) {
+        return '<th data-sort="' + dataSort + '"><span style="display:inline-flex;align-items:center;">' + label + sortIndicatorHtml + '</span></th>';
+    }
+
+    function showSystemStatus(message) {
+        var el = document.getElementById('systemStatus');
+        if (!el) return;
+        var statusText = el.querySelector('.status-text');
+        var progressBar = el.querySelector('.status-progress-bar');
+        if (statusText && statusText.firstElementChild) statusText.firstElementChild.textContent = message || 'May take 15-30 seconds for full dataset';
+        if (progressBar) progressBar.style.width = '0%';
+        el.style.display = 'block';
+        statusStartTime = Date.now();
+        if (statusProgressInterval) clearInterval(statusProgressInterval);
+        statusProgressInterval = setInterval(function () {
+            if (!statusStartTime) return;
+            var progressBar = document.getElementById('systemStatus') && document.getElementById('systemStatus').querySelector('.status-progress-bar');
+            if (!progressBar) return;
+            var elapsed = Date.now() - statusStartTime;
+            var estimatedTotal = 25000;
+            var progress = Math.min((elapsed / estimatedTotal) * 100, 95);
+            progressBar.style.width = progress + '%';
+        }, 100);
+        setTimeout(function () { el.classList.add('show'); }, 10);
+    }
+
+    function hideSystemStatus() {
+        var el = document.getElementById('systemStatus');
+        if (!el) return;
+        var progressBar = el.querySelector('.status-progress-bar');
+        if (progressBar) progressBar.style.width = '100%';
+        if (statusProgressInterval) {
+            clearInterval(statusProgressInterval);
+            statusProgressInterval = null;
+        }
+        setTimeout(function () {
+            el.classList.remove('show');
+            statusStartTime = null;
+            setTimeout(function () { el.style.display = 'none'; }, 300);
+        }, 500);
+    }
+
+    function debounce(fn, ms) {
+        var t;
+        return function () {
+            clearTimeout(t);
+            t = setTimeout(fn, ms);
+        };
+    }
+
+    function showState(which) {
+        stateEmpty.classList.add('hidden');
+        stateLoading.classList.add('hidden');
+        stateError.classList.add('hidden');
+        resultsPanel.classList.add('hidden');
+        if (which === 'empty') stateEmpty.classList.remove('hidden');
+        else if (which === 'loading') stateLoading.classList.remove('hidden');
+        else if (which === 'error') stateError.classList.remove('hidden');
+        else if (which === 'results') resultsPanel.classList.remove('hidden');
+    }
+
+    function escapeHtml(s) {
+        if (s == null) return '';
+        const div = document.createElement('div');
+        div.textContent = String(s);
+        return div.innerHTML;
+    }
+
+    function loadFilters() {
+        return fetch('/api/operators-by-brand-region/filters')
+            .then(function (r) {
+                if (!r.ok) throw new Error('Filters failed: ' + r.status);
+                return r.json();
+            })
+            .then(function (data) {
+                if (!data.success) throw new Error(data.error || 'Filters failed');
+                var parentSel = document.getElementById('parentCompany');
+                var brandSel = document.getElementById('brandFilter');
+                var locationTypeSel = document.getElementById('locationTypeFilter');
+                if (!parentSel || !brandSel || !locationTypeSel) return;
+                var cur = parentSel.value;
+                parentSel.innerHTML = '<option value="">All Parent Companies</option>';
+                (data.parentCompanies || []).forEach(function (name) {
+                    var opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    if (name === cur) opt.selected = true;
+                    parentSel.appendChild(opt);
+                });
+                var curB = brandSel.value;
+                brandSel.innerHTML = '<option value="">All Brands</option>';
+                (data.brands || []).forEach(function (name) {
+                    var opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    if (name === curB) opt.selected = true;
+                    brandSel.appendChild(opt);
+                });
+                var curL = locationTypeSel.value;
+                locationTypeSel.innerHTML = '<option value="">All Location Types</option>';
+                (data.locationTypes || []).forEach(function (name) {
+                    var opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    if (name === curL) opt.selected = true;
+                    locationTypeSel.appendChild(opt);
+                });
+                var chainScaleSel = document.getElementById('chainScaleFilter');
+                if (chainScaleSel) {
+                    var curCS = chainScaleSel.value;
+                    chainScaleSel.innerHTML = '<option value="">All Chain Scales</option>';
+                    (data.chainScales || []).forEach(function (name) {
+                        var opt = document.createElement('option');
+                        opt.value = name;
+                        opt.textContent = name;
+                        if (name === curCS) opt.selected = true;
+                        chainScaleSel.appendChild(opt);
+                    });
+                }
+                var regionSel = document.getElementById('regionFilter');
+                if (regionSel) {
+                    var curR = regionSel.value;
+                    regionSel.innerHTML = '<option value="">All Regions</option>';
+                    (data.regions || []).forEach(function (name) {
+                        var opt = document.createElement('option');
+                        opt.value = name;
+                        opt.textContent = name;
+                        if (name === curR) opt.selected = true;
+                        regionSel.appendChild(opt);
+                    });
+                }
+                var operationTypeSel = document.getElementById('operationTypeFilter');
+                if (operationTypeSel) {
+                    var curO = operationTypeSel.value;
+                    operationTypeSel.innerHTML = '<option value="">All Operation Types</option>';
+                    (data.operationTypes || []).forEach(function (name) {
+                        var opt = document.createElement('option');
+                        opt.value = name;
+                        opt.textContent = name;
+                        if (name === curO) opt.selected = true;
+                        operationTypeSel.appendChild(opt);
+                    });
+                }
+                var msg = document.getElementById('insightsList');
+                if (msg && data.parentCompanies && data.parentCompanies.length === 0 && data.brands && data.brands.length === 0)
+                    msg.innerHTML = '<div class="insight-item">No filter options yet. Check that Hotel Census (ALT base) has data.</div>';
+            })
+            .catch(function (err) {
+                var msg = document.getElementById('insightsList');
+                if (msg) msg.innerHTML = '<div class="insight-item">Could not load filter options: ' + (err.message || 'network error') + '. Check server and ALT base.</div>';
+            });
+    }
+
+    function sortOperators(operators, sortBy) {
+        var list = (operators || []).slice();
+        var key = sortBy || 'operator_keys';
+        if (key === 'operator_keys') {
+            list.sort(function (a, b) {
+                if (b.total_keys !== a.total_keys) return b.total_keys - a.total_keys;
+                if (b.hotel_count !== a.hotel_count) return b.hotel_count - a.hotel_count;
+                return (a.operator_name || '').localeCompare(b.operator_name || '');
+            });
+        } else if (key === 'operator_units') {
+            list.sort(function (a, b) {
+                if (b.hotel_count !== a.hotel_count) return b.hotel_count - a.hotel_count;
+                if (b.total_keys !== a.total_keys) return b.total_keys - a.total_keys;
+                return (a.operator_name || '').localeCompare(b.operator_name || '');
+            });
+        } else if (key === 'brand_keys') {
+            list.sort(function (a, b) {
+                var ba = (a.brands && a.brands[0]) || '';
+                var bb = (b.brands && b.brands[0]) || '';
+                var c = ba.localeCompare(bb);
+                if (c !== 0) return c;
+                return (b.total_keys || 0) - (a.total_keys || 0);
+            });
+        } else if (key === 'brand_units') {
+            list.sort(function (a, b) {
+                var ba = (a.brands && a.brands[0]) || '';
+                var bb = (b.brands && b.brands[0]) || '';
+                var c = ba.localeCompare(bb);
+                if (c !== 0) return c;
+                return (b.hotel_count || 0) - (a.hotel_count || 0);
+            });
+        } else if (key === 'parent_company_rooms') {
+            list.sort(function (a, b) {
+                var pa = (a.parent_company || '').toString();
+                var pb = (b.parent_company || '').toString();
+                var c = pa.localeCompare(pb);
+                if (c !== 0) return c;
+                return (b.total_keys || 0) - (a.total_keys || 0);
+            });
+        } else if (key === 'parent_company_units') {
+            list.sort(function (a, b) {
+                var pa = (a.parent_company || '').toString();
+                var pb = (b.parent_company || '').toString();
+                var c = pa.localeCompare(pb);
+                if (c !== 0) return c;
+                return (b.hotel_count || 0) - (a.hotel_count || 0);
+            });
+        }
+        return list;
+    }
+
+    function applyTableColumnSort(operators, column, direction) {
+        var list = (operators || []).slice();
+        var asc = direction === 'asc';
+        list.sort(function (a, b) {
+            var cmp = 0;
+            if (column === 'operator_name') {
+                var aa = (a.operator_name || '').toString();
+                var bb = (b.operator_name || '').toString();
+                cmp = aa.localeCompare(bb);
+            } else if (column === 'hotel_count') {
+                cmp = (a.hotel_count || 0) - (b.hotel_count || 0);
+            } else if (column === 'total_keys') {
+                cmp = (a.total_keys || 0) - (b.total_keys || 0);
+            } else if (column === 'brand') {
+                var ba = (a.brands && a.brands[0]) || '';
+                var bb = (b.brands && b.brands[0]) || '';
+                cmp = ba.localeCompare(bb);
+            } else if (column === 'hotel_type') {
+                var ta = (a.hotel_types && a.hotel_types[0]) || '';
+                var tb = (b.hotel_types && b.hotel_types[0]) || '';
+                cmp = ta.localeCompare(tb);
+            } else if (column === 'recent_openings') {
+                cmp = (a.recent_openings_count || 0) - (b.recent_openings_count || 0);
+            }
+            if (cmp === 0) cmp = (a.operator_name || '').localeCompare(b.operator_name || '');
+            return asc ? cmp : -cmp;
+        });
+        return list;
+    }
+
+    function getRankBy() { return (document.getElementById('rankBy') && document.getElementById('rankBy').value) || 'operator'; }
+
+    function getRankedList() {
+        if (!lastData) return { list: [], label: 'operators' };
+        var rankBy = getRankBy();
+        var list = [];
+        var label = 'operators';
+        if (rankBy === 'operator') {
+            list = (lastData.operators || []).slice();
+            label = 'operators';
+        } else if (rankBy === 'brand') {
+            list = (lastData.brands || []).slice();
+            label = 'brands';
+        } else if (rankBy === 'parent_company') {
+            list = (lastData.parent_companies || []).slice();
+            label = 'parent companies';
+        } else if (rankBy === 'region') {
+            list = (lastData.regions || []).slice();
+            label = 'regions';
+        } else if (rankBy === 'chain_scale') {
+            list = (lastData.chain_scales || []).slice();
+            label = 'chain scales';
+        } else if (rankBy === 'status') {
+            list = (lastData.statuses || []).slice();
+            label = 'statuses';
+        }
+        list.sort(function (a, b) {
+            var keysA = a.total_keys || 0;
+            var keysB = b.total_keys || 0;
+            var unitsA = a.hotel_count != null ? a.hotel_count : 0;
+            var unitsB = b.hotel_count != null ? b.hotel_count : 0;
+            if (keysB !== keysA) return keysB - keysA;
+            return unitsB - unitsA;
+        });
+        return { list: list, label: label };
+    }
+
+    function setRankHeaders() {
+        var rankBy = getRankBy();
+        if (!rankedTableHead || !rankedTableHead.querySelector('tr')) return;
+        var tr = rankedTableHead.querySelector('tr');
+        if (rankBy === 'operator') {
+            tr.innerHTML =
+                '<th class="rank-col" data-sort="total_keys"><span style="display:inline-flex;align-items:center;">#' + sortIndicatorHtml + '</span></th>' +
+                thWithSort('Operator', 'operator_name') +
+                thWithSort('Units', 'hotel_count') +
+                thWithSort('Keys', 'total_keys') +
+                thWithSort('Affiliation', 'brand') +
+                thWithSort('Hotel types', 'hotel_type') +
+                thWithSort('Recent openings', 'recent_openings');
+        } else {
+            var nameLabels = { brand: 'Brand / Affiliation', parent_company: 'Parent Company', region: 'Region', chain_scale: 'Chain Scale', status: 'Status' };
+            var nameLabel = nameLabels[rankBy] || 'Name';
+            tr.innerHTML =
+                '<th class="rank-col" data-sort="total_keys"><span style="display:inline-flex;align-items:center;">#' + sortIndicatorHtml + '</span></th>' +
+                thWithSort(nameLabel, 'name') +
+                thWithSort('Units', 'hotel_count') +
+                thWithSort('Keys', 'total_keys');
+        }
+        tr.querySelectorAll('th[data-sort]').forEach(function (th) {
+            th.classList.remove('sort-asc', 'sort-desc');
+            if (th.getAttribute('data-sort') === tableSortColumn) th.classList.add(tableSortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+            th.onclick = function () { handleRankTableSort(th.getAttribute('data-sort')); };
+        });
+    }
+
+    function sortListByColumn(list, column, direction, rankBy) {
+        var asc = direction === 'asc';
+        return list.slice().sort(function (a, b) {
+            var cmp = 0;
+            if (column === 'operator_name' || column === 'name') {
+                var aa = (a.operator_name || a.name || '').toString();
+                var bb = (b.operator_name || b.name || '').toString();
+                cmp = aa.localeCompare(bb);
+            } else if (column === 'hotel_count') {
+                cmp = (a.hotel_count != null ? a.hotel_count : 0) - (b.hotel_count != null ? b.hotel_count : 0);
+            } else if (column === 'total_keys') {
+                cmp = (a.total_keys || 0) - (b.total_keys || 0);
+            } else if (column === 'brand') {
+                var ba = (a.brands && a.brands[0]) || '';
+                var bb = (b.brands && b.brands[0]) || '';
+                cmp = ba.localeCompare(bb);
+            } else if (column === 'hotel_type') {
+                var ta = (a.hotel_types && a.hotel_types[0]) || '';
+                var tb = (b.hotel_types && b.hotel_types[0]) || '';
+                cmp = ta.localeCompare(tb);
+            } else if (column === 'recent_openings') {
+                cmp = (a.recent_openings_count || 0) - (b.recent_openings_count || 0);
+            }
+            if (cmp === 0 && (a.operator_name || a.name)) cmp = (a.operator_name || a.name || '').localeCompare(b.operator_name || b.name || '');
+            return asc ? cmp : -cmp;
+        });
+    }
+
+    function handleRankTableSort(column) {
+        if (tableSortColumn === column) {
+            tableSortDirection = tableSortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            tableSortColumn = column;
+            tableSortDirection = (column === 'operator_name' || column === 'name' || column === 'brand' || column === 'hotel_type') ? 'asc' : 'desc';
+        }
+        var rankBy = getRankBy();
+        var list = (rankBy === 'operator' && lastData.operators) ? lastData.operators.slice() :
+            (rankBy === 'brand' && lastData.brands) ? lastData.brands.slice() :
+            (rankBy === 'parent_company' && lastData.parent_companies) ? lastData.parent_companies.slice() :
+            (rankBy === 'region' && lastData.regions) ? lastData.regions.slice() :
+            (rankBy === 'chain_scale' && lastData.chain_scales) ? lastData.chain_scales.slice() :
+            (rankBy === 'status' && lastData.statuses) ? lastData.statuses.slice() : [];
+        var sorted = sortListByColumn(list, column, tableSortDirection, rankBy);
+        setRankHeaders();
+        if (rankBy === 'operator') {
+            renderTable({ operators: sorted, properties: lastData.properties, total_properties: lastData.total_properties });
+        } else {
+            renderSimpleRankList(sorted);
+        }
+    }
+
+    function applyRankView() {
+        if (!lastData) return;
+        var properties = lastData.properties || [];
+        var propNum = (lastData.total_properties != null ? lastData.total_properties : properties.length);
+        propertyCount.textContent = propNum;
+        if (fullDatasetWrap) fullDatasetWrap.textContent = (lastData.total_in_census != null) ? ' (of ' + Number(lastData.total_in_census).toLocaleString() + ' in full dataset)' : '';
+        var ranked = getRankedList();
+        if (rankCount) rankCount.textContent = ranked.list.length;
+        if (rankLabel) rankLabel.textContent = ranked.label;
+        setRankHeaders();
+        if (getRankBy() === 'operator') {
+            renderTable({ operators: ranked.list, properties: lastData.properties, total_properties: lastData.total_properties });
+        } else {
+            renderSimpleRankList(ranked.list);
+        }
+    }
+
+    function renderSimpleRankList(list) {
+        var rankBy = getRankBy();
+        rankedTableBody.innerHTML = list.map(function (item, i) {
+            var rank = i + 1;
+            var name = (item.name || item.operator_name || '—').toString();
+            var units = item.hotel_count != null ? item.hotel_count : 0;
+            var keys = item.total_keys != null ? item.total_keys : 0;
+            var initial = name.charAt(0).toUpperCase();
+            var nameCell = '<div class="operator-name-cell"><span class="operator-initial-thumb">' + escapeHtml(initial) + '</span><span class="operator-name-text">' + escapeHtml(name) + '</span></div>';
+            var expandContent = getExpandContentForRank(item.properties, rankBy);
+            return '<tr class="simple-row-expand">' +
+                '<td class="rank-col"><span class="rank-number">' + rank + '</span><span class="row-expand-icon row-expand-icon-closed" aria-hidden="true">▶</span><span class="row-expand-icon row-expand-icon-open" aria-hidden="true">▼</span></td>' +
+                '<td>' + nameCell + '</td><td>' + units + '</td><td>' + keys.toLocaleString() + '</td>' +
+                '</tr><tr class="similar-row"><td colspan="4">' + expandContent + '</td></tr>';
+        }).join('');
+
+        document.querySelectorAll('#rankedTableBody .similar-row').forEach(function (row) { row.classList.add('hidden'); });
+        document.querySelectorAll('.simple-row-expand').forEach(function (row) {
+            row.addEventListener('click', function () {
+                var next = row.nextElementSibling;
+                if (next && next.classList.contains('similar-row')) {
+                    next.classList.toggle('hidden');
+                    row.classList.toggle('expanded', !next.classList.contains('hidden'));
+                }
+            });
+        });
+    }
+
+    function buildAffiliationBreakdown(properties) {
+        var byBrand = {};
+        (properties || []).forEach(function (p) {
+            var b = (p.brand || '').trim() || '(no affiliation)';
+            if (!byBrand[b]) byBrand[b] = { units: 0, keys: 0 };
+            byBrand[b].units += 1;
+            byBrand[b].keys += (p.keys || 0);
+        });
+        var rows = Object.keys(byBrand).map(function (name) {
+            return { name: name, units: byBrand[name].units, keys: byBrand[name].keys };
+        }).sort(function (a, b) { return b.keys - a.keys; });
+        if (rows.length === 0) return '<div class="breakdown-panel"><div class="affiliation-breakdown-title">Units &amp; keys by affiliation</div><p style="color:#888;font-size:12px;">No data</p></div>';
+        var tableRows = rows.map(function (r) {
+            return '<tr><td class="breakdown-name">' + escapeHtml(r.name) + '</td><td class="breakdown-units">' + r.units + '</td><td class="breakdown-keys">' + (r.keys || 0).toLocaleString() + '</td></tr>';
+        }).join('');
+        return '<div class="breakdown-panel">' +
+            '<div class="affiliation-breakdown-title">Units &amp; keys by affiliation</div>' +
+            '<table class="affiliation-breakdown-table"><thead><tr><th>Affiliation</th><th>Units</th><th>Keys</th></tr></thead><tbody>' + tableRows + '</tbody></table></div>';
+    }
+
+    function buildCountryBreakdown(properties) {
+        var byCountry = {};
+        (properties || []).forEach(function (p) {
+            var c = (p.country || '').trim() || '(no country)';
+            if (!byCountry[c]) byCountry[c] = { units: 0, keys: 0 };
+            byCountry[c].units += 1;
+            byCountry[c].keys += (p.keys || 0);
+        });
+        var rows = Object.keys(byCountry).map(function (name) {
+            return { name: name, units: byCountry[name].units, keys: byCountry[name].keys };
+        }).sort(function (a, b) { return b.keys - a.keys; });
+        if (rows.length === 0) return '<div class="breakdown-panel"><div class="country-breakdown-title">Units &amp; keys by country</div><p style="color:#888;font-size:12px;">No data</p></div>';
+        var tableRows = rows.map(function (r) {
+            return '<tr><td class="breakdown-name">' + escapeHtml(r.name) + '</td><td class="breakdown-units">' + r.units + '</td><td class="breakdown-keys">' + (r.keys || 0).toLocaleString() + '</td></tr>';
+        }).join('');
+        return '<div class="breakdown-panel">' +
+            '<div class="country-breakdown-title">Units &amp; keys by country</div>' +
+            '<table class="country-breakdown-table"><thead><tr><th>Country</th><th>Units</th><th>Keys</th></tr></thead><tbody>' + tableRows + '</tbody></table></div>';
+    }
+
+    function buildOperatorBreakdown(properties) {
+        var byOp = {};
+        (properties || []).forEach(function (p) {
+            var o = (p.operator_name || '').trim() || '(no operator)';
+            if (!byOp[o]) byOp[o] = { units: 0, keys: 0 };
+            byOp[o].units += 1;
+            byOp[o].keys += (p.keys || 0);
+        });
+        var rows = Object.keys(byOp).map(function (name) {
+            return { name: name, units: byOp[name].units, keys: byOp[name].keys };
+        }).sort(function (a, b) { return b.keys - a.keys; });
+        if (rows.length === 0) return '<div class="breakdown-panel"><div class="affiliation-breakdown-title">Units &amp; keys by operator</div><p style="color:#888;font-size:12px;">No data</p></div>';
+        var tableRows = rows.map(function (r) {
+            return '<tr><td class="breakdown-name">' + escapeHtml(r.name) + '</td><td class="breakdown-units">' + r.units + '</td><td class="breakdown-keys">' + (r.keys || 0).toLocaleString() + '</td></tr>';
+        }).join('');
+        return '<div class="breakdown-panel">' +
+            '<div class="affiliation-breakdown-title">Units &amp; keys by operator</div>' +
+            '<table class="affiliation-breakdown-table"><thead><tr><th>Operator</th><th>Units</th><th>Keys</th></tr></thead><tbody>' + tableRows + '</tbody></table></div>';
+    }
+
+    function buildChainManagedFranchisedBreakdown(properties) {
+        var list = properties || [];
+        var chainManaged = list.filter(function (p) {
+            var ot = (p.operation_type || '').toString().trim().toLowerCase();
+            return ot === 'chain management';
+        });
+        var franchised = list.filter(function (p) {
+            var ot = (p.operation_type || '').toString().trim().toLowerCase();
+            return ot === 'franchise';
+        });
+        var independent = list.filter(function (p) {
+            var ot = (p.operation_type || '').toString().trim().toLowerCase();
+            return ot !== 'chain management' && ot !== 'franchise';
+        });
+        function panel(title, props, colLabel) {
+            var byOp = {};
+            props.forEach(function (p) {
+                var o = (p.operator_name || '').trim() || '(no operator)';
+                if (!byOp[o]) byOp[o] = { units: 0, keys: 0 };
+                byOp[o].units += 1;
+                byOp[o].keys += (p.keys || 0);
+            });
+            var rows = Object.keys(byOp).map(function (name) {
+                return { name: name, units: byOp[name].units, keys: byOp[name].keys };
+            }).sort(function (a, b) { return b.keys - a.keys; });
+            if (rows.length === 0) return '<div class="breakdown-panel"><div class="affiliation-breakdown-title">' + escapeHtml(title) + '</div><p style="color:#888;font-size:12px;">No data</p></div>';
+            var tableRows = rows.map(function (r) {
+                return '<tr><td class="breakdown-name">' + escapeHtml(r.name) + '</td><td class="breakdown-units">' + r.units + '</td><td class="breakdown-keys">' + (r.keys || 0).toLocaleString() + '</td></tr>';
+            }).join('');
+            return '<div class="breakdown-panel">' +
+                '<div class="affiliation-breakdown-title">' + escapeHtml(title) + '</div>' +
+                '<table class="affiliation-breakdown-table"><thead><tr><th>' + escapeHtml(colLabel) + '</th><th>Units</th><th>Keys</th></tr></thead><tbody>' + tableRows + '</tbody></table></div>';
+        }
+        return panel('Chain Management', chainManaged, 'Operator') + panel('Franchise', franchised, 'Operator') + panel('Independent', independent, 'Operator');
+    }
+
+    function getExpandContentForRank(properties, rankBy) {
+        if (!properties || !properties.length) return '<div class="breakdown-row-content"><div class="breakdown-panel"><p style="color:#888;font-size:12px;">No data</p></div></div>';
+        if (rankBy === 'brand') return '<div class="breakdown-row-content">' + buildOperatorBreakdown(properties) + buildCountryBreakdown(properties) + '</div>';
+        if (rankBy === 'parent_company') return '<div class="breakdown-row-content">' + buildChainManagedFranchisedBreakdown(properties) + '</div>';
+        if (rankBy === 'region') return '<div class="breakdown-row-content">' + buildOperatorBreakdown(properties) + buildCountryBreakdown(properties) + '</div>';
+        if (rankBy === 'chain_scale' || rankBy === 'status') return '<div class="breakdown-row-content">' + buildOperatorBreakdown(properties) + buildCountryBreakdown(properties) + '</div>';
+        return '<div class="breakdown-row-content">' + buildOperatorBreakdown(properties) + buildCountryBreakdown(properties) + '</div>';
+    }
+
+    function buildExpandContent(properties) {
+        return '<div class="breakdown-row-content">' + buildAffiliationBreakdown(properties) + buildCountryBreakdown(properties) + '</div>';
+    }
+
+    function renderTable(data) {
+        const operators = data.operators || [];
+        rankedTableBody.innerHTML = operators.map(function (op, i) {
+            const rank = i + 1;
+            const recentN = op.recent_openings_count || 0;
+            const breakdownHtml = buildExpandContent(op.properties);
+            var initial = (op.operator_name || '?').charAt(0).toUpperCase();
+            var nameCell = '<div class="operator-name-cell"><span class="operator-initial-thumb">' + escapeHtml(initial) + '</span><span class="operator-name-text">' + escapeHtml(op.operator_name || '—') + '</span></div>';
+            return '<tr class="operator-row-expand">' +
+                '<td class="rank-col"><span class="rank-number">' + rank + '</span><span class="row-expand-icon row-expand-icon-closed" aria-hidden="true">▶</span><span class="row-expand-icon row-expand-icon-open" aria-hidden="true">▼</span></td>' +
+                '<td>' + nameCell + '</td>' +
+                '<td>' + (op.hotel_count || 0) + '</td>' +
+                '<td>' + (op.total_keys || 0).toLocaleString() + '</td>' +
+                '<td><div class="badges">' + (op.brands || []).slice(0, 5).map(function (b) { return '<span class="badge">' + escapeHtml(b) + '</span>'; }).join('') + '</div></td>' +
+                '<td><div class="badges">' + (op.hotel_types || []).slice(0, 4).map(function (t) { return '<span class="badge">' + escapeHtml(t) + '</span>'; }).join('') + '</div></td>' +
+                '<td>' + (recentN > 0 ? recentN + ' recent' : '—') + '</td>' +
+                '</tr><tr class="similar-row"><td colspan="7">' + breakdownHtml + '</td></tr>';
+        }).join('');
+
+        document.querySelectorAll('.similar-row').forEach(function (row) { row.classList.add('hidden'); });
+        document.querySelectorAll('.operator-row-expand').forEach(function (row) {
+            row.addEventListener('click', function () {
+                const next = row.nextElementSibling;
+                if (next && next.classList.contains('similar-row')) {
+                    next.classList.toggle('hidden');
+                    row.classList.toggle('expanded', !next.classList.contains('hidden'));
+                }
+            });
+        });
+    }
+
+    function getMarkerColor(status) {
+        var s = (status || '').toString();
+        if (s === 'Open') return '#2563eb';
+        if (s === 'Pipeline') return '#dc2626';
+        if (s === 'Candidate') return '#7c3aed';
+        if (s.toLowerCase() === 'open') return '#2563eb';
+        if (s.toLowerCase() === 'pipeline') return '#dc2626';
+        if (s.toLowerCase() === 'candidate') return '#7c3aed';
+        return '#6b7280';
+    }
+
+    function initMapOnce() {
+        if (map) return;
+        map = L.map('map', {
+            center: [10, -80],
+            zoom: 4,
+            minZoom: 2,
+            maxZoom: 18,
+            zoomControl: true,
+            scrollWheelZoom: true,
+            doubleClickZoom: true,
+            dragging: true,
+        });
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        markersCluster = L.markerClusterGroup({
+            maxClusterRadius: 60,
+            spiderfyOnMaxZoom: true,
+            zoomToBoundsOnClick: true,
+            disableClusteringAtZoom: 12,
+            chunkedLoading: true,
+            removeOutsideVisibleBounds: true,
+            iconCreateFunction: function (cluster) {
+                var count = cluster.getChildCount();
+                var size = count > 100 ? 'large' : count > 20 ? 'medium' : 'small';
+                var px = size === 'large' ? 30 : size === 'medium' ? 25 : 20;
+                return L.divIcon({
+                    html: '<div class="cluster-icon cluster-' + size + '">' + count + '</div>',
+                    className: 'marker-cluster',
+                    iconSize: [px, px]
+                });
+            }
+        });
+        map.addLayer(markersCluster);
+    }
+
+    function updateMapMarkers(properties) {
+        if (!map || !markersCluster) return;
+        markersCluster.clearLayers();
+        var withCoords = (properties || []).filter(function (p) { return p.lat != null && p.lng != null && !isNaN(p.lat) && !isNaN(p.lng); });
+        withCoords.forEach(function (p) {
+            var color = getMarkerColor(p.status);
+            var marker = L.circleMarker([p.lat, p.lng], {
+                radius: 6,
+                fillColor: color,
+                color: '#ffffff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            });
+            marker.bindPopup('<strong>' + escapeHtml(p.property_name) + '</strong><br>' + escapeHtml(p.city + ', ' + p.country) + '<br>' + (p.operator_name || '') + ' · ' + (p.keys || 0) + ' keys');
+            markersCluster.addLayer(marker);
+        });
+        if (withCoords.length) {
+            var bounds = L.latLngBounds(withCoords.map(function (p) { return [p.lat, p.lng]; }));
+            map.fitBounds(bounds, { padding: [24, 24], maxZoom: 14 });
+        }
+    }
+
+    function renderMap(properties) {
+        initMapOnce();
+        if (map) {
+            updateMapMarkers(properties);
+            setTimeout(function () { if (map) map.invalidateSize(); }, 100);
+        }
+    }
+
+    document.querySelectorAll('.view-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            document.querySelectorAll('.view-tab').forEach(function (t) { t.classList.remove('active'); });
+            tab.classList.add('active');
+            var v = tab.getAttribute('data-view');
+            if (v === 'table') {
+                tableView.classList.remove('hidden');
+                mapView.classList.add('hidden');
+            } else {
+                tableView.classList.add('hidden');
+                mapView.classList.remove('hidden');
+                setTimeout(function () {
+                    initMapOnce();
+                    if (map) {
+                        map.invalidateSize();
+                        updateMapMarkers(lastData && lastData.properties ? lastData.properties : []);
+                    }
+                }, 50);
+            }
+        });
+    });
+
+    function runRanking() {
+        tableSortColumn = null;
+        if (loadingAbort) loadingAbort.abort();
+        loadingAbort = new AbortController();
+        var params = new URLSearchParams({
+            search: (document.getElementById('locationSearch').value || '').trim(),
+            parentCompany: (document.getElementById('parentCompany').value || '').trim(),
+            brand: (document.getElementById('brandFilter').value || '').trim(),
+            status: (document.getElementById('statusFilter').value || '').trim(),
+            chainScale: (document.getElementById('chainScaleFilter').value || '').trim(),
+            region: (document.getElementById('regionFilter').value || '').trim(),
+            locationType: (document.getElementById('locationTypeFilter').value || '').trim(),
+            operationType: (document.getElementById('operationTypeFilter').value || '').trim(),
+        });
+        showState('loading');
+        showSystemStatus('May take 15-30 seconds for full dataset');
+        fetch('/api/operators-by-brand-region?' + params.toString(), { signal: loadingAbort.signal })
+            .then(function (r) { return r.ok ? r.json() : r.json().then(function (j) { throw new Error(j.error || j.details || 'Request failed'); }); })
+            .then(function (data) {
+                lastData = data;
+                var properties = data.properties || [];
+                var propNum = (data.total_properties != null ? data.total_properties : properties.length);
+                propertyCount.textContent = propNum;
+                if (fullDatasetWrap) fullDatasetWrap.textContent = (data.total_in_census != null) ? ' (of ' + Number(data.total_in_census).toLocaleString() + ' in full dataset)' : '';
+                applyRankView();
+                renderMap(properties);
+                var oLen = (data.operators || []).length;
+                var bLen = (data.brands || []).length;
+                var pLen = (data.parent_companies || []).length;
+                var rLen = (data.regions || []).length;
+                var cLen = (data.chain_scales || []).length;
+                var sLen = (data.statuses || []).length;
+                var totalCensus = data.total_in_census != null ? Number(data.total_in_census).toLocaleString() : '';
+                var propLine = totalCensus ? '<strong>' + propNum.toLocaleString() + '</strong> properties with operator (of ' + totalCensus + ' in full dataset)' : '<strong>' + propNum.toLocaleString() + '</strong> properties with operator';
+                insightsList.innerHTML =
+                    '<div class="insight-item"><strong>' + oLen + '</strong> operators (only where listed)</div>' +
+                    '<div class="insight-item"><strong>' + bLen + '</strong> brands (only where listed)</div>' +
+                    '<div class="insight-item"><strong>' + pLen + '</strong> parent companies (only where listed)</div>' +
+                    '<div class="insight-item"><strong>' + rLen + '</strong> regions</div>' +
+                    '<div class="insight-item"><strong>' + cLen + '</strong> chain scales</div>' +
+                    '<div class="insight-item"><strong>' + sLen + '</strong> statuses</div>' +
+                    '<div class="insight-item">' + propLine + '</div>' +
+                    '<div class="insight-item">Switch "Rank by" to see biggest by Operator, Brand, Parent Company, Region, Chain Scale, or Status.</div>';
+                var ranked = getRankedList();
+                showState(ranked.list.length ? 'results' : 'empty');
+            })
+            .catch(function (err) {
+                if (err.name === 'AbortError') return;
+                stateErrorText.textContent = err.message || 'Please try again.';
+                showState('error');
+            })
+            .finally(function () {
+                loadingAbort = null;
+                hideSystemStatus();
+            });
+    }
+
+    form.addEventListener('submit', function (e) { e.preventDefault(); runRanking(); });
+
+    function resetView() {
+        document.getElementById('locationSearch').value = '';
+        document.getElementById('parentCompany').value = '';
+        document.getElementById('brandFilter').value = '';
+        document.getElementById('statusFilter').value = '';
+        document.getElementById('chainScaleFilter').value = '';
+        document.getElementById('regionFilter').value = '';
+        document.getElementById('locationTypeFilter').value = '';
+        document.getElementById('operationTypeFilter').value = '';
+        var r = document.getElementById('rankBy');
+        if (r) r.value = 'operator';
+        runRanking();
+    }
+
+    document.getElementById('btnResetView').addEventListener('click', resetView);
+    var locationSearch = document.getElementById('locationSearch');
+    var debouncedRun = debounce(runRanking, 300);
+    if (locationSearch) locationSearch.addEventListener('input', debouncedRun);
+    document.getElementById('parentCompany').addEventListener('change', runRanking);
+    document.getElementById('brandFilter').addEventListener('change', runRanking);
+    document.getElementById('statusFilter').addEventListener('change', runRanking);
+    document.getElementById('chainScaleFilter').addEventListener('change', runRanking);
+    document.getElementById('regionFilter').addEventListener('change', runRanking);
+    document.getElementById('locationTypeFilter').addEventListener('change', runRanking);
+    document.getElementById('operationTypeFilter').addEventListener('change', runRanking);
+
+    var rankByEl = document.getElementById('rankBy');
+    if (rankByEl) rankByEl.addEventListener('change', function () { tableSortColumn = null; if (lastData) applyRankView(); });
+
+    showState('loading');
+    showSystemStatus('May take 15-30 seconds for full dataset');
+    loadFilters().then(function () { runRanking(); });
+})();
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Image Debug Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #005a87;
+        }
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Image Debug Tool</h1>
+        <p>This tool helps debug contact image loading issues for specific contacts.</p>
+        
+        <div>
+            <button onclick="runContactAnalysis()">Analyze Specific Contacts</button>
+            <button onclick="checkDashboardStatus()">Check Dashboard Status</button>
+            <button onclick="retryFailedImages()">Retry Failed Image Loads</button>
+            <button onclick="clearOutput()">Clear Output</button>
+        </div>
+        
+        <div id="status"></div>
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        let outputDiv = document.getElementById('output');
+        let statusDiv = document.getElementById('status');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            outputDiv.textContent += `[${timestamp}] ${message}\n`;
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+            
+            // Update status
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+        }
+        
+        function clearOutput() {
+            outputDiv.textContent = '';
+            statusDiv.textContent = '';
+            statusDiv.className = '';
+        }
+        
+        function checkDashboardStatus() {
+            clearOutput();
+            log('Checking dashboard status...', 'info');
+            
+            if (typeof window.dashboard === 'undefined') {
+                log('ERROR: Dashboard not found. Make sure the main dashboard is loaded.', 'error');
+                return;
+            }
+            
+            if (!window.dashboard.deals || window.dashboard.deals.length === 0) {
+                log('WARNING: No deals data found. Dashboard may not be fully loaded.', 'error');
+                return;
+            }
+            
+            log(`Dashboard loaded with ${window.dashboard.deals.length} deals`, 'success');
+            
+            // Check for specific contacts
+            const targetContacts = [
+                'Olive Ray', 'Preetam Skyram', 'Ana Silva', 'David Chen',
+                'Maria Elena Vargas', 'Ryan Murphy'
+            ];
+            
+            log('\nChecking for specific contacts:', 'info');
+            targetContacts.forEach(contactName => {
+                const deal = window.dashboard.deals.find(deal =>
+                    deal.ownerName && deal.ownerName.toLowerCase().includes(contactName.toLowerCase())
+                );
+                
+                if (deal) {
+                    log(`✓ Found: ${contactName} (Deal ID: ${deal.id})`, 'success');
+                    log(`  - Email: ${deal.ownerEmail || 'None'}`);
+                    log(`  - Image: ${deal.contactImage || 'None'}`);
+                } else {
+                    log(`✗ Missing: ${contactName}`, 'error');
+                }
+            });
+        }
+        
+        function runContactAnalysis() {
+            clearOutput();
+            log('Starting contact analysis...', 'info');
+            
+            if (typeof window.dashboard === 'undefined') {
+                log('ERROR: Dashboard not found. Make sure the main dashboard is loaded.', 'error');
+                return;
+            }
+            
+            if (typeof window.dashboard.analyzeSpecificContacts !== 'function') {
+                log('ERROR: analyzeSpecificContacts function not found in dashboard.', 'error');
+                return;
+            }
+            
+            try {
+                log('Running analyzeSpecificContacts()...', 'info');
+                window.dashboard.analyzeSpecificContacts();
+                log('Analysis complete! Check the browser console for detailed results.', 'success');
+                log('Tip: Open Developer Tools (F12) and look at the Console tab.', 'info');
+            } catch (error) {
+                log(`ERROR: ${error.message}`, 'error');
+                console.error('Contact analysis error:', error);
+            }
+        }
+        
+        function retryFailedImages() {
+            clearOutput();
+            log('Retrying failed image loads...', 'info');
+            
+            if (typeof window.dashboard === 'undefined') {
+                log('ERROR: Dashboard not found. Make sure the main dashboard is loaded.', 'error');
+                return;
+            }
+            
+            if (typeof window.dashboard.retryFailedImageLoads !== 'function') {
+                log('ERROR: retryFailedImageLoads function not found in dashboard.', 'error');
+                return;
+            }
+            
+            try {
+                log('Running retryFailedImageLoads()...', 'info');
+                window.dashboard.retryFailedImageLoads();
+                log('Retry initiated! Check the browser console for progress.', 'success');
+                log('Images will load gradually over the next few minutes.', 'info');
+            } catch (error) {
+                log(`ERROR: ${error.message}`, 'error');
+                console.error('Retry error:', error);
+            }
+        }
+        
+        // Auto-check dashboard status on load
+        window.addEventListener('load', function() {
+            setTimeout(checkDashboardStatus, 1000);
+        });
+    </script>
+</body>
+</html>

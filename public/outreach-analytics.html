@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics - Outreach Hub | Dealality Platform</title>
+  <link rel="stylesheet" href="/outreach-hub.css">
+</head>
+<body>
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1){document.documentElement.classList.add('embed-mode');}})();</script>
+  <div class="page-wrapper">
+    <div class="sidebar-wrapper">
+      <div class="sidebar-padding">
+        <h2>Dealality</h2>
+        <nav>
+          <a href="/app">Home</a>
+          <a href="/outreach-plans">Plans</a>
+          <a href="/outreach-inbox">Inbox</a>
+          <a href="/outreach-templates">Templates</a>
+          <a href="/outreach-sequences">Sequences</a>
+          <a href="/outreach-analytics" class="active">Analytics</a>
+          <a href="/partner-directory">Partner Directory</a>
+        </nav>
+      </div>
+    </div>
+    <div class="dashboard-main-section">
+      <div class="outreach-hub-container">
+        <div class="outreach-hub__header">
+          <div class="breadcrumb">
+            <a href="/app">Home</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <a href="/outreach-plans">Outreach Hub</a>
+            <span class="breadcrumb-separator">&gt;</span>
+            <span>Analytics</span>
+          </div>
+          <div class="outreach-hub-title-container">
+            <div class="deal-capture-logo">
+              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+            </div>
+            <h1>Outreach Analytics</h1>
+          </div>
+          <p>Summary metrics for plans, threads, and messages. More dashboards coming soon.</p>
+        </div>
+
+        <div class="oh-grid-2" style="margin-bottom:24px;">
+          <div class="oh-section">
+            <h3 class="oh-section-title">Plans</h3>
+            <p id="stat-plans" class="oh-muted">—</p>
+          </div>
+          <div class="oh-section">
+            <h3 class="oh-section-title">Threads</h3>
+            <p id="stat-threads" class="oh-muted">—</p>
+          </div>
+          <div class="oh-section">
+            <h3 class="oh-section-title">Messages (sent / logged)</h3>
+            <p id="stat-messages" class="oh-muted">—</p>
+          </div>
+          <div class="oh-section">
+            <h3 class="oh-section-title">Templates</h3>
+            <p id="stat-templates" class="oh-muted">—</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function() {
+  var API = '/api/outreach-hub';
+  function qs(s) { return document.querySelector(s); }
+  Promise.all([
+    fetch(API + '/plans?pageSize=100').then(function(r) { return r.json(); }),
+    fetch(API + '/threads?pageSize=100').then(function(r) { return r.json(); }),
+    fetch(API + '/messages?pageSize=100').then(function(r) { return r.json(); }),
+    fetch(API + '/templates?pageSize=100').then(function(r) { return r.json(); })
+  ]).then(function(results) {
+    var plans = (results[0].records || []).length;
+    var threads = (results[1].records || []).length;
+    var messages = (results[2].records || []).length;
+    var templates = (results[3].records || []).length;
+    if (results[0].offset) plans = plans + '+';
+    if (results[1].offset) threads = threads + '+';
+    if (results[2].offset) messages = messages + '+';
+    if (results[3].offset) templates = templates + '+';
+    qs('#stat-plans').textContent = plans + ' plan(s)';
+    qs('#stat-threads').textContent = threads + ' thread(s)';
+    qs('#stat-messages').textContent = messages + ' message(s)';
+    qs('#stat-templates').textContent = templates + ' template(s)';
+  }).catch(function() {
+    qs('#stat-plans').textContent = 'Unable to load';
+    qs('#stat-threads').textContent = 'Unable to load';
+    qs('#stat-messages').textContent = 'Unable to load';
+    qs('#stat-templates').textContent = 'Unable to load';
+  });
+})();
+  </script>
+</body>
+</html>

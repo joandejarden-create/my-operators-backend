@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Dealality - Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/css/mvp-deal-capture.webflow.shared.36895bd16.css" rel="stylesheet" type="text/css">
+    <style>
+        /* Dark theme for entire signup page (match app / Clause / FTL in iframe) */
+        :root {
+            --signup-neutral-800: #080f25;
+            --signup-neutral-400: #aeb9e1;
+            --signup-neutral-100: #fff;
+            --signup-accent: #6c72ff;
+            --signup-bg-input: #101935;
+        }
+        body.signup-page,
+        body.signup-page .page-wrapper,
+        body.signup-page .dashboard-main-section,
+        body.signup-page .dashboard-content,
+        body.signup-page .dashboard-main-content {
+            background: var(--signup-neutral-800);
+            color: var(--signup-neutral-400);
+        }
+        body.signup-page .dashboard-footer-wrapper {
+            background: var(--signup-neutral-800);
+            color: var(--signup-neutral-400);
+        }
+        /* Remove dot/pattern background image from Webflow styles */
+        body.signup-page,
+        body.signup-page .page-wrapper,
+        body.signup-page .dashboard-main-section,
+        body.signup-page .dashboard-content,
+        body.signup-page .dashboard-main-content,
+        body.signup-page .signup-wrapper,
+        body.signup-page .signup-left,
+        body.signup-page .signup-right {
+            background-image: none !important;
+        }
+        body.signup-page .sales-home-hero-bg-image {
+            display: none !important;
+        }
+        body.signup-page h1,
+        body.signup-page h2,
+        body.signup-page h3,
+        body.signup-page .display-4 {
+            color: var(--signup-neutral-100);
+        }
+        body.signup-page .paragraph-large,
+        body.signup-page p,
+        body.signup-page .w-richtext,
+        body.signup-page .text-200 {
+            color: var(--signup-neutral-400);
+        }
+        body.signup-page .signup-left .form-block.v2 {
+            background: var(--signup-neutral-800);
+            color: var(--signup-neutral-400);
+            padding: 24px;
+            border-radius: 0;
+        }
+        body.signup-page .signup-left .form-block.v2 h3,
+        body.signup-page .signup-left .form-block.v2 .display-4 {
+            color: var(--signup-neutral-100);
+        }
+        body.signup-page .signup-left .form-block.v2 .paragraph-large {
+            color: var(--signup-neutral-400);
+        }
+        /* Form: same font and size for all text */
+        body.signup-page .signup-left .login-form-block,
+        body.signup-page .signup-left .login-form-block .input.w-input,
+        body.signup-page .signup-left .login-form-block textarea.w-input,
+        body.signup-page .signup-left .login-form-block .filter-select,
+        body.signup-page .signup-left .signup-terms-checkbox .w-form-label,
+        body.signup-page .signup-left .signup-terms-checkbox label,
+        body.signup-page .signup-left .submit-wrapper + p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+        body.signup-page .signup-left .input.w-input,
+        body.signup-page .signup-left textarea.w-input {
+            background: var(--signup-bg-input) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--signup-neutral-100) !important;
+        }
+        body.signup-page .signup-left .input.w-input::placeholder,
+        body.signup-page .signup-left textarea.w-input::placeholder {
+            color: #a0a0a0;
+        }
+        body.signup-page .signup-left .input.w-input:focus,
+        body.signup-page .signup-left textarea.w-input:focus {
+            border-color: var(--signup-accent);
+            box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
+            background: var(--signup-bg-input) !important;
+            color: var(--signup-neutral-100) !important;
+        }
+        /* Keep dark background and light text when filled / autofilled (match brand setup) */
+        body.signup-page .signup-left .input.w-input:-webkit-autofill,
+        body.signup-page .signup-left .input.w-input:-webkit-autofill:hover,
+        body.signup-page .signup-left .input.w-input:-webkit-autofill:focus,
+        body.signup-page .signup-left .input.w-input:-webkit-autofill:active,
+        body.signup-page .signup-left textarea.w-input:-webkit-autofill,
+        body.signup-page .signup-left textarea.w-input:-webkit-autofill:hover,
+        body.signup-page .signup-left textarea.w-input:-webkit-autofill:focus,
+        body.signup-page .signup-left textarea.w-input:-webkit-autofill:active {
+            -webkit-text-fill-color: var(--signup-neutral-100) !important;
+            -webkit-box-shadow: 0 0 0 1000px var(--signup-bg-input) inset !important;
+            box-shadow: 0 0 0 1000px var(--signup-bg-input) inset !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        /* Dropdown wrapper: same look as text inputs, arrow in muted grey */
+        body.signup-page .signup-left .signup-select-wrap {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+        body.signup-page .signup-left .signup-select-wrap::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid var(--signup-neutral-400);
+            pointer-events: none;
+        }
+        body.signup-page .signup-left .filter-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: var(--signup-bg-input) !important;
+            background-image: none !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--signup-neutral-400) !important;
+            padding: 8px 36px 8px 12px;
+            border-radius: 6px;
+            font-size: 14px !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            font-weight: 500;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        body.signup-page .signup-left .filter-select.has-value {
+            color: var(--signup-neutral-100) !important;
+        }
+        body.signup-page .signup-left .signup-select-wrap.has-value::after {
+            border-top-color: var(--signup-neutral-100);
+        }
+        body.signup-page .signup-left .filter-select::-ms-expand {
+            display: none;
+        }
+        body.signup-page .signup-left .filter-select:focus {
+            outline: none;
+            border-color: var(--signup-accent);
+            box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
+        }
+        body.signup-page .signup-left .filter-select option {
+            background: var(--signup-bg-input);
+            color: var(--signup-neutral-400);
+        }
+        /* Submit: accent purple button */
+        body.signup-page .signup-left .btn-submit {
+            padding: 10px 24px;
+            background: var(--signup-accent);
+            border: 1px solid var(--signup-accent);
+            color: var(--signup-neutral-100);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        body.signup-page .signup-left .btn-submit:hover {
+            filter: brightness(1.1);
+        }
+        body.signup-page .signup-left .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        /* Checkbox: accent + readable label/link */
+        body.signup-page .signup-left .signup-terms-checkbox .w-form-label,
+        body.signup-page .signup-left .signup-terms-checkbox label {
+            color: var(--signup-neutral-400);
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .signup-left .signup-terms-checkbox .entry-link,
+        .signup-left .signup-terms-checkbox a {
+            color: var(--signup-accent);
+        }
+        .signup-left .signup-terms-checkbox input[type="checkbox"] {
+            accent-color: var(--signup-accent);
+        }
+        /* Success message: readable on dark page (override Webflow light box) */
+        body.signup-page .w-form-done {
+            background: transparent !important;
+            border: none !important;
+            color: var(--signup-neutral-100) !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            padding: 24px 0 !important;
+        }
+        body.signup-page .w-form-done div {
+            color: var(--signup-neutral-100) !important;
+        }
+        body.signup-page .w-form-fail {
+            color: #ff5a65 !important;
+            font-size: 16px;
+        }
+        .w-form-done, .w-form-fail { display: none !important; }
+        .w-form-done.is-visible, .w-form-fail.is-visible { display: block !important; }
+    </style>
+</head>
+<body class="signup-page">
+    <div class="page-wrapper">
+        <div class="dashboard-main-section">
+            <div class="dashboard-content">
+                <div class="dashboard-main-content sales-page min-h-90vh">
+                    <div class="signup-wrapper">
+                        <!-- Left Side - Registration Form -->
+                        <div class="signup-left">
+                            <div class="form-block v2">
+                                <div class="logo-holder">
+                                    <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" loading="lazy" alt="">
+                                </div>
+                                <h3 class="display-4 medium mg-bottom-12px upppercase">JOIN DEAL CAPTURE™</h3>
+                                <p class="paragraph-large mg-bottom-32px">Join the confidential platform where qualified hotel owners, operators, and advisors connect. Submit your details to begin the quick approval process.</p>
+                                
+                                <div class="login-form-block v2 w-form">
+                                    <form method="post" action="#" name="wf-form-Signup-Form" data-name="Signup Form" id="wf-form-Signup-Form" aria-label="Signup Form">
+                                        <div class="form-field-wrap">
+                                            <div>
+                                                <input class="input w-input" maxlength="256" name="First-Name" data-name="First Name" placeholder="First Name*" type="text" id="First-Name" required="" aria-required="true">
+                                            </div>
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <div>
+                                                <input class="input w-input" maxlength="256" name="Last-Name" data-name="Last Name" placeholder="Last Name*" type="text" id="Last-Name" required="" aria-required="true">
+                                            </div>
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <input class="input w-input" maxlength="256" name="Company-Name" data-name="Company Name" placeholder="Company Name*" type="text" id="Company-Name" required="" aria-required="true">
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <input class="input w-input" maxlength="256" name="Title" data-name="Title" placeholder="Title*" type="text" id="Title" required="" aria-required="true">
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <input class="input w-input" maxlength="256" name="Email-Id" data-name="Email Id" placeholder="Company Email*" type="email" id="Email-Id" required="" aria-required="true">
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <input class="input w-input" maxlength="256" name="Phone" data-name="Phone" placeholder="Phone Number*" type="tel" id="Phone" required="" aria-required="true">
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <div class="signup-select-wrap">
+                                                <select id="Company-Type" name="Company-Type" data-name="Company Type" required="" class="filter-select" aria-required="true">
+                                                    <option value="">Select company type*</option>
+                                                    <option value="Hotel Owner">Hotel Owner</option>
+                                                    <option value="Developer Investor">Developer & Investor</option>
+                                                    <option value="Private Equity Firm">Private Equity Firm</option>
+                                                    <option value="Real Estate Broker">Real Estate Broker</option>
+                                                    <option value="Hotel Brand">Hotel Brand (Franchise)</option>
+                                                    <option value="Hotel Management Company">Hotel Management Company</option>
+                                                    <option value="Asset Manager">Asset Manager</option>
+                                                    <option value="Legal Advisor">Legal Advisor</option>
+                                                    <option value="Lenders Underwriter">Lender & Underwriter</option>
+                                                    <option value="Service Provider">Service Provider (Design, Tech, Procure., etc.)</option>
+                                                    <option value="Hospitality Consultant">Hospitality Consultant</option>
+                                                    <option value="Research Firm">Research Firm (e.g., JLL, STR, CoStar)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <textarea class="input textarea w-input" maxlength="5000" name="Reason-to-Join-Platform" data-name="Reason to Join Platform" placeholder="Tell us why you care to join the platform.*" id="Reason-to-Join-Platform" required="" aria-required="true"></textarea>
+                                        </div>
+                                        <div class="form-field-wrap">
+                                            <textarea class="input textarea w-input" maxlength="5000" name="How-Did-You-Hear" data-name="How Did You Hear" placeholder="How did you hear about us?" id="How-Did-You-Hear"></textarea>
+                                        </div>
+                                        <input type="password" class="hidden" autocomplete="off" readonly="readonly">
+                                        <div class="submit-wrapper">
+                                            <div class="form-field-wrap mg-bottom-0 signup-terms-checkbox">
+                                                <label class="w-checkbox">
+                                                    <input type="checkbox" name="Agree-with-Terms" id="Agree-with-Terms" data-name="Agree with Terms" required="" class="w-checkbox-input">
+                                                    <span class="w-form-label" for="Agree-with-Terms">I agree with the <a href="#" class="entry-link">Terms</a> & <a href="#" class="entry-link">Privacy Policy</a>.</span>
+                                                </label>
+                                            </div>
+                                            <input type="submit" data-wait="Please wait..." class="btn-submit" value="Submit">
+                                        </div>
+                                        <p>By providing a telephone number and submitting the form you are consenting to be contacted by SMS text message. Message & data rates may apply. Reply STOP to opt out of further messaging.</p>
+                                    </form>
+                                    <div class="w-form-done" tabindex="-1" role="region" aria-label="Signup Form success">
+                                        <div>Thank you! Your submission has been received!</div>
+                                        <p style="margin-top: 1rem;"><a href="/" class="entry-link" style="color: var(--signup-accent);">← Back to Dealality</a></p>
+                                    </div>
+                                    <div class="w-form-fail" tabindex="-1" role="region" aria-label="Signup Form failure">
+                                        <div>Oops! Something went wrong while submitting the form.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side - Membership Eligibility -->
+                        <div class="signup-right">
+                            <h3 class="display-4 medium mg-bottom-12px upppercase">DEAL CAPTURE™ MEMBERSHIP ELIGIBILITY CRITERIA</h3>
+                            <p class="paragraph-large mg-bottom-32px">Dealality is a private-access platform designed to connect qualified hospitality players across North America, Latin America, the Caribbean, Middle East, and Europe. Membership is limited to those actively involved in hotel development, brand expansion, or operational growth. You must meet one or more of the following criteria:</p>
+                            
+                            <h3 class="display-4 medium mg-bottom-12px upppercase mg-bottom-0">CAPITAL-SIDE MEMBERS</h3>
+                            <h3 class="display-4 medium mg-bottom-12px">(Hotel Owners, Developers, Investors, and Capital Platforms)</h3>
+                            <div class="paragraph-large w-richtext">
+                                <ul role="list">
+                                    <li>You own, operate, or control one or more hotel or resort assets generating at least $1M in annual revenue, or are actively developing a hotel or mixed-use project.</li>
+                                    <li>You are seeking a qualified brand or operator partner for a new build, conversion, or repositioning project within the next 24 months.</li>
+                                    <li>You represent a real estate investment group, family office, developer, or capital platform with a clear hospitality strategy and an active pipeline of projects.</li>
+                                </ul>
+                            </div>
+                            
+                            <h3 class="display-4 medium mg-bottom-12px upppercase mg-bottom-0">Operator-Side Members</h3>
+                            <h3 class="display-4 medium mg-bottom-12px">(Hotel Brands, Soft Brands, and Third-Party Management Companies)</h3>
+                            <div class="paragraph-large w-richtext">
+                                <ul role="list">
+                                    <li>You are a hotel brand, soft brand, or independent operator actively expanding in the Americas, Middle East or Europe, with a focus on franchise or management agreements.</li>
+                                    <li>You have executed at least 3 qualified hotel agreements in the last 3 years, or can demonstrate current growth momentum and delivery capability.</li>
+                                    <li>You offer a clear value proposition and support model for hotel owners and can engage in structured deal conversations.</li>
+                                </ul>
+                            </div>
+                            
+                            <h3 class="display-4 medium mg-bottom-12px upppercase mg-bottom-0">Advisory & Support Members</h3>
+                            <h3 class="display-4 medium mg-bottom-12px">(Consultants, Legal Advisors, Technical Experts)</h3>
+                            <div class="paragraph-large w-richtext">
+                                <p>You are a consultant or advisor with a proven track record supporting hotel projects, and have been directly engaged in helping owners or operators identify and structure brand or operator partnerships.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/68108c2a063eeb5d1bd7b095_sales-home-hero-bg-dashdark-webflow-template.svg" loading="eager" alt="" class="sales-home-hero-bg-image full-height">
+                </div>
+                <div class="dashboard-footer-wrapper">
+                    <div class="container-default w-container">
+                        <div class="text-200 medium">2025 Copyright © Dealality</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Submit to /api/signup: save to Airtable and send welcome email
+        (function () {
+            var form = document.getElementById('wf-form-Signup-Form');
+            var emailInput = document.getElementById('Email-Id');
+            var submitBtn = form ? form.querySelector('input[type="submit"]') : null;
+            var doneEl = document.querySelector('.w-form-done');
+            var failEl = document.querySelector('.w-form-fail');
+            if (!form || !emailInput) return;
+
+            function standardizeEmail(value) {
+                if (value == null || typeof value !== 'string') return '';
+                return value.trim().toLowerCase();
+            }
+
+            function getVal(id) {
+                var el = document.getElementById(id);
+                return el ? (el.value || '').trim() : '';
+            }
+
+            emailInput.addEventListener('blur', function () {
+                var raw = emailInput.value;
+                if (!raw) return;
+                var standardized = standardizeEmail(raw);
+                if (standardized !== raw) emailInput.value = standardized;
+            });
+
+            var companyTypeSelect = document.getElementById('Company-Type');
+            var selectWrap = companyTypeSelect ? companyTypeSelect.closest('.signup-select-wrap') : null;
+            function updateSelectStyle() {
+                if (!companyTypeSelect || !selectWrap) return;
+                var hasValue = (companyTypeSelect.value || '').trim() !== '';
+                if (hasValue) {
+                    companyTypeSelect.classList.add('has-value');
+                    if (selectWrap) selectWrap.classList.add('has-value');
+                } else {
+                    companyTypeSelect.classList.remove('has-value');
+                    if (selectWrap) selectWrap.classList.remove('has-value');
+                }
+            }
+            if (companyTypeSelect) {
+                companyTypeSelect.addEventListener('change', updateSelectStyle);
+                updateSelectStyle();
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (emailInput.value) emailInput.value = standardizeEmail(emailInput.value);
+
+                var payload = {
+                    firstName: getVal('First-Name'),
+                    lastName: getVal('Last-Name'),
+                    companyName: getVal('Company-Name'),
+                    title: getVal('Title'),
+                    email: getVal('Email-Id'),
+                    phone: getVal('Phone'),
+                    companyType: getVal('Company-Type'),
+                    reasonToJoin: getVal('Reason-to-Join-Platform'),
+                    howDidYouHear: getVal('How-Did-You-Hear')
+                };
+
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.value = 'Please wait...'; }
+                if (failEl) failEl.classList.remove('is-visible');
+
+                fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(function (res) {
+                    return res.json().then(function (data) {
+                        if (!res.ok) throw new Error(data.details || data.error || 'Signup failed');
+                        return data;
+                    });
+                })
+                .then(function () {
+                    form.style.display = 'none';
+                    if (doneEl) doneEl.classList.add('is-visible');
+                })
+                .catch(function (err) {
+                    if (failEl) {
+                        failEl.querySelector('div').textContent = err.message || 'Something went wrong. Please try again.';
+                        failEl.classList.add('is-visible');
+                    }
+                    form.style.display = '';
+                })
+                .finally(function () {
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.value = 'Submit'; }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>
+</html>

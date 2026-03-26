@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Operator Radar - Market Intelligence | Dealality</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .operator-radar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #080f25;
+            min-height: 100vh;
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+        .breadcrumb a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .page-header {
+            margin-bottom: 24px;
+            padding: 10px 20px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: #080f25;
+        }
+        .page-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 10px 0;
+        }
+        .page-subtitle {
+            color: #888;
+            font-size: 1.1rem;
+            max-width: 640px;
+        }
+        .radar-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 900px) {
+            .radar-layout { grid-template-columns: 1fr; }
+        }
+        .radar-sidebar {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        .radar-sidebar-title {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .radar-form .form-group {
+            margin-bottom: 16px;
+        }
+        .radar-form label {
+            display: block;
+            color: #aeb9e1;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .radar-form select,
+        .radar-form input[type="number"] {
+            width: 100%;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .radar-form select:focus,
+        .radar-form input:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+        .radar-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .btn-find {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn-find:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+        .insight-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+        .insight-item:last-child { border-bottom: none; }
+        .insight-item strong { color: #fdb52a; }
+        .radar-main {
+            min-width: 0;
+        }
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .results-count {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .results-count span { color: #4a9eff; }
+        .btn-partner-dir {
+            color: #4a9eff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .btn-partner-dir:hover { text-decoration: underline; }
+        .operator-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .operator-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+        .operator-card:hover {
+            border-color: #4a9eff;
+        }
+        .operator-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .operator-card-name {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .operator-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .operator-card-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .operator-card-desc {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .operator-card-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .operator-card-actions a {
+            color: #4a9eff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .operator-card-actions a:hover { text-decoration: underline; }
+        .state-empty, .state-loading, .state-error {
+            text-align: center;
+            padding: 48px 24px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: #888;
+        }
+        .state-empty .state-icon, .state-loading .state-icon, .state-error .state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        .state-empty .state-title, .state-loading .state-title, .state-error .state-title {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .state-loading .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #333;
+            border-top-color: #4a9eff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .hidden { display: none !important; }
+        /* Tabs: Radar (default) | Ranked list */
+        .radar-main-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .radar-main-tab {
+            background: #2a2a3e; border: 1px solid #4a5568; color: #aeb9e1;
+            padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .radar-main-tab:hover { border-color: #4a9eff; color: #fff; }
+        .radar-main-tab.active { background: #4a9eff; color: #fff; border-color: #4a9eff; }
+        .radar-tab-panel, .ranked-list-tab-panel { display: block; }
+        .ranked-list-tab-panel.hidden { display: none !important; }
+        .radar-tab-panel.hidden { display: none !important; }
+        /* Ranked list: filter bar (match Operator Intelligence) */
+        .ranked-list-filters {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px; align-items: end; margin-bottom: 16px;
+            background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px 16px;
+        }
+        .ranked-list-filters .control-group { margin-bottom: 0; }
+        .ranked-list-filters label { display: block; color: #aeb9e1; font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+        .ranked-list-filters .control-select, .ranked-list-filters .control-input {
+            width: 100%; background: #0a0a0a; border: 1px solid #333; color: #fff;
+            padding: 6px 8px; border-radius: 6px; font-size: 12px;
+        }
+        .ranked-list-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 12px; }
+        .ranked-list-summary { color: #fff; font-size: 0.75rem; font-weight: 300; margin-bottom: 12px; }
+        .ranked-list-summary span { color: #fdb52a; font-weight: 600; }
+        .ranked-table-wrap { overflow-x: auto; background: #212c4d; border: 1px solid #37446b; border-radius: 8px; margin-bottom: 20px; }
+        .ranked-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; }
+        .ranked-table thead { background: #212c4d; }
+        .ranked-table th { color: #fff; font-weight: 600; padding: 12px 8px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #37446b; }
+        .ranked-table th[data-sort] { cursor: pointer; user-select: none; }
+        .ranked-table th[data-sort]:hover { background: #37446b; }
+        .ranked-table th .sort-indicator { display: inline-flex; flex-direction: column; margin-left: 6px; vertical-align: middle; opacity: 0.5; }
+        .ranked-table th .sort-indicator-arrow { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; margin: 1px 0; }
+        .ranked-table th .sort-indicator-arrow-up { border-bottom: 5px solid #aeb9e1; }
+        .ranked-table th .sort-indicator-arrow-down { border-top: 5px solid #aeb9e1; }
+        .ranked-table th.sort-asc .sort-indicator-arrow-up { border-bottom-color: #6c72ff; }
+        .ranked-table th.sort-desc .sort-indicator-arrow-down { border-top-color: #6c72ff; }
+        .ranked-table tbody tr { border-bottom: 1px solid #37446b; }
+        .ranked-table tbody tr:hover { background: #37446b; }
+        .ranked-table td { padding: 10px 8px; color: #aeb9e1; vertical-align: middle; }
+        .rank-col { width: 44px; font-weight: 700; color: #fdb52a; font-size: 14px; }
+        .operator-name-cell { display: flex; align-items: center; gap: 12px; }
+        .operator-initial-thumb { width: 36px; height: 36px; border-radius: 6px; background: #37446b; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #aeb9e1; font-weight: 600; flex-shrink: 0; }
+        .operator-name-text { color: #fff; font-weight: 600; }
+        .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+        .badge { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #aeb9e1; padding: 4px 8px; border-radius: 8px; font-size: 11px; }
+        .operator-row-expand, .simple-row-expand { cursor: pointer; }
+        .row-expand-icon { display: inline-flex; align-items: center; justify-content: center; color: #aeb9e1; font-size: 10px; transition: color 0.2s; vertical-align: middle; }
+        .operator-row-expand:hover .row-expand-icon, .simple-row-expand:hover .row-expand-icon { color: #6c72ff; }
+        .row-expand-icon-open { display: none; }
+        .operator-row-expand.expanded .row-expand-icon-closed, .simple-row-expand.expanded .row-expand-icon-closed { display: none; }
+        .operator-row-expand.expanded .row-expand-icon-open, .simple-row-expand.expanded .row-expand-icon-open { display: inline-flex; color: #6c72ff; }
+        .breakdown-row-content { display: flex; flex-wrap: wrap; gap: 24px; padding: 10px 0 0 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 6px; }
+        .breakdown-panel { flex: 1; min-width: 260px; max-width: 480px; }
+        .affiliation-breakdown-title, .country-breakdown-title { font-size: 11px; font-weight: 600; color: #aeb9e1; margin-bottom: 8px; text-transform: uppercase; }
+        .affiliation-breakdown-table, .country-breakdown-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+        .affiliation-breakdown-table th, .country-breakdown-table th { text-align: left; color: #aeb9e1; font-weight: 600; padding: 4px 12px 4px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .affiliation-breakdown-table td, .country-breakdown-table td { color: #e0e0e0; padding: 6px 12px 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .affiliation-breakdown-table .breakdown-keys, .country-breakdown-table .breakdown-keys { color: #fdb52a; font-weight: 600; }
+        .ranked-list-loading, .ranked-list-empty { text-align: center; padding: 32px 24px; background: #1a1a1a; border: 1px solid #333; border-radius: 12px; color: #888; }
+        .ranked-list-loading .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #333; border-top-color: #4a9eff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+    <div class="operator-radar-container">
+        <div class="breadcrumb">
+            <a href="/app">Platform</a>
+            <span>/</span>
+            <span>Management Operator Radar</span>
+        </div>
+
+        <header class="page-header">
+            <h1 class="page-title">Management Operator Radar</h1>
+            <p class="page-subtitle">Find and compare third-party management operators that fit your hotel project—by region, deal terms, fees, and fit score.</p>
+        </header>
+
+        <div class="radar-layout">
+            <aside class="radar-sidebar">
+                <h2 class="radar-sidebar-title">Your project</h2>
+                <form class="radar-form" id="radarForm">
+                    <div class="form-group">
+                        <label for="region">Region</label>
+                        <select id="region" name="region">
+                            <option value="">All regions</option>
+                            <option value="AMERICAS">Americas</option>
+                            <option value="CALA">CALA</option>
+                            <option value="EUROPE">Europe</option>
+                            <option value="MEA">MEA</option>
+                            <option value="AP">AP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Room count range</label>
+                        <div class="form-row">
+                            <input type="number" id="roomMin" name="roomMin" placeholder="Min" min="0" step="10">
+                            <input type="number" id="roomMax" name="roomMax" placeholder="Max" min="0" step="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectType">Project type</label>
+                        <select id="projectType" name="projectType">
+                            <option value="">Any</option>
+                            <option value="New Build">New build</option>
+                            <option value="Conversion">Conversion / Reflag</option>
+                            <option value="Renovation">Renovation / Repositioning</option>
+                            <option value="Expansion">Expansion / Add-on</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-find" id="btnFind">Find operators</button>
+                </form>
+                <div class="insights-block" id="insightsBlock" style="margin-top: 24px;">
+                    <h2 class="radar-sidebar-title">Insights</h2>
+                    <div id="insightsList"></div>
+                </div>
+                <p id="rankedListTabNote" class="hidden" style="margin-top:16px;font-size:12px;color:#888;">Switch to <strong>Radar</strong> tab for project filters and insights.</p>
+            </aside>
+
+            <main class="radar-main">
+                <div class="radar-main-tabs">
+                    <button type="button" class="radar-main-tab active" data-tab="radar">Radar</button>
+                    <button type="button" class="radar-main-tab" data-tab="rankedlist">Ranked list</button>
+                </div>
+
+                <div id="radarTabPanel" class="radar-tab-panel">
+                    <div class="results-header hidden" id="resultsHeader">
+                        <p class="results-count"><span id="resultsCount">0</span> management companies</p>
+                        <a href="/partner-directory" class="btn-partner-dir">View all in Partner Directory →</a>
+                    </div>
+                    <div class="operator-cards hidden" id="operatorCards"></div>
+                    <div class="state-empty" id="stateEmpty">
+                        <div class="state-icon">📡</div>
+                        <div class="state-title">Enter your project and find operators</div>
+                        <p>Set region, room count, or project type above and click <strong>Find operators</strong> to see management companies that match.</p>
+                    </div>
+                    <div class="state-loading hidden" id="stateLoading">
+                        <div class="spinner"></div>
+                        <div class="state-title">Loading operators…</div>
+                    </div>
+                    <div class="state-error hidden" id="stateError">
+                        <div class="state-icon">⚠️</div>
+                        <div class="state-title">Could not load operators</div>
+                        <p id="stateErrorText"></p>
+                    </div>
+                </div>
+
+                <div id="rankedListTabPanel" class="ranked-list-tab-panel hidden">
+                    <form id="rankedListFilterForm" class="ranked-list-filters">
+                        <div class="control-group">
+                            <label for="rlSearch">Search</label>
+                            <input type="text" class="control-input" id="rlSearch" placeholder="City, country, property...">
+                        </div>
+                        <div class="control-group">
+                            <label for="rlParentCompany">Parent Company</label>
+                            <select id="rlParentCompany" class="control-select"><option value="">All</option></select>
+                        </div>
+                        <div class="control-group">
+                            <label for="rlBrand">Brand</label>
+                            <select id="rlBrand" class="control-select"><option value="">All</option></select>
+                        </div>
+                        <div class="control-group">
+                            <label for="rlStatus">Status</label>
+                            <select id="rlStatus" class="control-select">
+                                <option value="">All</option>
+                                <option value="Open">Open</option>
+                                <option value="Pipeline">Pipeline</option>
+                                <option value="Candidate">Candidate/LOI</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="rlChainScale">Chain Scale</label>
+                            <select id="rlChainScale" class="control-select"><option value="">All</option></select>
+                        </div>
+                        <div class="control-group">
+                            <label for="rlRegion">Region</label>
+                            <select id="rlRegion" class="control-select"><option value="">All</option></select>
+                        </div>
+                        <div class="control-group">
+                            <label for="rlOperationType">Operation Type</label>
+                            <select id="rlOperationType" class="control-select"><option value="">All</option></select>
+                        </div>
+                        <div class="control-group">
+                            <button type="button" class="btn-find" id="rlReset">Reset</button>
+                        </div>
+                    </form>
+                    <div class="ranked-list-toolbar">
+                        <div class="control-group" style="margin-bottom:0;min-width:200px;">
+                            <label class="control-label" for="rlRankBy">Rank by</label>
+                            <select id="rlRankBy" class="control-select">
+                                <option value="operator">Operator</option>
+                                <option value="brand">Brand / Affiliation</option>
+                                <option value="parent_company">Parent Company</option>
+                                <option value="region">Region</option>
+                                <option value="chain_scale">Chain Scale</option>
+                                <option value="status">Status</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="ranked-list-summary"><span id="rlRankCount">0</span> <span id="rlRankLabel">operators</span> · <span id="rlPropertyCount">0</span> properties with operator<span id="rlFullDataset"></span></p>
+                    <div id="rlLoading" class="ranked-list-loading hidden"><div class="spinner"></div><p>Loading…</p></div>
+                    <div id="rlTableWrap" class="ranked-table-wrap hidden">
+                        <table class="ranked-table" id="rlTable">
+                            <thead id="rlTableHead"><tr><th class="rank-col">#</th><th>Name</th><th>Units</th><th>Keys</th></tr></thead>
+                            <tbody id="rlTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="rlEmpty" class="ranked-list-empty hidden"><p>No data. Adjust filters and try again.</p></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const OPERATOR_TYPE = 'HOTEL MGMT. COMPANY';
+            const regionSelect = document.getElementById('region');
+            const roomMin = document.getElementById('roomMin');
+            const roomMax = document.getElementById('roomMax');
+            const projectType = document.getElementById('projectType');
+            const form = document.getElementById('radarForm');
+            const btnFind = document.getElementById('btnFind');
+            const resultsHeader = document.getElementById('resultsHeader');
+            const resultsCount = document.getElementById('resultsCount');
+            const operatorCards = document.getElementById('operatorCards');
+            const stateEmpty = document.getElementById('stateEmpty');
+            const stateLoading = document.getElementById('stateLoading');
+            const stateError = document.getElementById('stateError');
+            const stateErrorText = document.getElementById('stateErrorText');
+            const insightsList = document.getElementById('insightsList');
+
+            function showState(which) {
+                stateEmpty.classList.add('hidden');
+                stateLoading.classList.add('hidden');
+                stateError.classList.add('hidden');
+                resultsHeader.classList.add('hidden');
+                operatorCards.classList.add('hidden');
+                if (which === 'empty') stateEmpty.classList.remove('hidden');
+                else if (which === 'loading') stateLoading.classList.remove('hidden');
+                else if (which === 'error') stateError.classList.remove('hidden');
+                else if (which === 'results') {
+                    resultsHeader.classList.remove('hidden');
+                    operatorCards.classList.remove('hidden');
+                }
+            }
+
+            function renderInsights(totalOperators, matchingCount, regionFilter) {
+                let html = '';
+                html += '<div class="insight-item"><strong>' + totalOperators + '</strong> management companies in platform</div>';
+                html += '<div class="insight-item"><strong>' + matchingCount + '</strong> match your filters</div>';
+                if (regionFilter) {
+                    html += '<div class="insight-item">Region filter: ' + regionFilter + '</div>';
+                }
+                html += '<div class="insight-item">Use Partner Directory for full profiles and filters</div>';
+                insightsList.innerHTML = html;
+            }
+
+            function renderCards(operators) {
+                operatorCards.innerHTML = operators.map(function (op) {
+                    const desc = (op.description || op.companyOverview || '').trim();
+                    const descShort = desc ? desc.slice(0, 160) + (desc.length > 160 ? '…' : '') : 'No description.';
+                    const regions = (op.regions || []).length ? op.regions.join(', ') : '—';
+                    const website = (op.website || '').trim();
+                    const linkPartner = '/partner-directory';
+                    let meta = '<span>Regions: ' + regions + '</span>';
+                    if (op.brandCount != null && op.brandCount !== '') meta += '<span>Brands: ' + op.brandCount + '</span>';
+                    if ((op.location || '').trim()) meta += '<span>' + op.location + '</span>';
+                    return (
+                        '<div class="operator-card">' +
+                        '  <div class="operator-card-header">' +
+                        '    <div class="operator-card-name">' + escapeHtml(op.name || 'Unnamed') + '</div>' +
+                        (website ? '    <a href="' + escapeHtml(website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+                        '  </div>' +
+                        '  <div class="operator-card-meta">' + meta + '</div>' +
+                        '  <p class="operator-card-desc">' + escapeHtml(descShort) + '</p>' +
+                        '  <div class="operator-card-actions">' +
+                        '    <a href="' + linkPartner + '">View in Partner Directory</a>' +
+                        '  </div>' +
+                        '</div>'
+                    );
+                }).join('');
+            }
+
+            function escapeHtml(s) {
+                const div = document.createElement('div');
+                div.textContent = s;
+                return div.innerHTML;
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const region = (regionSelect.value || '').trim();
+                showState('loading');
+                fetch('/api/partner-directory')
+                    .then(function (res) { return res.ok ? res.json() : Promise.reject(new Error('Failed to load')); })
+                    .then(function (data) {
+                        let list = (data.companies || []).filter(function (c) {
+                            return (c.userType || '').toUpperCase() === OPERATOR_TYPE;
+                        });
+                        const allOperators = list;
+                        if (region) {
+                            list = list.filter(function (c) {
+                                const r = (c.regions || []);
+                                return r.length === 0 || r.some(function (x) { return String(x).toUpperCase() === region; });
+                            });
+                        }
+                        renderInsights(allOperators.length, list.length, region);
+                        resultsCount.textContent = list.length;
+                        renderCards(list);
+                        showState(list.length ? 'results' : 'empty');
+                    })
+                    .catch(function (err) {
+                        stateErrorText.textContent = err.message || 'Please try again.';
+                        showState('error');
+                    });
+            });
+
+            // Tabs: Radar (default) | Ranked list. Hide insights when Ranked list is active.
+            const radarTabPanel = document.getElementById('radarTabPanel');
+            const rankedListTabPanel = document.getElementById('rankedListTabPanel');
+            const insightsBlock = document.getElementById('insightsBlock');
+            const rankedListTabNote = document.getElementById('rankedListTabNote');
+            document.querySelectorAll('.radar-main-tab').forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    document.querySelectorAll('.radar-main-tab').forEach(function (t) { t.classList.remove('active'); });
+                    tab.classList.add('active');
+                    var which = tab.getAttribute('data-tab');
+                    if (which === 'radar') {
+                        radarTabPanel.classList.remove('hidden');
+                        rankedListTabPanel.classList.add('hidden');
+                        insightsBlock.classList.remove('hidden');
+                        if (rankedListTabNote) rankedListTabNote.classList.add('hidden');
+                    } else {
+                        radarTabPanel.classList.add('hidden');
+                        rankedListTabPanel.classList.remove('hidden');
+                        insightsBlock.classList.add('hidden');
+                        if (rankedListTabNote) rankedListTabNote.classList.remove('hidden');
+                        if (typeof runRankedList === 'function' && !window._rlDataLoaded) runRankedList();
+                    }
+                });
+            });
+        })();
+    </script>
+    <script>
+    (function () {
+        var rlLastData = null;
+        var rlSortColumn = null;
+        var rlSortDir = 'desc';
+        var rlAbort = null;
+        var sortIndicatorHtml = '<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span>';
+        function rlEsc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+        function rlTh(label, dataSort) { return '<th data-sort="' + dataSort + '"><span style="display:inline-flex;align-items:center;">' + label + sortIndicatorHtml + '</span></th>'; }
+        function rlGetRankBy() { return (document.getElementById('rlRankBy') && document.getElementById('rlRankBy').value) || 'operator'; }
+        function rlGetRankedList() {
+            var rankBy = rlGetRankBy();
+            var list = [], label = 'operators';
+            if (!rlLastData) return { list: [], label: label };
+            if (rankBy === 'operator') { list = (rlLastData.operators || []).slice(); label = 'operators'; }
+            else if (rankBy === 'brand') { list = (rlLastData.brands || []).slice(); label = 'brands'; }
+            else if (rankBy === 'parent_company') { list = (rlLastData.parent_companies || []).slice(); label = 'parent companies'; }
+            else if (rankBy === 'region') { list = (rlLastData.regions || []).slice(); label = 'regions'; }
+            else if (rankBy === 'chain_scale') { list = (rlLastData.chain_scales || []).slice(); label = 'chain scales'; }
+            else if (rankBy === 'status') { list = (rlLastData.statuses || []).slice(); label = 'statuses'; }
+            list.sort(function (a, b) { var ka = a.total_keys || 0, kb = b.total_keys || 0; if (kb !== ka) return kb - ka; return (b.hotel_count || 0) - (a.hotel_count || 0); });
+            return { list: list, label: label };
+        }
+        function rlBuildCountry(properties) {
+            var by = {};
+            (properties || []).forEach(function (p) { var c = (p.country || '').trim() || '(no country)'; if (!by[c]) by[c] = { units: 0, keys: 0 }; by[c].units += 1; by[c].keys += (p.keys || 0); });
+            var rows = Object.keys(by).map(function (n) { return { name: n, units: by[n].units, keys: by[n].keys }; }).sort(function (a, b) { return b.keys - a.keys; });
+            if (!rows.length) return '<div class="breakdown-panel"><div class="country-breakdown-title">Units &amp; keys by country</div><p style="color:#888;font-size:12px;">No data</p></div>';
+            var tr = rows.map(function (r) { return '<tr><td class="breakdown-name">' + rlEsc(r.name) + '</td><td class="breakdown-units">' + r.units + '</td><td class="breakdown-keys">' + (r.keys || 0).toLocaleString() + '</td></tr>'; }).join('');
+            return '<div class="breakdown-panel"><div class="country-breakdown-title">Units &amp; keys by country</div><table class="country-breakdown-table"><thead><tr><th>Country</th><th>Units</th><th>Keys</th></tr></thead><tbody>' + tr + '</tbody></table></div>';
+        }
+        function rlBuildOperator(properties) {
+            var by = {};
+            (properties || []).forEach(function (p) { var o = (p.operator_name || '').trim() || '(no operator)'; if (!by[o]) by[o] = { units: 0, keys: 0 }; by[o].units += 1; by[o].keys += (p.keys || 0); });
+            var rows = Object.keys(by).map(function (n) { return { name: n, units: by[n].units, keys: by[n].keys }; }).sort(function (a, b) { return b.keys - a.keys; });
+            if (!rows.length) return '<div class="breakdown-panel"><div class="affiliation-breakdown-title">Units &amp; keys by operator</div><p style="color:#888;font-size:12px;">No data</p></div>';
+            var tr = rows.map(function (r) { return '<tr><td class="breakdown-name">' + rlEsc(r.name) + '</td><td class="breakdown-units">' + r.units + '</td><td class="breakdown-keys">' + (r.keys || 0).toLocaleString() + '</td></tr>'; }).join('');
+            return '<div class="breakdown-panel"><div class="affiliation-breakdown-title">Units &amp; keys by operator</div><table class="affiliation-breakdown-table"><thead><tr><th>Operator</th><th>Units</th><th>Keys</th></tr></thead><tbody>' + tr + '</tbody></table></div>';
+        }
+        function rlBuildChainFranchise(properties) {
+            var list = properties || [];
+            var chain = list.filter(function (p) { var ot = (p.operation_type || '').toString().trim().toLowerCase(); return ot === 'chain management'; });
+            var franchise = list.filter(function (p) { var ot = (p.operation_type || '').toString().trim().toLowerCase(); return ot === 'franchise'; });
+            var other = list.filter(function (p) { var ot = (p.operation_type || '').toString().trim().toLowerCase(); return ot !== 'chain management' && ot !== 'franchise'; });
+            function panel(title, props, col) {
+                var by = {};
+                props.forEach(function (p) { var o = (p.operator_name || '').trim() || '(no operator)'; if (!by[o]) by[o] = { units: 0, keys: 0 }; by[o].units += 1; by[o].keys += (p.keys || 0); });
+                var rows = Object.keys(by).map(function (n) { return { name: n, units: by[n].units, keys: by[n].keys }; }).sort(function (a, b) { return b.keys - a.keys; });
+                if (!rows.length) return '<div class="breakdown-panel"><div class="affiliation-breakdown-title">' + rlEsc(title) + '</div><p style="color:#888;font-size:12px;">No data</p></div>';
+                var tr = rows.map(function (r) { return '<tr><td class="breakdown-name">' + rlEsc(r.name) + '</td><td class="breakdown-units">' + r.units + '</td><td class="breakdown-keys">' + (r.keys || 0).toLocaleString() + '</td></tr>'; }).join('');
+                return '<div class="breakdown-panel"><div class="affiliation-breakdown-title">' + rlEsc(title) + '</div><table class="affiliation-breakdown-table"><thead><tr><th>' + rlEsc(col) + '</th><th>Units</th><th>Keys</th></tr></thead><tbody>' + tr + '</tbody></table></div>';
+            }
+            return panel('Chain Management', chain, 'Operator') + panel('Franchise', franchise, 'Operator') + panel('Independent', other, 'Operator');
+        }
+        function rlExpandContent(properties, rankBy) {
+            if (!properties || !properties.length) return '<div class="breakdown-row-content"><div class="breakdown-panel"><p style="color:#888;font-size:12px;">No data</p></div></div>';
+            if (rankBy === 'brand') return '<div class="breakdown-row-content">' + rlBuildOperator(properties) + rlBuildCountry(properties) + '</div>';
+            if (rankBy === 'parent_company') return '<div class="breakdown-row-content">' + rlBuildChainFranchise(properties) + '</div>';
+            if (rankBy === 'region' || rankBy === 'chain_scale' || rankBy === 'status') return '<div class="breakdown-row-content">' + rlBuildOperator(properties) + rlBuildCountry(properties) + '</div>';
+            return '<div class="breakdown-row-content">' + rlBuildOperator(properties) + rlBuildCountry(properties) + '</div>';
+        }
+        function rlSetHeaders() {
+            var head = document.getElementById('rlTableHead');
+            if (!head || !head.querySelector('tr')) return;
+            var rankBy = rlGetRankBy();
+            var tr = head.querySelector('tr');
+            var names = { brand: 'Brand / Affiliation', parent_company: 'Parent Company', region: 'Region', chain_scale: 'Chain Scale', status: 'Status' };
+            var nameLabel = names[rankBy] || 'Name';
+            if (rankBy === 'operator') {
+                tr.innerHTML = '<th class="rank-col" data-sort="total_keys"><span style="display:inline-flex;align-items:center;">#' + sortIndicatorHtml + '</span></th>' + rlTh('Operator', 'operator_name') + rlTh('Units', 'hotel_count') + rlTh('Keys', 'total_keys');
+            } else {
+                tr.innerHTML = '<th class="rank-col" data-sort="total_keys"><span style="display:inline-flex;align-items:center;">#' + sortIndicatorHtml + '</span></th>' + rlTh(nameLabel, 'name') + rlTh('Units', 'hotel_count') + rlTh('Keys', 'total_keys');
+            }
+            tr.querySelectorAll('th[data-sort]').forEach(function (th) {
+                th.classList.remove('sort-asc', 'sort-desc');
+                if (th.getAttribute('data-sort') === rlSortColumn) th.classList.add(rlSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+                th.onclick = function () { rlHandleSort(th.getAttribute('data-sort')); };
+            });
+        }
+        function rlSortList(list, col, dir) {
+            var asc = dir === 'asc';
+            return list.slice().sort(function (a, b) {
+                var cmp = 0;
+                if (col === 'operator_name' || col === 'name') cmp = (a.operator_name || a.name || '').toString().localeCompare((b.operator_name || b.name || '').toString());
+                else if (col === 'hotel_count') cmp = (a.hotel_count || 0) - (b.hotel_count || 0);
+                else if (col === 'total_keys') cmp = (a.total_keys || 0) - (b.total_keys || 0);
+                if (cmp === 0) cmp = (a.operator_name || a.name || '').toString().localeCompare((b.operator_name || b.name || '').toString());
+                return asc ? cmp : -cmp;
+            });
+        }
+        function rlHandleSort(column) {
+            rlSortColumn = column;
+            rlSortDir = (column === 'operator_name' || column === 'name') ? 'asc' : 'desc';
+            var ranked = rlGetRankedList();
+            var sorted = rlSortList(ranked.list, column, rlSortDir);
+            rlSetHeaders();
+            rlRenderList(sorted);
+        }
+        function rlRenderList(list) {
+            var rankBy = rlGetRankBy();
+            var body = document.getElementById('rlTableBody');
+            if (!body) return;
+            body.innerHTML = list.map(function (item, i) {
+                var rank = i + 1;
+                var name = (item.name || item.operator_name || '—').toString();
+                var units = item.hotel_count != null ? item.hotel_count : 0;
+                var keys = item.total_keys != null ? item.total_keys : 0;
+                var initial = name.charAt(0).toUpperCase();
+                var nameCell = '<div class="operator-name-cell"><span class="operator-initial-thumb">' + rlEsc(initial) + '</span><span class="operator-name-text">' + rlEsc(name) + '</span></div>';
+                var expandHtml = rlExpandContent(item.properties, rankBy);
+                return '<tr class="simple-row-expand">' +
+                    '<td class="rank-col"><span class="rank-number">' + rank + '</span><span class="row-expand-icon row-expand-icon-closed">▶</span><span class="row-expand-icon row-expand-icon-open">▼</span></td>' +
+                    '<td>' + nameCell + '</td><td>' + units + '</td><td>' + keys.toLocaleString() + '</td>' +
+                    '</tr><tr class="similar-row"><td colspan="4">' + expandHtml + '</td></tr>';
+            }).join('');
+            body.querySelectorAll('.similar-row').forEach(function (row) { row.classList.add('hidden'); });
+            body.querySelectorAll('.simple-row-expand').forEach(function (row) {
+                row.addEventListener('click', function () {
+                    var next = row.nextElementSibling;
+                    if (next && next.classList.contains('similar-row')) { next.classList.toggle('hidden'); row.classList.toggle('expanded', !next.classList.contains('hidden')); }
+                });
+            });
+        }
+        function rlApplyView() {
+            if (!rlLastData) return;
+            var props = rlLastData.properties || [];
+            var propNum = (rlLastData.total_properties != null ? rlLastData.total_properties : props.length);
+            var rc = document.getElementById('rlPropertyCount');
+            if (rc) rc.textContent = propNum;
+            var rw = document.getElementById('rlFullDataset');
+            if (rw) rw.textContent = (rlLastData.total_in_census != null) ? ' (of ' + Number(rlLastData.total_in_census).toLocaleString() + ' in full dataset)' : '';
+            var ranked = rlGetRankedList();
+            var rk = document.getElementById('rlRankCount');
+            var rl = document.getElementById('rlRankLabel');
+            if (rk) rk.textContent = ranked.list.length;
+            if (rl) rl.textContent = ranked.label;
+            rlSetHeaders();
+            rlRenderList(ranked.list);
+        }
+        window.runRankedList = function () {
+            if (rlAbort) rlAbort.abort();
+            rlAbort = new AbortController();
+            var params = new URLSearchParams({
+                search: (document.getElementById('rlSearch') && document.getElementById('rlSearch').value) ? document.getElementById('rlSearch').value.trim() : '',
+                parentCompany: (document.getElementById('rlParentCompany') && document.getElementById('rlParentCompany').value) ? document.getElementById('rlParentCompany').value.trim() : '',
+                brand: (document.getElementById('rlBrand') && document.getElementById('rlBrand').value) ? document.getElementById('rlBrand').value.trim() : '',
+                status: (document.getElementById('rlStatus') && document.getElementById('rlStatus').value) ? document.getElementById('rlStatus').value.trim() : '',
+                chainScale: (document.getElementById('rlChainScale') && document.getElementById('rlChainScale').value) ? document.getElementById('rlChainScale').value.trim() : '',
+                region: (document.getElementById('rlRegion') && document.getElementById('rlRegion').value) ? document.getElementById('rlRegion').value.trim() : '',
+                operationType: (document.getElementById('rlOperationType') && document.getElementById('rlOperationType').value) ? document.getElementById('rlOperationType').value.trim() : ''
+            });
+            document.getElementById('rlLoading').classList.remove('hidden');
+            document.getElementById('rlTableWrap').classList.add('hidden');
+            document.getElementById('rlEmpty').classList.add('hidden');
+            fetch('/api/operators-by-brand-region?' + params.toString(), { signal: rlAbort.signal })
+                .then(function (r) { return r.ok ? r.json() : r.json().then(function (j) { throw new Error(j.error || j.details || 'Request failed'); }); })
+                .then(function (data) {
+                    rlLastData = data;
+                    window._rlDataLoaded = true;
+                    document.getElementById('rlLoading').classList.add('hidden');
+                    rlApplyView();
+                    var listLen = rlGetRankedList().list.length;
+                    if (listLen) {
+                        document.getElementById('rlTableWrap').classList.remove('hidden');
+                        document.getElementById('rlEmpty').classList.add('hidden');
+                    } else {
+                        document.getElementById('rlTableWrap').classList.add('hidden');
+                        document.getElementById('rlEmpty').classList.remove('hidden');
+                        document.getElementById('rlEmpty').innerHTML = '<p>No data. Adjust filters and try again.</p>';
+                    }
+                })
+                .catch(function (err) {
+                    if (err.name === 'AbortError') return;
+                    document.getElementById('rlLoading').classList.add('hidden');
+                    document.getElementById('rlEmpty').classList.remove('hidden');
+                    document.getElementById('rlEmpty').innerHTML = '<p>' + rlEsc(err.message || 'Failed to load') + '</p>';
+                });
+            rlAbort = null;
+        };
+        function rlLoadFilters() {
+            fetch('/api/operators-by-brand-region/filters').then(function (r) { return r.json(); }).then(function (data) {
+                var pc = document.getElementById('rlParentCompany');
+                if (pc && data.parentCompanies) { pc.innerHTML = '<option value="">All</option>' + data.parentCompanies.map(function (x) { return '<option value="' + rlEsc(x) + '">' + rlEsc(x) + '</option>'; }).join(''); }
+                var br = document.getElementById('rlBrand');
+                if (br && data.brands) { br.innerHTML = '<option value="">All</option>' + data.brands.map(function (x) { return '<option value="' + rlEsc(x) + '">' + rlEsc(x) + '</option>'; }).join(''); }
+                var cs = document.getElementById('rlChainScale');
+                if (cs && data.chainScales) { cs.innerHTML = '<option value="">All</option>' + data.chainScales.map(function (x) { return '<option value="' + rlEsc(x) + '">' + rlEsc(x) + '</option>'; }).join(''); }
+                var reg = document.getElementById('rlRegion');
+                if (reg && data.regions) { reg.innerHTML = '<option value="">All</option>' + data.regions.map(function (x) { return '<option value="' + rlEsc(x) + '">' + rlEsc(x) + '</option>'; }).join(''); }
+                var ot = document.getElementById('rlOperationType');
+                if (ot && data.operationTypes) { ot.innerHTML = '<option value="">All</option>' + data.operationTypes.map(function (x) { return '<option value="' + rlEsc(x) + '">' + rlEsc(x) + '</option>'; }).join(''); }
+            });
+        }
+        rlLoadFilters();
+        document.getElementById('rlRankBy').addEventListener('change', function () { rlSortColumn = null; if (rlLastData) rlApplyView(); });
+        document.getElementById('rlReset').addEventListener('click', function () {
+            document.getElementById('rlSearch').value = '';
+            document.getElementById('rlParentCompany').value = '';
+            document.getElementById('rlBrand').value = '';
+            document.getElementById('rlStatus').value = '';
+            document.getElementById('rlChainScale').value = '';
+            document.getElementById('rlRegion').value = '';
+            document.getElementById('rlOperationType').value = '';
+            document.getElementById('rlRankBy').value = 'operator';
+            runRankedList();
+        });
+        document.getElementById('rankedListFilterForm').addEventListener('submit', function (e) { e.preventDefault(); runRankedList(); });
+        var rlSearch = document.getElementById('rlSearch');
+        if (rlSearch) rlSearch.addEventListener('input', (function () { var t; return function () { clearTimeout(t); t = setTimeout(runRankedList, 400); }; })());
+        ['rlParentCompany', 'rlBrand', 'rlStatus', 'rlChainScale', 'rlRegion', 'rlOperationType'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.addEventListener('change', runRankedList);
+        });
+    })();
+    </script>
+</body>
+</html>

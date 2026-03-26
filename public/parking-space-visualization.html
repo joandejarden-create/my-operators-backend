@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Space Site Survey</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .survey-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+
+        .survey-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .survey-info {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .parking-lot-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 2px solid #000;
+            padding: 20px;
+            position: relative;
+            min-height: 800px;
+        }
+
+        .parking-lot-svg {
+            width: 100%;
+            height: 800px;
+            border: 1px solid #000;
+        }
+
+        .parking-space {
+            fill: #ffffff;
+            stroke: #000;
+            stroke-width: 1;
+        }
+
+        .parking-space-number {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            font-weight: bold;
+            fill: #000;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .structural-element {
+            fill: #cccccc;
+            stroke: #000;
+            stroke-width: 1;
+        }
+
+        .access-road {
+            fill: #f0f0f0;
+            stroke: #000;
+            stroke-width: 1;
+        }
+
+        .unusable-area {
+            fill: #ffffff;
+            stroke: #000;
+            stroke-width: 1;
+        }
+
+        .dimension-line {
+            stroke: #000;
+            stroke-width: 1;
+            stroke-dasharray: 3,3;
+            fill: none;
+        }
+
+        .dimension-text {
+            font-size: 12px;
+            fill: #000;
+            text-anchor: middle;
+            font-family: Arial, sans-serif;
+        }
+
+        .north-arrow {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #000;
+        }
+
+        .legend-color.usable {
+            background-color: #ffffff;
+        }
+
+        .legend-color.unusable {
+            background-color: #cccccc;
+        }
+
+        .survey-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .scale-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="survey-header">
+        <div class="survey-title">PARKING LOT SITE SURVEY</div>
+        <div class="survey-info">Property: Hotel Parking Facility | Date: <span id="currentDate"></span></div>
+        <div class="survey-info">Total Spaces: 294 | Usable Spaces: 292 | Unusable Spaces: 2</div>
+    </div>
+
+    <div class="parking-lot-container">
+        <div class="north-arrow">N ↑</div>
+        
+        <svg class="parking-lot-svg" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            <!-- Main parking facility outline -->
+            <rect x="50" y="50" width="1100" height="700" fill="#ffffff" stroke="#000" stroke-width="2"/>
+            
+            <!-- Dimension lines -->
+            <line class="dimension-line" x1="50" y1="30" x2="1150" y2="30"/>
+            <text class="dimension-text" x="600" y="25">1200 ft</text>
+            
+            <line class="dimension-line" x1="20" y1="50" x2="20" y2="750"/>
+            <text class="dimension-text" x="15" y="400" transform="rotate(-90, 15, 400)">700 ft</text>
+            
+            <!-- Large central parking area (spaces 1-180) -->
+            <g id="central-parking">
+                <!-- Row 1 (spaces 1-20) -->
+                <g>
+                    <rect x="100" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="107.5" y="112.5" class="parking-space-number">1</text>
+                    <rect x="120" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="127.5" y="112.5" class="parking-space-number">2</text>
+                    <rect x="140" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="147.5" y="112.5" class="parking-space-number">3</text>
+                    <rect x="160" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="167.5" y="112.5" class="parking-space-number">4</text>
+                    <rect x="180" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="187.5" y="112.5" class="parking-space-number">5</text>
+                    <rect x="200" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="207.5" y="112.5" class="parking-space-number">6</text>
+                    <rect x="220" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="227.5" y="112.5" class="parking-space-number">7</text>
+                    <rect x="240" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="247.5" y="112.5" class="parking-space-number">8</text>
+                    <rect x="260" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="267.5" y="112.5" class="parking-space-number">9</text>
+                    <rect x="280" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="287.5" y="112.5" class="parking-space-number">10</text>
+                    <rect x="300" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="307.5" y="112.5" class="parking-space-number">11</text>
+                    <rect x="320" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="327.5" y="112.5" class="parking-space-number">12</text>
+                    <rect x="340" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="347.5" y="112.5" class="parking-space-number">13</text>
+                    <rect x="360" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="367.5" y="112.5" class="parking-space-number">14</text>
+                    <rect x="380" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="387.5" y="112.5" class="parking-space-number">15</text>
+                    <rect x="400" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="407.5" y="112.5" class="parking-space-number">16</text>
+                    <rect x="420" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="427.5" y="112.5" class="parking-space-number">17</text>
+                    <rect x="440" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="447.5" y="112.5" class="parking-space-number">18</text>
+                    <rect x="460" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="467.5" y="112.5" class="parking-space-number">19</text>
+                    <rect x="480" y="100" width="15" height="25" class="parking-space"/>
+                    <text x="487.5" y="112.5" class="parking-space-number">20</text>
+                </g>
+                
+                <!-- Continue with more rows... (simplified for brevity) -->
+                <!-- Row 2 (spaces 21-40) -->
+                <g>
+                    <rect x="100" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="107.5" y="152.5" class="parking-space-number">21</text>
+                    <rect x="120" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="127.5" y="152.5" class="parking-space-number">22</text>
+                    <rect x="140" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="147.5" y="152.5" class="parking-space-number">23</text>
+                    <rect x="160" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="167.5" y="152.5" class="parking-space-number">24</text>
+                    <rect x="180" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="187.5" y="152.5" class="parking-space-number">25</text>
+                    <rect x="200" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="207.5" y="152.5" class="parking-space-number">26</text>
+                    <rect x="220" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="227.5" y="152.5" class="parking-space-number">27</text>
+                    <rect x="240" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="247.5" y="152.5" class="parking-space-number">28</text>
+                    <rect x="260" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="267.5" y="152.5" class="parking-space-number">29</text>
+                    <rect x="280" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="287.5" y="152.5" class="parking-space-number">30</text>
+                    <rect x="300" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="307.5" y="152.5" class="parking-space-number">31</text>
+                    <rect x="320" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="327.5" y="152.5" class="parking-space-number">32</text>
+                    <rect x="340" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="347.5" y="152.5" class="parking-space-number">33</text>
+                    <rect x="360" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="367.5" y="152.5" class="parking-space-number">34</text>
+                    <rect x="380" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="387.5" y="152.5" class="parking-space-number">35</text>
+                    <rect x="400" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="407.5" y="152.5" class="parking-space-number">36</text>
+                    <rect x="420" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="427.5" y="152.5" class="parking-space-number">37</text>
+                    <rect x="440" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="447.5" y="152.5" class="parking-space-number">38</text>
+                    <rect x="460" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="467.5" y="152.5" class="parking-space-number">39</text>
+                    <rect x="480" y="140" width="15" height="25" class="parking-space"/>
+                    <text x="487.5" y="152.5" class="parking-space-number">40</text>
+                </g>
+                
+                <!-- Access road -->
+                <rect x="500" y="100" width="30" height="700" class="access-road"/>
+                
+                <!-- Top-left parking block (spaces 200-240) -->
+                <g id="top-left-parking">
+                    <rect x="70" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="77.5" y="262.5" class="parking-space-number">200</text>
+                    <rect x="90" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="97.5" y="262.5" class="parking-space-number">201</text>
+                    <rect x="110" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="117.5" y="262.5" class="parking-space-number">202</text>
+                    <rect x="130" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="137.5" y="262.5" class="parking-space-number">203</text>
+                    <rect x="150" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="157.5" y="262.5" class="parking-space-number">204</text>
+                    <rect x="170" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="177.5" y="262.5" class="parking-space-number">205</text>
+                    <rect x="190" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="197.5" y="262.5" class="parking-space-number">206</text>
+                    <rect x="210" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="217.5" y="262.5" class="parking-space-number">207</text>
+                    <rect x="230" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="237.5" y="262.5" class="parking-space-number">208</text>
+                    <rect x="250" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="257.5" y="262.5" class="parking-space-number">209</text>
+                    <rect x="270" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="277.5" y="262.5" class="parking-space-number">210</text>
+                    
+                    <!-- Row 2 of top-left -->
+                    <rect x="70" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="77.5" y="302.5" class="parking-space-number">211</text>
+                    <rect x="90" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="97.5" y="302.5" class="parking-space-number">212</text>
+                    <rect x="110" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="117.5" y="302.5" class="parking-space-number">213</text>
+                    <rect x="130" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="137.5" y="302.5" class="parking-space-number">214</text>
+                    <rect x="150" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="157.5" y="302.5" class="parking-space-number">215</text>
+                    <rect x="170" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="177.5" y="302.5" class="parking-space-number">216</text>
+                    <rect x="190" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="197.5" y="302.5" class="parking-space-number">217</text>
+                    <rect x="210" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="217.5" y="302.5" class="parking-space-number">218</text>
+                    <rect x="230" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="237.5" y="302.5" class="parking-space-number">219</text>
+                    <rect x="250" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="257.5" y="302.5" class="parking-space-number">220</text>
+                    <rect x="270" y="290" width="15" height="25" class="parking-space"/>
+                    <text x="277.5" y="302.5" class="parking-space-number">221</text>
+                </g>
+                
+                <!-- Central-top parking block (spaces 287-294) -->
+                <g id="central-top-parking">
+                    <rect x="600" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="607.5" y="262.5" class="parking-space-number">287</text>
+                    <rect x="620" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="627.5" y="262.5" class="parking-space-number">288</text>
+                    <rect x="640" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="647.5" y="262.5" class="parking-space-number">289</text>
+                    <rect x="660" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="667.5" y="262.5" class="parking-space-number">290</text>
+                    <rect x="680" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="687.5" y="262.5" class="parking-space-number">291</text>
+                    <rect x="700" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="707.5" y="262.5" class="parking-space-number">292</text>
+                    <rect x="720" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="727.5" y="262.5" class="parking-space-number">293</text>
+                    <rect x="740" y="250" width="15" height="25" class="parking-space"/>
+                    <text x="747.5" y="262.5" class="parking-space-number">294</text>
+                </g>
+                
+                <!-- Structural elements (columns, walls) -->
+                <rect x="400" y="300" width="40" height="40" class="structural-element"/>
+                <rect x="800" y="400" width="40" height="40" class="structural-element"/>
+                <rect x="300" y="500" width="40" height="40" class="structural-element"/>
+                
+                <!-- Unusable areas (white spaces) -->
+                <rect x="900" y="350" width="100" height="80" class="unusable-area"/>
+                
+                <!-- Access roads -->
+                <rect x="50" y="180" width="450" height="15" class="access-road"/>
+                <rect x="50" y="350" width="450" height="15" class="access-road"/>
+                <rect x="550" y="100" width="15" height="650" class="access-road"/>
+                <rect x="750" y="100" width="15" height="650" class="access-road"/>
+            </g>
+        </svg>
+
+        <div class="scale-indicator">
+            Scale: 1" = 100'
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color usable"></div>
+            <span>Usable Parking Space (Numbered)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color unusable"></div>
+            <span>Unusable Space (Unnumbered)</span>
+        </div>
+    </div>
+
+    <div class="survey-footer">
+        <div>Prepared by: Site Survey Team | Drawing No: PS-001 | Rev: 1</div>
+        <div>Note: Spaces 295 and 296 have been removed from inventory due to structural constraints</div>
+    </div>
+
+    <script>
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+
+        // Print functionality
+        function printSurvey() {
+            window.print();
+        }
+
+        // Add print button
+        const printButton = document.createElement('button');
+        printButton.textContent = 'Print Survey';
+        printButton.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+        `;
+        printButton.onclick = printSurvey;
+        document.body.appendChild(printButton);
+
+        // Print styles
+        const printStyles = document.createElement('style');
+        printStyles.textContent = `
+            @media print {
+                button {
+                    display: none !important;
+                }
+                body {
+                    background-color: white !important;
+                }
+                .parking-lot-container {
+                    border: 2px solid #000 !important;
+                    background-color: white !important;
+                }
+            }
+        `;
+        document.head.appendChild(printStyles);
+    </script>
+</body>
+</html>

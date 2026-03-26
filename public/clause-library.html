@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clause Library - Dealality Platform</title>
+    <style>
+        /* CSS Variables - Matching Radar/Brand Review styling */
+        :root {
+          --neutral--800: #080f25;
+          --neutral--400: #aeb9e1;
+          --neutral--100: white;
+          --accent--primary-1: #6c72ff;
+          --secondary--color-4: #343b4f;
+          --secondary--color-1: #101935;
+          --general--shadow-01: #14142b0f;
+          --secondary--color-2: #9a91fb;
+          --secondary--color-3: #57c3ff;
+          --secondary--color-5: #fdb52a;
+          --neutral--700: #212c4d;
+          --neutral--600: #37446b;
+          --neutral--500: #7e89ac;
+          --neutral--200: #d9e1fa;
+          --system--green-300: #14ca74;
+          --system--300: #ff5a65;
+          --system--blue-400: #086cd9;
+          --system--green-400: #11845b;
+          --system--orange-400: #d5691b;
+          --general--shadow-03: #14142b1a;
+          --system--red-100: #ffeff0;
+          --neutral--300: #d1dbf9;
+          --general--shadow-02: #14142b14;
+          --system--red-400: #dc2b2b;
+          --system--blue-100: #eaf4ff;
+          --system--blue-300: #1d88fe;
+          --system--blue-200: #8fc3ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Global scrollbar - Partner Directory popup style */
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
+        *::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
+        *::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
+        *::-webkit-scrollbar-corner { background: #080f25; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--neutral--800);
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5em;
+            min-height: 100vh;
+        }
+
+        /* Page Wrapper */
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Main Content Layout - no sidebar (parent app provides nav) */
+        .dashboard-main-section {
+            flex: 1;
+            margin-left: 0;
+            min-width: 0;
+        }
+
+        /* Main Container */
+        .clause-library-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Header Section */
+        .clause-library__header {
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        .clause-library-title-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .deal-capture-logo {
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .deal-capture-logo img {
+            height: 100%;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+        }
+
+        .clause-library__header h1 {
+            color: var(--neutral--100);
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2em;
+        }
+
+        .clause-library__header-left {
+            flex: 1;
+        }
+
+        .clause-library__header p {
+            color: var(--neutral--100);
+            font-size: 0.75rem;
+            font-weight: 300;
+            line-height: 1.3;
+            max-width: 100%;
+            margin-top: 5px;
+        }
+
+        /* Disclaimer Box */
+        .disclaimer-box {
+            background: rgba(108, 114, 255, 0.08);
+            border: 0.6px solid var(--neutral--600);
+            border-left: 3px solid var(--accent--primary-1);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .disclaimer-box__title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--neutral--100);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .disclaimer-box__list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .disclaimer-box__item {
+            font-size: 11px;
+            color: var(--neutral--300);
+            line-height: 1.4;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .disclaimer-box__item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent--primary-1);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Results Header - NEW */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .results-count {
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .results-count strong {
+            color: var(--neutral--100);
+            font-weight: 600;
+        }
+
+        .results-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sort-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sort-label {
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .sort-select {
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .sort-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: var(--secondary--color-4);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            padding: 4px;
+        }
+
+        .view-toggle-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--neutral--400);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .view-toggle-btn:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .view-toggle-btn.active {
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        /* Active Filter Chips - NEW */
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .active-filters-label {
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 4px;
+        }
+
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(108, 114, 255, 0.15);
+            border: 0.6px solid var(--accent--primary-1);
+            border-radius: 16px;
+            color: var(--accent--primary-1);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .filter-chip__label {
+            font-weight: 600;
+        }
+
+        .filter-chip__remove {
+            background: none;
+            border: none;
+            color: var(--accent--primary-1);
+            cursor: pointer;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .filter-chip__remove:hover {
+            background: rgba(108, 114, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .filter-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            margin: 0;
+            z-index: 10;
+        }
+        
+        .filter-group-reset {
+            overflow: visible !important;
+        }
+
+        /* Quick Filters - NEW */
+        .quick-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quick-filter-btn {
+            padding: 6px 14px;
+            background: var(--secondary--color-4);
+            border: 0.6px solid var(--neutral--600);
+            color: var(--neutral--400);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-filter-btn:hover {
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+            background: var(--neutral--700);
+        }
+
+        .quick-filter-btn.active {
+            background: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        /* Filter Bar Component */
+        .clause-library__filters {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr minmax(120px, auto);
+            gap: 12px;
+            align-items: end;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .filter-label {
+            color: var(--neutral--400);
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .input-search,
+        .filter-select {
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .input-search:focus,
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .input-search::placeholder {
+            color: #a0a0a0;
+        }
+
+        .input-search:-webkit-autofill,
+        .input-search:-webkit-autofill:hover,
+        .input-search:-webkit-autofill:focus {
+            -webkit-text-fill-color: #ffffff !important;
+            -webkit-box-shadow: 0 0 0px 1000px var(--secondary--color-1) inset !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .filter-select option {
+            background: var(--secondary--color-1);
+            color: #ffffff;
+        }
+
+        /* Prevent filter selects from expanding too wide */
+        .filter-select {
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .btn-clear {
+            padding: 8px 16px;
+            background: var(--secondary--color-5);
+            border: 1px solid var(--secondary--color-5);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-clear:hover {
+            background: var(--system--orange-400);
+            border-color: var(--system--orange-400);
+            transform: translateY(-1px);
+        }
+
+        /* Quick Chips */
+        .clause-library__chips {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            margin-bottom: 20px;
+            width: 100%;
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 8px 12px;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--neutral--600) var(--neutral--800);
+        }
+
+        .clause-library__chips::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .clause-library__chips::-webkit-scrollbar-track {
+            background: var(--neutral--800);
+            border-top: 1px solid rgba(87, 195, 255, 0.35);
+        }
+
+        .clause-library__chips::-webkit-scrollbar-thumb {
+            background: var(--neutral--600);
+            border-radius: 0;
+        }
+
+        .clause-library__chips::-webkit-scrollbar-thumb:hover {
+            background: var(--neutral--500);
+        }
+
+        .chip {
+            padding: 5px 10px;
+            background: var(--secondary--color-4);
+            border: 0.6px solid var(--neutral--600);
+            color: var(--neutral--400);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .chip:hover {
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .chip.active {
+            background: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        /* Results List */
+        .clause-library__results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .clause-library__results.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .clause-library__results.list-view .clause-card {
+            flex-direction: row;
+            min-height: auto;
+            padding: 20px;
+        }
+
+        .clause-library__results.list-view .clause-card__header {
+            flex: 1;
+            margin-bottom: 0;
+            margin-right: 20px;
+        }
+
+        .clause-library__results.list-view .clause-card__summary {
+            flex: 2;
+            margin-bottom: 0;
+            margin-right: 20px;
+        }
+
+        .clause-library__results.list-view .clause-card__footer {
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            min-height: auto;
+        }
+
+        /* Skeleton Loading - NEW */
+        .skeleton-card {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 24px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .skeleton-line {
+            height: 16px;
+            background: linear-gradient(90deg, var(--neutral--700) 25%, var(--neutral--600) 50%, var(--neutral--700) 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            border-radius: 4px;
+        }
+
+        .skeleton-line.title {
+            height: 24px;
+            width: 70%;
+        }
+
+        .skeleton-line.meta {
+            height: 14px;
+            width: 50%;
+        }
+
+        .skeleton-line.summary {
+            height: 14px;
+            width: 100%;
+        }
+
+        .skeleton-line.summary.short {
+            width: 80%;
+        }
+
+        .skeleton-line.badge {
+            height: 20px;
+            width: 60px;
+            border-radius: 10px;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Clause Card Component */
+        .clause-card {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            min-height: 220px;
+        }
+
+        .clause-card.hidden {
+            display: none !important;
+        }
+
+        .clause-card:hover {
+            background: var(--neutral--700);
+            border-color: var(--neutral--500);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .clause-card__header {
+            margin-bottom: 12px;
+        }
+
+        .clause-card__title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neutral--100);
+            margin-bottom: 4px;
+            line-height: 1.333em;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 48px;
+        }
+
+        .clause-card__meta {
+            display: flex;
+            gap: 8px;
+            color: var(--neutral--400);
+            font-size: 13px;
+            margin-bottom: 16px;
+            flex-wrap: nowrap;
+            overflow: hidden;
+        }
+
+        .clause-card__meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .clause-card__meta-separator {
+            color: rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .clause-card__summary {
+            color: var(--neutral--400);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .clause-card__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            min-height: 36px;
+            flex-wrap: nowrap;
+        }
+
+        .clause-card__badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: nowrap;
+            flex-shrink: 0;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .badge--risk-low {
+            background: rgba(20, 202, 116, 0.2);
+            color: #14ca74;
+            border: 1px solid rgba(20, 202, 116, 0.3);
+        }
+
+        .badge--risk-medium {
+            background: rgba(253, 181, 42, 0.2);
+            color: #fdb52a;
+            border: 1px solid rgba(253, 181, 42, 0.3);
+        }
+
+        .badge--risk-high {
+            background: rgba(220, 43, 43, 0.2);
+            color: #dc2b2b;
+            border: 1px solid rgba(220, 43, 43, 0.3);
+        }
+
+        .badge--lean-neutral {
+            background: rgba(174, 185, 225, 0.2);
+            color: #aeb9e1;
+            border: 1px solid rgba(174, 185, 225, 0.3);
+        }
+
+        .badge--lean-owner {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .badge--lean-brand {
+            background: rgba(214, 158, 46, 0.2);
+            color: #d69e2e;
+            border: 1px solid rgba(214, 158, 46, 0.3);
+        }
+
+        .badge--prevalence-common {
+            background: rgba(20, 202, 116, 0.2);
+            color: #14ca74;
+            border: 1px solid rgba(20, 202, 116, 0.3);
+        }
+
+        .badge--prevalence-sometimes {
+            background: rgba(253, 181, 42, 0.2);
+            color: #fdb52a;
+            border: 1px solid rgba(253, 181, 42, 0.3);
+        }
+
+        .badge--prevalence-rare {
+            background: rgba(174, 185, 225, 0.2);
+            color: #aeb9e1;
+            border: 1px solid rgba(174, 185, 225, 0.3);
+        }
+
+        .clause-card__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration: none;
+            flex-shrink: 0;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            border: none;
+            margin-left: auto;
+        }
+
+        .clause-card__cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+            background: var(--secondary--color-2);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--neutral--400);
+        }
+
+        .empty-state h3 {
+            color: var(--neutral--100);
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            line-height: 1.417em;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .pagination-btn {
+            padding: 8px 16px;
+            background: var(--secondary--color-4);
+            border: 0.6px solid var(--neutral--600);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--neutral--700);
+            border-color: var(--accent--primary-1);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Loading State */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 280px;
+            max-width: 320px;
+        }
+
+        .loading-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .loading .wave-container {
+            width: 32px;
+            height: 32px;
+            position: relative;
+            background: var(--neutral--700);
+            border-radius: 50%;
+            border: 2px solid var(--neutral--600);
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .loading .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+
+        .loading .wave-1 {
+            height: 40%;
+            background: linear-gradient(45deg, #d69e2e, #f4d03f);
+            animation: wave-1 2s ease-in-out infinite;
+            animation-delay: 0s;
+        }
+
+        .loading .wave-2 {
+            height: 60%;
+            background: linear-gradient(45deg, #b8860b, #d69e2e);
+            animation: wave-2 2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .loading .wave-3 {
+            height: 80%;
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+            animation: wave-3 2s ease-in-out infinite;
+            animation-delay: 0.6s;
+        }
+
+        .loading .wave-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .loading .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #d69e2e;
+            border-radius: 50%;
+            animation: particle-float 3s ease-in-out infinite;
+            box-shadow: 0 0 4px #d69e2e;
+        }
+
+        .loading .particle:nth-child(1) {
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .loading .particle:nth-child(2) {
+            left: 40%;
+            animation-delay: 0.5s;
+        }
+
+        .loading .particle:nth-child(3) {
+            left: 60%;
+            animation-delay: 1s;
+        }
+
+        .loading .particle:nth-child(4) {
+            left: 80%;
+            animation-delay: 1.5s;
+        }
+
+        .loading-text {
+            flex: 1;
+        }
+
+        .loading-text-main {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neutral--100);
+            margin-bottom: 4px;
+        }
+
+        .loading-text-time {
+            font-size: 12px;
+            color: var(--neutral--400);
+        }
+
+        .loading-progress {
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary--color-5), var(--system--orange-400));
+            border-radius: 2px;
+            animation: progress-animation 3s ease-in-out infinite;
+            box-shadow: 0 0 4px rgba(214, 158, 46, 0.5);
+        }
+
+        @keyframes progress-animation {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes wave-1 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes wave-2 {
+            0%, 100% { 
+                transform: translateX(100%) scaleY(1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.1);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes wave-3 {
+            0%, 100% { 
+                transform: translateX(-100%) scaleY(1);
+                opacity: 0.4;
+            }
+            50% { 
+                transform: translateX(0%) scaleY(1.3);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes particle-float {
+            0% { 
+                transform: translateY(100%) scale(0);
+                opacity: 0;
+            }
+            20% { 
+                transform: translateY(80%) scale(1);
+                opacity: 1;
+            }
+            80% { 
+                transform: translateY(20%) scale(1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(0%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Keyboard Shortcut Hint - NEW */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--neutral--400);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            z-index: 1000;
+            border: 0.6px solid var(--neutral--600);
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .keyboard-hint.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .keyboard-hint kbd {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 10px;
+            border: 0.6px solid var(--neutral--600);
+            margin: 0 2px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .clause-library__filters {
+                grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr minmax(120px, auto);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .clause-library__results {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .clause-library-container {
+                padding: 20px;
+            }
+
+            .dashboard-main-section {
+                margin-left: 0;
+            }
+
+            .clause-library__filters {
+                grid-template-columns: 1fr;
+            }
+
+            .clause-library__results {
+                grid-template-columns: 1fr;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .results-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1){document.documentElement.classList.add('embed-mode');}})();</script>
+    <div class="page-wrapper">
+        <!-- Main Content (parent app provides left nav) -->
+        <div class="dashboard-main-section">
+            <div class="clause-library-container">
+                <!-- Header Section -->
+                <div class="clause-library__header">
+                    <div class="clause-library__header-left">
+                        <div class="clause-library-title-container">
+                            <div class="deal-capture-logo">
+                                <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+                            </div>
+                            <h1>Clause Library</h1>
+                        </div>
+                        <p>A comprehensive database of hotel franchise and management agreement clauses that helps owners understand key terms, negotiate better deals, and identify potential risks — providing detailed analysis of each clause's implications, negotiation strategies, and common positions.</p>
+                    </div>
+                    
+                    <!-- Disclaimer Box -->
+                    <div class="disclaimer-box">
+                        <div class="disclaimer-box__title">Disclaimer</div>
+                        <ul class="disclaimer-box__list">
+                            <li class="disclaimer-box__item">This is an owner education resource designed to reduce misunderstanding and late-stage surprises.</li>
+                            <li class="disclaimer-box__item">It is not brand-specific, not legal advice, and not an attempt to publish any brand's confidential contract language.</li>
+                            <li class="disclaimer-box__item">We include brand/operator rationale and compromise options to support faster alignment.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Quick Filters - NEW -->
+                <div class="quick-filters">
+                    <button class="quick-filter-btn" data-filter="risk" data-value="High">🔴 High Risk Only</button>
+                    <button class="quick-filter-btn" data-filter="lean" data-value="Owner-friendly">👤 Owner-Friendly</button>
+                    <button class="quick-filter-btn" data-filter="phase" data-value="Pre-Sign">📝 Pre-Sign Phase</button>
+                    <button class="quick-filter-btn" data-filter="prevalence" data-value="Common">⭐ Most Common</button>
+                </div>
+
+                <!-- Search + Filters Bar -->
+                <div class="clause-library__filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Search</label>
+                        <input type="text" class="input-search" id="searchInput" placeholder="Search by name, category, or agreement type... (Press / to focus)">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Agreement Type</label>
+                        <select class="filter-select" id="agreementTypeFilter">
+                            <option value="">All Types</option>
+                            <option value="HMA">HMA</option>
+                            <option value="Franchise">Franchise</option>
+                            <option value="LOI">LOI</option>
+                            <option value="NDA">NDA</option>
+                            <option value="TSA">TSA (Tran. Svc. Agmt.)</option>
+                            <option value="Technical Services Agreement">TSA (Tech. Svc. Agmt.)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Category</label>
+                        <select class="filter-select" id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="Accounting & Cash">Accounting & Cash</option>
+                            <option value="Assignment & Change of Control">Assignment & Change of Control</option>
+                            <option value="Audit & Compliance">Audit & Compliance</option>
+                            <option value="Budget & CapEx">Budget & CapEx</option>
+                            <option value="Change in System">Change in System</option>
+                            <option value="Compliance">Compliance</option>
+                            <option value="Conditions">Conditions</option>
+                            <option value="Confidentiality">Confidentiality</option>
+                            <option value="Data">Data</option>
+                            <option value="Default & Remedies">Default & Remedies</option>
+                            <option value="Definitions">Definitions</option>
+                            <option value="Dispute Resolution">Dispute Resolution</option>
+                            <option value="Due Diligence">Due Diligence</option>
+                            <option value="Exclusivity">Exclusivity</option>
+                            <option value="Fees">Fees</option>
+                            <option value="Financial Terms">Financial Terms</option>
+                            <option value="General Terms">General Terms</option>
+                            <option value="Governing Law">Governing Law</option>
+                            <option value="Indemnification">Indemnification</option>
+                            <option value="Insurance & Risk">Insurance & Risk</option>
+                            <option value="Lender Protections">Lender Protections</option>
+                            <option value="Liability">Liability</option>
+                            <option value="Non-Binding">Non-Binding</option>
+                            <option value="Non-Compete & Territory">Non-Compete & Territory</option>
+                            <option value="Operations & Staffing">Operations & Staffing</option>
+                            <option value="Owner Approvals">Owner Approvals</option>
+                            <option value="Performance Test">Performance Test</option>
+                            <option value="Post-Termination">Post-Termination</option>
+                            <option value="Pre-Opening">Pre-Opening</option>
+                            <option value="Process">Process</option>
+                            <option value="Procurement">Procurement</option>
+                            <option value="Procurement & Vendors">Procurement & Vendors</option>
+                            <option value="Property Improvement Plan">Property Improvement Plan</option>
+                            <option value="Quality Assurance">Quality Assurance</option>
+                            <option value="Remedies">Remedies</option>
+                            <option value="Renewal & Re-Licensing">Renewal & Re-Licensing</option>
+                            <option value="Reporting & Transparency">Reporting & Transparency</option>
+                            <option value="Risk Management">Risk Management</option>
+                            <option value="Standards">Standards</option>
+                            <option value="System Changes">System Changes</option>
+                            <option value="Technology & Data">Technology & Data</option>
+                            <option value="Term & Renewal">Term & Renewal</option>
+                            <option value="Termination">Termination</option>
+                            <option value="Territorial Rights">Territorial Rights</option>
+                            <option value="Transfer & Change of Ownership">Transfer & Change of Ownership</option>
+                            <option value="Transition">Transition</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Phase</label>
+                        <select class="filter-select" id="phaseFilter">
+                            <option value="">All Phases</option>
+                            <option value="Pre-Sign">Pre-Sign</option>
+                            <option value="Pre-Opening">Pre-Opening</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Exit">Exit</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Risk Level</label>
+                        <select class="filter-select" id="riskFilter">
+                            <option value="">All Risk</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Lean</label>
+                        <select class="filter-select" id="leanFilter">
+                            <option value="">All Lean</option>
+                            <option value="Neutral">Neutral</option>
+                            <option value="Owner-friendly">Owner-friendly</option>
+                            <option value="Brand-friendly">Brand-friendly</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Prevalence</label>
+                        <select class="filter-select" id="prevalenceFilter">
+                            <option value="">All Prevalence</option>
+                            <option value="Common">Common</option>
+                            <option value="Sometimes">Sometimes</option>
+                            <option value="Rare">Rare</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Jurisdiction</label>
+                        <select class="filter-select" id="jurisdictionFilter">
+                            <option value="">All Jurisdictions</option>
+                            <option value="Global">Global</option>
+                            <option value="US">US</option>
+                            <option value="CALA">CALA</option>
+                            <option value="EU">EU</option>
+                        </select>
+                    </div>
+                    <div class="filter-group filter-group-reset">
+                        <button class="btn-clear" onclick="clearFilters()" id="resetBtn">
+                            Reset View
+                            <span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Filter Chips - NEW -->
+                <div class="active-filters" id="activeFilters" style="display: none;">
+                    <span class="active-filters-label">Active filters:</span>
+                </div>
+
+                <!-- Quick Chips (Owner Goal Tags) -->
+                <div class="clause-library__chips" id="ownerGoalChips">
+                    <div class="chip active" data-goal="">All</div>
+                    <div class="chip" data-goal="Exit flexibility">Exit Flexibility</div>
+                    <div class="chip" data-goal="Fee transparency">Fee Transparency</div>
+                    <div class="chip" data-goal="Capex planning">Capex Planning</div>
+                    <div class="chip" data-goal="Transferability">Transferability</div>
+                    <div class="chip" data-goal="QA/default risk">QA/Default Risk</div>
+                    <div class="chip" data-goal="Data access">Data Access</div>
+                    <div class="chip" data-goal="Lender readiness">Lender Readiness</div>
+                    <div class="chip" data-goal="Operational control">Operational Control</div>
+                    <div class="chip" data-goal="Financial protection">Financial Protection</div>
+                    <div class="chip" data-goal="Contract flexibility">Contract Flexibility</div>
+                    <div class="chip" data-goal="Performance metrics">Performance Metrics</div>
+                    <div class="chip" data-goal="Termination rights">Termination Rights</div>
+                </div>
+
+                <!-- Results Header - NEW -->
+                <div class="results-header">
+                    <div class="results-count" id="resultsCount">
+                        Showing <strong>0</strong> of <strong>0</strong> clauses
+                    </div>
+                    <div class="results-controls">
+                        <div class="sort-control">
+                            <span class="sort-label">Sort:</span>
+                            <select class="sort-select" id="sortSelect">
+                                <option value="name-asc">Name (A-Z)</option>
+                                <option value="name-desc">Name (Z-A)</option>
+                                <option value="risk-asc">Risk (Low to High)</option>
+                                <option value="risk-desc">Risk (High to Low)</option>
+                                <option value="prevalence-asc">Prevalence (Common to Rare)</option>
+                                <option value="prevalence-desc">Prevalence (Rare to Common)</option>
+                            </select>
+                        </div>
+                        <div class="view-toggle">
+                            <button class="view-toggle-btn active" data-view="grid" id="gridViewBtn" title="Grid View">
+                                <span>⊞</span>
+                            </button>
+                            <button class="view-toggle-btn" data-view="list" id="listViewBtn" title="List View">
+                                <span>☰</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results List -->
+                <div class="clause-library__results" id="resultsList">
+                    <!-- Clauses will be loaded dynamically from Airtable API -->
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="pagination-btn" id="prevBtn" onclick="previousPage()" disabled>Previous</button>
+                    <span class="pagination-info">Page <span id="currentPage">1</span> of <span id="totalPages">1</span></span>
+                    <button class="pagination-btn" id="nextBtn" onclick="nextPage(); return false;">Next</button>
+                </div>
+
+                <!-- Empty State (hidden by default) -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <h3>No clauses found</h3>
+                    <p>No clauses match these filters. Clear filters or try a different search term.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcut Hint - NEW -->
+    <div class="keyboard-hint" id="keyboardHint">
+        <div><kbd>/</kbd> Focus search</div>
+        <div><kbd>Esc</kbd> Clear filters</div>
+    </div>
+
+    <script>
+        // Configuration - uses backend API at /api/clause-library/clauses
+        const CONFIG = {
+            CACHE_TTL: 5 * 60 * 1000,
+            MAX_RECORDS: 50000
+        };
+
+        function formatClauseFromAirtable(record) {
+            const f = record.fields || {};
+            const arr = (v) => Array.isArray(v) ? v.filter(Boolean).join(',') : (v && typeof v === 'string' ? v.trim() : '');
+            return {
+                id: record.id,
+                clauseId: f['Clause ID'] || '',
+                clauseName: f['Clause Name'] || '',
+                agreementType: f['Agreement Type'] || '',
+                category: f['Category'] || '',
+                lifecyclePhase: f['Lifecycle Phase'] || '',
+                ownerGoalTags: arr(f['Owner Goal Tags']),
+                riskLevel: f['Risk Level (Owner)'] || '',
+                lean: f['Lean'] || '',
+                prevalence: f['Prevalence'] || '',
+                jurisdictionTags: arr(f['Jurisdiction Tags']),
+                plainEnglishSummary: f['Plain-English Summary'] || ''
+            };
+        }
+
+        async function fetchAllClausesFromAirtable() {
+            // Use backend API instead of direct Airtable calls
+            const allRecords = [];
+            let offset = null;
+            do {
+                const params = new URLSearchParams({
+                    pageSize: '100'
+                });
+                if (offset) params.set('offset', offset);
+                
+                const url = `/api/clause-library/clauses?${params.toString()}`;
+                const res = await fetch(url);
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    throw new Error(`API request failed: ${res.status} - ${errorText}`);
+                }
+                const data = await res.json();
+                allRecords.push(...(data.records || []));
+                offset = data.offset || null;
+            } while (offset && allRecords.length < CONFIG.MAX_RECORDS);
+            return allRecords;
+        }
+
+        async function fetchClausesFromAirtable(filterParams) {
+            // Use backend API with filters
+            const params = new URLSearchParams({
+                pageSize: '10000' // Get all records for client-side filtering
+            });
+            
+            if (filterParams.search) params.set('search', filterParams.search);
+            if (filterParams.agreementType) params.set('agreementType', filterParams.agreementType);
+            if (filterParams.category) params.set('category', filterParams.category);
+            if (filterParams.phase) params.set('phase', filterParams.phase);
+            if (filterParams.risk) params.set('risk', filterParams.risk);
+            if (filterParams.lean) params.set('lean', filterParams.lean);
+            if (filterParams.jurisdiction) params.set('jurisdiction', filterParams.jurisdiction);
+            if (filterParams.ownerGoal) params.set('ownerGoal', filterParams.ownerGoal);
+            
+            const url = `/api/clause-library/clauses?${params.toString()}`;
+            const res = await fetch(url);
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`API request failed: ${res.status} - ${errorText}`);
+            }
+            const data = await res.json();
+            // Backend API already handles all filtering, so return the results directly
+            return { 
+                records: data.records || [], 
+                totalRecords: data.totalRecords || (data.records || []).length 
+            };
+        }
+
+        // Enhanced Clause Library with all UI/UX improvements
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultsList = document.getElementById('resultsList');
+            const emptyState = document.getElementById('emptyState');
+            const activeFilters = document.getElementById('activeFilters');
+            const filterCountBadge = document.getElementById('filterCountBadge');
+            const resultsCount = document.getElementById('resultsCount');
+            const sortSelect = document.getElementById('sortSelect');
+            const gridViewBtn = document.getElementById('gridViewBtn');
+            const listViewBtn = document.getElementById('listViewBtn');
+            const keyboardHint = document.getElementById('keyboardHint');
+
+            let currentOwnerGoal = '';
+            let currentOffset = null;
+            let isLoading = false;
+            let totalRecords = 0;
+            let currentView = 'grid';
+            let currentSort = 'name-asc';
+            let allClauses = []; // Store all clauses for sorting
+            let totalDisplayedCount = 0; // Track total displayed when appending
+
+            // URL State Management
+            function updateURL() {
+                const params = new URLSearchParams();
+                const searchText = (document.getElementById('searchInput')?.value || '').trim();
+                const agreementType = document.getElementById('agreementTypeFilter')?.value || '';
+                const category = document.getElementById('categoryFilter')?.value || '';
+                const phase = document.getElementById('phaseFilter')?.value || '';
+                const risk = document.getElementById('riskFilter')?.value || '';
+                const lean = document.getElementById('leanFilter')?.value || '';
+                const prevalence = document.getElementById('prevalenceFilter')?.value || '';
+                const jurisdiction = document.getElementById('jurisdictionFilter')?.value || '';
+
+                if (searchText) params.append('search', searchText);
+                if (agreementType) params.append('agreementType', agreementType);
+                if (category) params.append('category', category);
+                if (phase) params.append('phase', phase);
+                if (risk) params.append('risk', risk);
+                if (lean) params.append('lean', lean);
+                if (prevalence) params.append('prevalence', prevalence);
+                if (jurisdiction) params.append('jurisdiction', jurisdiction);
+                if (currentOwnerGoal) params.append('ownerGoal', currentOwnerGoal);
+                if (currentSort !== 'name-asc') params.append('sort', currentSort);
+                if (currentView !== 'grid') params.append('view', currentView);
+
+                const newURL = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+                window.history.pushState({}, '', newURL);
+            }
+
+            function loadFromURL() {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('search')) document.getElementById('searchInput').value = params.get('search');
+                if (params.get('agreementType')) document.getElementById('agreementTypeFilter').value = params.get('agreementType');
+                if (params.get('category')) document.getElementById('categoryFilter').value = params.get('category');
+                if (params.get('phase')) document.getElementById('phaseFilter').value = params.get('phase');
+                if (params.get('risk')) document.getElementById('riskFilter').value = params.get('risk');
+                if (params.get('lean')) document.getElementById('leanFilter').value = params.get('lean');
+                if (params.get('prevalence')) document.getElementById('prevalenceFilter').value = params.get('prevalence');
+                if (params.get('jurisdiction')) document.getElementById('jurisdictionFilter').value = params.get('jurisdiction');
+                if (params.get('ownerGoal')) {
+                    currentOwnerGoal = params.get('ownerGoal');
+                    document.querySelectorAll('.chip').forEach(chip => {
+                        chip.classList.remove('active');
+                        if (chip.dataset.goal === currentOwnerGoal) chip.classList.add('active');
+                    });
+                }
+                if (params.get('sort')) {
+                    currentSort = params.get('sort');
+                    sortSelect.value = currentSort;
+                }
+                if (params.get('view')) {
+                    currentView = params.get('view');
+                    updateViewToggle();
+                }
+            }
+
+            // Keyboard Shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Don't trigger if user is typing in an input
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                    if (e.key === 'Escape' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+                        e.target.blur();
+                        clearFilters();
+                        return;
+                    }
+                    return;
+                }
+
+                // Focus search with /
+                if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                    showKeyboardHint();
+                }
+
+                // Clear filters with Esc
+                if (e.key === 'Escape') {
+                    clearFilters();
+                    showKeyboardHint();
+                }
+            });
+
+            function showKeyboardHint() {
+                keyboardHint.classList.add('show');
+                setTimeout(() => keyboardHint.classList.remove('show'), 3000);
+            }
+
+            // View Toggle
+            function updateViewToggle() {
+                if (currentView === 'grid') {
+                    resultsList.classList.remove('list-view');
+                    gridViewBtn.classList.add('active');
+                    listViewBtn.classList.remove('active');
+                } else {
+                    resultsList.classList.add('list-view');
+                    listViewBtn.classList.add('active');
+                    gridViewBtn.classList.remove('active');
+                }
+            }
+
+            gridViewBtn.addEventListener('click', () => {
+                currentView = 'grid';
+                updateViewToggle();
+                updateURL();
+                renderClauses(allClauses);
+            });
+
+            listViewBtn.addEventListener('click', () => {
+                currentView = 'list';
+                updateViewToggle();
+                updateURL();
+                renderClauses(allClauses);
+            });
+
+            // Sort Functionality
+            function sortClauses(clauses) {
+                const sorted = [...clauses];
+                const [field, direction] = currentSort.split('-');
+                
+                sorted.sort((a, b) => {
+                    let aVal, bVal;
+                    
+                    switch(field) {
+                        case 'name':
+                            aVal = (a.clauseName || '').toLowerCase();
+                            bVal = (b.clauseName || '').toLowerCase();
+                            break;
+                        case 'risk':
+                            const riskOrder = { 'Low': 1, 'Medium': 2, 'High': 3 };
+                            aVal = riskOrder[a.riskLevel] || 2;
+                            bVal = riskOrder[b.riskLevel] || 2;
+                            break;
+                        case 'prevalence':
+                            const prevOrder = { 'Common': 1, 'Sometimes': 2, 'Rare': 3 };
+                            aVal = prevOrder[a.prevalence] || 1;
+                            bVal = prevOrder[b.prevalence] || 1;
+                            break;
+                        default:
+                            return 0;
+                    }
+                    
+                    if (aVal < bVal) return direction === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+                
+                return sorted;
+            }
+
+            sortSelect.addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                updateURL();
+                const sorted = sortClauses(allClauses);
+                renderClauses(sorted);
+            });
+
+            // Active Filter Chips
+            function updateActiveFilters() {
+                const filters = [];
+                const searchText = (document.getElementById('searchInput')?.value || '').trim();
+                const agreementType = document.getElementById('agreementTypeFilter')?.value || '';
+                const category = document.getElementById('categoryFilter')?.value || '';
+                const phase = document.getElementById('phaseFilter')?.value || '';
+                const risk = document.getElementById('riskFilter')?.value || '';
+                const lean = document.getElementById('leanFilter')?.value || '';
+                const prevalence = document.getElementById('prevalenceFilter')?.value || '';
+                const jurisdiction = document.getElementById('jurisdictionFilter')?.value || '';
+
+                if (searchText) filters.push({ type: 'search', label: 'Search', value: searchText });
+                if (agreementType) filters.push({ type: 'agreementType', label: 'Agreement Type', value: agreementType });
+                if (category) filters.push({ type: 'category', label: 'Category', value: category });
+                if (phase) filters.push({ type: 'phase', label: 'Phase', value: phase });
+                if (risk) filters.push({ type: 'risk', label: 'Risk', value: risk });
+                if (lean) filters.push({ type: 'lean', label: 'Lean', value: lean });
+                if (prevalence) filters.push({ type: 'prevalence', label: 'Prevalence', value: prevalence });
+                if (jurisdiction) filters.push({ type: 'jurisdiction', label: 'Jurisdiction', value: jurisdiction });
+                if (currentOwnerGoal) filters.push({ type: 'ownerGoal', label: 'Owner Goal', value: currentOwnerGoal });
+
+                activeFilters.innerHTML = filters.length > 0 
+                    ? '<span class="active-filters-label">Active filters:</span>' 
+                    : '';
+                
+                filters.forEach(filter => {
+                    const chip = document.createElement('div');
+                    chip.className = 'filter-chip';
+                    chip.innerHTML = `
+                        <span class="filter-chip__label">${escapeHtml(filter.label)}:</span>
+                        <span>${escapeHtml(filter.value)}</span>
+                        <button class="filter-chip__remove" data-filter-type="${filter.type}" title="Remove filter">×</button>
+                    `;
+                    chip.querySelector('.filter-chip__remove').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        removeFilter(filter.type);
+                    });
+                    activeFilters.appendChild(chip);
+                });
+
+                activeFilters.style.display = filters.length > 0 ? 'flex' : 'none';
+                
+                // Update filter count badge
+                const count = filters.length;
+                if (count > 0) {
+                    filterCountBadge.textContent = count;
+                    filterCountBadge.style.display = 'inline-flex';
+                } else {
+                    filterCountBadge.style.display = 'none';
+                }
+            }
+
+            function removeFilter(filterType) {
+                switch(filterType) {
+                    case 'search':
+                        document.getElementById('searchInput').value = '';
+                        break;
+                    case 'agreementType':
+                        document.getElementById('agreementTypeFilter').value = '';
+                        break;
+                    case 'category':
+                        document.getElementById('categoryFilter').value = '';
+                        break;
+                    case 'phase':
+                        document.getElementById('phaseFilter').value = '';
+                        break;
+                    case 'risk':
+                        document.getElementById('riskFilter').value = '';
+                        break;
+                    case 'lean':
+                        document.getElementById('leanFilter').value = '';
+                        break;
+                    case 'prevalence':
+                        document.getElementById('prevalenceFilter').value = '';
+                        break;
+                    case 'jurisdiction':
+                        document.getElementById('jurisdictionFilter').value = '';
+                        break;
+                    case 'ownerGoal':
+                        setOwnerGoal('');
+                        break;
+                }
+                updateActiveFilters();
+                currentOffset = null;
+                fetchClauses();
+            }
+
+            // Quick Filters
+            document.querySelectorAll('.quick-filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    const value = this.dataset.value;
+                    
+                    // Toggle active state
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        document.getElementById(filter + 'Filter').value = '';
+                    } else {
+                        document.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        document.getElementById(filter + 'Filter').value = value;
+                    }
+                    
+                    updateActiveFilters();
+                    currentOffset = null;
+                    fetchClauses();
+                });
+            });
+
+            function viewClause(clauseId) {
+                window.location.href = `clause-library-clause.html?id=${clauseId}`;
+            }
+
+            function setOwnerGoal(goal) {
+                document.querySelectorAll('.chip').forEach(chip => {
+                    chip.classList.remove('active');
+                    if (chip.dataset.goal === goal) {
+                        chip.classList.add('active');
+                    }
+                });
+                
+                currentOwnerGoal = goal;
+                currentOffset = null;
+                updateActiveFilters();
+                fetchClauses();
+            }
+
+            function clearFilters() {
+                document.getElementById('searchInput').value = '';
+                document.getElementById('agreementTypeFilter').value = '';
+                document.getElementById('categoryFilter').value = '';
+                document.getElementById('phaseFilter').value = '';
+                document.getElementById('riskFilter').value = '';
+                document.getElementById('leanFilter').value = '';
+                document.getElementById('prevalenceFilter').value = '';
+                document.getElementById('jurisdictionFilter').value = '';
+                document.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
+                setOwnerGoal('');
+                currentSort = 'name-asc';
+                sortSelect.value = currentSort;
+                currentView = 'grid';
+                updateViewToggle();
+                updateActiveFilters();
+                currentOffset = null;
+                fetchClauses();
+            }
+
+            // Skeleton Loading
+            function showSkeletonLoading() {
+                resultsList.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    const skeleton = document.createElement('div');
+                    skeleton.className = 'skeleton-card';
+                    skeleton.innerHTML = `
+                        <div class="skeleton-line title"></div>
+                        <div class="skeleton-line meta"></div>
+                        <div class="skeleton-line summary"></div>
+                        <div class="skeleton-line summary short"></div>
+                        <div style="display: flex; gap: 6px; margin-top: auto;">
+                            <div class="skeleton-line badge"></div>
+                            <div class="skeleton-line badge"></div>
+                            <div class="skeleton-line badge"></div>
+                        </div>
+                    `;
+                    resultsList.appendChild(skeleton);
+                }
+                resultsList.style.display = 'grid';
+                emptyState.style.display = 'none';
+            }
+
+            // Render clause cards from API data
+            function renderClauses(clauses, append = false, currentPage = 1, pageSize = 20) {
+                if (!append) {
+                    resultsList.innerHTML = '';
+                    totalDisplayedCount = 0;
+                }
+
+                if (clauses.length === 0 && !append) {
+                    resultsList.style.display = 'none';
+                    emptyState.style.display = 'block';
+                    resultsCount.innerHTML = 'Showing <strong>0</strong> of <strong>0</strong> clauses';
+                    totalDisplayedCount = 0;
+                    return;
+                }
+
+                resultsList.style.display = 'grid';
+                emptyState.style.display = 'none';
+
+                // Sort clauses
+                const sortedClauses = sortClauses(clauses);
+
+                sortedClauses.forEach(clause => {
+                    const card = createClauseCard(clause);
+                    resultsList.appendChild(card);
+                });
+
+                // Update cumulative count
+                totalDisplayedCount += sortedClauses.length;
+                
+                // Calculate range for display
+                const startIndex = append ? 1 : ((currentPage - 1) * pageSize + 1);
+                const endIndex = Math.min(totalDisplayedCount, totalRecords);
+                
+                // Update results count with range
+                if (totalRecords === 0) {
+                    resultsCount.innerHTML = 'Showing <strong>0</strong> of <strong>0</strong> clauses';
+                } else if (startIndex === endIndex) {
+                    resultsCount.innerHTML = `Showing <strong>${startIndex}</strong> of <strong>${totalRecords}</strong> clauses`;
+                } else {
+                    resultsCount.innerHTML = `Showing <strong>${startIndex}-${endIndex}</strong> of <strong>${totalRecords}</strong> clauses`;
+                }
+            }
+
+            // Create a clause card element
+            function createClauseCard(clause) {
+                const card = document.createElement('div');
+                card.className = 'clause-card';
+                card.onclick = () => viewClause(clause.clauseId);
+
+                const riskClassMap = {
+                    'Low': 'badge--risk-low',
+                    'Medium': 'badge--risk-medium',
+                    'High': 'badge--risk-high'
+                };
+
+                const leanClassMap = {
+                    'Neutral': 'badge--lean-neutral',
+                    'Owner-friendly': 'badge--lean-owner',
+                    'Brand-friendly': 'badge--lean-brand'
+                };
+
+                const prevalenceClassMap = {
+                    'Common': 'badge--prevalence-common',
+                    'Sometimes': 'badge--prevalence-sometimes',
+                    'Rare': 'badge--prevalence-rare'
+                };
+
+                const riskClass = riskClassMap[clause.riskLevel] || 'badge--risk-medium';
+                const leanClass = leanClassMap[clause.lean] || 'badge--lean-neutral';
+                const prevalenceClass = prevalenceClassMap[clause.prevalence] || 'badge--prevalence-common';
+                const riskLabel = clause.riskLevel || 'Medium';
+                const leanLabel = clause.lean || 'Neutral';
+                const prevalenceLabel = clause.prevalence || 'Common';
+
+                const summary = clause.plainEnglishSummary || '';
+                const truncatedSummary = summary.length > 160 ? summary.substring(0, 160) + '...' : summary;
+
+                const jurisdictionValue = clause.jurisdictionTags || '';
+                const jurisdictionDisplay = jurisdictionValue ? jurisdictionValue.split(',')[0].trim() : 'Global';
+
+                card.innerHTML = `
+                    <div class="clause-card__header">
+                        <h3 class="clause-card__title">${escapeHtml(clause.clauseName)}</h3>
+                        <div class="clause-card__meta">
+                            <span class="clause-card__meta-item">${escapeHtml(clause.agreementType)}</span>
+                            <span class="clause-card__meta-separator">|</span>
+                            <span class="clause-card__meta-item">${escapeHtml(clause.category)}</span>
+                            <span class="clause-card__meta-separator">|</span>
+                            <span class="clause-card__meta-item">${escapeHtml(clause.lifecyclePhase)}</span>
+                            <span class="clause-card__meta-separator">|</span>
+                            <span class="clause-card__meta-item">${escapeHtml(jurisdictionDisplay)}</span>
+                        </div>
+                    </div>
+                    <p class="clause-card__summary">${escapeHtml(truncatedSummary)}</p>
+                    <div class="clause-card__footer">
+                        <div class="clause-card__badges">
+                            <span class="badge ${riskClass}">${escapeHtml(riskLabel)} Risk</span>
+                            <span class="badge ${leanClass}">${escapeHtml(leanLabel)}</span>
+                            <span class="badge ${prevalenceClass}">${escapeHtml(prevalenceLabel)}</span>
+                        </div>
+                        <a href="clause-library-clause.html?id=${escapeHtml(clause.clauseId)}" class="clause-card__cta" onclick="event.stopPropagation();">View clause</a>
+                    </div>
+                `;
+
+                return card;
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // Fetch clauses from API
+            async function fetchClauses(append = false) {
+                if (isLoading) return;
+                
+                isLoading = true;
+                
+                if (!append) {
+                    showSkeletonLoading();
+                }
+
+                try {
+                    const searchText = (document.getElementById('searchInput')?.value || '').trim();
+                    const agreementType = document.getElementById('agreementTypeFilter')?.value || '';
+                    const category = document.getElementById('categoryFilter')?.value || '';
+                    const phase = document.getElementById('phaseFilter')?.value || '';
+                    const risk = document.getElementById('riskFilter')?.value || '';
+                    const lean = document.getElementById('leanFilter')?.value || '';
+                    const prevalence = document.getElementById('prevalenceFilter')?.value || '';
+                    const jurisdiction = document.getElementById('jurisdictionFilter')?.value || '';
+
+                    const filterParams = {
+                        search: searchText,
+                        agreementType,
+                        category,
+                        phase,
+                        risk,
+                        lean,
+                        prevalence,
+                        jurisdiction,
+                        ownerGoal: currentOwnerGoal
+                    };
+
+                    const data = await fetchClausesFromAirtable(filterParams);
+                    totalRecords = data.totalRecords || data.records.length;
+                    allClauses = data.records;
+                    
+                    // Apply sorting
+                    const sorted = sortClauses(allClauses);
+                    
+                    // Apply pagination
+                    const pageSize = 20;
+                    let startIndex;
+                    if (append && currentOffset) {
+                        // Continue from where we left off
+                        startIndex = parseInt(currentOffset);
+                    } else {
+                        // Start from beginning
+                        startIndex = 0;
+                    }
+                    const page = Math.floor(startIndex / pageSize) + 1;
+                    const endIndex = startIndex + pageSize;
+                    const paginated = sorted.slice(startIndex, endIndex);
+                    
+                    currentOffset = endIndex < sorted.length ? endIndex.toString() : null;
+                    
+                    const nextBtn = document.getElementById('nextBtn');
+                    const prevBtn = document.getElementById('prevBtn');
+                    
+                    if (nextBtn) {
+                        nextBtn.disabled = !currentOffset;
+                    }
+                    if (prevBtn) {
+                        prevBtn.disabled = page === 1;
+                    }
+                    
+                    // Update pagination info
+                    const totalPages = Math.ceil(sorted.length / pageSize);
+                    document.getElementById('currentPage').textContent = page;
+                    document.getElementById('totalPages').textContent = totalPages || 1;
+
+                    renderClauses(paginated, append, page, pageSize);
+                    updateActiveFilters();
+                    updateURL();
+
+                } catch (error) {
+                    console.error('Error fetching clauses:', error);
+                    resultsList.innerHTML = '';
+                    resultsList.style.display = 'none';
+                    emptyState.innerHTML = `<h3>Error loading clauses</h3><p>${error.message}</p>`;
+                    emptyState.style.display = 'block';
+                } finally {
+                    isLoading = false;
+                }
+            }
+
+            // Chip click handlers
+            const chipContainer = document.getElementById('ownerGoalChips');
+            if (chipContainer) {
+                chipContainer.addEventListener('click', function(e) {
+                    const chip = e.target.closest('.chip');
+                    if (chip) {
+                        const goal = chip.dataset.goal || '';
+                        setOwnerGoal(goal);
+                    }
+                });
+            }
+
+            window.viewClause = viewClause;
+            window.setOwnerGoal = setOwnerGoal;
+            window.clearFilters = clearFilters;
+
+            // Search with debounce
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', function(e) {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        currentOffset = null;
+                        updateActiveFilters();
+                        fetchClauses();
+                    }, 500);
+                });
+            }
+
+            // Filter change handlers
+            ['agreementTypeFilter', 'categoryFilter', 'phaseFilter', 'riskFilter', 'leanFilter', 'prevalenceFilter', 'jurisdictionFilter'].forEach(filterId => {
+                const filterElement = document.getElementById(filterId);
+                if (filterElement) {
+                    filterElement.addEventListener('change', function(e) {
+                        currentOffset = null;
+                        updateActiveFilters();
+                        fetchClauses();
+                    });
+                }
+            });
+
+            function previousPage() {
+                if (currentOffset) {
+                    const currentPage = Math.floor(parseInt(currentOffset) / 20);
+                    currentOffset = currentPage > 1 ? ((currentPage - 2) * 20).toString() : null;
+                } else {
+                    currentOffset = null;
+                }
+                fetchClauses();
+            }
+
+            function nextPage() {
+                const nextBtn = document.getElementById('nextBtn');
+                if (nextBtn && !nextBtn.disabled && currentOffset) {
+                    fetchClauses(true);
+                }
+                return false;
+            }
+
+            window.previousPage = previousPage;
+            window.nextPage = nextPage;
+
+            // Load from URL on page load
+            loadFromURL();
+            fetchClauses();
+        });
+    </script>
+</body>
+</html>
