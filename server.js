@@ -215,14 +215,34 @@ function parseCompanyProfileArrays(req, res, next) {
 
 const app = express();
 
-// CORS so Webflow (and other origins) can call API from the browser
-const CORS_ORIGIN = process.env.CORS_ORIGIN || "https://mvp-deal-capture.webflow.io";
+// CORS so Webflow staging + production can call API
+// Railway var example:
+// CORS_ORIGINS=https://mvp-deal-capture.webflow.io,https://www.dealality.com,https://dealality.com
+const allowedOrigins = (process.env.CORS_ORIGINS || [
+  "https://mvp-deal-capture.webflow.io",
+  "https://www.dealality.com",
+  "https://dealality.com"
+].join(","))
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", CORS_ORIGIN);
-  res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  if (req.method === "OPTIONS") return res.sendStatus(204);
-  next();
+  const origin = req.headers.origin;
+
+  // Allow non-browser tools and same-server requests
+  if (!origin || allowedOrigins.includes(origin)) {
+    if (origin) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+      res.setHeader("Vary", "Origin");
+    }
+    res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+    return next();
+  }
+
+  return res.status(403).json({ success: false, error: "Not allowed by CORS" });
 });
 
 // Security headers for deployment
