@@ -215,34 +215,14 @@ function parseCompanyProfileArrays(req, res, next) {
 
 const app = express();
 
-// CORS so Webflow staging + production can call API
-// Railway var example:
-// CORS_ORIGINS=https://mvp-deal-capture.webflow.io,https://www.dealality.com,https://dealality.com
-const allowedOrigins = (process.env.CORS_ORIGINS || [
-  "https://mvp-deal-capture.webflow.io",
-  "https://www.dealality.com",
-  "https://dealality.com"
-].join(","))
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
-
+// CORS so Webflow (and other origins) can call API from the browser
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "https://mvp-deal-capture.webflow.io";
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-
-  // Allow non-browser tools and same-server requests
-  if (!origin || allowedOrigins.includes(origin)) {
-    if (origin) {
-      res.setHeader("Access-Control-Allow-Origin", origin);
-      res.setHeader("Vary", "Origin");
-    }
-    res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    if (req.method === "OPTIONS") return res.sendStatus(204);
-    return next();
-  }
-
-  return res.status(403).json({ success: false, error: "Not allowed by CORS" });
+  res.setHeader("Access-Control-Allow-Origin", CORS_ORIGIN);
+  res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
 });
 
 // Security headers for deployment
@@ -449,10 +429,16 @@ app.get("/my-brands/", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'all-brands-dashboard.html'));
 });
 app.get("/my-third-party-operators", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "my-third-party-operators.html"));
+    res.sendFile(path.join(__dirname, "public", "my-third-party-operators-new.html"));
 });
 app.get("/my-third-party-operators/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "my-third-party-operators.html"));
+    res.sendFile(path.join(__dirname, "public", "my-third-party-operators-new.html"));
+});
+app.get("/my-third-party-operators-new", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "my-third-party-operators-new.html"));
+});
+app.get("/my-third-party-operators-new/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "my-third-party-operators-new.html"));
 });
 app.get("/my-deals", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'my-deals.html'));
@@ -846,6 +832,13 @@ app.get("/operator-explorer/", (req, res) => {
 
 app.get("/operator-explorer-detail", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-explorer-detail.html'));
+});
+
+app.get("/operator-explorer-gold-mock", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'operator-explorer-gold-mock.html'));
+});
+app.get("/operator-explorer-gold-mock/", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'operator-explorer-gold-mock.html'));
 });
 
 // Serve the third-party operator intake form
