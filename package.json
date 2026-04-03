@@ -7,6 +7,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "kill-port 3000 && node server.js",
+    "seed-operator-cala": "node scripts/seed-operator-setup-cala-demo.mjs",
+    "seed-operator-cala-coverage": "node scripts/seed-operator-setup-cala-coverage.mjs",
+    "seed-operator-cala-fullform": "node scripts/seed-operator-setup-cala-fullform.mjs",
+    "seed-operator-cala-fullform-ten": "node scripts/seed-operator-setup-cala-fullform-ten.mjs",
     "seed-deals": "node scripts/seed-deals-sample-data.js",
     "setup-target-list": "node scripts/setup-target-list-table.js",
     "setup-brand-engagement": "node scripts/setup-brand-engagement-tables.js",
@@ -40,7 +44,14 @@
     "refresh-all-deal-brand-cache": "node scripts/refresh-all-deal-brand-cache.js",
     "scrape": "node top100-projects-scraper.js",
     "extract-from-text": "node extract-from-provided-data.js",
-    "install-deps": "npm install"
+    "install-deps": "npm install",
+    "export-operator-setup-pdf": "node scripts/export-operator-setup-questionnaire-pdf.mjs",
+    "sync-basics-airtable-fields": "node scripts/sync-basics-airtable-fields.mjs",
+    "generate-new-two-bindings": "node scripts/generate-new-two-bindings.mjs",
+    "sync-new-two-airtable-schema": "node scripts/sync-new-two-airtable-schema.mjs",
+    "sync-footprint-number-fields": "node scripts/sync-footprint-number-fields.mjs",
+    "rename-strip-new-two-airtable-fields": "node scripts/rename-strip-new-two-suffix-airtable.mjs",
+    "ensure-governance-granular": "node scripts/ensure-governance-granular-fields.mjs"
   },
   "dependencies": {
     "airtable": "^0.12.2",
