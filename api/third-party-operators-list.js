@@ -1,26 +1,27 @@
 /**
- * Lists rows from the Third Party Operators table in the same base as Brand Setup
- * (`AIRTABLE_BASE_ID` — identical to api/brand-library.js and third-party-operator-intake.js).
+ * Lists operators from **Operator Setup — …** tables (Master + Profile, Platform, Case Studies,
+ * Diligence) plus **Brand Setup — Brand Basics** for linked brand name resolution.
  *
- * Uses the Airtable REST API (same approach as getBrandLibraryBrands) so HTTP status
- * codes (403, 404, etc.) are reliable; the JS SDK eachPage path did not always preserve statusCode.
+ * Mounted at: GET /api/intake/third-party-operators, /api/third-party-operators/list, /api/third-party-operators
+ * Query: `activeOnly=1` (or `explorer=1`) limits to Master submission_status Active — Operator Explorer.
  */
 
-import { parseMultiValue } from "./lib/build-third-party-operator-prefill.js";
+import {
+  NEW_BASE_MASTER_TABLE,
+  NEW_BASE_PROFILE_TABLE,
+  NEW_BASE_PLATFORM_TABLE,
+  NEW_BASE_CASE_STUDIES_TABLE,
+  NEW_BASE_DILIGENCE_TABLE,
+  fetchAllRecordsRest,
+  buildNewBaseListRow,
+  logOperatorReadPath,
+} from "./lib/operator-setup-new-base-read.js";
 
-const TABLE_NAME = process.env.AIRTABLE_THIRD_PARTY_OPERATORS_TABLE || "3rd Party Operator - Basics";
-const CASE_STUDIES_TABLE =
-  process.env.AIRTABLE_THIRD_PARTY_OPERATOR_CASE_STUDIES_TABLE || "3rd Party Operator - Case Studies";
-const OWNER_DILIGENCE_QA_TABLE =
-  process.env.AIRTABLE_THIRD_PARTY_OPERATOR_OWNER_DILIGENCE_QA_TABLE || "3rd Party Operator - Owner Diligence QA";
-const FOOTPRINT_TABLE =
-  process.env.AIRTABLE_THIRD_PARTY_OPERATOR_FOOTPRINT_TABLE || "3rd Party Operator - Footprint";
 const BRAND_BASICS_TABLE =
   process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
-const OPERATOR_BASICS_LINK_FIELD = "Operator (Basics Link)";
 
 const AIRTABLE_READ_HINT =
-  "Airtable returned 403: this token cannot list records on that table. Operators use the same base as Brand Setup (your AIRTABLE_BASE_ID). For a Personal Access Token, enable **data.records:read** for that base—submitting the intake only needs write access; the My 3rd Party Ops. page also needs read access to the Third Party Operators table.";
+  "Airtable returned 403: this token cannot list records on those tables. Operators use the same base as Brand Setup (your AIRTABLE_BASE_ID). For a Personal Access Token, enable **data.records:read** for that base.";
 
 function formatListValue(val) {
   if (val == null) return "";
@@ -42,65 +43,29 @@ function formatListValue(val) {
   return String(val).trim();
 }
 
-function isLikelyAirtableRecordId(s) {
-  return typeof s === "string" && /^rec[a-zA-Z0-9]{14,}$/.test(s.trim());
-}
-
-/** Combine Basics + linked Footprint multi-values into a single display string. */
-function mergeMultiFieldDisplay(basicsVal, footprintVal) {
-  const a = parseMultiValue(basicsVal);
-  const b = parseMultiValue(footprintVal);
-  const seen = new Set();
-  const out = [];
-  for (const x of [...a, ...b]) {
-    const k = String(x).trim();
-    if (!k || seen.has(k)) continue;
-    seen.add(k);
-    out.push(k);
+/** First linked row per Master id (Operator field → Master record id). */
+function mapFirstLinkedByMaster(rows) {
+  const m = new Map();
+  for (const r of rows || []) {
+    const op = r.fields && r.fields.Operator;
+    const mid = Array.isArray(op) && op[0] ? op[0] : null;
+    if (mid && !m.has(mid)) m.set(mid, r);
   }
-  return out.join(", ");
+  return m;
 }
 
-function firstLinkedRowForOperator(rows, operatorRecordId) {
-  return (
-    rows.find((r) => {
-      const links = (r.fields && r.fields[OPERATOR_BASICS_LINK_FIELD]) || [];
-      return Array.isArray(links) && links.includes(operatorRecordId);
-    }) || null
-  );
-}
-
-/**
- * Brands Managed may be multiple select (labels) or linked Brand Basics record IDs.
- */
-function formatBrandsManagedDisplay(raw, brandNameById) {
-  if (raw == null || raw === "") return "";
-  if (Array.isArray(raw)) {
-    const parts = [];
-    const seen = new Set();
-    for (const item of raw) {
-      let s = "";
-      if (typeof item === "string") s = item.trim();
-      else if (item && typeof item === "object" && typeof item.name === "string") s = item.name.trim();
-      if (!s) continue;
-      const label = isLikelyAirtableRecordId(s) ? brandNameById.get(s) || s : s;
-      if (label && !seen.has(label)) {
-        seen.add(label);
-        parts.push(label);
-      }
+/** Group child rows by Master id (Operator field). */
+function groupChildrenByMaster(rows) {
+  const out = new Map();
+  for (const r of rows || []) {
+    const op = r.fields && r.fields.Operator;
+    const ids = Array.isArray(op) ? op : [];
+    for (const mid of ids) {
+      if (!out.has(mid)) out.set(mid, []);
+      out.get(mid).push(r);
     }
-    return parts.join(", ");
   }
-  if (typeof raw === "string") return raw.trim();
-  return formatListValue(raw);
-}
-
-function attachmentUrl(fields) {
-  const att = fields["Company Logo"];
-  if (!Array.isArray(att) || att.length === 0) return "";
-  const first = att[0];
-  if (first && typeof first.url === "string") return first.url;
-  return "";
+  return out;
 }
 
 /**
@@ -146,20 +111,6 @@ async function fetchAllRecordsFromAirtable(tableName) {
   return allRecords;
 }
 
-function safeParseJsonArray(value) {
-  if (!value) return [];
-  if (Array.isArray(value)) return value;
-  if (typeof value === "string") {
-    try {
-      const parsed = JSON.parse(value);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-  return [];
-}
-
 const OPERATOR_STATUS_FALLBACK = [
   "Active",
   "Inactive",
@@ -170,7 +121,8 @@ const OPERATOR_STATUS_FALLBACK = [
   "Under Review",
 ];
 
-async function getOperatorStatusChoiceNames(baseId, apiKey) {
+/** Status dropdown choices from Operator Setup — Master `submission_status`. */
+async function getMasterSubmissionStatusChoiceNames(baseId, apiKey) {
   if (!baseId || !apiKey) return OPERATOR_STATUS_FALLBACK;
   try {
     const res = await fetch(`https://api.airtable.com/v0/meta/bases/${baseId}/tables`, {
@@ -179,16 +131,14 @@ async function getOperatorStatusChoiceNames(baseId, apiKey) {
     if (!res.ok) return OPERATOR_STATUS_FALLBACK;
 
     const data = await res.json();
-    const table = (data.tables || []).find((t) => t.name === TABLE_NAME);
+    const table = (data.tables || []).find((t) => t.name === NEW_BASE_MASTER_TABLE);
     if (!table) return OPERATOR_STATUS_FALLBACK;
 
-    const fieldNameCandidates = ["Operator Status", "Deal Status", "Status"];
-    const field = (table.fields || []).find((f) => {
-      const nameMatches =
-        fieldNameCandidates.includes(f.name) || fieldNameCandidates.includes(String(f.name || ""));
-      const typeOk = f.type === "singleSelect" || f.type === "multipleSelects";
-      return nameMatches && typeOk;
-    });
+    const field = (table.fields || []).find(
+      (f) =>
+        (f.name === "submission_status" || /submission\s*status/i.test(String(f.name || ""))) &&
+        (f.type === "singleSelect" || f.type === "multipleSelects")
+    );
 
     const choices = field?.options?.choices?.map((c) => c.name) || [];
     return choices.length > 0 ? choices : OPERATOR_STATUS_FALLBACK;
@@ -197,20 +147,23 @@ async function getOperatorStatusChoiceNames(baseId, apiKey) {
   }
 }
 
-/**
- * List operator intake records for the My 3rd Party Ops. dashboard.
- * Mounted at: GET /api/intake/third-party-operators, /api/third-party-operators/list, /api/third-party-operators
- */
 export default async function listThirdPartyOperators(req, res) {
   try {
-    const [records, caseStudyRecords, ownerQaRecords, footprintRecords, brandBasicsRecords] =
-      await Promise.all([
-        fetchAllRecordsFromAirtable(TABLE_NAME),
-        fetchAllRecordsFromAirtable(CASE_STUDIES_TABLE).catch(() => []),
-        fetchAllRecordsFromAirtable(OWNER_DILIGENCE_QA_TABLE).catch(() => []),
-        fetchAllRecordsFromAirtable(FOOTPRINT_TABLE).catch(() => []),
-        fetchAllRecordsFromAirtable(BRAND_BASICS_TABLE).catch(() => []),
-      ]);
+    const [
+      brandBasicsRecords,
+      masterRecords,
+      profileRows,
+      platformRows,
+      newBaseCaseRows,
+      newBaseDiligenceRows,
+    ] = await Promise.all([
+      fetchAllRecordsFromAirtable(BRAND_BASICS_TABLE).catch(() => []),
+      fetchAllRecordsRest(NEW_BASE_MASTER_TABLE).catch(() => []),
+      fetchAllRecordsRest(NEW_BASE_PROFILE_TABLE).catch(() => []),
+      fetchAllRecordsRest(NEW_BASE_PLATFORM_TABLE).catch(() => []),
+      fetchAllRecordsRest(NEW_BASE_CASE_STUDIES_TABLE).catch(() => []),
+      fetchAllRecordsRest(NEW_BASE_DILIGENCE_TABLE).catch(() => []),
+    ]);
 
     const brandNameById = new Map();
     for (const brec of brandBasicsRecords) {
@@ -221,106 +174,46 @@ export default async function listThirdPartyOperators(req, res) {
 
     const baseId = process.env.AIRTABLE_BASE_ID;
     const apiKey = process.env.AIRTABLE_API_KEY;
-    const operatorStatuses = await getOperatorStatusChoiceNames(baseId, apiKey).catch(
+    const operatorStatuses = await getMasterSubmissionStatusChoiceNames(baseId, apiKey).catch(
       () => OPERATOR_STATUS_FALLBACK
     );
 
-    const caseStudiesByOperator = new Map();
-    for (const rec of caseStudyRecords) {
-      const f = rec.fields || {};
-      const operatorId = formatListValue(f["Operator Record ID"]);
-      if (!operatorId) continue;
-      const row = {
-        hotel_type: formatListValue(f["Hotel Type"]),
-        region: formatListValue(f["Region"]),
-        branded_independent: formatListValue(f["Branded / Independent"]),
-        situation: formatListValue(f["Situation"]),
-        services: formatListValue(f["Services"]),
-        outcome: formatListValue(f["Outcome"]),
-        owner_relevance: formatListValue(f["Owner Relevance"]),
-      };
-      if (!caseStudiesByOperator.has(operatorId)) caseStudiesByOperator.set(operatorId, []);
-      caseStudiesByOperator.get(operatorId).push(row);
+    const profileByMaster = mapFirstLinkedByMaster(profileRows);
+    const platformByMaster = mapFirstLinkedByMaster(platformRows);
+    const newBaseCaseByMaster = groupChildrenByMaster(newBaseCaseRows);
+    const newBaseDiligenceByMaster = groupChildrenByMaster(newBaseDiligenceRows);
+
+    const rows = (masterRecords || []).map((master) =>
+      buildNewBaseListRow({
+        master,
+        profile: profileByMaster.get(master.id) || null,
+        platform: platformByMaster.get(master.id) || null,
+        caseStudyRows: newBaseCaseByMaster.get(master.id) || [],
+        diligenceRows: newBaseDiligenceByMaster.get(master.id) || [],
+        brandNameById,
+      })
+    );
+
+    /** When `activeOnly=1` (or `true`), return only Master `submission_status` === Active — used by Operator Explorer. */
+    const isActiveDealStatus = (dealStatus) =>
+      String(dealStatus || "")
+        .trim()
+        .toLowerCase() === "active";
+
+    const activeOnly =
+      req.query &&
+      (req.query.activeOnly === "1" ||
+        String(req.query.activeOnly || "").toLowerCase() === "true" ||
+        req.query.explorer === "1");
+
+    let operators = [...rows];
+    if (activeOnly) {
+      operators = operators.filter((o) => isActiveDealStatus(o.dealStatus));
     }
-
-    const ownerQaByOperator = new Map();
-    for (const rec of ownerQaRecords) {
-      const f = rec.fields || {};
-      const operatorId = formatListValue(f["Operator Record ID"]);
-      if (!operatorId) continue;
-      const row = {
-        category: formatListValue(f["Category"]),
-        question: formatListValue(f["Question"]),
-        answer: formatListValue(f["Answer"]),
-      };
-      if (!ownerQaByOperator.has(operatorId)) ownerQaByOperator.set(operatorId, []);
-      ownerQaByOperator.get(operatorId).push(row);
-    }
-
-    const operators = records.map((rec) => {
-      const f = rec.fields || {};
-      const footprintRow = firstLinkedRowForOperator(footprintRecords, rec.id);
-      const ff = (footprintRow && footprintRow.fields) || {};
-      const caseStudies =
-        caseStudiesByOperator.get(rec.id) || safeParseJsonArray(f["Case Studies Detail"]);
-      const ownerDiligenceQa =
-        ownerQaByOperator.get(rec.id) || safeParseJsonArray(f["Owner Diligence Q&A"]);
-
-      const brandsManaged = formatBrandsManagedDisplay(f["Brands Managed"], brandNameById);
-      const regionsSupported = mergeMultiFieldDisplay(
-        f["Regions Supported"] || f["Regions"],
-        ff["Regions Supported"] || ff["Regions"]
-      );
-      const chainScale = mergeMultiFieldDisplay(
-        f["Chain Scales You Support"] || f["Chain Scale"],
-        ff["Chain Scale"]
-      );
-
-      const rawBrandsField = f["Brands Managed"];
-      const brandCountFallback = Array.isArray(rawBrandsField)
-        ? rawBrandsField.length
-        : parseMultiValue(rawBrandsField).length;
-      const numberFromField =
-        f["Number of Brands Supported"] != null && String(f["Number of Brands Supported"]).trim() !== ""
-          ? formatListValue(f["Number of Brands Supported"])
-          : "";
-
-      return {
-        id: rec.id,
-        companyName: formatListValue(f["Company Name"]) || "—",
-        logo: attachmentUrl(f),
-        website: formatListValue(f["Website"]),
-        headquarters: formatListValue(f["Headquarters"] || f["Headquarters Location"]),
-        contactEmail: formatListValue(f["Contact Email"]),
-        contactPhone: formatListValue(f["Contact Phone"]),
-        yearEstablished: f["Year Established"] != null ? formatListValue(f["Year Established"]) : "",
-        yearsInBusiness: f["Years in Business"] != null ? formatListValue(f["Years in Business"]) : "",
-        companyDescription: formatListValue(f["Company Description"]),
-        primaryServiceModel: formatListValue(f["Primary Service Model"]),
-        numberOfBrands: numberFromField || (brandCountFallback > 0 ? String(brandCountFallback) : ""),
-        brandsManaged,
-        regionsSupported,
-        totalProperties:
-          f["Total Properties Managed"] != null ? formatListValue(f["Total Properties Managed"]) : "",
-        totalRooms: f["Total Rooms Managed"] != null ? formatListValue(f["Total Rooms Managed"]) : "",
-        chainScale,
-        dealStatus:
-          formatListValue(f["Operator Status"]) ||
-          formatListValue(f["Deal Status"]) ||
-          formatListValue(f["Status"]),
-        submittedAt: formatListValue(f["Submitted At"]),
-        caseStudiesCount: Array.isArray(caseStudies) ? caseStudies.length : 0,
-        ownerDiligenceQaCount: Array.isArray(ownerDiligenceQa) ? ownerDiligenceQa.length : 0,
-        caseStudiesDetail: caseStudies,
-        ownerDiligenceQa,
-      };
-    });
-
     operators.sort((a, b) =>
       (a.companyName || "").localeCompare(b.companyName || "", undefined, { sensitivity: "base" })
     );
 
-    // Ensure the dropdown always contains observed values, even when Meta API access is restricted.
     const allDealStatuses = new Set(operatorStatuses);
     const serviceModelSet = new Set();
     for (const o of operators) {
@@ -332,6 +225,11 @@ export default async function listThirdPartyOperators(req, res) {
     const serviceModels = Array.from(serviceModelSet).sort((a, b) =>
       a.localeCompare(b, undefined, { sensitivity: "base" })
     );
+
+    logOperatorReadPath("third_party_operators_list", {
+      read_path: "operator_setup",
+      record_count: operators.length,
+    });
 
     return res.json({
       success: true,

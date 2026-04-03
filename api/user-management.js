@@ -90,6 +90,20 @@ function normalizeRegionFocus(rawList) {
   return [...codes];
 }
 
+/** First attachment URL from common User Management profile / headshot field names. */
+function profilePhotoUrlFromFields(fields) {
+  if (!fields || typeof fields !== "object") return "";
+  const candidates = ["Profile", "Profile Picture", "Headshot", "Photo", "Avatar"];
+  for (const name of candidates) {
+    const v = fields[name];
+    if (Array.isArray(v) && v.length > 0 && v[0] && typeof v[0].url === "string") {
+      return v[0].url.trim();
+    }
+    if (typeof v === "string" && v.startsWith("http")) return v.trim();
+  }
+  return "";
+}
+
 function formatRecord(record) {
   const fields = record.fields || {};
   const companyProfile = fields[F.companyProfile];
@@ -119,6 +133,7 @@ function formatRecord(record) {
     companyEmail: companyEmail,
     companyProfileId: companyProfileId || null,
     platformRole: platformRole,
+    profilePhotoUrl: profilePhotoUrlFromFields(fields),
     regionFocus: regionFocus,
     contactVisibility: (() => {
       const cv = fields[F.contactVisibility];
@@ -192,11 +207,15 @@ export async function listUsers(req, res) {
       return res.status(500).json({ error: "Airtable not configured" });
     }
     const companyProfileId = (req.query.companyProfileId || req.query.company || "").trim().replace(/'/g, "\\'");
+    const limitRaw = parseInt(String(req.query.limit || ""), 10);
+    const maxRecords =
+      Number.isFinite(limitRaw) && limitRaw > 0 ? Math.min(limitRaw, 200) : undefined;
     const table = base(USER_MANAGEMENT_TABLE_ID);
     const records = [];
 
     await new Promise((resolve, reject) => {
       const options = { pageSize: 100 };
+      if (maxRecords) options.maxRecords = maxRecords;
       if (companyProfileId) {
         options.filterByFormula = `FIND('${companyProfileId}', {Company} & '') > 0`;
       }

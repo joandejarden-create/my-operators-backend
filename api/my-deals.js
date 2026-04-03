@@ -128,6 +128,8 @@ const DEAL_BRAND_CACHE_BEST_MATCH_BRAND_FIELD = "Best Match Brand";
 const DEAL_BRAND_CACHE_BEST_MATCH_SCORE_FIELD = "Best Match Score";
 const DEAL_BRAND_CACHE_LAST_COMPUTED_FIELD = "Last Computed At";
 const DEAL_BRAND_CACHE_BREAKDOWN_FIELD = "Breakdown Details By Brand";
+const BRAND_DEAL_REQUESTS_TABLE = process.env.AIRTABLE_TABLE_BRAND_DEAL_REQUESTS || "Brand Deal Requests";
+const TARGET_LIST_TABLE = process.env.AIRTABLE_TABLE_TARGET_LIST || "Target List";
 
 /** Get linked Strategic Intent - Operational - Key Challenges record ID from deal fields. */
 function getLinkedStrategicIntentId(fields) {
@@ -340,6 +342,85 @@ async function upsertDealBrandCache(baseId, apiKey, dealId, payload) {
   const data = await res.json();
   if (data.error) throw new Error(data.error.message || "Failed to create cache record");
   return data;
+}
+
+async function fetchTableRecordsAll(baseId, apiKey, tableName, { useSerial = false } = {}) {
+  const table = encodeURIComponent(tableName);
+  let offset = null;
+  const all = [];
+  do {
+    if (useSerial) await waitAirtableSerial();
+    const url = offset
+      ? `https://api.airtable.com/v0/${baseId}/${table}?pageSize=100&offset=${encodeURIComponent(offset)}`
+      : `https://api.airtable.com/v0/${baseId}/${table}?pageSize=100`;
+    const res = await fetch(url, { headers: { Authorization: "Bearer " + apiKey } });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message || `Failed fetching ${tableName}`);
+    all.push(...(data.records || []));
+    offset = data.offset || null;
+  } while (offset);
+  return all;
+}
+
+async function fetchInitialMatchedSupportState(baseId, apiKey, deals) {
+  const dealSet = new Set((deals || []).map((d) => d.id).filter(Boolean));
+  if (dealSet.size === 0) {
+    return {
+      contactedPairs: [],
+      targetListByDeal: {},
+      tabCounts: { contacted: 0, dealCompare: 0 },
+    };
+  }
+
+  const [bdrRecords, targetRecords] = await Promise.all([
+    fetchTableRecordsAll(baseId, apiKey, BRAND_DEAL_REQUESTS_TABLE, { useSerial: false }).catch(() => []),
+    fetchTableRecordsAll(baseId, apiKey, TARGET_LIST_TABLE, { useSerial: false }).catch(() => []),
+  ]);
+
+  const contactedPairs = bdrRecords
+    .map((r) => {
+      const f = r.fields || {};
+      const dealArr = Array.isArray(f.Deal) ? f.Deal : [];
+      const dealId = dealArr.find((id) => dealSet.has(id));
+      if (!dealId) return null;
+      const proposalStatus = valueToStr(f["Proposal Status"]) || "";
+      return {
+        id: r.id,
+        dealId,
+        brandName: valueToStr(f["Brand Name"]) || "",
+        status: valueToStr(f["Status"]) || "New",
+        proposal: proposalStatus ? { proposalStatus } : undefined,
+      };
+    })
+    .filter(Boolean);
+
+  const targetListByDeal = {};
+  for (const rec of targetRecords) {
+    const f = rec.fields || {};
+    const dealArr = Array.isArray(f.Deal_ID) ? f.Deal_ID : [];
+    const dealId = dealArr.find((id) => dealSet.has(id));
+    if (!dealId) continue;
+    if (!targetListByDeal[dealId]) targetListByDeal[dealId] = [];
+    targetListByDeal[dealId].push({
+      id: rec.id,
+      dealId,
+      brandName: valueToStr(f["Brand Name"]) || "",
+      status: valueToStr(f["Status"]) || "Considering",
+      matchScore: f["Match Score"] ?? null,
+    });
+  }
+
+  const dealCompareCount = deals.filter((d) => {
+    const did = d.id;
+    if (!did) return false;
+    return contactedPairs.some((c) => c.dealId === did && c.proposal && String(c.proposal.proposalStatus || "").trim() === "Submitted");
+  }).length;
+
+  return {
+    contactedPairs,
+    targetListByDeal,
+    tabCounts: { contacted: contactedPairs.length, dealCompare: dealCompareCount },
+  };
 }
 
 /** Convert Strategic Intent Airtable record to form field names and values (arrays → comma-sep for multi-select). */
@@ -677,6 +758,8 @@ const MY_DEALS_MP_CONCURRENCY = Math.min(3, Math.max(1, parseInt(process.env.MY_
 const MY_DEALS_COLD_START_DELAY_MS = parseInt(process.env.MY_DEALS_COLD_START_DELAY_MS || "2000", 10) || 2000;
 const MY_DEALS_MIN_GAP_MS = parseInt(process.env.MY_DEALS_MIN_GAP_MS || "5000", 10) || 5000;
 const MY_DEALS_PHASE_GAP_MS = parseInt(process.env.MY_DEALS_PHASE_GAP_MS || "100", 10) || 100;
+// Performance: keep retry-rebuild optional and off by default so one blank field does not block response.
+const MY_DEALS_ENABLE_RETRY_REBUILD = /^(1|true|on|yes)$/i.test(String(process.env.MY_DEALS_ENABLE_RETRY_REBUILD || "0"));
 
 /** Phase 5: Full linked-table batching. Default ON for fast mode; set to 0/false/off/no to disable. */
 const MY_DEALS_USE_BATCHED_LINKED_FETCHES = !/^(0|false|off|no)$/i.test(String(process.env.MY_DEALS_USE_BATCHED_LINKED_FETCHES ?? "1"));
@@ -1436,12 +1519,104 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
   };
 }
 
+// Core view: fields needed for first paint of Deal Information tab without linked-table fanout.
+function recordToCoreDeal(rec) {
+  const f = { ...(rec.fields || {}) };
+  // Recommended Deals lookup/denormalized fields for fast core rendering:
+  // - "Project Location (Core)" <= from Location & Property: City & State + Country (or preformatted location)
+  // - "Chain Scale (Core)" <= from Location & Property: Hotel Chain Scale
+  // - "Deal Type (Core)" <= from Market - Performance - Deal & Capital Structure: Preferred Deal Structure
+  // Keep legacy/lookup fallbacks so rollout is backward-compatible while Airtable fields populate.
+  const pick = function(names) {
+    for (const n of names) {
+      const v = valueToStr(f[n]);
+      if (v) return v;
+    }
+    return "";
+  };
+  const locationCity = pick(["City & State", "City", "City & State (from Location & Property)"]);
+  const locationCountry = pick(["Country", "Country (from Location & Property)"]);
+  const hotelLocation =
+    pick([
+      "Project Location (Core)",
+      "Project Location",
+      "Hotel Location",
+      "Location",
+      "Hotel Submarket & Location"
+    ]) ||
+    formatCityCountry(locationCity, locationCountry) ||
+    "";
+  const projectName = valueToStr(f["Project Name"]) || valueToStr(f["Property Name"]) || valueToStr(f["Name"]) || "";
+  const hotelType = valueToStr(f["Hotel Type"]) || valueToStr(f["Property Type"]) || "";
+  const hotelChainScale = pick([
+    "Chain Scale (Core)",
+    "Hotel Chain Scale",
+    "Hotel Chain Scale (from Location & Property)",
+    "Chain Scale",
+    "Hotel Scale"
+  ]);
+  const propertyDescription = valueToStr(f["Property Description"]) || valueToStr(f["Description"]) || "";
+  const whoBidsRaw = valueToStr(f["Who should receive bids for this project?"]) || "";
+  const dealBidType =
+    whoBidsRaw === "Hotel brands only (franchise/license)"
+      ? "Franchise only"
+      : whoBidsRaw === "Third-party operators only (management)"
+        ? "3rd party only"
+        : whoBidsRaw === "Both brands and third-party operators"
+          ? "Both"
+          : "";
+  const projectType = valueToStr(f["Project Type"]) || valueToStr(f["Stage of Development"]) || "";
+  const targetOpening =
+    f["Expected Opening or Rebranding Date"] != null
+      ? formatDate(f["Expected Opening or Rebranding Date"])
+      : valueToStr(f["Expected Opening or Rebranding Date"]) ||
+        (f["Target Opening Date"] != null ? formatDate(f["Target Opening Date"]) : valueToStr(f["Target Opening Date"]) || "");
+  const formStatus = valueToStr(f["Form Status"]) || "";
+  const dealStatus = valueToStr(f[DEALS_STATUS_FIELD]) || valueToStr(f["Deal Status"]) || valueToStr(f["Status"]) || "";
+  const dealType = pick([
+    "Deal Type (Core)",
+    "Preferred Deal Structure",
+    "Preferred Deal Structure (from Market - Performance - Deal & Capital Structure)",
+    "Deal Type",
+    "Deal Structure"
+  ]);
+  return {
+    id: rec.id,
+    projectName: projectName || "—",
+    hotelLocation: hotelLocation || "—",
+    hotelType: hotelType || "—",
+    hotelChainScale: hotelChainScale || "—",
+    propertyDescription: propertyDescription || "—",
+    dealBidType: dealBidType || "—",
+    projectType: projectType || "—",
+    targetOpeningDate: targetOpening || "—",
+    formStatus: formStatus || "—",
+    dealType: dealType || "—",
+    dealStatus: dealStatus || "—",
+    hasOutreachSetup: false,
+    preferredBrandsChosen: undefined,
+    matchScore: undefined,
+    matchScoreNew: undefined,
+    matchScoresNewByBrand: {},
+    matchBreakdownNewDetailsByBrand: {},
+  };
+}
+
 /**
  * GET /api/my-deals – list all deals from Airtable (optionally filter by owner later via query).
  */
 export async function getMyDeals(req, res) {
   const t0 = Date.now();
   const requestId = getMyDealsRequestId();
+  const view = String((req.query && req.query.view) || "").trim().toLowerCase();
+  const coreView = view === "core";
+  const initialView = view === "initial";
+  // TEMP MARKER: remove after runtime path verification.
+  console.log("[RUNTIME-MARKER][my-deals][2026-03-26-v2]", {
+    requestId,
+    view: coreView ? "core" : (initialView ? "initial" : "full"),
+    retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
+  });
   let tLast = t0;
   let tNow = t0;
   const timingSummary = {
@@ -1452,6 +1627,8 @@ export async function getMyDeals(req, res) {
       coldStartDelayMs: MY_DEALS_COLD_START_DELAY_MS,
       minGapMs: MY_DEALS_MIN_GAP_MS,
       phaseGapMs: MY_DEALS_PHASE_GAP_MS,
+      retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
+      view: coreView ? "core" : (initialView ? "initial" : "full"),
       mpFetchDelayMs: MY_DEALS_MP_FETCH_DELAY_MS,
       mpConcurrency: MY_DEALS_MP_CONCURRENCY,
       siFetchDelayMs: MY_DEALS_SI_FETCH_DELAY_MS,
@@ -1532,9 +1709,29 @@ export async function getMyDeals(req, res) {
     const locationIds = collectLinkedLocationIds(allRecords);
     const mpIds = collectLinkedMarketPerformanceIds(allRecords);
     const siIds = collectLinkedStrategicIntentIds(allRecords);
-    const cuIds = collectLinkedContactUploadsIds(allRecords);
+    const cuIds = initialView ? [] : collectLinkedContactUploadsIds(allRecords);
     let locationMap, mpDataMap, siDataMap, cuDataMap, outreachDealIds, dealBrandCacheMap;
     let mpFetch429Total = 0;
+    if (coreView) {
+      const deals = allRecords.map((rec) => recordToCoreDeal(rec));
+      const dealStatuses = [...new Set(deals.map((d) => d.dealStatus).filter((s) => s && s !== "—"))].sort();
+      const projectTypes = [...new Set(deals.map((d) => d.projectType).filter((s) => s && s !== "—"))].sort();
+      const hotelChainScales = [...new Set(deals.map((d) => d.hotelChainScale).filter((s) => s && s !== "—"))].sort();
+      const dealTypes = [...new Set(deals.map((d) => d.dealType).filter((s) => s && s !== "—"))].sort();
+      timingSummary.phasesMs.coreBuild = Date.now() - tLast;
+      timingSummary.counts.returnedDeals = deals.length;
+      timingSummary.elapsedMs = Date.now() - t0;
+      timingSummary.status = "success";
+      logMyDealsSummary(timingSummary);
+      if (shouldLogMyDealsSummary()) console.log("getMyDeals: response sent (core)", { requestId, totalCount: deals.length, elapsed: timingSummary.elapsedMs });
+      return res.json({
+        success: true,
+        view: "core",
+        deals,
+        totalCount: deals.length,
+        filterOptions: { dealStatuses, projectTypes, hotelChainScales, dealTypes },
+      });
+    }
     try {
       /* Cold-start: first load after restart needs warm-up. */
       if (getMyDealsColdStart) {
@@ -1550,8 +1747,6 @@ export async function getMyDeals(req, res) {
           timingSummary.waits.minGapMs = wait;
           if (shouldLogMyDealsSummary()) console.log("getMyDeals: min gap wait", { requestId, waitMs: wait, elapsed: Date.now() - t0 });
           await new Promise((r) => setTimeout(r, wait));
-        } else {
-          await new Promise((r) => setTimeout(r, 500));
         }
       }
       tLast = Date.now();
@@ -1584,7 +1779,7 @@ export async function getMyDeals(req, res) {
       /* Phase 6: When both batched and parallel flags on, run SI + Location + CU in parallel; else sequential. */
       if (MY_DEALS_USE_BATCHED_LINKED_FETCHES && MY_DEALS_USE_PARALLEL_BATCHED_LINKED_FETCHES) {
         const tParallelStart = Date.now();
-        if (shouldLogMyDealsSummary()) console.log("getMyDeals: parallel linked phases start", { requestId, phases: ["si", "location", "cu"] });
+        if (shouldLogMyDealsSummary()) console.log("getMyDeals: parallel linked phases start", { requestId, phases: initialView ? ["si", "location"] : ["si", "location", "cu"] });
 
         const runSi = async () => {
           const t0 = Date.now();
@@ -1623,7 +1818,9 @@ export async function getMyDeals(req, res) {
           return { map: new Map(), counts: { linkedIds: 0, fetched: 0, missing: 0 }, phaseMs: Date.now() - t0 };
         };
 
-        const [siResult, locResult, cuResult] = await Promise.all([runSi(), runLocation(), runCu()]);
+        const [siResult, locResult, cuResult] = initialView
+          ? await Promise.all([runSi(), runLocation(), Promise.resolve({ map: new Map(), counts: { linkedIds: 0, fetched: 0, missing: 0 }, phaseMs: 0 })])
+          : await Promise.all([runSi(), runLocation(), runCu()]);
 
         siDataMap = siResult.map;
         locationMap = locResult.map;
@@ -1753,7 +1950,24 @@ export async function getMyDeals(req, res) {
     let stubCount = 0;
     for (const rec of allRecords) {
       try {
-        const d = await recordToDeal(rec, locationMap, mpMap, outreachDealIds, siPreferredBrandsMap, mpDataMap, siDataMap, baseId, apiKey, cuDataMap, dealBrandCacheMap);
+        // Initial view includes Deal Info + Matched data but skips heavy per-brand recomputation.
+        const scoreBaseId = initialView ? null : baseId;
+        const scoreApiKey = initialView ? null : apiKey;
+        const scoreMpDataMap = initialView ? null : mpDataMap;
+        const scoreSiDataMap = initialView ? null : siDataMap;
+        const d = await recordToDeal(
+          rec,
+          locationMap,
+          mpMap,
+          outreachDealIds,
+          siPreferredBrandsMap,
+          scoreMpDataMap,
+          scoreSiDataMap,
+          scoreBaseId,
+          scoreApiKey,
+          cuDataMap,
+          dealBrandCacheMap
+        );
         deals.push(d);
       } catch (dealErr) {
         const name = (rec.fields && (rec.fields["Project Name"] || rec.fields["Property Name"] || rec.fields["Name"])) || rec.id;
@@ -1790,7 +2004,7 @@ export async function getMyDeals(req, res) {
     /* If any Deal Type (or Preferred Brands) are blank, retry MP+SI once after a pause; often fills in after rate-limit window passes. */
     const blankDealTypeCount = deals.filter((d) => !d.dealType || d.dealType === "—").length;
     timingSummary.counts.blankDealTypeBeforeRetry = blankDealTypeCount;
-    if (blankDealTypeCount > 0) {
+    if (!initialView && blankDealTypeCount > 0 && MY_DEALS_ENABLE_RETRY_REBUILD) {
       timingSummary.retryRan = true;
       const tRetryStart = Date.now();
       if (shouldLogMyDealsSummary()) console.log("getMyDeals: blank Deal Type before retry", { requestId, blankDealTypeCount, elapsed: tRetryStart - t0 });
@@ -1861,6 +2075,13 @@ export async function getMyDeals(req, res) {
       timingSummary.counts.blankDealTypeAfterRetry = blankAfterRetry;
       timingSummary.counts.stubCount = stubCount;
       if (shouldLogMyDealsSummary()) console.log("getMyDeals: blank Deal Type after retry", { requestId, blankDealTypeCount: blankAfterRetry, stubCount, elapsed: Date.now() - t0 });
+    } else if (blankDealTypeCount > 0 && shouldLogMyDealsSummary()) {
+      // Diagnostics retained without delaying user response.
+      console.warn("getMyDeals: blank Deal Type detected; retry-rebuild skipped (disabled)", {
+        requestId,
+        blankDealTypeCount,
+        enableWithEnv: "MY_DEALS_ENABLE_RETRY_REBUILD=1",
+      });
     }
 
     /* Disabled: background cache refresh hammers Airtable and causes rate limits; subsequent loads (or refreshes) then get empty Deal Type, Preferred Brands, Match Score. Use npm run refresh-all-deal-brand-cache or per-deal refresh instead. */
@@ -1906,6 +2127,13 @@ export async function getMyDeals(req, res) {
     };
     if (shouldLogMyDealsSummary()) console.log("getMyDeals: MP diagnostics", { requestId, ...timingSummary.mpDiagnostics });
 
+    let initialMatchedSupport = null;
+    if (initialView) {
+      const tInitialSupport = Date.now();
+      initialMatchedSupport = await fetchInitialMatchedSupportState(baseId, apiKey, deals);
+      timingSummary.phasesMs.initialMatchedSupport = Date.now() - tInitialSupport;
+    }
+
     timingSummary.counts.returnedDeals = deals.length;
     if (timingSummary.counts.blankDealTypeAfterRetry === undefined) timingSummary.counts.blankDealTypeAfterRetry = timingSummary.counts.blankDealTypeBeforeRetry;
     lastGetMyDealsFinishedAt = Date.now();
@@ -1914,9 +2142,11 @@ export async function getMyDeals(req, res) {
     if (shouldLogMyDealsSummary()) console.log("getMyDeals: response sent", { requestId, totalCount: deals.length, stubCount, elapsed: timingSummary.elapsedMs });
     res.json({
       success: true,
+      view: initialView ? "initial" : "full",
       deals,
       totalCount: deals.length,
       filterOptions: { dealStatuses, projectTypes, hotelChainScales, dealTypes },
+      ...(initialView && initialMatchedSupport ? { initialMatchedSupport } : {}),
     });
   } catch (err) {
     console.error("Error in getMyDeals:", err);

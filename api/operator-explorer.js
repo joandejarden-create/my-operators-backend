@@ -1,10 +1,12 @@
 /**
  * Operator Explorer API
- * Serves list and detail data for 3rd Party Operators.
- * Uses mock data until Airtable/backend integration is ready.
+ * List: delegates to GET /api/third-party-operators (Operator Setup — … tables).
+ * Detail fallback below still uses mock rows when no Airtable match is available.
  */
 
-// Mock operator data – realistic structure for list and detail
+import listThirdPartyOperators from "./third-party-operators-list.js";
+
+// Mock operator data – used only for GET /api/operator-explorer/operator fallback
 const MOCK_OPERATORS = [
   {
     id: "op-1",
@@ -193,123 +195,9 @@ const MOCK_OPERATORS = [
   },
 ];
 
-// Filter options derived from mock data
-const FILTER_OPTIONS = {
-  regions: ["Southeast USA", "Midwest USA", "California", "Arizona", "Nevada", "Mountain West", "Pacific Northwest", "Northeast USA", "Mid-Atlantic", "Caribbean", "Mexico"],
-  assetTypes: ["Full-Service", "Select Service", "Extended Stay", "Resort", "Boutique", "Lifestyle", "All-Inclusive"],
-  chainScales: ["Luxury", "Upper Upscale", "Upscale", "Upper Midscale", "Midscale"],
-  brandedIndependent: ["Branded", "Independent", "Both"],
-  experienceTypes: ["Pre-Opening", "Conversion", "Transition", "Turnaround", "Repositioning", "Stabilized"],
-  serviceTypes: ["Third-Party Management", "Asset Management"],
-};
-
-/** GET /api/operator-explorer/operators – List operators with optional filters */
+/** GET /api/operator-explorer/operators – same handler as GET /api/third-party-operators (pass ?activeOnly=1 for Explorer) */
 export async function listOperators(req, res) {
-  try {
-    let operators = [...MOCK_OPERATORS];
-    const { search, region, assetType, chainScale, brandedIndependent, experienceType, serviceType, sort = "name-asc" } = req.query;
-
-    // Search
-    if (search && search.trim()) {
-      const q = search.toLowerCase().trim();
-      operators = operators.filter((op) => {
-        const searchable = [
-          op.operator_name,
-          op.parent_company,
-          (op.geography || []).join(" "),
-          (op.brands_managed || []).join(" "),
-          (op.asset_classes || []).join(" "),
-          (op.hotel_types || []).join(" "),
-          (op.capability_tags || []).join(" "),
-          op.overview_short,
-        ].join(" ").toLowerCase();
-        return searchable.includes(q);
-      });
-    }
-
-    // Region
-    if (region && region.trim()) {
-      operators = operators.filter((op) => {
-        const geo = Array.isArray(op.geography) ? op.geography : [op.geography].filter(Boolean);
-        return geo.some((g) => String(g).toLowerCase().includes(region.toLowerCase()));
-      });
-    }
-
-    // Asset type
-    if (assetType && assetType.trim()) {
-      operators = operators.filter((op) =>
-        (op.asset_classes || []).some((a) => String(a) === assetType)
-      );
-    }
-
-    // Chain scale
-    if (chainScale && chainScale.trim()) {
-      operators = operators.filter((op) =>
-        (op.chain_scales || []).some((s) => String(s).toLowerCase() === chainScale.toLowerCase())
-      );
-    }
-
-    // Branded / Independent
-    if (brandedIndependent && brandedIndependent.trim()) {
-      if (brandedIndependent === "Branded") {
-        operators = operators.filter((op) => op.branded_experience);
-      } else if (brandedIndependent === "Independent") {
-        operators = operators.filter((op) => op.independent_experience);
-      }
-    }
-
-    // Experience type
-    if (experienceType && experienceType.trim()) {
-      operators = operators.filter((op) =>
-        (op.operating_situations || []).some(
-          (s) => String(s).toLowerCase() === experienceType.toLowerCase()
-        )
-      );
-    }
-
-    // Service type
-    if (serviceType && serviceType.trim()) {
-      operators = operators.filter((op) =>
-        (op.service_models || []).some((s) => String(s) === serviceType)
-      );
-    }
-
-    // Sort
-    const [field, dir] = (sort || "name-asc").split("-");
-    operators.sort((a, b) => {
-      let aVal, bVal;
-      switch (field) {
-        case "name":
-          aVal = (a.operator_name || "").toLowerCase();
-          bVal = (b.operator_name || "").toLowerCase();
-          break;
-        case "hotels":
-          aVal = a.hotels_managed_count || 0;
-          bVal = b.hotels_managed_count || 0;
-          return dir === "asc" ? aVal - bVal : bVal - aVal;
-        case "rooms":
-          aVal = a.rooms_managed_count || 0;
-          bVal = b.rooms_managed_count || 0;
-          return dir === "asc" ? aVal - bVal : bVal - aVal;
-        default:
-          aVal = (a.operator_name || "").toLowerCase();
-          bVal = (b.operator_name || "").toLowerCase();
-      }
-      if (aVal < bVal) return dir === "asc" ? -1 : 1;
-      if (aVal > bVal) return dir === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    res.json({
-      success: true,
-      operators,
-      filterOptions: FILTER_OPTIONS,
-      total: operators.length,
-    });
-  } catch (err) {
-    console.error("Operator Explorer list error:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
+  return listThirdPartyOperators(req, res);
 }
 
 /** GET /api/operator-explorer/operator – Single operator detail by id */

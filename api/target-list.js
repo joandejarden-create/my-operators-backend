@@ -18,6 +18,7 @@ import Airtable from "airtable";
 const TARGET_LIST_TABLE = process.env.AIRTABLE_TABLE_TARGET_LIST || "Target List";
 const NOTES_FIELD = process.env.AIRTABLE_TARGET_LIST_NOTES_FIELD || "Notes";
 const DEALS_TABLE = process.env.AIRTABLE_TABLE_DEALS || "Deals";
+const TARGET_LIST_CACHE_TTL_MS = Math.max(1000, parseInt(process.env.TARGET_LIST_CACHE_TTL_MS || "10000", 10) || 10000);
 
 function getAirtableBase() {
   const apiKey = process.env.AIRTABLE_API_KEY;
@@ -28,10 +29,46 @@ function getAirtableBase() {
   return new Airtable({ apiKey }).base(baseId);
 }
 
+let targetListCache = {
+  loadedAt: 0,
+  records: null,
+  inflight: null,
+};
+
+function invalidateTargetListCache() {
+  targetListCache.loadedAt = 0;
+  targetListCache.records = null;
+  targetListCache.inflight = null;
+}
+
+async function getAllTargetRecordsCached() {
+  const now = Date.now();
+  if (targetListCache.records && (now - targetListCache.loadedAt) < TARGET_LIST_CACHE_TTL_MS) {
+    return targetListCache.records;
+  }
+  if (targetListCache.inflight) return targetListCache.inflight;
+
+  const base = getAirtableBase();
+  targetListCache.inflight = base(TARGET_LIST_TABLE)
+    .select({ sort: [{ field: "Added Date", direction: "desc" }] })
+    .all()
+    .then((records) => {
+      targetListCache.records = records;
+      targetListCache.loadedAt = Date.now();
+      return records;
+    })
+    .finally(() => {
+      targetListCache.inflight = null;
+    });
+
+  return targetListCache.inflight;
+}
+
 /** Fetch targets for a deal (for use by add-recommended-brand limit check). Returns [{ brandName, status }]. */
 export async function fetchTargetsForDeal(dealId) {
-  const base = getAirtableBase();
-  const records = await base(TARGET_LIST_TABLE).select({ sort: [{ field: "Added Date", direction: "desc" }] }).all();
+  // Correctness: linked-record formula matching was unreliable for some deals.
+  // Use cached full-table snapshot + exact JS dealId includes() semantics.
+  const records = await getAllTargetRecordsCached();
   return records
     .filter((r) => {
       const dealIds = r.fields.Deal_ID;
@@ -52,31 +89,17 @@ export async function getTargetList(req, res) {
   const { status, excludeDeleted } = req.query;
 
   try {
-    const base = getAirtableBase();
     console.log('[target-list] GET for dealId:', dealId, 'status:', status, 'excludeDeleted:', excludeDeleted);
-    
-    // Fetch ALL records and filter in JavaScript (more reliable than Airtable formulas)
-    const records = await base(TARGET_LIST_TABLE)
-      .select({
-        sort: [{ field: "Added Date", direction: "desc" }],
-      })
-      .all();
-
-    console.log('[target-list] Fetched', records.length, 'total target records from Airtable');
-
-    // Filter in JavaScript to find targets for this deal
+    const records = await getAllTargetRecordsCached();
+    console.log('[target-list] cache snapshot size:', records.length, 'ttlMs:', TARGET_LIST_CACHE_TTL_MS);
     const matchingRecords = records.filter(r => {
       const dealIds = r.fields.Deal_ID;
       if (!dealIds || !Array.isArray(dealIds)) return false;
       if (!dealIds.includes(dealId)) return false;
-      
-      // Filter by status if provided
+
       const recordStatus = r.fields["Status"] || "Considering";
       if (status && recordStatus !== status) return false;
-      
-      // Exclude deleted items if requested
       if (excludeDeleted === "true" && recordStatus === "Deleted") return false;
-      
       return true;
     });
 
@@ -160,6 +183,7 @@ export async function addToTargetList(req, res) {
     console.log('[target-list] POST - Creating record with fields:', JSON.stringify(fields, null, 2));
     const record = await base(TARGET_LIST_TABLE).create([{ fields }]);
     console.log('[target-list] POST - Record created with ID:', record[0].id);
+    invalidateTargetListCache();
 
     res.json({ success: true, targetId: record[0].id });
   } catch (err) {
@@ -185,6 +209,7 @@ export async function updateTarget(req, res) {
     if (notes !== undefined) fields[NOTES_FIELD] = notes;
 
     await base(TARGET_LIST_TABLE).update([{ id: targetId, fields }]);
+    invalidateTargetListCache();
 
     res.json({ success: true });
   } catch (err) {
@@ -205,6 +230,7 @@ export async function removeFromTargetList(req, res) {
     console.log('[target-list] DELETE - Removing target with ID:', targetId);
     await base(TARGET_LIST_TABLE).destroy([targetId]);
     console.log('[target-list] DELETE - Successfully removed target:', targetId);
+    invalidateTargetListCache();
     res.json({ success: true });
   } catch (err) {
     console.error("[target-list] DELETE error:", err.message);
@@ -254,6 +280,7 @@ export async function markAsDeleted(req, res) {
       const updates = existing.map((r) => ({ id: r.id, fields: updateFields }));
       await base(TARGET_LIST_TABLE).update(updates);
       console.log('[target-list] MARK DELETED - Updated', existing.length, 'record(s), notes:', notesVal || '(none)');
+      invalidateTargetListCache();
       return res.json({ success: true, targetId: existing[0].id, updated: true });
     }
 
@@ -273,6 +300,7 @@ export async function markAsDeleted(req, res) {
 
     const record = await base(TARGET_LIST_TABLE).create([{ fields }]);
     console.log('[target-list] MARK DELETED - Record created with ID:', record[0].id);
+    invalidateTargetListCache();
 
     res.json({ success: true, targetId: record[0].id, created: true });
   } catch (err) {
@@ -327,6 +355,7 @@ export async function restoreFromDeleted(req, res) {
     ]);
 
     console.log("[target-list] RESTORE - Restored record:", targetId);
+    invalidateTargetListCache();
     res.json({ success: true, targetId });
   } catch (err) {
     const msg = err.error || err.message || String(err);
@@ -359,6 +388,7 @@ export async function batchRemoveFromTargetList(req, res) {
     for (const chunk of chunks) {
       await base(TARGET_LIST_TABLE).destroy(chunk);
     }
+    invalidateTargetListCache();
     
     console.log('[target-list] BATCH DELETE - Successfully removed', targetIds.length, 'targets');
     res.json({ success: true, deletedCount: targetIds.length });

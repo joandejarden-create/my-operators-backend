@@ -1,3 +1,5 @@
+import { NEW_BASE_MASTER_TABLE, findRecordByIdRest, logOperatorReadPath } from "./lib/operator-setup-new-base-read.js";
+
 const TABLE_NAME = process.env.AIRTABLE_THIRD_PARTY_OPERATORS_TABLE || "3rd Party Operator - Basics";
 
 export default async function updateThirdPartyOperatorStatus(req, res) {
@@ -13,6 +15,47 @@ export default async function updateThirdPartyOperatorStatus(req, res) {
     const body = (req.body && typeof req.body === "object") ? req.body : {};
     const newStatus = (body.dealStatus || body.operatorStatus || body.status || "").toString().trim();
     if (!newStatus) return res.status(400).json({ success: false, error: "dealStatus is required" });
+
+    const masterRow = await findRecordByIdRest(NEW_BASE_MASTER_TABLE, recordId);
+    if (masterRow && masterRow.id) {
+      const masterUrl = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(NEW_BASE_MASTER_TABLE)}/${encodeURIComponent(recordId)}`;
+      const patchRes = await fetch(masterUrl, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fields: { submission_status: newStatus },
+          typecast: true,
+        }),
+      });
+      const data = await patchRes.json().catch(() => ({}));
+      if (patchRes.ok && !data.error) {
+        logOperatorReadPath("third_party_operator_status", {
+          read_path: "new_base",
+          record_id_kind: "master",
+          recordId,
+        });
+        return res.json({
+          success: true,
+          recordId,
+          operatorStatus: newStatus,
+          updatedField: "submission_status",
+          targetTable: NEW_BASE_MASTER_TABLE,
+        });
+      }
+      logOperatorReadPath("third_party_operator_status", {
+        read_path: "new_base",
+        record_id_kind: "master",
+        recordId,
+        error: (data && data.error && (data.error.message || data.error.type)) || patchRes.statusText,
+      });
+      return res.status(patchRes.status >= 400 ? patchRes.status : 400).json({
+        success: false,
+        error:
+          (data && data.error && (data.error.message || data.error.type)) ||
+          patchRes.statusText ||
+          "Update failed on Operator Setup - Master",
+      });
+    }
 
     const url = `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(TABLE_NAME)}/${encodeURIComponent(recordId)}`;
     const fieldCandidates = ["Operator Status", "Deal Status", "Status"];
@@ -30,6 +73,11 @@ export default async function updateThirdPartyOperatorStatus(req, res) {
 
       const data = await patchRes.json().catch(() => ({}));
       if (patchRes.ok && !data.error) {
+        logOperatorReadPath("third_party_operator_status", {
+          read_path: "legacy",
+          record_id_kind: "basics",
+          recordId,
+        });
         return res.json({ success: true, recordId, operatorStatus: newStatus, updatedField: fieldName });
       }
 

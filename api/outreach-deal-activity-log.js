@@ -22,10 +22,61 @@ function str(v) {
 function getDealName(fields) {
   return (
     str(fields["Project Name"]) ||
+    str(fields["Deal Name"]) ||
+    str(fields["Project Opportunity"]) ||
+    str(fields["Deal Title"]) ||
     str(fields["Property Name"]) ||
+    str(fields["Hotel Name"]) ||
+    str(fields["Hotel"]) ||
     str(fields["Name"]) ||
     "Untitled Deal"
   );
+}
+
+function isAirtableRecordId(v) {
+  return /^rec[a-zA-Z0-9]{10,}$/.test(str(v));
+}
+
+function collectRecordIds(value) {
+  const out = [];
+  const pushMaybe = (v) => {
+    const s = str(v);
+    if (!s) return;
+    if (isAirtableRecordId(s)) out.push(s);
+  };
+  if (Array.isArray(value)) {
+    value.forEach((v) => pushMaybe(v));
+    return out;
+  }
+  const s = str(value);
+  if (!s) return out;
+  if (isAirtableRecordId(s)) {
+    out.push(s);
+    return out;
+  }
+  s.split(/[,\s]+/g).forEach((token) => pushMaybe(token));
+  return out;
+}
+
+function extractDealIds(fields) {
+  const candidates = [
+    fields["Deal"],
+    fields["Deals"],
+    fields["Deal ID"],
+    fields["DealId"],
+    fields["Deal Id"],
+    fields["Project"],
+    fields["Project Deal"],
+    fields["Project Opportunity"],
+    fields["Project Opportunity (from Deal)"]
+  ];
+  const ids = [];
+  for (const c of candidates) {
+    collectRecordIds(c).forEach((id) => {
+      if (!ids.includes(id)) ids.push(id);
+    });
+  }
+  return ids;
 }
 
 function timeAgo(dateStr) {
@@ -71,7 +122,12 @@ export async function getOutreachDealActivityLog(req, res) {
 
     const dealNameById = new Map();
     for (const rec of dealRecords) {
-      dealNameById.set(rec.id, getDealName(rec.fields || {}));
+      const fields = rec.fields || {};
+      const resolved = getDealName(fields);
+      dealNameById.set(rec.id, resolved);
+      // Support bases that persist record id in a text field.
+      const possibleIdText = str(fields["Record ID"]) || str(fields["Deal ID"]) || str(fields["Airtable Record ID"]);
+      if (isAirtableRecordId(possibleIdText)) dealNameById.set(possibleIdText, resolved);
     }
     const dealIds = new Set([...dealNameById.keys()]);
     if (dealIds.size === 0) return res.json({ success: true, entries: [] });
@@ -87,19 +143,32 @@ export async function getOutreachDealActivityLog(req, res) {
     const entries = [];
     for (const rec of logRecords) {
       const fields = rec.fields || {};
-      const linked = fields.Deal;
-      const linkedIds = Array.isArray(linked) ? linked : linked ? [linked] : [];
-      const dealId = linkedIds.find((id) => dealIds.has(id)) || null;
-      if (!dealId) continue;
+      const extractedDealIds = extractDealIds(fields);
+      const dealId = extractedDealIds.find((id) => dealIds.has(id)) || null;
 
-      const createdAt = str(fields["Created At"]);
+      const createdAt = str(fields["Created At"]) || str(rec.createdTime);
       const action = str(fields["Action"]) || "Activity Updated";
       const details = str(fields["Details"]);
       const stakeholder = inferStakeholder(fields);
+      const lookupDealName =
+        str(fields["Deal Name"]) ||
+        str(fields["Deal Name (from Deal)"]) ||
+        str(fields["Project Name (from Deal)"]) ||
+        str(fields["Project Opportunity (from Deal)"]) ||
+        str(fields["Deal Title (from Deal)"]) ||
+        str(fields["Project Name"]) ||
+        str(fields["Project Opportunity"]) ||
+        str(fields["Deal Title"]) ||
+        str(fields["Property Name"]);
+      const resolvedDealName =
+        (dealId ? (dealNameById.get(dealId) || "") : "") ||
+        (extractedDealIds.length ? (dealNameById.get(extractedDealIds[0]) || "") : "") ||
+        (isAirtableRecordId(lookupDealName) ? "" : lookupDealName) ||
+        "Untitled Deal";
       entries.push({
         id: rec.id,
         dealId,
-        dealName: dealNameById.get(dealId) || "Untitled Deal",
+        dealName: resolvedDealName,
         stakeholder,
         action,
         details,
@@ -107,7 +176,7 @@ export async function getOutreachDealActivityLog(req, res) {
         timeAgo: timeAgo(createdAt),
         type: "deal",
         title: action,
-        contextLabel: dealNameById.get(dealId) || "Untitled Deal",
+        contextLabel: resolvedDealName,
         badgeLabel: "Deal Activity",
         badgeType: "info",
         ctaHref: "/outreach-deal-activity-log"
