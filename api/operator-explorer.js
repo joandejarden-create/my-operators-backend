@@ -5,6 +5,7 @@
  */
 
 import listThirdPartyOperators from "./third-party-operators-list.js";
+import getThirdPartyOperatorDetail from "./third-party-operator-detail.js";
 
 // Mock operator data – used only for GET /api/operator-explorer/operator fallback
 const MOCK_OPERATORS = [
@@ -204,9 +205,15 @@ export async function listOperators(req, res) {
 export async function getOperatorById(req, res) {
   try {
     const { operatorId } = req.query;
-    const id = operatorId || req.params?.operatorId;
+    const id = String(operatorId || req.params?.operatorId || "").trim();
     if (!id) {
       return res.status(400).json({ success: false, error: "Operator ID required" });
+    }
+
+    /** Real Operator Setup rows use Airtable record ids — delegate to intake detail (same as My Operators / Gold Mock). */
+    if (/^rec[a-zA-Z0-9]{14,}$/.test(id)) {
+      const detailReq = { ...req, params: { ...(req.params || {}), recordId: id } };
+      return getThirdPartyOperatorDetail(detailReq, res);
     }
 
     const operator = MOCK_OPERATORS.find(

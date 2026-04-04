@@ -206,9 +206,29 @@ export default async function listThirdPartyOperators(req, res) {
         String(req.query.activeOnly || "").toLowerCase() === "true" ||
         req.query.explorer === "1");
 
+    /** Optional: hide QA / shadow rows from Operator Explorer (set OPERATOR_EXPLORER_HIDE_TEST_RECORDS=1 on Railway). */
+    const hideTestExplorer =
+      String(process.env.OPERATOR_EXPLORER_HIDE_TEST_RECORDS || "").trim() === "1";
+    const explorerTestNameHint = (name) => {
+      const n = String(name || "").toLowerCase();
+      return (
+        n.includes("e2e shadow") ||
+        n.includes("e2e validation") ||
+        n.includes("shadowval") ||
+        n.includes("shadow test") ||
+        n.includes("gold test") ||
+        n.includes("shadow-validation") ||
+        n.includes("example-operator-e2e")
+      );
+    };
+
     let operators = [...rows];
     if (activeOnly) {
-      operators = operators.filter((o) => isActiveDealStatus(o.dealStatus));
+      operators = operators.filter((o) => {
+        if (!isActiveDealStatus(o.dealStatus)) return false;
+        if (hideTestExplorer && explorerTestNameHint(o.companyName)) return false;
+        return true;
+      });
     }
     operators.sort((a, b) =>
       (a.companyName || "").localeCompare(b.companyName || "", undefined, { sensitivity: "base" })

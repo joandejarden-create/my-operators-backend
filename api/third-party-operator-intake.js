@@ -6,7 +6,6 @@ import {
     remapBasicsFieldsForAirtableSchema,
     remapLegacyBasicsFieldKeysToCanonical,
 } from "./lib/third-party-operator-basics-airtable-column-aliases.js";
-import { applyNewTwoFieldsToCompact } from "./lib/third-party-operator-new-two-fields.js";
 import { buildFootprintRowPayloadFromIntake } from "./lib/third-party-operator-footprint-intake.js";
 import { parseFormattedInt, formatListValue, parseMultiValue } from "./lib/third-party-operator-value-utils.js";
 import { getThirdPartyOperatorBasicsTableName } from "./lib/third-party-operator-env.js";
@@ -1411,6 +1410,7 @@ export default async function submitThirdPartyOperator(req, res) {
             })
         );
         compactFields = remapLegacyBasicsFieldKeysToCanonical(compactFields);
+        const { applyNewTwoFieldsToCompact } = await import("./lib/third-party-operator-new-two-fields.js");
         compactFields = applyNewTwoFieldsToCompact(compactFields, req.body || {});
         const writeGranularCheckboxes = process.env.OPERATOR_SERVICE_GRANULAR_CHECKBOX_WRITES === "1";
         compactFields = mergeGranularServiceSelectionsIntoCompactFields(compactFields, req.body || {}, {
