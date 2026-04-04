@@ -11,13 +11,40 @@ export const BASICS_COLUMN_CANONICAL_TO_ALTERNATE = [
   ["Property Types", "Property Types Managed"],
   ["Additional Experience Types", "Additional Experience / Location Contexts"],
   ["Emergency Response", "Emergency Response Plan"],
-  ["Business Continuity", "Business Continuity Planning"],
-  ["24/7 Support", "24/7 Support Availability"],
-  ["Crisis Experience", "Crisis Management Experience"],
+  ["Business Continuity Planning", "Business Continuity"],
+  ["Support 24/7 Availability", "24/7 Support"],
+  ["Crisis Management Experience", "Crisis Experience"],
   ["Certifications", "Certifications Held"],
-  ["Energy Efficiency", "Energy Efficiency Initiatives"],
-  ["Waste Reduction", "Waste Reduction Programs"],
-  ["Carbon Tracking", "Carbon Footprint Tracking"],
+  ["Energy Efficiency Initiatives", "Energy Efficiency"],
+  ["Waste Reduction Programs", "Waste Reduction"],
+  ["Carbon Footprint Tracking", "Carbon Tracking"],
+  /** After duplicate-column cleanup; older bases may still use the left-hand titles only. */
+  ["Primary Contact Email", "Contact Email"],
+  ["Primary Contact Phone", "Contact Phone"],
+  ["Headquarters Location", "Headquarters"],
+  ["Average Contract Renewal Rate", "Renewal Rate"],
+  /** Canonical (post–field-corrections) → older duplicate labels still seen in some bases */
+  ["EU Existing Rooms", "Geo EU Existing Rooms"],
+  ["EU Pipeline Rooms", "Geo EU Pipeline Rooms"],
+  ["Luxury Avg Staff", "Luxury Avg On-Site Staff Per Property"],
+  ["Average Occupancy Improvement", "Occupancy Improvement"],
+  ["Markets To Avoid", "Markets to Avoid"],
+  ["Milestone Operator Selection Min Months", "Milestone Min Months - First Discussion to Operator Selection"],
+  ["Milestone Construction Start Min Months", "Milestone Min Months - Operator Selection to Construction Start"],
+  ["Milestone Soft Opening Min Months", "Milestone Min Months - Pre-Opening Ramp to Soft Opening"],
+  ["Milestone Grand Opening Min Months", "Milestone Min Months - Soft Opening to Grand Opening"],
+  ["Pre-opening Experience", "Pre-Opening Experience"],
+  ["Stabilized / Ongoing-Operations Experience", "Stabilized Experience"],
+  ["Renovation/Rebrand Experience", "Renovation Experience"],
+  ["Typical Response Time for Owner Inquiries", "Typical Owner Response Time"],
+  ["# of Exits / Deflaggings (Units) in Past 24 Months", "Exits/Deflaggings (Past 24 Months)"],
+  ["Average NOI Improvement", "NOI Improvement"],
+  ["Certifications", "Certifications Held"],
+  ["Red Flag Items That Typically Make You Decline or Proceed With Caution", "Known Red Flag Items"],
+  ["Key Differentiators", "Featured Differentiators"],
+  ["Specific Markets/Cities", "Specific Markets"],
+  ["Major Lenders Worked With", "Major Lenders"],
+  ["Mixed-Use Development Allowed", "Mixed-Use Allowed"],
 ];
 
 /** @type {Map<string, { names: Set<string>; fetchedAt: number }>} */
@@ -98,6 +125,104 @@ export function filterFieldsToAirtableSchema(fields, schemaNameSet) {
   }
   return out;
 }
+
+/**
+ * Intake historically used duplicate / long geo & location column names. Maps those keys to the
+ * surviving Basics column names (see docs/operator-setup-mapping/airtable-field-corrections.csv).
+ * @param {Record<string, unknown>} fields
+ * @returns {Record<string, unknown>}
+ */
+export function remapLegacyBasicsFieldKeysToCanonical(fields) {
+  const f = { ...fields };
+  for (const [from, to] of BASICS_LEGACY_FIELD_KEY_TO_CANONICAL) {
+    if (!Object.prototype.hasOwnProperty.call(f, from)) continue;
+    if (from === to) continue;
+    const v = f[from];
+    if (Object.prototype.hasOwnProperty.call(f, to)) {
+      if (isEmptySchemaValue(f[to]) && !isEmptySchemaValue(v)) f[to] = v;
+    } else {
+      f[to] = v;
+    }
+    delete f[from];
+  }
+  return f;
+}
+
+/** @type {readonly [string, string][]} Legacy intake / duplicate column name → canonical Basics name */
+const BASICS_LEGACY_FIELD_KEY_TO_CANONICAL = [
+  ["Headquarters", "Headquarters Location"],
+  ["Contact Email", "Primary Contact Email"],
+  ["Contact Phone", "Primary Contact Phone"],
+  ["Geo CALA Existing Hotels", "CALA Existing Hotels"],
+  ["Geo CALA Existing Rooms", "CALA Existing Rooms"],
+  ["Geo CALA Pipeline Hotels", "CALA Pipeline Hotels"],
+  ["Geo CALA Pipeline Rooms", "CALA Pipeline Rooms"],
+  ["Geo NA Existing Rooms", "NA Existing Rooms"],
+  ["Geo NA Pipeline Rooms", "NA Pipeline Rooms"],
+  ["Geo MEA Existing Rooms", "MEA Existing Rooms"],
+  ["Geo MEA Pipeline Rooms", "MEA Pipeline Rooms"],
+  ["Geo APAC Existing Rooms", "APAC Existing Rooms"],
+  ["Geo APAC Pipeline Rooms", "APAC Pipeline Rooms"],
+  ["Location Type % Urban", "Location Type Urban"],
+  ["Location Type % Suburban", "Location Type Suburban"],
+  // Matches airtable-field-corrections.csv: duplicate % columns mapped to surviving short names.
+  ["Location Type % Resort", "Location Type Airport"],
+  ["Location Type % Airport", "Location Type Resort"],
+  ["Location Type % Small Metro/Town", "Location Type Highway"],
+  ["Location Type % Interstate", "Location Type Other"],
+  ["Location Type % Total", "Location Type Total"],
+  ["Upper Upscale Avg On-Site Staff Per Property", "Upper Upscale Avg Staff"],
+  ["Upper Midscale Avg On-Site Staff Per Property", "Upper Midscale Avg Staff"],
+  ["Midscale Avg On-Site Staff Per Property", "Midscale Avg Staff"],
+  ["Renewal Rate", "Average Contract Renewal Rate"],
+  ["Geo EU Existing Rooms", "EU Existing Rooms"],
+  ["Geo EU Pipeline Rooms", "EU Pipeline Rooms"],
+  ["Luxury Avg On-Site Staff Per Property", "Luxury Avg Staff"],
+  ["Occupancy Improvement", "Average Occupancy Improvement"],
+  ["Markets to Avoid", "Markets To Avoid"],
+  ["Milestone Min Months - First Discussion to Operator Selection", "Milestone Operator Selection Min Months"],
+  ["Milestone Min Months - Operator Selection to Construction Start", "Milestone Construction Start Min Months"],
+  ["Milestone Min Months - Pre-Opening Ramp to Soft Opening", "Milestone Soft Opening Min Months"],
+  ["Milestone Min Months - Soft Opening to Grand Opening", "Milestone Grand Opening Min Months"],
+  ["Pre-Opening Experience", "Pre-opening Experience"],
+  ["Stabilized Experience", "Stabilized / Ongoing-Operations Experience"],
+  ["Renovation Experience", "Renovation/Rebrand Experience"],
+  ["Typical Owner Response Time", "Typical Response Time for Owner Inquiries"],
+  ["Exits/Deflaggings (Past 24 Months)", "# of Exits / Deflaggings (Units) in Past 24 Months"],
+  ["Emergency Response Plan", "Emergency Response"],
+  ["Lender References", "Lender References Available"],
+  ["Report Types", "Report Types Provided"],
+  ["Owner Non-Negotiable Types", "Owner Non-Negotiables (Types)"],
+  ["Reporting Frequency", "Financial Reporting Frequency"],
+  ["Mobile Check-in", "Mobile Check-in Capability"],
+  ["Analytics Platform", "Data Analytics Platform"],
+  ["Decision Making Process", "Decision-Making Process"],
+  ["Owner Education Programs", "Owner Education/Training Provided"],
+  ["Upscale Avg On-Site Staff Per Property", "Upscale Avg Staff"],
+  ["Figures As Of", "Figures as of"],
+  ["Economy Avg On-Site Staff Per Property", "Economy Avg Staff"],
+  ["Primary PMS", "Primary PMS System"],
+  ["Business Continuity", "Business Continuity Planning"],
+  ["24/7 Support", "Support 24/7 Availability"],
+  ["Carbon Tracking", "Carbon Footprint Tracking"],
+  ["Crisis Experience", "Crisis Management Experience"],
+  ["Energy Efficiency", "Energy Efficiency Initiatives"],
+  ["Waste Reduction", "Waste Reduction Programs"],
+  ["Min Property Size", "Minimum Property Size"],
+  ["Max Property Size", "Maximum Property Size"],
+  ["Dispute Resolution", "Dispute Resolution Approach"],
+  ["ESG / Sustainability Expectations", "ESG / Sustainability Expectations You Prefer Projects to Meet"],
+  ["Market Expansion Ramp Lead Time (Months)", "Pre-opening Ramp Lead Time (Months)"],
+  ["Portfolio Value", "Total Portfolio Value"],
+  ["Annual Revenue Managed", "Average Annual Revenue Managed"],
+  ["NOI Improvement", "Average NOI Improvement"],
+  ["Certifications Held", "Certifications"],
+  ["Known Red Flag Items", "Red Flag Items That Typically Make You Decline or Proceed With Caution"],
+  ["Featured Differentiators", "Key Differentiators"],
+  ["Specific Markets", "Specific Markets/Cities"],
+  ["Major Lenders", "Major Lenders Worked With"],
+  ["Mixed-Use Allowed", "Mixed-Use Development Allowed"],
+];
 
 export function remapBasicsFieldsForAirtableSchema(fields, schemaNameSet) {
   if (!schemaNameSet || schemaNameSet.size === 0) return { ...fields };

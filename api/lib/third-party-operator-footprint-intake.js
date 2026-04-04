@@ -20,6 +20,8 @@ const LOCATION_INTAKE_TO_FOOTPRINT = [
   ["Location Type % Resort", "Location Type Resort"],
   ["Location Type % Airport", "Location Type Airport"],
   ["Location Type % Total", "Location Type Total"],
+  ["Location Type % Small Metro/Town", "Location Type Highway"],
+  ["Location Type % Interstate", "Location Type Other"],
 ];
 
 /**
@@ -157,9 +159,8 @@ function remapLocationKeysForFootprint(fields, schemaSet) {
   const hasHighwayCol = schemaSet.has(FOOTPRINT_HIGHWAY);
 
   if (!hasSmallCol && !hasInterCol && hasHighwayCol) {
-    const sm = toFiniteNumber(f[LOC_SMALL]);
-    const inter = toFiniteNumber(f[LOC_INTERSTATE]);
-    const combined = sm + inter;
+    const combined =
+      toFiniteNumber(f[LOC_SMALL]) + toFiniteNumber(f[LOC_INTERSTATE]);
     if (combined > 0 && f[FOOTPRINT_HIGHWAY] == null) {
       f[FOOTPRINT_HIGHWAY] = combined;
     }

@@ -1,5 +1,12 @@
 import { airtableBasicsFieldsToPrefill, applyFootprintFieldsToPrefill } from "./third-party-operator-basics-to-prefill.js";
+import { applyNewTwoPrefillFromSplitTables } from "./third-party-operator-new-two-fields.js";
 import { formatListValue, parseMultiValue } from "./third-party-operator-value-utils.js";
+import { applyOperatorServiceGranularPrefill } from "./operator-setup-service-granular-fields.js";
+import {
+  normalizeCaseStudySituationForForm,
+  normalizeOperatorSetupSelectPrefill,
+} from "./third-party-operator-select-prefill-normalize.js";
+import { NEW_BASE_GOVERNANCE_TABLE } from "./operator-setup-new-base-read.js";
 
 export { formatListValue, parseMultiValue, safeParseJsonArray } from "./third-party-operator-value-utils.js";
 
@@ -14,6 +21,12 @@ const OWNER_DILIGENCE_QA_TABLE =
   process.env.AIRTABLE_THIRD_PARTY_OPERATOR_OWNER_DILIGENCE_QA_TABLE || "3rd Party Operator - Owner Diligence QA";
 const DEAL_TERMS_TABLE =
   process.env.AIRTABLE_THIRD_PARTY_OPERATOR_DEAL_TERMS_TABLE || "3rd Party Operator - Deal Terms & Fees";
+const REPRESENTATIVE_PROPERTIES_TABLE =
+  process.env.AIRTABLE_THIRD_PARTY_OPERATOR_REPRESENTATIVE_PROPERTIES_TABLE ||
+  "3rd Party Operator - Representative Properties";
+const LEADERSHIP_TEAM_TABLE =
+  process.env.AIRTABLE_THIRD_PARTY_OPERATOR_LEADERSHIP_TEAM_TABLE ||
+  "3rd Party Operator - Leadership Team";
 
 function extractLeadingNumber(val) {
   const s = formatListValue(val);
@@ -73,10 +86,26 @@ function buildBrandNameByIdFromBasicsRecords(records) {
   return m;
 }
 
+function buildBrandLogoByNameFromBasicsRecords(records) {
+  const m = new Map();
+  for (const rec of records || []) {
+    const f = rec.fields || {};
+    const nm = formatListValue(f["Brand Name"]).trim();
+    if (!nm) continue;
+    const logoField = f["Brand Logo"] || f["Logo"] || f["Company Logo"] || null;
+    const logoUrl =
+      Array.isArray(logoField) && logoField[0] && logoField[0].url
+        ? String(logoField[0].url).trim()
+        : "";
+    if (logoUrl) m.set(nm.toLowerCase(), logoUrl);
+  }
+  return m;
+}
+
 /**
  * Intake multi-select options use brand *names*; Airtable often stores linked record IDs.
  */
-function resolvePrefillBrandsToNames(prefill, brandNameById) {
+export function resolvePrefillBrandsToNames(prefill, brandNameById) {
   const raw = prefill && prefill.brands;
   if (raw == null) return;
   const arr = Array.isArray(raw) ? raw : parseMultiValue(String(raw));
@@ -135,7 +164,10 @@ export async function fetchThirdPartyOperatorPrefillContext() {
     servicesRecords,
     idealRecords,
     ownerRelRecords,
+    representativePropertiesRecords,
+    leadershipTeamRecords,
     brandBasicsRecords,
+    governanceRecords,
   ] = await Promise.all([
     fetchAllRecordsFromAirtable(CASE_STUDIES_TABLE).catch(() => []),
     fetchAllRecordsFromAirtable(OWNER_DILIGENCE_QA_TABLE).catch(() => []),
@@ -145,7 +177,10 @@ export async function fetchThirdPartyOperatorPrefillContext() {
     fetchAllRecordsFromAirtable("3rd Party Operator - Service Offerings").catch(() => []),
     fetchAllRecordsFromAirtable("3rd Party Operator - Ideal Projects & Deal Fit").catch(() => []),
     fetchAllRecordsFromAirtable("3rd Party Operator - Owner Relations & Communication").catch(() => []),
+    fetchAllRecordsFromAirtable(REPRESENTATIVE_PROPERTIES_TABLE).catch(() => []),
+    fetchAllRecordsFromAirtable(LEADERSHIP_TEAM_TABLE).catch(() => []),
     fetchAllRecordsFromAirtable(BRAND_BASICS_TABLE).catch(() => []),
+    fetchAllRecordsFromAirtable(NEW_BASE_GOVERNANCE_TABLE).catch(() => []),
   ]);
   return {
     caseStudyRecords,
@@ -156,7 +191,10 @@ export async function fetchThirdPartyOperatorPrefillContext() {
     servicesRecords,
     idealRecords,
     ownerRelRecords,
+    representativePropertiesRecords,
+    leadershipTeamRecords,
     brandBasicsRecords,
+    governanceRecords,
   };
 }
 
@@ -176,21 +214,25 @@ export function buildThirdPartyOperatorPrefillFromContext(operatorRecord, ctx) {
     idealRecords,
     ownerRelRecords,
     brandBasicsRecords,
+    governanceRecords,
   } = ctx;
   const brandNameById = buildBrandNameByIdFromBasicsRecords(brandBasicsRecords);
+  const brandLogoByName = buildBrandLogoByNameFromBasicsRecords(brandBasicsRecords);
 
   const caseStudies = caseStudyRecords
     .filter((r) => formatListValue((r.fields || {})["Operator Record ID"]) === recordId)
     .map((r) => {
       const row = r.fields || {};
       return {
+        property_name: formatListValue(row["Property Name"]),
         hotel_type: formatListValue(row["Hotel Type"]),
         region: formatListValue(row["Region"]),
         branded_independent: formatListValue(row["Branded / Independent"]),
-        situation: formatListValue(row["Situation"]),
+        situation: normalizeCaseStudySituationForForm(formatListValue(row["Situation"])),
         services: formatListValue(row["Services"]),
         outcome: formatListValue(row["Outcome"]),
         owner_relevance: formatListValue(row["Owner Relevance"]),
+        image_url: formatListValue(row["Image URL"]),
       };
     });
 
@@ -251,11 +293,13 @@ export function buildThirdPartyOperatorPrefillFromContext(operatorRecord, ctx) {
   const services = byLink(servicesRecords);
   const ideal = byLink(idealRecords);
   const ownerRel = byLink(ownerRelRecords);
+  const governance = byLink(governanceRecords || []);
 
   const ff = (footprint && footprint.fields) || {};
   const dtf = (dealTerms && dealTerms.fields) || {};
   const pf = (perfOps && perfOps.fields) || {};
   const sf = (services && services.fields) || {};
+  const gf = (governance && governance.fields) || {};
   const ifields = (ideal && ideal.fields) || {};
   const of = (ownerRel && ownerRel.fields) || {};
 
@@ -301,6 +345,33 @@ export function buildThirdPartyOperatorPrefillFromContext(operatorRecord, ctx) {
   prefill.ownerPortalFeatures = str(of["Owner Portal Features"]) || prefill.ownerPortalFeatures || "";
   prefill.additionalNotes = str(of["Additional Notes"]) || prefill.additionalNotes || "";
 
+  // New Basics fields for Operator Explorer normalization
+  const bestFitAssetTypes = parseMultiValue(f["Best Fit Asset Types"]);
+  if (bestFitAssetTypes.length) prefill.bestFitAssetTypes = bestFitAssetTypes;
+  const bestFitGeographies = parseMultiValue(f["Best Fit Geographies"]);
+  if (bestFitGeographies.length) prefill.bestFitGeographies = bestFitGeographies;
+  const bestFitOwnerTypes = parseMultiValue(f["Best Fit Owner Types"]);
+  if (bestFitOwnerTypes.length) prefill.bestFitOwnerTypes = bestFitOwnerTypes;
+  const bestFitDealStructures = parseMultiValue(f["Best Fit Deal Structures"]);
+  if (bestFitDealStructures.length) prefill.bestFitDealStructures = bestFitDealStructures;
+  const typicalAssignmentTypes = parseMultiValue(f["Typical Assignment Types"]);
+  if (typicalAssignmentTypes.length) prefill.typicalAssignmentTypes = typicalAssignmentTypes;
+  prefill.lessIdealSituations = str(f["Less Ideal Situations"]) || prefill.lessIdealSituations || "";
+  prefill.ownerValueProposition = str(f["Owner Value Proposition"]) || prefill.ownerValueProposition || "";
+  prefill.ownerReportingCadence = str(f["Owner Reporting Cadence"]) || prefill.ownerReportingCadence || "";
+  if (f["KPI Dashboard Provided"] != null && String(f["KPI Dashboard Provided"]).trim() !== "") {
+    prefill.kpiDashboardProvided = !!f["KPI Dashboard Provided"];
+  }
+  prefill.budgetForecastReportingDiscipline =
+    str(f["Budget / Forecast Reporting Discipline"]) || prefill.budgetForecastReportingDiscipline || "";
+  prefill.capitalPlanningSupport = str(f["Capital Planning Support"]) || prefill.capitalPlanningSupport || "";
+  prefill.franchiseCompatibleExperience =
+    str(f["Franchise-Compatible Experience"]) || prefill.franchiseCompatibleExperience || "";
+  prefill.softBrandExperience = str(f["Soft Brand Experience"]) || prefill.softBrandExperience || "";
+  prefill.independentCollectionExperience =
+    str(f["Independent Collection Experience"]) || prefill.independentCollectionExperience || "";
+  prefill.brandStandardsFlexibility = str(f["Brand Standards Flexibility"]) || prefill.brandStandardsFlexibility || "";
+
   prefill.totalProperties =
     str(pf["Total Properties Managed"]) || str(f["Total Properties Managed"]) || prefill.totalProperties || "";
   prefill.totalRooms = str(pf["Total Rooms Managed"]) || str(f["Total Rooms Managed"]) || prefill.totalRooms || "";
@@ -337,32 +408,31 @@ export function buildThirdPartyOperatorPrefillFromContext(operatorRecord, ctx) {
   prefill.ownerPortal = str(pf["Owner Portal"]) || prefill.ownerPortal || "";
   prefill.analyticsPlatform = str(pf["Data Analytics Platform"]) || prefill.analyticsPlatform || "";
   prefill.apiIntegrations = str(pf["API Integrations"]) || prefill.apiIntegrations || "";
+  prefill.internalControlsSummary = str(pf["Internal Controls Summary"]) || prefill.internalControlsSummary || "";
+  prefill.escalationProtocol = str(pf["Escalation Protocol"]) || prefill.escalationProtocol || "";
+  prefill.complianceReviewProcess = str(pf["Compliance Review Process"]) || prefill.complianceReviewProcess || "";
+  prefill.auditQaProcess = str(pf["Audit / QA Process"]) || prefill.auditQaProcess || "";
+  prefill.incidentReportingProcess = str(pf["Incident Reporting Process"]) || prefill.incidentReportingProcess || "";
 
-  const rm = parseMultiValue(sf["Revenue Management Services"]);
-  if (rm.length) prefill.revenueManagementServices = rm;
-  prefill.revenueManagementOther = str(sf["Revenue Management Other"]) || prefill.revenueManagementOther || "";
-  const sm = parseMultiValue(sf["Sales Marketing Support"]);
-  if (sm.length) prefill.salesMarketingSupport = sm;
-  prefill.salesMarketingOther = str(sf["Sales Marketing Other"]) || prefill.salesMarketingOther || "";
-  const ar = parseMultiValue(sf["Accounting Reporting"]);
-  if (ar.length) prefill.accountingReporting = ar;
-  prefill.accountingReportingOther = str(sf["Accounting Reporting Other"]) || prefill.accountingReportingOther || "";
-  const proc = parseMultiValue(sf["Procurement Services"]);
-  if (proc.length) prefill.procurementServices = proc;
-  prefill.procurementServicesOther = str(sf["Procurement Services Other"]) || prefill.procurementServicesOther || "";
-  const hr = parseMultiValue(sf["HR Training Services"]);
-  if (hr.length) prefill.hrTrainingServices = hr;
-  prefill.hrTrainingServicesOther = str(sf["HR Training Services Other"]) || prefill.hrTrainingServicesOther || "";
-  const tech = parseMultiValue(sf["Technology Services"]);
-  if (tech.length) prefill.technologyServices = tech;
-  prefill.technologyServicesOther = str(sf["Technology Services Other"]) || prefill.technologyServicesOther || "";
-  const des = parseMultiValue(sf["Design Renovation Support"]);
-  if (des.length) prefill.designRenovationSupport = des;
-  prefill.designRenovationSupportOther = str(sf["Design Renovation Support Other"]) || prefill.designRenovationSupportOther || "";
-  const dev = parseMultiValue(sf["Development Services"]);
-  if (dev.length) prefill.developmentServices = dev;
-  prefill.developmentServicesOther = str(sf["Development Services Other"]) || prefill.developmentServicesOther || "";
+  applyOperatorServiceGranularPrefill({ ...sf, ...gf }, prefill);
   prefill.serviceDifferentiators = str(sf["Service Offering Summary"]) || prefill.serviceDifferentiators || "";
+  prefill.procurementSupport = str(sf["Procurement Support"]) || prefill.procurementSupport || "";
+  prefill.trainingPlatformSopSupport =
+    str(sf["Training Platform / SOP Support"]) || prefill.trainingPlatformSopSupport || "";
+  prefill.transitionTaskforce = str(sf["Transition Taskforce"]) || prefill.transitionTaskforce || "";
+
+  // New Footprint fields used by New Overview markets section
+  const countriesServed = parseMultiValue(ff["Countries Served"]);
+  if (countriesServed.length) prefill.countriesServed = countriesServed;
+  prefill.citiesServed = str(ff["Cities Served"]) || prefill.citiesServed || "";
+  const priorityCountries = parseMultiValue(ff["Priority Countries"]);
+  if (priorityCountries.length) prefill.priorityCountries = priorityCountries;
+  prefill.priorityCities = str(ff["Priority Cities"]) || prefill.priorityCities || "";
+  prefill.resortMarketExperience = str(ff["Resort Market Experience"]) || prefill.resortMarketExperience || "";
+  prefill.urbanMarketExperience = str(ff["Urban Market Experience"]) || prefill.urbanMarketExperience || "";
+  prefill.crossBorderOperatingExperience =
+    str(ff["Cross-Border Operating Experience"]) || prefill.crossBorderOperatingExperience || "";
+  prefill.marketEntryExperience = str(ff["Market Entry Experience"]) || prefill.marketEntryExperience || "";
 
   const ipt = parseMultiValue(ifields["Acceptable Project Types"]);
   if (ipt.length) prefill.idealProjectTypes = ipt;
@@ -436,9 +506,36 @@ export function buildThirdPartyOperatorPrefillFromContext(operatorRecord, ctx) {
   prefill.caseStudiesDetail = caseStudies;
   prefill.ownerDiligenceQa = ownerDiligenceQa;
 
-  resolvePrefillBrandsToNames(prefill, brandNameById);
+  const explorerFieldName = process.env.AIRTABLE_BASICS_EXPLORER_PROFILE_JSON_FIELD || "Explorer Profile JSON";
+  const explorerRaw = readFieldByNormalizedName(f, new Set([normalizeKey(explorerFieldName)]));
+  if (explorerRaw != null && String(explorerRaw).trim() !== "") {
+    prefill.explorerProfileJson = String(explorerRaw).trim();
+  }
 
-  return { prefill, caseStudies, ownerDiligenceQa };
+  applyNewTwoPrefillFromSplitTables(prefill, { f, pf, sf, ff, ifields, of, dtf });
+
+  resolvePrefillBrandsToNames(prefill, brandNameById);
+  const brandProfiles = buildBrandProfilesFromPrefill(prefill, brandBasicsRecords, brandLogoByName);
+
+  normalizeOperatorSetupSelectPrefill(prefill);
+
+  return { prefill, caseStudies, ownerDiligenceQa, brandProfiles };
+}
+
+/** Resolved brand names → `{ name, logoUrl }` for detail API (Basics or new-base prefill). */
+export function buildBrandProfilesFromPrefill(prefill, brandBasicsRecords, brandLogoByNameOverride) {
+  const brandLogoByName =
+    brandLogoByNameOverride || buildBrandLogoByNameFromBasicsRecords(brandBasicsRecords);
+  return (Array.isArray(prefill.brands) ? prefill.brands : [])
+    .map((name) => {
+      const n = formatListValue(name).trim();
+      if (!n) return null;
+      return {
+        name: n,
+        logoUrl: brandLogoByName.get(n.toLowerCase()) || "",
+      };
+    })
+    .filter(Boolean);
 }
 
 /**
@@ -450,3 +547,5 @@ export async function buildThirdPartyOperatorPrefill(operatorRecord) {
 }
 
 export { TABLE_NAME as THIRD_PARTY_OPERATOR_BASICS_TABLE };
+export { REPRESENTATIVE_PROPERTIES_TABLE as THIRD_PARTY_OPERATOR_REPRESENTATIVE_PROPERTIES_TABLE };
+export { LEADERSHIP_TEAM_TABLE as THIRD_PARTY_OPERATOR_LEADERSHIP_TEAM_TABLE };
