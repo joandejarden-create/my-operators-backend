@@ -222,6 +222,9 @@ app.get("/api/intake/third-party-operators/:recordId", getThirdPartyOperatorDeta
 app.get("/api/intake/third-party-operators", listThirdPartyOperators);
 app.get("/api/third-party-operators/list", listThirdPartyOperators);
 app.get("/api/third-party-operators", listThirdPartyOperators);
+// Aliases for My Operators (new) clients / docs
+app.get("/api/third-party-operators-new/list", listThirdPartyOperators);
+app.get("/api/third-party-operators-new", listThirdPartyOperators);
 app.patch("/api/intake/third-party-operators/:recordId/status", updateThirdPartyOperatorStatus);
 
 // My Deals API (more specific routes first so /outreach-default and /outreach-setup are not treated as recordId)
@@ -931,5 +934,7 @@ app.listen(PORT, () => {
   console.log("   GET /api/intake/third-party-operators");
   console.log("   GET /api/third-party-operators/list");
   console.log("   GET /api/third-party-operators");
+  console.log("   GET /api/third-party-operators-new/list");
+  console.log("   GET /api/third-party-operators-new");
   console.log("   GET /api/intake/third-party-operator/prefill-qa");
 });
