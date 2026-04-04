@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operator Explorer Gold Mock</title>
+  <style>
+    :root {
+      --neutral--800: #080f25;
+      --neutral--700: #212c4d;
+      --neutral--600: #37446b;
+      --neutral--500: #7e89ac;
+      --neutral--400: #aeb9e1;
+      --neutral--100: #ffffff;
+      --accent--primary-1: #6c72ff;
+      --secondary--color-1: #101935;
+      --secondary--color-3: #57c3ff;
+      --bg: #080f25;
+      --panel: #101935;
+      --panel-soft: #101935;
+      --border: #37446b;
+      --text: #ffffff;
+      --muted: #aeb9e1;
+    }
+    * { box-sizing: border-box; }
+    /* Match Operator Explorer / app shell scrollbar (dark track, muted thumb) */
+    html {
+      color-scheme: dark;
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: var(--neutral--600) var(--neutral--800);
+    }
+    *::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    *::-webkit-scrollbar-track {
+      background: var(--neutral--800);
+      border-left: 1px solid rgba(87, 195, 255, 0.35);
+    }
+    *::-webkit-scrollbar-thumb {
+      background: var(--neutral--600);
+      border-radius: 0;
+    }
+    *::-webkit-scrollbar-thumb:hover {
+      background: var(--neutral--500);
+    }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background-color: var(--neutral--800);
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .page { max-width: 1360px; margin: 0 auto; padding: 24px; }
+    .hero {
+      position: relative;
+      background: rgba(108, 114, 255, 0.08);
+      border: 0.6px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    /* Left stripe only — matches Operator Explorer tile (.brand-card__scale-stripe); color(s) from chain scale list */
+    .hero::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 12px 0 0 12px;
+      background: var(--hero-stripe-bg, var(--accent--primary-1));
+      pointer-events: none;
+    }
+    .hero h1 { margin: 0 0 6px 0; font-size: 28px; }
+    .hero-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .hero-logo {
+      height: 38px;
+      width: auto;
+      max-width: 140px;
+      object-fit: contain;
+      display: block;
+    }
+    .hero .tag { color: #8fc3ff; font-weight: 600; margin-bottom: 10px; }
+    .hero .statement { color: #d7e4fa; max-width: 1100px; }
+    .hero-meta {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .meta-card, .kpi {
+      background: var(--panel);
+      border: 0.6px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 72px;
+    }
+    .meta-card .label, .kpi .label, .cluster h3, .card h3 {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      font-size: 11px;
+      margin: 0 0 6px 0;
+    }
+    .meta-card .value, .kpi .value { font-size: 15px; font-weight: 600; }
+    .tabs-section {
+      display: grid;
+      /* One row of 10 tabs; min column width keeps two-line labels readable */
+      grid-template-columns: repeat(10, minmax(124px, 1fr));
+      grid-auto-rows: auto;
+      gap: 8px 4px;
+      margin-bottom: 18px;
+      align-items: start;
+      justify-items: stretch;
+      width: 100%;
+      background-color: var(--neutral--800);
+      border-bottom: 0.6px solid var(--neutral--600);
+      padding-bottom: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabs-section .section-nav-item {
+      min-width: 0;
+      width: 100%;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--neutral--400);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 10px;
+      font-weight: 600;
+      border: none;
+      background: none;
+      font-family: inherit;
+      padding: 10px 4px;
+      transition: color .2s;
+      position: relative;
+    }
+    .tabs-section .section-nav-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 0.6px solid var(--neutral--600);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--neutral--500);
+      background: transparent;
+      transition: all .2s;
+    }
+    .tabs-section .section-nav-icon svg {
+      width: 18px; height: 18px;
+      fill: none; stroke: currentColor; stroke-width: 1.5;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    /* Labels use explicit <br> in markup; fill cell width — no fixed max-width or line-clamp */
+    .tabs-section .section-nav-label {
+      text-align: center;
+      line-height: 1.3;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      margin: 0 auto;
+      padding: 0 2px;
+      box-sizing: border-box;
+      white-space: normal;
+      overflow: visible;
+      display: block;
+      font-size: 10px;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .tabs-section .section-nav-item:hover { color: var(--neutral--100); }
+    .tabs-section .section-nav-item:hover .section-nav-icon { color: var(--neutral--100); }
+    .tabs-section .section-nav-item.active { color: var(--accent--primary-1); }
+    .tabs-section .section-nav-item.active .section-nav-icon {
+      border-color: var(--accent--primary-1);
+      border-width: 2px;
+      color: var(--accent--primary-1);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .section {
+      background: var(--panel-soft);
+      border: 0.6px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .section-title { margin: 0 0 10px 0; font-size: 17px; }
+    .kpi-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .cluster, .card {
+      background: var(--panel);
+      border: 0.6px solid var(--border);
+      border-radius: 10px;
+      padding: 11px;
+      min-height: 140px;
+    }
+    .cluster ul { margin: 0; padding-left: 18px; }
+    .cluster li { margin: 5px 0; color: #dbe6f8; font-size: 13px; }
+    .gold-footprint-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .gold-footprint-subsection { margin: 0; }
+    .gold-footprint-table-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0 0 10px 0;
+      letter-spacing: 0.02em;
+      text-transform: none;
+    }
+    .gold-footprint-table-wrap {
+      overflow-x: auto;
+      border: 0.6px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel);
+    }
+    .gold-footprint-table {
+      width: 100%;
+      min-width: 520px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .gold-footprint-table th,
+    .gold-footprint-table td {
+      padding: 10px 12px;
+      border-bottom: 0.6px solid var(--border);
+      text-align: right;
+      vertical-align: middle;
+    }
+    .gold-footprint-table thead th {
+      background: rgba(16, 25, 53, 0.95);
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.03em;
+      text-align: center;
+      text-transform: none;
+    }
+    .gold-footprint-table th:first-child,
+    .gold-footprint-table td:first-child {
+      text-align: left;
+    }
+    .gold-footprint-table tbody th[scope="row"] {
+      font-weight: 600;
+      color: #eaf2ff;
+      background: rgba(8, 15, 37, 0.35);
+    }
+    .gold-footprint-table tbody td {
+      color: #dbe6f8;
+      font-variant-numeric: tabular-nums;
+    }
+    .gold-footprint-table .gold-ft-total-row th,
+    .gold-footprint-table .gold-ft-total-row td {
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.06);
+      border-top: 0.6px solid var(--border);
+    }
+    .gold-footprint-table.units-staffing-table th,
+    .gold-footprint-table.units-staffing-table td {
+      text-align: left;
+    }
+    .gold-footprint-table.units-staffing-table td:last-child {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .gold-footprint-table-note {
+      margin: 8px 0 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .gold-footprint-distribution-head .gold-footprint-table-title { margin-bottom: 4px; }
+    .gold-footprint-view-hint {
+      margin: 0 0 12px 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .gold-footprint-distribution { position: relative; }
+    .gold-fp-view-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .gold-footprint-view-toggle {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+    .gold-fp-view-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 0.6px solid var(--border);
+      background: rgba(8, 15, 37, 0.5);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: none;
+      letter-spacing: 0.02em;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .gold-fp-view-label:hover {
+      color: var(--text);
+      border-color: var(--neutral--600);
+    }
+    #goldFpViewRegion:checked ~ .gold-footprint-view-toggle label[for="goldFpViewRegion"],
+    #goldFpViewChain:checked ~ .gold-footprint-view-toggle label[for="goldFpViewChain"],
+    #goldFpViewBrand:checked ~ .gold-footprint-view-toggle label[for="goldFpViewBrand"] {
+      border-color: var(--accent--primary-1);
+      color: var(--text);
+      background: rgba(108, 114, 255, 0.14);
+    }
+    .gold-fp-panel { display: none; }
+    #goldFpViewRegion:checked ~ .gold-fp-panel-region { display: block; }
+    #goldFpViewChain:checked ~ .gold-fp-panel-chain { display: block; }
+    #goldFpViewBrand:checked ~ .gold-fp-panel-brand { display: block; }
+    .gold-footprint-table.units-staffing-table th[scope="row"] {
+      max-width: 220px;
+      min-width: 140px;
+      width: 42%;
+      white-space: normal;
+      line-height: 1.35;
+      vertical-align: top;
+    }
+    .gold-service-offerings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 1100px) {
+      .gold-service-offerings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .gold-service-offerings-grid { grid-template-columns: 1fr; }
+    }
+    .gold-service-category {
+      background: var(--panel);
+      border: 0.6px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      min-height: 100px;
+    }
+    .gold-service-category-title {
+      margin: 0 0 10px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #b8c5e8;
+      line-height: 1.4;
+      text-transform: none;
+      letter-spacing: 0.02em;
+      max-width: none;
+      white-space: normal;
+    }
+    .gold-service-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #dbe6f8;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .gold-service-list li { margin: 5px 0; }
+    /* Owner diligence Q&A: separate question vs answer visually */
+    .cluster.diligence-cluster .diligence-qa-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .cluster.diligence-cluster .diligence-qa-list > li {
+      margin: 0 0 14px 0;
+      padding-bottom: 12px;
+      border-bottom: 0.6px solid rgba(55, 68, 107, 0.85);
+    }
+    .cluster.diligence-cluster .diligence-qa-list > li:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .cluster.diligence-cluster .diligence-q,
+    .cluster.diligence-cluster .diligence-a {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .cluster.diligence-cluster .diligence-q {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      margin: 0 0 8px 0;
+      font-weight: 500;
+    }
+    .cluster.diligence-cluster .diligence-q-label,
+    .cluster.diligence-cluster .diligence-a-label {
+      flex: 0 0 auto;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      padding: 2px 0 0 0;
+    }
+    /* Q: warm accent — distinct from A (purple) and from question body (muted) */
+    .cluster.diligence-cluster .diligence-q-label { color: #e8a84a; }
+    .cluster.diligence-cluster .diligence-a-label { color: var(--accent--primary-1); }
+    .cluster.diligence-cluster .diligence-q-text,
+    .cluster.diligence-cluster .diligence-a-text {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .cluster.diligence-cluster .diligence-a {
+      color: #eaf2ff;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0;
+      font-weight: 400;
+    }
+    .card p { margin: 0; color: #dbe6f8; font-size: 13px; }
+    .cap-profile-3-2 .row-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 10px; }
+    .cap-profile-3-2 .row-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .proof-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .proof-card, .leader-card {
+      background: var(--panel);
+      border: 0.6px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+    }
+    .proof-card img, .leader-card img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+    .leader-image-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .leader-bio-overlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 12px 12px 10px;
+      color: #eaf2ff;
+      font-size: 12px;
+      line-height: 1.45;
+      background: linear-gradient(180deg, rgba(8,15,37,0) 0%, rgba(8,15,37,0.80) 58%, rgba(8,15,37,0.95) 100%);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .22s ease, transform .22s ease;
+      pointer-events: none;
+    }
+    .leader-image-wrap:hover .leader-bio-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .leader-card img {
+      height: 260px;
+      object-fit: cover;
+      object-position: center 16%;
+    }
+    .proof-body, .leader-body { padding: 10px; }
+    .proof-title, .leader-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .proof-meta, .leader-meta {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      margin-bottom: 8px;
+    }
+    .proof-line, .leader-summary { color: #dbe6f8; font-size: 13px; margin-bottom: 6px; }
+    .quant-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    @media (max-width: 720px) {
+      .tabs-section {
+        grid-template-columns: repeat(10, minmax(64px, 1fr));
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+    }
+    @media (max-width: 1000px) {
+      .hero-meta, .kpi-grid-4, .grid-3, .proof-grid, .quant-grid { grid-template-columns: 1fr 1fr; }
+      .cap-profile-3-2 .row-3, .cap-profile-3-2 .row-2 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero-meta, .kpi-grid-4, .grid-3, .proof-grid, .quant-grid { grid-template-columns: 1fr; }
+    }
+    .gold-mock-tab-empty {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-title">
+        <img class="hero-logo" id="heroLogo" alt="Altura Hospitality Group logo" />
+        <h1 id="heroName">Altura Hospitality Group</h1>
+      </div>
+      <div class="tag">Institutional-grade operations with local market precision</div>
+      <div class="statement">Altura Hospitality Group combines institutional operating discipline, data-led commercial strategy, and regionally grounded execution across urban and resort hospitality assets. The platform is built for owners and developers seeking strong governance, scalable operating depth, and decision-grade reporting.</div>
+      <div class="hero-meta" id="heroMeta"></div>
+    </header>
+    <nav class="tabs-section" id="tabs"></nav>
+    <main id="panels"></main>
+  </div>
+  <script src="js/operator-explorer-gold-mock-data.js"></script>
+  <script>
+    function renderGoldMockEmbeddedDemo() {
+    const REF_YEAR = new Date().getFullYear();
+    const GOLD_YEAR_FOUNDED = REF_YEAR - 18;
+    const GOLD_OPERATOR = {
+      name: "Altura Hospitality Group",
+      tagline: "Institutional-grade operations with local market precision",
+      positioning: "Altura Hospitality Group combines institutional operating discipline, data-led commercial strategy, and regionally grounded execution across urban and resort hospitality assets. The platform is built for owners and developers seeking strong governance, scalable operating depth, and decision-grade reporting.",
+      hq: "Miami, USA",
+      yearFounded: GOLD_YEAR_FOUNDED,
+      years: String(REF_YEAR - GOLD_YEAR_FOUNDED),
+      hotelsManaged: "35",
+      roomsManaged: "8,750",
+      regions: "Latin America, North America, Southern Europe", brandsSupported: "9", brandMix: "Balanced Branded + Independent",
+      logo: "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='84' viewBox='0 0 360 84'%3E%3Crect width='360' height='84' rx='8' fill='%230b1738'/%3E%3Ccircle cx='40' cy='42' r='18' fill='%236c72ff'/%3E%3Cpath d='M31 42l7 7 12-14' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='72' y='36' fill='%23ffffff' font-family='Inter,Segoe UI,Arial,sans-serif' font-size='21' font-weight='700'%3EAltura%3C/text%3E%3Ctext x='72' y='60' fill='%238fc3ff' font-family='Inter,Segoe UI,Arial,sans-serif' font-size='18' font-weight='600'%3EHospitality Group%3C/text%3E%3C/svg%3E",
+      images: {
+        proof1: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+        proof2: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
+        proof3: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80",
+        leader1: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80",
+        leader2: "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=900&q=80",
+        leader3: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80",
+        leader4: "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=900&q=80",
+        leader5: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80",
+        leader6: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80"
+      }
+    };
+    const tabs = ["Profile & Positioning","Operating Platform","Brand & Relationships","Markets & Footprint","Owner Engagement & Reporting","Infrastructure & Data","Risk, Compliance & ESG","Leadership","Best Fit & Deal Profile","Proof & Track Record"];
+    const TAB_ICONS = {
+      "Profile & Positioning": '<svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5"></path><path d="M5 10v10h14V10"></path></svg>',
+      "Operating Platform": '<svg viewBox="0 0 24 24"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path></svg>',
+      "Brand & Relationships": '<svg viewBox="0 0 24 24"><path d="M7 4h10l3 4-8 12L4 8z"></path></svg>',
+      "Markets & Footprint": '<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 11-9 11s-9-4-9-11a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>',
+      "Owner Engagement & Reporting": '<svg viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 1 1 0 7H6"></path></svg>',
+      "Infrastructure & Data": '<svg viewBox="0 0 24 24"><path d="M3 21h18"></path><path d="M6 21V7l6-4 6 4v14"></path><path d="M10 11h4"></path><path d="M10 15h4"></path></svg>',
+      "Risk, Compliance & ESG": '<svg viewBox="0 0 24 24"><path d="M12 2l9 16H3z"></path><path d="M12 9v5"></path><circle cx="12" cy="17" r="1"></circle></svg>',
+      "Leadership": '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"></path></svg>',
+      "Best Fit & Deal Profile": '<svg viewBox="0 0 24 24"><path d="M3 12l6 6 12-12"></path></svg>',
+      "Proof & Track Record": '<svg viewBox="0 0 24 24"><path d="M4 19h16"></path><path d="M7 16V9"></path><path d="M12 16V5"></path><path d="M17 16v-4"></path></svg>'
+    };
+    const TAB_LABEL_HTML = {
+      "Profile & Positioning": "Profile &<br>Positioning",
+      "Operating Platform": "Operating<br>Platform",
+      "Brand & Relationships": "Brand &<br>Relationships",
+      "Markets & Footprint": "Markets &<br>Footprint",
+      "Owner Engagement & Reporting": "Engagement &<br>Reporting",
+      "Infrastructure & Data": "Infrastructure<br>&amp; Data",
+      "Risk, Compliance & ESG": "Risk, Compliance<br>&amp; ESG",
+      "Leadership": "Leadership<br>&amp; Team",
+      "Best Fit & Deal Profile": "Best Fit &<br>Deal Profile",
+      "Proof & Track Record": "Proof &<br>Track Record"
+    };
+    function kpi(l,v){return `<div class="kpi"><div class="label">${l}</div><div class="value">${v}</div></div>`;}
+    function decisionStrip(items){
+      return `<section class="section"><h2 class="section-title">Decision Signals</h2><div class="kpi-grid-4">${items.map(([l,v])=>kpi(l,v)).join("")}</div></section>`;
+    }
+    function cluster(t,items){return `<div class="cluster"><h3>${t}</h3><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul></div>`;}
+    function card(t,b){return `<div class="card"><h3>${t}</h3><p>${b}</p></div>`;}
+    function proofCard(img,t,m,lines){return `<article class="proof-card"><img src="${img}" alt="${t}"><div class="proof-body"><div class="proof-title">${t}</div><div class="proof-meta">${m}</div>${lines.map(l=>`<div class="proof-line">${l}</div>`).join("")}</div></article>`;}
+    const LEADER_BIOS = {
+      "Maria Alvarez": "Executive operator with 20+ years leading multi-country hotel platforms. Known for disciplined governance, conversion execution, and owner-ready reporting structures across LATAM portfolios.",
+      "David Chen": "Former regional operations executive with deep full-service and brand-managed experience. Builds repeatable operating systems that improve margin performance and execution consistency.",
+      "Luis Romero": "Development and transition leader focused on growth-market deal activation. Specializes in conversion pathways, pre-opening mobilization, and brand alignment under complex timelines.",
+      "Valeria Santos": "Commercial strategist overseeing pricing, channel, and demand architecture. Connects portfolio-level commercial strategy to property-level actions and measurable owner outcomes.",
+      "Daniel Ortega": "Finance executive focused on control integrity, forecasting rigor, and capital visibility. Partners with owners on budget discipline, variance management, and investment planning.",
+      "Camila Ruiz": "People and culture leader designing scalable talent systems. Improves service consistency and leadership continuity through structured capability development."
+    };
+    function leaderCard(img,name,title,summary,role){
+      const bio = LEADER_BIOS[name] || summary;
+      return `<article class="leader-card"><div class="leader-image-wrap"><img src="${img}" alt="${name}"><div class="leader-bio-overlay"><strong>Executive Bio:</strong> ${bio}</div></div><div class="leader-body"><div class="leader-name">${name}</div><div class="leader-meta">${title} · ${role}</div><div class="leader-summary">${summary}</div></div></article>`;
+    }
+    const SERVICE_OFFERINGS_DEMO_HTML = `<section class="section"><h2 class="section-title">Service Offerings</h2><div class="gold-service-offerings-grid"><div class="gold-service-category"><h4 class="gold-service-category-title">Revenue Management Services</h4><ul class="gold-service-list"><li>In-House Revenue Management Team</li><li>Dedicated Revenue Manager Per Property</li><li>Advanced Analytics and Forecasting</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Sales &amp; Marketing Support</h4><ul class="gold-service-list"><li>Dedicated Sales Team</li><li>Digital Marketing Services</li><li>Social Media Management</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Accounting &amp; Financial Reporting</h4><ul class="gold-service-list"><li>Weekly Financial Reporting</li><li>Monthly P&amp;L Statements</li><li>Budget vs. Actual Analysis</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Procurement Services</h4><ul class="gold-service-list"><li>Centralized Purchasing</li><li>Preferred Vendor Network</li><li>Supply Chain Management</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">HR &amp; Training Services</h4><ul class="gold-service-list"><li>Recruitment and Hiring</li><li>Ongoing Training Programs</li><li>Leadership Development</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Technology Services</h4><ul class="gold-service-list"><li>IT Support and Helpdesk</li><li>System Integrations</li><li>Cybersecurity Services</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Design &amp; Renovation Support</h4><ul class="gold-service-list"><li>In-House Design Team</li><li>FF&amp;E Procurement</li><li>Space Planning and Design</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Development Services</h4><ul class="gold-service-list"><li>Pre-Opening Services</li><li>Conversion Project Management</li><li>Feasibility Studies</li></ul></div></div></section>`;
+    document.getElementById("heroName").textContent = GOLD_OPERATOR.name;
+    document.getElementById("heroLogo").src = GOLD_OPERATOR.logo;
+    document.getElementById("heroMeta").innerHTML=[["Headquarters",GOLD_OPERATOR.hq],["Years in Business",GOLD_OPERATOR.years],["Hotels Managed",GOLD_OPERATOR.hotelsManaged],["Rooms Managed",GOLD_OPERATOR.roomsManaged],["Brands Supported",GOLD_OPERATOR.brandsSupported],["Brand Mix",GOLD_OPERATOR.brandMix]].map(([l,v])=>`<div class="meta-card"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
+    const tabsEl=document.getElementById("tabs");
+    tabsEl.innerHTML=tabs.map((t,i)=>`<button type="button" class="section-nav-item ${i===0?"active":""}" data-tab="${t}"><div class="section-nav-icon">${TAB_ICONS[t]}</div><div class="section-nav-label">${TAB_LABEL_HTML[t]||t}</div></button>`).join("");
+    const panels={
+      "Profile & Positioning": `<section class="section"><h2 class="section-title">Operator Summary</h2><div class="kpi-grid-4">${kpi("Headquarters","Miami, USA")}${kpi("Years in Business",GOLD_OPERATOR.years)}${kpi("Hotels Managed","35")}${kpi("Rooms Managed","8,750")}</div></section>
+      <section class="section"><h2 class="section-title">Company Background</h2>${card("Positioning",GOLD_OPERATOR.positioning)}</section>
+      <section class="section"><h2 class="section-title">Scale & Footprint Snapshot</h2><div class="quant-grid">${cluster("Portfolio Scale",["Hotels Managed: 35","Rooms Managed: 8,750","Core Markets: 12","Cities: 22"])}${cluster("Regional Split",["Latin America Hotels: 24","North America Hotels: 6","Southern Europe Hotels: 5","Regional Leadership Clusters: 3"])}${cluster("Country Spread",["Mexico: 8 hotels","Brazil: 7 hotels","Colombia: 5 hotels","US + Spain: 12 hotels"])}${cluster("Brand Positioning",["Brands Supported: 9","Brand Mix: 60% Branded / 40% Independent","Soft Brand Agility: Strong","Franchise Compatibility: High"])}</div></section>
+      <section class="section"><h2 class="section-title">Key Differentiators</h2><div class="grid-2">${cluster("Execution Differentiators",["Institutional operating discipline","Decision-grade reporting architecture","Strong transition and repositioning depth","Market-grounded local execution model"])}${cluster("Commercial Differentiators",["Demand-led revenue governance","Channel mix discipline","Brand and independent operating confidence","Owner-priority alignment under governance"])}</div></section>
+      <section class="section"><h2 class="section-title">What They Are Best At</h2><div class="grid-3">${card("Urban + Resort Portfolio Execution","Balances urban and resort execution with stable governance and local market adaptation.")}${card("Transition-Heavy Assignments","Performs strongly in conversions, reflags, and stabilization windows requiring disciplined mobilization.")}${card("Owner-Facing Governance","Converts operating data into owner decisions through recurring cadence and clear action pathways.")}</div></section>
+      <section class="section"><h2 class="section-title">Owner Value Snapshot</h2><div class="grid-2">${cluster("Owner Outcomes",["Weekly + monthly visibility","Clear accountability structure","Commercial performance discipline","Risk-aware execution cadence"])}${cluster("Owner Experience",["Dashboard-first reporting","Quarterly executive review cycle","Structured escalation channels","Action tracker for follow-through"])}</div></section>
+      <section class="section"><h2 class="section-title">Operating Flexibility / Brand Context</h2><div class="grid-2">${cluster("Brand Context",["Core Brands: Marriott, Hilton, Hyatt, IHG","Soft Brands: Autograph, Curio, Tribute","Balanced branded + independent model","Controlled flexibility governance"])}${cluster("Flexibility Signals",["Independent-to-brand conversion support","Brand standards with local adaptation","Commercial + compliance balancing","Asset-specific operating model design"])}</div></section>
+      <section class="section"><h2 class="section-title">Leadership Snapshot</h2><div class="proof-grid">${leaderCard(GOLD_OPERATOR.images.leader1,"Maria Alvarez","CEO","Leads growth, governance, and owner confidence across the platform.","Executive Leadership · LATAM")}${leaderCard(GOLD_OPERATOR.images.leader2,"David Chen","COO","Drives operating consistency, labor discipline, and performance accountability.","Operations · Multi-Region")}${leaderCard(GOLD_OPERATOR.images.leader3,"Luis Romero","VP Development","Supports deal execution, brand alignment, and market-entry strategy.","Development · Growth Markets")}</div></section>
+      <section class="section"><h2 class="section-title">Why Owners Consider This Operator</h2><div class="grid-3">${card("High-Governance Execution","Platform built for owners requiring institutional control without losing local execution speed.")}${card("Commercial + Operational Balance","Strong commercial engine with disciplined operations, not one-sided optimization.")}${card("Decision-Grade Reporting","Owner communication is structured for decisions, accountability, and confidence under change.")}</div></section>
+      ${decisionStrip([["Repeat-owner Assignment Rate","68%"],["Average Contract Duration","7.4 years"],["Stabilization Window","6-9 months"]])}`,
+      "Operating Platform": `<section class="section"><h2 class="section-title">Operating Platform</h2><div class="kpi-grid-4">${kpi("Operating Model","Hybrid Platform")}${kpi("Execution Strength","Institutional")}${kpi("Transition Capability","Strong")}${kpi("Reporting Strength","Advanced")}</div></section>
+      <section class="section"><h2 class="section-title">Hotel Operating Profile</h2><div class="cap-profile-3-2"><div class="row-3">${cluster("Operational Execution",["Standardized SOP frameworks across full-service, resort, lifestyle, and select-service assets","Labor productivity models tailored to complex operating markets","Quality assurance and standards governance","Guest experience consistency programs","Property-to-portfolio accountability routines"])}${cluster("Commercial Engine",["Revenue strategy governance across transient, group, and direct segments","Channel mix optimization and OTA discipline","Sales strategy aligned to market demand profile","Demand generation coordination with brand and local teams","Weekly performance response routines"])}${cluster("Transition Capability",["Independent to branded conversions","Repositioning and turnaround mobilization","Pre-opening planning and operating ramp-up","Systems launch and controls activation","Owner and lender onboarding support"])}</div></div></section>
+      <section class="section"><h2 class="section-title">Asset Support Capabilities</h2><div class="grid-2">${card("Asset Positioning","Positions each asset using demand profile, channel economics, and owner return targets. Aligns positioning to market segment realities and capex constraints.")}${card("Service Differentiation","Differentiates operations through governance discipline, structured execution cadence, and practical localization. Creates repeatable owner-facing performance confidence.")}${card("Execution Reliability","Uses recurring control routines, escalation pathways, and weekly response cycles. Maintains consistency from portfolio strategy through property-level delivery.")}${card("Governance & Reporting","Runs decision-grade reporting packs and variance narratives tied to actions. Keeps owner, lender, and operator priorities aligned through formal review rhythms.")}</div></section>
+      <section class="section"><h2 class="section-title">Capability Deep Dive</h2><div class="grid-2">${cluster("Reporting Systems",["Weekly flash reports","Monthly P&L packages","Quarterly strategic reviews","Variance narratives and action logs"])}${cluster("Revenue Systems",["IDeaS RMS deployment","Duetto demand response workflows","Rate governance cadence","Channel mix control routines"])}${cluster("Execution Infrastructure",["Regional operations pods","Transition taskforces","Cross-functional escalation paths","Standard operating playbooks"])}${cluster("Owner Tools",["Live performance dashboard","Portfolio drill-down views","Action tracker","Governance calendar and decision log"])}</div></section>
+      <section class="section"><h2 class="section-title">Sample Properties / Capability Proof</h2><div class="proof-grid">${proofCard(GOLD_OPERATOR.images.proof1,"Hilton Bogotá Financial District","Bogotá, Colombia · Urban Full-Service",["Asset Type: Urban Full-Service","Result: +18% RevPAR growth post-transition"])}${proofCard(GOLD_OPERATOR.images.proof2,"Azul Beach Resort Cancún","Cancún, Mexico · Resort",["Asset Type: Resort","Result: Occupancy increased 22% in 12 months"])}${proofCard(GOLD_OPERATOR.images.proof3,"AC Hotel Madrid Centro","Madrid, Spain · Urban Lifestyle",["Asset Type: Urban Lifestyle","Result: ADR premium stabilized vs comp set"])}</div></section>
+      <section class="section"><h2 class="section-title">Capabilities Quantified Support</h2><div class="quant-grid">${cluster("Hotels by Chain Scale",["Luxury: 4","Upper Upscale: 7","Upscale: 11","Upper Midscale: 13"])}${cluster("Rooms by Region",["Latin America: 5,600","North America: 1,850","Southern Europe: 1,300","Total: 8,750"])}${cluster("Brands / Countries",["Brands Supported: 9","Countries Operated: 8","Cities Operated: 22","Core Markets: 12"])}${cluster("Proof / Platform",["Proof Properties: 3","System Stack Count: 5","Reporting Outputs: 6","Owner Tool Count: 5"])}</div></section>
+      ${decisionStrip([["Budget Accuracy","Within 3.5%"],["Time to First Performance Lift","90-120 days"],["Transitions Delivered On Schedule","89%"]])}`,
+      "Brand & Relationships": `<section class="section"><h2 class="section-title">Brand & Relationships</h2><div class="kpi-grid-4">${kpi("Brands Supported","9")}${kpi("Brand Mix","60% Branded / 40% Independent")}${kpi("Franchise Compatibility","High")}${kpi("Flexibility Model","Controlled Flexibility")}</div></section>
+      <section class="section"><h2 class="section-title">Brand Operating Modules</h2><div class="grid-2">${cluster("Core Brands",["Marriott (AC, Tribute, Autograph)","Hilton (DoubleTree, Curio)","Hyatt (Hyatt Centric, Hyatt Place)","IHG (Hotel Indigo, voco)"])}${cluster("Soft Brands / Collections",["Autograph Collection","Curio Collection","Tribute Portfolio","Independent luxury collections"])}${cluster("Compliance + Commercial Balance",["Brand standards governance with local market adaptation","Commercial decision rights via clear approval paths","Owner priorities balanced with brand integrity","QA readiness integrated into operations"])}${cluster("Brand Relationship Model",["Branded new-build support","Independent-to-brand conversion support","Soft-brand operating flexibility","Independent asset operating confidence"])}</div></section>
+      <section class="section"><h2 class="section-title">Brand Quantified Support</h2><div class="quant-grid">${cluster("Hotels by Brand Family",["Marriott Family: 11","Hilton Family: 8","Hyatt Family: 6","IHG + Independent: 10"])}${cluster("Rooms by Brand Family",["Marriott Family: 2,760","Hilton Family: 2,040","Hyatt Family: 1,510","IHG + Independent: 2,440"])}${cluster("Branded / Independent Split",["Branded Hotels: 21","Independent Hotels: 14","Branded Rooms: 5,450","Independent Rooms: 3,300"])}${cluster("Soft Brand Signals",["Soft Brand Hotels: 7","Soft Brand Rooms: 1,980","Collection Partnerships: 4","Conversion-ready Assets: 9"])}</div></section>
+      ${decisionStrip([["Brand Audit Pass Rate","95–98%"],["Reflag Readiness Lead Time","16–24 Weeks"],["Franchise Alignment Score","High"],["Soft Brand Retention","90–94%"]])}`,
+      "Markets & Footprint": `<section class="section"><h2 class="section-title">Markets & Footprint</h2><div class="kpi-grid-4">${kpi("Regions","3")}${kpi("Countries","8")}${kpi("Cities","22")}${kpi("Coverage Model","Clustered Regional Teams")}</div></section>
+      <section class="section"><h2 class="section-title">Footprint Metrics</h2><div class="gold-footprint-metrics"><div class="gold-footprint-subsection"><h3 class="gold-footprint-table-title">Existing vs. Pipeline (Portfolio)</h3><div class="gold-footprint-table-wrap" role="region" aria-label="Existing versus pipeline portfolio totals"><table class="gold-footprint-table"><thead><tr><th scope="col"></th><th scope="col">Existing Hotels</th><th scope="col">Existing Rooms</th><th scope="col">Pipeline Hotels</th><th scope="col">Pipeline Rooms</th></tr></thead><tbody><tr class="gold-ft-data-row"><th scope="row">Total</th><td>24</td><td>6,200</td><td>6</td><td>1,450</td></tr></tbody></table></div></div><div class="gold-footprint-subsection gold-footprint-distribution"><div class="gold-footprint-distribution-head"><h3 class="gold-footprint-table-title">Portfolio Distribution</h3><p class="gold-footprint-view-hint">View by region, chain scale, or brand.</p></div><input type="radio" name="goldFpView" id="goldFpViewRegion" class="gold-fp-view-input"><input type="radio" name="goldFpView" id="goldFpViewChain" class="gold-fp-view-input" checked><input type="radio" name="goldFpView" id="goldFpViewBrand" class="gold-fp-view-input"><div class="gold-footprint-view-toggle" role="tablist" aria-label="Portfolio distribution view"><label class="gold-fp-view-label" for="goldFpViewRegion">Region</label><label class="gold-fp-view-label" for="goldFpViewChain">Chain Scale</label><label class="gold-fp-view-label" for="goldFpViewBrand">Brand</label></div><div class="gold-footprint-table-wrap gold-fp-panel gold-fp-panel-region" role="tabpanel" aria-label="By region"><table class="gold-footprint-table"><thead><tr><th scope="col">Region</th><th scope="col">Existing Hotels</th><th scope="col">Existing Rooms</th><th scope="col">Pipeline Hotels</th><th scope="col">Pipeline Rooms</th><th scope="col">Total Hotels</th><th scope="col">Total Rooms</th><th scope="col">Avg Staff / Property</th></tr></thead><tbody><tr><th scope="row">North America</th><td>8</td><td>2,100</td><td>2</td><td>500</td><td>10</td><td>2,600</td><td>—</td></tr><tr><th scope="row">Caribbean &amp; Latin America</th><td>10</td><td>2,500</td><td>3</td><td>600</td><td>13</td><td>3,100</td><td>—</td></tr><tr><th scope="row">Europe</th><td>6</td><td>1,600</td><td>1</td><td>350</td><td>7</td><td>1,950</td><td>—</td></tr><tr class="gold-ft-total-row"><th scope="row">Total</th><td>24</td><td>6,200</td><td>6</td><td>1,450</td><td>30</td><td>7,650</td><td>—</td></tr></tbody></table></div><div class="gold-footprint-table-wrap gold-fp-panel gold-fp-panel-chain" role="tabpanel" aria-label="By chain scale"><table class="gold-footprint-table"><thead><tr><th scope="col">Chain Scale</th><th scope="col">Existing Hotels</th><th scope="col">Existing Rooms</th><th scope="col">Pipeline Hotels</th><th scope="col">Pipeline Rooms</th><th scope="col">Total Hotels</th><th scope="col">Total Rooms</th><th scope="col">Avg Staff / Property</th></tr></thead><tbody><tr><th scope="row">Luxury</th><td>2</td><td>500</td><td>1</td><td>100</td><td>3</td><td>600</td><td>42.0</td></tr><tr><th scope="row">Upper Upscale</th><td>9</td><td>2,200</td><td>2</td><td>500</td><td>11</td><td>2,700</td><td>38.0</td></tr><tr><th scope="row">Upscale</th><td>10</td><td>2,500</td><td>2</td><td>500</td><td>12</td><td>3,000</td><td>32.0</td></tr><tr><th scope="row">Upper Midscale</th><td>3</td><td>1,000</td><td>1</td><td>350</td><td>4</td><td>1,350</td><td>28.0</td></tr><tr class="gold-ft-total-row"><th scope="row">Total</th><td>24</td><td>6,200</td><td>6</td><td>1,450</td><td>30</td><td>7,650</td><td>—</td></tr></tbody></table></div><div class="gold-footprint-table-wrap gold-fp-panel gold-fp-panel-brand" role="tabpanel" aria-label="By brand"><table class="gold-footprint-table"><thead><tr><th scope="col">Brand</th><th scope="col">Existing Hotels</th><th scope="col">Existing Rooms</th><th scope="col">Pipeline Hotels</th><th scope="col">Pipeline Rooms</th><th scope="col">Total Hotels</th><th scope="col">Total Rooms</th><th scope="col">Avg Staff / Property</th></tr></thead><tbody><tr><th scope="row">Marriott</th><td>11</td><td>2,640</td><td>3</td><td>720</td><td>14</td><td>3,360</td><td>35.0</td></tr><tr><th scope="row">Hilton</th><td>8</td><td>1,920</td><td>2</td><td>510</td><td>10</td><td>2,430</td><td>34.0</td></tr><tr class="gold-ft-total-row"><th scope="row">Total</th><td>19</td><td>4,560</td><td>5</td><td>1,230</td><td>24</td><td>5,790</td><td>—</td></tr></tbody></table></div></div><div class="gold-footprint-subsection"><h3 class="gold-footprint-table-title">Units &amp; Staffing</h3><div class="gold-footprint-table-wrap"><table class="gold-footprint-table units-staffing-table"><tbody><tr><th scope="row">Total Employees (Reported)</th><td>1,240</td></tr><tr><th scope="row">Avg On-Site Staff per Property</th><td>36</td></tr><tr><th scope="row">Regional Teams</th><td>12</td></tr></tbody></table></div></div></div></section>
+      <section class="section"><h2 class="section-title">Market Footprint</h2><div class="grid-2">${cluster("Core Markets",["Mexico City","São Paulo","Bogotá","Miami","Madrid","Lima"])}${cluster("Market Depth",["Regional leadership in core markets","Cross-functional market pods","Commercial + ops coordination","Owner governance rhythm by market cluster","Urban and resort execution models"])}</div></section>
+      <section class="section"><h2 class="section-title">Regional Operating Model</h2><div class="quant-grid">${cluster("Hotels by Country",["Mexico: 8","Brazil: 7","Colombia: 5","United States: 6"])}${cluster("Rooms by Country",["Mexico: 2,180","Brazil: 1,960","Colombia: 1,240","United States: 1,850"])}${cluster("Hotels by Region",["Latin America: 24","North America: 6","Southern Europe: 5","Total: 35"])}${cluster("Market Type Split",["Urban: 19","Resort: 11","Secondary: 5","Gateway Markets: 12"])}</div></section>
+      ${decisionStrip([["Avg. Years in Core Markets","9.6"],["Local Support FTE by Region","12-18"],["Gateway Market Concentration","Selective High-Depth"],["Urban/Resort Mix","54% / 31%"]])}`,
+      "Owner Engagement & Reporting": `<section class="section"><h2 class="section-title">Owner Engagement & Reporting</h2><div class="kpi-grid-4">${kpi("Service Model","Hybrid Platform")}${kpi("Reporting Cadence","Weekly + Monthly + Quarterly")}${kpi("Owner Visibility","Full Dashboard Access")}${kpi("Portfolio Coverage","35 Hotels / 8 Countries")}</div></section>
+      <section class="section"><h2 class="section-title">Owner Value Insights</h2><div class="grid-3">${card("Operational Discipline","Applies standardized operating controls and accountability loops from property through portfolio leadership. Maintains consistency under both stable and transition conditions.")}${card("Commercial Performance Engine","Integrates pricing governance, channel control, and demand activation to protect top-line and margin. Uses rapid response routines for market volatility.")}${card("Communication & Reporting","Delivers decision-grade reporting packages with action pathways and ownership visibility. Converts KPI movement into practical next-step recommendations.")}${card("Flexibility","Balances owner priorities, brand standards, and local operating realities through controlled governance pathways. Supports differentiated asset strategies without control drift.")}${card("Risk Mitigation","Maintains continuity planning, escalation protocols, and controlled recovery routines. Keeps owners informed with structured incident and resolution communication.")}</div></section>
+      <section class="section"><h2 class="section-title">Owner Experience Module</h2><div class="grid-2">${cluster("Owner Interaction",["Weekly operating calls","Monthly executive reviews","Quarterly strategic planning session","Escalation support pathways"])}${cluster("Owner Deliverables",["Flash reports + full operating pack","KPI review deck and variance bridge","Action tracker and accountability grid","Budget and forecast updates"])}</div></section>
+      <section class="section"><h2 class="section-title">Owner Quantified Support</h2><div class="kpi-grid-4">${kpi("Review Touchpoints / Quarter","4")}${kpi("Average Response Window","<48 hours")}</div></section>
+      ${decisionStrip([["NOI Lift Range (24m)","+9-14%"],["Owner Satisfaction Signal","Very Strong"],["Portfolio Review Adherence","100%"]])}`,
+      "Infrastructure & Data": `${SERVICE_OFFERINGS_DEMO_HTML}<section class="section"><h2 class="section-title">Infrastructure & Data</h2><div class="kpi-grid-4">${kpi("Reporting Systems","6")}${kpi("Revenue Systems","4")}${kpi("Execution Platform","Centralized + Regional")}${kpi("Owner Tools","5")}</div></section>
+      <section class="section"><h2 class="section-title">Owner Reporting &amp; Technology Stack</h2><div class="grid-2">${cluster("Asset Management & Reporting",["Weekly flash KPI reporting","Monthly operating and financial packs","Owner visibility dashboards","Budget and forecast discipline","CapEx planning and deployment tracking"])}${cluster("Systems & Technology",["PMS: Oracle OPERA Cloud","RMS: IDeaS + Duetto","BI dashboards with owner-facing views","Accounting: M3","Task and workflow management systems"])}</div></section>
+      <section class="section"><h2 class="section-title">Systems Clusters</h2><div class="grid-2">${cluster("Reporting Systems",["Flash reporting engine","Monthly P&L and KPI deck","Variance bridge templates","Quarterly strategic review pack"])}${cluster("Revenue Systems",["IDeaS orchestration","Duetto workflow support","Pricing governance cadence","Channel strategy review loops"])}${cluster("Execution Infrastructure",["Regional operations pods","Central operating standards","Transition deployment team","Escalation workflow ownership"])}${cluster("Owner Tools / Visibility Tools",["Owner dashboard workspace","Portfolio drill-down analytics","Action log tracking","Decision workflow calendar"])}</div></section>
+      <section class="section"><h2 class="section-title">Platform Support Model</h2><div class="quant-grid">${cluster("Support Structure",["Regional support pods: 4","Commercial governance hub: 1","Cross-functional enablement team","Escalation workflows defined by severity"])}${cluster("System Signals",["System stack count: 5","Platform maturity: Advanced"])}${cluster("Execution Signals",["Transition teams in place","QA and control routines embedded","Weekly cross-functional reviews","Owner action tracking discipline"])}${cluster("Coverage Signals",["8 countries covered","22 cities active","12 core markets","3 regional leadership clusters"])}</div></section>
+      ${decisionStrip([["Platform Uptime SLA","99.8%"],["Critical Incident Response","<2 hours"],["System Adoption (Portfolio)","94%"],["Data Refresh Cadence","Daily + Weekly"]])}`,
+      "Risk, Compliance & ESG": `<section class="section"><h2 class="section-title">Risk, Compliance & ESG</h2><div class="grid-2">${cluster("Emergency Response",["Regional crisis activation protocols","Incident communication matrix","Stakeholder escalation pathways","Guest and property safety response routines"])}${cluster("Continuity Planning",["Business continuity playbooks","Redundancy coverage design","Critical service prioritization","Recovery sequencing and ownership"])}${cluster("Certifications / Standards",["ISO 9001","Brand QA readiness routines","Standards audit controls","Documentation traceability process"])}${cluster("Controls & Reliability",["Internal control checkpoints","Audit QA process cadence","Insurance governance coverage","Corrective-action tracking loops"])}</div></section>
+      <section class="section"><h2 class="section-title">Resilience Model</h2><div class="grid-2">${cluster("Reliability Signals",["Audit cycles per year: 4","Control categories tracked: 12","Crisis protocols: 9","Recovery playbooks: 6"])}${cluster("Recovery Signals",["24/7 escalation support","Cross-team incident response","Recovery timeline governance","Owner communication continuity"])}</div></section>
+      ${decisionStrip([["Audit Pass Consistency","95%+"],["BCP Test Frequency","Semi-Annual"],["Control Closure Rate","93% within cycle"],["Insurance Adequacy Review","Quarterly"]])}`,
+      "Leadership": `<section class="section"><h2 class="section-title">Leadership</h2><div class="kpi-grid-4">${kpi("Team Size","8")}${kpi("Experience Depth","18 Avg. Years")}${kpi("Regions Covered","3")}${kpi("Functions Covered","6")}</div></section>
+      <section class="section"><h2 class="section-title">Leadership Profiles</h2><div class="proof-grid">${leaderCard(GOLD_OPERATOR.images.leader1,"Maria Alvarez","CEO","20+ years across LATAM hospitality platforms. Leads growth, governance, and owner confidence across the platform.","Executive Leadership · LATAM")}${leaderCard(GOLD_OPERATOR.images.leader2,"David Chen","COO","Former Marriott regional operations leader. Drives operating consistency, labor discipline, and performance accountability.","Operations · Multi-Region")}${leaderCard(GOLD_OPERATOR.images.leader3,"Luis Romero","VP Development","Specialist in conversions and growth markets. Supports deal execution, brand alignment, and market-entry strategy.","Development · Growth Markets")}${leaderCard(GOLD_OPERATOR.images.leader4,"Valeria Santos","SVP Commercial","Leads commercial architecture across revenue strategy, channel management, and market-level demand planning.","Commercial · Portfolio")}${leaderCard(GOLD_OPERATOR.images.leader5,"Daniel Ortega","VP Finance","Oversees financial controls, reporting integrity, forecasting discipline, and owner capital planning visibility.","Finance · Portfolio")}${leaderCard(GOLD_OPERATOR.images.leader6,"Camila Ruiz","VP People & Culture","Builds talent operating model, leadership capability, and service consistency through structured culture systems.","People & Culture · Regional")}</div></section>
+      <section class="section"><h2 class="section-title">Bench Strength</h2><div class="grid-2">${cluster("Leadership Model",["Distributed regional model","Executive-to-property accountability","Formal decision governance","Escalation clarity"])}${cluster("Platform Resilience",["Cross-functional succession depth","Multi-region leadership continuity","Shared operating playbooks","Governance back-up coverage"])}${cluster("Functional Coverage",["Operations","Commercial","Finance","People & Culture"])}${cluster("Regional Coverage",["Latin America","North America","Southern Europe","Gateway and resort markets"])}</div></section>
+      ${decisionStrip([["Avg. Leadership Tenure","6.2 years"],["Cross-Brand Experience","High"],["Succession Coverage","All Core Functions"],["Regional Leadership Density","Strong"]])}`,
+      "Best Fit & Deal Profile": `<section class="section"><h2 class="section-title">Best Fit & Deal Profile</h2><div class="kpi-grid-4">${kpi("Asset Fit Strength","High")}${kpi("Situation Fit Strength","Strong")}${kpi("Geography Fit","Strong")}${kpi("Deal Structure Fit","Moderate-High")}</div></section>
+      <section class="section"><h2 class="section-title">Fit Clusters</h2><div class="grid-2">${cluster("Asset Types",["Urban Full-Service","Lifestyle Hotels","Resorts","Select-Service Urban"])}${cluster("Operating Situations",["Conversions","Turnaround and repositioning","New build openings","Brand reflag transitions","Stabilization assignments","Portfolio optimization"])}${cluster("Geography Fit",["Latin America","Southern Europe","United States","Gateway cities","Resort corridors"])}${cluster("Deal Structures",["Third-party management","Franchise support","Joint ventures","Portfolio assignments"])}${cluster("Not Ideal For",["Single rural independent assets","Ultra-luxury owner-operated standalones","No-governance operating environments","Assignments without transition runway"])}</div></section>
+      <section class="section"><h2 class="section-title">Typical Owner Use Cases</h2><div class="quant-grid">${kpi("Supported Asset Types","4")}${kpi("Supported Situation Types","6")}${kpi("Supported Deal Structures","4")}${kpi("Geography Breadth","3 Regions")}</div></section>
+      ${decisionStrip([["Best-Fit Deal Size","Mid to Upper-Mid Portfolio"],["Transition Intensity Fit","High"],["Owner Governance Requirement","High Compatibility"],["Capital Plan Complexity Fit","Moderate to High"]])}`,
+      "Proof & Track Record": `<section class="section"><h2 class="section-title">Proof & Track Record</h2><div class="kpi-grid-4">${kpi("Properties","35")}${kpi("Markets","12")}${kpi("Years","18")}${kpi("Experience Breadth","Broad")}</div></section>
+      <section class="section"><h2 class="section-title">Proof Cards</h2><div class="proof-grid">${proofCard(GOLD_OPERATOR.images.proof1,"Hilton Bogotá Financial District","Bogotá, Colombia · Urban Full-Service",["Assignment: Transition / repositioning assignment","Result: +18% RevPAR growth post-transition","Why it matters: Demonstrates performance improvement under branded urban conditions"])}${proofCard(GOLD_OPERATOR.images.proof2,"Azul Beach Resort Cancún","Cancún, Mexico · Resort",["Assignment: Turnaround assignment","Result: Occupancy increased 22% in 12 months","Why it matters: Shows resort repositioning and demand recovery capability"])}${proofCard(GOLD_OPERATOR.images.proof3,"AC Hotel Madrid Centro","Madrid, Spain · Urban Lifestyle",["Assignment: Stabilization assignment","Result: ADR premium stabilized vs competitive set","Why it matters: Shows disciplined operating and pricing control in a gateway urban market"])}</div></section>
+      <section class="section"><h2 class="section-title">Validation</h2><div class="grid-3">${cluster("Asset Breadth",["Urban Full-Service","Urban Lifestyle","Resort","Select-Service"])}${cluster("Situation Breadth",["Transition","Turnaround","Stabilization","Repositioning"])}${cluster("Geographic Breadth",["Colombia","Mexico","Spain","Multi-region coverage"])}</div></section>
+      <section class="section"><h2 class="section-title">Track Record Quantified Support</h2><div class="quant-grid">${kpi("Proof Properties by Country","3")}${kpi("Proof Properties by Asset Type","3")}${kpi("Proof Results Count","3")}${kpi("Brand Families in Proof Set","3")}</div></section>
+      ${decisionStrip([["RevPAR Lift Range","Low Double-Digit (+11–15%)"],["Occupancy Recovery Window","9–12 Months"],["ADR Index Stabilization","3–6 Months"],["Case Repeatability Signal","High"]])}`
+    };
+    const panelsRoot=document.getElementById("panels");
+    panelsRoot.innerHTML=tabs.map((tab,i)=>`<section class="tab-panel ${i===0?"active":""}" data-panel="${tab}">${panels[tab]}</section>`).join("");
+    tabsEl.addEventListener("click",(e)=>{const btn=e.target.closest(".section-nav-item");if(!btn)return;const tab=btn.dataset.tab;document.querySelectorAll(".section-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));document.querySelectorAll(".tab-panel").forEach(p=>p.classList.toggle("active",p.dataset.panel===tab));});
+    }
+    document.addEventListener("DOMContentLoaded", async function () {
+      var params = new URLSearchParams(window.location.search || "");
+      var id = params.get("id") || params.get("operatorId") || params.get("recordId");
+      if (id && window.OperatorExplorerGoldMock) {
+        var r = await window.OperatorExplorerGoldMock.bootstrap();
+        if (!r || r.mode !== "live") renderGoldMockEmbeddedDemo();
+      } else if (id) {
+        renderGoldMockEmbeddedDemo();
+      } else {
+        renderGoldMockEmbeddedDemo();
+        if (window.OperatorExplorerGoldMock) await window.OperatorExplorerGoldMock.bootstrap();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -286,7 +286,7 @@
         .filter-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
         .filter-group-search { min-width: 160px; max-width: 180px; }
         .filter-group:has(.filter-select) { max-width: 140px; }
-        .filter-group:has(.filter-reset-btn),
+        .filter-group:has(.btn-clear),
         .filter-group:has(.filter-compare-btn) { max-width: none; width: auto; }
         .filter-label { color: var(--neutral--400); font-weight: 500; font-size: 12px; }
 
@@ -348,25 +348,33 @@
         .filter-select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2); }
         .filter-select option { background: var(--secondary--color-1); color: #ffffff; }
 
-        .filter-reset-btn {
-            padding: 8px 12px;
+        /* Clause Library–style Reset View (see public/clause-library.html .btn-clear + .filter-count-badge) */
+        .filter-group-reset {
+            overflow: visible !important;
+        }
+        .btn-clear {
+            padding: 8px 16px;
             background: var(--secondary--color-5);
             border: 1px solid var(--secondary--color-5);
             color: var(--neutral--100);
             border-radius: 6px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
+            position: relative;
             min-height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
             box-sizing: border-box;
+            width: auto;
+            min-width: 0;
+            flex-shrink: 0;
         }
-        .filter-reset-btn:hover {
+        .btn-clear:hover {
             background: var(--system--orange-400);
             border-color: var(--system--orange-400);
             transform: translateY(-1px);
@@ -375,16 +383,22 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 18px;
-            height: 18px;
-            margin-left: 8px;
-            border-radius: 999px;
+            min-width: 20px;
+            height: 20px;
             padding: 0 6px;
-            background: rgba(8, 15, 37, 0.35);
-            border: 1px solid rgba(8, 15, 37, 0.5);
+            background: var(--accent--primary-1);
             color: var(--neutral--100);
+            border-radius: 10px;
             font-size: 11px;
-            line-height: 1;
+            font-weight: 600;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            margin: 0;
+            z-index: 10;
+        }
+        .filter-group:has(.btn-clear) {
+            overflow: visible;
         }
 
         .filter-compare-btn {
@@ -469,6 +483,7 @@
         }
 
         .brand-card {
+            position: relative;
             background: var(--secondary--color-1);
             border: 0.6px solid var(--neutral--600);
             border-left: 4px solid var(--accent--primary-1);
@@ -478,6 +493,15 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
+        }
+        .brand-card__scale-stripe {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 8px 0 0 8px;
+            pointer-events: none;
         }
         .brand-card.chain-scale-luxury { border-left-color: #d4af37; }
         .brand-card.chain-scale-upper-upscale { border-left-color: #9b59b6; }
@@ -550,24 +574,40 @@
             margin-bottom: 2px;
         }
         .brand-card__description {
-            font-size: 13px;
-            color: var(--neutral--400);
-            line-height: 1.45;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #94a3b8;
+            line-height: 1.4;
             margin-bottom: 16px;
+            margin-top: 0;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            min-height: 58px;
+            text-overflow: ellipsis;
+            min-height: 59px;
         }
         .brand-card__footer {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             padding-top: 16px;
             border-top: 1px solid var(--neutral--600);
             margin-top: auto;
         }
+        .brand-card__website {
+            color: var(--accent--primary-1);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            max-width: 56%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+        }
+        .brand-card__website:hover { text-decoration: underline; }
         .brand-card__more-btn {
             display: inline-flex;
             align-items: center;
@@ -636,6 +676,74 @@
         .loading-progress-bar { height: 100%; background: linear-gradient(90deg, var(--secondary--color-5), var(--system--orange-400)); border-radius: 2px; animation: progress-animation 3s ease-in-out infinite; }
         @keyframes progress-animation { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
 
+        /* Gold Mock: simple iframe popup with close */
+        button.brand-card__more-btn {
+            font: inherit;
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+        }
+        .gold-mock-popup {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .gold-mock-popup-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+        }
+        .gold-mock-popup-panel {
+            position: relative;
+            z-index: 10001;
+            width: min(96vw, 1400px);
+            height: min(92vh, 900px);
+            max-height: 92vh;
+            background: var(--secondary--color-1);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .gold-mock-popup-close {
+            position: absolute;
+            top: 8px;
+            /* Sits between iframe content edge and the scrollbar (~6px): inset just past the track + narrow gap */
+            right: calc(6px + 6px);
+            z-index: 10002;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            border: 1px solid var(--neutral--600);
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            font-size: 16px;
+            line-height: 1;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .gold-mock-popup-close:hover {
+            background: var(--neutral--600);
+            border-color: var(--accent--primary-1);
+        }
+        .gold-mock-popup-frame {
+            flex: 1;
+            width: 100%;
+            min-height: 0;
+            border: 0;
+            background: var(--neutral--900);
+        }
+
         @media (max-width: 768px) {
             .sidebar-wrapper { display: none; }
             .dashboard-main-section { margin-left: 0; }
@@ -671,7 +779,7 @@
                 <div class="operator-explorer__header">
                     <div class="operator-explorer-title-container">
                         <h1>Operator Explorer</h1>
-                        <p>Browse and compare third-party operators. Search, filter by footprint and capabilities, and click View Operator for full details.</p>
+                        <p>Companies here come from <strong>Operator Setup</strong> (Airtable <strong>Operator Setup — Master</strong>), with <strong>submission status Active</strong>. Search, filter by footprint and capabilities, and click View Operator for full details.</p>
                     </div>
                 </div>
 
@@ -735,9 +843,12 @@
                         </div>
                     </div>
                     <div class="filters-section-right">
-                        <div class="filter-group">
+                        <div class="filter-group filter-group-reset">
                             <label class="filter-label">&nbsp;</label>
-                            <button type="button" class="filter-reset-btn" id="resetFiltersBtn">Reset View<span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span></button>
+                            <button type="button" class="btn-clear" id="resetFiltersBtn">
+                                Reset View
+                                <span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -777,6 +888,14 @@
                     <p>No operators match these filters. Clear filters or try a different search term.</p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="gold-mock-popup" id="goldMockPopup" style="display: none;" aria-hidden="true">
+        <div class="gold-mock-popup-overlay" id="goldMockPopupOverlay"></div>
+        <div class="gold-mock-popup-panel" role="dialog" aria-modal="true" aria-label="Operator profile">
+            <button type="button" class="gold-mock-popup-close" id="goldMockPopupClose" aria-label="Close">&times;</button>
+            <iframe class="gold-mock-popup-frame" id="goldMockPopupFrame" title="Operator profile" src="about:blank"></iframe>
         </div>
     </div>
 
@@ -820,6 +939,7 @@
                     id: row.id,
                     operator_name: companyName,
                     logo_url: row.logo || row.logo_url || '',
+                    website: row.website || row.Website || '',
                     overview_short: row.companyDescription || row.overview_short || '',
                     overview_long: row.companyDescription || row.overview_long || '',
                     hotels_managed_count: Number(row.totalProperties || row.hotels_managed_count || 0) || 0,
@@ -846,10 +966,14 @@
             async function fetchOperators() {
                 try {
                     showLoading(true);
-                    const response = await fetch('/api/third-party-operators');
+                    const response = await fetch('/api/third-party-operators?activeOnly=1');
                     if (!response.ok) throw new Error('Failed to fetch operators');
                     const data = await response.json();
-                    allOperators = (data.operators || []).map(normalizeOperator);
+                    /** Match server activeOnly=1; keeps Explorer correct if cache/old bundle omits query param. */
+                    function rowIsActiveExplorer(r) {
+                        return String((r && r.dealStatus) || '').trim().toLowerCase() === 'active';
+                    }
+                    allOperators = (data.operators || []).filter(rowIsActiveExplorer).map(normalizeOperator);
                     filteredOperators = [...allOperators];
 
                     populateRegionFilter([...new Set(allOperators.flatMap(function(o) { return o.geography || []; }))].sort());
@@ -916,17 +1040,64 @@
                 return '';
             }
 
+            function getChainScaleColor(chainScale) {
+                if (!chainScale) return null;
+                const scale = String(chainScale).toLowerCase();
+                if (scale.includes('luxury')) return '#d4af37';
+                if (scale.includes('upper upscale')) return '#9b59b6';
+                if (scale.includes('upscale') && !scale.includes('upper')) return '#3498db';
+                if (scale.includes('upper midscale')) return '#2ecc71';
+                if (scale.includes('midscale')) return '#1abc9c';
+                if (scale.includes('economy')) return '#e67e22';
+                return null;
+            }
+
+            function getChainScaleStripeBackground(chainScales) {
+                const colors = [];
+                (chainScales || []).forEach(function (scale) {
+                    const color = getChainScaleColor(scale);
+                    if (color && colors.indexOf(color) === -1) colors.push(color);
+                });
+                if (colors.length === 0) return 'var(--accent--primary-1)';
+                if (colors.length === 1) return colors[0];
+                const step = 100 / colors.length;
+                const stops = colors.map(function (color, index) {
+                    const start = (index * step).toFixed(3);
+                    const end = ((index + 1) * step).toFixed(3);
+                    return color + ' ' + start + '%, ' + color + ' ' + end + '%';
+                }).join(', ');
+                return 'linear-gradient(to bottom, ' + stops + ')';
+            }
+
+            function normalizeWebsiteUrl(url) {
+                if (!url) return '';
+                const raw = String(url).trim();
+                if (!raw) return '';
+                if (/^https?:\/\//i.test(raw)) return raw;
+                return 'https://' + raw;
+            }
+
+            function websiteLabel(url) {
+                if (!url) return '';
+                return String(url).replace(/^https?:\/\//i, '').replace(/\/$/, '');
+            }
+
             function createOperatorCard(op) {
                 const card = document.createElement('div');
-                const primaryScale = (op.chain_scales || [])[0] || '';
+                const chainScales = (op.chain_scales || []).map(function (s) { return String(s || '').trim(); }).filter(Boolean);
+                const primaryScale = chainScales[0] || '';
                 card.className = 'brand-card ' + getChainScaleClass(primaryScale);
-                card.onclick = function() { viewOperator(op.id, op.operator_name); };
+                card.style.borderLeftColor = 'transparent';
+                card.onclick = function() { viewOperator(op.id); };
 
                 const summaryRaw = op.overview_short || op.overview_long || 'Learn more about this operator.';
                 const summary = summaryRaw.length > 160 ? summaryRaw.substring(0, 160) + '...' : summaryRaw;
                 const initial = (op.operator_name || 'O').charAt(0).toUpperCase();
-                const typeLabel = [primaryScale, '3rd Party Operator'].filter(Boolean).join(' · ');
+                const typeLabel = '3rd Party Operator';
                 const regionText = (op.geography || []).slice(0, 2).join(', ').toUpperCase();
+                const stripeBackground = getChainScaleStripeBackground(chainScales);
+                const websiteUrl = normalizeWebsiteUrl(op.website);
+                const websiteText = websiteLabel(websiteUrl);
 
                 let logoHtml = '<div class="brand-card__logo">';
                 if (op.logo_url && String(op.logo_url).startsWith('http')) {
@@ -938,6 +1109,7 @@
                 logoHtml += '</div>';
 
                 card.innerHTML =
+                    '<div class="brand-card__scale-stripe" style="background:' + stripeBackground + ';"></div>' +
                     '<div class="brand-card__header">' +
                     logoHtml +
                     '<div class="brand-card__info">' +
@@ -947,8 +1119,13 @@
                     '</div></div>' +
                     '<div class="brand-card__description">' + escapeHtml(summary) + '</div>' +
                     '<div class="brand-card__footer">' +
-                    '<a href="operator-explorer-detail.html?id=' + encodeURIComponent(op.id) + '&name=' + encodeURIComponent(op.operator_name) + '" class="brand-card__more-btn" onclick="event.stopPropagation();">View Operator</a>' +
+                    (websiteUrl ? '<a href="' + escapeHtml(websiteUrl) + '" class="brand-card__website" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">' + escapeHtml(websiteText) + '</a>' : '<span></span>') +
+                    '<button type="button" class="brand-card__more-btn" data-operator-id="' + escapeHtml(op.id) + '">View Operator</button>' +
                     '</div>';
+                card.querySelector('.brand-card__more-btn').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openGoldMockPopup(op.id);
+                });
                 return card;
             }
 
@@ -1087,9 +1264,38 @@
                 return div.innerHTML;
             }
 
-            function viewOperator(id, name) {
-                window.location.href = 'operator-explorer-detail.html?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name);
+            function closeGoldMockPopup() {
+                var popup = document.getElementById('goldMockPopup');
+                var frame = document.getElementById('goldMockPopupFrame');
+                if (popup) {
+                    popup.style.display = 'none';
+                    popup.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = '';
+                }
+                if (frame) frame.src = 'about:blank';
             }
+
+            function openGoldMockPopup(id) {
+                var popup = document.getElementById('goldMockPopup');
+                var frame = document.getElementById('goldMockPopupFrame');
+                if (!popup || !frame) return;
+                frame.src = '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(id);
+                popup.style.display = 'flex';
+                popup.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function viewOperator(id) {
+                openGoldMockPopup(id);
+            }
+
+            document.getElementById('goldMockPopupClose').addEventListener('click', closeGoldMockPopup);
+            document.getElementById('goldMockPopupOverlay').addEventListener('click', closeGoldMockPopup);
+            document.addEventListener('keydown', function(e) {
+                if (e.key !== 'Escape') return;
+                var p = document.getElementById('goldMockPopup');
+                if (p && p.style.display === 'flex') closeGoldMockPopup();
+            });
 
             document.getElementById('resetFiltersBtn').addEventListener('click', clearFilters);
             document.getElementById('sortIconBtn').addEventListener('click', toggleSortDirection);
