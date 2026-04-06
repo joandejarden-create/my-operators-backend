@@ -107,6 +107,44 @@ export function formatBrandsFromLinks(raw, brandNameById) {
 }
 
 /**
+ * Tile geography comes from Existing vs Pipeline Distribution totals:
+ * include region code when Total Hotels > 0; if all regions are present, return GLOBAL.
+ */
+function regionCodesFromFootprintTotals(platformFields) {
+    const plf = platformFields || {};
+    /** Match `third-party-operator-basics-to-prefill.js` / Airtable title variants. */
+    const regions = [
+        { code: "NA", keys: ["geo_na_total_hotels", "Geo NA Total Hotels", "NA Total Hotels"] },
+        { code: "CALA", keys: ["geo_cala_total_hotels", "Geo CALA Total Hotels", "CALA Total Hotels"] },
+        { code: "EU", keys: ["geo_eu_total_hotels", "Geo EU Total Hotels", "EU Total Hotels"] },
+        { code: "MEA", keys: ["geo_mea_total_hotels", "Geo MEA Total Hotels", "MEA Total Hotels"] },
+        {
+            code: "APAC",
+            keys: [
+                "geo_ap_total_hotels",
+                "geo_apac_total_hotels",
+                "Geo AP Total Hotels",
+                "Geo APAC Total Hotels",
+                "APAC Total Hotels",
+            ],
+        },
+    ];
+
+    function num(v) {
+        if (v == null || v === "") return 0;
+        const n = Number(String(v).replace(/,/g, "").trim());
+        return Number.isFinite(n) ? n : 0;
+    }
+
+    const active = regions
+        .filter((r) => r.keys.some((k) => num(plf[k]) > 0))
+        .map((r) => r.code);
+
+    if (active.length === regions.length) return "GLOBAL";
+    return active.join(", ");
+}
+
+/**
  * Build one list-row object (same keys as legacy list) from new-base tables.
  */
 export function buildNewBaseListRow({
@@ -176,7 +214,7 @@ export function buildNewBaseListRow({
         primaryServiceModel: formatListValue(pf.primaryServiceModel),
         numberOfBrands: numberFromProfile || (brandCountFallback > 0 ? String(brandCountFallback) : ""),
         brandsManaged,
-        regionsSupported: formatMultiFieldForList(plf.regions || plf.regionsSupported) || formatListValue(plf.specificMarkets),
+        regionsSupported: regionCodesFromFootprintTotals(plf),
         totalProperties: plf.totalProperties != null ? formatListValue(plf.totalProperties) : "",
         totalRooms: plf.totalRooms != null ? formatListValue(plf.totalRooms) : "",
         chainScale: formatMultiFieldForList(plf.chainScale),
