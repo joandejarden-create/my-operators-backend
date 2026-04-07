@@ -1279,7 +1279,10 @@
                 var popup = document.getElementById('goldMockPopup');
                 var frame = document.getElementById('goldMockPopupFrame');
                 if (!popup || !frame) return;
-                frame.src = '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(id);
+                
+                const API_BASE = window.DEALITY_API_BASE || 'https://my-operators-backend-production.up.railway.app';
+                frame.src = API_BASE + '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(id);
+                
                 popup.style.display = 'flex';
                 popup.setAttribute('aria-hidden', 'false');
                 document.body.style.overflow = 'hidden';
