@@ -70,6 +70,7 @@ import {
 } from "./api/brand-library.js";
 import listThirdPartyOperators from "./api/third-party-operators-list.js";
 import getThirdPartyOperatorDetail from "./api/third-party-operator-detail.js";
+import submitThirdPartyOperator from "./api/third-party-operator-intake.js";
 import getThirdPartyOperatorMappingReport from "./api/third-party-operator-mapping-report.js";
 import getThirdPartyOperatorPrefillQa from "./api/third-party-operator-prefill-qa.js";
 import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js";
@@ -130,15 +131,47 @@ const companyProfileUpload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
 });
 
-/** Legacy `api/third-party-operator-intake.js` is not loaded at startup (retired). */
-function legacyThirdPartyOperatorIntakeDisabled(req, res) {
-  res.status(410).json({
-    success: false,
-    error:
-      "Legacy third-party operator intake is retired. Use Operator Setup (Operator Setup — new / new-two) instead.",
-    code: "INTAKE_RETIRED",
-    useSetupPath: "/third-party-operator-setup-new-two.html",
-  });
+/** Optional company logo on Third Party Operator intake (same public /uploads/ URLs as company profile). */
+const operatorIntakeUpload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, UPLOADS_DIR),
+    filename: (_req, file, cb) => {
+      const safe = (file.originalname || "logo").replace(/[^a-zA-Z0-9.-]/g, "_");
+      cb(null, `tpo-${Date.now()}-${safe}`);
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const mimeOk = /^image\/(png|jpe?g)$/i.test(file.mimetype || "");
+    const nameOk = /\.(png|jpe?g)$/i.test(file.originalname || "");
+    if (mimeOk || nameOk) return cb(null, true);
+    cb(new Error("Logo must be PNG or JPEG"));
+  },
+});
+
+function handleThirdPartyOperatorIntake(req, res) {
+  const ct = req.headers["content-type"] || "";
+  if (ct.includes("multipart/form-data")) {
+    return operatorIntakeUpload.single("companyLogo")(req, res, (err) => {
+      if (err) {
+        if (err.code === "LIMIT_FILE_SIZE") {
+          return res.status(413).json({ error: "Logo file too large (maximum 5 MB)." });
+        }
+        return res.status(400).json({ error: err.message || "Upload failed" });
+      }
+      try {
+        const raw = req.body && req.body.payload;
+        if (typeof raw !== "string" || !raw.length) {
+          return res.status(400).json({ error: "Missing multipart field: payload (JSON string)." });
+        }
+        req.body = JSON.parse(raw);
+      } catch {
+        return res.status(400).json({ error: "Invalid intake payload JSON" });
+      }
+      return submitThirdPartyOperator(req, res);
+    });
+  }
+  return submitThirdPartyOperator(req, res);
 }
 
 const dealAttachmentsUpload = multer({
@@ -213,8 +246,8 @@ app.patch("/api/company-profile/:recordId", updateCompanyProfile);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/api/intake/third-party-operator", legacyThirdPartyOperatorIntakeDisabled);
-app.post("/api/third-party-operators/submit", legacyThirdPartyOperatorIntakeDisabled);
+app.post("/api/intake/third-party-operator", handleThirdPartyOperatorIntake);
+app.post("/api/third-party-operators/submit", handleThirdPartyOperatorIntake);
 app.get("/api/intake/third-party-operator/mapping-report", getThirdPartyOperatorMappingReport);
 app.get("/api/intake/third-party-operator/prefill-qa", getThirdPartyOperatorPrefillQa);
 // Operator list for My 3rd Party Ops. dashboard (multiple paths for proxies / older clients)
