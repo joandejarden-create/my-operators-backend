@@ -222,10 +222,21 @@ const EMBED_ALLOWED_ANCESTORS = (
   .map((s) => s.trim())
   .filter(Boolean);
 
-// CORS so Webflow (and other origins) can call API from the browser
-const CORS_ORIGIN = process.env.CORS_ORIGIN || "https://mvp-deal-capture.webflow.io";
+// CORS so Webflow + live origins can call API from browser
+const CORS_ALLOWED_ORIGINS = (
+  process.env.CORS_ORIGIN ||
+  "https://mvp-deal-capture.webflow.io"
+)
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", CORS_ORIGIN);
+  const origin = req.headers.origin;
+  if (origin && CORS_ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  }
   res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, POST, PUT, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   if (req.method === "OPTIONS") return res.sendStatus(204);
