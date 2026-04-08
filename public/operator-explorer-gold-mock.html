@@ -509,6 +509,86 @@
     }
     .proof-line, .leader-summary { color: #dbe6f8; font-size: 13px; margin-bottom: 6px; }
     .quant-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .quant-grid .cluster--span-2 { grid-column: span 2; }
+    .quant-grid .cluster--full-row {
+      grid-column: 1 / -1;
+    }
+    .cluster--brand-share {
+      min-height: 0;
+    }
+    .brand-share-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      color: #dbe6f8;
+      margin: 0;
+    }
+    .brand-share-table th,
+    .brand-share-table td {
+      padding: 7px 12px 7px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      vertical-align: top;
+    }
+    .brand-share-table thead th {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand-share-table thead th:first-child {
+      text-align: left;
+    }
+    .brand-share-table thead th:not(:first-child) {
+      text-align: right;
+    }
+    .brand-share-table tbody th {
+      font-weight: 500;
+      text-align: left;
+      color: #e8f0fc;
+    }
+    .brand-share-table td {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .brand-share-table tbody tr:last-child th,
+    .brand-share-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .brand-share-note {
+      margin: 10px 0 0 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    /* Brands Supported: wrap bullet list across 3 columns inside the tile */
+    .cluster--span-2 ul {
+      column-count: 3;
+      column-gap: 1.25rem;
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    /* Hanging indent: wrapped lines align with text, not the bullet */
+    .cluster--span-2 li {
+      position: relative;
+      padding-left: 1em;
+      margin: 4px 0;
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .cluster--span-2 li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #dbe6f8;
+      font-size: 0.85em;
+      line-height: inherit;
+    }
     @media (max-width: 720px) {
       .tabs-section {
         grid-template-columns: repeat(10, minmax(64px, 1fr));
@@ -521,9 +601,12 @@
       .hero-meta, .kpi-grid-4, .grid-3, .proof-grid, .quant-grid { grid-template-columns: 1fr 1fr; }
       .cap-profile-3-2 .row-3, .cap-profile-3-2 .row-2 { grid-template-columns: 1fr; }
       .grid-2 { grid-template-columns: 1fr; }
+      .cluster--span-2 ul { column-count: 2; }
     }
     @media (max-width: 640px) {
       .hero-meta, .kpi-grid-4, .grid-3, .proof-grid, .quant-grid { grid-template-columns: 1fr; }
+      .quant-grid .cluster--span-2 { grid-column: span 1; }
+      .cluster--span-2 ul { column-count: 1; }
     }
     .gold-mock-tab-empty {
       margin: 0;
@@ -668,7 +751,7 @@
       ${decisionStrip([["Audit Pass Consistency","95%+"],["BCP Test Frequency","Semi-Annual"],["Control Closure Rate","93% within cycle"],["Insurance Adequacy Review","Quarterly"]])}`,
       "Leadership": `<section class="section"><h2 class="section-title">Leadership</h2><div class="kpi-grid-4">${kpi("Team Size","8")}${kpi("Experience Depth","18 Avg. Years")}${kpi("Regions Covered","3")}${kpi("Functions Covered","6")}</div></section>
       <section class="section"><h2 class="section-title">Leadership Profiles</h2><div class="proof-grid">${leaderCard(GOLD_OPERATOR.images.leader1,"Maria Alvarez","CEO","20+ years across LATAM hospitality platforms. Leads growth, governance, and owner confidence across the platform.","Executive Leadership · LATAM",LEADER_BIOS["Maria Alvarez"])}${leaderCard(GOLD_OPERATOR.images.leader2,"David Chen","COO","Former Marriott regional operations leader. Drives operating consistency, labor discipline, and performance accountability.","Operations · Multi-Region",LEADER_BIOS["David Chen"])}${leaderCard(GOLD_OPERATOR.images.leader3,"Luis Romero","VP Development","Specialist in conversions and growth markets. Supports deal execution, brand alignment, and market-entry strategy.","Development · Growth Markets",LEADER_BIOS["Luis Romero"])}${leaderCard(GOLD_OPERATOR.images.leader4,"Valeria Santos","SVP Commercial","Leads commercial architecture across revenue strategy, channel management, and market-level demand planning.","Commercial · Portfolio",LEADER_BIOS["Valeria Santos"])}${leaderCard(GOLD_OPERATOR.images.leader5,"Daniel Ortega","VP Finance","Oversees financial controls, reporting integrity, forecasting discipline, and owner capital planning visibility.","Finance · Portfolio",LEADER_BIOS["Daniel Ortega"])}${leaderCard(GOLD_OPERATOR.images.leader6,"Camila Ruiz","VP People & Culture","Builds talent operating model, leadership capability, and service consistency through structured culture systems.","People & Culture · Regional",LEADER_BIOS["Camila Ruiz"])}</div></section>
-      <section class="section"><h2 class="section-title">Bench Strength</h2><div class="grid-2">${cluster("Leadership Model",["Distributed regional model","Executive-to-property accountability","Formal decision governance","Escalation clarity"])}${cluster("Platform Resilience",["Cross-functional succession depth","Multi-region leadership continuity","Shared operating playbooks","Governance back-up coverage"])}${cluster("Functional Coverage",["Operations","Commercial","Finance","People & Culture"])}${cluster("Regional Coverage",["Latin America","North America","Southern Europe","Gateway and resort markets"])}</div></section>
+      <section class="section"><h2 class="section-title">Bench Strength</h2><div class="grid-2">${cluster("Leadership Model",["Distributed regional model","Executive-to-property accountability","Formal decision governance","Escalation clarity"])}${cluster("Platform Resilience",["Cross-functional succession depth","Multi-region leadership continuity","Shared operating playbooks","Governance back-up coverage"])}${cluster("Industry Recognition",["Operations","Commercial","Finance","People & Culture"])}${cluster("Regional Coverage",["Latin America","North America","Southern Europe","Gateway and resort markets"])}</div></section>
       ${decisionStrip([["Avg. Leadership Tenure","6.2 years"],["Cross-Brand Experience","High"],["Succession Coverage","All Core Functions"],["Regional Leadership Density","Strong"]])}`,
       "Best Fit & Deal Profile": `<section class="section"><h2 class="section-title">Best Fit & Deal Profile</h2><div class="kpi-grid-4">${kpi("Asset Fit Strength","High")}${kpi("Situation Fit Strength","Strong")}${kpi("Geography Fit","Strong")}${kpi("Deal Structure Fit","Moderate-High")}</div></section>
       <section class="section"><h2 class="section-title">Fit Clusters</h2><div class="grid-2">${cluster("Asset Types",["Urban Full-Service","Lifestyle Hotels","Resorts","Select-Service Urban"])}${cluster("Operating Situations",["Conversions","Turnaround and repositioning","New build openings","Brand reflag transitions","Stabilization assignments","Portfolio optimization"])}${cluster("Geography Fit",["Latin America","Southern Europe","United States","Gateway cities","Resort corridors"])}${cluster("Deal Structures",["Third-party management","Franchise support","Joint ventures","Portfolio assignments"])}${cluster("Not Ideal For",["Single rural independent assets","Ultra-luxury owner-operated standalones","No-governance operating environments","Assignments without transition runway"])}</div></section>
@@ -696,6 +779,11 @@
         renderGoldMockEmbeddedDemo();
         if (window.OperatorExplorerGoldMock) await window.OperatorExplorerGoldMock.bootstrap();
       }
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: "operator-gold-mock-ready" }, "*");
+        }
+      } catch (e) {}
     });
   </script>
 </body>
