@@ -5,6 +5,8 @@ import { fileURLToPath } from "url";
 import { parseMultiValue } from "./third-party-operator-value-utils.js";
 import {
     buildGovernanceGranularAirtableFields,
+    GOVERNANCE_AGGREGATE_INTERNAL_TO_AIRTABLE,
+    isGovernanceGranularCheckboxWriteMode,
     OPERATOR_SERVICE_AGGREGATE_FIELD_NAMES,
 } from "./operator-setup-service-granular-fields.js";
 
@@ -32,8 +34,6 @@ const BRAND_TABLE_NAME = process.env.AIRTABLE_BRAND_BASICS_TABLE || "Brand Setup
 const airtableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
     process.env.AIRTABLE_BASE_ID
 );
-
-let CACHED_ROWS = null;
 
 function parseCsvLine(line) {
     const cells = [];
@@ -66,8 +66,8 @@ function stripUtf8Bom(s) {
 }
 
 function loadBuildSheetRows() {
-    if (CACHED_ROWS) return CACHED_ROWS;
     // UTF-8 BOM breaks the first header: keys become "\ufefftable_name" so r.table_name is always undefined.
+    // Always read from disk so edits to operator-setup-simplified-build-sheet-grouped-by-table.csv apply without server restart.
     const text = stripUtf8Bom(fs.readFileSync(BUILD_SHEET_PATH, "utf8"));
     const lines = text.split(/\r?\n/).filter(Boolean);
     if (!lines.length) return [];
@@ -82,7 +82,6 @@ function loadBuildSheetRows() {
         }
         rows.push(row);
     }
-    CACHED_ROWS = rows;
     return rows;
 }
 
@@ -129,6 +128,15 @@ function parseArrayValue(raw) {
 function coerceFieldValue(raw, airtableType) {
     if (raw == null) return null;
     if (airtableType === "singleLineText" || airtableType === "longText" || airtableType === "url") {
+        // Long text often stores JSON arrays (e.g. brandsPortfolioDetail). String(arrayOfObjects) becomes "[object Object],…".
+        if (airtableType === "longText" && typeof raw === "object") {
+            try {
+                const s = JSON.stringify(raw);
+                return s.trim() === "" ? null : s;
+            } catch {
+                return null;
+            }
+        }
         const s = String(raw).trim();
         return s === "" ? null : s;
     }
@@ -305,6 +313,14 @@ export function buildNewBaseTablePayloads({
         let value = body[formName];
         if (fieldName === "brands") value = linkedBrandRecordIds;
         if (fieldName === "numberOfBrands") value = derived.numberOfBrands;
+        // Same as stringifyJsonArrayField in legacy intake: never pass a raw object[] into long-text coercion.
+        if (formName === "brandsPortfolioDetail" && value != null && typeof value === "object") {
+            try {
+                value = JSON.stringify(value);
+            } catch {
+                value = null;
+            }
+        }
         const coerced = coerceFieldValue(value, fieldType);
         if (coerced == null || (Array.isArray(coerced) && coerced.length === 0)) continue;
         oneToOne[tableName][fieldName] = coerced;
@@ -314,11 +330,21 @@ export function buildNewBaseTablePayloads({
     if (granularGov && Object.keys(granularGov).length > 0) {
         oneToOne[GOVERNANCE_TABLE] = { ...(oneToOne[GOVERNANCE_TABLE] || {}), ...granularGov };
     }
-    // Build sheet may map aggregate multi-selects onto Governance; new-base table stores only per-option checkboxes.
-    if (oneToOne[GOVERNANCE_TABLE]) {
-        for (const name of OPERATOR_SERVICE_AGGREGATE_FIELD_NAMES) {
-            delete oneToOne[GOVERNANCE_TABLE][name];
+    // When Governance uses per-option checkboxes, strip aggregate multi-select keys (also removed inside granular merge).
+    if (oneToOne[GOVERNANCE_TABLE] && isGovernanceGranularCheckboxWriteMode()) {
+        for (const shortName of OPERATOR_SERVICE_AGGREGATE_FIELD_NAMES) {
+            const airtableName = GOVERNANCE_AGGREGATE_INTERNAL_TO_AIRTABLE[shortName] || shortName;
+            delete oneToOne[GOVERNANCE_TABLE][shortName];
+            if (airtableName !== shortName) delete oneToOne[GOVERNANCE_TABLE][airtableName];
         }
+    }
+    const sheetHasDisplayLeadershipOnExplorer = rows.some(
+        (r) =>
+            r.table_name === GOVERNANCE_TABLE &&
+            r.airtable_field_name === "displayLeadershipOnExplorer"
+    );
+    if (oneToOne[GOVERNANCE_TABLE] && !sheetHasDisplayLeadershipOnExplorer) {
+        delete oneToOne[GOVERNANCE_TABLE].displayLeadershipOnExplorer;
     }
 
     const leadershipRows = buildLeadershipRows(body);
