@@ -214,27 +214,20 @@ function parseCompanyProfileArrays(req, res, next) {
 }
 
 const app = express();
-
-// CORS so Webflow + live app origins can call API from browser
-const CORS_ALLOWED_ORIGINS = (
-  process.env.CORS_ORIGIN ||
-  "https://mvp-deal-capture.webflow.io"
+const EMBED_ALLOWED_ANCESTORS = (
+  process.env.FRAME_ANCESTORS ||
+  "https://dealality.com,https://www.dealality.com,https://mvp-deal-capture.webflow.io"
 )
   .split(",")
-  .map((o) => o.trim())
+  .map((s) => s.trim())
   .filter(Boolean);
 
+// CORS so Webflow (and other origins) can call API from the browser
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "https://mvp-deal-capture.webflow.io";
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-
-  if (origin && CORS_ALLOWED_ORIGINS.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Vary", "Origin");
-  }
-
+  res.setHeader("Access-Control-Allow-Origin", CORS_ORIGIN);
   res.setHeader("Access-Control-Allow-Methods", "GET, PATCH, POST, PUT, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
   if (req.method === "OPTIONS") return res.sendStatus(204);
   next();
 });
@@ -242,7 +235,21 @@ app.use((req, res, next) => {
 // Security headers for deployment
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  const isGoldMockPage =
+    req.path === "/operator-explorer-gold-mock.html" ||
+    req.path === "/operator-explorer-gold-mock" ||
+    req.path === "/operator-explorer-gold-mock/";
+
+  if (isGoldMockPage) {
+    // Allow selected parent origins to embed the gold-mock profile iframe.
+    res.removeHeader("X-Frame-Options");
+    res.setHeader(
+      "Content-Security-Policy",
+      "frame-ancestors 'self' " + EMBED_ALLOWED_ANCESTORS.join(" ")
+    );
+  } else {
+    res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  }
   res.setHeader("X-XSS-Protection", "1; mode=block");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   next();
