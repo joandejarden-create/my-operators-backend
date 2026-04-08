@@ -181,8 +181,28 @@ export const OPERATOR_SERVICE_GRANULAR = /** @type {ServiceCategoryGranular[]} *
   },
 ]);
 
-/** Legacy / Basics aggregate multi-select names (not written as columns on new-base Governance — only per-option checkboxes). */
+/** Internal aggregate keys from `OPERATOR_SERVICE_GRANULAR[].aggregate` (used in form body + granular logic). */
 export const OPERATOR_SERVICE_AGGREGATE_FIELD_NAMES = OPERATOR_SERVICE_GRANULAR.map((c) => c.aggregate);
+
+/**
+ * Governance Airtable column titles for those aggregates (match `OPERATIONAL_SUPPORT_SERVICE_MULTI_SELECT` in `api/brand-library.js`).
+ * Some bases use "&" in the category title; internal keys omit it for legacy reasons.
+ */
+export const GOVERNANCE_AGGREGATE_INTERNAL_TO_AIRTABLE = {
+  "Revenue Management Services": "Revenue Management Services",
+  "Sales Marketing Support": "Sales & Marketing Support",
+  "Accounting Reporting": "Accounting & Financial Reporting",
+  "Procurement Services": "Procurement Services",
+  "HR Training Services": "HR & Training Services",
+  "Technology Services": "Technology Services",
+  "Design Renovation Support": "Design & Renovation Support",
+  "Development Services": "Development Services",
+};
+
+/** When true, Governance writes per-option checkbox columns and strips aggregate multi-selects. When false (default), aggregate multi-selects are written and checkbox columns are omitted. */
+export function isGovernanceGranularCheckboxWriteMode() {
+  return process.env.OPERATOR_SETUP_GOVERNANCE_GRANULAR_CHECKBOX_WRITES === "1";
+}
 
 /** Checkbox columns + `* Other` long-text field names (for scripts / audits). */
 const seenGranularNames = new Set();
@@ -238,22 +258,35 @@ export function mergeGranularServiceSelectionsIntoCompactFields(compactFields, o
 }
 
 /**
- * Per-option service checkboxes for **Operator Setup - Governance, Delivery & Diligence** (new base).
- * Writes the same `* Other` long-text columns as Service Offerings + checkbox columns; omits aggregate keys on the governance row.
+ * Support & Services for **Operator Setup - Governance, Delivery & Diligence** (new base).
+ * Writes `* Other` long-text columns when present in the body.
+ * - **Default:** keeps aggregate multi-select arrays (`Revenue Management Services`, …) for Airtable `multipleSelects` columns.
+ * - **`OPERATOR_SETUP_GOVERNANCE_GRANULAR_CHECKBOX_WRITES=1`:** writes per-option checkbox columns instead and omits aggregates (bases provisioned via `ensure-governance-granular-fields.mjs`).
+ * Separate from `OPERATOR_SERVICE_GRANULAR_CHECKBOX_WRITES` (legacy Service Offerings / Basics only).
  * @param {Record<string, unknown>} body
  * @returns {Record<string, unknown>}
  */
 export function buildGovernanceGranularAirtableFields(body) {
+  const writeGranularCheckboxes = isGovernanceGranularCheckboxWriteMode();
   const compact = {};
   for (const cat of OPERATOR_SERVICE_GRANULAR) {
     const arr = asStringArray(body?.[cat.arrayBodyKey]);
     if (arr.length) compact[cat.aggregate] = arr;
   }
   const merged = mergeGranularServiceSelectionsIntoCompactFields(compact, body || {}, {
-    writeGranularCheckboxes: true,
+    writeGranularCheckboxes,
   });
-  for (const name of OPERATOR_SERVICE_AGGREGATE_FIELD_NAMES) {
-    delete merged[name];
+  if (writeGranularCheckboxes) {
+    for (const name of OPERATOR_SERVICE_AGGREGATE_FIELD_NAMES) {
+      delete merged[name];
+    }
+  } else {
+    for (const shortName of OPERATOR_SERVICE_AGGREGATE_FIELD_NAMES) {
+      const airtableName = GOVERNANCE_AGGREGATE_INTERNAL_TO_AIRTABLE[shortName] || shortName;
+      if (airtableName === shortName || merged[shortName] === undefined) continue;
+      merged[airtableName] = merged[shortName];
+      delete merged[shortName];
+    }
   }
   return merged;
 }
