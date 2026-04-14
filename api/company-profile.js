@@ -117,6 +117,21 @@ const OPEN_TO_CONTACT_AIRTABLE_TO_FORM = Object.fromEntries(
   ])
 );
 
+function normalizeCompanyRoleToForm(rawValue) {
+  const raw = toStr(rawValue);
+  if (!raw) return "";
+  if (COMPANY_ROLE_AIRTABLE_TO_FORM[raw]) return COMPANY_ROLE_AIRTABLE_TO_FORM[raw];
+
+  const lower = raw.toLowerCase();
+  if (lower.startsWith("brand")) return "Brand";
+  if (lower.startsWith("operator")) return "Operator";
+  if (lower.startsWith("both")) return "Both";
+  if (lower.startsWith("owner")) return "Owner";
+  if (lower.startsWith("advisor")) return "Advisor";
+  if (lower.startsWith("lender")) return "Lender";
+  return raw;
+}
+
 // —— Form primaryServices / additionalServices value → Airtable checkbox column name (suffix after "Primary - " or "Addl - ") ——
 const SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX = {
   "Franchise/Licensing": "Franchise / Licensing",
@@ -200,9 +215,9 @@ function airtableFieldsToPrefill(fields) {
   prefill.additionalOfficeRegions = toStr(f["Additional Office Regions"]);
   prefill.propertyAddress = toStr(f["Property Address"]);
   prefill.jurisdictionsLicensed = toStr(f["Jurisdictions Licensed"]);
-  prefill.companyRole =
-    COMPANY_ROLE_AIRTABLE_TO_FORM[toStr(f["Company's role in the hotel ecosystem"])] ||
-    toStr(f["Company's role in the hotel ecosystem"]);
+  prefill.companyRole = normalizeCompanyRoleToForm(
+    f["Company's role in the hotel ecosystem"]
+  );
   prefill.platformVisibility =
     PLATFORM_VISIBILITY_AIRTABLE_TO_FORM[toStr(f["Company Platform Visibility"])] ||
     toStr(f["Company Platform Visibility"]);
