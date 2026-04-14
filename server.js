@@ -68,16 +68,20 @@ import {
   updateLegalTermsByBrandId,
   getOperationalSupportByBrandId
 } from "./api/brand-library.js";
+import submitThirdPartyOperator from "./api/third-party-operator-intake.js";
 import listThirdPartyOperators from "./api/third-party-operators-list.js";
 import getThirdPartyOperatorDetail from "./api/third-party-operator-detail.js";
-import submitThirdPartyOperator from "./api/third-party-operator-intake.js";
 import getThirdPartyOperatorMappingReport from "./api/third-party-operator-mapping-report.js";
 import getThirdPartyOperatorPrefillQa from "./api/third-party-operator-prefill-qa.js";
 import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js";
 import signup from "./api/signup.js";
 import { getPartners, createUser, updateUser } from "./api/partner-directory.js";
 import { getUserFavorites, createFavorite, deleteFavorite, updateFavorite } from "./api/partner-directory-favorites.js";
-import { createCompanyProfile, updateCompanyProfile } from "./api/company-profile.js";
+import {
+  createCompanyProfile,
+  updateCompanyProfile,
+  getCompanyProfilePrefill,
+} from "./api/company-profile.js";
 import {
   listUsers as listUserManagementUsers,
   createUser as createUserManagementUser,
@@ -86,7 +90,7 @@ import {
   bulkDeleteUsers,
   listCompanies as listUserManagementCompanies,
 } from "./api/user-management.js";
-import { getMyDeals, getDealById, updateMyDealById, createDeal, addRecommendedBrand, getAlternativeBrands, getMatchScoreBreakdown, refreshDealBrandCache, uploadDealAttachments, ALLOWED_ATTACHMENT_EXTENSIONS, MAX_ATTACHMENT_FILE_SIZE_BYTES } from "./api/my-deals.js";
+import { getMyDeals, getDealById, updateMyDealById, createDeal, addRecommendedBrand, getAlternativeBrands, getMatchScoreBreakdown, getOperatorMatchScoreBreakdown, refreshDealBrandCache, uploadDealAttachments, ALLOWED_ATTACHMENT_EXTENSIONS, MAX_ATTACHMENT_FILE_SIZE_BYTES } from "./api/my-deals.js";
 import { getOutreachSetup, updateOutreachSetup, getOutreachDefault, updateOutreachDefault, deleteOutreachSetup } from "./api/outreach-setup.js";
 import { getFranchiseApplication, updateFranchiseApplication } from "./api/franchise-application.js";
 import { list as outreachHubList, get as outreachHubGet, create as outreachHubCreate, update as outreachHubUpdate, remove as outreachHubRemove } from "./api/outreach-hub.js";
@@ -274,6 +278,7 @@ app.post(
   createCompanyProfile
 );
 app.patch("/api/company-profile/:recordId", updateCompanyProfile);
+app.get("/api/company-profile/prefill", getCompanyProfilePrefill);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -305,6 +310,7 @@ app.patch("/api/franchise-application/:dealId", updateFranchiseApplication);
 app.get("/api/my-deals/:recordId", getDealById);
 app.get("/api/my-deals/:recordId/alternative-brands", getAlternativeBrands);
 app.get("/api/my-deals/:recordId/match-score-breakdown", getMatchScoreBreakdown);
+app.get("/api/my-deals/:recordId/operator-match-score-breakdown", getOperatorMatchScoreBreakdown);
 app.patch("/api/my-deals/:recordId", updateMyDealById);
 app.post("/api/my-deals/:recordId/add-recommended-brand", addRecommendedBrand);
 app.post("/api/my-deals/:recordId/refresh-brand-cache", refreshDealBrandCache);
@@ -480,6 +486,22 @@ app.get("/my-deals", (req, res) => {
 });
 app.get("/my-deals/", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'my-deals.html'));
+});
+app.get("/getting-started", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, 'public', 'getting-started.html'));
+});
+app.get("/getting-started/", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, 'public', 'getting-started.html'));
+});
+app.get("/knowledge-base", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, 'public', 'knowledge-base.html'));
+});
+app.get("/knowledge-base/", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, 'public', 'knowledge-base.html'));
 });
 
 // CSP that explicitly sets connect-src so fetch/XHR aren't blocked (e.g. form or API calls)
@@ -995,6 +1017,7 @@ app.listen(PORT, () => {
   console.log("✅ Company Profile routes registered:");
   console.log("   POST /api/company-profile  (multipart: fields + optional logo)");
   console.log("   PATCH /api/company-profile/:recordId");
+  console.log("   GET /api/company-profile/prefill?recordId=rec...|companyName=...");
   console.log("✅ Third-party operator list (My 3rd Party Ops.):");
   console.log("   GET /api/intake/third-party-operators");
   console.log("   GET /api/third-party-operators/list");
