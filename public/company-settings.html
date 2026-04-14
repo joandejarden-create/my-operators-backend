@@ -27,6 +27,17 @@
             --system--red-400: #dc2b2b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Global scrollbar - Partner Directory popup style */
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
+        *::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
+        *::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
+        *::-webkit-scrollbar-corner { background: #080f25; }
         body {
             font-family: "Mona sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background-color: var(--neutral--800);
@@ -114,7 +125,20 @@
             border-color: var(--accent--primary-1);
             box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
         }
-        .form-input::placeholder { color: var(--neutral--500); }
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--neutral--500);
+            opacity: 1;
+        }
+        .form-input::-webkit-input-placeholder,
+        .form-textarea::-webkit-input-placeholder {
+            color: var(--neutral--500);
+        }
+        .form-input::-moz-placeholder,
+        .form-textarea::-moz-placeholder {
+            color: var(--neutral--500);
+            opacity: 1;
+        }
         /* Keep dark background when field is filled / autofilled (override browser default white) */
         .form-input:-webkit-autofill,
         .form-input:-webkit-autofill:hover,
@@ -512,6 +536,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Additional Office Regions</label>
+                            <span class="help-text">Include other regions where your team has offices or active support coverage.</span>
                             <textarea class="form-textarea form-textarea-compact" id="additionalOfficeRegions" name="additionalOfficeRegions" placeholder="List any additional office locations or regions." rows="2"></textarea>
                         </div>
                         <div class="form-group">
@@ -717,6 +742,12 @@
     </div>
     <script>
         (function () {
+            var API_BASE = (window.DEALALITY_API_BASE_URL || window.API_BASE_URL || '').trim().replace(/\/+$/, '');
+            function buildApiUrl(path) {
+                if (!path) return API_BASE || '';
+                if (path.charAt(0) !== '/') path = '/' + path;
+                return API_BASE ? (API_BASE + path) : path;
+            }
             var form = document.getElementById('companySettingsForm');
             var successMessage = document.getElementById('successMessage');
             var errorMessage = document.getElementById('errorMessage');
@@ -851,7 +882,7 @@
             }
 
             function loadBrandsOperate() {
-                fetch('/api/brand-library/brands')
+                fetch(buildApiUrl('/api/brand-library/brands'))
                     .then(function (r) { return r.json(); })
                     .then(function (data) {
                         if (data.success && data.brands) {
@@ -933,7 +964,7 @@
                         formData.set('additionalServicesJson', JSON.stringify(Array.from(addlSelect.selectedOptions).map(function (o) { return o.value; })));
                     }
 
-                    fetch('/api/company-profile', { method: 'POST', body: formData })
+                    fetch(buildApiUrl('/api/company-profile'), { method: 'POST', body: formData })
                         .then(handleResponse)
                         .catch(handleError)
                         .finally(done);
