@@ -335,15 +335,18 @@ function airtableFieldsToPrefill(fields) {
   }
 
   for (const key of BRAND_IDS_FIELDS) {
-    const linked = f[key];
-    if (!Array.isArray(linked)) continue;
+    const linked = toArray(f[key]);
     const ids = linked
       .map((item) => (typeof item === "string" ? item : item && item.id))
-      .filter((id) => typeof id === "string" && id.startsWith("rec"));
+      .map((id) => toStr(id))
+      .filter((id) => id.startsWith("rec"));
     pushUnique(prefill.brandsOperateSupport, ids);
   }
   for (const key of BRAND_NAMES_FIELDS) {
-    const names = toArray(f[key]).map(toStr).filter(Boolean);
+    const rawItems = toArray(f[key]).map(toStr).filter(Boolean);
+    const ids = rawItems.filter((v) => v.startsWith("rec"));
+    const names = rawItems.filter((v) => !v.startsWith("rec"));
+    pushUnique(prefill.brandsOperateSupport, ids);
     pushUnique(prefill.brandsOperateSupportNames, names);
   }
 
