@@ -167,6 +167,11 @@
         .logo-selected-row .logo-filename { color: var(--neutral--200); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .logo-selected-row .logo-remove-btn { background: none; border: none; color: var(--system--300); cursor: pointer; font-size: 12px; padding: 0; text-decoration: underline; }
         .logo-selected-row .logo-remove-btn:hover { color: var(--neutral--100); }
+        .logo-current-row { display: none; align-items: center; gap: 12px; margin-top: 10px; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; background: rgba(255,255,255,0.03); }
+        .logo-current-thumb { width: 56px; height: 56px; object-fit: contain; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 4px; }
+        .logo-current-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .logo-current-label { color: var(--neutral--100); font-size: 12px; font-weight: 600; }
+        .logo-current-name { color: var(--neutral--400); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
         .form-textarea { min-height: 72px; resize: vertical; line-height: 1.4; }
         .form-textarea-compact { min-height: 56px; }
         .form-select option { background: var(--secondary--color-1); color: var(--neutral--100); }
@@ -508,6 +513,13 @@
                                     <span style="color: var(--neutral--600);">·</span>
                                     <button type="button" class="logo-remove-btn" id="companyLogoRemove">Remove</button>
                                 </div>
+                                <div class="logo-current-row" id="companyLogoCurrentRow">
+                                    <img class="logo-current-thumb" id="companyLogoCurrentImg" alt="Current company logo">
+                                    <div class="logo-current-meta">
+                                        <span class="logo-current-label">Current Logo</span>
+                                        <span class="logo-current-name" id="companyLogoCurrentName"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -804,6 +816,39 @@
                 return t.innerHTML;
             }
 
+            function setInputValue(id, value) {
+                var el = document.getElementById(id);
+                if (!el || value == null) return;
+                el.value = String(value);
+            }
+
+            function setSingleSelect(id, value) {
+                var el = document.getElementById(id);
+                var normalized = value == null ? '' : String(value);
+                if (!el || !normalized) return;
+                var hasOption = Array.from(el.options || []).some(function (opt) { return opt.value === normalized; });
+                if (hasOption) el.value = normalized;
+            }
+
+            function setMultiSelect(id, values) {
+                var el = document.getElementById(id);
+                if (!el || !Array.isArray(values)) return;
+                var lookup = {};
+                values.forEach(function (v) { lookup[String(v)] = true; });
+                Array.from(el.options || []).forEach(function (opt) {
+                    opt.selected = !!lookup[opt.value];
+                });
+            }
+
+            function setRegions(values) {
+                if (!Array.isArray(values)) return;
+                var lookup = {};
+                values.forEach(function (v) { lookup[String(v)] = true; });
+                document.querySelectorAll('#regionsGroup input[name="regions"]').forEach(function (cb) {
+                    cb.checked = !!lookup[cb.value];
+                });
+            }
+
             // Brands You Operate / Support
             var allBrands = [];
             var selectedBrandIds = [];
@@ -881,6 +926,94 @@
                 if (brandsOperateSupportInput) brandsOperateSupportInput.value = selectedBrandIds.join(',');
             }
 
+            function setBrands(values) {
+                if (!Array.isArray(values)) return;
+                selectedBrandIds = values.slice();
+                renderBrandsOperateChips();
+                renderBrandsOperateList();
+            }
+
+            function setBrandsFromNames(names) {
+                if (!Array.isArray(names) || !Array.isArray(allBrands) || !allBrands.length) return;
+                var desired = {};
+                names.forEach(function (name) {
+                    var key = String(name || '').trim().toLowerCase();
+                    if (key) desired[key] = true;
+                });
+                var ids = allBrands
+                    .filter(function (b) { return desired[String(b.name || '').trim().toLowerCase()]; })
+                    .map(function (b) { return b.id; });
+                if (ids.length) setBrands(ids);
+            }
+
+            var companyLogoCurrentRow = document.getElementById('companyLogoCurrentRow');
+            var companyLogoCurrentImg = document.getElementById('companyLogoCurrentImg');
+            var companyLogoCurrentName = document.getElementById('companyLogoCurrentName');
+
+            function showExistingLogo(url, filename) {
+                if (!companyLogoCurrentRow || !companyLogoCurrentImg || !url) return;
+                companyLogoCurrentImg.src = url;
+                companyLogoCurrentImg.alt = filename ? ('Current logo: ' + filename) : 'Current company logo';
+                if (companyLogoCurrentName) companyLogoCurrentName.textContent = filename || url;
+                companyLogoCurrentRow.style.display = 'flex';
+            }
+
+            function hideExistingLogo() {
+                if (companyLogoCurrentImg) companyLogoCurrentImg.removeAttribute('src');
+                if (companyLogoCurrentName) companyLogoCurrentName.textContent = '';
+                if (companyLogoCurrentRow) companyLogoCurrentRow.style.display = 'none';
+            }
+
+            function applyPrefill(prefill) {
+                if (!prefill) return;
+                setInputValue('companyName', prefill.companyName);
+                setInputValue('companyType', prefill.companyType);
+                setInputValue('companyWebsite', prefill.companyWebsite);
+                setSingleSelect('numberOfEmployees', prefill.numberOfEmployees);
+                setSingleSelect('companyHQCountry', prefill.companyHQCountry);
+                setInputValue('yearFounded', prefill.yearFounded);
+                setInputValue('companyOverview', prefill.companyOverview);
+                setInputValue('additionalOfficeRegions', prefill.additionalOfficeRegions);
+                setInputValue('propertyAddress', prefill.propertyAddress);
+                setRegions(prefill.regions || []);
+                setMultiSelect('primaryServices', prefill.primaryServices || []);
+                setMultiSelect('additionalServices', prefill.additionalServices || []);
+                setInputValue('jurisdictionsLicensed', prefill.jurisdictionsLicensed);
+                setSingleSelect('companyRole', prefill.companyRole);
+                setSingleSelect('platformVisibility', prefill.platformVisibility);
+                setSingleSelect('openToContact', prefill.openToContact);
+                if (Array.isArray(prefill.brandsOperateSupport) && prefill.brandsOperateSupport.length) {
+                    setBrands(prefill.brandsOperateSupport);
+                } else {
+                    setBrandsFromNames(prefill.brandsOperateSupportNames || []);
+                }
+                if (prefill.companyLogoUrl) {
+                    showExistingLogo(prefill.companyLogoUrl, prefill.companyLogoFilename);
+                }
+                syncAdditionalServicesDisabled();
+            }
+
+            function getPrefillUrl() {
+                var params = new URLSearchParams(window.location.search || '');
+                var recordId = params.get('recordId') || (window.COMPANY_PROFILE_RECORD_ID || '');
+                var companyName = params.get('companyName') || (window.COMPANY_NAME || '');
+                if (recordId) return buildApiUrl('/api/company-profile/prefill?recordId=' + encodeURIComponent(recordId));
+                if (companyName) return buildApiUrl('/api/company-profile/prefill?companyName=' + encodeURIComponent(companyName));
+                return '';
+            }
+
+            function loadCompanyPrefill() {
+                var url = getPrefillUrl();
+                if (!url) return Promise.resolve();
+                return fetch(url)
+                    .then(function (r) { return r.ok ? r.json() : null; })
+                    .then(function (data) {
+                        if (!data || !data.success) return;
+                        applyPrefill(data.prefill || {});
+                    })
+                    .catch(function () {});
+            }
+
             function loadBrandsOperate() {
                 fetch(buildApiUrl('/api/brand-library/brands'))
                     .then(function (r) { return r.json(); })
@@ -911,6 +1044,7 @@
                 });
             }
             loadBrandsOperate();
+            loadCompanyPrefill();
 
             function validateRegions() {
                 var checked = Array.from(regionsCheckboxes).some(function (c) { return c.checked; });
@@ -1014,6 +1148,7 @@
                     if (companyLogoTrigger) companyLogoTrigger.style.display = '';
                     if (companyLogoSelectedRow) companyLogoSelectedRow.style.display = 'none';
                     if (companyLogoName) companyLogoName.textContent = '';
+                    hideExistingLogo();
                     syncAdditionalServicesDisabled();
                     if (toastHideTimeout) { clearTimeout(toastHideTimeout); toastHideTimeout = null; }
                     if (toastHideTimeout2) { clearTimeout(toastHideTimeout2); toastHideTimeout2 = null; }
@@ -1047,6 +1182,7 @@
                         companyLogoName.textContent = companyLogoInput.files[0].name;
                         companyLogoName.setAttribute('title', companyLogoInput.files[0].name);
                         companyLogoSelectedRow.style.display = 'flex';
+                        hideExistingLogo();
                     } else {
                         companyLogoTrigger.style.display = '';
                         companyLogoSelectedRow.style.display = 'none';
