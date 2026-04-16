@@ -116,12 +116,6 @@ const OPEN_TO_CONTACT_AIRTABLE_TO_FORM = Object.fromEntries(
     formVal,
   ])
 );
-const SERVICE_SUFFIX_TO_FORM_VALUE = Object.fromEntries(
-  Object.entries(SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX).map(([formVal, suffix]) => [
-    suffix,
-    formVal,
-  ])
-);
 const LEGACY_PRIMARY_SERVICE_FIELDS = [
   "Primary Services Provided",
   "Primary Services",
@@ -187,6 +181,12 @@ const SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX = {
   "Project Mgmt": "Project Management (Development)",
   "Design Oversight": "Design Oversight / Brand Compliance",
 };
+const SERVICE_SUFFIX_TO_FORM_VALUE = Object.fromEntries(
+  Object.entries(SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX).map(([formVal, suffix]) => [
+    suffix,
+    formVal,
+  ])
+);
 
 const REGION_CHECKBOX_COLUMNS = [
   "Americas",
