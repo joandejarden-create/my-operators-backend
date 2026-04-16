@@ -116,6 +116,31 @@ const OPEN_TO_CONTACT_AIRTABLE_TO_FORM = Object.fromEntries(
     formVal,
   ])
 );
+const SERVICE_SUFFIX_TO_FORM_VALUE = Object.fromEntries(
+  Object.entries(SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX).map(([formVal, suffix]) => [
+    suffix,
+    formVal,
+  ])
+);
+const LEGACY_PRIMARY_SERVICE_FIELDS = [
+  "Primary Services Provided",
+  "Primary Services",
+  "Primary Service",
+];
+const LEGACY_ADDITIONAL_SERVICE_FIELDS = [
+  "Additional Services Provided",
+  "Additional Services",
+  "Additional Service",
+];
+const BRAND_IDS_FIELDS = ["Brands You Operate / Support", "Brands You Operate/Support"];
+const BRAND_NAMES_FIELDS = [
+  "Brand Name (from Brands You Operate / Support)",
+  "Brand Name from Brands You Operate / Support",
+  "Brands You Operate / Support (Names)",
+];
+const COMPANY_LOGO_FIELDS = ["Logo", "Company Logo"];
+const BRAND_BASICS_TABLE = "Brand Setup - Brand Basics";
+const BRAND_BASICS_NAME_FIELD = "Brand Name";
 
 function normalizeCompanyRoleToForm(rawValue) {
   const raw = toStr(rawValue);
@@ -175,6 +200,63 @@ function toStr(v) {
   return v == null ? "" : String(v).trim();
 }
 
+function toArray(v) {
+  if (Array.isArray(v)) return v;
+  if (v == null) return [];
+  if (typeof v === "string") {
+    const raw = v.trim();
+    if (!raw) return [];
+    if (raw.startsWith("[") && raw.endsWith("]")) {
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_) {}
+    }
+    return raw
+      .split(/[\n,;|]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
+  return [v];
+}
+
+function normalizeServiceItemToFormValue(item) {
+  const raw = toStr(item);
+  if (!raw) return "";
+  if (SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX[raw]) return raw;
+  if (SERVICE_SUFFIX_TO_FORM_VALUE[raw]) return SERVICE_SUFFIX_TO_FORM_VALUE[raw];
+
+  const lowerRaw = raw.toLowerCase();
+  for (const [formVal, suffix] of Object.entries(SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX)) {
+    if (suffix.toLowerCase() === lowerRaw) return formVal;
+    if (formVal.toLowerCase() === lowerRaw) return formVal;
+  }
+  return "";
+}
+
+function pushUnique(target, values) {
+  const existing = new Set(target);
+  for (const v of values) {
+    if (!v || existing.has(v)) continue;
+    target.push(v);
+    existing.add(v);
+  }
+}
+
+function extractAttachmentMeta(fields) {
+  for (const key of COMPANY_LOGO_FIELDS) {
+    const val = fields[key];
+    if (!Array.isArray(val) || val.length === 0) continue;
+    const first = val[0];
+    if (!first || typeof first !== "object") continue;
+    return {
+      companyLogoUrl: toStr(first.url),
+      companyLogoFilename: toStr(first.filename),
+    };
+  }
+  return { companyLogoUrl: "", companyLogoFilename: "" };
+}
+
 function buildEmptyPrefill() {
   return {
     companyName: "",
@@ -194,6 +276,9 @@ function buildEmptyPrefill() {
     companyRole: "",
     platformVisibility: "",
     openToContact: "",
+    companyLogoUrl: "",
+    companyLogoFilename: "",
+    brandsOperateSupportNames: [],
   };
 }
 
@@ -232,12 +317,39 @@ function airtableFieldsToPrefill(fields) {
     if (f[`Addl - ${suffix}`]) prefill.additionalServices.push(formVal);
   }
 
-  const linked = f["Brands You Operate / Support"];
-  if (Array.isArray(linked)) {
-    prefill.brandsOperateSupport = linked
+  if (prefill.primaryServices.length === 0) {
+    for (const key of LEGACY_PRIMARY_SERVICE_FIELDS) {
+      const normalized = toArray(f[key])
+        .map(normalizeServiceItemToFormValue)
+        .filter(Boolean);
+      pushUnique(prefill.primaryServices, normalized);
+    }
+  }
+  if (prefill.additionalServices.length === 0) {
+    for (const key of LEGACY_ADDITIONAL_SERVICE_FIELDS) {
+      const normalized = toArray(f[key])
+        .map(normalizeServiceItemToFormValue)
+        .filter(Boolean);
+      pushUnique(prefill.additionalServices, normalized);
+    }
+  }
+
+  for (const key of BRAND_IDS_FIELDS) {
+    const linked = f[key];
+    if (!Array.isArray(linked)) continue;
+    const ids = linked
       .map((item) => (typeof item === "string" ? item : item && item.id))
       .filter((id) => typeof id === "string" && id.startsWith("rec"));
+    pushUnique(prefill.brandsOperateSupport, ids);
   }
+  for (const key of BRAND_NAMES_FIELDS) {
+    const names = toArray(f[key]).map(toStr).filter(Boolean);
+    pushUnique(prefill.brandsOperateSupportNames, names);
+  }
+
+  const logoMeta = extractAttachmentMeta(f);
+  prefill.companyLogoUrl = logoMeta.companyLogoUrl;
+  prefill.companyLogoFilename = logoMeta.companyLogoFilename;
 
   return prefill;
 }
@@ -246,6 +358,30 @@ function escapeAirtableFormulaString(input) {
   return String(input || "")
     .replace(/\\/g, "\\\\")
     .replace(/'/g, "\\'");
+}
+
+async function resolveBrandIdsByName(base, names) {
+  const out = [];
+  const seen = new Set();
+  for (const rawName of names || []) {
+    const name = toStr(rawName);
+    if (!name) continue;
+    const key = name.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    try {
+      const formula = `LOWER({${BRAND_BASICS_NAME_FIELD}})='${escapeAirtableFormulaString(
+        key
+      )}'`;
+      const rows = await base(BRAND_BASICS_TABLE)
+        .select({ maxRecords: 1, filterByFormula: formula })
+        .firstPage();
+      if (rows && rows[0] && rows[0].id) out.push(rows[0].id);
+    } catch (_) {
+      // ignore lookup errors; keep fallback names in response
+    }
+  }
+  return out;
 }
 
 /**
@@ -511,11 +647,17 @@ export async function getCompanyProfilePrefill(req, res) {
       });
     }
 
+    const prefill = airtableFieldsToPrefill(record.fields || {});
+    if (prefill.brandsOperateSupport.length === 0 && prefill.brandsOperateSupportNames.length) {
+      const resolved = await resolveBrandIdsByName(base, prefill.brandsOperateSupportNames);
+      pushUnique(prefill.brandsOperateSupport, resolved);
+    }
+
     return res.json({
       success: true,
       recordId: record.id,
       source: "airtable",
-      prefill: airtableFieldsToPrefill(record.fields || {}),
+      prefill,
     });
   } catch (err) {
     console.error("Company profile prefill error:", err);
