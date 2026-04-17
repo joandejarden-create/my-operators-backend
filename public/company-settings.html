@@ -767,6 +767,7 @@
             var resetBtn = document.getElementById('resetBtn');
             var primaryServices = document.getElementById('primaryServices');
             var regionsCheckboxes = document.querySelectorAll('#regionsGroup input[name="regions"]');
+            var currentCompanyProfileRecordId = '';
 
             var toastHideTimeout = null;
             var toastHideTimeout2 = null;
@@ -997,6 +998,7 @@
                 var params = new URLSearchParams(window.location.search || '');
                 var recordId = params.get('recordId') || (window.COMPANY_PROFILE_RECORD_ID || '');
                 var companyName = params.get('companyName') || (window.COMPANY_NAME || '');
+                if (recordId) currentCompanyProfileRecordId = recordId;
                 if (recordId) return buildApiUrl('/api/company-profile/prefill?recordId=' + encodeURIComponent(recordId));
                 if (companyName) return buildApiUrl('/api/company-profile/prefill?companyName=' + encodeURIComponent(companyName));
                 return '';
@@ -1009,6 +1011,7 @@
                     .then(function (r) { return r.ok ? r.json() : null; })
                     .then(function (data) {
                         if (!data || !data.success) return;
+                        if (data.recordId) currentCompanyProfileRecordId = data.recordId;
                         applyPrefill(data.prefill || {});
                     })
                     .catch(function () {});
@@ -1098,7 +1101,11 @@
                         formData.set('additionalServicesJson', JSON.stringify(Array.from(addlSelect.selectedOptions).map(function (o) { return o.value; })));
                     }
 
-                    fetch(buildApiUrl('/api/company-profile'), { method: 'POST', body: formData })
+                    var saveMethod = currentCompanyProfileRecordId ? 'PATCH' : 'POST';
+                    var saveUrl = currentCompanyProfileRecordId
+                        ? buildApiUrl('/api/company-profile/' + encodeURIComponent(currentCompanyProfileRecordId))
+                        : buildApiUrl('/api/company-profile');
+                    fetch(saveUrl, { method: saveMethod, body: formData })
                         .then(handleResponse)
                         .catch(handleError)
                         .finally(done);
@@ -1117,6 +1124,7 @@
                         return res.json().then(function (data) {
                             if (res.ok) {
                                 var recId = data.id || '(no id returned)';
+                                if (data.id) currentCompanyProfileRecordId = data.id;
                                 setSuccessToast(recId);
                                 showToast(successMessage);
                             } else {
