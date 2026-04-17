@@ -475,6 +475,7 @@ async function resolveBrandIdsByName(base, names) {
  * @returns {Record<string, any>} - Fields to send to Airtable create/update
  */
 export function formToAirtableFields(body) {
+  body = body || {};
   const fields = {};
 
   // —— Simple 1:1 (form name → Airtable column name) ——
@@ -658,6 +659,17 @@ export async function updateCompanyProfile(req, res) {
     }
 
     const fields = formToAirtableFields(req.body);
+
+    // Logo update: accept multipart PATCH with optional new companyLogo file.
+    if (req.file && req.file.filename) {
+      const baseUrl =
+        process.env.PUBLIC_URL ||
+        (req.protocol && req.get && `${req.protocol}://${req.get("host")}`) ||
+        "http://localhost:3000";
+      const logoUrl = `${baseUrl.replace(/\/$/, "")}/uploads/${req.file.filename}`;
+      fields["Logo"] = [{ url: logoUrl, filename: req.file.originalname || req.file.filename }];
+      console.log("Company profile update: logo set, url =", logoUrl);
+    }
     if (Object.keys(fields).length === 0) {
       return res.status(400).json({ error: "No valid fields to update" });
     }
