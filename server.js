@@ -226,14 +226,18 @@ const EMBED_ALLOWED_ANCESTORS = (
   .map((s) => s.trim())
   .filter(Boolean);
 
-// CORS so Webflow + live origins can call API from browser
-const CORS_ALLOWED_ORIGINS = (
-  process.env.CORS_ORIGIN ||
-  "https://mvp-deal-capture.webflow.io"
-)
+// CORS so Webflow + live origins can call API from browser.
+// Env config is additive, so core production origins stay allowed.
+const DEFAULT_CORS_ALLOWED_ORIGINS = [
+  "https://mvp-deal-capture.webflow.io",
+  "https://dealality.com",
+  "https://www.dealality.com",
+];
+const configuredCorsOrigins = (process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || "")
   .split(",")
   .map((o) => o.trim())
   .filter(Boolean);
+const CORS_ALLOWED_ORIGINS = [...new Set([...DEFAULT_CORS_ALLOWED_ORIGINS, ...configuredCorsOrigins])];
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
@@ -277,7 +281,12 @@ app.post(
   parseCompanyProfileArrays,
   createCompanyProfile
 );
-app.patch("/api/company-profile/:recordId", updateCompanyProfile);
+app.patch(
+  "/api/company-profile/:recordId",
+  companyProfileUpload.single("companyLogo"),
+  parseCompanyProfileArrays,
+  updateCompanyProfile
+);
 app.get("/api/company-profile/prefill", getCompanyProfilePrefill);
 
 app.use(express.json());

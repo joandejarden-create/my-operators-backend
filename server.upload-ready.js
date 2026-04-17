@@ -245,7 +245,12 @@ app.post(
   parseCompanyProfileArrays,
   createCompanyProfile
 );
-app.patch("/api/company-profile/:recordId", updateCompanyProfile);
+app.patch(
+  "/api/company-profile/:recordId",
+  companyProfileUpload.single("companyLogo"),
+  parseCompanyProfileArrays,
+  updateCompanyProfile
+);
 app.get("/api/company-profile/prefill", getCompanyProfilePrefill);
 
 app.use(express.json());
