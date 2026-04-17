@@ -372,7 +372,7 @@ function extractUnknownFieldName(error) {
 async function createWithUnknownFieldFallback(base, fields) {
   const working = { ...(fields || {}) };
   const removed = [];
-  const maxRetries = 20;
+  const maxRetries = Math.max(50, Object.keys(working).length + 10);
   let attempts = 0;
 
   while (attempts <= maxRetries) {
@@ -401,13 +401,16 @@ async function createWithUnknownFieldFallback(base, fields) {
     }
   }
 
-  throw new Error("Exceeded retries while removing unknown Airtable fields (create)");
+  throw new Error(
+    "Exceeded retries while removing unknown Airtable fields (create): " +
+      removed.join(", ")
+  );
 }
 
 async function updateWithUnknownFieldFallback(base, recordId, fields) {
   const working = { ...(fields || {}) };
   const removed = [];
-  const maxRetries = 20;
+  const maxRetries = Math.max(50, Object.keys(working).length + 10);
   let attempts = 0;
 
   while (attempts <= maxRetries) {
@@ -436,7 +439,10 @@ async function updateWithUnknownFieldFallback(base, recordId, fields) {
     }
   }
 
-  throw new Error("Exceeded retries while removing unknown Airtable fields (update)");
+  throw new Error(
+    "Exceeded retries while removing unknown Airtable fields (update): " +
+      removed.join(", ")
+  );
 }
 
 async function resolveBrandIdsByName(base, names) {
