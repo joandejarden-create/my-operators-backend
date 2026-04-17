@@ -363,6 +363,82 @@ function escapeAirtableFormulaString(input) {
     .replace(/'/g, "\\'");
 }
 
+function extractUnknownFieldName(error) {
+  const msg = toStr(error && error.message);
+  const match = msg.match(/Unknown field name:\s*"([^"]+)"/i);
+  return match ? match[1] : "";
+}
+
+async function createWithUnknownFieldFallback(base, fields) {
+  const working = { ...(fields || {}) };
+  const removed = [];
+  const maxRetries = 20;
+  let attempts = 0;
+
+  while (attempts <= maxRetries) {
+    try {
+      const record = await base(COMPANY_PROFILE_TABLE_ID).create(working, {
+        typecast: true,
+      });
+      if (removed.length) {
+        console.warn(
+          "Company profile create: ignored unknown Airtable fields:",
+          removed.join(", ")
+        );
+      }
+      return record;
+    } catch (err) {
+      const unknown = extractUnknownFieldName(err);
+      if (!unknown || !Object.prototype.hasOwnProperty.call(working, unknown)) {
+        throw err;
+      }
+      delete working[unknown];
+      removed.push(unknown);
+      attempts += 1;
+      if (Object.keys(working).length === 0) {
+        throw err;
+      }
+    }
+  }
+
+  throw new Error("Exceeded retries while removing unknown Airtable fields (create)");
+}
+
+async function updateWithUnknownFieldFallback(base, recordId, fields) {
+  const working = { ...(fields || {}) };
+  const removed = [];
+  const maxRetries = 20;
+  let attempts = 0;
+
+  while (attempts <= maxRetries) {
+    try {
+      const record = await base(COMPANY_PROFILE_TABLE_ID).update(recordId, working, {
+        typecast: true,
+      });
+      if (removed.length) {
+        console.warn(
+          "Company profile update: ignored unknown Airtable fields:",
+          removed.join(", ")
+        );
+      }
+      return record;
+    } catch (err) {
+      const unknown = extractUnknownFieldName(err);
+      if (!unknown || !Object.prototype.hasOwnProperty.call(working, unknown)) {
+        throw err;
+      }
+      delete working[unknown];
+      removed.push(unknown);
+      attempts += 1;
+      if (Object.keys(working).length === 0) {
+        throw err;
+      }
+    }
+  }
+
+  throw new Error("Exceeded retries while removing unknown Airtable fields (update)");
+}
+
 async function resolveBrandIdsByName(base, names) {
   const out = [];
   const seen = new Set();
@@ -534,9 +610,7 @@ export async function createCompanyProfile(req, res) {
       return res.status(400).json({ error: "No valid fields to save" });
     }
 
-    const record = await base(COMPANY_PROFILE_TABLE_ID).create(fields, {
-      typecast: true,
-    });
+    const record = await createWithUnknownFieldFallback(base, fields);
 
     console.log(
       "Company profile created in Airtable:",
@@ -582,9 +656,7 @@ export async function updateCompanyProfile(req, res) {
       return res.status(400).json({ error: "No valid fields to update" });
     }
 
-    const record = await base(COMPANY_PROFILE_TABLE_ID).update(recordId, fields, {
-      typecast: true,
-    });
+    const record = await updateWithUnknownFieldFallback(base, recordId, fields);
 
     return res.json({
       id: record.id,
