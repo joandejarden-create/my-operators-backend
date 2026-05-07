@@ -1,9 +1,18 @@
 (function () {
     'use strict';
 
+    function getApiBaseUrl() {
+        var configBase = (window.CONFIG && window.CONFIG.API_BASE_URL) || '';
+        return (window.DEALALITY_API_BASE || configBase || '').replace(/\/$/, '');
+    }
+
+    function apiUrl(path) {
+        return getApiBaseUrl() + path;
+    }
+
     const API = {
-        list: '/api/market-alerts',
-        rail: '/api/market-alerts/rail'
+        list: apiUrl('/api/market-alerts'),
+        rail: apiUrl('/api/market-alerts/rail')
     };
 
     const CATEGORIES = [
@@ -71,19 +80,40 @@
     }
 
     function showToast(message) {
+        if (!document.getElementById('marketAlertsToastStyle')) {
+            var style = document.createElement('style');
+            style.id = 'marketAlertsToastStyle';
+            style.textContent = '' +
+                '.market-alerts-toast{' +
+                'position:fixed;top:20px;right:20px;max-width:320px;' +
+                'background:rgba(10,16,34,0.96);border:1px solid rgba(255,255,255,0.2);' +
+                'color:var(--dc-text);padding:10px 14px;border-radius:10px;font-size:12px;font-weight:600;' +
+                'z-index:10001;box-shadow:0 8px 24px rgba(0,0,0,0.35);' +
+                'opacity:0;transform:translateY(-8px);pointer-events:none;' +
+                'transition:opacity .22s ease,transform .22s ease;' +
+                '}' +
+                '.market-alerts-toast.show{opacity:1;transform:translateY(0);}' +
+                '@media (max-width:768px){.market-alerts-toast{left:12px;right:12px;max-width:none;top:12px;}}';
+            document.head.appendChild(style);
+        }
+
         var el = document.getElementById('marketAlertsToast');
         if (!el) {
             el = document.createElement('div');
             el.id = 'marketAlertsToast';
             el.setAttribute('role', 'status');
-            el.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--dc-bg-card);border:1px solid rgba(255,255,255,0.2);color:var(--dc-text);padding:10px 16px;border-radius:8px;font-size:12px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);display:none;';
+            el.className = 'market-alerts-toast';
             document.body.appendChild(el);
         }
+
         el.textContent = message;
-        el.style.display = 'block';
+        el.classList.remove('show');
+        // Reflow so rapid consecutive toasts retrigger animation.
+        void el.offsetWidth;
+        el.classList.add('show');
         clearTimeout(showToast._t);
         showToast._t = setTimeout(function () {
-            el.style.display = 'none';
+            el.classList.remove('show');
         }, 2500);
     }
 
