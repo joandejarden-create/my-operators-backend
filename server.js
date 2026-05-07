@@ -834,7 +834,6 @@ app.get("/api/partner-directory/config", (req, res) => {
         });
     }
     res.json({
-        AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY,
         AIRTABLE_BASE_ID: process.env.AIRTABLE_BASE_ID,
         COMPANY_PROFILE_TABLE_ID: 'tblItyfH6MlOnMKZ9',
         USERS_TABLE_ID: 'tbl6shiyz2wdUqE5F',
