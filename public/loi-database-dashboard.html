@@ -53,11 +53,17 @@
             padding: 10px 20px;
             margin: 0 -30px 32px -30px;
         }
+        .intake-header-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
         .intake-title-container {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 0;
         }
         .deal-capture-logo {
             height: 32px;
@@ -86,6 +92,10 @@
             margin: 0;
             margin-top: 5px;
         }
+        .intake-header > p {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
         @media (max-width: 768px) {
             .intake-header p { max-width: 400px; font-size: 0.7rem; }
         }
@@ -95,27 +105,88 @@
             display: flex;
             gap: 0;
             margin-bottom: 28px;
-            border-bottom: 1px solid var(--neutral--600);
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         .tab {
-            background: none;
+            min-width: 90px;
+            background: transparent;
             border: none;
-            padding: 12px 24px;
+            padding: 10px 12px;
             color: var(--neutral--400);
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
+            transition: color 0.2s, border-color 0.2s;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.04em;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            font-family: inherit;
+            margin-bottom: -1px;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral--400);
+            background: transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .tab-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .tab-label {
+            display: block;
+            line-height: 1.3;
+            text-align: center;
+            white-space: nowrap;
         }
         .tab:hover {
+            color: var(--neutral--100);
+        }
+        .tab:hover .tab-icon {
             color: var(--neutral--100);
         }
         .tab.active {
             color: var(--accent--primary-1);
             border-bottom-color: var(--accent--primary-1);
+        }
+        .tab.active .tab-icon {
+            border-color: var(--accent--primary-1);
+            border-width: 2px;
+            color: var(--accent--primary-1);
+        }
+        .tab-count {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--neutral--400);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+        .tab.active .tab-count {
+            border-color: var(--accent--primary-1);
+            color: var(--accent--primary-1);
         }
         .tab-panel {
             display: none;
@@ -358,25 +429,39 @@
             background: rgba(253, 181, 42, 0.15);
             border: 1px solid var(--secondary--color-5);
             border-radius: 6px;
-            padding: 12px 16px;
-            margin-bottom: 28px;
+            padding: 10px 12px;
+            margin: 0;
             display: flex;
-            align-items: center;
-            gap: 10px;
+            align-items: flex-start;
+            gap: 8px;
+            max-width: 560px;
+            flex: 0 1 560px;
         }
         .mock-data-banner-icon {
             color: var(--secondary--color-5);
-            font-size: 18px;
+            font-size: 16px;
             flex-shrink: 0;
+            margin-top: 1px;
         }
         .mock-data-banner-text {
             color: var(--neutral--100);
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 12px;
+            line-height: 1.35;
         }
         .mock-data-banner-text strong {
             color: var(--secondary--color-5);
             font-weight: 600;
+        }
+        @media (max-width: 980px) {
+            .intake-header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .mock-data-banner {
+                max-width: 100%;
+                width: 100%;
+                margin-top: 10px;
+            }
         }
 
         /* Filters – same style as Clause Library, My Deals */
@@ -669,6 +754,294 @@
             font-size: 14px;
         }
 
+        /* Benchmark tab */
+        .benchmark-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .benchmark-panel .step-1 { order: 1; }
+        .benchmark-panel .step-2 { order: 2; }
+        .benchmark-panel .step-3 { order: 3; }
+        .benchmark-panel .step-4 { order: 4; }
+        .benchmark-panel .step-5 { order: 5; }
+        .benchmark-step {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--secondary--color-5);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .benchmark-filter-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 12px;
+            align-items: end;
+        }
+        .benchmark-filter-grid .filter-select,
+        .benchmark-filter-grid .filter-input {
+            background: var(--secondary--color-1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            width: 100%;
+            min-height: 36px;
+            box-sizing: border-box;
+        }
+        .benchmark-filter-grid .filter-select option {
+            background: var(--secondary--color-1);
+            color: #ffffff;
+        }
+        .benchmark-filter-grid .filter-select:focus,
+        .benchmark-filter-grid .filter-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+        .benchmark-alert {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--neutral--600);
+            color: var(--neutral--300);
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .benchmark-alert.warn {
+            border-color: var(--secondary--color-5);
+            color: var(--secondary--color-5);
+            background: rgba(253, 181, 42, 0.12);
+        }
+        .benchmark-card {
+            background: var(--secondary--color-1);
+            border: 0.6px solid var(--secondary--color-4);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 7px 0 var(--general--shadow-01);
+        }
+        .benchmark-card h3 {
+            color: var(--neutral--100);
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 14px;
+        }
+        .header-help {
+            color: var(--neutral--500);
+            font-size: 12px;
+            margin: -8px 0 12px;
+            line-height: 1.45;
+        }
+        .benchmark-subtitle {
+            color: var(--neutral--500);
+            margin: 0 0 16px;
+            font-size: 13px;
+        }
+        .benchmark-percentile-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .percentile-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--neutral--600);
+            border-radius: 10px;
+            padding: 14px;
+        }
+        .percentile-label {
+            color: var(--neutral--500);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .percentile-help {
+            color: var(--neutral--500);
+            font-size: 11px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        .percentile-value {
+            color: var(--neutral--100);
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+        .percentile-meta {
+            color: var(--neutral--400);
+            font-size: 12px;
+        }
+        .benchmark-charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+        .benchmark-score-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .score-tile {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--neutral--600);
+            border-radius: 10px;
+            padding: 12px;
+        }
+        .score-tile-label {
+            color: var(--neutral--500);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            overflow: visible;
+        }
+        .score-info-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid var(--neutral--500);
+            color: var(--neutral--300);
+            font-size: 11px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: help;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .score-info-icon::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 10px);
+            transform: translateX(-50%);
+            min-width: 220px;
+            max-width: 260px;
+            background: rgba(8, 15, 37, 0.98);
+            border: 1px solid var(--neutral--600);
+            border-radius: 8px;
+            color: var(--neutral--100);
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1.35;
+            letter-spacing: normal;
+            text-transform: none;
+            padding: 8px 10px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 30;
+            transition: opacity 0.18s ease;
+            white-space: normal;
+        }
+        .score-info-icon:hover::after,
+        .score-info-icon:focus-visible::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        .score-tile-value {
+            color: var(--neutral--100);
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+        .score-tile-band {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid transparent;
+        }
+        .band-above-strong { color: #ffd6a3; background: rgba(253, 181, 42, 0.2); border-color: rgba(253, 181, 42, 0.45); }
+        .band-above { color: #ffe6c2; background: rgba(253, 181, 42, 0.14); border-color: rgba(253, 181, 42, 0.35); }
+        .band-at { color: #c8f5da; background: rgba(20, 202, 116, 0.14); border-color: rgba(20, 202, 116, 0.35); }
+        .band-below { color: #ffd0d0; background: rgba(255, 90, 101, 0.13); border-color: rgba(255, 90, 101, 0.32); }
+        .band-below-strong { color: #ffb8b8; background: rgba(255, 90, 101, 0.2); border-color: rgba(255, 90, 101, 0.45); }
+        .benchmark-chart-wrap {
+            height: 260px;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .comparison-actions {
+            display: flex;
+            justify-content: flex-end;
+            width: calc((100% - 24px) / 3);
+            margin-left: auto;
+            margin-bottom: 16px;
+        }
+        .comparison-actions .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            min-width: 180px;
+        }
+        .comparison-actions .btn-primary {
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+        .comparison-actions .btn-primary:hover {
+            background: var(--secondary--color-2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+        }
+        .comparison-results {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .comparison-result {
+            border: 1px solid var(--neutral--600);
+            border-radius: 10px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .comparison-result h4 {
+            margin: 0 0 8px;
+            color: var(--neutral--100);
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .comparison-result-help {
+            color: var(--neutral--500);
+            font-size: 11px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        .comparison-result-status {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .comparison-result-status.within { color: var(--system--green-300); }
+        .comparison-result-status.above { color: var(--secondary--color-5); }
+        .comparison-result-status.below { color: var(--system--300); }
+        .comparison-result-range {
+            color: var(--neutral--400);
+            font-size: 12px;
+        }
+
         @media (max-width: 900px) {
             .deals-table thead { 
                 display: none; 
@@ -705,6 +1078,22 @@
             .filter-group-reset {
                 flex: 1 1 100%;
             }
+            .benchmark-percentile-grid,
+            .benchmark-charts-grid,
+            .benchmark-score-grid,
+            .benchmark-filter-grid,
+            .comparison-grid,
+            .comparison-results {
+                grid-template-columns: 1fr;
+            }
+            .comparison-actions {
+                width: 100%;
+                margin-left: 0;
+            }
+            .comparison-actions .btn {
+                width: 100%;
+                min-width: 0;
+            }
         }
     </style>
 </head>
@@ -713,16 +1102,18 @@
         <div class="dashboard-main-section">
             <div class="dashboard-container">
                 <div class="intake-header">
-                    <div class="intake-title-container">
-                        <div class="deal-capture-logo">
-                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+                    <div class="intake-header-top">
+                        <div class="intake-title-container">
+                            <div class="deal-capture-logo">
+                                <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
+                            </div>
+                            <h1>LOI Market Hub</h1>
                         </div>
-                        <h1>LOI Market Hub</h1>
-                    </div>
-                    <div class="mock-data-banner">
-                        <span class="mock-data-banner-icon">⚠️</span>
-                        <div class="mock-data-banner-text">
-                            <strong>Mock Data Display:</strong> This dashboard shows sample data to demonstrate the intended presentation format. Real LOI deal data will be integrated when available.
+                        <div class="mock-data-banner">
+                            <span class="mock-data-banner-icon">⚠️</span>
+                            <div class="mock-data-banner-text">
+                                <strong>Mock Data Display:</strong> This dashboard shows sample data to demonstrate the intended presentation format. Real LOI deal data will be integrated when available.
+                            </div>
                         </div>
                     </div>
                     <p>Explore 100 sample hotel LOI deals across franchise, third-party management, and lease structures. Filter and compare terms to see how you'll be able to benchmark your deals.</p>
@@ -731,10 +1122,23 @@
                 <!-- Tabs Section -->
                 <div class="tabs-section">
                     <button class="tab active" data-tab="overview" id="overviewTab">
-                        LOI MARKET HUB
+                        <span class="tab-icon" title="LOI Market Hub">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"/><path d="M6 20V10"/><path d="M12 20V6"/><path d="M18 20V13"/><path d="M4 10l4-3 4 2 6-5"/></svg>
+                        </span>
+                        <span class="tab-label">LOI MARKET<br>HUB</span>
                     </button>
                     <button class="tab" data-tab="database" id="databaseTab">
-                        WINNING LOI DATABASE <span class="tab-count" id="databaseCount">100</span>
+                        <span class="tab-icon" title="Winning LOI Database">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v7c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 12v7c0 1.7 3.1 3 7 3s7-1.3 7-3v-7"/></svg>
+                        </span>
+                        <span class="tab-label">WINNING LOI<br>DATABASE</span>
+                        <span class="tab-count" id="databaseCount">100</span>
+                    </button>
+                    <button class="tab" data-tab="benchmark" id="benchmarkTab">
+                        <span class="tab-icon" title="Benchmarks">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><rect x="6" y="11" width="3" height="7"/><rect x="11" y="8" width="3" height="10"/><rect x="16" y="5" width="3" height="13"/></svg>
+                        </span>
+                        <span class="tab-label">MARKET<br>BENCHMARKS</span>
                     </button>
                 </div>
 
@@ -1105,31 +1509,221 @@
                 </div>
                 </div>
                 <!-- End Database Tab Panel -->
+
+                <!-- Benchmark Tab Panel -->
+                <div class="tab-panel" id="benchmarkPanel">
+                    <div class="benchmark-panel">
+                        <div class="benchmark-card step-1">
+                            <div class="benchmark-step">Step 1 · Define Peer Set</div>
+                            <h3>Peer Set Selector</h3>
+                            <p class="header-help">Choose the peer cohort for benchmarking. Index values use this cohort median as the 100 baseline.</p>
+                            <div class="benchmark-filter-grid">
+                                <div class="filter-group">
+                                    <label class="filter-label">Chain Scale</label>
+                                    <select class="filter-select" id="benchmarkChainScaleFilter">
+                                        <option value="">All</option>
+                                        <option value="Luxury">Luxury</option>
+                                        <option value="Upper Upscale">Upper Upscale</option>
+                                        <option value="Upscale">Upscale</option>
+                                        <option value="Select Service">Select Service</option>
+                                        <option value="Midscale">Midscale</option>
+                                        <option value="Economy">Economy</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Region</label>
+                                    <select class="filter-select" id="benchmarkRegionFilter">
+                                        <option value="">All</option>
+                                        <option value="North America">North America</option>
+                                        <option value="Caribbean">Caribbean</option>
+                                        <option value="Europe">Europe</option>
+                                        <option value="LATAM">LATAM</option>
+                                        <option value="Asia Pacific">Asia Pacific</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Project Type</label>
+                                    <select class="filter-select" id="benchmarkProjectTypeFilter">
+                                        <option value="">All</option>
+                                        <option value="Conversion">Conversion</option>
+                                        <option value="New Build">New Build</option>
+                                        <option value="Reflag">Reflag</option>
+                                        <option value="Acquisition">Acquisition</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Deal Structure</label>
+                                    <select class="filter-select" id="benchmarkDealStructureFilter">
+                                        <option value="">All</option>
+                                        <option value="Franchise + 3rd Party Mgmt">Franchise + 3rd Party Mgmt</option>
+                                        <option value="Franchise Only">Franchise Only</option>
+                                        <option value="Third-Party Mgmt Only">Third-Party Mgmt Only</option>
+                                        <option value="Lease">Lease</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Executed</label>
+                                    <select class="filter-select" id="benchmarkExecutedFilter">
+                                        <option value="">All</option>
+                                        <option value="Q2 2025">Q2 2025</option>
+                                        <option value="Q1 2025">Q1 2025</option>
+                                        <option value="Q4 2024">Q4 2024</option>
+                                        <option value="Q3 2024">Q3 2024</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="benchmark-alert" id="benchmarkCohortInfo">Cohort size: -- deals</div>
+                            <div class="benchmark-alert" id="benchmarkGuardrail">Benchmark guardrail: requires at least 8 deals in cohort.</div>
+                        </div>
+
+                        <div class="benchmark-card step-3">
+                            <div class="benchmark-step">Step 3 · Review Index Scorecard</div>
+                            <h3>Deal Benchmark Scorecard (Index = 100 at Market Median)</h3>
+                            <p class="header-help">This scorecard uses your entered deal terms versus the selected peer-set median (STR-style indexing).</p>
+                            <div class="benchmark-score-grid">
+                                <div class="score-tile">
+                                    <div class="score-tile-label">Royalty Index
+                                        <span class="score-info-icon" tabindex="0" data-tooltip="Compares your entered franchise fee to the peer median. 100 means equal to peer median. Above 100 means higher fee than peers." title="Royalty Index info">i</span>
+                                    </div>
+                                    <div class="score-tile-value" id="royaltyIndexValue">--</div>
+                                    <span class="score-tile-band band-at" id="royaltyIndexBand">At Market</span>
+                                </div>
+                                <div class="score-tile">
+                                    <div class="score-tile-label">Term Index
+                                        <span class="score-info-icon" tabindex="0" data-tooltip="Compares your entered term length to the peer median term. 100 means at market. Higher means longer term commitment than peers." title="Term Index info">i</span>
+                                    </div>
+                                    <div class="score-tile-value" id="termIndexValue">--</div>
+                                    <span class="score-tile-band band-at" id="termIndexBand">At Market</span>
+                                </div>
+                                <div class="score-tile">
+                                    <div class="score-tile-label">Key Money Index
+                                        <span class="score-info-icon" tabindex="0" data-tooltip="Compares your entered key money per room to the peer median. 100 means at market. Above 100 means stronger owner contribution than peers." title="Key Money Index info">i</span>
+                                    </div>
+                                    <div class="score-tile-value" id="keyIndexValue">--</div>
+                                    <span class="score-tile-band band-at" id="keyIndexBand">At Market</span>
+                                </div>
+                                <div class="score-tile">
+                                    <div class="score-tile-label">Composite Terms Index
+                                        <span class="score-info-icon" tabindex="0" data-tooltip="Weighted summary score of Royalty (40%), Term (30%), and Key Money (30%). 100 means overall alignment with peer market median." title="Composite Terms Index info">i</span>
+                                    </div>
+                                    <div class="score-tile-value" id="compositeIndexValue">--</div>
+                                    <span class="score-tile-band band-at" id="compositeIndexBand">At Market</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="benchmark-card step-4">
+                            <div class="benchmark-step">Step 4 · Spot Trend Direction</div>
+                            <h3>Index Trend by Quarter</h3>
+                            <p class="header-help">Trend of median royalty index by quarter for the selected peer cohort.</p>
+                            <div class="benchmark-chart-wrap">
+                                <canvas id="benchmarkTrendChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="benchmark-card step-5">
+                            <div class="benchmark-step">Step 5 · Drill Into Distribution</div>
+                            <h3>Market Quartiles (25th / 50th / 75th Percentile)</h3>
+                            <p class="header-help">Quartiles summarize where most deal terms cluster: P25 is the lower bound, P50 is the midpoint, and P75 is the upper bound.</p>
+                            <p class="benchmark-subtitle">Aggregated market percentiles with no deal-level rows.</p>
+                            <div class="benchmark-percentile-grid">
+                                <div class="percentile-item">
+                                    <div class="percentile-label">25th Percentile (P25)</div>
+                                    <div class="percentile-help">25% of deals are at or below this term.</div>
+                                    <div class="percentile-value" id="termP25">--</div>
+                                    <div class="percentile-meta">Lower quartile</div>
+                                </div>
+                                <div class="percentile-item">
+                                    <div class="percentile-label">50th Percentile (P50 / Median)</div>
+                                    <div class="percentile-help">The middle market value (50% below / 50% above).</div>
+                                    <div class="percentile-value" id="termP50">--</div>
+                                    <div class="percentile-meta">Market midpoint</div>
+                                </div>
+                                <div class="percentile-item">
+                                    <div class="percentile-label">75th Percentile (P75)</div>
+                                    <div class="percentile-help">75% of deals are at or below this term.</div>
+                                    <div class="percentile-value" id="termP75">--</div>
+                                    <div class="percentile-meta">Upper quartile</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="benchmark-charts-grid step-5">
+                            <div class="benchmark-card">
+                                <h3>Term Distribution Histogram</h3>
+                                <p class="header-help">Each bar shows how many deals fall inside that term-length band.</p>
+                                <p class="benchmark-subtitle">Histogram of term lengths across all benchmarked deals.</p>
+                                <div class="benchmark-chart-wrap">
+                                    <canvas id="termHistogramChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="benchmark-card">
+                                <h3>Franchise Fee Box Plot</h3>
+                                <p class="header-help">The blue bar is the typical range (P25-P75), yellow is median, and cyan points are min/max outliers.</p>
+                                <p class="benchmark-subtitle">Box plot style view (min, P25, median, P75, max).</p>
+                                <div class="benchmark-chart-wrap">
+                                    <canvas id="feeBoxPlotChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="benchmark-card step-2">
+                            <div class="benchmark-step">Step 2 · Enter Your Deal Terms</div>
+                            <h3>Your Deal vs Market Range</h3>
+                            <p class="header-help">Enter your draft terms to see whether each item is below, within, or above the current benchmark range.</p>
+                            <p class="benchmark-subtitle">Compare your draft LOI terms against the market interquartile range (P25-P75).</p>
+                            <div class="comparison-grid">
+                                <div class="filter-group">
+                                    <label class="filter-label">Your Term (yrs)</label>
+                                    <input type="number" class="filter-input" id="compareTermInput" min="5" max="40" step="1" value="18">
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Your Franchise Fee (%)</label>
+                                    <input type="number" class="filter-input" id="compareFeeInput" min="0" max="10" step="0.1" value="5.2">
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Your Key Money / Room ($K)</label>
+                                    <input type="number" class="filter-input" id="compareKeyInput" min="0" max="100" step="1" value="18">
+                                </div>
+                            </div>
+                            <div class="comparison-actions">
+                                <button class="btn btn-primary" type="button" id="runComparisonBtn">Run Comparison</button>
+                            </div>
+                            <div class="comparison-results">
+                                <div class="comparison-result">
+                                    <h4>Term</h4>
+                                    <div class="comparison-result-help">Compares your term years vs the market quartile range.</div>
+                                    <div class="comparison-result-status" id="compareTermStatus">--</div>
+                                    <div class="comparison-result-range" id="compareTermRange">Market range: --</div>
+                                </div>
+                                <div class="comparison-result">
+                                    <h4>Franchise Fee</h4>
+                                    <div class="comparison-result-help">Compares your royalty/franchise fee against market fee benchmarks.</div>
+                                    <div class="comparison-result-status" id="compareFeeStatus">--</div>
+                                    <div class="comparison-result-range" id="compareFeeRange">Market range: --</div>
+                                </div>
+                                <div class="comparison-result">
+                                    <h4>Key Money / Room</h4>
+                                    <div class="comparison-result-help">Compares your key-money-per-room level versus market contribution ranges.</div>
+                                    <div class="comparison-result-status" id="compareKeyStatus">--</div>
+                                    <div class="comparison-result-range" id="compareKeyRange">Market range: --</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Benchmark Tab Panel -->
             </div>
         </div>
     </div>
 
     <script>
-        // Airtable config – replace placeholders with actual credentials for integration
+        // This page currently uses mock data (DEAL_POOL) only.
+        // Backend integration should use /api/... routes.
         const CONFIG = {
-            AIRTABLE_API_KEY: 'patmXXXXXX.XXXXXX',
-            AIRTABLE_BASE_ID: 'appXXXXXX',
-            AIRTABLE_TABLE_NAME: 'Winning_LOI_Deals',
             CACHE_TTL: 5 * 60 * 1000, // 5 minutes cache
             MAX_RECORDS: 50000
         };
-
-        // When integrating Airtable: use direct API URL, e.g.:
-        // fetch(`https://api.airtable.com/v0/${CONFIG.AIRTABLE_BASE_ID}/${CONFIG.AIRTABLE_TABLE_NAME}/?maxRecords=${CONFIG.MAX_RECORDS}`, {
-        //   headers: { 'Authorization': `Bearer ${CONFIG.AIRTABLE_API_KEY}` }
-        // })
-
-        // For POST (if adding create/update): use direct JSON object, not FormData:
-        // const airtableData = { fields: { "Executed": "Q2 2025", "Deal Structure": "Franchise Only", ... } };
-        // fetch(`https://api.airtable.com/v0/${CONFIG.AIRTABLE_BASE_ID}/${CONFIG.AIRTABLE_TABLE_NAME}`, {
-        //   method: 'POST', headers: { 'Authorization': `Bearer ${CONFIG.AIRTABLE_API_KEY}`, 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(airtableData)
-        // })
 
         // 100 varied hotel LOI deals (mock data – replace with Airtable fetch when integrated)
         const DEAL_POOL = [
@@ -1309,6 +1903,402 @@
         let sortColumn = 'executed';
         let sortDirection = 'desc';
         let pageSize = 100;
+        let benchmarkStats = null;
+        let benchmarkCharts = {};
+        let benchmarkPeerData = [];
+        const MIN_BENCHMARK_COHORT = 8;
+
+        function getNumericCurrency(value) {
+            if (!value || value === '—') return 0;
+            const numStr = value.replace(/[^0-9.]/g, '');
+            const num = parseFloat(numStr) || 0;
+            if (value.includes('M')) return num * 1000000;
+            if (value.includes('K')) return num * 1000;
+            return num;
+        }
+
+        function percentile(sortedValues, p) {
+            if (!sortedValues.length) return 0;
+            const index = (sortedValues.length - 1) * p;
+            const lower = Math.floor(index);
+            const upper = Math.ceil(index);
+            if (lower === upper) return sortedValues[lower];
+            const weight = index - lower;
+            return sortedValues[lower] * (1 - weight) + sortedValues[upper] * weight;
+        }
+
+        function filterBenchmarkPeers() {
+            const chainScale = document.getElementById('benchmarkChainScaleFilter').value;
+            const region = document.getElementById('benchmarkRegionFilter').value;
+            const projectType = document.getElementById('benchmarkProjectTypeFilter').value;
+            const dealStructure = document.getElementById('benchmarkDealStructureFilter').value;
+            const executed = document.getElementById('benchmarkExecutedFilter').value;
+
+            return allData.filter(d =>
+                (!chainScale || d.chainScale === chainScale) &&
+                (!region || d.region === region) &&
+                (!projectType || d.projectType === projectType) &&
+                (!dealStructure || d.dealStructure === dealStructure) &&
+                (!executed || d.executed === executed)
+            );
+        }
+
+        function computeBenchmarkStats(sourceData) {
+            const dataset = sourceData || benchmarkPeerData;
+            const terms = dataset.map(d => Number(d.term) || 0).filter(v => v > 0).sort((a, b) => a - b);
+            const fees = dataset.map(d => parseFloat((d.franchiseFee || '0').replace('%', '').replace('—', '')) || 0).filter(v => v > 0).sort((a, b) => a - b);
+            const keyPerRoom = dataset
+                .map(d => {
+                    const keyVal = getNumericCurrency(d.keyMoney);
+                    if (!keyVal || !d.rooms) return 0;
+                    return keyVal / d.rooms / 1000;
+                })
+                .filter(v => v > 0)
+                .sort((a, b) => a - b);
+
+            return {
+                term: {
+                    values: terms,
+                    min: terms[0] || 0,
+                    p25: percentile(terms, 0.25),
+                    p50: percentile(terms, 0.5),
+                    p75: percentile(terms, 0.75),
+                    max: terms[terms.length - 1] || 0
+                },
+                fee: {
+                    values: fees,
+                    min: fees[0] || 0,
+                    p25: percentile(fees, 0.25),
+                    p50: percentile(fees, 0.5),
+                    p75: percentile(fees, 0.75),
+                    max: fees[fees.length - 1] || 0
+                },
+                key: {
+                    values: keyPerRoom,
+                    min: keyPerRoom[0] || 0,
+                    p25: percentile(keyPerRoom, 0.25),
+                    p50: percentile(keyPerRoom, 0.5),
+                    p75: percentile(keyPerRoom, 0.75),
+                    max: keyPerRoom[keyPerRoom.length - 1] || 0
+                }
+            };
+        }
+
+        function setIndexBand(indexValue, bandEl) {
+            let label = 'At Market';
+            let cls = 'band-at';
+            if (indexValue >= 120) {
+                label = 'Materially Above Market';
+                cls = 'band-above-strong';
+            } else if (indexValue >= 105) {
+                label = 'Above Market';
+                cls = 'band-above';
+            } else if (indexValue >= 95) {
+                label = 'At Market';
+                cls = 'band-at';
+            } else if (indexValue >= 80) {
+                label = 'Below Market';
+                cls = 'band-below';
+            } else {
+                label = 'Materially Below Market';
+                cls = 'band-below-strong';
+            }
+            bandEl.textContent = label;
+            bandEl.className = `score-tile-band ${cls}`;
+        }
+
+        function updateIndexScorecard(stats) {
+            if (!stats) return;
+            const termVal = parseFloat(document.getElementById('compareTermInput').value) || stats.term.p50;
+            const feeVal = parseFloat(document.getElementById('compareFeeInput').value) || stats.fee.p50;
+            const keyVal = parseFloat(document.getElementById('compareKeyInput').value) || stats.key.p50;
+
+            const royaltyIndex = stats.fee.p50 > 0 ? (feeVal / stats.fee.p50) * 100 : 100;
+            const termIndex = stats.term.p50 > 0 ? (termVal / stats.term.p50) * 100 : 100;
+            const keyIndex = stats.key.p50 > 0 ? (keyVal / stats.key.p50) * 100 : 100;
+            const compositeIndex = (royaltyIndex * 0.4) + (termIndex * 0.3) + (keyIndex * 0.3);
+
+            document.getElementById('royaltyIndexValue').textContent = royaltyIndex.toFixed(0);
+            document.getElementById('termIndexValue').textContent = termIndex.toFixed(0);
+            document.getElementById('keyIndexValue').textContent = keyIndex.toFixed(0);
+            document.getElementById('compositeIndexValue').textContent = compositeIndex.toFixed(0);
+
+            setIndexBand(royaltyIndex, document.getElementById('royaltyIndexBand'));
+            setIndexBand(termIndex, document.getElementById('termIndexBand'));
+            setIndexBand(keyIndex, document.getElementById('keyIndexBand'));
+            setIndexBand(compositeIndex, document.getElementById('compositeIndexBand'));
+        }
+
+        function buildHistogram(values, binSize) {
+            if (!values.length) return { labels: [], counts: [] };
+            const min = Math.floor(values[0] / binSize) * binSize;
+            const max = Math.ceil(values[values.length - 1] / binSize) * binSize;
+            const labels = [];
+            const counts = [];
+            for (let start = min; start < max; start += binSize) {
+                const end = start + binSize;
+                labels.push(`${start}-${end}`);
+                counts.push(values.filter(v => v >= start && v < end).length);
+            }
+            return { labels, counts };
+        }
+
+        function getQuarterOrder(q) {
+            const rank = { 'Q1': 1, 'Q2': 2, 'Q3': 3, 'Q4': 4 };
+            const parts = String(q || '').split(' ');
+            if (parts.length !== 2) return 0;
+            return (parseInt(parts[1], 10) || 0) * 10 + (rank[parts[0]] || 0);
+        }
+
+        function buildBenchmarkTrend(dataset, feeMedian) {
+            const grouped = {};
+            dataset.forEach(d => {
+                const key = d.executed || 'Unknown';
+                const val = parseFloat((d.franchiseFee || '0').replace('%', '').replace('—', '')) || 0;
+                if (val <= 0) return;
+                if (!grouped[key]) grouped[key] = [];
+                grouped[key].push(val);
+            });
+            const labels = Object.keys(grouped).sort((a, b) => getQuarterOrder(a) - getQuarterOrder(b));
+            const values = labels.map(label => {
+                const sorted = grouped[label].sort((a, b) => a - b);
+                const med = percentile(sorted, 0.5);
+                return feeMedian > 0 ? (med / feeMedian) * 100 : 100;
+            });
+            return { labels, values };
+        }
+
+        function updateCohortGuardrail() {
+            const cohortInfo = document.getElementById('benchmarkCohortInfo');
+            const guardrail = document.getElementById('benchmarkGuardrail');
+            const count = benchmarkPeerData.length;
+            cohortInfo.textContent = `Cohort size: ${count} deals`;
+            if (count < MIN_BENCHMARK_COHORT) {
+                guardrail.textContent = `Benchmark guardrail active: need at least ${MIN_BENCHMARK_COHORT} deals (current ${count}).`;
+                guardrail.className = 'benchmark-alert warn';
+                return false;
+            }
+            guardrail.textContent = `Benchmark guardrail passed: cohort is large enough for indexing (n=${count}).`;
+            guardrail.className = 'benchmark-alert';
+            return true;
+        }
+
+        function runDealComparison() {
+            if (!benchmarkStats) {
+                ['compareTermStatus', 'compareFeeStatus', 'compareKeyStatus'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.textContent = `Need at least ${MIN_BENCHMARK_COHORT} deals`;
+                    el.className = 'comparison-result-status below';
+                });
+                return;
+            }
+            const termVal = parseFloat(document.getElementById('compareTermInput').value) || 0;
+            const feeVal = parseFloat(document.getElementById('compareFeeInput').value) || 0;
+            const keyVal = parseFloat(document.getElementById('compareKeyInput').value) || 0;
+
+            const setComparison = (value, stat, statusId, rangeId, formatter) => {
+                const statusEl = document.getElementById(statusId);
+                const rangeEl = document.getElementById(rangeId);
+                let label = 'Within market range';
+                let cls = 'within';
+                if (value < stat.p25) {
+                    label = 'Below market range';
+                    cls = 'below';
+                } else if (value > stat.p75) {
+                    label = 'Above market range';
+                    cls = 'above';
+                }
+                statusEl.textContent = label;
+                statusEl.className = `comparison-result-status ${cls}`;
+                rangeEl.textContent = `Market range: ${formatter(stat.p25)} to ${formatter(stat.p75)} (Median ${formatter(stat.p50)})`;
+            };
+
+            setComparison(termVal, benchmarkStats.term, 'compareTermStatus', 'compareTermRange', v => `${v.toFixed(1)} yrs`);
+            setComparison(feeVal, benchmarkStats.fee, 'compareFeeStatus', 'compareFeeRange', v => `${v.toFixed(2)}%`);
+            setComparison(keyVal, benchmarkStats.key, 'compareKeyStatus', 'compareKeyRange', v => `$${v.toFixed(1)}K`);
+            updateIndexScorecard(benchmarkStats);
+        }
+
+        function initBenchmarkTab() {
+            benchmarkPeerData = filterBenchmarkPeers();
+            const guardrailPassed = updateCohortGuardrail();
+            if (!guardrailPassed) {
+                benchmarkStats = null;
+                document.getElementById('termP25').textContent = '--';
+                document.getElementById('termP50').textContent = '--';
+                document.getElementById('termP75').textContent = '--';
+                ['royaltyIndexValue', 'termIndexValue', 'keyIndexValue', 'compositeIndexValue'].forEach(id => {
+                    document.getElementById(id).textContent = '--';
+                });
+                ['royaltyIndexBand', 'termIndexBand', 'keyIndexBand', 'compositeIndexBand'].forEach(id => {
+                    const el = document.getElementById(id);
+                    el.textContent = 'Insufficient Cohort';
+                    el.className = 'score-tile-band band-below';
+                });
+                if (benchmarkCharts.hist) benchmarkCharts.hist.destroy();
+                if (benchmarkCharts.box) benchmarkCharts.box.destroy();
+                if (benchmarkCharts.trend) benchmarkCharts.trend.destroy();
+                runDealComparison();
+                return;
+            }
+
+            benchmarkStats = computeBenchmarkStats(benchmarkPeerData);
+            document.getElementById('termP25').textContent = `${benchmarkStats.term.p25.toFixed(1)} yrs`;
+            document.getElementById('termP50').textContent = `${benchmarkStats.term.p50.toFixed(1)} yrs`;
+            document.getElementById('termP75').textContent = `${benchmarkStats.term.p75.toFixed(1)} yrs`;
+
+            const histogram = buildHistogram(benchmarkStats.term.values, 2);
+            if (benchmarkCharts.hist) benchmarkCharts.hist.destroy();
+            const histCtx = document.getElementById('termHistogramChart').getContext('2d');
+            benchmarkCharts.hist = new Chart(histCtx, {
+                type: 'bar',
+                data: {
+                    labels: histogram.labels,
+                    datasets: [{
+                        label: 'Deal count',
+                        data: histogram.counts,
+                        backgroundColor: '#6c72ff',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#7e89ac', font: { size: 10 } },
+                            grid: { display: false, drawBorder: false }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#7e89ac', stepSize: 2 },
+                            grid: { color: 'rgba(126, 137, 172, 0.1)', drawBorder: false }
+                        }
+                    }
+                }
+            });
+
+            if (benchmarkCharts.box) benchmarkCharts.box.destroy();
+            const boxCtx = document.getElementById('feeBoxPlotChart').getContext('2d');
+            benchmarkCharts.box = new Chart(boxCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Franchise Fee (%)'],
+                    datasets: [
+                        {
+                            label: 'IQR (P25-P75)',
+                            data: [[benchmarkStats.fee.p25, benchmarkStats.fee.p75]],
+                            backgroundColor: 'rgba(108, 114, 255, 0.6)',
+                            borderColor: '#6c72ff',
+                            borderWidth: 1,
+                            borderRadius: 8,
+                            barThickness: 40
+                        },
+                        {
+                            type: 'scatter',
+                            label: 'Median',
+                            data: [{ x: benchmarkStats.fee.p50, y: 0 }],
+                            backgroundColor: '#fdb52a',
+                            pointRadius: 7,
+                            pointHoverRadius: 8
+                        },
+                        {
+                            type: 'scatter',
+                            label: 'Min / Max',
+                            data: [
+                                { x: benchmarkStats.fee.min, y: 0 },
+                                { x: benchmarkStats.fee.max, y: 0 }
+                            ],
+                            backgroundColor: '#57c3ff',
+                            pointRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#aeb9e1', font: { size: 11 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    if (ctx.dataset.label === 'IQR (P25-P75)') {
+                                        return `P25-P75: ${benchmarkStats.fee.p25.toFixed(2)}% - ${benchmarkStats.fee.p75.toFixed(2)}%`;
+                                    }
+                                    if (ctx.dataset.label === 'Median') return `Median: ${benchmarkStats.fee.p50.toFixed(2)}%`;
+                                    return `Value: ${ctx.parsed.x.toFixed(2)}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            min: Math.floor(benchmarkStats.fee.min * 2) / 2,
+                            max: Math.ceil(benchmarkStats.fee.max * 2) / 2,
+                            ticks: {
+                                color: '#7e89ac',
+                                callback: function(v) { return `${v}%`; }
+                            },
+                            grid: { color: 'rgba(126, 137, 172, 0.1)', drawBorder: false }
+                        },
+                        y: {
+                            ticks: { color: '#7e89ac' },
+                            grid: { display: false, drawBorder: false }
+                        }
+                    }
+                }
+            });
+
+            if (benchmarkCharts.trend) benchmarkCharts.trend.destroy();
+            const trendCtx = document.getElementById('benchmarkTrendChart').getContext('2d');
+            const trendData = buildBenchmarkTrend(benchmarkPeerData, benchmarkStats.fee.p50);
+            benchmarkCharts.trend = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: trendData.labels,
+                    datasets: [{
+                        label: 'Royalty Index (Median)',
+                        data: trendData.values,
+                        borderColor: '#57c3ff',
+                        backgroundColor: 'rgba(87, 195, 255, 0.2)',
+                        fill: true,
+                        tension: 0.35,
+                        borderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#aeb9e1', font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#7e89ac', font: { size: 10 } },
+                            grid: { display: false, drawBorder: false }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            ticks: {
+                                color: '#7e89ac',
+                                callback: function(v) { return `${Math.round(v)}`; }
+                            },
+                            grid: { color: 'rgba(126, 137, 172, 0.1)', drawBorder: false }
+                        }
+                    }
+                }
+            });
+
+            updateIndexScorecard(benchmarkStats);
+            runDealComparison();
+        }
 
         function updateFilterBadge() {
             const search = document.getElementById('searchInput').value;
@@ -1609,6 +2599,8 @@
             // Initialize charts if switching to overview tab
             if (tabName === 'overview') {
                 initCharts();
+            } else if (tabName === 'benchmark') {
+                initBenchmarkTab();
             }
         }
         
@@ -1617,7 +2609,12 @@
                 switchTab(tab.dataset.tab);
             });
         });
-        
+        document.getElementById('runComparisonBtn').addEventListener('click', runDealComparison);
+        ['benchmarkChainScaleFilter', 'benchmarkRegionFilter', 'benchmarkProjectTypeFilter', 'benchmarkDealStructureFilter', 'benchmarkExecutedFilter']
+            .forEach(id => {
+                document.getElementById(id).addEventListener('change', initBenchmarkTab);
+            });
+
         // Chart initialization
         let chartInstances = {};
         
@@ -1846,6 +2843,7 @@
         renderTable();
         initCharts();
         initAdditionalCharts();
+        initBenchmarkTab();
         
         // Initialize additional charts
         function initAdditionalCharts() {
