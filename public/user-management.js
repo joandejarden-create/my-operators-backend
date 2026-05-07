@@ -1,9 +1,8 @@
 /**
  * User Management page – list, add, edit, delete users (Airtable User Management table).
  *
- * API: Frontend calls the app proxy (API_BASE). The server uses CONFIG (env) and forwards to
- *   https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${USER_MANAGEMENT_TABLE_ID}/...
- * Credentials (AIRTABLE_API_KEY, AIRTABLE_BASE_ID) are server-side only; never expose in this file.
+ * API: Frontend calls only the app proxy (API_BASE).
+ * Data-source credentials are handled server-side only; never expose them in this file.
  */
 (function () {
     const API_BASE = '/api/user-management';
