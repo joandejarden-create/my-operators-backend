@@ -4,23 +4,12 @@
 // CONFIGURATION - UPDATE THESE VALUES BEFORE DEPLOYMENT
 // ============================================================================
 // 
-// For LOCAL DEVELOPMENT: The config will be automatically loaded from the server.
-// For PRODUCTION/WEBFLOW: Update the values below with your actual Airtable credentials.
-//
-// INSTRUCTIONS (for production/Webflow deployment):
-// 1. Get your Airtable API Key: https://airtable.com/create/tokens
-//    - Create a token with read access to your base
-//    - Copy the token (starts with 'pat...')
-// 
-// 2. Get your Airtable Base ID: https://airtable.com/api
-//    - Select your base
-//    - Copy the Base ID (starts with 'app...')
-//
-// 3. Update the values below:
-//
 // Required CONFIG shape: table IDs, CACHE_TTL, MAX_RECORDS.
 // Airtable access is server-side via /api/partner-directory* endpoints.
 // Optional: /api/partner-directory/config loads non-secret config from server.
+const API_BASE = window.DEALALITY_API_BASE || '';
+const apiUrl = (path) => `${API_BASE}${path}`;
+
 const CONFIG = {
     AIRTABLE_BASE_ID: 'YOUR_AIRTABLE_BASE_ID_HERE',
     AIRTABLE_TABLE_NAME: 'Company_Profile',
@@ -44,7 +33,7 @@ function isPartnerDirectoryDebug() {
 // Load config from server for local development (falls back to hardcoded config for production)
 async function loadConfig() {
     try {
-        const response = await fetch('/api/partner-directory/config');
+        const response = await fetch(apiUrl('/api/partner-directory/config'));
         if (response.ok) {
             const serverConfig = await response.json();
             Object.assign(PARTNER_DIRECTORY_CONFIG, serverConfig);
@@ -947,7 +936,7 @@ class PartnerDirectory {
                 this.applyFilters();
                 return;
             }
-            const response = await fetch('/api/partner-directory');
+            const response = await fetch(apiUrl('/api/partner-directory'));
             if (!response.ok) {
                 const errorText = await response.text().catch(() => '');
                 throw new Error(`Failed to fetch partners: ${response.status} ${response.statusText}. ${errorText}`);
@@ -1454,7 +1443,7 @@ class PartnerDirectory {
         try {
             const userId = this.currentUserId && this.currentUserId.startsWith('rec') ? this.currentUserId : '';
             const query = userId ? `?userId=${encodeURIComponent(userId)}` : '';
-            const response = await fetch(`/api/partner-directory/favorites${query}`);
+            const response = await fetch(apiUrl(`/api/partner-directory/favorites${query}`));
             
             if (!response.ok) {
                 throw new Error(`Failed to load favorites: ${response.status} ${response.statusText}`);
@@ -1594,7 +1583,7 @@ class PartnerDirectory {
                 }
 
                 const query = this.currentUserId ? `?userId=${encodeURIComponent(this.currentUserId)}` : '';
-                const response = await fetch(`/api/partner-directory/favorites/${encodeURIComponent(favoriteRecordId)}${query}`, {
+                const response = await fetch(apiUrl(`/api/partner-directory/favorites/${encodeURIComponent(favoriteRecordId)}${query}`), {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' }
                 });
@@ -1624,7 +1613,7 @@ class PartnerDirectory {
                 const existingFavorite = this.favoritesMap.get(key);
                 let newFavorite;
                 if (existingFavorite?.favoriteRecordId) {
-                    const updateResponse = await fetch(`/api/partner-directory/favorites/${encodeURIComponent(existingFavorite.favoriteRecordId)}`, {
+                    const updateResponse = await fetch(apiUrl(`/api/partner-directory/favorites/${encodeURIComponent(existingFavorite.favoriteRecordId)}`), {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1648,7 +1637,7 @@ class PartnerDirectory {
                     };
                 } else {
                     const individual = type === 'individual' ? this.individuals.find(ind => ind.id === id) : null;
-                    const response = await fetch('/api/partner-directory/favorites', {
+                    const response = await fetch(apiUrl('/api/partner-directory/favorites'), {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -3948,8 +3937,8 @@ let partnerDirectory;
                             <h2 style="margin-bottom: 16px;">⚠️ Configuration Required</h2>
                             <p style="margin-bottom: 8px;">Please update PARTNER_DIRECTORY_CONFIG in partner-directory.js</p>
                             <p style="font-size: 14px; color: var(--neutral--500);">
-                                For local development, ensure your server has AIRTABLE_API_KEY and AIRTABLE_BASE_ID environment variables set.<br>
-                                For production/Webflow, update the hardcoded values in the config object.
+                                For local development, ensure your backend API server is running and reachable.<br>
+                                For production/Webflow, set <code>window.DEALALITY_API_BASE</code> before loading this script.
                             </p>
                         </div>
                     `;
