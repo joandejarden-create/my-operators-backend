@@ -1,4 +1,4 @@
-// Partner Directory JavaScript - Direct Airtable API Integration
+// Partner Directory JavaScript - Backend API Integration
 // Version: 2025-01-29 - Airtable Favorites Integration
 // ============================================================================
 // CONFIGURATION - UPDATE THESE VALUES BEFORE DEPLOYMENT
@@ -18,12 +18,10 @@
 //
 // 3. Update the values below:
 //
-// Required CONFIG shape: AIRTABLE_API_KEY, AIRTABLE_BASE_ID, table IDs, CACHE_TTL, MAX_RECORDS.
-// All Airtable data is fetched via https://api.airtable.com/v0/${CONFIG.AIRTABLE_BASE_ID}/...
-// Optional: /api/partner-directory/config is only for loading this config from the server (local dev); for standalone/production set values below.
-// CONFIG: Airtable credentials – all fetches use https://api.airtable.com/v0/${CONFIG.AIRTABLE_BASE_ID}/...
+// Required CONFIG shape: table IDs, CACHE_TTL, MAX_RECORDS.
+// Airtable access is server-side via /api/partner-directory* endpoints.
+// Optional: /api/partner-directory/config loads non-secret config from server.
 const CONFIG = {
-    AIRTABLE_API_KEY: 'YOUR_AIRTABLE_API_KEY_HERE',
     AIRTABLE_BASE_ID: 'YOUR_AIRTABLE_BASE_ID_HERE',
     AIRTABLE_TABLE_NAME: 'Company_Profile',
     CACHE_TTL: 5 * 60 * 1000,
@@ -57,13 +55,7 @@ async function loadConfig() {
         // Will use hardcoded config below
     }
     
-    // Validate hardcoded config for production
-    if (PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY === 'YOUR_AIRTABLE_API_KEY_HERE' || 
-        PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID === 'YOUR_AIRTABLE_BASE_ID_HERE') {
-        console.warn('⚠️ Configuration Required: Please update PARTNER_DIRECTORY_CONFIG with your actual Airtable credentials.');
-        return false;
-    }
-    
+    // Config endpoint is optional for local/server-backed deployments.
     return true;
 }
 
@@ -955,71 +947,19 @@ class PartnerDirectory {
                 this.applyFilters();
                 return;
             }
-            // Validate configuration (should already be validated in loadConfig, but double-check)
-            if (!PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY || 
-                !PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID ||
-                PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY === 'YOUR_AIRTABLE_API_KEY_HERE' || 
-                PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID === 'YOUR_AIRTABLE_BASE_ID_HERE') {
-                throw new Error('⚠️ Configuration Required: Please update PARTNER_DIRECTORY_CONFIG in partner-directory.js with your actual Airtable API key and Base ID. See comments at the top of the file for instructions.');
+            const response = await fetch('/api/partner-directory');
+            if (!response.ok) {
+                const errorText = await response.text().catch(() => '');
+                throw new Error(`Failed to fetch partners: ${response.status} ${response.statusText}. ${errorText}`);
             }
-            
-            const baseId = PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID;
-            const apiKey = PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY;
-            const pageSize = PARTNER_DIRECTORY_CONFIG.MAX_RECORDS_PER_REQUEST.toString();
-            const headers = { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' };
-
-            // Fetch companies and individuals in parallel for faster load
-            const [allCompanyRecords, allIndividualRecords] = await Promise.all([
-                this._fetchAllPages(baseId, PARTNER_DIRECTORY_CONFIG.COMPANY_PROFILE_TABLE_ID, pageSize, headers),
-                this._fetchIndividualsFromAllTables(baseId, pageSize, headers)
-            ]);
-
-            // Format company records
-            this.companies = allCompanyRecords
-                .filter(record => {
-                    const fields = record.fields || {};
-                    const companyName = fields["Company Name"] || '';
-                    return companyName && companyName.trim();
-                })
-                .map(record => this.formatCompanyRecord(record));
-
-            // Format individual records (allIndividualRecords from parallel fetch above)
-            this.individuals = allIndividualRecords.map(record => {
-                const formatted = this.formatIndividualRecord(record);
-                formatted._sourceTable = record._sourceTable || 'Unknown';
-                return formatted;
-            });
+            const payload = await response.json();
+            this.companies = Array.isArray(payload.companies) ? payload.companies : [];
+            this.individuals = Array.isArray(payload.individuals) ? payload.individuals : [];
             
             // Show grid and data first for faster perceived load (especially Individuals tab)
             this.hideLoading();
             this.updateStats();
             this.applyFilters();
-
-            // Fetch company names in background so Individuals tab shows immediately; names fill in when ready
-            const individualsNeedingCompanyNames = this.individuals.filter(ind => ind.companyRecordId && !ind.companyName);
-            if (individualsNeedingCompanyNames.length > 0) {
-                const companyRecordIds = [...new Set(individualsNeedingCompanyNames.map(ind => ind.companyRecordId).filter(id => id))];
-                this.fetchCompanyNames(companyRecordIds).then(companyNamesMap => {
-                    this.individuals.forEach(individual => {
-                        if (individual.companyRecordId) {
-                            if (!individual.companyName && companyNamesMap[individual.companyRecordId]) {
-                                individual.companyName = companyNamesMap[individual.companyRecordId];
-                            }
-                            if (!individual.userType && this.companyUserTypesMap && this.companyUserTypesMap[individual.companyRecordId]) {
-                                individual.userType = this.companyUserTypesMap[individual.companyRecordId];
-                            }
-                        }
-                        if (!individual.userType && individual.companyName) {
-                            const matchingCompany = this.companies.find(c => c.name === individual.companyName);
-                            if (matchingCompany && matchingCompany.userType) {
-                                individual.userType = matchingCompany.userType;
-                            }
-                        }
-                    });
-                    this.updateStats();
-                    this.applyFilters();
-                }).catch(err => console.warn('Background company names fetch failed:', err));
-            }
 
             // Store in cache for TTL (avoids refetch on tab switch / repeat visits)
             this.partnersCache = { companies: this.companies, individuals: this.individuals, timestamp: Date.now() };
@@ -1028,75 +968,6 @@ class PartnerDirectory {
             this.hideLoading();
             this.showLoadingError('Failed to load partners. Please try again later.');
         }
-    }
-
-    async _fetchAllPages(baseId, tableId, pageSize, headers) {
-        const all = [];
-        let offset = null;
-        do {
-            const url = new URL(`https://api.airtable.com/v0/${baseId}/${tableId}`);
-            url.searchParams.append('pageSize', pageSize);
-            if (offset) url.searchParams.append('offset', offset);
-            const response = await fetch(url, { headers });
-            if (!response.ok) {
-                const errorText = await response.text().catch(() => '');
-                throw new Error(`Airtable API error: ${response.status} ${response.statusText}. ${errorText}`);
-            }
-            const data = await response.json();
-            all.push(...(data.records || []));
-            offset = data.offset;
-        } while (offset);
-        return all;
-    }
-
-    async _fetchIndividualsFromAllTables(baseId, pageSize, headers) {
-        const fetchUsers = async () => {
-            const all = [];
-            let offset = null;
-            do {
-                const url = new URL(`https://api.airtable.com/v0/${baseId}/${PARTNER_DIRECTORY_CONFIG.USERS_TABLE_ID}`);
-                url.searchParams.append('pageSize', pageSize);
-                if (offset) url.searchParams.append('offset', offset);
-                url.searchParams.append('cellFormat', 'json');
-                url.searchParams.append('returnFieldsByFieldId', 'false');
-                url.searchParams.append('expand[]', 'Company Profile');
-                const response = await fetch(url, { headers });
-                if (!response.ok) {
-                    const errorText = await response.text().catch(() => '');
-                    throw new Error(`Airtable API error (Users): ${response.status} ${response.statusText}. ${errorText}`);
-                }
-                const data = await response.json();
-                (data.records || []).forEach(r => { r._sourceTable = 'Users'; });
-                all.push(...(data.records || []));
-                offset = data.offset;
-            } while (offset);
-            return all;
-        };
-        const fetchUserManagement = async () => {
-            if (!PARTNER_DIRECTORY_CONFIG.USER_MANAGEMENT_TABLE_ID) return [];
-            const all = [];
-            let offset = null;
-            do {
-                const url = new URL(`https://api.airtable.com/v0/${baseId}/${PARTNER_DIRECTORY_CONFIG.USER_MANAGEMENT_TABLE_ID}`);
-                url.searchParams.append('pageSize', pageSize);
-                if (offset) url.searchParams.append('offset', offset);
-                url.searchParams.append('cellFormat', 'json');
-                url.searchParams.append('returnFieldsByFieldId', 'false');
-                url.searchParams.append('expand[]', 'Company Profile');
-                const response = await fetch(url, { headers });
-                if (!response.ok) {
-                    console.warn('⚠️ Could not fetch User Management table, continuing with Users only');
-                    return all;
-                }
-                const data = await response.json();
-                (data.records || []).forEach(r => { r._sourceTable = 'User Management'; });
-                all.push(...(data.records || []));
-                offset = data.offset;
-            } while (offset);
-            return all;
-        };
-        const [userRecords, umRecords] = await Promise.all([fetchUsers(), fetchUserManagement()]);
-        return [...userRecords, ...umRecords];
     }
 
     hideLoading() {
@@ -1581,58 +1452,9 @@ class PartnerDirectory {
 
     async loadFavorites() {
         try {
-            const tableId = PARTNER_DIRECTORY_CONFIG.USER_FAVORITES_TABLE_ID;
-            if (!tableId) {
-                console.warn('⚠️ USER_FAVORITES_TABLE_ID not configured, favorites will not be loaded');
-                this.favorites = [];
-                this.updateFavoritesMap();
-                return;
-            }
-
-            // Get userId - use currentUserId or find first available user for fallback
-            let userId = this.currentUserId;
-            if (!userId || !userId.startsWith('rec')) {
-                // Try to get first user from Users table as fallback
-                const USERS_TABLE_ID = PARTNER_DIRECTORY_CONFIG.USERS_TABLE_ID;
-                if (USERS_TABLE_ID) {
-                    try {
-                        const url = `https://api.airtable.com/v0/${PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID}/${USERS_TABLE_ID}?maxRecords=1`;
-                        const response = await fetch(url, {
-                            headers: {
-                                'Authorization': `Bearer ${PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY}`,
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                        if (response.ok) {
-                            const data = await response.json();
-                            if (data.records && data.records.length > 0) {
-                                userId = data.records[0].id;
-                            }
-                        }
-                    } catch (e) {
-                        // Fallback failed, continue without userId
-                    }
-                }
-            }
-
-            if (!userId || !userId.startsWith('rec')) {
-                // No valid userId, return empty favorites
-                this.favorites = [];
-                this.updateFavoritesMap();
-                return;
-            }
-
-            // Build direct Airtable API URL with filter
-            const url = new URL(`https://api.airtable.com/v0/${PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID}/${tableId}`);
-            url.searchParams.append('filterByFormula', `{User_ID} = '${userId}'`);
-            url.searchParams.append('maxRecords', '1000');
-
-            const response = await fetch(url, {
-                headers: {
-                    'Authorization': `Bearer ${PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            });
+            const userId = this.currentUserId && this.currentUserId.startsWith('rec') ? this.currentUserId : '';
+            const query = userId ? `?userId=${encodeURIComponent(userId)}` : '';
+            const response = await fetch(`/api/partner-directory/favorites${query}`);
             
             if (!response.ok) {
                 throw new Error(`Failed to load favorites: ${response.status} ${response.statusText}`);
@@ -1640,32 +1462,14 @@ class PartnerDirectory {
 
             const data = await response.json();
             
-            // Map Airtable records to favorites format
-            this.favorites = (data.records || []).map(record => {
-                const fields = record.fields || {};
-                const partnerType = fields['Partner Type'] || '';
-                let partnerId = null;
-                
-                // Get partner ID based on type
-                if (partnerType === 'Company') {
-                    const companyProfile = fields['Company Profile'];
-                    partnerId = Array.isArray(companyProfile) ? companyProfile[0] : companyProfile;
-                } else if (partnerType === 'Individual') {
-                    // Check both Individual Profile and User Profile fields
-                    const individualProfile = fields['Individual Profile'];
-                    const userProfile = fields['User Profile'];
-                    partnerId = Array.isArray(individualProfile) && individualProfile.length > 0 
-                        ? individualProfile[0] 
-                        : (Array.isArray(userProfile) && userProfile.length > 0 ? userProfile[0] : null);
-                }
-                
+            this.favorites = (data.favorites || []).map(favorite => {
                 return {
-                    id: partnerId, // Use partnerId as the id for compatibility
-                    type: partnerType.toLowerCase(),
-                    category: fields['Category'] || 'Important',
-                    favoritedDate: fields['Favorited Date'] || new Date().toISOString(),
-                    lastViewed: fields['Last Viewed'] || null,
-                    favoriteRecordId: record.id // Store the Airtable record ID for deletion
+                    id: favorite.partnerId,
+                    type: favorite.type,
+                    category: favorite.category || 'Important',
+                    favoritedDate: favorite.favoritedDate || new Date().toISOString(),
+                    lastViewed: favorite.lastViewed || null,
+                    favoriteRecordId: favorite.id
                 };
             });
 
@@ -1760,13 +1564,6 @@ class PartnerDirectory {
     }
 
     async toggleFavorite(id, type, category = 'Important', starButton = null, isRemoval = false) {
-        const tableId = PARTNER_DIRECTORY_CONFIG.USER_FAVORITES_TABLE_ID;
-        if (!tableId) {
-            console.warn('⚠️ USER_FAVORITES_TABLE_ID not configured');
-            alert('Favorites feature is not configured. Please contact support.');
-            return;
-        }
-
         // Allow favoriting for all individuals (both Users and User Management tables)
         // If the Individual Profile field doesn't support Users table, Airtable will return an error which we'll handle gracefully
         if (type === 'individual') {
@@ -1796,15 +1593,10 @@ class PartnerDirectory {
                     return;
                 }
 
-                // Delete using direct Airtable API
-                const deleteUrl = `https://api.airtable.com/v0/${PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID}/${tableId}/${favoriteRecordId}`;
-                
-                const response = await fetch(deleteUrl, {
+                const query = this.currentUserId ? `?userId=${encodeURIComponent(this.currentUserId)}` : '';
+                const response = await fetch(`/api/partner-directory/favorites/${encodeURIComponent(favoriteRecordId)}${query}`, {
                     method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Content-Type': 'application/json' }
                 });
 
                 if (!response.ok) {
@@ -1825,166 +1617,63 @@ class PartnerDirectory {
                 }
                 
             } else {
-                // Add to favorites using direct Airtable API
                 // Use provided category or default to 'Important'
                 const selectedCategory = category || 'Important';
                 
-                // Get userId - use currentUserId or find first available user for fallback
-                let userId = this.currentUserId;
-                if (!userId || !userId.startsWith('rec')) {
-                    // Try to get first user from Users table as fallback
-                    const USERS_TABLE_ID = PARTNER_DIRECTORY_CONFIG.USERS_TABLE_ID;
-                    if (USERS_TABLE_ID) {
-                        try {
-                            const url = `https://api.airtable.com/v0/${PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID}/${USERS_TABLE_ID}?maxRecords=1`;
-                            const response = await fetch(url, {
-                                headers: {
-                                    'Authorization': `Bearer ${PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY}`,
-                                    'Content-Type': 'application/json'
-                                }
-                            });
-                            if (response.ok) {
-                                const data = await response.json();
-                                if (data.records && data.records.length > 0) {
-                                    userId = data.records[0].id;
-                                }
-                            }
-                        } catch (e) {
-                            // Fallback failed
-                        }
+                const key = `${type}-${id}`;
+                const existingFavorite = this.favoritesMap.get(key);
+                let newFavorite;
+                if (existingFavorite?.favoriteRecordId) {
+                    const updateResponse = await fetch(`/api/partner-directory/favorites/${encodeURIComponent(existingFavorite.favoriteRecordId)}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            category: selectedCategory,
+                            notes: existingFavorite.notes || '',
+                            userId: this.currentUserId || null
+                        })
+                    });
+                    if (!updateResponse.ok) {
+                        const errorData = await updateResponse.json().catch(() => ({}));
+                        throw new Error(`Failed to update favorite: ${updateResponse.status} ${updateResponse.statusText} - ${errorData.error || ''}`);
                     }
-                }
-                
-                if (!userId || !userId.startsWith('rec')) {
-                    throw new Error('Invalid user ID. User_ID must be a valid Airtable record ID (starts with "rec").');
-                }
-                
-                // Determine which field to use based on partner type and source table
-                const normalizedPartnerType = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase(); // "Company" or "Individual"
-                let partnerField;
-                if (normalizedPartnerType === 'Company') {
-                    partnerField = 'Company Profile';
-                } else if (normalizedPartnerType === 'Individual') {
-                    // Check source table for individuals
-                    const individual = this.individuals.find(ind => ind.id === id);
-                    if (individual && individual._sourceTable === 'Users') {
-                        partnerField = 'User Profile';
-                    } else {
-                        partnerField = 'Individual Profile';
+                    const updateData = await updateResponse.json();
+                    newFavorite = {
+                        id: id,
+                        type: type,
+                        category: updateData.favorite?.category || selectedCategory,
+                        notes: updateData.favorite?.notes || '',
+                        favoritedDate: existingFavorite.favoritedDate || new Date().toISOString(),
+                        favoriteRecordId: existingFavorite.favoriteRecordId
+                    };
+                } else {
+                    const individual = type === 'individual' ? this.individuals.find(ind => ind.id === id) : null;
+                    const response = await fetch('/api/partner-directory/favorites', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: this.currentUserId || null,
+                            partnerId: id,
+                            partnerType: type,
+                            category: selectedCategory,
+                            notes: '',
+                            sourceTable: individual?._sourceTable || 'Users'
+                        })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(`Failed to create favorite: ${response.status} ${response.statusText} - ${errorData.error || ''}`);
                     }
+                    const data = await response.json();
+                    newFavorite = {
+                        id: id,
+                        type: type,
+                        category: data.favorite?.category || selectedCategory,
+                        notes: data.favorite?.notes || '',
+                        favoritedDate: data.favorite?.favoritedDate || new Date().toISOString(),
+                        favoriteRecordId: data.id
+                    };
                 }
-                
-                // Check for existing favorite first
-                const checkUrl = new URL(`https://api.airtable.com/v0/${PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID}/${tableId}`);
-                let checkFilter = `AND({User_ID} = '${userId}', {${partnerField}} = '${id}')`;
-                if (normalizedPartnerType === 'Individual') {
-                    // Check both fields for individuals
-                    const otherField = partnerField === 'User Profile' ? 'Individual Profile' : 'User Profile';
-                    checkFilter = `OR(AND({User_ID} = '${userId}', {${partnerField}} = '${id}'), AND({User_ID} = '${userId}', {${otherField}} = '${id}'))`;
-                }
-                checkUrl.searchParams.append('filterByFormula', checkFilter);
-                checkUrl.searchParams.append('maxRecords', '1');
-                
-                const checkResponse = await fetch(checkUrl, {
-                    headers: {
-                        'Authorization': `Bearer ${PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                
-                if (checkResponse.ok) {
-                    const checkData = await checkResponse.json();
-                    if (checkData.records && checkData.records.length > 0) {
-                        // Update existing favorite
-                        const existingRecord = checkData.records[0];
-                        const updateUrl = `https://api.airtable.com/v0/${PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID}/${tableId}/${existingRecord.id}`;
-                        const updateFields = {
-                            'Category': selectedCategory,
-                            'Last Viewed': new Date().toISOString()
-                        };
-                        
-                        const updateResponse = await fetch(updateUrl, {
-                            method: 'PATCH',
-                            headers: {
-                                'Authorization': `Bearer ${PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY}`,
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                fields: updateFields
-                            })
-                        });
-                        
-                        if (!updateResponse.ok) {
-                            throw new Error(`Failed to update favorite: ${updateResponse.status} ${updateResponse.statusText}`);
-                        }
-                        
-                        const updateData = await updateResponse.json();
-                        const newFavorite = {
-                            id: id,
-                            type: type,
-                            category: updateData.fields['Category'] || selectedCategory,
-                            favoritedDate: updateData.fields['Favorited Date'] || new Date().toISOString(),
-                            favoriteRecordId: updateData.id
-                        };
-                        
-                        // Update star button visual state and icon
-                        if (starButton) {
-                            starButton.classList.add('favorited');
-                            const categoryClass = selectedCategory ? `category-${selectedCategory.toLowerCase().replace(/\s+/g, '-')}` : '';
-                            starButton.className = starButton.className.replace(/category-\S+/g, '').trim();
-                            starButton.classList.add(categoryClass);
-                            starButton.innerHTML = this.getCategoryIcon(selectedCategory);
-                        }
-                        
-                        // Update local favorites array
-                        const key = `${type}-${id}`;
-                        const existingIndex = this.favorites.findIndex(fav => fav.id === id && fav.type === type);
-                        if (existingIndex >= 0) {
-                            this.favorites[existingIndex] = newFavorite;
-                        } else {
-                            this.favorites.push(newFavorite);
-                        }
-                        this.favoritesMap.set(key, newFavorite);
-                        return;
-                    }
-                }
-                
-                // Create new favorite
-                const createUrl = `https://api.airtable.com/v0/${PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID}/${tableId}`;
-                const fields = {
-                    'User_ID': [userId], // Linked record array
-                    'Partner Type': normalizedPartnerType,
-                    [partnerField]: [id], // Linked record array
-                    'Category': selectedCategory,
-                    'Favorited Date': new Date().toISOString(),
-                    'Last Viewed': new Date().toISOString()
-                };
-                
-                const response = await fetch(createUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fields: fields,
-                        typecast: true
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    throw new Error(`Failed to create favorite: ${response.status} ${response.statusText} - ${errorData.error?.message || ''}`);
-                }
-
-                const data = await response.json();
-                const newFavorite = {
-                    id: id,
-                    type: type,
-                    category: data.fields['Category'] || selectedCategory,
-                    favoritedDate: data.fields['Favorited Date'] || new Date().toISOString(),
-                    favoriteRecordId: data.id
-                };
                 
                 // Update star button visual state and icon
                 if (starButton) {
@@ -1997,8 +1686,12 @@ class PartnerDirectory {
                     starButton.innerHTML = this.getCategoryIcon(category);
                 }
 
-                this.favorites.push(newFavorite);
-                const key = `${type}-${id}`;
+                const existingIndex = this.favorites.findIndex(fav => fav.id === id && fav.type === type);
+                if (existingIndex >= 0) {
+                    this.favorites[existingIndex] = newFavorite;
+                } else {
+                    this.favorites.push(newFavorite);
+                }
                 this.favoritesMap.set(key, newFavorite);
                 
             }
@@ -3547,166 +3240,38 @@ class PartnerDirectory {
 
     async fetchCompanyNames(companyRecordIds) {
         if (!companyRecordIds || companyRecordIds.length === 0) return {};
-        const baseId = PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID;
-        const apiKey = PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY;
-        const companyProfileTableId = PARTNER_DIRECTORY_CONFIG.COMPANY_PROFILE_TABLE_ID;
-        const headers = { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' };
-        try {
-            // Fetch all company records in parallel (was sequential - major speedup)
-            const results = await Promise.all(companyRecordIds.map(async (recordId) => {
-                try {
-                    const url = `https://api.airtable.com/v0/${baseId}/${companyProfileTableId}/${recordId}`;
-                    const response = await fetch(url, { headers });
-                    if (!response.ok) return { recordId, companyName: null, userType: null };
-                    const data = await response.json();
-                    const fields = data.fields || {};
-                    const companyName = fields["Company Name"] || '';
-                    const userType = fields["User Type"] || fields["Company Type"] || '';
-                    return { recordId, companyName: companyName || null, userType: userType || null };
-                } catch (e) {
-                    console.error(`Error fetching company record ${recordId}:`, e);
-                    return { recordId, companyName: null, userType: null };
-                }
-            }));
-            const companyNamesMap = {};
-            const companyUserTypesMap = {};
-            results.forEach(({ recordId, companyName, userType }) => {
-                if (companyName) {
-                    companyNamesMap[recordId] = companyName;
-                    if (userType) companyUserTypesMap[recordId] = userType;
-                }
-            });
-            this.companyUserTypesMap = { ...this.companyUserTypesMap, ...companyUserTypesMap };
-            return companyNamesMap;
-        } catch (error) {
-            console.error('Error in fetchCompanyNames:', error);
-            return {};
-        }
+        const companyNamesMap = {};
+        companyRecordIds.forEach((recordId) => {
+            const company = this.companies.find(c => c.id === recordId);
+            if (company?.name) {
+                companyNamesMap[recordId] = company.name;
+                if (company.userType) this.companyUserTypesMap[recordId] = company.userType;
+            }
+        });
+        return companyNamesMap;
     }
 
     async fetchBrandNames(brandRecordIds) {
         if (!brandRecordIds || brandRecordIds.length === 0) return [];
-        
-        const brandNames = [];
-        const baseId = PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID;
-        const apiKey = PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY;
-        
-        // Try common Brand table IDs - you may need to update this with the correct table ID
-        const possibleBrandTableIds = [
-            'tbl1x6S7I7JwTcRdV', // Brand Setup - Brand Basics (from try-fetch-linked-record.js)
-        ];
-        
-        // Fetch all brand names in parallel instead of sequentially (much faster!)
-        for (const tableId of possibleBrandTableIds) {
-            try {
-                const fetchPromises = brandRecordIds.map(async (recordId) => {
-                    try {
-                        const url = `https://api.airtable.com/v0/${baseId}/${tableId}/${recordId}`;
-                        const response = await fetch(url, {
-                            headers: {
-                                'Authorization': `Bearer ${apiKey}`,
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            const brandName = data.fields?.["Brand Name"] || 
-                                            data.fields?.name || 
-                                            data.fields?.Name ||
-                                            '';
-                            return brandName || null;
-                        }
-                        return null;
-                    } catch (error) {
-                        console.error(`Error fetching brand ${recordId}:`, error);
-                        return null;
-                    }
-                });
-                
-                // Wait for all requests to complete in parallel
-                const results = await Promise.all(fetchPromises);
-                brandNames.push(...results.filter(name => name !== null));
-                
-                if (brandNames.length > 0) break; // Found brands, stop trying other tables
-            } catch (error) {
-                // Try next table or continue
-                continue;
-            }
-        }
-        
-        // If we still don't have brand names, log for debugging
-        if (brandNames.length === 0 && brandRecordIds.length > 0) {
-        }
-        
-        return brandNames;
+        return [];
     }
 
     async fetchTeamMembersFromUserManagement(userManagementRecordIds) {
         if (!userManagementRecordIds || userManagementRecordIds.length === 0) return [];
-        
-        const baseId = PARTNER_DIRECTORY_CONFIG.AIRTABLE_BASE_ID;
-        const apiKey = PARTNER_DIRECTORY_CONFIG.AIRTABLE_API_KEY;
-        const usersTableId = PARTNER_DIRECTORY_CONFIG.USERS_TABLE_ID;
-        
-        try {
-            // Fetch all user records in parallel instead of sequentially (much faster!)
-            const fetchPromises = userManagementRecordIds.map(async (recordId) => {
-                try {
-                    const url = `https://api.airtable.com/v0/${baseId}/${usersTableId}/${recordId}`;
-                    const response = await fetch(url, {
-                        headers: {
-                            'Authorization': `Bearer ${apiKey}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        const fields = data.fields || {};
-                        
-                        const firstName = fields["First Name"] || '';
-                        const lastName = fields["Last Name"] || '';
-                        const email = fields["Email"] || '';
-                        const phoneNumber = fields["Phone Number"] || '';
-                        const companyTitle = fields["Company Title"] || '';
-                        
-                        // Get profile picture/headshot
-                        let profilePicture = null;
-                        const profileField = fields["Profile"] || fields["Profile Picture"] || fields["Headshot"] || fields["Photo"] || '';
-                        if (profileField) {
-                            if (Array.isArray(profileField) && profileField.length > 0 && profileField[0] && profileField[0].url) {
-                                profilePicture = profileField[0].url;
-                            } else if (typeof profileField === 'string' && profileField.startsWith('http')) {
-                                profilePicture = profileField;
-                            }
-                        }
-                        
-                        if (firstName || lastName) {
-                            return {
-                                firstName: firstName,
-                                lastName: lastName,
-                                email: email,
-                                phoneNumber: phoneNumber,
-                                companyTitle: companyTitle,
-                                profilePicture: profilePicture
-                            };
-                        }
-                    }
-                    return null;
-                } catch (error) {
-                    console.error(`Error fetching user ${recordId}:`, error);
-                    return null;
-                }
+        const records = [];
+        userManagementRecordIds.forEach((recordId) => {
+            const user = this.individuals.find(ind => ind.id === recordId);
+            if (!user) return;
+            records.push({
+                firstName: user.firstName || '',
+                lastName: user.lastName || '',
+                email: user.email || user.companyEmail || '',
+                phoneNumber: user.phoneNumber || '',
+                companyTitle: user.companyTitle || '',
+                profilePicture: user.profilePicture || null
             });
-            
-            // Wait for all requests to complete in parallel
-            const results = await Promise.all(fetchPromises);
-            return results.filter(member => member !== null);
-        } catch (error) {
-            console.error('Error fetching team members from User Management:', error);
-            return [];
-        }
+        });
+        return records;
     }
 
     async fetchTeamMembers(companyId) {
