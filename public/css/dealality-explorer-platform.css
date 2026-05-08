@@ -17,6 +17,7 @@
   --secondary--color-4: #343b4f;
   --explorer-tab-border: rgba(255, 255, 255, 0.1);
   --explorer-icon-ring: rgba(255, 255, 255, 0.12);
+  --scrollbar-size: 6px;
 }
 
 html {
@@ -25,8 +26,8 @@ html {
   scrollbar-color: var(--neutral--600) var(--neutral--800);
 }
 *::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
 }
 *::-webkit-scrollbar-track {
   background: var(--neutral--800);

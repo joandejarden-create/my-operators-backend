@@ -22,10 +22,22 @@
   --container: 100%;
   --section-pad: 80px;
   --radius: 8px;
+  --scrollbar-size: 6px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #37446b #080f25;
+}
+
+*::-webkit-scrollbar { width: var(--scrollbar-size); height: var(--scrollbar-size); }
+*::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
+*::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
+*::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
+*::-webkit-scrollbar-corner { background: #080f25; }
 
 .skip-link {
   position: absolute;

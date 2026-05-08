@@ -18,6 +18,7 @@
           --system--300: #ff5a65;
           --system--blue-400: #086cd9;
           --system--orange-400: #d5691b;
+          --scrollbar-size: 6px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,7 +28,7 @@
             scrollbar-width: thin;
             scrollbar-color: #37446b #080f25;
         }
-        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar { width: var(--scrollbar-size); height: var(--scrollbar-size); }
         *::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
         *::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
         *::-webkit-scrollbar-thumb:hover { background: #7e89ac; }

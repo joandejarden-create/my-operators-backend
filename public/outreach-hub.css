@@ -21,9 +21,22 @@
   --general--shadow-01: #14142b0f;
   --general--shadow-02: #14142b14;
   --general--shadow-03: #14142b1a;
+  --scrollbar-size: 6px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #37446b #080f25;
+}
+
+*::-webkit-scrollbar { width: var(--scrollbar-size); height: var(--scrollbar-size); }
+*::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
+*::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
+*::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
+*::-webkit-scrollbar-corner { background: #080f25; }
 
 body {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
