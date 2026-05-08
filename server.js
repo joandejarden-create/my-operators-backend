@@ -601,18 +601,18 @@ app.get("/brand-review", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'brand-review.html'));
 });
 
-// Serve the deal brand fit analyzer
+// Retired standalone page: keep legacy URL but send users to active workflow.
 app.get("/deal-brand-fit-analyzer", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'deal-brand-fit-analyzer.html'));
+    res.redirect("/app.html#/my-deals");
 });
 
 app.get("/production-dashboard", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'webflow-brand-dashboard.html'));
+    res.redirect("/app.html#/brand-development-dashboard");
 });
 
-// Serve the webflow brand dashboard directly
+// Retired standalone brand workspace dashboard: keep URL but redirect to active brand dashboard.
 app.get("/webflow-brand-dashboard.html", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'webflow-brand-dashboard.html'));
+    res.redirect("/app.html#/brand-development-dashboard");
 });
 
 // Serve the brand development dashboard
