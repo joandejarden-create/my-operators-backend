@@ -742,6 +742,50 @@
             min-height: 0;
             border: 0;
             background: var(--neutral--900);
+            opacity: 0;
+            transition: opacity 0.18s ease;
+        }
+        .gold-mock-popup-frame.is-ready {
+            opacity: 1;
+        }
+        .gold-mock-popup-loading {
+            position: absolute;
+            inset: 0;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: linear-gradient(180deg, rgba(8, 15, 37, 0.94), rgba(16, 25, 53, 0.96));
+        }
+        .gold-mock-popup-loading[hidden] {
+            display: none !important;
+        }
+        .gold-mock-popup-loading-card {
+            width: min(92%, 560px);
+            background: var(--secondary--color-1);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 10px;
+            padding: 18px 20px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+        }
+        .gold-mock-popup-loading .loading {
+            position: static;
+            transform: none;
+            min-width: 320px;
+            margin: 0;
+            background: #000000;
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+        .gold-mock-popup-loading .loading-progress {
+            margin-top: 10px;
+        }
+        .gold-mock-popup-loading.is-error .loading-progress-bar {
+            animation: none;
+            width: 100%;
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
         }
 
         @media (max-width: 768px) {
@@ -895,6 +939,24 @@
         <div class="gold-mock-popup-overlay" id="goldMockPopupOverlay"></div>
         <div class="gold-mock-popup-panel" role="dialog" aria-modal="true" aria-label="Operator profile">
             <button type="button" class="gold-mock-popup-close" id="goldMockPopupClose" aria-label="Close">&times;</button>
+            <div class="gold-mock-popup-loading" id="goldMockPopupLoading" hidden>
+                <div class="gold-mock-popup-loading-card">
+                    <div class="loading">
+                        <div class="loading-content">
+                            <div class="wave-container">
+                                <div class="wave wave-1"></div>
+                                <div class="wave wave-2"></div>
+                                <div class="wave wave-3"></div>
+                            </div>
+                            <div>
+                                <div class="loading-text-main" id="goldMockPopupLoadingTitle">Loading operator profile...</div>
+                                <div class="loading-text-time" id="goldMockPopupLoadingText">Waiting for live operator data...</div>
+                            </div>
+                        </div>
+                        <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                    </div>
+                </div>
+            </div>
             <iframe class="gold-mock-popup-frame" id="goldMockPopupFrame" title="Operator profile" src="about:blank"></iframe>
         </div>
     </div>
@@ -911,6 +973,8 @@
 
             let allOperators = [];
             let filteredOperators = [];
+            let goldMockPopupToken = '';
+            let goldMockPopupTimeout = null;
             /** Legend-only chain scale filter (normalized, e.g. "luxury", "upper upscale"). */
             let selectedChainScaleNorm = '';
 
@@ -1267,29 +1331,103 @@
             function closeGoldMockPopup() {
                 var popup = document.getElementById('goldMockPopup');
                 var frame = document.getElementById('goldMockPopupFrame');
+                var loading = document.getElementById('goldMockPopupLoading');
+                var loadingTitle = document.getElementById('goldMockPopupLoadingTitle');
+                var loadingText = document.getElementById('goldMockPopupLoadingText');
                 if (popup) {
                     popup.style.display = 'none';
                     popup.setAttribute('aria-hidden', 'true');
                     document.body.style.overflow = '';
                 }
-                if (frame) frame.src = 'about:blank';
+                if (goldMockPopupTimeout) {
+                    clearTimeout(goldMockPopupTimeout);
+                    goldMockPopupTimeout = null;
+                }
+                goldMockPopupToken = '';
+                if (loading) {
+                    loading.hidden = true;
+                    loading.classList.remove('is-error');
+                }
+                if (loadingTitle) loadingTitle.textContent = 'Loading operator profile';
+                if (loadingText) loadingText.textContent = 'Waiting for live operator data...';
+                if (frame) {
+                    frame.classList.remove('is-ready');
+                    frame.src = 'about:blank';
+                }
             }
 
             function openGoldMockPopup(id) {
                 var popup = document.getElementById('goldMockPopup');
                 var frame = document.getElementById('goldMockPopupFrame');
+                var loading = document.getElementById('goldMockPopupLoading');
+                var loadingTitle = document.getElementById('goldMockPopupLoadingTitle');
+                var loadingText = document.getElementById('goldMockPopupLoadingText');
                 if (!popup || !frame) return;
-                
-                frame.src = '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(id) + '&embed=1';
+
+                if (goldMockPopupTimeout) {
+                    clearTimeout(goldMockPopupTimeout);
+                    goldMockPopupTimeout = null;
+                }
+
+                goldMockPopupToken = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+                frame.classList.remove('is-ready');
+                if (loading) {
+                    loading.hidden = false;
+                    loading.classList.remove('is-error');
+                }
+                if (loadingTitle) loadingTitle.textContent = 'Loading operator profile';
+                if (loadingText) loadingText.textContent = 'Waiting for live operator data...';
+                frame.src = '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(id) + '&embed=1&popupToken=' + encodeURIComponent(goldMockPopupToken);
                 
                 popup.style.display = 'flex';
                 popup.setAttribute('aria-hidden', 'false');
                 document.body.style.overflow = 'hidden';
+
+                goldMockPopupTimeout = setTimeout(function () {
+                    if (!goldMockPopupToken) return;
+                    if (loading) {
+                        loading.hidden = false;
+                        loading.classList.add('is-error');
+                    }
+                    if (loadingTitle) loadingTitle.textContent = 'Live profile is taking longer than expected';
+                    if (loadingText) loadingText.textContent = 'Still waiting for live data. You can close this panel and try again.';
+                }, 8000);
             }
 
             function viewOperator(id) {
                 openGoldMockPopup(id);
             }
+
+            window.addEventListener('message', function (event) {
+                if (!event || event.origin !== window.location.origin) return;
+                var data = event.data || {};
+                if (data.type !== 'operator-gold-mock-ready') return;
+                if (!goldMockPopupToken || data.popupToken !== goldMockPopupToken) return;
+                var frame = document.getElementById('goldMockPopupFrame');
+                var loading = document.getElementById('goldMockPopupLoading');
+                var loadingTitle = document.getElementById('goldMockPopupLoadingTitle');
+                var loadingText = document.getElementById('goldMockPopupLoadingText');
+                if (!frame) return;
+
+                if (goldMockPopupTimeout) {
+                    clearTimeout(goldMockPopupTimeout);
+                    goldMockPopupTimeout = null;
+                }
+
+                if (data.live === true) {
+                    frame.classList.add('is-ready');
+                    if (loading) loading.hidden = true;
+                    return;
+                }
+
+                frame.classList.remove('is-ready');
+                if (loading) {
+                    loading.hidden = false;
+                    loading.classList.add('is-error');
+                }
+                if (loadingTitle) loadingTitle.textContent = 'Live profile unavailable';
+                if (loadingText) loadingText.textContent = 'This operator did not return live profile data.';
+            });
 
             document.getElementById('goldMockPopupClose').addEventListener('click', closeGoldMockPopup);
             document.getElementById('goldMockPopupOverlay').addEventListener('click', closeGoldMockPopup);

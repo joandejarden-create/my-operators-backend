@@ -770,9 +770,15 @@
     document.addEventListener("DOMContentLoaded", async function () {
       var params = new URLSearchParams(window.location.search || "");
       var id = params.get("id") || params.get("operatorId") || params.get("recordId");
+      var popupToken = params.get("popupToken") || "";
+      var isLive = false;
       if (id && window.OperatorExplorerGoldMock) {
         var r = await window.OperatorExplorerGoldMock.bootstrap();
-        if (!r || r.mode !== "live") renderGoldMockEmbeddedDemo();
+        if (r && r.mode === "live") {
+          isLive = true;
+        } else {
+          renderGoldMockEmbeddedDemo();
+        }
       } else if (id) {
         renderGoldMockEmbeddedDemo();
       } else {
@@ -781,7 +787,12 @@
       }
       try {
         if (window.parent && window.parent !== window) {
-          window.parent.postMessage({ type: "operator-gold-mock-ready" }, "*");
+          window.parent.postMessage({
+            type: "operator-gold-mock-ready",
+            popupToken: popupToken,
+            operatorId: id || "",
+            live: isLive
+          }, window.location.origin);
         }
       } catch (e) {}
     });
