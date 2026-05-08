@@ -1843,6 +1843,20 @@
             const urlParams = new URLSearchParams(window.location.search);
             let brandId = urlParams.get('id');
             let brandName = urlParams.get('name');
+            const popupToken = urlParams.get('popupToken') || '';
+
+            function postBrandDetailReady(live) {
+                try {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage({
+                            type: 'brand-library-detail-ready',
+                            popupToken: popupToken,
+                            brandId: brandId || '',
+                            live: !!live
+                        }, window.location.origin);
+                    }
+                } catch (_e) {}
+            }
 
             // Decode URL parameters
             if (brandId) brandId = decodeURIComponent(brandId);
@@ -1850,6 +1864,7 @@
 
             if (!brandId && !brandName) {
                 showError('Brand ID or name is required');
+                postBrandDetailReady(false);
                 return;
             }
 
@@ -1923,6 +1938,7 @@
             function displayBrand(brand) {
                 document.getElementById('loadingState').style.display = 'none';
                 document.getElementById('brandContent').style.display = 'block';
+                postBrandDetailReady(true);
 
                 document.getElementById('brandName').textContent = brand.name;
                 document.getElementById('breadcrumbBrandName').textContent = brand.name;
@@ -3005,6 +3021,7 @@
                 document.getElementById('loadingState').style.display = 'none';
                 document.getElementById('errorState').style.display = 'block';
                 document.getElementById('errorMessage').textContent = message;
+                postBrandDetailReady(false);
             }
 
             function renderFeeStructure(feeStructure) {
