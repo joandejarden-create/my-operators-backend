@@ -924,6 +924,26 @@ class PartnerDirectory {
         };
     }
 
+    getIndividualResponsivenessBadge(individual) {
+        if (!individual || typeof individual !== 'object') return '';
+        const directValue =
+            individual.responsivenessCombinedBadge ||
+            individual.responsiveness_combined_badge ||
+            '';
+        if (typeof directValue === 'string' && directValue.trim()) return directValue.trim();
+
+        const rawFields = individual.rawFields;
+        if (rawFields && typeof rawFields === 'object') {
+            const fromRaw =
+                rawFields["responsiveness_combined_badge"] ||
+                rawFields["Responsiveness Combined Badge"] ||
+                rawFields["Responsiveness combined badge"] ||
+                '';
+            if (typeof fromRaw === 'string' && fromRaw.trim()) return fromRaw.trim();
+        }
+        return '';
+    }
+
     async fetchPartners() {
         this.showLoading();
         try {
@@ -944,6 +964,15 @@ class PartnerDirectory {
             const payload = await response.json();
             this.companies = Array.isArray(payload.companies) ? payload.companies : [];
             this.individuals = Array.isArray(payload.individuals) ? payload.individuals : [];
+            // Normalize responsiveness badge naming so all individual cards can render it.
+            this.individuals = this.individuals.map((individual) => {
+                const badge = this.getIndividualResponsivenessBadge(individual);
+                if (!badge) return individual;
+                return {
+                    ...individual,
+                    responsivenessCombinedBadge: badge
+                };
+            });
             
             // Show grid and data first for faster perceived load (especially Individuals tab)
             this.hideLoading();
@@ -1019,7 +1048,9 @@ class PartnerDirectory {
             document.getElementById('filtersSection')?.classList.remove('hidden');
             document.getElementById('resultsGrid')?.classList.remove('hidden');
             document.getElementById('insightsContainer')?.classList.add('hidden');
-            // Ensure companies grid never uses the 3-column individuals layout
+            // Ensure companies grid uses wide-card company layout helper class.
+            resultsGrid?.classList.add('results-grid--companies');
+            // Ensure companies grid never uses the individuals layout helper class.
             resultsGrid?.classList.remove('results-grid--individuals');
             if (responsivenessWrapper) {
                 // Hide responsiveness filters visually but keep layout space on Companies tab
@@ -1036,6 +1067,7 @@ class PartnerDirectory {
             document.getElementById('filtersSection')?.classList.remove('hidden');
             document.getElementById('resultsGrid')?.classList.remove('hidden');
             document.getElementById('insightsContainer')?.classList.add('hidden');
+            resultsGrid?.classList.remove('results-grid--companies');
             // Ensure individuals grid uses the 3-column layout helper class
             resultsGrid?.classList.add('results-grid--individuals');
             if (responsivenessWrapper) {
@@ -1057,6 +1089,9 @@ class PartnerDirectory {
             document.getElementById('filtersSection')?.classList.remove('hidden');
             document.getElementById('resultsGrid')?.classList.remove('hidden');
             document.getElementById('insightsContainer')?.classList.add('hidden');
+            // Favorites can contain both entities; keep wide-card layout for consistency with Companies.
+            resultsGrid?.classList.add('results-grid--companies');
+            resultsGrid?.classList.remove('results-grid--individuals');
             responsivenessWrapper?.classList.add('hidden');
             if (responsivenessWrapper) responsivenessWrapper.setAttribute('aria-hidden', 'true');
             this.ensureCategoryFilter();
@@ -1073,6 +1108,8 @@ class PartnerDirectory {
             document.getElementById('resultsGrid')?.classList.add('hidden');
             document.getElementById('emptyState')?.classList.add('hidden');
             document.getElementById('insightsContainer')?.classList.remove('hidden');
+            resultsGrid?.classList.remove('results-grid--companies');
+            resultsGrid?.classList.remove('results-grid--individuals');
             // Show insights filters section
             document.getElementById('insightsFiltersSection')?.classList.remove('hidden');
             this.updateInsightsFilterCount();
@@ -1856,10 +1893,12 @@ class PartnerDirectory {
         
         const type = this.currentTab === 'companies' ? 'company' : 'individual';
         
-        // On Individuals tab, add a helper class so CSS can limit max columns on wide screens
+        // Apply per-tab layout helper classes for wide-screen card density.
         if (type === 'individual') {
+            resultsGrid.classList.remove('results-grid--companies');
             resultsGrid.classList.add('results-grid--individuals');
         } else {
+            resultsGrid.classList.add('results-grid--companies');
             resultsGrid.classList.remove('results-grid--individuals');
         }
         
@@ -2068,6 +2107,8 @@ class PartnerDirectory {
         }
         
         resultsGrid.classList.remove('hidden');
+        resultsGrid.classList.add('results-grid--companies');
+        resultsGrid.classList.remove('results-grid--individuals');
         emptyState.classList.add('hidden');
         const cardList = [];
         filteredFavoriteCompanies.forEach(company => {
@@ -2232,6 +2273,7 @@ class PartnerDirectory {
         const lastName = (individual.lastName || '').trim();
         const initials = this.getInitials(firstName, lastName);
         const fullName = `${firstName} ${lastName}`.trim();
+        const responsivenessBadge = this.getIndividualResponsivenessBadge(individual);
         const hasProfilePicture = individual.profilePicture && individual.profilePicture.trim();
         
         // Handle profile picture (eager load so avatars display reliably; hidden img breaks IntersectionObserver)
@@ -2280,7 +2322,7 @@ class PartnerDirectory {
                             ${lastName ? `<div class="individual-card__last-name">${this.escapeHtml(lastName)}</div>` : ''}
                         </div>
                         ${individual.companyName ? `<div class="individual-card__type">${this.escapeHtml(individual.companyName)}</div>` : ''}
-                        ${individual.responsivenessCombinedBadge ? `<div class="individual-card__responsiveness-badge" title="Response behavior">${this.escapeHtml(individual.responsivenessCombinedBadge)}</div>` : ''}
+                        ${responsivenessBadge ? `<div class="individual-card__responsiveness-badge" title="Response behavior">${this.escapeHtml(responsivenessBadge)}</div>` : ''}
                     </div>
                 </div>
                 <div class="individual-card__header-stats">
@@ -2505,6 +2547,11 @@ class PartnerDirectory {
             if (!this.teamMembersCache.has(companyCacheKey)) {
                 if (company.userManagementRecordIds && company.userManagementRecordIds.length > 0) {
                     teamMembers = await this.fetchTeamMembersFromUserManagement(company.userManagementRecordIds);
+                    // Some linked IDs may come from a different table than Users.
+                    // Fall back to company-based matching so the modal still shows team members.
+                    if (!teamMembers.length) {
+                        teamMembers = await this.fetchTeamMembers(company.companyId || company.id);
+                    }
                 } else {
                     teamMembers = await this.fetchTeamMembers(company.companyId || company.id);
                 }
@@ -2624,41 +2671,78 @@ class PartnerDirectory {
             }
         }
         
-        // Display additional fields from rawFields
+        // Additional information fallback: keep meaningful text-based values while
+        // filtering raw/debug noise seen in modal captures.
         let additionalFields = [];
-        // Fields to exclude from display
-        const excludedFields = [
-            'Company_ID',
-            'Record ID',
-            'Open to Contact',
-            "Company's role in the hotel ecosystem",
-            'Company Platform Visibility',
-            'Created Date',
-            'USER MANAGEMENT',
-            'User Management',
-            'user management',
-            'User_ID',
-            'User ID',
-            'user_id',
-            'USER_ID',
-            'User_Favorites',
-            'User Favorites',
-            'user_favorites',
-            'USER_FAVORITES',
-            'BRAND NAME (FROM BRANDS YOU OPERATE / SUPPORT)',
-            'Brand Name (from Brands You Operate / Support)',
-            'Brand Name',
-            'BRAND_BASICS_ID (FROM BRAND NAME (FROM BRANDS YOU OPERATE / SUPPORT))',
-            'BRAND_BASICS_ID',
-            'Brand_Basics_ID (from Brand Name (from Brands You Operate / Support))',
-            'Brand_Basics_ID',
-            'Primary Services',
-            'Additional Services',
-            'PRIMARY SERVICES',
-            'ADDITIONAL SERVICES',
-            'Primary Services Provided',
-            'Additional Services Provided'
-        ];
+        if (company.rawFields && typeof company.rawFields === 'object' && !Array.isArray(company.rawFields)) {
+            const excludedFieldNames = new Set([
+                'Company_ID',
+                'Company Name',
+                'Company Type',
+                'User Type',
+                'Record ID',
+                'Company HQ Country',
+                'Country',
+                'Company Website',
+                'Company Overview',
+                'Logo',
+                'Company Logo',
+                'Created Date',
+                "Company's role in the hotel ecosystem",
+                'Company Platform Visibility',
+                'Open to Contact',
+                'Regions',
+                'Region',
+                'User Management',
+                'USER MANAGEMENT',
+                'user management',
+                'Primary Services',
+                'Additional Services',
+                'PRIMARY SERVICES',
+                'ADDITIONAL SERVICES',
+                'Primary Services Provided',
+                'Additional Services Provided'
+            ]);
+            const normalizeField = (fieldName) => String(fieldName || '').toLowerCase().replace(/\s+/g, ' ').trim();
+            const shouldExcludeField = (fieldName) => {
+                if (excludedFieldNames.has(fieldName)) return true;
+                const normalized = normalizeField(fieldName);
+                if (normalized.includes('region -')) return true;
+                if (normalized.includes('region') && normalized.includes('america')) return true;
+                if (normalized.includes('region') && normalized.includes('latin')) return true;
+                if (normalized.includes('region') && normalized.includes('caribbean')) return true;
+                if (normalized.includes('region') && normalized.includes('europe')) return true;
+                if (normalized.includes('region') && normalized.includes('middle east')) return true;
+                if (normalized.includes('region') && normalized.includes('africa')) return true;
+                if (normalized.includes('region') && normalized.includes('asia pacific')) return true;
+                if (normalized.includes('brand name (from brands you operate / support)')) return true;
+                if (normalized.includes('brand_basics_id')) return true;
+                return false;
+            };
+
+            for (const [key, value] of Object.entries(company.rawFields)) {
+                if (shouldExcludeField(key)) continue;
+                if (value === null || value === undefined || value === '') continue;
+                if (typeof value === 'boolean') continue;
+                if (typeof value === 'object' && !Array.isArray(value)) continue;
+
+                let displayValue = '';
+                if (Array.isArray(value)) {
+                    const cleaned = value
+                        .map((v) => {
+                            if (typeof v === 'string') return v.trim();
+                            if (typeof v === 'number') return String(v);
+                            return '';
+                        })
+                        .filter((v) => v && !v.startsWith('rec'));
+                    if (cleaned.length) displayValue = cleaned.join(', ');
+                } else {
+                    displayValue = String(value).trim();
+                }
+                if (!displayValue) continue;
+                additionalFields.push({ key, value: displayValue });
+            }
+        }
         
         // Derive services from company or rawFields (rawFields may have comma-separated "Primary Services"/"Additional Services")
         const toArray = (v) => {
@@ -2681,34 +2765,6 @@ class PartnerDirectory {
             if (allServices.length === 0 && primary.length > 0) allServices = [...primary];
         }
         const nonPrimary = allServices.filter(s => !primary.includes(s));
-        
-        if (company.rawFields && typeof company.rawFields === 'object' && !Array.isArray(company.rawFields)) {
-            for (const [key, value] of Object.entries(company.rawFields)) {
-                // Skip excluded fields (including Primary/Additional Services - shown in dedicated section)
-                if (excludedFields.includes(key)) continue;
-                if (/primary/i.test(key) && /services/i.test(key)) continue;
-                if (/additional/i.test(key) && /services/i.test(key)) continue;
-                
-                // Skip empty values
-                if (value === null || value === undefined || value === '') continue;
-                
-                // Format the value for display
-                let displayValue = '';
-                if (Array.isArray(value)) {
-                    displayValue = value.map(v => typeof v === 'string' ? v : (v.name || String(v))).join(', ');
-                } else if (typeof value === 'object') {
-                    displayValue = JSON.stringify(value).substring(0, 100);
-                } else {
-                    displayValue = String(value);
-                }
-                
-                // Only show fields that have meaningful content
-                if (displayValue && displayValue.trim()) {
-                    additionalFields.push({ key, value: displayValue });
-                }
-            }
-        }
-        
         
         body.innerHTML = `
             <div class="company-modal-body-left">
@@ -2891,7 +2947,7 @@ class PartnerDirectory {
                         })()}
                     </div>
                 ` : ''}
-                
+
                 ${additionalFields.length > 0 ? `
                     <div class="company-modal-section">
                         <div class="company-modal-section-title">ADDITIONAL INFORMATION</div>
@@ -2909,6 +2965,7 @@ class PartnerDirectory {
                         </div>
                     </div>
                 ` : ''}
+                
             </div>
 
             <div class="company-modal-body-right">
@@ -3248,9 +3305,17 @@ class PartnerDirectory {
     async fetchTeamMembersFromUserManagement(userManagementRecordIds) {
         if (!userManagementRecordIds || userManagementRecordIds.length === 0) return [];
         const records = [];
+        const seen = new Set();
         userManagementRecordIds.forEach((recordId) => {
-            const user = this.individuals.find(ind => ind.id === recordId);
+            const rid = String(recordId || '').trim();
+            const user = this.individuals.find(ind =>
+                String(ind.id || '').trim() === rid ||
+                String(ind.companyRecordId || '').trim() === rid
+            );
             if (!user) return;
+            const normalizedKey = (user.email || `${user.firstName || ''}|${user.lastName || ''}`).toLowerCase();
+            if (seen.has(normalizedKey)) return;
+            seen.add(normalizedKey);
             records.push({
                 firstName: user.firstName || '',
                 lastName: user.lastName || '',
@@ -3274,21 +3339,36 @@ class PartnerDirectory {
             const company = this.companies.find(c => c.companyId === companyId || c.id === companyId);
             if (!company) return [];
             
-            const companyName = (company.name || '').toLowerCase().trim();
+            const normalize = (value) => String(value || '')
+                .toLowerCase()
+                .replace(/[^\w\s]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+            const companyName = normalize(company.name || '');
+            const companyRecordId = String(company.id || '').trim();
+            const companyBusinessId = String(company.companyId || '').trim();
             
-            // Filter individuals by company name match
+            // Filter individuals by record ID first, then relaxed company-name matching.
             const filtered = this.individuals.filter(ind => {
-                const indCompanyName = (ind.companyName || '').toLowerCase().trim();
-                return indCompanyName === companyName;
+                const individualCompanyRecordId = String(ind.companyRecordId || '').trim();
+                if (companyRecordId && individualCompanyRecordId && individualCompanyRecordId === companyRecordId) {
+                    return true;
+                }
+                const individualCompanyName = normalize(ind.companyName || '');
+                if (!individualCompanyName || !companyName) return false;
+                if (individualCompanyName === companyName) return true;
+                if (individualCompanyName.includes(companyName) || companyName.includes(individualCompanyName)) return true;
+                if (companyBusinessId && individualCompanyRecordId && individualCompanyRecordId === companyBusinessId) return true;
+                return false;
             });
             
-            return filtered.slice(0, 10).map(ind => ({
+            return filtered.map(ind => ({
                 firstName: ind.firstName || '',
                 lastName: ind.lastName || '',
                 email: ind.email || '',
                 phoneNumber: ind.phoneNumber || '',
                 companyTitle: ind.companyTitle || '',
-                profilePicture: null
+                profilePicture: ind.profilePicture || null
             }));
         } catch (error) {
             console.error('Error fetching team members:', error);

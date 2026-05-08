@@ -29,6 +29,204 @@ function generateDefaultDescription(companyName, userType) {
   return `${company} is a ${typeText}.`;
 }
 
+function isRecordId(value) {
+  return typeof value === "string" && /^rec[a-zA-Z0-9]{5,}$/.test(value.trim());
+}
+
+function extractRecordIdsFromValue(value, out) {
+  if (value == null) return;
+  if (Array.isArray(value)) {
+    value.forEach((item) => extractRecordIdsFromValue(item, out));
+    return;
+  }
+  if (typeof value === "string") {
+    if (isRecordId(value)) out.push(value.trim());
+    return;
+  }
+  if (typeof value === "object") {
+    if (isRecordId(value.id)) out.push(String(value.id).trim());
+    if (isRecordId(value.recordId)) out.push(String(value.recordId).trim());
+  }
+}
+
+function uniqueStrings(values) {
+  return [...new Set((values || []).filter(Boolean).map((v) => String(v).trim()).filter(Boolean))];
+}
+
+function parseAttachmentUrl(value) {
+  if (!value) return null;
+  if (Array.isArray(value) && value[0]) {
+    if (typeof value[0] === "string") return value[0];
+    if (value[0] && typeof value[0] === "object" && value[0].url) return String(value[0].url);
+  }
+  if (typeof value === "string") return value;
+  if (typeof value === "object" && value.url) return String(value.url);
+  return null;
+}
+
+function buildCompanyEnrichment(fields, recordCreatedTime) {
+  const safeFields = fields && typeof fields === "object" ? { ...fields } : {};
+  if (!safeFields["Created Date"] && recordCreatedTime) {
+    safeFields["Created Date"] = recordCreatedTime;
+  }
+
+  const brandRecordIds = [];
+  const userManagementRecordIds = [];
+  const services = [];
+  const primaryServices = [];
+  const brands = [];
+
+  Object.entries(safeFields).forEach(([key, value]) => {
+    const lower = String(key || "").toLowerCase();
+
+    // Linked brand references (record IDs and direct string brand names).
+    if (lower.includes("brand")) {
+      extractRecordIdsFromValue(value, brandRecordIds);
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          if (typeof item === "string" && !isRecordId(item)) brands.push(item);
+          else if (item && typeof item === "object") {
+            const name = item.name || item.label || item.title || item.fields?.["Brand Name"] || item.fields?.name;
+            if (name) brands.push(String(name));
+          }
+        });
+      } else if (typeof value === "string" && !isRecordId(value)) {
+        value.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => brands.push(x));
+      }
+    }
+
+    // Linked team/user-management references.
+    if (
+      lower.includes("user management") ||
+      lower.includes("user_management") ||
+      lower.includes("team") ||
+      (lower.includes("team") && (lower.includes("record") || lower.includes("member") || lower.includes("users"))) ||
+      lower.includes("company users")
+    ) {
+      extractRecordIdsFromValue(value, userManagementRecordIds);
+    }
+
+    // Service checkboxes and service list fields.
+    if (lower.includes("service")) {
+      if (typeof value === "boolean" && value) {
+        const cleaned = String(key)
+          .replace(/\s*[\[(]?\s*primary\s*[\])]?/gi, "")
+          .replace(/\s*services?\s*/gi, "")
+          .trim();
+        const serviceName = cleaned || String(key).trim();
+        services.push(serviceName);
+        if (/primary/i.test(key)) primaryServices.push(serviceName);
+      } else if (typeof value === "string" && value.trim()) {
+        value.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => services.push(x));
+        if (/primary/i.test(key)) {
+          value.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => primaryServices.push(x));
+        }
+      } else if (Array.isArray(value)) {
+        value
+          .map((x) => (typeof x === "string" ? x.trim() : ""))
+          .filter(Boolean)
+          .forEach((x) => services.push(x));
+        if (/primary/i.test(key)) {
+          value
+            .map((x) => (typeof x === "string" ? x.trim() : ""))
+            .filter(Boolean)
+            .forEach((x) => primaryServices.push(x));
+        }
+      }
+    }
+  });
+
+  return {
+    rawFields: safeFields,
+    brandRecordIds: uniqueStrings(brandRecordIds),
+    userManagementRecordIds: uniqueStrings(userManagementRecordIds),
+    services: uniqueStrings(services),
+    primaryServices: uniqueStrings(primaryServices),
+    brands: uniqueStrings(brands)
+  };
+}
+
+function parseLinkedCompanyInfo(fields) {
+  const candidates = [
+    fields["Company Profile"],
+    fields["Company Name"],
+    fields["Company/Organization"],
+    fields["Company"],
+    fields["Organization"],
+    fields["Company Record ID"],
+    fields["Linked Company"]
+  ];
+
+  let companyName = "";
+  let companyRecordId = "";
+
+  const visit = (value) => {
+    if (value == null) return;
+    if (Array.isArray(value)) {
+      value.forEach(visit);
+      return;
+    }
+    if (typeof value === "string") {
+      const v = value.trim();
+      if (!v) return;
+      if (isRecordId(v)) {
+        if (!companyRecordId) companyRecordId = v;
+      } else if (!companyName) {
+        companyName = v;
+      }
+      return;
+    }
+    if (typeof value === "object") {
+      if (isRecordId(value.id) && !companyRecordId) companyRecordId = String(value.id).trim();
+      const nestedName =
+        value.fields?.["Company Name"] ||
+        value.fields?.["Name"] ||
+        value.name ||
+        value.label ||
+        value.title ||
+        "";
+      if (nestedName && !companyName) companyName = String(nestedName).trim();
+    }
+  };
+
+  candidates.forEach(visit);
+  return { companyName, companyRecordId };
+}
+
+async function buildBrandNameMap(base) {
+  const map = new Map();
+  const brandRecords = [];
+  await new Promise((resolve, reject) => {
+    base(F.brands.table)
+      .select({})
+      .eachPage(
+        (pageRecords, fetchNextPage) => {
+          brandRecords.push(...pageRecords);
+          fetchNextPage();
+        },
+        (err) => (err ? reject(err) : resolve())
+      );
+  });
+  brandRecords.forEach((record) => {
+    const fields = record.fields || {};
+    const name = fields[F.brands.name] || fields["Brand Name"] || fields["Name"] || "";
+    if (record.id && name) map.set(record.id, String(name).trim());
+  });
+  return map;
+}
+
+function attachResolvedBrandNames(companies, brandNameMap) {
+  if (!Array.isArray(companies) || !brandNameMap) return companies || [];
+  return companies.map((company) => {
+    const existing = Array.isArray(company.brands) ? company.brands.filter(Boolean) : [];
+    const resolved = (company.brandRecordIds || [])
+      .map((id) => brandNameMap.get(id))
+      .filter(Boolean);
+    const merged = uniqueStrings([...existing, ...resolved]);
+    return { ...company, brands: merged };
+  });
+}
+
 // Field mappings for Airtable tables
 const F = {
   // Users table for individuals
@@ -110,7 +308,7 @@ export async function getPartners(req, res) {
           const table = base(tableIdentifier);
           table
             .select({
-              maxRecords: 100 // Airtable pagination limit per page
+              // Fetch complete dataset via pagination (no hard cap)
             })
             .eachPage(
               (pageRecords, fetchNextPage) => {
@@ -315,6 +513,7 @@ export async function getPartners(req, res) {
               // keep logoDisplay as initial
             }
 
+            const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
             return {
               id: record.id || '',
               companyId: companyId || '', // Company ID field (like Term ID in Financial Term Library)
@@ -329,7 +528,14 @@ export async function getPartners(req, res) {
               closedDeals: closedDeals ? Number(closedDeals) : 0,
               brandCount: brandCount ? Number(brandCount) : 0,
               submittedBids: submittedBids ? Number(submittedBids) : 0,
-              logo: logoDisplay
+              logo: logoDisplay,
+              _createdTime: record.createdTime || null,
+              rawFields: enrichment.rawFields,
+              brandRecordIds: enrichment.brandRecordIds,
+              userManagementRecordIds: enrichment.userManagementRecordIds,
+              services: enrichment.services,
+              primaryServices: enrichment.primaryServices,
+              brands: enrichment.brands
             };
           } catch (recordError) {
             console.error('Error processing record:', recordError);
@@ -350,7 +556,7 @@ export async function getPartners(req, res) {
         await new Promise((resolve, reject) => {
           base("Company Profile")
             .select({
-              maxRecords: 100
+              // Fetch complete dataset via pagination (no hard cap)
             })
             .eachPage(
               (pageRecords, fetchNextPage) => {
@@ -521,6 +727,7 @@ export async function getPartners(req, res) {
               // Get Company ID field (like Term ID in Financial Term Library)
               const companyId = fields[F.companyProfile.companyId] || fields["Company ID"] || '';
               
+              const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
               return {
                 id: record.id || '',
                 companyId: companyId || '', // Company ID field (like Term ID in Financial Term Library)
@@ -535,7 +742,14 @@ export async function getPartners(req, res) {
                 closedDeals: closedDeals ? Number(closedDeals) : 0,
                 brandCount: brandCount ? Number(brandCount) : 0,
                 submittedBids: submittedBids ? Number(submittedBids) : 0,
-                logo: logoDisplay
+                logo: logoDisplay,
+                _createdTime: record.createdTime || null,
+                rawFields: enrichment.rawFields,
+                brandRecordIds: enrichment.brandRecordIds,
+                userManagementRecordIds: enrichment.userManagementRecordIds,
+                services: enrichment.services,
+                primaryServices: enrichment.primaryServices,
+                brands: enrichment.brands
               };
             });
           
@@ -549,13 +763,14 @@ export async function getPartners(req, res) {
     // SKIP Users table for companies - all company data should come from Company Profile table only
     // This ensures we only use data from the Company Profile table as requested
 
-    // Fetch individuals from Users table
+    // Fetch individuals from User Management table only
+    // (Do not blend in Users table records for the Individuals tab payload.)
     let userRecords = [];
     try {
       await new Promise((resolve, reject) => {
-        base(F.users.table)
+        base("User Management")
           .select({
-            maxRecords: 100 // Airtable pagination limit per page
+            // Fetch complete dataset via pagination (no hard cap)
           })
           .eachPage(
             (pageRecords, fetchNextPage) => {
@@ -588,7 +803,16 @@ export async function getPartners(req, res) {
         })
         .map(record => formatUserRecord(record));
     } catch (userError) {
+      console.error('Error fetching user management records:', userError);
       individuals = [];
+    }
+
+    // Resolve linked brand record IDs to brand names so modal brand lists can render.
+    try {
+      const brandNameMap = await buildBrandNameMap(base);
+      companies = attachResolvedBrandNames(companies, brandNameMap);
+    } catch (brandResolveError) {
+      console.error("Error resolving linked brand names:", brandResolveError);
     }
 
     // Always return data, even if empty
@@ -629,12 +853,25 @@ export async function getPartners(req, res) {
 // Format user record from Airtable
 function formatUserRecord(record) {
   const fields = record.fields;
+  const companyInfo = parseLinkedCompanyInfo(fields);
   // Try both field IDs and field names for compatibility
   const firstName = fields[F.users.firstName] || fields["First Name"] || "";
   const lastName = fields[F.users.lastName] || fields["Last Name"] || "";
-  const company = fields[F.users.company] || fields["Company/Organization"] || "";
+  const company = companyInfo.companyName || fields[F.users.company] || fields["Company/Organization"] || fields["Company Name"] || "";
   const country = fields[F.users.country] || fields["Country"] || "";
   const userType = fields[F.users.userType] || fields["User Type"] || "";
+  const email = fields[F.users.email] || fields["Email"] || "";
+  const phone = fields[F.users.phone] || fields["Phone Number"] || fields["Phone"] || "";
+  const website = fields["Website"] || fields["Company Website"] || "";
+  const companyRecordId = companyInfo.companyRecordId;
+
+  const profilePicture = parseAttachmentUrl(
+    fields[F.users.profile] ||
+      fields["Profile"] ||
+      fields["Profile Picture"] ||
+      fields["Headshot"] ||
+      fields["Photo"]
+  );
   
   // Determine location from country
   const location = country ? `${country}` : "";
@@ -653,21 +890,45 @@ function formatUserRecord(record) {
     }
   }
 
+  const rawFields = { ...fields };
+  if (!rawFields["Created Date"] && record.createdTime) {
+    rawFields["Created Date"] = record.createdTime;
+  }
+
   return {
     id: record.id,
-    firstName: firstName,
-    lastName: lastName,
-    companyTitle: "", // Not in Users table - would need to add
-    companyName: company,
-    phoneNumber: fields[F.users.phone] || fields["Phone Number"] || fields["Phone"] || "",
-    companyEmail: fields[F.users.email] || "",
+    firstName: firstName || "",
+    lastName: lastName || "",
+    companyTitle: fields["Title"] || fields["Company Title"] || "",
+    companyName: company || "",
+    companyRecordId: isRecordId(companyRecordId) ? companyRecordId : "",
+    phoneNumber: phone || "",
+    email: email || "",
+    companyEmail: email || "",
+    userType: userType || "",
     platformRole: userType || "",
     regions: regions,
-    contactVisibility: "Show Contact", // Default
-    location: location,
-    closedDeals: 0, // Would need to calculate from linked deals
-    brandCount: 0, // Would need to calculate
-    submittedBids: 0 // Would need to calculate
+    contactVisibility: "Show Contact",
+    location: location || "",
+    website: website || "",
+    closedDeals: 0,
+    brandCount: 0,
+    submittedBids: 0,
+    profilePicture: profilePicture || null,
+    responsivenessCombinedBadge:
+      fields["responsiveness_combined_badge"] ||
+      fields["Responsiveness Combined Badge"] ||
+      "",
+    responsivenessTimeCategory:
+      fields["responsiveness_response_time_category"] ||
+      fields["Responsiveness Response Time Category"] ||
+      "",
+    responsivenessFrequencyCategory:
+      fields["responsiveness_frequency_category"] ||
+      fields["Responsiveness Frequency Category"] ||
+      "",
+    _createdTime: record.createdTime || null,
+    rawFields
   };
 }
 
@@ -865,6 +1126,7 @@ export async function getCompanyById(req, res) {
       }
     }
 
+    const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
     const company = {
       id: record.id || '',
       companyId: companyId || '',
@@ -879,7 +1141,14 @@ export async function getCompanyById(req, res) {
       closedDeals: closedDeals ? Number(closedDeals) : 0,
       brandCount: brandCount ? Number(brandCount) : 0,
       submittedBids: submittedBids ? Number(submittedBids) : 0,
-      logo: logoDisplay
+      logo: logoDisplay,
+      _createdTime: record.createdTime || null,
+      rawFields: enrichment.rawFields,
+      brandRecordIds: enrichment.brandRecordIds,
+      userManagementRecordIds: enrichment.userManagementRecordIds,
+      services: enrichment.services,
+      primaryServices: enrichment.primaryServices,
+      brands: enrichment.brands
     };
 
     res.json(company);

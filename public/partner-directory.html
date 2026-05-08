@@ -764,9 +764,17 @@
         /* Results Grid */
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
+        }
+
+        /* Companies / Individuals tabs: cap at 4 columns on wide screens (avoids 5+ narrow tiles) */
+        @media (min-width: 1400px) {
+            .results-grid.results-grid--companies,
+            .results-grid.results-grid--individuals {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
         }
 
         /* Company Card - fully rendered so scroll feels instant */
