@@ -1,6 +1,16 @@
 import Airtable from "airtable";
 
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY_READONLY || process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID_ALT || process.env.AIRTABLE_BASE_ID);
+const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
+const base = (AIRTABLE_KEY && AIRTABLE_BASE)
+  ? new Airtable({ apiKey: AIRTABLE_KEY }).base(AIRTABLE_BASE)
+  : null;
+
+function ensureBrandPresenceConfig(res) {
+  if (base) return true;
+  res.status(500).json({ error: "Missing Airtable API key or base id for brand presence" });
+  return false;
+}
 
 // In-memory cache for performance optimization
 const cache = new Map();
@@ -72,9 +82,10 @@ const F = {
 
 // Get brand presence data
 export async function getBrandPresence(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const requestedLimit = parseInt(req.query.limit, 10);
-    const limit = Math.min(Math.max(requestedLimit || 50000, 1), 100000);
+    const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : null;
     const { brand, status, region, search, page = 0 } = req.query;
     
     // Check cache first
@@ -138,10 +149,12 @@ export async function getBrandPresence(req, res) {
         F.hotels.operationType,
         F.hotels.managementCompany
       ],
-      maxRecords: limit,
       pageSize: 100, // Airtable's optimal page size
       sort: [{ field: F.hotels.name, direction: 'asc' }]
     };
+    if (limit) {
+      selectOptions.maxRecords = limit;
+    }
     
     // Only add filterByFormula if we have a valid filter
     if (filterFormula && filterFormula.trim() !== '') {
@@ -195,7 +208,7 @@ export async function getBrandPresence(req, res) {
       totalCount: formattedHotels.length,
       totalWithCoordinates: formattedHotels.length - skippedNoCoordinates,
       skippedNoCoordinates,
-      hasMore: hotels.length === limit,
+      hasMore: !!limit && hotels.length === limit,
       page: parseInt(page, 10),
       limit,
       cached: false
@@ -218,6 +231,7 @@ export async function getBrandPresence(req, res) {
 
 // Get brand statistics
 export async function getBrandStatistics(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const { region } = req.query;
     
@@ -441,11 +455,11 @@ function generateInsights(hotels) {
 
 // Get unique location types from Airtable
 export async function getLocationTypes(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const hotels = await base(F.hotels.table)
       .select({
-        fields: [F.hotels.locationType],
-        maxRecords: 20000
+        fields: [F.hotels.locationType]
       })
       .all();
     
@@ -469,11 +483,11 @@ export async function getLocationTypes(req, res) {
 
 // Get unique parent companies from Airtable
 export async function getParentCompanies(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const hotels = await base(F.hotels.table)
       .select({
-        fields: [F.hotels.parentCompany],
-        maxRecords: 20000
+        fields: [F.hotels.parentCompany]
       })
       .all();
     
@@ -497,11 +511,11 @@ export async function getParentCompanies(req, res) {
 
 // Get unique brands from Airtable
 export async function getBrands(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const hotels = await base(F.hotels.table)
       .select({
-        fields: [F.hotels.brand],
-        maxRecords: 20000
+        fields: [F.hotels.brand]
       })
       .all();
     
@@ -525,11 +539,11 @@ export async function getBrands(req, res) {
 
 // Get chain scales (property types) from Airtable
 export async function getChainScales(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const hotels = await base(F.hotels.table)
       .select({
-        fields: [F.hotels.propertyType],
-        maxRecords: 20000
+        fields: [F.hotels.propertyType]
       })
       .all();
     

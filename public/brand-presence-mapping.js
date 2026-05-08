@@ -8,8 +8,10 @@ let whiteSpaceLayer = null;
 let penetrationLayer = null;
 let pipelineLayer = null;
 let infrastructureLayer = null;
+let cityAggregationLayer = null;
 let allHotels = [];
 let currentFilteredHotels = [];
+let isCityAggregationEnabled = false;
 
 
 // Global flag to prevent applyFilters during reset
@@ -130,6 +132,7 @@ async function loadHotelData() {
         if (result.success) {
             updateSystemStatus('Processing hotel data...', '1-2 seconds');
             allHotels = result.hotels;
+            window.allHotels = allHotels;
             hotelData = [...allHotels];
             currentFilteredHotels = [...allHotels];
             if (result.skippedNoCoordinates) console.warn(result.skippedNoCoordinates + " Airtable records have no coordinates and are not shown on the map.");
@@ -141,25 +144,23 @@ async function loadHotelData() {
             updateBrandDistribution(hotelData);
             generateInsights(hotelData);
             updateAllDropdowns(hotelData);
+            if (isCityAggregationEnabled) renderCityAggregationMarkers();
         } else {
             throw new Error('API returned error: ' + result.error);
         }
     } catch (error) {
         console.error('Error loading hotel data:', error);
-        updateSystemStatus('Loading mock data...');
-        
-        // Fallback to mock data if API fails
-        const mockData = generateMockHotelData();
-        allHotels = mockData;
-        hotelData = [...mockData];
-        
-        updateSystemStatus('Displaying hotels on map...');
-        // Display all hotels initially
-        await displayHotels(hotelData);
-        updateStatistics(hotelData);
-        updateBrandDistribution(hotelData);
-        generateInsights(hotelData);
-        updateAllDropdowns(hotelData);
+        allHotels = [];
+        hotelData = [];
+        currentFilteredHotels = [];
+        window.allHotels = [];
+        markersCluster.clearLayers();
+        currentMarkers = [];
+        updateStatistics([]);
+        updateBrandDistribution([]);
+        generateInsights([]);
+        updateAllDropdowns([]);
+        showNoResultsMessage('Unable to load live hotel census data. Please verify /api/brand-presence response.');
     } finally {
         showLoading(false);
         hideSystemStatus();
@@ -222,7 +223,112 @@ async function displayHotels(hotels) {
     
     // Force marker visibility by ensuring cluster is properly added
     console.log(`Completed processing: ${markersAdded} markers added, ${skippedInvalid} skipped`);
-    
+    if (isCityAggregationEnabled) renderCityAggregationMarkers();
+}
+
+function getHotelsForAggregation() {
+    const hasActiveFilters = Object.values(currentFilters || {}).some(function (value) {
+        return String(value || '').trim() !== '';
+    });
+    if (hasActiveFilters) return currentFilteredHotels || [];
+    return allHotels || [];
+}
+
+function clearCityAggregationLayer() {
+    if (cityAggregationLayer) {
+        map.removeLayer(cityAggregationLayer);
+        cityAggregationLayer = null;
+    }
+}
+
+function renderCityAggregationMarkers() {
+    if (!map) return;
+    clearCityAggregationLayer();
+    if (!isCityAggregationEnabled) return;
+
+    const sourceHotels = getHotelsForAggregation();
+    if (!sourceHotels.length) return;
+
+    const cityGroups = {};
+    sourceHotels.forEach(function (hotel) {
+        const city = (hotel.city || '').trim();
+        const country = (hotel.country || '').trim();
+        if (!city) return;
+        const cityKey = city + '|' + (country || 'Unknown Country');
+        if (!cityGroups[cityKey]) {
+            cityGroups[cityKey] = {
+                city: city,
+                country: country || 'Unknown Country',
+                totalHotels: 0,
+                totalRooms: 0,
+                withCoordinates: 0,
+                withoutCoordinates: 0,
+                openHotels: 0,
+                pipelineHotels: 0,
+                candidateHotels: 0,
+                lat: null,
+                lng: null
+            };
+        }
+        const row = cityGroups[cityKey];
+        row.totalHotels += 1;
+        row.totalRooms += Number(hotel.rooms) || 0;
+
+        const status = String(hotel.status || '').toLowerCase();
+        if (status === 'open') row.openHotels += 1;
+        else if (status === 'pipeline') row.pipelineHotels += 1;
+        else if (status === 'candidate') row.candidateHotels += 1;
+
+        const lat = Number(hotel.lat);
+        const lng = Number(hotel.lng);
+        const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
+        if (hasCoords) {
+            row.withCoordinates += 1;
+            if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) {
+                row.lat = lat;
+                row.lng = lng;
+            }
+        } else {
+            row.withoutCoordinates += 1;
+        }
+    });
+
+    cityAggregationLayer = L.layerGroup();
+    Object.values(cityGroups).forEach(function (row) {
+        if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) return;
+        const marker = L.marker([row.lat, row.lng], {
+            icon: L.divIcon({
+                className: 'city-aggregate-marker',
+                html: '<div style="width:24px;height:24px;border-radius:50%;background:#6c72ff;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">' + row.totalHotels + '</div>',
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            })
+        });
+        marker.bindPopup(
+            '<div style="min-width:260px;font-family:Inter,Segoe UI,sans-serif;">' +
+                '<h3 style="margin:0 0 8px;color:#1a1a1a;">' + row.city + ', ' + row.country + '</h3>' +
+                '<div style="font-size:12px;color:#444;line-height:1.45;">' +
+                    '<strong>Total hotels:</strong> ' + row.totalHotels.toLocaleString() + '<br>' +
+                    '<strong>Total rooms:</strong> ' + row.totalRooms.toLocaleString() + '<br>' +
+                    '<strong>Open / Pipeline / Candidate:</strong> ' + row.openHotels + ' / ' + row.pipelineHotels + ' / ' + row.candidateHotels + '<br>' +
+                    '<strong>With coordinates:</strong> ' + row.withCoordinates + '<br>' +
+                    '<strong>Without coordinates:</strong> ' + row.withoutCoordinates +
+                '</div>' +
+            '</div>'
+        );
+        cityAggregationLayer.addLayer(marker);
+    });
+    map.addLayer(cityAggregationLayer);
+}
+
+function toggleCityAggregation() {
+    const toggle = document.getElementById('cityAggregationToggle');
+    isCityAggregationEnabled = !!(toggle && toggle.checked);
+    if (isCityAggregationEnabled) {
+        renderCityAggregationMarkers();
+    } else {
+        clearCityAggregationLayer();
+    }
 }
 
 // Create hotel marker

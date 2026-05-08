@@ -1,6 +1,16 @@
 import Airtable from "airtable";
 
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY_READONLY }).base(process.env.AIRTABLE_BASE_ID_ALT);
+const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
+const base = (AIRTABLE_KEY && AIRTABLE_BASE)
+  ? new Airtable({ apiKey: AIRTABLE_KEY }).base(AIRTABLE_BASE)
+  : null;
+
+function ensureTravelInfrastructureConfig(res) {
+  if (base) return true;
+  res.status(500).json({ error: "Missing Airtable API key or base id for travel infrastructure" });
+  return false;
+}
 
 // Field mappings for travel infrastructure data
 const F = {
@@ -19,6 +29,7 @@ const F = {
 
 // Get travel infrastructure data
 export async function getTravelInfrastructure(req, res) {
+  if (!ensureTravelInfrastructureConfig(res)) return;
   try {
     const { type, country, region } = req.query;
     
