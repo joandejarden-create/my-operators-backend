@@ -1,8 +1,28 @@
 import Airtable from "airtable";
 
-// Use the same API key and base as the Clause Library
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY_READONLY }).base(process.env.AIRTABLE_BASE_ID_ALT);
-const writeBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID_ALT);
+const READ_API_KEY = process.env.AIRTABLE_API_KEY;
+const READ_BASE_ID = process.env.AIRTABLE_BASE_ID_ALT;
+const WRITE_API_KEY = process.env.AIRTABLE_API_KEY;
+const WRITE_BASE_ID = process.env.AIRTABLE_BASE_ID_ALT;
+
+const base = (READ_API_KEY && READ_BASE_ID)
+    ? new Airtable({ apiKey: READ_API_KEY }).base(READ_BASE_ID)
+    : null;
+const writeBase = (WRITE_API_KEY && WRITE_BASE_ID)
+    ? new Airtable({ apiKey: WRITE_API_KEY }).base(WRITE_BASE_ID)
+    : null;
+
+function ensureReadConfig(res) {
+    if (base) return true;
+    res.status(500).json({ error: "Missing Airtable API key or base id for financial term library" });
+    return false;
+}
+
+function ensureWriteConfig(res) {
+    if (writeBase) return true;
+    res.status(500).json({ error: "Missing Airtable API key or base id for financial term library" });
+    return false;
+}
 
 // Helper function to format Airtable records for the frontend
 function formatTermRecord(record) {
@@ -168,6 +188,7 @@ function formatTermRecord(record) {
 // Get list of financial terms with optional filters
 export async function getTerms(req, res) {
     try {
+        if (!ensureReadConfig(res)) return;
         const {
             search,
             agreementType,
@@ -312,6 +333,7 @@ export async function getTerms(req, res) {
 // Get single financial term by Term ID
 export async function getTermById(req, res) {
     try {
+        if (!ensureReadConfig(res)) return;
         const { id } = req.query;
 
         if (!id) {
@@ -344,6 +366,7 @@ export async function getTermById(req, res) {
 // Get all term IDs for navigation (prev/next)
 export async function getTermIds(req, res) {
     try {
+        if (!ensureReadConfig(res)) return;
         const tableNameOrId = 'Financial_Term_Library';
         const allRecords = [];
         await base(tableNameOrId)
@@ -369,6 +392,7 @@ export async function getTermIds(req, res) {
 // Create a new financial term record
 export async function createTerm(req, res) {
     try {
+        if (!ensureReadConfig(res) || !ensureWriteConfig(res)) return;
         if (req.method !== 'POST') {
             return res.status(405).json({ error: 'Method not allowed. Use POST to create terms.' });
         }

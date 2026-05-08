@@ -1,11 +1,28 @@
 import Airtable from "airtable";
 
-// Use the same API key and base as the Radar page (brand-presence.js) for reading
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY_READONLY }).base(process.env.AIRTABLE_BASE_ID_ALT);
+const READ_API_KEY = process.env.AIRTABLE_API_KEY;
+const READ_BASE_ID = process.env.AIRTABLE_BASE_ID_ALT;
+const WRITE_API_KEY = process.env.AIRTABLE_API_KEY;
+const WRITE_BASE_ID = process.env.AIRTABLE_BASE_ID_ALT;
 
-// Use write-capable API key for write operations (same base - AIRTABLE_BASE_ID_ALT)
-// Note: The API key must have write permissions to this base
-const writeBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID_ALT);
+const base = (READ_API_KEY && READ_BASE_ID)
+    ? new Airtable({ apiKey: READ_API_KEY }).base(READ_BASE_ID)
+    : null;
+const writeBase = (WRITE_API_KEY && WRITE_BASE_ID)
+    ? new Airtable({ apiKey: WRITE_API_KEY }).base(WRITE_BASE_ID)
+    : null;
+
+function ensureReadConfig(res) {
+    if (base) return true;
+    res.status(500).json({ error: "Missing Airtable API key or base id for clause library" });
+    return false;
+}
+
+function ensureWriteConfig(res) {
+    if (writeBase) return true;
+    res.status(500).json({ error: "Missing Airtable API key or base id for clause library" });
+    return false;
+}
 
 // Helper function to format Airtable records for the frontend
 function formatClauseRecord(record) {
@@ -145,6 +162,7 @@ function formatClauseRecord(record) {
 // Get list of clauses with optional filters
 export async function getClauses(req, res) {
     try {
+        if (!ensureReadConfig(res)) return;
         const {
             search,
             agreementType,
@@ -298,6 +316,7 @@ export async function getClauses(req, res) {
 // Get single clause by Clause ID
 export async function getClauseById(req, res) {
     try {
+        if (!ensureReadConfig(res)) return;
         const { id } = req.query;
 
         if (!id) {
@@ -355,6 +374,7 @@ export async function getClauseById(req, res) {
 // Get clause variables (from Clause_Variables table)
 export async function getClauseVariables(req, res) {
     try {
+        if (!ensureReadConfig(res)) return;
         const { clauseId } = req.query;
 
         if (!clauseId) {
@@ -450,6 +470,7 @@ export async function getClauseVariables(req, res) {
 // Get all clause IDs for navigation (prev/next)
 export async function getClauseIds(req, res) {
     try {
+        if (!ensureReadConfig(res)) return;
         const tableNameOrId = 'tbl4wXAIpWLhiRP6W';
         const allRecords = [];
         await base(tableNameOrId)
@@ -475,6 +496,7 @@ export async function getClauseIds(req, res) {
 // Create a new clause record
 export async function createClause(req, res) {
     try {
+        if (!ensureReadConfig(res) || !ensureWriteConfig(res)) return;
         if (req.method !== 'POST') {
             return res.status(405).json({ error: 'Method not allowed. Use POST to create clauses.' });
         }

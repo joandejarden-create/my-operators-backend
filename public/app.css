@@ -109,6 +109,10 @@ body {
     display: none;
 }
 
+.sidebar.collapsed .dev-workspace-wrap {
+    display: none;
+}
+
 /* Home page: hide center nav (search + menu), keep minimal strip like other pages */
 .sidebar.sidebar--home {
     width: var(--sidebar-width-collapsed);
@@ -208,11 +212,17 @@ body {
 .sidebar-nav {
     flex: 1;
     overflow-y: auto;
-    padding: 0.5rem 0;
+    padding: 0.25rem 0 0.75rem;
+}
+
+.nav-section-divider {
+    height: 1px;
+    background: var(--sidebar-border);
+    margin: 0.65rem 1rem;
 }
 
 .nav-group {
-    margin-bottom: 0;
+    margin-bottom: 0.15rem;
 }
 
 .nav-item {
@@ -255,7 +265,8 @@ body {
 
 .nav-item .nav-label {
     flex: 1;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.2;
 }
 
 .nav-item .nav-arrow {
@@ -294,7 +305,7 @@ body {
 }
 
 .nav-item-child {
-    padding-left: 2.75rem !important;
+    padding-left: 2.4rem !important;
     font-size: 0.85rem;
     font-weight: 400;
 }
@@ -307,11 +318,46 @@ body {
     display: none;
 }
 
+.sidebar.collapsed .nav-section-divider {
+    margin: 0.55rem 0.45rem;
+}
+
 /* Sidebar footer – user & account dropdown */
 .sidebar-footer {
     position: relative;
     padding: 1rem;
     border-top: 1px solid var(--sidebar-border);
+}
+
+.dev-workspace-wrap {
+    margin: 0.5rem 1rem 0.4rem;
+    padding: 0.65rem 0.7rem;
+    border: 1px solid var(--sidebar-border);
+    border-radius: 8px;
+    background: rgba(55, 68, 107, 0.35);
+}
+
+.dev-workspace-label {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--sidebar-text-muted);
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.02em;
+}
+
+.dev-workspace-select {
+    width: 100%;
+    border: 1px solid var(--sidebar-border);
+    border-radius: 6px;
+    background: #0b1431;
+    color: var(--sidebar-text);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.45rem;
+    outline: none;
+}
+
+.dev-workspace-select:focus {
+    border-color: var(--sidebar-active);
 }
 
 .user-block {

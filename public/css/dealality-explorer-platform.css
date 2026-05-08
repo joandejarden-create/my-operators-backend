@@ -1,0 +1,98 @@
+/**
+ * Shared Explorer shell — align Brand Explorer & Operator Explorer surfaces.
+ * Source tokens mirror public/operator-explorer.html
+ */
+:root {
+  --neutral--800: #080f25;
+  --neutral--700: #212c4d;
+  --neutral--600: #37446b;
+  --neutral--500: #7e89ac;
+  --neutral--400: #aeb9e1;
+  --neutral--200: #d9e1fa;
+  --neutral--100: #ffffff;
+  --accent--primary-1: #6c72ff;
+  --secondary--color-1: #101935;
+  --secondary--color-2: #9a91fb;
+  --secondary--color-3: #57c3ff;
+  --secondary--color-4: #343b4f;
+  --explorer-tab-border: rgba(255, 255, 255, 0.1);
+  --explorer-icon-ring: rgba(255, 255, 255, 0.12);
+}
+
+html {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neutral--600) var(--neutral--800);
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--neutral--800);
+  border-left: 1px solid rgba(87, 195, 255, 0.35);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--neutral--600);
+  border-radius: 0;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--neutral--500);
+}
+
+body.explorer-body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5em;
+  background-color: var(--neutral--800);
+  color: var(--neutral--400);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.explorer-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.explorer-page-header {
+  margin-bottom: 24px;
+}
+.explorer-page-header__title {
+  margin: 0;
+  color: var(--neutral--100);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2em;
+}
+.explorer-page-header__desc {
+  margin: 8px 0 0;
+  color: var(--neutral--400);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.45;
+  max-width: 52rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: var(--neutral--500);
+}
+.breadcrumb a {
+  color: var(--neutral--400);
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  color: var(--neutral--100);
+}
+.breadcrumb-separator {
+  color: var(--neutral--600);
+}
