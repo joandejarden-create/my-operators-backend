@@ -11,7 +11,7 @@ const API_BASE = window.DEALALITY_API_BASE || '';
 const apiUrl = (path) => `${API_BASE}${path}`;
 
 const CONFIG = {
-    AIRTABLE_BASE_ID: 'YOUR_AIRTABLE_BASE_ID_HERE',
+    SERVER_CONFIG_PLACEHOLDER: 'SERVER_SIDE_ONLY',
     AIRTABLE_TABLE_NAME: 'Company_Profile',
     CACHE_TTL: 5 * 60 * 1000,
     MAX_RECORDS: 50000
