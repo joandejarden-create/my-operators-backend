@@ -21,15 +21,18 @@
     var ROUTES = {
         '/home': { file: '/app/home.html', title: 'Home' },
         '/my-deals': { file: '/my-deals.html', title: 'My Deals' },
-        '/new-deal-setup': { file: '/new-deal-setup.html', title: 'New Deal Setup' },
+        '/new-deal-setup': { file: '/new-deal-setup.html', title: 'Add New Deal' },
         '/deal-setup': { file: '/deal-setup.html', title: 'Deal Setup' },
         '/deal-summary': { file: '/deal-summary.html', title: 'Deal Summary' },
         '/deal-compare': { file: '/deal-compare.html', title: 'Deal Compare' },
         '/market-alerts': { file: '/market-alerts.html', title: 'Market Alerts' },
-        '/opportunity-radar': { file: '/deal-capture-radar-with-ranked-list.html', title: 'Opportunity Radar' },
-        '/management-operator-radar': { file: '/management-operator-radar.html', title: 'Management Operator Radar' },
-        '/loi-database-dashboard': { file: '/loi-database-dashboard.html', title: 'LOI Database Dashboard' },
-        '/brand-explorer': { file: '/brand-explorer.html', title: 'Brand Explorer' },
+        '/opportunity-radar': { file: '/deal-capture-radar-with-ranked-list.html', title: 'The Radar' },
+        // Retired route kept as archived source file only (public/management-operator-radar.html).
+        // Intentionally removed from active app shell routing/navigation.
+        '/loi-database-dashboard': { file: '/loi-database-dashboard.html', title: 'LOI Market Hub' },
+        // Legacy Brand Directory route retained as alias target for old bookmarks.
+        // It now loads the active Brand Explorer (Mock Up) experience.
+        '/brand-explorer': { file: '/brand-library-atelier-north.html', title: 'Brand Explorer (Mock Up)' },
         '/operator-explorer': { file: '/operator-explorer.html', title: 'Operator Explorer' },
         '/operator-explorer-mockup': { file: '/operator-explorer-gold-mock.html', title: 'Operator Explorer Mockup' },
         '/deal-room-owner': { file: '/deal-room-owner.html', title: 'Owner Deal Room' },
@@ -47,13 +50,10 @@
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
         '/franchise-fee-estimator': { file: '/franchise-fee-estimator.html', title: 'Franchise Fee Estimator' },
-        '/fit-analyzer': { file: '/deal-brand-fit-analyzer.html', title: 'Fit Analyzer' },
         '/partner-directory': { file: '/partner-directory.html', title: 'Partner Directory' },
-        '/my-brands': { file: '/webflow-brand-dashboard.html', title: 'My Brands' },
+        '/my-brands': { file: '/all-brands-dashboard.html', title: 'My Brands' },
         '/my-operators': { file: '/my-third-party-operators.html', title: 'My Operators' },
-        '/brand-workspace': { file: '/webflow-brand-dashboard.html', title: 'Brand Workspace' },
-        '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'Brand Development Dashboard' },
-        '/my-third-party-operators': { file: '/my-third-party-operators.html', title: 'My Third-Party Operators' },
+        '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'My Brand Deals' },
         '/third-party-operator-intake': { file: '/third-party-operator-intake.html', title: 'Third-Party Operator Intake' },
         '/brand-setup': { file: '/brand-setup.html', title: 'Brand Setup' },
         '/reports': { file: '/reports-dashboard.html', title: 'Reports' },
@@ -64,11 +64,26 @@
         '/user-management': { file: '/user-management.html', title: 'User Management' }
     };
 
+    var NAV_ICONS = {
+        home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M9.5 20v-6h5v6"/></svg>',
+        deals: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>',
+        market: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>',
+        room: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5h8v2"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>',
+        outreach: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="20" cy="12" r="2"/><circle cx="12" cy="20" r="2"/><path d="M12 6v12"/><path d="M6 12h12"/></svg>',
+        toolbox: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h5v14H4z"/><path d="M10 4h5v16h-5z"/><path d="M16 7h4v13h-4z"/></svg>',
+        partner: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="2.5" width="18" height="19" rx="2"/><circle cx="12" cy="8" r="2.8"/><path d="M7.5 16c1.5-2.2 7.5-2.2 9 0"/><path d="M6.5 4.5h3"/><path d="M14.5 4.5h3"/></svg>',
+        platform: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5"/><path d="M3 16.5 12 21l9-4.5"/></svg>',
+        reports: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"/><rect x="5" y="11" width="3" height="7"/><rect x="10.5" y="8" width="3" height="10"/><rect x="16" y="5" width="3" height="13"/></svg>',
+        support: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 1 1-4.2-7.35"/><path d="M8.8 9.2a3.2 3.2 0 1 1 5 2.6c-.8.6-1.4 1.1-1.4 2.2"/><circle cx="12.1" cy="17.4" r="0.7" fill="currentColor" stroke="none"/></svg>',
+        routeMap: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h5v5H5z"/><path d="M14 5h5v5h-5z"/><path d="M5 14h5v5H5z"/><path d="M10 7.5h4"/><path d="M7.5 10v4"/></svg>',
+        settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 1 1-4 0v-.2a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 0 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 1 1 0-4h.2a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 0 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2 1 1 0 0 0 .6-.9V4a2 2 0 1 1 4 0v.2a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a2 2 0 0 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1 1 1 0 0 0 .9.6H20a2 2 0 1 1 0 4h-.2a1 1 0 0 0-.9.6z"/></svg>'
+    };
+
     var NAV_SECTIONS = [
         {
             name: 'top',
             entries: [
-                { type: 'item', label: 'Home', icon: '⌂', route: '/home', roles: ['owner', 'brand', 'operator', 'admin'] }
+                { type: 'item', label: 'Home', icon: NAV_ICONS.home, route: '/home', roles: ['owner', 'brand', 'operator', 'admin'] }
             ]
         },
         {
@@ -77,30 +92,29 @@
                 {
                     type: 'group',
                     label: 'Deals',
-                    icon: '▦',
+                    icon: NAV_ICONS.deals,
                     children: [
+                        { label: 'Add New Deal', route: '/new-deal-setup', roles: ['owner', 'admin'] },
                         { label: 'My Deals', route: '/my-deals', roles: ['owner', 'operator', 'admin'] },
-                        { label: 'New Deal Setup', route: '/new-deal-setup', roles: ['owner', 'admin'] },
-                        { label: 'Deal Setup', route: '/deal-setup', roles: ['owner', 'admin'] },
-                        { label: 'Deal Summary', route: '/deal-summary', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Deal Compare', route: '/deal-compare', roles: ['owner', 'brand', 'admin'] }
+                        { label: 'My Brand Deals', route: '/brand-development-dashboard', roles: ['brand', 'admin'] },
+                        { label: 'My Brands', route: '/my-brands', roles: ['owner', 'brand', 'admin'] },
+                        { label: 'My Operators', route: '/my-operators', roles: ['owner', 'operator', 'admin'] }
                     ]
                 },
                 {
                     type: 'group',
                     label: 'Market Intelligence',
-                    icon: '◉',
+                    icon: NAV_ICONS.market,
                     children: [
+                        { label: 'The Radar', route: '/opportunity-radar', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Market Alerts', route: '/market-alerts', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Opportunity Radar', route: '/opportunity-radar', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Management Operator Radar', route: '/management-operator-radar', roles: ['operator', 'admin'] },
-                        { label: 'LOI Database Dashboard', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] }
+                        { label: 'LOI Market Hub', route: '/loi-database-dashboard', roles: ['owner', 'brand', 'admin'] }
                     ]
                 },
                 {
                     type: 'group',
                     label: 'Deal Room',
-                    icon: '🏢',
+                    icon: NAV_ICONS.room,
                     children: [
                         { label: 'Owner Deal Room', route: '/deal-room-owner', roles: ['owner', 'admin'] },
                         { label: 'Brand Deal Room', route: '/deal-room-brand', roles: ['brand', 'admin'] },
@@ -110,15 +124,14 @@
                 {
                     type: 'group',
                     label: 'Outreach Hub',
-                    icon: '⚇',
+                    icon: NAV_ICONS.outreach,
                     children: [
                         { label: 'Outreach Plans', route: '/outreach', roles: ['owner', 'brand', 'operator', 'admin'] },
+                        { label: 'Templates', route: '/outreach/templates', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Inbox', route: '/outreach/inbox', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Sequences', route: '/outreach/sequences', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Analytics', route: '/outreach/analytics', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Activity Log', route: '/activity-log', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Deal Activity Log', route: '/outreach/deal-activity-log', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Templates', route: '/outreach/templates', roles: ['owner', 'brand', 'operator', 'admin'] }
+                        { label: 'Activity Log', route: '/activity-log', roles: ['owner', 'brand', 'operator', 'admin'] }
                     ]
                 }
             ]
@@ -129,56 +142,41 @@
                 {
                     type: 'group',
                     label: 'Deal Toolbox',
-                    icon: '▤',
+                    icon: NAV_ICONS.toolbox,
                     children: [
-                        { label: 'Brand Explorer', route: '/brand-explorer', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Brand Explorer (Mock Up)', route: '/brand-library-atelier', roles: ['owner', 'brand', 'admin'] },
+                        { label: 'Brand Explorer', route: '/brand-library-atelier', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Operator Explorer', route: '/operator-explorer', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Operator Explorer Mockup', route: '/operator-explorer-mockup', roles: ['owner', 'operator', 'admin'] },
                         { label: 'Brand Library', route: '/brand-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Financial Term Library', route: '/financial-term-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Clause Library', route: '/clause-library', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Fit Analyzer', route: '/fit-analyzer', roles: ['owner', 'admin'] }
+                        { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] }
                     ]
                 },
                 {
                     type: 'item',
                     label: 'Partner Directory',
-                    icon: '👤',
+                    icon: NAV_ICONS.partner,
                     route: '/partner-directory',
                     roles: ['owner', 'operator', 'admin']
-                },
-                {
-                    type: 'group',
-                    label: 'Platform Resources',
-                    icon: '▥',
-                    children: [
-                        { label: 'My Brands', route: '/my-brands', roles: ['brand', 'admin'] },
-                        { label: 'Brand Workspace', route: '/brand-workspace', roles: ['brand', 'admin'] },
-                        { label: 'Brand Development Dashboard', route: '/brand-development-dashboard', roles: ['brand', 'admin'] },
-                        { label: 'My Operators', route: '/my-operators', roles: ['owner', 'operator', 'admin'] },
-                        { label: 'My Third-Party Operators', route: '/my-third-party-operators', roles: ['operator', 'admin'] },
-                        { label: 'Third-Party Operator Intake', route: '/third-party-operator-intake', roles: ['operator', 'admin'] },
-                        { label: 'Brand Setup', route: '/brand-setup', roles: ['admin'] }
-                    ]
                 }
             ]
         },
         {
             name: 'tertiary',
             entries: [
-                { type: 'item', label: 'Reports', icon: '▁', route: '/reports', roles: ['admin'] },
-                { type: 'item', label: 'Support', icon: '?', route: '/support', roles: ['owner', 'brand', 'operator', 'admin'] },
-                { type: 'item', label: 'Route Map', icon: '⌗', route: '/route-map', roles: ['admin'], devOnly: true },
+                { type: 'item', label: 'Reports', icon: NAV_ICONS.reports, route: '/reports', roles: ['admin'] },
+                { type: 'item', label: 'Support', icon: NAV_ICONS.support, route: '/support', roles: ['owner', 'brand', 'operator', 'admin'] },
+                { type: 'item', label: 'Route Map', icon: NAV_ICONS.routeMap, route: '/route-map', roles: ['admin'], devOnly: true },
                 {
                     type: 'group',
                     label: 'Settings',
-                    icon: '⚙',
+                    icon: NAV_ICONS.settings,
                     children: [
                         { label: 'Company Settings', route: '/company-settings', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Profile Settings', route: '/profile-settings', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'User Management', route: '/user-management', roles: ['admin'] }
+                        { label: 'User Management', route: '/user-management', roles: ['admin'] },
+                        { label: 'Third-Party Operator Intake', route: '/third-party-operator-intake', roles: ['operator', 'admin'] },
+                        { label: 'Brand Setup', route: '/brand-setup', roles: ['admin'] }
                     ]
                 }
             ]
@@ -202,9 +200,8 @@
         '/market-alerts.html': '/market-alerts',
         '/deal-capture-radar-with-ranked-list.html': '/opportunity-radar',
         '/operator-intelligence-radar-with-list.html': '/opportunity-radar',
-        '/management-operator-radar.html': '/management-operator-radar',
         '/loi-database-dashboard.html': '/loi-database-dashboard',
-        '/brand-explorer.html': '/brand-explorer',
+        '/brand-explorer.html': '/brand-library-atelier',
         '/operator-explorer.html': '/operator-explorer',
         '/operator-explorer-gold-mock.html': '/operator-explorer-mockup',
         '/deal-room-owner.html': '/deal-room-owner',
@@ -222,14 +219,18 @@
         '/financial-term-library.html': '/financial-term-library',
         '/clause-library.html': '/clause-library',
         '/franchise-fee-estimator.html': '/franchise-fee-estimator',
-        '/deal-brand-fit-analyzer.html': '/fit-analyzer',
+        '/fit-analyzer': '/my-deals',
+        '/deal-brand-fit-analyzer.html': '/my-deals',
         '/partner-directory.html': '/partner-directory',
         '/my-brands.html': '/my-brands',
+        '/all-brands-dashboard.html': '/my-brands',
         '/webflow-my-brands.html': '/my-brands',
-        '/webflow-brand-dashboard.html': '/brand-workspace',
+        '/brand-workspace': '/brand-development-dashboard',
+        '/webflow-brand-dashboard.html': '/brand-development-dashboard',
         '/brand-development-dashboard.html': '/brand-development-dashboard',
         '/my-operators.html': '/my-operators',
-        '/my-third-party-operators.html': '/my-third-party-operators',
+        '/my-third-party-operators': '/my-operators',
+        '/my-third-party-operators.html': '/my-operators',
         '/third-party-operator-intake.html': '/third-party-operator-intake',
         '/brand-setup.html': '/brand-setup',
         '/reports-dashboard.html': '/reports',
@@ -303,7 +304,7 @@
     }
 
     function getDefaultRoute(role) {
-        return role === 'brand' ? '/brand-workspace' : '/home';
+        return role === 'brand' ? '/brand-development-dashboard' : '/home';
     }
 
     function getPath(role) {
@@ -322,6 +323,54 @@
 
     function getFrameForPath(path) {
         return frameContainer ? frameContainer.querySelector('.app-frame[data-path="' + path + '"]') : null;
+    }
+
+    function applyEmbeddedPageOverrides(frame, route, role) {
+        if (!frame || !frame.contentDocument) return;
+        try {
+            var doc = frame.contentDocument;
+            var styleId = 'dealality-embed-overrides';
+            var styleEl = doc.getElementById(styleId);
+            if (!styleEl) {
+                styleEl = doc.createElement('style');
+                styleEl.id = styleId;
+                (doc.head || doc.documentElement).appendChild(styleEl);
+            }
+
+            var css = ''
+                + '.deal-capture-logo{display:none !important;}'
+                // Header alignment/typography baseline across embedded platform pages.
+                + '.intake-header,.dashboard-header,.page-header,.brand-review__header,.explorer-page-header,.news-page-header{'
+                + 'margin:0 0 24px 0 !important;padding-left:0 !important;padding-right:0 !important;}'
+                + '.intake-title-container,.dashboard-header-left,.brand-review-title-container,.news-title-container{'
+                + 'gap:10px !important;margin-bottom:0 !important;}'
+                + '.intake-header h1,.dashboard-header h1,.page-header h1,.brand-review__header h1,.explorer-page-header__title,.mapping-title,.news-page-header h1{'
+                + 'font-family:Inter,"Segoe UI",Arial,sans-serif !important;font-style:normal !important;'
+                + 'font-size:2rem !important;line-height:1.2 !important;font-weight:700 !important;'
+                + 'letter-spacing:0 !important;text-transform:none !important;'
+                + 'margin:0 !important;color:#ffffff !important;}'
+                + '.intake-header p,.dashboard-header p,.page-header p,.brand-review__header p,.explorer-page-header__subtitle,.mapping-subtitle,.news-page-header p{'
+                + 'font-family:Inter,"Segoe UI",Arial,sans-serif !important;font-style:normal !important;'
+                + 'font-size:0.75rem !important;line-height:1.35 !important;font-weight:400 !important;'
+                + 'letter-spacing:0 !important;text-transform:none !important;'
+                + 'margin-top:8px !important;max-width:760px !important;color:#ffffff !important;}'
+                + '.intake-header p *, .dashboard-header p *, .page-header p *, .brand-review__header p *, .explorer-page-header__subtitle *, .mapping-subtitle *, .news-page-header p * {'
+                + 'font-family:inherit !important;font-size:inherit !important;font-style:inherit !important;font-weight:inherit !important;line-height:inherit !important;letter-spacing:inherit !important;color:inherit !important;}';
+            // LOI tabs should be visible only to admin + dev "all".
+            if (route === '/loi-database-dashboard' && role !== 'admin' && role !== 'all') {
+                css += '#databaseTab,#benchmarkTab,#databasePanel,#benchmarkPanel{display:none !important;}';
+            }
+            styleEl.textContent = css;
+
+            if (route === '/loi-database-dashboard' && role !== 'admin' && role !== 'all') {
+                var overviewTab = doc.getElementById('overviewTab');
+                var overviewPanel = doc.getElementById('overviewPanel');
+                if (overviewTab) overviewTab.classList.add('active');
+                if (overviewPanel) overviewPanel.classList.add('active');
+            }
+        } catch (_err) {
+            // Ignore pages that are unavailable during navigation transitions.
+        }
     }
 
     function passesSearch(label, childLabels, query) {
@@ -494,9 +543,14 @@
     function updateShellHeader(route, role) {
         if (shellPageTitle) shellPageTitle.textContent = ROUTES[route] ? ROUTES[route].title : 'Dealality App';
         if (shellPageSubtitle) {
-            shellPageSubtitle.textContent = role === 'all'
-                ? 'All workspaces (dev)'
-                : role.charAt(0).toUpperCase() + role.slice(1) + ' workspace';
+            // Keep header cleaner in dev mode; workspace context is shown on the Dev Workspace control.
+            if (isDevMode) {
+                shellPageSubtitle.textContent = '';
+                shellPageSubtitle.style.display = 'none';
+            } else {
+                shellPageSubtitle.style.display = '';
+                shellPageSubtitle.textContent = role.charAt(0).toUpperCase() + role.slice(1) + ' workspace';
+            }
         }
     }
 
@@ -542,10 +596,15 @@
                 frame.setAttribute('data-path', target);
                 frame.title = ROUTES[target].title || 'Page content';
                 frame.src = routeToEmbedUrl(target, role);
+                frame.addEventListener('load', function () {
+                    applyEmbeddedPageOverrides(frame, target, role);
+                });
                 frameContainer.appendChild(frame);
             }
         } else if (target === '/route-map') {
             frame.srcdoc = renderRouteMapHtml(role);
+        } else {
+            applyEmbeddedPageOverrides(frame, target, role);
         }
 
         showFrame(target);
@@ -636,6 +695,13 @@
         currentRole = getEffectiveRole();
 
         if (devWorkspaceSelect) devWorkspaceSelect.value = devWorkspace;
+        if (devWorkspaceWrap) devWorkspaceWrap.setAttribute('data-workspace', currentRole);
+        var devWorkspaceLabel = document.querySelector('.dev-workspace-label');
+        if (devWorkspaceLabel) {
+            devWorkspaceLabel.textContent = currentRole === 'all'
+                ? 'Dev Workspace: All (dev)'
+                : 'Dev Workspace: ' + currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
+        }
         setStoredDevWorkspace(isDevMode ? devWorkspace : '');
 
         if (ROUTES[currentRoute]) {
