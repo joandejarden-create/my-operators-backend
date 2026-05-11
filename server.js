@@ -220,7 +220,7 @@ function parseCompanyProfileArrays(req, res, next) {
 const app = express();
 const EMBED_ALLOWED_ANCESTORS = (
   process.env.FRAME_ANCESTORS ||
-  "https://dealality.com,https://www.dealality.com,https://mvp-deal-capture.webflow.io"
+  "https://www.dealality.com,https://dealality.com,https://deal-capture.design.webflow.com,https://*.webflow.io,https://*.webflow.com"
 )
   .split(",")
   .map((s) => s.trim())
@@ -254,13 +254,12 @@ app.use((req, res, next) => {
 // Security headers for deployment
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
-  const isGoldMockPage =
-    req.path === "/operator-explorer-gold-mock.html" ||
-    req.path === "/operator-explorer-gold-mock" ||
-    req.path === "/operator-explorer-gold-mock/";
+  const isEmbedRequest = req.query && String(req.query.embed || "") === "1";
+  const isHtmlPage = typeof req.path === "string" && req.path.endsWith(".html");
+  const allowsFraming = isEmbedRequest || isHtmlPage;
 
-  if (isGoldMockPage) {
-    // Allow selected parent origins to embed the gold-mock profile iframe.
+  if (allowsFraming) {
+    // Allow approved Dealality/Webflow ancestors to embed HTML/embed pages.
     res.removeHeader("X-Frame-Options");
     res.setHeader(
       "Content-Security-Policy",
