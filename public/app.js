@@ -338,6 +338,7 @@
             }
 
             var css = ''
+                + '.deal-capture-logo{display:none !important;}'
                 // Header alignment/typography baseline across embedded platform pages.
                 + '.intake-header,.dashboard-header,.page-header,.brand-review__header,.explorer-page-header,.news-page-header{'
                 + 'margin:0 0 24px 0 !important;padding-left:0 !important;padding-right:0 !important;}'
