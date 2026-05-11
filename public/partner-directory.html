@@ -35,6 +35,7 @@
           --system--blue-100: #eaf4ff;
           --system--blue-300: #1d88fe;
           --system--blue-200: #8fc3ff;
+          --scrollbar-size: 6px;
         }
 
         * {
@@ -45,6 +46,8 @@
 
         html {
             scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
         }
 
         body {
@@ -57,6 +60,44 @@
             line-height: 1.5em;
             min-height: 100vh;
             scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+
+        /* Global scrollbar — match app.css / other hub pages.
+           Include html, body: Chrome often ignores *::-webkit-scrollbar on the viewport scroller. */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar,
+        .sidebar-wrapper::-webkit-scrollbar,
+        *::-webkit-scrollbar {
+            width: var(--scrollbar-size);
+            height: var(--scrollbar-size);
+        }
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track,
+        .sidebar-wrapper::-webkit-scrollbar-track,
+        *::-webkit-scrollbar-track {
+            background: #080f25;
+            border-left: 1px solid rgba(87, 195, 255, 0.35);
+        }
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb,
+        .sidebar-wrapper::-webkit-scrollbar-thumb,
+        *::-webkit-scrollbar-thumb {
+            background: #37446b;
+            border-radius: 0;
+        }
+        html::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover,
+        .sidebar-wrapper::-webkit-scrollbar-thumb:hover,
+        *::-webkit-scrollbar-thumb:hover {
+            background: #7e89ac;
+        }
+        html::-webkit-scrollbar-corner,
+        body::-webkit-scrollbar-corner,
+        .sidebar-wrapper::-webkit-scrollbar-corner,
+        *::-webkit-scrollbar-corner {
+            background: #080f25;
         }
 
         /* ----- LAYOUT (main content position/width) - keep in sync for future changes -----
@@ -123,7 +164,6 @@
         .embed-mode .sidebar-wrapper { display: none !important; }
         .embed-mode .dashboard-main-section { margin-left: 0 !important; }
         .embed-mode .partner-directory-container { max-width: 100% !important; }
-        .embed-mode .partner-directory__header .deal-capture-logo { display: none !important; }
 
         /* Main Content Layout */
         .dashboard-main-section {
@@ -178,18 +218,7 @@
             margin-bottom: 8px;
         }
 
-        .partner-directory__header .deal-capture-logo {
-            height: 32px;
-            display: flex;
-            align-items: center;
-        }
 
-        .partner-directory__header .deal-capture-logo img {
-            height: 100%;
-            width: auto;
-            max-width: 120px;
-            object-fit: contain;
-        }
 
         .partner-directory__header h1 {
             font-size: 2rem;
@@ -2655,9 +2684,6 @@
                 <!-- Header Section -->
                 <div class="partner-directory__header">
                     <div class="partner-directory-title-container">
-                        <div class="deal-capture-logo">
-                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-                        </div>
                         <h1>Partner Directory</h1>
                     </div>
                     <p class="page-desc">Discover and connect with hotel companies, brands, and key decision-makers. Browse by type and region, filter by responsiveness, and save favorites for quick access.</p>
