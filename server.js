@@ -46,7 +46,6 @@ import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
 import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } from "./api/operators-by-brand-region.js";
 import { getTravelInfrastructure } from "./api/travel-infrastructure.js";
-import { getDealalityScout, getDealalityScoutFilters } from "./api/dealality-scout.js";
 import { getBrandReviewDeals, updateDealStatus, getDealDetails, bulkUpdateDeals, getBrandReviewStats, getMatchedBrands } from "./api/brand-review.js";
 import { analyzeBrandFit, getDealBrandFit, getAllDealsForAnalysis } from "./api/brand-fit-analyzer.js";
 import { getClauses, getClauseById, getClauseVariables, getClauseIds, createClause } from "./api/clause-library.js";
@@ -579,13 +578,16 @@ app.get("/market-analytics", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'market-analytics.html'));
 });
 
-// Standalone Dealality Scout prototype page (not added to app shell)
-app.get("/dealality-scout", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "dealality-scout.html"));
-});
-app.get("/dealality-scout/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "dealality-scout.html"));
-});
+// Standalone Dealality Scout prototype (optional — only if static files are deployed)
+const dealalityScoutHtmlPath = path.join(__dirname, "public", "dealality-scout.html");
+if (fs.existsSync(dealalityScoutHtmlPath)) {
+  app.get("/dealality-scout", (req, res) => {
+    res.sendFile(dealalityScoutHtmlPath);
+  });
+  app.get("/dealality-scout/", (req, res) => {
+    res.sendFile(dealalityScoutHtmlPath);
+  });
+}
 
 // CSP for app pages that would otherwise get default-src 'none' from sendFile (allows data: images, localhost for DevTools)
 const APP_PAGE_CSP =
@@ -761,10 +763,6 @@ app.get("/api/operators-by-brand-region/filters", getOperatorsByBrandRegionFilte
 
 // Travel Infrastructure API endpoints
 app.get("/api/travel-infrastructure", getTravelInfrastructure);
-
-// Standalone Dealality Scout API endpoints (mock mode)
-app.get("/api/dealality-scout", getDealalityScout);
-app.get("/api/dealality-scout/filters", getDealalityScoutFilters);
 
 // Brand Review API endpoints
 app.get("/api/brand-review/deals", getBrandReviewDeals);
@@ -1019,30 +1017,52 @@ app.use((req, res, next) => {
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
-  // Optional quick check (only shows first chars, don't log secrets in prod)
-  console.log("Airtable key present:", !!process.env.AIRTABLE_API_KEY);
-  const smtpOk = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-  console.log("SMTP (signup emails):", smtpOk ? "configured — " + process.env.SMTP_HOST : "not configured — set SMTP_HOST, SMTP_USER, SMTP_PASS in .env");
-  console.log("✅ Partner Directory routes registered:");
-  console.log("   GET /partner-directory");
-  console.log("   GET /api/partner-directory");
-  console.log("   POST /api/partner-directory/users");
-  console.log("   PUT /api/partner-directory/users/:userId");
-  console.log("✅ Financial Term Library routes registered:");
-  console.log("   GET /api/financial-term-library/terms");
-  console.log("   GET /api/financial-term-library/term");
-  console.log("   POST /api/financial-term-library/terms");
-  console.log("✅ Company Profile routes registered:");
-  console.log("   POST /api/company-profile  (multipart: fields + optional logo)");
-  console.log("   PATCH /api/company-profile/:recordId");
-  console.log("   GET /api/company-profile/prefill?recordId=rec...|companyName=...");
-  console.log("✅ Third-party operator list (My 3rd Party Ops.):");
-  console.log("   GET /api/intake/third-party-operators");
-  console.log("   GET /api/third-party-operators/list");
-  console.log("   GET /api/third-party-operators");
-  console.log("   GET /api/third-party-operators-new/list");
-  console.log("   GET /api/third-party-operators-new");
-  console.log("   GET /api/intake/third-party-operator/prefill-qa");
+
+(async function startServer() {
+  const dealalityScoutApiPath = path.join(__dirname, "api", "dealality-scout.js");
+  if (fs.existsSync(dealalityScoutApiPath)) {
+    try {
+      const { getDealalityScout, getDealalityScoutFilters } = await import("./api/dealality-scout.js");
+      app.get("/api/dealality-scout", getDealalityScout);
+      app.get("/api/dealality-scout/filters", getDealalityScoutFilters);
+      console.log("✅ Dealality Scout API routes registered");
+    } catch (e) {
+      console.warn("Dealality Scout API failed to load:", e && e.message ? e.message : e);
+    }
+  } else {
+    console.warn(
+      "api/dealality-scout.js not found — GET /api/dealality-scout disabled (commit api/dealality-scout.js to enable)"
+    );
+  }
+
+  app.listen(PORT, () => {
+    console.log(`✅ Server running at http://localhost:${PORT}`);
+    // Optional quick check (only shows first chars, don't log secrets in prod)
+    console.log("Airtable key present:", !!process.env.AIRTABLE_API_KEY);
+    const smtpOk = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+    console.log("SMTP (signup emails):", smtpOk ? "configured — " + process.env.SMTP_HOST : "not configured — set SMTP_HOST, SMTP_USER, SMTP_PASS in .env");
+    console.log("✅ Partner Directory routes registered:");
+    console.log("   GET /partner-directory");
+    console.log("   GET /api/partner-directory");
+    console.log("   POST /api/partner-directory/users");
+    console.log("   PUT /api/partner-directory/users/:userId");
+    console.log("✅ Financial Term Library routes registered:");
+    console.log("   GET /api/financial-term-library/terms");
+    console.log("   GET /api/financial-term-library/term");
+    console.log("   POST /api/financial-term-library/terms");
+    console.log("✅ Company Profile routes registered:");
+    console.log("   POST /api/company-profile  (multipart: fields + optional logo)");
+    console.log("   PATCH /api/company-profile/:recordId");
+    console.log("   GET /api/company-profile/prefill?recordId=rec...|companyName=...");
+    console.log("✅ Third-party operator list (My 3rd Party Ops.):");
+    console.log("   GET /api/intake/third-party-operators");
+    console.log("   GET /api/third-party-operators/list");
+    console.log("   GET /api/third-party-operators");
+    console.log("   GET /api/third-party-operators-new/list");
+    console.log("   GET /api/third-party-operators-new");
+    console.log("   GET /api/intake/third-party-operator/prefill-qa");
+  });
+})().catch((err) => {
+  console.error("Server failed to start:", err);
+  process.exit(1);
 });
