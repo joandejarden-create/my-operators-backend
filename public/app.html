@@ -34,6 +34,9 @@
                     <option value="admin">Admin</option>
                     <option value="all">All</option>
                 </select>
+                <a href="/webflow-preview.html" target="_blank" rel="noopener noreferrer" class="dev-workspace-preview-btn">
+                    Open Webflow Preview
+                </a>
             </div>
 
             <div class="sidebar-footer" id="accountDropdownWrap">
@@ -83,14 +86,10 @@
         </aside>
 
         <main class="main-content">
-            <header class="shell-topbar">
-                <button type="button" class="shell-mobile-nav-toggle" id="mobileNavToggle" aria-label="Open navigation">☰</button>
-                <div class="shell-topbar-title-group">
-                    <h1 class="shell-topbar-title" id="shellPageTitle">Dealality App</h1>
-                    <p class="shell-topbar-subtitle" id="shellPageSubtitle">Owner workspace</p>
-                </div>
-            </header>
             <div id="frameContainer" class="frame-container"></div>
+            <footer class="app-shell-footer" role="contentinfo">
+                <span id="appShellCopyrightYear"></span> Copyright © Dealality
+            </footer>
         </main>
     </div>
     <script src="app.js"></script>

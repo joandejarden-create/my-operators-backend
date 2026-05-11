@@ -46,6 +46,7 @@ import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
 import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } from "./api/operators-by-brand-region.js";
 import { getTravelInfrastructure } from "./api/travel-infrastructure.js";
+import { getDealalityScout, getDealalityScoutFilters } from "./api/dealality-scout.js";
 import { getBrandReviewDeals, updateDealStatus, getDealDetails, bulkUpdateDeals, getBrandReviewStats, getMatchedBrands } from "./api/brand-review.js";
 import { analyzeBrandFit, getDealBrandFit, getAllDealsForAnalysis } from "./api/brand-fit-analyzer.js";
 import { getClauses, getClauseById, getClauseVariables, getClauseIds, createClause } from "./api/clause-library.js";
@@ -578,6 +579,14 @@ app.get("/market-analytics", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'market-analytics.html'));
 });
 
+// Standalone Dealality Scout prototype page (not added to app shell)
+app.get("/dealality-scout", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "dealality-scout.html"));
+});
+app.get("/dealality-scout/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "dealality-scout.html"));
+});
+
 // CSP for app pages that would otherwise get default-src 'none' from sendFile (allows data: images, localhost for DevTools)
 const APP_PAGE_CSP =
   "default-src 'self'; " +
@@ -752,6 +761,10 @@ app.get("/api/operators-by-brand-region/filters", getOperatorsByBrandRegionFilte
 
 // Travel Infrastructure API endpoints
 app.get("/api/travel-infrastructure", getTravelInfrastructure);
+
+// Standalone Dealality Scout API endpoints (mock mode)
+app.get("/api/dealality-scout", getDealalityScout);
+app.get("/api/dealality-scout/filters", getDealalityScoutFilters);
 
 // Brand Review API endpoints
 app.get("/api/brand-review/deals", getBrandReviewDeals);

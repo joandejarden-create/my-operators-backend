@@ -4764,9 +4764,9 @@
                         targetListsHydrated = true;
                         updateTargetListTabCount();
                         var initialCounts = data.initialMatchedSupport.tabCounts || {};
-                        var tabCountContacted = document.getElementById('tabCountContacted');
+                    var tabCountContacted = document.getElementById('tabCountContacted');
                         if (tabCountContacted) tabCountContacted.textContent = String(initialCounts.contacted != null ? initialCounts.contacted : contactedPairs.length);
-                        var tabCountDealCompare = document.getElementById('tabCountDealCompare');
+                    var tabCountDealCompare = document.getElementById('tabCountDealCompare');
                         if (tabCountDealCompare) tabCountDealCompare.textContent = String(initialCounts.dealCompare != null ? initialCounts.dealCompare : 0);
                         topNavCountsLoaded = true;
                     }
@@ -6443,7 +6443,7 @@
                                     if (!loaded || isStaleLoad(tabLoadToken)) return;
                                     var activeBtn = document.querySelector('.my-deals-section-nav .section-nav-item.active');
                                     if (!activeBtn || activeBtn.getAttribute('data-tab') !== 'deal-compare') return;
-                                    populateDealCompareDealSelect();
+                            populateDealCompareDealSelect();
                                 }).catch(function(err) {
                                     if (isStaleLoad(tabLoadToken)) return;
                                     console.warn('Failed loading deal-compare data:', err);

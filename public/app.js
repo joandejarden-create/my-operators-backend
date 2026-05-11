@@ -748,6 +748,9 @@
     }
 
     function init() {
+        var copyrightYearEl = document.getElementById('appShellCopyrightYear');
+        if (copyrightYearEl) copyrightYearEl.textContent = String(new Date().getFullYear());
+
         isDevMode = computeDevMode();
         currentBaseRole = getBaseRole();
         devWorkspace = isDevMode ? (getStoredDevWorkspace() || currentBaseRole) : '';
