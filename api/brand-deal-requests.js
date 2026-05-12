@@ -135,7 +135,7 @@ export async function listForBrand(req, res) {
     let formula = `{Brand Name} = '${escapeFormula(brand)}'`;
     if (status) {
       const statusVal = String(status).trim();
-      if (["New", "Viewed", "Brand Viewed", "Accepted", "Declined", "Archived"].includes(statusVal)) {
+      if (["New", "Viewed", "Brand Viewed", "Accepted", "Declined", "Archived", "More Info Requested", "Revisit Later"].includes(statusVal)) {
         formula += ` AND {Status} = '${statusVal}'`;
       }
     }
@@ -539,6 +539,19 @@ function mapBdrToResponse(r) {
   };
   const proposal = mapProposalFromFields(r.fields);
   if (Object.keys(proposal).length > 0) base.proposal = proposal;
+  // Optional CRM sync readiness fields (ignored if columns missing in Airtable)
+  const crmId = r.fields["External CRM ID"];
+  if (crmId != null && String(crmId).trim()) base.externalCrmId = String(crmId).trim();
+  const crmSync = r.fields["CRM Sync Status"];
+  if (crmSync != null && String(crmSync).trim()) base.crmSyncStatus = String(crmSync).trim();
+  const crmSyncAt = r.fields["Last CRM Sync At"];
+  if (crmSyncAt != null && String(crmSyncAt).trim()) base.lastCrmSyncAt = String(crmSyncAt).trim();
+  const crmOwner = r.fields["CRM Owner"];
+  if (crmOwner != null && String(crmOwner).trim()) base.crmOwner = String(crmOwner).trim();
+  const crmStage = r.fields["CRM Stage"];
+  if (crmStage != null && String(crmStage).trim()) base.crmStage = String(crmStage).trim();
+  const crmNotes = r.fields["CRM Notes"];
+  if (crmNotes != null && String(crmNotes).trim()) base.crmNotes = String(crmNotes).trim();
   return base;
 }
 
@@ -704,6 +717,7 @@ export async function updateStatus(req, res) {
   const pipelineStatuses = [
     "New", "Viewed", "Brand Viewed", "Sent / Awaiting Response",
     "Accepted", "Declined", "Archived", "Responded - Accepted", "Responded - Declined",
+    "More Info Requested", "Revisit Later",
     "Pre-LOI", "Pre-LOI / Term Comparison", "Finalist", "Deal Room Active",
     "Feasibility", "Feasibility In Progress", "LOI Signed", "LOI Signed / Platform Exit"
   ];
@@ -732,16 +746,24 @@ export async function updateStatus(req, res) {
       const brandName = rec.fields["Brand Name"] || "";
       const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
 
+      const followUpStakeholder = String(scheduledBy || "owner").toLowerCase() === "brand" ? "Brand" : "Owner";
       if (hasOwnerNotes) {
         await logActivity(base, dealId, brandName, "Notes updated", "Owner notes updated", "", "", "Owner");
       } else if (hasNextFollowup) {
         const label = nextFollowupHeader ? `${nextFollowupHeader} – ` : "";
-        await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", "Owner");
+        await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", followUpStakeholder);
         await createFollowUpNotificationForOutreachHub(base, dealId, brandName, {
           nextFollowupDate,
           nextFollowupHeader,
           nextFollowupNotes,
         }, scheduledBy);
+      } else if (hasResponseNotes) {
+        const customAction = typeof body.brandCrmAction === "string" && body.brandCrmAction.trim() ? body.brandCrmAction.trim().slice(0, 120) : "Information requested";
+        const customDetails =
+          typeof body.brandCrmDetails === "string" && body.brandCrmDetails.trim()
+            ? body.brandCrmDetails.trim().slice(0, 2000)
+            : String(responseNotes || "").trim().slice(0, 2000);
+        await logActivity(base, dealId, brandName, customAction, customDetails || "Response notes updated", "", "", "Brand");
       }
 
       return res.json({ success: true });
@@ -793,19 +815,35 @@ export async function updateStatus(req, res) {
     const brandName = rec.fields["Brand Name"] || "";
     const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
 
+    const followUpStakeholderMain = String(scheduledBy || "owner").toLowerCase() === "brand" ? "Brand" : "Owner";
     if (hasValidStatus) {
-      const activityAction = (statusStr === "Viewed" || statusStr === "Brand Viewed") ? "Brand Viewed" : statusStr;
+      let activityAction = statusStr;
+      if (statusStr === "Viewed" || statusStr === "Brand Viewed") activityAction = "Opportunity reviewed";
+      else if (statusStr === "Accepted") activityAction = "Marked interested";
+      else if (statusStr === "Pre-LOI" || statusStr === "Pre-LOI / Term Comparison") activityAction = "Terms preparation started";
+      else if (statusStr === "Declined" || statusStr === "Responded - Declined") activityAction = "Declined";
+      else if (statusStr === "More Info Requested") activityAction = "Information requested";
+      else if (statusStr === "Revisit Later") activityAction = "Revisit later";
       const activityDetails = statusStr === "Accepted"
-        ? (responseNotes || "The brand accepted the Project Opportunity")
+        ? (responseNotes || "Brand marked interest in advancing this opportunity.")
         : (statusStr === "Declined"
-          ? (responseNotes || "The brand declined the Project Opportunity")
+          ? (responseNotes || "The brand declined the opportunity.")
           : (responseNotes || `Status updated to ${statusStr}`));
       await logActivity(base, dealId, brandName, activityAction, activityDetails, "", "", "Brand");
+      if (nextFollowupDate !== undefined) {
+        const label = nextFollowupHeader ? `${nextFollowupHeader} – ` : "";
+        await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", followUpStakeholderMain);
+        await createFollowUpNotificationForOutreachHub(base, dealId, brandName, {
+          nextFollowupDate,
+          nextFollowupHeader,
+          nextFollowupNotes,
+        }, scheduledBy);
+      }
     } else if (ownerNotes !== undefined) {
       await logActivity(base, dealId, brandName, "Notes updated", "Owner notes updated", "", "", "Owner");
     } else if (nextFollowupDate !== undefined) {
       const label = nextFollowupHeader ? `${nextFollowupHeader} – ` : "";
-      await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", "Owner");
+      await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", followUpStakeholderMain);
       await createFollowUpNotificationForOutreachHub(base, dealId, brandName, {
         nextFollowupDate,
         nextFollowupHeader,
@@ -840,6 +878,7 @@ export async function bulkUpdateStatus(req, res) {
   const pipelineStatuses = [
     "New", "Viewed", "Brand Viewed", "Sent / Awaiting Response",
     "Accepted", "Declined", "Archived", "Responded - Accepted", "Responded - Declined",
+    "More Info Requested", "Revisit Later",
     "Pre-LOI", "Pre-LOI / Term Comparison", "Finalist", "Deal Room Active",
     "Feasibility", "Feasibility In Progress", "LOI Signed", "LOI Signed / Platform Exit"
   ];
@@ -871,7 +910,13 @@ export async function bulkUpdateStatus(req, res) {
       const brandName = rec.fields["Brand Name"] || "";
       const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
       const statusStr = String(updates[i].status || "").trim();
-      const activityAction = (statusStr === "Viewed" || statusStr === "Brand Viewed") ? "Brand Viewed" : statusStr;
+      let activityAction = statusStr;
+      if (statusStr === "Viewed" || statusStr === "Brand Viewed") activityAction = "Opportunity reviewed";
+      else if (statusStr === "Accepted") activityAction = "Marked interested";
+      else if (statusStr === "Pre-LOI" || statusStr === "Pre-LOI / Term Comparison") activityAction = "Terms preparation started";
+      else if (statusStr === "Declined" || statusStr === "Responded - Declined") activityAction = "Declined";
+      else if (statusStr === "More Info Requested") activityAction = "Information requested";
+      else if (statusStr === "Revisit Later") activityAction = "Revisit later";
       await logActivity(base, dealId, brandName, activityAction, `Bulk update to ${statusStr}`, "", "", "Owner");
     }
 
@@ -1791,7 +1836,7 @@ function escapeFormula(s) {
 function getStageFromStatus(status) {
   const s = String(status || "").trim();
   if (["New", "Viewed", "Sent / Awaiting Response"].includes(s)) return "03 Owner Offer Request";
-  if (["Accepted", "Responded - Accepted"].includes(s)) return "04 Brand Response";
+  if (["Accepted", "Responded - Accepted", "More Info Requested", "Revisit Later"].includes(s)) return "04 Brand Response";
   if (["Declined", "Archived", "Responded - Declined"].includes(s)) return "04 Brand Response";
   if (["Pre-LOI", "Pre-LOI / Term Comparison"].includes(s)) return "05 Pre-LOI Term Comparison";
   if (s === "Finalist") return "06 Finalist Confirmation";

@@ -99,6 +99,7 @@ import { getOutreachDealActivityLog } from "./api/outreach-deal-activity-log.js"
 import { getDashboardHome } from "./api/dashboard-home.js";
 import { getTargetList, addToTargetList, updateTarget, removeFromTargetList, batchRemoveFromTargetList, markAsDeleted, restoreFromDeleted } from "./api/target-list.js";
 import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
+import { getBrandWorkspaceKpiHistory, postBrandWorkspaceKpiSnapshot } from "./api/brand-workspace-kpi-history.js";
 import { list as listDealRoomDocuments, listForBrandRequest as listDealRoomDocumentsForBrandRequest, create as createDealRoomDocument, update as updateDealRoomDocument, remove as deleteDealRoomDocument } from "./api/deal-room-documents.js";
 import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
@@ -350,6 +351,8 @@ app.get("/api/brand-deal-requests/:requestId/proposal-draft", getProposalDraft);
 app.post("/api/brand-deal-requests/:requestId/submit-proposal", submitProposal);
 app.patch("/api/brand-deal-requests/:requestId", updateBrandDealRequestStatus);
 app.post("/api/brand-deal-requests/bulk-update", bulkUpdateBrandDealRequestStatus);
+app.get("/api/brand-workspace/kpi-history", getBrandWorkspaceKpiHistory);
+app.post("/api/brand-workspace/kpi-history", postBrandWorkspaceKpiSnapshot);
 // Deal Room Documents
 app.get("/api/deal-room-documents", listDealRoomDocuments);
 app.get("/api/deal-room-documents/brand/:requestId", listDealRoomDocumentsForBrandRequest);
@@ -921,9 +924,11 @@ app.get("/operator-explorer-gold-mock/", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-explorer-gold-mock.html'));
 });
 
-// Legacy intake URL → Operator Setup (new two)
+// Legacy intake URL → Operator Setup (new two) — preserve ?recordId=… and &embed=… for edit prefill
 app.get("/third-party-operator-intake", (req, res) => {
-    res.redirect(302, "/third-party-operator-setup-new-two.html");
+    const i = req.originalUrl.indexOf("?");
+    const qs = i >= 0 ? req.originalUrl.slice(i) : "";
+    res.redirect(302, "/third-party-operator-setup-new-two.html" + qs);
 });
 
 // Request information endpoint

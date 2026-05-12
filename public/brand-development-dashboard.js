@@ -1,4 +1,4 @@
-// Brand Development Dashboard JavaScript
+// Brand Development Workspace (brand-side dealflow; helpers are structured for future reuse)
 class BrandDevelopmentDashboard {
     constructor() {
         this.deals = [];
@@ -8,9 +8,12 @@ class BrandDevelopmentDashboard {
         this.archivedDeals = [];
         this.activeDeals = [];
         this.dealLogEntries = [];
-        this.brandDealRequests = { new: [], accepted: [], declined: [], archived: [] };
+        this.brandDealRequests = { new: [], viewed: [], accepted: [], declined: [], archived: [] };
         this.dealIdToRequest = {}; // dealId -> { requestId, status } for New tab Accept/Decline
         this.brandId = null;
+        this.currentWorkspaceTab = 'bdd-new';
+        this.allWorkspaceRows = [];
+        this.filteredWorkspaceRows = [];
         this.sortColumn = null;
         this.sortDirection = 'asc'; // 'asc' or 'desc'
         // Cache for repeated API fetches (same location/contact used by many deals)
@@ -34,6 +37,15 @@ class BrandDevelopmentDashboard {
         this._airtableFetchDelayMs = 150;  // min gap between Airtable requests to avoid 429
         this._airtableLastFetchAt = 0;
         this._operationalSupportForbidden = false;  // skip fetch after 403 (table access denied)
+        this._bddWorkspaceMoreMenuEl = null;
+        /** Activity drawer: stage = visible rows in current tab; all = entire log. */
+        this._bddActivityScope = 'stage';
+        this._bddActivityPanelOpen = false;
+        this._bddActivityPanelWired = false;
+        /** Debounce POST weekly KPI snapshot to server. */
+        this._bddKpiSyncTimer = null;
+        /** Sorted brand names from brand library (for decline → alternate brand picker). */
+        this._portfolioBrandNames = [];
 
         this.init();
     }
@@ -64,44 +76,23 @@ class BrandDevelopmentDashboard {
     }
 
     showLoadingInTab(tabId) {
-        const ids = {
-            'new-deals': 'newDealsLoadingState',
-            'active-deals': 'activeDealsLoadingState',
-            'archived': 'archivedLoadingState',
-            'deal-log': 'dealLogLoadingState'
-        };
-        Object.entries(ids).forEach(([tab, elId]) => {
-            const el = document.getElementById(elId);
-            if (el) el.style.display = (tab === tabId ? 'block' : 'none');
-        });
-        const newTable = document.getElementById('dealsTable');
-        if (newTable) newTable.style.display = tabId === 'new-deals' ? 'none' : '';
-        // For Active Deals and Archived, keep the card wrapper visible while loading
-        // but hide the tables so stale rows aren't shown.
-        if (tabId === 'active-deals') {
-            const activeWrap = document.getElementById('activeDealsTableWrap');
-            const activeTable = document.getElementById('activeDealsTable');
-            const activeEmpty = document.getElementById('activeDealsEmptyState');
-            if (activeWrap) activeWrap.style.display = '';
-            if (activeTable) activeTable.style.display = 'none';
-            if (activeEmpty) activeEmpty.style.display = 'none';
-        }
-        if (tabId === 'archived') {
-            const archivedWrap = document.getElementById('archivedTableWrap');
-            const archivedTable = archivedWrap ? archivedWrap.querySelector('table') : null;
-            const archivedEmpty = document.getElementById('archivedEmptyState');
-            if (archivedWrap) archivedWrap.style.display = '';
-            if (archivedTable) archivedTable.style.display = 'none';
-            if (archivedEmpty) archivedEmpty.style.display = 'none';
-        }
-        if (tabId === 'deal-log') {
-            const dealLogContent = document.getElementById('dealLogContent');
-            if (dealLogContent) dealLogContent.style.display = 'none';
-        }
+        const legacy = { 'new-deals': 'bdd-new', 'active-deals': 'bdd-active-review', 'archived': 'bdd-archived', 'deal-log': 'bdd-deal-log' };
+        if (legacy[tabId]) tabId = legacy[tabId];
+        const workspaceIds = ['bdd-new', 'bdd-active-review', 'bdd-awaiting-info', 'bdd-nda-room', 'bdd-terms-proposal', 'bdd-advanced', 'bdd-archived'];
+        const isWorkspace = workspaceIds.indexOf(tabId) !== -1;
+        const isLog = tabId === 'bdd-deal-log' || tabId === 'deal-log';
+        const loadWorkspace = document.getElementById('newDealsLoadingState');
+        const loadLog = document.getElementById('dealLogLoadingState');
+        const dealsTable = document.getElementById('dealsTable');
+        const dealLogContent = document.getElementById('dealLogContent');
+        if (loadWorkspace) loadWorkspace.style.display = isWorkspace ? 'block' : 'none';
+        if (loadLog) loadLog.style.display = isLog ? 'block' : 'none';
+        if (dealsTable) dealsTable.style.display = isWorkspace ? 'none' : '';
+        if (dealLogContent && isLog) dealLogContent.style.display = 'none';
     }
 
     hideAllLoadingStates() {
-        ['newDealsLoadingState', 'activeDealsLoadingState', 'archivedLoadingState', 'dealLogLoadingState'].forEach(id => {
+        ['newDealsLoadingState', 'dealLogLoadingState'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.style.display = 'none';
         });
@@ -130,7 +121,7 @@ class BrandDevelopmentDashboard {
 
     async loadDeals() {
         this.dealsLoading = true;
-        this.showLoadingInTab('new-deals');
+        this.showLoadingInTab(this.currentWorkspaceTab || 'bdd-new');
         try {
             console.log('Loading deals...');
             const backendDeals = await this.fetchDealsFromBackend();
@@ -143,8 +134,6 @@ class BrandDevelopmentDashboard {
             
             this.renderDeals();
             await this.populateFilters();
-            this.updateArchivedDisplay();
-            this.updateActiveDealsDisplay();
             this.dealsLoading = false;
             this.hideAllLoadingStates();
             this.restoreTabFromHash();
@@ -262,10 +251,10 @@ class BrandDevelopmentDashboard {
             for (const r of allRequests) {
                 const s = (r.status || 'New').trim();
                 if (s === 'New') byStatus.new.push(r);
-                else if (s === 'Brand Viewed') byStatus.viewed.push(r);
-                else if (s === 'Accepted') byStatus.accepted.push(r);
-                else if (s === 'Declined') byStatus.declined.push(r);
+                else if (s === 'Brand Viewed' || s === 'Viewed') byStatus.viewed.push(r);
+                else if (s === 'Declined' || s === 'Responded - Declined') byStatus.declined.push(r);
                 else if (s === 'Archived') byStatus.archived.push(r);
+                else byStatus.accepted.push(r);
             }
             this.brandDealRequests = byStatus;
             const allWithStatus = [
@@ -289,58 +278,14 @@ class BrandDevelopmentDashboard {
                 try {
                     const activityRes = await fetch(`${base}/api/brand-deal-requests/activity?dealIds=${encodeURIComponent(allDealIds.join(','))}`);
                     const activityData = activityRes.ok ? await activityRes.json() : { entries: [] };
-                    const dealMapForName = new Map(this.deals.map(d => [d.id, d]));
-                    this.dealLogEntries = (activityData.entries || []).map(e => {
-                        const deal = dealMapForName.get(e.dealId);
-                        const dealName = (deal?.propertyName || deal?.dealFields?.['Project Name'] || deal?.dealFields?.['Property Name'] || '').toString().trim() || (e.dealId ? 'Deal ' + String(e.dealId).slice(-6) : '');
-                        return {
-                            date: e.createdAt || '',
-                            dealName: dealName,
-                            action: e.action || '',
-                            details: e.details || '',
-                            dealId: e.dealId
-                        };
-                    });
+                    this.dealLogEntries = this._mapActivityEntries(activityData);
                 } catch (_) {
                     this.dealLogEntries = [];
                 }
             } else {
                 this.dealLogEntries = [];
             }
-            // New Deals tab: only New + Brand Viewed (exclude Accepted, Declined, Archived - those go to Active/Archived)
-            const newDealsRequests = [
-                ...byStatus.new.map(r => ({ ...r, _status: 'New' })),
-                ...byStatus.viewed.map(r => ({ ...r, _status: 'Brand Viewed' }))
-            ];
-            const dealMap = new Map(this.deals.map(d => [d.id, d]));
-            this.filteredDeals = [];
-            for (const req of newDealsRequests) {
-                const deal = dealMap.get(req.dealId);
-                if (!deal) continue;
-                const row = { ...deal };
-                row._requestId = req.id;
-                row._requestStatus = req._status;
-                row._requestMatchScore = req.matchScore;
-                row._contactedBrand = req.brandName || '';
-                this.filteredDeals.push(row);
-            }
-            this.activeDeals = (byStatus.accepted || []).map(r => {
-                const deal = dealMap.get(r.dealId);
-                const brandName = r.brandName || '';
-                const base = deal ? { ...deal } : { id: r.dealId, propertyName: 'Deal ' + (r.dealId || '').slice(-6), rooms: 'N/A', chainScale: '—', projectType: '—', propertyType: '—', city: '', country: '', targetOpeningDate: '' };
-                return { ...base, status: 'Accepted', _requestId: r.id, _requestMatchScore: r.matchScore, _contactedBrand: brandName };
-            });
-            const declinedArchived = [
-                ...(byStatus.declined || []).map(r => ({ ...r, _status: 'Declined' })),
-                ...(byStatus.archived || []).map(r => ({ ...r, _status: 'Archived' }))
-            ];
-            this.archivedDeals = declinedArchived.map(r => {
-                const deal = dealMap.get(r.dealId);
-                if (!deal) return { id: r.dealId, propertyName: 'Deal ' + (r.dealId || '').slice(-6), archivedReason: r._status || r.status, matchScore: r.matchScore, _requestId: r.id };
-                deal.archivedReason = r._status || r.status;
-                deal._requestId = r.id;
-                return deal;
-            });
+            this._rebuildRequestDerivedState();
         } catch (err) {
             console.warn('Could not fetch all contacted deals:', err.message);
         }
@@ -350,103 +295,98 @@ class BrandDevelopmentDashboard {
         if (!this.brandId) return;
         const base = window.location.origin || '';
         try {
-            const [newRes, viewedRes, acceptedRes, declinedRes, archivedRes, activityRes] = await Promise.all([
-                fetch(`${base}/api/brand-deal-requests?brand=${encodeURIComponent(this.brandId)}&status=New`),
-                fetch(`${base}/api/brand-deal-requests?brand=${encodeURIComponent(this.brandId)}&status=Brand Viewed`),
-                fetch(`${base}/api/brand-deal-requests?brand=${encodeURIComponent(this.brandId)}&status=Accepted`),
-                fetch(`${base}/api/brand-deal-requests?brand=${encodeURIComponent(this.brandId)}&status=Declined`),
-                fetch(`${base}/api/brand-deal-requests?brand=${encodeURIComponent(this.brandId)}&status=Archived`),
+            const [listRes, activityRes] = await Promise.all([
+                fetch(`${base}/api/brand-deal-requests?brand=${encodeURIComponent(this.brandId)}`),
                 fetch(`${base}/api/brand-deal-requests/activity?brand=${encodeURIComponent(this.brandId)}`)
             ]);
-            const newData = newRes.ok ? await newRes.json() : { requests: [] };
-            const viewedData = viewedRes.ok ? await viewedRes.json() : { requests: [] };
-            const acceptedData = acceptedRes.ok ? await acceptedRes.json() : { requests: [] };
-            const declinedData = declinedRes.ok ? await declinedRes.json() : { requests: [] };
-            const archivedData = archivedRes.ok ? await archivedRes.json() : { requests: [] };
+            const listData = listRes.ok ? await listRes.json() : { requests: [] };
             const activityData = activityRes.ok ? await activityRes.json() : { entries: [] };
-            this.brandDealRequests = {
-                new: newData.requests || [],
-                viewed: viewedData.requests || [],
-                accepted: acceptedData.requests || [],
-                declined: declinedData.requests || [],
-                archived: archivedData.requests || []
-            };
-            const dealMapForName = new Map(this.deals.map(d => [d.id, d]));
-            this.dealLogEntries = (activityData.entries || []).map(e => {
-                const deal = dealMapForName.get(e.dealId);
-                const dealName = (deal?.propertyName || deal?.dealFields?.['Project Name'] || deal?.dealFields?.['Property Name'] || '').toString().trim() || (e.dealId ? 'Deal ' + String(e.dealId).slice(-6) : '');
-                return {
-                    date: e.createdAt || '',
-                    dealName,
-                    action: e.action || '',
-                    details: e.details || '',
-                    dealId: e.dealId
-                };
-            });
-            this.dealIdToRequest = {};
-            const dealMap = new Map(this.deals.map(d => [d.id, d]));
-            const allRequests = [
-                ...(this.brandDealRequests.new || []).map(r => ({ ...r, _status: 'New' })),
-                ...(this.brandDealRequests.viewed || []).map(r => ({ ...r, _status: 'Brand Viewed' })),
-                ...(this.brandDealRequests.accepted || []).map(r => ({ ...r, _status: 'Accepted' })),
-                ...(this.brandDealRequests.declined || []).map(r => ({ ...r, _status: 'Declined' })),
-                ...(this.brandDealRequests.archived || []).map(r => ({ ...r, _status: 'Archived' }))
-            ];
-            allRequests.forEach(r => {
-                if (r.dealId) this.dealIdToRequest[r.dealId] = { requestId: r.id, status: r._status, matchScore: r.matchScore };
-            });
-            const newDealsRequests = [
-                ...(this.brandDealRequests.new || []).map(r => ({ ...r, _status: 'New' })),
-                ...(this.brandDealRequests.viewed || []).map(r => ({ ...r, _status: 'Brand Viewed' }))
-            ];
-            const newDealsDealIds = new Set(newDealsRequests.map(r => r.dealId).filter(Boolean));
-            this.filteredDeals = this.deals.filter(d => newDealsDealIds.has(d.id)).map(d => {
-                const req = newDealsRequests.find(r => r.dealId === d.id);
-                if (req) {
-                    d._requestId = req.id;
-                    d._requestStatus = req._status;
-                    d._requestMatchScore = req.matchScore;
-                    d._contactedBrand = req.brandName || this.brandId;
-                }
-                return d;
-            });
-            const acceptedRequests = (this.brandDealRequests.accepted || []).map(r => ({ ...r, _status: 'Accepted' }));
-            this.activeDeals = acceptedRequests.map(r => {
-                const deal = dealMap.get(r.dealId);
-                const brandName = r.brandName || this.brandId || '';
-                const base = deal ? { ...deal } : { id: r.dealId, propertyName: 'Deal ' + (r.dealId || '').slice(-6), rooms: 'N/A', chainScale: '—', projectType: '—', propertyType: '—', city: '', country: '', targetOpeningDate: '' };
-                return { ...base, status: 'Accepted', _requestId: r.id, _requestMatchScore: r.matchScore, _contactedBrand: brandName };
-            });
-            const declinedArchived = [
-                ...(this.brandDealRequests.declined || []).map(r => ({ ...r, _status: 'Declined' })),
-                ...(this.brandDealRequests.archived || []).map(r => ({ ...r, _status: 'Archived' }))
-            ];
-            this.archivedDeals = declinedArchived.map(r => {
-                const deal = dealMap.get(r.dealId);
-                if (!deal) return { id: r.dealId, propertyName: 'Deal ' + (r.dealId || '').slice(-6), archivedReason: r._status || r.status, matchScore: r.matchScore, _requestId: r.id };
-                deal.archivedReason = r._status || r.status;
-                deal._requestId = r.id;
-                return deal;
-            });
-            for (const e of this.dealLogEntries) {
-                if (e.dealId && !e.dealName) {
-                    const d = dealMap.get(e.dealId);
-                    if (d) e.dealName = d.propertyName || d.headline || 'Deal';
-                }
+            const allRequests = listData.requests || [];
+            const byStatus = { new: [], viewed: [], accepted: [], declined: [], archived: [] };
+            for (const r of allRequests) {
+                const s = (r.status || 'New').trim();
+                if (s === 'New') byStatus.new.push(r);
+                else if (s === 'Brand Viewed' || s === 'Viewed') byStatus.viewed.push(r);
+                else if (s === 'Declined' || s === 'Responded - Declined') byStatus.declined.push(r);
+                else if (s === 'Archived') byStatus.archived.push(r);
+                else byStatus.accepted.push(r);
             }
+            this.brandDealRequests = byStatus;
+            this.dealLogEntries = this._mapActivityEntries(activityData);
+            this._rebuildRequestDerivedState();
         } catch (err) {
             console.warn('Could not fetch brand deal requests:', err.message);
         }
+    }
+
+    _mapActivityEntries(activityData) {
+        const dealMapForName = new Map(this.deals.map(d => [d.id, d]));
+        const arr = (activityData.entries || []).map(e => {
+            const deal = dealMapForName.get(e.dealId);
+            const dealName = (deal?.propertyName || deal?.dealFields?.['Project Name'] || deal?.dealFields?.['Property Name'] || '').toString().trim() || (e.dealId ? 'Deal ' + String(e.dealId).slice(-6) : '');
+            return {
+                date: e.createdAt || '',
+                dealName,
+                action: e.action || '',
+                details: e.details || '',
+                dealId: e.dealId,
+                stakeholder: e.stakeholder || ''
+            };
+        });
+        for (const e of arr) {
+            if (e.dealId && !e.dealName) {
+                const d = dealMapForName.get(e.dealId);
+                if (d) e.dealName = d.propertyName || d.headline || 'Deal';
+            }
+        }
+        return arr;
+    }
+
+    async refreshDealalityActivityFeed() {
+        const base = window.location.origin || '';
+        try {
+            let activityRes;
+            if (this.brandId) {
+                activityRes = await fetch(`${base}/api/brand-deal-requests/activity?brand=${encodeURIComponent(this.brandId)}`);
+            } else {
+                const lists = [
+                    ...(this.brandDealRequests.new || []),
+                    ...(this.brandDealRequests.viewed || []),
+                    ...(this.brandDealRequests.accepted || []),
+                    ...(this.brandDealRequests.declined || []),
+                    ...(this.brandDealRequests.archived || [])
+                ];
+                const ids = [...new Set(lists.map(r => r.dealId).filter(Boolean))].slice(0, 40);
+                if (ids.length === 0) {
+                    this.dealLogEntries = [];
+                    return;
+                }
+                activityRes = await fetch(`${base}/api/brand-deal-requests/activity?dealIds=${encodeURIComponent(ids.join(','))}`);
+            }
+            const activityData = activityRes.ok ? await activityRes.json() : { entries: [] };
+            this.dealLogEntries = this._mapActivityEntries(activityData);
+            if (this.currentWorkspaceTab === 'bdd-deal-log') this.renderDealLog();
+        } catch (err) {
+            console.warn('Activity refresh failed:', err.message);
+        }
+    }
+
+    crmSuccessToast() {
+        this.showBddToast('Saved. Activity trail captured in Dealality.', true);
+    }
+
+    async refreshModalIfOpen(dealId, requestId) {
+        if (!this._opportunityModalContext || this._opportunityModalContext.dealId !== dealId) return;
+        await this.openOpportunityWorkspaceModal(dealId, requestId || this._opportunityModalContext.requestId, { skipMarkViewed: true });
     }
 
     _bucketForStatus(status) {
         const normalized = (status || '').toString().trim().toLowerCase();
         if (normalized === 'new') return 'new';
         if (normalized === 'brand viewed' || normalized === 'viewed') return 'viewed';
-        if (normalized === 'accepted') return 'accepted';
-        if (normalized === 'declined') return 'declined';
+        if (normalized === 'declined' || normalized === 'responded - declined') return 'declined';
         if (normalized === 'archived') return 'archived';
-        return null;
+        return 'accepted';
     }
 
     _statusLabelForBucket(bucket) {
@@ -473,7 +413,7 @@ class BrandDevelopmentDashboard {
         const allByStatus = [
             ...(this.brandDealRequests.new || []).map(r => ({ ...r, _status: 'New' })),
             ...(this.brandDealRequests.viewed || []).map(r => ({ ...r, _status: 'Brand Viewed' })),
-            ...(this.brandDealRequests.accepted || []).map(r => ({ ...r, _status: 'Accepted' })),
+            ...(this.brandDealRequests.accepted || []).map(r => ({ ...r, _status: (r.status || 'Accepted').trim() })),
             ...(this.brandDealRequests.declined || []).map(r => ({ ...r, _status: 'Declined' })),
             ...(this.brandDealRequests.archived || []).map(r => ({ ...r, _status: 'Archived' }))
         ];
@@ -487,8 +427,9 @@ class BrandDevelopmentDashboard {
         this.activeDeals = (this.brandDealRequests.accepted || []).map(r => {
             const deal = dealMap.get(r.dealId);
             const brandName = r.brandName || this.brandId || '';
+            const st = (r.status || 'Accepted').trim();
             const base = deal ? { ...deal } : { id: r.dealId, propertyName: 'Deal ' + (r.dealId || '').slice(-6), rooms: 'N/A', chainScale: '—', projectType: '—', propertyType: '—', city: '', country: '', targetOpeningDate: '' };
-            return { ...base, status: 'Accepted', _requestId: r.id, _requestMatchScore: r.matchScore, _contactedBrand: brandName };
+            return { ...base, status: st, _requestId: r.id, _requestMatchScore: r.matchScore, _contactedBrand: brandName };
         });
 
         const declinedArchived = [
@@ -521,7 +462,7 @@ class BrandDevelopmentDashboard {
             return true;
         }
 
-        const updated = { ...current, ...patch, status: nextStatus };
+        const updated = { ...current, ...patch, status: nextStatus || current.status };
         list.splice(pos.index, 1);
         this.brandDealRequests[pos.bucket] = list;
         const targetList = this.brandDealRequests[nextBucket] || [];
@@ -533,8 +474,6 @@ class BrandDevelopmentDashboard {
     _applyLocalMutationEffects() {
         this._rebuildRequestDerivedState();
         this.applyFilters();
-        this.updateActiveDealsDisplay();
-        this.updateArchivedDisplay();
         this.updateTabCounts();
     }
 
@@ -1795,87 +1734,1344 @@ class BrandDevelopmentDashboard {
         return 60;
     }
 
-    renderDeals() {
-        const tbody = document.getElementById('dealsTableBody');
-        if (!tbody) return;
-        
-        if (this.filteredDeals.length === 0) {
-            const hasRequests = (this.brandDealRequests.new?.length || this.brandDealRequests.accepted?.length || this.brandDealRequests.declined?.length || this.brandDealRequests.archived?.length || 0) > 0;
-            const msg = hasRequests
-                ? '<h3>No deals found</h3><p>Try adjusting your filters.</p>'
-                : '<h3>No contacted projects yet</h3><p>Projects will appear here once they have been contacted (offers sent) in Airtable.</p>';
-            tbody.innerHTML = '<tr><td colspan="12" class="empty-state" style="padding: 60px 20px;">' + msg + '</td></tr>';
-            this.updateTabCounts();
+    _workspaceTabToBucket(tabId) {
+        const m = {
+            'bdd-new': 'new',
+            'bdd-active-review': 'active-review',
+            'bdd-awaiting-info': 'awaiting-info',
+            'bdd-nda-room': 'nda-room',
+            'bdd-terms-proposal': 'terms-proposal',
+            'bdd-advanced': 'advanced',
+            'bdd-archived': 'archived'
+        };
+        return m[tabId] || 'new';
+    }
+
+    deriveWorkspaceBucket(row) {
+        try {
+            const st = (row._requestStatus || '').trim();
+            if (['Declined', 'Responded - Declined', 'Archived'].includes(st)) return 'archived';
+            if (st === 'Revisit Later') return 'advanced';
+            if (st === 'More Info Requested') return 'awaiting-info';
+            const nda = (row.ndaStatus || '').trim();
+            const dra = (row.dealRoomAccess || '').trim();
+            const prop = (row.proposalStatus || '').trim();
+            const inNdaFlow = st === 'Deal Room Active' ||
+                nda === 'Not Sent' || nda === 'Sent' ||
+                (nda === 'Signed - Owner Confirmed' && dra && dra !== 'Granted');
+            if (inNdaFlow) return 'nda-room';
+            if (['Pre-LOI', 'Pre-LOI / Term Comparison'].includes(st) || prop === 'Draft' || prop === 'Submitted') return 'terms-proposal';
+            if (['Finalist', 'Feasibility', 'Feasibility In Progress', 'LOI Signed', 'LOI Signed / Platform Exit'].includes(st)) return 'advanced';
+            if (['Accepted', 'Responded - Accepted'].includes(st)) return 'awaiting-info';
+            if (['Brand Viewed', 'Viewed'].includes(st)) return 'active-review';
+            if (['New', 'Sent / Awaiting Response'].includes(st) || !st) return 'new';
+            return 'awaiting-info';
+        } catch (_) {
+            return 'new';
+        }
+    }
+
+    deriveStageLabel(row) {
+        const m = {
+            new: 'Intake',
+            'active-review': 'Brand review',
+            'awaiting-info': 'Engaged',
+            'nda-room': 'NDA / Deal room',
+            'terms-proposal': 'Terms / proposal',
+            advanced: 'Advanced',
+            archived: 'Closed'
+        };
+        return m[row.workspaceBucket] || '—';
+    }
+
+    deriveNextAction(row) {
+        const st = (row._requestStatus || '').trim();
+        const nda = (row.ndaStatus || '').trim();
+        const dra = (row.dealRoomAccess || '').trim();
+        const prop = (row.proposalStatus || '').trim();
+        if (['Declined', 'Archived', 'Responded - Declined'].includes(st)) return 'No action required';
+        if (st === 'New' || st === 'Sent / Awaiting Response' || !st) return 'Review new opportunity';
+        if (st === 'More Info Requested') return 'Follow up with owner';
+        if (st === 'Revisit Later') return 'Revisit later';
+        if (st === 'Brand Viewed' || st === 'Viewed') return 'Mark decision';
+        if (nda === 'Not Sent' || nda === '') return 'Send NDA';
+        if (nda === 'Sent') return 'Awaiting signed NDA';
+        if (nda === 'Signed - Owner Confirmed' && dra !== 'Granted') return 'Open deal room';
+        if (dra === 'Granted' && prop !== 'Submitted') return 'Review documents';
+        if (prop === 'Draft') return 'Prepare preliminary terms';
+        if (['Pre-LOI', 'Pre-LOI / Term Comparison'].includes(st)) return 'Prepare preliminary terms';
+        if (prop === 'Submitted') return 'Follow up with owner';
+        if (['Accepted', 'Responded - Accepted'].includes(st)) return 'Request missing owner information';
+        if (['Finalist', 'Feasibility', 'Feasibility In Progress'].includes(st)) return 'Internal review';
+        if (['LOI Signed', 'LOI Signed / Platform Exit'].includes(st)) return 'Revisit later';
+        return 'Follow up with owner';
+    }
+
+    derivePriorityBadges(row) {
+        const out = [];
+        const st = (row._requestStatus || '').trim();
+        const nda = (row.ndaStatus || '').trim();
+        const dra = (row.dealRoomAccess || '').trim();
+        const prop = (row.proposalStatus || '').trim();
+        const score = row._requestMatchScore != null ? Number(row._requestMatchScore) : (row.matchScore != null ? Number(row.matchScore) : null);
+        if (st === 'New' || st === 'Sent / Awaiting Response') out.push({ key: 'new', label: 'New' });
+        if (['New', 'Brand Viewed', 'Viewed', 'Sent / Awaiting Response'].includes(st)) out.push({ key: 'needs', label: 'Needs Response' });
+        if (['Accepted', 'Responded - Accepted'].includes(st) && row.workspaceBucket === 'awaiting-info') out.push({ key: 'owner', label: 'Owner Waiting' });
+        if (nda === 'Sent' || nda === 'Not Sent') out.push({ key: 'nda', label: 'NDA Pending' });
+        if (dra === 'Granted' || st === 'Deal Room Active') out.push({ key: 'dr', label: 'Deal Room Active' });
+        if (prop === 'Draft' || ['Pre-LOI', 'Pre-LOI / Term Comparison'].includes(st)) out.push({ key: 'terms', label: 'Terms Pending' });
+        if (this.isStalledRow(row)) out.push({ key: 'overdue', label: 'Overdue' });
+        if (score != null && !isNaN(score) && score >= 80) out.push({ key: 'fit', label: 'High Fit' });
+        if (row.workspaceBucket === 'awaiting-info') out.push({ key: 'miss', label: 'Missing Info' });
+        if (['LOI Signed', 'LOI Signed / Platform Exit'].includes(st)) out.push({ key: 'revisit', label: 'Revisit Later' });
+        if (st === 'More Info Requested') out.push({ key: 'miss', label: 'Info requested' });
+        const seen = new Set();
+        return out.filter(b => { if (seen.has(b.label)) return false; seen.add(b.label); return true; });
+    }
+
+    /** Append a dated note block; safe for empty existing. */
+    appendResponseNotesForPatch(existing, addition) {
+        const old = (existing || '').trim();
+        const add = (addition || '').trim();
+        if (!add) return old || '';
+        const stamp = '[' + new Date().toISOString().slice(0, 19).replace('T', ' ') + 'Z] ';
+        const block = stamp + add;
+        if (!old) return block;
+        return old + '\n\n' + block;
+    }
+
+    derivePrimaryWorkspaceAction(row) {
+        const na = this.deriveNextAction(row);
+        const map = {
+            'Review new opportunity': { action: 'open', label: 'Review' },
+            'Mark decision': { action: 'open', label: 'Decide' },
+            'Send NDA': { action: 'requestNda', label: 'Request NDA' },
+            'Awaiting signed NDA': { action: 'followUp', label: 'Follow up' },
+            'Open deal room': { action: 'grantRoom', label: 'Grant access' },
+            'Review documents': { action: 'dealRoom', label: 'Deal room' },
+            'Prepare preliminary terms': { action: 'prepareTerms', label: 'Prepare terms' },
+            'Follow up with owner': { action: 'followUp', label: 'Follow up' },
+            'Request missing owner information': { action: 'requestInfo', label: 'Request info' },
+            'Internal review': { action: 'followUp', label: 'Follow up' },
+            'Revisit later': { action: 'revisitLater', label: 'Revisit' },
+            'No action required': { action: 'open', label: 'Open' }
+        };
+        return map[na] || { action: 'open', label: 'Open' };
+    }
+
+    getAvailableWorkspaceActions(row) {
+        const st = (row._requestStatus || '').trim();
+        const dealId = row.id || '';
+        const requestId = row._requestId || '';
+        const nda = (row.ndaStatus || '').trim();
+        const dra = (row.dealRoomAccess || '').trim();
+        const prop = (row.proposalStatus || '').trim();
+        const add = (id, label) => ({ id, label, dealId, requestId });
+        const out = [];
+        const push = (id, label) => {
+            if (!requestId && id !== 'open') return;
+            if (!out.find(x => x.id === id)) out.push(add(id, label));
+        };
+        push('open', 'Workspace');
+        if (['Declined', 'Archived', 'Responded - Declined'].includes(st)) return out;
+        if (st === 'More Info Requested') {
+            push('requestInfo', 'Request info');
+            push('followUp', 'Follow up');
+            push('decline', 'Decline');
+            return out;
+        }
+        if (st === 'Revisit Later') {
+            push('followUp', 'Follow up');
+            push('interested', 'Resume');
+            push('decline', 'Decline');
+            return out;
+        }
+        if (['New', 'Sent / Awaiting Response'].includes(st) || !st) {
+            push('interested', 'Interested');
+            push('requestInfo', 'Request info');
+            push('decline', 'Decline');
+            return out;
+        }
+        if (st === 'Brand Viewed' || st === 'Viewed') {
+            push('interested', 'Interested');
+            push('requestInfo', 'Request info');
+            push('decline', 'Decline');
+            push('followUp', 'Follow up');
+            return out;
+        }
+        if (['Accepted', 'Responded - Accepted'].includes(st)) {
+            push('requestInfo', 'Request info');
+            if (nda === 'Not Sent' || nda === '') push('requestNda', 'Request NDA');
+            if (nda === 'Sent') push('followUp', 'Follow up');
+            if (nda === 'Signed - Owner Confirmed' && dra !== 'Granted') push('grantRoom', 'Grant room');
+            push('prepareTerms', 'Prepare terms');
+            push('followUp', 'Follow up');
+            push('decline', 'Decline');
+            return out;
+        }
+        if (st === 'Deal Room Active' || row.workspaceBucket === 'nda-room') {
+            push('dealRoom', 'Deal room');
+            if (nda === 'Not Sent' || nda === '') push('requestNda', 'Request NDA');
+            if (nda === 'Signed - Owner Confirmed' && dra !== 'Granted') push('grantRoom', 'Grant room');
+            push('followUp', 'Follow up');
+            push('prepareTerms', 'Prepare terms');
+            push('decline', 'Decline');
+            return out;
+        }
+        if (row.workspaceBucket === 'terms-proposal' || prop === 'Draft' || prop === 'Submitted' || ['Pre-LOI', 'Pre-LOI / Term Comparison'].includes(st)) {
+            push('dealRoom', 'Deal room');
+            push('prepareTerms', 'Prepare terms');
+            push('submitProposal', 'Proposal');
+            push('followUp', 'Follow up');
+            push('decline', 'Decline');
+            return out;
+        }
+        if (row.workspaceBucket === 'advanced') {
+            push('followUp', 'Follow up');
+            push('revisitLater', 'Revisit');
+            push('decline', 'Decline');
+            return out;
+        }
+        push('requestInfo', 'Request info');
+        push('followUp', 'Follow up');
+        push('decline', 'Decline');
+        return out;
+    }
+
+    closeBddWorkspaceMoreMenu() {
+        if (this._bddWorkspaceMoreMenuEl && this._bddWorkspaceMoreMenuEl.parentNode) {
+            this._bddWorkspaceMoreMenuEl.parentNode.removeChild(this._bddWorkspaceMoreMenuEl);
+        }
+        this._bddWorkspaceMoreMenuEl = null;
+    }
+
+    /** Action ids shown as fixed icons in the row strip (everything else appears under More). */
+    _bddWorkspaceStripActionIds(row) {
+        return new Set(['open', 'submitProposal']);
+    }
+
+    showBddWorkspaceMoreMenu(anchorBtn) {
+        this.closeBddWorkspaceMoreMenu();
+        if (!anchorBtn) return;
+        const dealId = anchorBtn.getAttribute('data-deal-id');
+        const requestId = anchorBtn.getAttribute('data-request-id');
+        const row = this._getWorkspaceRowForModal(dealId, requestId);
+        if (!row || !requestId) return;
+        const strip = this._bddWorkspaceStripActionIds(row);
+        const menu = document.createElement('div');
+        menu.className = 'bdd-ws-more-menu';
+        menu.style.cssText = 'position:fixed;z-index:10050;background:var(--secondary--color-1);border:1px solid var(--neutral--600);border-radius:10px;padding:6px;min-width:200px;box-shadow:0 8px 20px rgba(0,0,0,0.35);';
+        const rect = anchorBtn.getBoundingClientRect();
+        menu.style.top = Math.min(window.innerHeight - 200, rect.bottom + 6) + 'px';
+        menu.style.left = Math.min(window.innerWidth - 220, rect.left) + 'px';
+
+        const addItem = (label, handler) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = label;
+            btn.style.cssText = 'display:block;width:100%;text-align:left;background:transparent;border:none;color:var(--neutral--100);padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px;';
+            btn.addEventListener('mouseenter', () => { btn.style.background = 'rgba(255,255,255,0.08)'; });
+            btn.addEventListener('mouseleave', () => { btn.style.background = 'transparent'; });
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.closeBddWorkspaceMoreMenu();
+                handler();
+            });
+            menu.appendChild(btn);
+        };
+
+        const primaryId = this.derivePrimaryWorkspaceAction(row).action;
+        const moreActions = this.getAvailableWorkspaceActions(row).filter((a) => !strip.has(a.id));
+        moreActions.sort((a, b) => {
+            if (a.id === primaryId) return -1;
+            if (b.id === primaryId) return 1;
+            return 0;
+        });
+        moreActions.forEach((a) => {
+            addItem(a.label, () => { this.executeBrandWorkspaceAction(a.id, row); });
+        });
+
+        const score = row._requestMatchScore != null ? Number(row._requestMatchScore) : (row.matchScore ?? null);
+        const bn = (row._contactedBrand || row.preferredBrandName || '').trim();
+        if (requestId) {
+            addItem('Delete request…', () => {
+                this.showBddDeleteReasonModal(requestId, dealId, bn, score != null && !Number.isNaN(Number(score)) ? Number(score) : null);
+            });
+        }
+
+        document.body.appendChild(menu);
+        this._bddWorkspaceMoreMenuEl = menu;
+        setTimeout(() => {
+            const dismiss = (evt) => {
+                if (!this._bddWorkspaceMoreMenuEl) return;
+                if (this._bddWorkspaceMoreMenuEl.contains(evt.target) || evt.target === anchorBtn) return;
+                this.closeBddWorkspaceMoreMenu();
+                document.removeEventListener('click', dismiss, true);
+            };
+            document.addEventListener('click', dismiss, true);
+        }, 0);
+    }
+
+    /** My Deals–style icon row: fixed icons on every row; contextual actions under More. */
+    renderWorkspaceCallToActionRow(deal) {
+        const dealId = this.escapeHtml(deal.id || '');
+        const requestId = this.escapeHtml(deal._requestId || '');
+        const brandAttr = this.escapeHtml((deal._contactedBrand || deal.preferredBrandName || '').trim());
+        const email = (deal.contactData && (deal.contactData['Email Address'] || deal.contactData['Email'])) || '';
+        const inboxTitle = email ? 'Outreach Inbox (contact on file)' : 'Outreach Inbox';
+        if (!requestId) {
+            return '<div class="action-icons bdd-ws-cta-icons"><span class="bdd-pill-muted" style="padding:0;border:none;background:transparent;">—</span></div>';
+        }
+        const avail = this.getAvailableWorkspaceActions(deal);
+        const canSubmitProposal = avail.some((a) => a.id === 'submitProposal');
+
+        const svgEye = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        const svgCal = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+        const svgDoc = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
+
+        const parts = [];
+        parts.push(
+            '<button type="button" class="action-icon" title="Opportunity workspace" aria-label="Opportunity workspace" data-bdd-ws="open" data-deal-id="' + dealId + '" data-request-id="' + requestId + '">' + svgEye + '</button>'
+        );
+        parts.push(
+            '<button type="button" class="action-icon" title="' + this.escapeHtml(inboxTitle) + '" aria-label="Open Outreach Inbox" data-action="communications" data-deal-id="' + dealId + '" data-brand="' + brandAttr + '"' + (email ? ' data-email="' + this.escapeHtml(String(email).trim()) + '"' : '') + '>' +
+            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></button>'
+        );
+        parts.push(
+            '<button type="button" class="action-icon" title="Schedule follow-up" aria-label="Schedule follow-up" data-action="schedule" data-deal-id="' + dealId + '" data-request-id="' + requestId + '" data-brand="' + brandAttr + '">' + svgCal + '</button>'
+        );
+        if (canSubmitProposal) {
+            parts.push(
+                '<button type="button" class="action-icon action-icon--proposal" title="Submit Proposal" aria-label="Submit Proposal" data-action="submit-proposal" data-request-id="' + requestId + '">' + svgDoc + '</button>'
+            );
+        } else {
+            parts.push(
+                '<button type="button" class="action-icon action-icon--proposal" disabled title="Submit Proposal not available for this request status" aria-label="Submit Proposal not available">' + svgDoc + '</button>'
+            );
+        }
+        parts.push(
+            '<button type="button" class="action-icon" title="More actions" data-action="bdd-ws-more" data-deal-id="' + dealId + '" data-request-id="' + requestId + '" data-brand="' + brandAttr + '">' +
+            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>'
+        );
+        return '<div class="action-icons bdd-ws-cta-icons" title="Suggested actions update the Brand Deal Request and activity log.">' + parts.join('') + '</div>';
+    }
+
+    async executeBrandWorkspaceAction(action, row) {
+        const requestId = row._requestId;
+        const dealId = row.id;
+        if (!requestId && action !== 'open') {
+            this.showBddToast('Missing request id for this row.', false);
             return;
         }
-        
-        tbody.innerHTML = this.filteredDeals.map(deal => {
-            const displayScore = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore != null && deal.matchScore !== '' ? Number(deal.matchScore) : null);
-            const scoreClass = this.getScoreClass(displayScore);
-            const location = `${deal.city}, ${deal.country}`;
-            
-            // Render preferred/contacted brand (Contact Brand from BDR when in all-contacted mode, else owner preference)
-            let preferredBrandHtml = '<div class="preferred-brand-cell">';
-            const contactBrand = deal._contactedBrand || deal.preferredBrandName;
-            if (contactBrand) {
-                const displayBrand = deal._contactedBrand 
-                    ? contactBrand 
-                    : (deal.preferredBrands?.length > 1 ? `${deal.preferredBrandName} +${deal.preferredBrands.length - 1}` : deal.preferredBrandName);
-                const hasBetterAlternatives = !deal._contactedBrand && deal.hasBetterAlternatives ? '<span class="better-match-indicator" title="Better matches available">⚠️</span>' : '';
-                
-                preferredBrandHtml += `
-                    <div class="preferred-brand-name">${this.escapeHtml(displayBrand)}${hasBetterAlternatives}</div>
-                `;
-            } else {
-                preferredBrandHtml += '<div class="no-preferred-brand">—</div>';
+        try {
+            if (action === 'open') {
+                await this.handleViewDeal(dealId, requestId, row._requestStatus || '');
+                return;
             }
-            preferredBrandHtml += '</div>';
-            
-            const reqId = deal._requestId || '';
-            return `
-                <tr>
-                    <td class="cell-checkbox"><input type="checkbox" class="deal-row-checkbox" data-request-id="${this.escapeHtml(reqId)}" title="Select row"></td>
-                    <td>${this.renderStatusCell(deal._requestStatus)}</td>
-                    <td><span class="property-name">${this.escapeHtml(deal.propertyName)}</span></td>
-                    <td>${this.escapeHtml(location)}</td>
-                    <td>${this.escapeHtml(deal.chainScale || '—')}</td>
-                    <td>${this.escapeHtml(deal.projectType || '—')}</td>
-                    <td>${this.formatTargetOpeningDate(deal.targetOpeningDate)}</td>
-                    <td>${this.escapeHtml(deal.propertyType)}</td>
-                    <td>${deal.rooms || 'N/A'}</td>
-                    <td>${preferredBrandHtml}</td>
-                    <td class="match-score-cell">
-                        <span class="match-score-badge ${scoreClass}">${displayScore != null ? displayScore.toFixed(1) : '—'}</span>
-                        <button class="match-score-details-btn" onclick="dashboard.showScoreDetails('${deal.id}')">
-                            View Details
-                        </button>
-                    </td>
-                    <td class="cell-call-to-action">
-                        ${this.renderCallToActionButtons(deal)}
-                    </td>
-                </tr>
-            `;
-        }).join('');
+            if (action === 'dealRoom') {
+                if (requestId) window.open('/deal-room-brand.html?requestId=' + encodeURIComponent(requestId), '_blank', 'noopener,noreferrer');
+                this.crmSuccessToast();
+                return;
+            }
+            if (action === 'interested') {
+                await this.acceptRequest(requestId, { keepModal: true, dealId });
+                return;
+            }
+            if (action === 'requestInfo') {
+                this.openRequestInfoModal(requestId, dealId);
+                return;
+            }
+            if (action === 'requestNda') {
+                await this.runBdrAction(requestId, 'sendNda', { keepModal: true, dealId });
+                return;
+            }
+            if (action === 'grantRoom') {
+                await this.runBdrAction(requestId, 'grantAccess', { keepModal: true, dealId });
+                return;
+            }
+            if (action === 'prepareTerms') {
+                await this.patchBdrStatus(requestId, 'Pre-LOI', { keepModal: true, dealId });
+                return;
+            }
+            if (action === 'followUp') {
+                this.scheduleFollowUp(dealId, requestId, row._contactedBrand || '');
+                return;
+            }
+            if (action === 'submitProposal') {
+                this.openSubmitProposalModal(requestId);
+                return;
+            }
+            if (action === 'decline') {
+                this.openDeclineWorkspaceModal(requestId, dealId);
+                return;
+            }
+            if (action === 'revisitLater') {
+                this.openRevisitLaterModal(dealId, requestId);
+                return;
+            }
+        } catch (err) {
+            this.showBddToast(err.message || 'Action failed', false);
+        }
+    }
+
+    async afterCrmMutation(dealId, requestId) {
+        await this.refreshDealalityActivityFeed();
+        this._applyLocalMutationEffects();
+        await this.refreshModalIfOpen(dealId, requestId);
+    }
+
+    _parseDateMs(v) {
+        if (v == null || v === '') return null;
+        const d = new Date(String(v).trim());
+        return isNaN(d.getTime()) ? null : d.getTime();
+    }
+
+    computeLastActivityMs(row) {
+        const times = [
+            this._parseDateMs(row.lastUpdated),
+            this._parseDateMs(row.responseDate),
+            this._parseDateMs(row.requestSentAt)
+        ].filter(t => t != null);
+        if (times.length === 0) return null;
+        return Math.max(...times);
+    }
+
+    formatLastActivityDisplay(row) {
+        const ms = row.lastActivitySort;
+        if (ms == null) return '—';
+        try {
+            return new Date(ms).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        } catch (_) {
+            return '—';
+        }
+    }
+
+    formatFollowUpDisplay(row) {
+        const d = row.nextFollowupDate;
+        const h = row.nextFollowupHeader;
+        if (!d && !h) return '—';
+        const dateStr = d ? String(d).slice(0, 10) : '';
+        return [dateStr, h].filter(Boolean).join(' · ') || '—';
+    }
+
+    isStalledRow(row) {
+        if (row.workspaceBucket === 'archived') return false;
+        const fu = this._parseDateMs(row.nextFollowupDate);
+        if (fu != null) {
+            const start = new Date();
+            start.setHours(0, 0, 0, 0);
+            if (fu < start.getTime()) return true;
+        }
+        const last = row.lastActivitySort;
+        if (last != null && Date.now() - last > 14 * 86400000) return true;
+        return false;
+    }
+
+    buildWorkspaceRows() {
+        const dealMap = new Map(this.deals.map(d => [d.id, d]));
+        const lists = [
+            ...(this.brandDealRequests.new || []).map(r => ({ ...r, _requestStatus: (r.status || 'New').trim() })),
+            ...(this.brandDealRequests.viewed || []).map(r => ({ ...r, _requestStatus: (r.status || 'Brand Viewed').trim() })),
+            ...(this.brandDealRequests.accepted || []).map(r => ({ ...r, _requestStatus: (r.status || 'Accepted').trim() })),
+            ...(this.brandDealRequests.declined || []).map(r => ({ ...r, _requestStatus: (r.status || 'Declined').trim() })),
+            ...(this.brandDealRequests.archived || []).map(r => ({ ...r, _requestStatus: (r.status || 'Archived').trim() }))
+        ];
+        this.allWorkspaceRows = lists.map(req => this._rowFromBdrRequest(req, dealMap)).filter(Boolean);
+    }
+
+    _rowFromBdrRequest(req, dealMap) {
+        if (!req || !req.dealId) return null;
+        const deal = dealMap.get(req.dealId);
+        const base = deal ? { ...deal } : {
+            id: req.dealId,
+            propertyName: 'Deal ' + String(req.dealId).slice(-6),
+            dealFields: {},
+            locationData: {},
+            contactData: {},
+            rooms: '—',
+            chainScale: '—',
+            projectType: '—',
+            propertyType: '—',
+            city: '',
+            country: '',
+            targetOpeningDate: '—',
+            matchScore: null
+        };
+        const row = { ...base };
+        row._requestId = req.id;
+        row._requestStatus = req._requestStatus || req.status || 'New';
+        row._requestMatchScore = req.matchScore;
+        row._contactedBrand = req.brandName || '';
+        row._bdr = req;
+        row.ndaStatus = req.ndaStatus != null ? String(req.ndaStatus) : '';
+        row.dealRoomAccess = req.dealRoomAccess != null ? String(req.dealRoomAccess) : '';
+        row.ndaRequired = req.ndaRequired;
+        row.proposalStatus = (req.proposal && req.proposal.proposalStatus) ? String(req.proposal.proposalStatus) : '';
+        row.nextFollowupDate = req.nextFollowupDate || '';
+        row.nextFollowupHeader = req.nextFollowupHeader || '';
+        row.responseNotes = req.responseNotes || '';
+        row.ownerNotes = req.ownerNotes || '';
+        row.lastUpdated = req.lastUpdated || '';
+        row.requestSentAt = req.requestSentAt || '';
+        row.responseDate = req.responseDate || '';
+        row.workspaceBucket = this.deriveWorkspaceBucket(row);
+        row.stageLabel = this.deriveStageLabel(row);
+        row.nextActionLabel = this.deriveNextAction(row);
+        row.priorityBadges = this.derivePriorityBadges(row);
+        row.lastActivitySort = this.computeLastActivityMs(row);
+        row.lastActivityDisplay = this.formatLastActivityDisplay(row);
+        row.followUpDisplay = this.formatFollowUpDisplay(row);
+        const b = row._bdr || req;
+        if (b && b.externalCrmId) row.externalCrmId = b.externalCrmId;
+        if (b && b.crmSyncStatus) row.crmSyncStatus = b.crmSyncStatus;
+        if (b && b.lastCrmSyncAt) row.lastCrmSyncAt = b.lastCrmSyncAt;
+        if (b && b.crmOwner) row.crmOwner = b.crmOwner;
+        if (b && b.crmStage) row.crmStage = b.crmStage;
+        if (b && b.crmNotes) row.crmNotes = b.crmNotes;
+        return row;
+    }
+
+    getVisibleWorkspaceRows() {
+        const bucket = this._workspaceTabToBucket(this.currentWorkspaceTab);
+        return (this.filteredWorkspaceRows || []).filter(r => r.workspaceBucket === bucket);
+    }
+
+    _getFilterParamsFromDom() {
+        return {
+            brand: (document.getElementById('brandFilter')?.value || '').trim(),
+            status: (document.getElementById('statusFilter')?.value || '').trim(),
+            score: (document.getElementById('scoreFilter')?.value || '').trim(),
+            propertyType: (document.getElementById('propertyTypeFilter')?.value || '').trim(),
+            country: (document.getElementById('countryFilter')?.value || '').trim()
+        };
+    }
+
+    _buildKpiScopeKey(p) {
+        return ['v1', p.brand || '_', p.status || '_', p.score || '_', p.propertyType || '_', p.country || '_'].join('|');
+    }
+
+    /** Same rules as workspace table filters (brand, status, score band, property type, country). */
+    _filterWorkspaceRowsByDashboardFilters(rows, p) {
+        const brandFilterVal = (p && p.brand) || '';
+        const statusFilter = (p && p.status) || '';
+        const scoreFilter = (p && p.score) || '';
+        const propertyTypeFilter = (p && p.propertyType) || '';
+        const countryFilter = (p && p.country) || '';
+        return (rows || []).filter((deal) => {
+            if (brandFilterVal && (deal._contactedBrand || '').trim() !== brandFilterVal) return false;
+            if (statusFilter && (deal._requestStatus || '') !== statusFilter) return false;
+            if (scoreFilter) {
+                const score = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore ?? 0);
+                if (scoreFilter === 'high' && score < 80) return false;
+                if (scoreFilter === 'medium' && (score < 50 || score >= 80)) return false;
+                if (scoreFilter === 'low' && score >= 50) return false;
+            }
+            if (propertyTypeFilter && deal.propertyType !== propertyTypeFilter) return false;
+            if (countryFilter && deal.country !== countryFilter) return false;
+            return true;
+        });
+    }
+
+    renderFitSummaryHtml(score, details, brandName) {
+        const strong = [];
+        const weak = [];
+        const review = [];
+        if (details && typeof details === 'object') {
+            for (const k of Object.keys(details)) {
+                const d = details[k];
+                const s = (d && d.score != null && d.score !== '—') ? Number(d.score) : NaN;
+                const lbl = (d && d.label) ? d.label : k;
+                if (isNaN(s)) continue;
+                if (s >= 75) strong.push(lbl);
+                else if (s < 55) { weak.push(lbl); review.push(lbl); }
+            }
+        }
+        const scoreTxt = score != null && !isNaN(Number(score)) ? Number(score).toFixed(1) : '—';
+        let step = 'Compare quantitative fit factors and owner intent before committing resources.';
+        if (score != null && Number(score) >= 80) step = 'Strong fit — advance diligence and confirm owner priorities.';
+        else if (score != null && Number(score) < 50) step = 'Weak fit — clarify gaps with the owner or decline with clear rationale.';
+        return (
+            '<div class="bdd-fit-summary">' +
+            '<p><strong>Fit score:</strong> ' + this.escapeHtml(scoreTxt) + '/100' + (brandName ? ' <span style="color:var(--neutral--500);">(' + this.escapeHtml(brandName) + ')</span>' : '') + '</p>' +
+            '<p><strong>Potential fit signals:</strong> ' + this.escapeHtml(strong.length ? strong.slice(0, 4).join(', ') : '—') + '</p>' +
+            '<p><strong>Review considerations:</strong> ' + this.escapeHtml(weak.length ? weak.slice(0, 4).join(', ') : '—') + '</p>' +
+            '<p><strong>Missing information:</strong> ' + this.escapeHtml(review.length ? 'Clarify: ' + review.slice(0, 3).join(', ') : '—') + '</p>' +
+            '<p><strong>Suggested brand review step:</strong> ' + this.escapeHtml(step) + '</p>' +
+            '</div>'
+        );
+    }
+
+    _bddKpiWeeksStorageKey() {
+        return 'dealality_bdd_kpi_weeks_v3';
+    }
+
+    _bddReadScopedWeekCache(scopeKey) {
+        try {
+            const root = JSON.parse(localStorage.getItem(this._bddKpiWeeksStorageKey()) || '{}');
+            const sc = root[scopeKey];
+            return sc && typeof sc === 'object' ? sc : {};
+        } catch (_) {
+            return {};
+        }
+    }
+
+    _bddWriteScopedWeekCache(scopeKey, weeksObj) {
+        try {
+            const wkKeys = Object.keys(weeksObj).sort();
+            wkKeys.slice(0, Math.max(0, wkKeys.length - 14)).forEach((k) => { delete weeksObj[k]; });
+            const root = JSON.parse(localStorage.getItem(this._bddKpiWeeksStorageKey()) || '{}');
+            root[scopeKey] = weeksObj;
+            const scopes = Object.keys(root);
+            if (scopes.length > 32) scopes.slice(0, scopes.length - 32).forEach((k) => { delete root[k]; });
+            localStorage.setItem(this._bddKpiWeeksStorageKey(), JSON.stringify(root));
+        } catch (_) { /* quota */ }
+    }
+
+    _scheduleBddKpiServerSync(scopeKey, weekKey, snapshot) {
+        if (this._bddKpiSyncTimer) clearTimeout(this._bddKpiSyncTimer);
+        this._bddKpiSyncTimer = setTimeout(() => {
+            this._bddKpiSyncTimer = null;
+            const base = window.location.origin || '';
+            fetch(base + '/api/brand-workspace/kpi-history', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ scopeKey, weekKey, snapshot })
+            }).catch(() => {});
+        }, 900);
+    }
+
+    _bddIsoWeekKey(d) {
+        const t = new Date(d.getTime());
+        t.setHours(0, 0, 0, 0);
+        const day = t.getDay() || 7;
+        t.setDate(t.getDate() + 4 - day);
+        const yearStart = new Date(t.getFullYear(), 0, 1);
+        const week = Math.ceil((((t - yearStart) / 86400000) + 1) / 7);
+        return `${t.getFullYear()}-W${String(week).padStart(2, '0')}`;
+    }
+
+    _bddPrevIsoWeekKey(wk) {
+        const parts = String(wk || '').split('-W');
+        if (parts.length !== 2) return null;
+        let y = parseInt(parts[0], 10);
+        let w = parseInt(parts[1], 10) - 1;
+        if (w < 1) {
+            y -= 1;
+            w = 52;
+        }
+        return `${y}-W${String(w).padStart(2, '0')}`;
+    }
+
+    _bddRowDateMs(v) {
+        if (v == null || v === '') return null;
+        const d = new Date(String(v).trim());
+        const t = d.getTime();
+        return isNaN(t) ? null : t;
+    }
+
+    _bddCountRequestSentInRange(rows, startMs, endMs) {
+        return rows.filter((r) => {
+            const t = this._bddRowDateMs(r.requestSentAt);
+            return t != null && t >= startMs && t < endMs;
+        }).length;
+    }
+
+    _bddIsPassedArchived(row) {
+        const st = (row._requestStatus || '').trim();
+        return ['Declined', 'Responded - Declined'].includes(st);
+    }
+
+    _bddPipelineStageMeta(stageRows) {
+        const now = Date.now();
+        const d7 = now - 7 * 86400000;
+        let n = 0;
+        let a = 0;
+        let s = 0;
+        stageRows.forEach((r) => {
+            const sent = this._bddRowDateMs(r.requestSentAt);
+            if (sent != null && sent >= d7) n += 1;
+            const last = r.lastActivitySort;
+            if (last != null && last >= d7 && (sent == null || sent < d7)) a += 1;
+            if (this.isStalledRow(r)) s += 1;
+        });
+        const parts = [];
+        if (n) parts.push({ html: 'New (7d): ' + n, warn: false });
+        if (a) parts.push({ html: 'Active (7d): ' + a, warn: false });
+        if (s) parts.push({ html: 'Stalled: ' + s, warn: true });
+        if (!parts.length) return '';
+        return (
+            '<div class="bdd-kpi-pipeline-meta-stack">' +
+            parts
+                .map(
+                    (p) =>
+                        '<span class="bdd-kpi-pipeline-meta-line' +
+                        (p.warn ? ' bdd-pipeline-meta-warn' : '') +
+                        '">' +
+                        p.html +
+                        '</span>'
+                )
+                .join('') +
+            '</div>'
+        );
+    }
+
+    /** Compares current count to the prior ISO week snapshot (server + cache). */
+    _bddFormatWoWTrend(cur, prev, invertColors) {
+        if (prev == null || prev === undefined || Number.isNaN(Number(prev))) {
+            return { text: '—', trend: 'neutral' };
+        }
+        const d = cur - prev;
+        if (d === 0) return { text: 'same vs last week', trend: 'neutral' };
+        const pos = d > 0;
+        const trend = invertColors ? (pos ? 'negative' : 'positive') : (pos ? 'positive' : 'negative');
+        const arrow = pos ? '▲' : '▼';
+        const sign = pos ? '+' : '';
+        return { text: `${arrow} ${sign}${d} vs last week`, trend };
+    }
+
+    /** Rolling 7d vs the immediately previous 7-day window (not the ISO week snapshot). */
+    _bddFormatRolling7dDelta(cur, prevWindowCount, invertColors) {
+        if (prevWindowCount == null || prevWindowCount === undefined || Number.isNaN(Number(prevWindowCount))) {
+            return { text: '—', trend: 'neutral' };
+        }
+        const d = cur - prevWindowCount;
+        if (d === 0) return { text: 'same vs prior 7d', trend: 'neutral' };
+        const pos = d > 0;
+        const trend = invertColors ? (pos ? 'negative' : 'positive') : (pos ? 'positive' : 'negative');
+        const arrow = pos ? '▲' : '▼';
+        const sign = pos ? '+' : '';
+        return { text: `${arrow} ${sign}${d} vs prior 7 days`, trend };
+    }
+
+    /** My deal flow strip: five card wrappers; optional card title = native tooltip (what this counts). */
+    _bddRenderKpiInsightsStrip(items) {
+        const esc = (s) => this.escapeHtml(s == null ? '' : String(s));
+        const cards = items.map((it) => {
+            const trend = it.trend;
+            const opts = it.opts || {};
+            const badgeClass = trend === 'positive' ? 'positive' : trend === 'negative' ? 'negative' : 'neutral';
+            const cardHi = opts.highlight ? ' bdd-kpi-metric-card--action' : '';
+            const cardTitleAttr = opts.cardTitle ? ' title="' + esc(opts.cardTitle) + '"' : '';
+            let infoBtn = '';
+            if (opts.atRisk) {
+                infoBtn =
+                    '<span class="bdd-kpi-info-wrap--card">' +
+                    '<button type="button" class="bdd-kpi-why-btn" popovertarget="bddKpiStuckPopover" ' +
+                    'aria-haspopup="dialog" aria-label="How Stuck at risk is calculated">ℹ</button></span>';
+            }
+            const infoCls = infoBtn ? ' bdd-kpi-metric-card--has-info' : '';
+            return (
+                '<div class="bdd-kpi-metric-card' + cardHi + infoCls + '"' + cardTitleAttr + '>' +
+                '<div class="bdd-kpi-metric-card__label-wrap">' +
+                '<span class="bdd-kpi-metric-card__label">' + esc(it.label) + '</span>' +
+                infoBtn +
+                '</div>' +
+                '<span class="bdd-kpi-metric-card__value">' + esc(it.value) + '</span>' +
+                '<div class="bdd-kpi-metric-card__footer">' +
+                '<span class="bdd-insight-card__badge ' + badgeClass + '">' + esc(it.badgeText) + '</span>' +
+                '</div>' +
+                '</div>'
+            );
+        });
+        return (
+            '<div class="bdd-kpi-strip bdd-kpi-strip--insights bdd-kpi-strip--cards" role="group" aria-label="My deal flow">' +
+            cards.join('') +
+            '</div>'
+        );
+    }
+
+    /** Pipeline snapshot as matching metric cards (footer meta may include HTML from _bddPipelineStageMeta). */
+    _bddRenderPipelineStrip(stages) {
+        const esc = (s) => this.escapeHtml(s == null ? '' : String(s));
+        const cards = stages.map((s) => (
+            '<div class="bdd-kpi-metric-card bdd-kpi-metric-card--pipeline">' +
+            '<div class="bdd-kpi-metric-card__label-wrap">' +
+            '<span class="bdd-kpi-metric-card__label">' + esc(s.label) + '</span></div>' +
+            '<span class="bdd-kpi-metric-card__value bdd-kpi-metric-card__value--pipe">' + esc(s.count) + '</span>' +
+            '<div class="bdd-kpi-metric-card__footer bdd-kpi-metric-card__footer--meta bdd-kpi-pipeline-meta-cell">' +
+            (s.metaHtml
+                ? s.metaHtml
+                : '<span class="bdd-insight-card__badge neutral">—</span>') +
+            '</div>' +
+            '</div>'
+        ));
+        return (
+            '<div class="bdd-kpi-strip bdd-kpi-strip--pipeline bdd-kpi-strip--cards" role="group" aria-label="Deal pipeline by stage">' +
+            cards.join('') +
+            '</div>'
+        );
+    }
+
+    async updateWorkspaceKpis() {
+        const p = this._getFilterParamsFromDom();
+        const scopeKey = this._buildKpiScopeKey(p);
+        const rows = this._filterWorkspaceRowsByDashboardFilters(this.allWorkspaceRows || [], p);
+        const brandActionLabels = new Set([
+            'Review new opportunity', 'Mark decision', 'Send NDA', 'Open deal room', 'Review documents',
+            'Prepare preliminary terms', 'Request missing owner information', 'Internal review', 'Follow up with owner'
+        ]);
+        const active = rows.filter((r) => r.workspaceBucket !== 'archived');
+        const needsAction = active.filter((r) => brandActionLabels.has((r.nextActionLabel || '').trim())).length;
+        const now = Date.now();
+        const newRolling7d = this._bddCountRequestSentInRange(rows, now - 7 * 86400000, now + 1);
+        const newRollingPrev7d = this._bddCountRequestSentInRange(rows, now - 14 * 86400000, now - 7 * 86400000);
+        const inReview = active.filter((r) => r.workspaceBucket === 'active-review').length;
+        const awaitingOwner = active.filter((r) => r.workspaceBucket === 'awaiting-info').length;
+        const atRisk = rows.filter((r) => this.isStalledRow(r)).length;
+
+        const pNew = rows.filter((r) => r.workspaceBucket === 'new');
+        const pReview = rows.filter((r) => r.workspaceBucket === 'active-review');
+        const pBid = rows.filter((r) => r.workspaceBucket === 'terms-proposal');
+        const pNeg = rows.filter((r) => r.workspaceBucket === 'nda-room' || r.workspaceBucket === 'advanced');
+        const pClosed = rows.filter((r) => r.workspaceBucket === 'archived' && !this._bddIsPassedArchived(r));
+        const pPassed = rows.filter((r) => r.workspaceBucket === 'archived' && this._bddIsPassedArchived(r));
+
+        const wk = this._bddIsoWeekKey(new Date());
+        const prevWk = this._bddPrevIsoWeekKey(wk);
+        let serverWeeks = {};
+        try {
+            const base = window.location.origin || '';
+            const res = await fetch(base + '/api/brand-workspace/kpi-history?scopeKey=' + encodeURIComponent(scopeKey));
+            if (res.ok) {
+                const j = await res.json();
+                if (j.success && j.weeks && typeof j.weeks === 'object') serverWeeks = j.weeks;
+            }
+        } catch (_) { /* offline */ }
+
+        const localWeeks = this._bddReadScopedWeekCache(scopeKey);
+        const mergedWeeks = { ...localWeeks, ...serverWeeks };
+        const prev = prevWk ? mergedWeeks[prevWk] : null;
+
+        const snap = {
+            needsAction,
+            newRolling7d,
+            inReview,
+            awaitingOwner,
+            atRisk,
+            pipeline: {
+                newInbound: pNew.length,
+                underReview: pReview.length,
+                bidSubmitted: pBid.length,
+                negotiation: pNeg.length,
+                closed: pClosed.length,
+                passed: pPassed.length
+            }
+        };
+        mergedWeeks[wk] = snap;
+        this._bddWriteScopedWeekCache(scopeKey, mergedWeeks);
+        this._scheduleBddKpiServerSync(scopeKey, wk, snap);
+
+        const dashWoW = { text: '—', trend: 'neutral' };
+        const tNewRoll = this._bddFormatRolling7dDelta(newRolling7d, newRollingPrev7d, false);
+        const tRisk = this._bddFormatWoWTrend(atRisk, prev ? prev.atRisk : null, true);
+
+        const reqSentHint =
+            'Counts rows whose owner request was sent to your brand in the last 7 days (each row’s request-sent date). Same filters as the table.';
+
+        const insightsHtml = this._bddRenderKpiInsightsStrip([
+            {
+                label: 'Brand action',
+                value: needsAction,
+                badgeText: dashWoW.text,
+                trend: dashWoW.trend,
+                opts: { highlight: true }
+            },
+            { label: 'Awaiting owner', value: awaitingOwner, badgeText: dashWoW.text, trend: dashWoW.trend, opts: {} },
+            { label: 'Stuck / at risk', value: atRisk, badgeText: tRisk.text, trend: tRisk.trend, opts: { atRisk: true } },
+            {
+                label: 'Requests sent (7d)',
+                value: newRolling7d,
+                badgeText: tNewRoll.text,
+                trend: tNewRoll.trend,
+                opts: { cardTitle: reqSentHint }
+            },
+            { label: 'Under review', value: inReview, badgeText: dashWoW.text, trend: dashWoW.trend, opts: {} }
+        ]);
+
+        const pipelineStages = [
+            { label: 'New inbound', list: pNew, key: 'newInbound' },
+            { label: 'Under review', list: pReview, key: 'underReview' },
+            /* Bucket = terms-proposal: Pre-LOI / term comparison, or proposal Draft/Submitted — not “bids submitted” only */
+            { label: 'Terms & proposal', list: pBid, key: 'bidSubmitted' },
+            /* pNeg = nda-room ∪ advanced (NDA/deal room + finalist/LOI/feasibility) — not the same as terms-proposal */
+            { label: 'Deal room & finalist', list: pNeg, key: 'negotiation' },
+            { label: 'Closed', list: pClosed, key: 'closed' },
+            { label: 'Passed', list: pPassed, key: 'passed' }
+        ];
+        const pipelineHtml = this._bddRenderPipelineStrip(
+            pipelineStages.map((s) => ({
+                label: s.label,
+                count: s.list.length,
+                metaHtml: this._bddPipelineStageMeta(s.list)
+            }))
+        );
+
+        const insEl = document.getElementById('bddKpiInsights');
+        const pipeEl = document.getElementById('bddKpiPipeline');
+        if (insEl) insEl.innerHTML = insightsHtml;
+        if (pipeEl) pipeEl.innerHTML = pipelineHtml;
+    }
+
+    updateWorkspaceTabBadges() {
+        const p = this._getFilterParamsFromDom();
+        const rows = this._filterWorkspaceRowsByDashboardFilters(this.allWorkspaceRows || [], p);
+        const c = (bucket) => rows.filter(r => r.workspaceBucket === bucket).length;
+        const m = [
+            ['tabCountBddNew', 'new'],
+            ['tabCountBddActiveReview', 'active-review'],
+            ['tabCountBddAwaitingInfo', 'awaiting-info'],
+            ['tabCountBddNda', 'nda-room'],
+            ['tabCountBddTerms', 'terms-proposal'],
+            ['tabCountBddAdvanced', 'advanced'],
+            ['tabCountBddArchived', 'archived']
+        ];
+        for (const [id, b] of m) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = String(c(b));
+        }
+    }
+
+    getWorkspaceTableColspan() {
+        return this.currentWorkspaceTab === 'bdd-new' ? 12 : 11;
+    }
+
+    _bddSortTh(sortKey, label) {
+        return (
+            '<th data-sort="' + sortKey + '">' +
+            '<span style="display: inline-flex; align-items: center; gap: 4px;"><span>' + this.escapeHtml(label) + '</span>' +
+            '<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span>' +
+            '</th>'
+        );
+    }
+
+    ensureWorkspaceTableHeader() {
+        const thead = document.getElementById('bddWorkspaceThead');
+        const cg = document.getElementById('dealsTableColgroup');
+        const table = document.getElementById('dealsTable');
+        if (!thead || !cg || !table) return;
+        const isNew = this.currentWorkspaceTab === 'bdd-new';
+        table.classList.toggle('bdd-workspace-table--new-layout', isNew);
+        if (isNew) {
+            cg.innerHTML = '<col class="bdd-col-check"><col><col><col><col><col><col><col><col><col><col><col>';
+            thead.innerHTML =
+                '<tr>' +
+                '<th class="cell-checkbox no-sort"><input type="checkbox" id="bddSelectAllCheckbox" title="Select all"></th>' +
+                '<th class="no-sort">Your decision</th>' +
+                this._bddSortTh('headline', 'Why this surfaced') +
+                '<th class="no-sort">Alerts</th>' +
+                this._bddSortTh('propertyName', 'Opportunity') +
+                this._bddSortTh('country', 'Country') +
+                this._bddSortTh('rooms', 'Rooms') +
+                this._bddSortTh('stageLabel', 'Stage') +
+                this._bddSortTh('status', 'Status') +
+                this._bddSortTh('lastActivity', 'Last activity') +
+                this._bddSortTh('followUp', 'Follow-up') +
+                '<th class="no-sort cell-call-to-action"><span>More actions</span></th>' +
+                '</tr>';
+        } else {
+            cg.innerHTML = '<col class="bdd-col-check"><col><col><col><col><col><col><col><col><col><col>';
+            thead.innerHTML =
+                '<tr>' +
+                '<th class="cell-checkbox no-sort"><input type="checkbox" id="bddSelectAllCheckbox" title="Select all"></th>' +
+                '<th class="no-sort">Alerts</th>' +
+                this._bddSortTh('propertyName', 'Opportunity') +
+                this._bddSortTh('country', 'Country') +
+                this._bddSortTh('rooms', 'Rooms') +
+                this._bddSortTh('matchScore', 'Brand fit') +
+                this._bddSortTh('stageLabel', 'Stage') +
+                this._bddSortTh('status', 'Status') +
+                this._bddSortTh('lastActivity', 'Last activity') +
+                this._bddSortTh('followUp', 'Follow-up') +
+                '<th class="no-sort cell-call-to-action"><span>Call to action</span></th>' +
+                '</tr>';
+        }
+        this.refreshSortHeaderClasses();
+    }
+
+    refreshSortHeaderClasses() {
+        if (!this.sortColumn) return;
+        document.querySelectorAll('#dealsTable th[data-sort]').forEach((th) => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            if (th.dataset.sort === this.sortColumn) {
+                th.classList.add(this.sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+            }
+        });
+    }
+
+    getDealHeadlineForRow(deal) {
+        if (deal.headline) return deal.headline;
+        return this.generateDealHeadline(deal.dealFields || {}, deal.locationData || {}, deal.contactData || {});
+    }
+
+    /** Primary decision buttons for New opportunities tab (reuses executeBrandWorkspaceAction). */
+    renderNewOpportunityDecisionCell(deal) {
+        const dealId = this.escapeHtml(deal.id || '');
+        const requestId = deal._requestId || '';
+        if (!requestId) {
+            return '<div class="bdd-decision-stack"><span class="bdd-pill-muted" style="border:none;background:transparent;padding:0;">No request link</span></div>';
+        }
+        const rid = this.escapeHtml(requestId);
+        const avail = new Set((this.getAvailableWorkspaceActions(deal) || []).map((a) => a.id));
+        const mk = (action, cls, label) => {
+            const ok = avail.has(action);
+            return (
+                '<button type="button" class="bdd-decision-btn ' + cls + '" data-bdd-ws="' + action + '" data-deal-id="' + dealId + '" data-request-id="' + rid + '"' +
+                (ok ? '' : ' disabled') + '>' + label + '</button>'
+            );
+        };
+        return (
+            '<div class="bdd-decision-stack">' +
+            mk('interested', 'bdd-decision-btn--primary', 'Interested') +
+            mk('requestInfo', 'bdd-decision-btn--secondary', 'Request info') +
+            mk('decline', 'bdd-decision-btn--ghost', 'Decline') +
+            '</div>'
+        );
+    }
+
+    renderWhySurfacedCell(deal) {
+        const displayScore = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore != null && deal.matchScore !== '' ? Number(deal.matchScore) : null);
+        const hasScore = displayScore != null && !Number.isNaN(displayScore);
+        const scoreClass = hasScore ? this.getScoreClass(displayScore) : 'match-score-empty';
+        const brandPlain = (deal._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || deal.preferredBrandName || '').trim();
+        const brandAttr = this.escapeHtml(brandPlain);
+        const headline = this.escapeHtml(this.getDealHeadlineForRow(deal));
+        const detailsBtn = hasScore
+            ? '<button type="button" class="match-score-new-details-btn" data-deal-id="' + this.escapeHtml(deal.id) + '" data-brand="' + brandAttr + '">Match details</button>'
+            : '';
+        return (
+            '<div class="bdd-why-cell-inner">' +
+            '<p class="bdd-why-headline">' + headline + '</p>' +
+            '<div class="bdd-why-fit-row">' +
+            '<span class="match-score-badge ' + scoreClass + '">' + (hasScore ? displayScore.toFixed(1) : '—') + '</span>' +
+            detailsBtn +
+            '</div></div>'
+        );
+    }
+
+    getWorkspaceEmptyStateHtml(hasAny, hasBdr, filtersMightHelp) {
+        const tab = this.currentWorkspaceTab || 'bdd-new';
+        if (!hasBdr) {
+            return (
+                '<h3>No inbound requests yet</h3><p>Opportunities land here when an owner contacts your brand through Dealality.</p>' +
+                '<p style="margin-top:14px;font-size:13px;color:var(--neutral--500);max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5;">' +
+                'On the owner side, this usually starts in <strong style="color:var(--neutral--300);">My Deals</strong> → Matched or Contacted brands. When they shortlist or message you, the request appears under <strong style="color:var(--neutral--300);">New opportunities</strong>.</p>'
+            );
+        }
+        if (!hasAny) {
+            return '<h3>No deals match the current filters</h3><p>Try <strong>Reset View</strong> or pick a different brand in the filter bar.</p>';
+        }
+        const byTab = {
+            'bdd-new':
+                '<h3>No new opportunities in this view</h3><p>Everything here has already moved forward, or filters are hiding rows.</p>' +
+                '<p style="margin-top:12px;font-size:13px;color:var(--neutral--500);line-height:1.5;">Next: open <strong style="color:var(--neutral--300);">Active brand review</strong> for deals you accepted, or clear filters to see the full new queue.</p>',
+            'bdd-active-review':
+                '<h3>No deals in active review</h3><p>When you mark a request <strong>Interested</strong>, it typically moves into this stage — aligned with owners working you in <strong>My Deals → Contacted</strong>.</p>' +
+                '<p style="margin-top:12px;font-size:13px;color:var(--neutral--500);line-height:1.5;">If you expected rows here, check <strong>New opportunities</strong> for pending decisions or adjust filters.</p>',
+            'bdd-awaiting-info':
+                '<h3>No deals waiting on owner information</h3><p>This stage fills when you use <strong>Request info</strong> and the owner has not yet replied with documents or answers.</p>' +
+                '<p style="margin-top:12px;font-size:13px;color:var(--neutral--500);line-height:1.5;">Next: follow up from the row actions, or review <strong>Active brand review</strong> for deals that still need a first response.</p>',
+            'bdd-nda-room':
+                '<h3>No deals in NDA &amp; deal room</h3><p>Rows appear here after you progress confidentiality and shared workspace steps — owners often reference the same deal in <strong>Deal Room</strong> on their side.</p>' +
+                '<p style="margin-top:12px;font-size:13px;color:var(--neutral--500);line-height:1.5;">If the pipeline is empty, advance an accepted deal from <strong>Active brand review</strong> or clear filters.</p>',
+            'bdd-terms-proposal':
+                '<h3>No deals in terms &amp; proposal</h3><p>Pre-LOI and proposal work shows here, usually alongside owners comparing economics in <strong>My Deals → Deal Compare</strong>.</p>' +
+                '<p style="margin-top:12px;font-size:13px;color:var(--neutral--500);line-height:1.5;">Next: move a qualified deal forward from <strong>NDA &amp; deal room</strong>, or widen filters.</p>',
+            'bdd-advanced':
+                '<h3>No finalist or advanced deals in this view</h3><p>Finalist, feasibility, and LOI-stage work is grouped here — the owner may still track milestones under their deal in My Deals.</p>' +
+                '<p style="margin-top:12px;font-size:13px;color:var(--neutral--500);line-height:1.5;">Try <strong>Terms &amp; proposal</strong> for earlier-stage opportunities, or reset filters.</p>',
+            'bdd-archived':
+                '<h3>No declined or archived deals in this view</h3><p>Declines and archives land here for record-keeping. The owner may still see their project history on their side.</p>' +
+                '<p style="margin-top:12px;font-size:13px;color:var(--neutral--500);line-height:1.5;">To change a decision, use reactivation or support workflows from the archived list when available.</p>'
+        };
+        const specific = byTab[tab];
+        if (specific) return specific;
+        return '<h3>No opportunities in this stage</h3><p>Try another tab or adjust filters.</p>';
+    }
+
+    _syncBddActivityScopeUi() {
+        const bStage = document.getElementById('bddActivityScopeStage');
+        const bAll = document.getElementById('bddActivityScopeAll');
+        if (!bStage || !bAll) return;
+        if (this.currentWorkspaceTab === 'bdd-deal-log') {
+            this._bddActivityScope = 'all';
+            bStage.disabled = true;
+            bStage.classList.remove('is-active');
+            bAll.disabled = false;
+            bAll.classList.add('is-active');
+        } else {
+            bStage.disabled = false;
+            bAll.disabled = false;
+            bStage.classList.toggle('is-active', this._bddActivityScope === 'stage');
+            bAll.classList.toggle('is-active', this._bddActivityScope === 'all');
+        }
+    }
+
+    _getDealLogEntriesForActivityPanel() {
+        const entries = this.dealLogEntries || [];
+        if (this._bddActivityScope !== 'stage' || this.currentWorkspaceTab === 'bdd-deal-log') {
+            return entries.slice(0, 250);
+        }
+        const visible = this.getVisibleWorkspaceRows();
+        const ids = new Set((visible || []).map((r) => r.id).filter(Boolean));
+        return entries.filter((e) => ids.has(e.dealId)).slice(0, 250);
+    }
+
+    renderBddActivityPanelBody() {
+        const host = document.getElementById('bddActivityPanelBody');
+        if (!host) return;
+        const entries = this._getDealLogEntriesForActivityPanel();
+        const scopeHint = document.getElementById('bddActivityHint');
+        if (scopeHint) {
+            if (this.currentWorkspaceTab === 'bdd-deal-log') {
+                scopeHint.textContent = 'You are on the full Deal activity tab — showing recent events across all deals.';
+            } else if (this._bddActivityScope === 'stage') {
+                scopeHint.textContent = 'Showing activity for deals visible in this pipeline stage (respects your current filters). Switch to All deals for the full timeline.';
+            } else {
+                scopeHint.textContent = 'Showing recent activity across all deals in this workspace.';
+            }
+        }
+        if (entries.length === 0) {
+            host.innerHTML =
+                '<div class="bdd-activity-empty">' +
+                '<strong>No activity to show yet</strong>' +
+                (this._bddActivityScope === 'stage' && this.currentWorkspaceTab !== 'bdd-deal-log'
+                    ? 'Nothing logged for the deals in this stage. Try <strong>All deals</strong>, complete an action on a row, or open the full Deal activity tab.'
+                    : 'As requests, status changes, NDA and deal room steps, proposals, and notes are recorded, they will appear here.') +
+                '</div>';
+            return;
+        }
+        const rows = entries
+            .map((e) => {
+                return (
+                    '<tr>' +
+                    '<td style="white-space:nowrap;">' +
+                    this.escapeHtml((e.date || '').slice(0, 19)) +
+                    '</td>' +
+                    '<td>' +
+                    this.escapeHtml(e.dealName || '—') +
+                    '</td>' +
+                    '<td>' +
+                    this.escapeHtml(e.action || '') +
+                    '</td>' +
+                    '<td>' +
+                    this.escapeHtml(e.details || '') +
+                    '</td>' +
+                    '</tr>'
+                );
+            })
+            .join('');
+        host.innerHTML =
+            '<table class="bdd-activity-table"><thead><tr><th style="width:22%">When</th><th style="width:24%">Opportunity</th><th style="width:20%">Event</th><th>Details</th></tr></thead><tbody>' +
+            rows +
+            '</tbody></table>';
+    }
+
+    toggleBddActivityPanel(open) {
+        const panel = document.getElementById('bddActivityPanel');
+        const backdrop = document.getElementById('bddActivityBackdrop');
+        const fab = document.getElementById('bddActivityFab');
+        if (!panel || !backdrop) return;
+        const next = open === undefined ? !this._bddActivityPanelOpen : !!open;
+        this._bddActivityPanelOpen = next;
+        panel.classList.toggle('is-open', next);
+        backdrop.classList.toggle('is-open', next);
+        panel.setAttribute('aria-hidden', next ? 'false' : 'true');
+        if (fab) fab.setAttribute('aria-expanded', next ? 'true' : 'false');
+        if (next) {
+            this._syncBddActivityScopeUi();
+            this.renderBddActivityPanelBody();
+        }
+    }
+
+    setupBddActivityPanel() {
+        if (this._bddActivityPanelWired) return;
+        this._bddActivityPanelWired = true;
+        const fab = document.getElementById('bddActivityFab');
+        const close = document.getElementById('bddActivityClose');
+        const backdrop = document.getElementById('bddActivityBackdrop');
+        const full = document.getElementById('bddActivityOpenFullLog');
+        const bStage = document.getElementById('bddActivityScopeStage');
+        const bAll = document.getElementById('bddActivityScopeAll');
+        fab?.addEventListener('click', () => this.toggleBddActivityPanel(true));
+        close?.addEventListener('click', () => this.toggleBddActivityPanel(false));
+        backdrop?.addEventListener('click', () => this.toggleBddActivityPanel(false));
+        full?.addEventListener('click', () => {
+            this.toggleBddActivityPanel(false);
+            this.switchTab('bdd-deal-log');
+        });
+        bStage?.addEventListener('click', () => {
+            if (this.currentWorkspaceTab === 'bdd-deal-log') return;
+            this._bddActivityScope = 'stage';
+            bStage.classList.add('is-active');
+            bAll?.classList.remove('is-active');
+            this.renderBddActivityPanelBody();
+        });
+        bAll?.addEventListener('click', () => {
+            this._bddActivityScope = 'all';
+            bAll.classList.add('is-active');
+            bStage?.classList.remove('is-active');
+            this.renderBddActivityPanelBody();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this._bddActivityPanelOpen) this.toggleBddActivityPanel(false);
+        });
+    }
+
+    renderDeals() {
+        this.renderWorkspaceTable();
+    }
+
+    renderWorkspaceTable() {
+        const tbody = document.getElementById('dealsTableBody');
+        if (!tbody) return;
+        this.closeBddWorkspaceMoreMenu();
+        this.ensureWorkspaceTableHeader();
+        const visible = this.getVisibleWorkspaceRows();
+        const colspan = this.getWorkspaceTableColspan();
+        const isNewLayout = this.currentWorkspaceTab === 'bdd-new';
+        if (visible.length === 0) {
+            const hasAny = this.allWorkspaceRows && this.allWorkspaceRows.length > 0;
+            const hasBdr =
+                (this.brandDealRequests.new?.length || 0) +
+                    (this.brandDealRequests.viewed?.length || 0) +
+                    (this.brandDealRequests.accepted?.length || 0) +
+                    (this.brandDealRequests.declined?.length || 0) +
+                    (this.brandDealRequests.archived?.length || 0) >
+                0;
+            const msg = this.getWorkspaceEmptyStateHtml(hasAny, hasBdr, true);
+            tbody.innerHTML = '<tr><td colspan="' + colspan + '" class="empty-state" style="padding: 48px 20px;">' + msg + '</td></tr>';
+            this.updateTabCounts();
+            this.setupBulkActions();
+            this.updateBulkActionsState();
+            if (this._bddActivityPanelOpen) this.renderBddActivityPanelBody();
+            return;
+        }
+        tbody.innerHTML = visible
+            .map((deal) => {
+                const displayScore = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore != null && deal.matchScore !== '' ? Number(deal.matchScore) : null);
+                const hasScore = displayScore != null && !Number.isNaN(displayScore);
+                const scoreClass = hasScore ? this.getScoreClass(displayScore) : 'match-score-empty';
+                const brandPlain = (deal._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || deal.preferredBrandName || '').trim();
+                const brandAttr = this.escapeHtml(brandPlain);
+                const badges = (deal.priorityBadges || [])
+                    .map((b) => '<span class="bdd-pill bdd-pill--' + this.escapeHtml(b.key) + '">' + this.escapeHtml(b.label) + '</span>')
+                    .join(' ');
+                const reqId = deal._requestId || '';
+                const detailsBtn = hasScore
+                    ? '<button type="button" class="match-score-new-details-btn" data-deal-id="' + this.escapeHtml(deal.id) + '" data-brand="' + brandAttr + '">View Details</button>'
+                    : '';
+                if (isNewLayout) {
+                    return (
+                        '<tr>' +
+                        '<td class="cell-checkbox"><input type="checkbox" class="deal-row-checkbox" data-request-id="' +
+                        this.escapeHtml(reqId) +
+                        '" title="Select row"></td>' +
+                        '<td class="bdd-decision-cell">' +
+                        this.renderNewOpportunityDecisionCell(deal) +
+                        '</td>' +
+                        '<td class="bdd-why-cell">' +
+                        this.renderWhySurfacedCell(deal) +
+                        '</td>' +
+                        '<td class="bdd-badges-cell">' +
+                        (badges || '<span class="bdd-pill-muted">—</span>') +
+                        '</td>' +
+                        '<td><span class="property-name">' +
+                        this.escapeHtml(deal.propertyName || '—') +
+                        '</span></td>' +
+                        '<td>' +
+                        this.escapeHtml(deal.country || '—') +
+                        '</td>' +
+                        '<td>' +
+                        this.escapeHtml(String(deal.rooms != null ? deal.rooms : '—')) +
+                        '</td>' +
+                        '<td>' +
+                        this.escapeHtml(deal.stageLabel || '—') +
+                        '</td>' +
+                        '<td>' +
+                        this.renderStatusCell(deal._requestStatus) +
+                        '</td>' +
+                        '<td style="font-size:12px;color:var(--neutral--400);">' +
+                        this.escapeHtml(deal.lastActivityDisplay || '—') +
+                        '</td>' +
+                        '<td style="font-size:12px;color:var(--neutral--400);max-width:120px;">' +
+                        this.escapeHtml(deal.followUpDisplay || '—') +
+                        '</td>' +
+                        '<td class="cell-call-to-action bdd-ws-actions-col">' +
+                        this.renderWorkspaceCallToActionRow(deal) +
+                        '</td>' +
+                        '</tr>'
+                    );
+                }
+                return (
+                    '<tr>' +
+                    '<td class="cell-checkbox"><input type="checkbox" class="deal-row-checkbox" data-request-id="' +
+                    this.escapeHtml(reqId) +
+                    '" title="Select row"></td>' +
+                    '<td class="bdd-badges-cell">' +
+                    (badges || '<span class="bdd-pill-muted">—</span>') +
+                    '</td>' +
+                    '<td><span class="property-name">' +
+                    this.escapeHtml(deal.propertyName || '—') +
+                    '</span></td>' +
+                    '<td>' +
+                    this.escapeHtml(deal.country || '—') +
+                    '</td>' +
+                    '<td>' +
+                    this.escapeHtml(String(deal.rooms != null ? deal.rooms : '—')) +
+                    '</td>' +
+                    '<td><div class="match-score-cell">' +
+                    '<span class="match-score-badge ' +
+                    scoreClass +
+                    '">' +
+                    (hasScore ? displayScore.toFixed(1) : '—') +
+                    '</span>' +
+                    detailsBtn +
+                    '</div></td>' +
+                    '<td>' +
+                    this.escapeHtml(deal.stageLabel || '—') +
+                    '</td>' +
+                    '<td>' +
+                    this.renderStatusCell(deal._requestStatus) +
+                    '</td>' +
+                    '<td style="font-size:12px;color:var(--neutral--400);">' +
+                    this.escapeHtml(deal.lastActivityDisplay || '—') +
+                    '</td>' +
+                    '<td style="font-size:12px;color:var(--neutral--400);max-width:120px;">' +
+                    this.escapeHtml(deal.followUpDisplay || '—') +
+                    '</td>' +
+                    '<td class="cell-call-to-action bdd-ws-actions-col">' +
+                    this.renderWorkspaceCallToActionRow(deal) +
+                    '</td>' +
+                    '</tr>'
+                );
+            })
+            .join('');
         this.updateTabCounts();
         this.setupBulkActions();
         this.updateBulkActionsState();
+        if (this._bddActivityPanelOpen) this.renderBddActivityPanelBody();
     }
 
     setupBulkActions() {
         const tbody = document.getElementById('dealsTableBody');
-        const selectAll = document.getElementById('bddSelectAllCheckbox');
         const bulkBtn = document.getElementById('bddBulkActionsBtn');
         const dropdown = document.getElementById('bddBulkDropdown');
-        if (!tbody || !selectAll || !bulkBtn || !dropdown) return;
+        if (!tbody || !bulkBtn || !dropdown) return;
         if (this._bddBulkWired) return;
         this._bddBulkWired = true;
-        selectAll.addEventListener('change', () => {
-            const checked = selectAll.checked;
-            tbody.querySelectorAll('.deal-row-checkbox').forEach(cb => { cb.checked = checked; });
-            this.updateBulkActionsState();
-        });
-        tbody.addEventListener('change', (e) => {
-            if (e.target.classList.contains('deal-row-checkbox')) this.updateBulkActionsState();
+        const tableHost = document.getElementById('newDealsTableContainer') || document.getElementById('dealsTable');
+        tableHost?.addEventListener('change', (e) => {
+            const t = e.target;
+            if (t && t.id === 'bddSelectAllCheckbox') {
+                const checked = !!t.checked;
+                tbody.querySelectorAll('.deal-row-checkbox').forEach((cb) => {
+                    cb.checked = checked;
+                });
+                this.updateBulkActionsState();
+                return;
+            }
+            if (t && t.classList && t.classList.contains('deal-row-checkbox')) this.updateBulkActionsState();
         });
         bulkBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1932,10 +3128,9 @@ class BrandDevelopmentDashboard {
             } else {
                 this.showBddToast('Updated ' + updates.length + ' row(s)', true);
             }
-            await this.fetchAllContactedDeals();
+            if (this.brandId) await this.fetchBrandDealRequests();
+            else await this.fetchAllContactedDeals();
             await this.recalculateMatchScores();
-            this.updateArchivedDisplay();
-            this.updateActiveDealsDisplay();
             document.getElementById('bddBulkDropdown')?.classList.remove('open');
             this.renderDeals();
         } catch (err) {
@@ -1948,15 +3143,24 @@ class BrandDevelopmentDashboard {
     }
 
     updateTabCounts() {
-        var newCount = document.getElementById('tabCountNewDeals');
-        var activeCount = document.getElementById('tabCountActiveDeals');
-        var archivedCount = document.getElementById('tabCountArchived');
-        var resultsEl = document.getElementById('newDealsResultsCount');
-        var n = (this.filteredDeals && this.filteredDeals.length) || 0;
-        if (newCount) newCount.textContent = n;
-        if (activeCount) activeCount.textContent = (this.activeDeals && this.activeDeals.length) || 0;
-        if (archivedCount) archivedCount.textContent = (this.archivedDeals && this.archivedDeals.length) || 0;
-        if (resultsEl) resultsEl.textContent = n === 0 ? 'No deals match your filters.' : 'Showing ' + n + ' deal' + (n === 1 ? '' : 's') + '.';
+        const resultsEl = document.getElementById('newDealsResultsCount');
+        const visible = this.getVisibleWorkspaceRows();
+        const n = visible.length;
+        if (resultsEl) {
+            resultsEl.textContent = n === 0
+                ? 'No opportunities in this stage with the current filters.'
+                : 'Showing ' + n + ' opportunit' + (n === 1 ? 'y' : 'ies') + ' in this stage.';
+        }
+        void this.updateWorkspaceKpis();
+        this.updateWorkspaceTabBadges();
+    }
+
+    clearAllFilters() {
+        ['brandFilter', 'statusFilter', 'scoreFilter', 'propertyTypeFilter', 'countryFilter'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        this.applyFilters();
     }
 
     generateDealHeadline(dealFields, locationData, contactData) {
@@ -2063,32 +3267,31 @@ class BrandDevelopmentDashboard {
         const showReactivate = !!opts.showReactivate;
         const showSubmitProposal = !!opts.showSubmitProposal;
         const email = (deal.contactData && (deal.contactData['Email Address'] || deal.contactData['Email'])) || '';
-        const mailto = email ? 'mailto:' + encodeURIComponent(email.trim()) : '';
-        const emailTitle = email ? 'Communications' : 'No email on file';
+        const inboxTitle = email ? 'Outreach Inbox (contact on file)' : 'Outreach Inbox';
         const dealId = deal.id || '';
         const requestId = deal._requestId || '';
-        const brandName = (deal._contactedBrand || deal.preferredBrandName || '').replace(/"/g, '&quot;');
+        const brandRaw = (deal._contactedBrand || deal.preferredBrandName || '').trim();
+        const brandNameAttr = this.escapeHtml(brandRaw);
         const score = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore ?? null);
         const showAcceptDecline = (deal._requestStatus === 'New' || deal._requestStatus === 'Brand Viewed') && requestId;
         const acceptDecline = showAcceptDecline ? `
-            <button type="button" class="action-icon" title="Accept" onclick="dashboard.acceptRequest('${requestId}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></button>
-            <button type="button" class="action-icon" title="Decline" onclick="dashboard.declineRequest('${requestId}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            <button type="button" class="action-icon" title="Mark interested" onclick="dashboard.acceptRequest('${requestId}', { keepModal: false, dealId: '${dealId}' })"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></button>
+            <button type="button" class="action-icon" title="Decline" onclick="dashboard.declineRequest('${requestId}', '${dealId}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         ` : '';
-        const deleteBtn = showDelete && requestId ? `<button type="button" class="action-icon" title="Delete" data-action="delete" data-request-id="${this.escapeHtml(requestId)}" data-deal-id="${this.escapeHtml(dealId)}" data-brand="${this.escapeHtml(brandName)}" data-score="${score != null && score !== '' ? this.escapeHtml(String(score)) : ''}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : '';
+        const deleteBtn = showDelete && requestId ? `<button type="button" class="action-icon" title="Delete" data-action="delete" data-request-id="${this.escapeHtml(requestId)}" data-deal-id="${this.escapeHtml(dealId)}" data-brand="${brandNameAttr}" data-score="${score != null && score !== '' ? this.escapeHtml(String(score)) : ''}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>` : '';
         const reactivateBtn = showReactivate && requestId ? `<button type="button" class="action-icon" title="Reactivate" data-action="reactivate" data-request-id="${this.escapeHtml(requestId)}" data-deal-id="${this.escapeHtml(dealId)}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>` : '';
         const submitProposalBtn = showSubmitProposal
             ? (requestId
                 ? `<button type="button" class="action-icon action-icon--proposal" title="Submit Proposal" aria-label="Submit Proposal" data-action="submit-proposal" data-request-id="${this.escapeHtml(requestId)}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></button>`
                 : `<button type="button" class="action-icon action-icon--proposal" title="Submit Proposal unavailable: request record is missing for this deal-brand pair." aria-label="Submit Proposal unavailable: request record is missing for this deal-brand pair." disabled><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></button>`)
             : '';
-        const emailLink = email
-            ? `<button type="button" class="action-icon" title="${emailTitle}" data-action="communications" data-deal-id="${dealId}" data-brand="${this.escapeHtml(brandName)}" data-email="${this.escapeHtml(email.trim())}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></button>`
-            : `<span class="action-icon" style="opacity:0.5;cursor:not-allowed;" title="${emailTitle}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></span>`;
+        const emailAttr = email ? ` data-email="${this.escapeHtml(email.trim())}"` : '';
+        const emailLink = `<button type="button" class="action-icon" title="${this.escapeHtml(inboxTitle)}" aria-label="Open Outreach Inbox" data-action="communications" data-deal-id="${this.escapeHtml(dealId)}" data-brand="${brandNameAttr}"${emailAttr}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></button>`;
         return `<div class="action-icons">` +
             emailLink +
-            `<button type="button" class="action-icon" title="Schedule follow-up" data-action="schedule" data-deal-id="${dealId}" data-request-id="${requestId}" data-brand="${this.escapeHtml(brandName)}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>` +
+            `<button type="button" class="action-icon" title="Schedule follow-up" data-action="schedule" data-deal-id="${dealId}" data-request-id="${requestId}" data-brand="${brandNameAttr}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></button>` +
             submitProposalBtn +
-            `<button type="button" class="action-icon" title="View" onclick="dashboard.handleViewDeal('${dealId}', '${requestId}', '${deal._requestStatus || ''}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>` +
+            `<button type="button" class="action-icon" title="Opportunity workspace" onclick="dashboard.handleViewDeal('${dealId}', '${requestId}', '${deal._requestStatus || ''}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>` +
             reactivateBtn +
             deleteBtn +
             acceptDecline +
@@ -2183,9 +3386,11 @@ class BrandDevelopmentDashboard {
 
     getScoreClass(score) {
         const n = Number(score);
+        if (Number.isNaN(n)) return 'match-score-poor';
         if (n >= 80) return 'match-score-high';
         if (n >= 50) return 'match-score-medium';
-        return 'match-score-low';
+        if (n >= 25) return 'match-score-weak';
+        return 'match-score-poor';
     }
 
     getBreakdownScoreClass(score) {
@@ -2241,7 +3446,7 @@ class BrandDevelopmentDashboard {
         return p;
     }
 
-    async showScoreDetails(dealId) {
+    async showScoreDetails(dealId, brandOverride) {
         const deal = this.deals.find(d => d.id === dealId);
         if (!deal) return;
 
@@ -2249,9 +3454,11 @@ class BrandDevelopmentDashboard {
         const content = document.getElementById('scoreDetailsContent');
         if (!modal || !content) return;
 
-        const brand = (document.getElementById('brandFilter')?.value || this.brandId || deal.preferredBrandName || '').trim();
+        const brand = (brandOverride != null && String(brandOverride).trim() !== '')
+            ? String(brandOverride).trim()
+            : (document.getElementById('brandFilter')?.value || this.brandId || deal.preferredBrandName || '').trim();
         if (!brand) {
-            content.innerHTML = '<div class="modal-section"><p style="color: var(--neutral--400);">No brand selected. Use the brand filter or ensure the deal has a preferred brand to see the Match Score Breakdown.</p></div>';
+            content.innerHTML = '<div class="modal-section"><p style="color: var(--neutral--400);">Brand fit details will appear once this opportunity is linked to a brand match record.</p></div>';
             modal.classList.add('active');
             return;
         }
@@ -2618,6 +3825,7 @@ class BrandDevelopmentDashboard {
         
         content.innerHTML = html;
         modal.classList.add('active');
+        bddSetDealDetailsModalScrollLock(true);
     }
 
     setupEventListeners() {
@@ -2634,7 +3842,7 @@ class BrandDevelopmentDashboard {
                 if (tbody && this.deals.length > 0) {
                     tbody.innerHTML = `
                         <tr>
-                            <td colspan="12" style="padding: 60px 20px; text-align: center;">
+                            <td colspan="${this.getWorkspaceTableColspan()}" style="padding: 60px 20px; text-align: center;">
                                 <div class="loading">
                                     <div class="loading-content">
                                         <div class="wave-container">
@@ -2669,27 +3877,14 @@ class BrandDevelopmentDashboard {
                     await this.fetchAllContactedDeals();
                 }
                 await this.recalculateMatchScores();
-                this.updateArchivedDisplay();
-                this.updateActiveDealsDisplay();
             });
         }
         document.getElementById('statusFilter')?.addEventListener('change', () => this.applyFilters());
         document.getElementById('scoreFilter')?.addEventListener('change', () => this.applyFilters());
         document.getElementById('propertyTypeFilter')?.addEventListener('change', () => this.applyFilters());
         document.getElementById('countryFilter')?.addEventListener('change', () => this.applyFilters());
-        document.getElementById('activeBrandFilter')?.addEventListener('change', () => this.updateActiveDealsDisplay());
-        document.getElementById('activeStatusFilter')?.addEventListener('change', () => this.updateActiveDealsDisplay());
-        document.getElementById('activeScoreFilter')?.addEventListener('change', () => this.updateActiveDealsDisplay());
-        document.getElementById('activePropertyTypeFilter')?.addEventListener('change', () => this.updateActiveDealsDisplay());
-        document.getElementById('activeCountryFilter')?.addEventListener('change', () => this.updateActiveDealsDisplay());
-        document.getElementById('archivedBrandFilter')?.addEventListener('change', () => this.updateArchivedDisplay());
-        document.getElementById('archivedStatusFilter')?.addEventListener('change', () => this.updateArchivedDisplay());
-        document.getElementById('archivedScoreFilter')?.addEventListener('change', () => this.updateArchivedDisplay());
-        document.getElementById('archivedPropertyTypeFilter')?.addEventListener('change', () => this.updateArchivedDisplay());
-        document.getElementById('archivedCountryFilter')?.addEventListener('change', () => this.updateArchivedDisplay());
-        document.getElementById('archivedClearFiltersBtn')?.addEventListener('click', () => this.clearArchivedDealsFilters());
         
-        // Tab navigation (New Deals, Active Deals, Archived, Deal Log)
+        // Tab navigation (workspace stages + activity log)
         var self = this;
         document.querySelectorAll('.bdd-section-nav .section-nav-item[data-tab]').forEach(function(btn) {
             btn.addEventListener('click', function() { self.switchTab(btn.getAttribute('data-tab')); });
@@ -2707,6 +3902,15 @@ class BrandDevelopmentDashboard {
             if (e.target.id === 'dealDetailsModal') {
                 closeDealDetailsModal();
             }
+            const fitBtn = e.target.closest('.bdd-modal-fit-btn');
+            if (fitBtn) {
+                e.preventDefault();
+                const id = fitBtn.getAttribute('data-deal-id');
+                const benc = fitBtn.getAttribute('data-brand') || '';
+                let brand = '';
+                try { brand = decodeURIComponent(benc); } catch (_) {}
+                if (id) this.showScoreDetails(id, brand);
+            }
         });
 
         document.getElementById('bddScheduleModal')?.addEventListener('click', (e) => {
@@ -2719,10 +3923,39 @@ class BrandDevelopmentDashboard {
                 this.closeSubmitProposalModal();
             }
         });
+        document.getElementById('bddOutreachInboxModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'bddOutreachInboxModal') {
+                this.closeOutreachInboxModal();
+            }
+        });
         document.getElementById('bddScheduleModalClose')?.addEventListener('click', () => this.closeBddScheduleModal());
         document.getElementById('bddScheduleCancelBtn')?.addEventListener('click', () => this.closeBddScheduleModal());
         document.getElementById('bddScheduleSaveBtn')?.addEventListener('click', () => this.saveBddSchedule());
         document.getElementById('bddSubmitProposalModalClose')?.addEventListener('click', () => this.closeSubmitProposalModal());
+        document.getElementById('bddOutreachInboxModalClose')?.addEventListener('click', () => this.closeOutreachInboxModal());
+
+        document.getElementById('bddRequestInfoModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'bddRequestInfoModal') this.closeBddRequestInfoModal();
+        });
+        document.getElementById('bddRequestInfoModalClose')?.addEventListener('click', () => this.closeBddRequestInfoModal());
+        document.getElementById('bddRequestInfoCancelBtn')?.addEventListener('click', () => this.closeBddRequestInfoModal());
+        document.getElementById('bddRequestInfoSaveBtn')?.addEventListener('click', () => this.saveBddRequestInfo());
+
+        document.getElementById('bddDeclineWorkspaceModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'bddDeclineWorkspaceModal') this.closeBddDeclineWorkspaceModal();
+        });
+        document.getElementById('bddDeclineWorkspaceModalClose')?.addEventListener('click', () => this.closeBddDeclineWorkspaceModal());
+        document.getElementById('bddDeclineWorkspaceCancelBtn')?.addEventListener('click', () => this.closeBddDeclineWorkspaceModal());
+        document.getElementById('bddDeclineWorkspaceSaveBtn')?.addEventListener('click', () => this.saveBddDeclineWorkspace());
+        document.getElementById('bddDeclineReasonPreset')?.addEventListener('change', () => this._syncBddDeclineReasonUi());
+        document.getElementById('bddDeclineAlternateBrand')?.addEventListener('change', () => this._syncBddDeclineAlternateUi());
+
+        document.getElementById('bddRevisitLaterModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'bddRevisitLaterModal') this.closeBddRevisitLaterModal();
+        });
+        document.getElementById('bddRevisitLaterModalClose')?.addEventListener('click', () => this.closeBddRevisitLaterModal());
+        document.getElementById('bddRevisitLaterCancelBtn')?.addEventListener('click', () => this.closeBddRevisitLaterModal());
+        document.getElementById('bddRevisitLaterSaveBtn')?.addEventListener('click', () => this.saveBddRevisitLater());
 
         // Add sort handlers to table headers - use event delegation since headers are re-rendered
         document.addEventListener('click', (e) => {
@@ -2734,6 +3967,35 @@ class BrandDevelopmentDashboard {
                 } else {
                     this.handleSort(sortColumn);
                 }
+                return;
+            }
+            const moreWs = e.target.closest('[data-action="bdd-ws-more"]');
+            if (moreWs) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.showBddWorkspaceMoreMenu(moreWs);
+                return;
+            }
+            const wsBtn = e.target.closest('[data-bdd-ws]');
+            if (wsBtn) {
+                e.preventDefault();
+                const action = wsBtn.getAttribute('data-bdd-ws');
+                const dealId = wsBtn.getAttribute('data-deal-id');
+                const requestId = wsBtn.getAttribute('data-request-id');
+                if (action && dealId) {
+                    const row = this._getWorkspaceRowForModal(dealId, requestId);
+                    if (row) this.executeBrandWorkspaceAction(action, row);
+                }
+                return;
+            }
+            const detailsNew = e.target.closest('.match-score-new-details-btn');
+            if (detailsNew && detailsNew.getAttribute('data-deal-id')) {
+                e.preventDefault();
+                e.stopPropagation();
+                const dealId = detailsNew.getAttribute('data-deal-id');
+                const brand = (detailsNew.getAttribute('data-brand') || '').trim();
+                if (dealId) this.showScoreDetails(dealId, brand);
+                return;
             }
             const scheduleBtn = e.target.closest('.action-icon[data-action="schedule"]');
             if (scheduleBtn) {
@@ -2747,11 +4009,13 @@ class BrandDevelopmentDashboard {
             const commBtn = e.target.closest('.action-icon[data-action="communications"]');
             if (commBtn) {
                 e.preventDefault();
-                const email = (commBtn.dataset.email || '').trim();
-                if (email) {
-                    const mailto = 'mailto:' + encodeURIComponent(email);
-                    window.location.href = mailto;
-                }
+                const dealId = (commBtn.dataset.dealId || '').trim();
+                let brand = (commBtn.getAttribute('data-brand') || '').trim();
+                try {
+                    brand = decodeURIComponent(brand);
+                } catch (_) { /* keep raw */ }
+                if (dealId) this.openOutreachInboxModal(dealId, brand);
+                else this.showBddToast('Missing deal id for inbox.', false);
                 return;
             }
             const submitProposalBtn = e.target.closest('.action-icon[data-action="submit-proposal"]');
@@ -2781,65 +4045,325 @@ class BrandDevelopmentDashboard {
         });
 
         this.setupBddDeleteReasonModal();
+        this.setupBddActivityPanel();
     }
 
     switchTab(tabId) {
-        var validTabs = ['new-deals', 'active-deals', 'archived', 'deal-log'];
-        if (!tabId || validTabs.indexOf(tabId) === -1) tabId = 'new-deals';
+        const legacy = { 'new-deals': 'bdd-new', 'active-deals': 'bdd-active-review', 'archived': 'bdd-archived', 'deal-log': 'bdd-deal-log' };
+        if (legacy[tabId]) tabId = legacy[tabId];
+        this.closeBddWorkspaceMoreMenu();
+        const workspaceIds = ['bdd-new', 'bdd-active-review', 'bdd-awaiting-info', 'bdd-nda-room', 'bdd-terms-proposal', 'bdd-advanced', 'bdd-archived'];
+        const valid = [...workspaceIds, 'bdd-deal-log'];
+        if (!tabId || valid.indexOf(tabId) === -1) tabId = 'bdd-new';
+        this.currentWorkspaceTab = tabId;
+
         document.querySelectorAll('.bdd-section-nav .section-nav-item').forEach(function(t) { t.classList.remove('active'); });
         document.querySelectorAll('.bdd-tab-panel').forEach(function(p) { p.classList.remove('active'); });
-        var btn = document.querySelector('.bdd-section-nav .section-nav-item[data-tab="' + tabId + '"]');
-        var panelId = 'section' + tabId.split('-').map(function(s) { return s.charAt(0).toUpperCase() + s.slice(1); }).join('');
-        var panel = document.getElementById(panelId);
+        const btn = document.querySelector('.bdd-section-nav .section-nav-item[data-tab="' + tabId + '"]');
         if (btn) btn.classList.add('active');
-        if (panel) panel.classList.add('active');
+
+        const isDealLog = tabId === 'bdd-deal-log';
+        const workspacePanel = document.getElementById('sectionWorkspace');
+        const logPanel = document.getElementById('sectionDealLog');
+        if (workspacePanel) workspacePanel.classList.toggle('active', !isDealLog);
+        if (logPanel) logPanel.classList.toggle('active', isDealLog);
+
         if (this.dealsLoading) {
             this.showLoadingInTab(tabId);
         } else {
-            if (tabId === 'archived') this.updateArchivedDisplay();
-            if (tabId === 'active-deals') this.updateActiveDealsDisplay();
-            if (tabId === 'deal-log') this.renderDealLog();
+            this.hideAllLoadingStates();
+            if (isDealLog) this.renderDealLog();
+            else this.renderWorkspaceTable();
         }
         try { window.history.replaceState(null, '', window.location.pathname + window.location.search + '#' + tabId); } catch (_) {}
+
+        if (this._bddActivityPanelOpen) {
+            this._syncBddActivityScopeUi();
+            this.renderBddActivityPanelBody();
+        }
     }
 
     restoreTabFromHash() {
-        var hash = (window.location.hash || '').replace(/^#/, '');
-        if (hash && ['new-deals', 'active-deals', 'archived', 'deal-log'].indexOf(hash) !== -1) {
-            this.switchTab(hash);
+        const hash = (window.location.hash || '').replace(/^#/, '');
+        const legacy = { 'new-deals': 'bdd-new', 'active-deals': 'bdd-active-review', 'archived': 'bdd-archived', 'deal-log': 'bdd-deal-log' };
+        const tab = legacy[hash] || hash;
+        const ok = ['bdd-new', 'bdd-active-review', 'bdd-awaiting-info', 'bdd-nda-room', 'bdd-terms-proposal', 'bdd-advanced', 'bdd-archived', 'bdd-deal-log'];
+        if (tab && ok.indexOf(tab) !== -1) this.switchTab(tab);
+    }
+
+    _getWorkspaceRowForModal(dealId, requestId) {
+        if (!dealId) return null;
+        const dealMap = new Map(this.deals.map(d => [d.id, d]));
+        let row = (this.allWorkspaceRows || []).find(r => r.id === dealId && (!requestId || r._requestId === requestId));
+        if (row) return row;
+        const lists = [
+            ...(this.brandDealRequests.new || []),
+            ...(this.brandDealRequests.viewed || []),
+            ...(this.brandDealRequests.accepted || []),
+            ...(this.brandDealRequests.declined || []),
+            ...(this.brandDealRequests.archived || [])
+        ];
+        const req = requestId ? lists.find(r => r.id === requestId) : lists.find(r => r.dealId === dealId);
+        if (!req) {
+            const deal = dealMap.get(dealId);
+            return deal ? { ...deal, _requestId: requestId || '', _requestStatus: '' } : null;
         }
+        const merged = { ...req, _requestStatus: (req.status || 'New').trim() };
+        return this._rowFromBdrRequest(merged, dealMap);
+    }
+
+    async _maybeMarkBrandViewed(requestId, requestStatus) {
+        const validRequestId = requestId && String(requestId).trim().startsWith('rec');
+        const should = (requestStatus === 'New' || requestStatus === 'new') && validRequestId;
+        if (!should) return;
+        try {
+            const base = window.location.origin || '';
+            const res = await fetch(`${base}/api/brand-deal-requests/${encodeURIComponent(requestId)}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Brand Viewed' })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                this.showBddToast(data.error || res.statusText || 'Could not mark as viewed.', false);
+                return;
+            }
+            this._applyLocalRequestPatch(requestId, { status: 'Brand Viewed' });
+            this._applyLocalMutationEffects();
+            this._scheduleBackgroundRefresh();
+        } catch (err) {
+            console.error('Brand viewed PATCH error:', err);
+            this.showBddToast('Status update failed: ' + (err.message || 'Network error'), false);
+        }
+    }
+
+    async openOpportunityWorkspaceModal(dealId, requestId, opts = {}) {
+        void opts;
+        const row = this._getWorkspaceRowForModal(dealId, requestId);
+        if (!row || !dealId) return;
+        const modal = document.getElementById('dealDetailsModal');
+        const content = document.getElementById('dealDetailsContent');
+        if (!modal || !content) return;
+
+        const reqId = row._requestId || requestId || '';
+        this._opportunityModalContext = { dealId, requestId: reqId };
+        const brand = (row._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || row.preferredBrandName || '').trim();
+        const contact = row.contactData || {};
+        const contactName = contact['Main Contact Name'] || contact['Contact Name'] || '—';
+        const company = contact['Entity or Company Name'] || contact['Company Name'] || '';
+        const email = (contact['Email Address'] || contact['Email'] || '').trim();
+        const score = row._requestMatchScore != null ? Number(row._requestMatchScore) : (row.matchScore != null ? Number(row.matchScore) : null);
+        const fitHtml = brand
+            ? this.renderFitSummaryHtml(score, row.scoreBreakdown || {}, brand)
+            : '<p style="color:var(--neutral--500);">Brand fit details will appear once this opportunity is linked to a brand match record.</p>';
+        const brandEnc = encodeURIComponent(brand);
+
+        const timelineEntries = (this.dealLogEntries || []).filter(e => e.dealId === dealId).slice(0, 40);
+        const timelineRows = timelineEntries.map(e =>
+            '<tr><td style="white-space:nowrap;font-size:11px;color:var(--neutral--500);padding:6px;">' + this.escapeHtml((e.date || '').slice(0, 19)) + '</td>' +
+            '<td style="font-size:12px;padding:6px;">' + this.escapeHtml(e.action || '') + '</td>' +
+            '<td style="font-size:11px;color:var(--neutral--500);padding:6px;">' + this.escapeHtml(e.stakeholder || '—') + '</td>' +
+            '<td style="font-size:12px;color:var(--neutral--400);padding:6px;">' + this.escapeHtml(e.details || '') + '</td>' +
+            '<td style="font-size:11px;color:var(--neutral--500);padding:6px;">' + this.escapeHtml(row._requestStatus || '—') + '</td></tr>'
+        ).join('');
+        const timelineTable = timelineEntries.length
+            ? '<table class="bdd-crm-timeline-table" style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:var(--neutral--700);text-align:left;"><th style="padding:8px;">When</th><th style="padding:8px;">Event</th><th style="padding:8px;">Side</th><th style="padding:8px;">Details</th><th style="padding:8px;">Request status</th></tr></thead><tbody>' + timelineRows + '</tbody></table>'
+            : '<p style="color:var(--neutral--500);">No activity loaded for this deal yet.</p>';
+
+        const primary = this.derivePrimaryWorkspaceAction(row);
+        const secondaryChips = this._buildModalActionButtonGroup(dealId, reqId, row);
+        const stickyBar =
+            '<div class="bdd-modal-action-sticky">' +
+            '<p class="bdd-ws-actions-hint" style="margin:0 0 10px;font-size:12px;color:var(--neutral--500);">Work the deal once. Dealality captures the activity trail automatically. Actions update the Brand Deal Request and the Deal Activity Log.</p>' +
+            '<div class="bdd-modal-primary-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">' +
+            '<button type="button" class="bdd-ws-primary-btn" data-bdd-ws="' + this.escapeHtml(primary.action) + '" data-deal-id="' + this.escapeHtml(dealId) + '" data-request-id="' + this.escapeHtml(reqId) + '">' + this.escapeHtml(primary.label) + '</button>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">' + secondaryChips + '</div></div></div>';
+
+        const advisorName = contact['Advisor Name'] || contact['Advisor Contact Name'] || contact['Consultant Name'] || '—';
+        const lastTouch = row.lastActivityDisplay || '—';
+        const relHtml =
+            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Relationship & contact context</h3>' +
+            '<ul style="margin:0;padding-left:18px;color:var(--neutral--400);font-size:13px;line-height:1.6;">' +
+            '<li><strong style="color:var(--neutral--300);">Owner / primary:</strong> ' + this.escapeHtml(contactName) + (company ? ' — ' + this.escapeHtml(company) : '') + '</li>' +
+            '<li><strong style="color:var(--neutral--300);">Advisor:</strong> ' + this.escapeHtml(advisorName) + '</li>' +
+            '<li><strong style="color:var(--neutral--300);">Email:</strong> ' + (email ? this.escapeHtml(email) : 'Not on file') + '</li>' +
+            '<li><strong style="color:var(--neutral--300);">Brand on request:</strong> ' + this.escapeHtml(brand || '—') + '</li>' +
+            '<li><strong style="color:var(--neutral--300);">Last touch:</strong> ' + this.escapeHtml(lastTouch) + '</li>' +
+            '<li><strong style="color:var(--neutral--300);">Next follow-up:</strong> ' + this.escapeHtml(row.followUpDisplay || '—') + '</li>' +
+            '</ul></div>';
+
+        const crmHas = row.externalCrmId || row.crmSyncStatus || row.crmStage || row.crmOwner || row.lastCrmSyncAt;
+        const crmHtml = crmHas
+            ? ('<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">CRM sync readiness</h3>' +
+                '<ul style="margin:0;padding-left:18px;color:var(--neutral--400);font-size:13px;">' +
+                (row.externalCrmId ? '<li>External CRM ID: ' + this.escapeHtml(row.externalCrmId) + '</li>' : '') +
+                (row.crmSyncStatus ? '<li>Sync status: ' + this.escapeHtml(row.crmSyncStatus) + '</li>' : '') +
+                (row.lastCrmSyncAt ? '<li>Last CRM sync: ' + this.escapeHtml(row.lastCrmSyncAt) + '</li>' : '') +
+                (row.crmOwner ? '<li>CRM owner: ' + this.escapeHtml(row.crmOwner) + '</li>' : '') +
+                (row.crmStage ? '<li>CRM stage: ' + this.escapeHtml(row.crmStage) + '</li>' : '') +
+                (row.crmNotes ? '<li>CRM notes: ' + this.escapeHtml(row.crmNotes) + '</li>' : '') +
+                '</ul></div>')
+            : ('<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">CRM sync readiness</h3><p style="color:var(--neutral--500);font-size:13px;">Optional CRM fields (External CRM ID, sync status, etc.) appear here when present in Airtable.</p></div>');
+
+        const taskHtml = '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Next step & follow-up</h3>' +
+            '<p style="margin:0;font-size:13px;color:var(--neutral--400);">Next action: <strong style="color:var(--neutral--100);">' + this.escapeHtml(row.nextActionLabel || '—') + '</strong>' +
+            (this.isStalledRow(row) ? ' <span style="color:#ffb4b8;">Overdue</span>' : '') + '</p></div>';
+
+        const nda = (row.ndaStatus || '').trim() || '—';
+        const dr = (row.dealRoomAccess || '').trim() || '—';
+        const prop = (row.proposalStatus || '').trim() || '—';
+        const dealRoomLink = reqId ? '/deal-room-brand.html?requestId=' + encodeURIComponent(reqId) : '';
+        const summaryLink = '/deal-summary.html?id=' + encodeURIComponent(dealId) + '&from=bdd';
+
+        /* Single scroll: #dealDetailsContent only (no nested overflow-y — avoids double scrollbars) */
+        content.innerHTML = stickyBar + '<div class="bdd-deal-details-body">' +
+            '<div class="modal-section"><p style="margin:0 0 16px;font-size:13px;color:var(--neutral--500);line-height:1.5;">Dealality is built for hotel development dealflow. It captures relationship activity, owner requests, NDA progress, deal room actions, follow-ups, and proposal milestones as your team works — so development teams do not have to manage the same opportunity twice in a generic CRM.</p></div>' +
+            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:0 0 8px;">Opportunity summary</h3>' +
+            '<p style="margin:0;color:var(--neutral--300);">' + this.escapeHtml(row.propertyName || '—') + '</p>' +
+            '<p style="margin:8px 0 0;color:var(--neutral--400);font-size:14px;">' + this.escapeHtml([row.city, row.country].filter(Boolean).join(', ') || '—') +
+            ' · ' + this.escapeHtml(String(row.rooms != null ? row.rooms : '—')) + ' rooms · ' + this.escapeHtml(row.propertyType || '—') + '</p>' +
+            '<p style="margin:10px 0 0;font-size:13px;color:var(--neutral--500);">Stage: ' + this.escapeHtml(row.stageLabel || '—') +
+            ' · Status: ' + this.escapeHtml(row._requestStatus || '—') + '</p>' +
+            '<p style="margin:12px 0 0;"><a href="' + summaryLink + '" style="color:var(--accent--primary-1);">Open full deal summary</a>' +
+            (dealRoomLink ? ' · <a href="' + dealRoomLink + '" target="_blank" rel="noopener" style="color:var(--accent--primary-1);">Open deal room</a>' : '') + '</p></div>' +
+            relHtml + taskHtml + crmHtml +
+            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Brand fit review</h3>' + fitHtml +
+            (brand ? '<p style="margin:12px 0 0;"><button type="button" class="bdd-modal-fit-btn filter-input" style="cursor:pointer;padding:8px 12px;" data-deal-id="' + this.escapeHtml(dealId) + '" data-brand="' + brandEnc + '">Open full match breakdown</button></p>' : '') + '</div>' +
+            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Internal notes & responses</h3>' +
+            '<p style="color:var(--neutral--400);font-size:14px;margin:0;white-space:pre-wrap;">' + this.escapeHtml((row.responseNotes || row.ownerNotes || '').trim() || '—') + '</p></div>' +
+            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Documents / deal room</h3>' +
+            '<ul style="margin:0;padding-left:18px;color:var(--neutral--400);font-size:14px;">' +
+            '<li>NDA status: ' + this.escapeHtml(nda) + '</li>' +
+            '<li>Deal room access: ' + this.escapeHtml(dr) + '</li>' +
+            '<li>Proposal status: ' + this.escapeHtml(prop) + '</li></ul></div>' +
+            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">CRM activity timeline</h3>' + timelineTable + '</div>' +
+            '</div>';
+
+        modal.classList.add('active');
+        bddSetDealDetailsModalScrollLock(true);
+    }
+
+    _buildModalActionButtonGroup(dealId, requestId, row) {
+        const primary = this.derivePrimaryWorkspaceAction(row);
+        const skipRowIcons = new Set();
+        const chips = this.getAvailableWorkspaceActions(row)
+            .filter(a => a.id !== primary.action && a.id !== 'open' && !skipRowIcons.has(a.id));
+        return chips.map(a =>
+            '<button type="button" class="bdd-ws-chip" data-bdd-ws="' + this.escapeHtml(a.id) + '" data-deal-id="' + this.escapeHtml(dealId) + '" data-request-id="' + this.escapeHtml(requestId) + '">' + this.escapeHtml(a.label) + '</button>'
+        ).join('');
+    }
+
+    _workspaceResponseActionsHtml(dealId, requestId, row) {
+        if (!requestId) return '<span style="color:var(--neutral--500);">No brand request id — use the full deal summary for now.</span>';
+        const st = (row._requestStatus || '').trim();
+        const canInterest = (st === 'New' || st === 'Brand Viewed');
+        const b = (cls, label, onClick) => '<button type="button" class="filter-input ' + cls + '" style="cursor:pointer;padding:8px 10px;font-size:13px;" onclick="' + onClick + '">' + this.escapeHtml(label) + '</button>';
+        let h = '';
+        if (canInterest) {
+            h += b('', 'Mark interested', 'dashboard.acceptRequest(\'' + requestId + '\', { keepModal: true, dealId: \'' + dealId + '\' })');
+            h += b('', 'Decline', 'dashboard.declineRequest(\'' + requestId + '\', \'' + dealId + '\')');
+        }
+        h += b('', 'Request more information', 'dashboard.openRequestInfoModal(\'' + requestId + '\', \'' + dealId + '\')');
+        h += b('', 'Request NDA (mark sent)', 'dashboard.runBdrAction(\'' + requestId + '\',\'sendNda\')');
+        h += b('', 'Grant deal room', 'dashboard.runBdrAction(\'' + requestId + '\',\'grantAccess\')');
+        h += b('', 'Prepare terms (Pre-LOI)', 'dashboard.patchBdrStatus(\'' + requestId + '\',\'Pre-LOI\')');
+        h += b('', 'Submit proposal', 'closeDealDetailsModal(); dashboard.openSubmitProposalModal(\'' + requestId + '\')');
+        h += b('', 'Add follow-up', 'closeDealDetailsModal(); dashboard.scheduleFollowUp(\'' + dealId + '\',\'' + requestId + '\',\'\')');
+        h += b('', 'Revisit later', 'dashboard.openRevisitLaterModal(\'' + dealId + '\',\'' + requestId + '\')');
+        return h;
+    }
+
+    scheduleFollowUpRevisit(dealId, requestId) {
+        this.openRevisitLaterModal(dealId, requestId);
+    }
+
+    async runBdrAction(requestId, action, opts = {}) {
+        if (!requestId || !action) return;
+        try {
+            const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                this.showBddToast(data.error || 'Action failed', false);
+                return;
+            }
+            this.crmSuccessToast();
+            if (!opts.keepModal) closeDealDetailsModal();
+            this._scheduleBackgroundRefresh();
+            await this.refreshDealalityActivityFeed();
+            if (opts.dealId) await this.refreshModalIfOpen(opts.dealId, requestId);
+            this.applyFilters();
+        } catch (err) {
+            this.showBddToast(err.message || 'Network error', false);
+        }
+    }
+
+    async patchBdrStatus(requestId, status, opts = {}) {
+        if (!requestId || !status) return;
+        try {
+            const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                this.showBddToast(data.error || 'Update failed', false);
+                return;
+            }
+            this._applyLocalRequestPatch(requestId, { status });
+            this._applyLocalMutationEffects();
+            this._scheduleBackgroundRefresh();
+            this.crmSuccessToast();
+            if (!opts.keepModal) closeDealDetailsModal();
+            await this.refreshDealalityActivityFeed();
+            if (opts.dealId) await this.refreshModalIfOpen(opts.dealId, requestId);
+            this.applyFilters();
+        } catch (err) {
+            this.showBddToast(err.message || 'Network error', false);
+        }
+    }
+
+    async patchBdrNotesOnly(requestId, patch, opts = {}) {
+        if (!requestId || !patch) return;
+        try {
+            const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(patch)
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                this.showBddToast(data.error || 'Update failed', false);
+                return;
+            }
+            this._applyLocalRequestPatch(requestId, patch);
+            this._applyLocalMutationEffects();
+            this._scheduleBackgroundRefresh();
+            this.crmSuccessToast();
+            if (!opts.keepModal) closeDealDetailsModal();
+            await this.refreshDealalityActivityFeed();
+            if (opts.dealId) await this.refreshModalIfOpen(opts.dealId, requestId);
+            this.applyFilters();
+        } catch (err) {
+            this.showBddToast(err.message || 'Network error', false);
+        }
+    }
+
+    executeBrandWorkspaceActionFromModal(action, dealId, requestId) {
+        const row = this._getWorkspaceRowForModal(dealId, requestId);
+        if (row) this.executeBrandWorkspaceAction(action, row);
     }
 
     async handleViewDeal(dealId, requestId, requestStatus) {
-        const base = window.location.origin || '';
-        const url = base + '/deal-summary.html?id=' + encodeURIComponent(dealId) + '&from=bdd';
-        const validRequestId = requestId && String(requestId).trim().startsWith('rec');
-        const shouldUpdateStatus = (requestStatus === 'New' || requestStatus === 'new') && validRequestId;
-        if (shouldUpdateStatus) {
-            try {
-                const res = await fetch(`${base}/api/brand-deal-requests/${encodeURIComponent(requestId)}`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status: 'Brand Viewed' })
-                });
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok) {
-                    const msg = data.error || res.statusText || 'Could not update status to Viewed.';
-                    this.showBddToast('Status update failed: ' + msg, false);
-                } else {
-                    this._applyLocalRequestPatch(requestId, { status: 'Brand Viewed' });
-                    this._applyLocalMutationEffects();
-                    this._scheduleBackgroundRefresh();
-                }
-            } catch (err) {
-                console.error('handleViewDeal PATCH error:', err);
-                this.showBddToast('Status update failed: ' + (err.message || 'Network error'), false);
-            }
-        }
-        window.location.href = url;
+        await this._maybeMarkBrandViewed(requestId, requestStatus);
+        await this.openOpportunityWorkspaceModal(dealId, requestId);
     }
 
-    async acceptRequest(requestId) {
+    async acceptRequest(requestId, opts = {}) {
         if (!requestId) return;
         try {
             const base = window.location.origin || '';
@@ -2856,7 +4380,10 @@ class BrandDevelopmentDashboard {
             this._applyLocalRequestPatch(requestId, { status: 'Accepted' });
             this._applyLocalMutationEffects();
             this._scheduleBackgroundRefresh();
-            this.showBddToast('Deal accepted and moved to Active Deals', true);
+            if (!opts.keepModal) closeDealDetailsModal();
+            this.crmSuccessToast();
+            await this.refreshDealalityActivityFeed();
+            if (opts.dealId) await this.refreshModalIfOpen(opts.dealId, requestId);
         } catch (err) {
             this.showBddToast('Error: ' + (err.message || 'Network error'), false);
         }
@@ -2876,37 +4403,304 @@ class BrandDevelopmentDashboard {
                 this.showBddToast(data.error || 'Could not reactivate', false);
                 return;
             }
-            this.showBddToast('Deal reactivated and moved to Active Deals', true);
+            this.showBddToast('Reactivated — returned to the workspace pipeline.', true);
             this._applyLocalRequestPatch(requestId, { status: 'Accepted' });
             this._applyLocalMutationEffects();
             this._scheduleBackgroundRefresh();
+            closeDealDetailsModal();
         } catch (err) {
             this.showBddToast('Error reactivating: ' + (err.message || 'Network error'), false);
         }
     }
 
-    async declineRequest(requestId) {
-        if (!requestId) return;
-        const notes = window.prompt('Optional: Add a note for why you declined');
-        if (notes === null) return;
+    declineRequest(requestId, dealId) {
+        this.openDeclineWorkspaceModal(requestId, dealId || '');
+    }
+
+    openRequestInfoModal(requestId, dealId) {
+        this._openBddRequestInfoModal(requestId, dealId || '');
+    }
+
+    requestMoreInformation(requestId, dealId) {
+        this._openBddRequestInfoModal(requestId, dealId || '');
+    }
+
+    _openBddRequestInfoModal(requestId, dealId) {
+        const modal = document.getElementById('bddRequestInfoModal');
+        const ta = document.getElementById('bddRequestInfoTextarea');
+        if (!modal || !ta || !requestId) return;
+        const pos = this._findRequestPosition(requestId);
+        const d = dealId || (pos && pos.request && pos.request.dealId) || (this._opportunityModalContext && this._opportunityModalContext.dealId) || '';
+        modal.dataset.pendingRequestId = requestId;
+        modal.dataset.pendingDealId = d;
+        ta.value = 'Please confirm room count, ownership structure, and current project timeline.';
+        modal.classList.add('active');
+    }
+
+    closeBddRequestInfoModal() {
+        document.getElementById('bddRequestInfoModal')?.classList.remove('active');
+    }
+
+    async saveBddRequestInfo() {
+        const modal = document.getElementById('bddRequestInfoModal');
+        const requestId = modal && modal.dataset.pendingRequestId;
+        const dealId = (modal && modal.dataset.pendingDealId) || '';
+        const ta = document.getElementById('bddRequestInfoTextarea');
+        if (!requestId || !ta) return;
+        const addition = String(ta.value || '').trim();
+        if (!addition) {
+            this.showBddToast('Enter what you are requesting from the owner.', false);
+            return;
+        }
+        const pos = this._findRequestPosition(requestId);
+        const existing = (pos && pos.request && pos.request.responseNotes) ? String(pos.request.responseNotes) : '';
+        const merged = this.appendResponseNotesForPatch(existing, 'Information requested: ' + addition);
         try {
-            const base = window.location.origin || '';
-            const res = await fetch(`${base}/api/brand-deal-requests/${encodeURIComponent(requestId)}`, {
+            const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: 'Declined', responseNotes: notes || undefined })
+                body: JSON.stringify({ status: 'More Info Requested', responseNotes: merged })
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
-                this.showBddToast(data.error || 'Could not decline request', false);
+                this.showBddToast(data.error || 'Could not save request', false);
                 return;
             }
-            this._applyLocalRequestPatch(requestId, { status: 'Declined', responseNotes: notes || undefined });
+            this._applyLocalRequestPatch(requestId, { status: 'More Info Requested', responseNotes: merged });
             this._applyLocalMutationEffects();
             this._scheduleBackgroundRefresh();
-            this.showBddToast('Deal declined and moved to Archived', true);
+            this.closeBddRequestInfoModal();
+            this.crmSuccessToast();
+            await this.refreshDealalityActivityFeed();
+            if (dealId) await this.refreshModalIfOpen(dealId, requestId);
         } catch (err) {
-            this.showBddToast('Error: ' + (err.message || 'Network error'), false);
+            this.showBddToast(err.message || 'Network error', false);
+        }
+    }
+
+    _declinePresetReasonLabel(value) {
+        const m = {
+            brand_fit: 'Brand / product fit',
+            scale_positioning: 'Chain scale or positioning mismatch',
+            geography_market: 'Geography or market coverage',
+            deal_structure: 'Deal structure (fees, key money, terms)',
+            timing: 'Timing or project pace',
+            capacity_pipeline: 'Internal capacity / pipeline',
+            strategic_pause: 'Strategic pause or allocation',
+            other: null
+        };
+        return m[value] || '';
+    }
+
+    _syncBddDeclineReasonUi() {
+        const preset = document.getElementById('bddDeclineReasonPreset');
+        const wrap = document.getElementById('bddDeclineReasonOtherWrap');
+        if (!preset || !wrap) return;
+        wrap.style.display = preset.value === 'other' ? 'block' : 'none';
+    }
+
+    _syncBddDeclineAlternateUi() {
+        const sel = document.getElementById('bddDeclineAlternateBrand');
+        const wrap = document.getElementById('bddDeclineAlternateOtherWrap');
+        if (!sel || !wrap) return;
+        wrap.style.display = sel.value === '__other__' ? 'block' : 'none';
+    }
+
+    _populateDeclineAlternateBrandSelect(excludeBrand) {
+        const sel = document.getElementById('bddDeclineAlternateBrand');
+        if (!sel) return;
+        const ex = (excludeBrand || '').trim().toLowerCase();
+        sel.innerHTML = '';
+        const none = document.createElement('option');
+        none.value = '';
+        none.textContent = 'No alternate brand suggested';
+        sel.appendChild(none);
+        let names = (this._portfolioBrandNames && this._portfolioBrandNames.length)
+            ? [...this._portfolioBrandNames]
+            : Array.from(document.querySelectorAll('#brandFilter option')).map(o => (o.value || '').trim()).filter(Boolean);
+        names = [...new Set(names)].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+        names.forEach((name) => {
+            if (!name || name.trim().toLowerCase() === ex) return;
+            const opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = name;
+            sel.appendChild(opt);
+        });
+        const other = document.createElement('option');
+        other.value = '__other__';
+        other.textContent = 'Other brand (type name)';
+        sel.appendChild(other);
+    }
+
+    openDeclineWorkspaceModal(requestId, dealId) {
+        const modal = document.getElementById('bddDeclineWorkspaceModal');
+        const notes = document.getElementById('bddDeclineNotesInput');
+        if (!modal || !requestId) return;
+        const pos = this._findRequestPosition(requestId);
+        const d = dealId || (pos && pos.request && pos.request.dealId) || (this._opportunityModalContext && this._opportunityModalContext.dealId) || '';
+        modal.dataset.pendingRequestId = requestId;
+        modal.dataset.pendingDealId = d;
+        const row = d ? this._getWorkspaceRowForModal(d, requestId) : null;
+        const contacted = ((row && row._contactedBrand) || (pos && pos.request && (pos.request.brandName || '').trim()) || this.brandId || document.getElementById('brandFilter')?.value || '').trim();
+        modal.dataset.contactedBrand = contacted;
+
+        const preset = document.getElementById('bddDeclineReasonPreset');
+        if (preset) preset.value = '';
+        const otherReason = document.getElementById('bddDeclineReasonOtherInput');
+        if (otherReason) otherReason.value = '';
+        this._syncBddDeclineReasonUi();
+
+        if (notes) notes.value = '';
+
+        this._populateDeclineAlternateBrandSelect(contacted);
+        const altSel = document.getElementById('bddDeclineAlternateBrand');
+        if (altSel) altSel.value = '';
+        const altOther = document.getElementById('bddDeclineAlternateBrandOther');
+        if (altOther) altOther.value = '';
+        this._syncBddDeclineAlternateUi();
+
+        modal.classList.add('active');
+    }
+
+    closeBddDeclineWorkspaceModal() {
+        document.getElementById('bddDeclineWorkspaceModal')?.classList.remove('active');
+    }
+
+    async saveBddDeclineWorkspace() {
+        const modal = document.getElementById('bddDeclineWorkspaceModal');
+        const requestId = modal && modal.dataset.pendingRequestId;
+        const dealId = (modal && modal.dataset.pendingDealId) || '';
+        const presetEl = document.getElementById('bddDeclineReasonPreset');
+        const notesEl = document.getElementById('bddDeclineNotesInput');
+        const presetVal = presetEl ? String(presetEl.value || '').trim() : '';
+        const extra = notesEl ? String(notesEl.value || '').trim() : '';
+        if (!requestId) return;
+        if (!presetVal) {
+            this.showBddToast('Choose a decline reason.', false);
+            return;
+        }
+        let reasonLine = '';
+        if (presetVal === 'other') {
+            reasonLine = (document.getElementById('bddDeclineReasonOtherInput')?.value || '').trim();
+            if (!reasonLine) {
+                this.showBddToast('Add a short explanation for Other.', false);
+                return;
+            }
+        } else {
+            reasonLine = this._declinePresetReasonLabel(presetVal);
+            if (!reasonLine) {
+                this.showBddToast('Choose a decline reason.', false);
+                return;
+            }
+        }
+
+        let altLine = '';
+        const altSel = document.getElementById('bddDeclineAlternateBrand');
+        if (altSel && altSel.value === '__other__') {
+            const t = (document.getElementById('bddDeclineAlternateBrandOther')?.value || '').trim();
+            if (!t) {
+                this.showBddToast('Enter the alternate brand name, or choose "No alternate brand suggested".', false);
+                return;
+            }
+            altLine = 'Alternate brand proposed: ' + t;
+        } else if (altSel && altSel.value) {
+            altLine = 'Alternate brand proposed: ' + altSel.value;
+        }
+
+        const pos = this._findRequestPosition(requestId);
+        const existing = (pos && pos.request && pos.request.responseNotes) ? String(pos.request.responseNotes) : '';
+        const addition = ['Declined — ' + reasonLine, altLine, extra].filter(Boolean).join('\n');
+        const merged = this.appendResponseNotesForPatch(existing, addition);
+        try {
+            const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Declined', responseNotes: merged })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                this.showBddToast(data.error || 'Could not decline', false);
+                return;
+            }
+            this._applyLocalRequestPatch(requestId, { status: 'Declined', responseNotes: merged });
+            this._applyLocalMutationEffects();
+            this._scheduleBackgroundRefresh();
+            this.closeBddDeclineWorkspaceModal();
+            closeDealDetailsModal();
+            this.crmSuccessToast();
+            await this.refreshDealalityActivityFeed();
+            if (dealId) await this.refreshModalIfOpen(dealId, requestId);
+        } catch (err) {
+            this.showBddToast(err.message || 'Network error', false);
+        }
+    }
+
+    openRevisitLaterModal(dealId, requestId) {
+        const modal = document.getElementById('bddRevisitLaterModal');
+        const dateInput = document.getElementById('bddRevisitDateInput');
+        const notesInput = document.getElementById('bddRevisitNotesInput');
+        if (!modal || !requestId || !dateInput) return;
+        modal.dataset.pendingRequestId = requestId;
+        modal.dataset.pendingDealId = dealId || '';
+        const pos = this._findRequestPosition(requestId);
+        const pair = pos && pos.request;
+        dateInput.value = (pair && pair.nextFollowupDate) ? String(pair.nextFollowupDate).slice(0, 10) : '';
+        if (notesInput) notesInput.value = (pair && pair.nextFollowupNotes) ? String(pair.nextFollowupNotes).trim() : '';
+        modal.classList.add('active');
+    }
+
+    closeBddRevisitLaterModal() {
+        document.getElementById('bddRevisitLaterModal')?.classList.remove('active');
+    }
+
+    async saveBddRevisitLater() {
+        const modal = document.getElementById('bddRevisitLaterModal');
+        const requestId = modal && modal.dataset.pendingRequestId;
+        const dealId = (modal && modal.dataset.pendingDealId) || '';
+        const dateInput = document.getElementById('bddRevisitDateInput');
+        const notesInput = document.getElementById('bddRevisitNotesInput');
+        const dateVal = dateInput && dateInput.value;
+        const notesVal = notesInput ? notesInput.value.trim() : '';
+        if (!requestId || !dateVal) {
+            this.showBddToast('Choose a revisit date.', false);
+            return;
+        }
+        const pos = this._findRequestPosition(requestId);
+        const existing = (pos && pos.request && pos.request.responseNotes) ? String(pos.request.responseNotes) : '';
+        const merged = this.appendResponseNotesForPatch(existing, 'Revisit later — next check-in ' + dateVal + (notesVal ? ': ' + notesVal : ''));
+        try {
+            const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    status: 'Revisit Later',
+                    responseNotes: merged,
+                    nextFollowupDate: dateVal,
+                    nextFollowupHeader: 'Revisit later',
+                    nextFollowupNotes: notesVal || 'Parked for revisit',
+                    scheduledBy: 'brand'
+                })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                this.showBddToast(data.error || 'Could not save revisit', false);
+                return;
+            }
+            this._applyLocalRequestPatch(requestId, {
+                status: 'Revisit Later',
+                responseNotes: merged,
+                nextFollowupDate: dateVal,
+                nextFollowupHeader: 'Revisit later',
+                nextFollowupNotes: notesVal || 'Parked for revisit'
+            });
+            this._applyLocalMutationEffects();
+            this._scheduleBackgroundRefresh();
+            this.closeBddRevisitLaterModal();
+            this.crmSuccessToast();
+            await this.refreshDealalityActivityFeed();
+            if (dealId) await this.refreshModalIfOpen(dealId, requestId);
+        } catch (err) {
+            this.showBddToast(err.message || 'Network error', false);
         }
     }
 
@@ -2920,6 +4714,7 @@ class BrandDevelopmentDashboard {
         const shortId = dealId ? String(dealId).slice(-6) : '';
         label.textContent = 'Schedule a follow-up for ' + (brand || 'this brand') + (shortId ? ' (deal ' + shortId + ').' : '.');
         modal.dataset.pendingRequestId = requestId || '';
+        modal.dataset.pendingDealId = dealId || '';
         const allReqs = [
             ...(this.brandDealRequests.new || []),
             ...(this.brandDealRequests.viewed || []),
@@ -2956,6 +4751,32 @@ class BrandDevelopmentDashboard {
         if (iframe) iframe.src = 'about:blank';
     }
 
+    openOutreachInboxModal(dealId, brand) {
+        const id = (dealId || '').trim();
+        if (!id) {
+            this.showBddToast('Missing deal id for inbox.', false);
+            return;
+        }
+        const modal = document.getElementById('bddOutreachInboxModal');
+        const iframe = document.getElementById('bddOutreachInboxIframe');
+        if (!modal || !iframe) return;
+        const base = window.location.origin || '';
+        const params = new URLSearchParams();
+        params.set('embed', '1');
+        params.set('dealId', id);
+        const b = (brand || '').trim();
+        if (b) params.set('brand', b);
+        iframe.src = base + '/outreach-inbox?' + params.toString();
+        modal.classList.add('active');
+    }
+
+    closeOutreachInboxModal() {
+        const modal = document.getElementById('bddOutreachInboxModal');
+        const iframe = document.getElementById('bddOutreachInboxIframe');
+        if (modal) modal.classList.remove('active');
+        if (iframe) iframe.src = 'about:blank';
+    }
+
     async saveBddSchedule() {
         const modal = document.getElementById('bddScheduleModal');
         const dateInput = document.getElementById('bddScheduleDateInput');
@@ -2973,7 +4794,12 @@ class BrandDevelopmentDashboard {
             const res = await fetch(window.location.origin + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nextFollowupDate: dateVal, nextFollowupHeader: headerVal, nextFollowupNotes: notesVal })
+                body: JSON.stringify({
+                    nextFollowupDate: dateVal,
+                    nextFollowupHeader: headerVal,
+                    nextFollowupNotes: notesVal,
+                    scheduledBy: 'brand'
+                })
             });
             const data = await res.json().catch(() => ({}));
             if (res.ok) {
@@ -2985,7 +4811,10 @@ class BrandDevelopmentDashboard {
                 });
                 this._applyLocalMutationEffects();
                 this._scheduleBackgroundRefresh();
-                this.showBddToast('Follow-up date saved', true);
+                this.crmSuccessToast();
+                await this.refreshDealalityActivityFeed();
+                const dealId = (modal && modal.dataset.pendingDealId) || '';
+                if (dealId) await this.refreshModalIfOpen(dealId, requestId);
             } else {
                 this.showBddToast(data.error || 'Could not save follow-up date', false);
             }
@@ -3013,7 +4842,6 @@ class BrandDevelopmentDashboard {
             var reason = selectEl.value || '';
             var hasReason = reason && reason !== 'Other' ? true : (reason === 'Other' && otherInput.value.trim().length > 0);
             confirmBtn.disabled = !hasReason;
-            confirmBtn.style.opacity = hasReason ? '1' : '0.7';
         }
         if (closeBtn) closeBtn.addEventListener('click', closeModal);
         if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
@@ -3048,7 +4876,6 @@ class BrandDevelopmentDashboard {
         otherWrap.style.display = 'none';
         otherInput.value = '';
         confirmBtn.disabled = true;
-        confirmBtn.style.opacity = '0.7';
         modal.dataset.pendingRequestId = requestId || '';
         modal.dataset.pendingDealId = dealId || '';
         modal.dataset.pendingBrandName = brandName || '';
@@ -3079,6 +4906,7 @@ class BrandDevelopmentDashboard {
     }
 
     updateActiveDealsDisplay() {
+        if (!document.getElementById('activeDealsTableWrap')) return;
         this.applyActiveDealsFilters();
         var tableWrap = document.getElementById('activeDealsTableWrap');
         var activeTable = document.getElementById('activeDealsTable');
@@ -3224,7 +5052,7 @@ class BrandDevelopmentDashboard {
                 '<td>' + this.escapeHtml(deal.propertyType || '') + '</td>' +
                 '<td>' + (deal.rooms || 'N/A') + '</td>' +
                 '<td><div class="preferred-brand-cell"><div class="preferred-brand-name">' + this.escapeHtml(brandDisplay) + '</div></div></td>' +
-                '<td class="match-score-cell"><span class="match-score-badge ' + scoreClass + '">' + (score != null && score !== '' ? Number(score).toFixed(1) : '—') + '</span></td>' +
+                '<td><div class="match-score-cell"><span class="match-score-badge ' + scoreClass + '">' + (score != null && score !== '' ? Number(score).toFixed(1) : '—') + '</span></div></td>' +
                 '<td class="cell-call-to-action">' + this.renderCallToActionButtons(deal, { showDelete: true, showSubmitProposal: true }) + '</td>' +
                 '</tr>';
         }.bind(this)).join('');
@@ -3376,7 +5204,7 @@ class BrandDevelopmentDashboard {
                 '<td>' + this.escapeHtml(deal.propertyType || '') + '</td>' +
                 '<td>' + (deal.rooms || 'N/A') + '</td>' +
                 '<td><div class="preferred-brand-cell"><div class="preferred-brand-name">' + this.escapeHtml(deal.preferredBrandName || '—') + '</div></div></td>' +
-                '<td class="match-score-cell"><span class="match-score-badge ' + scoreClass + '">' + (deal.matchScore != null && deal.matchScore !== '' ? Number(deal.matchScore).toFixed(1) : '—') + '</span></td>' +
+                '<td><div class="match-score-cell"><span class="match-score-badge ' + scoreClass + '">' + (deal.matchScore != null && deal.matchScore !== '' ? Number(deal.matchScore).toFixed(1) : '—') + '</span></div></td>' +
                 '<td>' + this.escapeHtml(archivedReason) + '</td>' +
                 '<td class="cell-call-to-action">' + this.renderCallToActionButtons(deal, { showReactivate: true }) + '</td>' +
                 '</tr>';
@@ -3471,15 +5299,21 @@ class BrandDevelopmentDashboard {
         if (!tbody) return;
         var entries = this.dealLogEntries || [];
         if (entries.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="padding: 60px 20px; text-align: center; color: var(--neutral--500); font-size: 14px;"><p style="margin: 0;">No activity yet. When you accept, decline, or respond to deals, entries will appear here.</p></td></tr>';
+            tbody.innerHTML =
+                '<tr><td colspan="5" style="padding: 60px 20px; text-align: center; color: var(--neutral--500); font-size: 14px; line-height: 1.55;">' +
+                '<p style="margin: 0 0 10px; color: var(--neutral--300); font-weight: 600;">No activity in the log yet</p>' +
+                '<p style="margin: 0;">When owners and your team move requests forward — accept/decline, request information, NDA and deal room, proposals, follow-ups — events appear here automatically.</p>' +
+                '<p style="margin: 14px 0 0; font-size: 13px;">Tip: use the <strong style="color:var(--neutral--300);">Activity</strong> button while working a pipeline tab to preview the timeline without leaving your stage.</p>' +
+                '</td></tr>';
             return;
         }
         tbody.innerHTML = entries.map(function(e) {
             return '<tr>' +
-                '<td>' + this.escapeHtml(e.date || '') + '</td>' +
+                '<td style="white-space:nowrap;font-size:12px;">' + this.escapeHtml((e.date || '').slice(0, 19)) + '</td>' +
                 '<td>' + this.escapeHtml(e.dealName || '') + '</td>' +
-                '<td>' + this.escapeHtml(e.action || '') + '</td>' +
-                '<td>' + this.escapeHtml(e.details || '') + '</td>' +
+                '<td><span class="bdd-status-badge bdd-status-plain">' + this.escapeHtml(e.action || '') + '</span></td>' +
+                '<td style="font-size:13px;color:var(--neutral--400);">' + this.escapeHtml(e.details || '') + '</td>' +
+                '<td style="font-size:12px;color:var(--neutral--500);">' + this.escapeHtml(e.stakeholder || '—') + '</td>' +
                 '</tr>';
         }.bind(this)).join('');
     }
@@ -3493,28 +5327,26 @@ class BrandDevelopmentDashboard {
             this.sortDirection = 'asc';
         }
 
-        // Update header classes
-        document.querySelectorAll('.deals-table th[data-sort]').forEach(th => {
+        document.querySelectorAll('#dealsTable th[data-sort]').forEach(th => {
             th.classList.remove('sort-asc', 'sort-desc');
             if (th.dataset.sort === column) {
                 th.classList.add(this.sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
             }
         });
 
-        // Sort the filtered deals
         this.sortDeals();
-        
-        // Re-render
         this.renderDeals();
     }
 
     sortDeals() {
         if (!this.sortColumn) return;
+        const rows = this.filteredWorkspaceRows;
+        if (!rows || rows.length === 0) return;
 
-        this.filteredDeals.sort((a, b) => {
+        rows.sort((a, b) => {
             let aVal, bVal;
 
-            switch(this.sortColumn) {
+            switch (this.sortColumn) {
                 case 'status':
                     aVal = (a._requestStatus || '').toLowerCase();
                     bVal = (b._requestStatus || '').toLowerCase();
@@ -3527,21 +5359,23 @@ class BrandDevelopmentDashboard {
                     aVal = (a.headline || this.generateDealHeadline(a.dealFields, a.locationData, a.contactData) || '').toLowerCase();
                     bVal = (b.headline || this.generateDealHeadline(b.dealFields, b.locationData, b.contactData) || '').toLowerCase();
                     break;
-                case 'contactName':
-                    const aContactName = a.contactData?.['Main Contact Name'] || 
-                                        a.contactData?.['Contact Name'] || 
-                                        'Unknown';
-                    const bContactName = b.contactData?.['Main Contact Name'] || 
-                                        b.contactData?.['Contact Name'] || 
-                                        'Unknown';
+                case 'contactName': {
+                    const aContactName = a.contactData?.['Main Contact Name'] || a.contactData?.['Contact Name'] || 'Unknown';
+                    const bContactName = b.contactData?.['Main Contact Name'] || b.contactData?.['Contact Name'] || 'Unknown';
                     aVal = aContactName.toLowerCase();
                     bVal = bContactName.toLowerCase();
                     break;
-                case 'location':
+                }
+                case 'location': {
                     const aLocation = `${a.city || ''}, ${a.country || ''}`.toLowerCase();
                     const bLocation = `${b.city || ''}, ${b.country || ''}`.toLowerCase();
                     aVal = aLocation;
                     bVal = bLocation;
+                    break;
+                }
+                case 'country':
+                    aVal = (a.country || '').toLowerCase();
+                    bVal = (b.country || '').toLowerCase();
                     break;
                 case 'chainScale':
                     aVal = (a.chainScale || '').toLowerCase();
@@ -3555,32 +5389,45 @@ class BrandDevelopmentDashboard {
                     aVal = (a.targetOpeningDate || '').toLowerCase();
                     bVal = (b.targetOpeningDate || '').toLowerCase();
                     break;
-                case 'propertyType':
-                    aVal = (a.propertyType || '').toLowerCase();
-                    bVal = (b.propertyType || '').toLowerCase();
-                    break;
                 case 'rooms':
-                    aVal = parseInt(a.rooms) || 0;
-                    bVal = parseInt(b.rooms) || 0;
+                    aVal = parseInt(a.rooms, 10) || 0;
+                    bVal = parseInt(b.rooms, 10) || 0;
                     break;
                 case 'matchScore':
-                    aVal = a.matchScore || 0;
-                    bVal = b.matchScore || 0;
+                    aVal = a._requestMatchScore != null ? Number(a._requestMatchScore) : (a.matchScore ?? 0);
+                    bVal = b._requestMatchScore != null ? Number(b._requestMatchScore) : (b.matchScore ?? 0);
                     break;
+                case 'stageLabel':
+                    aVal = (a.stageLabel || '').toLowerCase();
+                    bVal = (b.stageLabel || '').toLowerCase();
+                    break;
+                case 'nextAction':
+                    aVal = (a.nextActionLabel || '').toLowerCase();
+                    bVal = (b.nextActionLabel || '').toLowerCase();
+                    break;
+                case 'lastActivity':
+                    aVal = a.lastActivitySort != null ? a.lastActivitySort : 0;
+                    bVal = b.lastActivitySort != null ? b.lastActivitySort : 0;
+                    break;
+                case 'followUp': {
+                    const fa = this._parseDateMs(a.nextFollowupDate);
+                    const fb = this._parseDateMs(b.nextFollowupDate);
+                    aVal = fa != null ? fa : 0;
+                    bVal = fb != null ? fb : 0;
+                    break;
+                }
                 default:
                     return 0;
             }
 
-            // Handle numeric vs string comparison
-            if (this.sortColumn === 'rooms' || this.sortColumn === 'matchScore') {
+            if (this.sortColumn === 'rooms' || this.sortColumn === 'matchScore' || this.sortColumn === 'lastActivity' || this.sortColumn === 'followUp') {
                 return this.sortDirection === 'asc' ? aVal - bVal : bVal - aVal;
-            } else {
-                // String comparison
-                if (aVal < bVal) return this.sortDirection === 'asc' ? -1 : 1;
-                if (aVal > bVal) return this.sortDirection === 'asc' ? 1 : -1;
-                return 0;
             }
+            if (aVal < bVal) return this.sortDirection === 'asc' ? -1 : 1;
+            if (aVal > bVal) return this.sortDirection === 'asc' ? 1 : -1;
+            return 0;
         });
+        this.filteredDeals = rows.filter(r => r.workspaceBucket === 'new');
     }
 
     async recalculateMatchScores() {
@@ -3668,51 +5515,11 @@ class BrandDevelopmentDashboard {
     }
 
     applyFilters() {
-        const scoreFilter = document.getElementById('scoreFilter')?.value || '';
-        const propertyTypeFilter = document.getElementById('propertyTypeFilter')?.value || '';
-        const countryFilter = document.getElementById('countryFilter')?.value || '';
-        const newDealsRequests = [
-            ...(this.brandDealRequests.new || []).map(r => ({ ...r, _status: 'New' })),
-            ...(this.brandDealRequests.viewed || []).map(r => ({ ...r, _status: 'Brand Viewed' }))
-        ];
-        const dealMap = new Map(this.deals.map(d => [d.id, d]));
-        const sourceDeals = [];
-        for (const req of newDealsRequests) {
-            const deal = dealMap.get(req.dealId);
-            if (!deal) continue;
-            const row = { ...deal };
-            row._requestId = req.id;
-            row._requestStatus = req._status;
-            row._requestMatchScore = req.matchScore;
-            row._contactedBrand = req.brandName || '';
-            sourceDeals.push(row);
-        }
-        const statusFilter = document.getElementById('statusFilter')?.value || '';
-        this.filteredDeals = sourceDeals.filter(deal => {
-            if (statusFilter && deal._requestStatus && deal._requestStatus !== statusFilter) return false;
-            if (scoreFilter) {
-                const score = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore ?? 0);
-                if (scoreFilter === 'high' && score < 80) return false;
-                if (scoreFilter === 'medium' && (score < 50 || score >= 80)) return false;
-                if (scoreFilter === 'low' && score >= 50) return false;
-            }
-            
-            if (propertyTypeFilter && deal.propertyType !== propertyTypeFilter) {
-                return false;
-            }
-            
-            if (countryFilter && deal.country !== countryFilter) {
-                return false;
-            }
-            
-            return true;
-        });
-        
-        // Apply sorting if active
-        if (this.sortColumn) {
-            this.sortDeals();
-        }
-        
+        this.buildWorkspaceRows();
+        const p = this._getFilterParamsFromDom();
+        this.filteredWorkspaceRows = this._filterWorkspaceRowsByDashboardFilters(this.allWorkspaceRows || [], p);
+        this.filteredDeals = this.filteredWorkspaceRows.filter(r => r.workspaceBucket === 'new');
+        if (this.sortColumn) this.sortDeals();
         this.renderDeals();
     }
 
@@ -3726,9 +5533,11 @@ class BrandDevelopmentDashboard {
                 const data = await response.json();
                 const brandSelect = document.getElementById('brandFilter');
                 const brands = Array.isArray(data.brands) ? data.brands : [];
+                const nameList = [];
                 brands.forEach(record => {
                     const brandName = (record?.name || '').toString().trim();
                     if (brandName) {
+                        nameList.push(brandName);
                         const option = document.createElement('option');
                         option.value = brandName;
                         option.textContent = brandName;
@@ -3738,6 +5547,7 @@ class BrandDevelopmentDashboard {
                         brandSelect?.appendChild(option);
                     }
                 });
+                this._portfolioBrandNames = [...new Set(nameList)].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
             }
         } catch (error) {
             console.error('Error populating brand filter:', error);
@@ -4226,11 +6036,13 @@ class BrandDevelopmentDashboard {
     }
 
     showError(message) {
+        this.ensureWorkspaceTableHeader();
         const tbody = document.getElementById('dealsTableBody');
         if (tbody) {
+            const colspan = typeof this.getWorkspaceTableColspan === 'function' ? this.getWorkspaceTableColspan() : 11;
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="12" class="empty-state">
+                    <td colspan="${colspan}" class="empty-state">
                         <h3>Error</h3>
                         <p>${this.escapeHtml(message)}</p>
                     </td>
@@ -4245,8 +6057,21 @@ function closeScoreDetailsModal() {
     document.getElementById('scoreDetailsModal')?.classList.remove('active');
 }
 
+function bddSetDealDetailsModalScrollLock(on) {
+    const cl = 'bdd-deal-details-modal-open';
+    if (on) {
+        document.documentElement.classList.add(cl);
+        document.body.classList.add(cl);
+    } else {
+        document.documentElement.classList.remove(cl);
+        document.body.classList.remove(cl);
+    }
+}
+
 function closeDealDetailsModal() {
     document.getElementById('dealDetailsModal')?.classList.remove('active');
+    bddSetDealDetailsModalScrollLock(false);
+    if (window.dashboard) window.dashboard._opportunityModalContext = null;
 }
 
 function closeAlternativeBrandsModal() {

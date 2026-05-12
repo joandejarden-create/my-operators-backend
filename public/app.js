@@ -54,7 +54,7 @@
         '/my-brands': { file: '/all-brands-dashboard.html', title: 'My Brands' },
         '/my-operators': { file: '/my-third-party-operators.html', title: 'My Operators' },
         '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'My Brand Deals' },
-        '/third-party-operator-intake': { file: '/third-party-operator-intake.html', title: 'Third-Party Operator Intake' },
+        '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/brand-setup': { file: '/brand-setup.html', title: 'Brand Setup' },
         '/reports': { file: '/reports-dashboard.html', title: 'Reports' },
         '/route-map': { placeholder: true, title: 'Route Map' },
@@ -175,7 +175,7 @@
                         { label: 'Company Settings', route: '/company-settings', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Profile Settings', route: '/profile-settings', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'User Management', route: '/user-management', roles: ['admin'] },
-                        { label: 'Third-Party Operator Intake', route: '/third-party-operator-intake', roles: ['operator', 'admin'] },
+                        { label: 'Operator Setup', route: '/third-party-operator-intake', roles: ['operator', 'admin'] },
                         { label: 'Brand Setup', route: '/brand-setup', roles: ['admin'] }
                     ]
                 }
@@ -232,6 +232,7 @@
         '/my-third-party-operators': '/my-operators',
         '/my-third-party-operators.html': '/my-operators',
         '/third-party-operator-intake.html': '/third-party-operator-intake',
+        '/third-party-operator-setup-new-two.html': '/third-party-operator-intake',
         '/brand-setup.html': '/brand-setup',
         '/reports-dashboard.html': '/reports',
         '/route-map.html': '/route-map',
@@ -355,7 +356,22 @@
                 + 'letter-spacing:0 !important;text-transform:none !important;'
                 + 'margin-top:8px !important;max-width:760px !important;color:#ffffff !important;}'
                 + '.intake-header p *, .dashboard-header p *, .page-header p *, .brand-review__header p *, .explorer-page-header__subtitle *, .mapping-subtitle *, .news-page-header p * {'
-                + 'font-family:inherit !important;font-size:inherit !important;font-style:inherit !important;font-weight:inherit !important;line-height:inherit !important;letter-spacing:inherit !important;color:inherit !important;}';
+                + 'font-family:inherit !important;font-size:inherit !important;font-style:inherit !important;font-weight:inherit !important;line-height:inherit !important;letter-spacing:inherit !important;color:inherit !important;}'
+                + '/* Help / SVG-adjacent popovers — same surfaces as Brand Workspace (secondary--1 + neutral--600 border) */'
+                + '.input-help:hover::after,.input-help:focus-visible::after{'
+                + 'background:#101935!important;border:1px solid #37446b!important;color:#f0f4ff!important;'
+                + 'box-shadow:0 8px 24px rgba(0,0,0,0.45)!important;}'
+                + '.score-info-icon::after{'
+                + 'background:#101935!important;border:1px solid #37446b!important;color:#f0f4ff!important;'
+                + 'box-shadow:0 8px 20px rgba(0,0,0,0.4)!important;}'
+                + '.info-tooltip .tooltip-content,.tooltip-content{'
+                + 'background:#101935!important;border:1px solid #37446b!important;color:#f0f4ff!important;}'
+                + '#partnerDirectoryTooltipContainer .tooltip-content{'
+                + 'background:#101935!important;border:1px solid #37446b!important;color:#f0f4ff!important;}'
+                + '#tooltipContainer .tooltip-content{'
+                + 'background:#101935!important;border:1px solid #37446b!important;color:#f0f4ff!important;}'
+                + '.tooltip-close-btn{background:#37446b!important;color:#fff!important;border:none!important;}'
+                + '.tooltip-close-btn:hover{background:#7e89ac!important;color:#fff!important;}';
             // LOI tabs should be visible only to admin + dev "all".
             if (route === '/loi-database-dashboard' && role !== 'admin' && role !== 'all') {
                 css += '#databaseTab,#benchmarkTab,#databasePanel,#benchmarkPanel{display:none !important;}';

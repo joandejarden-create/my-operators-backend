@@ -192,7 +192,8 @@
             cursor: help;
             position: relative;
         }
-        .input-help:hover::after {
+        .input-help:hover::after,
+        .input-help:focus-visible::after {
             content: attr(data-tooltip);
             position: absolute;
             left: 50%;
@@ -202,16 +203,16 @@
             max-width: 320px;
             width: 300px;
             padding: 12px;
-            background-color: #1a1a2e;
-            border: 1px solid #333;
-            border-radius: 6px;
+            background: var(--secondary--color-1);
+            border: 1px solid var(--neutral--600);
+            border-radius: 8px;
             font-size: 12px;
             font-weight: 400;
-            color: #fff;
+            color: var(--neutral--100);
             line-height: 1.4;
             white-space: normal;
             z-index: 100;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
         }
         .filter-input,
         .filter-select {

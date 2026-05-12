@@ -286,8 +286,7 @@
         .filter-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
         .filter-group-search { min-width: 160px; max-width: 180px; }
         .filter-group:has(.filter-select) { max-width: 140px; }
-        .filter-group:has(.btn-clear),
-        .filter-group:has(.filter-compare-btn) { max-width: none; width: auto; }
+        .filter-group:has(.btn-clear) { max-width: none; width: auto; }
         .filter-label { color: var(--neutral--400); font-weight: 500; font-size: 12px; }
 
         .filter-search-input {
@@ -399,37 +398,6 @@
         }
         .filter-group:has(.btn-clear) {
             overflow: visible;
-        }
-
-        .filter-compare-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 12px;
-            min-height: 36px;
-            background: var(--accent--primary-1);
-            border: 1px solid var(--accent--primary-1);
-            color: var(--neutral--100);
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            white-space: nowrap;
-            box-sizing: border-box;
-        }
-        .filter-compare-btn:hover {
-            background: var(--secondary--color-2);
-            border-color: var(--secondary--color-2);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
-        }
-        .filter-compare-btn:disabled,
-        .filter-compare-btn.disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            pointer-events: none;
         }
 
         .chain-scale-legend {
@@ -833,10 +801,6 @@
                         <span class="section-nav-label">Operators</span>
                         <span class="tab-count" id="operatorsTabCount">0</span>
                     </button>
-                    <a href="#" class="section-nav-item" data-tab="compare" title="Compare Operators (coming soon)" aria-disabled="true" onclick="event.preventDefault();">
-                        <div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 2 5-6"/><path d="M18 17v-4"/><path d="M15 13l-3 3 3 3"/></svg></div>
-                        <span class="section-nav-label">Compare<br>Operators</span>
-                    </a>
                 </nav>
 
                 <div class="filters-section" id="filtersSection">

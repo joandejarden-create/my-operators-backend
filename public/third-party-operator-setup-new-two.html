@@ -229,25 +229,31 @@
             overflow-x: hidden;
         }
 
-        /* Section Navigation (sticky — matches Brand Setup) */
+        /* Section Navigation (sticky — single row like My Deals; scroll on narrow viewports) */
         .section-nav {
             display: flex;
-            gap: 10px;
+            gap: 0;
             margin-bottom: 30px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: flex-start;
             align-content: flex-start;
             position: sticky;
             top: 0;
             z-index: 100;
             background-color: var(--neutral--800);
-            padding: 12px 0 16px 0;
+            padding: 8px 0 14px 0;
             margin-top: -12px;
             margin-left: -2px;
             margin-right: -2px;
             padding-left: 2px;
             padding-right: 2px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .section-nav::-webkit-scrollbar {
+            display: none;
         }
         .section-nav::after {
             content: "";
@@ -264,40 +270,45 @@
         }
 
         .section-nav-item {
-            min-width: 118px;
+            min-width: 90px;
             flex: 0 0 auto;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             cursor: pointer;
             color: var(--neutral--400);
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.04em;
             font-size: 10px;
             font-weight: 600;
             position: relative;
+            padding: 10px 8px;
+            flex-shrink: 0;
+            box-sizing: border-box;
         }
 
         .section-nav-icon {
-            width: 52px;
-            height: 52px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             border: 1px solid var(--neutral--600);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--neutral--400);
-            font-size: 22px;
+            font-size: 16px;
             background: transparent;
             transition: all 0.2s ease;
+            flex-shrink: 0;
+            box-sizing: border-box;
         }
         .section-nav-icon svg {
-            width: 26px;
-            height: 26px;
+            width: 18px;
+            height: 18px;
             fill: none;
             stroke: currentColor;
-            stroke-width: 1.8;
+            stroke-width: 1.5;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
@@ -310,17 +321,13 @@
             min-width: 0;
             padding: 0 2px;
             box-sizing: border-box;
-            white-space: normal;
-            overflow: visible;
-            display: block;
-            word-break: break-word;
-            overflow-wrap: break-word;
+            font-size: 10px;
         }
 
         .section-nav-item::after {
             content: "";
             position: absolute;
-            bottom: -10px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
             width: 40px;
@@ -337,6 +344,7 @@
 
         .section-nav-item.active .section-nav-icon {
             border-color: var(--secondary--color-5);
+            border-width: 2px;
             background: rgba(253, 181, 42, 0.1);
             color: var(--secondary--color-5);
         }
