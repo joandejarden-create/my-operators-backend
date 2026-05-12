@@ -457,6 +457,12 @@ app.get("/my-third-party-operators-new", (req, res) => {
 app.get("/my-third-party-operators-new/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "my-third-party-operators-new.html"));
 });
+app.get("/my-third-party-operators.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "my-third-party-operators-new.html"));
+});
+app.get("/my-third-party-operators-new.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "my-third-party-operators-new.html"));
+});
 app.get("/my-deals", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'my-deals.html'));
 });
