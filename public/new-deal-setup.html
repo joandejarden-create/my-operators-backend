@@ -3085,6 +3085,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/dealality-webflow-nav.js"></script>
     <script>
 (function () {
     var form = document.getElementById("dealForm");
@@ -4538,56 +4539,24 @@
         } catch (e) {}
     }
 
-    function pathnameLooksHotelOwner(pathname) {
-        return /^\/hotel-owner(\/|$)/i.test(pathname || "");
-    }
-
-    function pathnameLooksAppShell(pathname) {
-        return /^\/app(\/|$)/i.test(pathname || "");
-    }
-
-    /** Webflow hotel-owner area uses /hotel-owner/my-deals-new; app shell uses hash + /my-deals.html. */
-    function getDealalityMyDealsNavigatePathForParentFrame() {
-        try {
-            if (window.parent && window.parent !== window) {
-                var pp = window.parent.location.pathname || "";
-                if (pathnameLooksHotelOwner(pp)) return "/hotel-owner/my-deals-new";
-                if (pathnameLooksAppShell(pp) || (String(window.parent.location.hash || "").indexOf("#/") === 0)) {
-                    return "/my-deals.html";
-                }
-            }
-        } catch (e) {
-            /* cross-origin parent — fall through */
-        }
-        return "/my-deals.html";
-    }
-
-    function getMyDealsTopLevelHref() {
-        try {
-            if (pathnameLooksHotelOwner(window.location.pathname || "")) return "/hotel-owner/my-deals-new";
-        } catch (e) {}
-        return "/my-deals.html";
-    }
-
     function navigateToMyDeals() {
+        if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.navigateToMyDealsList === "function") {
+            window.DealalityWebflowNav.navigateToMyDealsList({ beforeNavigate: resetAddNewDealUiStateBeforeExit });
+            return;
+        }
         resetAddNewDealUiStateBeforeExit();
-
-        // When embedded in the app shell iframe, ask parent shell to switch route
-        // so left-nav state changes to "My Deals" correctly.
         if (window.parent && window.parent !== window) {
             try {
-                var navPath = getDealalityMyDealsNavigatePathForParentFrame();
-                window.parent.postMessage({ type: "dealality-navigate", path: navPath }, window.location.origin);
+                window.parent.postMessage({ type: "dealality-navigate", path: "/my-deals.html" }, window.location.origin);
                 return;
             } catch (e) {}
         }
-
         var inAppShell = window.location.pathname === "/app" || window.location.pathname === "/app/";
         if (inAppShell || (window.location.hash || "").indexOf("#/") === 0) {
             window.location.href = "/app#/my-deals.html";
             return;
         }
-        window.location.href = getMyDealsTopLevelHref();
+        window.location.href = "/my-deals.html";
     }
 
     function continueNowViaMyDealsEdit() {
@@ -5539,6 +5508,9 @@
     (function initBackToMyDealsLink() {
         var backA = document.getElementById("backToMyDealsLink");
         if (!backA) return;
+        if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
+            backA.setAttribute("href", window.DealalityWebflowNav.getMyDealsTopLevelHref());
+        }
         backA.addEventListener("click", function (e) {
             e.preventDefault();
             navigateToMyDeals();

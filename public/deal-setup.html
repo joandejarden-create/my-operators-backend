@@ -521,7 +521,7 @@
             <div class="intake-container">
                 <div class="intake-header">
                     <div class="back-to-my-deals">
-                        <a href="/my-deals">← Back to My Deals</a>
+                        <a href="/my-deals.html" id="dealSetupBackToMyDealsLink">← Back to My Deals</a>
                     </div>
                     <div class="intake-title-container">
                         <h1 id="dealPageTitle">Deal</h1>
@@ -2517,6 +2517,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/dealality-webflow-nav.js"></script>
     <script>
 (function () {
     var form = document.getElementById("dealForm");
@@ -3732,6 +3733,18 @@
     form.addEventListener("change", function () { updateSectionCompletionIndicators(); });
 
     updateRequiredCounts();
+
+    (function initBackToMyDealsNav() {
+        var el = document.getElementById("dealSetupBackToMyDealsLink");
+        if (!el || !window.DealalityWebflowNav || typeof window.DealalityWebflowNav.navigateToMyDealsList !== "function") return;
+        if (typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
+            el.setAttribute("href", window.DealalityWebflowNav.getMyDealsTopLevelHref());
+        }
+        el.addEventListener("click", function (e) {
+            e.preventDefault();
+            window.DealalityWebflowNav.navigateToMyDealsList({});
+        });
+    })();
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();

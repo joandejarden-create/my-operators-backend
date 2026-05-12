@@ -6822,7 +6822,12 @@ Assignments without transition runway</textarea>
                 const hotelOwnerListPath = '/hotel-owner/my-third-party-operators-new';
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
-                    const isHotelOwnerPath = /^\/hotel-owner(\/|$)/i.test(window.location.pathname || '');
+                    var isHotelOwnerPath = /^\/hotel-owner(\/|$)/i.test(window.location.pathname || '');
+                    if (!isHotelOwnerPath && window.self !== window.top) {
+                        try {
+                            isHotelOwnerPath = /^\/hotel-owner(\/|$)/i.test(window.parent.location.pathname || '');
+                        } catch (_err) { /* cross-origin */ }
+                    }
                     if (window.self !== window.top) {
                         if (isHotelOwnerPath) {
                             window.location.assign(hotelOwnerListPath);

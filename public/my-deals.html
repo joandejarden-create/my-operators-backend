@@ -8112,6 +8112,15 @@
         })();
     </script>
 
+    <script src="/dealality-webflow-nav.js"></script>
+    <script>
+    (function () {
+        var nav = window.DealalityWebflowNav;
+        if (!nav || typeof nav.getMyDealsTopLevelHref !== "function") return;
+        var myDealsA = document.querySelector('.sidebar-wrapper nav a[href="/my-deals"]');
+        if (myDealsA) myDealsA.setAttribute("href", nav.getMyDealsTopLevelHref());
+    })();
+    </script>
     <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

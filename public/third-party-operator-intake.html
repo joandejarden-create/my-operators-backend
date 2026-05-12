@@ -5179,11 +5179,26 @@
             (function bindIntakeBreadcrumbBack() {
                 const link = document.getElementById('intakeBreadcrumbBackLink');
                 if (!link) return;
-                const listPath = '/my-third-party-operators';
-                const listHash = '#/my-third-party-operators';
+                const hotelOwnerListPath = '/hotel-owner/my-third-party-operators-new';
+                const listHash = '#/my-operators';
+                const appShellListPath = '/my-operators';
+                function isHotelOwnerPath() {
+                    if (/^\/hotel-owner(\/|$)/i.test(window.location.pathname || '')) return true;
+                    try {
+                        if (window.self !== window.top && window.parent && window.parent !== window) {
+                            return /^\/hotel-owner(\/|$)/i.test(window.parent.location.pathname || '');
+                        }
+                    } catch (_e) {}
+                    return false;
+                }
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
+                    const ho = isHotelOwnerPath();
                     if (window.self !== window.top) {
+                        if (ho) {
+                            window.location.assign(hotelOwnerListPath);
+                            return;
+                        }
                         var hashOk = false;
                         try {
                             window.parent.location.hash = listHash;
@@ -5197,9 +5212,13 @@
                         }
                         if (!hashOk) {
                             try {
-                                window.parent.postMessage({ type: 'dealality-navigate', path: listPath }, window.location.origin);
+                                window.parent.postMessage({ type: 'dealality-navigate', path: appShellListPath }, window.location.origin);
                             } catch (err3) { /* ignore */ }
                         }
+                        return;
+                    }
+                    if (ho) {
+                        window.location.assign(hotelOwnerListPath);
                         return;
                     }
                     window.location.assign('/app' + listHash);

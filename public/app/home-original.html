@@ -89,6 +89,15 @@
       }
     })();
   </script>
+  <script src="/dealality-webflow-nav.js"></script>
+  <script>
+  (function () {
+    var h = (window.DealalityWebflowNav && window.DealalityWebflowNav.getMyDealsTopLevelHref)
+      ? window.DealalityWebflowNav.getMyDealsTopLevelHref()
+      : "/my-deals";
+    document.querySelectorAll('a.dc-link[href="/my-deals"]').forEach(function (a) { a.setAttribute("href", h); });
+  })();
+  </script>
   <script src="/app/dashboard-adapter.js"></script>
   <script src="/app/dashboard-original.js"></script>
 </body>

@@ -1191,6 +1191,7 @@
         </div>
     </div>
 
+    <script src="/dealality-webflow-nav.js"></script>
     <script>
 (function () {
     var form = document.getElementById("faForm");
@@ -1530,7 +1531,12 @@
     function load() {
         dealId = getParam("dealId") || getParam("id");
         if (backToMyDeals && dealId && dealId.startsWith("rec")) {
-            backToMyDeals.href = "/my-deals.html?tab=franchise-application&deal=" + encodeURIComponent(dealId);
+            var qs = "tab=franchise-application&deal=" + encodeURIComponent(dealId);
+            if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.mergeMyDealsHrefWithQuery === "function") {
+                backToMyDeals.href = window.DealalityWebflowNav.mergeMyDealsHrefWithQuery(qs);
+            } else {
+                backToMyDeals.href = "/my-deals.html?" + qs;
+            }
         }
         if (!dealId || !dealId.startsWith("rec")) {
             showLoading(false);
@@ -1954,6 +1960,18 @@
     if (downloadAppLetterBtn) downloadAppLetterBtn.addEventListener("click", downloadApplicationLetter);
     var generateForBrandBtn = document.getElementById("generateForBrandBtn");
     if (generateForBrandBtn) generateForBrandBtn.addEventListener("click", generateForBrand);
+
+    if (backToMyDeals && window.DealalityWebflowNav && typeof window.DealalityWebflowNav.navigateToMyDealsList === "function") {
+        backToMyDeals.addEventListener("click", function (e) {
+            var id = getParam("dealId") || getParam("id");
+            var qs = id && id.startsWith("rec") ? "tab=franchise-application&deal=" + encodeURIComponent(id) : "";
+            e.preventDefault();
+            window.DealalityWebflowNav.navigateToMyDealsList({ queryString: qs });
+        });
+    }
+    if (backToMyDeals && window.DealalityWebflowNav && typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
+        backToMyDeals.setAttribute("href", window.DealalityWebflowNav.getMyDealsTopLevelHref());
+    }
 
     load();
 })();

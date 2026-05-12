@@ -32,6 +32,15 @@
     return String(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  function myDealsHref() {
+    try {
+      if (typeof window !== 'undefined' && window.DealalityWebflowNav && typeof window.DealalityWebflowNav.myDealsHref === 'function') {
+        return window.DealalityWebflowNav.myDealsHref();
+      }
+    } catch (_e) {}
+    return '/my-deals';
+  }
+
   function isExternalHref(href) {
     if (!href) return false;
     return /^https?:\/\//i.test(String(href));
@@ -412,7 +421,7 @@
     var el = document.getElementById('dc-today-focus-body');
     if (!el) return;
     if (!chips || !chips.length) {
-      el.innerHTML = '<p class="dc-activity-log__empty">Nothing urgent. <a href="/my-deals" class="dc-link">View deals</a></p>';
+      el.innerHTML = '<p class="dc-activity-log__empty">Nothing urgent. <a href="' + escapeAttr(myDealsHref()) + '" class="dc-link">View deals</a></p>';
       return;
     }
     var html = '<div class="dc-focus-chips">' + chips.map(function (c) {
@@ -430,7 +439,7 @@
     var el = document.getElementById('dc-next-actions');
     if (!el) return;
     if (!actions || !actions.length) {
-      el.innerHTML = '<p class="dc-activity-log__empty">No upcoming actions. <a href="/my-deals" class="dc-link">Create follow-ups</a></p>';
+      el.innerHTML = '<p class="dc-activity-log__empty">No upcoming actions. <a href="' + escapeAttr(myDealsHref()) + '" class="dc-link">Create follow-ups</a></p>';
       return;
     }
     var items = actions.slice(0, MAX_NEXT_ACTIONS);
@@ -960,6 +969,8 @@
   function init() {
     var role = getStoredRole();
     updateRoleToggle(role);
+    var homeMyDealsLink = document.getElementById('dc-home-my-deals-link');
+    if (homeMyDealsLink) homeMyDealsLink.href = myDealsHref();
     var toggle = document.getElementById('dc-role-toggle');
     if (toggle) {
       toggle.addEventListener('click', function (e) {

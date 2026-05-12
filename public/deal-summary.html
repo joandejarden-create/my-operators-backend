@@ -1226,5 +1226,19 @@
                 });
         })();
     </script>
+    <script src="/dealality-webflow-nav.js"></script>
+    <script>
+    (function () {
+        var a = document.getElementById("brochureBackLink");
+        if (!a || !window.DealalityWebflowNav || typeof window.DealalityWebflowNav.navigateToMyDealsList !== "function") return;
+        if (typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
+            a.setAttribute("href", window.DealalityWebflowNav.getMyDealsTopLevelHref());
+        }
+        a.addEventListener("click", function (e) {
+            e.preventDefault();
+            window.DealalityWebflowNav.navigateToMyDealsList({});
+        });
+    })();
+    </script>
 </body>
 </html>
