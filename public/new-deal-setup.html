@@ -793,7 +793,7 @@
             <div class="intake-container">
                 <div class="intake-header">
                     <div class="back-to-my-deals hidden" id="backToMyDealsRow">
-                        <a href="/my-deals">← Back to My Deals</a>
+                        <a href="/my-deals.html" id="backToMyDealsLink">← Back to My Deals</a>
                     </div>
                     <div class="intake-title-container">
                         <h1 id="dealPageTitle">Deal</h1>
@@ -4538,6 +4538,37 @@
         } catch (e) {}
     }
 
+    function pathnameLooksHotelOwner(pathname) {
+        return /^\/hotel-owner(\/|$)/i.test(pathname || "");
+    }
+
+    function pathnameLooksAppShell(pathname) {
+        return /^\/app(\/|$)/i.test(pathname || "");
+    }
+
+    /** Webflow hotel-owner area uses /hotel-owner/my-deals-new; app shell uses hash + /my-deals.html. */
+    function getDealalityMyDealsNavigatePathForParentFrame() {
+        try {
+            if (window.parent && window.parent !== window) {
+                var pp = window.parent.location.pathname || "";
+                if (pathnameLooksHotelOwner(pp)) return "/hotel-owner/my-deals-new";
+                if (pathnameLooksAppShell(pp) || (String(window.parent.location.hash || "").indexOf("#/") === 0)) {
+                    return "/my-deals.html";
+                }
+            }
+        } catch (e) {
+            /* cross-origin parent — fall through */
+        }
+        return "/my-deals.html";
+    }
+
+    function getMyDealsTopLevelHref() {
+        try {
+            if (pathnameLooksHotelOwner(window.location.pathname || "")) return "/hotel-owner/my-deals-new";
+        } catch (e) {}
+        return "/my-deals.html";
+    }
+
     function navigateToMyDeals() {
         resetAddNewDealUiStateBeforeExit();
 
@@ -4545,7 +4576,8 @@
         // so left-nav state changes to "My Deals" correctly.
         if (window.parent && window.parent !== window) {
             try {
-                window.parent.postMessage({ type: "dealality-navigate", path: "/my-deals.html" }, window.location.origin);
+                var navPath = getDealalityMyDealsNavigatePathForParentFrame();
+                window.parent.postMessage({ type: "dealality-navigate", path: navPath }, window.location.origin);
                 return;
             } catch (e) {}
         }
@@ -4555,7 +4587,7 @@
             window.location.href = "/app#/my-deals.html";
             return;
         }
-        window.location.href = "/my-deals.html";
+        window.location.href = getMyDealsTopLevelHref();
     }
 
     function continueNowViaMyDealsEdit() {
@@ -5504,6 +5536,14 @@
     })();
 
     updateDealReadinessButton();
+    (function initBackToMyDealsLink() {
+        var backA = document.getElementById("backToMyDealsLink");
+        if (!backA) return;
+        backA.addEventListener("click", function (e) {
+            e.preventDefault();
+            navigateToMyDeals();
+        });
+    })();
     applyEditModeChrome();
     loadDeal();
 })();
