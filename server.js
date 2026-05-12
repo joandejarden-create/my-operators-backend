@@ -91,6 +91,7 @@ import {
   listCompanies as listUserManagementCompanies,
 } from "./api/user-management.js";
 import { getMyDeals, getDealById, updateMyDealById, createDeal, addRecommendedBrand, getAlternativeBrands, getMatchScoreBreakdown, getOperatorMatchScoreBreakdown, refreshDealBrandCache, uploadDealAttachments, ALLOWED_ATTACHMENT_EXTENSIONS, MAX_ATTACHMENT_FILE_SIZE_BYTES } from "./api/my-deals.js";
+import { getDealReadinessMeta, postDealReadinessReview, postDealReadinessSave } from "./api/deal-readiness-review.js";
 import { getOutreachSetup, updateOutreachSetup, getOutreachDefault, updateOutreachDefault, deleteOutreachSetup } from "./api/outreach-setup.js";
 import { getFranchiseApplication, updateFranchiseApplication } from "./api/franchise-application.js";
 import { list as outreachHubList, get as outreachHubGet, create as outreachHubCreate, update as outreachHubUpdate, remove as outreachHubRemove } from "./api/outreach-hub.js";
@@ -322,6 +323,10 @@ app.get("/api/my-deals/:recordId/operator-match-score-breakdown", getOperatorMat
 app.patch("/api/my-deals/:recordId", updateMyDealById);
 app.post("/api/my-deals/:recordId/add-recommended-brand", addRecommendedBrand);
 app.post("/api/my-deals/:recordId/refresh-brand-cache", refreshDealBrandCache);
+// Deal Readiness Review (deterministic + optional Airtable save via env field names)
+app.get("/api/ai/deal-readiness-review/meta", getDealReadinessMeta);
+app.post("/api/ai/deal-readiness-review", postDealReadinessReview);
+app.post("/api/ai/deal-readiness-review/save", postDealReadinessSave);
 // Target List (brand shortlist) API
 app.get("/api/target-list/:dealId", getTargetList);
 app.post("/api/target-list", addToTargetList);

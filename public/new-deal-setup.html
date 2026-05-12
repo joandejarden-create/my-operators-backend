@@ -1930,11 +1930,11 @@
                                     <select class="form-select" name="Royalty Fee Expectations">
                                         <option value="">Select One…</option>
                                         <option value="Under 3%">Under 3%</option>
-                                        <option value="3% – 4%">3% – 4%</option>
-                                        <option value="4% – 5%">4% – 5%</option>
-                                        <option value="5% – 6%">5% – 6%</option>
+                                        <option value="3% - 4%">3% - 4%</option>
+                                        <option value="4% - 5%">4% - 5%</option>
+                                        <option value="5% - 6%">5% - 6%</option>
                                         <option value="Over 6%">Over 6%</option>
-                                        <option value="Undeterimed">Undeterimed</option>
+                                        <option value="Undetermined">Undetermined</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -1942,11 +1942,11 @@
                                     <select class="form-select" name="Marketing Fee Expectations">
                                         <option value="">Select One…</option>
                                         <option value="Under 3%">Under 3%</option>
-                                        <option value="3% – 4%">3% – 4%</option>
-                                        <option value="4% – 5%">4% – 5%</option>
-                                        <option value="5% – 6%">5% – 6%</option>
+                                        <option value="3% - 4%">3% - 4%</option>
+                                        <option value="4% - 5%">4% - 5%</option>
+                                        <option value="5% - 6%">5% - 6%</option>
                                         <option value="Over 6%">Over 6%</option>
-                                        <option value="Undeterimed">Undeterimed</option>
+                                        <option value="Undetermined">Undetermined</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -1954,11 +1954,11 @@
                                     <select class="form-select" name="Loyalty Fee Expectations">
                                         <option value="">Select One…</option>
                                         <option value="Under 3%">Under 3%</option>
-                                        <option value="3% – 4%">3% – 4%</option>
-                                        <option value="4% – 5%">4% – 5%</option>
-                                        <option value="5% – 6%">5% – 6%</option>
+                                        <option value="3% - 4%">3% - 4%</option>
+                                        <option value="4% - 5%">4% - 5%</option>
+                                        <option value="5% - 6%">5% - 6%</option>
                                         <option value="Over 6%">Over 6%</option>
-                                        <option value="Undeterimed">Undeterimed</option>
+                                        <option value="Undetermined">Undetermined</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -5294,12 +5294,15 @@
             html += '<div class="deal-readiness-section"><h3>Section scores</h3><div class="deal-readiness-section-grid">';
             if (labeled && labeled.length) {
                 labeled.forEach(function (row) {
-                    html += '<div class="deal-readiness-section-card"><div class="pct">' + esc(row.score) + '%</div>' +
+                    var pctStr = (row.score == null || row.score === "") ? "—" : esc(row.score) + "%";
+                    html += '<div class="deal-readiness-section-card"><div class="pct">' + pctStr + "</div>" +
                         '<div class="lbl">' + esc(row.label || row.id) + "</div></div>";
                 });
             } else {
                 Object.keys(sections).forEach(function (k) {
-                    html += '<div class="deal-readiness-section-card"><div class="pct">' + esc(sections[k]) + '%</div>' +
+                    var v = sections[k];
+                    var pctStr2 = (v == null || v === "") ? "—" : esc(v) + "%";
+                    html += '<div class="deal-readiness-section-card"><div class="pct">' + pctStr2 + "</div>" +
                         '<div class="lbl">' + esc(k) + "</div></div>";
                 });
             }
@@ -5345,7 +5348,7 @@
                 html += "</ul></div>";
             }
             if (weak.length) {
-                html += '<div class="deal-readiness-section"><h3>Weak or thin fields</h3><ul class="deal-readiness-list warn">';
+                html += '<div class="deal-readiness-section"><h3>Placeholder-style text (optional penalty)</h3><ul class="deal-readiness-list warn">';
                 weak.slice(0, 18).forEach(function (w) {
                     var line = (w && w.field) ? w.field : "";
                     var tabHintW = (w && w.relatedTab && String(w.relatedTab).trim()) ? String(w.relatedTab).trim()

@@ -25,12 +25,16 @@ import {
   LOCATION_PROPERTY_ID_FIELD,
   LOCATION_FORM_TO_AIRTABLE,
   LOCATION_FORM_FIELDS,
+  LOCATION_MULTI_SELECT_FORM_KEYS,
   MARKET_PERFORMANCE_TABLE,
   MARKET_PERFORMANCE_LINK_FIELD,
   MP_DEAL_LINK_FIELD,
   MARKET_PERFORMANCE_FIELD_NAMES,
   MP_FORM_TO_TABLE,
   MP_TABLE_TO_FORM,
+  MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS,
+  MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS,
+  MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS,
   STRATEGIC_INTENT_LINK_FIELD,
   STRATEGIC_INTENT_TABLE,
   CONTACT_UPLOADS_LINK_FIELD,
@@ -48,6 +52,7 @@ import {
   LEASE_STRUCTURE_FORM_FIELDS,
   LS_FORM_TO_AIRTABLE,
   LS_AIRTABLE_TO_FORM,
+  extractDealReadinessListFields,
 } from "./schemas/deal-setup-fields.js";
 import { validateDealSetupPayload } from "./deal-setup-validate.js";
 import { fetchTargetsForDeal } from "./target-list.js";
@@ -976,9 +981,6 @@ async function fetchPreferredDealStructureMap(baseId, apiKey, mpRecordIds) {
   return preferredDealStructureMapFromMpDataMap(map);
 }
 
-/** Location form keys that are multi-select (array) in Airtable. */
-const LOCATION_MULTI_SELECT_FORM_KEYS = new Set(["Ownership Type", "Access to Transit or Highway", "F&B Program Type"]);
-
 /** Convert raw Location Airtable fields to form-keyed object (M3). Used by fetchLocationRecord and batched Location phase. */
 function locationFieldsToFormFields(f) {
   if (!f || typeof f !== "object") return null;
@@ -1068,8 +1070,8 @@ function formatCityCountry(city, country) {
   return parts.length ? parts.join(", ") : "";
 }
 
-/** Required field names in deal-setup form (reference only; Data Comp. % uses the form’s UI-required fields only, computed client-side). */
-const REQUIRED_DEAL_SETUP_FIELDS = [
+/** Required field names in deal-setup form (same set as Deal Setup UI; used for Deal Readiness scoring server-side). */
+export const REQUIRED_DEAL_SETUP_FIELDS = [
   "Property Name",
   "Project Type",
   "Stage of Development",
@@ -1162,7 +1164,7 @@ const REQUIRED_DEAL_SETUP_FIELDS = [
 ];
 
 /** Return true if the field value is considered "filled" for completion. */
-function isFieldFilled(val) {
+export function isFieldFilled(val) {
   if (val == null) return false;
   if (typeof val === "number" && !Number.isNaN(val)) return true;
   if (typeof val === "string") return val.trim() !== "";
@@ -1969,6 +1971,7 @@ export async function getMyDeals(req, res) {
           cuDataMap,
           dealBrandCacheMap
         );
+        Object.assign(d, extractDealReadinessListFields(rec.fields));
         deals.push(d);
       } catch (dealErr) {
         const name = (rec.fields && (rec.fields["Project Name"] || rec.fields["Property Name"] || rec.fields["Name"])) || rec.id;
@@ -1993,6 +1996,7 @@ export async function getMyDeals(req, res) {
           matchScoresByBrand: {},
           matchScoresNewByBrand: {},
           matchBreakdownNewDetailsByBrand: {},
+          ...extractDealReadinessListFields(rec.fields),
         });
       }
     }
@@ -2045,6 +2049,7 @@ export async function getMyDeals(req, res) {
       for (const rec of allRecords) {
         try {
           const d = await recordToDeal(rec, locationMap, mpMap, outreachDealIds, siPreferredBrandsMap, mpDataMap, siDataMap, baseId, apiKey, cuDataMap, dealBrandCacheMap);
+          Object.assign(d, extractDealReadinessListFields(rec.fields));
           deals.push(d);
         } catch (dealErr) {
           const name = (rec.fields && (rec.fields["Project Name"] || rec.fields["Property Name"] || rec.fields["Name"])) || rec.id;
@@ -2068,6 +2073,7 @@ export async function getMyDeals(req, res) {
             matchScoresByBrand: {},
             matchScoresNewByBrand: {},
             matchBreakdownNewDetailsByBrand: {},
+            ...extractDealReadinessListFields(rec.fields),
           });
         }
       }
@@ -2688,9 +2694,9 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
   const dealPreferredBrands = toList((siData || {})["Preferred Brands"]);
   const dealBreakers = toList((siData || {})["Top 3 Deal Breakers"]);
   const dealMustHaves = toList((siData || {})["Must-Haves From Brand/Operator"] || (siData || {})["Must-Haves From Brand or Operator"]);
-  const dealRoy = toStr((mpData || {})["Royalty Fee Expectations"]);
-  const dealMktFee = toStr((mpData || {})["Marketing Fee Expectations"]);
-  const dealLoyaltyFee = toStr((mpData || {})["Loyalty Fee Expectations"]);
+  const dealRoy = toStr((mpData || {})[MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS]);
+  const dealMktFee = toStr((mpData || {})[MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS]);
+  const dealLoyaltyFee = toStr((mpData || {})[MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS]);
 
   const op = operatorPrefill || {};
   const opMarkets = toList(firstPresent(op, ["specificMarkets", "market_fit", "topMarkets", "regionsSupported", "bestFitGeographies"]));
@@ -3196,7 +3202,7 @@ export async function refreshDealBrandCache(req, res) {
 }
 
 /** Fetch a deal by id and merge in all linked records (Location, Market Performance, Strategic Intent, Contact & Uploads). Returns { deal, normalized } or null if not found. */
-async function fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId) {
+export async function fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId) {
   const tableIdOrName = encodeURIComponent(DEALS_TABLE);
   const url = `https://api.airtable.com/v0/${baseId}/${tableIdOrName}/${encodeURIComponent(recordId)}`;
   const getRes = await fetch(url, {
@@ -3371,8 +3377,13 @@ export async function updateMyDealById(req, res) {
     const hasLocationFields = LOCATION_FORM_FIELDS.some((f) => fields[f] !== undefined);
     if (hasLocationFields) {
       const locFields = {};
-      const numericLocationKeys = ["Total Number of Rooms/Keys", "Number of Standard Rooms", "Number of Suites", "# of Stories", "Number of Stories"];
-      const multiSelectLocationKeys = ["Ownership Type", "Access to Transit or Highway"];
+      const numericLocationKeys = [
+        "Total Number of Rooms/Keys",
+        "Number of Standard Rooms",
+        "Number of Suites",
+        "# of Stories",
+        "Number of Stories",
+      ];
       for (const formName of LOCATION_FORM_FIELDS) {
         const val = fields[formName];
         if (val === undefined || val === null) continue;
@@ -3382,7 +3393,7 @@ export async function updateMyDealById(req, res) {
           if (!Number.isNaN(num) && String(val).trim() !== "") locFields[airtableName] = num;
           continue;
         }
-        if (multiSelectLocationKeys.includes(formName)) {
+        if (LOCATION_MULTI_SELECT_FORM_KEYS.has(formName)) {
           const arr = Array.isArray(val) ? val.map((v) => String(v).trim()).filter(Boolean) : String(val).trim().split(/\s*,\s*/).filter(Boolean);
           if (arr.length) locFields[airtableName] = arr;
           continue;
@@ -3435,6 +3446,20 @@ export async function updateMyDealById(req, res) {
         val = val.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean);
       } else if (name === "Primary Demand Drivers" && Array.isArray(val)) {
         val = val.map((s) => (typeof s === "string" ? s : (s && s.name) || "").trim()).filter(Boolean);
+      } else if (name === "Is the property encumbered" && typeof val === "string" && val.trim() !== "") {
+        val = val.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean);
+      } else if (name === "Is the property encumbered" && Array.isArray(val)) {
+        val = val.map((s) => (typeof s === "string" ? s : (s && s.name) || "").trim()).filter(Boolean);
+      } else if (
+        (name === "Royalty Fee Expectations" || name === "Marketing Fee Expectations" || name === "Loyalty Fee Expectations") &&
+        typeof val === "string"
+      ) {
+        let s = val.trim();
+        if (s === "Undeterimed") s = "Undetermined";
+        s = s.replace(/\u2013/g, "-");
+        val = s;
+      } else if (typeof val === "string") {
+        val = val.replace(/\u2013/g, "-");
       }
       mpFieldsPayload[tableName] = val;
       delete fields[name];

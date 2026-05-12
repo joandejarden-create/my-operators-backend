@@ -322,6 +322,46 @@
             vertical-align: middle;
         }
 
+        /* Table row checkboxes — navy tile (matches page chrome, same as My Deals) */
+        .deals-table .cell-checkbox input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            vertical-align: middle;
+            background: var(--secondary--color-1);
+            border: 1px solid var(--neutral--600);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .deals-table .cell-checkbox input[type="checkbox"]:hover {
+            background: var(--neutral--700);
+            border-color: rgba(108, 114, 255, 0.4);
+        }
+        .deals-table .cell-checkbox input[type="checkbox"]:focus-visible {
+            outline: 2px solid var(--accent--primary-1);
+            outline-offset: 2px;
+        }
+        .deals-table .cell-checkbox input[type="checkbox"]:checked {
+            background: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
+        }
+        .deals-table .cell-checkbox input[type="checkbox"]:checked::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 9px;
+            border: solid #ffffff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
         .deals-table-container {
             background: var(--neutral--800);
             border: 0.6px solid var(--neutral--600);

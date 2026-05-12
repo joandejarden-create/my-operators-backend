@@ -436,12 +436,18 @@
             border-radius: 10px; font-size: 11px; font-weight: 600; position: absolute; top: -8px; right: -8px;
             margin: 0; z-index: 10;
         }
-        /* Table – same as My Brands */
-        .deals-table-container { background: var(--neutral--800); overflow-x: auto; overflow-y: hidden; }
-        .deals-table { width: 100%; border-collapse: collapse; table-layout: fixed; margin-left: -5px; }
+        /* Table — container chrome aligned with My Brand Deals */
+        .deals-table-container {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        .deals-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         .deals-table thead { background: var(--neutral--700); }
         .deals-table th {
-            color: var(--neutral--100); font-weight: 600; padding: 12px 2px; text-align: left; font-size: 11px;
+            color: var(--neutral--100); font-weight: 600; padding: 12px 8px; text-align: left; font-size: 11px;
             text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--neutral--600);
         }
         .deals-table th[data-sort] { cursor: pointer; user-select: none; }
@@ -482,41 +488,56 @@
             color: #fdb52a;
         }
         .deals-table tbody tr:hover { background: var(--neutral--700); }
-        .deals-table td { padding: 10px 2px; color: var(--neutral--400); vertical-align: middle; }
-        .deals-table .cell-checkbox { width: 32px; min-width: 32px; max-width: 32px; text-align: center; box-sizing: border-box; vertical-align: middle; }
-        /* White tile + thin black check — same language as operator Service Offerings / project-fit checklists */
+        .deals-table td { padding: 10px 8px; color: var(--neutral--400); vertical-align: middle; }
+        /* Checkbox column — same width / control styling as My Brand Deals */
+        .deals-table .cell-checkbox {
+            width: 36px !important;
+            min-width: 36px !important;
+            max-width: 36px !important;
+            text-align: center;
+            vertical-align: middle;
+            box-sizing: border-box;
+        }
         .deals-table .cell-checkbox input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             margin: 0;
             vertical-align: middle;
-            background: #ffffff;
-            border: none;
-            border-radius: 2px;
+            background: var(--secondary--color-1);
+            border: 1px solid var(--neutral--600);
+            border-radius: 4px;
             cursor: pointer;
             position: relative;
             box-sizing: border-box;
         }
+        .deals-table .cell-checkbox input[type="checkbox"]:hover {
+            background: var(--neutral--700);
+            border-color: rgba(108, 114, 255, 0.4);
+        }
         .deals-table .cell-checkbox input[type="checkbox"]:focus-visible {
             outline: 2px solid var(--accent--primary-1);
             outline-offset: 2px;
+        }
+        .deals-table .cell-checkbox input[type="checkbox"]:checked {
+            background: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
         }
         .deals-table .cell-checkbox input[type="checkbox"]:checked::after {
             content: "";
             position: absolute;
             left: 5px;
             top: 2px;
-            width: 3px;
-            height: 8px;
-            border: solid #000000;
-            border-width: 0 1.5px 1.5px 0;
+            width: 4px;
+            height: 9px;
+            border: solid #ffffff;
+            border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
         #matchedDealsTable th { white-space: nowrap; }
-        #matchedDealsTable .cell-call-to-action { min-width: 0; padding-left: 2px; }
+        #matchedDealsTable .cell-call-to-action { min-width: 0; padding-left: 8px; }
         .deals-table .project-name-text { color: var(--neutral--100); font-weight: 600; }
         .deals-table .status-active { color: var(--system--green-400); }
         .deals-table .status-select {
@@ -3622,12 +3643,15 @@
                         '<div class="my-deals-readiness-section-grid">';
                     if (labeled && labeled.length) {
                         labeled.forEach(function(row) {
-                            html += '<div class="my-deals-readiness-section-card"><div class="icon">' + sectionIconSvg(row.label || row.id) + '</div><div class="pct">' + esc(row.score) + '%</div>' +
+                            var pctStr = (row.score == null || row.score === '') ? '—' : esc(row.score) + '%';
+                            html += '<div class="my-deals-readiness-section-card"><div class="icon">' + sectionIconSvg(row.label || row.id) + '</div><div class="pct">' + pctStr + '</div>' +
                                 '<div class="lbl">' + uiTwoLineLabel(esc(row.label || row.id)) + '</div></div>';
                         });
                     } else {
                         Object.keys(sections).forEach(function(k) {
-                            html += '<div class="my-deals-readiness-section-card"><div class="icon">' + sectionIconSvg(k) + '</div><div class="pct">' + esc(sections[k]) + '%</div>' +
+                            var v = sections[k];
+                            var pctStr2 = (v == null || v === '') ? '—' : esc(v) + '%';
+                            html += '<div class="my-deals-readiness-section-card"><div class="icon">' + sectionIconSvg(k) + '</div><div class="pct">' + pctStr2 + '</div>' +
                                 '<div class="lbl">' + uiTwoLineLabel(esc(k)) + '</div></div>';
                         });
                     }

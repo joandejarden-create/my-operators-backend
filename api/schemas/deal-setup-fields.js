@@ -20,6 +20,58 @@ export const LEASE_STRUCTURE_TABLE = process.env.AIRTABLE_TABLE_LEASE_STRUCTURE 
 export const DEALS_STATUS_FIELD = process.env.AIRTABLE_DEALS_STATUS_FIELD || "Deal Status";
 
 // ---------------------------------------------------------------------------
+// Deal Readiness Review — persisted on the Deals table (override names via env if your base differs)
+// ---------------------------------------------------------------------------
+export const DEAL_READINESS_SCORE_AIRTABLE_FIELD =
+  process.env.DEAL_READINESS_SCORE_FIELD || "Deal Readiness Score";
+export const DEAL_READINESS_STAGE_AIRTABLE_FIELD =
+  process.env.DEAL_READINESS_STAGE_FIELD || "Deal Readiness Stage";
+/** Long text / multiline summary; optional — only written when set in env. */
+export const DEAL_READINESS_SUMMARY_AIRTABLE_FIELD = process.env.DEAL_READINESS_SUMMARY_FIELD || "";
+/**
+ * Date or date-time on Deals when saving a review.
+ * Default: "Deal Readiness Last Reviewed". Set to "0" or "false" to skip PATCH (bases with only score + stage).
+ */
+export const DEAL_READINESS_LAST_REVIEWED_AIRTABLE_FIELD = (() => {
+  const v = process.env.DEAL_READINESS_LAST_REVIEWED_FIELD;
+  if (v === "0" || v === "false") return "";
+  return v || "Deal Readiness Last Reviewed";
+})();
+
+/** Map Airtable Deals fields → My Deals list / readiness UI (missing keys when column absent). */
+export function extractDealReadinessListFields(airtableFields) {
+  const f = airtableFields || {};
+  const out = {};
+  const rawSc = f[DEAL_READINESS_SCORE_AIRTABLE_FIELD];
+  if (rawSc != null && rawSc !== "") {
+    const n = Number(rawSc);
+    if (Number.isFinite(n)) out.dealReadinessScore = Math.round(n);
+  }
+  const st = f[DEAL_READINESS_STAGE_AIRTABLE_FIELD];
+  if (st != null && String(st).trim() !== "") out.dealReadinessStage = String(st).trim();
+  const missKey = process.env.DEAL_READINESS_MISSING_COUNT_FIELD || "Deal Readiness Missing Count";
+  const blockKey = process.env.DEAL_READINESS_BLOCKING_COUNT_FIELD || "Deal Readiness Blocking Count";
+  const rawM = f[missKey];
+  if (rawM != null && rawM !== "") {
+    const n = Number(rawM);
+    if (Number.isFinite(n)) out.dealReadinessMissingCount = n;
+  }
+  const rawB = f[blockKey];
+  if (rawB != null && rawB !== "") {
+    const n = Number(rawB);
+    if (Number.isFinite(n)) out.dealReadinessBlockingCount = n;
+  }
+  if (DEAL_READINESS_LAST_REVIEWED_AIRTABLE_FIELD) {
+    const rawL = f[DEAL_READINESS_LAST_REVIEWED_AIRTABLE_FIELD];
+    if (rawL != null && rawL !== "") {
+      out.dealReadinessLastReviewed =
+        typeof rawL === "string" ? rawL : rawL instanceof Date ? rawL.toISOString() : String(rawL);
+    }
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------------------
 // Deals table: form field name → Airtable column name (Batch 1 and other Deals-only fields)
 // Use when form key and Airtable column differ (typos, renames).
 // Franchise/affiliation: many bases use the legacy typo "agreeement"; we default write to that.
@@ -79,6 +131,8 @@ export const LS_DEAL_LINK_FIELD = process.env.AIRTABLE_LEASE_STRUCTURE_DEAL_LINK
 
 // ---------------------------------------------------------------------------
 // Location & Property: form → Airtable column name
+// Source of truth for which keys sync to the linked Location row (not Deals).
+// Full inventory (all #dealForm fields → all 6 tables): npm run verify-deal-setup-routing
 // Tota Site Size Unit: default is typo "Tota". If your base uses "Total Site Size Unit", set:
 //   AIRTABLE_LOCATION_TOTAL_SITE_SIZE_UNIT_FIELD=Total Site Size Unit
 // ---------------------------------------------------------------------------
@@ -127,21 +181,22 @@ export const LOCATION_FORM_TO_AIRTABLE = {
   "Column Spacing": "Column Spacing",
   "Column Spacing Unit": "Column Spacing Unit",
   "Existing MEP Capacity (Conversion)": "Existing MEP Capacity (Conversion)",
-  "F&B Outlets?": "F&B Outlets?",
-  "Number of F&B Outlets": "Number of F&B Outlets",
-  "F&B Program Type": "F&B Program Type",
-  "Outlet Names / Concepts": "Outlet Names / Concepts",
-  "Total F&B Outlet Size": "Total F&B Outlet Size",
-  "Total F&B Outlet Size Unit": "Total F&B Outlet Size Unit",
-  "Meeting Space": "Meeting Space",
-  "Meeting Space Unit": "Meeting Space Unit",
-  "Number of Meeting Rooms": "Number of Meeting Rooms",
-  "Condo Residences?": "Condo Residences?",
-  "Hotel Rental Program?": "Hotel Rental Program?",
+  // "Amenities & Facilities" (HTML data-section="5"): F&B, meeting, parking, spa, sustainability, additional amenities → Deals
+  "Micro-Location Type": "Micro-Location Type",
+  "Demand Mix Targets": "Demand Mix Targets",
+  "Operational Complexity Profile": "Operational Complexity Profile",
 };
 
 /** Form field names that belong to Location & Property (used to route and delete from deal fields). */
 export const LOCATION_FORM_FIELDS = Object.keys(LOCATION_FORM_TO_AIRTABLE);
+
+/** Location form keys stored as multi-select (array) in Airtable. */
+export const LOCATION_MULTI_SELECT_FORM_KEYS = new Set([
+  "Ownership Type",
+  "Access to Transit or Highway",
+  "Demand Mix Targets",
+  "Operational Complexity Profile",
+]);
 
 /**
  * expandedLocation (camelCase) key → form field name. Used to merge Location data into deal.fields
@@ -205,13 +260,39 @@ export const MARKET_PERFORMANCE_FIELD_NAMES = new Set([
   "Ownership Structure",
   "Preferred Deal Structure",
   "PIP / CapEx Status",
+  "Royalty Fee Expectations",
+  "Marketing Fee Expectations",
+  "Loyalty Fee Expectations",
+  "Estimated Dev. Cost per Key (Room)",
+  "Is the property encumbered",
+  "Property Encumbered Description",
+  "PIP / CapEx Status Amount",
+  "PIP Cap Ex Status Timeline",
+  "Is Financing Secured?",
+  "Comfort Level with Upfront Investment",
+  "Fee Tolerance Level",
+  "Incentive Requirement Level",
+  "Primary Incentive Type",
+  "CapEx Tolerance Band",
 ]);
+
+/** Exact Airtable column names on "Market - Performance - Deal & Capital Structure" for the three fee-expectation selects.
+ * Form `name` attributes stay "Royalty Fee Expectations", etc. If PATCH fails with UNKNOWN_FIELD_NAME, set env to your base’s exact field labels. */
+export const MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS =
+  (process.env.AIRTABLE_MP_ROYALTY_FEE_EXPECTATIONS_COLUMN || "").trim() || "Royalty Fee Expectations";
+export const MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS =
+  (process.env.AIRTABLE_MP_MARKETING_FEE_EXPECTATIONS_COLUMN || "").trim() || "Marketing Fee Expectations";
+export const MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS =
+  (process.env.AIRTABLE_MP_LOYALTY_FEE_EXPECTATIONS_COLUMN || "").trim() || "Loyalty Fee Expectations";
 
 export const MP_FORM_TO_TABLE = {
   "Group vs Transient Mix": "Group vs Transient Mix (If Known)",
   "Regulatory or Permitting Issues Description": "Regulatory or Permitting Issues Text",
   "Primary Demand Drivers Other": "Primary Demand Drivers Other Text",
   "PIP Budget Range (if conversion)": "PIP Budget Range (If Conversion)",
+  "Royalty Fee Expectations": MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS,
+  "Marketing Fee Expectations": MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS,
+  "Loyalty Fee Expectations": MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS,
 };
 
 export const MP_TABLE_TO_FORM = {
@@ -219,6 +300,15 @@ export const MP_TABLE_TO_FORM = {
   "Regulatory or Permitting Issues Text": "Regulatory or Permitting Issues Description",
   "Primary Demand Drivers Other Text": "Primary Demand Drivers Other",
   "PIP Budget Range (If Conversion)": "PIP Budget Range (if conversion)",
+  ...(MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS !== "Royalty Fee Expectations"
+    ? { [MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS]: "Royalty Fee Expectations" }
+    : {}),
+  ...(MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS !== "Marketing Fee Expectations"
+    ? { [MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS]: "Marketing Fee Expectations" }
+    : {}),
+  ...(MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS !== "Loyalty Fee Expectations"
+    ? { [MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS]: "Loyalty Fee Expectations" }
+    : {}),
 };
 
 // ---------------------------------------------------------------------------
@@ -387,6 +477,24 @@ export const LEASE_STRUCTURE_FORM_FIELDS = [
   "Lease Structure Notes",
 ];
 
+/**
+ * True when Deal Setup shows the Lease Structure section (same as new-deal-setup isLeaseStructureVisible).
+ * Preferred Deal Structure is stored on Market–Performance but merged onto deal.fields for reads/review.
+ */
+export function isLeaseStructureDealApplicableFromMergedFields(fields) {
+  if (!fields || typeof fields !== "object") return false;
+  const raw = fields["Preferred Deal Structure"];
+  const v =
+    typeof raw === "string"
+      ? raw.trim()
+      : raw != null && typeof raw === "object" && typeof raw.name === "string"
+        ? String(raw.name).trim()
+        : raw != null && typeof raw !== "object"
+          ? String(raw).trim()
+          : "";
+  return v === "Lease" || v === "Flexible/Open";
+}
+
 export const LS_FORM_TO_AIRTABLE = {
   "Initial Lease Term (years)": "Initial Lease Term (Years)",
   "Lease Expiration or End Date": "Lease Expiration / End Date",
@@ -406,6 +514,35 @@ export const LS_AIRTABLE_TO_FORM = {
   "Early Termination / Break Clause": "Early Termination or Break Clause",
   "Security Deposit / Guarantees": "Security Deposit or Guarantees",
 };
+
+// ---------------------------------------------------------------------------
+// Deal Setup PATCH: which Airtable table each form `name` routes to (see updateMyDealById).
+// HTML #dealForm: data-section 3 = Location & Site through Operational Complexity → Location;
+// data-section 4 = Property Specs (keys, building, MEP) → Location; data-section 5 = Amenities & Facilities → Deals.
+// ---------------------------------------------------------------------------
+export const DEAL_SETUP_AIRTABLE_TABLE_NAMES = {
+  DEALS: "Deals",
+  LOCATION: "Location & Property",
+  MARKET_PERFORMANCE: "Market - Performance - Deal & Capital Structure",
+  LEASE: "Lease Structure",
+  STRATEGIC_INTENT: "Strategic Intent - Operational - Key Challenges",
+  CONTACT_UPLOADS: "Contact & Uploads",
+};
+
+const _DEAL_SETUP_LOC_KEYS = new Set(LOCATION_FORM_FIELDS);
+const _DEAL_SETUP_SI_KEYS = new Set(STRATEGIC_INTENT_FORM_FIELDS);
+const _DEAL_SETUP_CU_KEYS = new Set(CONTACT_UPLOADS_FORM_FIELDS);
+const _DEAL_SETUP_LS_KEYS = new Set(LEASE_STRUCTURE_FORM_FIELDS);
+
+/** Target Airtable table for a Deal Setup form field name (same routing as PATCH). */
+export function classifyDealSetupFormField(fieldName) {
+  if (_DEAL_SETUP_LOC_KEYS.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.LOCATION;
+  if (MARKET_PERFORMANCE_FIELD_NAMES.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.MARKET_PERFORMANCE;
+  if (_DEAL_SETUP_SI_KEYS.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.STRATEGIC_INTENT;
+  if (_DEAL_SETUP_CU_KEYS.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.CONTACT_UPLOADS;
+  if (_DEAL_SETUP_LS_KEYS.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.LEASE;
+  return DEAL_SETUP_AIRTABLE_TABLE_NAMES.DEALS;
+}
 
 // ---------------------------------------------------------------------------
 // Required fields by section (M1 source of truth; section 7 = Lease, skip when Lease hidden)

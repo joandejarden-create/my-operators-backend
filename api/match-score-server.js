@@ -4,6 +4,12 @@
  * Accepts locationData in either Airtable field names or normalized keys (from my-deals fetchLocationRecord).
  */
 
+import {
+  MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS,
+  MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS,
+  MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS,
+} from "./schemas/deal-setup-fields.js";
+
 const BRAND_BASICS_TABLE = "Brand Setup - Brand Basics";
 const PROJECT_FIT_TABLE = "Brand Setup - Project Fit";
 /** Project Fit table field for numeric ID lookup when Brand Basics links by number (e.g. 18, 19, 20) instead of recXXX. */
@@ -29,7 +35,7 @@ const BF = {
   brandDealTerms: { minInitialTermQty: "Quantity - Typical Minimum Initial Term", minInitialTermQtyAlt: "Min Initial Term (Quantity)", performanceTestRequirement: "Performance Test Requirement", conversionMax: "Conversion - Typical max time allowed for completion" },
   brandOperationalSupport: { incentiveTypes: INCENTIVE_TYPES_FIELD, willingToNegotiate: "Willing to Negotiate Incentives", willingToNegotiateAlt: "Willing to Negotiate Incentives?" },
   locationDeal: { country: "Country", hotelChainScale: "Hotel Chain Scale", hotelServiceModel: "Hotel Service Model", totalRoomsKeys: "Total Number of Rooms/Keys", projectType: "Project Type", buildingType: "Building Type", stageOfDevelopment: "Stage of Development", preferredDealStructure: "Preferred Deal Structure", sustainability: "Sustainability" },
-  marketPerformance: { ownershipStructure: "Ownership Structure", royaltyFeeExpectations: "Royalty Fee Expectations", marketingFeeExpectations: "Marketing Fee Expectations", loyaltyFeeExpectations: "Loyalty Fee Expectations", capitalStatus: "Capital Status", fundingStatus: "Funding Status", targetInitialTerm: "Target Initial Term", performanceTestRequired: "Performance Test Required", conversionTimeline: "Conversion Timeline", preferredDealStructure: "Preferred Deal Structure" },
+  marketPerformance: { ownershipStructure: "Ownership Structure", royaltyFeeExpectations: MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS, marketingFeeExpectations: MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS, loyaltyFeeExpectations: MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS, capitalStatus: "Capital Status", fundingStatus: "Funding Status", targetInitialTerm: "Target Initial Term", performanceTestRequired: "Performance Test Required", conversionTimeline: "Conversion Timeline", preferredDealStructure: "Preferred Deal Structure" },
   strategicIntent: { preferredBrands: "Preferred Brands", softVsHardPreference: "Soft vs Hard Brand Preference", mustHavesFromBrand: "Must-Haves From Brand/Operator", incentiveTypesInterestedIn: "Incentive Types Interested In", top3DealBreakers: "Top 3 Deal Breakers" },
   contactUploads: { filterOutNoKeyMoney: "Would You Like to Filter Out Brands Without Key Money?", filterOutNoKeyMoneyAlt: "Would you like to filter out brands without key money?" },
   projectFit: { idealMin: "Min - Ideal Project Size", idealMax: "Max - Ideal Project Size", roomCountMin: "Min - Room Count", roomCountMax: "Max - Room Count" }
