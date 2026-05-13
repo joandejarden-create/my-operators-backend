@@ -104,6 +104,7 @@ import { list as listDealRoomDocuments, listForBrandRequest as listDealRoomDocum
 import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
+import { getMe } from "./api/me.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -292,6 +293,10 @@ app.get("/api/company-profile/prefill", getCompanyProfilePrefill);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Memberstack + Airtable user context (Phase A)
+app.get("/api/me", getMe);
+app.post("/api/me", getMe);
 
 app.post("/api/intake/third-party-operator", handleThirdPartyOperatorIntake);
 app.post("/api/third-party-operators/submit", handleThirdPartyOperatorIntake);
