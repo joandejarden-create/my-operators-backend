@@ -35,8 +35,8 @@
         '/brand-explorer': { file: '/brand-library-atelier-north.html', title: 'Brand Explorer (Mock Up)' },
         '/operator-explorer': { file: '/operator-explorer.html', title: 'Operator Explorer' },
         '/operator-explorer-mockup': { file: '/operator-explorer-gold-mock.html', title: 'Operator Explorer Mockup' },
-        '/deal-room-owner': { file: '/deal-room-owner.html', title: 'Owner Deal Room' },
-        '/deal-room-brand': { file: '/deal-room-brand.html', title: 'Brand Deal Room' },
+        '/deal-room-owner': { file: '/deal-room-owner.html', title: 'Deal Room (Owner)' },
+        '/deal-room-brand': { file: '/deal-room-brand.html', title: 'Deal Room (Brand)' },
         '/brand-deal-request': { file: '/brand-deal-request.html', title: 'Brand Deal Request' },
         '/outreach': { file: '/outreach-plans.html', title: 'Outreach Plans' },
         '/activity-log': { file: '/outreach-deal-activity-log.html', title: 'Activity Log' },
@@ -45,7 +45,8 @@
         '/outreach/analytics': { file: '/outreach-analytics.html', title: 'Outreach Analytics' },
         '/outreach/deal-activity-log': { file: '/outreach-deal-activity-log.html', title: 'Outreach Deal Activity Log' },
         '/outreach/templates': { file: '/outreach-template-manager.html', title: 'Outreach Templates' },
-        '/brand-library': { file: '/brand-library.html', title: 'Brand Library' },
+        '/brand-library': { file: '/brand-library.html', title: 'Browse brands' },
+        '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer (preview)' },
         '/brand-library-atelier': { file: '/brand-library-atelier-north.html', title: 'Brand Explorer (Mock Up)' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
@@ -145,8 +146,9 @@
                     icon: NAV_ICONS.toolbox,
                     children: [
                         { label: 'Brand Explorer', route: '/brand-library-atelier', roles: ['owner', 'brand', 'admin'] },
+                        { label: 'Brand Explorer (preview)', route: '/brand-explorer-combined', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Operator Explorer', route: '/operator-explorer', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Brand Library', route: '/brand-library', roles: ['owner', 'brand', 'admin'] },
+                        { label: 'Browse brands', route: '/brand-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Financial Term Library', route: '/financial-term-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Clause Library', route: '/clause-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] }
@@ -215,6 +217,7 @@
         '/outreach-deal-activity-log.html': '/outreach/deal-activity-log',
         '/outreach-template-manager.html': '/outreach/templates',
         '/brand-library.html': '/brand-library',
+        '/brand-explorer-combined.html': '/brand-explorer-combined',
         '/brand-library-atelier-north.html': '/brand-library-atelier',
         '/financial-term-library.html': '/financial-term-library',
         '/clause-library.html': '/clause-library',
@@ -316,12 +319,21 @@
     }
 
     function routeToEmbedUrl(route, role) {
+        var embedQs = 'embed=1&appShell=1';
         if (route === '/opportunity-radar' && role === 'operator') {
-            return '/operator-intelligence-radar-with-list.html?embed=1';
+            return '/operator-intelligence-radar-with-list.html?' + embedQs;
         }
         var mapped = ROUTES[route];
-        if (!mapped || !mapped.file) return '/app/home.html?embed=1';
-        return mapped.file + (mapped.file.indexOf('?') === -1 ? '?embed=1' : '&embed=1');
+        if (!mapped || !mapped.file) return '/app/home.html?' + embedQs;
+        var sep = mapped.file.indexOf('?') === -1 ? '?' : '&';
+        return mapped.file + sep + embedQs;
+    }
+
+    /** Pathname the shell iframe should show for this route (matches routeToEmbedUrl, including operator radar exception). */
+    function getEmbedPathnameForRoute(route, role) {
+        var rel = routeToEmbedUrl(route, role).split('?')[0];
+        if (rel.charAt(0) !== '/') rel = '/' + rel;
+        return rel;
     }
 
     function getFrameForPath(path) {
@@ -622,7 +634,31 @@
         } else if (target === '/route-map') {
             frame.srcdoc = renderRouteMapHtml(role);
         } else {
-            applyEmbeddedPageOverrides(frame, target, role);
+            /*
+             * Embedded list pages often do in-frame navigation (e.g. my-deals → deal-summary via
+             * location.href) without changing this iframe's data-path. Hash can stay #/my-deals while
+             * the child document is no longer my-deals.html — reload when pathname does not match.
+             */
+            var expectedPath = getEmbedPathnameForRoute(target, role);
+            var mustReloadFrame = false;
+            if (expectedPath && frame.contentWindow) {
+                try {
+                    if (frame.contentWindow.location.pathname !== expectedPath) {
+                        mustReloadFrame = true;
+                    }
+                } catch (_crossOrigin) {
+                    /* Assume in sync if we cannot read the child (should not happen for same-origin embeds). */
+                }
+            }
+            if (mustReloadFrame) {
+                frame.src = routeToEmbedUrl(target, role);
+                frame.addEventListener('load', function onShellEmbedRouteLoad() {
+                    frame.removeEventListener('load', onShellEmbedRouteLoad);
+                    applyEmbeddedPageOverrides(frame, target, role);
+                });
+            } else {
+                applyEmbeddedPageOverrides(frame, target, role);
+            }
         }
 
         showFrame(target);
@@ -779,6 +815,15 @@
         initDevWorkspaceSwitcher();
         initSidebarControls();
         initShellMessageListener();
+        /* Same-origin iframes (deal-setup, new-deal-setup, etc.) call this so navigation works even if postMessage is flaky. */
+        window.dealalityAppShellNavigate = function (path) {
+            if (typeof path !== 'string') return;
+            try {
+                navigate(path, currentRole, true);
+            } catch (_err) {
+                // Ignore — embed may call during teardown.
+            }
+        };
         navigate(getPath(currentRole), currentRole, false);
         window.addEventListener('hashchange', function () {
             navigate(getPath(currentRole), currentRole, false);

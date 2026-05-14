@@ -1592,7 +1592,7 @@
                     <a href="#">🏢 Deal Room</a>
                     <a href="#">🤝 Outreach Hub</a>
                     <a href="clause-library.html">📚 Legal Library</a>
-                    <a href="brand-library.html" class="active">🏨 Brand Library</a>
+                    <a href="brand-library.html" class="active">🏨 Browse brands</a>
                     <a href="brand-library-compare.html">⚖️ Compare Brands</a>
                     <a href="partner-directory.html">👥 Partner Directory</a>
                     <a href="#">📋 Platform Resources</a>
@@ -1606,7 +1606,7 @@
         <div class="dashboard-main-section">
             <div class="brand-detail-container">
                 <div class="breadcrumb">
-                    <a href="brand-library.html">Brand Library</a>
+                    <a href="brand-library.html">Browse brands</a>
                     <span class="breadcrumb-separator">></span>
                     <span id="breadcrumbBrandName">Brand</span>
                 </div>
@@ -2932,6 +2932,28 @@
             }
 
             function renderSupportAndLegal(operationalSupport, legalTerms) {
+                function humanizeFieldKey(key) {
+                    return String(key)
+                        .replace(/([A-Z])/g, ' $1')
+                        .replace(/_/g, ' ')
+                        .replace(/\s+/g, ' ')
+                        .trim()
+                        .replace(/^./, function (c) {
+                            return c.toUpperCase();
+                        });
+                }
+                function formatGridValue(value) {
+                    if (value == null) return '';
+                    if (Array.isArray(value)) {
+                        return value
+                            .map(function (x) {
+                                return x != null ? String(x).trim() : '';
+                            })
+                            .filter(Boolean)
+                            .join(', ');
+                    }
+                    return String(value).trim();
+                }
                 function renderKeyValueGrid(containerId, data) {
                     const container = document.getElementById(containerId);
                     if (!container) return;
@@ -2939,16 +2961,30 @@
                         container.innerHTML = '<div style="color: var(--neutral--500);">No data available</div>';
                         return;
                     }
-                    const html = Object.entries(data).map(([key, value]) => {
-                        const label = key.replace(/\s*-\s*/g, ' – ').trim();
-                        const val = (value != null && String(value).trim() !== '') ? String(value).trim() : '—';
-                        return `
-                            <div class="info-item-compact">
-                                <div class="info-item-compact__label">${escapeHtml(label)}</div>
-                                <div class="info-item-compact__value">${escapeHtml(val)}</div>
-                            </div>`;
-                    }).join('');
-                    container.innerHTML = html;
+                    const rows = Object.entries(data)
+                        .map(function (entry) {
+                            const key = entry[0];
+                            const value = entry[1];
+                            const val = formatGridValue(value);
+                            if (!val) return '';
+                            const label = humanizeFieldKey(key);
+                            return (
+                                '<div class="info-item-compact">' +
+                                '<div class="info-item-compact__label">' +
+                                escapeHtml(label) +
+                                '</div>' +
+                                '<div class="info-item-compact__value">' +
+                                escapeHtml(val) +
+                                '</div>' +
+                                '</div>'
+                            );
+                        })
+                        .filter(Boolean);
+                    if (!rows.length) {
+                        container.innerHTML = '<div style="color: var(--neutral--500);">No data available</div>';
+                        return;
+                    }
+                    container.innerHTML = rows.join('');
                 }
                 renderKeyValueGrid('operationalSupportContent', operationalSupport);
                 renderKeyValueGrid('legalTermsContent', legalTerms);
@@ -3025,74 +3061,118 @@
             }
 
             function renderFeeStructure(feeStructure) {
-                if (!feeStructure || Object.keys(feeStructure).length === 0) {
+                if (!feeStructure || typeof feeStructure !== 'object' || Object.keys(feeStructure).length === 0) {
                     document.getElementById('feeStructureContent').innerHTML = '<div style="color: var(--neutral--500);">Fee structure information not available</div>';
                     return;
                 }
 
                 const fees = feeStructure;
+                const first = function (a, b) {
+                    var x = a !== undefined && a !== null && String(a).trim() !== '' ? a : b;
+                    return x !== undefined && x !== null && String(x).trim() !== '' ? x : '';
+                };
+
+                var applicationFeeMin = first(fees.applicationFeeMin, fees.typicalApplicationFeeMin);
+                var applicationFeeMax = first(fees.applicationFeeMax, fees.typicalApplicationFeeMax);
+                var applicationFeeBasis = first(fees.applicationFeeBasis, fees.typicalApplicationFeeBasis);
+                var royaltyMin = first(fees.royaltyMin, fees.typicalRoyaltyPercentMin);
+                var royaltyMax = first(fees.royaltyMax, fees.typicalRoyaltyPercentMax);
+                var royaltyBasis = first(fees.royaltyBasis, fees.typicalRoyaltyPercentBasis);
+                var marketingMin = first(fees.marketingMin, fees.typicalMarketingFeePercentMin);
+                var marketingMax = first(fees.marketingMax, fees.typicalMarketingFeePercentMax);
+                var marketingBasis = first(fees.marketingBasis, fees.typicalMarketingFeePercentBasis);
+                var techMin = first(fees.techFeeMin, first(fees.technicalFeeMin, fees.typicalTechnologyFeeMin));
+                var techMax = first(fees.techFeeMax, first(fees.technicalFeeMax, fees.typicalTechnologyFeeMax));
+                var techBasis = first(fees.techFeeBasis, first(fees.technicalFeeBasis, fees.typicalTechnologyFeeBasis));
+                var loyaltyMin = first(fees.loyaltyMin, fees.typicalLoyaltyFeePercentMin);
+                var loyaltyMax = first(fees.loyaltyMax, fees.typicalLoyaltyFeePercentMax);
+                var loyaltyBasis = first(fees.loyaltyBasis, fees.typicalLoyaltyFeePercentBasis);
+                var reservationMin = fees.typicalReservationFeeMin;
+                var reservationMax = fees.typicalReservationFeeMax;
+                var reservationBasis = fees.typicalReservationFeeBasis;
+                var trainingMin = fees.typicalTrainingFeeMin;
+                var trainingMax = fees.typicalTrainingFeeMax;
+                var trainingBasis = fees.typicalTrainingFeeBasis;
+
                 let html = '<div class="info-grid-compact">';
                 
-                if (fees.applicationFeeMin || fees.applicationFeeMax) {
+                if (applicationFeeMin || applicationFeeMax) {
                     html += `
                         <div class="info-item-compact">
                             <div class="info-item-compact__label">Application Fee</div>
-                            <div class="info-item-compact__value">${formatFeeRange(fees.applicationFeeMin, fees.applicationFeeMax, fees.applicationFeeBasis)}</div>
+                            <div class="info-item-compact__value">${formatFeeRange(applicationFeeMin, applicationFeeMax, applicationFeeBasis)}</div>
                         </div>
                     `;
                 }
                 
-                if (fees.royaltyMin || fees.royaltyMax) {
+                if (royaltyMin || royaltyMax) {
                     html += `
                         <div class="info-item-compact">
                             <div class="info-item-compact__label">Royalty Fee</div>
-                            <div class="info-item-compact__value">${formatFeeRange(fees.royaltyMin, fees.royaltyMax, fees.royaltyBasis)}</div>
+                            <div class="info-item-compact__value">${formatFeeRange(royaltyMin, royaltyMax, royaltyBasis)}</div>
                         </div>
                     `;
                 }
                 
-                if (fees.marketingMin || fees.marketingMax) {
+                if (marketingMin || marketingMax) {
                     html += `
                         <div class="info-item-compact">
                             <div class="info-item-compact__label">Marketing Fee</div>
-                            <div class="info-item-compact__value">${formatFeeRange(fees.marketingMin, fees.marketingMax, fees.marketingBasis)}</div>
+                            <div class="info-item-compact__value">${formatFeeRange(marketingMin, marketingMax, marketingBasis)}</div>
                         </div>
                     `;
                 }
                 
-                if (fees.technicalFeeMin || fees.technicalFeeMax) {
+                if (techMin || techMax) {
                     html += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Technical Services Fee</div>
-                            <div class="info-item-compact__value">${formatFeeRange(fees.technicalFeeMin, fees.technicalFeeMax, fees.technicalFeeBasis)}</div>
+                            <div class="info-item-compact__label">Technology fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(techMin, techMax, techBasis)}</div>
                         </div>
                     `;
                 }
                 
-                if (fees.techFeeMin || fees.techFeeMax) {
-                    html += `
-                        <div class="info-item-compact">
-                            <div class="info-item-compact__label">Technology Fee</div>
-                            <div class="info-item-compact__value">${formatFeeRange(fees.techFeeMin, fees.techFeeMax, fees.techFeeBasis)}</div>
-                        </div>
-                    `;
-                }
-                
-                if (fees.loyaltyMin || fees.loyaltyMax) {
+                if (loyaltyMin || loyaltyMax) {
                     html += `
                         <div class="info-item-compact">
                             <div class="info-item-compact__label">Loyalty Program Fee</div>
-                            <div class="info-item-compact__value">${formatFeeRange(fees.loyaltyMin, fees.loyaltyMax, fees.loyaltyBasis)}</div>
+                            <div class="info-item-compact__value">${formatFeeRange(loyaltyMin, loyaltyMax, loyaltyBasis)}</div>
+                        </div>
+                    `;
+                }
+
+                if (reservationMin || reservationMax) {
+                    html += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Reservation / distribution fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(reservationMin, reservationMax, reservationBasis)}</div>
+                        </div>
+                    `;
+                }
+
+                if (trainingMin || trainingMax) {
+                    html += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Training fee</div>
+                            <div class="info-item-compact__value">${formatFeeRange(trainingMin, trainingMax, trainingBasis)}</div>
                         </div>
                     `;
                 }
                 
                 html += '</div>';
                 
-                if (fees.descriptionOfFee) {
-                    html += `<div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--neutral--600);"><div class="info-card__content">${escapeHtml(fees.descriptionOfFee)}</div></div>`;
+                var feeNotes = first(fees.descriptionOfFee, fees.typicalRoyaltyNotes);
+                if (!String(feeNotes).trim()) feeNotes = first('', fees.typicalApplicationFeeNotes);
+                if (!String(feeNotes).trim()) feeNotes = first('', fees.typicalMarketingFeeNotes);
+                if (feeNotes) {
+                    html += `<div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--neutral--600);"><div class="info-card__content">${escapeHtml(String(feeNotes))}</div></div>`;
                 }
                 
+                if (!html.includes('info-item-compact') && !String(feeNotes || '').trim()) {
+                    document.getElementById('feeStructureContent').innerHTML = '<div style="color: var(--neutral--500);">Fee structure information not available</div>';
+                    return;
+                }
+
                 document.getElementById('feeStructureContent').innerHTML = html;
             }
 
@@ -3179,145 +3259,234 @@
             }
 
             function renderDealTerms(terms) {
-                console.log('Rendering deal terms:', terms);
-                // Check if terms object exists and has any non-empty values
-                const hasData = terms && Object.keys(terms).some(key => {
-                    const value = terms[key];
-                    return value !== null && value !== undefined && value !== '' && value !== false;
-                });
-                
-                if (!hasData) {
-                    console.log('No deal terms data available');
-                    document.getElementById('termLengthContent').innerHTML = '<div style="color: var(--neutral--500);">Deal terms information not available</div>';
+                const emptyDeal = '<div style="color: var(--neutral--500);">Deal terms information not available</div>';
+                const first = function (a, b) {
+                    var x = a !== undefined && a !== null && String(a).trim() !== '' ? a : b;
+                    return x !== undefined && x !== null && String(x).trim() !== '' ? x : '';
+                };
+                const joinParts = function () {
+                    var parts = [];
+                    for (var i = 0; i < arguments.length; i++) {
+                        var v = arguments[i];
+                        if (v !== undefined && v !== null && String(v).trim() !== '') parts.push(String(v).trim());
+                    }
+                    return parts.join(' ');
+                };
+
+                if (!terms || typeof terms !== 'object') {
+                    document.getElementById('termLengthContent').innerHTML = emptyDeal;
+                    document.getElementById('renewalTermsContent').innerHTML = emptyDeal;
+                    document.getElementById('performanceRequirementsContent').innerHTML = emptyDeal;
+                    document.getElementById('pipContent').innerHTML = emptyDeal;
                     return;
                 }
 
-                // Term Length
+                const hasData = Object.keys(terms).some(function (key) {
+                    const value = terms[key];
+                    return value !== null && value !== undefined && value !== '' && value !== false;
+                });
+                if (!hasData) {
+                    document.getElementById('termLengthContent').innerHTML = emptyDeal;
+                    document.getElementById('renewalTermsContent').innerHTML = emptyDeal;
+                    document.getElementById('performanceRequirementsContent').innerHTML = emptyDeal;
+                    document.getElementById('pipContent').innerHTML = emptyDeal;
+                    return;
+                }
+
+                // Align with GET /api/brand-library/brand dealTerms (DEAL_TERMS_FORM_TO_AIRTABLE) + legacy aliases.
+                var minInitialTerm = first(terms.minInitialTerm, joinParts(terms.minInitialTermQty, terms.minInitialTermLength, terms.minInitialTermDuration));
+
+                var renewalOption = first(terms.renewalOption, joinParts(terms.renewalOptionQty, terms.renewalOptionLength, terms.renewalOptionDuration));
+                var renewalOptionLengthOnly = first(terms.renewalOptionLength, '');
+                if (!renewalOption && renewalOptionLengthOnly) renewalOption = renewalOptionLengthOnly;
+
+                var renewalNoticeQty = first(terms.renewalNoticePeriod, terms.renewalNoticeQty);
+                var renewalNoticeDuration = first(terms.renewalNoticeDuration, '');
+                if (!renewalNoticeDuration && terms.renewalNoticeType && terms.renewalNoticeType !== 'Owner/Franchisee to Brand') {
+                    renewalNoticeDuration = terms.renewalNoticeType;
+                }
+                if (!renewalNoticeDuration) renewalNoticeDuration = 'months';
+                var renewalResp = first(terms.renewalNoticeResponsibility, '');
+                if (!renewalResp && terms.renewalNoticeType === 'Owner/Franchisee to Brand') renewalResp = terms.renewalNoticeType;
+
+                var renewalConditions = terms.renewalConditions;
+                var renewalStructure = first(terms.renewalStructure, '');
+
+                var performanceTest = first(terms.performanceTest, terms.performanceTestRequirement);
+                var performanceTestText = first(terms.performanceTestText, terms.qaComplianceRequirement);
+                var curePeriod = first(terms.curePeriod, joinParts(terms.curePeriodQty, terms.curePeriodDuration));
+                if (curePeriod && terms.curePeriod && String(terms.curePeriod).trim() !== '' && !terms.curePeriodQty) {
+                    if (!/\b(month|day|week|year)s?\b/i.test(String(curePeriod))) {
+                        curePeriod = String(curePeriod).trim() + ' months';
+                    }
+                }
+
+                var mandatoryPIPRenewal = first(terms.mandatoryPIPRenewal, terms.pipAtRenewal);
+                var mandatoryPIPConversion = first(terms.mandatoryPIPConversion, terms.pipForConversions);
+                var typicalPIPConversionPerRoom = first(terms.typicalPIPConversionPerRoom, '');
+                var conversionMaxTime = first(
+                    terms.conversionMaxTime,
+                    joinParts(terms.conversionMaxTimeQty, terms.conversionMaxTimeDuration)
+                );
+                var renewalMaxTime = first(terms.renewalMaxTime, joinParts(terms.renewalMaxTimeQty, terms.renewalMaxTimeDuration));
+
+                var terminationFeeStructure = first(terms.terminationFeeStructure, '');
+                var terminationFeeStructureNotes = first(terms.terminationFeeStructureNotes, '');
+                var performanceTerminationRights = first(terms.performanceTerminationRights, '');
+
+                // Term length
                 let termHtml = '<div class="info-grid-compact">';
-                if (terms.minInitialTerm) {
+                if (minInitialTerm) {
                     termHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Minimum Initial Term</div>
-                            <div class="info-item-compact__value">${terms.minInitialTerm} years</div>
+                            <div class="info-item-compact__label">Minimum initial term</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(minInitialTerm))}</div>
                         </div>
                     `;
                 }
                 termHtml += '</div>';
-                document.getElementById('termLengthContent').innerHTML = termHtml;
+                document.getElementById('termLengthContent').innerHTML = termHtml.includes('info-item-compact')
+                    ? termHtml
+                    : emptyDeal;
 
-                // Renewal Terms
+                // Renewal
                 let renewalHtml = '<div class="info-grid-compact">';
-                if (terms.renewalOption) {
+                if (renewalOption) {
                     renewalHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Renewal Option</div>
-                            <div class="info-item-compact__value">${terms.renewalOption} years</div>
+                            <div class="info-item-compact__label">Renewal option</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(renewalOption))}</div>
                         </div>
                     `;
                 }
-                if (terms.renewalOptionLength) {
+                if (renewalStructure) {
                     renewalHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Renewal Option Length</div>
-                            <div class="info-item-compact__value">${terms.renewalOptionLength}</div>
+                            <div class="info-item-compact__label">Renewal structure</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(renewalStructure))}</div>
                         </div>
                     `;
                 }
-                if (terms.renewalNoticePeriod) {
-                    const duration = terms.renewalNoticeType && terms.renewalNoticeType !== 'Owner/Franchisee to Brand' 
-                        ? terms.renewalNoticeType 
-                        : 'months';
+                if (renewalNoticeQty) {
                     renewalHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Renewal Notice Period</div>
-                            <div class="info-item-compact__value">${terms.renewalNoticePeriod} ${duration}</div>
+                            <div class="info-item-compact__label">Renewal notice period</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(renewalNoticeQty))} ${escapeHtml(String(renewalNoticeDuration))}</div>
                         </div>
                     `;
                 }
-                if (terms.renewalNoticeType && terms.renewalNoticeType === 'Owner/Franchisee to Brand') {
+                if (renewalResp) {
                     renewalHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Renewal Notice Responsibility</div>
-                            <div class="info-item-compact__value">${terms.renewalNoticeType}</div>
+                            <div class="info-item-compact__label">Renewal notice responsibility</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(renewalResp))}</div>
                         </div>
                     `;
                 }
-                if (terms.renewalConditions) {
+                if (renewalConditions) {
                     renewalHtml += `
                         <div class="info-item-compact" style="grid-column: 1 / -1; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--neutral--600);">
-                            <div class="info-item-compact__label">Typical Renewal Conditions</div>
-                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(terms.renewalConditions)}</div>
+                            <div class="info-item-compact__label">Typical renewal conditions</div>
+                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(String(renewalConditions))}</div>
                         </div>
                     `;
                 }
                 renewalHtml += '</div>';
-                document.getElementById('renewalTermsContent').innerHTML = renewalHtml;
+                document.getElementById('renewalTermsContent').innerHTML = renewalHtml.includes('info-item-compact')
+                    ? renewalHtml
+                    : emptyDeal;
 
-                // Performance Requirements
+                // Performance
                 let perfHtml = '<div class="info-grid-compact">';
-                if (terms.performanceTest) {
+                if (performanceTest) {
                     perfHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Performance Test Required</div>
-                            <div class="info-item-compact__value">${terms.performanceTest}</div>
+                            <div class="info-item-compact__label">Performance test</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(performanceTest))}</div>
                         </div>
                     `;
                 }
-                if (terms.performanceTestText) {
+                if (performanceTestText && performanceTestText !== performanceTest) {
                     perfHtml += `
                         <div class="info-item-compact" style="grid-column: 1 / -1; margin-top: 10px;">
-                            <div class="info-item-compact__label">Performance Test Details</div>
-                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(terms.performanceTestText)}</div>
+                            <div class="info-item-compact__label">QA / compliance</div>
+                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(String(performanceTestText))}</div>
                         </div>
                     `;
                 }
-                if (terms.curePeriod) {
+                if (curePeriod) {
                     perfHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Cure Period</div>
-                            <div class="info-item-compact__value">${terms.curePeriod} months</div>
+                            <div class="info-item-compact__label">Cure period</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(curePeriod))}</div>
+                        </div>
+                    `;
+                }
+                if (performanceTerminationRights) {
+                    perfHtml += `
+                        <div class="info-item-compact" style="grid-column: 1 / -1; margin-top: 10px;">
+                            <div class="info-item-compact__label">Termination right after failed test</div>
+                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(String(performanceTerminationRights))}</div>
+                        </div>
+                    `;
+                }
+                if (terminationFeeStructure || terminationFeeStructureNotes) {
+                    perfHtml += `
+                        <div class="info-item-compact" style="grid-column: 1 / -1; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--neutral--600);">
+                            <div class="info-item-compact__label">Termination fee structure</div>
+                            <div class="info-item-compact__value" style="font-size: 12px; line-height: 1.5;">${escapeHtml(String(joinParts(terminationFeeStructure, terminationFeeStructureNotes)))}</div>
                         </div>
                     `;
                 }
                 perfHtml += '</div>';
-                document.getElementById('performanceRequirementsContent').innerHTML = perfHtml;
+                document.getElementById('performanceRequirementsContent').innerHTML = perfHtml.includes('info-item-compact')
+                    ? perfHtml
+                    : emptyDeal;
 
                 // PIP
                 let pipHtml = '<div class="info-grid-compact">';
-                if (terms.mandatoryPIPRenewal) {
+                if (mandatoryPIPRenewal) {
                     pipHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Mandatory PIP at Renewal</div>
-                            <div class="info-item-compact__value">${terms.mandatoryPIPRenewal}</div>
+                            <div class="info-item-compact__label">Mandatory PIP at renewal</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(mandatoryPIPRenewal))}</div>
                         </div>
                     `;
                 }
-                if (terms.mandatoryPIPConversion) {
+                if (mandatoryPIPConversion) {
                     pipHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Mandatory PIP at Conversion</div>
-                            <div class="info-item-compact__value">${terms.mandatoryPIPConversion}</div>
+                            <div class="info-item-compact__label">Mandatory PIP for conversions</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(mandatoryPIPConversion))}</div>
                         </div>
                     `;
                 }
-                if (terms.conversionMaxTime) {
+                if (typicalPIPConversionPerRoom) {
                     pipHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Conversion Max Time</div>
-                            <div class="info-item-compact__value">${terms.conversionMaxTime} years</div>
+                            <div class="info-item-compact__label">Typical mandatory PIP (conversions)</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(typicalPIPConversionPerRoom))}</div>
                         </div>
                     `;
                 }
-                if (terms.renewalMaxTime) {
+                if (conversionMaxTime) {
                     pipHtml += `
                         <div class="info-item-compact">
-                            <div class="info-item-compact__label">Renewal Max Time</div>
-                            <div class="info-item-compact__value">${terms.renewalMaxTime} years</div>
+                            <div class="info-item-compact__label">Conversion — max time to complete</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(conversionMaxTime))}</div>
+                        </div>
+                    `;
+                }
+                if (renewalMaxTime) {
+                    pipHtml += `
+                        <div class="info-item-compact">
+                            <div class="info-item-compact__label">Renewal — max time to complete</div>
+                            <div class="info-item-compact__value">${escapeHtml(String(renewalMaxTime))}</div>
                         </div>
                     `;
                 }
                 pipHtml += '</div>';
-                document.getElementById('pipContent').innerHTML = pipHtml;
+                document.getElementById('pipContent').innerHTML = pipHtml.includes('info-item-compact') ? pipHtml : emptyDeal;
             }
 
             async function fetchSimilarBrands(currentBrand) {

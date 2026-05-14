@@ -46,6 +46,11 @@ class BrandDevelopmentDashboard {
         this._bddKpiSyncTimer = null;
         /** Sorted brand names from brand library (for decline → alternate brand picker). */
         this._portfolioBrandNames = [];
+        /** Deal activity tab: debounced search re-render */
+        this._dealLogSearchDebounce = null;
+        this._dealLogFilterListenersWired = false;
+        /** Opportunity workspace: Chart.js instance for owner importance radar (destroyed on modal close). */
+        this._bddOwImportanceRadarChart = null;
 
         this.init();
     }
@@ -219,6 +224,7 @@ class BrandDevelopmentDashboard {
             projectType: (rawDeal.projectType || '').toString().trim() || 'Unknown',
             chainScale: (rawDeal.hotelChainScale || '').toString().trim() || 'Not Specified',
             targetOpeningDate: (rawDeal.targetOpeningDate || '').toString().trim() || '—',
+            preferredBrands,
             preferredBrandName,
             preferredBrandScore,
             preferredBrandScoreBreakdown: scoreBreakdown,
@@ -228,12 +234,97 @@ class BrandDevelopmentDashboard {
             locationData,
             contactData: {},
             marketPerformanceData: {},
-            strategicIntentData: {},
+            strategicIntentData: rawDeal.strategicIntentForm && typeof rawDeal.strategicIntentForm === 'object' ? { ...rawDeal.strategicIntentForm } : {},
             matchScoresByBrand,
             matchScoresNewByBrand: rawDeal.matchScoresNewByBrand || rawDeal.matchScoresByBrand || {},
             matchBreakdownNewDetailsByBrand: rawDeal.matchBreakdownNewDetailsByBrand || rawDeal.matchBreakdownDetailsByBrand || {},
-            matchBreakdownDetailsByBrand: rawDeal.matchBreakdownDetailsByBrand || {}
+            matchBreakdownDetailsByBrand: rawDeal.matchBreakdownDetailsByBrand || {},
+            matchScoreNew: rawDeal.matchScoreNew != null && rawDeal.matchScoreNew !== '' ? Number(rawDeal.matchScoreNew) : null
         };
+    }
+
+    /**
+     * Brands the owner listed as preferred (My Deals / Strategic Intent), comma-separated.
+     * Not the Brand Deal Request "Brand Name" (outreach row), which may be a parent company.
+     */
+    _ownerPreferredBrandsDisplay(deal) {
+        if (!deal) return '';
+        let list = [];
+        if (Array.isArray(deal.preferredBrands) && deal.preferredBrands.length > 0) {
+            list = deal.preferredBrands.map((b) => String(b).trim()).filter(Boolean);
+        } else {
+            const raw = deal.dealFields && deal.dealFields['Preferred Brands'];
+            if (typeof raw === 'string' && raw.trim()) {
+                list = raw.split(',').map((s) => s.trim()).filter(Boolean);
+            } else if (Array.isArray(raw)) {
+                list = raw.map((b) => String(b).trim()).filter(Boolean);
+            }
+        }
+        const seen = new Set();
+        list = list.filter((b) => {
+            const k = b.toLowerCase();
+            if (seen.has(k)) return false;
+            seen.add(k);
+            return true;
+        });
+        if (list.length > 0) return list.join(', ');
+        return (deal.preferredBrandName || '').toString().trim();
+    }
+
+    /** Ordered unique list of owner preferred brand names (My Deals / Strategic Intent). */
+    _ownerPreferredBrandsArray(deal) {
+        if (!deal) return [];
+        const out = [];
+        const pushUnique = (t) => {
+            const s = String(t).trim();
+            if (!s) return;
+            const k = s.toLowerCase();
+            if (out.some((x) => String(x).toLowerCase() === k)) return;
+            out.push(s);
+        };
+        if (Array.isArray(deal.preferredBrands) && deal.preferredBrands.length > 0) {
+            deal.preferredBrands.forEach(pushUnique);
+            return out;
+        }
+        const raw = deal.dealFields && deal.dealFields['Preferred Brands'];
+        if (typeof raw === 'string' && raw.trim()) {
+            raw.split(',').forEach((x) => pushUnique(x));
+        } else if (Array.isArray(raw)) {
+            raw.forEach((x) => pushUnique(x));
+        }
+        return out;
+    }
+
+    _brandNamesEquivalent(a, b) {
+        return String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase();
+    }
+
+    /** Per-brand match score (same keys as My Deals Matched Brands). */
+    _matchScoreNewForBrand(deal, brand) {
+        if (!deal || brand == null) return null;
+        const b = String(brand).trim();
+        if (!b || b === '—') return null;
+        const map = deal.matchScoresNewByBrand || deal.matchScoresByBrand || {};
+        if (map[b] != null && map[b] !== '') return Number(map[b]);
+        const lower = b.toLowerCase();
+        for (const key of Object.keys(map)) {
+            if (key != null && String(key).trim().toLowerCase() === lower) return Number(map[key]);
+        }
+        if (deal.matchScoreNew != null && deal.matchScoreNew !== '' && !Number.isNaN(Number(deal.matchScoreNew))) return Number(deal.matchScoreNew);
+        return null;
+    }
+
+    /** Score shown on workspace rows: deal↔target brand fit, then BDR snapshot, then deal default. */
+    _effectiveWorkspaceRowScore(row) {
+        if (!row) return null;
+        if (row._rowBrandMatchScore != null && row._rowBrandMatchScore !== '' && !Number.isNaN(Number(row._rowBrandMatchScore))) {
+            return Number(row._rowBrandMatchScore);
+        }
+        if (row._requestMatchScore != null && row._requestMatchScore !== '' && !Number.isNaN(Number(row._requestMatchScore))) {
+            return Number(row._requestMatchScore);
+        }
+        if (row.matchScore != null && row.matchScore !== '' && !Number.isNaN(Number(row.matchScore))) return Number(row.matchScore);
+        return null;
     }
 
     /**
@@ -324,9 +415,12 @@ class BrandDevelopmentDashboard {
         const arr = (activityData.entries || []).map(e => {
             const deal = dealMapForName.get(e.dealId);
             const dealName = (deal?.propertyName || deal?.dealFields?.['Project Name'] || deal?.dealFields?.['Property Name'] || '').toString().trim() || (e.dealId ? 'Deal ' + String(e.dealId).slice(-6) : '');
+            const ownerTargetBrand = (this._ownerPreferredBrandsDisplay(deal) || '').trim() || '—';
             return {
                 date: e.createdAt || '',
                 dealName,
+                brandName: (e.brandName != null ? String(e.brandName) : '').trim(),
+                ownerTargetBrand,
                 action: e.action || '',
                 details: e.details || '',
                 dealId: e.dealId,
@@ -904,7 +998,7 @@ class BrandDevelopmentDashboard {
                         null;
                     return {
                         brandBasics,
-                        brandFit: data.projectFit || data.brandFit || {},
+                        brandFit: (data.brand && data.brand.projectFit) || data.projectFit || data.brandFit || {},
                         brandFootprint: data.footprint || data.brandFootprint || {},
                         brandStandards: data.brandStandards || {},
                         brandFeeStructure: data.feeStructure || data.brandFeeStructure || {},
@@ -1813,7 +1907,7 @@ class BrandDevelopmentDashboard {
         const nda = (row.ndaStatus || '').trim();
         const dra = (row.dealRoomAccess || '').trim();
         const prop = (row.proposalStatus || '').trim();
-        const score = row._requestMatchScore != null ? Number(row._requestMatchScore) : (row.matchScore != null ? Number(row.matchScore) : null);
+        const score = this._effectiveWorkspaceRowScore(row);
         if (st === 'New' || st === 'Sent / Awaiting Response') out.push({ key: 'new', label: 'New' });
         if (['New', 'Brand Viewed', 'Viewed', 'Sent / Awaiting Response'].includes(st)) out.push({ key: 'needs', label: 'Needs Response' });
         if (['Accepted', 'Responded - Accepted'].includes(st) && row.workspaceBucket === 'awaiting-info') out.push({ key: 'owner', label: 'Owner Waiting' });
@@ -1840,19 +1934,24 @@ class BrandDevelopmentDashboard {
         return old + '\n\n' + block;
     }
 
+    /** Append team-only internal notes (Airtable: Next Follow-up Notes (Internal); same dated blocks as Response Notes). */
+    appendBrandInternalNotesForPatch(existing, addition) {
+        return this.appendResponseNotesForPatch(existing, addition);
+    }
+
     derivePrimaryWorkspaceAction(row) {
         const na = this.deriveNextAction(row);
         const map = {
             'Review new opportunity': { action: 'open', label: 'Review' },
             'Mark decision': { action: 'open', label: 'Decide' },
             'Send NDA': { action: 'requestNda', label: 'Request NDA' },
-            'Awaiting signed NDA': { action: 'followUp', label: 'Follow up' },
-            'Open deal room': { action: 'grantRoom', label: 'Grant access' },
-            'Review documents': { action: 'dealRoom', label: 'Deal room' },
-            'Prepare preliminary terms': { action: 'prepareTerms', label: 'Prepare terms' },
-            'Follow up with owner': { action: 'followUp', label: 'Follow up' },
-            'Request missing owner information': { action: 'requestInfo', label: 'Request info' },
-            'Internal review': { action: 'followUp', label: 'Follow up' },
+            'Awaiting signed NDA': { action: 'followUp', label: 'Follow Up' },
+            'Open deal room': { action: 'grantRoom', label: 'Grant Access' },
+            'Review documents': { action: 'dealRoom', label: 'Deal Room' },
+            'Prepare preliminary terms': { action: 'prepareTerms', label: 'Prepare Terms' },
+            'Follow up with owner': { action: 'followUp', label: 'Follow Up' },
+            'Request missing owner information': { action: 'requestInfo', label: 'Request Info' },
+            'Internal review': { action: 'followUp', label: 'Follow Up' },
             'Revisit later': { action: 'revisitLater', label: 'Revisit' },
             'No action required': { action: 'open', label: 'Open' }
         };
@@ -1875,65 +1974,65 @@ class BrandDevelopmentDashboard {
         push('open', 'Workspace');
         if (['Declined', 'Archived', 'Responded - Declined'].includes(st)) return out;
         if (st === 'More Info Requested') {
-            push('requestInfo', 'Request info');
-            push('followUp', 'Follow up');
+            push('requestInfo', 'Request Info');
+            push('followUp', 'Follow Up');
             push('decline', 'Decline');
             return out;
         }
         if (st === 'Revisit Later') {
-            push('followUp', 'Follow up');
+            push('followUp', 'Follow Up');
             push('interested', 'Resume');
             push('decline', 'Decline');
             return out;
         }
         if (['New', 'Sent / Awaiting Response'].includes(st) || !st) {
             push('interested', 'Interested');
-            push('requestInfo', 'Request info');
+            push('requestInfo', 'Request Info');
             push('decline', 'Decline');
             return out;
         }
         if (st === 'Brand Viewed' || st === 'Viewed') {
             push('interested', 'Interested');
-            push('requestInfo', 'Request info');
+            push('requestInfo', 'Request Info');
             push('decline', 'Decline');
-            push('followUp', 'Follow up');
+            push('followUp', 'Follow Up');
             return out;
         }
         if (['Accepted', 'Responded - Accepted'].includes(st)) {
-            push('requestInfo', 'Request info');
+            push('requestInfo', 'Request Info');
             if (nda === 'Not Sent' || nda === '') push('requestNda', 'Request NDA');
-            if (nda === 'Sent') push('followUp', 'Follow up');
-            if (nda === 'Signed - Owner Confirmed' && dra !== 'Granted') push('grantRoom', 'Grant room');
-            push('prepareTerms', 'Prepare terms');
-            push('followUp', 'Follow up');
+            if (nda === 'Sent') push('followUp', 'Follow Up');
+            if (nda === 'Signed - Owner Confirmed' && dra !== 'Granted') push('grantRoom', 'Grant Room');
+            push('prepareTerms', 'Prepare Terms');
+            push('followUp', 'Follow Up');
             push('decline', 'Decline');
             return out;
         }
         if (st === 'Deal Room Active' || row.workspaceBucket === 'nda-room') {
-            push('dealRoom', 'Deal room');
+            push('dealRoom', 'Deal Room');
             if (nda === 'Not Sent' || nda === '') push('requestNda', 'Request NDA');
-            if (nda === 'Signed - Owner Confirmed' && dra !== 'Granted') push('grantRoom', 'Grant room');
-            push('followUp', 'Follow up');
-            push('prepareTerms', 'Prepare terms');
+            if (nda === 'Signed - Owner Confirmed' && dra !== 'Granted') push('grantRoom', 'Grant Room');
+            push('followUp', 'Follow Up');
+            push('prepareTerms', 'Prepare Terms');
             push('decline', 'Decline');
             return out;
         }
         if (row.workspaceBucket === 'terms-proposal' || prop === 'Draft' || prop === 'Submitted' || ['Pre-LOI', 'Pre-LOI / Term Comparison'].includes(st)) {
-            push('dealRoom', 'Deal room');
-            push('prepareTerms', 'Prepare terms');
+            push('dealRoom', 'Deal Room');
+            push('prepareTerms', 'Prepare Terms');
             push('submitProposal', 'Proposal');
-            push('followUp', 'Follow up');
+            push('followUp', 'Follow Up');
             push('decline', 'Decline');
             return out;
         }
         if (row.workspaceBucket === 'advanced') {
-            push('followUp', 'Follow up');
+            push('followUp', 'Follow Up');
             push('revisitLater', 'Revisit');
             push('decline', 'Decline');
             return out;
         }
-        push('requestInfo', 'Request info');
-        push('followUp', 'Follow up');
+        push('requestInfo', 'Request Info');
+        push('followUp', 'Follow Up');
         push('decline', 'Decline');
         return out;
     }
@@ -1992,7 +2091,7 @@ class BrandDevelopmentDashboard {
             addItem(a.label, () => { this.executeBrandWorkspaceAction(a.id, row); });
         });
 
-        const score = row._requestMatchScore != null ? Number(row._requestMatchScore) : (row.matchScore ?? null);
+        const score = this._effectiveWorkspaceRowScore(row);
         const bn = (row._contactedBrand || row.preferredBrandName || '').trim();
         if (requestId) {
             addItem('Delete request…', () => {
@@ -2177,7 +2276,61 @@ class BrandDevelopmentDashboard {
             ...(this.brandDealRequests.declined || []).map(r => ({ ...r, _requestStatus: (r.status || 'Declined').trim() })),
             ...(this.brandDealRequests.archived || []).map(r => ({ ...r, _requestStatus: (r.status || 'Archived').trim() }))
         ];
-        this.allWorkspaceRows = lists.map(req => this._rowFromBdrRequest(req, dealMap)).filter(Boolean);
+        const reqsByDeal = new Map();
+        for (const req of lists) {
+            if (!req || !req.dealId) continue;
+            if (!reqsByDeal.has(req.dealId)) reqsByDeal.set(req.dealId, []);
+            reqsByDeal.get(req.dealId).push(req);
+        }
+        const dealOrder = [];
+        const seenDealId = new Set();
+        for (const req of lists) {
+            if (!req || !req.dealId || seenDealId.has(req.dealId)) continue;
+            seenDealId.add(req.dealId);
+            dealOrder.push(req.dealId);
+        }
+        const out = [];
+        for (const dealId of dealOrder) {
+            const deal = dealMap.get(dealId);
+            const dealReqs = reqsByDeal.get(dealId) || [];
+            const brands = this._ownerPreferredBrandsArray(deal);
+            const usedReqIds = new Set();
+
+            if (brands.length === 0) {
+                for (const req of dealReqs) {
+                    const row = this._rowFromBdrRequest(req, dealMap);
+                    if (!row) continue;
+                    const tb = String(req.brandName || '').trim() || '—';
+                    row._rowTargetBrand = tb;
+                    row._rowBrandMatchScore = this._matchScoreNewForBrand(deal, tb);
+                    out.push(row);
+                }
+                continue;
+            }
+
+            for (const b of brands) {
+                const req = dealReqs.find((r) => this._brandNamesEquivalent(r.brandName, b));
+                if (!req) continue;
+                if (usedReqIds.has(req.id)) continue;
+                usedReqIds.add(req.id);
+                const row = this._rowFromBdrRequest(req, dealMap);
+                if (!row) continue;
+                row._rowTargetBrand = b;
+                row._rowBrandMatchScore = this._matchScoreNewForBrand(deal, b);
+                out.push(row);
+            }
+
+            for (const req of dealReqs) {
+                if (usedReqIds.has(req.id)) continue;
+                const row = this._rowFromBdrRequest(req, dealMap);
+                if (!row) continue;
+                const tb = String(req.brandName || '').trim() || '—';
+                row._rowTargetBrand = tb;
+                row._rowBrandMatchScore = this._matchScoreNewForBrand(deal, tb);
+                out.push(row);
+            }
+        }
+        this.allWorkspaceRows = out;
     }
 
     _rowFromBdrRequest(req, dealMap) {
@@ -2212,6 +2365,7 @@ class BrandDevelopmentDashboard {
         row.nextFollowupHeader = req.nextFollowupHeader || '';
         row.responseNotes = req.responseNotes || '';
         row.ownerNotes = req.ownerNotes || '';
+        row.brandInternalNotes = req.brandInternalNotes || '';
         row.lastUpdated = req.lastUpdated || '';
         row.requestSentAt = req.requestSentAt || '';
         row.responseDate = req.responseDate || '';
@@ -2259,10 +2413,11 @@ class BrandDevelopmentDashboard {
         const propertyTypeFilter = (p && p.propertyType) || '';
         const countryFilter = (p && p.country) || '';
         return (rows || []).filter((deal) => {
-            if (brandFilterVal && (deal._contactedBrand || '').trim() !== brandFilterVal) return false;
+            const rowBrand = ((deal._rowTargetBrand || deal._contactedBrand || '') + '').trim();
+            if (brandFilterVal && rowBrand !== brandFilterVal && (deal._contactedBrand || '').trim() !== brandFilterVal) return false;
             if (statusFilter && (deal._requestStatus || '') !== statusFilter) return false;
             if (scoreFilter) {
-                const score = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore ?? 0);
+                const score = this._effectiveWorkspaceRowScore(deal) ?? 0;
                 if (scoreFilter === 'high' && score < 80) return false;
                 if (scoreFilter === 'medium' && (score < 50 || score >= 80)) return false;
                 if (scoreFilter === 'low' && score >= 50) return false;
@@ -2299,6 +2454,347 @@ class BrandDevelopmentDashboard {
             '<p><strong>Missing information:</strong> ' + this.escapeHtml(review.length ? 'Clarify: ' + review.slice(0, 3).join(', ') : '—') + '</p>' +
             '<p><strong>Suggested brand review step:</strong> ' + this.escapeHtml(step) + '</p>' +
             '</div>'
+        );
+    }
+
+    _bddSiDisplayValue(val) {
+        if (val == null || val === '') return '';
+        if (Array.isArray(val)) {
+            return val.map(v => (v && typeof v === 'object' && v.name != null ? String(v.name).trim() : String(v).trim())).filter(Boolean).join(', ');
+        }
+        return String(val).replace(/^\s+|\s+$/g, '');
+    }
+
+    _bddOwnerSiStrategicKeys() {
+        return [
+            'Soft vs Hard Brand Preference', 'Preferred Chain Scales', 'Open to Soft Brand First Then Reflag?', 'Target Guest Segment', 'Target Guest Segment Other',
+            'Brand Flexibility vs Prestige', 'IRR/Yield Goals', 'Open to Outside Capital or Partnerships?', 'Preferred Brands (up to 4)', 'Planned Hold Period',
+            'Primary Goal for the Hotel', 'Primary Goal for the Hotel Other', 'Plan to Self-Manage or Hire Third Party?'
+        ];
+    }
+
+    /** Same 14 fields as deal setup; rendered separately in Opportunity Workspace (radar + guidance), not as a flat list. */
+    _bddImportanceFieldNames() {
+        return [
+            'Speed to Market Importance', 'Development / Renovation Timeline Importance', 'CapEx / PIP Execution Importance',
+            'Revenue / Yield Management Importance', 'Marketing & Distribution Importance', 'Loyalty Program Importance',
+            'Brand Recognition Importance', 'Brand Equity Increase on Exit Importance', 'Guest Experience / Satisfaction Importance',
+            'Cost Control / Operational Efficiency Importance', 'Staffing & Talent Importance', 'Technology & Systems Importance',
+            'Incentive Alignment Importance', 'ESG / Sustainability Importance'
+        ];
+    }
+
+    _bddOwnerSiOperationalNonImportanceKeys() {
+        return [
+            'Minimum Operator Experience (years)', 'Preferred Third-Party Operators (names)', 'Preferred Third-Party Operator Profile', 'Services Required From Operator',
+            'Other Operator Criteria or Notes', 'Level of Involvement in Day-to-Day Ops', 'On-Site vs Remote Owner Representation'
+        ];
+    }
+
+    _bddOwnerSiOperationalKeys() {
+        return this._bddOwnerSiOperationalNonImportanceKeys().concat(this._bddImportanceFieldNames());
+    }
+
+    _bddOwnerSiChallengesKeys() {
+        return [
+            'Top 3 Success Metrics', 'Top 3 Success Metrics Other', 'Top Priorities for Project', 'Top Priorities for Project Other', 'Top Concerns for this Project', 'Top Concerns for this Project Other',
+            'Decision Timeline for Brand/Operator', 'Critical deadlines for application', 'Critical Deadlines Description', 'Top 3 Deal Breakers', 'Top 3 Deal Breakers Other',
+            'Must-haves From Brand or Operator', 'Must-haves From Brand or Operator Other', 'Incentive Types Interested In', 'Incentive Types Interested In Other'
+        ];
+    }
+
+    _bddOwnerSiAllKeys() {
+        return this._bddOwnerSiStrategicKeys().concat(this._bddOwnerSiOperationalKeys()).concat(this._bddOwnerSiChallengesKeys());
+    }
+
+    _bddSiHasAnyContent(si) {
+        if (!si || typeof si !== 'object') return false;
+        return this._bddOwnerSiAllKeys().some(k => this._bddSiDisplayValue(si[k]));
+    }
+
+    /** Full deal fetch merges Strategic Intent onto deal.fields (same as deal setup); list rows sometimes lack that payload. */
+    async _bddFetchOwnerSiFromDealApi(dealId) {
+        const id = dealId && String(dealId).trim();
+        if (!id || id.slice(0, 3) !== 'rec') return null;
+        try {
+            const base = window.location.origin || '';
+            const res = await fetch(base + '/api/my-deals/' + encodeURIComponent(id));
+            if (!res.ok) return null;
+            const data = await res.json().catch(() => ({}));
+            if (!data.success || !data.deal || !data.deal.fields) return null;
+            const f = data.deal.fields;
+            const out = {};
+            for (const k of this._bddOwnerSiAllKeys()) {
+                if (f[k] !== undefined && f[k] !== null) out[k] = f[k];
+            }
+            return out;
+        } catch (_) {
+            return null;
+        }
+    }
+
+    _bddSiRowHtml(label, val) {
+        const v = this._bddSiDisplayValue(val);
+        if (!v) return '';
+        return '<div class="bdd-ow-si-kv"><dt class="bdd-ow-si-k">' + this.escapeHtml(label) + '</dt><dd class="bdd-ow-si-v">' + this.escapeHtml(v).replace(/\r\n|\r|\n/g, '<br/>') + '</dd></div>';
+    }
+
+    _bddSiPanelFromKeys(si, keys) {
+        const rows = keys.map(k => this._bddSiRowHtml(k, si[k])).filter(Boolean);
+        if (!rows.length) return '<p class="bdd-ow-muted" style="margin:0;">Nothing recorded in this section yet.</p>';
+        return '<dl class="bdd-ow-si-dl">' + rows.join('') + '</dl>';
+    }
+
+    _bddImportanceCategoryDefs() {
+        return [
+            { label: ['Speed &', 'Delivery'], fields: ['Speed to Market Importance', 'Development / Renovation Timeline Importance', 'CapEx / PIP Execution Importance'] },
+            { label: ['Commercial', 'Focus'], fields: ['Revenue / Yield Management Importance', 'Marketing & Distribution Importance', 'Loyalty Program Importance'] },
+            { label: ['Brand &', 'Experience'], fields: ['Brand Recognition Importance', 'Brand Equity Increase on Exit Importance', 'Guest Experience / Satisfaction Importance'] },
+            { label: ['Operational', 'Rigor'], fields: ['Cost Control / Operational Efficiency Importance', 'Staffing & Talent Importance', 'Technology & Systems Importance'] },
+            { label: ['Partnership &', 'Values'], fields: ['Incentive Alignment Importance', 'ESG / Sustainability Importance'] }
+        ];
+    }
+
+    _bddCategoryDisplayName(cat) {
+        return Array.isArray(cat.label) ? cat.label.join(' ') : String(cat.label);
+    }
+
+    _bddParseSiImportanceNumber(val) {
+        if (val == null || val === '') return null;
+        const n = parseFloat(String(val).replace(/,/g, ''), 10);
+        if (!Number.isFinite(n)) return null;
+        return n;
+    }
+
+    /**
+     * Same aggregation as deal-setup importance radar: average available 1–5 fields per category.
+     * @returns {{ chartLabels: (string|string[])[]; data: number[]; hasAny: boolean }}
+     */
+    _bddComputeImportanceRadarFromSi(si) {
+        const src = si && typeof si === 'object' ? si : {};
+        const cats = this._bddImportanceCategoryDefs();
+        const chartLabels = [];
+        const data = [];
+        let hasAny = false;
+        cats.forEach((cat) => {
+            chartLabels.push(Array.isArray(cat.label) ? cat.label : [cat.label]);
+            let sum = 0;
+            let count = 0;
+            cat.fields.forEach((f) => {
+                const v = this._bddParseSiImportanceNumber(src[f]);
+                if (v != null) {
+                    hasAny = true;
+                    sum += v;
+                    count++;
+                }
+            });
+            data.push(count > 0 ? Math.round((sum / count) * 10) / 10 : 0);
+        });
+        return { chartLabels, data, hasAny };
+    }
+
+    /** Brand/operator-facing guidance (mirrors deal-setup logic; no "good fit" block). */
+    _bddWorkspaceImportanceInterpretationForBrand(data) {
+        const cats = this._bddImportanceCategoryDefs();
+        if (!data || data.length !== cats.length) return { lookFor: '', avoid: '' };
+        const lookMap = {
+            'Speed & Delivery': 'The owner is signaling strong priority on speed and delivery. Expect questions on on-time openings, clear development and renovation timelines, and disciplined CapEx/PIP execution—and be ready with comparable references.',
+            'Commercial Focus': 'The owner is signaling strong priority on commercial outcomes. Expect focus on revenue management, marketing and distribution support, and loyalty contribution; benchmarks help.',
+            'Brand & Experience': 'The owner is signaling strong priority on brand and guest experience. Expect focus on loyalty standards, guest satisfaction, brand recognition, and how the proposition supports exit value.',
+            'Operational Rigor': 'The owner is signaling strong priority on operational rigor. Expect focus on cost controls, staffing and talent, and technology and systems—across both brand standards and execution.',
+            'Partnership & Values': 'The owner is signaling strong priority on partnership and values. Expect scrutiny of incentive alignment, systems and modernization, and ESG and sustainability commitments—in both deal structure and operations.'
+        };
+        const avoidMap = {
+            'Speed & Delivery': 'The owner is trying to avoid partners with a reputation for delays, vague timelines, or weak project and CapEx discipline—especially if their timeline is fixed.',
+            'Commercial Focus': 'The owner is trying to avoid partners who cannot show revenue management depth or meaningful marketing and distribution support if top-line growth matters on this deal.',
+            'Brand & Experience': 'The owner is trying to avoid partners who do not credibly prioritize loyalty, guest experience, and brand equity if those dimensions matter in their profile.',
+            'Operational Rigor': 'The owner is trying to avoid partners without clear cost controls, labor benchmarks, or talent focus if efficiency and retention matter to them.',
+            'Partnership & Values': 'The owner is trying to avoid misaligned incentives, outdated systems, or vague ESG posture if structure and values are material to them.'
+        };
+        const items = cats.map((cat, i) => ({ name: this._bddCategoryDisplayName(cat), value: data[i] || 0 }));
+        const sortedByValue = items.slice().sort((a, b) => b.value - a.value);
+        const avg = items.reduce((s, x) => s + x.value, 0) / items.length;
+        const highThreshold = 3.3;
+        const lowThreshold = 2.7;
+        const high = items.filter((x) => x.value >= highThreshold);
+        const low = items.filter((x) => x.value <= lowThreshold);
+        const lookFor = [];
+        const avoid = [];
+        high.forEach((x) => {
+            if (lookMap[x.name]) lookFor.push(lookMap[x.name]);
+        });
+        low.forEach((x) => {
+            if (avoidMap[x.name]) avoid.push(avoidMap[x.name]);
+        });
+        if (lookFor.length === 0 && sortedByValue.length > 0) {
+            const top = sortedByValue[0];
+            if (top.value > avg && lookMap[top.name]) {
+                lookFor.push('The owner\'s strongest emphasis appears to be ' + top.name + '. ' + lookMap[top.name]);
+            } else {
+                lookFor.push('The owner\'s ratings look fairly balanced across the five dimensions. Prepare to speak credibly to speed, commercial outcomes, brand and guest experience, operational rigor, and partnership values.');
+            }
+        }
+        if (avoid.length === 0 && sortedByValue.length > 0) {
+            const bottom = sortedByValue[sortedByValue.length - 1];
+            if (bottom.value < avg && avoidMap[bottom.name]) {
+                avoid.push('The owner places relatively less emphasis on ' + bottom.name + '. ' + avoidMap[bottom.name]);
+            } else {
+                avoid.push('With no single dimension clearly de-prioritized, weak execution across multiple areas—with no plan to address gaps—will stand out in this review.');
+            }
+        }
+        return { lookFor: lookFor.join(' '), avoid: avoid.join(' ') };
+    }
+
+    _bddRenderOpportunityImportanceProfileHtml(si) {
+        const { chartLabels, data, hasAny } = this._bddComputeImportanceRadarFromSi(si);
+        if (!hasAny) return '';
+        const interp = this._bddWorkspaceImportanceInterpretationForBrand(data);
+        let payload = '';
+        try {
+            payload = encodeURIComponent(JSON.stringify({ l: chartLabels, d: data }));
+        } catch (_) {
+            return '';
+        }
+        return (
+            '<div class="bdd-ow-importance-radar-root bdd-ow-importance-radar-container" data-bdd-radar="' + payload + '">' +
+            '<h4 class="bdd-ow-importance-radar-title">Owner Deal Priority Profile</h4>' +
+            '<p class="bdd-ow-importance-radar-desc">This chart summarizes the owner\'s stated importance ratings (1–5) across the same five dimensions as deal setup. Copy is written for brands and operators reviewing the opportunity.</p>' +
+            '<div class="bdd-ow-importance-radar-layout">' +
+            '<div class="bdd-ow-importance-radar-chart-col">' +
+            '<div class="bdd-ow-importance-radar-wrap">' +
+            '<canvas id="bddOwImportanceRadarChart" width="400" height="320" aria-label="Owner deal priority radar chart"></canvas>' +
+            '</div></div>' +
+            '<div class="bdd-ow-importance-radar-text-col" aria-live="polite">' +
+            '<div class="bdd-ow-importance-radar-interpretation-block">' +
+            '<div class="bdd-ow-importance-radar-interp-title">What to Look For</div>' +
+            '<p class="bdd-ow-importance-radar-interp-text" id="bddOwImportanceLookFor">' + this.escapeHtml(interp.lookFor) + '</p>' +
+            '</div>' +
+            '<div class="bdd-ow-importance-radar-interpretation-block">' +
+            '<div class="bdd-ow-importance-radar-interp-title">What to Avoid</div>' +
+            '<p class="bdd-ow-importance-radar-interp-text" id="bddOwImportanceAvoid">' + this.escapeHtml(interp.avoid) + '</p>' +
+            '</div></div></div></div>'
+        );
+    }
+
+    _bddDestroyOpportunityWorkspaceRadarChart() {
+        if (this._bddOwImportanceRadarChart) {
+            try {
+                this._bddOwImportanceRadarChart.destroy();
+            } catch (_) { /* noop */ }
+            this._bddOwImportanceRadarChart = null;
+        }
+    }
+
+    _bddMountOrResizeOpportunityWorkspaceRadarChart() {
+        const canvas = document.getElementById('bddOwImportanceRadarChart');
+        const root = canvas && canvas.closest('.bdd-ow-importance-radar-root');
+        if (!canvas || !root || typeof Chart === 'undefined') return;
+        const opPanel = canvas.closest('.bdd-ow-si-panel[data-bdd-ow-si-panel="bdd-ow-si-operational"]');
+        if (!opPanel || !opPanel.classList.contains('is-active')) return;
+        let payload;
+        try {
+            payload = JSON.parse(decodeURIComponent(root.getAttribute('data-bdd-radar') || ''));
+        } catch (_) {
+            return;
+        }
+        if (!payload || !payload.l || !payload.d || payload.l.length !== 5 || payload.d.length !== 5) return;
+
+        if (this._bddOwImportanceRadarChart) {
+            try {
+                this._bddOwImportanceRadarChart.destroy();
+            } catch (_) { /* noop */ }
+            this._bddOwImportanceRadarChart = null;
+        }
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        this._bddOwImportanceRadarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: payload.l,
+                datasets: [{
+                    label: 'Importance',
+                    data: payload.d,
+                    backgroundColor: 'rgba(253, 181, 42, 0.25)',
+                    borderColor: 'rgb(253, 181, 42)',
+                    borderWidth: 1.5,
+                    pointBackgroundColor: 'rgb(253, 181, 42)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(253, 181, 42)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        min: 0,
+                        max: 5,
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, display: false },
+                        pointLabels: { color: '#aeb9e1', font: { size: 11 } },
+                        grid: { color: 'rgba(174, 185, 225, 0.3)' },
+                        angleLines: { color: 'rgba(174, 185, 225, 0.3)' }
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+        requestAnimationFrame(() => {
+            try {
+                if (this._bddOwImportanceRadarChart) this._bddOwImportanceRadarChart.resize();
+            } catch (_) { /* noop */ }
+        });
+    }
+
+    /** Opportunity workspace: owner SI tabs (read-only). */
+    renderBddOpportunityOwnerPrioritiesHtml(strategicIntentData) {
+        const si = strategicIntentData && typeof strategicIntentData === 'object' ? strategicIntentData : {};
+        const strategicKeys = this._bddOwnerSiStrategicKeys();
+        const operationalKeys = this._bddOwnerSiOperationalKeys();
+        const challengesKeys = this._bddOwnerSiChallengesKeys();
+        const allKeys = strategicKeys.concat(operationalKeys).concat(challengesKeys);
+        const hasAny = allKeys.some(k => this._bddSiDisplayValue(si[k]));
+        if (!hasAny) {
+            return (
+                '<div class="bdd-ow-card bdd-ow-section bdd-ow-si-root">' +
+                '<h3 class="bdd-ow-section__title">Deal Priorities</h3>' +
+                '<p class="bdd-ow-muted" style="margin:0;">We could not load any owner entries for <strong>Strategic intent</strong>, <strong>Operational expectations</strong>, or <strong>Challenges &amp; priorities</strong> on this deal. That usually means the workspace list did not include linked setup data yet, or the deal has no Strategic Intent record linked in Airtable. Try <strong>refreshing the page</strong>; if the owner has already completed those tabs in deal setup and this message persists, confirm the deal is linked to a Strategic Intent record.</p>' +
+                '</div>'
+            );
+        }
+        const iconStrategic = '<span class="bdd-ow-si-tab-icon" aria-hidden="true"><svg viewBox="0 0 40 40" width="32" height="32"><circle class="bdd-ow-si-tab-ring" cx="20" cy="20" r="17" fill="none" stroke-width="1.5"/><circle cx="20" cy="20" r="2.5" fill="currentColor"/><circle cx="20" cy="20" r="6" fill="none" stroke="currentColor" stroke-width="1.25"/><circle cx="20" cy="20" r="10.5" fill="none" stroke="currentColor" stroke-width="1.25"/></svg></span>';
+        const iconOperational = '<span class="bdd-ow-si-tab-icon" aria-hidden="true"><svg viewBox="0 0 40 40" width="32" height="32"><circle class="bdd-ow-si-tab-ring" cx="20" cy="20" r="17" fill="none" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M12 26V14M20 26V10M28 26v-8"/></svg></span>';
+        const iconChallenges = '<span class="bdd-ow-si-tab-icon" aria-hidden="true"><svg viewBox="0 0 40 40" width="32" height="32"><circle class="bdd-ow-si-tab-ring" cx="20" cy="20" r="17" fill="none" stroke-width="1.5"/><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M20 11l8 14H12l8-14z"/><line x1="20" y1="16" x2="20" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="22.5" r="0.9" fill="currentColor"/></svg></span>';
+        const tab = (id, label, icon, active) =>
+            '<button type="button" class="bdd-ow-si-tab' + (active ? ' active' : '') + '" data-bdd-ow-si-panel="' + id + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '">' + icon + '<span class="bdd-ow-si-tab-label">' + label + '</span></button>';
+        const panel = (id, inner, active) =>
+            '<div class="bdd-ow-si-panel' + (active ? ' is-active' : '') + '" data-bdd-ow-si-panel="' + id + '" role="tabpanel">' + inner + '</div>';
+        const impHtml = this._bddRenderOpportunityImportanceProfileHtml(si);
+        const opNonImp = this._bddOwnerSiOperationalNonImportanceKeys();
+        const hasOpKv = opNonImp.some((k) => this._bddSiDisplayValue(si[k]));
+        const opPanelRest = this._bddSiPanelFromKeys(si, opNonImp);
+        let operationalInner = impHtml || '';
+        if (hasOpKv) {
+            if (operationalInner) operationalInner += '<div class="bdd-ow-operational-after-radar">' + opPanelRest + '</div>';
+            else operationalInner = opPanelRest;
+        } else if (!operationalInner) {
+            operationalInner = '<p class="bdd-ow-muted" style="margin:0;">Nothing recorded in this section yet.</p>';
+        }
+        return (
+            '<div class="bdd-ow-card bdd-ow-section bdd-ow-si-root">' +
+            '<h3 class="bdd-ow-section__title">Deal Priorities</h3>' +
+            '<p class="bdd-ow-muted" style="margin:0 0 12px;">What the owner entered in deal setup (read-only).</p>' +
+            '<nav class="bdd-ow-si-tabs" aria-label="Strategic intent, operational expectations, and challenges">' +
+            tab('bdd-ow-si-strategic', 'Strategic<br>intent', iconStrategic, true) +
+            tab('bdd-ow-si-operational', 'Operational<br>expectations', iconOperational, false) +
+            tab('bdd-ow-si-challenges', 'Challenges &amp;<br>priorities', iconChallenges, false) +
+            '</nav>' +
+            '<div class="bdd-ow-si-panels">' +
+            panel('bdd-ow-si-strategic', this._bddSiPanelFromKeys(si, strategicKeys), true) +
+            panel('bdd-ow-si-operational', operationalInner, false) +
+            panel('bdd-ow-si-challenges', this._bddSiPanelFromKeys(si, challengesKeys), false) +
+            '</div></div>'
         );
     }
 
@@ -2633,7 +3129,7 @@ class BrandDevelopmentDashboard {
     }
 
     getWorkspaceTableColspan() {
-        return this.currentWorkspaceTab === 'bdd-new' ? 12 : 11;
+        return this.currentWorkspaceTab === 'bdd-new' ? 13 : 12;
     }
 
     _bddSortTh(sortKey, label) {
@@ -2653,7 +3149,7 @@ class BrandDevelopmentDashboard {
         const isNew = this.currentWorkspaceTab === 'bdd-new';
         table.classList.toggle('bdd-workspace-table--new-layout', isNew);
         if (isNew) {
-            cg.innerHTML = '<col class="bdd-col-check"><col><col><col><col><col><col><col><col><col><col><col>';
+            cg.innerHTML = '<col class="bdd-col-check"><col><col><col><col><col><col><col><col><col><col><col><col>';
             thead.innerHTML =
                 '<tr>' +
                 '<th class="cell-checkbox no-sort"><input type="checkbox" id="bddSelectAllCheckbox" title="Select all"></th>' +
@@ -2661,6 +3157,7 @@ class BrandDevelopmentDashboard {
                 this._bddSortTh('headline', 'Why this surfaced') +
                 '<th class="no-sort">Alerts</th>' +
                 this._bddSortTh('propertyName', 'Opportunity') +
+                this._bddSortTh('targetBrand', 'Target brand') +
                 this._bddSortTh('country', 'Country') +
                 this._bddSortTh('rooms', 'Rooms') +
                 this._bddSortTh('stageLabel', 'Stage') +
@@ -2670,12 +3167,13 @@ class BrandDevelopmentDashboard {
                 '<th class="no-sort cell-call-to-action"><span>More actions</span></th>' +
                 '</tr>';
         } else {
-            cg.innerHTML = '<col class="bdd-col-check"><col><col><col><col><col><col><col><col><col><col>';
+            cg.innerHTML = '<col class="bdd-col-check"><col><col><col><col><col><col><col><col><col><col><col>';
             thead.innerHTML =
                 '<tr>' +
                 '<th class="cell-checkbox no-sort"><input type="checkbox" id="bddSelectAllCheckbox" title="Select all"></th>' +
                 '<th class="no-sort">Alerts</th>' +
                 this._bddSortTh('propertyName', 'Opportunity') +
+                this._bddSortTh('targetBrand', 'Target brand') +
                 this._bddSortTh('country', 'Country') +
                 this._bddSortTh('rooms', 'Rooms') +
                 this._bddSortTh('matchScore', 'Brand fit') +
@@ -2723,21 +3221,21 @@ class BrandDevelopmentDashboard {
         return (
             '<div class="bdd-decision-stack">' +
             mk('interested', 'bdd-decision-btn--primary', 'Interested') +
-            mk('requestInfo', 'bdd-decision-btn--secondary', 'Request info') +
+            mk('requestInfo', 'bdd-decision-btn--secondary', 'Request Info') +
             mk('decline', 'bdd-decision-btn--ghost', 'Decline') +
             '</div>'
         );
     }
 
     renderWhySurfacedCell(deal) {
-        const displayScore = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore != null && deal.matchScore !== '' ? Number(deal.matchScore) : null);
+        const displayScore = this._effectiveWorkspaceRowScore(deal);
         const hasScore = displayScore != null && !Number.isNaN(displayScore);
         const scoreClass = hasScore ? this.getScoreClass(displayScore) : 'match-score-empty';
-        const brandPlain = (deal._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || deal.preferredBrandName || '').trim();
+        const brandPlain = (deal._rowTargetBrand || deal._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || deal.preferredBrandName || '').trim();
         const brandAttr = this.escapeHtml(brandPlain);
         const headline = this.escapeHtml(this.getDealHeadlineForRow(deal));
         const detailsBtn = hasScore
-            ? '<button type="button" class="match-score-new-details-btn" data-deal-id="' + this.escapeHtml(deal.id) + '" data-brand="' + brandAttr + '">Match details</button>'
+            ? '<button type="button" class="match-score-new-details-btn" data-deal-id="' + this.escapeHtml(deal.id) + '" data-brand="' + brandAttr + '">Match Details</button>'
             : '';
         return (
             '<div class="bdd-why-cell-inner">' +
@@ -2852,6 +3350,9 @@ class BrandDevelopmentDashboard {
                     this.escapeHtml(e.dealName || '—') +
                     '</td>' +
                     '<td>' +
+                    this.escapeHtml(e.ownerTargetBrand || '—') +
+                    '</td>' +
+                    '<td>' +
                     this.escapeHtml(e.action || '') +
                     '</td>' +
                     '<td>' +
@@ -2862,7 +3363,7 @@ class BrandDevelopmentDashboard {
             })
             .join('');
         host.innerHTML =
-            '<table class="bdd-activity-table"><thead><tr><th style="width:22%">When</th><th style="width:24%">Opportunity</th><th style="width:20%">Event</th><th>Details</th></tr></thead><tbody>' +
+            '<table class="bdd-activity-table"><thead><tr><th style="width:20%">When</th><th style="width:22%">Opportunity</th><th style="width:18%">Target Brand</th><th style="width:18%">Event</th><th>Details</th></tr></thead><tbody>' +
             rows +
             '</tbody></table>';
     }
@@ -2949,10 +3450,10 @@ class BrandDevelopmentDashboard {
         }
         tbody.innerHTML = visible
             .map((deal) => {
-                const displayScore = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore != null && deal.matchScore !== '' ? Number(deal.matchScore) : null);
+                const displayScore = this._effectiveWorkspaceRowScore(deal);
                 const hasScore = displayScore != null && !Number.isNaN(displayScore);
                 const scoreClass = hasScore ? this.getScoreClass(displayScore) : 'match-score-empty';
-                const brandPlain = (deal._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || deal.preferredBrandName || '').trim();
+                const brandPlain = (deal._rowTargetBrand || deal._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || deal.preferredBrandName || '').trim();
                 const brandAttr = this.escapeHtml(brandPlain);
                 const badges = (deal.priorityBadges || [])
                     .map((b) => '<span class="bdd-pill bdd-pill--' + this.escapeHtml(b.key) + '">' + this.escapeHtml(b.label) + '</span>')
@@ -2979,6 +3480,9 @@ class BrandDevelopmentDashboard {
                         '<td><span class="property-name">' +
                         this.escapeHtml(deal.propertyName || '—') +
                         '</span></td>' +
+                        '<td>' +
+                        this.escapeHtml((deal._rowTargetBrand || '').trim() || '—') +
+                        '</td>' +
                         '<td>' +
                         this.escapeHtml(deal.country || '—') +
                         '</td>' +
@@ -3014,6 +3518,9 @@ class BrandDevelopmentDashboard {
                     '<td><span class="property-name">' +
                     this.escapeHtml(deal.propertyName || '—') +
                     '</span></td>' +
+                    '<td>' +
+                    this.escapeHtml((deal._rowTargetBrand || '').trim() || '—') +
+                    '</td>' +
                     '<td>' +
                     this.escapeHtml(deal.country || '—') +
                     '</td>' +
@@ -3272,7 +3779,7 @@ class BrandDevelopmentDashboard {
         const requestId = deal._requestId || '';
         const brandRaw = (deal._contactedBrand || deal.preferredBrandName || '').trim();
         const brandNameAttr = this.escapeHtml(brandRaw);
-        const score = deal._requestMatchScore != null ? Number(deal._requestMatchScore) : (deal.matchScore ?? null);
+        const score = this._effectiveWorkspaceRowScore(deal);
         const showAcceptDecline = (deal._requestStatus === 'New' || deal._requestStatus === 'Brand Viewed') && requestId;
         const acceptDecline = showAcceptDecline ? `
             <button type="button" class="action-icon" title="Mark interested" onclick="dashboard.acceptRequest('${requestId}', { keepModal: false, dealId: '${dealId}' })"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></button>
@@ -3824,6 +4331,11 @@ class BrandDevelopmentDashboard {
         }
         
         content.innerHTML = html;
+        const bddSub = document.getElementById('dealDetailsModalSubtitle');
+        if (bddSub) {
+            bddSub.textContent = '';
+            bddSub.setAttribute('hidden', 'hidden');
+        }
         modal.classList.add('active');
         bddSetDealDetailsModalScrollLock(true);
     }
@@ -3890,6 +4402,8 @@ class BrandDevelopmentDashboard {
             btn.addEventListener('click', function() { self.switchTab(btn.getAttribute('data-tab')); });
         });
         window.addEventListener('hashchange', function() { self.restoreTabFromHash(); });
+
+        this._setupDealLogFilterListeners();
         
         // Close modals when clicking outside
         document.getElementById('scoreDetailsModal')?.addEventListener('click', (e) => {
@@ -3901,6 +4415,30 @@ class BrandDevelopmentDashboard {
         document.getElementById('dealDetailsModal')?.addEventListener('click', (e) => {
             if (e.target.id === 'dealDetailsModal') {
                 closeDealDetailsModal();
+            }
+            const siTab = e.target.closest('.bdd-ow-si-tab');
+            if (siTab && e.target.closest('#dealDetailsContent')) {
+                e.preventDefault();
+                const panelId = siTab.getAttribute('data-bdd-ow-si-panel');
+                const root = siTab.closest('.bdd-ow-si-root');
+                if (!root || !panelId) return;
+                root.querySelectorAll('.bdd-ow-si-tab').forEach(function (t) {
+                    const on = t === siTab;
+                    t.classList.toggle('active', on);
+                    t.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+                root.querySelectorAll('.bdd-ow-si-panel').forEach(function (p) {
+                    const on = p.getAttribute('data-bdd-ow-si-panel') === panelId;
+                    p.classList.toggle('is-active', on);
+                });
+                if (panelId === 'bdd-ow-si-operational') {
+                    requestAnimationFrame(() => {
+                        if (typeof this._bddMountOrResizeOpportunityWorkspaceRadarChart === 'function') {
+                            this._bddMountOrResizeOpportunityWorkspaceRadarChart();
+                        }
+                    });
+                }
+                return;
             }
             const fitBtn = e.target.closest('.bdd-modal-fit-btn');
             if (fitBtn) {
@@ -4114,7 +4652,8 @@ class BrandDevelopmentDashboard {
 
     async _maybeMarkBrandViewed(requestId, requestStatus) {
         const validRequestId = requestId && String(requestId).trim().startsWith('rec');
-        const should = (requestStatus === 'New' || requestStatus === 'new') && validRequestId;
+        const st = String(requestStatus || '').trim();
+        const should = (st === 'New' || st.toLowerCase() === 'new') && validRequestId;
         if (!should) return;
         try {
             const base = window.location.origin || '';
@@ -4145,16 +4684,33 @@ class BrandDevelopmentDashboard {
         const content = document.getElementById('dealDetailsContent');
         if (!modal || !content) return;
 
+        this._bddDestroyOpportunityWorkspaceRadarChart();
+
+        let siForPriorities = row.strategicIntentData && typeof row.strategicIntentData === 'object' ? { ...row.strategicIntentData } : {};
+        if (!this._bddSiHasAnyContent(siForPriorities)) {
+            const fetched = await this._bddFetchOwnerSiFromDealApi(dealId);
+            if (fetched && this._bddSiHasAnyContent(fetched)) {
+                siForPriorities = fetched;
+                row.strategicIntentData = { ...siForPriorities };
+                const deal = this.deals.find(d => d.id === dealId);
+                if (deal) deal.strategicIntentData = { ...(deal.strategicIntentData || {}), ...fetched };
+            }
+        }
+
         const reqId = row._requestId || requestId || '';
         this._opportunityModalContext = { dealId, requestId: reqId };
-        const brand = (row._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || row.preferredBrandName || '').trim();
+        const brand = (row._rowTargetBrand || row._contactedBrand || this.brandId || document.getElementById('brandFilter')?.value || row.preferredBrandName || '').trim();
         const contact = row.contactData || {};
         const contactName = contact['Main Contact Name'] || contact['Contact Name'] || '—';
         const company = contact['Entity or Company Name'] || contact['Company Name'] || '';
         const email = (contact['Email Address'] || contact['Email'] || '').trim();
-        const score = row._requestMatchScore != null ? Number(row._requestMatchScore) : (row.matchScore != null ? Number(row.matchScore) : null);
+        const score = this._effectiveWorkspaceRowScore(row);
+        const breakdownFromMap =
+            (row.matchBreakdownNewDetailsByBrand && row.matchBreakdownNewDetailsByBrand[brand]) ||
+            (row.matchBreakdownDetailsByBrand && row.matchBreakdownDetailsByBrand[brand]) ||
+            {};
         const fitHtml = brand
-            ? this.renderFitSummaryHtml(score, row.scoreBreakdown || {}, brand)
+            ? this.renderFitSummaryHtml(score, Object.keys(breakdownFromMap).length ? breakdownFromMap : (row.scoreBreakdown || {}), brand)
             : '<p style="color:var(--neutral--500);">Brand fit details will appear once this opportunity is linked to a brand match record.</p>';
         const brandEnc = encodeURIComponent(brand);
 
@@ -4167,47 +4723,79 @@ class BrandDevelopmentDashboard {
             '<td style="font-size:11px;color:var(--neutral--500);padding:6px;">' + this.escapeHtml(row._requestStatus || '—') + '</td></tr>'
         ).join('');
         const timelineTable = timelineEntries.length
-            ? '<table class="bdd-crm-timeline-table" style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:var(--neutral--700);text-align:left;"><th style="padding:8px;">When</th><th style="padding:8px;">Event</th><th style="padding:8px;">Side</th><th style="padding:8px;">Details</th><th style="padding:8px;">Request status</th></tr></thead><tbody>' + timelineRows + '</tbody></table>'
+            ? '<table class="bdd-crm-timeline-table" style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:var(--neutral--700);text-align:left;"><th style="padding:8px;">When</th><th style="padding:8px;">Event</th><th style="padding:8px;">Side</th><th style="padding:8px;">Details</th><th style="padding:8px;">Request Status</th></tr></thead><tbody>' + timelineRows + '</tbody></table>'
             : '<p style="color:var(--neutral--500);">No activity loaded for this deal yet.</p>';
 
         const primary = this.derivePrimaryWorkspaceAction(row);
         const secondaryChips = this._buildModalActionButtonGroup(dealId, reqId, row);
+        /* Inside this modal, "open" only re-opens the same workspace (Review / Decide / Open) — omit as redundant. */
+        const primaryOpenBtn =
+            primary.action === 'open'
+                ? ''
+                : '<button type="button" class="bdd-decision-btn bdd-decision-btn--primary" data-bdd-ws="' + this.escapeHtml(primary.action) + '" data-deal-id="' + this.escapeHtml(dealId) + '" data-request-id="' + this.escapeHtml(reqId) + '">' + this.escapeHtml(primary.label) + '</button>';
         const stickyBar =
             '<div class="bdd-modal-action-sticky">' +
-            '<p class="bdd-ws-actions-hint" style="margin:0 0 10px;font-size:12px;color:var(--neutral--500);">Work the deal once. Dealality captures the activity trail automatically. Actions update the Brand Deal Request and the Deal Activity Log.</p>' +
-            '<div class="bdd-modal-primary-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">' +
-            '<button type="button" class="bdd-ws-primary-btn" data-bdd-ws="' + this.escapeHtml(primary.action) + '" data-deal-id="' + this.escapeHtml(dealId) + '" data-request-id="' + this.escapeHtml(reqId) + '">' + this.escapeHtml(primary.label) + '</button>' +
-            '<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">' + secondaryChips + '</div></div></div>';
+            '<p class="bdd-ws-actions-hint" style="margin:0 0 10px;font-size:12px;color:var(--neutral--500);line-height:1.45;">Actions update the Brand Deal Request and the Deal Activity Log.</p>' +
+            '<div class="bdd-modal-primary-row bdd-modal-decision-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">' +
+            primaryOpenBtn +
+            '<div class="bdd-ow-ws-actions-row" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">' + secondaryChips + '</div></div></div>';
 
         const advisorName = contact['Advisor Name'] || contact['Advisor Contact Name'] || contact['Consultant Name'] || '—';
         const lastTouch = row.lastActivityDisplay || '—';
+        const relParts = [];
+        const primaryContactBits = [];
+        if (contactName && contactName !== '—') primaryContactBits.push(this.escapeHtml(contactName));
+        const companyTrim = company ? String(company).trim() : '';
+        if (companyTrim) primaryContactBits.push(this.escapeHtml(companyTrim));
+        if (primaryContactBits.length) {
+            relParts.push('<li><span class="bdd-ow-kv-label">Primary Contact</span> ' + primaryContactBits.join(' — ') + '</li>');
+        }
+        if (advisorName && advisorName !== '—') {
+            relParts.push('<li><span class="bdd-ow-kv-label">Advisor</span> ' + this.escapeHtml(advisorName) + '</li>');
+        }
+        if (email) {
+            relParts.push('<li><span class="bdd-ow-kv-label">Email</span> <a href="mailto:' + encodeURIComponent(email) + '" style="color:var(--accent--primary-1);text-decoration:none;font-weight:500;">' + this.escapeHtml(email) + '</a></li>');
+        } else if (relParts.length > 0) {
+            relParts.push('<li class="bdd-ow-muted"><span class="bdd-ow-kv-label">Email</span> Not on file</li>');
+        }
+        if (brand) {
+            relParts.push('<li><span class="bdd-ow-kv-label">Brand on request</span> ' + this.escapeHtml(brand) + '</li>');
+        }
+        if (lastTouch && lastTouch !== '—') {
+            relParts.push('<li><span class="bdd-ow-kv-label">Last touch</span> ' + this.escapeHtml(lastTouch) + '</li>');
+        }
+        const followUpDisp = (row.followUpDisplay || '').trim();
+        if (followUpDisp && followUpDisp !== '—') {
+            relParts.push('<li><span class="bdd-ow-kv-label">Next follow-up</span> ' + this.escapeHtml(followUpDisp) + '</li>');
+        }
+        const relListInner = relParts.length
+            ? '<ul class="bdd-ow-rel-list">' + relParts.join('') + '</ul>'
+            : '<p class="bdd-ow-muted" style="margin:0;">No contact context on file for this opportunity.</p>';
         const relHtml =
-            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Relationship & contact context</h3>' +
-            '<ul style="margin:0;padding-left:18px;color:var(--neutral--400);font-size:13px;line-height:1.6;">' +
-            '<li><strong style="color:var(--neutral--300);">Owner / primary:</strong> ' + this.escapeHtml(contactName) + (company ? ' — ' + this.escapeHtml(company) : '') + '</li>' +
-            '<li><strong style="color:var(--neutral--300);">Advisor:</strong> ' + this.escapeHtml(advisorName) + '</li>' +
-            '<li><strong style="color:var(--neutral--300);">Email:</strong> ' + (email ? this.escapeHtml(email) : 'Not on file') + '</li>' +
-            '<li><strong style="color:var(--neutral--300);">Brand on request:</strong> ' + this.escapeHtml(brand || '—') + '</li>' +
-            '<li><strong style="color:var(--neutral--300);">Last touch:</strong> ' + this.escapeHtml(lastTouch) + '</li>' +
-            '<li><strong style="color:var(--neutral--300);">Next follow-up:</strong> ' + this.escapeHtml(row.followUpDisplay || '—') + '</li>' +
-            '</ul></div>';
+            '<div class="bdd-ow-card bdd-ow-section">' +
+            '<h3 class="bdd-ow-section__title">Relationship &amp; Contact</h3>' +
+            relListInner +
+            '</div>';
 
-        const crmHas = row.externalCrmId || row.crmSyncStatus || row.crmStage || row.crmOwner || row.lastCrmSyncAt;
+        const crmHas = !!(row.externalCrmId || row.crmSyncStatus || row.crmStage || row.crmOwner || row.lastCrmSyncAt || (row.crmNotes && String(row.crmNotes).trim()));
         const crmHtml = crmHas
-            ? ('<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">CRM sync readiness</h3>' +
-                '<ul style="margin:0;padding-left:18px;color:var(--neutral--400);font-size:13px;">' +
-                (row.externalCrmId ? '<li>External CRM ID: ' + this.escapeHtml(row.externalCrmId) + '</li>' : '') +
-                (row.crmSyncStatus ? '<li>Sync status: ' + this.escapeHtml(row.crmSyncStatus) + '</li>' : '') +
-                (row.lastCrmSyncAt ? '<li>Last CRM sync: ' + this.escapeHtml(row.lastCrmSyncAt) + '</li>' : '') +
-                (row.crmOwner ? '<li>CRM owner: ' + this.escapeHtml(row.crmOwner) + '</li>' : '') +
-                (row.crmStage ? '<li>CRM stage: ' + this.escapeHtml(row.crmStage) + '</li>' : '') +
-                (row.crmNotes ? '<li>CRM notes: ' + this.escapeHtml(row.crmNotes) + '</li>' : '') +
+            ? ('<div class="bdd-ow-card bdd-ow-section">' +
+                '<h3 class="bdd-ow-section__title">CRM Sync</h3>' +
+                '<ul class="bdd-ow-rel-list">' +
+                (row.externalCrmId ? '<li><span class="bdd-ow-kv-label">External CRM ID</span> ' + this.escapeHtml(row.externalCrmId) + '</li>' : '') +
+                (row.crmSyncStatus ? '<li><span class="bdd-ow-kv-label">Sync Status</span> ' + this.escapeHtml(row.crmSyncStatus) + '</li>' : '') +
+                (row.lastCrmSyncAt ? '<li><span class="bdd-ow-kv-label">Last CRM Sync</span> ' + this.escapeHtml(row.lastCrmSyncAt) + '</li>' : '') +
+                (row.crmOwner ? '<li><span class="bdd-ow-kv-label">CRM Owner</span> ' + this.escapeHtml(row.crmOwner) + '</li>' : '') +
+                (row.crmStage ? '<li><span class="bdd-ow-kv-label">CRM Stage</span> ' + this.escapeHtml(row.crmStage) + '</li>' : '') +
+                (row.crmNotes ? '<li><span class="bdd-ow-kv-label">CRM Notes</span> ' + this.escapeHtml(row.crmNotes) + '</li>' : '') +
                 '</ul></div>')
-            : ('<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">CRM sync readiness</h3><p style="color:var(--neutral--500);font-size:13px;">Optional CRM fields (External CRM ID, sync status, etc.) appear here when present in Airtable.</p></div>');
+            : '';
 
-        const taskHtml = '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Next step & follow-up</h3>' +
-            '<p style="margin:0;font-size:13px;color:var(--neutral--400);">Next action: <strong style="color:var(--neutral--100);">' + this.escapeHtml(row.nextActionLabel || '—') + '</strong>' +
-            (this.isStalledRow(row) ? ' <span style="color:#ffb4b8;">Overdue</span>' : '') + '</p></div>';
+        const taskHtml =
+            '<div class="bdd-ow-card bdd-ow-section">' +
+            '<h3 class="bdd-ow-section__title">Next Step</h3>' +
+            '<p style="margin:0;font-size:14px;color:var(--neutral--400);">Next action: <strong style="color:var(--neutral--100);">' + this.escapeHtml(row.nextActionLabel || '—') + '</strong>' +
+            (this.isStalledRow(row) ? ' <span style="color:#ffb4b8;font-weight:600;">Overdue</span>' : '') + '</p></div>';
 
         const nda = (row.ndaStatus || '').trim() || '—';
         const dr = (row.dealRoomAccess || '').trim() || '—';
@@ -4215,32 +4803,105 @@ class BrandDevelopmentDashboard {
         const dealRoomLink = reqId ? '/deal-room-brand.html?requestId=' + encodeURIComponent(reqId) : '';
         const summaryLink = '/deal-summary.html?id=' + encodeURIComponent(dealId) + '&from=bdd';
 
+        const responseNotesText = (row.responseNotes || '').trim();
+        const responseNotesBlock = responseNotesText
+            ? '<p style="color:var(--neutral--400);font-size:14px;margin:0;white-space:pre-wrap;">' + this.escapeHtml(responseNotesText) + '</p>'
+            : '<p class="bdd-ow-muted" style="margin:0;">No owner-facing notes yet.</p>';
+        const internalNotesText = (row.brandInternalNotes || '').trim();
+        const internalNotesBlock = internalNotesText
+            ? '<p style="color:var(--neutral--400);font-size:14px;margin:0;white-space:pre-wrap;">' + this.escapeHtml(internalNotesText) + '</p>'
+            : '<p class="bdd-ow-muted" style="margin:0;">No internal notes yet.</p>';
+
+        const notesDocsDetails =
+            '<details class="bdd-ow-details">' +
+            '<summary>Notes &amp; Documents</summary>' +
+            '<div class="bdd-ow-details__body">' +
+            '<div class="bdd-ow-card bdd-ow-section">' +
+            '<h4 class="bdd-ow-subheading">Owner-Facing Notes</h4>' +
+            '<p class="bdd-ow-muted" style="margin:0 0 8px;">Visible to the owner where applicable.</p>' +
+            responseNotesBlock +
+            '</div>' +
+            '<div class="bdd-ow-card bdd-ow-section">' +
+            '<h4 class="bdd-ow-subheading">Team Notes (Internal)</h4>' +
+            '<p class="bdd-ow-muted" style="margin:0 0 8px;">Not shared with the owner.</p>' +
+            internalNotesBlock +
+            '</div>' +
+            '<div class="bdd-ow-card bdd-ow-section">' +
+            '<h4 class="bdd-ow-subheading">Documents / Deal Room</h4>' +
+            '<ul class="bdd-ow-rel-list">' +
+            '<li><span class="bdd-ow-kv-label">NDA status</span> ' + this.escapeHtml(nda) + '</li>' +
+            '<li><span class="bdd-ow-kv-label">Deal room access</span> ' + this.escapeHtml(dr) + '</li>' +
+            '<li><span class="bdd-ow-kv-label">Proposal status</span> ' + this.escapeHtml(prop) + '</li></ul></div>' +
+            '</div></details>';
+
+        const timelineDetails =
+            '<details class="bdd-ow-details">' +
+            '<summary>Activity Timeline</summary>' +
+            '<div class="bdd-ow-details__body" style="padding-top:4px;">' + timelineTable + '</div></details>';
+
+        const summaryHeadingName = (row.propertyName || '').trim() || '—';
+        const subEl = document.getElementById('dealDetailsModalSubtitle');
+        if (subEl) {
+            if (summaryHeadingName && summaryHeadingName !== '—') {
+                subEl.textContent = summaryHeadingName;
+                subEl.removeAttribute('hidden');
+            } else {
+                subEl.textContent = '';
+                subEl.setAttribute('hidden', 'hidden');
+            }
+        }
+
+        const iconDealSummarySvg =
+            '<svg class="bdd-ow-icon-link__svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>' +
+            '<line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>';
+        const iconDealRoomSvg =
+            '<svg class="bdd-ow-icon-link__svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-4h6v4"/><path d="M9 10h.01"/><path d="M12 10h.01"/><path d="M15 10h.01"/></svg>';
+
+        const summaryCard =
+            '<div class="bdd-ow-card bdd-ow-section">' +
+            '<h3 class="bdd-ow-section__title">Opportunity Summary</h3>' +
+            '<p class="bdd-ow-meta">' + this.escapeHtml([row.city, row.country].filter(Boolean).join(', ') || '—') +
+            ' · ' + this.escapeHtml(String(row.rooms != null ? row.rooms : '—')) + ' rooms · ' + this.escapeHtml(row.propertyType || '—') + '</p>' +
+            '<p class="bdd-ow-meta">Stage: ' + this.escapeHtml(row.stageLabel || '—') +
+            ' · Status: ' + this.escapeHtml(row._requestStatus || '—') + '</p>' +
+            '<div class="bdd-ow-icon-actions">' +
+            '<a class="bdd-ow-icon-link" href="' + summaryLink + '" title="Deal Summary" aria-label="Open Deal Summary">' + iconDealSummarySvg + '</a>' +
+            (dealRoomLink ? '<a class="bdd-ow-icon-link" href="' + dealRoomLink + '" target="_blank" rel="noopener" title="Deal Room" aria-label="Open Deal Room">' + iconDealRoomSvg + '</a>' : '') +
+            '</div></div>';
+
+        const ownerPrioritiesHtml = this.renderBddOpportunityOwnerPrioritiesHtml(siForPriorities);
+
+        const brandFitCard =
+            '<div class="bdd-ow-card bdd-ow-section">' +
+            '<h3 class="bdd-ow-section__title">Brand Fit Review</h3>' +
+            fitHtml +
+            (brand ? '<p style="margin:12px 0 0;"><button type="button" class="bdd-ds-btn bdd-ds-btn--secondary bdd-modal-fit-btn" data-deal-id="' + this.escapeHtml(dealId) + '" data-brand="' + brandEnc + '">Open Full Match Breakdown</button></p>' : '') +
+            '</div>';
+
         /* Single scroll: #dealDetailsContent only (no nested overflow-y — avoids double scrollbars) */
         content.innerHTML = stickyBar + '<div class="bdd-deal-details-body">' +
-            '<div class="modal-section"><p style="margin:0 0 16px;font-size:13px;color:var(--neutral--500);line-height:1.5;">Dealality is built for hotel development dealflow. It captures relationship activity, owner requests, NDA progress, deal room actions, follow-ups, and proposal milestones as your team works — so development teams do not have to manage the same opportunity twice in a generic CRM.</p></div>' +
-            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:0 0 8px;">Opportunity summary</h3>' +
-            '<p style="margin:0;color:var(--neutral--300);">' + this.escapeHtml(row.propertyName || '—') + '</p>' +
-            '<p style="margin:8px 0 0;color:var(--neutral--400);font-size:14px;">' + this.escapeHtml([row.city, row.country].filter(Boolean).join(', ') || '—') +
-            ' · ' + this.escapeHtml(String(row.rooms != null ? row.rooms : '—')) + ' rooms · ' + this.escapeHtml(row.propertyType || '—') + '</p>' +
-            '<p style="margin:10px 0 0;font-size:13px;color:var(--neutral--500);">Stage: ' + this.escapeHtml(row.stageLabel || '—') +
-            ' · Status: ' + this.escapeHtml(row._requestStatus || '—') + '</p>' +
-            '<p style="margin:12px 0 0;"><a href="' + summaryLink + '" style="color:var(--accent--primary-1);">Open full deal summary</a>' +
-            (dealRoomLink ? ' · <a href="' + dealRoomLink + '" target="_blank" rel="noopener" style="color:var(--accent--primary-1);">Open deal room</a>' : '') + '</p></div>' +
-            relHtml + taskHtml + crmHtml +
-            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Brand fit review</h3>' + fitHtml +
-            (brand ? '<p style="margin:12px 0 0;"><button type="button" class="bdd-modal-fit-btn filter-input" style="cursor:pointer;padding:8px 12px;" data-deal-id="' + this.escapeHtml(dealId) + '" data-brand="' + brandEnc + '">Open full match breakdown</button></p>' : '') + '</div>' +
-            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Internal notes & responses</h3>' +
-            '<p style="color:var(--neutral--400);font-size:14px;margin:0;white-space:pre-wrap;">' + this.escapeHtml((row.responseNotes || row.ownerNotes || '').trim() || '—') + '</p></div>' +
-            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">Documents / deal room</h3>' +
-            '<ul style="margin:0;padding-left:18px;color:var(--neutral--400);font-size:14px;">' +
-            '<li>NDA status: ' + this.escapeHtml(nda) + '</li>' +
-            '<li>Deal room access: ' + this.escapeHtml(dr) + '</li>' +
-            '<li>Proposal status: ' + this.escapeHtml(prop) + '</li></ul></div>' +
-            '<div class="modal-section"><h3 style="color:var(--neutral--100);margin:16px 0 8px;">CRM activity timeline</h3>' + timelineTable + '</div>' +
+            summaryCard +
+            ownerPrioritiesHtml +
+            relHtml +
+            taskHtml +
+            crmHtml +
+            brandFitCard +
+            notesDocsDetails +
+            timelineDetails +
             '</div>';
 
         modal.classList.add('active');
         bddSetDealDetailsModalScrollLock(true);
+    }
+
+    /** Match My Brand Deals workspace row: primary / secondary / ghost decision buttons. */
+    _bddDecisionBtnClassForWorkspaceAction(actionId) {
+        const id = (actionId || '').trim();
+        if (id === 'decline') return 'bdd-decision-btn bdd-decision-btn--ghost';
+        if (id === 'interested') return 'bdd-decision-btn bdd-decision-btn--primary';
+        return 'bdd-decision-btn bdd-decision-btn--secondary';
     }
 
     _buildModalActionButtonGroup(dealId, requestId, row) {
@@ -4248,9 +4909,10 @@ class BrandDevelopmentDashboard {
         const skipRowIcons = new Set();
         const chips = this.getAvailableWorkspaceActions(row)
             .filter(a => a.id !== primary.action && a.id !== 'open' && !skipRowIcons.has(a.id));
-        return chips.map(a =>
-            '<button type="button" class="bdd-ws-chip" data-bdd-ws="' + this.escapeHtml(a.id) + '" data-deal-id="' + this.escapeHtml(dealId) + '" data-request-id="' + this.escapeHtml(requestId) + '">' + this.escapeHtml(a.label) + '</button>'
-        ).join('');
+        return chips.map(a => {
+            const cls = this._bddDecisionBtnClassForWorkspaceAction(a.id);
+            return '<button type="button" class="' + cls + '" data-bdd-ws="' + this.escapeHtml(a.id) + '" data-deal-id="' + this.escapeHtml(dealId) + '" data-request-id="' + this.escapeHtml(requestId) + '">' + this.escapeHtml(a.label) + '</button>';
+        }).join('');
     }
 
     _workspaceResponseActionsHtml(dealId, requestId, row) {
@@ -4260,16 +4922,16 @@ class BrandDevelopmentDashboard {
         const b = (cls, label, onClick) => '<button type="button" class="filter-input ' + cls + '" style="cursor:pointer;padding:8px 10px;font-size:13px;" onclick="' + onClick + '">' + this.escapeHtml(label) + '</button>';
         let h = '';
         if (canInterest) {
-            h += b('', 'Mark interested', 'dashboard.acceptRequest(\'' + requestId + '\', { keepModal: true, dealId: \'' + dealId + '\' })');
+            h += b('', 'Mark Interested', 'dashboard.acceptRequest(\'' + requestId + '\', { keepModal: true, dealId: \'' + dealId + '\' })');
             h += b('', 'Decline', 'dashboard.declineRequest(\'' + requestId + '\', \'' + dealId + '\')');
         }
-        h += b('', 'Request more information', 'dashboard.openRequestInfoModal(\'' + requestId + '\', \'' + dealId + '\')');
-        h += b('', 'Request NDA (mark sent)', 'dashboard.runBdrAction(\'' + requestId + '\',\'sendNda\')');
-        h += b('', 'Grant deal room', 'dashboard.runBdrAction(\'' + requestId + '\',\'grantAccess\')');
-        h += b('', 'Prepare terms (Pre-LOI)', 'dashboard.patchBdrStatus(\'' + requestId + '\',\'Pre-LOI\')');
-        h += b('', 'Submit proposal', 'closeDealDetailsModal(); dashboard.openSubmitProposalModal(\'' + requestId + '\')');
-        h += b('', 'Add follow-up', 'closeDealDetailsModal(); dashboard.scheduleFollowUp(\'' + dealId + '\',\'' + requestId + '\',\'\')');
-        h += b('', 'Revisit later', 'dashboard.openRevisitLaterModal(\'' + dealId + '\',\'' + requestId + '\')');
+        h += b('', 'Request More Information', 'dashboard.openRequestInfoModal(\'' + requestId + '\', \'' + dealId + '\')');
+        h += b('', 'Request NDA (Mark Sent)', 'dashboard.runBdrAction(\'' + requestId + '\',\'sendNda\')');
+        h += b('', 'Grant Deal Room', 'dashboard.runBdrAction(\'' + requestId + '\',\'grantAccess\')');
+        h += b('', 'Prepare Terms (Pre-LOI)', 'dashboard.patchBdrStatus(\'' + requestId + '\',\'Pre-LOI\')');
+        h += b('', 'Submit Proposal', 'closeDealDetailsModal(); dashboard.openSubmitProposalModal(\'' + requestId + '\')');
+        h += b('', 'Add Follow-Up', 'closeDealDetailsModal(); dashboard.scheduleFollowUp(\'' + dealId + '\',\'' + requestId + '\',\'\')');
+        h += b('', 'Revisit Later', 'dashboard.openRevisitLaterModal(\'' + dealId + '\',\'' + requestId + '\')');
         return h;
     }
 
@@ -4434,6 +5096,8 @@ class BrandDevelopmentDashboard {
         modal.dataset.pendingRequestId = requestId;
         modal.dataset.pendingDealId = d;
         ta.value = 'Please confirm room count, ownership structure, and current project timeline.';
+        const ti = document.getElementById('bddRequestInfoInternalTextarea');
+        if (ti) ti.value = '';
         modal.classList.add('active');
     }
 
@@ -4446,8 +5110,10 @@ class BrandDevelopmentDashboard {
         const requestId = modal && modal.dataset.pendingRequestId;
         const dealId = (modal && modal.dataset.pendingDealId) || '';
         const ta = document.getElementById('bddRequestInfoTextarea');
+        const ti = document.getElementById('bddRequestInfoInternalTextarea');
         if (!requestId || !ta) return;
         const addition = String(ta.value || '').trim();
+        const internalRaw = ti ? String(ti.value || '').trim() : '';
         if (!addition) {
             this.showBddToast('Enter what you are requesting from the owner.', false);
             return;
@@ -4455,18 +5121,24 @@ class BrandDevelopmentDashboard {
         const pos = this._findRequestPosition(requestId);
         const existing = (pos && pos.request && pos.request.responseNotes) ? String(pos.request.responseNotes) : '';
         const merged = this.appendResponseNotesForPatch(existing, 'Information requested: ' + addition);
+        const biExisting = (pos && pos.request && pos.request.brandInternalNotes) ? String(pos.request.brandInternalNotes) : '';
+        const biMerged = internalRaw ? this.appendBrandInternalNotesForPatch(biExisting, internalRaw) : biExisting;
         try {
+            const payload = { status: 'More Info Requested', responseNotes: merged };
+            if (internalRaw) payload.appendBrandInternalNotes = internalRaw;
             const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: 'More Info Requested', responseNotes: merged })
+                body: JSON.stringify(payload)
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
                 this.showBddToast(data.error || 'Could not save request', false);
                 return;
             }
-            this._applyLocalRequestPatch(requestId, { status: 'More Info Requested', responseNotes: merged });
+            const patch = { status: 'More Info Requested', responseNotes: merged };
+            if (internalRaw) patch.brandInternalNotes = biMerged;
+            this._applyLocalRequestPatch(requestId, patch);
             this._applyLocalMutationEffects();
             this._scheduleBackgroundRefresh();
             this.closeBddRequestInfoModal();
@@ -4534,7 +5206,6 @@ class BrandDevelopmentDashboard {
 
     openDeclineWorkspaceModal(requestId, dealId) {
         const modal = document.getElementById('bddDeclineWorkspaceModal');
-        const notes = document.getElementById('bddDeclineNotesInput');
         if (!modal || !requestId) return;
         const pos = this._findRequestPosition(requestId);
         const d = dealId || (pos && pos.request && pos.request.dealId) || (this._opportunityModalContext && this._opportunityModalContext.dealId) || '';
@@ -4550,7 +5221,10 @@ class BrandDevelopmentDashboard {
         if (otherReason) otherReason.value = '';
         this._syncBddDeclineReasonUi();
 
-        if (notes) notes.value = '';
+        const extN = document.getElementById('bddDeclineExternalNotesInput');
+        const intN = document.getElementById('bddDeclineInternalNotesInput');
+        if (extN) extN.value = '';
+        if (intN) intN.value = '';
 
         this._populateDeclineAlternateBrandSelect(contacted);
         const altSel = document.getElementById('bddDeclineAlternateBrand');
@@ -4571,9 +5245,11 @@ class BrandDevelopmentDashboard {
         const requestId = modal && modal.dataset.pendingRequestId;
         const dealId = (modal && modal.dataset.pendingDealId) || '';
         const presetEl = document.getElementById('bddDeclineReasonPreset');
-        const notesEl = document.getElementById('bddDeclineNotesInput');
+        const externalNotesEl = document.getElementById('bddDeclineExternalNotesInput');
+        const internalNotesEl = document.getElementById('bddDeclineInternalNotesInput');
         const presetVal = presetEl ? String(presetEl.value || '').trim() : '';
-        const extra = notesEl ? String(notesEl.value || '').trim() : '';
+        const externalExtra = externalNotesEl ? String(externalNotesEl.value || '').trim() : '';
+        const internalExtra = internalNotesEl ? String(internalNotesEl.value || '').trim() : '';
         if (!requestId) return;
         if (!presetVal) {
             this.showBddToast('Choose a decline reason.', false);
@@ -4609,20 +5285,26 @@ class BrandDevelopmentDashboard {
 
         const pos = this._findRequestPosition(requestId);
         const existing = (pos && pos.request && pos.request.responseNotes) ? String(pos.request.responseNotes) : '';
-        const addition = ['Declined — ' + reasonLine, altLine, extra].filter(Boolean).join('\n');
+        const addition = ['Declined — ' + reasonLine, altLine, externalExtra].filter(Boolean).join('\n');
         const merged = this.appendResponseNotesForPatch(existing, addition);
+        const biExisting = (pos && pos.request && pos.request.brandInternalNotes) ? String(pos.request.brandInternalNotes) : '';
+        const biMerged = internalExtra ? this.appendBrandInternalNotesForPatch(biExisting, internalExtra) : biExisting;
         try {
+            const payload = { status: 'Declined', responseNotes: merged };
+            if (internalExtra) payload.appendBrandInternalNotes = internalExtra;
             const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: 'Declined', responseNotes: merged })
+                body: JSON.stringify(payload)
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
                 this.showBddToast(data.error || 'Could not decline', false);
                 return;
             }
-            this._applyLocalRequestPatch(requestId, { status: 'Declined', responseNotes: merged });
+            const lp = { status: 'Declined', responseNotes: merged };
+            if (internalExtra) lp.brandInternalNotes = biMerged;
+            this._applyLocalRequestPatch(requestId, lp);
             this._applyLocalMutationEffects();
             this._scheduleBackgroundRefresh();
             this.closeBddDeclineWorkspaceModal();
@@ -4639,6 +5321,7 @@ class BrandDevelopmentDashboard {
         const modal = document.getElementById('bddRevisitLaterModal');
         const dateInput = document.getElementById('bddRevisitDateInput');
         const notesInput = document.getElementById('bddRevisitNotesInput');
+        const notesInternal = document.getElementById('bddRevisitInternalNotesInput');
         if (!modal || !requestId || !dateInput) return;
         modal.dataset.pendingRequestId = requestId;
         modal.dataset.pendingDealId = dealId || '';
@@ -4646,6 +5329,7 @@ class BrandDevelopmentDashboard {
         const pair = pos && pos.request;
         dateInput.value = (pair && pair.nextFollowupDate) ? String(pair.nextFollowupDate).slice(0, 10) : '';
         if (notesInput) notesInput.value = (pair && pair.nextFollowupNotes) ? String(pair.nextFollowupNotes).trim() : '';
+        if (notesInternal) notesInternal.value = '';
         modal.classList.add('active');
     }
 
@@ -4659,8 +5343,10 @@ class BrandDevelopmentDashboard {
         const dealId = (modal && modal.dataset.pendingDealId) || '';
         const dateInput = document.getElementById('bddRevisitDateInput');
         const notesInput = document.getElementById('bddRevisitNotesInput');
+        const notesInternal = document.getElementById('bddRevisitInternalNotesInput');
         const dateVal = dateInput && dateInput.value;
         const notesVal = notesInput ? notesInput.value.trim() : '';
+        const internalVal = notesInternal ? notesInternal.value.trim() : '';
         if (!requestId || !dateVal) {
             this.showBddToast('Choose a revisit date.', false);
             return;
@@ -4668,31 +5354,37 @@ class BrandDevelopmentDashboard {
         const pos = this._findRequestPosition(requestId);
         const existing = (pos && pos.request && pos.request.responseNotes) ? String(pos.request.responseNotes) : '';
         const merged = this.appendResponseNotesForPatch(existing, 'Revisit later — next check-in ' + dateVal + (notesVal ? ': ' + notesVal : ''));
+        const biExisting = (pos && pos.request && pos.request.brandInternalNotes) ? String(pos.request.brandInternalNotes) : '';
+        const biMerged = internalVal ? this.appendBrandInternalNotesForPatch(biExisting, internalVal) : biExisting;
         try {
+            const payload = {
+                status: 'Revisit Later',
+                responseNotes: merged,
+                nextFollowupDate: dateVal,
+                nextFollowupHeader: 'Revisit later',
+                nextFollowupNotes: notesVal || 'Parked for revisit',
+                scheduledBy: 'brand'
+            };
+            if (internalVal) payload.appendBrandInternalNotes = internalVal;
             const res = await fetch((window.location.origin || '') + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    status: 'Revisit Later',
-                    responseNotes: merged,
-                    nextFollowupDate: dateVal,
-                    nextFollowupHeader: 'Revisit later',
-                    nextFollowupNotes: notesVal || 'Parked for revisit',
-                    scheduledBy: 'brand'
-                })
+                body: JSON.stringify(payload)
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok) {
                 this.showBddToast(data.error || 'Could not save revisit', false);
                 return;
             }
-            this._applyLocalRequestPatch(requestId, {
+            const lp = {
                 status: 'Revisit Later',
                 responseNotes: merged,
                 nextFollowupDate: dateVal,
                 nextFollowupHeader: 'Revisit later',
                 nextFollowupNotes: notesVal || 'Parked for revisit'
-            });
+            };
+            if (internalVal) lp.brandInternalNotes = biMerged;
+            this._applyLocalRequestPatch(requestId, lp);
             this._applyLocalMutationEffects();
             this._scheduleBackgroundRefresh();
             this.closeBddRevisitLaterModal();
@@ -4710,6 +5402,7 @@ class BrandDevelopmentDashboard {
         const headerInput = document.getElementById('bddScheduleHeaderInput');
         const dateInput = document.getElementById('bddScheduleDateInput');
         const notesInput = document.getElementById('bddScheduleNotesInput');
+        const notesInternal = document.getElementById('bddScheduleInternalNotesInput');
         if (!modal || !label || !dateInput) return;
         const shortId = dealId ? String(dealId).slice(-6) : '';
         label.textContent = 'Schedule a follow-up for ' + (brand || 'this brand') + (shortId ? ' (deal ' + shortId + ').' : '.');
@@ -4782,33 +5475,42 @@ class BrandDevelopmentDashboard {
         const dateInput = document.getElementById('bddScheduleDateInput');
         const headerInput = document.getElementById('bddScheduleHeaderInput');
         const notesInput = document.getElementById('bddScheduleNotesInput');
+        const notesInternal = document.getElementById('bddScheduleInternalNotesInput');
         const requestId = modal && modal.dataset.pendingRequestId;
         const dateVal = dateInput && dateInput.value;
         const headerVal = headerInput ? headerInput.value.trim() : '';
         const notesVal = notesInput ? notesInput.value.trim() : '';
+        const internalVal = notesInternal ? notesInternal.value.trim() : '';
         if (!requestId || !dateVal) {
             this.closeBddScheduleModal();
             return;
         }
+        const pos = requestId ? this._findRequestPosition(requestId) : null;
+        const biExisting = (pos && pos.request && pos.request.brandInternalNotes) ? String(pos.request.brandInternalNotes) : '';
+        const biMerged = internalVal ? this.appendBrandInternalNotesForPatch(biExisting, internalVal) : biExisting;
         try {
+            const payload = {
+                nextFollowupDate: dateVal,
+                nextFollowupHeader: headerVal,
+                nextFollowupNotes: notesVal,
+                scheduledBy: 'brand'
+            };
+            if (internalVal) payload.appendBrandInternalNotes = internalVal;
             const res = await fetch(window.location.origin + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    nextFollowupDate: dateVal,
-                    nextFollowupHeader: headerVal,
-                    nextFollowupNotes: notesVal,
-                    scheduledBy: 'brand'
-                })
+                body: JSON.stringify(payload)
             });
             const data = await res.json().catch(() => ({}));
             if (res.ok) {
                 this.closeBddScheduleModal();
-                this._applyLocalRequestPatch(requestId, {
+                const lp = {
                     nextFollowupDate: dateVal,
                     nextFollowupHeader: headerVal,
                     nextFollowupNotes: notesVal
-                });
+                };
+                if (internalVal) lp.brandInternalNotes = biMerged;
+                this._applyLocalRequestPatch(requestId, lp);
                 this._applyLocalMutationEffects();
                 this._scheduleBackgroundRefresh();
                 this.crmSuccessToast();
@@ -5294,23 +5996,166 @@ class BrandDevelopmentDashboard {
         }
     }
 
+    _syncDealLogFilterOptions() {
+        const entries = this.dealLogEntries || [];
+        const dealSel = document.getElementById('bddDealLogFilterDeal');
+        const actionSel = document.getElementById('bddDealLogFilterAction');
+        if (!dealSel || !actionSel) return;
+        const prevDeal = dealSel.value;
+        const prevAction = actionSel.value;
+        const dealMap = new Map();
+        for (const e of entries) {
+            const id = e.dealId != null ? String(e.dealId).trim() : '';
+            const name = (e.dealName || '').trim() || (id ? 'Deal ' + id.slice(-6) : '');
+            const key = id || name;
+            if (!key) continue;
+            if (!dealMap.has(key)) dealMap.set(key, { id: id || key, name: name || key });
+        }
+        const deals = [...dealMap.values()].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+        dealSel.innerHTML =
+            '<option value="">All deals</option>' +
+            deals
+                .map(
+                    (d) =>
+                        '<option value="' +
+                        this.escapeHtml(String(d.id)) +
+                        '">' +
+                        this.escapeHtml(d.name) +
+                        '</option>'
+                )
+                .join('');
+        if (prevDeal && [...dealSel.options].some((o) => o.value === prevDeal)) dealSel.value = prevDeal;
+
+        const actions = [
+            ...new Set(entries.map((e) => (e.action || '').trim()).filter(Boolean))
+        ].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+        actionSel.innerHTML =
+            '<option value="">All actions</option>' +
+            actions.map((a) => '<option value="' + this.escapeHtml(a) + '">' + this.escapeHtml(a) + '</option>').join('');
+        if (prevAction && [...actionSel.options].some((o) => o.value === prevAction)) actionSel.value = prevAction;
+    }
+
+    _applyDealLogFilters(entries) {
+        const searchEl = document.getElementById('bddDealLogSearch');
+        const dealEl = document.getElementById('bddDealLogFilterDeal');
+        const actionEl = document.getElementById('bddDealLogFilterAction');
+        const timeEl = document.getElementById('bddDealLogFilterTimeframe');
+        const q = (searchEl && searchEl.value ? searchEl.value : '').trim().toLowerCase();
+        const dealId = (dealEl && dealEl.value ? dealEl.value : '').trim();
+        const action = (actionEl && actionEl.value ? actionEl.value : '').trim();
+        const tf = (timeEl && timeEl.value ? timeEl.value : 'all') || 'all';
+        let cutoff = null;
+        if (tf === '7d') cutoff = Date.now() - 7 * 86400000;
+        else if (tf === '30d') cutoff = Date.now() - 30 * 86400000;
+        else if (tf === '90d') cutoff = Date.now() - 90 * 86400000;
+
+        return entries.filter((e) => {
+            if (cutoff != null) {
+                const t = new Date(e.date || 0).getTime();
+                if (Number.isNaN(t) || t < cutoff) return false;
+            }
+            if (dealId) {
+                const id = e.dealId != null ? String(e.dealId).trim() : '';
+                if (id !== dealId) return false;
+            }
+            if (action && (e.action || '').trim() !== action) return false;
+            if (q) {
+                const hay = [
+                    e.dealName,
+                    e.action,
+                    e.details,
+                    e.ownerTargetBrand,
+                    e.stakeholder,
+                    e.brandName
+                ]
+                    .map((x) => String(x || '').toLowerCase())
+                    .join(' ');
+                if (!hay.includes(q)) return false;
+            }
+            return true;
+        });
+    }
+
+    _updateDealLogCountLine(filtered, total) {
+        const shown = document.getElementById('bddDealLogCountShown');
+        const ofTotal = document.getElementById('bddDealLogCountOfTotal');
+        const actWord = (n) => (n === 1 ? 'activity' : 'activities');
+        if (shown) shown.textContent = String(filtered);
+        if (ofTotal) {
+            if (filtered < total) {
+                ofTotal.innerHTML = ' of <strong>' + total + '</strong> ' + actWord(total);
+            } else {
+                ofTotal.textContent = ' ' + actWord(filtered);
+            }
+        }
+    }
+
+    resetDealLogView() {
+        const search = document.getElementById('bddDealLogSearch');
+        const deal = document.getElementById('bddDealLogFilterDeal');
+        const action = document.getElementById('bddDealLogFilterAction');
+        const timeframe = document.getElementById('bddDealLogFilterTimeframe');
+        if (search) search.value = '';
+        if (deal) deal.value = '';
+        if (action) action.value = '';
+        if (timeframe) timeframe.value = 'all';
+        if (this.currentWorkspaceTab === 'bdd-deal-log') this.renderDealLog();
+    }
+
+    _setupDealLogFilterListeners() {
+        if (this._dealLogFilterListenersWired) return;
+        const search = document.getElementById('bddDealLogSearch');
+        const deal = document.getElementById('bddDealLogFilterDeal');
+        const action = document.getElementById('bddDealLogFilterAction');
+        const timeframe = document.getElementById('bddDealLogFilterTimeframe');
+        const reset = document.getElementById('bddDealLogResetBtn');
+        if (!search || !deal || !action || !timeframe || !reset) return;
+        this._dealLogFilterListenersWired = true;
+        const self = this;
+        const rerender = function () {
+            if (self.currentWorkspaceTab === 'bdd-deal-log') self.renderDealLog();
+        };
+        search.addEventListener('input', function () {
+            clearTimeout(self._dealLogSearchDebounce);
+            self._dealLogSearchDebounce = setTimeout(rerender, 200);
+        });
+        deal.addEventListener('change', rerender);
+        action.addEventListener('change', rerender);
+        timeframe.addEventListener('change', rerender);
+        reset.addEventListener('click', function () {
+            self.resetDealLogView();
+        });
+    }
+
     renderDealLog() {
         var tbody = document.getElementById('dealLogTableBody');
         if (!tbody) return;
+        this._syncDealLogFilterOptions();
         var entries = this.dealLogEntries || [];
+        var filtered = this._applyDealLogFilters(entries);
+        this._updateDealLogCountLine(filtered.length, entries.length);
         if (entries.length === 0) {
             tbody.innerHTML =
-                '<tr><td colspan="5" style="padding: 60px 20px; text-align: center; color: var(--neutral--500); font-size: 14px; line-height: 1.55;">' +
+                '<tr><td colspan="6" style="padding: 60px 20px; text-align: center; color: var(--neutral--500); font-size: 14px; line-height: 1.55;">' +
                 '<p style="margin: 0 0 10px; color: var(--neutral--300); font-weight: 600;">No activity in the log yet</p>' +
                 '<p style="margin: 0;">When owners and your team move requests forward — accept/decline, request information, NDA and deal room, proposals, follow-ups — events appear here automatically.</p>' +
                 '<p style="margin: 14px 0 0; font-size: 13px;">Tip: use the <strong style="color:var(--neutral--300);">Activity</strong> button while working a pipeline tab to preview the timeline without leaving your stage.</p>' +
                 '</td></tr>';
             return;
         }
-        tbody.innerHTML = entries.map(function(e) {
+        if (filtered.length === 0) {
+            tbody.innerHTML =
+                '<tr><td colspan="6" style="padding: 48px 20px; text-align: center; color: var(--neutral--500); font-size: 14px; line-height: 1.55;">' +
+                '<p style="margin: 0 0 8px; color: var(--neutral--300); font-weight: 600;">No activities match your filters</p>' +
+                '<p style="margin: 0;">Try clearing search, choosing <strong>All deals</strong> / <strong>All actions</strong>, setting timeframe to <strong>All time</strong>, or click <strong>Reset View</strong>.</p>' +
+                '</td></tr>';
+            return;
+        }
+        tbody.innerHTML = filtered.map(function(e) {
             return '<tr>' +
                 '<td style="white-space:nowrap;font-size:12px;">' + this.escapeHtml((e.date || '').slice(0, 19)) + '</td>' +
                 '<td>' + this.escapeHtml(e.dealName || '') + '</td>' +
+                '<td>' + this.escapeHtml(e.ownerTargetBrand || '—') + '</td>' +
                 '<td><span class="bdd-status-badge bdd-status-plain">' + this.escapeHtml(e.action || '') + '</span></td>' +
                 '<td style="font-size:13px;color:var(--neutral--400);">' + this.escapeHtml(e.details || '') + '</td>' +
                 '<td style="font-size:12px;color:var(--neutral--500);">' + this.escapeHtml(e.stakeholder || '—') + '</td>' +
@@ -5355,6 +6200,10 @@ class BrandDevelopmentDashboard {
                     aVal = (a.propertyName || '').toLowerCase();
                     bVal = (b.propertyName || '').toLowerCase();
                     break;
+                case 'targetBrand':
+                    aVal = ((a._rowTargetBrand || a._contactedBrand || '') + '').toLowerCase();
+                    bVal = ((b._rowTargetBrand || b._contactedBrand || '') + '').toLowerCase();
+                    break;
                 case 'headline':
                     aVal = (a.headline || this.generateDealHeadline(a.dealFields, a.locationData, a.contactData) || '').toLowerCase();
                     bVal = (b.headline || this.generateDealHeadline(b.dealFields, b.locationData, b.contactData) || '').toLowerCase();
@@ -5394,8 +6243,8 @@ class BrandDevelopmentDashboard {
                     bVal = parseInt(b.rooms, 10) || 0;
                     break;
                 case 'matchScore':
-                    aVal = a._requestMatchScore != null ? Number(a._requestMatchScore) : (a.matchScore ?? 0);
-                    bVal = b._requestMatchScore != null ? Number(b._requestMatchScore) : (b.matchScore ?? 0);
+                    aVal = this._effectiveWorkspaceRowScore(a) ?? 0;
+                    bVal = this._effectiveWorkspaceRowScore(b) ?? 0;
                     break;
                 case 'stageLabel':
                     aVal = (a.stageLabel || '').toLowerCase();
@@ -5432,8 +6281,7 @@ class BrandDevelopmentDashboard {
 
     async recalculateMatchScores() {
         if (!this.brandId) {
-            // All-contacted mode: scores come from row._requestMatchScore (BDR) or deal.matchScore (preferredBrandScore)
-            // Don't overwrite deal.matchScore - rows get _requestMatchScore when built in applyFilters
+            // All-contacted mode: per-row score prefers deal↔target brand (matchScoresNewByBrand), then BDR snapshot.
             console.log('All-contacted mode: using scores from Brand Deal Requests (per row)');
             this.applyFilters();
             if (this.sortColumn) this.sortDeals();
@@ -6069,8 +6917,16 @@ function bddSetDealDetailsModalScrollLock(on) {
 }
 
 function closeDealDetailsModal() {
+    if (window.dashboard && typeof window.dashboard._bddDestroyOpportunityWorkspaceRadarChart === 'function') {
+        window.dashboard._bddDestroyOpportunityWorkspaceRadarChart();
+    }
     document.getElementById('dealDetailsModal')?.classList.remove('active');
     bddSetDealDetailsModalScrollLock(false);
+    const sub = document.getElementById('dealDetailsModalSubtitle');
+    if (sub) {
+        sub.textContent = '';
+        sub.setAttribute('hidden', 'hidden');
+    }
     if (window.dashboard) window.dashboard._opportunityModalContext = null;
 }
 

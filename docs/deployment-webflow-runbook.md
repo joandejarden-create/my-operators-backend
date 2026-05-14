@@ -98,7 +98,7 @@ Set and validate per Railway environment:
 - `AIRTABLE_API_KEY`
 - `AIRTABLE_BASE_ID`
 - `AIRTABLE_BASE_ID_ALT`
-- Memberstack keys (if used in that environment)
+- Memberstack: `MEMBERSTACK_APP_ID` (recommended for `GET|POST /api/me` JWT audience); `MEMBERSTACK_SECRET_KEY` if you use Admin API elsewhere
 - OpenAI/API keys used by readiness or AI features
 
 Operational note:

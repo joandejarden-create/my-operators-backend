@@ -1245,7 +1245,7 @@
                     <a href="/clause-library"><span>📚</span><span class="sidebar-label">Legal Library</span></a>
                     <a href="/my-brands"><span>🏷️</span><span class="sidebar-label">My Brands</span></a>
                     <a href="/brand-development-dashboard"><span>🎯</span><span class="sidebar-label">My Brand Deals</span></a>
-                    <a href="/brand-library"><span>📚</span><span class="sidebar-label">Brand Library</span></a>
+                    <a href="/brand-library"><span>📚</span><span class="sidebar-label">Browse brands</span></a>
                     <a href="/partner-directory"><span>👥</span><span class="sidebar-label">Partner Directory</span></a>
                     <a href="#"><span>📋</span><span class="sidebar-label">Platform Resources</span></a>
                     <a href="#"><span>⚙️</span><span class="sidebar-label">Settings</span></a>
@@ -2413,6 +2413,17 @@
                 const div = document.createElement('div');
                 div.textContent = text;
                 return div.innerHTML;
+            }
+
+            /** In the app shell iframe, preserve hub embed flags so new-deal-setup can exit to /app#/my-deals. */
+            function newDealSetupEditUrl(dealId, extraQuery) {
+                var q = '?id=' + encodeURIComponent(String(dealId || '')) + '&edit=1';
+                if (extraQuery) q += '&' + String(extraQuery).replace(/^\?/, '');
+                if (window.self !== window.top) {
+                    if (q.indexOf('embed=1') === -1) q += '&embed=1';
+                    if (q.indexOf('appShell=1') === -1) q += '&appShell=1';
+                }
+                return '/new-deal-setup.html' + q;
             }
 
             function ui_readinessWorkflowLabelFromStage(stage) {
@@ -3632,7 +3643,7 @@
 
                     if (activeDealId) {
                         html += '<p style="margin:12px 0 0 0;line-height:1.45;">' +
-                            '<a class="my-deals-readiness-edit-link" data-deal-readiness-form="1" href="/new-deal-setup.html?id=' + encodeURIComponent(activeDealId) + '&edit=1&highlightReadinessGaps=1">Edit deal — highlight gaps on each tab →</a>' +
+                            '<a class="my-deals-readiness-edit-link" data-deal-readiness-form="1" href="' + newDealSetupEditUrl(activeDealId, 'highlightReadinessGaps=1') + '">Edit deal — highlight gaps on each tab →</a>' +
                             '</p>';
                         html += '<p style="font-size:12px;color:var(--neutral--500);margin:8px 0 0 0;">Opens the deal form; each tab shows outlines on missing or thin fields from this review. Save there to update this score.</p>';
                     }
@@ -4771,10 +4782,8 @@
                     }
                     const data = await res.json();
                     if (thisLoad !== loadVersion) {
-                        if (typeof console !== 'undefined' && console.log) console.log('my-deals: ignoring stale response', { thisLoad, current: loadVersion });
                         return;
                     }
-                    if (typeof console !== 'undefined' && console.log) console.log('my-deals: response received', { loadId: thisLoad, dealCount: (data.deals || []).length });
                     allDeals = data.deals || [];
                     filteredDeals = allDeals.slice();
                     window._filterOptions = data.filterOptions || {};
@@ -4795,7 +4804,6 @@
 
                     populateFilterOptions();
                     applyFilters();
-                    if (typeof console !== 'undefined' && console.log) console.log('my-deals: render done', { loadId: thisLoad });
                     if (tabCountDealInfo) tabCountDealInfo.textContent = allDeals.length;
                     applyInitialOutreachParams();
                     applyInitialFranchiseParams();
@@ -4868,7 +4876,7 @@
                             return;
                         }
                         if (action === 'view') { window.location.href = '/deal-summary.html?id=' + encodeURIComponent(dealId); }
-                        if (action === 'edit') { window.location.href = '/new-deal-setup.html?id=' + encodeURIComponent(dealId) + '&edit=1'; }
+                        if (action === 'edit') { window.location.href = newDealSetupEditUrl(dealId); }
                         if (action === 'fit-list') { window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals'; }
                         if (action === 'delete') {
                             var row = actionBtn.closest('tr');
@@ -4993,7 +5001,7 @@
                             return;
                         }
                         if (action === 'view') { window.location.href = '/deal-summary.html?id=' + encodeURIComponent(dealId); }
-                        if (action === 'edit') { window.location.href = '/new-deal-setup.html?id=' + encodeURIComponent(dealId) + '&edit=1'; }
+                        if (action === 'edit') { window.location.href = newDealSetupEditUrl(dealId); }
                         if (action === 'fit-list') { window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals'; }
                         if (action === 'delete') {
                             var row = actionBtn.closest('tr');
@@ -5121,7 +5129,7 @@
                         return;
                     }
                     if (action === 'view' && dealId) window.location.href = '/deal-summary.html?id=' + encodeURIComponent(dealId);
-                    if (action === 'edit' && dealId) window.location.href = '/new-deal-setup.html?id=' + encodeURIComponent(dealId) + '&edit=1';
+                    if (action === 'edit' && dealId) window.location.href = newDealSetupEditUrl(dealId);
                     if (action === 'fit-list' && dealId) window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals';
                 });
             }
@@ -6391,7 +6399,7 @@
                 var dealInfoBtn = document.querySelector('.my-deals-section-nav .section-nav-item[data-tab="deal-information"]');
                 if (dealInfoBtn && typeof dealInfoBtn.click === 'function') dealInfoBtn.click();
                 setTimeout(function () {
-                    window.location.href = '/new-deal-setup.html?id=' + encodeURIComponent(deal) + '&edit=1';
+                    window.location.href = newDealSetupEditUrl(deal);
                 }, 0);
             }
 

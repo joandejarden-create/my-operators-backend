@@ -98,9 +98,18 @@ import { list as outreachHubList, get as outreachHubGet, create as outreachHubCr
 import { getOutreachDealActivityLog } from "./api/outreach-deal-activity-log.js";
 import { getDashboardHome } from "./api/dashboard-home.js";
 import { getTargetList, addToTargetList, updateTarget, removeFromTargetList, batchRemoveFromTargetList, markAsDeleted, restoreFromDeleted } from "./api/target-list.js";
-import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
+import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDealRoom as listBrandDealRequestsForDealRoom, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getDealMetaBatch as getBrandDealMetaBatch, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
 import { getBrandWorkspaceKpiHistory, postBrandWorkspaceKpiSnapshot } from "./api/brand-workspace-kpi-history.js";
-import { list as listDealRoomDocuments, listForBrandRequest as listDealRoomDocumentsForBrandRequest, create as createDealRoomDocument, update as updateDealRoomDocument, remove as deleteDealRoomDocument } from "./api/deal-room-documents.js";
+import {
+  list as listDealRoomDocuments,
+  listForBrandRequest as listDealRoomDocumentsForBrandRequest,
+  create as createDealRoomDocument,
+  update as updateDealRoomDocument,
+  remove as deleteDealRoomDocument,
+  uploadFile as uploadDealRoomDocumentFile,
+  serveFile as serveDealRoomDocumentFile,
+  DEAL_ROOM_DOCS_UPLOAD_DIR,
+} from "./api/deal-room-documents.js";
 import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
@@ -125,6 +134,10 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 const DEAL_ATTACHMENTS_DIR = path.join(__dirname, "uploads", "deal-attachments");
 if (!fs.existsSync(DEAL_ATTACHMENTS_DIR)) {
   fs.mkdirSync(DEAL_ATTACHMENTS_DIR, { recursive: true });
+}
+
+if (!fs.existsSync(DEAL_ROOM_DOCS_UPLOAD_DIR)) {
+  fs.mkdirSync(DEAL_ROOM_DOCS_UPLOAD_DIR, { recursive: true });
 }
 
 const companyProfileUpload = multer({
@@ -195,6 +208,29 @@ const dealAttachmentsUpload = multer({
   }),
   limits: { fileSize: MAX_ATTACHMENT_FILE_SIZE_BYTES },
   fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname || "").toLowerCase();
+    if (ALLOWED_ATTACHMENT_EXTENSIONS.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("File type not allowed. Allowed: " + ALLOWED_ATTACHMENT_EXTENSIONS.join(", ")), false);
+    }
+  },
+});
+
+const dealRoomDocsUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, _file, cb) => {
+      const dir = path.join(DEAL_ROOM_DOCS_UPLOAD_DIR, req.params.dealId || "unknown");
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      cb(null, dir);
+    },
+    filename: (_req, file, cb) => {
+      const base = (file.originalname || "file").replace(/[^a-zA-Z0-9.-]/g, "_");
+      cb(null, `${Date.now()}-${base}`);
+    },
+  }),
+  limits: { fileSize: MAX_ATTACHMENT_FILE_SIZE_BYTES },
+  fileFilter: (_req, file, cb) => {
     const ext = path.extname(file.originalname || "").toLowerCase();
     if (ALLOWED_ATTACHMENT_EXTENSIONS.includes(ext)) {
       cb(null, true);
@@ -345,8 +381,16 @@ app.delete("/api/target-list/:targetId", removeFromTargetList);
 app.post("/api/brand-deal-requests", createBrandDealRequest);
 app.post("/api/brand-deal-requests/by-deals", listBrandDealRequestsByDealsPost);
 app.get("/api/brand-deal-requests/activity", getBrandDealActivityLog);
+app.get("/api/brand-deal-requests/deal-meta", getBrandDealMetaBatch);
+// Dedicated path so Deal Room (Brand) never falls through to listForBrand (requires ?brand=) if dealRoom routing is missing or query is altered.
+app.get("/api/deal-room/brand-requests", listBrandDealRequestsForDealRoom);
 app.get("/api/brand-deal-requests", (req, res) => {
   if (req.query.dealIds) return listBrandDealRequestsByDeals(req, res);
+  const dealRoom = req.query.dealRoom ?? req.query.deal_room;
+  if (dealRoom === true || dealRoom === 1) return listBrandDealRequestsForDealRoom(req, res);
+  const dealRoomStr =
+    dealRoom == null ? "" : String(Array.isArray(dealRoom) ? dealRoom[0] : dealRoom).trim().toLowerCase();
+  if (dealRoomStr === "1" || dealRoomStr === "true") return listBrandDealRequestsForDealRoom(req, res);
   const allParam = req.query.all;
   if (allParam === "1" || allParam === "true") return listBrandDealRequestsAll(req, res);
   return listBrandDealRequests(req, res);
@@ -358,7 +402,26 @@ app.patch("/api/brand-deal-requests/:requestId", updateBrandDealRequestStatus);
 app.post("/api/brand-deal-requests/bulk-update", bulkUpdateBrandDealRequestStatus);
 app.get("/api/brand-workspace/kpi-history", getBrandWorkspaceKpiHistory);
 app.post("/api/brand-workspace/kpi-history", postBrandWorkspaceKpiSnapshot);
-// Deal Room Documents
+// Deal Room Documents (specific paths before generic :id)
+app.get("/api/deal-room-documents/files/:dealId/:filename", serveDealRoomDocumentFile);
+app.post(
+  "/api/deal-room-documents/upload/:dealId",
+  (req, res, next) => {
+    dealRoomDocsUpload.single("file")(req, res, (err) => {
+      if (err) {
+        if (err.code === "LIMIT_FILE_SIZE") {
+          return res.status(413).json({ success: false, error: "File too large. Maximum size is 10 MB per file." });
+        }
+        if (err.message && err.message.includes("File type not allowed")) {
+          return res.status(400).json({ success: false, error: err.message });
+        }
+        return res.status(500).json({ success: false, error: err.message || "Upload failed" });
+      }
+      next();
+    });
+  },
+  uploadDealRoomDocumentFile
+);
 app.get("/api/deal-room-documents", listDealRoomDocuments);
 app.get("/api/deal-room-documents/brand/:requestId", listDealRoomDocumentsForBrandRequest);
 app.post("/api/deal-room-documents", createDealRoomDocument);
@@ -596,17 +659,6 @@ app.get("/market-alerts-back", (req, res) => {
 app.get("/market-analytics", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'market-analytics.html'));
 });
-
-// Standalone Dealality Scout prototype (optional — only if static files are deployed)
-const dealalityScoutHtmlPath = path.join(__dirname, "public", "dealality-scout.html");
-if (fs.existsSync(dealalityScoutHtmlPath)) {
-  app.get("/dealality-scout", (req, res) => {
-    res.sendFile(dealalityScoutHtmlPath);
-  });
-  app.get("/dealality-scout/", (req, res) => {
-    res.sendFile(dealalityScoutHtmlPath);
-  });
-}
 
 // CSP for app pages that would otherwise get default-src 'none' from sendFile (allows data: images, localhost for DevTools)
 const APP_PAGE_CSP =
@@ -1039,51 +1091,30 @@ app.use((req, res, next) => {
 
 const PORT = process.env.PORT || 8080;
 
-(async function startServer() {
-  const dealalityScoutApiPath = path.join(__dirname, "api", "dealality-scout.js");
-  if (fs.existsSync(dealalityScoutApiPath)) {
-    try {
-      const { getDealalityScout, getDealalityScoutFilters } = await import("./api/dealality-scout.js");
-      app.get("/api/dealality-scout", getDealalityScout);
-      app.get("/api/dealality-scout/filters", getDealalityScoutFilters);
-      console.log("✅ Dealality Scout API routes registered");
-    } catch (e) {
-      console.warn("Dealality Scout API failed to load:", e && e.message ? e.message : e);
-    }
-  } else {
-    console.warn(
-      "api/dealality-scout.js not found — GET /api/dealality-scout disabled (commit api/dealality-scout.js to enable)"
-    );
-  }
-
-  app.listen(PORT, () => {
-    console.log(`✅ Server running at http://localhost:${PORT}`);
-    // Optional quick check (only shows first chars, don't log secrets in prod)
-    console.log("Airtable key present:", !!process.env.AIRTABLE_API_KEY);
-    const smtpOk = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-    console.log("SMTP (signup emails):", smtpOk ? "configured — " + process.env.SMTP_HOST : "not configured — set SMTP_HOST, SMTP_USER, SMTP_PASS in .env");
-    console.log("✅ Partner Directory routes registered:");
-    console.log("   GET /partner-directory");
-    console.log("   GET /api/partner-directory");
-    console.log("   POST /api/partner-directory/users");
-    console.log("   PUT /api/partner-directory/users/:userId");
-    console.log("✅ Financial Term Library routes registered:");
-    console.log("   GET /api/financial-term-library/terms");
-    console.log("   GET /api/financial-term-library/term");
-    console.log("   POST /api/financial-term-library/terms");
-    console.log("✅ Company Profile routes registered:");
-    console.log("   POST /api/company-profile  (multipart: fields + optional logo)");
-    console.log("   PATCH /api/company-profile/:recordId");
-    console.log("   GET /api/company-profile/prefill?recordId=rec...|companyName=...");
-    console.log("✅ Third-party operator list (My 3rd Party Ops.):");
-    console.log("   GET /api/intake/third-party-operators");
-    console.log("   GET /api/third-party-operators/list");
-    console.log("   GET /api/third-party-operators");
-    console.log("   GET /api/third-party-operators-new/list");
-    console.log("   GET /api/third-party-operators-new");
-    console.log("   GET /api/intake/third-party-operator/prefill-qa");
-  });
-})().catch((err) => {
-  console.error("Server failed to start:", err);
-  process.exit(1);
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
+  // Optional quick check (only shows first chars, don't log secrets in prod)
+  console.log("Airtable key present:", !!process.env.AIRTABLE_API_KEY);
+  const smtpOk = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+  console.log("SMTP (signup emails):", smtpOk ? "configured — " + process.env.SMTP_HOST : "not configured — set SMTP_HOST, SMTP_USER, SMTP_PASS in .env");
+  console.log("✅ Partner Directory routes registered:");
+  console.log("   GET /partner-directory");
+  console.log("   GET /api/partner-directory");
+  console.log("   POST /api/partner-directory/users");
+  console.log("   PUT /api/partner-directory/users/:userId");
+  console.log("✅ Financial Term Library routes registered:");
+  console.log("   GET /api/financial-term-library/terms");
+  console.log("   GET /api/financial-term-library/term");
+  console.log("   POST /api/financial-term-library/terms");
+  console.log("✅ Company Profile routes registered:");
+  console.log("   POST /api/company-profile  (multipart: fields + optional logo)");
+  console.log("   PATCH /api/company-profile/:recordId");
+  console.log("   GET /api/company-profile/prefill?recordId=rec...|companyName=...");
+  console.log("✅ Third-party operator list (My 3rd Party Ops.):");
+  console.log("   GET /api/intake/third-party-operators");
+  console.log("   GET /api/third-party-operators/list");
+  console.log("   GET /api/third-party-operators");
+  console.log("   GET /api/third-party-operators-new/list");
+  console.log("   GET /api/third-party-operators-new");
+  console.log("   GET /api/intake/third-party-operator/prefill-qa");
 });

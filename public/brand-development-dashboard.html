@@ -173,34 +173,6 @@
         }
         .bdd-product-note strong { color: var(--neutral--100); font-weight: 600; }
 
-        .bdd-ws-primary-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: none;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            background: linear-gradient(135deg, var(--accent--primary-1), var(--secondary--color-2));
-            color: var(--neutral--100);
-            white-space: nowrap;
-        }
-        .bdd-ws-primary-btn:hover { filter: brightness(1.08); }
-        .bdd-ws-chip {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            background: var(--secondary--color-1);
-            border: 1px solid var(--neutral--600);
-            color: var(--neutral--300);
-        }
-        .bdd-ws-chip:hover { border-color: var(--accent--primary-1); color: var(--neutral--100); }
         /* Opportunity workspace: platform shell (--neutral--800), single scroll inside #dealDetailsContent only */
         #dealDetailsModal.modal-overlay {
             overflow: hidden !important;
@@ -226,10 +198,183 @@
             flex-shrink: 0;
             border-bottom: 1px solid var(--neutral--600);
             background: var(--neutral--800);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        #dealDetailsModal .modal-content.modal-content--deal-setup > .modal-header .bdd-ow-modal-header__text {
+            min-width: 0;
+            flex: 1;
         }
         #dealDetailsModal .modal-content.modal-content--deal-setup > .modal-header h2 {
             font-size: 1.15rem;
             font-weight: 700;
+            margin: 0;
+        }
+        #dealDetailsModal .modal-content.modal-content--deal-setup > .modal-header .modal-close {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        #dealDetailsModal .bdd-ow-modal-subtitle {
+            margin: 6px 0 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--neutral--300);
+            line-height: 1.35;
+        }
+        #dealDetailsModal .bdd-ow-modal-subtitle[hidden] {
+            display: none !important;
+        }
+        #dealDetailsModal .bdd-ow-card {
+            background: rgba(16, 25, 53, 0.65);
+            border: 1px solid var(--neutral--600);
+            border-radius: 12px;
+            padding: 16px 18px 18px;
+            margin-bottom: 0;
+        }
+        #dealDetailsModal .bdd-ow-section {
+            margin-bottom: 0;
+        }
+        #dealDetailsModal .bdd-ow-section__title {
+            margin: 0 0 12px;
+            padding: 0 0 10px;
+            border-bottom: 1px solid rgba(55, 68, 107, 0.85);
+            color: var(--neutral--100);
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        #dealDetailsModal .bdd-ow-deal-title {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--neutral--100);
+            line-height: 1.3;
+        }
+        #dealDetailsModal .bdd-ow-meta {
+            margin: 8px 0 0;
+            font-size: 0.875rem;
+            color: var(--neutral--400);
+            line-height: 1.45;
+        }
+        #dealDetailsModal .bdd-ow-muted {
+            color: var(--neutral--500);
+            font-size: 0.8125rem;
+        }
+        #dealDetailsModal .bdd-ow-rel-list {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+            color: var(--neutral--400);
+            font-size: 0.8125rem;
+            line-height: 1.65;
+        }
+        #dealDetailsModal .bdd-ow-rel-list li {
+            margin-bottom: 8px;
+            padding-left: 0;
+        }
+        #dealDetailsModal .bdd-ow-rel-list li:last-child {
+            margin-bottom: 0;
+        }
+        #dealDetailsModal .bdd-ow-kv-label {
+            display: inline-block;
+            min-width: 7.5rem;
+            color: var(--neutral--500);
+            font-weight: 500;
+        }
+        #dealDetailsModal .bdd-ow-icon-actions {
+            margin: 14px 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px 10px;
+        }
+        #dealDetailsModal .bdd-ow-icon-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            color: var(--accent--primary-1);
+            background: rgba(108, 114, 255, 0.08);
+            border: 1px solid rgba(108, 114, 255, 0.35);
+            text-decoration: none;
+            transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+        }
+        #dealDetailsModal .bdd-ow-icon-link:hover {
+            color: var(--neutral--100);
+            background: rgba(108, 114, 255, 0.22);
+            border-color: var(--accent--primary-1);
+        }
+        #dealDetailsModal .bdd-ow-icon-link:focus-visible {
+            outline: 2px solid var(--accent--primary-1);
+            outline-offset: 2px;
+        }
+        #dealDetailsModal .bdd-ow-icon-link__svg {
+            display: block;
+            flex-shrink: 0;
+        }
+        #dealDetailsModal details.bdd-ow-details {
+            margin-bottom: 0;
+            border: 1px solid var(--neutral--600);
+            border-radius: 10px;
+            background: rgba(8, 15, 37, 0.35);
+            overflow: hidden;
+        }
+        #dealDetailsModal details.bdd-ow-details[open] {
+            background: rgba(16, 25, 53, 0.55);
+        }
+        #dealDetailsModal details.bdd-ow-details > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 12px 16px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--neutral--100);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            user-select: none;
+        }
+        #dealDetailsModal details.bdd-ow-details > summary::-webkit-details-marker {
+            display: none;
+        }
+        #dealDetailsModal details.bdd-ow-details > summary::after {
+            content: "▾";
+            font-size: 12px;
+            color: var(--neutral--500);
+            transition: transform 0.2s ease;
+        }
+        #dealDetailsModal details.bdd-ow-details[open] > summary::after {
+            transform: rotate(-180deg);
+        }
+        #dealDetailsModal .bdd-ow-details__body {
+            padding: 0 16px 16px;
+            border-top: 1px solid rgba(55, 68, 107, 0.5);
+        }
+        #dealDetailsModal .bdd-ow-details__body .bdd-ow-card {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 14px 0 0;
+            margin-bottom: 0;
+        }
+        #dealDetailsModal .bdd-ow-details__body > .bdd-ow-card:first-of-type {
+            padding-top: 12px;
+        }
+        #dealDetailsModal .bdd-ow-details__body .bdd-ow-card + .bdd-ow-card {
+            border-top: 1px solid rgba(55, 68, 107, 0.45);
+            margin-top: 4px;
+            padding-top: 16px;
+        }
+        #dealDetailsModal .bdd-ow-subheading {
+            margin: 0 0 6px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--neutral--100);
         }
         #dealDetailsModal #dealDetailsContent {
             padding: 0 20px 20px;
@@ -255,16 +400,232 @@
             background: #7e89ac;
         }
         #dealDetailsModal .bdd-deal-details-body {
-            padding: 4px 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            padding: 8px 0 0;
         }
+
+        /* Opportunity workspace — owner SI tabs (strategic / operational / challenges) */
+        #dealDetailsModal .bdd-ow-si-root .bdd-ow-si-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px 14px;
+            margin: 0 0 14px;
+            padding: 0;
+            border: none;
+        }
+        #dealDetailsModal .bdd-ow-si-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            min-width: 72px;
+            max-width: 112px;
+            padding: 6px 4px 10px;
+            margin: 0;
+            border: none;
+            background: transparent;
+            color: var(--neutral--400);
+            font: inherit;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            line-height: 1.2;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            border-radius: 8px 8px 0 0;
+            transition: color 0.2s, background 0.2s, border-bottom-color 0.2s;
+            box-shadow: none;
+            filter: none;
+        }
+        #dealDetailsModal .bdd-ow-si-tab:hover {
+            color: var(--neutral--100);
+            box-shadow: none;
+        }
+        #dealDetailsModal .bdd-ow-si-tab:hover .bdd-ow-si-tab-icon {
+            color: var(--neutral--100);
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+        #dealDetailsModal .bdd-ow-si-tab:focus {
+            outline: none;
+        }
+        #dealDetailsModal .bdd-ow-si-tab:focus-visible {
+            outline: 2px solid var(--accent--primary-1);
+            outline-offset: 2px;
+            box-shadow: none;
+        }
+        #dealDetailsModal .bdd-ow-si-tab.active {
+            color: var(--accent--primary-1);
+            border-bottom-color: var(--accent--primary-1);
+            background: transparent;
+            box-shadow: none;
+            filter: none;
+        }
+        #dealDetailsModal .bdd-ow-si-tab-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--neutral--400);
+            background: transparent;
+            box-sizing: border-box;
+            transition: color 0.2s, border-color 0.2s, border-width 0.2s;
+        }
+        #dealDetailsModal .bdd-ow-si-tab.active .bdd-ow-si-tab-icon {
+            color: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
+            border-width: 2px;
+        }
+        #dealDetailsModal .bdd-ow-si-tab-icon svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+            flex-shrink: 0;
+        }
+        #dealDetailsModal .bdd-ow-si-tab-ring {
+            stroke: currentColor;
+        }
+        #dealDetailsModal .bdd-ow-si-tab-label {
+            text-align: center;
+            text-wrap: balance;
+        }
+        #dealDetailsModal .bdd-ow-si-panels {
+            border-top: 1px solid var(--neutral--600);
+            padding-top: 14px;
+        }
+        #dealDetailsModal .bdd-ow-si-panel {
+            display: none;
+        }
+        #dealDetailsModal .bdd-ow-si-panel.is-active {
+            display: block;
+        }
+        #dealDetailsModal .bdd-ow-si-summary-lede {
+            margin: 0 0 14px;
+            font-size: 13px;
+            color: var(--neutral--400);
+            line-height: 1.45;
+        }
+        #dealDetailsModal .bdd-ow-si-summary-section {
+            margin-bottom: 18px;
+        }
+        #dealDetailsModal .bdd-ow-si-summary-section:last-child {
+            margin-bottom: 0;
+        }
+        #dealDetailsModal .bdd-ow-si-summary-h {
+            margin: 0 0 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--neutral--100);
+            letter-spacing: 0.02em;
+        }
+        #dealDetailsModal .bdd-ow-si-dl {
+            margin: 0;
+        }
+        #dealDetailsModal .bdd-ow-si-kv {
+            margin: 0 0 10px;
+        }
+        #dealDetailsModal .bdd-ow-si-kv:last-child {
+            margin-bottom: 0;
+        }
+        #dealDetailsModal .bdd-ow-si-k {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--neutral--500);
+            margin-bottom: 2px;
+        }
+        #dealDetailsModal .bdd-ow-si-v {
+            margin: 0;
+            font-size: 14px;
+            color: var(--neutral--200);
+            line-height: 1.45;
+            white-space: pre-wrap;
+        }
+
+        /* Opportunity workspace: owner importance → five-dimension radar (read-only; brand/operator copy) */
+        #dealDetailsModal .bdd-ow-importance-radar-container {
+            margin: 0 0 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--neutral--600);
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-title {
+            color: var(--neutral--100);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin: 0 0 6px;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-desc {
+            color: var(--neutral--500);
+            font-size: 0.8125rem;
+            font-weight: 400;
+            line-height: 1.45;
+            margin: 0 0 14px;
+            max-width: 760px;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-layout {
+            display: flex;
+            gap: 22px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-chart-col {
+            flex: 0 0 auto;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-text-col {
+            flex: 1;
+            min-width: 260px;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-wrap {
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            height: 320px;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-wrap canvas {
+            max-height: 320px;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-interpretation-block {
+            margin-bottom: 18px;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-interpretation-block:last-child {
+            margin-bottom: 0;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-interp-title {
+            color: var(--neutral--100);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0 0 6px;
+        }
+        #dealDetailsModal .bdd-ow-importance-radar-interp-text {
+            color: var(--neutral--400);
+            font-size: 0.8125rem;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0;
+        }
+        #dealDetailsModal .bdd-ow-operational-after-radar {
+            margin-top: 16px;
+        }
+
         #dealDetailsModal .bdd-modal-action-sticky {
             position: sticky;
             top: 0;
             z-index: 3;
             background: var(--neutral--800);
             padding: 16px 0 12px;
-            margin: 0 0 8px;
+            margin: 0 0 4px;
             border-bottom: 1px solid var(--neutral--600);
+        }
+        #dealDetailsModal .bdd-modal-decision-row .bdd-decision-btn {
+            flex: 0 1 auto;
         }
         .bdd-crm-timeline-table tbody tr:nth-child(even) { background: rgba(33, 44, 77, 0.35); }
 
@@ -892,6 +1253,61 @@
             background: var(--system--orange-400);
             border-color: var(--system--orange-400);
             transform: translateY(-1px);
+        }
+
+        /* Deal activity tab — filter row (search + deal + action + timeframe + reset) */
+        .bdd-deal-log-filter-wrap {
+            margin: 0 20px 16px;
+        }
+        .bdd-deal-log-filters.filters-section {
+            margin-bottom: 0;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 12px 16px;
+        }
+        .bdd-deal-log-filters .filter-label {
+            color: var(--neutral--100);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .bdd-deal-log-filters .filter-group--search {
+            flex: 1.35 1 200px;
+            min-width: 180px;
+        }
+        .bdd-deal-log-filters .filter-group--deal,
+        .bdd-deal-log-filters .filter-group--action,
+        .bdd-deal-log-filters .filter-group--time {
+            flex: 1 1 140px;
+            min-width: 130px;
+            max-width: 220px;
+        }
+        .bdd-deal-log-filters .filter-group--reset {
+            flex: 0 0 auto;
+            min-width: 120px;
+        }
+        .bdd-deal-log-reset-btn {
+            padding: 10px 18px;
+            background: var(--system--orange-400, #ed8936);
+            border: 1px solid var(--system--orange-400, #ed8936);
+            color: var(--neutral--100);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: filter 0.2s, transform 0.15s;
+            min-height: 42px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .bdd-deal-log-reset-btn:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+        .bdd-deal-log-count-line {
+            margin: 10px 0 0;
+            font-size: 13px;
+            color: var(--neutral--500);
         }
 
         .bdd-results-row {
@@ -2977,20 +3393,20 @@
             <div style="padding: 20px;">
                 <h2>Dealality</h2>
                 <nav>
-                    <a href="#">🏠 Home</a>
-                    <a href="#">📊 Deals</a>
-                    <a href="#">📈 Market Intelligence</a>
-                    <a href="#">🏢 Deal Room</a>
-                    <a href="#">🤝 Outreach Hub</a>
-                    <a href="clause-library.html">📚 Legal Library</a>
+                    <a href="/app">🏠 Home</a>
+                    <a href="/my-deals">📊 Deals</a>
+                    <a href="/market-alerts">📈 Market Intelligence</a>
+                    <a href="/deal-room-owner.html">🏢 Deal Room</a>
+                    <a href="/outreach-inbox">🤝 Outreach Hub</a>
+                    <a href="/clause-library">📚 Legal Library</a>
                     <a href="/my-brands">🏷️ My Brands</a>
                     <a href="/brand-development-dashboard" class="active">🎯 My Brand Deals</a>
-                    <a href="brand-library.html">📚 Brand Library</a>
-                    <a href="partner-directory.html">👥 Partner Directory</a>
-                    <a href="#">📋 Platform Resources</a>
-                    <a href="#">📊 Reports</a>
-                    <a href="#">❓ Support</a>
-                    <a href="#">⚙️ Settings</a>
+                    <a href="/brand-library">📚 Browse brands</a>
+                    <a href="/partner-directory">👥 Partner Directory</a>
+                    <a href="/knowledge-base">📋 Platform Resources</a>
+                    <a href="/loi-database-dashboard">📊 Reports</a>
+                    <a href="/getting-started">❓ Support</a>
+                    <a href="/company-settings">⚙️ Settings</a>
                 </nav>
             </div>
         </div>
@@ -3037,7 +3453,7 @@
                 </div>
 
                 <div id="bddKpiStuckPopover" popover="auto" class="bdd-kpi-stuck-popover">
-                    <h3 class="bdd-kpi-stuck-popover__title">Stuck / at risk</h3>
+                    <h3 class="bdd-kpi-stuck-popover__title">Stuck / At Risk</h3>
                     <p class="bdd-kpi-stuck-popover__body">Includes rows where the follow-up date is in the past, or there has been no activity for 14 days or more. Log activity or clear the follow-up to remove a row from this count.</p>
                     <p class="bdd-kpi-stuck-popover__muted">The trend line compares to the saved total from the <strong>previous calendar week</strong> (same filters).</p>
                     <button type="button" class="bdd-kpi-stuck-popover__close" popovertarget="bddKpiStuckPopover" popovertargetaction="hide">Close</button>
@@ -3080,8 +3496,8 @@
                         <span class="tab-count" id="tabCountBddArchived">0</span>
                     </button>
                     <button type="button" class="section-nav-item" data-tab="bdd-deal-log">
-                        <div class="section-nav-icon" title="Deal activity log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
-                        <span class="section-nav-label">Deal<br>activity</span>
+                        <div class="section-nav-icon" title="Deal Activity Log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+                        <span class="section-nav-label">Deal<br>Activity Log</span>
                     </button>
                 </nav>
                 </div><!-- /.bdd-kpi-nav-stack -->
@@ -3225,22 +3641,57 @@
                         </div>
                     </div>
                     <div class="deal-log-container" id="dealLogContent" style="background: var(--neutral--800); border: 0.6px solid var(--neutral--600); border-radius: 8px;">
-                        <h3 style="color: var(--neutral--100); margin: 0; padding: 20px 20px 12px; font-size: 16px;">Activity log</h3>
+                        <h3 style="color: var(--neutral--100); margin: 0; padding: 20px 20px 12px; font-size: 16px;">Deal Activity Log</h3>
                         <p style="color: var(--neutral--500); font-size: 13px; margin: 0 20px 16px; font-weight: 400;">Request sent, brand review, status changes, NDA and deal room, proposal drafts and submissions, follow-ups, and notes.</p>
+                        <div class="bdd-deal-log-filter-wrap">
+                            <div class="filters-section bdd-deal-log-filters" aria-label="Filter activity log">
+                                <div class="filter-group filter-group--search">
+                                    <label class="filter-label" for="bddDealLogSearch">Search</label>
+                                    <input type="search" id="bddDealLogSearch" class="filter-input" placeholder="Search action, deal, or details…" autocomplete="off" enterkeyhint="search">
+                                </div>
+                                <div class="filter-group filter-group--deal">
+                                    <label class="filter-label" for="bddDealLogFilterDeal">Deal</label>
+                                    <select id="bddDealLogFilterDeal" class="filter-select">
+                                        <option value="">All deals</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group filter-group--action">
+                                    <label class="filter-label" for="bddDealLogFilterAction">Action</label>
+                                    <select id="bddDealLogFilterAction" class="filter-select">
+                                        <option value="">All actions</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group filter-group--time">
+                                    <label class="filter-label" for="bddDealLogFilterTimeframe">Timeframe</label>
+                                    <select id="bddDealLogFilterTimeframe" class="filter-select">
+                                        <option value="all">All time</option>
+                                        <option value="7d">Last 7 days</option>
+                                        <option value="30d">Last 30 days</option>
+                                        <option value="90d">Last 90 days</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group filter-group--reset">
+                                    <label class="filter-label bdd-deal-log-reset-label" aria-hidden="true">&nbsp;</label>
+                                    <button type="button" class="bdd-deal-log-reset-btn" id="bddDealLogResetBtn">Reset View</button>
+                                </div>
+                            </div>
+                            <p class="bdd-deal-log-count-line" id="bddDealLogCountLine">Showing <strong id="bddDealLogCountShown">0</strong><span id="bddDealLogCountOfTotal"></span></p>
+                        </div>
                         <div class="deals-table-container">
                             <table class="deals-table deal-log-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 15%;">When</th>
-                                        <th style="width: 18%;">Opportunity</th>
-                                        <th style="width: 16%;">Event</th>
-                                        <th style="width: 41%;">Details</th>
-                                        <th style="width: 10%;">Side</th>
+                                        <th style="width: 14%;">When</th>
+                                        <th style="width: 16%;">Opportunity</th>
+                                        <th style="width: 14%;">Target Brand</th>
+                                        <th style="width: 14%;">Event</th>
+                                        <th style="width: 34%;">Details</th>
+                                        <th style="width: 8%;">Side</th>
                                     </tr>
                                 </thead>
                                 <tbody id="dealLogTableBody">
                                     <tr>
-                                        <td colspan="5" style="padding: 40px 20px; text-align: center; color: var(--neutral--500);">
+                                        <td colspan="6" style="padding: 40px 20px; text-align: center; color: var(--neutral--500);">
                                             <p>No activity yet. As you and owners move requests forward, the timeline will populate here.</p>
                                         </td>
                                     </tr>
@@ -3306,8 +3757,11 @@
     <div class="modal-overlay" id="dealDetailsModal">
         <div class="modal-content modal-content--deal-setup" style="max-width: 920px;">
             <div class="modal-header">
-                <h2>Opportunity workspace</h2>
-                <button class="modal-close" onclick="closeDealDetailsModal()">&times;</button>
+                <div class="bdd-ow-modal-header__text">
+                    <h2>Opportunity Workspace</h2>
+                    <p id="dealDetailsModalSubtitle" class="bdd-ow-modal-subtitle" hidden></p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeDealDetailsModal()" aria-label="Close">&times;</button>
             </div>
             <div id="dealDetailsContent">
                 <!-- Content will be populated by JavaScript -->
@@ -3332,14 +3786,18 @@
     <div class="modal-overlay" id="bddRequestInfoModal">
         <div class="modal-content modal-content--deal-setup" style="max-width: 520px;">
             <div class="modal-header">
-                <h2>Request more information</h2>
+                <h2>Request More Information</h2>
                 <button type="button" class="modal-close" id="bddRequestInfoModalClose">&times;</button>
             </div>
             <div class="bdd-ds-modal-body">
-                <p class="bdd-ds-hint bdd-ds-hint--lg">This is appended to Response Notes and updates status to More Info Requested. Existing notes are preserved.</p>
+                <p class="bdd-ds-hint bdd-ds-hint--lg">Owner-facing text is appended to <strong>Response Notes</strong> (visible to the owner). Team-only notes append to <strong>Next Follow-up Notes (Internal)</strong> in Airtable.</p>
                 <div class="bdd-ds-field">
-                    <label class="bdd-ds-field-label" for="bddRequestInfoTextarea">What do you need from the owner?</label>
-                    <textarea id="bddRequestInfoTextarea" rows="5" class="filter-input"></textarea>
+                    <label class="bdd-ds-field-label" for="bddRequestInfoTextarea">What do you need from the owner? (external)</label>
+                    <textarea id="bddRequestInfoTextarea" rows="4" class="filter-input" placeholder="Visible to the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRequestInfoInternalTextarea">Team notes (internal, optional)</label>
+                    <textarea id="bddRequestInfoInternalTextarea" rows="3" class="filter-input" placeholder="Not shared with the owner…"></textarea>
                 </div>
                 <div class="bdd-ds-modal-footer">
                     <button type="button" id="bddRequestInfoCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
@@ -3353,7 +3811,7 @@
     <div class="modal-overlay" id="bddDeclineWorkspaceModal">
         <div class="modal-content modal-content--deal-setup" style="max-width: 520px;">
             <div class="modal-header">
-                <h2>Decline opportunity</h2>
+                <h2>Decline Opportunity</h2>
                 <button type="button" class="modal-close" id="bddDeclineWorkspaceModalClose">&times;</button>
             </div>
             <div class="bdd-ds-modal-body">
@@ -3386,8 +3844,13 @@
                     <input type="text" id="bddDeclineAlternateBrandOther" class="filter-input" placeholder="Brand name not listed above" maxlength="200">
                 </div>
                 <div class="bdd-ds-field">
-                    <label class="bdd-ds-field-label" for="bddDeclineNotesInput">Internal notes (optional)</label>
-                    <textarea id="bddDeclineNotesInput" rows="3" class="filter-input"></textarea>
+                    <label class="bdd-ds-field-label" for="bddDeclineExternalNotesInput">Message to owner (external, optional)</label>
+                    <p class="bdd-ds-hint" style="margin-top: -4px;">Appended to Response Notes along with the decline reason.</p>
+                    <textarea id="bddDeclineExternalNotesInput" rows="2" class="filter-input" placeholder="Optional context for the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddDeclineInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddDeclineInternalNotesInput" rows="3" class="filter-input" placeholder="Not shared with the owner…"></textarea>
                 </div>
                 <div class="bdd-ds-modal-footer">
                     <button type="button" id="bddDeclineWorkspaceCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
@@ -3401,18 +3864,22 @@
     <div class="modal-overlay" id="bddRevisitLaterModal">
         <div class="modal-content modal-content--deal-setup" style="max-width: 480px;">
             <div class="modal-header">
-                <h2>Revisit later</h2>
+                <h2>Revisit Later</h2>
                 <button type="button" class="modal-close" id="bddRevisitLaterModalClose">&times;</button>
             </div>
             <div class="bdd-ds-modal-body">
                 <p class="bdd-ds-hint bdd-ds-hint--lg">Sets status to Revisit Later, schedules a follow-up on your chosen date, and logs both in the activity timeline.</p>
                 <div class="bdd-ds-field">
-                    <label class="bdd-ds-field-label" for="bddRevisitDateInput">Revisit / follow-up date</label>
+                    <label class="bdd-ds-field-label" for="bddRevisitDateInput">Revisit / Follow-Up Date</label>
                     <input type="date" id="bddRevisitDateInput" class="filter-input">
                 </div>
                 <div class="bdd-ds-field">
-                    <label class="bdd-ds-field-label" for="bddRevisitNotesInput">Notes</label>
-                    <textarea id="bddRevisitNotesInput" rows="3" class="filter-input" placeholder="Why park this and what to revisit..."></textarea>
+                    <label class="bdd-ds-field-label" for="bddRevisitNotesInput">Follow-up notes for the owner (external)</label>
+                    <textarea id="bddRevisitNotesInput" rows="2" class="filter-input" placeholder="Visible in Outreach / follow-up context…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRevisitInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddRevisitInternalNotesInput" rows="2" class="filter-input" placeholder="Not shared with the owner…"></textarea>
                 </div>
                 <div class="bdd-ds-modal-footer">
                     <button type="button" id="bddRevisitLaterCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
@@ -3437,12 +3904,17 @@
                     <input type="text" id="bddScheduleHeaderInput" class="filter-input" placeholder="e.g. Follow-up call, Send proposal">
                 </div>
                 <div class="bdd-ds-field">
-                    <label class="bdd-ds-field-label" for="bddScheduleDateInput">Follow-up date</label>
+                    <label class="bdd-ds-field-label" for="bddScheduleDateInput">Follow-Up Date</label>
                     <input type="date" id="bddScheduleDateInput" class="filter-input">
                 </div>
                 <div class="bdd-ds-field">
-                    <label class="bdd-ds-field-label" for="bddScheduleNotesInput">Notes</label>
-                    <textarea id="bddScheduleNotesInput" rows="3" class="filter-input" placeholder="Add notes for this follow-up..."></textarea>
+                    <label class="bdd-ds-field-label" for="bddScheduleNotesInput">Follow-up notes (external)</label>
+                    <p class="bdd-ds-hint" style="margin-top: -4px;">The contact can see these in Outreach Hub.</p>
+                    <textarea id="bddScheduleNotesInput" rows="2" class="filter-input" placeholder="Visible to the brand contact…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddScheduleInternalNotesInput" rows="2" class="filter-input" placeholder="Not shared with the owner…"></textarea>
                 </div>
                 <div class="bdd-ds-modal-footer">
                     <button type="button" id="bddScheduleCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
@@ -3526,6 +3998,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="brand-development-dashboard.js"></script>
 
     <script src="/embed-chrome.js" defer></script>

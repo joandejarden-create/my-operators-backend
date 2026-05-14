@@ -5,8 +5,11 @@
  * Prerequisites:
  *   - .env: AIRTABLE_API_KEY, AIRTABLE_BASE_ID (same as server)
  *   - Tables: "Brand Deal Requests", "Deal Activity Log", "Deals" (or env overrides)
- *   - Status / NDA / Deal Room / Proposal Status single-select options must match your base
- *     (same set as scripts/seed-brand-development-workspace-demo.mjs / api/brand-deal-requests.js).
+ *   - Brand Deal Request single-selects (Status, NDA Status, Deal Room Access, Proposal Status)
+ *     must match your base (same set as api/brand-deal-requests.js / workspace demo seeds).
+ *   - Deal Activity Log → Action is often a restricted single-select; this script uses the same
+ *     verb labels as api/brand-deal-requests.js, then falls back to the BDR pipeline Status string
+ *     when the API would (e.g. "Deal Room Active") if the primary label is not an option.
  *
  * Usage:
  *   node scripts/seed-bdr-activity-from-existing-deals.mjs
@@ -14,10 +17,14 @@
  *   node scripts/seed-bdr-activity-from-existing-deals.mjs --clean   # remove only rows tagged [seed:bdd-v2]
  *
  * Env (optional):
- *   SEED_MAX_DEALS=35              max deals to scan (default 40)
- *   SEED_BRANDS_PER_DEAL=2       BDRs to create per deal (default 2), uses preferred brands first
+ *   SEED_COVER_TABS=1            default: one BDR per workspace tab (sparse); set 0 for legacy “many rows” mode
+ *   SEED_EXTRA_NEW_OPPORTUNITIES=5  after tab coverage, add more Status "New" rows (default 5 when SEED_COVER_TABS=1; 0 skips)
+ *   SEED_MAX_DEALS=25            max deals to scan (default 25)
+ *   SEED_BRANDS_PER_DEAL=1       default 1 in tab-coverage mode; legacy mode default 2
  *   SEED_DEAL_IDS=recA,recB      force these deal IDs only (overrides max scan)
  *   SEED_SKIP_EXISTING=1         skip deal+brand if a BDR already exists (default 1)
+ *
+ * Workspace buckets follow public/brand-development-dashboard.js → deriveWorkspaceBucket (NDA state runs before status).
  */
 
 import "dotenv/config";
@@ -42,34 +49,34 @@ const FALLBACK_BRANDS = [
   "Rosewood",
 ];
 
-/** Pipeline slices so different deals surface across workspace tabs. */
+/**
+ * One row per My Brand Deals workspace tab (deriveWorkspaceBucket in brand-development-dashboard.js).
+ * Use NDA "Not Required" (not "Not Sent") for New / Brand Viewed so rows land in New / Active review, not NDA tab.
+ */
 const STATUS_TEMPLATES = [
   {
-    label: "New",
-    fields: { Status: "New", "NDA Status": "Not Sent", "Deal Room Access": "Blocked" },
+    label: "New opportunities",
+    workspaceTab: "bdd-new",
+    fields: { Status: "New", "NDA Status": "Not Required", "Deal Room Access": "Blocked" },
   },
   {
-    label: "Brand viewed",
-    fields: { Status: "Brand Viewed", "NDA Status": "Not Sent", "Deal Room Access": "Blocked" },
+    label: "Active brand review",
+    workspaceTab: "bdd-active-review",
+    fields: { Status: "Brand Viewed", "NDA Status": "Not Required", "Deal Room Access": "Blocked" },
   },
   {
-    label: "Accepted / NDA optional",
+    label: "Awaiting owner info",
+    workspaceTab: "bdd-awaiting-info",
     fields: { Status: "Accepted", "NDA Status": "Not Required", "Deal Room Access": "Blocked" },
   },
   {
-    label: "NDA sent",
+    label: "NDA / Deal room",
+    workspaceTab: "bdd-nda-room",
     fields: { Status: "Accepted", "NDA Status": "Sent", "Deal Room Access": "Blocked" },
   },
   {
-    label: "Deal room active",
-    fields: {
-      Status: "Deal Room Active",
-      "NDA Status": "Signed - Owner Confirmed",
-      "Deal Room Access": "Granted",
-    },
-  },
-  {
-    label: "Pre-LOI draft",
+    label: "Terms / proposal",
+    workspaceTab: "bdd-terms-proposal",
     fields: {
       Status: "Pre-LOI",
       "NDA Status": "Signed - Owner Confirmed",
@@ -78,34 +85,17 @@ const STATUS_TEMPLATES = [
     },
   },
   {
-    label: "Finalist",
+    label: "Advanced pipeline",
+    workspaceTab: "bdd-advanced",
     fields: {
       Status: "Finalist",
       "NDA Status": "Signed - Owner Confirmed",
       "Deal Room Access": "Granted",
-      "Proposal Status": "Submitted",
     },
   },
   {
-    label: "More info",
-    fields: {
-      Status: "More Info Requested",
-      "NDA Status": "Not Sent",
-      "Response Notes": "Please share latest feasibility and indicative key terms.",
-    },
-  },
-  {
-    label: "Revisit later",
-    fields: {
-      Status: "Revisit Later",
-      "NDA Status": "Not Sent",
-      "Next Follow-up Date": isoDaysFromNow(60),
-      "Next Follow-up Header": "Check back after market update",
-      "Next Follow-up Notes": "Parked pending sponsor guidance.",
-    },
-  },
-  {
-    label: "Declined",
+    label: "Archived / declined",
+    workspaceTab: "bdd-archived",
     fields: {
       Status: "Declined",
       "NDA Status": "Not Required",
@@ -114,11 +104,8 @@ const STATUS_TEMPLATES = [
   },
 ];
 
-function isoDaysFromNow(days) {
-  const d = new Date();
-  d.setDate(d.getDate() + Number(days) || 0);
-  return d.toISOString().slice(0, 10);
-}
+/** Extra Action single-select values to try after pipeline Status (restricted Airtable keys). */
+const ACTION_VERB_FALLBACKS = ["Notes updated", "Follow-up scheduled", "Request Sent"];
 
 function isoDaysAgo(days) {
   const d = new Date();
@@ -177,6 +164,106 @@ function markOwnerNote(baseText) {
   return t ? `${t} ${SEED_MARKER}` : SEED_MARKER;
 }
 
+/** Mirrors deriveWorkspaceBucket (brand-development-dashboard.js) using BDR-shaped field names. */
+function deriveWorkspaceBucketFromSeedFields(fields) {
+  if (!fields || typeof fields !== "object") return "new";
+  const st = String(fields.Status || "").trim();
+  const nda = String(fields["NDA Status"] || "").trim();
+  const dra = String(fields["Deal Room Access"] || "").trim();
+  const prop = String(fields["Proposal Status"] || "").trim();
+  if (["Declined", "Responded - Declined", "Archived"].includes(st)) return "archived";
+  if (st === "Revisit Later") return "advanced";
+  if (st === "More Info Requested") return "awaiting-info";
+  const inNdaFlow =
+    st === "Deal Room Active" ||
+    nda === "Not Sent" ||
+    nda === "Sent" ||
+    (nda === "Signed - Owner Confirmed" && dra && dra !== "Granted");
+  if (inNdaFlow) return "nda-room";
+  if (["Pre-LOI", "Pre-LOI / Term Comparison"].includes(st) || prop === "Draft" || prop === "Submitted") return "terms-proposal";
+  if (["Finalist", "Feasibility", "Feasibility In Progress", "LOI Signed", "LOI Signed / Platform Exit"].includes(st)) return "advanced";
+  if (["Accepted", "Responded - Accepted"].includes(st)) return "awaiting-info";
+  if (["Brand Viewed", "Viewed"].includes(st)) return "active-review";
+  if (["New", "Sent / Awaiting Response"].includes(st) || !st) return "new";
+  return "awaiting-info";
+}
+
+/**
+ * Distinct Deal Activity Log Action verbs (aligned with api/brand-deal-requests.js) for UI testing.
+ */
+function getActivityPlan(tmpl) {
+  const f = tmpl.fields || {};
+  const status = f.Status;
+  const nda = f["NDA Status"];
+  const label = tmpl.label || "Seed";
+  /** @type {{ action: string, details: string, stakeholder: string, daysAgo: number }[]} */
+  const rows = [];
+  const push = (action, details, stakeholder, daysAgo) => {
+    rows.push({ action, details, stakeholder, daysAgo });
+  };
+
+  push("Request Sent", `Intro sent — ${label}.`, "Owner", 24);
+
+  if (status === "New") {
+    push("Notes updated", "Sponsor context and timeline refreshed for routing.", "Owner", 21);
+    return rows;
+  }
+
+  push("Opportunity reviewed", "Brand team reviewed project summary and match context.", "Brand", 20);
+
+  if (status === "Brand Viewed") {
+    push("Notes updated", "Brand committee reviewing portfolio fit vs. current pipeline.", "Brand", 16);
+    return rows;
+  }
+
+  if (status === "Accepted" && nda === "Sent") {
+    push("Marked interested", "Brand confirmed appetite to proceed under mutual NDA.", "Brand", 18);
+    push("NDA Sent", "Standard mutual NDA issued for confidential review.", "Owner", 16);
+    push("Follow-up scheduled", "Weekly reminder — countersignature still outstanding.", "Owner", 13);
+    push("Notes updated", "Owner uploaded draft scope outline to deal room (pending access).", "Owner", 11);
+    return rows;
+  }
+
+  if (status === "Accepted") {
+    push("Marked interested", "Brand confirmed interest; awaiting owner underwriting inputs.", "Brand", 18);
+    push("Information requested", "Requesting feasibility memo and indicative key terms.", "Brand", 16);
+    push("Follow-up scheduled", "Owner / brand working session on data gaps.", "Owner", 14);
+    push("Notes updated", "Match score drivers validated against latest sponsor brief.", "Owner", 12);
+    return rows;
+  }
+
+  if (status === "Pre-LOI") {
+    push("Marked interested", "Brand advancing to structured diligence.", "Brand", 19);
+    push("NDA Sent", "Mutual NDA issued for data room review.", "Owner", 17);
+    push("NDA Signed (Owner Confirmed)", "Countersigned NDA on file.", "Owner", 15);
+    push("Deal Room Access Granted", "VDR access enabled for brand diligence team.", "Owner", 14);
+    push("Notes updated", "Owner indexed core data room folders for brand reviewers.", "Owner", 12);
+    push("Terms preparation started", "Draft commercial terms under internal review.", "Brand", 10);
+    push("Follow-up scheduled", "Terms working group — target decision date.", "Owner", 8);
+    return rows;
+  }
+
+  if (status === "Finalist") {
+    push("Marked interested", "Brand shortlisted for final comparison.", "Brand", 19);
+    push("NDA Sent", "Mutual NDA issued.", "Owner", 17);
+    push("NDA Signed (Owner Confirmed)", "Countersigned NDA on file.", "Owner", 15);
+    push("Deal Room Access Granted", "Full diligence library unlocked.", "Owner", 14);
+    push("Terms preparation started", "Commercial term sheet iterations in progress.", "Brand", 12);
+    push("Proposal Submitted", "Brand proposal submitted for owner evaluation.", "Brand", 9);
+    push("Notes updated", "Owner consolidated finalist scorecard.", "Owner", 7);
+    return rows;
+  }
+
+  if (status === "Declined") {
+    push("Notes updated", "Brand requested one clarification pass on scope before decision.", "Brand", 16);
+    push("Declined", "Brand declined for this opportunity after internal gate.", "Brand", 13);
+    push("Notes updated", "Decline rationale logged for CRM continuity.", "Owner", 11);
+    return rows;
+  }
+
+  return rows;
+}
+
 async function findBdr(base, dealId, brandName) {
   const formula = `AND(FIND('${escapeFormula(dealId)}', ARRAYJOIN({Deal})) > 0, {Brand Name} = '${escapeFormula(brandName)}')`;
   const rows = await base(BDR_TABLE).select({ filterByFormula: formula, maxRecords: 1 }).firstPage();
@@ -215,91 +302,80 @@ async function deleteSeededActivity(base) {
   console.log(`Deleted ${toDelete.length} seeded Deal Activity Log row(s).`);
 }
 
-async function createActivity(base, fields) {
+async function attemptActivityCreate(base, fields) {
   try {
     await base(ACTIVITY_LOG_TABLE).create([{ fields }]);
+    return;
   } catch (e) {
     const msg = String(e?.message || e);
     if (/Unknown field|does not exist/i.test(msg) && fields.Stakeholder != null) {
       const f2 = { ...fields };
       delete f2.Stakeholder;
-      await base(ACTIVITY_LOG_TABLE).create([{ fields: f2 }]);
-    } else if (/Created At|READONLY|cannot/i.test(msg)) {
+      await attemptActivityCreate(base, f2);
+      return;
+    }
+    if (/Created At|READONLY|cannot/i.test(msg)) {
       const f2 = { ...fields };
       delete f2["Created At"];
-      await base(ACTIVITY_LOG_TABLE).create([{ fields: f2 }]);
-    } else {
-      throw e;
+      await attemptActivityCreate(base, f2);
+      return;
     }
+    throw e;
   }
 }
 
-async function seedActivityTimeline(base, dealId, brandName, templateLabel, status) {
+/**
+ * Write Deal Activity Log row. If Action is a single-select and the primary label is not
+ * allowed in the base (common with restricted API keys), retry with `statusFallback`
+ * — same pattern as api/brand-deal-requests.js (raw pipeline status as Action when unmapped).
+ */
+async function createActivity(base, fields, statusFallback = "", extraPreferred = []) {
+  const primary = String(fields.Action || "").trim();
+  const alt = String(statusFallback || "").trim();
+  const secondary = alt && alt !== primary ? alt : "";
+  const mergedExtras = [...(extraPreferred || []), ...ACTION_VERB_FALLBACKS]
+    .map((x) => String(x || "").trim())
+    .filter(Boolean);
+  const chain = [];
+  const seen = new Set();
+  for (const a of [primary, secondary, ...mergedExtras]) {
+    if (!a || seen.has(a)) continue;
+    seen.add(a);
+    chain.push(a);
+  }
+  const isSelectPermissionError = (msg) =>
+    /select option|UNKNOWN_MULTIPLE_CHOICE|Insufficient permissions|invalid.*choice|INVALID_MULTIPLE_CHOICE_OPTIONS/i.test(
+      String(msg || ""),
+    );
+
+  for (const action of chain) {
+    try {
+      await attemptActivityCreate(base, { ...fields, Action: action });
+      return;
+    } catch (e) {
+      const msg = String(e?.message || e);
+      if (isSelectPermissionError(msg)) continue;
+      throw e;
+    }
+  }
+  console.warn(`[activity] skip exhausted (${chain.join(" → ")}): no Action option matched this base`);
+}
+
+async function seedActivityTimeline(base, dealId, brandName, tmpl) {
+  const f = tmpl.fields || {};
+  const status = f.Status;
   const detailsSuffix = ` ${SEED_MARKER}`;
-  const mk = (action, details, stakeholder, daysAgo) => ({
-    Deal: [dealId],
-    "Brand Name": brandName,
-    Action: action,
-    Details: String(details) + detailsSuffix,
-    Stakeholder: stakeholder,
-    "Created At": isoDaysAgo(daysAgo),
-  });
-
-  await createActivity(
-    base,
-    mk("Request Sent", `Intro sent for ${templateLabel} track.`, "Owner", 18),
-  );
-
-  if (status === "New") return;
-
-  await createActivity(
-    base,
-    mk("Opportunity reviewed", "Brand team reviewed project summary and match context.", "Brand", 16),
-  );
-
-  if (["Accepted", "Brand Viewed", "More Info Requested", "Revisit Later", "Declined"].includes(status)) {
-    await createActivity(
-      base,
-      mk(
-        status === "Declined" ? "Declined" : "Marked interested",
-        status === "More Info Requested"
-          ? "Brand requested additional underwriting inputs."
-          : status === "Revisit Later"
-            ? "Brand asked to revisit next quarter."
-            : status === "Declined"
-              ? "Brand declined for this opportunity."
-              : "Brand confirmed interest to proceed.",
-        "Brand",
-        14,
-      ),
-    );
-  }
-
-  if (["Deal Room Active", "Pre-LOI", "Finalist"].includes(status)) {
-    await createActivity(
-      base,
-      mk("NDA Sent", "Standard mutual NDA issued for data room review.", "Owner", 12),
-    );
-    await createActivity(
-      base,
-      mk("NDA Signed (Owner Confirmed)", "Countersigned NDA on file.", "Owner", 10),
-    );
-    await createActivity(
-      base,
-      mk("Deal Room Access Granted", "VDR access enabled for brand diligence team.", "Owner", 9),
-    );
-  }
-
-  if (status === "Pre-LOI" || status === "Finalist") {
-    await createActivity(
-      base,
-      mk(
-        "Terms preparation started",
-        status === "Finalist" ? "Shortlisted for final comparison." : "Draft commercial terms under review.",
-        "Brand",
-        7,
-      ),
-    );
+  const plan = getActivityPlan(tmpl);
+  for (const step of plan) {
+    const fields = {
+      Deal: [dealId],
+      "Brand Name": brandName,
+      Action: step.action,
+      Details: String(step.details) + detailsSuffix,
+      Stakeholder: step.stakeholder,
+      "Created At": isoDaysAgo(step.daysAgo),
+    };
+    await createActivity(base, fields, status);
   }
 }
 
@@ -310,12 +386,11 @@ async function fetchDealIds(base) {
     .filter((id) => id.startsWith("rec"));
   if (env.length) return env;
 
-  const max = Math.min(100, Math.max(1, parseInt(process.env.SEED_MAX_DEALS || "40", 10) || 40));
+  const max = Math.min(100, Math.max(1, parseInt(process.env.SEED_MAX_DEALS || "25", 10) || 25));
   const ids = [];
   await base(DEALS_TABLE)
     .select({
       pageSize: 100,
-      fields: ["Property Name", "Preferred Brands (up to 4)", "Preferred Brands"],
     })
     .eachPage((records, next) => {
       for (const r of records) {
@@ -332,6 +407,23 @@ async function fetchDealRecord(base, dealId) {
   return rec;
 }
 
+function getPreferredBrandsRaw(fields) {
+  if (!fields || typeof fields !== "object") return "";
+  const keys = [
+    "Preferred Brands (up to 4)",
+    "Preferred Brands",
+    "Brand Preference",
+    "Desired Brand",
+    "Preferred brand(s)",
+  ];
+  for (const k of keys) {
+    const v = fields[k];
+    const s = fieldToString(v);
+    if (s) return s;
+  }
+  return "";
+}
+
 async function main() {
   const dry = process.argv.includes("--dry-run");
   const clean = process.argv.includes("--clean");
@@ -344,7 +436,17 @@ async function main() {
     return;
   }
 
-  const brandsPerDeal = Math.min(4, Math.max(1, parseInt(process.env.SEED_BRANDS_PER_DEAL || "2", 10) || 2));
+  const coverTabs = (process.env.SEED_COVER_TABS || "1") !== "0";
+  const brandsPerDeal = Math.min(
+    4,
+    Math.max(
+      1,
+      parseInt(
+        process.env.SEED_BRANDS_PER_DEAL || (coverTabs ? "1" : "2"),
+        10,
+      ) || (coverTabs ? 1 : 2),
+    ),
+  );
   const skipExisting = (process.env.SEED_SKIP_EXISTING || "1") !== "0";
 
   const dealIds = await fetchDealIds(base);
@@ -352,14 +454,30 @@ async function main() {
     console.error(`No deals found in "${DEALS_TABLE}".`);
     process.exit(1);
   }
-  console.log(`Using ${dealIds.length} deal(s). dry-run=${dry}`);
+  console.log(
+    `Using ${dealIds.length} deal(s). dry-run=${dry} coverTabs=${coverTabs} templates=${STATUS_TEMPLATES.length}`,
+  );
+
+  const extraNewTarget =
+    String(process.env.SEED_EXTRA_NEW_OPPORTUNITIES || "").trim() !== ""
+      ? Math.max(0, parseInt(process.env.SEED_EXTRA_NEW_OPPORTUNITIES, 10) || 0)
+      : coverTabs
+        ? 5
+        : 0;
+  if (extraNewTarget > 0) {
+    console.log(`Extra "New" tab rows target: ${extraNewTarget} (SEED_EXTRA_NEW_OPPORTUNITIES)`);
+  }
 
   let createdBdr = 0;
   let skipped = 0;
   let failed = 0;
   let fb = 0;
+  let templateIndex = 0;
+  let extraNewCreated = 0;
 
   for (let di = 0; di < dealIds.length; di++) {
+    if (coverTabs && templateIndex >= STATUS_TEMPLATES.length) break;
+
     const dealId = dealIds[di];
     let dealRec;
     try {
@@ -370,17 +488,17 @@ async function main() {
     }
     const f = dealRec.fields || {};
     const prop = fieldToString(f["Property Name"]) || "Project";
-    let brands = parseBrandNames(f["Preferred Brands (up to 4)"] || f["Preferred Brands"]);
+    let brands = parseBrandNames(getPreferredBrandsRaw(f));
     while (brands.length < brandsPerDeal) {
       brands.push(FALLBACK_BRANDS[fb % FALLBACK_BRANDS.length]);
       fb++;
     }
     brands = brands.slice(0, brandsPerDeal);
 
-    for (let bi = 0; bi < brands.length; bi++) {
+    const brandSlots = coverTabs ? 1 : brands.length;
+    for (let bi = 0; bi < brandSlots; bi++) {
       const brandName = brands[bi];
-      const tmpl = STATUS_TEMPLATES[(di + bi) % STATUS_TEMPLATES.length];
-      const status = tmpl.fields.Status;
+      const tmpl = coverTabs ? STATUS_TEMPLATES[templateIndex] : STATUS_TEMPLATES[(di + bi) % STATUS_TEMPLATES.length];
 
       if (skipExisting) {
         const ex = await findBdr(base, dealId, brandName);
@@ -422,7 +540,11 @@ async function main() {
       }
 
       if (dry) {
-        console.log(`[dry-run] ${prop} | ${brandName} | ${tmpl.label}`);
+        const bucket = deriveWorkspaceBucketFromSeedFields(tmpl.fields);
+        console.log(
+          `[dry-run] ${tmpl.workspaceTab || "—"} | bucket:${bucket} | ${prop} | ${brandName} | ${tmpl.label}`,
+        );
+        if (coverTabs) templateIndex++;
         continue;
       }
 
@@ -441,8 +563,12 @@ async function main() {
           }
         }
         createdBdr++;
-        console.log(`[bdr] ${created.id} ${brandName} / ${dealId.slice(0, 10)}… / ${tmpl.label}`);
-        await seedActivityTimeline(base, dealId, brandName, tmpl.label, status);
+        const bucket = deriveWorkspaceBucketFromSeedFields(tmpl.fields);
+        console.log(
+          `[bdr] ${created.id} ${brandName} / ${dealId.slice(0, 10)}… / ${tmpl.label} → ${bucket}`,
+        );
+        await seedActivityTimeline(base, dealId, brandName, tmpl);
+        if (coverTabs) templateIndex++;
       } catch (e) {
         failed++;
         console.error(`[fail] ${prop} | ${brandName}:`, e.message || e);
@@ -455,7 +581,119 @@ async function main() {
     }
   }
 
-  console.log("\nSummary:", { createdBdr, skipped, failed, dry });
+  if (extraNewTarget > 0 && dry && coverTabs) {
+    let n = 0;
+    for (let di = 0; di < dealIds.length && n < extraNewTarget; di++) {
+      const dealId = dealIds[di];
+      let dealRec;
+      try {
+        dealRec = await fetchDealRecord(base, dealId);
+      } catch {
+        continue;
+      }
+      const f = dealRec.fields || {};
+      const prop = fieldToString(f["Property Name"]) || "Project";
+      let brands = parseBrandNames(getPreferredBrandsRaw(f));
+      while (brands.length < 8) {
+        brands.push(FALLBACK_BRANDS[fb % FALLBACK_BRANDS.length]);
+        fb++;
+      }
+      for (let j = 0; j < brands.length && n < extraNewTarget; j++) {
+        console.log(`[dry-run] bdd-new | bucket:new | ${prop} | ${brands[j]} | New opportunities (extra)`);
+        n++;
+      }
+    }
+  }
+
+  if (extraNewTarget > 0 && !dry) {
+    const newTmpl = {
+      label: "New opportunities",
+      workspaceTab: "bdd-new",
+      fields: { ...STATUS_TEMPLATES[0].fields },
+    };
+    for (let di = 0; di < dealIds.length && extraNewCreated < extraNewTarget; di++) {
+      const dealId = dealIds[di];
+      let dealRec;
+      try {
+        dealRec = await fetchDealRecord(base, dealId);
+      } catch (e) {
+        console.warn(`Skip deal ${dealId}:`, e.message);
+        continue;
+      }
+      const f = dealRec.fields || {};
+      const prop = fieldToString(f["Property Name"]) || "Project";
+      let brands = parseBrandNames(getPreferredBrandsRaw(f));
+      while (brands.length < 8) {
+        brands.push(FALLBACK_BRANDS[fb % FALLBACK_BRANDS.length]);
+        fb++;
+      }
+      for (let j = 0; j < brands.length && extraNewCreated < extraNewTarget; j++) {
+        const brandName = brands[j];
+        if (skipExisting) {
+          const ex = await findBdr(base, dealId, brandName);
+          if (ex) {
+            skipped++;
+            continue;
+          }
+        }
+        try {
+          const now = new Date().toISOString();
+          const matchScore = 58 + ((di * 5 + j * 11) % 32);
+          const bdrFields = {
+            Deal: [dealId],
+            "Brand Name": brandName,
+            "Match Score": matchScore,
+            "Request Sent At": isoDaysAgo(14 - (j % 3)),
+            "Created At": isoDaysAgo(14 - (j % 3)),
+            "Last Updated": now,
+            "Owner Notes": markOwnerNote(`Seeded for "${prop}" — ${newTmpl.label} (extra New tab).`),
+            ...newTmpl.fields,
+          };
+          let created;
+          try {
+            [created] = await base(BDR_TABLE).create([{ fields: bdrFields }]);
+          } catch (e1) {
+            const msg = String(e1?.message || e1);
+            if (/Created At|READONLY|cannot|unknown field/i.test(msg)) {
+              const f2 = { ...bdrFields };
+              delete f2["Created At"];
+              [created] = await base(BDR_TABLE).create([{ fields: f2 }]);
+            } else {
+              throw e1;
+            }
+          }
+          createdBdr++;
+          extraNewCreated++;
+          console.log(`[bdr+extra-new] ${created.id} ${brandName} / ${dealId.slice(0, 10)}… → new`);
+          await seedActivityTimeline(base, dealId, brandName, newTmpl);
+        } catch (e) {
+          failed++;
+          console.error(`[fail extra-new] ${prop} | ${brandName}:`, e.message || e);
+        }
+      }
+    }
+    if (extraNewCreated < extraNewTarget) {
+      console.warn(
+        `[seed] Extra New opportunities: created ${extraNewCreated}/${extraNewTarget}. Increase SEED_MAX_DEALS or clear existing BDRs for more brands per deal.`,
+      );
+    }
+  }
+
+  console.log("\nSummary:", {
+    createdBdr,
+    skipped,
+    failed,
+    dry,
+    coverTabs,
+    templatesTarget: STATUS_TEMPLATES.length,
+    extraNewCreated,
+    extraNewTarget,
+  });
+  if (coverTabs && !dry && templateIndex < STATUS_TEMPLATES.length) {
+    console.warn(
+      `Workspace tab coverage incomplete: ${templateIndex}/${STATUS_TEMPLATES.length} templates written. Try SEED_MAX_DEALS=30, clear conflicting BDRs, or SEED_SKIP_EXISTING=0 (careful).`,
+    );
+  }
   if (!dry) {
     console.log(`Remove seeded rows: node scripts/seed-bdr-activity-from-existing-deals.mjs --clean`);
   }

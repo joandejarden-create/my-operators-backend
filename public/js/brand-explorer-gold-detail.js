@@ -1,31 +1,21 @@
 /**
  * Brand Explorer detail — Operator Gold Mock shell + full Brand Setup API payload.
- * Tabs: Profile & Positioning, Footprint & Distribution, Deal Economics,
- * Requirements & Standards, Owner Fit & Risk, Support, Legal & Commercial.
+ * Tabs: Requirements & Standards, Support, Legal & Commercial.
  */
 (function () {
   'use strict';
 
   var TAB_DEFS = [
-    { id: 'profile', label: 'Profile &<br>Positioning' },
-    { id: 'footprint', label: 'Footprint &<br>Distribution' },
-    { id: 'economics', label: 'Deal<br>Economics' },
     { id: 'requirements', label: 'Requirements &<br>Standards' },
-    { id: 'owner-fit', label: 'Owner Fit &<br>Risk' },
-    { id: 'support-legal', label: 'Support, Legal &<br>Commercial' }
+    { id: 'support-legal', label: 'Support,<br>Legal&nbsp;&amp;&nbsp;Commercial' }
   ];
 
   var TAB_ICONS = {
-    profile: '<svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5"></path><path d="M5 10v10h14V10"></path></svg>',
-    footprint: '<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 11-9 11s-9-4-9-11a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>',
-    economics: '<svg viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
     requirements: '<svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>',
-    'owner-fit': '<svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg>',
     'support-legal': '<svg viewBox="0 0 24 24"><path d="M12 3v18"></path><path d="M5 10h14"></path><path d="M5 14h14"></path><path d="M8 7l4-4 4 4"></path><path d="M8 21l4 4 4-4"></path></svg>'
   };
 
   var NESTED = {
-    footprint: 1,
     loyaltyCommercial: 1,
     feeStructure: 1,
     brandStandards: 1,
@@ -38,58 +28,6 @@
     projectFitDebug: 1
   };
 
-  var PROFILE_KEYS = [
-    'name',
-    'logo',
-    'brandName',
-    'parentCompany',
-    'hotelChainScale',
-    'brandArchitecture',
-    'brandModelFormat',
-    'hotelServiceModel',
-    'yearBrandLaunched',
-    'brandDevelopmentStage',
-    'brandPositioning',
-    'brandTaglineMotto',
-    'brandCustomerPromise',
-    'brandValueProposition',
-    'brandPillars',
-    'companyHistory',
-    'targetGuestSegments',
-    'guestPsychographics',
-    'keyBrandDifferentiators',
-    'sustainabilityPositioning',
-    'brandWebsite',
-    'brandStatus',
-    'brandProfileAnalysis'
-  ];
-
-  var PROFILE_LABELS = {
-    name: 'Display name',
-    logo: 'Logo URL',
-    brandName: 'Brand name',
-    parentCompany: 'Parent company',
-    hotelChainScale: 'Chain scale',
-    brandArchitecture: 'Brand architecture',
-    brandModelFormat: 'Brand model',
-    hotelServiceModel: 'Service model',
-    yearBrandLaunched: 'Year launched',
-    brandDevelopmentStage: 'Development stage',
-    brandPositioning: 'Positioning',
-    brandTaglineMotto: 'Tagline / motto',
-    brandCustomerPromise: 'Customer promise',
-    brandValueProposition: 'Value proposition',
-    brandPillars: 'Brand pillars',
-    companyHistory: 'Company history',
-    targetGuestSegments: 'Target guest segments',
-    guestPsychographics: 'Guest psychographics',
-    keyBrandDifferentiators: 'Key differentiators',
-    sustainabilityPositioning: 'Sustainability positioning',
-    brandWebsite: 'Website',
-    brandStatus: 'Brand status',
-    brandProfileAnalysis: 'Profile analysis'
-  };
-
   function escapeHtml(text) {
     if (text == null || text === '') return '';
     return String(text)
@@ -100,14 +38,34 @@
   }
 
   function humanizeKey(k) {
-    return String(k)
-      .replace(/([A-Z])/g, ' $1')
+    var s = String(k)
+      .replace(/([a-z\d])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
       .replace(/_/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()
-      .replace(/^./, function (c) {
-        return c.toUpperCase();
-      });
+      .toLowerCase();
+    s = s.replace(/\b[a-z]/g, function (m) {
+      return m.toUpperCase();
+    });
+    return s
+      .replace(/\bOta\b/g, 'OTA')
+      .replace(/\bCrs\b/g, 'CRS')
+      .replace(/\bIhg\b/g, 'IHG')
+      .replace(/\bGds\b/g, 'GDS')
+      .replace(/\bUrl\b/g, 'URL')
+      .replace(/\bApi\b/g, 'API')
+      .replace(/\bPms\b/g, 'PMS')
+      .replace(/\bRevpar\b/g, 'RevPAR')
+      .replace(/\bRfp\b/g, 'RFP')
+      .replace(/\bQa\b/g, 'QA')
+      .replace(/\bNa\b/g, 'NA')
+      .replace(/\bEu\b/g, 'EU')
+      .replace(/\bMea\b/g, 'MEA')
+      .replace(/\bApac\b/g, 'APAC')
+      .replace(/\bCala\b/g, 'CALA')
+      .replace(/\bEmea\b/g, 'EMEA')
+      .replace(/\bLatam\b/g, 'LATAM');
   }
 
   function formatValue(v) {
@@ -131,25 +89,6 @@
     if (Array.isArray(v)) return v.length > 0;
     return true;
   }
-
-  var LONG_PROSE_KEYS = {
-    brandPositioning: 1,
-    brandCustomerPromise: 1,
-    brandValueProposition: 1,
-    companyHistory: 1,
-    guestPsychographics: 1,
-    brandProfileAnalysis: 1,
-    brandStandards: 1,
-    brandStandardsNotes: 1,
-    brandQaExpectations: 1
-  };
-
-  var TAG_KEYS = {
-    brandPillars: 1,
-    targetGuestSegments: 1,
-    keyBrandDifferentiators: 1,
-    sustainabilityPositioning: 1
-  };
 
   function splitToTags(val) {
     if (Array.isArray(val)) return val.map(String).filter(Boolean);
@@ -178,12 +117,6 @@
     );
   }
 
-  function linkIfUrl(val) {
-    var s = String(val).trim();
-    if (s.indexOf('http') !== 0) return escapeHtml(s);
-    return '<a class="be-link" href="' + escapeHtml(s) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(s) + '</a>';
-  }
-
   function fieldCardHtml(label, innerHtml, wide) {
     return (
       '<div class="be-field-card' +
@@ -194,22 +127,6 @@
       innerHtml +
       '</div></div>'
     );
-  }
-
-  function valueHtmlForProfile(key, v) {
-    if (key === 'brandWebsite') return linkIfUrl(v);
-    if (TAG_KEYS[key] && hasVal(v)) {
-      var tags = splitToTags(v);
-      if (!tags.length) return escapeHtml(formatValue(v));
-      return '<div class="be-tags">' + tags.map(function (t) {
-        return '<span class="be-tag">' + escapeHtml(t) + '</span>';
-      }).join('') + '</div>';
-    }
-    if (LONG_PROSE_KEYS[key] || (typeof v === 'string' && v.length > 140)) {
-      return '<div class="be-prose">' + renderLongTextAsHtml(v) + '</div>';
-    }
-    if (isYesNoDisplay(v)) return boolBadgeHtml(v);
-    return '<span class="be-field-value--muted">' + escapeHtml(formatValue(v)) + '</span>';
   }
 
   function subsectionHtml(title, inner) {
@@ -287,8 +204,8 @@
     var metrics = [
       { id: 'hotels', label: 'Hotels' },
       { id: 'rooms', label: 'Rooms' },
-      { id: 'pipelineHotels', label: 'Pipeline hotels' },
-      { id: 'pipelineRooms', label: 'Pipeline rooms' }
+      { id: 'pipelineHotels', label: 'Pipeline Hotels' },
+      { id: 'pipelineRooms', label: 'Pipeline Rooms' }
     ];
     var regions = Object.keys(rd || {}).map(function (name) {
       var x = rd[name] || {};
@@ -458,7 +375,7 @@
     var views = portfolioDistributionViews(brand, fp);
     return (
       '<div class="be-portdist" id="brandPortfolioDistribution">' +
-      '<div class="be-portdist__hint">View by region, chain scale, or brand.</div>' +
+      '<div class="be-portdist__hint">View By Region, Chain Scale, or Brand</div>' +
       '<div class="be-portdist__toggles">' +
       '<button type="button" class="be-portdist-toggle active" data-view="region">Region</button>' +
       '<button type="button" class="be-portdist-toggle" data-view="chain">Chain Scale</button>' +
@@ -641,9 +558,9 @@
 
     var meta = [];
     if (brand.parentCompany) meta.push(['Parent', brand.parentCompany]);
-    if (brand.hotelChainScale) meta.push(['Chain scale', brand.hotelChainScale]);
-    if (brand.hotelServiceModel) meta.push(['Service model', brand.hotelServiceModel]);
-    if (brand.brandModelFormat) meta.push(['Brand model', brand.brandModelFormat]);
+    if (brand.hotelChainScale) meta.push(['Chain Scale', brand.hotelChainScale]);
+    if (brand.hotelServiceModel) meta.push(['Service Model', brand.hotelServiceModel]);
+    if (brand.brandModelFormat) meta.push(['Brand Model', brand.brandModelFormat]);
     if (brand.yearBrandLaunched) meta.push(['Launched', brand.yearBrandLaunched]);
     if (brand.brandWebsite) meta.push(['Website', brand.brandWebsite]);
 
@@ -683,101 +600,255 @@
     );
   }
 
-  function applyHeroStripe(brand) {
-    var el = document.getElementById('brandHero');
-    if (!el) return;
-    var hex = chainStripeColor(brand.hotelChainScale || '');
-    if (hex) el.style.setProperty('--hero-stripe-bg', hex);
-    else el.style.removeProperty('--hero-stripe-bg');
+  function presentationFootprintLine(brand) {
+    var fp = brand.footprint || {};
+    var openH = fp.totalExistingHotels;
+    var pipH = (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0);
+    var rd = fp.regionalDistribution && typeof fp.regionalDistribution === 'object' ? fp.regionalDistribution : {};
+    var rdKeys = Object.keys(rd);
+    if (openH == null || openH === '') {
+      if (rdKeys.length) {
+        var sumOpen = 0;
+        rdKeys.forEach(function (k) {
+          sumOpen += Number((rd[k] || {}).hotels) || 0;
+        });
+        if (sumOpen) openH = sumOpen;
+      }
+    }
+    if (!pipH && rdKeys.length) {
+      var sumPipe = 0;
+      rdKeys.forEach(function (k) {
+        sumPipe += Number((rd[k] || {}).pipelineHotels) || 0;
+      });
+      if (sumPipe) pipH = sumPipe;
+    }
+    var parts = [];
+    if ((openH != null && openH !== '') || pipH > 0) {
+      parts.push(String(openH != null && openH !== '' ? openH : '0') + ' open / ' + (pipH > 0 ? String(pipH) : '0') + ' pipeline hotels');
+    }
+    var markets = fp.formValues && fp.formValues.numberOfMarkets;
+    if (markets != null && markets !== '') parts.push(String(markets) + ' markets');
+    var sm = fp.priorityCities || (fp.formValues && fp.formValues.specificMarkets);
+    if (sm) parts.push(String(sm).trim());
+    return parts.length ? parts.join(' · ') : '';
   }
 
-  function renderProfile(brand) {
-    var parts = [];
-    var hasLogo = brand.logo && String(brand.logo).indexOf('http') === 0;
-
-    var identityKeys = [
-      'name',
-      'brandName',
-      'parentCompany',
-      'hotelChainScale',
-      'brandArchitecture',
-      'brandModelFormat',
-      'hotelServiceModel',
-      'yearBrandLaunched',
-      'brandDevelopmentStage',
-      'brandStatus',
-      'brandWebsite'
-    ];
-    var narrativeKeys = [
-      'brandPositioning',
-      'brandTaglineMotto',
-      'brandCustomerPromise',
-      'brandValueProposition',
-      'brandPillars',
-      'companyHistory'
-    ];
-    var audienceKeys = ['targetGuestSegments', 'guestPsychographics', 'keyBrandDifferentiators', 'sustainabilityPositioning'];
-    var notesKeys = ['brandProfileAnalysis'];
-
-    function buildGrid(keys) {
-      var cards = [];
-      keys.forEach(function (key) {
-        if (key === 'logo') return;
-        if (key === 'name' && brand.brandName && brand.name === brand.brandName) return;
-        var v = brand[key];
-        if (!hasVal(v)) return;
-        var label = PROFILE_LABELS[key] || humanizeKey(key);
-        var wide = !!(LONG_PROSE_KEYS[key] || (typeof v === 'string' && v.length > 140));
-        cards.push(fieldCardHtml(label, valueHtmlForProfile(key, v), wide));
-      });
-      if (!cards.length) return '';
-      return '<div class="be-card-grid">' + cards.join('') + '</div>';
+  /** Short “benefit zones” line — first differentiator bullets or footprint experience mix (atelier hero parity). */
+  function presentationBenefitZonesLine(brand) {
+    var diff = brand.keyBrandDifferentiators;
+    if (diff) {
+      var bullets = String(diff)
+        .split(/\n|;|•/g)
+        .map(function (s) {
+          return s.replace(/^\s*[-*]\s*/, '').trim();
+        })
+        .filter(Boolean)
+        .slice(0, 3);
+      if (bullets.length) return bullets.join(', ');
     }
+    var fv = brand.footprint && brand.footprint.formValues ? brand.footprint.formValues : {};
+    var parts = [];
+    if (hasVal(fv.newBuildExperience)) parts.push('New build: ' + String(fv.newBuildExperience).trim());
+    if (hasVal(fv.conversionExperience)) parts.push('Conversion: ' + String(fv.conversionExperience).trim());
+    if (hasVal(fv.renovationExperience)) parts.push('Renovation/rebrand: ' + String(fv.renovationExperience).trim());
+    return parts.join(' · ');
+  }
 
-    var sub = [];
-    var idGrid = buildGrid(identityKeys);
-    if (idGrid) sub.push(subsectionHtml('Identity & classification', idGrid));
+  /** One-line operator fit — prefer Operational Support specializations / proof, not full value proposition. */
+  function presentationOperatorCompatLine(brand) {
+    var op = brand.operationalSupport || {};
+    if (hasVal(op.specializations)) return String(op.specializations).trim();
+    if (hasVal(op.testimonials)) {
+      var t0 = String(op.testimonials).trim().split(/\n+/)[0];
+      if (t0) return t0.length > 220 ? t0.slice(0, 217) + '…' : t0;
+    }
+    var p = brand.brandProfileAnalysis;
+    if (hasVal(p)) {
+      var first = String(p)
+        .split(/\n+/)
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(Boolean)[0];
+      if (first) return first.length > 220 ? first.slice(0, 217) + '…' : first;
+    }
+    return '';
+  }
 
-    var narGrid = buildGrid(narrativeKeys);
-    if (narGrid) sub.push(subsectionHtml('Brand story & positioning', narGrid));
+  function presentationLoyaltyLine(brand) {
+    var fv = brand.loyaltyCommercial && brand.loyaltyCommercial.formValues;
+    if (!fv) return '';
+    var name = fv.typicalLoyaltyProgramName;
+    var mem = fv.totalGlobalMembersMillions;
+    var parts = [];
+    if (name) parts.push(String(name));
+    if (mem) parts.push('~' + String(mem).replace(/\s*m\s*$/i, '') + 'M members (est.)');
+    var pct = fv.typicalLoyaltyRoomsPercent;
+    if (pct) parts.push(String(pct) + '% rooms from loyalty (est.)');
+    return parts.join(' — ');
+  }
 
-    var audGrid = buildGrid(audienceKeys);
-    if (audGrid) sub.push(subsectionHtml('Audience & differentiation', audGrid));
+  function presentationOperatingModel(brand) {
+    var a = brand.brandModelFormat;
+    var b = brand.hotelServiceModel;
+    if (!a && !b) return '';
+    return [a, b].filter(Boolean).join(' · ');
+  }
 
-    var nGrid = buildGrid(notesKeys);
-    if (nGrid) sub.push(subsectionHtml('Analysis & notes', nGrid));
+  function presentationCardVal(v) {
+    var t = formatValue(v);
+    if (!t) return '—';
+    return t.length > 240 ? t.slice(0, 237) + '…' : t;
+  }
 
-    if (hasLogo && brand.logo) {
-      sub.push(
-        subsectionHtml(
-          'Brand assets',
-          fieldCardHtml('Logo', '<img class="hero-logo" src="' + escapeHtml(brand.logo) + '" alt="" referrerpolicy="no-referrer" style="max-height:48px;width:auto" />', false)
-        )
+  function presentationIsDemoBrand(brand) {
+    if (!brand) return false;
+    var id = String(brand.id || '').toLowerCase();
+    if (id.indexOf('mock') !== -1) return true;
+    var n = String(brand.name || '').toLowerCase().trim();
+    return (
+      n === 'atelier north' ||
+      n === 'velvet crown' ||
+      n === 'summit house' ||
+      n === 'voco' ||
+      n.indexOf('voco ') === 0
+    );
+  }
+
+  /** Atelier North education–style header (unified combined + modal). opts.heroId defaults to brandHero; use brandHeroPopup in modal. */
+  function renderPresentationHero(brand, opts) {
+    opts = opts || {};
+    var heroId = opts.heroId || 'brandHero';
+    var name = brand.name || brand.brandName || 'Brand';
+    var logo = brand.logo && String(brand.logo).indexOf('http') === 0 ? brand.logo : '';
+    var pid = brand.id != null && String(brand.id).trim() !== '' ? String(brand.id).trim() : '';
+    var setupHref = pid ? '/brand-setup?id=' + encodeURIComponent(pid) : '/brand-setup';
+    var posRaw = brand.brandPositioning ? String(brand.brandPositioning) : '';
+    var positionLine = brand.brandTaglineMotto || (posRaw ? posRaw.slice(0, 140) + (posRaw.length > 140 ? '…' : '') : '');
+    var summaryRaw =
+      brand.brandCustomerPromise ||
+      brand.brandValueProposition ||
+      posRaw ||
+      '';
+    var summary = summaryRaw ? String(summaryRaw) : '';
+    var isDemo = presentationIsDemoBrand(brand);
+
+    var chips = [];
+    if (brand.hotelChainScale) chips.push(brand.hotelChainScale);
+    if (brand.brandModelFormat) chips.push(brand.brandModelFormat);
+    if (brand.brandArchitecture) chips.push(brand.brandArchitecture);
+    var chipHtml = chips
+      .slice(0, 5)
+      .map(function (c) {
+        return '<span class="tag-chip">' + escapeHtml(String(c).toUpperCase()) + '</span>';
+      })
+      .join('');
+
+    function metaCard(label, val) {
+      return (
+        '<div class="meta-card"><div class="label">' +
+        escapeHtml(label) +
+        '</div><div class="value">' +
+        escapeHtml(presentationCardVal(val)) +
+        '</div></div>'
       );
     }
 
-    if (sub.length) {
-      parts.push(section('Profile & positioning', '<div class="be-panel">' + sub.join('') + '</div>'));
-    }
+    var logoBlock = logo
+      ? '<img class="brand-hero__logo" src="' +
+        escapeHtml(logo) +
+        '" alt="" width="120" height="38" referrerpolicy="no-referrer" />'
+      : '<div class="brand-hero__logo brand-hero__logo--initial" aria-hidden="true">' +
+        escapeHtml((name || '?').charAt(0).toUpperCase()) +
+        '</div>';
 
+    var bannerHtml = isDemo
+      ? '<div class="brand-hero__mock-warning" role="note" aria-live="polite">' +
+        '<svg class="brand-hero__mock-warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>' +
+        '<line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>' +
+        '</svg>' +
+        '<span class="brand-hero__mock-warning-text"><strong>Mock Data Display:</strong> This dashboard shows sample data to demonstrate the intended presentation format.</span>' +
+        '</div>'
+      : '';
+
+    var updatedMeta = isDemo
+      ? '<span class="meta-muted">Last updated March 2026</span>'
+      : '<span class="meta-muted">Live Airtable / Brand Setup data</span>';
+
+    return (
+      '<section class="brand-hero be-combined-presentation-hero" id="' +
+      escapeHtml(heroId) +
+      '" aria-labelledby="brand-profile-name-' +
+      escapeHtml(heroId) +
+      '">' +
+      '<div class="brand-hero__title-row">' +
+      logoBlock +
+      '<div class="brand-hero__title-block">' +
+      '<div class="brand-hero__name-row">' +
+      '<h2 id="brand-profile-name-' +
+      escapeHtml(heroId) +
+      '">' +
+      escapeHtml(name) +
+      '</h2>' +
+      bannerHtml +
+      '</div>' +
+      (brand.parentCompany
+        ? '<p class="brand-hero__parent">' + escapeHtml(brand.parentCompany) + '</p>'
+        : '<p class="brand-hero__parent meta-muted">Parent company not set</p>') +
+      '<div class="brand-hero__verified-line">' +
+      '<span class="badge-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>Verified by brand</span>' +
+      updatedMeta +
+      '</div>' +
+      '</div>' +
+      '<div class="brand-hero__actions">' +
+      '<div class="btn-row">' +
+      '<a class="btn" href="' +
+      escapeHtml(setupHref) +
+      '">Save</a>' +
+      '<button type="button" class="btn btn--primary" disabled title="Coming soon">Request Introduction</button>' +
+      '</div>' +
+      (chipHtml ? '<div class="tag-chip-row" aria-label="Brand Highlights">' + chipHtml + '</div>' : '') +
+      '</div>' +
+      '</div>' +
+      (positionLine ? '<p class="brand-hero__position">' + escapeHtml(positionLine) + '</p>' : '') +
+      (summary ? '<p class="brand-hero__summary">' + renderLongTextAsHtml(summary) + '</p>' : '') +
+      '<div class="brand-hero__meta" aria-label="Brand metrics">' +
+      metaCard('Segment', brand.hotelChainScale || '') +
+      metaCard('Operating Model', presentationOperatingModel(brand)) +
+      metaCard('Typical Benefit Zones', presentationBenefitZonesLine(brand)) +
+      metaCard('Footprint', presentationFootprintLine(brand)) +
+      metaCard('Loyalty Strength', presentationLoyaltyLine(brand)) +
+      metaCard('Operator Compatibility', presentationOperatorCompatLine(brand)) +
+      '</div>' +
+      '</section>'
+    );
+  }
+
+  function applyHeroStripe(brand) {
+    var hex = chainStripeColor(brand.hotelChainScale || '');
+    ['brandHero', 'brandHeroPopup'].forEach(function (hid) {
+      var el = document.getElementById(hid);
+      if (!el) return;
+      if (hex) el.style.setProperty('--hero-stripe-bg', hex);
+      else el.style.removeProperty('--hero-stripe-bg');
+    });
+  }
+
+  function renderFootprint(brand) {
+    var fp = brand.footprint || {};
+    var parts = [];
     var warn = brand.loadWarnings;
     if (warn && warn.length) {
       parts.push(
         section(
-          'Data load notes',
+          'Data Load Notes',
           '<p class="gold-mock-tab-empty">Some linked tables could not be loaded: ' +
             escapeHtml(warn.join(', ')) +
             '.</p>'
         )
       );
     }
-
-    return parts.join('') || '<p class="gold-mock-tab-empty">No profile fields returned.</p>';
-  }
-
-  function renderFootprint(brand) {
-    var fp = brand.footprint || {};
-    var parts = [];
 
     var rd = fp.regionalDistribution && typeof fp.regionalDistribution === 'object'
       ? fp.regionalDistribution
@@ -798,7 +869,7 @@
       fieldCardHtml('Cities (markets list)', '<span class="be-field-value--muted">' + escapeHtml(String(cityCount || 0)) + '</span>', false) +
       fieldCardHtml('Coverage / depth', '<span class="be-field-value--muted">' + escapeHtml(coverage) + '</span>', false) +
       '</div>';
-    parts.push(section('Markets & footprint', summary));
+    parts.push(section('Markets & Footprint', summary));
 
     var existingHotels = toNumber(fp.totalExistingHotels);
     var existingRooms = toNumber(fp.totalExistingRooms);
@@ -811,15 +882,15 @@
     ]);
 
     var metricsInner =
-      subsectionHtml('Existing vs. pipeline (portfolio)', totalTable) +
-      subsectionHtml('Portfolio distribution', portfolioDistributionHtml(brand, fp));
+      subsectionHtml('Existing vs. Pipeline (Portfolio)', totalTable) +
+      subsectionHtml('Portfolio Distribution', portfolioDistributionHtml(brand, fp));
     parts.push(section('Footprint Metrics', '<div class="be-panel">' + metricsInner + '</div>'));
 
     var loc = fp.locationDistribution;
     if (loc && typeof loc === 'object' && Object.keys(loc).length) {
       parts.push(
         section(
-          'Location type mix',
+          'Location Type Mix',
           locationMixBars(loc) +
             '<p class="be-note">Share of properties by location type (where provided).</p>'
         )
@@ -853,7 +924,7 @@
         });
         var fpGroups = groupRowsByLabel(nonRepeating, [
           {
-            title: 'Regional detail',
+            title: 'Regional Detail',
             match: function (label) {
               return /^(North America|Americas|EMEA|Europe|APAC|CALA|MEA|Latin America|Global)\s—/i.test(label);
             }
@@ -862,7 +933,7 @@
         if (fpGroups.length) {
           parts.push(
             section(
-              'Footprint detail (by region & metric)',
+              'Footprint Detail (By Region & Metric)',
               '<div class="be-panel">' + renderRowGroupsAsSubsections(fpGroups) + '</div>'
             )
           );
@@ -909,51 +980,6 @@
     return html;
   }
 
-  function renderEconomics(brand) {
-    var parts = [];
-    var fee = brand.feeStructure || {};
-    var deal = brand.dealTerms || {};
-    var port = brand.portfolioPerformance || {};
-
-    function econSection(secTitle, obj) {
-      var rows = rowsFromObject(obj);
-      if (!rows.length) return '';
-      return (
-        subsectionHtml(
-          secTitle,
-          '<div class="be-card-grid be-card-grid--2">' +
-            rows
-              .map(function (row) {
-                var label = row[0];
-                var val = row[1];
-                var wide = typeof val === 'string' && val.length > 180;
-                var inner;
-                if (isYesNoDisplay(val)) inner = boolBadgeHtml(val);
-                else if (wide) inner = '<div class="be-prose">' + renderLongTextAsHtml(val) + '</div>';
-                else inner = '<span class="be-field-value--muted">' + escapeHtml(formatValue(val)) + '</span>';
-                return fieldCardHtml(label, inner, wide);
-              })
-              .join('') +
-            '</div>'
-        )
-      );
-    }
-
-    var inner = [];
-    var a = econSection('Fee structure', fee);
-    if (a) inner.push(a);
-    var b = econSection('Deal terms', deal);
-    if (b) inner.push(b);
-    var c = econSection('Portfolio & performance', port);
-    if (c) inner.push(c);
-
-    if (!inner.length) {
-      return '<p class="gold-mock-tab-empty">No fee, deal, or portfolio records linked.</p>';
-    }
-    parts.push(section('Deal economics', '<div class="be-panel">' + inner.join('') + '</div>'));
-    return parts.join('');
-  }
-
   function renderRequirements(brand) {
     var std = brand.brandStandards || {};
 
@@ -966,23 +992,23 @@
 
     var groups = [
       {
-        title: 'Core spaces & amenities',
+        title: 'Core Spaces & Amenities',
         rows: []
       },
       {
-        title: 'Food & beverage',
+        title: 'Food & Beverage',
         rows: []
       },
       {
-        title: 'Meetings & events',
+        title: 'Meetings & Events',
         rows: []
       },
       {
-        title: 'Parking & program rules',
+        title: 'Parking & Program Rules',
         rows: []
       },
       {
-        title: 'Sustainability & amenities',
+        title: 'Sustainability & Amenities',
         rows: []
       },
       {
@@ -992,43 +1018,44 @@
     ];
 
     pushRow(groups[0].rows, 'Lobby', std.lobby);
-    pushRow(groups[0].rows, 'Lobby description', std.lobbyDescription);
-    pushRow(groups[0].rows, 'Bar / beverage', std.barBeverage);
+    pushRow(groups[0].rows, 'Lobby Description', std.lobbyDescription);
+    pushRow(groups[0].rows, 'Bar / Beverage', std.barBeverage);
     pushRow(groups[0].rows, 'Fitness', std.fitnessCenter);
     pushRow(groups[0].rows, 'Pool', std.pool);
-    pushRow(groups[0].rows, 'Onsite parking', std.onsiteParking);
-    pushRow(groups[0].rows, 'Meeting / event space', std.meetingEventSpace);
-    pushRow(groups[0].rows, 'Co-working', std.coworking);
-    pushRow(groups[0].rows, 'Grab & go', std.grabGo);
-    pushRow(groups[0].rows, 'Minimum room size (sq ft)', std.minimumRoomSize);
-    pushRow(groups[0].rows, 'Minimum room size (sq m)', std.minimumRoomSizeMeters);
-    pushRow(groups[0].rows, 'Brand standards narrative', std.brandStandards);
+    pushRow(groups[0].rows, 'Onsite Parking', std.onsiteParking);
+    pushRow(groups[0].rows, 'Meeting / Event Space', std.meetingEventSpace);
+    pushRow(groups[0].rows, 'Co-Working', std.coworking);
+    pushRow(groups[0].rows, 'Grab & Go', std.grabGo);
+    pushRow(groups[0].rows, 'Minimum Room Size (Sq Ft)', std.minimumRoomSize);
+    pushRow(groups[0].rows, 'Minimum Room Size (Sq M)', std.minimumRoomSizeMeters);
+    pushRow(groups[0].rows, 'Brand Standards Narrative', std.brandStandards);
 
-    pushRow(groups[1].rows, 'F&B outlets required', std.brandFbOutletsRequired);
-    pushRow(groups[1].rows, 'Typical F&B outlet count', std.brandFbOutletsCount);
-    pushRow(groups[1].rows, 'F&B program type', std.brandFbProgramType);
-    pushRow(groups[1].rows, 'Outlet concepts', std.brandFbOutletConcepts);
-    pushRow(groups[1].rows, 'F&B outlet size', std.brandFbOutletSize);
+    pushRow(groups[1].rows, 'F&B Outlets Required', std.brandFbOutletsRequired);
+    pushRow(groups[1].rows, 'Typical F&B Outlet Count', std.brandFbOutletsCount);
+    pushRow(groups[1].rows, 'F&B Program Type', std.brandFbProgramType);
+    pushRow(groups[1].rows, 'Outlet Concepts', std.brandFbOutletConcepts);
+    pushRow(groups[1].rows, 'F&B Outlet Size', std.brandFbOutletSize);
+    pushRow(groups[1].rows, 'F&B Outlet Size Unit', std.brandFbOutletSizeUnit);
 
-    pushRow(groups[2].rows, 'Meeting space required', std.brandMeetingSpaceRequired);
-    pushRow(groups[2].rows, 'Meeting rooms count', std.brandMeetingRoomsCount);
-    pushRow(groups[2].rows, 'Meeting space size', std.brandMeetingSpaceSize);
-    pushRow(groups[2].rows, 'Condo / residences', std.brandCondoResidencesAllowed);
-    pushRow(groups[2].rows, 'Hotel rental program', std.brandHotelRentalProgram);
+    pushRow(groups[2].rows, 'Meeting Space Required', std.brandMeetingSpaceRequired);
+    pushRow(groups[2].rows, 'Meeting Rooms Count', std.brandMeetingRoomsCount);
+    pushRow(groups[2].rows, 'Meeting Space Size', std.brandMeetingSpaceSize);
+    pushRow(groups[2].rows, 'Condo / Residences', std.brandCondoResidencesAllowed);
+    pushRow(groups[2].rows, 'Hotel Rental Program', std.brandHotelRentalProgram);
 
-    pushRow(groups[3].rows, 'Parking required', std.brandParkingRequired);
-    pushRow(groups[3].rows, 'Parking spaces', std.brandParkingSpacesCount);
-    pushRow(groups[3].rows, 'Parking program', std.brandParkingProgramType);
+    pushRow(groups[3].rows, 'Parking Required', std.brandParkingRequired);
+    pushRow(groups[3].rows, 'Parking Spaces', std.brandParkingSpacesCount);
+    pushRow(groups[3].rows, 'Parking Program', std.brandParkingProgramType);
 
-    pushRow(groups[4].rows, 'Sustainability features', std.brandSustainability);
-    pushRow(groups[4].rows, 'Other sustainability', std.brandSustainabilityOther);
-    pushRow(groups[4].rows, 'Additional amenities', std.brandRequiredAmenities);
-    pushRow(groups[4].rows, 'Other amenities', std.brandRequiredAmenitiesOther);
+    pushRow(groups[4].rows, 'Sustainability Features', std.brandSustainability);
+    pushRow(groups[4].rows, 'Other Sustainability', std.brandSustainabilityOther);
+    pushRow(groups[4].rows, 'Additional Amenities', std.brandRequiredAmenities);
+    pushRow(groups[4].rows, 'Other Amenities', std.brandRequiredAmenitiesOther);
 
-    pushRow(groups[5].rows, 'Compliance & safety', std.brandCompliance);
-    pushRow(groups[5].rows, 'Other compliance', std.brandComplianceOther);
-    pushRow(groups[5].rows, 'QA / brand standards expectations', std.brandQaExpectations);
-    pushRow(groups[5].rows, 'Additional notes', std.brandStandardsNotes);
+    pushRow(groups[5].rows, 'Compliance & Safety', std.brandCompliance);
+    pushRow(groups[5].rows, 'Other Compliance', std.brandComplianceOther);
+    pushRow(groups[5].rows, 'QA / Brand Standards Expectations', std.brandQaExpectations);
+    pushRow(groups[5].rows, 'Additional Notes', std.brandStandardsNotes);
 
     var nonempty = groups.filter(function (g) {
       return g.rows.length > 0;
@@ -1037,7 +1064,7 @@
       return '<p class="gold-mock-tab-empty">No brand standards record linked.</p>';
     }
     return section(
-      'Requirements & standards',
+      'Requirements & Standards',
       '<div class="be-panel">' +
         nonempty
           .map(function (g) {
@@ -1046,106 +1073,6 @@
           .join('') +
         '</div>'
     );
-  }
-
-  function renderOwnerFit(brand) {
-    var parts = [];
-    var pf = brand.projectFit || {};
-    var fv = pf.formValues || {};
-
-    var pfRows = rowsFromObject(fv);
-    if (pfRows.length) {
-      var fitRules = [
-        {
-          title: 'Deal shape & agreements',
-          match: function (label) {
-            return /ideal|project type|building|agreement|stage/i.test(label);
-          }
-        },
-        {
-          title: 'Markets & geography',
-          match: function (label) {
-            return /market|avoid|priority/i.test(label);
-          }
-        },
-        {
-          title: 'Owner profile & economics',
-          match: function (label) {
-            return /owner|capital|brand status|fee|exit|negotiable/i.test(label);
-          }
-        },
-        {
-          title: 'Thresholds & criteria',
-          match: function (label) {
-            return /room|size|experience|lead time|preferred/i.test(label);
-          }
-        }
-      ];
-      var fitGrouped = groupRowsByLabel(pfRows, fitRules);
-      parts.push(
-        section(
-          'Project fit',
-          '<div class="be-panel">' + renderRowGroupsAsSubsections(fitGrouped) + '</div>'
-        )
-      );
-    }
-
-    var extraPf = rowsFromObject(pf, { skip: { formValues: 1 } });
-    if (extraPf.length) {
-      parts.push(
-        section(
-          'Project fit (source fields)',
-          '<div class="be-panel">' + renderRowsAsCardGrid(extraPf) + '</div>'
-        )
-      );
-    }
-
-    var esgRows = [];
-    [
-      ['Sustainability programs', brand.sustainabilityPrograms],
-      ['ESG reporting', brand.esgReporting],
-      ['Carbon tracking', brand.carbonTracking],
-      ['Energy efficiency', brand.energyEfficiency],
-      ['Waste reduction', brand.wasteReduction]
-    ].forEach(function (pair) {
-      if (hasVal(pair[1])) esgRows.push(pair);
-    });
-    if (esgRows.length) {
-      parts.push(
-        section(
-          'Sustainability & ESG',
-          '<div class="be-panel">' + renderRowsAsCardGrid(esgRows) + '</div>'
-        )
-      );
-    }
-
-    var lcWrap = brand.loyaltyCommercial || {};
-    var lc = lcWrap.formValues;
-    if (lc && typeof lc === 'object') {
-      var lcRows = rowsFromObject(lc);
-      if (lcRows.length) {
-        parts.push(
-          section(
-            'Loyalty & commercial',
-            '<div class="be-panel">' + renderRowsAsCardGrid(lcRows) + '</div>'
-          )
-        );
-      }
-    }
-    var lcExtra = rowsFromObject(lcWrap, { skip: { formValues: 1, unlinkedFields: 1 } });
-    if (lcExtra.length) {
-      parts.push(
-        section(
-          'Loyalty & commercial (additional)',
-          '<div class="be-panel">' + renderRowsAsCardGrid(lcExtra) + '</div>'
-        )
-      );
-    }
-
-    if (!parts.length) {
-      return '<p class="gold-mock-tab-empty">No project fit, ESG, or loyalty/commercial data linked.</p>';
-    }
-    return parts.join('');
   }
 
   function renderSupportLegal(brand) {
@@ -1157,19 +1084,19 @@
     if (opRows.length) {
       var supRules = [
         {
-          title: 'Key money & incentives',
+          title: 'Key Money & Incentives',
           match: function (label) {
             return /incentive|key money|clawback|negotiate/i.test(label);
           }
         },
         {
-          title: 'Service model & communication',
+          title: 'Service Model & Communication',
           match: function (label) {
             return /service|communication|response|differentiator/i.test(label);
           }
         },
         {
-          title: 'Governance, disputes & owner programs',
+          title: 'Governance, Disputes & Owner Programs',
           match: function (label) {
             return /decision|dispute|resolution|concern|advisory|education|reference|involvement/i.test(label);
           }
@@ -1178,7 +1105,7 @@
       var opGrouped = groupRowsByLabel(opRows, supRules);
       parts.push(
         section(
-          'Operational support',
+          'Operational Support',
           '<div class="be-panel">' + renderRowGroupsAsSubsections(opGrouped) + '</div>'
         )
       );
@@ -1188,7 +1115,7 @@
     if (legRows.length) {
       parts.push(
         section(
-          'Legal terms',
+          'Legal Terms',
           '<div class="be-panel">' + renderRowsAsCardGrid(legRows) + '</div>'
         )
       );
@@ -1202,11 +1129,7 @@
 
   function buildPanels(brand) {
     return {
-      profile: renderProfile(brand),
-      footprint: renderFootprint(brand),
-      economics: renderEconomics(brand),
       requirements: renderRequirements(brand),
-      'owner-fit': renderOwnerFit(brand),
       'support-legal': renderSupportLegal(brand)
     };
   }
@@ -1264,8 +1187,11 @@
     return params.get('id') || params.get('brandId') || params.get('name') || '';
   }
 
-  async function load() {
-    var id = getBrandQuery();
+  async function load(overrideId) {
+    var id =
+      overrideId != null && String(overrideId).trim() !== ''
+        ? String(overrideId).trim()
+        : getBrandQuery();
     var loading = document.getElementById('brandLoading');
     var errEl = document.getElementById('brandError');
     var root = document.getElementById('brandRoot');
@@ -1282,6 +1208,10 @@
     }
 
     try {
+      if (errEl) errEl.style.display = 'none';
+      if (loading) loading.style.display = 'flex';
+      if (root) root.style.display = 'none';
+
       var url = '/api/brand-library/brand?brandId=' + encodeURIComponent(id);
       var res = await fetch(url);
       if (!res.ok) throw new Error('Failed to load brand (' + res.status + ')');
@@ -1295,44 +1225,60 @@
       if (bc) bc.textContent = brand.name || id;
 
       var heroMount = document.getElementById('heroMount');
-      if (heroMount) heroMount.innerHTML = renderHero(brand);
+      var unifiedTabs =
+        document.documentElement.getAttribute('data-brand-explorer-unified-tabs') === '1';
+      if (heroMount) {
+        heroMount.innerHTML = unifiedTabs ? renderPresentationHero(brand) : renderHero(brand);
+      }
       applyHeroStripe(brand);
 
-      var tabsHtml = TAB_DEFS.map(function (t, i) {
-        return (
-          '<button type="button" class="section-nav-item' +
-          (i === 0 ? ' active' : '') +
-          '" data-tab="' +
-          t.id +
-          '"><div class="section-nav-icon">' +
-          TAB_ICONS[t.id] +
-          '</div><div class="section-nav-label">' +
-          t.label +
-          '</div></button>'
-        );
-      }).join('');
       var nav = document.getElementById('brandTabs');
-      if (nav) nav.innerHTML = tabsHtml;
-
-      var panels = buildPanels(brand);
-      var panelsHtml = TAB_DEFS.map(function (t, i) {
-        return (
-          '<section class="tab-panel' +
-          (i === 0 ? ' active' : '') +
-          '" data-panel="' +
-          t.id +
-          '">' +
-          panels[t.id] +
-          '</section>'
-        );
-      }).join('');
       var main = document.getElementById('brandPanels');
-      if (main) main.innerHTML = panelsHtml;
+
+      if (!unifiedTabs) {
+        var tabsHtml = TAB_DEFS.map(function (t, i) {
+          return (
+            '<button type="button" class="section-nav-item' +
+            (i === 0 ? ' active' : '') +
+            '" data-tab="' +
+            t.id +
+            '"><div class="section-nav-icon">' +
+            TAB_ICONS[t.id] +
+            '</div><div class="section-nav-label">' +
+            t.label +
+            '</div></button>'
+          );
+        }).join('');
+        if (nav) nav.innerHTML = tabsHtml;
+
+        var panels = buildPanels(brand);
+        var panelsHtml = TAB_DEFS.map(function (t, i) {
+          return (
+            '<section class="tab-panel' +
+            (i === 0 ? ' active' : '') +
+            '" data-panel="' +
+            t.id +
+            '">' +
+            panels[t.id] +
+            '</section>'
+          );
+        }).join('');
+        if (main) main.innerHTML = panelsHtml;
+      } else {
+        if (nav) nav.innerHTML = '';
+        if (main) main.innerHTML = '';
+      }
 
       if (loading) loading.style.display = 'none';
       if (root) root.style.display = 'block';
 
-      wireTabs();
+      try {
+        window.dispatchEvent(new CustomEvent('brand-explorer-detail-loaded', { detail: { brand: brand } }));
+      } catch (_) {}
+
+      if (!unifiedTabs) {
+        wireTabs();
+      }
       wireFootprintDistribution();
       wirePortfolioDistribution();
     } catch (e) {
@@ -1347,9 +1293,24 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', load);
-  } else {
-    load();
+  window.BrandExplorerGoldDetail = {
+    load: load,
+    getBrandQuery: getBrandQuery,
+    buildPanels: buildPanels,
+    TAB_DEFS: TAB_DEFS,
+    TAB_ICONS: TAB_ICONS,
+    renderPresentationHero: renderPresentationHero,
+    applyHeroStripe: applyHeroStripe
+  };
+
+  var deferGoldAutoLoad =
+    document.documentElement.getAttribute('data-brand-explorer-gold-defer') === '1';
+
+  if (!deferGoldAutoLoad) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', load);
+    } else {
+      load();
+    }
   }
 })();

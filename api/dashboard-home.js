@@ -407,7 +407,7 @@ export function buildHomeDashboardViewModel(opts = {}) {
       { id: 'financial-term', label: 'Term Library', iconKey: 'file-text', href: '/financial-term-library', status: 'Live' },
       { id: 'legal-clause', label: 'Clause Library', iconKey: 'file', href: '/clause-library', status: 'Live' },
       { id: 'message-center', label: 'Message Center', iconKey: 'message', href: '/outreach-inbox', status: 'Beta' },
-      { id: 'company-profiles', label: 'Brand Explorer', iconKey: 'building', href: '/brand-library', status: 'Live' },
+      { id: 'company-profiles', label: 'Browse brands', iconKey: 'building', href: '/brand-library', status: 'Live' },
       { id: 'deal-compare', label: 'Deal Compare', iconKey: 'scale', href: '/deal-compare', status: 'Beta' }
     ]
   };

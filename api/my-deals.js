@@ -91,7 +91,11 @@ const DEAL_STATUS_FALLBACK = [
 /** When true, every Airtable request used by getMyDeals is serialized with AIRTABLE_SERIAL_INTERVAL_MS to guarantee reliable load (no rate-limit blanks). */
 let getMyDealsSerializing = false;
 let lastAirtableRequestAt = 0;
-const AIRTABLE_SERIAL_INTERVAL_MS = 1200;
+/** Space between serial Airtable calls during one getMyDeals. Lower = faster; too low can cause 429 (raise via MY_DEALS_AIRTABLE_SERIAL_INTERVAL_MS, e.g. 1200). */
+const AIRTABLE_SERIAL_INTERVAL_MS = Math.max(
+  0,
+  parseInt(process.env.MY_DEALS_AIRTABLE_SERIAL_INTERVAL_MS || "500", 10) || 500
+);
 
 async function waitAirtableSerial() {
   if (!getMyDealsSerializing) return;
@@ -760,9 +764,9 @@ function collectLinkedMarketPerformanceIds(records) {
 const MY_DEALS_MP_FETCH_DELAY_MS = Math.max(0, parseInt(process.env.MY_DEALS_MP_FETCH_DELAY_MS || "1000", 10) || 1000);
 const MY_DEALS_MP_CONCURRENCY = Math.min(3, Math.max(1, parseInt(process.env.MY_DEALS_MP_CONCURRENCY || "1", 10) || 1));
 
-/** Configurable My Deals pacing (env-backed; current behavior is default). */
-const MY_DEALS_COLD_START_DELAY_MS = parseInt(process.env.MY_DEALS_COLD_START_DELAY_MS || "2000", 10) || 2000;
-const MY_DEALS_MIN_GAP_MS = parseInt(process.env.MY_DEALS_MIN_GAP_MS || "5000", 10) || 5000;
+/** Configurable My Deals pacing (env-backed). Defaults tuned for faster first paint / refresh; increase if you see Airtable blanks after deploy. */
+const MY_DEALS_COLD_START_DELAY_MS = parseInt(process.env.MY_DEALS_COLD_START_DELAY_MS || "500", 10) || 500;
+const MY_DEALS_MIN_GAP_MS = parseInt(process.env.MY_DEALS_MIN_GAP_MS || "1500", 10) || 1500;
 const MY_DEALS_PHASE_GAP_MS = parseInt(process.env.MY_DEALS_PHASE_GAP_MS || "100", 10) || 100;
 // Performance: keep retry-rebuild optional and off by default so one blank field does not block response.
 const MY_DEALS_ENABLE_RETRY_REBUILD = /^(1|true|on|yes)$/i.test(String(process.env.MY_DEALS_ENABLE_RETRY_REBUILD || "0"));
@@ -772,8 +776,8 @@ const MY_DEALS_USE_BATCHED_LINKED_FETCHES = !/^(0|false|off|no)$/i.test(String(p
 
 /** Phase 6: Parallel batched linked fetches (SI/Location/CU). Default ON; set to 0/false/off/no to disable. Only applies when batched is also on. */
 const MY_DEALS_USE_PARALLEL_BATCHED_LINKED_FETCHES = !/^(0|false|off|no)$/i.test(String(process.env.MY_DEALS_USE_PARALLEL_BATCHED_LINKED_FETCHES ?? "1"));
-const MY_DEALS_BATCH_FETCH_CHUNK_SIZE = Math.min(15, Math.max(1, parseInt(process.env.MY_DEALS_BATCH_FETCH_CHUNK_SIZE || "10", 10) || 10));
-const MY_DEALS_BATCH_FETCH_DELAY_MS = Math.max(0, parseInt(process.env.MY_DEALS_BATCH_FETCH_DELAY_MS || "100", 10) || 100);
+const MY_DEALS_BATCH_FETCH_CHUNK_SIZE = Math.min(15, Math.max(1, parseInt(process.env.MY_DEALS_BATCH_FETCH_CHUNK_SIZE || "12", 10) || 12));
+const MY_DEALS_BATCH_FETCH_DELAY_MS = Math.max(0, parseInt(process.env.MY_DEALS_BATCH_FETCH_DELAY_MS || "50", 10) || 50);
 function getBatchChunkSize(phaseName) {
   const override = process.env[`MY_DEALS_${phaseName}_BATCH_FETCH_CHUNK_SIZE`];
   if (override != null && override !== "") {
@@ -1316,6 +1320,11 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
     if (mpLinkedId) dealType = mpMap.get(mpLinkedId) || "";
   }
   const hasOutreachSetup = outreachDealIds ? outreachDealIds.has(rec.id) : false;
+  const siRecordIdForForm = getLinkedStrategicIntentId(f);
+  const strategicIntentForm =
+    siRecordIdForForm && siDataMap && typeof siDataMap.get === "function"
+      ? strategicIntentToFormFields(siDataMap.get(siRecordIdForForm) || {})
+      : {};
   let preferredBrandsChosen = "";
   if (siPreferredBrandsMap) {
     const siId = getLinkedStrategicIntentId(f);
@@ -1369,6 +1378,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       dealType: dealType || "—",
       dealStatus: dealStatus || "—",
       hasOutreachSetup,
+      strategicIntentForm,
       preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
       matchScore: firstScore,
       matchScoresByBrand: Object.fromEntries(brandsList.map((b) => [String(b).trim(), cachedScores[String(b).trim()] != null ? toOneDecimal(cachedScores[String(b).trim()]) : undefined])),
@@ -1420,6 +1430,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       dealType: dealType || "—",
       dealStatus: dealStatus || "—",
       hasOutreachSetup,
+      strategicIntentForm,
       preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
       matchScore: firstBrandScore,
       matchScoresByBrand,
@@ -1463,6 +1474,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
         dealType: dealType || "—",
         dealStatus: dealStatus || "—",
         hasOutreachSetup,
+        strategicIntentForm,
         preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
         matchScore,
         matchScoresByBrand,
@@ -1492,6 +1504,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       dealType: dealType || "—",
         dealStatus: dealStatus || "—",
         hasOutreachSetup,
+        strategicIntentForm,
         preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
         matchScore: matchScoresByBrand[String(brandsList[0]).trim()],
       matchScoresByBrand,
@@ -1514,6 +1527,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
     dealType: dealType || "—",
     dealStatus: dealStatus || "—",
     hasOutreachSetup,
+    strategicIntentForm,
     preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
     matchScore,
     matchScoreNew: undefined,
@@ -1614,12 +1628,13 @@ export async function getMyDeals(req, res) {
   const view = String((req.query && req.query.view) || "").trim().toLowerCase();
   const coreView = view === "core";
   const initialView = view === "initial";
-  // TEMP MARKER: remove after runtime path verification.
-  console.log("[RUNTIME-MARKER][my-deals][2026-03-26-v2]", {
-    requestId,
-    view: coreView ? "core" : (initialView ? "initial" : "full"),
-    retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
-  });
+  if (shouldLogMyDealsSummary()) {
+    console.log("getMyDeals: request", {
+      requestId,
+      view: coreView ? "core" : (initialView ? "initial" : "full"),
+      retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
+    });
+  }
   let tLast = t0;
   let tNow = t0;
   const timingSummary = {
@@ -1639,6 +1654,7 @@ export async function getMyDeals(req, res) {
       cuFetchDelayMs: MY_DEALS_CU_FETCH_DELAY_MS,
       ...(MY_DEALS_USE_BATCHED_LINKED_FETCHES && { useBatchedLinkedFetches: true, batchFetchChunkSize: MY_DEALS_BATCH_FETCH_CHUNK_SIZE, batchFetchDelayMs: MY_DEALS_BATCH_FETCH_DELAY_MS }),
       ...(MY_DEALS_USE_BATCHED_LINKED_FETCHES && MY_DEALS_USE_PARALLEL_BATCHED_LINKED_FETCHES && { useParallelBatchedLinkedFetches: true }),
+      airtableSerialIntervalMs: AIRTABLE_SERIAL_INTERVAL_MS,
     },
     waits: { coldStartMs: undefined, minGapMs: undefined },
     counts: { dealsFetched: 0, returnedDeals: 0, blankDealTypeBeforeRetry: undefined, blankDealTypeAfterRetry: undefined, stubCount: 0 },
@@ -1900,25 +1916,42 @@ export async function getMyDeals(req, res) {
         if (shouldLogMyDealsSummary()) console.log("getMyDeals: phase cu done", { requestId, elapsed: tNow - t0, linkedIds: cuIds.length, fetched: cuDataMap.size });
         await new Promise((r) => setTimeout(r, MY_DEALS_PHASE_GAP_MS));
       }
-      outreachDealIds = await getAllOutreachDealIds(baseId, apiKey, { beforeRequest: () => waitAirtableSerial() });
+      const tOutreachCache = Date.now();
+      const outreachPromise = (async () => {
+        const t = Date.now();
+        const r = await getAllOutreachDealIds(baseId, apiKey, { beforeRequest: () => waitAirtableSerial() });
+        return { r, ms: Date.now() - t };
+      })();
+      const cachePromise = (async () => {
+        const t = Date.now();
+        try {
+          const r = await fetchDealBrandCacheMap(baseId, apiKey);
+          return { r, ms: Date.now() - t };
+        } catch (_cacheErr) {
+          return { r: new Map(), ms: Date.now() - t };
+        }
+      })();
+      const [outreachTimed, cacheTimed] = await Promise.all([outreachPromise, cachePromise]);
+      outreachDealIds = outreachTimed.r;
+      dealBrandCacheMap = cacheTimed.r instanceof Map ? cacheTimed.r : new Map();
       tNow = Date.now();
-      timingSummary.phasesMs.outreach = tNow - tLast;
+      timingSummary.phasesMs.outreach = outreachTimed.ms;
+      timingSummary.phasesMs.cache = cacheTimed.ms;
+      timingSummary.phasesMs.outreachCacheParallelWallMs = tNow - tOutreachCache;
       const outreachSize = outreachDealIds && typeof outreachDealIds.size === "number" ? outreachDealIds.size : (Array.isArray(outreachDealIds) ? outreachDealIds.length : 0);
       timingSummary.countsByPhase.outreach = { linkedIds: allRecords.length, fetched: outreachSize, missing: undefined };
-      tLast = tNow;
-      if (shouldLogMyDealsSummary()) console.log("getMyDeals: phase outreach done", { requestId, elapsed: tNow - t0, dealsWithOutreach: outreachSize });
-      await new Promise((r) => setTimeout(r, MY_DEALS_PHASE_GAP_MS));
-      try {
-        dealBrandCacheMap = await fetchDealBrandCacheMap(baseId, apiKey);
-      } catch (cacheErr) {
-        dealBrandCacheMap = new Map();
-      }
-      tNow = Date.now();
-      timingSummary.phasesMs.cache = tNow - tLast;
       const cacheSize = dealBrandCacheMap ? dealBrandCacheMap.size : 0;
       timingSummary.countsByPhase.cache = { linkedIds: allRecords.length, fetched: cacheSize, missing: allRecords.length - cacheSize };
       tLast = tNow;
-      if (shouldLogMyDealsSummary()) console.log("getMyDeals: phase cache done", { requestId, elapsed: tNow - t0, dealsWithCache: cacheSize });
+      if (shouldLogMyDealsSummary()) {
+        console.log("getMyDeals: phase outreach+cache (parallel)", {
+          requestId,
+          elapsed: tNow - t0,
+          dealsWithOutreach: outreachSize,
+          dealsWithCache: cacheSize,
+          wallMs: timingSummary.phasesMs.outreachCacheParallelWallMs,
+        });
+      }
     } catch (e) {
       const raw = (e && e.message) ? e.message : String(e);
       const msg = /fetch failed|failed to fetch|ECONNREFUSED|ENOTFOUND|ETIMEDOUT|network/i.test(raw)
@@ -1957,7 +1990,7 @@ export async function getMyDeals(req, res) {
         const scoreBaseId = initialView ? null : baseId;
         const scoreApiKey = initialView ? null : apiKey;
         const scoreMpDataMap = initialView ? null : mpDataMap;
-        const scoreSiDataMap = initialView ? null : siDataMap;
+        const scoreSiDataMap = siDataMap;
         const d = await recordToDeal(
           rec,
           locationMap,
@@ -1991,6 +2024,7 @@ export async function getMyDeals(req, res) {
           dealType: "—",
           dealStatus: "—",
           hasOutreachSetup: false,
+          strategicIntentForm: {},
           matchScore: undefined,
           matchScoreNew: undefined,
           matchScoresByBrand: {},
@@ -2068,6 +2102,7 @@ export async function getMyDeals(req, res) {
             dealType: "—",
             dealStatus: "—",
             hasOutreachSetup: false,
+            strategicIntentForm: {},
             matchScore: undefined,
             matchScoreNew: undefined,
             matchScoresByBrand: {},
@@ -2094,11 +2129,6 @@ export async function getMyDeals(req, res) {
     /* Disabled: background cache refresh hammers Airtable and causes rate limits; subsequent loads (or refreshes) then get empty Deal Type, Preferred Brands, Match Score. Use npm run refresh-all-deal-brand-cache or per-deal refresh instead. */
     /* startBackgroundFullCacheRefresh(baseId, apiKey, allRecords.map((r) => r.id)); */
 
-    let dealStatuses = [];
-    try {
-      const choices = await getDealStatusChoiceNames(baseId, apiKey);
-      if (Array.isArray(choices) && choices.length > 0) dealStatuses = [...choices].sort();
-    } catch (_) { /* use empty */ }
     const projectTypes = [
       ...new Set(deals.map((d) => d.projectType).filter((s) => s && s !== "—")),
     ].sort();
@@ -2134,12 +2164,21 @@ export async function getMyDeals(req, res) {
     };
     if (shouldLogMyDealsSummary()) console.log("getMyDeals: MP diagnostics", { requestId, ...timingSummary.mpDiagnostics });
 
+    const tFinalParallel = Date.now();
+    let dealStatuses = [];
     let initialMatchedSupport = null;
-    if (initialView) {
-      const tInitialSupport = Date.now();
-      initialMatchedSupport = await fetchInitialMatchedSupportState(baseId, apiKey, deals);
-      timingSummary.phasesMs.initialMatchedSupport = Date.now() - tInitialSupport;
-    }
+    const [choices, initialSupport] = await Promise.all([
+      getDealStatusChoiceNames(baseId, apiKey).catch(() => []),
+      initialView
+        ? fetchInitialMatchedSupportState(baseId, apiKey, deals).catch((err) => {
+            console.warn("getMyDeals: initialMatchedSupport fetch failed", err && err.message ? err.message : err);
+            return null;
+          })
+        : Promise.resolve(null),
+    ]);
+    if (Array.isArray(choices) && choices.length > 0) dealStatuses = [...choices].sort();
+    if (initialView && initialSupport) initialMatchedSupport = initialSupport;
+    timingSummary.phasesMs.finalParallelMeta = Date.now() - tFinalParallel;
 
     timingSummary.counts.returnedDeals = deals.length;
     if (timingSummary.counts.blankDealTypeAfterRetry === undefined) timingSummary.counts.blankDealTypeAfterRetry = timingSummary.counts.blankDealTypeBeforeRetry;

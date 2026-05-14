@@ -25,6 +25,7 @@ function getBase() {
 // | 7 Legal Terms          | Brand Setup - Legal Terms             | yes           | yes          |
 //
 // Preload: Brand Setup page pulls from these tables; FORM_TO_AIRTABLE_* and F.* define column ↔ form field mapping.
+// Inventory export (no Airtable call): npm run export-brand-setup-airtable-inventory → docs/generated/
 const F = {
   brandBasics: {
     table: "Brand Setup - Brand Basics",
@@ -959,6 +960,18 @@ export async function getBrandLibraryBrandById(req, res) {
           locationDistribution,
           regionalDistribution
         };
+
+        // Atelier / legacy read `priorityCities`; Brand Setup + Airtable use `specificMarkets` only.
+        // Mirror so both exist on GET until a single name is chosen; canonical storage stays `Specific Markets/Cities`.
+        const sm = footprintData.formValues && footprintData.formValues.specificMarkets;
+        if (sm != null && String(sm).trim() !== "") {
+          const v = typeof sm === "string" ? sm.trim() : sm;
+          const pc = footprintData.formValues.priorityCities;
+          if (pc == null || (typeof pc === "string" && pc.trim() === "")) {
+            footprintData.formValues.priorityCities = v;
+          }
+          footprintData.priorityCities = footprintData.formValues.priorityCities || v;
+        }
       }
     } catch (error) {
       console.error("Error fetching brand footprint:", error);
@@ -1244,6 +1257,8 @@ export async function getBrandLibraryBrandById(req, res) {
       }
     }
     // Get Project Fit data (linked table). Build formValues so Brand Setup can prefill by form field name.
+    // Default JSON: brand.projectFit = { formValues } only (no duplicate flat Airtable keys on projectFit).
+    // Optional: ?projectFitExtras=1 or ?debug=projectFit merges fieldsToDisplayObject(raw) onto projectFit for auditing.
     let projectFitData = {};
     let projectFitRawForDebug = null;
     try {
@@ -1251,7 +1266,6 @@ export async function getBrandLibraryBrandById(req, res) {
       if (pfRec) {
         const raw = pfRec.fields || {};
         if (req.query && req.query.debug === "projectFit") projectFitRawForDebug = raw;
-        projectFitData = fieldsToDisplayObject(raw);
         const formValues = {};
         const isChecked = (v) => {
           if (v === true || v === 1) return true;
@@ -1377,7 +1391,19 @@ export async function getBrandLibraryBrandById(req, res) {
             formValues[formName] = typeof val === 'string' ? val.trim() : valueToStr(val) || '';
           }
         }
-        projectFitData.formValues = formValues;
+        projectFitData = { formValues };
+        const exposeProjectFitLoose =
+          req.query &&
+          (req.query.projectFitExtras === "1" ||
+            req.query.projectFitExtras === "true" ||
+            req.query.debug === "projectFit");
+        if (exposeProjectFitLoose) {
+          const loose = fieldsToDisplayObject(raw);
+          for (const [k, v] of Object.entries(loose)) {
+            if (Object.prototype.hasOwnProperty.call(projectFitData, k)) continue;
+            projectFitData[k] = v;
+          }
+        }
       }
     } catch (err) {
       console.error("Error fetching project fit:", err.message);
@@ -2233,7 +2259,21 @@ export async function updateBrandFootprintByBrandId(req, res) {
     if (!recordId || !recordId.startsWith("rec")) {
       return res.status(400).json({ success: false, error: "Valid brand record ID is required" });
     }
-    const body = req.body && typeof req.body === "object" ? req.body : {};
+    const rawBody = req.body && typeof req.body === "object" ? req.body : {};
+    const body = { ...rawBody };
+    // Accept legacy/alternate key: same Airtable column as specificMarkets (keep both until cleanup).
+    const smEmpty =
+      body.specificMarkets === undefined ||
+      body.specificMarkets === null ||
+      (typeof body.specificMarkets === "string" && body.specificMarkets.trim() === "");
+    const pcVal = body.priorityCities;
+    const pcPresent =
+      pcVal !== undefined &&
+      pcVal !== null &&
+      (typeof pcVal !== "string" || pcVal.trim() !== "");
+    if (smEmpty && pcPresent) {
+      body.specificMarkets = typeof pcVal === "string" ? pcVal.trim() : pcVal;
+    }
     const base = getBase();
     const brandName = await getBrandNameFromBasics(base, recordId);
     const LOCATION_TYPE_FORM_NAMES = ["locationTypeUrban", "locationTypeSuburban", "locationTypeResort", "locationTypeAirport", "locationTypeSmallMetro", "locationTypeInterstate"];
@@ -2876,4 +2916,260 @@ function parsePercent(value) {
   if (typeof value === 'number') return value;
   const parsed = parseFloat(String(value).replace(/[^0-9.-]/g, ''));
   return isNaN(parsed) ? 0 : parsed;
+}
+
+/**
+ * Single source of truth for Brand Setup tab labels (align with comment block at top of this file).
+ * Used by buildBrandSetupAirtableMappingInventory() for CSV/JSON exports.
+ */
+const BRAND_SETUP_TAB_BY_TABLE = {
+  [F.brandBasics.table]: "0 · Brand Basics",
+  [F.sustainabilityEsg.table]: "0 · Sustainability & ESG",
+  [F.brandFootprint.table]: "1 · Brand Footprint",
+  [F.projectFit.table]: "2 · Project Fit",
+  [F.portfolioPerformance.table]: "3 · Portfolio & Performance",
+  [F.brandStandards.table]: "4 · Brand Standards",
+  [F.feeStructure.table]: "5 · Fee Structure",
+  [F.dealTerms.table]: "5 · Deal Terms",
+  [F.operationalSupport.table]: "6 · Operational Support",
+  [F.legalTerms.table]: "7 · Legal Terms",
+  [F.loyaltyCommercial.table]: "Loyalty & Commercial"
+};
+
+const PROJECT_FIT_CHECKBOX_COLUMN_GROUPS = [
+  { mappingSource: "PROJECT_FIT_ACCEPTABLE_PROJECT_TYPES_COLUMNS", formGroup: "idealProjectTypes", cols: PROJECT_FIT_ACCEPTABLE_PROJECT_TYPES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_ACCEPTABLE_BUILDING_TYPES_COLUMNS", formGroup: "idealBuildingTypes", cols: PROJECT_FIT_ACCEPTABLE_BUILDING_TYPES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_ACCEPTABLE_AGREEMENT_TYPES_COLUMNS", formGroup: "idealAgreementTypes", cols: PROJECT_FIT_ACCEPTABLE_AGREEMENT_TYPES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_ACCEPTABLE_PROJECT_STAGES_COLUMNS", formGroup: "projectStage", cols: PROJECT_FIT_ACCEPTABLE_PROJECT_STAGES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_PRIORITY_MARKETS_COLUMNS", formGroup: "priorityMarkets (checkbox legacy)", cols: PROJECT_FIT_PRIORITY_MARKETS_COLUMNS },
+  { mappingSource: "PROJECT_FIT_MARKETS_TO_AVOID_COLUMNS", formGroup: "marketsToAvoid (checkbox legacy)", cols: PROJECT_FIT_MARKETS_TO_AVOID_COLUMNS },
+  { mappingSource: "PROJECT_FIT_OWNER_INVOLVEMENT_COLUMNS", formGroup: "ownerInvolvementLevel", cols: PROJECT_FIT_OWNER_INVOLVEMENT_COLUMNS },
+  { mappingSource: "PROJECT_FIT_OWNER_NON_NEGOTIABLE_TYPES_COLUMNS", formGroup: "ownerNonNegotiableTypes", cols: PROJECT_FIT_OWNER_NON_NEGOTIABLE_TYPES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_CAPITAL_STATUS_COLUMNS", formGroup: "capitalStatus", cols: PROJECT_FIT_CAPITAL_STATUS_COLUMNS },
+  { mappingSource: "PROJECT_FIT_BRAND_STATUS_COLUMNS", formGroup: "brandStatus", cols: PROJECT_FIT_BRAND_STATUS_COLUMNS }
+];
+
+/**
+ * Returns every Airtable column / form key claimed by Brand Library mappers (no Airtable network call).
+ * Use for diffing against your base schema and for filling the UI demand matrix (add brand JSON + consumer columns manually).
+ */
+export function buildBrandSetupAirtableMappingInventory() {
+  const generatedAt = new Date().toISOString();
+  const rows = [];
+  const tabFor = (table) => BRAND_SETUP_TAB_BY_TABLE[table] || "";
+
+  function addRow(partial) {
+    const t = partial.airtableTable;
+    rows.push({
+      airtableTable: t,
+      brandSetupTab: partial.brandSetupTab ?? tabFor(t),
+      mappingSource: partial.mappingSource,
+      mappingKind: partial.mappingKind,
+      apiFormKey: partial.apiFormKey ?? "",
+      airtableColumn: partial.airtableColumn ?? "",
+      notes: partial.notes ?? ""
+    });
+  }
+
+  for (const [apiFormKey, airtableKey] of Object.entries(FORM_TO_AIRTABLE_BASICS)) {
+    addRow({
+      airtableTable: F.brandBasics.table,
+      mappingSource: "FORM_TO_AIRTABLE_BASICS",
+      mappingKind: apiFormKey === "targetGuestSegments" ? "json_array" : "scalar",
+      apiFormKey,
+      airtableColumn: typeof airtableKey === "string" ? airtableKey : String(airtableKey)
+    });
+  }
+  addRow({
+    airtableTable: F.brandBasics.table,
+    mappingSource: "F.brandBasics",
+    mappingKind: "scalar",
+    apiFormKey: "(logo)",
+    airtableColumn: F.brandBasics.logo,
+    notes: "GET only; PATCH via logo upload if applicable"
+  });
+
+  for (const [apiFormKey, airtableCol] of Object.entries(SUSTAINABILITY_ESG_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.sustainabilityEsg.table,
+      mappingSource: "SUSTAINABILITY_ESG_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey,
+      airtableColumn: airtableCol
+    });
+  }
+
+  for (const { form, airtable } of FOOTPRINT_FORM_TO_AIRTABLE) {
+    addRow({
+      airtableTable: F.brandFootprint.table,
+      mappingSource: "FOOTPRINT_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey: form,
+      airtableColumn: airtable
+    });
+  }
+
+  for (const { form, airtable } of LOYALTY_COMMERCIAL_FORM_TO_AIRTABLE) {
+    addRow({
+      airtableTable: F.loyaltyCommercial.table,
+      mappingSource: "LOYALTY_COMMERCIAL_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey: form,
+      airtableColumn: airtable,
+      notes: "Some percent fields stored as 0–1 in Airtable on PATCH"
+    });
+  }
+
+  for (const [apiFormKey, cols] of Object.entries(FEE_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.feeStructure.table,
+      mappingSource: "FEE_FORM_TO_AIRTABLE",
+      mappingKind: Array.isArray(cols) && cols.length > 1 ? "alternates" : "scalar",
+      apiFormKey,
+      airtableColumn: Array.isArray(cols) ? cols.join(" | ") : String(cols)
+    });
+  }
+
+  for (const [apiFormKey, cols] of Object.entries(DEAL_TERMS_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.dealTerms.table,
+      mappingSource: "DEAL_TERMS_FORM_TO_AIRTABLE",
+      mappingKind: Array.isArray(cols) && cols.length > 1 ? "alternates" : "scalar",
+      apiFormKey,
+      airtableColumn: Array.isArray(cols) ? cols.join(" | ") : String(cols)
+    });
+  }
+
+  for (const [apiFormKey, cols] of Object.entries(PORTFOLIO_PERFORMANCE_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.portfolioPerformance.table,
+      mappingSource: "PORTFOLIO_PERFORMANCE_FORM_TO_AIRTABLE",
+      mappingKind: Array.isArray(cols) && cols.length > 1 ? "alternates" : "scalar",
+      apiFormKey,
+      airtableColumn: Array.isArray(cols) ? cols.join(" | ") : String(cols)
+    });
+  }
+  addRow({
+    airtableTable: F.portfolioPerformance.table,
+    mappingSource: "PORTFOLIO_PATCH",
+    mappingKind: "multi_select",
+    apiFormKey: "reportTypes",
+    airtableColumn: "Report Types Required",
+    notes: "Also see REPORT_TYPES_CHECKBOX_COLUMNS for checkbox-style columns"
+  });
+  for (const { airtableColumn, formValue } of REPORT_TYPES_CHECKBOX_COLUMNS) {
+    addRow({
+      airtableTable: F.portfolioPerformance.table,
+      mappingSource: "REPORT_TYPES_CHECKBOX_COLUMNS",
+      mappingKind: "portfolio_report_checkbox",
+      apiFormKey: `reportTypes:${formValue}`,
+      airtableColumn,
+      notes: "Boolean checkbox column paired with reportTypes"
+    });
+  }
+
+  for (const [apiFormKey, cols] of Object.entries(BRAND_STANDARDS_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.brandStandards.table,
+      mappingSource: "BRAND_STANDARDS_FORM_TO_AIRTABLE",
+      mappingKind: "amenity_alternates",
+      apiFormKey,
+      airtableColumn: Array.isArray(cols) ? cols.join(" | ") : String(cols),
+      notes: "GET uses additional Brand Standards columns; see brandStandardsData in getBrandLibraryBrandById"
+    });
+  }
+
+  for (const { form, airtable } of LEGAL_TERMS_FORM_TO_AIRTABLE) {
+    addRow({
+      airtableTable: F.legalTerms.table,
+      mappingSource: "LEGAL_TERMS_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey: form,
+      airtableColumn: airtable
+    });
+  }
+
+  for (const { form, airtable } of OPERATIONAL_SUPPORT_FORM_TO_AIRTABLE) {
+    addRow({
+      airtableTable: F.operationalSupport.table,
+      mappingSource: "OPERATIONAL_SUPPORT_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey: form,
+      airtableColumn: airtable
+    });
+  }
+  addRow({
+    airtableTable: F.operationalSupport.table,
+    mappingSource: "OPERATIONAL_SUPPORT_GET",
+    mappingKind: "multi_select",
+    apiFormKey: "typesOfIncentives",
+    airtableColumn: "Incentive Types",
+    notes: "Multi-select; options in OPERATIONAL_SUPPORT_INCENTIVE_TYPES_OPTIONS"
+  });
+  for (const { formKey, airtableCol } of OPERATIONAL_SUPPORT_SERVICE_MULTI_SELECT) {
+    addRow({
+      airtableTable: F.operationalSupport.table,
+      mappingSource: "OPERATIONAL_SUPPORT_SERVICE_MULTI_SELECT",
+      mappingKind: "multi_select",
+      apiFormKey: formKey,
+      airtableColumn: airtableCol
+    });
+  }
+  for (const [formKey, options] of Object.entries(OPERATIONAL_SUPPORT_SERVICE_COLUMNS)) {
+    for (const opt of options) {
+      addRow({
+        airtableTable: F.operationalSupport.table,
+        mappingSource: "OPERATIONAL_SUPPORT_SERVICE_COLUMNS",
+        mappingKind: "op_service_option",
+        apiFormKey: `${formKey}:${opt.formValue}`,
+        airtableColumn: opt.airtable,
+        notes: "Option label for multi-select value"
+      });
+    }
+  }
+
+  for (const [formName, airtableCol] of Object.entries(PROJECT_FIT_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.projectFit.table,
+      mappingSource: "PROJECT_FIT_FORM_TO_AIRTABLE",
+      mappingKind: PROJECT_FIT_NUMERIC_FIELDS.has(formName) ? "numeric" : "scalar",
+      apiFormKey: formName,
+      airtableColumn: airtableCol
+    });
+  }
+  const multiSelectProjectFit = [
+    { formKey: "idealProjectTypes", airtableCol: "Acceptable Project Type" },
+    { formKey: "idealBuildingTypes", airtableCol: "Acceptable Building Types" },
+    { formKey: "idealAgreementTypes", airtableCol: "Acceptable Agreements Type" },
+    { formKey: "projectStage", airtableCol: "Acceptable Project Stages" },
+    { formKey: "ownerInvolvementLevel", airtableCol: "Acceptable Owner Involvement Levels" },
+    { formKey: "ownerNonNegotiableTypes", airtableCol: "Owner Non-Negotiables" },
+    { formKey: "capitalStatus", airtableCol: "Acceptable Capital Status at Engagement" },
+    { formKey: "brandStatus", airtableCol: "Brand Status Scenarios You Will Consider" },
+    { formKey: "feeExpectationVsMarket", airtableCol: "Acceptable Fee Expectations vs Market" },
+    { formKey: "exitHorizon", airtableCol: "Acceptable Exit Horizon" }
+  ];
+  for (const { formKey, airtableCol } of multiSelectProjectFit) {
+    addRow({
+      airtableTable: F.projectFit.table,
+      mappingSource: "updateProjectFitByBrandId.multiSelectProjectFit",
+      mappingKind: "multi_select",
+      apiFormKey: formKey,
+      airtableColumn: airtableCol
+    });
+  }
+  for (const g of PROJECT_FIT_CHECKBOX_COLUMN_GROUPS) {
+    for (const { airtableColumn, formValue } of g.cols) {
+      addRow({
+        airtableTable: F.projectFit.table,
+        mappingSource: g.mappingSource,
+        mappingKind: "project_fit_checkbox",
+        apiFormKey: `${g.formGroup}→${formValue}`,
+        airtableColumn,
+        notes: "Checkbox-style column; form aggregates into multi-select or checkboxes"
+      });
+    }
+  }
+
+  return { generatedAt, rowCount: rows.length, rows };
 }

@@ -87,6 +87,8 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 20px;
             margin: 0 -30px 40px -30px;
+            position: relative;
+            z-index: 200;
         }
         .back-to-my-deals { margin-bottom: 16px; }
         .back-to-my-deals a {
@@ -3016,7 +3018,7 @@
                                 <p class="form-section-subtitle" style="margin:0 0 12px 0;">Contacted brands for this deal.</p>
                                 <div id="drBdrTableWrap" style="overflow-x:auto;">
                                     <table class="deals-table" id="drBdrTable" style="width:100%;min-width:600px;">
-                                        <thead><tr><th>Brand Name</th><th>NDA Status</th><th>Deal Room Access</th><th>NDA Signed File</th><th>Proposal</th><th>Actions</th></tr></thead>
+                                        <thead><tr><th>Brand Name</th><th>NDA Status</th><th>Deal Room Access</th><th>NDA Signed File</th><th>Actions</th></tr></thead>
                                         <tbody id="drBdrTableBody"></tbody>
                                     </table>
                                 </div>
@@ -3307,12 +3309,17 @@
         return m.get(name) || "";
     }
     var isEditView = getParam("edit") === "1";
+    var isAppShellEmbed = /(?:^|[?&])appShell=1(?:&|$)/.test(window.location.search || "");
     function applyEditModeChrome() {
-        if (!isEditView) return;
         var backRow = document.getElementById("backToMyDealsRow");
         var subtitle = document.getElementById("dealSetupSubtitle");
-        if (backRow) backRow.classList.remove("hidden");
-        if (subtitle) subtitle.textContent = "View and edit your deal. Changes are saved to the main deal record.";
+        if (isEditView) {
+            if (subtitle) subtitle.textContent = "View and edit your deal. Changes are saved to the main deal record.";
+        }
+        /* Hub iframe (/?appShell=1): always show back so users can exit to My Deals without relying on parent DOM probes. */
+        if (isEditView || isAppShellEmbed) {
+            if (backRow) backRow.classList.remove("hidden");
+        }
     }
 
     function showLoading(show) {
@@ -4525,21 +4532,70 @@
         // starts at cover and does not keep the summary modal visible.
         hideQuickStartSuccessCard();
         showError("");
-        setIntakePathMode(MODE_QUICK);
-        switchSection(0);
+        /* Do not switch to Quick Start tab visibility when leaving edit mode — that runs
+           before navigate() and collapses the nav to the 6-tab quick set without leaving the page. */
+        if (!isEditView) {
+            setIntakePathMode(MODE_QUICK);
+            switchSection(0);
 
-        if (dealId) {
-            try { localStorage.removeItem("dealSetupLastSection_" + dealId); } catch (e) {}
+            if (dealId) {
+                try { localStorage.removeItem("dealSetupLastSection_" + dealId); } catch (e) {}
+            }
+            try {
+                var cleanUrl = new URL(window.location.href);
+                cleanUrl.searchParams.delete("dealId");
+                cleanUrl.searchParams.delete("id");
+                history.replaceState({}, "", cleanUrl.toString());
+            } catch (e) {}
         }
-        try {
-            var cleanUrl = new URL(window.location.href);
-            cleanUrl.searchParams.delete("dealId");
-            cleanUrl.searchParams.delete("id");
-            history.replaceState({}, "", cleanUrl.toString());
-        } catch (e) {}
     }
 
     function navigateToMyDeals() {
+        if (isAppShellEmbed && window.top !== window) {
+            resetAddNewDealUiStateBeforeExit();
+            try {
+                if (typeof window.top.dealalityAppShellNavigate === "function") {
+                    window.top.dealalityAppShellNavigate("/my-deals");
+                    return;
+                }
+            } catch (eNav) {}
+            var shellNdHref = "/app#/my-deals";
+            try {
+                shellNdHref = (window.top.location.origin || "") + "/app#/my-deals";
+            } catch (e2) {}
+            window.top.location.href = shellNdHref;
+            return;
+        }
+        try {
+            if (window.parent && window.parent !== window) {
+                var ppNd = "";
+                try {
+                    ppNd = window.parent.location.pathname || "";
+                } catch (e0) {
+                    ppNd = "";
+                }
+                var shellNdPath = /^\/app(?:\.html)?(?:\/|$)/i.test(ppNd);
+                var shellNdDom = false;
+                try {
+                    shellNdDom = !!(window.parent.document && window.parent.document.getElementById("frameContainer"));
+                } catch (e1) {}
+                if (shellNdPath || shellNdDom) {
+                    resetAddNewDealUiStateBeforeExit();
+                    try {
+                        if (typeof window.top.dealalityAppShellNavigate === "function") {
+                            window.top.dealalityAppShellNavigate("/my-deals");
+                            return;
+                        }
+                    } catch (eNav2) {}
+                    var shellNdHref2 = "/app#/my-deals";
+                    try {
+                        shellNdHref2 = (window.top.location.origin || "") + "/app#/my-deals";
+                    } catch (e2b) {}
+                    window.top.location.href = shellNdHref2;
+                    return;
+                }
+            }
+        } catch (eShellNd) {}
         if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.navigateToMyDealsList === "function") {
             window.DealalityWebflowNav.navigateToMyDealsList({ beforeNavigate: resetAddNewDealUiStateBeforeExit });
             return;
@@ -4547,13 +4603,14 @@
         resetAddNewDealUiStateBeforeExit();
         if (window.parent && window.parent !== window) {
             try {
-                window.parent.postMessage({ type: "dealality-navigate", path: "/my-deals.html" }, window.location.origin);
+                window.parent.postMessage({ type: "dealality-navigate", path: "/my-deals" }, window.location.origin);
                 return;
             } catch (e) {}
         }
-        var inAppShell = window.location.pathname === "/app" || window.location.pathname === "/app/";
+        var inAppShell = window.location.pathname === "/app" || window.location.pathname === "/app/" ||
+            /^\/app(?:\.html)?(?:\/|$)/i.test(window.location.pathname || "");
         if (inAppShell || (window.location.hash || "").indexOf("#/") === 0) {
-            window.location.href = "/app#/my-deals.html";
+            window.location.href = "/app#/my-deals";
             return;
         }
         window.location.href = "/my-deals.html";
@@ -4779,10 +4836,7 @@
                 var access = b.dealRoomAccess || "";
                 var signedFiles = b.ndaSignedFile || [];
                 var signedLink = signedFiles.length && signedFiles[0] && signedFiles[0].url ? ("<a href=\"" + signedFiles[0].url + "\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--accent--primary-1)\">" + (signedFiles[0].filename || "file") + "</a>") : "—";
-                var proposalStatus = (b.proposal && b.proposal.proposalStatus) ? b.proposal.proposalStatus : "";
-                var proposalLink = "<a href=\"/brand-deal-request.html?requestId=" + encodeURIComponent(b.id) + "\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--accent--primary-1);\" onclick=\"event.stopPropagation();\">Submit Proposal</a>";
-                if (proposalStatus === "Submitted") proposalLink = "<span style=\"color:var(--system--green-300);\">Submitted</span>";
-                tr.innerHTML = "<td>" + (b.brandName || "—") + "</td><td>" + ndaStatus + "</td><td>" + access + "</td><td>" + signedLink + "</td><td>" + proposalLink + "</td><td><button type=\"button\" class=\"btn btn-secondary\" data-action=\"sendNda\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Send NDA</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"markSigned\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Mark Signed</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"grantAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Grant</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"revokeAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Revoke</button></td>";
+                tr.innerHTML = "<td>" + (b.brandName || "—") + "</td><td>" + ndaStatus + "</td><td>" + access + "</td><td>" + signedLink + "</td><td><button type=\"button\" class=\"btn btn-secondary\" data-action=\"sendNda\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Send NDA</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"markSigned\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Mark Signed</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"grantAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Grant</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"revokeAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Revoke</button></td>";
                 tbody.appendChild(tr);
             });
             updateDrAttachSummaryText(!!selectedId);
@@ -5508,13 +5562,56 @@
     (function initBackToMyDealsLink() {
         var backA = document.getElementById("backToMyDealsLink");
         if (!backA) return;
-        if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
+        function isHubIframeForMyDeals() {
+            if (window.top === window.self) return false;
+            if (/(?:^|[?&])appShell=1(?:&|$)/.test(window.location.search || "")) return true;
+            try {
+                if (window.parent !== window && window.parent.document && window.parent.document.getElementById("frameContainer")) {
+                    return true;
+                }
+            } catch (e0) {}
+            try {
+                return /^\/app(?:\.html)?(?:\/|$)/i.test(window.parent.location.pathname || "");
+            } catch (e1) {
+                return false;
+            }
+        }
+        if (isHubIframeForMyDeals()) {
+            try {
+                backA.setAttribute("href", (window.top.location.origin || "") + "/app#/my-deals");
+            } catch (eH) {
+                backA.setAttribute("href", "/app#/my-deals");
+            }
+            backA.setAttribute("target", "_top");
+        } else if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
             backA.setAttribute("href", window.DealalityWebflowNav.getMyDealsTopLevelHref());
         }
-        backA.addEventListener("click", function (e) {
-            e.preventDefault();
-            navigateToMyDeals();
-        });
+        /* Capture phase runs before other listeners; forces top navigation in app hub iframe. */
+        backA.addEventListener(
+            "click",
+            function (e) {
+                if (!isHubIframeForMyDeals()) {
+                    if (!window.DealalityWebflowNav || typeof window.DealalityWebflowNav.navigateToMyDealsList !== "function") return;
+                    e.preventDefault();
+                    window.DealalityWebflowNav.navigateToMyDealsList({ beforeNavigate: resetAddNewDealUiStateBeforeExit });
+                    return;
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                try {
+                    if (window.top !== window && typeof window.top.dealalityAppShellNavigate === "function") {
+                        window.top.dealalityAppShellNavigate("/my-deals");
+                        return;
+                    }
+                } catch (eNav) {}
+                var dest = "/app#/my-deals";
+                try {
+                    dest = (window.top.location.origin || "") + "/app#/my-deals";
+                } catch (e2) {}
+                window.top.location.href = dest;
+            },
+            true
+        );
     })();
     applyEditModeChrome();
     loadDeal();

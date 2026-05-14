@@ -97,9 +97,18 @@ import { list as outreachHubList, get as outreachHubGet, create as outreachHubCr
 import { getOutreachDealActivityLog } from "./api/outreach-deal-activity-log.js";
 import { getDashboardHome } from "./api/dashboard-home.js";
 import { getTargetList, addToTargetList, updateTarget, removeFromTargetList, batchRemoveFromTargetList, markAsDeleted, restoreFromDeleted } from "./api/target-list.js";
-import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
+import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDealRoom as listBrandDealRequestsForDealRoom, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getDealMetaBatch as getBrandDealMetaBatch, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
 import { getBrandWorkspaceKpiHistory, postBrandWorkspaceKpiSnapshot } from "./api/brand-workspace-kpi-history.js";
-import { list as listDealRoomDocuments, listForBrandRequest as listDealRoomDocumentsForBrandRequest, create as createDealRoomDocument, update as updateDealRoomDocument, remove as deleteDealRoomDocument } from "./api/deal-room-documents.js";
+import {
+  list as listDealRoomDocuments,
+  listForBrandRequest as listDealRoomDocumentsForBrandRequest,
+  create as createDealRoomDocument,
+  update as updateDealRoomDocument,
+  remove as deleteDealRoomDocument,
+  uploadFile as uploadDealRoomDocumentFile,
+  serveFile as serveDealRoomDocumentFile,
+  DEAL_ROOM_DOCS_UPLOAD_DIR,
+} from "./api/deal-room-documents.js";
 import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
@@ -124,6 +133,10 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 const DEAL_ATTACHMENTS_DIR = path.join(__dirname, "uploads", "deal-attachments");
 if (!fs.existsSync(DEAL_ATTACHMENTS_DIR)) {
   fs.mkdirSync(DEAL_ATTACHMENTS_DIR, { recursive: true });
+}
+
+if (!fs.existsSync(DEAL_ROOM_DOCS_UPLOAD_DIR)) {
+  fs.mkdirSync(DEAL_ROOM_DOCS_UPLOAD_DIR, { recursive: true });
 }
 
 const companyProfileUpload = multer({
@@ -194,6 +207,29 @@ const dealAttachmentsUpload = multer({
   }),
   limits: { fileSize: MAX_ATTACHMENT_FILE_SIZE_BYTES },
   fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname || "").toLowerCase();
+    if (ALLOWED_ATTACHMENT_EXTENSIONS.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("File type not allowed. Allowed: " + ALLOWED_ATTACHMENT_EXTENSIONS.join(", ")), false);
+    }
+  },
+});
+
+const dealRoomDocsUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, _file, cb) => {
+      const dir = path.join(DEAL_ROOM_DOCS_UPLOAD_DIR, req.params.dealId || "unknown");
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      cb(null, dir);
+    },
+    filename: (_req, file, cb) => {
+      const base = (file.originalname || "file").replace(/[^a-zA-Z0-9.-]/g, "_");
+      cb(null, `${Date.now()}-${base}`);
+    },
+  }),
+  limits: { fileSize: MAX_ATTACHMENT_FILE_SIZE_BYTES },
+  fileFilter: (_req, file, cb) => {
     const ext = path.extname(file.originalname || "").toLowerCase();
     if (ALLOWED_ATTACHMENT_EXTENSIONS.includes(ext)) {
       cb(null, true);
@@ -305,8 +341,15 @@ app.delete("/api/target-list/:targetId", removeFromTargetList);
 app.post("/api/brand-deal-requests", createBrandDealRequest);
 app.post("/api/brand-deal-requests/by-deals", listBrandDealRequestsByDealsPost);
 app.get("/api/brand-deal-requests/activity", getBrandDealActivityLog);
+app.get("/api/brand-deal-requests/deal-meta", getBrandDealMetaBatch);
+app.get("/api/deal-room/brand-requests", listBrandDealRequestsForDealRoom);
 app.get("/api/brand-deal-requests", (req, res) => {
   if (req.query.dealIds) return listBrandDealRequestsByDeals(req, res);
+  const dealRoom = req.query.dealRoom ?? req.query.deal_room;
+  if (dealRoom === true || dealRoom === 1) return listBrandDealRequestsForDealRoom(req, res);
+  const dealRoomStr =
+    dealRoom == null ? "" : String(Array.isArray(dealRoom) ? dealRoom[0] : dealRoom).trim().toLowerCase();
+  if (dealRoomStr === "1" || dealRoomStr === "true") return listBrandDealRequestsForDealRoom(req, res);
   const allParam = req.query.all;
   if (allParam === "1" || allParam === "true") return listBrandDealRequestsAll(req, res);
   return listBrandDealRequests(req, res);
@@ -318,7 +361,26 @@ app.patch("/api/brand-deal-requests/:requestId", updateBrandDealRequestStatus);
 app.post("/api/brand-deal-requests/bulk-update", bulkUpdateBrandDealRequestStatus);
 app.get("/api/brand-workspace/kpi-history", getBrandWorkspaceKpiHistory);
 app.post("/api/brand-workspace/kpi-history", postBrandWorkspaceKpiSnapshot);
-// Deal Room Documents
+// Deal Room Documents (specific paths before generic :id)
+app.get("/api/deal-room-documents/files/:dealId/:filename", serveDealRoomDocumentFile);
+app.post(
+  "/api/deal-room-documents/upload/:dealId",
+  (req, res, next) => {
+    dealRoomDocsUpload.single("file")(req, res, (err) => {
+      if (err) {
+        if (err.code === "LIMIT_FILE_SIZE") {
+          return res.status(413).json({ success: false, error: "File too large. Maximum size is 10 MB per file." });
+        }
+        if (err.message && err.message.includes("File type not allowed")) {
+          return res.status(400).json({ success: false, error: err.message });
+        }
+        return res.status(500).json({ success: false, error: err.message || "Upload failed" });
+      }
+      next();
+    });
+  },
+  uploadDealRoomDocumentFile
+);
 app.get("/api/deal-room-documents", listDealRoomDocuments);
 app.get("/api/deal-room-documents/brand/:requestId", listDealRoomDocumentsForBrandRequest);
 app.post("/api/deal-room-documents", createDealRoomDocument);
