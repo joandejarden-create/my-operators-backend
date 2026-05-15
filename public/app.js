@@ -30,9 +30,8 @@
         // Retired route kept as archived source file only (public/management-operator-radar.html).
         // Intentionally removed from active app shell routing/navigation.
         '/loi-database-dashboard': { file: '/loi-database-dashboard.html', title: 'LOI Market Hub' },
-        // Legacy Brand Directory route retained as alias target for old bookmarks.
-        // It now loads the active Brand Explorer (Mock Up) experience.
-        '/brand-explorer': { file: '/brand-library-atelier-north.html', title: 'Brand Explorer (Mock Up)' },
+        // Legacy hash routes → combined Brand Explorer (replaces brand-library-atelier-north.html).
+        '/brand-explorer': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
         '/operator-explorer': { file: '/operator-explorer.html', title: 'Operator Explorer' },
         '/operator-explorer-mockup': { file: '/operator-explorer-gold-mock.html', title: 'Operator Explorer Mockup' },
         '/deal-room-owner': { file: '/deal-room-owner.html', title: 'Deal Room (Owner)' },
@@ -46,8 +45,8 @@
         '/outreach/deal-activity-log': { file: '/outreach-deal-activity-log.html', title: 'Outreach Deal Activity Log' },
         '/outreach/templates': { file: '/outreach-template-manager.html', title: 'Outreach Templates' },
         '/brand-library': { file: '/brand-library.html', title: 'Browse brands' },
-        '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer (preview)' },
-        '/brand-library-atelier': { file: '/brand-library-atelier-north.html', title: 'Brand Explorer (Mock Up)' },
+        '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
+        '/brand-library-atelier': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
         '/franchise-fee-estimator': { file: '/franchise-fee-estimator.html', title: 'Franchise Fee Estimator' },
@@ -145,13 +144,12 @@
                     label: 'Deal Toolbox',
                     icon: NAV_ICONS.toolbox,
                     children: [
-                        { label: 'Brand Explorer', route: '/brand-library-atelier', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Brand Explorer (preview)', route: '/brand-explorer-combined', roles: ['owner', 'brand', 'admin'] },
+                        { label: 'Brand Explorer', route: '/brand-explorer-combined', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Operator Explorer', route: '/operator-explorer', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Browse brands', route: '/brand-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Financial Term Library', route: '/financial-term-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Clause Library', route: '/clause-library', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] }
+                        { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] },
+                        { label: 'Browse brands', route: '/brand-library', roles: ['admin'] }
                     ]
                 },
                 {
@@ -203,7 +201,7 @@
         '/deal-capture-radar-with-ranked-list.html': '/opportunity-radar',
         '/operator-intelligence-radar-with-list.html': '/opportunity-radar',
         '/loi-database-dashboard.html': '/loi-database-dashboard',
-        '/brand-explorer.html': '/brand-library-atelier',
+        '/brand-explorer.html': '/brand-explorer-combined',
         '/operator-explorer.html': '/operator-explorer',
         '/operator-explorer-gold-mock.html': '/operator-explorer-mockup',
         '/deal-room-owner.html': '/deal-room-owner',
@@ -218,7 +216,7 @@
         '/outreach-template-manager.html': '/outreach/templates',
         '/brand-library.html': '/brand-library',
         '/brand-explorer-combined.html': '/brand-explorer-combined',
-        '/brand-library-atelier-north.html': '/brand-library-atelier',
+        '/brand-library-atelier-north.html': '/brand-explorer-combined',
         '/financial-term-library.html': '/financial-term-library',
         '/clause-library.html': '/clause-library',
         '/franchise-fee-estimator.html': '/franchise-fee-estimator',

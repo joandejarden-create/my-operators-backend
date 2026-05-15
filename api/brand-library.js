@@ -23,6 +23,7 @@ function getBase() {
 // | 5 Deal Terms           | Brand Setup - Deal Terms              | yes           | yes          |
 // | 6 Brand/OP Support     | Brand Setup - Operational Support     | yes           | yes          |
 // | 7 Legal Terms          | Brand Setup - Legal Terms             | yes           | yes          |
+// | Brand Explorer         | Brand Setup - Brand Explorer Presentation | yes (GET) | optional PATCH later |
 //
 // Preload: Brand Setup page pulls from these tables; FORM_TO_AIRTABLE_* and F.* define column ↔ form field mapping.
 // Inventory export (no Airtable call): npm run export-brand-setup-airtable-inventory → docs/generated/
@@ -49,7 +50,10 @@ const F = {
     sustainability: "Sustainability Positioning",
     status: "Brand Status",
     architecture: "Brand Architecture",
-    profileAnalysis: "Brand Profile Analysis"
+    regionOffered: "Region Offered",
+    profileAnalysis: "Brand Profile Analysis",
+    explorerHeroVerification: "Explorer Hero Verification",
+    explorerHeroDataSource: "Explorer Hero Data Source"
   },
   brandFootprint: {
     table: "Brand Setup - Brand Footprint",
@@ -83,6 +87,11 @@ const F = {
   },
   sustainabilityEsg: {
     table: "Brand Setup - Sustainability & ESG",
+    brandName: "Brand Name"
+  },
+  /** 1:n content blocks for Brand Explorer combined (slot_key → body). See docs/brand-explorer-presentation-slots.md */
+  brandExplorerPresentation: {
+    table: "Brand Setup - Brand Explorer Presentation",
     brandName: "Brand Name"
   }
 };
@@ -311,6 +320,186 @@ async function findLinkedRecordByBrand(base, tableName, brandRecordId, brandName
   return null;
 }
 
+/**
+ * All rows in a child table linked to a Brand Basics record (1:n).
+ * Used for Brand Explorer presentation blocks and similar collections.
+ */
+async function selectAllLinkedToBrandBasics(base, tableName, brandRecordId, brandName) {
+  if (!brandRecordId) return [];
+  const escapedId = String(brandRecordId).replace(/"/g, '\\"');
+  const escapedName = (brandName || '').replace(/"/g, '\\"');
+  const linkFieldNames = ['Brand', 'Brand_Basic_ID', 'Brand Setup - Brand Basics', 'Brand Basics'];
+
+  const merged = [];
+  const seen = new Set();
+  const pushAll = (records) => {
+    for (const rec of records) {
+      if (rec && !seen.has(rec.id)) {
+        seen.add(rec.id);
+        merged.push(rec);
+      }
+    }
+  };
+
+  // In filterByFormula, linked-record fields compare to the linked row's *primary field* text, not record ids.
+  // FIND(recId, ARRAYJOIN({Brand})) is therefore unreliable for "rows linked to this Basics id".
+  // Prefer Brand Name (set by apply-brand-explorer-presentation) and {Brand} = Basics name or id, then scan.
+  if (escapedName) {
+    try {
+      pushAll(await base(tableName).select({ filterByFormula: `{Brand Name} = "${escapedName}"`, maxRecords: 500 }).all());
+    } catch (_) {
+      /* optional column */
+    }
+    try {
+      pushAll(await base(tableName).select({ filterByFormula: `{Brand} = "${escapedName}"`, maxRecords: 500 }).all());
+    } catch (_) {
+      /* link field may not be named Brand */
+    }
+  }
+  try {
+    pushAll(await base(tableName).select({ filterByFormula: `{Brand} = "${escapedId}"`, maxRecords: 500 }).all());
+  } catch (_) {}
+
+  if (merged.length > 0) return merged;
+
+  for (const linkField of linkFieldNames) {
+    try {
+      const formula = `FIND("${escapedId}", ARRAYJOIN({${linkField}})) > 0`;
+      const records = await base(tableName).select({ filterByFormula: formula }).all();
+      if (records.length > 0) return records;
+    } catch (_) {
+      continue;
+    }
+  }
+
+  try {
+    const allRecords = await base(tableName).select({ maxRecords: 2000 }).all();
+    for (const rec of allRecords) {
+      const fields = rec.fields || {};
+      for (const key of Object.keys(fields)) {
+        const val = fields[key];
+        if (
+          Array.isArray(val) &&
+          val.length > 0 &&
+          typeof val[0] === 'string' &&
+          val[0].startsWith('rec') &&
+          val.includes(brandRecordId)
+        ) {
+          pushAll([rec]);
+          break;
+        }
+      }
+    }
+  } catch (_) {}
+
+  return merged;
+}
+
+/** First HTTPS URL from an Airtable attachments-style field (array of { url, ... }). */
+function firstAttachmentUrlFromFields(fields) {
+  if (!fields || typeof fields !== "object") return "";
+  const names = ["Image", "Images", "Scenario Image", "Attachments", "Photo", "Photos"];
+  const tryArray = (val) => {
+    if (typeof val === "string") {
+      const s = val.trim();
+      if (s.startsWith("http") || s.startsWith("//")) return s.startsWith("//") ? `https:${s}` : s;
+      return "";
+    }
+    if (!Array.isArray(val) || val.length === 0) return "";
+    for (const att of val) {
+      const u = getUrlFromAttachment(att);
+      if (u) return u;
+    }
+    return "";
+  };
+  for (const name of names) {
+    const u = tryArray(getFieldValue(fields, name));
+    if (u) return u;
+  }
+  for (const key of Object.keys(fields)) {
+    if (!/image|attachment|photo/i.test(key) || /logo|icon|favicon/i.test(key)) continue;
+    const u = tryArray(fields[key]);
+    if (u) return u;
+  }
+  return "";
+}
+
+/** Normalize Airtable rows → brand.brandExplorer.blocks for GET /api/brand-library/brand */
+function normalizeBrandExplorerPresentationRecords(records) {
+  const list = Array.isArray(records) ? records : [];
+  const blocks = [];
+  for (const rec of list) {
+    const f = rec.fields || {};
+    const activeRaw = getFieldValue(f, 'Active');
+    const inactive =
+      activeRaw === false ||
+      String(activeRaw).toLowerCase() === 'no' ||
+      String(activeRaw).toLowerCase() === 'false' ||
+      activeRaw === 0;
+    if (inactive) continue;
+    const slotKey = (getFieldValue(f, 'Slot Key') ?? getFieldValue(f, 'slot_key') ?? '').toString().trim();
+    if (!slotKey) continue;
+    const title = (getFieldValue(f, 'Title') ?? '').toString().trim();
+    const body = (getFieldValue(f, 'Body') ?? '').toString().trim();
+    const sortRaw = getFieldValue(f, 'Sort Order') ?? getFieldValue(f, 'sort_order');
+    let sort = 0;
+    if (typeof sortRaw === 'number' && !Number.isNaN(sortRaw)) sort = sortRaw;
+    else if (sortRaw != null && sortRaw !== '') sort = parseFloat(String(sortRaw).replace(/,/g, '')) || 0;
+    const imageUrl = firstAttachmentUrlFromFields(f);
+    const summaryUrlRaw = (
+      getFieldValue(f, "Summary URL") ??
+      getFieldValue(f, "View Summary URL") ??
+      getFieldValue(f, "Case summary URL") ??
+      ""
+    )
+      .toString()
+      .trim();
+    const summaryUrl =
+      /^https?:\/\//i.test(summaryUrlRaw) && !/\s/.test(summaryUrlRaw) ? summaryUrlRaw : "";
+    function csPickField(names) {
+      for (let i = 0; i < names.length; i++) {
+        const v = getFieldValue(f, names[i]);
+        if (v != null && String(v).trim() !== "") return String(v).trim();
+      }
+      return "";
+    }
+    const caseSummaryOverview = csPickField(["Case Summary Overview", "case_summary_overview"]);
+    const caseSummaryOwnerObjective = csPickField([
+      "Case Summary Owner Objective",
+      "case_summary_owner_objective",
+    ]);
+    const caseSummaryBrandRelevance = csPickField([
+      "Case Summary Brand Relevance",
+      "case_summary_brand_relevance",
+    ]);
+    const caseSummaryInterpretation = csPickField([
+      "Case Summary Interpretation",
+      "Case Summary Dealality Interpretation",
+      "case_summary_interpretation",
+    ]);
+    const caseSummaryTags = csPickField(["Case Summary Tags", "case_summary_tags"]);
+    blocks.push({
+      recordId: rec.id,
+      slotKey,
+      title,
+      body,
+      sort,
+      imageUrl,
+      summaryUrl,
+      caseSummaryOverview,
+      caseSummaryOwnerObjective,
+      caseSummaryBrandRelevance,
+      caseSummaryInterpretation,
+      caseSummaryTags,
+    });
+  }
+  blocks.sort((a, b) => {
+    if (a.sort !== b.sort) return a.sort - b.sort;
+    return String(a.recordId).localeCompare(String(b.recordId));
+  });
+  return { version: 1, blocks };
+}
+
 // Normalize Airtable single-select / multi-select to display string
 function valueToStr(v) {
   if (v == null) return '';
@@ -328,6 +517,21 @@ function valueToStr(v) {
     return parts.join(', ');
   }
   return '';
+}
+
+function valuesToStrList(v) {
+  if (v == null) return [];
+  if (Array.isArray(v)) {
+    return v
+      .map((item) => {
+        if (typeof item === 'string') return item.trim();
+        if (item && typeof item === 'object' && typeof item.name === 'string') return item.name.trim();
+        return '';
+      })
+      .filter(Boolean);
+  }
+  const one = valueToStr(v);
+  return one ? [one] : [];
 }
 
 // Convert a record's fields to display-friendly key-value (skip Brand link, IDs)
@@ -356,18 +560,23 @@ const LOGO_FIELD_NAMES = [
 ];
 
 function getUrlFromAttachment(att) {
-  if (!att || typeof att !== 'object') return '';
+  if (!att || typeof att !== "object") return "";
   const url =
     att.url ||
     (att.thumbnails && att.thumbnails.large && att.thumbnails.large.url) ||
     (att.thumbnails && att.thumbnails.small && att.thumbnails.small.url);
-  if (url && typeof url === 'string' && url.startsWith('http')) return url;
+  if (url && typeof url === "string") {
+    const u = url.trim();
+    if (u.startsWith("http") || u.startsWith("//")) return u.startsWith("//") ? `https:${u}` : u;
+  }
   // Fallback: any string property that looks like an image URL
   for (const v of Object.values(att)) {
-    if (typeof v === 'string' && v.startsWith('http')) return v;
-    if (v && typeof v === 'object' && v.url && typeof v.url === 'string') return v.url;
+    if (typeof v === "string" && (v.startsWith("http") || v.startsWith("//"))) {
+      return v.startsWith("//") ? `https:${v.trim()}` : v.trim();
+    }
+    if (v && typeof v === "object" && v.url && typeof v.url === "string") return v.url;
   }
-  return '';
+  return "";
 }
 
 function extractLogoUrl(fields) {
@@ -481,10 +690,50 @@ export async function getOperationalSupportByBrandId(req, res) {
   }
 }
 
+const BRAND_LIST_CACHE_TTL_MS = Math.max(
+  5000,
+  parseInt(process.env.BRAND_LIBRARY_LIST_CACHE_TTL_MS || "120000", 10) || 120000
+);
+const BRAND_LIST_CACHE_DISABLED =
+  process.env.DISABLE_BRAND_LIBRARY_LIST_CACHE === "true" ||
+  process.env.DISABLE_BRAND_LIBRARY_LIST_CACHE === "1";
+/** @type {Map<string, { at: number, payload: object }>} */
+const brandListCache = new Map();
+/** @type {Map<string, Promise<object>>} */
+const brandListLoadPromise = new Map();
+
+export function clearBrandListCache() {
+  brandListCache.clear();
+  brandListLoadPromise.clear();
+}
+
 // Get all brands for the library listing (use REST API so we get exact field names e.g. Brand Architecture)
 export async function getBrandLibraryBrands(req, res) {
   try {
     const allStatuses = req.query?.allStatuses === '1' || req.query?.allStatuses === 'true';
+    const cacheKey = allStatuses ? "all" : "active";
+  const bypassCache =
+    req.query?.refresh === "1" ||
+    req.query?.refresh === "true" ||
+    req.headers["x-bypass-brand-list-cache"] === "1";
+
+  if (!bypassCache && !BRAND_LIST_CACHE_DISABLED) {
+    const hit = brandListCache.get(cacheKey);
+    if (hit && Date.now() - hit.at < BRAND_LIST_CACHE_TTL_MS) {
+      res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+      res.setHeader("X-Brand-List-Cache", "HIT");
+      return res.json(hit.payload);
+    }
+    const inFlight = brandListLoadPromise.get(cacheKey);
+    if (inFlight) {
+      const payload = await inFlight;
+      res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+      res.setHeader("X-Brand-List-Cache", "HIT-INFLIGHT");
+      return res.json(payload);
+    }
+  }
+
+  const loadPromise = (async () => {
     console.log('[Brand Library] API called: fetching brands...', allStatuses ? '(all statuses)' : '(Active only)');
     const baseId = process.env.AIRTABLE_BASE_ID;
     const apiKey = process.env.AIRTABLE_API_KEY;
@@ -524,15 +773,38 @@ export async function getBrandLibraryBrands(req, res) {
       return '';
     }
 
+    function valuesToStrList(v) {
+      if (v == null) return [];
+      if (Array.isArray(v)) {
+        return v
+          .map((item) => {
+            if (typeof item === 'string') return item.trim();
+            if (item && typeof item === 'object' && typeof item.name === 'string') return item.name.trim();
+            return '';
+          })
+          .filter(Boolean);
+      }
+      const one = valueToStr(v);
+      return one ? [one] : [];
+    }
+
     // Airtable omits empty fields from the response — so scan all records to find the architecture column name
     const allFieldNames = new Set();
     allRecords.forEach(rec => { Object.keys(rec.fields || {}).forEach(k => allFieldNames.add(k)); });
     const architectureFieldKey = [...allFieldNames].find(k => k.toLowerCase().includes('architecture')) || null;
+    const regionOfferedFieldKey =
+      [...allFieldNames].find((k) => k.toLowerCase() === 'region offered') ||
+      [...allFieldNames].find((k) => k.toLowerCase().includes('region offered')) ||
+      null;
     const firstFields = allRecords[0] && allRecords[0].fields ? allRecords[0].fields : {};
 
     const brandList = allRecords.map(rec => {
       const fields = rec.fields || {};
       const archVal = architectureFieldKey ? valueToStr(fields[architectureFieldKey]) : valueToStr(fields['Brand Architecture'] ?? fields[F.brandBasics.architecture]);
+      const regionRaw =
+        (regionOfferedFieldKey && fields[regionOfferedFieldKey]) ??
+        fields[F.brandBasics.regionOffered] ??
+        fields['Region Offered'];
       return {
         id: rec.id,
         name: (fields[F.brandBasics.name] || '').toString().trim() || 'Unknown Brand',
@@ -543,6 +815,7 @@ export async function getBrandLibraryBrands(req, res) {
         brandModel: valueToStr(fields[F.brandBasics.brandModel]),
         serviceModel: valueToStr(fields[F.brandBasics.serviceModel]),
         architecture: archVal,
+        regionOffered: valuesToStrList(regionRaw),
         status: (fields[F.brandBasics.status] || '').toString().trim(),
         yearBrandLaunched: (fields[F.brandBasics.yearLaunched] || '').toString().trim(),
         positioning: (fields[F.brandBasics.positioning] || '').toString().trim(),
@@ -557,16 +830,28 @@ export async function getBrandLibraryBrands(req, res) {
     const brandModels = [...new Set(brandList.map(b => (b.brandModel || '').trim()).filter(Boolean))].sort();
     const serviceModels = [...new Set(brandList.map(b => (b.serviceModel || '').trim()).filter(Boolean))].sort();
     const architectures = [...new Set(brandList.map(b => (b.architecture || '').trim()).filter(Boolean))].sort();
+    const regionsOffered = [
+      ...new Set(
+        brandList.flatMap((b) =>
+          (Array.isArray(b.regionOffered) ? b.regionOffered : [])
+            .map((r) => String(r).trim())
+            .filter(Boolean)
+        )
+      ),
+    ].sort();
 
     const withArch = brandList.filter(b => (b.architecture || '').trim()).length;
     console.log('[Brand Library] Architecture field key:', architectureFieldKey, '| brands with architecture:', withArch, '/', brandList.length, '| options:', architectures);
+    const withRegion = brandList.filter((b) => Array.isArray(b.regionOffered) && b.regionOffered.length).length;
+    console.log('[Brand Library] Region Offered field key:', regionOfferedFieldKey, '| brands with region:', withRegion, '/', brandList.length, '| options:', regionsOffered);
 
     const filterOptions = {
       parentCompanies,
       chainScales,
       brandModels,
       serviceModels,
-      architectures
+      architectures,
+      regionsOffered
     };
 
     const payload = {
@@ -578,14 +863,39 @@ export async function getBrandLibraryBrands(req, res) {
     if (allRecords.length > 0) {
       payload._debug = { airtableColumnLabels: [...allFieldNames].sort() };
     }
-    res.json(payload);
+    if (!BRAND_LIST_CACHE_DISABLED) {
+      brandListCache.set(cacheKey, { at: Date.now(), payload });
+    }
+    return payload;
+  })();
 
+  if (!bypassCache && !BRAND_LIST_CACHE_DISABLED) {
+    brandListLoadPromise.set(cacheKey, loadPromise);
+  }
+  try {
+    const payload = await loadPromise;
+    res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+    res.setHeader("X-Brand-List-Cache", bypassCache ? "BYPASS" : "MISS");
+    res.json(payload);
   } catch (error) {
     console.error("Error fetching brands:", error);
-    res.status(500).json({ 
-      error: "Internal Server Error", 
-      details: error.message 
+    res.status(500).json({
+      error: "Internal Server Error",
+      details: error.message
     });
+  } finally {
+    if (!bypassCache && !BRAND_LIST_CACHE_DISABLED) {
+      brandListLoadPromise.delete(cacheKey);
+    }
+  }
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: "Internal Server Error",
+        details: error.message,
+      });
+    }
   }
 }
 
@@ -652,6 +962,7 @@ export async function getBrandsGroupedByParentCompany(req, res) {
 // Get detailed brand information for a specific brand
 export async function getBrandLibraryBrandById(req, res) {
   try {
+    res.setHeader("Cache-Control", "no-store, max-age=0");
     const { brandId } = req.query;
     
     if (!brandId) {
@@ -1508,6 +1819,20 @@ export async function getBrandLibraryBrandById(req, res) {
       loadWarnings.push("Sustainability & ESG");
     }
 
+    let brandExplorerPresentation = { version: 1, blocks: [] };
+    try {
+      const exRecs = await selectAllLinkedToBrandBasics(
+        base,
+        F.brandExplorerPresentation.table,
+        brandRecordId,
+        brandName
+      );
+      brandExplorerPresentation = normalizeBrandExplorerPresentationRecords(exRecs);
+    } catch (err) {
+      console.error("Error fetching Brand Explorer Presentation:", err.message);
+      loadWarnings.push("Brand Explorer Presentation");
+    }
+
     const logoUrl = extractLogoUrl(brandFields);
 
     // Build Basics from same mapping used for PATCH (FORM_TO_AIRTABLE_BASICS) so read and write stay in sync
@@ -1523,12 +1848,13 @@ export async function getBrandLibraryBrandById(req, res) {
       portfolioPerformance: portfolioPerformanceData,
       projectFit: projectFitData,
       operationalSupport: operationalSupportData,
-      legalTerms: legalTermsData
+      legalTerms: legalTermsData,
+      brandExplorer: brandExplorerPresentation
     };
     for (const [formKey, airtableKey] of Object.entries(FORM_TO_AIRTABLE_BASICS)) {
       const raw = brandFields[airtableKey];
-      if (formKey === 'targetGuestSegments') {
-        brandDetails[formKey] = Array.isArray(raw) ? raw.map((s) => valueToStr(s)).filter(Boolean) : [];
+      if (formKey === 'targetGuestSegments' || formKey === 'regionOffered') {
+        brandDetails[formKey] = valuesToStrList(raw);
       } else if (raw !== undefined && raw !== null && raw !== '') {
         brandDetails[formKey] = typeof raw === 'string' ? raw.trim() : valueToStr(raw) || raw;
       } else {
@@ -1602,7 +1928,10 @@ const FORM_TO_AIRTABLE_BASICS = {
   sustainabilityPositioning: F.brandBasics.sustainability,
   brandWebsite: "Brand Website",
   brandStatus: F.brandBasics.status,
-  brandProfileAnalysis: F.brandBasics.profileAnalysis
+  brandProfileAnalysis: F.brandBasics.profileAnalysis,
+  regionOffered: F.brandBasics.regionOffered,
+  explorerHeroVerification: F.brandBasics.explorerHeroVerification,
+  explorerHeroDataSource: F.brandBasics.explorerHeroDataSource
 };
 
 // Brand Setup - Brand Footprint: form input name → Airtable column name. Same mapping for read (preload) and future write.
@@ -2072,6 +2401,7 @@ export async function updateBrandBasicsById(req, res) {
       return res.status(400).json({ success: false, error: "No fields to update" });
     }
     const updated = await base(F.brandBasics.table).update(recordId, fields);
+    clearBrandListCache();
     res.json({
       success: true,
       brand: {
@@ -2933,7 +3263,8 @@ const BRAND_SETUP_TAB_BY_TABLE = {
   [F.dealTerms.table]: "5 · Deal Terms",
   [F.operationalSupport.table]: "6 · Operational Support",
   [F.legalTerms.table]: "7 · Legal Terms",
-  [F.loyaltyCommercial.table]: "Loyalty & Commercial"
+  [F.loyaltyCommercial.table]: "Loyalty & Commercial",
+  [F.brandExplorerPresentation.table]: "Brand Explorer · Presentation"
 };
 
 const PROJECT_FIT_CHECKBOX_COLUMN_GROUPS = [
@@ -3169,6 +3500,48 @@ export function buildBrandSetupAirtableMappingInventory() {
         notes: "Checkbox-style column; form aggregates into multi-select or checkboxes"
       });
     }
+  }
+
+  const explorerSchemaCols = [
+    { col: "Brand", notes: "Link to Brand Setup - Brand Basics (required)" },
+    { col: "Brand Name", notes: "Optional text match fallback" },
+    { col: "Slot Key", notes: "Stable id; see docs/brand-explorer-presentation-slots.md" },
+    { col: "Title", notes: "Optional" },
+    { col: "Body", notes: "Long text" },
+    {
+      col: "Case Summary Overview",
+      notes: "Optional long text for modal Property overview (else derived from Body)",
+    },
+    {
+      col: "Case Summary Owner Objective",
+      notes: "Optional long text for modal Owner objective (else Location · Asset from Body)",
+    },
+    {
+      col: "Case Summary Brand Relevance",
+      notes: "Optional long text for modal Brand relevance (else Why the brand was relevant from Body)",
+    },
+    {
+      col: "Case Summary Interpretation",
+      notes: "Optional long text for modal Dealality interpretation (else owner takeaway from Body)",
+    },
+    {
+      col: "Case Summary Tags",
+      notes: "Optional comma-separated tags for modal Related tags (else card chip list)",
+    },
+    { col: "Image", notes: "Optional multiple attachments; first file URL exposed as block.imageUrl (e.g. overview scenario cards)" },
+    { col: "Sort Order", notes: "Number" },
+    { col: "Active", notes: "Checkbox; false excludes row" }
+  ];
+  for (const { col, notes } of explorerSchemaCols) {
+    addRow({
+      airtableTable: F.brandExplorerPresentation.table,
+      brandSetupTab: "Brand Explorer · Presentation",
+      mappingSource: "brandExplorerPresentation_schema",
+      mappingKind: "explorer_block",
+      apiFormKey: "(row)",
+      airtableColumn: col,
+      notes
+    });
   }
 
   return { generatedAt, rowCount: rows.length, rows };

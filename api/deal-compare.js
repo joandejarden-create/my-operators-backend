@@ -2,6 +2,7 @@
  * Deal Compare API
  * GET /api/deal-compare/proposals?dealId=recXXX
  * Returns Brand Deal Requests for the deal with proposal values for Deal Compare.
+ * Only rows with Proposal Status = Submitted appear in the comparison table.
  * Prefers SUBMITTED proposal values; falls back to Brand Library when proposal fields are blank.
  */
 
@@ -28,6 +29,21 @@ function parseNum(v) {
   if (v === null || v === undefined || v === "") return 0;
   const n = Number(v);
   return Number.isNaN(n) ? 0 : n;
+}
+
+/** Airtable single-select may be string or { name }; multi-select is array. */
+function readProposalStatusFromFields(fields) {
+  if (!fields) return "";
+  const v = fields["Proposal Status"];
+  if (v == null || v === "") return "";
+  if (typeof v === "string") return v.trim();
+  if (typeof v === "object" && v !== null && v.name != null) return String(v.name).trim();
+  if (Array.isArray(v) && v.length > 0) {
+    const first = v[0];
+    if (typeof first === "string") return first.trim();
+    if (first && typeof first === "object" && first.name != null) return String(first.name).trim();
+  }
+  return String(v).trim();
 }
 
 /** Fetch Brand Library defaults for a brand by name. Used as fallback when proposal values are empty. */
@@ -282,7 +298,7 @@ function mapProposalToBrandCompare(bdr) {
   const dealIds = f.Deal;
   const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
   const brandName = f["Brand Name"] || "";
-  const proposalStatus = f["Proposal Status"] || "";
+  const proposalStatus = readProposalStatusFromFields(f);
   const proposalSubmittedAt = f["Proposal Submitted At"] || null;
   const feeStructure = {};
   const dealTerms = {};
@@ -534,8 +550,12 @@ export async function getProposalsForDeal(req, res) {
 
     const filtered = records.filter((r) => {
       const dealIds = r.fields.Deal;
-      const d = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : dealIds;
-      return d === dealId || String(d) === dealId;
+      const matchesDeal = Array.isArray(dealIds)
+        ? dealIds.some((id) => id === dealId || String(id) === String(dealId))
+        : dealIds === dealId || String(dealIds) === String(dealId);
+      if (!matchesDeal) return false;
+      const proposalStatus = readProposalStatusFromFields(r.fields).toLowerCase();
+      return proposalStatus === "submitted";
     });
 
     const proposalBrands = filtered.map((rec) => mapProposalToBrandCompare(rec));

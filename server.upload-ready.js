@@ -78,6 +78,11 @@ import signup from "./api/signup.js";
 import { getPartners, createUser, updateUser } from "./api/partner-directory.js";
 import { getUserFavorites, createFavorite, deleteFavorite, updateFavorite } from "./api/partner-directory-favorites.js";
 import {
+  getBrandExplorerFavorites,
+  createBrandExplorerFavorite,
+  deleteBrandExplorerFavorite,
+} from "./api/brand-explorer-favorites.js";
+import {
   createCompanyProfile,
   updateCompanyProfile,
   getCompanyProfilePrefill,
@@ -484,6 +489,15 @@ app.get("/franchise-application/", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/franchise-application.html" + q);
 });
+// Retired mock list page → combined Brand Explorer (bookmarks / Webflow embeds).
+app.get("/brand-library-atelier-north.html", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(301, "/brand-explorer-combined.html" + q);
+});
+app.get("/brand-library-atelier-north", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(301, "/brand-explorer-combined.html" + q);
+});
 app.get("/company-settings", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, 'public', 'company-settings.html'));
@@ -841,6 +855,11 @@ app.get("/api/partner-directory/favorites", getUserFavorites);
 app.post("/api/partner-directory/favorites", createFavorite);
 app.delete("/api/partner-directory/favorites/:favoriteId", deleteFavorite);
 app.put("/api/partner-directory/favorites/:favoriteId", updateFavorite);
+
+app.get("/api/brand-explorer/favorites", getBrandExplorerFavorites);
+app.post("/api/brand-explorer/favorites", createBrandExplorerFavorite);
+app.delete("/api/brand-explorer/favorites", deleteBrandExplorerFavorite);
+app.delete("/api/brand-explorer/favorites/:favoriteId", deleteBrandExplorerFavorite);
 
 // Partner Directory config endpoint (for local development)
 app.get("/api/user-management", listUserManagementUsers);

@@ -25,7 +25,8 @@
     operationalSupport: 1,
     legalTerms: 1,
     loadWarnings: 1,
-    projectFitDebug: 1
+    projectFitDebug: 1,
+    brandExplorer: 1
   };
 
   function escapeHtml(text) {
@@ -88,6 +89,41 @@
     if (v == null || v === '') return false;
     if (Array.isArray(v)) return v.length > 0;
     return true;
+  }
+
+  function explorerBlocksForSlot(brand, slotKey) {
+    var be = brand.brandExplorer;
+    if (!be || !Array.isArray(be.blocks)) return [];
+    function imgRank(b) {
+      if (!b || !b.imageUrl) return 0;
+      var u = String(b.imageUrl).trim();
+      return u.indexOf('http') === 0 ? 1 : 0;
+    }
+    var rows = be.blocks.filter(function (b) {
+      return b && String(b.slotKey) === String(slotKey);
+    });
+    rows.sort(function (a, b) {
+      var ir = imgRank(b) - imgRank(a);
+      if (ir !== 0) return ir;
+      var as = typeof a.sort === 'number' && !isNaN(a.sort) ? a.sort : 0;
+      var bs = typeof b.sort === 'number' && !isNaN(b.sort) ? b.sort : 0;
+      if (as !== bs) return as - bs;
+      return String(a.recordId || '').localeCompare(String(b.recordId || ''));
+    });
+    return rows;
+  }
+
+  function explorerMergedBody(brand, slotKey, joinStr) {
+    joinStr = joinStr == null ? '\n\n' : joinStr;
+    return explorerBlocksForSlot(brand, slotKey)
+      .map(function (r) {
+        var t = hasVal(r.title) ? String(r.title).trim() : '';
+        var bd = hasVal(r.body) ? String(r.body).trim() : '';
+        if (t && bd) return t + ': ' + bd;
+        return bd || t;
+      })
+      .filter(hasVal)
+      .join(joinStr);
   }
 
   function splitToTags(val) {
@@ -633,8 +669,12 @@
     return parts.length ? parts.join(' · ') : '';
   }
 
-  /** Short “benefit zones” line — first differentiator bullets or footprint experience mix (atelier hero parity). */
+  /** Short “benefit zones” line — optional Airtable slot hero.benefit_zones, else differentiators / footprint mix. */
   function presentationBenefitZonesLine(brand) {
+    var slot = explorerMergedBody(brand, 'hero.benefit_zones', ', ');
+    if (hasVal(slot)) {
+      return String(slot).trim();
+    }
     var diff = brand.keyBrandDifferentiators;
     if (diff) {
       var bullets = String(diff)
@@ -654,13 +694,17 @@
     return parts.join(' · ');
   }
 
-  /** One-line operator fit — prefer Operational Support specializations / proof, not full value proposition. */
+  /** One-line operator fit — optional slot hero.operator_compat, else Operational Support / profile. */
   function presentationOperatorCompatLine(brand) {
+    var slot = explorerMergedBody(brand, 'hero.operator_compat');
+    if (hasVal(slot)) {
+      return String(slot).trim();
+    }
     var op = brand.operationalSupport || {};
     if (hasVal(op.specializations)) return String(op.specializations).trim();
     if (hasVal(op.testimonials)) {
       var t0 = String(op.testimonials).trim().split(/\n+/)[0];
-      if (t0) return t0.length > 220 ? t0.slice(0, 217) + '…' : t0;
+      if (t0) return t0;
     }
     var p = brand.brandProfileAnalysis;
     if (hasVal(p)) {
@@ -670,7 +714,7 @@
           return s.trim();
         })
         .filter(Boolean)[0];
-      if (first) return first.length > 220 ? first.slice(0, 217) + '…' : first;
+      if (first) return first;
     }
     return '';
   }
@@ -693,12 +737,6 @@
     var b = brand.hotelServiceModel;
     if (!a && !b) return '';
     return [a, b].filter(Boolean).join(' · ');
-  }
-
-  function presentationCardVal(v) {
-    var t = formatValue(v);
-    if (!t) return '—';
-    return t.length > 240 ? t.slice(0, 237) + '…' : t;
   }
 
   function presentationIsDemoBrand(brand) {
@@ -745,12 +783,21 @@
       .join('');
 
     function metaCard(label, val) {
+      var raw = formatValue(val);
+      var text = raw != null && String(raw).trim() !== '' ? String(raw).trim() : '';
+      if (!text) {
+        return (
+          '<div class="meta-card"><div class="label">' +
+          escapeHtml(label) +
+          '</div><div class="value"><span class="meta-card__value-clamp meta-card__value-clamp--empty">—</span></div></div>'
+        );
+      }
       return (
         '<div class="meta-card"><div class="label">' +
         escapeHtml(label) +
-        '</div><div class="value">' +
-        escapeHtml(presentationCardVal(val)) +
-        '</div></div>'
+        '</div><div class="value"><span class="meta-card__value-clamp">' +
+        escapeHtml(text) +
+        '</span></div></div>'
       );
     }
 
@@ -774,7 +821,18 @@
 
     var updatedMeta = isDemo
       ? '<span class="meta-muted">Last updated March 2026</span>'
-      : '<span class="meta-muted">Live Airtable / Brand Setup data</span>';
+      : '<span class="meta-muted">' +
+        escapeHtml(
+          hasVal(brand.explorerHeroDataSource) && String(brand.explorerHeroDataSource).trim()
+            ? String(brand.explorerHeroDataSource).trim()
+            : 'Live Airtable / Brand Setup data'
+        ) +
+        '</span>';
+
+    var verificationText =
+      hasVal(brand.explorerHeroVerification) && String(brand.explorerHeroVerification).trim()
+        ? String(brand.explorerHeroVerification).trim()
+        : 'Verified by brand';
 
     return (
       '<section class="brand-hero be-combined-presentation-hero" id="' +
@@ -797,15 +855,19 @@
         ? '<p class="brand-hero__parent">' + escapeHtml(brand.parentCompany) + '</p>'
         : '<p class="brand-hero__parent meta-muted">Parent company not set</p>') +
       '<div class="brand-hero__verified-line">' +
-      '<span class="badge-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>Verified by brand</span>' +
+      '<span class="badge-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>' +
+      escapeHtml(verificationText) +
+      '</span>' +
       updatedMeta +
       '</div>' +
       '</div>' +
       '<div class="brand-hero__actions">' +
       '<div class="btn-row">' +
-      '<a class="btn" href="' +
-      escapeHtml(setupHref) +
-      '">Save</a>' +
+      (pid
+        ? '<button type="button" class="btn be-brand-save-btn" data-be-brand-id="' +
+          escapeHtml(pid) +
+          '" aria-pressed="false">Save</button>'
+        : '<button type="button" class="btn be-brand-save-btn" disabled title="Brand record id unavailable">Save</button>') +
       '<button type="button" class="btn btn--primary" disabled title="Coming soon">Request Introduction</button>' +
       '</div>' +
       (chipHtml ? '<div class="tag-chip-row" aria-label="Brand Highlights">' + chipHtml + '</div>' : '') +
@@ -832,6 +894,35 @@
       if (!el) return;
       if (hex) el.style.setProperty('--hero-stripe-bg', hex);
       else el.style.removeProperty('--hero-stripe-bg');
+    });
+  }
+
+  /** Set native tooltip only when hero meta value is visually line-clamped (scrollHeight overflow). */
+  function wirePresentationMetaValueTooltips(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    var nodes = scope.querySelectorAll(
+      '.brand-hero.be-combined-presentation-hero .meta-card__value-clamp:not(.meta-card__value-clamp--empty)'
+    );
+    if (!nodes || !nodes.length) return;
+    function apply() {
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        el.removeAttribute('title');
+        el.style.cursor = '';
+        var truncated = el.scrollHeight > el.clientHeight + 2;
+        if (truncated) {
+          var full = (el.textContent || '')
+            .replace(/\s+/g, ' ')
+            .trim();
+          if (full) {
+            el.setAttribute('title', full);
+            el.style.cursor = 'help';
+          }
+        }
+      }
+    }
+    requestAnimationFrame(function () {
+      requestAnimationFrame(apply);
     });
   }
 
@@ -1231,6 +1322,12 @@
         heroMount.innerHTML = unifiedTabs ? renderPresentationHero(brand) : renderHero(brand);
       }
       applyHeroStripe(brand);
+      if (unifiedTabs) {
+        wirePresentationMetaValueTooltips();
+        if (window.BrandExplorerFavorites && heroMount) {
+          window.BrandExplorerFavorites.wireSaveButtons(heroMount);
+        }
+      }
 
       var nav = document.getElementById('brandTabs');
       var main = document.getElementById('brandPanels');
@@ -1300,7 +1397,8 @@
     TAB_DEFS: TAB_DEFS,
     TAB_ICONS: TAB_ICONS,
     renderPresentationHero: renderPresentationHero,
-    applyHeroStripe: applyHeroStripe
+    applyHeroStripe: applyHeroStripe,
+    wirePresentationMetaValueTooltips: wirePresentationMetaValueTooltips
   };
 
   var deferGoldAutoLoad =

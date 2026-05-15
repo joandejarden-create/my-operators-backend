@@ -50,7 +50,7 @@ Use your staging host and append these paths:
 
 - `/partner-directory.html?embed=1`
 - `/deal-capture-radar-with-ranked-list.html?embed=1`
-- `/brand-library-atelier-north.html?embed=1`
+- `/brand-explorer-combined.html?embed=1`
 - `/my-deals.html?embed=1`
 - `/new-deal-setup.html?embed=1`
 - `/deal-summary.html?embed=1`
