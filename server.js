@@ -119,35 +119,6 @@ import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
 import { getMe } from "./api/me.js";
-import {
-  listFddDocuments,
-  getFddDocument,
-  postFddDocument,
-  fddCreateDocumentMaybeMultipart,
-  postFddExtract,
-  postFddExtractFull,
-  postFddExtractFullAsync,
-  getFddExtractionJob,
-  streamFddExtractionJobEvents,
-  listFddSections,
-  listFddRows,
-  patchFddRow,
-  getFddBrandEconomics,
-  getFddCompare,
-  postFddDocumentAudit,
-  postFddDocumentApproveAutoEligible,
-  postFddBulkUpdateRows,
-  getFddDocumentFile,
-} from "./api/fdd-intelligence.js";
-import {
-  listFddDocumentTerms,
-  postFddExtractTerms,
-  patchFddTerm,
-  getFddBrandTerms,
-  postFddDocumentAuditTerms,
-  postFddApproveAutoEligibleTerms,
-  postFddBulkUpdateTerms,
-} from "./api/fdd-intelligence-terms.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -501,35 +472,6 @@ app.post("/api/outreach-hub/:table", outreachHubCreate);
 app.patch("/api/outreach-hub/:table/:recordId", outreachHubUpdate);
 app.delete("/api/outreach-hub/:table/:recordId", outreachHubRemove);
 app.get("/api/outreach/deal-activity-log", getOutreachDealActivityLog);
-
-// FDD Intelligence (Franchise Intelligence admin, economics profile, brand comparison)
-app.get("/api/fdd-intelligence/health", (_req, res) => {
-  res.json({ ok: true, service: "fdd-intelligence", documentsPath: "/api/fdd-intelligence/documents" });
-});
-app.get("/api/fdd-intelligence/compare", getFddCompare);
-app.get("/api/fdd-intelligence/documents", listFddDocuments);
-app.post("/api/fdd-intelligence/documents", fddCreateDocumentMaybeMultipart, postFddDocument);
-app.get("/api/fdd-intelligence/documents/:id/file", getFddDocumentFile);
-app.get("/api/fdd-intelligence/documents/:id/sections", listFddSections);
-app.get("/api/fdd-intelligence/documents/:id/rows", listFddRows);
-app.get("/api/fdd-intelligence/documents/:id/terms", listFddDocumentTerms);
-app.post("/api/fdd-intelligence/documents/:id/extract-terms", postFddExtractTerms);
-app.post("/api/fdd-intelligence/documents/:id/audit-terms", postFddDocumentAuditTerms);
-app.post("/api/fdd-intelligence/documents/:id/approve-auto-eligible-terms", postFddApproveAutoEligibleTerms);
-app.post("/api/fdd-intelligence/documents/:id/bulk-update-terms", postFddBulkUpdateTerms);
-app.post("/api/fdd-intelligence/documents/:id/extract-full-async", postFddExtractFullAsync);
-app.get("/api/fdd-intelligence/extract-jobs/:jobId", getFddExtractionJob);
-app.get("/api/fdd-intelligence/extract-jobs/:jobId/events", streamFddExtractionJobEvents);
-app.post("/api/fdd-intelligence/documents/:id/extract-full", postFddExtractFull);
-app.post("/api/fdd-intelligence/documents/:id/extract", postFddExtract);
-app.post("/api/fdd-intelligence/documents/:id/audit", postFddDocumentAudit);
-app.post("/api/fdd-intelligence/documents/:id/approve-auto-eligible", postFddDocumentApproveAutoEligible);
-app.post("/api/fdd-intelligence/documents/:id/bulk-update-rows", postFddBulkUpdateRows);
-app.get("/api/fdd-intelligence/documents/:id", getFddDocument);
-app.patch("/api/fdd-intelligence/rows/:rowId", patchFddRow);
-app.patch("/api/fdd-intelligence/terms/:termId", patchFddTerm);
-app.get("/api/fdd-intelligence/brands/:brandName/terms", getFddBrandTerms);
-app.get("/api/fdd-intelligence/brands/:brandName/economics", getFddBrandEconomics);
 
 // Serve the unified app hub and brand setup BEFORE static so paths are not treated as static files
 app.get("/app", (req, res) => {
