@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Franchise Intelligence — Economics profile | Dealality</title>
+  <link rel="stylesheet" href="/app.css" />
+  <link rel="stylesheet" href="/css/fdd-intelligence-shell.css" />
+  <style>
+    :root {
+      --neutral--800: #080f25;
+      --neutral--700: #212c4d;
+      --neutral--600: #37446b;
+      --neutral--500: #7e89ac;
+      --neutral--400: #aeb9e1;
+      --neutral--200: #d9e1fa;
+      --neutral--100: #fff;
+      --accent--primary-1: #6c72ff;
+      --accent--glow: rgba(108, 114, 255, 0.35);
+      --cyan-accent: #57c3ff;
+      --amber-warn: #fdb52a;
+      --surface-elevated: #101935;
+      --border-subtle: rgba(87, 195, 255, 0.18);
+      --secondary--color-1: #101935;
+      --secondary--color-5: #fdb52a;
+      --system--orange-400: #d5691b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: var(--neutral--600) var(--neutral--800);
+    }
+    *::-webkit-scrollbar { width: 6px; height: 6px; }
+    *::-webkit-scrollbar-track { background: var(--neutral--800); border-left: 1px solid var(--border-subtle); }
+    *::-webkit-scrollbar-thumb { background: var(--neutral--600); }
+    *::-webkit-scrollbar-thumb:hover { background: var(--neutral--500); }
+
+    /* Filters bar — same pattern as LOI / My Brand Deals */
+    .filters-section {
+      background: var(--neutral--800);
+      border: 0.6px solid var(--neutral--600);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: flex-end;
+      gap: 12px;
+      width: 100%;
+      min-width: 0;
+      color-scheme: dark;
+      box-sizing: border-box;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      overflow: hidden;
+      flex: 1 1 0%;
+    }
+    .filter-group-search {
+      flex: 1.15 1 0%;
+      min-width: 140px;
+    }
+    .filter-group-rows {
+      flex: 0 1 280px;
+      min-width: 220px;
+      max-width: 320px;
+    }
+    .filter-group-actions {
+      flex: 0 0 auto;
+      min-width: 0;
+    }
+    .filter-group-reset {
+      flex: 0 0 auto;
+      min-width: 0;
+      flex-shrink: 0;
+      position: relative;
+      overflow: visible !important;
+    }
+    .filters-section .filter-label {
+      color: var(--neutral--400);
+      font-weight: 500;
+      font-size: 12px;
+      margin-bottom: 0;
+    }
+    .filters-section .filter-select,
+    .filters-section .filter-input {
+      background: var(--secondary--color-1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+      min-height: 36px;
+      transition: border-color 0.2s;
+    }
+    .filters-section .filter-select { cursor: pointer; }
+    .filters-section .filter-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+    .filters-section .filter-input:focus,
+    .filters-section .filter-select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    .filters-section .filter-select option {
+      background: var(--secondary--color-1);
+      color: #ffffff;
+    }
+    .filter-actions-inline {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .filters-section .filter-actions-inline button {
+      white-space: nowrap;
+      padding: 8px 14px;
+      min-height: 36px;
+      font-size: 13px;
+    }
+    .filters-section .btn-clear {
+      padding: 8px 16px;
+      background: var(--secondary--color-5);
+      border: 1px solid var(--secondary--color-5);
+      color: var(--neutral--100);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .filters-section .btn-clear:hover {
+      background: var(--system--orange-400);
+      border-color: var(--system--orange-400);
+    }
+    .filter-group-reset .filter-label-faux {
+      visibility: hidden;
+      font-size: 12px;
+      line-height: 1.25;
+      min-height: 18px;
+      display: block;
+      user-select: none;
+    }
+    @media (max-width: 1100px) {
+      .filters-section {
+        flex-wrap: wrap;
+        padding: 16px;
+      }
+      .filter-group-search {
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+      .filter-group-rows {
+        flex: 1 1 240px;
+        max-width: none;
+      }
+      .filter-group-actions,
+      .filter-group-reset {
+        flex: 1 1 auto;
+      }
+    }
+
+    .econ-results-wrap {
+      margin-bottom: 12px;
+    }
+    .econ-preset-chips {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 6px;
+      margin: 0.35rem 0 0.65rem;
+      width: 100%;
+      background: var(--neutral--800);
+      border: 0.6px solid var(--neutral--600);
+      border-radius: 8px;
+      padding: 8px 12px;
+      align-items: center;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--neutral--600) var(--neutral--800);
+    }
+    .econ-preset-chips::-webkit-scrollbar { height: 6px; }
+    .econ-preset-chips::-webkit-scrollbar-track { background: var(--neutral--800); border-top: 1px solid var(--border-subtle); }
+    .econ-preset-chips::-webkit-scrollbar-thumb { background: var(--neutral--600); }
+    .econ-preset-chip {
+      padding: 5px 10px;
+      background: #343b4f;
+      border: 0.6px solid var(--neutral--600);
+      color: var(--neutral--400);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-family: inherit;
+    }
+    .econ-preset-chip:hover {
+      border-color: var(--accent--primary-1);
+      color: var(--neutral--100);
+    }
+    .econ-preset-chip.active {
+      background: var(--accent--primary-1);
+      border-color: var(--accent--primary-1);
+      color: var(--neutral--100);
+    }
+    .econ-results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+      gap: 12px 15px;
+    }
+    .econ-results-count {
+      font-size: 14px;
+      color: var(--neutral--500);
+      font-weight: 500;
+    }
+    .econ-results-count strong { color: var(--neutral--100); font-weight: 600; }
+    .econ-results-count .econ-results-meta { color: var(--neutral--500); font-weight: 500; }
+    .econ-results-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .econ-sort-control { display: flex; align-items: center; gap: 8px; }
+    .econ-sort-label { color: var(--neutral--500); font-size: 12px; font-weight: 500; }
+    .econ-sort-select {
+      background: var(--surface-elevated);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--neutral--100);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      min-width: 168px;
+    }
+    .econ-sort-select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    .econ-view-toggle {
+      display: flex;
+      gap: 4px;
+      background: #343b4f;
+      border: 0.6px solid var(--neutral--600);
+      border-radius: 6px;
+      padding: 4px;
+    }
+    .econ-view-toggle-btn {
+      padding: 6px 10px;
+      background: transparent;
+      border: none;
+      color: var(--neutral--500);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      font-family: inherit;
+    }
+    .econ-view-toggle-btn:hover { background: var(--neutral--700); color: var(--neutral--100); }
+    .econ-view-toggle-btn.active { background: var(--accent--primary-1); color: var(--neutral--100); }
+    .econ-bulk-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.5rem;
+      align-items: center;
+      margin-bottom: 0.45rem;
+    }
+    .econ-bulk-toolbar .ghost {
+      background: transparent;
+      border: 1px solid var(--neutral--600);
+      color: var(--neutral--200);
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .econ-bulk-toolbar .ghost:hover {
+      border-color: var(--accent--primary-1);
+      color: var(--neutral--100);
+    }
+    .econ-bulk-toolbar .primary {
+      background: var(--accent--primary-1);
+      border: none;
+      color: var(--neutral--100);
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .econ-bulk-toolbar .primary:hover { filter: brightness(1.06); }
+    .econ-bulk-status-msg {
+      margin: 0 0 0.5rem;
+      font-size: 0.82rem;
+      color: var(--neutral--400);
+      line-height: 1.45;
+    }
+    .econ-bulk-status-msg strong { color: var(--neutral--100); }
+    .econ-deals-table th.econ-cell-cb,
+    .econ-deals-table td.econ-cell-cb {
+      width: 38px;
+      text-align: center;
+      vertical-align: middle !important;
+      padding-left: 0.35rem;
+      padding-right: 0.35rem;
+    }
+    .econ-deals-table tbody tr.econ-row-selected td { background: rgba(108, 114, 255, 0.1); }
+    #econ-head-cb { cursor: pointer; accent-color: var(--accent--primary-1); }
+    .econ-row-cb { cursor: pointer; accent-color: var(--accent--primary-1); }
+    .econ-table-scroll.econ-table-scroll--compact .econ-deals-table { font-size: 0.72rem; }
+    .econ-table-scroll.econ-table-scroll--compact .econ-deals-table th,
+    .econ-table-scroll.econ-table-scroll--compact .econ-deals-table td { padding: 0.22rem 0.3rem; }
+
+    .econ-table-panel {
+      background: var(--neutral--800);
+      border: 0.6px solid var(--neutral--600);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .econ-table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .econ-deals-table {
+      width: 100%;
+      min-width: 1280px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .econ-deals-table thead { background: var(--neutral--700); }
+    .econ-deals-table th {
+      color: var(--neutral--100);
+      font-weight: 600;
+      padding: 0.65rem 0.5rem;
+      text-align: left;
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 2px solid var(--neutral--600);
+      vertical-align: middle;
+    }
+    .econ-deals-table th[data-sort] {
+      cursor: pointer;
+      user-select: none;
+    }
+    .econ-deals-table th[data-sort]:hover { background: var(--neutral--600); }
+    .econ-deals-table th .sort-indicator {
+      display: inline-flex;
+      flex-direction: column;
+      margin-left: 0.35rem;
+      opacity: 0.45;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    .econ-deals-table th:hover .sort-indicator,
+    .econ-deals-table th.sort-asc .sort-indicator,
+    .econ-deals-table th.sort-desc .sort-indicator { opacity: 1; }
+    .sort-indicator-arrow {
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      margin: 1px 0;
+    }
+    .sort-indicator-arrow-up { border-bottom: 5px solid var(--neutral--400); }
+    .sort-indicator-arrow-down { border-top: 5px solid var(--neutral--400); }
+    .econ-deals-table th.sort-asc .sort-indicator-arrow-up { border-bottom-color: var(--accent--primary-1); }
+    .econ-deals-table th.sort-desc .sort-indicator-arrow-down { border-top-color: var(--accent--primary-1); }
+    .econ-deals-table tbody tr {
+      border-bottom: 0.6px solid var(--neutral--600);
+    }
+    .econ-deals-table tbody tr:hover td { background: rgba(108, 114, 255, 0.06); }
+    .econ-deals-table td {
+      padding: 0.55rem 0.5rem;
+      color: var(--neutral--400);
+      font-size: 0.8125rem;
+      vertical-align: top;
+    }
+    .econ-deals-table td.col-center,
+    .econ-deals-table th.col-center { text-align: center; }
+    .econ-deals-table td.col-wrap {
+      white-space: normal;
+      word-break: break-word;
+    }
+    .econ-deals-table td .cost-basis-sub {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--neutral--500);
+      margin-top: 0.2rem;
+      line-height: 1.35;
+    }
+    .econ-deals-table td.muted-td { color: var(--neutral--500); }
+    .econ-deals-table td.cat-cell {
+      color: var(--neutral--100);
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
+    .econ-empty-state {
+      padding: 2rem 1.25rem;
+      text-align: center;
+      color: var(--neutral--500);
+      font-size: 0.9rem;
+    }
+
+    .filters-section .segmented {
+      display: flex;
+      gap: 0.15rem;
+      padding: 0.15rem;
+      background: var(--secondary--color-1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      min-height: 36px;
+      align-items: stretch;
+      box-sizing: border-box;
+    }
+    .segmented .segment {
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      margin: 0;
+      padding: 0.3rem 0.45rem;
+      border-radius: 6px;
+      text-transform: none;
+      letter-spacing: normal;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--neutral--500);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      border: 0.6px solid transparent;
+    }
+    .segmented .segment:has(input:checked) {
+      background: linear-gradient(135deg, rgba(108, 114, 255, 0.38) 0%, rgba(87, 195, 255, 0.14) 100%);
+      color: var(--neutral--100);
+      border-color: rgba(108, 114, 255, 0.55);
+      box-shadow: 0 0 0 1px rgba(108, 114, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .segmented .segment:hover:not(:has(input:checked)) {
+      color: var(--neutral--400);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .segmented .segment input[type="radio"] {
+      accent-color: var(--accent--primary-1);
+      width: 0.85rem;
+      height: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    button {
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.55rem 1.1rem;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    button:active { transform: scale(0.98); }
+    button.primary {
+      background: linear-gradient(135deg, var(--accent--primary-1) 0%, #5a5fe0 100%);
+      color: var(--neutral--100);
+      box-shadow: 0 4px 16px rgba(108, 114, 255, 0.35);
+    }
+    button.primary:hover {
+      box-shadow: 0 6px 22px rgba(108, 114, 255, 0.45);
+    }
+    button.ghost {
+      background: transparent;
+      color: var(--neutral--400);
+      border: 0.6px solid var(--neutral--600);
+    }
+    button.ghost:hover {
+      border-color: var(--neutral--500);
+      color: var(--neutral--100);
+      background: rgba(55, 68, 107, 0.35);
+    }
+
+    .muted {
+      color: var(--neutral--500);
+      font-size: 0.8125rem;
+      margin-top: 0.75rem;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.12rem 0.45rem;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      margin-right: 0.25rem;
+    }
+    .pill.approved { background: rgba(20, 202, 116, 0.18); color: #7bed9f; }
+    .pill.needs { background: rgba(253, 181, 42, 0.18); color: #ffe082; }
+    .pill.dup { background: rgba(154, 145, 251, 0.2); color: #d4c4fc; }
+    .pill.yes { background: rgba(20, 202, 116, 0.15); color: #7bed9f; }
+    .pill.no { background: rgba(126, 137, 172, 0.2); color: var(--neutral--500); }
+
+    .questions {
+      margin-top: 1.75rem;
+      padding: 1.15rem 1.25rem;
+      border-radius: 12px;
+      background: var(--neutral--700);
+      border: 0.6px solid var(--neutral--600);
+      border-left: 4px solid var(--accent--primary-1);
+    }
+    .questions > strong {
+      display: block;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--neutral--100);
+      margin-bottom: 0.5rem;
+    }
+    .questions ul {
+      margin: 0.25rem 0 0 1.15rem;
+      padding: 0;
+      color: var(--neutral--400);
+    }
+    .questions li { margin: 0.45rem 0; line-height: 1.5; }
+
+    .econ-deals-table td.fee-name { color: var(--neutral--100); font-weight: 600; }
+    .econ-deals-table td.muted { color: var(--neutral--500); }
+  </style>
+</head>
+<body class="fdd-page">
+  <div class="fdd-container">
+    <header class="fdd-dashboard-header">
+      <div class="fdd-dashboard-header-left">
+        <h1 class="fdd-page-title">Franchise Intelligence</h1>
+        <p class="fdd-page-intro">
+          Leverage our various tools that convert complex franchise disclosure documents into actionable intelligence for
+          comparing brand costs, requirements, flexibility, and commercial risk.
+        </p>
+      </div>
+      <aside class="fdd-dashboard-header-disclaimer" aria-label="Disclaimer">
+        <div class="disclaimer-box">
+          <div class="disclaimer-box__title">Disclaimer</div>
+          <div id="disclaimer">
+            <ul class="disclaimer-box__list">
+              <li class="disclaimer-box__item">Dealality FDD Intelligence is a commercial decision-support tool. It does not provide legal advice.</li>
+              <li class="disclaimer-box__item">Owners should review all franchise documents with qualified legal and financial advisors before making commitments.</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <div class="fdd-kpi-nav-stack">
+      <div class="fdd-kpi-section" id="fdd-kpi-section">
+        <header class="fdd-kpi-section__head">
+          <span class="fdd-step-label" id="fdd-kpi-step-label">Loaded profile summary</span>
+        </header>
+        <div id="fdd-summary-cards" class="fdd-kpi-strip" data-kpi-context="economics"></div>
+      </div>
+      <nav class="fdd-section-nav" aria-label="Franchise Intelligence workspace">
+        <a class="fdd-section-nav-item" href="/franchise-intelligence-admin.html">
+          <span class="fdd-section-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+          </span>
+          <span class="fdd-section-nav-label">Franchise<br />Intelligence</span>
+        </a>
+        <a class="fdd-section-nav-item active" href="/fdd-brand-economics-profile.html" aria-current="page">
+          <span class="fdd-section-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+          </span>
+          <span class="fdd-section-nav-label">Brand economics<br />profile</span>
+        </a>
+        <a class="fdd-section-nav-item" href="/fdd-brand-terms-profile.html">
+          <span class="fdd-section-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z"/></svg>
+          </span>
+          <span class="fdd-section-nav-label">Brand terms<br />profile</span>
+        </a>
+        <a class="fdd-section-nav-item" href="/fdd-brand-comparison.html">
+          <span class="fdd-section-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>
+          </span>
+          <span class="fdd-section-nav-label">Brand<br />comparison</span>
+        </a>
+      </nav>
+    </div>
+
+    <section class="filters-section" aria-label="Profile filters">
+      <div class="filter-group filter-group-search">
+        <label class="filter-label" for="econ-search">Search fees</label>
+        <input
+          type="search"
+          id="econ-search"
+          class="filter-input"
+          placeholder="Fee name, type, amount, category…"
+          autocomplete="off"
+        />
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="brand-select">Brand</label>
+        <select id="brand-select" class="filter-select" aria-label="Brand registered in FDD Intelligence">
+          <option value="">Loading brands…</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="year-select">FDD year (optional)</label>
+        <select id="year-select" class="filter-select" aria-label="FDD document year for this brand">
+          <option value="">All years</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="country-select">Country</label>
+        <select id="country-select" class="filter-select" aria-label="FDD country for this brand (from registry)">
+          <option value="">All countries</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="econ-category-filter">Commercial category</label>
+        <select id="econ-category-filter" class="filter-select" aria-label="Filter by commercial category">
+          <option value="">All categories</option>
+        </select>
+      </div>
+      <div class="filter-group filter-group-rows">
+        <span id="rows-filter-label" class="filter-label">Rows</span>
+        <div class="segmented" role="radiogroup" aria-labelledby="rows-filter-label">
+          <label class="segment">
+            <input type="radio" name="review-scope" value="approved" checked />
+            <span>Approved only</span>
+          </label>
+          <label class="segment">
+            <input type="radio" name="review-scope" value="include-needs" />
+            <span>Include Needs Review</span>
+          </label>
+        </div>
+      </div>
+      <div class="filter-group filter-group-actions">
+        <span class="filter-label">Profile</span>
+        <div class="filter-actions-inline">
+          <button type="button" class="primary" id="btn-load">Load profile</button>
+          <button type="button" class="ghost" id="btn-csv" hidden>Export CSV</button>
+        </div>
+      </div>
+      <div class="filter-group filter-group-reset">
+        <span class="filter-label filter-label-faux" aria-hidden="true">Reset</span>
+        <button type="button" class="btn-clear" id="btn-reset-view">Reset view</button>
+      </div>
+    </section>
+    <p class="muted" id="status-line" style="margin-top:0;"></p>
+
+    <div class="econ-results-wrap" id="econ-results-wrap" hidden>
+      <div class="econ-preset-chips" id="econ-preset-chips" role="toolbar" aria-label="Quick filter presets">
+        <button type="button" class="econ-preset-chip active" data-preset="all">All</button>
+        <button type="button" class="econ-preset-chip" data-preset="needs_review">Needs review</button>
+        <button type="button" class="econ-preset-chip" data-preset="possible_dup">Possible duplicate</button>
+        <button type="button" class="econ-preset-chip" data-preset="needs_legal">Needs legal</button>
+        <button type="button" class="econ-preset-chip" data-preset="needs_commercial">Needs commercial</button>
+        <button type="button" class="econ-preset-chip" data-preset="basis_needs">Basis review</button>
+        <button type="button" class="econ-preset-chip" data-preset="cat_franchise_fee">Franchise fee</button>
+        <button type="button" class="econ-preset-chip" data-preset="cat_recurring_brand">Recurring brand</button>
+        <button type="button" class="econ-preset-chip" data-preset="cat_transfer">Transfer / renewal</button>
+        <button type="button" class="econ-preset-chip" data-preset="cat_termination">Termination / default</button>
+        <button type="button" class="econ-preset-chip" data-preset="cat_other">Other / needs review</button>
+      </div>
+      <div class="econ-results-header">
+        <div class="econ-results-count" id="econ-results-count"></div>
+        <div class="econ-results-controls">
+          <div class="econ-sort-control">
+            <label class="econ-sort-label" for="econ-rows-sort">Sort:</label>
+            <select id="econ-rows-sort" class="econ-sort-select" aria-label="Sort fee rows">
+              <option value="feeOrObligationName|asc">Fee / obligation (A–Z)</option>
+              <option value="feeOrObligationName|desc">Fee / obligation (Z–A)</option>
+              <option value="commercialCategory|asc">Category (A–Z)</option>
+              <option value="commercialCategory|desc">Category (Z–A)</option>
+              <option value="reviewStatus|asc">Review status (A–Z)</option>
+              <option value="amount|desc">Amount (high → low)</option>
+              <option value="amount|asc">Amount (low → high)</option>
+              <option value="sourceItem|asc">Source item (A–Z)</option>
+              <option value="basisNeedsReview|desc">Basis review (needs first)</option>
+              <option value="basisNeedsReview|asc">Basis review (clear first)</option>
+              <option value="needsLegalReview|desc">Legal review (needs first)</option>
+              <option value="needsCommercialReview|desc">Commercial review (needs first)</option>
+            </select>
+          </div>
+          <div class="econ-view-toggle" role="group" aria-label="Table density">
+            <button type="button" class="econ-view-toggle-btn active" id="econ-view-comfortable" title="Comfortable spacing" aria-pressed="true">▦</button>
+            <button type="button" class="econ-view-toggle-btn" id="econ-view-compact" title="Compact spacing" aria-pressed="false">☰</button>
+          </div>
+        </div>
+      </div>
+      <div class="econ-bulk-toolbar">
+        <button type="button" class="ghost" id="btn-econ-select-visible">Select visible</button>
+        <button type="button" class="ghost" id="btn-econ-clear-selection">Clear selection</button>
+        <button type="button" class="primary" id="btn-econ-csv-selected">Export selected CSV</button>
+      </div>
+      <div class="econ-bulk-status-msg" id="econ-bulk-status" hidden></div>
+    </div>
+
+    <div id="econ-table-host"></div>
+    <div class="questions" id="owner-questions" hidden>
+      <strong>Key owner questions</strong>
+      <ul id="owner-questions-list"></ul>
+    </div>
+  </div>
+  <script src="/js/fdd-workspace-kpi-cache-boot.js"></script>
+  <script src="/fdd-brand-economics-profile.js" type="module"></script>
+</body>
+</html>

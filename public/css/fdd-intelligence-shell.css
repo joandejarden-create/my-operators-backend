@@ -1,0 +1,481 @@
+/**
+ * Shared FDD Intelligence workspace chrome (admin, economics profile, brand comparison).
+ * Tab + header patterns align with My Brand Deals (brand-development-dashboard).
+ */
+
+/* Single source of truth for FDD workspace chrome — all tab pages share this + identical header/KPI markup order. */
+/* app.css sets body { overflow: hidden } for the shell; FDD standalone pages must scroll. */
+body.fdd-page {
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+:root {
+  --fdd-neutral--800: #080f25;
+  --fdd-neutral--700: #212c4d;
+  --fdd-neutral--600: #37446b;
+  --fdd-neutral--500: #7e89ac;
+  --fdd-neutral--400: #aeb9e1;
+  --fdd-neutral--300: #d1dbf9;
+  --fdd-neutral--200: #d9e1fa;
+  --fdd-neutral--100: #ffffff;
+  --fdd-accent: #6c72ff;
+  --fdd-secondary-1: #101935;
+  --fdd-secondary-5: #fdb52a;
+  --fdd-orange: #d5691b;
+  --fdd-kpi-cell: 100px;
+  --fdd-kpi-gap: 8px;
+  --fdd-kpi-card-height: 120px;
+}
+
+.fdd-page {
+  min-height: 100vh;
+  background-color: var(--fdd-neutral--800);
+  color: var(--fdd-neutral--400);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color-scheme: dark;
+}
+
+.fdd-container {
+  max-width: min(1720px, calc(100vw - 3rem));
+  margin: 0 auto;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.fdd-dashboard-header {
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 380px);
+  gap: 24px 30px;
+  align-items: start;
+}
+
+.fdd-dashboard-header-left {
+  min-width: 0;
+}
+
+.fdd-dashboard-header-disclaimer {
+  justify-self: end;
+  width: 100%;
+  max-width: 380px;
+}
+
+@media (max-width: 900px) {
+  .fdd-dashboard-header {
+    grid-template-columns: 1fr;
+  }
+  .fdd-dashboard-header-disclaimer {
+    justify-self: stretch;
+    max-width: none;
+  }
+}
+
+/* Clause Library–style disclaimer (see public/clause-library.html .disclaimer-box) */
+.fdd-page .disclaimer-box {
+  background: rgba(108, 114, 255, 0.08);
+  border: 0.6px solid var(--fdd-neutral--600);
+  border-left: 3px solid var(--fdd-accent);
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin-top: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.fdd-page .disclaimer-box__title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fdd-neutral--100);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fdd-page .disclaimer-box__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fdd-page .disclaimer-box__item {
+  font-size: 11px;
+  color: var(--fdd-neutral--300);
+  line-height: 1.4;
+  padding-left: 16px;
+  position: relative;
+}
+
+.fdd-page .disclaimer-box__item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--fdd-accent);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.fdd-page .disclaimer-box__api-text {
+  margin: 0;
+  font-size: 11px;
+  color: var(--fdd-neutral--300);
+  line-height: 1.4;
+  padding-left: 16px;
+  position: relative;
+}
+
+.fdd-page .disclaimer-box__api-text::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--fdd-accent);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.fdd-dashboard-header-left > .fdd-page-title:first-child {
+  margin-bottom: 8px;
+}
+
+.fdd-page-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--fdd-neutral--100);
+  line-height: 1.2;
+}
+
+.fdd-page-intro {
+  margin: 5px 0 0;
+  color: var(--fdd-neutral--100);
+  font-size: 0.75rem;
+  font-weight: 300;
+  line-height: 1.35;
+  max-width: 56rem;
+}
+
+.fdd-kpi-nav-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.fdd-kpi-section {
+  width: 100%;
+  margin-bottom: 0;
+}
+/* KPI sits above tabs; spacing before tab bar */
+.fdd-kpi-nav-stack > .fdd-kpi-section {
+  margin-bottom: 16px;
+}
+.fdd-kpi-section[hidden] {
+  display: none !important;
+}
+
+.fdd-kpi-section__head {
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+.fdd-step-label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fdd-neutral--200);
+}
+
+.fdd-kpi-strip {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  /* Avoid layout collapse while innerHTML is replaced on navigation */
+  min-height: calc(var(--fdd-kpi-card-height) + 8px);
+}
+.fdd-kpi-strip-inner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: var(--fdd-kpi-gap);
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.fdd-kpi-metric-card {
+  flex: 0 0 auto;
+  width: var(--fdd-kpi-cell);
+  min-width: 92px;
+  max-width: 120px;
+  background: var(--fdd-secondary-1);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  padding: 6px 5px 7px;
+  box-sizing: border-box;
+  height: var(--fdd-kpi-card-height);
+  display: grid;
+  grid-template-rows: auto minmax(0, 2.2rem) auto;
+  row-gap: 2px;
+  align-content: start;
+}
+
+.fdd-kpi-metric-card__label-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 2em;
+}
+.fdd-kpi-metric-card__label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fdd-neutral--400);
+  line-height: 1.25;
+  text-align: center;
+  word-break: break-word;
+  hyphens: none;
+}
+
+.fdd-kpi-metric-card__value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 700;
+  color: var(--fdd-neutral--100);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.fdd-kpi-metric-card__footer {
+  min-height: 4px;
+}
+
+/* Section nav — same rhythm as My Brand Deals .bdd-section-nav */
+.fdd-section-nav {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fdd-neutral--600) var(--fdd-neutral--800);
+  padding-bottom: 6px;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--fdd-neutral--800);
+  padding-top: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fdd-section-nav::-webkit-scrollbar {
+  height: 8px;
+}
+
+.fdd-section-nav::-webkit-scrollbar-thumb {
+  background: var(--fdd-neutral--600);
+  border-radius: 4px;
+}
+
+.fdd-section-nav-item {
+  min-width: 104px;
+  max-width: 150px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #aeb9e1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 10px;
+  font-weight: 600;
+  border: none;
+  background: none;
+  font-family: inherit;
+  padding: 10px 12px;
+  white-space: normal;
+  flex-shrink: 0;
+  transition: color 0.2s;
+  margin-bottom: -1px;
+  text-decoration: none;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.fdd-section-nav-item:hover {
+  color: #fff;
+}
+
+.fdd-section-nav-item.active {
+  color: #6c72ff;
+}
+
+.fdd-section-nav-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aeb9e1;
+  flex-shrink: 0;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.fdd-section-nav-item.active .fdd-section-nav-icon {
+  border-color: #6c72ff;
+  border-width: 2px;
+  color: #6c72ff;
+}
+
+.fdd-section-nav-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fdd-section-nav-label {
+  text-align: center;
+  line-height: 1.25;
+  white-space: normal;
+  font-size: 9px;
+  display: block;
+}
+
+/* FDD Intelligence admin — stacked layout + scrollable data grids (fee + terms admin) */
+
+.fdd-admin-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.fdd-admin-doc-panel {
+  flex: 0 0 auto;
+  min-width: 0;
+  max-height: min(280px, 36vh);
+  display: flex;
+  flex-direction: column;
+  background: var(--fdd-secondary-1);
+  border: 1px solid var(--fdd-neutral--600);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  box-sizing: border-box;
+}
+
+.fdd-admin-doc-panel > h2:first-of-type {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.fdd-admin-doc-panel .fdd-admin-doc-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 6px;
+  border: 1px solid #243046;
+  background: #121a2e;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fdd-neutral--600) #121a2e;
+}
+
+.fdd-admin-doc-panel .fdd-admin-doc-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.fdd-admin-doc-panel .fdd-admin-doc-scroll::-webkit-scrollbar-thumb {
+  background: var(--fdd-neutral--600);
+  border-radius: 6px;
+}
+
+.fdd-admin-work-panel {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fdd-admin-data-scroll {
+  flex: 1 1 auto;
+  min-height: 280px;
+  max-height: calc(100dvh - 340px);
+  min-width: 0;
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid #243046;
+  border-radius: 8px;
+  background: #121a2e;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fdd-neutral--600) #121a2e;
+  scrollbar-gutter: stable;
+}
+
+.fdd-admin-data-scroll::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.fdd-admin-data-scroll::-webkit-scrollbar-thumb {
+  background: var(--fdd-neutral--600);
+  border-radius: 6px;
+  border: 2px solid #121a2e;
+}
+
+.fdd-admin-data-scroll::-webkit-scrollbar-track {
+  background: #0b1020;
+}
+
+.fdd-admin-data-scroll::-webkit-scrollbar-corner {
+  background: #121a2e;
+}
+
+@media (max-height: 720px) {
+  .fdd-admin-data-scroll {
+    max-height: calc(100dvh - 260px);
+  }
+  .fdd-admin-doc-panel {
+    max-height: min(220px, 30vh);
+  }
+}
+
+/* Optional disabled nav slot (reserved for future links). */
+.fdd-section-nav-item--disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  pointer-events: none;
+}

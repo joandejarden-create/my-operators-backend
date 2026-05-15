@@ -2445,6 +2445,7 @@ class PartnerDirectory {
                 </div>
             </div>
             <div class="individual-card__footer">
+                <p class="individual-card__stats-note">Sample figures for demo — not live pipeline totals.</p>
                 <div class="individual-card__footer-actions">
                     <button type="button" class="individual-card__connect-btn">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -3670,6 +3671,7 @@ class PartnerDirectory {
                         ${companyName ? `<div class="individual-modal-header-company">${this.escapeHtml(companyName)}</div>` : ''}
                     </div>
                 </div>
+                <div class="individual-modal-header-stats-wrap">
                 <div class="individual-modal-header-metrics individual-card__metrics" aria-label="Deal stats">
                     <div class="individual-card__metric">
                         <span class="stat-icon">📄</span>
@@ -3692,6 +3694,8 @@ class PartnerDirectory {
                             <span class="individual-card__metric-label">Closed Deal(s)</span>
                         </div>
                     </div>
+                </div>
+                <p class="individual-modal-header-stats-note">Sample figures for demo — not live pipeline totals.</p>
                 </div>
             </div>
             <div class="company-modal-header-info">

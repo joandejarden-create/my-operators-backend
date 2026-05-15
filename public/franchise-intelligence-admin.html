@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Franchise Intelligence — Admin | Dealality</title>
+  <link rel="stylesheet" href="/app.css" />
+  <link rel="stylesheet" href="/css/fdd-intelligence-shell.css" />
+  <link rel="stylesheet" href="/css/fdd-extract-loading.css" />
+  <style>
+    .fdd-intel-admin-main { padding: 0; max-width: 100%; margin: 0; min-width: 0; }
+    body.fdd-page a:not(.fdd-section-nav-item) { color: #8ab4ff; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1rem; }
+    button, .btn { background: #2d3f66; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.875rem; }
+    button.primary { background: #3d5afe; }
+    button.danger { background: #c62828; }
+    button.ghost { background: transparent; border: 1px solid #3d4f6f; color: #d4d8e6; }
+    .fdd-admin-doc-scroll table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      background: #121a2e;
+    }
+    .fdd-admin-data-scroll #rows-table,
+    .fdd-admin-data-scroll #terms-table {
+      width: max-content;
+      min-width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      background: #121a2e;
+    }
+    .fdd-admin-doc-scroll th,
+    .fdd-admin-doc-scroll td,
+    .fdd-admin-data-scroll #rows-table th,
+    .fdd-admin-data-scroll #rows-table td,
+    .fdd-admin-data-scroll #terms-table th,
+    .fdd-admin-data-scroll #terms-table td {
+      border: 1px solid #243046;
+      padding: 0.4rem 0.5rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    .fdd-admin-doc-scroll th,
+    .fdd-admin-data-scroll #rows-table th,
+    .fdd-admin-data-scroll #terms-table th {
+      background: #1a2438;
+    }
+    tr.selected td { background: #1e2a44; }
+    .muted { color: #8b93a8; font-size: 0.8rem; }
+    input, select, textarea { background: #0b1020; color: #e8eaf0; border: 1px solid #324060; border-radius: 4px; padding: 0.35rem 0.5rem; font-size: 0.85rem; }
+    label { display: block; font-size: 0.75rem; color: #9aa3b8; margin-bottom: 0.15rem; }
+    .form-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; margin-bottom: 0.5rem; }
+    dialog { border: none; border-radius: 8px; padding: 0; background: #121a2e; color: #e8eaf0; max-width: 520px; width: 90vw; }
+    dialog::backdrop { background: rgba(0,0,0,0.55); }
+    .dialog-inner { padding: 1.25rem; }
+    #fdd-rows-wrap.fdd-rows-wrap--compact #rows-table { font-size: 0.72rem; }
+    #fdd-rows-wrap.fdd-rows-wrap--compact #rows-table th,
+    #fdd-rows-wrap.fdd-rows-wrap--compact #rows-table td { padding: 0.22rem 0.3rem; }
+    .pill { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 999px; font-size: 0.7rem; }
+    .pill.needs { background: #5c4a00; color: #ffe082; }
+    .pill.approved { background: #1b5e20; color: #c8e6c9; }
+    .pill.rejected { background: #4a148c; color: #e1bee7; }
+    .pill.yesno-yes { background: #1b4332; color: #b7e4c7; }
+    .pill.yesno-no { background: #3e2723; color: #d7ccc8; }
+    .actions-cell { white-space: normal; min-width: 200px; }
+    .actions-cell button { margin: 0.15rem 0.15rem 0 0; font-size: 0.7rem; padding: 0.25rem 0.45rem; }
+    .rows-filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+      gap: 0.45rem 0.65rem;
+      margin: 0.5rem 0 0.65rem;
+      align-items: end;
+    }
+    .rows-filter-grid label { margin-bottom: 0.08rem; font-size: 0.68rem; }
+    .rows-filter-grid select { width: 100%; min-width: 0; }
+    .rows-bulk-toolbar { flex-wrap: wrap; gap: 0.4rem 0.5rem !important; align-items: center; }
+    .cell-cb { width: 34px; text-align: center; vertical-align: middle !important; }
+    #rows-table thead th.cell-cb { text-align: center; }
+    #rows-head-cb { cursor: pointer; }
+    /* Sticky checkbox + Name columns (horizontal scroll inside .fdd-admin-data-scroll) */
+    #rows-table,
+    #terms-table {
+      --fi-sticky-cb: 38px;
+    }
+    #fdd-rows-wrap.fdd-rows-wrap--compact #rows-table {
+      --fi-sticky-cb: 36px;
+    }
+    #rows-table thead th.cell-sticky-col-0,
+    #rows-table tbody td.cell-sticky-col-0,
+    #terms-table thead th.cell-sticky-col-0,
+    #terms-table tbody td.cell-sticky-col-0 {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      width: var(--fi-sticky-cb);
+      min-width: var(--fi-sticky-cb);
+      max-width: var(--fi-sticky-cb);
+      box-sizing: border-box;
+      background: #121a2e;
+    }
+    #rows-table thead th.cell-sticky-col-0,
+    #terms-table thead th.cell-sticky-col-0 {
+      z-index: 4;
+      background: #1a2438;
+    }
+    #rows-table thead th.cell-sticky-col-1,
+    #rows-table tbody td.cell-sticky-col-1,
+    #terms-table thead th.cell-sticky-col-1,
+    #terms-table tbody td.cell-sticky-col-1 {
+      position: sticky;
+      left: var(--fi-sticky-cb);
+      z-index: 2;
+      background: #121a2e;
+      box-shadow: 4px 0 12px -2px rgba(0, 0, 0, 0.55);
+    }
+    #rows-table thead th.cell-sticky-col-1,
+    #terms-table thead th.cell-sticky-col-1 {
+      z-index: 4;
+      background: #1a2438;
+      box-shadow: 4px 0 12px -2px rgba(0, 0, 0, 0.55);
+    }
+    #rows-table tbody tr.selected td.cell-sticky-col-0,
+    #rows-table tbody tr.selected td.cell-sticky-col-1,
+    #terms-table tbody tr.selected td.cell-sticky-col-0,
+    #terms-table tbody tr.selected td.cell-sticky-col-1 {
+      background: #1e2a44;
+    }
+    #rows-table td.cell-sticky-col-1 {
+      min-width: 9rem;
+      max-width: 14rem;
+      white-space: normal;
+      word-break: break-word;
+    }
+    #terms-table td.cell-sticky-col-1 {
+      min-width: 8rem;
+      max-width: 13rem;
+      white-space: normal;
+      word-break: break-word;
+    }
+    .audit-pill {
+      display: inline-block;
+      padding: 0.12rem 0.4rem;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .audit-pill--high { background: rgba(20, 202, 116, 0.2); color: #8ef0c2; }
+    .audit-pill--quick { background: rgba(87, 195, 255, 0.18); color: #9fdcff; }
+    .audit-pill--needs { background: rgba(253, 181, 42, 0.18); color: #ffe082; }
+    .audit-pill--manual { background: rgba(213, 105, 27, 0.22); color: #ffc48a; }
+    .audit-pill--block { background: rgba(197, 48, 48, 0.22); color: #ffb4b8; }
+    .pill-dup { background: rgba(154, 145, 251, 0.25); color: #d4c4fc; }
+    .pill-auto { background: rgba(20, 202, 116, 0.22); color: #b7e4c7; }
+    .bulk-status-msg { margin: 0.45rem 0; font-size: 0.82rem; color: #d4d8e6; line-height: 1.45; }
+    .bulk-status-msg strong { color: #fff; }
+    .fdd-admin-chips {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 6px;
+      margin: 0.5rem 0 0.75rem;
+      width: 100%;
+      background: #080f25;
+      border: 0.6px solid #37446b;
+      border-radius: 8px;
+      padding: 8px 12px;
+      align-items: center;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #37446b #080f25;
+    }
+    .fdd-admin-chips::-webkit-scrollbar { height: 6px; }
+    .fdd-admin-chips::-webkit-scrollbar-track { background: #080f25; border-top: 1px solid rgba(87, 195, 255, 0.25); }
+    .fdd-admin-chips::-webkit-scrollbar-thumb { background: #37446b; }
+    .fdd-admin-chip {
+      padding: 5px 10px;
+      background: #343b4f;
+      border: 0.6px solid #37446b;
+      color: #aeb9e1;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-family: inherit;
+    }
+    .fdd-admin-chip:hover { border-color: #6c72ff; color: #fff; }
+    .fdd-admin-chip.active { background: #6c72ff; border-color: #6c72ff; color: #fff; }
+    .fdd-admin-results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+      flex-wrap: wrap;
+      gap: 12px 15px;
+    }
+    .fdd-admin-results-header .results-count { color: #7e89ac; font-size: 14px; font-weight: 500; }
+    .fdd-admin-results-header .results-count strong { color: #fff; font-weight: 600; }
+    .fdd-admin-results-header .results-count .fdd-results-meta { color: #7e89ac; font-weight: 500; }
+    .fdd-admin-results-header .results-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .fdd-admin-results-header .sort-control { display: flex; align-items: center; gap: 8px; }
+    .fdd-admin-results-header .sort-label { color: #7e89ac; font-size: 12px; font-weight: 500; }
+    .fdd-admin-results-header .sort-select {
+      background: #101935;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      min-width: 160px;
+    }
+    .fdd-admin-results-header .sort-select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    .fdd-admin-results-header .view-toggle {
+      display: flex;
+      gap: 4px;
+      background: #343b4f;
+      border: 0.6px solid #37446b;
+      border-radius: 6px;
+      padding: 4px;
+    }
+    .fdd-admin-results-header .view-toggle-btn {
+      padding: 6px 10px;
+      background: transparent;
+      border: none;
+      color: #7e89ac;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      font-family: inherit;
+    }
+    .fdd-admin-results-header .view-toggle-btn:hover { background: #212c4d; color: #fff; }
+    .fdd-admin-results-header .view-toggle-btn.active { background: #6c72ff; color: #fff; }
+    .cell-clip { max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+    .cell-clip-sm { max-width: 140px; overflow: hidden; text-overflow: ellipsis; }
+    .cell-num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .warn-banner { background: rgba(253, 181, 42, 0.12); border: 1px solid rgba(253, 181, 42, 0.35); color: #ffe082; padding: 0.5rem 0.65rem; border-radius: 6px; margin: 0.5rem 0; font-size: 0.82rem; }
+    .fi-panel-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0.85rem 0 0.65rem;
+      border-bottom: 1px solid #243046;
+      padding-bottom: 0.35rem;
+    }
+    .fi-panel-tab {
+      background: #1a2438;
+      border: 1px solid #324060;
+      color: #aeb9e1;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-family: inherit;
+    }
+    .fi-panel-tab:hover { color: #fff; border-color: #6c72ff; }
+    .fi-panel-tab.active {
+      background: #2d3f66;
+      border-color: #6c72ff;
+      color: #fff;
+    }
+    .fi-panel { margin-top: 0.5rem; }
+    .fi-panel[hidden] { display: none !important; }
+    .fi-readiness-pill {
+      display: inline-block;
+      margin-top: 0.35rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: #212c4d;
+      border: 1px solid #37446b;
+      font-size: 0.78rem;
+      color: #e8eaf0;
+    }
+    /* Selected-document KPI strip (My Deals / dashboard insight card pattern) */
+    .fi-doc-kpi-wrap {
+      margin: 0.45rem 0 0.65rem;
+      min-width: 0;
+    }
+    .fi-doc-kpi-step-label {
+      color: #7e89ac;
+      font-size: clamp(9px, 1vw, 11px);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 0.4rem;
+    }
+    .fi-doc-kpi-row {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 6px;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #37446b #080f25;
+      padding-bottom: 2px;
+    }
+    .fi-doc-kpi-row::-webkit-scrollbar { height: 5px; }
+    .fi-doc-kpi-row::-webkit-scrollbar-thumb { background: #37446b; border-radius: 4px; }
+    .fi-kpi-card {
+      flex: 1 1 0;
+      min-width: 48px;
+      min-height: 58px;
+      padding: 6px 3px 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      gap: 4px;
+      background: #101935;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    }
+    .fi-kpi-card--summary {
+      flex: 1.15 1 0;
+      min-width: 72px;
+    }
+    .fi-kpi-card__label {
+      color: #7e89ac;
+      font-size: clamp(6.5px, 0.52vw, 9px);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+      line-height: 1.15;
+      text-align: center;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: break-word;
+    }
+    .fi-kpi-card__value {
+      color: #fff;
+      font-size: clamp(11px, 0.95vw, 15px);
+      font-weight: 700;
+      line-height: 1.15;
+      text-align: center;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 1.35em;
+    }
+    .fi-kpi-card--summary .fi-kpi-card__value {
+      font-size: clamp(9px, 0.75vw, 11px);
+      font-weight: 600;
+      white-space: normal;
+      line-height: 1.2;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      align-items: flex-start;
+      padding: 0 1px;
+    }
+    .fi-overview-section {
+      margin: 0.65rem 0;
+      padding: 0.5rem 0.65rem;
+      background: #101935;
+      border: 1px solid #243046;
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+    .fi-overview-section h4 {
+      margin: 0 0 0.4rem;
+      font-size: 0.85rem;
+      color: #e8eaf0;
+    }
+    .fi-overview-grid-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.35rem 0.75rem;
+    }
+    .fi-overview-metric { color: #aeb9e1; }
+    .fi-overview-metric strong { color: #fff; font-weight: 600; }
+  </style>
+</head>
+<body class="fdd-page">
+  <div class="fdd-container">
+    <header class="fdd-dashboard-header">
+      <div class="fdd-dashboard-header-left">
+        <h1 class="fdd-page-title">Franchise Intelligence</h1>
+        <p class="fdd-page-intro">
+          Select an FDD once, run full franchise intelligence extraction, then review fee rows and terms &amp; obligations on this page.
+          Fee rows and terms remain in separate backend tables.
+        </p>
+      </div>
+      <aside class="fdd-dashboard-header-disclaimer" aria-label="Disclaimer">
+        <div class="disclaimer-box">
+          <div class="disclaimer-box__title">Disclaimer</div>
+          <ul class="disclaimer-box__list">
+            <li class="disclaimer-box__item">Dealality FDD Intelligence is a commercial decision-support tool. It does not provide legal advice.</li>
+            <li class="disclaimer-box__item">Owners should review all franchise documents with qualified legal and financial advisors before making commitments.</li>
+          </ul>
+        </div>
+      </aside>
+    </header>
+    <div class="fdd-kpi-nav-stack">
+      <nav class="fdd-section-nav" aria-label="Franchise Intelligence workspace">
+        <a class="fdd-section-nav-item active" href="/franchise-intelligence-admin.html" aria-current="page">
+          <span class="fdd-section-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+          </span>
+          <span class="fdd-section-nav-label">Franchise<br />Intelligence</span>
+        </a>
+        <a class="fdd-section-nav-item" href="/fdd-brand-economics-profile.html">
+          <span class="fdd-section-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+          </span>
+          <span class="fdd-section-nav-label">Brand economics<br />profile</span>
+        </a>
+        <a class="fdd-section-nav-item" href="/fdd-brand-terms-profile.html">
+          <span class="fdd-section-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h10v2H4v-2z"/></svg>
+          </span>
+          <span class="fdd-section-nav-label">Brand terms<br />profile</span>
+        </a>
+        <a class="fdd-section-nav-item" href="/fdd-brand-comparison.html">
+          <span class="fdd-section-nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg>
+          </span>
+          <span class="fdd-section-nav-label">Brand<br />comparison</span>
+        </a>
+      </nav>
+    </div>
+    <main class="fdd-intel-admin-main">
+      <p class="muted" id="storage-banner"></p>
+      <div id="extract-warnings" class="warn-banner" hidden></div>
+      <div class="toolbar">
+        <button type="button" class="primary" id="btn-open-register">Add / register FDD</button>
+        <button type="button" class="ghost" id="btn-refresh">Refresh documents</button>
+      </div>
+      <div class="fdd-admin-layout">
+        <section class="fdd-admin-doc-panel" aria-label="FDD documents">
+          <h2 style="font-size:1rem;">Documents</h2>
+          <div class="fdd-admin-doc-scroll">
+            <table id="fi-doc-table">
+              <thead>
+                <tr>
+                  <th>Brand</th>
+                  <th>Parent</th>
+                  <th>Year</th>
+                  <th>Country</th>
+                  <th>Extraction status</th>
+                  <th>Fee rows</th>
+                  <th>Term rows</th>
+                  <th>Last extracted</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="fdd-admin-work-panel" aria-label="Selected document">
+          <h2 style="font-size:1rem;">Selected document</h2>
+          <p class="muted" id="detail-empty">Select a document from the list.</p>
+          <div id="detail-panel" hidden>
+            <p><strong id="d-brand"></strong> <span class="muted" id="d-meta"></span></p>
+            <div id="fi-doc-kpi-wrap" class="fi-doc-kpi-wrap" aria-label="Selected document summary">
+              <div class="fi-doc-kpi-step-label">Selected document summary</div>
+              <div class="fi-doc-kpi-row" id="fi-doc-kpi-row">
+                <div class="fi-kpi-card fi-kpi-card--summary">
+                  <div class="fi-kpi-card__label">Summary</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-summary">—</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Fee rows total</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-fee-total">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Term rows total</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-term-total">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Fee rows approved</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-fee-approved">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Term rows approved</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-term-approved">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Fee needs review</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-fee-needs">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Terms needs review</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-term-needs">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Fee possible duplicates</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-fee-dup">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Term possible duplicates</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-term-dup">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Fee auto-eligible</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-fee-auto">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Term auto-eligible</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-term-auto">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Fee legal review</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-fee-legal">0</div>
+                </div>
+                <div class="fi-kpi-card">
+                  <div class="fi-kpi-card__label">Term legal review</div>
+                  <div class="fi-kpi-card__value" id="fi-kpi-v-term-legal">0</div>
+                </div>
+              </div>
+            </div>
+            <div class="toolbar" style="margin-top:0.35rem;">
+              <button type="button" class="primary" id="btn-extract-full" title="Fees + terms in one pass">Run Full Franchise Intelligence Extraction</button>
+              <button type="button" class="ghost" id="btn-extract" title="POST …/extract">Run Fees Only</button>
+              <button type="button" class="ghost" id="btn-extract-terms" title="POST …/extract-terms">Run Terms Only</button>
+              <button type="button" class="ghost" id="btn-audit" title="POST …/audit">Run Fee Audit</button>
+              <button type="button" class="ghost" id="btn-audit-terms" title="POST …/audit-terms">Run Terms Audit</button>
+              <button type="button" class="ghost" id="btn-approve-auto" title="POST …/approve-auto-eligible">Approve Fee Auto-Eligible</button>
+              <button type="button" class="ghost" id="btn-approve-auto-terms" title="POST …/approve-auto-eligible-terms">Approve Term Auto-Eligible</button>
+              <a class="btn ghost" id="link-file" href="#" target="_blank" rel="noopener" style="display:none;">Open PDF</a>
+              <button type="button" class="ghost" id="btn-load-text">Load full text (debug)</button>
+            </div>
+            <div id="fi-action-summary" class="muted bulk-status-msg" style="margin:0.25rem 0 0.35rem; min-height:0;" aria-live="polite" hidden></div>
+            <div id="full-extract-summary" class="warn-banner" style="display:none;" aria-live="polite"></div>
+            <p class="muted fi-sync-format-note" hidden style="margin:0.35rem 0 0.5rem; max-width: 52rem;"></p>
+            <pre class="muted" id="text-debug" style="display:none; max-height:120px; overflow:auto; white-space:pre-wrap; font-size:0.7rem;"></pre>
+
+            <div class="fi-panel-tabs" role="tablist" aria-label="Review panels">
+              <button type="button" class="fi-panel-tab active" role="tab" data-fi-panel="overview" aria-selected="true">Overview</button>
+              <button type="button" class="fi-panel-tab" role="tab" data-fi-panel="fees" aria-selected="false">Fee &amp; Cost Review</button>
+              <button type="button" class="fi-panel-tab" role="tab" data-fi-panel="terms" aria-selected="false">Terms &amp; Obligations Review</button>
+            </div>
+
+            <section id="fi-panel-overview" class="fi-panel" role="tabpanel" data-fi-panel="overview">
+              <h3 style="font-size:0.95rem; margin:0 0 0.35rem;">Overview</h3>
+              <p class="muted fi-sync-format-note" hidden style="margin:0 0 0.75rem; max-width:52rem;"></p>
+              <div id="fi-overview-body"></div>
+            </section>
+
+            <section id="fi-panel-fees" class="fi-panel" role="tabpanel" data-fi-panel="fees" hidden>
+              <h3 style="font-size:0.95rem; margin:0 0 0.35rem;">Fee &amp; Cost Review</h3>
+              <div class="rows-filter-grid" aria-label="Fee row filters">
+                <div>
+                  <label for="f-review-status">Review status</label>
+                  <select id="f-review-status">
+                    <option value="">All</option>
+                    <option value="Needs Review">Needs Review</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-audit-status">Audit status</label>
+                  <select id="f-audit-status">
+                    <option value="">All</option>
+                    <option value="High Confidence">High Confidence</option>
+                    <option value="Quick Review">Quick Review</option>
+                    <option value="Needs Review">Needs Review</option>
+                    <option value="Manual Review Required">Manual Review Required</option>
+                    <option value="Do Not Auto-Approve">Do Not Auto-Approve</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-commercial-cat">Commercial category</label>
+                  <select id="f-commercial-cat">
+                    <option value="">All</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-commercial-review">Commercial review</label>
+                  <select id="f-commercial-review">
+                    <option value="">All</option>
+                    <option value="needs">Needs Commercial Review</option>
+                    <option value="cleared">Commercial Review Cleared</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-legal-review">Legal review</label>
+                  <select id="f-legal-review">
+                    <option value="">All</option>
+                    <option value="needs">Needs Legal Review</option>
+                    <option value="no">No Legal Review</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-duplicate">Duplicate</label>
+                  <select id="f-duplicate">
+                    <option value="">All</option>
+                    <option value="dup">Possible Duplicate</option>
+                    <option value="not">Not Duplicate</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-basis-review">Basis review</label>
+                  <select id="f-basis-review">
+                    <option value="">All</option>
+                    <option value="needs">Basis Needs Review</option>
+                    <option value="clear">Basis Clear</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-auto-eligible">Auto-approve eligible</label>
+                  <select id="f-auto-eligible">
+                    <option value="">All</option>
+                    <option value="yes">Eligible</option>
+                    <option value="no">Not Eligible</option>
+                  </select>
+                </div>
+              </div>
+              <div class="fdd-admin-chips" id="fdd-admin-preset-chips" role="toolbar" aria-label="Quick filter presets">
+                <button type="button" class="fdd-admin-chip active" data-preset="all">All</button>
+                <button type="button" class="fdd-admin-chip" data-preset="safe">Safe commercial queue</button>
+                <button type="button" class="fdd-admin-chip" data-preset="needs_review">Needs review</button>
+                <button type="button" class="fdd-admin-chip" data-preset="high_quick">High / Quick audit</button>
+                <button type="button" class="fdd-admin-chip" data-preset="needs_commercial">Needs commercial</button>
+                <button type="button" class="fdd-admin-chip" data-preset="auto_eligible">Auto-eligible</button>
+                <button type="button" class="fdd-admin-chip" data-preset="possible_dup">Possible duplicate</button>
+                <button type="button" class="fdd-admin-chip" data-preset="needs_legal">Needs legal</button>
+                <button type="button" class="fdd-admin-chip" data-preset="basis_needs">Basis needs review</button>
+                <button type="button" class="fdd-admin-chip" data-preset="manual_or_blocked">Manual / Do not auto-approve</button>
+              </div>
+              <div class="fdd-admin-results-header results-header">
+                <div class="results-count" id="fdd-rows-results-count">Showing <strong>0</strong> of <strong>0</strong> fee rows</div>
+                <div class="results-controls">
+                  <div class="sort-control">
+                    <label class="sort-label" for="fdd-rows-sort">Sort:</label>
+                    <select id="fdd-rows-sort" class="sort-select" aria-label="Sort rows">
+                      <option value="name_asc">Name (A–Z)</option>
+                      <option value="name_desc">Name (Z–A)</option>
+                      <option value="audit_desc">Audit score (high → low)</option>
+                      <option value="audit_asc">Audit score (low → high)</option>
+                      <option value="cat_asc">Commercial category (A–Z)</option>
+                      <option value="review_asc">Review status (A–Z)</option>
+                      <option value="amount_desc">Amount (high → low)</option>
+                      <option value="amount_asc">Amount (low → high)</option>
+                    </select>
+                  </div>
+                  <div class="view-toggle" role="group" aria-label="Table density">
+                    <button type="button" class="view-toggle-btn active" id="fdd-view-comfortable" title="Comfortable spacing" aria-pressed="true">▦</button>
+                    <button type="button" class="view-toggle-btn" id="fdd-view-compact" title="Compact spacing" aria-pressed="false">☰</button>
+                  </div>
+                </div>
+              </div>
+              <div class="toolbar rows-bulk-toolbar">
+                <button type="button" class="ghost" id="btn-select-visible">Select visible</button>
+                <button type="button" class="ghost" id="btn-clear-selection">Clear selection</button>
+                <button type="button" class="ghost" id="btn-bulk-audit-doc">Bulk run audit (document)</button>
+                <button type="button" class="ghost" id="btn-bulk-clear-commercial">Bulk clear Commercial Review</button>
+                <button type="button" class="ghost" id="btn-bulk-mark-commercial">Bulk mark Commercial needed</button>
+                <button type="button" class="ghost" id="btn-bulk-needs-review">Bulk mark Needs Review</button>
+                <button type="button" class="ghost" id="btn-bulk-reject">Bulk reject selected</button>
+                <button type="button" class="primary" id="btn-bulk-approve">Bulk approve selected</button>
+              </div>
+              <div id="bulk-status"></div>
+              <div class="rows-wrap fdd-admin-data-scroll" id="fdd-rows-wrap">
+                <table id="rows-table">
+                  <thead>
+                    <tr>
+                      <th class="cell-cb cell-sticky-col-0"><input type="checkbox" id="rows-head-cb" title="Select visible" aria-label="Select all visible rows" /></th>
+                      <th class="cell-sticky-col-1">Name</th>
+                      <th>Type</th>
+                      <th>Commercial category</th>
+                      <th>Duplicate</th>
+                      <th>Amount</th>
+                      <th>Cost basis</th>
+                      <th>Formula type</th>
+                      <th>Basis confidence</th>
+                      <th>Basis review</th>
+                      <th>Lifecycle</th>
+                      <th>Review</th>
+                      <th>Audit score</th>
+                      <th>Audit status</th>
+                      <th>Audit issues</th>
+                      <th>Auto-approve</th>
+                      <th>Source Item</th>
+                      <th>Confidence</th>
+                      <th>Legal Review</th>
+                      <th>Commercial Review</th>
+                      <th>Extraction Run</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section id="fi-panel-terms" class="fi-panel" role="tabpanel" data-fi-panel="terms" hidden>
+              <h3 style="font-size:0.95rem; margin:0 0 0.35rem;">Terms &amp; Obligations Review</h3>
+              <div class="toolbar" style="margin-top:0; flex-wrap:wrap;">
+                <button type="button" class="ghost" id="fi-term-btn-preset-safe">Safe terms review queue</button>
+                <button type="button" class="ghost" id="fi-term-btn-preset-clear">Clear preset</button>
+                <button type="button" class="ghost" id="fi-term-btn-select-visible">Select visible</button>
+                <button type="button" class="ghost" id="fi-term-btn-clear-selection">Clear selection</button>
+                <button type="button" class="ghost" id="fi-term-btn-run-audit">Run Terms Audit</button>
+                <button type="button" class="ghost" id="fi-term-btn-bulk-clear-comm">Bulk clear Commercial Review</button>
+                <button type="button" class="ghost" id="fi-term-btn-bulk-clear-legal">Bulk clear Legal Review</button>
+                <button type="button" class="ghost" id="fi-term-btn-bulk-approve">Bulk approve selected</button>
+                <button type="button" class="ghost" id="fi-term-btn-bulk-reject">Bulk reject selected</button>
+                <button type="button" class="ghost" id="fi-term-btn-bulk-needs">Bulk mark Needs Review</button>
+              </div>
+              <p class="muted" id="terms-count-label" style="margin:0.35rem 0 0.25rem;"></p>
+              <p class="muted" id="bulk-result" style="margin:0; white-space:pre-wrap;"></p>
+              <div class="rows-filter-grid" aria-label="Term filters">
+                <div>
+                  <label for="f-term-review">Review status</label>
+                  <select id="f-term-review">
+                    <option value="">All</option>
+                    <option value="Needs Review">Needs Review</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-term-category">Term category</label>
+                  <select id="f-term-category"><option value="">All</option></select>
+                </div>
+                <div>
+                  <label for="f-term-bucket">Normalized term bucket</label>
+                  <select id="f-term-bucket"><option value="">All</option></select>
+                </div>
+                <div>
+                  <label for="f-term-comparable">Comparable term group</label>
+                  <select id="f-term-comparable"><option value="">All</option></select>
+                </div>
+                <div>
+                  <label for="f-term-risk">Risk level</label>
+                  <select id="f-term-risk">
+                    <option value="">All</option>
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                    <option>Unclear</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-term-flex">Flexibility level</label>
+                  <select id="f-term-flex">
+                    <option value="">All</option>
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                    <option>Unclear</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-term-legal">Legal review required</label>
+                  <select id="f-term-legal">
+                    <option value="">All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-term-comm">Commercial review required</label>
+                  <select id="f-term-comm">
+                    <option value="">All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-term-dup">Duplicate</label>
+                  <select id="f-term-dup">
+                    <option value="">All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-term-audit-status">Term audit status</label>
+                  <select id="f-term-audit-status">
+                    <option value="">All</option>
+                    <option>High Confidence</option>
+                    <option>Quick Review</option>
+                    <option>Needs Review</option>
+                    <option>Manual Review Required</option>
+                    <option>Do Not Auto-Approve</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="f-term-auto">Auto-approve eligible</label>
+                  <select id="f-term-auto">
+                    <option value="">All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="rows-wrap fdd-admin-data-scroll" id="fdd-terms-rows-wrap">
+                <table id="terms-table">
+                  <thead>
+                    <tr>
+                      <th class="cell-cb cell-sticky-col-0" style="width:var(--fi-sticky-cb);min-width:var(--fi-sticky-cb);"><span class="muted" title="Selection">Sel</span></th>
+                      <th class="cell-sticky-col-1">Name</th>
+                      <th>Category</th>
+                      <th>Norm. bucket</th>
+                      <th>Comparable</th>
+                      <th>Dup</th>
+                      <th>Item</th>
+                      <th>Summary</th>
+                      <th>Risk</th>
+                      <th>Flex</th>
+                      <th>Legal</th>
+                      <th>Comm.</th>
+                      <th>Status</th>
+                      <th class="cell-num">Audit</th>
+                      <th>Audit status</th>
+                      <th>Audit issues</th>
+                      <th>Auto</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="dlg-register">
+    <form method="dialog" class="dialog-inner" id="form-register">
+      <h3 style="margin-top:0;">Register FDD</h3>
+      <p class="muted">JSON registration or PDF upload. All processing stays server-side.</p>
+      <div class="form-row">
+        <div><label>Brand name *</label><input name="brandName" required /></div>
+        <div><label>Parent company</label><input name="parentCompany" /></div>
+        <div><label>FDD year</label><input name="fddYear" type="number" min="1990" max="2100" /></div>
+        <div><label>Country</label><input name="country" value="US" /></div>
+      </div>
+      <div class="form-row">
+        <div><label>Jurisdiction</label><input name="jurisdiction" placeholder="e.g. CA, NY" /></div>
+        <div><label>Document type</label><input name="documentType" value="FDD" /></div>
+        <div><label>Source type</label>
+          <select name="sourceType">
+            <option value="upload">upload</option>
+            <option value="url">url</option>
+            <option value="manual">manual</option>
+          </select>
+        </div>
+        <div><label>Source URL</label><input name="sourceUrl" placeholder="https://…" /></div>
+      </div>
+      <div class="form-row">
+        <div style="grid-column:1/-1;"><label>Paste plain text (optional, helps segmentation without PDF text)</label>
+          <textarea name="pastedText" rows="4" style="width:100%;"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div><label>PDF file</label><input name="file" type="file" accept="application/pdf,.pdf" /></div>
+      </div>
+      <div class="toolbar" style="justify-content:flex-end;">
+        <button type="button" class="ghost" id="btn-cancel-dlg">Cancel</button>
+        <button type="submit" class="primary" value="default">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/franchise-intelligence-admin.js" type="module"></script>
+</body>
+</html>
