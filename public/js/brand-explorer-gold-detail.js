@@ -1,13 +1,13 @@
 /**
  * Brand Explorer detail — Operator Gold Mock shell + full Brand Setup API payload.
- * Tabs: Requirements & Standards, Support, Legal & Commercial.
+ * Tabs: Requirements & Standards, Dev. Support & Legal.
  */
 (function () {
   'use strict';
 
   var TAB_DEFS = [
     { id: 'requirements', label: 'Requirements &<br>Standards' },
-    { id: 'support-legal', label: 'Support,<br>Legal&nbsp;&amp;&nbsp;Commercial' }
+    { id: 'support-legal', label: 'Dev. Support<br>&amp; Legal' }
   ];
 
   var TAB_ICONS = {
@@ -581,6 +581,111 @@
     return null;
   }
 
+  function chainScaleFromBrand(brand) {
+    if (!brand) return '';
+    return brand.hotelChainScale || brand.chainScale || '';
+  }
+
+  function parseHexRgb(hex) {
+    var h = String(hex || '')
+      .trim()
+      .replace(/^#/, '');
+    if (h.length === 3) {
+      h = h
+        .split('')
+        .map(function (c) {
+          return c + c;
+        })
+        .join('');
+    }
+    if (!/^[0-9a-fA-F]{6}$/.test(h)) return null;
+    return {
+      r: parseInt(h.slice(0, 2), 16),
+      g: parseInt(h.slice(2, 4), 16),
+      b: parseInt(h.slice(4, 6), 16)
+    };
+  }
+
+  var CHAIN_SCALE_THEME_VAR_NAMES = [
+    '--accent--primary-1',
+    '--accent',
+    '--hero-stripe-bg',
+    '--hero-tag',
+    '--accent-soft',
+    '--accent-line'
+  ];
+
+  function applyChainScaleThemeVars(el, hex) {
+    if (!el) return;
+    if (!hex) {
+      CHAIN_SCALE_THEME_VAR_NAMES.forEach(function (name) {
+        el.style.removeProperty(name);
+      });
+      el.removeAttribute('data-be-chain-scale-theme');
+      return;
+    }
+    var rgb = parseHexRgb(hex);
+    if (!rgb) return;
+    var accent = hex.indexOf('#') === 0 ? hex : '#' + hex;
+    el.style.setProperty('--accent--primary-1', accent);
+    el.style.setProperty('--accent', accent);
+    el.style.setProperty('--hero-stripe-bg', accent);
+    el.style.setProperty('--hero-tag', accent);
+    el.style.setProperty(
+      '--accent-soft',
+      'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', 0.14)'
+    );
+    el.style.setProperty(
+      '--accent-line',
+      'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', 0.45)'
+    );
+    el.setAttribute('data-be-chain-scale-theme', '1');
+  }
+
+  function chainScaleThemeRoots(extra) {
+    var roots = [
+      document.getElementById('brandRoot'),
+      document.getElementById('beCombinedDetailView'),
+      document.getElementById('beAtelierExplorer'),
+      document.getElementById('beAtelierRoot'),
+      document.getElementById('beCombinedPopupAtelierRoot')
+    ];
+    var popupPanel = document.querySelector(
+      '#beCombinedBrandDetailPopup .brand-detail-popup-panel'
+    );
+    if (popupPanel) roots.push(popupPanel);
+    if (extra) {
+      if (extra.nodeType === 1) roots.push(extra);
+      else if (extra.length) {
+        for (var i = 0; i < extra.length; i++) roots.push(extra[i]);
+      }
+    }
+    var seen = [];
+    return roots.filter(function (el) {
+      if (!el || seen.indexOf(el) !== -1) return false;
+      seen.push(el);
+      return true;
+    });
+  }
+
+  function applyChainScaleTheme(brand, extraRoots) {
+    var hex = chainStripeColor(chainScaleFromBrand(brand));
+    chainScaleThemeRoots(extraRoots).forEach(function (el) {
+      applyChainScaleThemeVars(el, hex);
+    });
+    applyHeroStripe(brand);
+  }
+
+  function clearChainScaleTheme() {
+    chainScaleThemeRoots().forEach(function (el) {
+      applyChainScaleThemeVars(el, null);
+    });
+    ['brandHero', 'brandHeroPopup'].forEach(function (hid) {
+      var el = document.getElementById(hid);
+      if (el) el.style.removeProperty('--hero-stripe-bg');
+    });
+  }
+
   function renderHero(brand) {
     var logo = brand.logo && String(brand.logo).indexOf('http') === 0 ? brand.logo : '';
     var name = brand.name || brand.brandName || 'Brand';
@@ -706,15 +811,24 @@
       var t0 = String(op.testimonials).trim().split(/\n+/)[0];
       if (t0) return t0;
     }
-    var p = brand.brandProfileAnalysis;
-    if (hasVal(p)) {
-      var first = String(p)
+    var proof = explorerMergedBody(brand, 'overview.proof_operator');
+    if (hasVal(proof)) {
+      var proofFirst = String(proof)
         .split(/\n+/)
         .map(function (s) {
           return s.trim();
         })
         .filter(Boolean)[0];
-      if (first) return first;
+      if (proofFirst) return proofFirst;
+    }
+    if (hasVal(brand.brandValueProposition)) {
+      var vpFirst = String(brand.brandValueProposition)
+        .split(/\n\n+/)
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(Boolean)[0];
+      if (vpFirst) return vpFirst;
     }
     return '';
   }
@@ -888,7 +1002,7 @@
   }
 
   function applyHeroStripe(brand) {
-    var hex = chainStripeColor(brand.hotelChainScale || '');
+    var hex = chainStripeColor(chainScaleFromBrand(brand));
     ['brandHero', 'brandHeroPopup'].forEach(function (hid) {
       var el = document.getElementById(hid);
       if (!el) return;
@@ -1321,7 +1435,7 @@
       if (heroMount) {
         heroMount.innerHTML = unifiedTabs ? renderPresentationHero(brand) : renderHero(brand);
       }
-      applyHeroStripe(brand);
+      applyChainScaleTheme(brand);
       if (unifiedTabs) {
         wirePresentationMetaValueTooltips();
         if (window.BrandExplorerFavorites && heroMount) {
@@ -1398,6 +1512,9 @@
     TAB_ICONS: TAB_ICONS,
     renderPresentationHero: renderPresentationHero,
     applyHeroStripe: applyHeroStripe,
+    applyChainScaleTheme: applyChainScaleTheme,
+    clearChainScaleTheme: clearChainScaleTheme,
+    chainStripeColor: chainStripeColor,
     wirePresentationMetaValueTooltips: wirePresentationMetaValueTooltips
   };
 

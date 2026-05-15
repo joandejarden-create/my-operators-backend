@@ -37,6 +37,9 @@
         }
         html[data-brand-explorer-unified-tabs="1"] body {
             font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
         }
         .be-combined-wrap .dashboard-main-section { margin-left: 0 !important; }
         /* Scope: no .page-wrapper sidebar — center explorer column */
@@ -194,8 +197,8 @@
             text-transform: uppercase;
             letter-spacing: 0.06em;
             color: var(--hero-tag, #8fc3ff);
-            background: rgba(108, 114, 255, 0.1);
-            border: 0.6px solid rgba(108, 114, 255, 0.35);
+            background: var(--accent-soft, rgba(108, 114, 255, 0.14));
+            border: 0.6px solid var(--accent-line, rgba(108, 114, 255, 0.45));
             border-radius: 6px;
         }
         .be-atelier-metrics-row {
@@ -535,7 +538,8 @@
             gap: 5px;
             margin: 8px 0 0;
         }
-        .be-combined-presentation-hero.brand-hero .tag-chip {
+        .be-combined-presentation-hero.brand-hero .tag-chip,
+        #brandRoot .brand-hero .tag-chip {
             display: inline-flex;
             align-items: center;
             padding: 4px 10px;
@@ -543,9 +547,9 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--hero-tag);
-            background: rgba(108, 114, 255, 0.1);
-            border: 0.6px solid rgba(108, 114, 255, 0.35);
+            color: var(--hero-tag, #8fc3ff);
+            background: var(--accent-soft, rgba(108, 114, 255, 0.14));
+            border: 0.6px solid var(--accent-line, rgba(108, 114, 255, 0.45));
             border-radius: 6px;
         }
         .be-combined-presentation-hero.brand-hero .badge-verified {
@@ -662,24 +666,41 @@
         /* Unified tab strip — parity with brand-education-atelier-north.html (.tab-system .tabs-section) */
         #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav],
         #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] {
+            position: relative;
             display: flex;
             flex-wrap: nowrap;
             align-items: flex-start;
             justify-content: stretch;
-            gap: 4px 2px;
+            gap: 0;
             margin-bottom: 24px;
             width: 100%;
             max-width: 100%;
+            box-sizing: border-box;
+            position: -webkit-sticky;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 200;
             background-color: var(--neutral--800, #080f25);
             border-bottom: 1px solid var(--explorer-tab-border, rgba(255, 255, 255, 0.1));
-            padding: 0 0 10px;
+            padding: 8px 0 10px;
+            margin-top: -1px;
             overflow-x: auto;
             overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            isolation: isolate;
+            box-shadow: 0 10px 24px -8px rgba(8, 15, 37, 0.95);
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav]::before,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav]::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 100%;
+            height: 120vh;
+            background-color: var(--neutral--800, #080f25);
+            pointer-events: none;
+            z-index: -1;
         }
         #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav]::-webkit-scrollbar,
         #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav]::-webkit-scrollbar {
@@ -691,7 +712,7 @@
             min-width: 0;
             width: auto;
             max-width: none;
-            display: inline-flex;
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
@@ -699,15 +720,16 @@
             cursor: pointer;
             color: var(--neutral--400, #aeb9e1);
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            font-size: 10px;
+            letter-spacing: 0.04em;
+            font-size: 9px;
             font-weight: 600;
             border: none;
             background: none;
             font-family: inherit;
-            padding: 4px 4px 10px;
+            padding: 4px 2px 10px;
             transition: color 0.2s;
             position: relative;
+            box-sizing: border-box;
         }
         #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-icon,
         #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-icon {
@@ -745,6 +767,12 @@
         #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active,
         #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active {
             color: var(--accent--primary-1, #6c72ff);
+            background: transparent;
+            box-shadow: none;
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active::after,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active::after {
+            display: none;
         }
         #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active .section-nav-icon,
         #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active .section-nav-icon {
@@ -755,49 +783,31 @@
         #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-label,
         #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-label {
             text-align: center;
-            line-height: 1.3;
+            line-height: 1.25;
             width: 100%;
             max-width: 100%;
             min-width: 0;
-            margin: 0 auto;
-            padding: 0 2px;
+            margin: 0;
+            padding: 0 1px;
             box-sizing: border-box;
             white-space: normal;
             display: block;
-            font-size: 10px;
-            font-weight: 600;
+            font-size: inherit;
+            font-weight: inherit;
+            letter-spacing: inherit;
             word-break: break-word;
-            overflow-wrap: break-word;
+            overflow-wrap: anywhere;
+            hyphens: auto;
             max-height: none;
             overflow: visible;
         }
-        /* Slightly tighter Atelier tabs so Brand Setup strip fits on two lines */
-        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-tab-source="atelier"],
-        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-tab-source="atelier"] {
-            flex: 0.92 1 0;
-            min-width: 56px;
-        }
-        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-tab-source="gold"],
-        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-tab-source="gold"] {
-            flex: 1.08 1 0;
-            min-width: 76px;
-        }
-        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-atelier-tab="gold-support-legal"],
-        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-atelier-tab="gold-support-legal"] {
-            flex: 1.35 1 112px;
-            min-width: 112px;
-            max-width: 200px;
-        }
-        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-atelier-tab="gold-support-legal"] .section-nav-label,
-        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-atelier-tab="gold-support-legal"] .section-nav-label {
-            word-break: normal;
-            overflow-wrap: normal;
-            hyphens: none;
-        }
-        @media (max-width: 720px) {
-            #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-tab-source="atelier"],
-            #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item[data-tab-source="atelier"] {
-                min-width: 52px;
+        @media (min-width: 1280px) {
+            #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item,
+            #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item {
+                font-size: 10px;
+                letter-spacing: 0.05em;
+                padding-left: 3px;
+                padding-right: 3px;
             }
         }
         /* Directory list: flex tab rail (atelier-list-parity) — not gold-surface 10-col grid */
@@ -845,23 +855,16 @@
             border-width: 2px;
             color: var(--accent--primary-1, #6c72ff);
         }
+        /* Whole-page scroll (hero scrolls away); tabs stick flush to scroll top with opaque cover. */
         .be-atelier-root--popup {
-            flex: 1;
-            min-height: 0;
-            max-height: min(70vh, 640px);
-            overflow-y: auto;
+            overflow: visible;
             text-align: left;
             width: 100%;
         }
         .be-combined-popup-fallback-inner {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            gap: 10px;
             width: 100%;
-            height: 100%;
-            max-height: 100%;
-            min-height: 0;
+            padding: 44px 24px 0 24px;
+            box-sizing: border-box;
         }
         /* Modal must sit above app shell / any explorer stacking contexts */
         #beCombinedBrandDetailPopup {
@@ -880,16 +883,19 @@
             flex-direction: column;
             align-items: stretch;
             justify-content: flex-start;
-            gap: 12px;
-            /* Leave room for .brand-detail-popup-close (28px + top/right offsets) so hero does not sit under it */
-            padding: 48px 48px 16px 16px;
+            gap: 0;
+            padding: 0 16px 20px 16px;
             text-align: left;
             font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--explorer-statement-color, #d7e4fa);
             background: var(--neutral--800, #080f25);
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-gutter: stable;
         }
         .be-combined-brand-popup-fallback:not(.hidden) {
-            display: flex;
+            display: block;
         }
         .be-combined-brand-popup-fallback .be-combined-popup-atelier-error {
             margin: 0;
@@ -1300,7 +1306,9 @@
                         heroSlot.innerHTML = window.BrandExplorerGoldDetail.renderPresentationHero(dataB.brand, {
                             heroId: 'brandHeroPopup'
                         });
-                        if (window.BrandExplorerGoldDetail.applyHeroStripe) {
+                        if (window.BrandExplorerGoldDetail.applyChainScaleTheme) {
+                            window.BrandExplorerGoldDetail.applyChainScaleTheme(dataB.brand, popRoot);
+                        } else if (window.BrandExplorerGoldDetail.applyHeroStripe) {
                             window.BrandExplorerGoldDetail.applyHeroStripe(dataB.brand);
                         }
                         if (window.BrandExplorerGoldDetail.wirePresentationMetaValueTooltips) {
@@ -1400,6 +1408,9 @@
     }
 
     function showListUi() {
+        if (window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.clearChainScaleTheme) {
+            window.BrandExplorerGoldDetail.clearChainScaleTheme();
+        }
         listView.classList.remove('hidden');
         detailView.classList.add('hidden');
         closeBrandEducationPopup();
@@ -1920,6 +1931,9 @@
             if (!brandsRes.ok) throw new Error('Failed to fetch brands');
             var data = await brandsRes.json();
             allBrands = data.brands || [];
+            window.getBrandExplorerListBrands = function () {
+                return allBrands.slice();
+            };
             filteredBrands = allBrands.slice();
             var fo = data.filterOptions || {};
 

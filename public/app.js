@@ -46,7 +46,7 @@
         '/outreach/templates': { file: '/outreach-template-manager.html', title: 'Outreach Templates' },
         '/brand-library': { file: '/brand-library.html', title: 'Browse brands' },
         '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
-        '/brand-library-atelier': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
+        '/brand-library-atelier': { file: '/brand-library-atelier-north.html', title: 'Brand Explorer (Mock Up)' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
         '/franchise-fee-estimator': { file: '/franchise-fee-estimator.html', title: 'Franchise Fee Estimator' },
@@ -149,7 +149,8 @@
                         { label: 'Financial Term Library', route: '/financial-term-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Clause Library', route: '/clause-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] },
-                        { label: 'Browse brands', route: '/brand-library', roles: ['admin'] }
+                        { label: 'Browse brands', route: '/brand-library', roles: ['admin'] },
+                        { label: 'Brand Explorer (Mock Up)', route: '/brand-library-atelier', roles: ['admin'] }
                     ]
                 },
                 {
@@ -216,7 +217,7 @@
         '/outreach-template-manager.html': '/outreach/templates',
         '/brand-library.html': '/brand-library',
         '/brand-explorer-combined.html': '/brand-explorer-combined',
-        '/brand-library-atelier-north.html': '/brand-explorer-combined',
+        '/brand-library-atelier-north.html': '/brand-library-atelier',
         '/financial-term-library.html': '/financial-term-library',
         '/clause-library.html': '/clause-library',
         '/franchise-fee-estimator.html': '/franchise-fee-estimator',

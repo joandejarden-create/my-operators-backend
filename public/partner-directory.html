@@ -791,7 +791,12 @@
             z-index: 10;
         }
 
-        /* Results Grid */
+        /* Results Grid — individual cards fill row height so footer + metrics align across columns */
+        .results-grid--individuals > .individual-card {
+            height: 100%;
+            min-height: 0;
+        }
+
         .results-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -1144,18 +1149,19 @@
         .individual-card__header {
             display: flex;
             align-items: flex-start;
-            justify-content: space-between;
             gap: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            width: 100%;
         }
 
         .individual-card__profile-section {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 16px;
             flex: 1;
             min-width: 0;
+            width: 100%;
         }
 
         .individual-card__avatar-wrapper {
@@ -1201,8 +1207,7 @@
         .individual-card__info {
             flex: 1;
             min-width: 0;
-            text-align: center;
-            width: 100%;
+            text-align: left;
         }
 
         .individual-card__name {
@@ -1210,17 +1215,20 @@
             font-weight: 700;
             color: var(--neutral--100);
             margin-bottom: 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1.05;
+            line-height: 1.25;
+        }
+
+        .individual-card__name-text {
+            display: block;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            hyphens: auto;
         }
 
         .individual-card__first-name,
         .individual-card__last-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            word-break: break-word;
+            overflow-wrap: anywhere;
             max-width: 100%;
         }
 
@@ -1238,25 +1246,179 @@
             font-size: 12px;
             color: var(--neutral--400);
             margin-top: 6px;
+            line-height: 1.35;
+            max-width: 100%;
+            white-space: normal;
+        }
+
+        .individual-card__company {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neutral--400);
+            text-align: left;
+            margin: 4px 0 6px;
+            line-height: 1.35;
+            max-width: 100%;
+            white-space: normal;
+        }
+
+        .individual-card__header-stats {
+            display: none;
+        }
+
+        .individual-card__tail {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .individual-card__metrics {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px 10px;
+            width: 100%;
+            margin: 14px 0 0;
+            padding: 10px 44px 12px 0; /* right: star */
+            box-sizing: border-box;
+            border-top: 1px solid var(--neutral--600);
+            border-bottom: none;
+        }
+
+        .individual-card__metric {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .individual-card__metric .stat-icon {
+            flex-shrink: 0;
+            margin-top: 0;
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            min-height: 16px;
+            font-size: 13px;
+            opacity: 0.75;
+        }
+
+        .individual-card__metric-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
+        }
+
+        .individual-card__metric-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--neutral--300);
+            line-height: 1.2;
+        }
+
+        .individual-card__metric-label {
+            font-size: 9px;
+            line-height: 1.2;
+            color: var(--neutral--500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        /* Individual modal header — same metric cells as cards, aligned right */
+        #individualModal .company-modal-header-left {
+            min-width: 0;
+            align-items: flex-start;
+        }
+
+        #individualModal .individual-modal-header-metrics.individual-card__metrics {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 4px 0 0;
+            border-top: none;
+            width: auto;
+            max-width: min(420px, 52%);
+            flex-shrink: 0;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px 16px;
+            align-self: center;
+        }
+
+        @media (max-width: 720px) {
+            #individualModal .company-modal-header-top {
+                flex-wrap: wrap;
+            }
+
+            #individualModal .individual-modal-header-metrics.individual-card__metrics {
+                max-width: 100%;
+                width: 100%;
+                padding-top: 14px;
+                margin-top: 8px;
+                border-top: 1px solid var(--neutral--600);
+            }
+        }
+
+        .individual-card__meta-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+
+        /* Always label on one row, value below — same rhythm on every card */
+        .individual-card__meta-field {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .individual-card__meta-label {
+            font-weight: 700;
+            color: var(--neutral--100);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
             line-height: 1.3;
+        }
+
+        .individual-card__meta-value {
+            width: 100%;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: var(--neutral--200);
+            word-break: break-word;
+        }
+
+        .individual-card__meta-value--muted {
+            color: var(--neutral--500);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* Languages: one line — "LANGUAGES: Spanish, French" */
+        .individual-card__languages-inline {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.4;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .individual-card__company {
-            font-size: 13px;
-            color: var(--neutral--100);
+        .individual-card__languages-inline .individual-card__meta-label {
+            margin-right: 0.35em;
         }
 
-        .individual-card__header-stats {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 6px;
-            flex-shrink: 0;
-            align-self: flex-start;
-            padding-right: 34px; /* Make room for star icon while giving center more width */
+        .individual-card__languages-inline .individual-card__meta-value {
+            display: inline;
+            width: auto;
+            min-height: 0;
+            font-weight: 400;
         }
 
         .individual-card__stat-icons {
@@ -1292,18 +1454,11 @@
             color: var(--neutral--500);
         }
 
-        .individual-card__regions {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--neutral--100);
-            text-transform: uppercase;
-        }
-
         .individual-card__body {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 0;
         }
 
         .individual-card__footer-info {
@@ -1340,36 +1495,72 @@
 
         .individual-card__footer {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             padding-top: 16px;
             border-top: 1px solid var(--neutral--600);
-            margin-top: auto;
+            margin-top: 0;
         }
 
         .individual-card__connect-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 20px;
-            background: var(--accent--primary-1);
+            padding: 8px 20px;
+            background: var(--secondary--color-4);
             color: var(--neutral--100);
+            border: 1px solid var(--neutral--500);
             border-radius: 6px;
             font-weight: 500;
             font-size: 14px;
-            border: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .individual-card__connect-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
-            background: var(--secondary--color-2);
+            border-color: var(--secondary--color-3);
+            background: rgba(87, 195, 255, 0.12);
+            box-shadow: 0 4px 12px rgba(87, 195, 255, 0.15);
         }
 
         .individual-card__connect-btn svg {
             flex-shrink: 0;
+        }
+
+        .individual-card__footer-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .individual-modal-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .individual-modal-avatar-initials {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            font-size: 24px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .individual-modal-company-link {
+            margin-top: 8px;
         }
 
         /* Loading State - Wave Animation */
@@ -1701,6 +1892,34 @@
             gap: 16px;
         }
 
+        /* Individual modal: vertical stack — name, job title, company */
+        #individualModal .company-modal-header-name-section.individual-modal-header-name-stack {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        #individualModal .individual-modal-header-name-stack > h2 {
+            margin: 0 0 14px;
+            padding: 0;
+        }
+
+        #individualModal .individual-modal-header-job-title {
+            font-size: 14px;
+            color: var(--neutral--400);
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        #individualModal .individual-modal-header-company {
+            font-size: 14px;
+            color: var(--neutral--300);
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.35;
+        }
+
         .company-modal-logo {
             width: 60px;
             height: 60px;
@@ -1863,6 +2082,55 @@
             font-size: 14px;
             color: var(--neutral--400);
             line-height: 1.7;
+        }
+
+        /* Individual modal: bold caps labels, normal body text */
+        .company-modal-inline-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--neutral--100);
+            font-size: 13px;
+        }
+
+        .company-modal-section--individual-tight {
+            margin-bottom: 12px;
+        }
+
+        .company-modal-coverage-block .company-modal-inline-label {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .company-modal-coverage-body {
+            font-weight: 400;
+            color: var(--neutral--300);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .company-modal-languages-inline {
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+        }
+
+        .company-modal-languages-inline .company-modal-inline-label {
+            margin-right: 0.35em;
+        }
+
+        .company-modal-lang-values {
+            font-weight: 400;
+            color: var(--neutral--300);
+        }
+
+        .company-modal-lang-empty {
+            font-weight: 400;
+            color: var(--neutral--500);
+            font-style: italic;
         }
 
         .company-modal-industries-list {
@@ -3083,11 +3351,21 @@
         </div>
     </div>
 
+    <!-- Individual Profile Modal -->
+    <div class="company-modal" id="individualModal" style="display: none;">
+        <div class="company-modal-overlay" id="individualModalOverlay"></div>
+        <div class="company-modal-content">
+            <button type="button" class="company-modal-close" id="individualModalClose" aria-label="Close profile">&times;</button>
+            <div class="company-modal-header" id="individualModalHeader"></div>
+            <div class="company-modal-body" id="individualModalBody"></div>
+        </div>
+    </div>
+
     <!-- Company Detail Modal -->
     <div class="company-modal" id="companyModal" style="display: none;">
         <div class="company-modal-overlay" id="companyModalOverlay"></div>
         <div class="company-modal-content">
-            <button class="company-modal-close" id="companyModalClose">&times;</button>
+            <button type="button" class="company-modal-close" id="companyModalClose" aria-label="Close company profile">&times;</button>
             <div class="company-modal-header" id="companyModalHeader">
                 <!-- Header content will be inserted here -->
             </div>

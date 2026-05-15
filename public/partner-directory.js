@@ -314,10 +314,24 @@ class PartnerDirectory {
             this.closeCompanyModal();
         });
 
-        // Close modal on Escape key
+        // Individual profile modal close
+        document.getElementById('individualModalClose')?.addEventListener('click', () => {
+            this.closeIndividualModal();
+        });
+
+        document.getElementById('individualModalOverlay')?.addEventListener('click', () => {
+            this.closeIndividualModal();
+        });
+
+        // Close modals on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                this.closeCompanyModal();
+                const individualModal = document.getElementById('individualModal');
+                if (individualModal && individualModal.style.display === 'flex') {
+                    this.closeIndividualModal();
+                } else {
+                    this.closeCompanyModal();
+                }
             }
         });
 
@@ -944,6 +958,35 @@ class PartnerDirectory {
         return '';
     }
 
+    /**
+     * Individual stats from API (`closedDeals`, `brandCount`, `submittedBids`), with fallback to `rawFields`
+     * when a property is missing (commas/spacing in Airtable values are tolerated).
+     */
+    getIndividualMetric(individual, propName, airtableKeys) {
+        const coerce = (raw) => {
+            if (raw == null || raw === '') return null;
+            const n = Number(String(raw).replace(/,/g, '').trim());
+            return Number.isFinite(n) ? n : null;
+        };
+        const top = coerce(individual[propName]);
+        if (top !== null) return top;
+
+        const rf = individual.rawFields;
+        if (!rf || typeof rf !== 'object') return 0;
+
+        const lowerMap = {};
+        for (const k of Object.keys(rf)) {
+            lowerMap[k.trim().toLowerCase()] = rf[k];
+        }
+        for (const key of airtableKeys) {
+            let raw = rf[key];
+            if (raw === undefined) raw = lowerMap[String(key).trim().toLowerCase()];
+            const n = coerce(raw);
+            if (n !== null) return n;
+        }
+        return 0;
+    }
+
     async fetchPartners() {
         this.showLoading();
         try {
@@ -956,7 +999,7 @@ class PartnerDirectory {
                 this.applyFilters();
                 return;
             }
-            const response = await fetch(apiUrl('/api/partner-directory'));
+            const response = await fetch(apiUrl('/api/partner-directory'), { cache: 'no-store' });
             if (!response.ok) {
                 const errorText = await response.text().catch(() => '');
                 throw new Error(`Failed to fetch partners: ${response.status} ${response.statusText}. ${errorText}`);
@@ -2288,8 +2331,8 @@ class PartnerDirectory {
         const website = individual.website || '';
         const websiteUrl = website.startsWith('http') ? website : (website ? `https://${website}` : '');
         const location = individual.location || '';
-        const regions = Array.isArray(individual.regions) ? individual.regions.filter(r => r && r.trim()) : [];
-        const regionsText = regions.length > 0 ? regions.join(', ') : '';
+        const linkedCompany = this.findCompanyForIndividual(individual);
+        const displayCompanyName = (individual.companyName || linkedCompany?.name || '').trim();
         
         // Check if favorited - show star for all individuals (both Users and User Management tables)
         // Note: Users table individuals may not be favoritable if Individual Profile field only links to User Management
@@ -2309,6 +2352,28 @@ class PartnerDirectory {
             </button>
         `;
 
+        const displayCtx = this.getIndividualDisplayContext(individual);
+        const coverageCardText = displayCtx.coverageTerritoriesText || '';
+        const languagesCardText = this.formatLanguagesListForDisplay(displayCtx.languages);
+
+        // Stats from API when present (merged brand counts may appear on individual)
+        const closedDealsDisplay = this.getIndividualMetric(individual, 'closedDeals', ['Closed Deals']);
+        const brandCountDisplay = this.getIndividualMetric(individual, 'brandCount', [
+            'Unique Brands (Deals)',
+            'Deals Unique Brands',
+            'Brand Count',
+            '# of Brand',
+            'Number of Brands',
+        ]);
+        const submittedBidsDisplay = this.getIndividualMetric(individual, 'submittedBids', ['Submitted Bids']);
+
+        const coverageValueClass = coverageCardText
+            ? 'individual-card__meta-value'
+            : 'individual-card__meta-value individual-card__meta-value--muted';
+        const languagesValueClass = languagesCardText
+            ? 'individual-card__meta-value'
+            : 'individual-card__meta-value individual-card__meta-value--muted';
+
         card.innerHTML = `
             ${starIconHtml}
             <div class="individual-card__header">
@@ -2318,36 +2383,25 @@ class PartnerDirectory {
                     </div>
                     <div class="individual-card__info">
                         <div class="individual-card__name">
-                            <div class="individual-card__first-name">${this.escapeHtml(firstName || fullName)}</div>
-                            ${lastName ? `<div class="individual-card__last-name">${this.escapeHtml(lastName)}</div>` : ''}
+                            <span class="individual-card__name-text">${this.escapeHtml(fullName || 'Unknown')}</span>
                         </div>
-                        ${individual.companyName ? `<div class="individual-card__type">${this.escapeHtml(individual.companyName)}</div>` : ''}
+                        ${displayCompanyName ? `<div class="individual-card__company">${this.escapeHtml(displayCompanyName)}</div>` : ''}
                         ${responsivenessBadge ? `<div class="individual-card__responsiveness-badge" title="Response behavior">${this.escapeHtml(responsivenessBadge)}</div>` : ''}
-                    </div>
-                </div>
-                <div class="individual-card__header-stats">
-                    <div class="individual-card__stat-icons">
-                        <span class="stat-icon">🤝</span>
-                        <span class="stat-icon">👥</span>
-                        <span class="stat-icon">📄</span>
-                    </div>
-                    <div class="individual-card__stat-values">
-                        <div class="individual-card__stat-row">
-                            <span class="individual-card__stat-value">${individual.closedDeals || 0}</span>
-                            <span class="individual-card__stat-label">Closed Deal(s)</span>
-                        </div>
-                        <div class="individual-card__stat-row">
-                            <span class="individual-card__stat-value">${individual.brandCount || 0}</span>
-                            <span class="individual-card__stat-label"># of Brand(s)</span>
-                        </div>
-                        <div class="individual-card__stat-row">
-                            <span class="individual-card__stat-value">${individual.submittedBids || 0}</span>
-                            <span class="individual-card__stat-label">Submitted Bid(s)</span>
-                        </div>
                     </div>
                 </div>
             </div>
             <div class="individual-card__body">
+                <div class="individual-card__meta-lines">
+                    <div class="individual-card__meta-field">
+                        <div class="individual-card__meta-label">Coverage territories:</div>
+                        <div class="${coverageValueClass}">${coverageCardText ? this.escapeHtml(coverageCardText) : 'Not specified'}</div>
+                    </div>
+                    <div class="individual-card__meta-field individual-card__meta-field--languages">
+                        <p class="individual-card__languages-inline">
+                            <span class="individual-card__meta-label">Languages:</span><span class="${languagesValueClass}">${languagesCardText ? this.escapeHtml(languagesCardText) : 'Not specified'}</span>
+                        </p>
+                    </div>
+                </div>
                 ${location || website ? `
                     <div class="individual-card__footer-info">
                         ${location ? `
@@ -2366,24 +2420,62 @@ class PartnerDirectory {
                     </div>
                 ` : ''}
             </div>
+            <div class="individual-card__tail">
+            <div class="individual-card__metrics">
+                <div class="individual-card__metric">
+                    <span class="stat-icon">📄</span>
+                    <div class="individual-card__metric-text">
+                        <span class="individual-card__metric-value">${submittedBidsDisplay}</span>
+                        <span class="individual-card__metric-label">Submitted Bid(s)</span>
+                    </div>
+                </div>
+                <div class="individual-card__metric">
+                    <span class="stat-icon">👥</span>
+                    <div class="individual-card__metric-text">
+                        <span class="individual-card__metric-value">${brandCountDisplay}</span>
+                        <span class="individual-card__metric-label"># of Brand(s)</span>
+                    </div>
+                </div>
+                <div class="individual-card__metric">
+                    <span class="stat-icon">🤝</span>
+                    <div class="individual-card__metric-text">
+                        <span class="individual-card__metric-value">${closedDealsDisplay}</span>
+                        <span class="individual-card__metric-label">Closed Deal(s)</span>
+                    </div>
+                </div>
+            </div>
             <div class="individual-card__footer">
-                ${regionsText ? `
-                    <div class="individual-card__regions">${this.escapeHtml(regionsText)}</div>
-                ` : '<div></div>'}
-                <button class="individual-card__connect-btn" onclick="event.stopPropagation(); partnerDirectory.connectUser('${individual.id || ''}')">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="8.5" cy="7" r="4"></circle>
-                        <line x1="20" y1="8" x2="20" y2="14"></line>
-                        <line x1="23" y1="11" x2="17" y2="11"></line>
-                    </svg>
-                    Connect
-                </button>
+                <div class="individual-card__footer-actions">
+                    <button type="button" class="individual-card__connect-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                        Connect
+                    </button>
+                    <button type="button" class="company-card__more-btn" data-individual-id="${this.escapeHtml(individual.id || '')}">More...</button>
+                </div>
+            </div>
             </div>
         `;
 
-        // Note: Edit modal functionality removed - modals not implemented in HTML
-        // Card click handler removed to prevent errors
+        const learnMoreBtn = card.querySelector('.company-card__more-btn');
+        if (learnMoreBtn) {
+            learnMoreBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.openIndividualModal(individual);
+            });
+        }
+
+        const connectBtn = card.querySelector('.individual-card__connect-btn');
+        if (connectBtn) {
+            connectBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.connectUser(individual.id || '');
+            });
+        }
 
         return card;
     }
@@ -2412,6 +2504,7 @@ class PartnerDirectory {
     }
 
     async openCompanyModal(company) {
+        this.closeIndividualModal();
         const modal = document.getElementById('companyModal');
         const header = document.getElementById('companyModalHeader');
         const body = document.getElementById('companyModalBody');
@@ -2837,60 +2930,7 @@ class PartnerDirectory {
                     <div class="company-modal-section">
                         <div class="company-modal-section-title">BRANDS (${brands.length})</div>
                         <div class="company-modal-brands-grid">
-                            ${(() => {
-                                const visibleBrands = brands.slice(0, 16); // Up to 4 rows x 4 columns = 16 items
-                                const hiddenBrands = brands.slice(16);
-                                
-                                // Distribute visible brands across 4 columns
-                                const columns = [[], [], [], []];
-                                visibleBrands.forEach((brand, index) => {
-                                    const columnIndex = index % 4;
-                                    columns[columnIndex].push(brand);
-                                });
-                                
-                                let html = '<div class="company-modal-brands-columns">';
-                                columns.forEach((column, colIndex) => {
-                                    const hasHidden = hiddenBrands.length > 0;
-                                    html += `<div class="company-modal-brands-column${hasHidden ? ' has-hidden' : ''}">`;
-                                    column.forEach(brand => {
-                                        const brandName = typeof brand === 'string' ? brand : (brand.name || String(brand));
-                                        html += `
-                                            <div class="company-modal-brand-item">
-                                                <span class="company-modal-brand-name">${this.escapeHtml(brandName)}</span>
-                                            </div>
-                                        `;
-                                    });
-                                    html += '</div>';
-                                });
-                                html += '</div>';
-                                
-                                if (hiddenBrands.length > 0) {
-                                    html += `<div class="company-modal-brands-hidden" style="display: none;">`;
-                                    // Distribute hidden brands across 4 columns
-                                    const hiddenColumns = [[], [], [], []];
-                                    hiddenBrands.forEach((brand, index) => {
-                                        const columnIndex = index % 4;
-                                        hiddenColumns[columnIndex].push(brand);
-                                    });
-                                    html += '<div class="company-modal-brands-columns">';
-                                    hiddenColumns.forEach((column) => {
-                                        html += '<div class="company-modal-brands-column">';
-                                        column.forEach(brand => {
-                                            const brandName = typeof brand === 'string' ? brand : (brand.name || String(brand));
-                                            html += `
-                                                <div class="company-modal-brand-item">
-                                                    <span class="company-modal-brand-name">${this.escapeHtml(brandName)}</span>
-                                                </div>
-                                            `;
-                                        });
-                                        html += '</div>';
-                                    });
-                                    html += '</div>';
-                                    html += `</div>`;
-                                }
-                                
-                                return html;
-                            })()}
+                            ${this.buildModalBrandsGridHtml(brands)}
                         </div>
                         ${brands.length > 16 ? `
                             <a href="#" class="company-modal-show-all" id="companyModalShowAllBrands">
@@ -3058,24 +3098,7 @@ class PartnerDirectory {
             });
         });
         
-        // Add event listener for "Show all brands" link
-        const showAllBrandsLink = document.getElementById('companyModalShowAllBrands');
-        if (showAllBrandsLink) {
-            showAllBrandsLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                const hiddenBrands = modal.querySelector('.company-modal-brands-hidden');
-                if (hiddenBrands) {
-                    const isExpanded = hiddenBrands.style.display !== 'none';
-                    if (isExpanded) {
-                        hiddenBrands.style.display = 'none';
-                        showAllBrandsLink.innerHTML = 'Show all brands <span class="company-modal-show-all-icon">▼</span>';
-                    } else {
-                        hiddenBrands.style.display = 'block';
-                        showAllBrandsLink.innerHTML = 'Show less brands <span class="company-modal-show-all-icon">▲</span>';
-                    }
-                }
-            });
-        }
+        this.wireModalBrandsShowAll(modal, 'companyModalShowAllBrands');
     }
 
     updateModalTeamSection(modal, teamMembers) {
@@ -3135,6 +3158,70 @@ class PartnerDirectory {
         }
     }
 
+    buildModalBrandsGridHtml(brands) {
+        if (!Array.isArray(brands) || brands.length === 0) return '';
+
+        const visibleBrands = brands.slice(0, 16);
+        const hiddenBrands = brands.slice(16);
+        const columns = [[], [], [], []];
+
+        visibleBrands.forEach((brand, index) => {
+            columns[index % 4].push(brand);
+        });
+
+        let html = '<div class="company-modal-brands-columns">';
+        columns.forEach((column) => {
+            const hasHidden = hiddenBrands.length > 0;
+            html += `<div class="company-modal-brands-column${hasHidden ? ' has-hidden' : ''}">`;
+            column.forEach((brand) => {
+                const brandName = typeof brand === 'string' ? brand : (brand.name || String(brand));
+                html += `<div class="company-modal-brand-item"><span class="company-modal-brand-name">${this.escapeHtml(brandName)}</span></div>`;
+            });
+            html += '</div>';
+        });
+        html += '</div>';
+
+        if (hiddenBrands.length > 0) {
+            const hiddenColumns = [[], [], [], []];
+            hiddenBrands.forEach((brand, index) => {
+                hiddenColumns[index % 4].push(brand);
+            });
+            html += '<div class="company-modal-brands-hidden" style="display: none;">';
+            html += '<div class="company-modal-brands-columns">';
+            hiddenColumns.forEach((column) => {
+                html += '<div class="company-modal-brands-column">';
+                column.forEach((brand) => {
+                    const brandName = typeof brand === 'string' ? brand : (brand.name || String(brand));
+                    html += `<div class="company-modal-brand-item"><span class="company-modal-brand-name">${this.escapeHtml(brandName)}</span></div>`;
+                });
+                html += '</div>';
+            });
+            html += '</div></div>';
+        }
+
+        return html;
+    }
+
+    wireModalBrandsShowAll(modal, linkId = 'companyModalShowAllBrands') {
+        if (!modal || !linkId) return;
+        const showAllBrandsLink = modal.querySelector(`#${linkId}`);
+        if (!showAllBrandsLink) return;
+
+        showAllBrandsLink.onclick = (e) => {
+            e.preventDefault();
+            const hiddenBrands = modal.querySelector('.company-modal-brands-hidden');
+            if (!hiddenBrands) return;
+            const isExpanded = hiddenBrands.style.display !== 'none';
+            if (isExpanded) {
+                hiddenBrands.style.display = 'none';
+                showAllBrandsLink.innerHTML = 'Show all brands <span class="company-modal-show-all-icon">▼</span>';
+            } else {
+                hiddenBrands.style.display = 'block';
+                showAllBrandsLink.innerHTML = 'Show less brands <span class="company-modal-show-all-icon">▲</span>';
+            }
+        };
+    }
+
     updateModalBrandsSection(modal, brands) {
         if (!modal || !brands || brands.length === 0) return;
         
@@ -3152,91 +3239,20 @@ class PartnerDirectory {
             brandsTitle.textContent = `BRANDS (${brands.length})`;
         }
         
-        // Build brands HTML
-        const visibleBrands = brands.slice(0, 16);
-        const hiddenBrands = brands.slice(16);
-        
-        // Distribute visible brands across 4 columns
-        const columns = [[], [], [], []];
-        visibleBrands.forEach((brand, index) => {
-            const columnIndex = index % 4;
-            columns[columnIndex].push(brand);
-        });
-        
-        let html = '<div class="company-modal-brands-columns">';
-        columns.forEach((column, colIndex) => {
-            const hasHidden = hiddenBrands.length > 0;
-            html += `<div class="company-modal-brands-column${hasHidden ? ' has-hidden' : ''}">`;
-            column.forEach(brand => {
-                const brandName = typeof brand === 'string' ? brand : (brand.name || String(brand));
-                html += `
-                    <div class="company-modal-brand-item">
-                        <span class="company-modal-brand-name">${this.escapeHtml(brandName)}</span>
-                    </div>
-                `;
-            });
-            html += '</div>';
-        });
-        html += '</div>';
-        
-        if (hiddenBrands.length > 0) {
-            html += `<div class="company-modal-brands-hidden" style="display: none;">`;
-            // Distribute hidden brands across 4 columns
-            const hiddenColumns = [[], [], [], []];
-            hiddenBrands.forEach((brand, index) => {
-                const columnIndex = index % 4;
-                hiddenColumns[columnIndex].push(brand);
-            });
-            html += '<div class="company-modal-brands-columns">';
-            hiddenColumns.forEach((column) => {
-                html += '<div class="company-modal-brands-column">';
-                column.forEach(brand => {
-                    const brandName = typeof brand === 'string' ? brand : (brand.name || String(brand));
-                    html += `
-                        <div class="company-modal-brand-item">
-                            <span class="company-modal-brand-name">${this.escapeHtml(brandName)}</span>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-            });
-            html += '</div>';
-            html += `</div>`;
-        }
-        
-        brandsGrid.innerHTML = html;
-        
-        // Update or add "Show all brands" link
+        brandsGrid.innerHTML = this.buildModalBrandsGridHtml(brands);
+
         let showAllBrandsLink = modal.querySelector('#companyModalShowAllBrands');
         if (brands.length > 16) {
-            if (!showAllBrandsLink) {
-                // Create the link if it doesn't exist
-                const brandsSection = brandsGrid.closest('.company-modal-section');
-                if (brandsSection) {
-                    showAllBrandsLink = document.createElement('a');
-                    showAllBrandsLink.href = '#';
-                    showAllBrandsLink.className = 'company-modal-show-all';
-                    showAllBrandsLink.id = 'companyModalShowAllBrands';
-                    brandsSection.appendChild(showAllBrandsLink);
-                }
+            if (!showAllBrandsLink && brandsSection) {
+                showAllBrandsLink = document.createElement('a');
+                showAllBrandsLink.href = '#';
+                showAllBrandsLink.className = 'company-modal-show-all';
+                showAllBrandsLink.id = 'companyModalShowAllBrands';
+                brandsSection.appendChild(showAllBrandsLink);
             }
             if (showAllBrandsLink) {
                 showAllBrandsLink.innerHTML = 'Show all brands <span class="company-modal-show-all-icon">▼</span>';
-                // Re-attach event listener
-                showAllBrandsLink.onclick = (e) => {
-                    e.preventDefault();
-                    const hiddenBrands = modal.querySelector('.company-modal-brands-hidden');
-                    if (hiddenBrands) {
-                        const isExpanded = hiddenBrands.style.display !== 'none';
-                        if (isExpanded) {
-                            hiddenBrands.style.display = 'none';
-                            showAllBrandsLink.innerHTML = 'Show all brands <span class="company-modal-show-all-icon">▼</span>';
-                        } else {
-                            hiddenBrands.style.display = 'block';
-                            showAllBrandsLink.innerHTML = 'Show less brands <span class="company-modal-show-all-icon">▲</span>';
-                        }
-                    }
-                };
+                this.wireModalBrandsShowAll(modal, 'companyModalShowAllBrands');
             }
         } else if (showAllBrandsLink) {
             showAllBrandsLink.remove();
@@ -3376,6 +3392,404 @@ class PartnerDirectory {
         }
     }
 
+    findCompanyForIndividual(individual) {
+        if (!individual) return null;
+        const recordId = (individual.companyRecordId || '').trim();
+        if (recordId) {
+            const byId = this.companies.find((company) => company.id === recordId);
+            if (byId) return byId;
+        }
+        const companyName = (individual.companyName || '').trim().toLowerCase();
+        if (!companyName) return null;
+        return this.companies.find((company) => (company.name || '').trim().toLowerCase() === companyName) || null;
+    }
+
+    mergeUniqueStrings(...lists) {
+        const out = new Set();
+        lists.forEach((list) => {
+            (Array.isArray(list) ? list : []).forEach((item) => {
+                const value = String(item || '').trim();
+                if (value) out.add(value);
+            });
+        });
+        return [...out];
+    }
+
+    extractBrandNamesFromFields(rawFields) {
+        const brands = [];
+        if (!rawFields || typeof rawFields !== 'object') return brands;
+
+        const pushValue = (value) => {
+            if (value == null) return;
+            if (Array.isArray(value)) {
+                value.forEach(pushValue);
+                return;
+            }
+            if (typeof value === 'string') {
+                const trimmed = value.trim();
+                if (!trimmed || trimmed.startsWith('rec')) return;
+                trimmed.split(',').map((x) => x.trim()).filter(Boolean).forEach((x) => brands.push(x));
+                return;
+            }
+            if (typeof value === 'object') {
+                const brandName =
+                    value.fields?.['Brand Name'] ||
+                    value.fields?.name ||
+                    value.fields?.Name ||
+                    value.name ||
+                    '';
+                if (brandName) brands.push(String(brandName).trim());
+            }
+        };
+
+        const preferredKeys = [
+            'Brands You Operate / Support',
+            'Brand Name',
+            'Brands',
+            'Brand'
+        ];
+        preferredKeys.forEach((key) => {
+            if (rawFields[key]) pushValue(rawFields[key]);
+        });
+
+        if (brands.length === 0) {
+            for (const [key, value] of Object.entries(rawFields)) {
+                const keyLower = String(key || '').toLowerCase();
+                if (!keyLower.includes('brand')) continue;
+                if (keyLower.includes('count') || keyLower.includes('record id')) continue;
+                pushValue(value);
+            }
+        }
+
+        return this.mergeUniqueStrings(brands);
+    }
+
+    parseCoverageTerritoriesForIndividual(individual) {
+        const fromApi = Array.isArray(individual?.coverageTerritories)
+            ? individual.coverageTerritories.map((t) => String(t).trim()).filter(Boolean)
+            : [];
+        if (fromApi.length) return fromApi;
+
+        const rf = individual?.rawFields;
+        if (!rf || typeof rf !== 'object') return [];
+
+        const raw =
+            rf['Coverage Territories'] ??
+            rf['Coverage territories'] ??
+            rf['COVERAGE TERRITORIES'] ??
+            '';
+        if (typeof raw === 'string' && raw.trim()) return [raw.trim()];
+        if (Array.isArray(raw)) {
+            return raw
+                .map((item) => {
+                    if (typeof item === 'string') return item.trim();
+                    if (item && typeof item === 'object' && item.name) return String(item.name).trim();
+                    return '';
+                })
+                .filter(Boolean);
+        }
+        return [];
+    }
+
+    parseLanguagesForIndividual(individual) {
+        const fromApi = Array.isArray(individual?.languages)
+            ? individual.languages.map((l) => String(l).trim()).filter(Boolean)
+            : [];
+        if (fromApi.length) return fromApi;
+
+        const rf = individual?.rawFields;
+        if (!rf || typeof rf !== 'object') return [];
+
+        const raw = rf['Languages'] ?? rf['Language'] ?? rf['languages'] ?? '';
+        if (Array.isArray(raw)) {
+            return raw
+                .map((item) => {
+                    if (typeof item === 'string') return item.trim();
+                    if (item && typeof item === 'object' && item.name) return String(item.name).trim();
+                    return '';
+                })
+                .filter(Boolean);
+        }
+        if (typeof raw === 'string' && raw.trim()) {
+            return raw.split(',').map((x) => x.trim()).filter(Boolean);
+        }
+        return [];
+    }
+
+    getIndividualDisplayContext(individual) {
+        const linkedCompany = this.findCompanyForIndividual(individual);
+        const personBrands = this.mergeUniqueStrings(
+            individual?.brands,
+            this.extractBrandNamesFromFields(individual?.rawFields)
+        );
+        const companyBrands = this.mergeUniqueStrings(
+            linkedCompany?.brands,
+            this.extractBrandNamesFromFields(linkedCompany?.rawFields)
+        );
+        const brands = this.mergeUniqueStrings(personBrands, companyBrands);
+
+        const coverageTerritories = this.parseCoverageTerritoriesForIndividual(individual);
+        let coverageTerritoriesText = this.formatCoverageTerritoriesList(coverageTerritories);
+        let coverageTerritoriesViaRegions = false;
+        if (!coverageTerritoriesText) {
+            const regions = Array.isArray(individual?.regions)
+                ? individual.regions.filter((r) => r && String(r).trim())
+                : [];
+            if (regions.length) {
+                coverageTerritoriesText = regions
+                    .map((r) => this.formatRegionDisplayLabel(r))
+                    .join(', ');
+                coverageTerritoriesViaRegions = true;
+            }
+        }
+
+        const languages = this.parseLanguagesForIndividual(individual);
+
+        const brandsViaCompany =
+            Boolean(individual?.brandsViaCompany) ||
+            (personBrands.length === 0 && companyBrands.length > 0);
+
+        return {
+            linkedCompany,
+            brands,
+            coverageTerritories,
+            coverageTerritoriesText,
+            coverageTerritoriesViaRegions,
+            languages,
+            brandsViaCompany
+        };
+    }
+
+    formatRegionDisplayLabel(code) {
+        const labels = {
+            AMERICAS: 'Americas',
+            CALA: 'Caribbean & Latin America',
+            EUROPE: 'Europe',
+            MEA: 'Middle East & Africa',
+            AP: 'Asia Pacific',
+            GLOBAL: 'Global'
+        };
+        const key = String(code || '').trim().toUpperCase();
+        return labels[key] || code;
+    }
+
+    formatCoverageTerritoriesList(territories) {
+        if (!Array.isArray(territories) || territories.length === 0) return '';
+        return territories
+            .map((item) => this.formatRegionDisplayLabel(String(item || '').trim()))
+            .filter(Boolean)
+            .join(', ');
+    }
+
+    /** Normalize language list for display (e.g. "Spanish, French"). */
+    formatLanguagesListForDisplay(languages) {
+        if (!languages) return '';
+        if (Array.isArray(languages)) {
+            return languages.map((l) => String(l).trim()).filter(Boolean).join(', ');
+        }
+        if (typeof languages === 'string' && languages.trim()) {
+            return languages
+                .split(',')
+                .map((x) => x.trim())
+                .filter(Boolean)
+                .join(', ');
+        }
+        return '';
+    }
+
+    getResponsivenessExplanation(individual) {
+        const badge = this.getIndividualResponsivenessBadge(individual);
+        const time = (individual.responsivenessTimeCategory || '').trim();
+        const freq = (individual.responsivenessFrequencyCategory || '').trim();
+        const parts = [];
+        if (badge) parts.push(`Overall: ${badge}`);
+        if (time) parts.push(`Response time: ${time}`);
+        if (freq) parts.push(`Response frequency: ${freq}`);
+        if (parts.length) return parts.join('. ') + '.';
+        return 'Response behavior reflects Dealality platform activity when available.';
+    }
+
+    async openIndividualModal(individual) {
+        if (!individual) return;
+        if (individual.id) {
+            const fresh = this.individuals.find((row) => row.id === individual.id);
+            if (fresh) individual = fresh;
+        }
+        this.closeCompanyModal();
+        const modal = document.getElementById('individualModal');
+        const header = document.getElementById('individualModalHeader');
+        const body = document.getElementById('individualModalBody');
+        if (!modal || !header || !body) return;
+
+        const firstName = (individual.firstName || '').trim();
+        const lastName = (individual.lastName || '').trim();
+        const fullName = `${firstName} ${lastName}`.trim() || 'Unknown';
+        const initials = this.getInitials(firstName, lastName);
+        const title = (individual.companyTitle || individual.platformRole || '').trim();
+        const companyName = (individual.companyName || '').trim();
+        const location = (individual.location || '').trim();
+        const {
+            linkedCompany,
+            brands,
+            coverageTerritoriesText,
+            coverageTerritoriesViaRegions,
+            languages,
+            brandsViaCompany
+        } = this.getIndividualDisplayContext(individual);
+        const website = (individual.website || '').trim();
+        const websiteUrl = website ? (website.startsWith('http') ? website : `https://${website}`) : '';
+        const responsivenessBadge = this.getIndividualResponsivenessBadge(individual);
+        const responsivenessExplanation = this.getResponsivenessExplanation(individual);
+        const companyLabel = linkedCompany?.name || companyName;
+
+        const closedDealsDisplay = this.getIndividualMetric(individual, 'closedDeals', ['Closed Deals']);
+        const brandCountDisplay = this.getIndividualMetric(individual, 'brandCount', [
+            'Unique Brands (Deals)',
+            'Deals Unique Brands',
+            'Brand Count',
+            '# of Brand',
+            'Number of Brands',
+        ]);
+        const submittedBidsDisplay = this.getIndividualMetric(individual, 'submittedBids', ['Submitted Bids']);
+
+        let avatarHtml = '';
+        if (individual.profilePicture) {
+            avatarHtml = `<img src="${this.escapeHtml(individual.profilePicture)}" alt="${this.escapeHtml(fullName)}" class="individual-modal-avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />`;
+            avatarHtml += `<div class="individual-modal-avatar-initials" style="display:none;">${initials}</div>`;
+        } else {
+            avatarHtml = `<div class="individual-modal-avatar-initials">${initials}</div>`;
+        }
+
+        header.innerHTML = `
+            <div class="company-modal-header-top">
+                <div class="company-modal-header-left">
+                    ${avatarHtml}
+                    <div class="company-modal-header-name-section individual-modal-header-name-stack">
+                        <h2>${this.escapeHtml(fullName)}</h2>
+                        ${title ? `<div class="individual-modal-header-job-title">${this.escapeHtml(title)}</div>` : ''}
+                        ${companyName ? `<div class="individual-modal-header-company">${this.escapeHtml(companyName)}</div>` : ''}
+                    </div>
+                </div>
+                <div class="individual-modal-header-metrics individual-card__metrics" aria-label="Deal stats">
+                    <div class="individual-card__metric">
+                        <span class="stat-icon">📄</span>
+                        <div class="individual-card__metric-text">
+                            <span class="individual-card__metric-value">${submittedBidsDisplay}</span>
+                            <span class="individual-card__metric-label">Submitted Bid(s)</span>
+                        </div>
+                    </div>
+                    <div class="individual-card__metric">
+                        <span class="stat-icon">👥</span>
+                        <div class="individual-card__metric-text">
+                            <span class="individual-card__metric-value">${brandCountDisplay}</span>
+                            <span class="individual-card__metric-label"># of Brand(s)</span>
+                        </div>
+                    </div>
+                    <div class="individual-card__metric">
+                        <span class="stat-icon">🤝</span>
+                        <div class="individual-card__metric-text">
+                            <span class="individual-card__metric-value">${closedDealsDisplay}</span>
+                            <span class="individual-card__metric-label">Closed Deal(s)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="company-modal-header-info">
+                ${location ? `
+                    <div class="company-modal-header-info-row">
+                        <div class="company-location">Based in ${this.escapeHtml(location)}</div>
+                    </div>
+                ` : ''}
+                ${website ? `
+                    <div class="company-modal-header-info-row${location ? ' company-modal-header-info-row-last' : ''}">
+                        <a href="${this.escapeHtml(websiteUrl)}" target="_blank" rel="noopener noreferrer" class="company-modal-website">
+                            ${this.escapeHtml(website)}
+                        </a>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+
+        const brandsSourceNote = brandsViaCompany && brands.length > 0
+            ? `Shown from ${companyLabel || 'linked company'} profile.`
+            : '';
+        const brandsEmptyHtml = linkedCompany
+            ? '<div class="company-modal-section-content" style="color: var(--neutral--500);">No brands on this person or their linked company. Open the company profile to confirm.</div>'
+            : '<div class="company-modal-section-content" style="color: var(--neutral--500);">No brands listed. Link a company in User Management to show company brands.</div>';
+        const brandsHtml = brands.length > 0
+            ? `${brandsSourceNote ? `<p class="company-modal-section-content" style="margin: 0 0 12px; color: var(--neutral--400); font-size: 13px;">${this.escapeHtml(brandsSourceNote)}</p>` : ''}<div class="company-modal-brands-grid">${this.buildModalBrandsGridHtml(brands)}</div>${brands.length > 16 ? '<a href="#" class="company-modal-show-all" id="individualModalShowAllBrands">Show all brands <span class="company-modal-show-all-icon">▼</span></a>' : ''}`
+            : brandsEmptyHtml;
+
+        const languagesModalText = this.formatLanguagesListForDisplay(languages);
+        const languagesModalValueClass = languagesModalText
+            ? 'company-modal-lang-values'
+            : 'company-modal-lang-values company-modal-lang-empty';
+
+        body.innerHTML = `
+            <div class="company-modal-body-left">
+                <div class="company-modal-section company-modal-section--individual-tight">
+                    <div class="company-modal-section-content company-modal-coverage-block">
+                        <span class="company-modal-inline-label">Coverage territories:</span>
+                    ${coverageTerritoriesText
+                        ? `<div class="company-modal-coverage-body">${this.escapeHtml(coverageTerritoriesText)}</div>
+                            ${coverageTerritoriesViaRegions
+                                ? '<p class="company-modal-section-content" style="margin: 8px 0 0; color: var(--neutral--400); font-size: 13px;">From region selections on this profile. Add <strong>Coverage Territories</strong> in User Management for a custom description.</p>'
+                                : ''}`
+                        : '<div class="company-modal-coverage-body" style="color: var(--neutral--500);">Coverage territories not specified. Fill the <strong>Coverage Territories</strong> field in User Management, or set region checkboxes.</div>'}
+                    ${location ? `<div class="company-modal-section-content" style="margin-top: 12px;"><strong>Based in:</strong> ${this.escapeHtml(location)}</div>` : ''}
+                    </div>
+                </div>
+                <div class="company-modal-section company-modal-section--individual-tight">
+                    <p class="company-modal-section-content company-modal-languages-inline">
+                        <span class="company-modal-inline-label">Languages:</span><span class="${languagesModalValueClass}">${languagesModalText ? this.escapeHtml(languagesModalText) : 'Not specified'}</span>
+                    </p>
+                </div>
+                <div class="company-modal-section">
+                    <div class="company-modal-section-title">BRANDS (${brands.length})</div>
+                    ${brandsHtml}
+                </div>
+                ${responsivenessBadge ? `
+                    <div class="company-modal-section">
+                        <div class="company-modal-section-title">RESPONSE BEHAVIOR</div>
+                        <div class="company-modal-section-content">
+                            <strong>${this.escapeHtml(responsivenessBadge)}</strong>
+                            <p style="margin: 8px 0 0; color: var(--neutral--400); font-size: 14px;">${this.escapeHtml(responsivenessExplanation)}</p>
+                        </div>
+                    </div>
+                ` : ''}
+                ${linkedCompany ? `
+                    <div class="company-modal-section">
+                        <div class="company-modal-section-title">COMPANY</div>
+                        <div class="company-modal-section-content">${this.escapeHtml(linkedCompany.name || companyName)}</div>
+                        <button type="button" class="company-card__more-btn individual-modal-company-link" id="individualModalCompanyLink">View company profile</button>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        const companyLinkBtn = document.getElementById('individualModalCompanyLink');
+        if (companyLinkBtn && linkedCompany) {
+            companyLinkBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.closeIndividualModal();
+                this.openCompanyModal(linkedCompany);
+            });
+        }
+
+        this.wireModalBrandsShowAll(modal, 'individualModalShowAllBrands');
+    }
+
+    closeIndividualModal() {
+        const modal = document.getElementById('individualModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
     closeCompanyModal() {
         const modal = document.getElementById('companyModal');
         if (modal) {
@@ -3383,9 +3797,6 @@ class PartnerDirectory {
             document.body.style.overflow = '';
         }
     }
-
-    // Note: Add/Edit user modal functions removed - modals not implemented in HTML
-    // These functions referenced non-existent DOM elements and would cause errors
 
     async connectUser(userId) {
         // Placeholder for connect functionality

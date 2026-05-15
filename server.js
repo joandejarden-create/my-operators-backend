@@ -530,15 +530,6 @@ app.get("/franchise-application/", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/franchise-application.html" + q);
 });
-// Retired mock list page → combined Brand Explorer (bookmarks / Webflow embeds).
-app.get("/brand-library-atelier-north.html", (req, res) => {
-    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
-    res.redirect(301, "/brand-explorer-combined.html" + q);
-});
-app.get("/brand-library-atelier-north", (req, res) => {
-    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
-    res.redirect(301, "/brand-explorer-combined.html" + q);
-});
 app.get("/company-settings", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, 'public', 'company-settings.html'));

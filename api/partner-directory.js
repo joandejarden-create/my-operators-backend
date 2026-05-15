@@ -3,6 +3,10 @@ import Airtable from "airtable";
 // Set PARTNER_DIRECTORY_DEBUG=true in .env to enable verbose logs (e.g. for debugging Airtable field mapping).
 const DEBUG = process.env.PARTNER_DIRECTORY_DEBUG === 'true';
 
+/** Individuals tab reads User Management by ID so renaming the table in Airtable cannot break stats. */
+const USER_MANAGEMENT_TABLE_ID =
+  process.env.USER_MANAGEMENT_TABLE_ID || "tblQEpYKf2aYNKKjw";
+
 // Lazy initialization of Airtable base
 function getBase() {
     if (!process.env.AIRTABLE_API_KEY || !process.env.AIRTABLE_BASE_ID) {
@@ -215,16 +219,286 @@ async function buildBrandNameMap(base) {
   return map;
 }
 
-function attachResolvedBrandNames(companies, brandNameMap) {
-  if (!Array.isArray(companies) || !brandNameMap) return companies || [];
-  return companies.map((company) => {
-    const existing = Array.isArray(company.brands) ? company.brands.filter(Boolean) : [];
-    const resolved = (company.brandRecordIds || [])
+function attachResolvedBrandNames(records, brandNameMap) {
+  if (!Array.isArray(records) || !brandNameMap) return records || [];
+  return records.map((record) => {
+    const existing = Array.isArray(record.brands) ? record.brands.filter(Boolean) : [];
+    const resolved = (record.brandRecordIds || [])
       .map((id) => brandNameMap.get(id))
       .filter(Boolean);
     const merged = uniqueStrings([...existing, ...resolved]);
-    return { ...company, brands: merged };
+    return { ...record, brands: merged };
   });
+}
+
+/** User Management rows rarely have brand links; inherit from linked Company Profile. */
+function mergeLinkedCompanyIntoIndividuals(individuals, companies) {
+  if (!Array.isArray(individuals) || !Array.isArray(companies)) return individuals || [];
+
+  const companyById = new Map();
+  const companyByName = new Map();
+  companies.forEach((company) => {
+    if (company?.id) companyById.set(company.id, company);
+    const name = (company?.name || "").trim().toLowerCase();
+    if (name && !companyByName.has(name)) companyByName.set(name, company);
+  });
+
+  return individuals.map((individual) => {
+    let company = null;
+    const recordId = (individual.companyRecordId || "").trim();
+    if (recordId) company = companyById.get(recordId) || null;
+    if (!company) {
+      const name = (individual.companyName || "").trim().toLowerCase();
+      if (name) company = companyByName.get(name) || null;
+    }
+    if (!company) return individual;
+
+    const personBrands = Array.isArray(individual.brands) ? individual.brands : [];
+    const companyBrands = Array.isArray(company.brands) ? company.brands : [];
+    const mergedBrands = uniqueStrings([...personBrands, ...companyBrands]);
+
+    const personRegions = Array.isArray(individual.regions) ? individual.regions.filter(Boolean) : [];
+    const companyRegions = Array.isArray(company.regions) ? company.regions.filter(Boolean) : [];
+
+    const brandCount = individual.brandCountFromDealsColumn
+      ? Number(individual.brandCount) || 0
+      : Math.max(
+          Number(individual.brandCount) || 0,
+          mergedBrands.length,
+          Number(company.brandCount) || 0
+        );
+
+    const companyName =
+      (individual.companyName || "").trim() || (company.name || "").trim();
+
+    const personCoverage = Array.isArray(individual.coverageTerritories)
+      ? individual.coverageTerritories.filter(Boolean)
+      : [];
+    const personLanguages = Array.isArray(individual.languages)
+      ? individual.languages.filter(Boolean)
+      : [];
+
+    return {
+      ...individual,
+      companyName,
+      brands: mergedBrands,
+      brandRecordIds: uniqueStrings([
+        ...(individual.brandRecordIds || []),
+        ...(company.brandRecordIds || [])
+      ]),
+      regions: personRegions,
+      companyRegions,
+      coverageTerritories: personCoverage,
+      languages: personLanguages,
+      brandCount,
+      brandsViaCompany: personBrands.length === 0 && companyBrands.length > 0,
+      regionsViaCompany: personRegions.length === 0 && companyRegions.length > 0
+    };
+  });
+}
+
+const USER_REGION_CHECKBOX_FIELDS = [
+  "Region - America",
+  "Region - Caribbean & Latin America",
+  "Region - Europe",
+  "Region - Middle East & Africa",
+  "Region - Asia Pacific",
+];
+
+const USER_REGION_CHECKBOX_TO_CODE = {
+  "Region - America": "AMERICAS",
+  "Region - Caribbean & Latin America": "CALA",
+  "Region - Europe": "EUROPE",
+  "Region - Middle East & Africa": "MEA",
+  "Region - Asia Pacific": "AP",
+};
+
+const ALL_USER_REGION_CODES = new Set(["AMERICAS", "CALA", "EUROPE", "MEA", "AP"]);
+
+function normalizeRegionToken(value) {
+  const u = (typeof value === "string" ? value : String(value || "")).trim().replace(/\s+/g, " ").toUpperCase();
+  if (!u) return null;
+  if (u.indexOf("GLOBAL") >= 0) return "GLOBAL";
+  if (u.indexOf("CARIBBEAN") >= 0 || u.indexOf("LATIN") >= 0 || u === "CALA") return "CALA";
+  if (u.indexOf("EUROPE") >= 0 || u === "EU") return "EUROPE";
+  if ((u.indexOf("MIDDLE") >= 0 && u.indexOf("EAST") >= 0) || u.indexOf("MEA") >= 0) return "MEA";
+  if ((u.indexOf("ASIA") >= 0 && u.indexOf("PACIFIC") >= 0) || u === "AP") return "AP";
+  if (u.indexOf("AMERICAS") >= 0 || (u.indexOf("AMERICA") >= 0 && u.indexOf("LATIN") < 0 && u.indexOf("CARIBBEAN") < 0)) {
+    return "AMERICAS";
+  }
+  return null;
+}
+
+function isRegionCheckboxChecked(value) {
+  return value === true || value === 1 || value === "true" || value === "1";
+}
+
+/** Regions for individuals: User Management checkbox columns only (not company rollup lookups). */
+function parseRegionsFromUserFields(fields) {
+  const safeFields = fields && typeof fields === "object" ? fields : {};
+  const codes = new Set();
+
+  for (const fieldName of USER_REGION_CHECKBOX_FIELDS) {
+    if (isRegionCheckboxChecked(safeFields[fieldName])) {
+      const code = USER_REGION_CHECKBOX_TO_CODE[fieldName];
+      if (code) codes.add(code);
+    }
+  }
+
+  // Only use Region/Regions multi-select when no checkboxes are set (legacy data entry).
+  if (codes.size === 0) {
+    const regionField = safeFields["Region"] || safeFields["Regions"] || safeFields["REGION"] || "";
+    if (regionField) {
+      const items = Array.isArray(regionField)
+        ? regionField
+        : String(regionField).split(",").map((x) => x.trim()).filter(Boolean);
+      items.forEach((item) => {
+        const code = normalizeRegionToken(item);
+        if (code && code !== "GLOBAL") codes.add(code);
+      });
+    }
+  }
+
+  if (codes.size >= 5 && [...ALL_USER_REGION_CODES].every((r) => codes.has(r))) {
+    return ["GLOBAL"];
+  }
+  return [...codes];
+}
+
+function parseCoverageTerritoriesFromFields(fields) {
+  const safeFields = fields && typeof fields === "object" ? fields : {};
+  const raw =
+    safeFields["Coverage Territories"] ??
+    safeFields["Coverage territories"] ??
+    safeFields["COVERAGE TERRITORIES"] ??
+    "";
+  if (raw == null || raw === "") return [];
+
+  const territories = [];
+  const pushValue = (value) => {
+    if (value == null) return;
+    if (Array.isArray(value)) {
+      value.forEach(pushValue);
+      return;
+    }
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (!trimmed || isRecordId(trimmed)) return;
+      // Keep full text (e.g. "Mexico, Central America, & Caribbean") as one territory.
+      territories.push(trimmed);
+      return;
+    }
+    if (typeof value === "object") {
+      const name =
+        value.name ||
+        value.label ||
+        value.title ||
+        value.fields?.Name ||
+        value.fields?.["Coverage Territories"] ||
+        "";
+      if (name) territories.push(String(name).trim());
+    }
+  };
+
+  pushValue(raw);
+  return uniqueStrings(territories);
+}
+
+function extractLanguagesFromFields(fields) {
+  const safeFields = fields && typeof fields === "object" ? fields : {};
+  const languages = [];
+  const pushLanguageValue = (value) => {
+    if (value == null) return;
+    if (Array.isArray(value)) {
+      value.forEach(pushLanguageValue);
+      return;
+    }
+    if (typeof value === "string" && value.trim()) {
+      value
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean)
+        .forEach((x) => languages.push(x));
+      return;
+    }
+    if (typeof value === "object" && value.name) {
+      languages.push(String(value.name).trim());
+    }
+  };
+
+  const explicit =
+    safeFields["Languages"] ??
+    safeFields["Language"] ??
+    safeFields["languages"] ??
+    null;
+  if (explicit != null && explicit !== "") {
+    pushLanguageValue(explicit);
+    return uniqueStrings(languages);
+  }
+
+  Object.entries(safeFields).forEach(([key, value]) => {
+    if (!/language/i.test(String(key || ""))) return;
+    if (Array.isArray(value)) {
+      value.forEach((item) => {
+        if (typeof item === "string" && item.trim()) languages.push(item.trim());
+        else if (item && typeof item === "object" && item.name) languages.push(String(item.name).trim());
+      });
+    } else if (typeof value === "string" && value.trim()) {
+      value.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => languages.push(x));
+    }
+  });
+  return uniqueStrings(languages);
+}
+
+function coerceFiniteNumber(raw) {
+  if (raw == null || raw === "") return null;
+  if (typeof raw === "number" && Number.isFinite(raw)) return raw;
+  const s = String(raw).trim().replace(/,/g, "");
+  if (!s) return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+
+/** Match Airtable column labels even if spacing/casing differs slightly from our literals. */
+function getFieldRawInsensitive(fields, preferredNames) {
+  const safe = fields && typeof fields === "object" ? fields : {};
+  for (const name of preferredNames) {
+    if (Object.prototype.hasOwnProperty.call(safe, name)) {
+      const v = safe[name];
+      if (v !== undefined) return v;
+    }
+  }
+  const lowerByKey = new Map();
+  for (const k of Object.keys(safe)) {
+    lowerByKey.set(k.trim().toLowerCase(), safe[k]);
+  }
+  for (const name of preferredNames) {
+    const key = String(name).trim().toLowerCase();
+    if (lowerByKey.has(key)) return lowerByKey.get(key);
+  }
+  return undefined;
+}
+
+function parseNumericField(fields, names) {
+  for (const name of names) {
+    const raw = getFieldRawInsensitive(fields, [name]);
+    const num = coerceFiniteNumber(raw);
+    if (num !== null) return num;
+  }
+  return 0;
+}
+
+/** Partner Directory stat: unique brands represented across deals (User Management column). */
+const DEALS_UNIQUE_BRAND_COUNT_FIELDS = ["Unique Brands (Deals)", "Deals Unique Brands"];
+
+function readDealsUniqueBrandCountFromFields(fields) {
+  const safe = fields && typeof fields === "object" ? fields : {};
+  for (const name of DEALS_UNIQUE_BRAND_COUNT_FIELDS) {
+    const raw = getFieldRawInsensitive(safe, [name]);
+    const num = coerceFiniteNumber(raw);
+    if (num !== null) return { value: num, fromDealsColumn: true };
+  }
+  return { value: null, fromDealsColumn: false };
 }
 
 // Field mappings for Airtable tables
@@ -768,7 +1042,7 @@ export async function getPartners(req, res) {
     let userRecords = [];
     try {
       await new Promise((resolve, reject) => {
-        base("User Management")
+        base(USER_MANAGEMENT_TABLE_ID)
           .select({
             // Fetch complete dataset via pagination (no hard cap)
           })
@@ -811,6 +1085,8 @@ export async function getPartners(req, res) {
     try {
       const brandNameMap = await buildBrandNameMap(base);
       companies = attachResolvedBrandNames(companies, brandNameMap);
+      individuals = attachResolvedBrandNames(individuals, brandNameMap);
+      individuals = mergeLinkedCompanyIntoIndividuals(individuals, companies);
     } catch (brandResolveError) {
       console.error("Error resolving linked brand names:", brandResolveError);
     }
@@ -858,11 +1134,27 @@ function formatUserRecord(record) {
   const firstName = fields[F.users.firstName] || fields["First Name"] || "";
   const lastName = fields[F.users.lastName] || fields["Last Name"] || "";
   const company = companyInfo.companyName || fields[F.users.company] || fields["Company/Organization"] || fields["Company Name"] || "";
-  const country = fields[F.users.country] || fields["Country"] || "";
-  const userType = fields[F.users.userType] || fields["User Type"] || "";
-  const email = fields[F.users.email] || fields["Email"] || "";
-  const phone = fields[F.users.phone] || fields["Phone Number"] || fields["Phone"] || "";
-  const website = fields["Website"] || fields["Company Website"] || "";
+  const country =
+    fields["Based (Country)"] ||
+    fields[F.users.country] ||
+    fields["Country"] ||
+    "";
+  const userType =
+    fields[F.users.userType] ||
+    fields["User Type"] ||
+    fields["Platform Role"] ||
+    "";
+  const email =
+    fields[F.users.email] ||
+    fields["Email"] ||
+    fields["Company Email"] ||
+    "";
+  const phone =
+    fields[F.users.phone] ||
+    fields["Phone Number"] ||
+    fields["Phone"] ||
+    "";
+  const website = fields["Website"] || fields["Company Website"] || fields["Personal Website"] || "";
   const companyRecordId = companyInfo.companyRecordId;
 
   const profilePicture = parseAttachmentUrl(
@@ -872,23 +1164,49 @@ function formatUserRecord(record) {
       fields["Headshot"] ||
       fields["Photo"]
   );
-  
-  // Determine location from country
-  const location = country ? `${country}` : "";
-  
-  // Determine regions from user type and country (simplified mapping)
-  let regions = [];
-  if (country) {
-    if (country.includes("United States") || country.includes("Canada")) {
-      regions = ["AMERICAS"];
-    } else if (country.includes("Mexico") || country.includes("Brazil") || country.includes("Argentina")) {
-      regions = ["CALA"];
-    } else if (country.includes("United Kingdom") || country.includes("France") || country.includes("Germany") || country.includes("Spain") || country.includes("Italy")) {
-      regions = ["EUROPE"];
-    } else {
-      regions = ["GLOBAL"];
+
+  const location = country ? String(country).trim() : "";
+  const regions = parseRegionsFromUserFields(fields);
+  const coverageTerritories = parseCoverageTerritoriesFromFields(fields);
+  const languages = extractLanguagesFromFields(fields);
+  const enrichment = buildCompanyEnrichment(fields, record.createdTime);
+  const explicitBrandsField =
+    fields["Brands Supported"] ||
+    fields["Brands You Operate / Support"] ||
+    fields["Brands"] ||
+    fields["Brand Name"] ||
+    null;
+  if (explicitBrandsField) {
+    if (Array.isArray(explicitBrandsField)) {
+      explicitBrandsField.forEach((item) => {
+        if (typeof item === "string" && !isRecordId(item)) enrichment.brands.push(item);
+        else if (item && typeof item === "object") {
+          extractRecordIdsFromValue(item, enrichment.brandRecordIds);
+          const name =
+            item.fields?.["Brand Name"] ||
+            item.fields?.Name ||
+            item.name ||
+            "";
+          if (name) enrichment.brands.push(String(name));
+        }
+      });
+    } else if (typeof explicitBrandsField === "string" && !isRecordId(explicitBrandsField)) {
+      explicitBrandsField
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean)
+        .forEach((x) => enrichment.brands.push(x));
     }
+    enrichment.brands = uniqueStrings(enrichment.brands);
   }
+  const closedDeals = parseNumericField(fields, ["Closed Deals", "closed_deals"]);
+  const submittedBids = parseNumericField(fields, ["Submitted Bids", "submitted_bids"]);
+  const legacyBrandCount = parseNumericField(fields, ["Brand Count", "# of Brand", "Number of Brands", "brand_count"]);
+  const dealsUnique = readDealsUniqueBrandCountFromFields(fields);
+  const brandCountFromDealsColumn = dealsUnique.fromDealsColumn;
+  const resolvedBrandCount = brandCountFromDealsColumn
+    ? dealsUnique.value
+    : legacyBrandCount || (enrichment.brands?.length || 0);
 
   const rawFields = { ...fields };
   if (!rawFields["Created Date"] && record.createdTime) {
@@ -906,14 +1224,21 @@ function formatUserRecord(record) {
     email: email || "",
     companyEmail: email || "",
     userType: userType || "",
-    platformRole: userType || "",
-    regions: regions,
-    contactVisibility: "Show Contact",
+    platformRole: fields["Platform Role"] || userType || "",
+    regions,
+    coverageTerritories,
+    languages,
+    contactVisibility: (() => {
+      const cv = fields["Contact Visibility"];
+      if (typeof cv === "object" && cv && cv.name) return cv.name;
+      return typeof cv === "string" ? cv : "";
+    })(),
     location: location || "",
     website: website || "",
-    closedDeals: 0,
-    brandCount: 0,
-    submittedBids: 0,
+    closedDeals,
+    brandCount: resolvedBrandCount,
+    brandCountFromDealsColumn,
+    submittedBids,
     profilePicture: profilePicture || null,
     responsivenessCombinedBadge:
       fields["responsiveness_combined_badge"] ||
@@ -928,7 +1253,9 @@ function formatUserRecord(record) {
       fields["Responsiveness Frequency Category"] ||
       "",
     _createdTime: record.createdTime || null,
-    rawFields
+    rawFields,
+    brandRecordIds: enrichment.brandRecordIds,
+    brands: enrichment.brands
   };
 }
 

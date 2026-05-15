@@ -7,11 +7,35 @@
 (function () {
   'use strict';
 
+  /** Single source for recent-opening property cards (Footprint & Growth). Not materials.caseStudy. */
+  var FOOTPRINT_OPENINGS_SLOT = 'footprint.openings';
+  /** Recent Momentum timeline rows (date, headline, description, optional Choice Hotels URL). */
+  var FOOTPRINT_MOMENTUM_SLOT = 'footprint.momentum';
+  var FOOTPRINT_MOMENTUM_LABEL_SLOT = 'footprint.momentum_label';
+  /** Portfolio Mix pills under Recent Momentum (Title = category, Body = level label). */
+  var FOOTPRINT_PORTFOLIO_MIX_SLOT = 'footprint.portfolio_mix';
+  var OPERATIONS_COMPLIANCE_SLOTS = [
+    'operations.compliance.qa_cadence',
+    'operations.compliance.training_rigor',
+    'operations.compliance.reporting',
+    'operations.compliance.brand_interaction'
+  ];
+
+  /** Brand Explorer Presentation rows for Geographic Footprint region cards (Title optional; Body = status line, blank line, narrative). */
+  var FOOTPRINT_REGION_SLOT_DEFS = [
+    { slot: 'footprint.region.am', defaultName: 'Americas' },
+    { slot: 'footprint.region.cala', defaultName: 'CALA' },
+    { slot: 'footprint.region.eu', defaultName: 'Europe' },
+    { slot: 'footprint.region.mea', defaultName: 'MEA' },
+    { slot: 'footprint.region.apac', defaultName: 'APAC' }
+  ];
+
   var ATELIER_TAB_DEFS = [
     { id: 'atelier-overview', label: 'Overview' },
     { id: 'atelier-value-owners', label: 'Value to<br>Owners' },
     { id: 'atelier-ops', label: 'Operations &<br>Standards' },
     { id: 'atelier-commercial', label: 'Commercial<br>Engine' },
+    { id: 'atelier-economics', label: 'Economics &<br>Obligations' },
     { id: 'atelier-loyalty', label: 'Loyalty<br>Program' },
     { id: 'atelier-footprint', label: 'Footprint &<br>Growth' },
     { id: 'atelier-materials', label: 'Brand<br>Materials' },
@@ -45,19 +69,23 @@
     folder:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
     spark:
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>'
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+    wallet:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3H7a2 2 0 0 1-2-2 2 2 0 0 1 2-2h16" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>'
   };
 
-  var TAB_ICONS = [
-    ICONS.overview,
-    ICONS.chart,
-    ICONS.ops,
-    ICONS.bars,
-    ICONS.star,
-    ICONS.globe,
-    ICONS.folder,
-    ICONS.spark
-  ];
+  /** Stable icon per atelier tab id (do not rely on array index when tabs are added). */
+  var ATELIER_TAB_ICON_BY_ID = {
+    'atelier-overview': ICONS.overview,
+    'atelier-value-owners': ICONS.chart,
+    'atelier-ops': ICONS.ops,
+    'atelier-commercial': ICONS.bars,
+    'atelier-economics': ICONS.wallet,
+    'atelier-loyalty': ICONS.star,
+    'atelier-footprint': ICONS.globe,
+    'atelier-materials': ICONS.folder,
+    'atelier-insight': ICONS.spark
+  };
 
   /** Loyalty & Commercial form keys — labels align with Brand Setup / Airtable (see api/brand-library.js LOYALTY_COMMERCIAL_FORM_TO_AIRTABLE). */
   var LOYALTY_FORM_ROWS = [
@@ -172,6 +200,35 @@
     return rows.length ? rows[0] : null;
   }
 
+  /** Single-line copy from Brand Explorer Presentation (Body, else Title). */
+  function explorerPresentationLine(brand, slotKey) {
+    var merged = explorerMergedBody(brand, slotKey);
+    if (hasVal(merged)) return String(merged).trim();
+    var row = explorerFirstBlock(brand, slotKey);
+    if (row && hasVal(row.body)) return String(row.body).trim();
+    if (row && hasVal(row.title)) return String(row.title).trim();
+    return '';
+  }
+
+  /** Dealality Insight tab — presentation slot first; no Brand Basics “Profile Analysis” column required. */
+  function dealalitySummaryFromBrand(brand) {
+    var slot = explorerMergedBody(brand, 'insight.summary');
+    if (hasVal(slot)) return String(slot).trim();
+    if (hasVal(brand.brandValueProposition)) return String(brand.brandValueProposition).trim();
+    if (hasVal(brand.keyBrandDifferentiators)) {
+      var diffPara = String(brand.keyBrandDifferentiators)
+        .split(/\n\n+/)
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(Boolean)[0];
+      if (diffPara) return diffPara;
+    }
+    if (hasVal(brand.brandPositioning)) return String(brand.brandPositioning).trim();
+    if (hasVal(brand.brandProfileAnalysis)) return String(brand.brandProfileAnalysis).trim();
+    return '';
+  }
+
   /** Multiple rows with same slotKey → list of { title, body } (sorted). */
   function explorerCardRowsForSlot(brand, slotKey) {
     return explorerBlocksForSlot(brand, slotKey).map(function (r) {
@@ -271,6 +328,50 @@
       .filter(Boolean);
   }
 
+  function footprintRegionStatusClass(statusLabel) {
+    var l = String(statusLabel || '').toLowerCase();
+    if (l.indexOf('limited') >= 0) return 'status-label--limited';
+    if (l.indexOf('selective') >= 0) return 'status-label--selective';
+    if (l.indexOf('emerging') >= 0 || l.indexOf('high relevance') >= 0) return 'status-label--emerging';
+    return 'status-label--established';
+  }
+
+  function footprintRegionCardDim(statusLabel) {
+    var l = String(statusLabel || '').toLowerCase();
+    return l.indexOf('limited') >= 0 || l.indexOf('selective') >= 0;
+  }
+
+  function parseFootprintRegionBlock(block, defaultName) {
+    var name =
+      block && hasVal(block.title) ? String(block.title).trim() : defaultName || 'Region';
+    var raw = block && hasVal(block.body) ? String(block.body).trim() : '';
+    var paras = raw
+      .split(/\n\n+/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+    var statusLabel = paras[0] || '';
+    var narrative = paras.length > 1 ? paras.slice(1).join('\n\n') : '';
+    if (!narrative && paras.length === 1 && paras[0].length > 120) {
+      narrative = paras[0];
+      statusLabel = 'Directional presence';
+    }
+    return { name: name, statusLabel: statusLabel, narrative: narrative };
+  }
+
+  function footprintRegionCardsFromPresentation(brand) {
+    var cards = [];
+    FOOTPRINT_REGION_SLOT_DEFS.forEach(function (def) {
+      var row = explorerFirstBlock(brand, def.slot);
+      if (!row || (!hasVal(row.body) && !hasVal(row.title))) return;
+      var parsed = parseFootprintRegionBlock(row, def.defaultName);
+      if (!hasVal(parsed.narrative) && !hasVal(parsed.statusLabel)) return;
+      cards.push(parsed);
+    });
+    return cards;
+  }
+
   function footprintSummaryLine(fp) {
     if (!fp || typeof fp !== 'object') return '';
     var openH = fp.totalExistingHotels;
@@ -346,11 +447,17 @@
     var m = fv.typicalManagedPercent;
     var f = fv.typicalFranchisedPercent;
     if (!hasVal(m) && !hasVal(f)) return '';
-    var ms = m != null && m !== '' ? String(m).replace(/%/g, '').trim() : '';
-    var fs = f != null && f !== '' ? String(f).replace(/%/g, '').trim() : '';
-    if (ms && fs) return ms + '% managed · ' + fs + '% franchised';
-    if (ms) return ms + '% managed';
-    if (fs) return fs + '% franchised';
+    function pctLabel(raw) {
+      if (raw == null || raw === '') return '';
+      var n = parseFloat(String(raw).replace(/%/g, '').trim());
+      if (!isFinite(n)) return String(raw).replace(/%/g, '').trim();
+      return String(Math.round(n)) + '%';
+    }
+    var ms = pctLabel(m);
+    var fs = pctLabel(f);
+    if (ms && fs) return ms + ' managed · ' + fs + ' franchised';
+    if (ms) return ms + ' managed';
+    if (fs) return fs + ' franchised';
     return '';
   }
 
@@ -444,12 +551,48 @@
     return parts.join(' — ');
   }
 
+  /** Overview snapshot: where the brand succeeds (not Footprint city lists). */
+  function typicalUseCaseFromBrand(brand) {
+    var slot = explorerMergedBody(brand, 'overview.typical_use_case');
+    if (hasVal(slot)) return String(slot).trim();
+    var row = explorerFirstBlock(brand, 'overview.typical_use_case');
+    if (row && hasVal(row.body)) return String(row.body).trim();
+    if (row && hasVal(row.title)) return String(row.title).trim();
+
+    var pf = brand.projectFit || {};
+    var pfFv = pf.formValues || pf;
+    var notes = pfFv.idealProjectsAdditionalNotes || pf.idealProjectsAdditionalNotes;
+    if (hasVal(notes)) return String(notes).trim();
+
+    return '';
+  }
+
+  /** Overview snapshot: conversion vs new-build emphasis (not Basics stage + model join). */
+  function developmentModelFromBrand(brand) {
+    var slot = explorerMergedBody(brand, 'overview.development_model');
+    if (hasVal(slot)) return String(slot).trim();
+    var row = explorerFirstBlock(brand, 'overview.development_model');
+    if (row && hasVal(row.body)) return String(row.body).trim();
+    if (row && hasVal(row.title)) return String(row.title).trim();
+    return '';
+  }
+
+  /** Overview snapshot: position within parent portfolio (not Brand Positioning long copy). */
+  function relativePositioningFromBrand(brand) {
+    var slot = explorerMergedBody(brand, 'overview.relative_positioning');
+    if (hasVal(slot)) return String(slot).trim();
+    var row = explorerFirstBlock(brand, 'overview.relative_positioning');
+    if (row && hasVal(row.body)) return String(row.body).trim();
+    if (row && hasVal(row.title)) return String(row.title).trim();
+    return '';
+  }
+
   /** Portfolio & Performance: min/max property size (rooms) → snapshot “typical keys” line. */
   function typicalKeysRangeFromPortfolio(brand) {
     var pp = brand.portfolioPerformance || {};
     var minK = pp.minPropertySize;
     var maxK = pp.maxPropertySize;
-    if (hasVal(minK) && hasVal(maxK)) return fmtNum(minK) + '–' + fmtNum(maxK) + ' rooms (stated brand band)';
+    if (hasVal(minK) && hasVal(maxK)) return fmtNum(minK) + '–' + fmtNum(maxK) + ' rooms';
     if (hasVal(minK)) return fmtNum(minK) + '+ rooms (minimum)';
     if (hasVal(maxK)) return 'Up to ' + fmtNum(maxK) + ' rooms';
     return '';
@@ -495,6 +638,81 @@
     return 2;
   }
 
+  function ladderTierFallbackLabels() {
+    return [
+      'Lower-scale brands',
+      'Mid-scale brands',
+      'Upscale brands',
+      'Upper-scale brands'
+    ];
+  }
+
+  function normalizePortfolioParentKey(parent) {
+    return String(parent || '')
+      .trim()
+      .toLowerCase();
+  }
+
+  function explorerBrandListForPortfolio() {
+    if (typeof window.getBrandExplorerListBrands === 'function') {
+      return window.getBrandExplorerListBrands() || [];
+    }
+    return [];
+  }
+
+  function portfolioSiblingNamesByLadderTier(brand, brandList) {
+    var tiers = [[], [], [], []];
+    var parentKey = normalizePortfolioParentKey(brand && brand.parentCompany);
+    if (!parentKey || !brandList || !brandList.length) return tiers;
+    var currentId = brand && (brand.id || brand.brandId) ? String(brand.id || brand.brandId) : '';
+    brandList.forEach(function (b) {
+      if (!b) return;
+      if (normalizePortfolioParentKey(b.parentCompany) !== parentKey) return;
+      var nm = hasVal(b.name) ? String(b.name).trim() : '';
+      if (!nm) return;
+      var bid = b.id != null ? String(b.id) : '';
+      if (currentId && bid === currentId) return;
+      var scale = b.hotelChainScale || b.chainScale || '';
+      tiers[ladderIndexForScale(scale)].push(nm);
+    });
+    tiers.forEach(function (names) {
+      names.sort(function (a, b) {
+        return a.localeCompare(b, undefined, { sensitivity: 'base' });
+      });
+    });
+    return tiers;
+  }
+
+  function portfolioLadderStepLabel(tierNames, fallback, active, brandName) {
+    if (active) return hasVal(brandName) ? String(brandName).trim() : fallback;
+    if (tierNames && tierNames.length) return tierNames.join(', ');
+    return fallback;
+  }
+
+  function buildPortfolioLadderCellsHtml(brand) {
+    var fallbacks = ladderTierFallbackLabels();
+    var tierNames = portfolioSiblingNamesByLadderTier(brand, explorerBrandListForPortfolio());
+    var ladderIdx = ladderIndexForScale(
+      brand && (brand.hotelChainScale || brand.chainScale)
+    );
+    var brandName = brand && brand.name ? String(brand.name).trim() : '';
+    return fallbacks
+      .map(function (fallback, i) {
+        var active = i === ladderIdx;
+        var label = portfolioLadderStepLabel(tierNames[i], fallback, active, brandName);
+        return (
+          '<div class="ladder__step' +
+          (active ? ' ladder__step--active' : '') +
+          '"' +
+          (active ? ' aria-current="true"' : '') +
+          '>' +
+          escapeHtml(label) +
+          '</div>'
+        );
+      })
+      .join('');
+  }
+
   function positionBody(text) {
     if (!hasVal(text)) {
       return '<p class="brand-position-card__body"><span class="oe-dd--empty">&nbsp;</span></p>';
@@ -520,12 +738,9 @@
     var footLine = footprintSummaryLine(fp);
     var loyaltyLine = loyaltyStrengthLine(brand);
     var geoFocus = regionOfferedLine(brand);
-    var typicalUse = hasVal(fv.specificMarkets)
-      ? String(fv.specificMarkets).trim()
-      : hasVal(fp.priorityCities)
-        ? String(fp.priorityCities).trim()
-        : '';
-    var devModel = [brand.brandDevelopmentStage, brand.brandModelFormat].filter(hasVal).join(' · ');
+    var typicalUse = typicalUseCaseFromBrand(brand);
+    var relativePositioning = relativePositioningFromBrand(brand);
+    var devModel = developmentModelFromBrand(brand);
 
     var snapshotGrid =
       '<div class="oe-grid-2 oe-grid-2--snapshot">' +
@@ -547,7 +762,7 @@
       ]) +
       oeKvBlock('Development & positioning', [
         { k: 'Development Model', v: devModel },
-        { k: 'Relative Positioning', v: brand.brandPositioning }
+        { k: 'Relative Positioning', v: relativePositioning }
       ]) +
       '</div>';
 
@@ -604,7 +819,7 @@
     var whySlotMerged = explorerMergedBody(brand, 'overview.why_value');
     var whyLines = hasVal(whySlotMerged)
       ? splitBullets(whySlotMerged)
-      : splitBullets(brand.brandProfileAnalysis || brand.brandValueProposition);
+      : splitBullets(brand.brandValueProposition || brand.keyBrandDifferentiators);
     while (whyLines.length < 5) whyLines.push('');
     var whyList = whyLines
       .slice(0, 5)
@@ -705,7 +920,7 @@
       [brand.brandModelFormat, brand.brandDevelopmentStage].filter(hasVal).join(' · '),
       hasVal(fv.specificMarkets) ? fv.specificMarkets : fp.priorityCities || '',
       loyaltyLine,
-      hasVal(proofOpSlot) ? proofOpSlot : brand.brandProfileAnalysis || ''
+      hasVal(proofOpSlot) ? proofOpSlot : brand.brandValueProposition || ''
     ];
     var proofHeads = [
       'Global Open Footprint',
@@ -793,13 +1008,13 @@
       })
       .join('');
 
-    var hasCaseStudies = explorerBlocksForSlot(brand, 'materials.caseStudy').length > 0;
-    var caseStudiesJumpBtn =
+    var hasOpenings = explorerBlocksForSlot(brand, FOOTPRINT_OPENINGS_SLOT).length > 0;
+    var openingsJumpBtn =
       '<button type="button" class="btn btn--primary"' +
-      (hasCaseStudies
-        ? ' data-be-jump-atelier-tab="atelier-materials" title="Open Brand Materials — Case studies & proof of application"'
-        : ' disabled title="Add Brand Explorer Presentation rows with Slot Key materials.caseStudy"') +
-      '>View Case Studies</button>';
+      (hasOpenings
+        ? ' data-be-jump-atelier-tab="atelier-footprint" title="Open Footprint &amp; Growth — Recent openings"'
+        : ' disabled title="Add Brand Explorer Presentation rows with Slot Key footprint.openings"') +
+      '>View Recent Openings</button>';
 
     return (
       '<div class="be-atelier-oe">' +
@@ -875,7 +1090,7 @@
       '</span><div class="tag-chip-row">' +
       featTags +
       '</div></div>' +
-      caseStudiesJumpBtn +
+      openingsJumpBtn +
       '</div></section>' +
       '<section class="oe-section">' +
       '<h2 class="oe-section-title">Portfolio Context</h2>' +
@@ -883,10 +1098,10 @@
       (hasVal(brand.parentCompany)
         ? 'Where <strong>' +
           escapeHtml(String(brand.name || 'This brand')) +
-          '</strong> sits under <strong>' +
+          '</strong> sits among <strong>' +
           escapeHtml(String(brand.parentCompany)) +
-          '</strong> on an illustrative portfolio spectrum (not a quality ranking).'
-        : 'Where this brand sits on an illustrative portfolio spectrum (not a quality ranking).') +
+          '</strong> brands by chain scale—lower-scale flags on the left, higher-scale on the right (not a quality ranking).'
+        : 'Sibling brands by chain scale on the portfolio spectrum—lower on the left, higher on the right (not a quality ranking).') +
       '</p>' +
       '<div class="ladder-axis-labels" aria-hidden="true"><span>← Lower On the Portfolio Spectrum</span><span>Higher On the Portfolio Spectrum →</span></div>' +
       '<div class="ladder" role="group" aria-label="Portfolio tiers relative to sibling brands, lower to higher on the company spectrum">' +
@@ -906,6 +1121,33 @@
         escapeHtml(fmtCell(bodyText)).replace(/\n/g, '<br>') +
         '</p>'
       : '<p class="explorer-detail-card__body oe-dd--empty">&nbsp;</p>';
+    return (
+      '<div class="explorer-detail-card"><h3 class="explorer-detail-card__label">' +
+      escapeHtml(label) +
+      '</h3>' +
+      body +
+      '</div>'
+    );
+  }
+
+  function explorerDetailCardMultiline(label, bodyText) {
+    if (!hasVal(bodyText)) return explorerDetailCard(label, '');
+    var paras = String(bodyText)
+      .split(/\n\n+/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+    if (paras.length <= 1) return explorerDetailCard(label, bodyText);
+    var body = paras
+      .map(function (p) {
+        return (
+          '<p class="explorer-detail-card__body">' +
+          escapeHtml(fmtCell(p)).replace(/\n/g, '<br>') +
+          '</p>'
+        );
+      })
+      .join('');
     return (
       '<div class="explorer-detail-card"><h3 class="explorer-detail-card__label">' +
       escapeHtml(label) +
@@ -996,8 +1238,39 @@
     );
   }
 
-  function fileCard(icon, title, hrefOpt) {
+  function materialsFileBodyLines(body) {
+    if (!hasVal(body)) return [];
+    return String(body)
+      .split(/\r?\n/)
+      .map(function (line) {
+        return line.trim();
+      })
+      .filter(Boolean);
+  }
+
+  function materialsFileMetaFromBody(body) {
+    return materialsFileBodyLines(body)
+      .filter(function (line) {
+        return !isSafeHttpUrl(line) && !/^badge\s*:/i.test(line);
+      })
+      .join(' · ')
+      .trim();
+  }
+
+  function materialsFileBadgeFromBody(body) {
+    var badgeLine = materialsFileBodyLines(body).find(function (line) {
+      return /^badge\s*:/i.test(line);
+    });
+    if (!badgeLine) return '';
+    return badgeLine.replace(/^badge\s*:\s*/i, '').trim();
+  }
+
+  function fileCard(icon, title, meta, hrefOpt, badge) {
     var href = hrefOpt && isSafeHttpUrl(String(hrefOpt)) ? String(hrefOpt).trim() : '';
+    var badgeLabel = hasVal(badge) ? String(badge).trim() : 'Unverified by Brand';
+    var metaHtml = hasVal(meta)
+      ? '<div class="file-card__meta">' + escapeHtml(meta) + '</div>'
+      : '<div class="file-card__meta oe-dd--empty">&nbsp;</div>';
     var actions =
       '<div style="margin-top:10px">' +
       (href
@@ -1016,8 +1289,10 @@
       '<p class="file-card__title">' +
       (hasVal(title) ? escapeHtml(title) : '&nbsp;') +
       '</p>' +
-      '<div class="file-card__meta oe-dd--empty">&nbsp;</div>' +
-      '<span class="file-card__badge">Unverified by Brand</span>' +
+      metaHtml +
+      '<span class="file-card__badge">' +
+      escapeHtml(badgeLabel) +
+      '</span>' +
       actions +
       '</div></div>'
     );
@@ -1072,7 +1347,7 @@
     var watchSlot = explorerMergedBody(brand, 'valueOwners.watchouts');
     var watchLines = hasVal(watchSlot)
       ? splitBullets(watchSlot)
-      : splitBullets(brand.brandProfileAnalysis || brand.keyBrandDifferentiators);
+      : splitBullets(brand.keyBrandDifferentiators || brand.brandValueProposition);
     while (watchLines.length < 5) watchLines.push('');
     var watchUl = watchLines
       .slice(0, 5)
@@ -1121,76 +1396,151 @@
     );
   }
 
+  var FLEXIBILITY_INDICATOR_DEFS = [
+    { label: 'Design Flexibility', slot: 'operations.flexibility.design' },
+    { label: 'Conversion Friendliness', slot: 'operations.flexibility.conversion' },
+    { label: 'Localization Flexibility', slot: 'operations.flexibility.localization' },
+    { label: 'Operational Rigidity', slot: 'operations.flexibility.operational_rigidity' },
+    { label: 'PIP Sensitivity', slot: 'operations.flexibility.pip' },
+    { label: 'Prototype Dependence', slot: 'operations.flexibility.prototype' }
+  ];
+
+  /** Maps Airtable Body → distinct bar class (see docs/brand-explorer-presentation-slots.md). */
+  function flexibilityFillClass(tag) {
+    var s = String(tag || '')
+      .toLowerCase()
+      .trim()
+      .replace(/[–—]/g, '-');
+    if (!s || /^(n\/?a|na|none|unknown|not\s+applicable|tbd|-)$/.test(s)) return 'empty';
+    if (/^very\s*high$/.test(s)) return 'very-high';
+    if (/^high$/.test(s)) return 'high';
+    if (/^medium$/.test(s)) return 'medium';
+    if (/^moderate$/.test(s)) return 'moderate';
+    if (/^minimal$/.test(s)) return 'minimal';
+    if (/^low$/.test(s)) return 'low';
+    var num = s.match(/^([1-6])(?:\s*\/\s*6)?$/);
+    if (num) {
+      return (
+        ['empty', 'minimal', 'low', 'moderate', 'medium', 'high', 'very-high'][
+          parseInt(num[1], 10)
+        ] || 'moderate'
+      );
+    }
+    if (/\bvery\s*high\b/.test(s)) return 'very-high';
+    if (/\b(very\s*low|minimal|negligible)\b/.test(s)) return 'minimal';
+    if (/\b(exceptional|maximum|extensive)\b/.test(s)) return 'very-high';
+    if (/\b(high|strong|significant|substantial|robust|elevated|considerable)\b/.test(s))
+      return 'high';
+    if (/\b(low|limited|light|minor|weak|restricted|tight)\b/.test(s)) return 'low';
+    if (/\bmedium\b/.test(s)) return 'medium';
+    if (/\b(moderate|mid|average|fair|balanced|typical|some)\b/.test(s)) return 'moderate';
+    if (/\b(low[- ]moderate|moderate[- ]low)\b/.test(s)) return 'low';
+    if (/\b(moderate[- ]high|high[- ]moderate)\b/.test(s)) return 'high';
+    return 'moderate';
+  }
+
+  function flexibilityTagFromBrand(brand, slotKey) {
+    var row = explorerFirstBlock(brand, slotKey);
+    if (!row) return '';
+    if (hasVal(row.body)) return String(row.body).trim();
+    if (hasVal(row.title)) return String(row.title).trim();
+    return '';
+  }
+
+  function flexibilityIndicatorsHtml(brand) {
+    return FLEXIBILITY_INDICATOR_DEFS.map(function (d) {
+      var tag = flexibilityTagFromBrand(brand, d.slot);
+      if (!hasVal(tag)) {
+        return (
+          '<div class="indicator-bar"><span class="indicator-bar__label">' +
+          escapeHtml(d.label) +
+          '</span><div class="indicator-bar__track"><div class="indicator-bar__fill indicator-bar__fill--empty"></div></div><span class="indicator-bar__tag oe-dd--empty">&nbsp;</span></div>'
+        );
+      }
+      var fill = flexibilityFillClass(tag);
+      return (
+        '<div class="indicator-bar"><span class="indicator-bar__label">' +
+        escapeHtml(d.label) +
+        '</span><div class="indicator-bar__track"><div class="indicator-bar__fill indicator-bar__fill--' +
+        fill +
+        '"></div></div><span class="indicator-bar__tag">' +
+        escapeHtml(tag) +
+        '</span></div>'
+      );
+    }).join('');
+  }
+
+  function operatorCompatTagsFromBrand(brand) {
+    var tags = [];
+    explorerBlocksForSlot(brand, 'operations.operator_compat.tags').forEach(function (r) {
+      if (hasVal(r.body)) tags = tags.concat(splitBullets(r.body));
+      else if (hasVal(r.title)) tags.push(String(r.title).trim());
+    });
+    return tags;
+  }
+
+  function operatorCompatTagRowHtml(brand) {
+    var tags = operatorCompatTagsFromBrand(brand);
+    if (!tags.length) {
+      return (
+        '<div class="tag-chip-row" style="margin:0">' +
+        '<span class="tag-chip oe-dd--empty">&nbsp;</span></div>'
+      );
+    }
+    return (
+      '<div class="tag-chip-row" style="margin:0">' +
+      tags
+        .map(function (t) {
+          return '<span class="tag-chip">' + escapeHtml(t) + '</span>';
+        })
+        .join('') +
+      '</div>'
+    );
+  }
+
   function renderOperationsStandards(brand) {
     var std = brand.brandStandards || {};
     var op = brand.operationalSupport || {};
     var grid =
       '<div class="oe-grid-2 oe-grid-2--operating-model">' +
       oeKvBlock('Structure & ownership', [
-        { k: 'Primary Model', v: brand.brandModelFormat },
-        { k: 'Management Option', v: managementOptionLine(brand) },
-        { k: 'Typical Ownership Structure', v: typicalOwnershipStructureLine(brand) }
+        { k: 'Primary Model', v: explorerPresentationLine(brand, 'operations.model.primary_model') },
+        { k: 'Management Option', v: explorerPresentationLine(brand, 'operations.model.management_option') },
+        { k: 'Typical Ownership Structure', v: explorerPresentationLine(brand, 'operations.model.typical_ownership') }
       ]) +
       oeKvBlock('Brand involvement & systems', [
-        { k: 'Brand Involvement', v: brandInvolvementLine(brand) },
-        { k: 'Systems Integration', v: opSystemsIntegrationLine(brand) },
-        { k: 'Pre-opening Discipline', v: preOpeningServicesLine(brand) }
+        { k: 'Brand Involvement', v: explorerPresentationLine(brand, 'operations.model.brand_involvement') },
+        { k: 'Systems Integration', v: explorerPresentationLine(brand, 'operations.model.systems_integration') },
+        { k: 'Pre-opening Discipline', v: explorerPresentationLine(brand, 'operations.model.pre_opening') }
       ]) +
       oeKvBlock('Operations & complexity', [
-        {
-          k: 'Staffing Intensity',
-          v: staffingIntensityLine(brand)
-        },
-        { k: 'F&B Complexity', v: std.brandFbProgramType },
-        { k: 'Training Requirements', v: trainingRequirementsLine(brand) }
+        { k: 'Staffing Intensity', v: explorerPresentationLine(brand, 'operations.model.staffing_intensity') },
+        { k: 'F&B Complexity', v: explorerPresentationLine(brand, 'operations.model.fb_complexity') },
+        { k: 'Training Requirements', v: explorerPresentationLine(brand, 'operations.model.training') }
       ]) +
       oeKvBlock('Governance & technology', [
-        { k: 'Reporting Discipline', v: std.brandCompliance },
-        { k: 'QA Rhythm', v: qaRhythmLine(brand) },
-        { k: 'Technology Expectations', v: opTechnologyExpectationsLine(brand) }
+        { k: 'Reporting Discipline', v: explorerPresentationLine(brand, 'operations.model.reporting_discipline') },
+        { k: 'QA Rhythm', v: explorerPresentationLine(brand, 'operations.model.qa_rhythm') },
+        { k: 'Technology Expectations', v: explorerPresentationLine(brand, 'operations.model.technology') }
       ]) +
       '</div>';
-    var flexLabels = [
-      'Design Flexibility',
-      'Conversion Friendliness',
-      'Localization Flexibility',
-      'Operational Rigidity',
-      'PIP Sensitivity',
-      'Prototype Dependence'
-    ];
-    var indRows = flexLabels
-      .map(function (label) {
-        return (
-          '<div class="indicator-bar"><span class="indicator-bar__label">' +
-          escapeHtml(label) +
-          '</span><div class="indicator-bar__track"><div class="indicator-bar__fill indicator-bar__fill--empty"></div></div><span class="indicator-bar__tag oe-dd--empty">&nbsp;</span></div>'
-        );
-      })
-      .join('');
-    var thirdTags = [
-      '3rd-Party Operator Friendly',
-      'Best With Experienced Branded Operator',
-      'Moderate Compliance Demands',
-      'Better With Lifestyle/Full-Service Depth',
-      'Stronger Fit for Organized Platforms'
-    ];
-    var tagRow =
-      '<div class="tag-chip-row" style="margin:0">' +
-      thirdTags
-        .map(function (t) {
-          return '<span class="tag-chip">' + escapeHtml(t) + '</span>';
-        })
-        .join('') +
-      '</div>';
+    var indRows = flexibilityIndicatorsHtml(brand);
+    var standardsPhilosophy = explorerMergedBody(brand, 'operations.standards_philosophy');
+    var opCompatSummary = explorerMergedBody(brand, 'operations.operator_compat.summary');
+    var opCompatFit = explorerMergedBody(brand, 'operations.operator_compat.fit');
+    var opCompatTagRow = operatorCompatTagRowHtml(brand);
     var diffTitles = ['QA Cadence', 'Training Rigor', 'Reporting Expectations', 'Brand Interaction Frequency'];
-    var qaCadence = qaRhythmLine(brand);
-    var trainingRigor = trainingRequirementsLine(brand);
-    var diffVals = [
-      qaCadence || std.brandQaExpectations,
-      trainingRigor || joinOpMulti(op.hrTrainingServices),
+    var diffFallbacks = [
+      qaRhythmLine(brand) || std.brandQaExpectations,
+      trainingRequirementsLine(brand) || joinOpMulti(op.hrTrainingServices),
       std.brandCompliance,
-      [op.communicationStyle, op.ownerResponseTime, op.decisionMaking].filter(hasVal).join(' · ') || std.brandStandardsNotes
+      [op.communicationStyle, op.ownerResponseTime, op.decisionMaking].filter(hasVal).join(' · ') ||
+        std.brandStandardsNotes
     ];
+    var diffVals = OPERATIONS_COMPLIANCE_SLOTS.map(function (slotKey, i) {
+      var fromSlot = explorerPresentationLine(brand, slotKey);
+      return hasVal(fromSlot) ? fromSlot : diffFallbacks[i];
+    });
     var diffGrid = diffTitles
       .map(function (title, i) {
         var val = diffVals[i];
@@ -1203,7 +1553,7 @@
         grid +
         '</section>' +
         '<section class="oe-section"><h2 class="oe-section-title">Standards Philosophy</h2>' +
-        explorerDetailCard('Philosophy', std.brandStandards) +
+        explorerDetailCard('Philosophy', standardsPhilosophy) +
         '</section>' +
         '<section class="oe-section"><h2 class="oe-section-title">Flexibility Indicators</h2>' +
         '<div class="info-card"><div class="indicator-row">' +
@@ -1211,9 +1561,9 @@
         '</div></div></section>' +
         '<section class="oe-section"><h2 class="oe-section-title">Third-Party Operator Compatibility</h2>' +
         '<div class="explorer-detail-stack">' +
-        explorerDetailCard('Summary', brand.brandProfileAnalysis) +
-        tagRow +
-        explorerDetailCard('Fit', brand.hotelServiceModel) +
+        explorerDetailCard('Summary', opCompatSummary) +
+        opCompatTagRow +
+        explorerDetailCard('Fit', opCompatFit) +
         '</div></section>' +
         '<section class="oe-section"><h2 class="oe-section-title">Compliance &amp; Oversight</h2>' +
         '<div class="diff-grid">' +
@@ -1324,6 +1674,937 @@
         '<h2 class="oe-section-title">Market Perception</h2>' +
         explorerDetailCard('Summary', brand.brandPositioning) +
         '</section>'
+    );
+  }
+
+  var ECON_FEE_TYPE_DEFS = [
+    {
+      key: 'application',
+      label: 'Application / entry',
+      min: 'typicalApplicationFeeMin',
+      max: 'typicalApplicationFeeMax',
+      basis: 'typicalApplicationFeeBasis',
+      notes: 'typicalApplicationFeeNotes',
+      signals: ['typicalApplicationFeeBasis', 'typicalApplicationFeeNotes', 'typicalApplicationFeeMin']
+    },
+    {
+      key: 'royalty',
+      label: 'Royalty / brand fee',
+      min: 'typicalRoyaltyPercentMin',
+      max: 'typicalRoyaltyPercentMax',
+      basis: 'typicalRoyaltyPercentBasis',
+      notes: 'typicalRoyaltyNotes',
+      percentRange: true,
+      signals: ['typicalRoyaltyPercentBasis', 'typicalRoyaltyNotes', 'typicalRoyaltyPercentMin']
+    },
+    {
+      key: 'marketing',
+      label: 'Marketing / brand fund',
+      min: 'typicalMarketingFeePercentMin',
+      max: 'typicalMarketingFeePercentMax',
+      basis: 'typicalMarketingFeePercentBasis',
+      notes: 'typicalMarketingFeeNotes',
+      percentRange: true,
+      signals: ['typicalMarketingFeePercentBasis', 'typicalMarketingFeeNotes', 'typicalMarketingFeePercentMin']
+    },
+    {
+      key: 'technology',
+      label: 'Technology / systems',
+      min: 'typicalTechnologyFeeMin',
+      max: 'typicalTechnologyFeeMax',
+      basis: 'typicalTechnologyFeeBasis',
+      notes: 'typicalTechnologyFeeNotes',
+      signals: ['typicalTechnologyFeeBasis', 'typicalTechnologyFeeNotes', 'typicalTechnologyFeeMin']
+    },
+    {
+      key: 'loyalty',
+      label: 'Loyalty / program participation',
+      min: 'typicalLoyaltyFeePercentMin',
+      max: 'typicalLoyaltyFeePercentMax',
+      basis: 'typicalLoyaltyFeePercentBasis',
+      notes: 'typicalLoyaltyFeeNotes',
+      percentRange: true,
+      signals: ['typicalLoyaltyFeePercentBasis', 'typicalLoyaltyFeeNotes', 'typicalLoyaltyFeePercentMin']
+    },
+    {
+      key: 'reservation',
+      label: 'Reservation / distribution',
+      min: 'typicalReservationFeeMin',
+      max: 'typicalReservationFeeMax',
+      basis: 'typicalReservationFeeBasis',
+      notes: 'typicalReservationFeeNotes',
+      signals: ['typicalReservationFeeBasis', 'typicalReservationFeeNotes', 'typicalReservationFeeMin']
+    },
+    {
+      key: 'training',
+      label: 'Training / opening support',
+      min: 'typicalTrainingFeeMin',
+      max: 'typicalTrainingFeeMax',
+      basis: 'typicalTrainingFeeBasis',
+      notes: 'typicalTrainingFeeNotes',
+      signals: ['typicalTrainingFeeBasis', 'typicalTrainingFeeNotes', 'typicalTrainingFeeMin']
+    }
+  ];
+
+  var ECON_FDD_KPI_DEFS = [
+    {
+      slot: 'economics.kpi.royalty',
+      label: 'Typical royalty',
+      feeKey: 'royalty'
+    },
+    {
+      slot: 'economics.kpi.marketing',
+      label: 'Marketing / brand fund',
+      feeKey: 'marketing'
+    },
+    {
+      slot: 'economics.kpi.application',
+      label: 'Application fee',
+      feeKey: 'application'
+    },
+    {
+      slot: 'economics.kpi.training',
+      label: 'Training / opening fee',
+      feeKey: 'training'
+    },
+    {
+      slot: 'economics.kpi.term',
+      label: 'Initial franchise term',
+      term: true
+    },
+    {
+      slot: 'economics.kpi.technology',
+      label: 'Technology fee',
+      feeKey: 'technology'
+    },
+    {
+      slot: 'economics.kpi.loyalty',
+      label: 'Loyalty program fee',
+      feeKey: 'loyalty'
+    }
+  ];
+
+  function econNormalizePercentValue(v) {
+    if (!hasVal(v)) return '';
+    var s = String(v).trim().replace(/%$/, '');
+    var n = parseFloat(s.replace(/,/g, ''));
+    if (!isFinite(n)) return s;
+    if (n > 0 && n <= 1) n = Math.round(n * 1000) / 10;
+    return String(n).replace(/\.0$/, '');
+  }
+
+  function econIsPercentBasis(basis) {
+    if (!hasVal(basis)) return false;
+    var b = String(basis).toLowerCase();
+    if (b.indexOf('%') >= 0) return true;
+    return /\b(gross|total)\s+revenue\b/.test(b) || /\brooms\s+revenue\b/.test(b);
+  }
+
+  function econLooksLikeRangeText(s) {
+    if (!hasVal(s)) return false;
+    return /[\d]/.test(String(s));
+  }
+
+  function econFddKpiValueFromApi(brand, def) {
+    var fs = brand.feeStructure && typeof brand.feeStructure === 'object' ? brand.feeStructure : {};
+    var dt = brand.dealTerms && typeof brand.dealTerms === 'object' ? brand.dealTerms : {};
+    if (def.term) {
+      var term = econInitialTermDisplay(dt);
+      if (hasVal(term)) return term;
+      return (
+        explorerPresentationLine(brand, 'economics.kpi.term') ||
+        explorerPresentationLine(brand, 'economics.kpi.agreement') ||
+        ''
+      );
+    }
+    if (def.feeKey) {
+      var feeDef = econFeeDefByKey(def.feeKey);
+      if (feeDef) return econFeeRangeLine(fs, feeDef);
+    }
+    return '';
+  }
+
+  function econFormatPercentRange(min, max) {
+    var mn = econNormalizePercentValue(min);
+    var mx = econNormalizePercentValue(max);
+    if (!mn && !mx) return '';
+    if (mn && mx && mn !== mx) return mn + '% – ' + mx + '%';
+    return (mn || mx) + '%';
+  }
+
+  function econFormatMoneyRange(min, max) {
+    function moneyOne(v) {
+      if (!hasVal(v)) return '';
+      var s = String(v).trim();
+      if (s.indexOf('$') >= 0) return s;
+      var n = parseFloat(s.replace(/,/g, ''));
+      if (!isFinite(n)) return s;
+      if (n >= 1000) return '$' + fmtNum(n);
+      return '$' + s;
+    }
+    var a = moneyOne(min);
+    var b = moneyOne(max);
+    if (a && b && a !== b) return a + ' – ' + b;
+    return a || b || '';
+  }
+
+  function econFeeRangeLine(fs, def) {
+    if (!fs || !def) return '';
+    var basis = def.basis && hasVal(fs[def.basis]) ? fmtCell(fs[def.basis]) : '';
+    var min = def.min ? fs[def.min] : '';
+    var max = def.max ? fs[def.max] : '';
+    var range = '';
+    if (def.percentRange || econIsPercentBasis(basis)) {
+      range = econFormatPercentRange(min, max);
+    } else {
+      range = econFormatMoneyRange(min, max);
+    }
+    if (!range) return '';
+    if (basis) return range + ' · ' + basis;
+    return range;
+  }
+
+  function econInitialTermDisplay(dt) {
+    if (!dt || typeof dt !== 'object') return '';
+    var q = dt.minInitialTermQty;
+    var l = dt.minInitialTermLength;
+    var d = dt.minInitialTermDuration;
+    if (hasVal(q) && hasVal(l)) {
+      return String(q).trim() + ' × ' + String(l).trim() + (hasVal(d) ? ' ' + String(d).trim() : '');
+    }
+    if (hasVal(l)) return String(l).trim() + (hasVal(d) ? ' ' + String(d).trim() : '');
+    if (hasVal(dt.minInitialTerm)) return fmtCell(dt.minInitialTerm);
+    return '';
+  }
+
+  function econRenewalDisplay(dt) {
+    if (!dt || typeof dt !== 'object') return '';
+    var q = dt.renewalOptionQty;
+    var l = dt.renewalOptionLength;
+    var d = dt.renewalOptionDuration;
+    if (hasVal(q) && hasVal(l)) {
+      return String(q).trim() + ' × ' + String(l).trim() + (hasVal(d) ? ' ' + String(d).trim() : '');
+    }
+    if (hasVal(dt.renewalStructure)) return fmtCell(dt.renewalStructure);
+    return '';
+  }
+
+  function econFddKpiValue(brand, def) {
+    var slotRow = explorerFirstBlock(brand, def.slot);
+    if (slotRow && hasVal(slotRow.body)) {
+      var slotBody = String(slotRow.body).trim();
+      if (econLooksLikeRangeText(slotBody)) return slotBody;
+    }
+    return econFddKpiValueFromApi(brand, def);
+  }
+
+  function econFeeSupportFromApi(fs, def) {
+    if (!fs || !def) return '';
+    if (def.notes && hasVal(fs[def.notes])) return String(fs[def.notes]).trim();
+    if (def.basis && hasVal(fs[def.basis])) {
+      return 'Basis: ' + fmtCell(fs[def.basis]) + '. Confirm in Item 7 and your LOI.';
+    }
+    return '';
+  }
+
+  function econFddKpiCard(label, rangeLine, support) {
+    return (
+      '<div class="brand-markets-kpi__card brand-markets-kpi__card--econ-glance">' +
+      '<div class="brand-markets-kpi__label">' +
+      escapeHtml(label) +
+      '</div>' +
+      (hasVal(rangeLine)
+        ? '<div class="brand-markets-kpi__value">' + escapeHtml(fmtCell(rangeLine)) + '</div>'
+        : '<div class="brand-markets-kpi__value oe-dd--empty">—</div>') +
+      (hasVal(support)
+        ? '<p class="brand-markets-kpi__note">' + escapeHtml(fmtCell(support)) + '</p>'
+        : '') +
+      '</div>'
+    );
+  }
+
+  function econFddKpiRowHtml(brand) {
+    var fs = brand.feeStructure && typeof brand.feeStructure === 'object' ? brand.feeStructure : {};
+    var cards = [];
+
+    ECON_FDD_KPI_DEFS.forEach(function (kpiDef) {
+      var slotRow = explorerFirstBlock(brand, kpiDef.slot);
+      var lbl = kpiDef.label;
+      if (slotRow && hasVal(slotRow.title)) lbl = String(slotRow.title).trim();
+
+      if (kpiDef.term) {
+        var termVal = econFddKpiValue(brand, kpiDef);
+        if (hasVal(termVal)) cards.push(econFddKpiCard(lbl, termVal, ''));
+        return;
+      }
+
+      var range = '';
+      if (slotRow && hasVal(slotRow.body) && econLooksLikeRangeText(slotRow.body)) {
+        range = String(slotRow.body).trim();
+      }
+      var feeDef = kpiDef.feeKey ? econFeeDefByKey(kpiDef.feeKey) : null;
+      if (!hasVal(range) && feeDef) range = econFeeRangeLine(fs, feeDef);
+      if (!hasVal(range)) return;
+      cards.push(econFddKpiCard(lbl, range, feeDef ? econFeeSupportFromApi(fs, feeDef) : ''));
+    });
+
+    var resDef = econFeeDefByKey('reservation');
+    if (resDef && econFeeTypePresent(fs, resDef)) {
+      var resRange = econFeeRangeLine(fs, resDef);
+      if (hasVal(resRange)) {
+        cards.push(econFddKpiCard(resDef.label, resRange, econFeeSupportFromApi(fs, resDef)));
+      }
+    }
+
+    if (!cards.length) {
+      var legacy = [
+        { slot: 'economics.kpi.fee_stack', label: 'Fee stack' },
+        { slot: 'economics.kpi.agreement', label: 'Agreement shape' },
+        { slot: 'economics.kpi.capital', label: 'Capital rhythm' },
+        { slot: 'economics.kpi.incentives', label: 'Incentives' }
+      ];
+      legacy.forEach(function (leg) {
+        var val = explorerPresentationLine(brand, leg.slot);
+        if (!hasVal(val)) return;
+        var row = explorerFirstBlock(brand, leg.slot);
+        var legLbl = leg.label;
+        if (row && hasVal(row.title)) legLbl = String(row.title).trim();
+        cards.push(econFddKpiCard(legLbl, val, ''));
+      });
+    }
+
+    if (!cards.length) return '';
+    return (
+      '<div class="brand-markets-kpi brand-markets-kpi--econ-fdd" aria-label="Typical disclosed ranges">' +
+      cards.join('') +
+      '</div>'
+    );
+  }
+
+  function econProofPointCard(headline, rangeLine, support) {
+    var rangeHtml = hasVal(rangeLine)
+      ? '<div class="econ-fdd-range">' + escapeHtml(rangeLine) + '</div>'
+      : '';
+    var body = hasVal(support) ? escapeHtml(fmtCell(support)) : '&nbsp;';
+    return (
+      '<article class="proof-point-card">' +
+      '<div class="proof-point-card__icon">◇</div>' +
+      rangeHtml +
+      '<h3 class="proof-point-card__headline">' +
+      escapeHtml(headline) +
+      '</h3><p class="proof-point-card__support' +
+      (hasVal(support) ? '' : ' oe-dd--empty') +
+      '">' +
+      body +
+      '</p></article>'
+    );
+  }
+
+  function econTitleCaseWords(s) {
+    if (!hasVal(s)) return '';
+    var small = { a: 1, an: 1, and: 1, or: 1, of: 1, in: 1, on: 1, at: 1, to: 1, for: 1, the: 1, per: 1 };
+    return String(s)
+      .split(/\s+/)
+      .map(function (word, i) {
+        if (/^[%$]/.test(word)) return word;
+        var m = word.match(/^([^a-zA-Z]*)([a-zA-Z]+)(.*)$/);
+        if (!m) return word;
+        var lead = m[1];
+        var core = m[2];
+        var tail = m[3];
+        if (i > 0 && small[core.toLowerCase()]) return lead + core.toLowerCase() + tail;
+        return lead + core.charAt(0).toUpperCase() + core.slice(1).toLowerCase() + tail;
+      })
+      .join(' ');
+  }
+
+  /** Title case for fee-bucket bullets; handles /, -, and acronyms (PIP, FDD, …). */
+  function econFeeBucketBulletCase(s) {
+    if (!hasVal(s)) return '';
+    var small = { a: 1, an: 1, and: 1, or: 1, of: 1, in: 1, on: 1, at: 1, to: 1, for: 1, the: 1, per: 1 };
+    var acronyms = { pip: 'PIP', fdd: 'FDD', loi: 'LOI', crs: 'CRS', pms: 'PMS', qa: 'QA' };
+    var wi = 0;
+    return String(s).replace(/[a-zA-Z]+/g, function (core) {
+      var low = core.toLowerCase();
+      if (acronyms[low]) {
+        wi++;
+        return acronyms[low];
+      }
+      var out =
+        wi > 0 && small[low] ? low : core.charAt(0).toUpperCase() + core.slice(1).toLowerCase();
+      wi++;
+      return out;
+    });
+  }
+
+  function econListItemCase(s) {
+    if (!hasVal(s)) return '';
+    return econFeeBucketBulletCase(s).replace(/\bCo-op\b/g, 'Co-Op');
+  }
+
+  function econTitleCaseLabel(label) {
+    if (!hasVal(label)) return '';
+    return String(label)
+      .split(/\s*\/\s*/)
+      .map(function (part) {
+        return econTitleCaseWords(part.trim());
+      })
+      .join(' / ');
+  }
+
+  function econParseFeeBucketBullets(body) {
+    if (!hasVal(body)) return [];
+    var text = String(body).trim();
+    var dotMatch = text.match(/\.\s+/);
+    var listPart = dotMatch && dotMatch.index != null ? text.slice(0, dotMatch.index).trim() : text;
+    return listPart
+      .split(/;\s*|,\s*(?:and\s+)?/i)
+      .map(function (s) {
+        return s.trim().replace(/^and\s+/i, '');
+      })
+      .filter(hasVal)
+      .map(econFeeBucketBulletCase);
+  }
+
+  var ECON_FEE_BUCKET_THEME_BY_KEY = {
+    application: 'Application and entry fees',
+    training: 'Training and opening support',
+    royalty: 'Royalty or brand fee',
+    marketing: 'Marketing or brand fund',
+    technology: 'Technology and systems',
+    loyalty: 'Loyalty program participation',
+    reservation: 'Reservation and distribution charges'
+  };
+
+  var ECON_FEE_CHANGE_THEMES = [
+    'Renewal PIP',
+    'Conversion PIP',
+    'Termination-related obligations',
+    'Owner-funded reserves'
+  ];
+
+  function econFeeBucketThemesFromApi(brand, bucket) {
+    var fs = brand.feeStructure && typeof brand.feeStructure === 'object' ? brand.feeStructure : {};
+    var themes = [];
+    (bucket.typeKeys || []).forEach(function (key) {
+      var def = econFeeDefByKey(key);
+      if (!def || !econFeeTypePresent(fs, def)) return;
+      themes.push(ECON_FEE_BUCKET_THEME_BY_KEY[def.key] || econTitleCaseLabel(def.label));
+    });
+    if (bucket.slot === 'economics.fee.change' && !themes.length) {
+      return ECON_FEE_CHANGE_THEMES.map(econFeeBucketBulletCase);
+    }
+    return themes.map(econFeeBucketBulletCase);
+  }
+
+  function econFeeBucketCard(headline, bullets, support) {
+    var listHtml = '';
+    if (bullets && bullets.length) {
+      listHtml =
+        '<ul class="proof-point-card__fee-list bullet-list">' +
+        bullets
+          .map(function (line) {
+            return '<li>' + escapeHtml(line) + '</li>';
+          })
+          .join('') +
+        '</ul>';
+    }
+    var supportHtml = '';
+    if (hasVal(support)) {
+      supportHtml =
+        '<p class="proof-point-card__support proof-point-card__footnote">' +
+        escapeHtml(fmtCell(support)) +
+        '</p>';
+    } else if (!bullets.length) {
+      supportHtml =
+        '<p class="proof-point-card__support proof-point-card__footnote oe-dd--empty">Confirm categories, basis, and timing in your FDD and LOI.</p>';
+    }
+    return (
+      '<article class="proof-point-card proof-point-card--fee-bucket">' +
+      '<div class="proof-point-card__icon">◇</div>' +
+      '<h3 class="proof-point-card__headline">' +
+      escapeHtml(econTitleCaseLabel(headline)) +
+      '</h3>' +
+      listHtml +
+      supportHtml +
+      '</article>'
+    );
+  }
+
+  function econFeeBucketProofHtml(brand, bucket) {
+    var slotRow = explorerFirstBlock(brand, bucket.slot);
+    var title = slotRow && hasVal(slotRow.title) ? String(slotRow.title).trim() : bucket.title;
+    var slotBody = slotRow && hasVal(slotRow.body) ? String(slotRow.body).trim() : '';
+    var bullets = [];
+    if (bucket.defaultBullets && bucket.defaultBullets.length) {
+      bullets = bucket.defaultBullets.map(econFeeBucketBulletCase);
+    } else {
+      bullets = econParseFeeBucketBullets(slotBody);
+      if (!bullets.length) {
+        bullets = econFeeBucketThemesFromApi(brand, bucket);
+      }
+    }
+    var footnote = bucket.footnote || '';
+    return econFeeBucketCard(title, bullets, footnote);
+  }
+
+  function econCashPhaseCardStyled(label, parsed) {
+    var owner = parsed.owner || '';
+    var brandLine = parsed.brand || '';
+    var inner =
+      (hasVal(owner)
+        ? '<p class="econ-cash-line"><span class="econ-cash-line__who">Owner</span> ' + escapeHtml(fmtCell(owner)) + '</p>'
+        : '') +
+      (hasVal(brandLine)
+        ? '<p class="econ-cash-line"><span class="econ-cash-line__who">Brand</span> ' + escapeHtml(fmtCell(brandLine)) + '</p>'
+        : '&nbsp;');
+    return (
+      '<article class="scenario-card scenario-card--detail econ-cash-phase">' +
+      '<h3 class="explorer-detail-card__label">' +
+      escapeHtml(label) +
+      '</h3>' +
+      inner +
+      '</article>'
+    );
+  }
+
+  function econFeeTypePresent(fs, def) {
+    if (!fs || !def) return false;
+    return (def.signals || []).some(function (k) {
+      return hasVal(fs[k]);
+    });
+  }
+
+  function econFeeCardBodyFromApi(fs, def) {
+    var parts = [];
+    if (def.basis && hasVal(fs[def.basis])) {
+      parts.push('Typically assessed on: ' + fmtCell(fs[def.basis]) + '.');
+    }
+    if (def.notes && hasVal(fs[def.notes])) {
+      parts.push(String(fs[def.notes]).trim());
+    }
+    if (!parts.length) {
+      parts.push(
+        'This fee category is part of the brand’s typical stack; confirm basis and timing in the franchise disclosure document and LOI.'
+      );
+    }
+    return parts.join(' ');
+  }
+
+  function econFeeCardsFromApi(brand) {
+    var fs = brand.feeStructure && typeof brand.feeStructure === 'object' ? brand.feeStructure : {};
+    return ECON_FEE_TYPE_DEFS.filter(function (def) {
+      return econFeeTypePresent(fs, def);
+    }).map(function (def) {
+      return { title: def.label, body: econFeeCardBodyFromApi(fs, def) };
+    });
+  }
+
+  function econFeeStackKpiFromApi(brand) {
+    var fs = brand.feeStructure && typeof brand.feeStructure === 'object' ? brand.feeStructure : {};
+    var labels = ECON_FEE_TYPE_DEFS.filter(function (def) {
+      return econFeeTypePresent(fs, def);
+    }).map(function (def) {
+      return def.label;
+    });
+    if (hasVal(fs.typicalIncentivesOffered)) labels.push('Incentives (typical)');
+    return labels.join(' · ');
+  }
+
+  function econPlainLinesFromObject(obj, keys) {
+    var lines = [];
+    (keys || []).forEach(function (k) {
+      if (!obj || !hasVal(obj[k])) return;
+      var v = fmtCell(obj[k]);
+      if (!v) return;
+      if (/^\d+(\.\d+)?$/.test(String(v).replace(/,/g, ''))) return;
+      if (/^\d+(\.\d+)?\s*%$/.test(String(v).trim())) return;
+      lines.push(v);
+    });
+    return lines;
+  }
+
+  function econNegotiabilityLabel(brand) {
+    var os = brand.operationalSupport && typeof brand.operationalSupport === 'object' ? brand.operationalSupport : {};
+    var slot = explorerPresentationLine(brand, 'economics.negotiability') || explorerPresentationLine(brand, 'economics.kpi.negotiability');
+    if (hasVal(slot)) return slot;
+    var w = fmtCell(os.willingToNegotiateIncentives);
+    if (!w) return '';
+    var wl = String(w).toLowerCase();
+    if (wl.indexOf('yes') >= 0) return 'Often negotiated';
+    if (wl.indexOf('case') >= 0) return 'Case by case';
+    if (wl.indexOf('no') >= 0) return 'Mostly standard';
+    return w;
+  }
+
+  var ECON_FEE_BUCKET_DEFS = [
+    {
+      slot: 'economics.fee.join',
+      title: 'To Join',
+      typeKeys: ['application', 'training'],
+      defaultBullets: [
+        'Application and entry fees',
+        'Training and opening support',
+        'Initial / franchise license fee',
+        'Technology implementation / setup',
+        'Plan review, design, or inspection fees'
+      ],
+      footnote:
+        'Basis and timing vary by keys, market, and deal—confirm in the FDD and LOI.'
+    },
+    {
+      slot: 'economics.fee.operate',
+      title: 'To Operate',
+      typeKeys: ['royalty', 'marketing', 'technology', 'loyalty', 'reservation'],
+      footnote: 'Owners evaluate net contribution after mandatory program costs.'
+    },
+    {
+      slot: 'economics.fee.change',
+      title: 'When Things Change',
+      typeKeys: [],
+      footnote:
+        'Triggered at renewal, repositioning, or exit—not steady-state operations.'
+    }
+  ];
+
+  var ECON_CASH_PHASE_DEFS = [
+    {
+      slot: 'economics.cash.preopening',
+      label: 'Pre-opening',
+      legacySlot: 'economics.lifecycle.preopening',
+      ownerDefault:
+        'Front-loaded standards and FF&E alignment, technology cutover, working capital through opening, and application or training cash outlays.',
+      brandDefault:
+        'Design and standards review, opening playbooks, pre-opening support, and milestone QA—not day-to-day operating spend.'
+    },
+    {
+      slot: 'economics.cash.ramp',
+      label: 'Early years (ramp)',
+      legacySlot: 'economics.lifecycle.ramp',
+      ownerDefault:
+        'Ramp marketing and loyalty enrollment while occupancy and rate build; recurring fees scale up as revenue mix stabilizes.',
+      brandDefault:
+        'Negotiated ramp relief or co-op when offered, plus channel and mix guidance as the asset proves out.'
+    },
+    {
+      slot: 'economics.cash.steadystate',
+      label: 'Steady state',
+      legacySlot: 'economics.lifecycle.steadystate',
+      ownerDefault:
+        'The full recurring fee stack—royalty, marketing, technology, loyalty, and distribution—plus mandatory program participation once stabilized.',
+      brandDefault:
+        'Sales and revenue support, brand systems access, and portfolio benchmarks—not property payroll or routine FF&E.'
+    },
+    {
+      slot: 'economics.cash.renewal',
+      label: 'Renewal / repositioning',
+      legacySlot: 'economics.lifecycle.renewal',
+      ownerDefault:
+        'Renewal or conversion PIP, owner reserves, and re-licensing work when triggers hit—not part of steady-state operations.',
+      brandDefault:
+        'Clear renewal standards; co-investment or phased PIP timing may be negotiable in competitive renewals.'
+    }
+  ];
+
+  var ECON_OPENING_STEPS = [
+    'Application & Feasibility',
+    'Design & Standards',
+    'Pre-Opening Planning',
+    'Opening Support',
+    'Stabilization'
+  ];
+
+  function econFeeDefByKey(key) {
+    for (var i = 0; i < ECON_FEE_TYPE_DEFS.length; i++) {
+      if (ECON_FEE_TYPE_DEFS[i].key === key) return ECON_FEE_TYPE_DEFS[i];
+    }
+    return null;
+  }
+
+  function econParseOwnerBrandBody(body) {
+    if (!hasVal(body)) return { owner: '', brand: '' };
+    var paras = String(body)
+      .split(/\n\n+/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+    if (paras.length >= 2) {
+      return {
+        owner: paras[0].replace(/^Owner(\s+typically)?(\s+funds)?:\s*/i, '').trim(),
+        brand: paras[1].replace(/^Brand(\s+typically)?(\s+provides)?:\s*/i, '').trim()
+      };
+    }
+    var single = paras[0] || '';
+    if (/^owner/i.test(single) && single.indexOf('\n') < 0) {
+      return { owner: single.replace(/^Owner[^:]*:\s*/i, '').trim(), brand: '' };
+    }
+    return { owner: single, brand: '' };
+  }
+
+  function econCashPhaseCard(label, ownerPays, brandProvides) {
+    var parts = [];
+    if (hasVal(ownerPays)) parts.push('Owner typically funds: ' + ownerPays);
+    if (hasVal(brandProvides)) parts.push('Brand typically provides: ' + brandProvides);
+    return scenarioDetailCard(label, parts.join('\n\n') || '');
+  }
+
+  function econRiskCardsFromApi(brand) {
+    var dt = brand.dealTerms && typeof brand.dealTerms === 'object' ? brand.dealTerms : {};
+    var fs = brand.feeStructure && typeof brand.feeStructure === 'object' ? brand.feeStructure : {};
+    var lt = brand.legalTerms && typeof brand.legalTerms === 'object' ? brand.legalTerms : {};
+    var cards = [];
+    var term = econPlainLinesFromObject(dt, [
+      'renewalStructure',
+      'renewalConditions',
+      'renewalNoticeResponsibility',
+      'minInitialTermLength',
+      'minInitialTermDuration',
+      'pipAtRenewal',
+      'pipForConversions'
+    ]).join(' ');
+    if (hasVal(term)) cards.push({ title: 'Term & renewal', body: term });
+    var perf = econPlainLinesFromObject(Object.assign({}, dt, fs), [
+      'performanceTestRequirement',
+      'qaComplianceRequirement',
+      'performanceTerminationRights',
+      'ownerEarlyTerminationRights',
+      'terminationFeeStructure'
+    ]).join(' ');
+    if (hasVal(perf)) cards.push({ title: 'Performance & exit', body: perf });
+    var legal = econPlainLinesFromObject(lt, [
+      'assignmentRestrictions',
+      'buyoutTransferProvisions',
+      'terminationOnSale',
+      'aopRadius',
+      'aopRestrictions'
+    ]);
+    legal.forEach(function (line, idx) {
+      if (idx < 2) cards.push({ title: idx === 0 ? 'Transfer & sale' : 'Area of protection', body: line });
+    });
+    return cards;
+  }
+
+  function renderAtelierEconomicsObligations(brand) {
+    var fs = brand.feeStructure && typeof brand.feeStructure === 'object' ? brand.feeStructure : {};
+    var dt = brand.dealTerms && typeof brand.dealTerms === 'object' ? brand.dealTerms : {};
+    var lt = brand.legalTerms && typeof brand.legalTerms === 'object' ? brand.legalTerms : {};
+    var os = brand.operationalSupport && typeof brand.operationalSupport === 'object' ? brand.operationalSupport : {};
+
+    var disclaimer =
+      explorerMergedBody(brand, 'economics.intro') ||
+      'Illustrative brand-level patterns only—not a quote, financial model, or substitute for the franchise disclosure document, LOI, or your advisors. Use this tab to know what to ask and model, not what to sign.';
+
+    var cashGrid = ECON_CASH_PHASE_DEFS.map(function (def) {
+      var raw =
+        explorerMergedBody(brand, def.slot) ||
+        explorerMergedBody(brand, def.legacySlot) ||
+        '';
+      var parsed = econParseOwnerBrandBody(raw);
+      if (!hasVal(parsed.owner) && !hasVal(parsed.brand) && hasVal(raw) && raw.indexOf('\n\n') < 0) {
+        parsed = { owner: raw, brand: '' };
+      }
+      if (!hasVal(parsed.owner) && def.legacySlot === 'economics.lifecycle.renewal') {
+        var pipBits = [dt.pipAtRenewal, dt.pipForConversions, fs.ownerFundedReserves]
+          .filter(hasVal)
+          .map(fmtCell);
+        if (pipBits.length) parsed.owner = pipBits.join('; ');
+      }
+      if (!hasVal(parsed.owner) && def.ownerDefault) parsed.owner = def.ownerDefault;
+      if (!hasVal(parsed.brand) && def.brandDefault) parsed.brand = def.brandDefault;
+      return econCashPhaseCardStyled(def.label, parsed);
+    }).join('');
+
+    var fddKpiRow = econFddKpiRowHtml(brand);
+
+    var openingHasStepDetail = false;
+    var openingTimeline = ECON_OPENING_STEPS.map(function (label, idx) {
+      var slotRow = explorerFirstBlock(brand, 'economics.opening.step.' + (idx + 1));
+      var stepLabel = slotRow && hasVal(slotRow.title) ? String(slotRow.title).trim() : label;
+      stepLabel = econListItemCase(stepLabel);
+      var det = slotRow && hasVal(slotRow.body) ? String(slotRow.body).trim() : '';
+      if (hasVal(det)) openingHasStepDetail = true;
+      return timelinePhase(stepLabel, det);
+    }).join('');
+
+    var openingProcess =
+      explorerMergedBody(brand, 'economics.opening.process') ||
+      'Align with brand development, complete design and standards review, execute pre-opening with systems cutover, and stabilize with brand QA touchpoints. Third-party operators often run day-to-day opening while the brand approves milestones.';
+
+    var openingBelowTimeline = openingHasStepDetail
+      ? ''
+      : explorerDetailCardMultiline('Process summary', openingProcess);
+
+    var feeBucketGrid = ECON_FEE_BUCKET_DEFS.map(function (bucket) {
+      return econFeeBucketProofHtml(brand, bucket);
+    }).join('');
+
+    var riskCards = explorerCardRowsForSlot(brand, 'economics.risk');
+    riskCards = riskCards.filter(function (r) {
+      return hasVal(r.title) || hasVal(r.body);
+    });
+    if (!riskCards.length) {
+      var riskMerged =
+        explorerMergedBody(brand, 'economics.risk_exit') ||
+        [explorerMergedBody(brand, 'economics.term_renewal'), explorerMergedBody(brand, 'economics.performance_exit')]
+          .filter(hasVal)
+          .join('\n\n');
+      if (hasVal(riskMerged)) {
+        riskCards = [{ title: 'Term, performance & exit', body: riskMerged }];
+      } else {
+        riskCards = econRiskCardsFromApi(brand);
+      }
+    }
+    if (!riskCards.length) {
+      var legalLegacy = explorerCardRowsForSlot(brand, 'economics.legal');
+      riskCards = legalLegacy.filter(function (r) {
+        return hasVal(r.title) || hasVal(r.body);
+      });
+    }
+    var termAnchor = econInitialTermDisplay(dt);
+    var renewalAnchor = econRenewalDisplay(dt);
+    if (!riskCards.length && (hasVal(termAnchor) || hasVal(renewalAnchor))) {
+      riskCards = [
+        {
+          title: 'Initial term & renewal',
+          body: [termAnchor ? 'Initial term: ' + termAnchor : '', renewalAnchor ? 'Renewal: ' + renewalAnchor : '']
+            .filter(hasVal)
+            .join('\n\n')
+        }
+      ];
+    }
+    var riskGrid = riskCards
+      .map(function (r) {
+        var anchor =
+          r.title && /term|renewal/i.test(r.title) && hasVal(termAnchor)
+            ? termAnchor + (hasVal(renewalAnchor) ? ' · Renewal ' + renewalAnchor : '')
+            : '';
+        if (anchor) {
+          return econProofPointCard(r.title || 'Risk theme', anchor, r.body);
+        }
+        return scenarioDetailCard(r.title || 'Risk theme', r.body);
+      })
+      .join('');
+
+    var negotiabilityLine = econNegotiabilityLabel(brand);
+    var negotiabilityBody =
+      explorerMergedBody(brand, 'economics.negotiability') ||
+      explorerMergedBody(brand, 'economics.incentives') ||
+      [
+        negotiabilityLine ? 'Posture: ' + negotiabilityLine : '',
+        hasVal(fs.typicalIncentivesOffered) ? 'Typical incentives: ' + fmtCell(fs.typicalIncentivesOffered) : '',
+        Array.isArray(os.typesOfIncentives) && os.typesOfIncentives.length
+          ? 'Often discussed: ' + os.typesOfIncentives.map(fmtCell).join(', ')
+          : ''
+      ]
+        .filter(hasVal)
+        .join('\n\n');
+
+    var negotiableItems = splitBullets(explorerMergedBody(brand, 'economics.negotiable_items')).map(
+      econListItemCase
+    );
+    var rarelyItems = splitBullets(explorerMergedBody(brand, 'economics.rarely_negotiable')).map(
+      econListItemCase
+    );
+    if (!negotiableItems.length) {
+      negotiableItems = [
+        'Key Money or Ramp Relief',
+        'Marketing Co-Op or Opening Support',
+        'PIP Scope or Timing',
+        'Application or Training Fee Structure',
+        'Fee Ramp in Early Operating Years'
+      ];
+    }
+    if (!rarelyItems.length) {
+      rarelyItems = [
+        'Core Royalty and Program Participation',
+        'Mandatory Technology Stack and Integrations',
+        'Brand Standards Compliance Framework',
+        'Fundamental QA and Reporting Obligations'
+      ];
+    }
+    var negotiableUl =
+      '<ul class="explorer-detail-card__list bullet-list">' +
+      negotiableItems
+        .map(function (line) {
+          return '<li>' + escapeHtml(line) + '</li>';
+        })
+        .join('') +
+      '</ul>';
+    var rarelyUl =
+      '<ul class="explorer-detail-card__list bullet-list">' +
+      rarelyItems
+        .map(function (line) {
+          return '<li>' + escapeHtml(line) + '</li>';
+        })
+        .join('') +
+      '</ul>';
+
+    var feeVariability =
+      explorerMergedBody(brand, 'economics.fee_variability') ||
+      'Room count, market tier, new build versus conversion, incentive package, and operator model usually change how fees and capital line items land on your deal.';
+
+    return wrapOe(
+      '<section class="oe-section oe-section--econ-intro">' +
+        explorerDetailCardMultiline('How to use this tab', disclaimer) +
+        '</section>' +
+      '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Economics at a Glance</h2>' +
+        '<p class="oe-section-hint">Typical ranges and fee-schedule notes from Brand Setup (FDD Item 7 style)—confirm every line in your disclosure document and LOI</p>' +
+        fddKpiRow +
+        '</section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Cash &amp; Capital Rhythm</h2>' +
+        '<p class="oe-section-hint">Who typically funds what—and when</p>' +
+        '<div class="scenario-card-grid scenario-card-grid--owner-value econ-cash-grid">' +
+        cashGrid +
+        '</div></section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Opening &amp; Conversion Path</h2>' +
+        '<p class="oe-section-hint">' +
+        (openingHasStepDetail
+          ? 'Milestone path for opening and conversion'
+          : 'Typical opening and conversion process') +
+        '</p>' +
+        '<div class="timeline">' +
+        openingTimeline +
+        '</div>' +
+        (openingBelowTimeline ? '<div style="margin-top:14px">' + openingBelowTimeline + '</div>' : '') +
+        '</section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Fees in Three Buckets</h2>' +
+        '<p class="oe-section-hint">Join · operate · change—typical fee categories in each phase</p>' +
+        '<div class="proof-points-grid proof-points-grid--econ-buckets">' +
+        feeBucketGrid +
+        '</div>' +
+        '<p class="proof-meta-line">Ranges are brand-level typicals, not your property quote. Application, training, PIP, and incentives vary by deal.</p>' +
+        '<div class="oe-cluster"><h3>What drives variability</h3><p class="explorer-detail-card__body">' +
+        escapeHtml(fmtCell(feeVariability)).replace(/\n/g, '<br>') +
+        '</p></div></section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Term, Renewal &amp; Exit Risk</h2>' +
+        '<p class="oe-section-hint">Lock-in, performance, and liquidity themes—confirm in franchise agreement</p>' +
+        '<div class="scenario-card-grid scenario-card-grid--owner-value">' +
+        riskGrid +
+        '</div></section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Negotiability &amp; Incentives</h2>' +
+        '<p class="oe-section-hint">Where the conversation usually has room vs what tends to stay standard</p>' +
+        '<div class="oe-cluster"><h3>Negotiation posture</h3><p class="explorer-detail-card__body">' +
+        escapeHtml(fmtCell(negotiabilityBody)).replace(/\n\n/g, '</p><p class="explorer-detail-card__body">').replace(/\n/g, '<br>') +
+        '</p></div>' +
+        '<div class="oe-grid-2" style="margin-top:12px">' +
+        '<div class="oe-cluster"><h3>Often Negotiated</h3>' +
+        negotiableUl +
+        '</div>' +
+        '<div class="oe-cluster"><h3>Usually Standard</h3>' +
+        rarelyUl +
+        '</div></div></section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Confirm in the FDD &amp; LOI</h2>' +
+        '<p class="oe-section-hint">This page orients diligence—it does not replace disclosure documents</p>' +
+        '<div class="explorer-detail-card">' +
+        '<p class="explorer-detail-card__body">All economics, fees, capital obligations, and legal terms for your hotel must be confirmed in the franchise disclosure document, LOI, and executed franchise agreement. Work with your counsel and advisor to tie the items on this page to your model and term sheet.</p></div></section>'
     );
   }
 
@@ -1560,9 +2841,9 @@
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Property &amp; Owner Implications</h2>' +
         '<div class="explorer-detail-stack">' +
-        explorerDetailCard('P&amp;L &amp; Contribution', implPnl) +
-        explorerDetailCard('Operations &amp; Guest Experience', implOps) +
-        explorerDetailCard('Systems &amp; Data', implSys) +
+        explorerDetailCard('P&L & Contribution', implPnl) +
+        explorerDetailCard('Operations & Guest Experience', implOps) +
+        explorerDetailCard('Systems & Data', implSys) +
         '</div></section>' +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Where Loyalty Lifts Demand Most</h2>' +
@@ -1573,7 +2854,157 @@
     );
   }
 
-  function renderFootprintGrowth(brand) {
+  /**
+   * footprint.momentum Body: line 1 = date label; blank line; description; optional blank line; https URL (announcement).
+   * Title = headline (strong).
+   */
+  function parseMomentumPresentationBlock(block) {
+    var headline = block && hasVal(block.title) ? String(block.title).trim() : '';
+    var paras = String((block && block.body) || '')
+      .split(/\n\n+/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+    var date = paras.length ? paras[0] : '';
+    var url = '';
+    var descParts = [];
+    for (var i = 1; i < paras.length; i++) {
+      if (isSafeHttpUrl(paras[i])) url = paras[i].trim();
+      else descParts.push(paras[i]);
+    }
+    return {
+      date: date,
+      headline: headline,
+      description: descParts.join('\n\n'),
+      url: url
+    };
+  }
+
+  function parsePortfolioMixEntry(row) {
+    if (!row) return null;
+    var category = hasVal(row.title) ? String(row.title).trim() : '';
+    var level = hasVal(row.body) ? String(row.body).trim() : '';
+    if (!category && level) {
+      var pipe = level.split('|');
+      if (pipe.length >= 2) {
+        category = pipe[0].trim();
+        level = pipe.slice(1).join('|').trim();
+      } else {
+        var colon = level.indexOf(':');
+        if (colon > 0) {
+          category = level.slice(0, colon).trim();
+          level = level.slice(colon + 1).trim();
+        }
+      }
+    }
+    if (!category && !level) return null;
+    return { category: category, level: level };
+  }
+
+  function portfolioMixPillsFromBrand(brand) {
+    var rows = explorerCardRowsForSlot(brand, FOOTPRINT_PORTFOLIO_MIX_SLOT);
+    if (!rows.length) return [];
+    var pills = rows.map(parsePortfolioMixEntry).filter(Boolean);
+    if (pills.length) return pills;
+    var merged = explorerMergedBody(brand, FOOTPRINT_PORTFOLIO_MIX_SLOT, '\n');
+    if (!hasVal(merged)) return [];
+    return String(merged)
+      .split(/\n+/)
+      .map(function (line) {
+        return parsePortfolioMixEntry({ title: '', body: line.trim() });
+      })
+      .filter(Boolean);
+  }
+
+  function portfolioMixSectionHtml(brand) {
+    var pills = portfolioMixPillsFromBrand(brand);
+    var rowInner =
+      pills.length > 0
+        ? pills
+            .map(function (p) {
+              var level = hasVal(p.level) ? ' ' + escapeHtml(p.level) : '';
+              return (
+                '<span class="portfolio-mix__pill"><strong>' +
+                escapeHtml(p.category) +
+                '</strong>' +
+                level +
+                '</span>'
+              );
+            })
+            .join('')
+        : '<span class="portfolio-mix__pill oe-dd--empty">&nbsp;</span>';
+    return (
+      '<div class="portfolio-mix">' +
+      '<h3>Portfolio Mix</h3>' +
+      '<div class="portfolio-mix__row">' +
+      rowInner +
+      '</div></div>'
+    );
+  }
+
+  function momentumFeedItemHtml(item) {
+    if (!item || (!hasVal(item.headline) && !hasVal(item.description))) return '';
+    var descP = hasVal(item.description)
+      ? '<p>' + escapeHtml(item.description) + '</p>'
+      : '';
+    var linkP = isSafeHttpUrl(item.url)
+      ? '<p class="momentum-feed__link"><a href="' +
+        escapeHtml(item.url) +
+        '" target="_blank" rel="noopener noreferrer">View Choice Hotels announcement</a></p>'
+      : '';
+    return (
+      '<div class="momentum-feed__item">' +
+      '<div class="momentum-feed__date">' +
+      escapeHtml(item.date || '') +
+      '</div>' +
+      '<div class="momentum-feed__body">' +
+      (hasVal(item.headline) ? '<strong>' + escapeHtml(item.headline) + '</strong>' : '') +
+      descP +
+      linkP +
+      '</div></div>'
+    );
+  }
+
+  function renderMomentumSection(brand) {
+    var blocks = explorerBlocksForSlot(brand, FOOTPRINT_MOMENTUM_SLOT);
+    var labelRaw = explorerPresentationLine(brand, FOOTPRINT_MOMENTUM_LABEL_SLOT);
+    var label = hasVal(labelRaw)
+      ? labelRaw
+      : 'Choice Hotels CALA openings · linked announcements';
+    var itemsHtml = blocks
+      .map(function (b) {
+        return momentumFeedItemHtml(parseMomentumPresentationBlock(b));
+      })
+      .filter(Boolean)
+      .join('');
+    if (!itemsHtml) {
+      return (
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Recent Momentum</h2>' +
+        '<p class="oe-section-hint">Presentation or verified disclosures when available</p>' +
+        '<p class="momentum-feed__label oe-dd--empty">&nbsp;</p>' +
+        '<div class="momentum-feed oe-dd--empty">&nbsp;</div>' +
+        portfolioMixSectionHtml(brand) +
+        '</section>'
+      );
+    }
+    return (
+      '<section class="oe-section">' +
+      '<h2 class="oe-section-title">Recent Momentum</h2>' +
+      '<p class="oe-section-hint">Illustrative activity</p>' +
+      '<p class="momentum-feed__label">' +
+      escapeHtml(label) +
+      '</p>' +
+      '<div class="momentum-feed">' +
+      itemsHtml +
+      '</div>' +
+      portfolioMixSectionHtml(brand) +
+      '</section>'
+    );
+  }
+
+  function renderFootprintGrowth(brand, footprintPropertyPayloadSink) {
     var fp = brand.footprint || {};
     var fv = fp.formValues || {};
     var pipH = (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0);
@@ -1588,7 +3019,7 @@
           : '';
     var kpiRow =
       '<div class="brand-markets-kpi" aria-label="Markets and Footprint Summary">' +
-      kpiCard('Regions (IHG-Style)', regionsSummary) +
+      kpiCard('Regions', regionsSummary) +
       kpiCard('Markets Operated In', fv.numberOfMarkets) +
       kpiCard('Open Hotels (Public YE2025)', fp.totalExistingHotels) +
       kpiCard('Coverage Model', [brand.brandModelFormat, brand.hotelChainScale].filter(hasVal).join(' · ')) +
@@ -1597,7 +3028,7 @@
     var openR = fp.totalExistingRooms;
     var tableRow =
       '<tr class="brand-ft-data-row">' +
-      '<th scope="row">Total (Public IHG Figures, Illustrative)</th>' +
+      '<th scope="row">Total (Portfolio)</th>' +
       '<td>' +
       (hasVal(openH) ? escapeHtml(fmtNum(openH)) : '&nbsp;') +
       '</td><td>' +
@@ -1720,7 +3151,7 @@
       presenceIntelCard('Growth Style', brand.brandDevelopmentStage) +
       presenceIntelCard('Brand Maturity', brand.yearBrandLaunched) +
       '</div>';
-    var geoSrc = String(brand.brandProfileAnalysis || fv.specificMarkets || '').trim();
+    var geoSrc = String(explorerMergedBody(brand, 'footprint.geo_intro') || fv.specificMarkets || '').trim();
     var geoIntro;
     if (!hasVal(geoSrc)) {
       geoIntro =
@@ -1733,16 +3164,38 @@
         (geoSrc.length > 420 ? '…' : '') +
         '</p>';
     }
-    var schematic =
-      '<div class="footprint-schematic" aria-hidden="true">' +
-      '<div class="footprint-schematic__seg footprint-schematic__seg--on">Americas</div>' +
-      '<div class="footprint-schematic__seg footprint-schematic__seg--on">EMEAA</div>' +
-      '<div class="footprint-schematic__seg footprint-schematic__seg--on">Greater China</div>' +
-      '<div class="footprint-schematic__seg footprint-schematic__seg--on">APAC Leisure</div>' +
-      '<div class="footprint-schematic__seg footprint-schematic__seg--off">Select LATAM</div>' +
-      '</div>' +
-      '<p class="footprint-schematic__caption">Schematic Presence Strip · Illustrative, Not Geographic Precision</p>';
-    function regionStatusCard(name, dim, statusClass, statusLabel) {
+    var presentationRegions = footprintRegionCardsFromPresentation(brand);
+    var schematicNames = presentationRegions.length
+      ? presentationRegions.map(function (c) {
+          return c.name;
+        })
+      : regionKeys.slice(0, 8);
+    var schematic = '';
+    if (schematicNames.length) {
+      schematic =
+        '<div class="footprint-schematic" aria-hidden="true">' +
+        schematicNames
+          .map(function (region, idx) {
+            var dim =
+              presentationRegions.length && presentationRegions[idx]
+                ? footprintRegionCardDim(presentationRegions[idx].statusLabel)
+                : false;
+            return (
+              '<div class="footprint-schematic__seg footprint-schematic__seg--' +
+              (dim ? 'off' : 'on') +
+              '">' +
+              escapeHtml(region) +
+              '</div>'
+            );
+          })
+          .join('') +
+        '</div>' +
+        '<p class="footprint-schematic__caption">Schematic presence strip · illustrative, not geographic precision</p>';
+    }
+    function regionStatusCard(name, dim, statusClass, statusLabel, narrative) {
+      var narrHtml = hasVal(narrative)
+        ? '<p>' + escapeHtml(narrative) + '</p>'
+        : '<p class="oe-dd--empty">&nbsp;</p>';
       return (
         '<div class="region-status-card' +
         (dim ? ' region-status-card--dim' : '') +
@@ -1753,28 +3206,68 @@
         '<span class="status-label ' +
         statusClass +
         '">' +
-        escapeHtml(statusLabel) +
+        escapeHtml(statusLabel || 'Directional presence') +
         '</span>' +
-        '<p class="oe-dd--empty">&nbsp;</p></div>'
+        narrHtml +
+        '</div>'
       );
     }
-    var regionGrid =
-      '<div class="region-footprint-grid">' +
-      regionStatusCard('EMEAA', false, 'status-label--established', 'Strong Conversion Activity') +
-      regionStatusCard('Americas', false, 'status-label--established', 'Established Presence') +
-      regionStatusCard('Asia–Pacific', false, 'status-label--emerging', 'High Relevance') +
-      regionStatusCard('Greater China', true, 'status-label--selective', 'Selective / Market-Specific') +
-      regionStatusCard('Latin America', true, 'status-label--limited', 'Limited vs Other Regions') +
-      '</div>';
+    var regionGrid = '';
+    if (presentationRegions.length) {
+      regionGrid =
+        '<div class="region-footprint-grid">' +
+        presentationRegions
+          .map(function (card) {
+            return regionStatusCard(
+              card.name,
+              footprintRegionCardDim(card.statusLabel),
+              footprintRegionStatusClass(card.statusLabel),
+              card.statusLabel,
+              card.narrative
+            );
+          })
+          .join('') +
+        '</div>';
+    } else if (regionKeys.length) {
+      regionGrid =
+        '<div class="region-footprint-grid">' +
+        regionKeys
+          .slice(0, 8)
+          .map(function (region, idx) {
+            return regionStatusCard(
+              region,
+              idx > 3,
+              'status-label--established',
+              'From footprint data',
+              ''
+            );
+          })
+          .join('') +
+        '</div>';
+    }
+    var growthThemesRaw = explorerMergedBody(brand, 'footprint.growth_themes');
+    var growthTagSrc = splitBullets(growthThemesRaw).filter(hasVal);
+    if (!growthTagSrc.length && hasVal(growthThemesRaw)) {
+      growthTagSrc = chipListFromCsv(growthThemesRaw);
+    }
+    if (!growthTagSrc.length) {
+      growthTagSrc = splitBullets(brand.brandDevelopmentStage || fv.specificMarkets || '')
+        .filter(hasVal)
+        .slice(0, 6);
+    } else {
+      growthTagSrc = growthTagSrc.slice(0, 6);
+    }
     var growthChips =
-      '<span class="tag-chip">Urban Repositioning</span>' +
-      '<span class="tag-chip">Independent Conversions</span>' +
-      '<span class="tag-chip">Boutique Leisure</span>' +
-      '<span class="tag-chip">Selected Gateway City Entries</span>' +
-      '<span class="tag-chip">Resort-Adjacent Lifestyle Assets</span>' +
-      '<span class="tag-chip">Design-Led Affiliation Opportunities</span>';
-    var growthRightP = hasVal(brand.brandProfileAnalysis)
-      ? '<p>' + escapeHtml(fmtCell(brand.brandProfileAnalysis)).replace(/\n/g, '<br>') + '</p>'
+      growthTagSrc.length > 0
+        ? growthTagSrc
+            .map(function (t) {
+              return '<span class="tag-chip">' + escapeHtml(String(t)) + '</span>';
+            })
+            .join('')
+        : '<span class="tag-chip">&nbsp;</span>';
+    var growthEditorial = explorerMergedBody(brand, 'footprint.growth_editorial');
+    var growthRightP = hasVal(growthEditorial)
+      ? '<p>' + escapeHtml(fmtCell(growthEditorial)).replace(/\n/g, '<br>') + '</p>'
       : '<p class="oe-dd--empty">&nbsp;</p>';
     var growthSection =
       '<section class="oe-section">' +
@@ -1790,12 +3283,21 @@
       growthRightP +
       '<div class="growth-fit-sub">' +
       '<h4>Most Likely Growth Fit</h4>' +
-      '<ul>' +
-      '<li>Urban Conversions</li>' +
-      '<li>Premium Independent Repositioning</li>' +
-      '<li>Lifestyle-Forward Leisure Assets</li>' +
-      '<li>Smaller Full-Service or Boutique Assets With a Strong Story</li>' +
-      '</ul></div></div></div></section>';
+      (function () {
+        var fitItems = splitBullets(explorerMergedBody(brand, 'footprint.growth_fit')).filter(hasVal);
+        if (!fitItems.length) {
+          return '<ul><li class="oe-dd--empty">&nbsp;</li></ul></div></div></div></section>';
+        }
+        return (
+          '<ul>' +
+          fitItems
+            .map(function (li) {
+              return '<li>' + escapeHtml(String(li)) + '</li>';
+            })
+            .join('') +
+          '</ul></div></div></div></section>'
+        );
+      })();
     function propertyShell() {
       return (
         '<article class="property-example-card">' +
@@ -1812,56 +3314,46 @@
         '<button type="button" class="btn" disabled>View Property</button></div></article>'
       );
     }
+    var openingBlocks = explorerBlocksForSlot(brand, FOOTPRINT_OPENINGS_SLOT);
+    var openingsGrid;
+    if (openingBlocks.length && footprintPropertyPayloadSink) {
+      openingsGrid = openingBlocks
+        .map(function (block) {
+          return propertyExampleCardFromBlock(block, footprintPropertyPayloadSink);
+        })
+        .join('');
+    } else {
+      openingsGrid = propertyShell() + propertyShell() + propertyShell();
+    }
     var openingsSection =
       '<section class="oe-section" style="margin-top:8px">' +
       '<h2 class="oe-section-title">Openings / Examples / Properties</h2>' +
       '<p class="oe-section-hint">Curated · Not a Full Directory</p>' +
-      '<p style="font-size:0.8125rem;color:#d7e4fa;margin:0 0 16px;max-width:820px;line-height:1.5">' +
-      '<strong style="color:var(--text,#fff);font-weight:600">Illustrative placeholders</strong> — Property cards mirror the education layout; add verified examples when available.</p>' +
       '<div class="property-example-grid">' +
-      propertyShell() +
-      propertyShell() +
-      propertyShell() +
+      openingsGrid +
       '</div></section>';
-    var momentumSection =
-      '<section class="oe-section">' +
-      '<h2 class="oe-section-title">Recent Momentum</h2>' +
-      '<p class="oe-section-hint">Illustrative Activity</p>' +
-      '<p class="momentum-feed__label">Illustrative Activity View</p>' +
-      '<div class="momentum-feed">' +
-      '<div class="momentum-feed__item"><div class="momentum-feed__date">Jan 2026</div><div class="momentum-feed__body"><strong>New urban conversion opening added to portfolio</strong><p>Illustrative example of continued momentum in independent repositioning.</p></div></div>' +
-      '<div class="momentum-feed__item"><div class="momentum-feed__date">Feb 2026</div><div class="momentum-feed__body"><strong>Expanded leisure-forward presence in resort-adjacent market</strong><p>Signals relevance beyond pure urban applications.</p></div></div>' +
-      '<div class="momentum-feed__item"><div class="momentum-feed__date">Mar 2026</div><div class="momentum-feed__body"><strong>Pipeline entry in gateway European market</strong><p>Supports the brand’s emerging premium affiliation story in select cities.</p></div></div>' +
-      '<div class="momentum-feed__item"><div class="momentum-feed__date">Q1 2026</div><div class="momentum-feed__body"><strong>Repeat-owner affiliation interest</strong><p>Suggests continued appeal among owners seeking flexibility with stronger commercial structure.</p></div></div>' +
-      '</div>' +
-      '<div class="portfolio-mix">' +
-      '<h3>Portfolio Mix</h3>' +
-      '<div class="portfolio-mix__row">' +
-      '<span class="portfolio-mix__pill"><strong>Urban</strong> High</span>' +
-      '<span class="portfolio-mix__pill"><strong>Leisure / Resort-Adjacent</strong> Moderate</span>' +
-      '<span class="portfolio-mix__pill"><strong>Secondary Market</strong> Selective</span>' +
-      '<span class="portfolio-mix__pill"><strong>New Build Prototype-Led</strong> Low</span>' +
-      '<span class="portfolio-mix__pill"><strong>Conversion / Repositioning</strong> High</span>' +
-      '</div></div></section>';
+    var momentumSection = renderMomentumSection(brand);
     var fpEditorialP;
-    if (hasVal(brand.brandProfileAnalysis)) {
+    var fpEditorial = explorerMergedBody(brand, 'footprint.editorial');
+    if (hasVal(fpEditorial)) {
       fpEditorialP =
-        '<p>' + escapeHtml(fmtCell(brand.brandProfileAnalysis)).replace(/\n/g, '<br>') + '</p>';
+        '<p>' + escapeHtml(fmtCell(fpEditorial)).replace(/\n/g, '<br>') + '</p>';
     } else if (hasVal(brand.name)) {
-      fpEditorialP =
-        '<p>' +
-        escapeHtml(String(brand.name).trim()) +
-        '\u2019s footprint reads as \u201cPremium scale with conversion DNA\u201d: large enough for parent-network retail credibility, still positioned as personality-forward versus rigid prototype brands. It tends to show best where owners need systems and loyalty\u2014not a bespoke luxury operating theater.</p>';
+      fpEditorialP = '<p class="oe-dd--empty">&nbsp;</p>';
     } else {
       fpEditorialP = '<p class="oe-dd--empty">&nbsp;</p>';
     }
+    var fpBulletSrc = splitBullets(explorerMergedBody(brand, 'footprint.editorial_bullets')).filter(hasVal);
     var fpEditorialUl =
-      '<ul>' +
-      '<li>Strongest Current Relevance in Urban Repositioning</li>' +
-      '<li>Credible Use in Boutique Leisure and Resort-Adjacent Contexts</li>' +
-      '<li>Still Selective Rather Than Ubiquitous</li>' +
-      '<li>More Compelling Where Asset Identity Already Exists</li>' +
-      '</ul>';
+      fpBulletSrc.length > 0
+        ? '<ul>' +
+          fpBulletSrc
+            .map(function (li) {
+              return '<li>' + escapeHtml(String(li)) + '</li>';
+            })
+            .join('') +
+          '</ul>'
+        : '<ul><li class="oe-dd--empty">&nbsp;</li></ul>';
     var dealalitySection =
       '<section class="oe-section">' +
       '<h2 class="oe-section-title">Dealality View on Market Presence</h2>' +
@@ -1952,6 +3444,131 @@
       interp: paras[3] || '',
       tagsStr: paras[4] || ''
     };
+  }
+
+  function parseCaseStudyParas(bodyRaw) {
+    var paras = String(bodyRaw || '')
+      .split(/\n\n+/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+    var summaryHref = '';
+    if (paras.length && isSafeHttpUrl(paras[paras.length - 1])) {
+      summaryHref = paras[paras.length - 1];
+      paras = paras.slice(0, -1);
+    }
+    var chips = '';
+    var loc = '';
+    var asset = '';
+    var situation = '';
+    var why = '';
+    var takeaway = '';
+    if (paras.length >= 6) {
+      chips = paras[0];
+      loc = paras[1];
+      asset = paras[2];
+      situation = paras[3];
+      why = paras[4];
+      takeaway = paras[5];
+    } else if (paras.length >= 3) {
+      situation = paras[0];
+      why = paras[1];
+      takeaway = paras[2];
+    } else if (paras.length === 2) {
+      situation = paras[0];
+      why = paras[1];
+    } else if (paras.length === 1) {
+      situation = paras[0];
+    }
+    if (!summaryHref) summaryHref = lastHttpUrlInString(bodyRaw);
+    return {
+      summaryHref: summaryHref && isSafeHttpUrl(summaryHref) ? summaryHref : '',
+      chips: chips,
+      loc: loc,
+      asset: asset,
+      situation: situation,
+      why: why,
+      takeaway: takeaway
+    };
+  }
+
+  /**
+   * footprint.openings Body — not the same as materials.caseStudy short form.
+   * 4 blocks: chips, location, asset/meta, opening teaser (+ optional https URL).
+   * 5 blocks: + scenario accent line (voco property-example-card__scenario).
+   * 6 blocks: full case-study card blocks (chips … takeaway).
+   */
+  function parseFootprintOpeningParas(bodyRaw) {
+    var paras = String(bodyRaw || '')
+      .split(/\n\n+/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+    var summaryHref = '';
+    if (paras.length && isSafeHttpUrl(paras[paras.length - 1])) {
+      summaryHref = paras[paras.length - 1];
+      paras = paras.slice(0, -1);
+    }
+    var chips = '';
+    var loc = '';
+    var asset = '';
+    var scenario = '';
+    var situation = '';
+    var why = '';
+    var takeaway = '';
+    if (paras.length >= 6) {
+      chips = paras[0];
+      loc = paras[1];
+      asset = paras[2];
+      situation = paras[3];
+      why = paras[4];
+      takeaway = paras[5];
+    } else if (paras.length === 5) {
+      chips = paras[0];
+      loc = paras[1];
+      asset = paras[2];
+      scenario = paras[3];
+      situation = paras[4];
+    } else if (paras.length === 4) {
+      chips = paras[0];
+      loc = paras[1];
+      asset = paras[2];
+      situation = paras[3];
+    } else {
+      var short = parseCaseStudyParas(bodyRaw);
+      return {
+        summaryHref: short.summaryHref,
+        chips: short.chips,
+        loc: short.loc,
+        asset: short.asset,
+        scenario: '',
+        situation: short.situation,
+        why: short.why,
+        takeaway: short.takeaway
+      };
+    }
+    if (!summaryHref) summaryHref = lastHttpUrlInString(bodyRaw);
+    return {
+      summaryHref: summaryHref && isSafeHttpUrl(summaryHref) ? summaryHref : '',
+      chips: chips,
+      loc: loc,
+      asset: asset,
+      scenario: scenario,
+      situation: situation,
+      why: why,
+      takeaway: takeaway
+    };
+  }
+
+  function chipListFromCsv(csv) {
+    return String(csv || '')
+      .split(',')
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
   }
 
   function buildCaseStudyModalPayload(block, p, chipParts, externalUrl, modalAppendixParsed) {
@@ -2047,14 +3664,202 @@
     document.body.style.overflow = '';
   }
 
+  /** Footprint “View Property” modal — Case Summary columns on footprint.openings rows (voco footprint IA). */
+  function buildFootprintPropertyPayload(block, p, chipParts, modalAppendixParsed) {
+    var m = modalAppendixParsed || null;
+    var title = block && hasVal(block.title) ? String(block.title).trim() : 'Property';
+    var locLine = p && hasVal(p.loc) ? String(p.loc).trim() : '';
+    var subtitle = locLine ? locLine + ' · Open' : 'Open';
+    var overview =
+      blockCaseSummaryField(block, 'caseSummaryOverview') ||
+      (m && hasVal(m.overview) ? String(m.overview).trim() : '') ||
+      (p && hasVal(p.situation) ? String(p.situation).trim() : '');
+    var relevance =
+      blockCaseSummaryField(block, 'caseSummaryBrandRelevance') ||
+      (m && hasVal(m.brandRel) ? String(m.brandRel).trim() : '') ||
+      (p && hasVal(p.why) ? String(p.why).trim() : '');
+    var suggests =
+      blockCaseSummaryField(block, 'caseSummaryOwnerObjective') ||
+      (m && hasVal(m.ownerObj) ? String(m.ownerObj).trim() : '') ||
+      (p && hasVal(p.asset) ? String(p.asset).trim() : '');
+    var dealalityTakeaway =
+      blockCaseSummaryField(block, 'caseSummaryInterpretation') ||
+      (m && hasVal(m.interp) ? String(m.interp).trim() : '') ||
+      (p && hasVal(p.takeaway) ? String(p.takeaway).trim() : '');
+    var tagsStr = blockCaseSummaryField(block, 'caseSummaryTags');
+    if (!hasVal(tagsStr) && m && hasVal(m.tagsStr)) tagsStr = String(m.tagsStr).trim();
+    var tags = [];
+    if (hasVal(tagsStr)) {
+      tags = tagsStr
+        .split(',')
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(Boolean);
+    } else {
+      tags = chipParts.slice();
+    }
+    var ext =
+      block && hasVal(block.summaryUrl) && isSafeHttpUrl(String(block.summaryUrl).trim())
+        ? String(block.summaryUrl).trim()
+        : p && p.summaryHref
+          ? p.summaryHref
+          : '';
+    return {
+      title: title,
+      subtitle: subtitle,
+      overview: overview || '—',
+      relevance: relevance || '—',
+      suggests: suggests || '—',
+      dealalityTakeaway: dealalityTakeaway || '—',
+      tags: tags,
+      externalUrl: ext
+    };
+  }
+
+  function openBrandFootprintPropertyModal(payload) {
+    var modal = document.getElementById('beCaseStudyModal');
+    var titleEl = document.getElementById('beCsModalTitle');
+    var innerEl = document.getElementById('beCsModalInner');
+    if (!modal || !titleEl || !innerEl || !payload) return;
+    titleEl.textContent = payload.title || 'Property';
+    var tagsHtml = (payload.tags || [])
+      .map(function (t) {
+        return '<span class="tag-chip">' + escapeHtml(t) + '</span>';
+      })
+      .join('');
+    var linkBlock = '';
+    if (payload.externalUrl) {
+      linkBlock =
+        '<div class="be-case-modal__external">' +
+        '<a class="btn btn--ghost" href="' +
+        escapeHtml(payload.externalUrl) +
+        '" target="_blank" rel="noopener noreferrer">Open external link</a>' +
+        '</div>';
+    }
+    innerEl.innerHTML =
+      '<p style="margin:0 0 14px;font-size:0.8125rem;color:var(--muted,#9fb0d0)">' +
+      escapeHtml(payload.subtitle || '') +
+      '</p>' +
+      '<div class="be-case-detail-block"><h4>Property overview</h4><p>' +
+      escapeHtml(payload.overview) +
+      '</p></div>' +
+      '<div class="be-case-detail-block"><h4>Why it is relevant</h4><p>' +
+      escapeHtml(payload.relevance) +
+      '</p></div>' +
+      '<div class="be-case-detail-block"><h4>What it suggests about the brand</h4><p>' +
+      escapeHtml(payload.suggests) +
+      '</p></div>' +
+      '<div class="be-case-detail-block"><h4>Dealality takeaway</h4><p>' +
+      escapeHtml(payload.dealalityTakeaway) +
+      '</p></div>' +
+      '<div class="be-case-detail-block"><h4>Similar property types</h4><div class="be-case-modal__tags">' +
+      (tagsHtml || '<span class="be-case-modal__tags-empty">—</span>') +
+      '</div></div>' +
+      linkBlock;
+    modal.classList.add('be-case-modal-overlay--open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function propertyExampleCardFromBlock(block, footprintPropertyPayloadSink) {
+    if (!footprintPropertyPayloadSink) footprintPropertyPayloadSink = [];
+    var title = block && hasVal(block.title) ? String(block.title).trim() : '';
+    var bodyRaw = block && hasVal(block.body) ? String(block.body).trim() : '';
+    var split = splitCaseStudyCardBodyAndModalAppendix(bodyRaw);
+    var p = parseFootprintOpeningParas(split.cardBody);
+    var modalAppendixParsed = parseCaseSummaryModalAppendix(split.modalAppendix);
+    var chipParts = chipListFromCsv(p.chips);
+    if (!chipParts.length) chipParts = chipListFromCsv(blockCaseSummaryField(block, 'caseSummaryTags'));
+    var scenario = hasVal(p.scenario)
+      ? String(p.scenario).trim()
+      : chipParts.length > 1
+        ? chipParts.slice(1).join(' / ')
+        : '';
+    var tagsHtml = chipParts.length
+      ? chipParts
+          .map(function (c) {
+            return '<span class="tag-chip">' + escapeHtml(c) + '</span>';
+          })
+          .join('')
+      : '<span class="tag-chip">&nbsp;</span>';
+    var imgUrl = block && hasVal(block.imageUrl) ? String(block.imageUrl).trim() : '';
+    var topInner = '';
+    if (imgUrl && isSafeHttpUrl(imgUrl)) {
+      topInner =
+        '<img src="' +
+        escapeHtml(imgUrl) +
+        '" alt="' +
+        escapeHtml(title || 'Property') +
+        '" loading="lazy" />';
+    }
+    var situationSn = hasVal(p.situation) ? String(p.situation).trim() : '';
+    if (!hasVal(situationSn)) {
+      var ovSn = blockCaseSummaryField(block, 'caseSummaryOverview');
+      if (hasVal(ovSn)) situationSn = String(ovSn).trim();
+    }
+    if (situationSn.length > 280) situationSn = situationSn.slice(0, 277) + '…';
+    var metaHtml = hasVal(p.asset)
+      ? escapeHtml(p.asset)
+      : '<span class="oe-dd--empty">&nbsp;</span>';
+    var scenarioHtml = hasVal(scenario)
+      ? escapeHtml(scenario)
+      : '<span class="oe-dd--empty">&nbsp;</span>';
+    var teaserHtml = hasVal(situationSn)
+      ? escapeHtml(situationSn)
+      : '<span class="oe-dd--empty">&nbsp;</span>';
+    var fpPayload = buildFootprintPropertyPayload(block, p, chipParts, modalAppendixParsed);
+    var fpIdx = footprintPropertyPayloadSink.length;
+    footprintPropertyPayloadSink.push(fpPayload);
+    return (
+      '<article class="property-example-card">' +
+      '<div class="property-example-card__top">' +
+      topInner +
+      '<span class="property-example-card__badge">Open</span>' +
+      '<div class="property-example-card__titles">' +
+      '<h4>' +
+      (hasVal(title) ? escapeHtml(title) : '&nbsp;') +
+      '</h4>' +
+      '<span>' +
+      (hasVal(p.loc) ? escapeHtml(p.loc) : '&nbsp;') +
+      '</span></div></div>' +
+      '<div class="property-example-card__mid">' +
+      '<div class="property-example-card__meta">' +
+      metaHtml +
+      '</div>' +
+      '<div class="property-example-card__scenario">' +
+      scenarioHtml +
+      '</div>' +
+      '<p>' +
+      teaserHtml +
+      '</p></div>' +
+      '<div class="property-example-card__bottom">' +
+      '<div class="property-example-card__tags">' +
+      tagsHtml +
+      '</div>' +
+      '<button type="button" class="btn" data-be-footprint-property="' +
+      fpIdx +
+      '">View Property</button></div></article>'
+    );
+  }
+
   function wireBrandCaseStudyModalOnce() {
     if (window._beCaseStudyModalDocumentWired) return;
     window._beCaseStudyModalDocumentWired = true;
     document.addEventListener('click', function (e) {
+      var panelsWrap = e.target.closest('[data-be-atelier-panels]');
+      if (!panelsWrap) return;
+      var fpBtn = e.target.closest('[data-be-footprint-property]');
+      if (fpBtn) {
+        if (!Array.isArray(panelsWrap._beFootprintPropertyPayloads)) return;
+        var fpIdx = parseInt(fpBtn.getAttribute('data-be-footprint-property'), 10);
+        if (isNaN(fpIdx) || fpIdx < 0 || fpIdx >= panelsWrap._beFootprintPropertyPayloads.length) return;
+        e.preventDefault();
+        openBrandFootprintPropertyModal(panelsWrap._beFootprintPropertyPayloads[fpIdx]);
+        return;
+      }
       var btn = e.target.closest('[data-be-case-summary]');
       if (!btn) return;
-      var panelsWrap = btn.closest('[data-be-atelier-panels]');
-      if (!panelsWrap || !Array.isArray(panelsWrap._beCaseStudyPayloads)) return;
+      if (!Array.isArray(panelsWrap._beCaseStudyPayloads)) return;
       var idx = parseInt(btn.getAttribute('data-be-case-summary'), 10);
       if (isNaN(idx) || idx < 0 || idx >= panelsWrap._beCaseStudyPayloads.length) return;
       e.preventDefault();
@@ -2078,208 +3883,13 @@
     });
   }
 
-  function renderBrandMaterials(brand, caseStudyPayloadSink) {
-    if (!caseStudyPayloadSink) caseStudyPayloadSink = [];
-    var caseTags = [
-      'Conversion Example',
-      'Resort Example',
-      'Urban Example',
-      'Operator-Led Example',
-      'Repositioning Example',
-      'Boutique Asset',
-      'Independent Reflag'
-    ];
-    var tagRow =
-      '<div class="tag-chip-row" style="margin-bottom:14px" aria-label="Proof Taxonomy">' +
-      caseTags
-        .map(function (t) {
-          return '<span class="tag-chip">' + escapeHtml(t) + '</span>';
-        })
-        .join('') +
-      '</div>';
-    function caseStudyShell() {
-      return (
-        '<article class="case-study-card">' +
-        '<div class="case-study-card__thumb" aria-hidden="true"></div>' +
-        '<div class="case-study-card__body">' +
-        '<div class="case-study-card__chips"><span class="tag-chip oe-dd--empty">&nbsp;</span></div>' +
-        '<h4 class="oe-dd--empty">&nbsp;</h4>' +
-        '<div class="case-study-card__loc oe-dd--empty">&nbsp;</div>' +
-        '<div class="case-study-card__asset oe-dd--empty">&nbsp;</div>' +
-        '<p class="case-study-card__narr"><span class="case-study-card__narr-label">Situation.</span> <span class="case-study-card__narr-text oe-dd--empty">&nbsp;</span></p>' +
-        '<p class="case-study-card__narr"><span class="case-study-card__narr-label">Why the brand was relevant.</span> <span class="case-study-card__narr-text oe-dd--empty">&nbsp;</span></p>' +
-        '<div class="case-study-card__takeaway">' +
-        '<div class="case-study-card__takeaway-kicker" role="presentation">' +
-        '<span class="case-study-card__takeaway-kicker-up">Owner takeaway</span> ' +
-        '<span class="case-study-card__takeaway-kicker-sub">(Dealality summary)</span>' +
-        '</div>' +
-        '<span class="case-study-card__takeaway-body"><span class="oe-dd--empty">&nbsp;</span></span>' +
-        '</div>' +
-        '<div class="case-study-card__actions">' +
-        '<button type="button" class="btn case-study-card__btn" disabled>View Summary</button>' +
-        '</div>' +
-        '</div></article>'
-      );
-    }
+  function renderBrandMaterials(brand) {
     function materialsFileHref(block) {
       if (!block) return '';
       var fromBody = firstHttpUrlInString(block.body);
       if (fromBody) return fromBody;
       var img = hasVal(block.imageUrl) ? String(block.imageUrl).trim() : '';
       return isSafeHttpUrl(img) ? img : '';
-    }
-    function parseCaseStudyParas(bodyRaw) {
-      var paras = String(bodyRaw || '')
-        .split(/\n\n+/)
-        .map(function (s) {
-          return s.trim();
-        })
-        .filter(Boolean);
-      var summaryHref = '';
-      if (paras.length && isSafeHttpUrl(paras[paras.length - 1])) {
-        summaryHref = paras[paras.length - 1];
-        paras = paras.slice(0, -1);
-      }
-      var chips = '';
-      var loc = '';
-      var asset = '';
-      var situation = '';
-      var why = '';
-      var takeaway = '';
-      if (paras.length >= 6) {
-        chips = paras[0];
-        loc = paras[1];
-        asset = paras[2];
-        situation = paras[3];
-        why = paras[4];
-        takeaway = paras[5];
-      } else if (paras.length >= 3) {
-        situation = paras[0];
-        why = paras[1];
-        takeaway = paras[2];
-      } else if (paras.length === 2) {
-        situation = paras[0];
-        why = paras[1];
-      } else if (paras.length === 1) {
-        situation = paras[0];
-      }
-      if (!summaryHref) summaryHref = lastHttpUrlInString(bodyRaw);
-      return {
-        summaryHref: summaryHref && isSafeHttpUrl(summaryHref) ? summaryHref : '',
-        chips: chips,
-        loc: loc,
-        asset: asset,
-        situation: situation,
-        why: why,
-        takeaway: takeaway
-      };
-    }
-    function caseStudyFromBlock(block) {
-      var title = block && hasVal(block.title) ? String(block.title).trim() : '';
-      var bodyRaw = block && hasVal(block.body) ? String(block.body).trim() : '';
-      var split = splitCaseStudyCardBodyAndModalAppendix(bodyRaw);
-      var p = parseCaseStudyParas(split.cardBody);
-      var modalAppendixParsed = parseCaseSummaryModalAppendix(split.modalAppendix);
-      var chipParts = p.chips
-        ? p.chips
-            .split(',')
-            .map(function (s) {
-              return s.trim();
-            })
-            .filter(Boolean)
-        : [];
-      var chipsHtml = chipParts.length
-        ? chipParts
-            .map(function (c) {
-              return '<span class="tag-chip">' + escapeHtml(c) + '</span>';
-            })
-            .join('')
-        : '<span class="tag-chip oe-dd--empty">&nbsp;</span>';
-      var imgUrl = block && hasVal(block.imageUrl) ? String(block.imageUrl).trim() : '';
-      var thumbExtra = '';
-      if (imgUrl && isSafeHttpUrl(imgUrl)) {
-        thumbExtra =
-          ' style="background-image:url(' +
-          escapeHtml(imgUrl) +
-          ');background-size:cover;background-position:center"';
-      }
-      function narrBlock(label, val) {
-        if (!hasVal(val)) {
-          return (
-            '<p class="case-study-card__narr"><span class="case-study-card__narr-label">' +
-            escapeHtml(label) +
-            '</span> <span class="case-study-card__narr-text oe-dd--empty">&nbsp;</span></p>'
-          );
-        }
-        return (
-          '<p class="case-study-card__narr"><span class="case-study-card__narr-label">' +
-          escapeHtml(label) +
-          '</span> <span class="case-study-card__narr-text">' +
-          escapeHtml(val) +
-          '</span></p>'
-        );
-      }
-      function takeawayHtml(val) {
-        var head =
-          '<div class="case-study-card__takeaway-kicker" role="presentation">' +
-          '<span class="case-study-card__takeaway-kicker-up">Owner takeaway</span> ' +
-          '<span class="case-study-card__takeaway-kicker-sub">(Dealality summary)</span>' +
-          '</div>';
-        if (!hasVal(val)) {
-          return (
-            '<div class="case-study-card__takeaway">' +
-            head +
-            '<span class="case-study-card__takeaway-body"><span class="oe-dd--empty">&nbsp;</span></span>' +
-            '</div>'
-          );
-        }
-        return (
-          '<div class="case-study-card__takeaway">' +
-          head +
-          '<span class="case-study-card__takeaway-body">' +
-          escapeHtml(val) +
-          '</span>' +
-          '</div>'
-        );
-      }
-      var summaryFromField =
-        block && hasVal(block.summaryUrl) && isSafeHttpUrl(String(block.summaryUrl).trim())
-          ? String(block.summaryUrl).trim()
-          : '';
-      var summaryHref = summaryFromField || p.summaryHref;
-      var modalPayload = buildCaseStudyModalPayload(block, p, chipParts, summaryHref, modalAppendixParsed);
-      var summaryIdx = caseStudyPayloadSink.length;
-      caseStudyPayloadSink.push(modalPayload);
-      var summaryBtn =
-        '<button type="button" class="btn case-study-card__btn" data-be-case-summary="' +
-        summaryIdx +
-        '">View Summary</button>';
-      return (
-        '<article class="case-study-card">' +
-        '<div class="case-study-card__thumb"' +
-        thumbExtra +
-        ' aria-hidden="true"></div>' +
-        '<div class="case-study-card__body">' +
-        '<div class="case-study-card__chips">' +
-        chipsHtml +
-        '</div>' +
-        '<h4>' +
-        (hasVal(title) ? escapeHtml(title) : '<span class="oe-dd--empty">&nbsp;</span>') +
-        '</h4>' +
-        '<div class="case-study-card__loc">' +
-        (hasVal(p.loc) ? escapeHtml(p.loc) : '<span class="oe-dd--empty">&nbsp;</span>') +
-        '</div>' +
-        '<div class="case-study-card__asset">' +
-        (hasVal(p.asset) ? escapeHtml(p.asset) : '<span class="oe-dd--empty">&nbsp;</span>') +
-        '</div>' +
-        narrBlock('Situation.', p.situation) +
-        narrBlock('Why the brand was relevant.', p.why) +
-        takeawayHtml(p.takeaway) +
-        '<div class="case-study-card__actions">' +
-        summaryBtn +
-        '</div>' +
-        '</div></article>'
-      );
     }
     var fileRows = explorerBlocksForSlot(brand, 'materials.file');
     var fileGrid;
@@ -2297,19 +3907,18 @@
             }
           }
           if (!label) label = 'Brand material';
-          return fileCard(kind, label, href);
+          var metaLine = materialsFileMetaFromBody(row.body);
+          var badgeLine = materialsFileBadgeFromBody(row.body);
+          return fileCard(kind, label, metaLine, href, badgeLine);
         })
         .join('');
     } else {
       fileGrid =
-        fileCard('PDF', 'Brand Overview Deck.pdf') +
-        fileCard('PDF', 'Development Snapshot.pdf') +
-        fileCard('PDF', 'Positioning Summary.pdf') +
-        fileCard('ZIP', 'Design Reference Gallery.zip');
+        fileCard('PDF', 'Brand Overview Deck.pdf', 'PDF · 4.2 MB · Updated Feb 12, 2026') +
+        fileCard('PDF', 'Development Snapshot.pdf', 'PDF · 1.8 MB · Updated Jan 28, 2026') +
+        fileCard('PDF', 'Positioning Summary.pdf', 'PDF · 956 KB · Updated Mar 4, 2026') +
+        fileCard('ZIP', 'Design Reference Gallery.zip', 'ZIP · 128 MB · Updated Dec 9, 2025');
     }
-    var csBlocks = explorerBlocksForSlot(brand, 'materials.caseStudy');
-    var placeholders = caseStudyShell() + caseStudyShell() + caseStudyShell();
-    var caseStudyHtml = csBlocks.length ? csBlocks.map(caseStudyFromBlock).join('') : placeholders;
     var galleryLabels = ['Lobby', 'Guest Room', 'Rooftop / Bar', 'Arrival', 'Pool & Resort Setting', 'Restaurant'];
     var gallery = galleryLabels
       .map(function (lab, i) {
@@ -2341,21 +3950,9 @@
     return wrapOe(
       '<section class="oe-section">' +
         '<h2 class="oe-section-title">Official Brand Materials</h2>' +
-        '<p class="oe-section-hint">Unverified by Brand · Populate with Brand Explorer Presentation rows (<code>materials.file</code>)</p>' +
+        '<p class="oe-section-hint">Unverified by Brand</p>' +
         '<div class="file-card-grid">' +
         fileGrid +
-        '</div></section>' +
-        '<section class="oe-section" id="case-studies-section" style="margin-top:8px">' +
-        '<h2 class="oe-section-title">Case Studies &amp; Proof of Application</h2>' +
-        '<p class="oe-section-hint">Unverified by Brand · Curated by Dealality · Optional slot <code>materials.caseStudy</code></p>' +
-        '<p class="case-study-intro"><strong>How the brand shows up in practice</strong> — Each card can name a real, open property with a verifiable photo. Dealality’s situation and takeaway copy is editorial (not verified by the brand or a statement of property-level performance).</p>' +
-        tagRow +
-        '<div class="case-study-grid">' +
-        caseStudyHtml +
-        '</div>' +
-        '<div class="locked-mini-grid">' +
-        '<div class="locked-mini"><h5>🔒 Performance Detail</h5><p>Available only where public or shared during active evaluation. No property-level RevPAR, ADR, or occupancy claims shown here.</p></div>' +
-        '<div class="locked-mini"><h5>🔒 Deal Structure Context</h5><p>Visible in Match &amp; Compare or during brand-approved diligence. Fee economics and key terms remain gated.</p></div>' +
         '</div></section>' +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Image Gallery</h2>' +
@@ -2368,50 +3965,58 @@
 
   function renderDealalityInsight(brand) {
     var STRENGTH_PAIRS = [
-      ['Conversion & reflag velocity', 'When the goal is faster IHG integration vs. long new-build cycles.'],
-      ['IHG-heavy corridors', 'Where IHG recognition, corporate accounts, and loyalty meaningfully shift share.'],
-      ['Upscale full-service bones', 'Assets that already run full-service but need brand-led retail discipline.'],
-      ['Operator + franchise flexibility', 'Structures where IHG-approved operators can execute Premium standards reliably.']
+      ['Character-Rich Conversions', 'When the story is already there and needs commercial scaffolding.'],
+      ['Premium Urban Repositioning', 'Where design credibility and distribution lift both matter.'],
+      ['Design-Led Independent Alternatives', 'For guests who want individuality with dependable systems.'],
+      ['Owner / Operator Structures', 'With branded operating experience and reporting discipline.']
     ];
     var CAUTION_PAIRS = [
-      ['Product not truly upscale', 'If rooms and public spaces cannot support Premium ADR, fees won’t clear.'],
-      ['Markets with weak IHG relevance', 'In some regions, another flag may convert demand more efficiently.'],
-      ['Operators unaccustomed to IHG tooling', 'Systems and training load can overwhelm lightly resourced teams.'],
-      ['Expectations of ultra-luxury', '']
+      ['Assets Without Identity', 'Weaker story limits lifestyle premium capture.'],
+      ['Markets That Won\u2019t Reward Premium', 'Rate and RevPAR may not support positioning.'],
+      ['Limited Branded Experience', 'Operators without lifestyle depth may struggle with calibration.'],
+      ['Expectations of Total Design Freedom', 'Guardrails still apply for guest confidence and QA.']
     ];
-    var bn = brand.name ? String(brand.name).trim() : 'this brand';
-    var cautionUltraBody =
-      escapeHtml(bn) +
-      ' is Premium—not a substitute for InterContinental or Luxury & Lifestyle positioning.';
     var strengthGrid = STRENGTH_PAIRS.map(function (row) {
       return scenarioDetailCard(row[0], row[1]);
     }).join('');
-    var cautionGrid =
-      scenarioDetailCard(CAUTION_PAIRS[0][0], CAUTION_PAIRS[0][1]) +
-      scenarioDetailCard(CAUTION_PAIRS[1][0], CAUTION_PAIRS[1][1]) +
-      scenarioDetailCard(CAUTION_PAIRS[2][0], CAUTION_PAIRS[2][1]) +
-      scenarioDetailCard(CAUTION_PAIRS[3][0], cautionUltraBody);
+    var cautionGrid = CAUTION_PAIRS.map(function (row) {
+      return scenarioDetailCard(row[0], row[1]);
+    }).join('');
     var checklist =
       '<ul class="explorer-detail-card__list checklist">' +
-      '<li>Does the asset meet ' +
-      escapeHtml(bn) +
-      '\u2019s physical and F&amp;B expectations for Premium?</li>' +
-      '<li>Will IHG retail + loyalty materially change channel mix vs. staying independent?</li>' +
-      '<li>Is the operator ready for IHG systems, QA, and reporting cadence?</li>' +
-      '<li>Is the owner optimizing for conversion economics and speed—not bespoke luxury craft?</li>' +
-      '<li>How does ' +
-      escapeHtml(bn) +
-      ' compare to sibling IHG options (e.g., Hotel Indigo) on design and guest promise?</li>' +
+      '<li>Is the asset\u2019s physical story strong enough to support lifestyle positioning?</li>' +
+      '<li>Will the market pay for a more premium affiliation?</li>' +
+      '<li>Is the operator capable of delivering the service tone and reporting rigor?</li>' +
+      '<li>Is the owner looking for individuality plus structure, rather than a highly standardized model?</li>' +
+      '<li>Is loyalty contribution likely to matter in this demand mix?</li>' +
       '</ul>';
+    var similarRows = explorerCardRowsForSlot(brand, 'insight.similar');
     var similar =
-      '<div class="scenario-card"><strong>Hotel Indigo</strong> (IHG · Design-Led Premium)</div>' +
-      '<div class="scenario-card"><strong>Hyatt Centric</strong> (Upscale Lifestyle)</div>' +
-      '<div class="scenario-card"><strong>DoubleTree by Hilton</strong> (Full-Service Conversion Mainstream)</div>';
+      similarRows.length > 0
+        ? similarRows
+            .map(function (r) {
+              var label = hasVal(r.title) ? r.title : r.body;
+              var sub =
+                hasVal(r.title) && hasVal(r.body) && String(r.body).trim() !== String(r.title).trim()
+                  ? ' ' + escapeHtml(String(r.body).trim())
+                  : '';
+              return (
+                '<div class="scenario-card"><strong>' +
+                escapeHtml(String(label).slice(0, 120)) +
+                '</strong>' +
+                sub +
+                '</div>'
+              );
+            })
+            .join('')
+        : '<div class="scenario-card"><strong>&nbsp;</strong></div>' +
+          '<div class="scenario-card"><strong>&nbsp;</strong></div>' +
+          '<div class="scenario-card"><strong>&nbsp;</strong></div>';
     return wrapOe(
       '<section class="oe-section">' +
         '<h2 class="oe-section-title">Dealality Summary</h2>' +
         '<p class="oe-section-hint">Dealality Editorial Summary</p>' +
-        explorerDetailCard('Summary', brand.brandProfileAnalysis) +
+        explorerDetailCard('Summary', dealalitySummaryFromBrand(brand)) +
         '</section>' +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Key Strengths &amp; Strategic Fit</h2>' +
@@ -2441,15 +4046,16 @@
   }
 
   function buildAtelierPanelsHtml(brand) {
-    var caseStudyPayloadSink = [];
+    var footprintPropertyPayloadSink = [];
     var atelierMap = {
       'atelier-overview': renderAtelierOverview(brand),
       'atelier-value-owners': renderValueToOwners(brand),
       'atelier-ops': renderOperationsStandards(brand),
       'atelier-commercial': renderCommercialEngine(brand),
+      'atelier-economics': renderAtelierEconomicsObligations(brand),
       'atelier-loyalty': renderLoyaltyProgram(brand),
-      'atelier-footprint': renderFootprintGrowth(brand),
-      'atelier-materials': renderBrandMaterials(brand, caseStudyPayloadSink),
+      'atelier-footprint': renderFootprintGrowth(brand, footprintPropertyPayloadSink),
+      'atelier-materials': renderBrandMaterials(brand),
       'atelier-insight': renderDealalityInsight(brand)
     };
     var goldAppend = getGoldAppendTabs();
@@ -2482,7 +4088,10 @@
         );
       })
       .join('');
-    return { html: htmlStr, caseStudyPayloads: caseStudyPayloadSink };
+    return {
+      html: htmlStr,
+      footprintPropertyPayloads: footprintPropertyPayloadSink
+    };
   }
 
   function buildAtelierTabsHtml() {
@@ -2491,7 +4100,11 @@
     return rows
       .map(function (t, i) {
         var isAtelier = i < ATELIER_TAB_DEFS.length;
-        var icon = isAtelier ? TAB_ICONS[i] : G && G.TAB_ICONS ? G.TAB_ICONS[t.goldKey] : '';
+        var icon = isAtelier
+          ? ATELIER_TAB_ICON_BY_ID[t.id] || ''
+          : G && G.TAB_ICONS
+            ? G.TAB_ICONS[t.goldKey]
+            : '';
         return (
           '<button type="button" class="section-nav-item' +
           (i === 0 ? ' active' : '') +
@@ -2543,8 +4156,11 @@
     nav.innerHTML = buildAtelierTabsHtml();
     var built = buildAtelierPanelsHtml(brand);
     panelsWrap.innerHTML = built.html;
-    panelsWrap._beCaseStudyPayloads = built.caseStudyPayloads;
+    panelsWrap._beFootprintPropertyPayloads = built.footprintPropertyPayloads;
     wireAtelierTabs(rootEl);
+    if (window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.applyChainScaleTheme) {
+      window.BrandExplorerGoldDetail.applyChainScaleTheme(brand, rootEl);
+    }
   }
 
   function mountAtelierFromBrand(brand) {

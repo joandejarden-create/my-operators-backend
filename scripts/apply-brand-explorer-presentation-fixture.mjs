@@ -10,6 +10,13 @@
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-record-id recXXXXXXXX
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --fixture fixtures/other.json --brand-name Radisson
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --replace
+ *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --only-missing
+ *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --only-missing --slot-keys operations.standards_philosophy,operations.operator_compat.summary
+ *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --prune-except-slot-keys operations.standards_philosophy,operations.operator_compat.summary,operations.operator_compat.tags,operations.operator_compat.fit
+ *
+ * --only-missing   Create only fixture rows whose Slot Key is not already present for this brand.
+ * --slot-keys      Comma-separated Slot Key filter (applied before --only-missing).
+ * --prune-except-slot-keys  Delete existing rows for this brand whose Slot Key is NOT in the list (dry-run supported).
  *
  * Env: AIRTABLE_API_KEY, AIRTABLE_BASE_ID. Loads ../load-env.js when present.
  */
@@ -35,6 +42,7 @@ function parseArgs(argv) {
     const a = args[i];
     if (a === "--dry-run") flags.add("dry-run");
     else if (a === "--replace") flags.add("replace");
+    else if (a === "--only-missing") flags.add("only-missing");
     else if (a.startsWith("--")) {
       const key = a.slice(2);
       const next = args[i + 1];
@@ -45,13 +53,36 @@ function parseArgs(argv) {
     }
   }
   const fixtureRel = typeof kv.fixture === "string" ? kv.fixture : "fixtures/brand-explorer-presentation-radisson.example.json";
+  const slotKeysRaw = String(kv["slot-keys"] || kv["prune-except-slot-keys"] || "").trim();
+  const slotKeysFilter = slotKeysRaw
+    ? slotKeysRaw
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : null;
   return {
     dryRun: flags.has("dry-run"),
     replace: flags.has("replace"),
+    onlyMissing: flags.has("only-missing"),
+    pruneExceptSlotKeys: kv["prune-except-slot-keys"] ? slotKeysFilter : null,
+    slotKeysFilter: kv["slot-keys"] ? slotKeysFilter : null,
     brandName: String(kv["brand-name"] || "").trim(),
     brandRecordId: String(kv["brand-record-id"] || "").trim(),
     fixturePath: path.isAbsolute(fixtureRel) ? fixtureRel : path.resolve(ROOT, fixtureRel),
   };
+}
+
+function slotKeyFromRecord(rec) {
+  return String(rec.get("Slot Key") || rec.fields?.["Slot Key"] || "").trim();
+}
+
+function existingSlotKeysSet(records) {
+  const set = new Set();
+  for (const rec of records) {
+    const sk = slotKeyFromRecord(rec);
+    if (sk) set.add(sk);
+  }
+  return set;
 }
 
 function getBase() {
@@ -141,6 +172,16 @@ function buildFieldsForRow(brandRecordId, linkField, r, brandNameForRow) {
   };
   const su = String(r.summaryUrl ?? "").trim();
   if (su) fields["Summary URL"] = su;
+  const csOverview = String(r.caseSummaryOverview ?? "").trim();
+  const csOwner = String(r.caseSummaryOwnerObjective ?? "").trim();
+  const csBrand = String(r.caseSummaryBrandRelevance ?? "").trim();
+  const csInterp = String(r.caseSummaryInterpretation ?? "").trim();
+  const csTags = String(r.caseSummaryTags ?? "").trim();
+  if (csOverview) fields["Case Summary Overview"] = csOverview;
+  if (csOwner) fields["Case Summary Owner Objective"] = csOwner;
+  if (csBrand) fields["Case Summary Brand Relevance"] = csBrand;
+  if (csInterp) fields["Case Summary Interpretation"] = csInterp;
+  if (csTags) fields["Case Summary Tags"] = csTags;
   const n = String(brandNameForRow || "").trim();
   if (n) fields["Brand Name"] = n;
   return fields;
@@ -187,7 +228,7 @@ async function main() {
   const opts = parseArgs(process.argv);
   if (!opts.brandRecordId && !opts.brandName) {
     console.error(
-      "Usage: node scripts/apply-brand-explorer-presentation-fixture.mjs [--dry-run] [--replace] --brand-name \"Radisson\" | --brand-record-id recXXX [--fixture path/to.json]"
+      "Usage: node scripts/apply-brand-explorer-presentation-fixture.mjs [--dry-run] [--replace] [--only-missing] [--slot-keys k1,k2] [--prune-except-slot-keys k1,k2] --brand-name \"Radisson\" | --brand-record-id recXXX [--fixture path/to.json]"
     );
     process.exit(1);
   }
@@ -196,9 +237,18 @@ async function main() {
     throw new Error(`Fixture not found: ${opts.fixturePath}`);
   }
   const data = JSON.parse(fs.readFileSync(opts.fixturePath, "utf8"));
-  const rows = data.rows;
+  let rows = data.rows;
   if (!Array.isArray(rows) || !rows.length) {
     throw new Error("fixture.rows must be a non-empty array");
+  }
+
+  if (opts.slotKeysFilter?.length) {
+    const allow = new Set(opts.slotKeysFilter);
+    rows = rows.filter((r) => allow.has(String(r.slotKey || "").trim()));
+    if (!rows.length) {
+      throw new Error(`No fixture rows match --slot-keys (${opts.slotKeysFilter.join(", ")})`);
+    }
+    console.log(`--slot-keys: ${rows.length} fixture row(s) after filter.`);
   }
 
   const base = getBase();
@@ -223,22 +273,69 @@ async function main() {
     }
   }
 
-  if (opts.replace) {
-    const existing = await selectPresentationForBrand(base, brandRecId, brandNameForSelect);
-    if (existing.length === 0) {
-      console.log("--replace: no existing presentation rows found for this brand.");
+  const existing = await selectPresentationForBrand(base, brandRecId, brandNameForSelect);
+
+  if (opts.pruneExceptSlotKeys?.length) {
+    const keep = new Set(opts.pruneExceptSlotKeys);
+    const toDrop = existing.filter((rec) => !keep.has(slotKeyFromRecord(rec)));
+    if (toDrop.length === 0) {
+      console.log("--prune-except-slot-keys: nothing to delete.");
     } else {
-      console.log(`--replace: deleting ${existing.length} existing row(s) in ${TABLE}…`);
+      const keys = [...new Set(toDrop.map(slotKeyFromRecord).filter(Boolean))];
+      console.log(
+        `--prune-except-slot-keys: would delete ${toDrop.length} row(s) (${keys.length} slot key(s) not in keep list).`
+      );
       if (!opts.dryRun) {
         await deleteRecords(
           base,
-          existing.map((r) => r.id)
+          toDrop.map((r) => r.id)
+        );
+        console.log(`Deleted ${toDrop.length} row(s).`);
+      }
+    }
+    if (!opts.onlyMissing && !opts.replace && opts.pruneExceptSlotKeys) {
+      return;
+    }
+  }
+
+  if (opts.replace) {
+    const freshExisting = opts.pruneExceptSlotKeys && !opts.dryRun
+      ? await selectPresentationForBrand(base, brandRecId, brandNameForSelect)
+      : existing;
+    if (freshExisting.length === 0) {
+      console.log("--replace: no existing presentation rows found for this brand.");
+    } else {
+      console.log(`--replace: deleting ${freshExisting.length} existing row(s) in ${TABLE}…`);
+      if (!opts.dryRun) {
+        await deleteRecords(
+          base,
+          freshExisting.map((r) => r.id)
         );
       }
     }
   }
 
-  await createAllRows(base, brandRecId, rows, opts.dryRun, brandNameForSelect);
+  let rowsToCreate = rows;
+  if (opts.onlyMissing) {
+    const afterPrune = opts.pruneExceptSlotKeys && !opts.dryRun
+      ? await selectPresentationForBrand(base, brandRecId, brandNameForSelect)
+      : opts.replace && !opts.dryRun
+        ? []
+        : existing;
+    const have = existingSlotKeysSet(afterPrune);
+    rowsToCreate = rows.filter((r) => !have.has(String(r.slotKey || "").trim()));
+    const skipped = rows.length - rowsToCreate.length;
+    if (skipped) {
+      console.log(`--only-missing: skipping ${skipped} row(s) — slot key already present.`);
+    }
+    if (!rowsToCreate.length) {
+      console.log("--only-missing: nothing to create.");
+      return;
+    }
+    console.log(`--only-missing: will create ${rowsToCreate.length} row(s).`);
+  }
+
+  await createAllRows(base, brandRecId, rowsToCreate, opts.dryRun, brandNameForSelect);
 }
 
 main().catch((e) => {

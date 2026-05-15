@@ -43,6 +43,10 @@ const F = {
   dealAccess: "Deal Access",
   documentAccess: "Document Access",
   country: "Based (Country)",
+  /** Partner Directory card metrics (User Management number fields) */
+  closedDeals: "Closed Deals",
+  uniqueBrandsDeals: "Unique Brands (Deals)",
+  submittedBids: "Submitted Bids",
 };
 
 // All five Region checkbox columns in Airtable (each is a Checkbox field; same config for all five)
@@ -88,6 +92,12 @@ function normalizeRegionFocus(rawList) {
   if (codes.has("GLOBAL")) return ["GLOBAL"];
   if (ALL_FIVE_REGIONS.size === codes.size && [...ALL_FIVE_REGIONS].every((r) => codes.has(r))) return ["GLOBAL"];
   return [...codes];
+}
+
+function optionalNumberFromBody(value) {
+  if (value === undefined || value === null || value === "") return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
 }
 
 /** First attachment URL from common User Management profile / headshot field names. */
@@ -151,6 +161,9 @@ function formatRecord(record) {
       return (typeof v === "string" ? v : "") || "";
     })(),
     country: fields[F.country] || "",
+    closedDeals: optionalNumberFromBody(fields[F.closedDeals]) ?? 0,
+    uniqueBrandsDeals: optionalNumberFromBody(fields[F.uniqueBrandsDeals]) ?? 0,
+    submittedBids: optionalNumberFromBody(fields[F.submittedBids]) ?? 0,
   };
 }
 
@@ -177,6 +190,13 @@ function buildFieldsFromBody(body) {
     fields[F.documentAccess] = String(body.documentAccess).trim();
   }
   if (body.country != null) fields[F.country] = String(body.country).trim();
+
+  const closedDealsNum = optionalNumberFromBody(body.closedDeals);
+  if (closedDealsNum !== null) fields[F.closedDeals] = closedDealsNum;
+  const uniqueBrandsDealsNum = optionalNumberFromBody(body.uniqueBrandsDeals);
+  if (uniqueBrandsDealsNum !== null) fields[F.uniqueBrandsDeals] = uniqueBrandsDealsNum;
+  const submittedBidsNum = optionalNumberFromBody(body.submittedBids);
+  if (submittedBidsNum !== null) fields[F.submittedBids] = submittedBidsNum;
 
   // Map Region Focus to Airtable checkbox columns (same as edit form checkmarks in Airtable)
   if (body.regionFocus != null) {
