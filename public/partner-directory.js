@@ -10,6 +10,61 @@
 const API_BASE = window.DEALALITY_API_BASE || '';
 const apiUrl = (path) => `${API_BASE}${path}`;
 
+/** Strip leading www. from website hostname (Company Website label / href). */
+function stripLeadingWwwFromWebsiteUrl(raw) {
+    const s = String(raw ?? '').trim();
+    if (!s) return '';
+
+    const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(s);
+
+    try {
+        const candidate = hasScheme ? s : `https://${s}`;
+        const u = new URL(candidate);
+        const strippedHost = u.hostname.replace(/^www\./i, '');
+        if (strippedHost === u.hostname) {
+            return s;
+        }
+        u.hostname = strippedHost;
+
+        if (!hasScheme) {
+            const hostPort = strippedHost + (u.port ? `:${u.port}` : '');
+            const rest = `${u.pathname}${u.search}${u.hash}`;
+            if (!rest || rest === '/') return hostPort;
+            return `${hostPort}${rest}`;
+        }
+
+        let href = u.href;
+        if (
+            u.pathname === '/' &&
+            !u.search &&
+            !u.hash &&
+            !s.endsWith('/')
+        ) {
+            href = href.replace(/\/$/, '');
+        }
+        return href;
+    } catch {
+        return s
+            .replace(/^(https?:\/\/)www\./i, '$1')
+            .replace(/^www\./i, '');
+    }
+}
+
+/** Full navigation URL (Brand Explorer pattern). */
+function normalizeWebsiteUrlForHref(raw) {
+    const s = String(raw ?? '').trim();
+    if (!s || s === '#') return '';
+    if (/^https?:\/\//i.test(s)) return s;
+    return `https://${s}`;
+}
+
+/** Visible label: no scheme, no trailing slash on bare origin (matches Brand Explorer cards). */
+function websiteLabelForDisplay(urlWithScheme) {
+    const u = String(urlWithScheme ?? '').trim();
+    if (!u) return '';
+    return u.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+}
+
 const CONFIG = {
     SERVER_CONFIG_PLACEHOLDER: 'SERVER_SIDE_ONLY',
     AIRTABLE_TABLE_NAME: 'Company_Profile',
@@ -347,7 +402,9 @@ class PartnerDirectory {
         const companyType = fields["Company Type"] || '';
         const userType = fields["User Type"] || '';
         const location = fields["Company HQ Country"] || '';
-        const website = fields["Company Website"] ? String(fields["Company Website"]).trim() : '';
+        const website = fields["Company Website"]
+            ? stripLeadingWwwFromWebsiteUrl(String(fields["Company Website"]).trim())
+            : '';
         const companyOverview = fields["Company Overview"] || '';
         
         // Get regions: 1) multi-select "Regions" field, 2) checkbox fields by exact/normalized name, 3) pattern match on any region checkbox
@@ -778,7 +835,9 @@ class PartnerDirectory {
         }
         
         const location = fields["Country"] || fields["Location"] || '';
-        const website = fields["Website"] || fields["Personal Website"] || '';
+        const website = stripLeadingWwwFromWebsiteUrl(
+            String(fields["Website"] || fields["Personal Website"] || '').trim()
+        );
         const closedDeals = fields["Closed Deals"] ? Number(fields["Closed Deals"]) : 0;
         const brandCount = fields["Brand Count"] ? Number(fields["Brand Count"]) : 0;
         const submittedBids = fields["Submitted Bids"] ? Number(fields["Submitted Bids"]) : 0;
@@ -2216,7 +2275,9 @@ class PartnerDirectory {
         const regionsText = regions.length > 0 ? regions.join(', ') : '';
         // Prioritize companyOverview from Airtable, fallback to description
         const description = company.companyOverview || company.description || '';
-        const website = company.website || '#';
+        const websiteRaw = String(company.website || '').trim();
+        const websiteHref = websiteRaw ? normalizeWebsiteUrlForHref(stripLeadingWwwFromWebsiteUrl(websiteRaw)) : '';
+        const websiteLabel = websiteHref ? websiteLabelForDisplay(websiteHref) : '';
         // Show HQ badge if location exists (location indicates headquarters)
         const isHQ = company.location && company.location.trim().length > 0;
         const locationText = company.location ? company.location.replace(/HQ/gi, '').trim() : '';
@@ -2253,7 +2314,9 @@ class PartnerDirectory {
             ` : ''}
             <p class="company-card__description">${description ? this.escapeHtml(description) : ''}</p>
             <div class="company-card__footer">
-                <a href="${website}" target="_blank" class="company-card__website" onclick="event.stopPropagation();">${this.escapeHtml(website)}</a>
+                ${websiteHref ? `
+                <a href="${this.escapeHtml(websiteHref)}" target="_blank" rel="noopener noreferrer" class="company-card__website" onclick="event.stopPropagation();">${this.escapeHtml(websiteLabel)}</a>
+                ` : ''}
                 <button class="company-card__more-btn" data-company-id="${company.id || ''}">More...</button>
             </div>
         `;
@@ -2517,8 +2580,9 @@ class PartnerDirectory {
         const companyName = this.escapeHtml(company.name || 'Unknown Company');
         const companyType = this.escapeHtml(this.getUserTypeDisplayLabel(company.userType || company.companyType) || '');
         const location = this.escapeHtml(company.location || '');
-        const website = company.website || '';
-        const websiteUrl = website.startsWith('http') ? website : `https://${website}`;
+        const websiteRaw = String(company.website || '').trim();
+        const websiteUrl = websiteRaw ? normalizeWebsiteUrlForHref(stripLeadingWwwFromWebsiteUrl(websiteRaw)) : '';
+        const websiteLinkText = websiteUrl ? websiteLabelForDisplay(websiteUrl) : '';
         const regions = Array.isArray(company.regions) ? company.regions.filter(r => r && r.trim()) : [];
         const regionsText = regions.length > 0 ? regions.join(', ') : '';
         
@@ -2579,11 +2643,11 @@ class PartnerDirectory {
                         <div class="company-modal-regions">${this.escapeHtml(regionsText)}</div>
                     </div>
                 ` : ''}
-                ${website || memberSinceDate ? `
+                ${websiteUrl || memberSinceDate ? `
                     <div class="company-modal-header-info-row company-modal-header-info-row-last">
-                        ${website ? `
-                            <a href="${this.escapeHtml(websiteUrl)}" target="_blank" class="company-modal-website">
-                                ${this.escapeHtml(website)}
+                        ${websiteUrl ? `
+                            <a href="${this.escapeHtml(websiteUrl)}" target="_blank" rel="noopener noreferrer" class="company-modal-website">
+                                ${this.escapeHtml(websiteLinkText)}
                                 <svg class="company-modal-website-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                     <polyline points="15 3 21 3 21 9"></polyline>

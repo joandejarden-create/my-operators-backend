@@ -1,5 +1,7 @@
 import Airtable from "airtable";
 
+import { stripLeadingWwwFromWebsiteUrl } from "./lib/strip-www-from-website-url.js";
+
 // Set PARTNER_DIRECTORY_DEBUG=true in .env to enable verbose logs (e.g. for debugging Airtable field mapping).
 const DEBUG = process.env.PARTNER_DIRECTORY_DEBUG === 'true';
 
@@ -674,8 +676,10 @@ export async function getPartners(req, res) {
             
             // Get location from "Company HQ Country" column in Airtable
             const location = fields["Company HQ Country"] || '';
-            // Get "Company Website" directly from Airtable - simple and direct
-            const website = fields["Company Website"] ? String(fields["Company Website"]).trim() : '';
+            // Get "Company Website" directly from Airtable — normalize www for display/links only
+            const website = fields["Company Website"]
+              ? stripLeadingWwwFromWebsiteUrl(String(fields["Company Website"]).trim())
+              : '';
             // Prioritize "Company Overview" field from Airtable - try multiple variations
             // Check all possible field name variations
             let companyOverview = '';
@@ -893,8 +897,10 @@ export async function getPartners(req, res) {
               const userType = companyType || fields["User Type"] || fields["userType"] || '';
               // Get location from "Company HQ Country" column in Airtable
               const location = fields["Company HQ Country"] || '';
-              // Get "Company Website" directly from Airtable - simple and direct
-              const website = fields["Company Website"] ? String(fields["Company Website"]).trim() : '';
+              // Get "Company Website" directly from Airtable — normalize www for display/links only
+              const website = fields["Company Website"]
+                ? stripLeadingWwwFromWebsiteUrl(String(fields["Company Website"]).trim())
+                : '';
               // Prioritize "Company Overview" field from Airtable - try multiple variations
               let companyOverview = '';
               const fieldKeysForOverviewFallback = Object.keys(fields);
@@ -1154,7 +1160,9 @@ function formatUserRecord(record) {
     fields["Phone Number"] ||
     fields["Phone"] ||
     "";
-  const website = fields["Website"] || fields["Company Website"] || fields["Personal Website"] || "";
+  const website = stripLeadingWwwFromWebsiteUrl(
+    String(fields["Website"] || fields["Company Website"] || fields["Personal Website"] || "").trim()
+  );
   const companyRecordId = companyInfo.companyRecordId;
 
   const profilePicture = parseAttachmentUrl(
@@ -1397,7 +1405,9 @@ export async function getCompanyById(req, res) {
     const companyType = fields[F.companyProfile.companyType] || fields["Company Type"] || '';
     const userType = fields[F.companyProfile.userType] || fields["User Type"] || '';
     const location = fields["Company HQ Country"] || '';
-    const website = fields["Company Website"] ? String(fields["Company Website"]).trim() : '';
+    const website = fields["Company Website"]
+      ? stripLeadingWwwFromWebsiteUrl(String(fields["Company Website"]).trim())
+      : '';
     const companyOverview = fields["Company Overview"] || '';
     
     // Get regions from checkbox fields

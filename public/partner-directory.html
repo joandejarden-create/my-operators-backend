@@ -36,6 +36,8 @@
           --system--blue-300: #1d88fe;
           --system--blue-200: #8fc3ff;
           --scrollbar-size: 6px;
+          /* Individual demo stats disclaimer — same on cards + modal */
+          --demo-footnote-text: rgba(255, 255, 255, 0.82);
         }
 
         * {
@@ -1362,7 +1364,7 @@
             padding: 0;
             font-size: 10px;
             line-height: 1.4;
-            color: var(--neutral--300);
+            color: var(--demo-footnote-text);
             font-weight: 400;
             text-align: right;
             word-wrap: break-word;
@@ -1532,9 +1534,9 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            padding-top: 16px;
+            flex-wrap: nowrap;
+            gap: 10px;
+            padding-top: 12px;
             border-top: 1px solid var(--neutral--600);
             margin-top: 0;
             min-height: 44px;
@@ -1542,20 +1544,20 @@
 
         .individual-card__stats-note {
             margin: 0;
-            flex: 1 1 12rem;
-            min-width: min(100%, 9rem);
-            max-width: 100%;
+            flex: 1 1 auto;
+            min-width: 0;
+            max-width: none;
             padding: 0;
-            font-size: 10px;
-            line-height: 1.38;
-            color: var(--neutral--300);
+            font-size: 9px;
+            line-height: 1.35;
+            color: var(--demo-footnote-text);
             font-weight: 400;
             text-align: left;
             overflow: hidden;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             word-break: break-word;
             overflow-wrap: anywhere;
         }

@@ -8,6 +8,8 @@
 
 import Airtable from "airtable";
 
+import { stripLeadingWwwFromWebsiteUrl } from "./lib/strip-www-from-website-url.js";
+
 const COMPANY_PROFILE_TABLE_ID = "tblItyfH6MlOnMKZ9";
 
 function getBase() {
@@ -289,7 +291,7 @@ function airtableFieldsToPrefill(fields) {
   prefill.companyName = toStr(f["Company Name"]);
   prefill.companyType =
     COMPANY_TYPE_AIRTABLE_TO_FORM[toStr(f["Company Type"])] || toStr(f["Company Type"]);
-  prefill.companyWebsite = toStr(f["Company Website"]);
+  prefill.companyWebsite = stripLeadingWwwFromWebsiteUrl(toStr(f["Company Website"]));
   prefill.numberOfEmployees =
     NUMBER_OF_EMPLOYEES_AIRTABLE_TO_FORM[toStr(f["Number of Employees"])] ||
     toStr(f["Number of Employees"]);
@@ -482,7 +484,7 @@ export function formToAirtableFields(body) {
   if (body.companyName != null && body.companyName !== "")
     fields["Company Name"] = String(body.companyName).trim();
   if (body.companyWebsite != null && body.companyWebsite !== "")
-    fields["Company Website"] = String(body.companyWebsite).trim();
+    fields["Company Website"] = stripLeadingWwwFromWebsiteUrl(String(body.companyWebsite).trim());
   if (body.companyOverview != null && body.companyOverview !== "")
     fields["Company Overview"] = String(body.companyOverview).trim();
   if (body.additionalOfficeRegions != null && body.additionalOfficeRegions !== "")
