@@ -1107,7 +1107,8 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            contain: layout paint;
+            /* layout only — paint containment clipped footers when row-height stretched grid cells */
+            contain: layout;
             will-change: transform;
         }
 
@@ -1327,10 +1328,20 @@
             font-weight: 500;
         }
 
-        /* Individual modal header — same metric cells as cards, aligned right */
-        #individualModal .company-modal-header-left {
-            min-width: 0;
+        /* Individual modal header: metrics + demo footnote */
+        #individualModal .company-modal-header-top {
+            overflow: visible;
             align-items: flex-start;
+        }
+
+        #individualModal .individual-modal-header-stats-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            flex-shrink: 0;
+            max-width: min(420px, 52%);
+            align-self: flex-start;
+            min-width: 0;
         }
 
         #individualModal .individual-modal-header-metrics.individual-card__metrics {
@@ -1338,17 +1349,36 @@
             margin-bottom: 0;
             padding: 4px 0 0;
             border-top: none;
-            width: auto;
-            max-width: min(420px, 52%);
+            width: 100%;
+            max-width: none;
             flex-shrink: 0;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 12px 16px;
-            align-self: center;
+            align-self: stretch;
+        }
+
+        #individualModal .individual-modal-header-stats-note {
+            margin: 8px 0 0;
+            padding: 0;
+            font-size: 10px;
+            line-height: 1.4;
+            color: var(--neutral--300);
+            font-weight: 400;
+            text-align: right;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            flex-shrink: 0;
+            min-height: 1.35em;
         }
 
         @media (max-width: 720px) {
             #individualModal .company-modal-header-top {
                 flex-wrap: wrap;
+            }
+
+            #individualModal .individual-modal-header-stats-wrap {
+                max-width: 100%;
+                width: 100%;
             }
 
             #individualModal .individual-modal-header-metrics.individual-card__metrics {
@@ -1357,6 +1387,10 @@
                 padding-top: 14px;
                 margin-top: 8px;
                 border-top: 1px solid var(--neutral--600);
+            }
+
+            #individualModal .individual-modal-header-stats-note {
+                text-align: center;
             }
         }
 
@@ -1495,11 +1529,35 @@
 
         .individual-card__footer {
             display: flex;
-            justify-content: flex-end;
+            flex-direction: row;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
             padding-top: 16px;
             border-top: 1px solid var(--neutral--600);
             margin-top: 0;
+            min-height: 44px;
+        }
+
+        .individual-card__stats-note {
+            margin: 0;
+            flex: 1 1 12rem;
+            min-width: min(100%, 9rem);
+            max-width: 100%;
+            padding: 0;
+            font-size: 10px;
+            line-height: 1.38;
+            color: var(--neutral--300);
+            font-weight: 400;
+            text-align: left;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .individual-card__connect-btn {
