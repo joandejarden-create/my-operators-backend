@@ -15,13 +15,65 @@
     return true;
   }
 
+  function getMemberstackDom() {
+    return global.$memberstackDom || global.memberstack || null;
+  }
+
+  function memberHasSession(member) {
+    return !!(member && member.data);
+  }
+
   function extractTokenFromMember(member) {
-    if (!member) return null;
+    if (!memberHasSession(member)) return null;
     var token =
-      (member.data && member.data.tokens && member.data.tokens.accessToken) ||
-      (member.data && member.data.token) ||
+      (member.data.tokens && member.data.tokens.accessToken) ||
+      member.data.token ||
       member.token;
     if (isValidBearerToken(token)) return String(token).trim();
+    return null;
+  }
+
+  function sleep(ms) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  /**
+   * Wait until $memberstackDom / memberstack is on window (Webflow loads scripts async).
+   * @param {number} [maxMs=20000]
+   * @returns {Promise<object|null>}
+   */
+  async function waitForMemberstackDom(maxMs) {
+    var limit = maxMs == null ? 20000 : maxMs;
+    var start = Date.now();
+    while (Date.now() - start < limit) {
+      var ms = getMemberstackDom();
+      if (ms && (typeof ms.getCurrentMember === 'function' || typeof ms.getToken === 'function')) {
+        return ms;
+      }
+      await sleep(150);
+    }
+    return null;
+  }
+
+  /**
+   * Wait until getCurrentMember() returns data (logged-in session).
+   * @param {number} [maxMs=20000]
+   * @returns {Promise<object|null>} member payload from getCurrentMember
+   */
+  async function waitForLoggedInMember(maxMs) {
+    var ms = await waitForMemberstackDom(maxMs);
+    if (!ms || typeof ms.getCurrentMember !== 'function') return null;
+    var limit = maxMs == null ? 20000 : maxMs;
+    var start = Date.now();
+    while (Date.now() - start < limit) {
+      try {
+        var member = await ms.getCurrentMember();
+        if (memberHasSession(member)) return member;
+      } catch (_) {}
+      await sleep(200);
+    }
     return null;
   }
 
@@ -30,7 +82,7 @@
    */
   async function getMemberstackJwt() {
     try {
-      var ms = global.$memberstackDom || global.memberstack;
+      var ms = getMemberstackDom();
       if (!ms) return null;
       if (typeof ms.getCurrentMember === 'function') {
         var member = await ms.getCurrentMember();
@@ -46,11 +98,28 @@
   }
 
   /**
+   * Same as getMemberstackJwt but waits for Webflow/Memberstack init after redirect.
+   * @param {number} [maxMs=20000]
+   * @returns {Promise<string|null>}
+   */
+  async function getMemberstackJwtWhenReady(maxMs) {
+    var member = await waitForLoggedInMember(maxMs);
+    if (member) {
+      var t = extractTokenFromMember(member);
+      if (t) return t;
+    }
+    return getMemberstackJwt();
+  }
+
+  /**
    * @param {Record<string, string>} [extra]
    * @returns {Promise<{ headers: Record<string, string> }|{ error: string }>}
    */
-  async function getAuthHeaders(extra) {
-    var jwt = await getMemberstackJwt();
+  async function getAuthHeaders(extra, options) {
+    var opts = options || {};
+    var jwt = opts.waitForLogin
+      ? await getMemberstackJwtWhenReady(opts.maxWaitMs)
+      : await getMemberstackJwt();
     if (!jwt) return { error: LOGIN_MSG };
     var headers = Object.assign(
       { Authorization: 'Bearer ' + jwt, Accept: 'application/json' },
@@ -98,7 +167,11 @@
 
   global.DealalityMemberstackAuth = {
     LOGIN_MSG: LOGIN_MSG,
+    getMemberstackDom: getMemberstackDom,
+    waitForMemberstackDom: waitForMemberstackDom,
+    waitForLoggedInMember: waitForLoggedInMember,
     getMemberstackJwt: getMemberstackJwt,
+    getMemberstackJwtWhenReady: getMemberstackJwtWhenReady,
     getAuthHeaders: getAuthHeaders,
     authFetch: authFetch,
     fetchMyDealsList: fetchMyDealsList,
