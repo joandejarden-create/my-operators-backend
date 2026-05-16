@@ -2427,6 +2427,15 @@
                 return '/new-deal-setup.html' + q;
             }
 
+            function navigateMyDealsPage(url) {
+                var auth = window.DealalityMemberstackAuth;
+                if (auth && typeof auth.navigateWithAuth === 'function') {
+                    auth.navigateWithAuth(url);
+                    return;
+                }
+                window.location.href = url;
+            }
+
             function ui_readinessWorkflowLabelFromStage(stage) {
                 var s = String(stage || '').trim();
                 if (s === 'Discovery') return 'Keep in Draft';
@@ -4876,8 +4885,8 @@
                             if (dealId && openMyDealsReadinessForDeal) openMyDealsReadinessForDeal(dealId);
                             return;
                         }
-                        if (action === 'view') { window.location.href = '/deal-summary.html?id=' + encodeURIComponent(dealId); }
-                        if (action === 'edit') { window.location.href = newDealSetupEditUrl(dealId); }
+                        if (action === 'view') { navigateMyDealsPage('/deal-summary.html?id=' + encodeURIComponent(dealId)); }
+                        if (action === 'edit') { navigateMyDealsPage(newDealSetupEditUrl(dealId)); }
                         if (action === 'fit-list') { window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals'; }
                         if (action === 'delete') {
                             var row = actionBtn.closest('tr');
@@ -4917,7 +4926,7 @@
                     if (!recordId || !newStatus) return;
                     (async function() {
                         try {
-                            const res = await fetch('/api/my-deals/' + encodeURIComponent(recordId), {
+                            const res = await window.DealalityMemberstackAuth.fetchMyDealsApi('/api/my-deals/' + encodeURIComponent(recordId), {
                                 method: 'PATCH',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ dealStatus: newStatus })
@@ -5001,8 +5010,8 @@
                             showSendCommunicationModal(dealId, brandName, projectName, matchScore);
                             return;
                         }
-                        if (action === 'view') { window.location.href = '/deal-summary.html?id=' + encodeURIComponent(dealId); }
-                        if (action === 'edit') { window.location.href = newDealSetupEditUrl(dealId); }
+                        if (action === 'view') { navigateMyDealsPage('/deal-summary.html?id=' + encodeURIComponent(dealId)); }
+                        if (action === 'edit') { navigateMyDealsPage(newDealSetupEditUrl(dealId)); }
                         if (action === 'fit-list') { window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals'; }
                         if (action === 'delete') {
                             var row = actionBtn.closest('tr');
@@ -5129,8 +5138,8 @@
                         handleContactedDeleteAction(actionBtn, dealId);
                         return;
                     }
-                    if (action === 'view' && dealId) window.location.href = '/deal-summary.html?id=' + encodeURIComponent(dealId);
-                    if (action === 'edit' && dealId) window.location.href = newDealSetupEditUrl(dealId);
+                    if (action === 'view' && dealId) navigateMyDealsPage('/deal-summary.html?id=' + encodeURIComponent(dealId));
+                    if (action === 'edit' && dealId) navigateMyDealsPage(newDealSetupEditUrl(dealId));
                     if (action === 'fit-list' && dealId) window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals';
                 });
             }

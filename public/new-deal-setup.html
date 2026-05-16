@@ -3088,6 +3088,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/dealality-webflow-nav.js"></script>
+    <script src="/js/dealality-memberstack-auth.js"></script>
     <script>
 (function () {
     var form = document.getElementById("dealForm");
@@ -4251,7 +4252,7 @@
         showError("");
         if (pageTitle) pageTitle.textContent = "Loading…";
         var apiUrl = "/api/my-deals/" + encodeURIComponent(dealId);
-        fetch(apiUrl)
+        window.DealalityMemberstackAuth.fetchMyDealsApi(apiUrl)
             .then(function (r) {
                 var ct = (r.headers.get("content-type") || "").toLowerCase();
                 return r.text().then(function (text) {
@@ -4488,7 +4489,7 @@
         }
         function patchDeal(body, allowFormStatusRetry, unknownFieldRetryCount) {
             unknownFieldRetryCount = Number(unknownFieldRetryCount || 0);
-            return fetch("/api/my-deals/" + encodeURIComponent(dealId), {
+            return window.DealalityMemberstackAuth.fetchMyDealsApi("/api/my-deals/" + encodeURIComponent(dealId), {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
@@ -4652,7 +4653,7 @@
         if (triggerBtn) triggerBtn.classList.add("loading");
         showLoading(true);
         setLoadingOverlayText("Creating draft deal…", "");
-        fetch("/api/my-deals", {
+        window.DealalityMemberstackAuth.fetchMyDealsApi("/api/my-deals", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ dealName: dealName })
@@ -4782,7 +4783,7 @@
         if (!dealId || !dealId.startsWith("rec")) return;
         showDrStatus("", "");
         Promise.all([
-            fetch("/api/my-deals/" + encodeURIComponent(dealId)).then(function(r) { return r.json(); }),
+            window.DealalityMemberstackAuth.fetchMyDealsApi("/api/my-deals/" + encodeURIComponent(dealId)).then(function(r) { return r.json(); }),
             fetch("/api/brand-deal-requests?dealIds=" + encodeURIComponent(dealId)).then(function(r) { return r.json(); }),
             fetch("/api/deal-room-documents?dealId=" + encodeURIComponent(dealId)).then(function(r) { return r.json(); })
         ]).then(function(results) {
@@ -4966,7 +4967,7 @@
                 uploadBtn.disabled = true;
                 var formData = new FormData();
                 for (var i = 0; i < files.length; i++) formData.append("files", files[i]);
-                fetch("/api/my-deals/" + encodeURIComponent(dealId) + "/attachments", {
+                window.DealalityMemberstackAuth.fetchMyDealsApi("/api/my-deals/" + encodeURIComponent(dealId) + "/attachments", {
                     method: "POST",
                     body: formData
                 })

@@ -757,6 +757,7 @@
     <div id="brochureLoading" class="brochure-loading">Loading deal…</div>
     <div id="brochureError" class="brochure-error" style="display: none;"></div>
 
+    <script src="/js/dealality-memberstack-auth.js"></script>
     <script>
         (function() {
             function getParam(name) {
@@ -1167,13 +1168,22 @@
                 document.getElementById('brochureError').textContent = 'Invalid deal ID. Use ?id=demo for sample or open from My Deals (eye icon).';
                 return;
             }
-            fetch('/api/my-deals/' + encodeURIComponent(dealId))
-                .then(function(res) { return res.json(); })
-                .then(function(data) {
+            (async function loadDealBrief() {
+                var auth = window.DealalityMemberstackAuth;
+                if (!auth || typeof auth.fetchMyDealsApi !== 'function') {
                     document.getElementById('brochureLoading').style.display = 'none';
-                    if (!data.success || !data.deal) {
+                    document.getElementById('brochureError').style.display = 'block';
+                    document.getElementById('brochureError').textContent = 'Auth helper failed to load. Hard refresh and try again.';
+                    return;
+                }
+                try {
+                    var res = await auth.fetchMyDealsApi('/api/my-deals/' + encodeURIComponent(dealId), { method: 'GET' });
+                    var data = await res.json();
+                    document.getElementById('brochureLoading').style.display = 'none';
+                    if (!res.ok || !data.success || !data.deal) {
                         document.getElementById('brochureError').style.display = 'block';
-                        document.getElementById('brochureError').textContent = data.error || 'Deal not found.';
+                        document.getElementById('brochureError').textContent =
+                            (data && (data.message || data.error)) || 'Deal not found.';
                         return;
                     }
                     document.getElementById('brochureContent').style.display = 'block';
@@ -1218,12 +1228,12 @@
                         });
                     }
                     render(fields, data.normalized || {});
-                })
-                .catch(function(err) {
+                } catch (err) {
                     document.getElementById('brochureLoading').style.display = 'none';
                     document.getElementById('brochureError').style.display = 'block';
                     document.getElementById('brochureError').textContent = 'Failed to load deal: ' + (err.message || 'Network error');
-                });
+                }
+            })();
         })();
     </script>
     <script src="/dealality-webflow-nav.js"></script>

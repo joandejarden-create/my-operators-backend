@@ -486,6 +486,43 @@
     return authFetch(url, { method: 'GET', maxWaitMs: 20000 });
   }
 
+  /**
+   * Authenticated fetch for /api/my-deals paths (relative or absolute).
+   * @param {string} path e.g. "/api/my-deals/recXXX"
+   */
+  async function fetchMyDealsApi(path, options) {
+    options = options || {};
+    var url = path;
+    if (path.indexOf('http') !== 0) {
+      var origin = '';
+      try {
+        origin = global.location.origin || '';
+      } catch (_) {}
+      url = origin + (path.charAt(0) === '/' ? path : '/' + path);
+    }
+    return authFetch(url, Object.assign({ maxWaitMs: 20000 }, options));
+  }
+
+  /**
+   * In-app navigation (deal-summary, new-deal-setup) — carries msToken for embed reloads.
+   * @param {string} relativeUrl
+   */
+  async function navigateWithAuth(relativeUrl) {
+    var jwt = await getMemberstackJwtWhenReady(15000);
+    var target = relativeUrl;
+    try {
+      var u = new URL(relativeUrl, global.location.href);
+      if (jwt) u.searchParams.set('msToken', jwt);
+      target = u.pathname + u.search + u.hash;
+    } catch (_) {
+      if (jwt && relativeUrl.indexOf('msToken=') === -1) {
+        target =
+          relativeUrl + (relativeUrl.indexOf('?') >= 0 ? '&' : '?') + 'msToken=' + encodeURIComponent(jwt);
+      }
+    }
+    global.location.href = target;
+  }
+
   global.DealalityMemberstackAuth = {
     LOGIN_MSG: LOGIN_MSG,
     MSG_EMBED_PARENT: MSG_EMBED_PARENT,
@@ -501,6 +538,8 @@
     getAuthHeaders: getAuthHeaders,
     authFetch: authFetch,
     fetchMyDealsList: fetchMyDealsList,
+    fetchMyDealsApi: fetchMyDealsApi,
+    navigateWithAuth: navigateWithAuth,
     notifyLoginRequired: notifyLoginRequired,
     inspectMemberstackAuth: inspectMemberstackAuth,
   };
