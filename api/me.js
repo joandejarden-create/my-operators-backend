@@ -230,8 +230,13 @@ async function getMe(req, res) {
     warnings.push("user_matched_by_email");
     try {
       const syncFields = { [INTAKE_USERS_UNIQUE_WEBFLOW_ID]: memberstackId };
-      if (MEMBERSTACK_MATCH_FIELDS.includes("slug")) {
-        syncFields.slug = memberstackId;
+      const slugFieldId = process.env.AIRTABLE_USERS_SLUG_FIELD || "fldEgbHu5MvfyrxgE";
+      if (
+        MEMBERSTACK_MATCH_FIELDS.includes("slug") ||
+        MEMBERSTACK_MATCH_FIELDS.includes("Slug") ||
+        MEMBERSTACK_MATCH_FIELDS.includes(slugFieldId)
+      ) {
+        syncFields[slugFieldId] = memberstackId;
       }
       await base(USERS_TABLE).update(rec.id, syncFields, { typecast: true });
       warnings.push("memberstack_id_synced_to_users_row");

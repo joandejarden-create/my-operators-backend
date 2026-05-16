@@ -6,7 +6,8 @@ Users row **`rec32VycDpnAp3OmP`** (Joan Dejarden, Hotel Owner) must have:
 
 - **Email:** `dealalitydemo@dealality.com`
 - **Platform Role / User Type:** Owner (e.g. `Hotel Owner`)
-- After first successful `/api/me`: **Unique Webflow ID** and **slug** = `mem_sb_…` (auto-sync from commit `0c53bc7`)
+- **Unique Webflow ID** (`flddTfp7oLdcPwBIC`) and **Slug** (`fldEgbHu5MvfyrxgE`) must equal the **same** `mem_sb_…` as the logged-in Memberstack session (not an old id).
+- Railway env: `AIRTABLE_ME_USERS_MEMBERSTACK_FIELDS=flddTfp7oLdcPwBIC,fldEgbHu5MvfyrxgE` (do **not** use lowercase `slug` for writes — Airtable field name is **Slug**).
 
 Verify locally:
 

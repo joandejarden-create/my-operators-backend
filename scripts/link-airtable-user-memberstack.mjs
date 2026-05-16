@@ -16,6 +16,9 @@ const USERS_TABLE = process.env.AIRTABLE_INTAKE_USERS_TABLE || "tbl6shiyz2wdUqE5
 const EMAIL_FIELD = process.env.AIRTABLE_INTAKE_USERS_EMAIL_FIELD || "fldBl7IXEscwkMhnZ";
 const MS_ID_FIELD =
   process.env.AIRTABLE_INTAKE_USERS_UNIQUE_WEBFLOW_ID_FIELD || "flddTfp7oLdcPwBIC";
+/** Airtable column is "Slug" (fldEgbHu5MvfyrxgE) — not lowercase "slug". */
+const SLUG_FIELD =
+  process.env.AIRTABLE_USERS_SLUG_FIELD || "fldEgbHu5MvfyrxgE";
 
 function escapeFormula(value) {
   return String(value ?? "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
@@ -73,7 +76,7 @@ async function main() {
 
   const patch = {
     [MS_ID_FIELD]: msId,
-    slug: msId,
+    [SLUG_FIELD]: msId,
   };
 
   if (args.dryRun) {
