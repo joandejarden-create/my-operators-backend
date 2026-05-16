@@ -124,6 +124,28 @@ function buildUserLookupFormula(memberstackId) {
   return `OR(${parts.join(",")})`;
 }
 
+function pickEmailFromPayload(payload) {
+  if (!payload || typeof payload !== "object") return null;
+  const candidates = [
+    payload.email,
+    payload.auth?.email,
+    payload.member?.email,
+    payload.data?.email,
+    payload.data?.auth?.email,
+  ];
+  for (const c of candidates) {
+    const s = c != null ? String(c).trim().toLowerCase() : "";
+    if (s && s.includes("@")) return s;
+  }
+  return null;
+}
+
+async function findUserByEmail(base, email) {
+  const lit = airtableStringLiteral(email.toLowerCase());
+  const formula = `LOWER({${INTAKE_USERS_EMAIL}}) = '${lit}'`;
+  return base(USERS_TABLE).select({ filterByFormula: formula, maxRecords: 1 }).firstPage();
+}
+
 async function getMe(req, res) {
   if (req.method !== "GET" && req.method !== "POST") {
     return res.status(405).json({ success: false, error: "method_not_allowed" });
@@ -162,6 +184,8 @@ async function getMe(req, res) {
     });
   }
 
+  const emailFromToken = pickEmailFromPayload(payload);
+
   const apiKey = process.env.AIRTABLE_API_KEY;
   const baseId = process.env.AIRTABLE_BASE_ID;
   if (!apiKey || !baseId) {
@@ -172,8 +196,13 @@ async function getMe(req, res) {
   const formula = buildUserLookupFormula(memberstackId);
 
   let userRows;
+  let matchedBy = "memberstack_id";
   try {
     userRows = await base(USERS_TABLE).select({ filterByFormula: formula, maxRecords: 1 }).firstPage();
+    if (!userRows.length && emailFromToken) {
+      userRows = await findUserByEmail(base, emailFromToken);
+      if (userRows.length) matchedBy = "email";
+    }
   } catch (err) {
     console.error("[api/me] Airtable user lookup error:", err.message);
     return res.status(500).json({
@@ -189,13 +218,28 @@ async function getMe(req, res) {
       error: "user_not_found",
       message: "No Users row matched this Memberstack id for the configured fields.",
       memberstackId,
-      hint: "Confirm Users row has Memberstack id in the configured match fields (see AIRTABLE_ME_USERS_MEMBERSTACK_FIELDS).",
+      email: emailFromToken || null,
+      hint: "Confirm Users row has Memberstack id in slug / Unique Webflow ID, or email matches the signed-in Memberstack account.",
     });
   }
 
   const rec = userRows[0];
   const fields = rec.fields || {};
   const warnings = [];
+  if (matchedBy === "email") {
+    warnings.push("user_matched_by_email");
+    try {
+      const syncFields = { [INTAKE_USERS_UNIQUE_WEBFLOW_ID]: memberstackId };
+      if (MEMBERSTACK_MATCH_FIELDS.includes("slug")) {
+        syncFields.slug = memberstackId;
+      }
+      await base(USERS_TABLE).update(rec.id, syncFields, { typecast: true });
+      warnings.push("memberstack_id_synced_to_users_row");
+    } catch (syncErr) {
+      console.warn("[api/me] could not sync Memberstack id to Users row:", syncErr.message);
+      warnings.push("memberstack_id_sync_failed");
+    }
+  }
 
   const email = cellToStringList(fields[INTAKE_USERS_EMAIL])[0] || null;
   const firstName = cellToStringList(fields[INTAKE_USERS_FIRST_NAME])[0] || null;
@@ -253,6 +297,7 @@ async function getMe(req, res) {
       memberstackMatchFields: MEMBERSTACK_MATCH_FIELDS,
       brandBasicsLinkField: BRAND_LINK_FIELD,
       regionsField: REGIONS_FIELD,
+      matchedBy,
       warnings,
     },
   });
