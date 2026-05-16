@@ -23,6 +23,40 @@
     }
   }
 
+  function hasEmbedParam() {
+    try {
+      return /(?:^|[?&])embed=1(?:&|$)/.test(global.location.search || "");
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /** Railway page in iframe on Webflow (dealality.com) — parent does not handle dealality-navigate. */
+  function isRailwayEmbedInExternalParent() {
+    if (global.top === global.self) return false;
+    if (embeddedInDealalityAppShell(global.parent)) return false;
+    return hasEmbedParam();
+  }
+
+  function getMyDealsEmbedIframeHref(queryString) {
+    var parts = ["embed=1"];
+    if (hasAppShellEmbedParam()) parts.push("appShell=1");
+    if (queryString) parts.push(String(queryString).replace(/^\?/, ""));
+    return "/my-deals.html?" + parts.join("&");
+  }
+
+  function navigateWithinEmbedIframeToMyDeals(queryString) {
+    var path = getMyDealsEmbedIframeHref(queryString);
+    if (
+      global.DealalityMemberstackAuth &&
+      typeof global.DealalityMemberstackAuth.navigateWithAuth === "function"
+    ) {
+      global.DealalityMemberstackAuth.navigateWithAuth(path);
+      return;
+    }
+    global.location.href = path;
+  }
+
   function embeddedInDealalityAppShell(parentWin) {
     if (hasAppShellEmbedParam() && global.top !== global.self) return true;
     if (!parentWin || parentWin === global) return false;
@@ -144,6 +178,11 @@
         }
       } catch (eEmb) {}
 
+      if (isRailwayEmbedInExternalParent()) {
+        navigateWithinEmbedIframeToMyDeals(qs);
+        return;
+      }
+
       try {
         var navPath = mergeHrefWithQuery(getDealalityMyDealsNavigatePathForParentFrame(), qs);
         postDealalityNavigateToParent(navPath);
@@ -218,6 +257,10 @@
     pathnameLooksHotelOwner: pathnameLooksHotelOwner,
     pathnameLooksAppShell: pathnameLooksAppShell,
     isHotelOwnerWebContext: isHotelOwnerWebContext,
+    hasEmbedParam: hasEmbedParam,
+    isRailwayEmbedInExternalParent: isRailwayEmbedInExternalParent,
+    getMyDealsEmbedIframeHref: getMyDealsEmbedIframeHref,
+    navigateWithinEmbedIframeToMyDeals: navigateWithinEmbedIframeToMyDeals,
     getDealalityMyDealsNavigatePathForParentFrame: getDealalityMyDealsNavigatePathForParentFrame,
     getMyDealsTopLevelHref: getMyDealsTopLevelHref,
     mergeMyDealsHrefWithQuery: mergeMyDealsHrefWithQuery,

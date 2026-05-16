@@ -1308,21 +1308,36 @@
                 a.setAttribute("href", "/app#/my-deals");
             }
             a.setAttribute("target", "_top");
+        } else if (
+            window.DealalityWebflowNav &&
+            typeof window.DealalityWebflowNav.isRailwayEmbedInExternalParent === "function" &&
+            window.DealalityWebflowNav.isRailwayEmbedInExternalParent()
+        ) {
+            a.setAttribute("href", window.DealalityWebflowNav.getMyDealsEmbedIframeHref());
         } else if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
             a.setAttribute("href", window.DealalityWebflowNav.getMyDealsTopLevelHref());
         }
         a.addEventListener(
             "click",
             function (e) {
-                if (!isHubIframeForMyDeals()) {
-                    if (!window.DealalityWebflowNav || typeof window.DealalityWebflowNav.navigateToMyDealsList !== "function") return;
+                if (isHubIframeForMyDeals()) {
                     e.preventDefault();
-                    window.DealalityWebflowNav.navigateToMyDealsList({});
+                    e.stopPropagation();
+                    goAppShellMyDeals();
                     return;
                 }
+                if (
+                    window.DealalityWebflowNav &&
+                    typeof window.DealalityWebflowNav.isRailwayEmbedInExternalParent === "function" &&
+                    window.DealalityWebflowNav.isRailwayEmbedInExternalParent()
+                ) {
+                    e.preventDefault();
+                    window.DealalityWebflowNav.navigateWithinEmbedIframeToMyDeals();
+                    return;
+                }
+                if (!window.DealalityWebflowNav || typeof window.DealalityWebflowNav.navigateToMyDealsList !== "function") return;
                 e.preventDefault();
-                e.stopPropagation();
-                goAppShellMyDeals();
+                window.DealalityWebflowNav.navigateToMyDealsList({});
             },
             true
         );

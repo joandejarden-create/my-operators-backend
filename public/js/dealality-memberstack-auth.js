@@ -513,6 +513,15 @@
     try {
       var u = new URL(relativeUrl, global.location.href);
       if (jwt) u.searchParams.set('msToken', jwt);
+      try {
+        var cur = new URL(global.location.href);
+        if (cur.searchParams.get('embed') === '1' && !u.searchParams.has('embed')) {
+          u.searchParams.set('embed', '1');
+        }
+        if (cur.searchParams.get('appShell') === '1' && !u.searchParams.has('appShell')) {
+          u.searchParams.set('appShell', '1');
+        }
+      } catch (_) {}
       target = u.pathname + u.search + u.hash;
     } catch (_) {
       if (jwt && relativeUrl.indexOf('msToken=') === -1) {
