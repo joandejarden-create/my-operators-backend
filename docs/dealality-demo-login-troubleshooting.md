@@ -57,6 +57,23 @@ Replace with production Railway URL when testing production.
 })();
 ```
 
+## “No brands assigned” (blue Information toast)
+
+`/api/me` returns **200** but `permissions.allowedBrandNames` is empty. That is **normal for Hotel Owner** demo accounts (no Brand Basics link on the Users row).
+
+Webflow should **not** show “No brands assigned” when `dealality.isOwner === true` (included in `/api/me` as of role payload). Owners use **My Deals**, not brand allow-lists.
+
+## JWT in the browser console
+
+`getCurrentMember().data.tokens.accessToken` is often **empty** on Memberstack DOM v2. Use:
+
+```javascript
+const ms = window.$memberstackDom || window.memberstack;
+const token = await ms.getToken(); // or await ms.getMemberCookie()
+```
+
+Or use `DealalityMemberstackAuth.getMemberstackJwt()`.
+
 ## Toast: “Your account isn't set up in our system yet”
 
 Shown when **`GET /api/me`** returns **`user_not_found`** (404) or **`user_not_found`** (403 on `/api/auth/me`). After Airtable email is fixed and Memberstack session exists, `/api/me` should return **200**.

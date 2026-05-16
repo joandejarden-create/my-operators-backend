@@ -23,13 +23,52 @@
     return !!(member && member.data);
   }
 
+  function unwrapTokenValue(raw) {
+    if (raw == null) return null;
+    if (typeof raw === 'string') {
+      return isValidBearerToken(raw) ? raw.trim() : null;
+    }
+    if (typeof raw === 'object') {
+      if (typeof raw.token === 'string' && isValidBearerToken(raw.token)) return raw.token.trim();
+      if (typeof raw.accessToken === 'string' && isValidBearerToken(raw.accessToken)) {
+        return raw.accessToken.trim();
+      }
+      if (raw.data != null) return unwrapTokenValue(raw.data);
+    }
+    return null;
+  }
+
   function extractTokenFromMember(member) {
     if (!memberHasSession(member)) return null;
-    var token =
-      (member.data.tokens && member.data.tokens.accessToken) ||
-      member.data.token ||
-      member.token;
-    if (isValidBearerToken(token)) return String(token).trim();
+    var candidates = [
+      member.data.tokens && member.data.tokens.accessToken,
+      member.data.tokens && member.data.tokens.access_token,
+      member.data.token,
+      member.data.accessToken,
+      member.token,
+    ];
+    for (var i = 0; i < candidates.length; i++) {
+      var t = unwrapTokenValue(candidates[i]);
+      if (t) return t;
+    }
+    return null;
+  }
+
+  async function tokenFromMemberstackDom(ms) {
+    if (!ms) return null;
+    if (typeof ms.getToken === 'function') {
+      var tok = unwrapTokenValue(await ms.getToken());
+      if (tok) return tok;
+    }
+    if (typeof ms.getMemberCookie === 'function') {
+      var cookie = unwrapTokenValue(await ms.getMemberCookie());
+      if (cookie) return cookie;
+    }
+    if (typeof ms.getCurrentMember === 'function') {
+      var member = await ms.getCurrentMember();
+      var fromMember = extractTokenFromMember(member);
+      if (fromMember) return fromMember;
+    }
     return null;
   }
 
@@ -82,17 +121,7 @@
    */
   async function getMemberstackJwt() {
     try {
-      var ms = getMemberstackDom();
-      if (!ms) return null;
-      if (typeof ms.getCurrentMember === 'function') {
-        var member = await ms.getCurrentMember();
-        var fromMember = extractTokenFromMember(member);
-        if (fromMember) return fromMember;
-      }
-      if (typeof ms.getToken === 'function') {
-        var tok = await ms.getToken();
-        if (isValidBearerToken(tok)) return String(tok).trim();
-      }
+      return await tokenFromMemberstackDom(getMemberstackDom());
     } catch (_) {}
     return null;
   }

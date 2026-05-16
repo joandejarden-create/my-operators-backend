@@ -23,6 +23,7 @@ import {
   INTAKE_USERS_LAST_NAME,
   INTAKE_USERS_UNIQUE_WEBFLOW_ID,
 } from "./schemas/intake-deal-fields.js";
+import { roleInfoFromUserFields } from "../lib/dealality/resolve-user.js";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 const BRAND_NAME_FIELD = process.env.AIRTABLE_BRAND_NAME_FIELD || "Brand Name";
@@ -249,6 +250,7 @@ async function getMe(req, res) {
   const email = cellToStringList(fields[INTAKE_USERS_EMAIL])[0] || null;
   const firstName = cellToStringList(fields[INTAKE_USERS_FIRST_NAME])[0] || null;
   const lastName = cellToStringList(fields[INTAKE_USERS_LAST_NAME])[0] || null;
+  const dealalityRole = roleInfoFromUserFields(fields);
 
   const brandLinks = fields[BRAND_LINK_FIELD];
   const linkedBrandIds = Array.isArray(brandLinks) ? brandLinks.filter(Boolean) : [];
@@ -296,6 +298,14 @@ async function getMe(req, res) {
       allowedBrandNames,
       allowedBrandRecordIds,
       allowedRegions,
+    },
+    dealality: {
+      role: dealalityRole.role,
+      roleRaw: dealalityRole.roleRaw,
+      isOwner: dealalityRole.isOwner,
+      isBrand: dealalityRole.isBrand,
+      isOperator: dealalityRole.isOperator,
+      isAdmin: dealalityRole.isAdmin,
     },
     meta: {
       usersTable: USERS_TABLE,
