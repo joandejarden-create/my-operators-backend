@@ -65,14 +65,30 @@ Webflow should **not** show “No brands assigned” when `dealality.isOwner ===
 
 ## JWT in the browser console
 
-`getCurrentMember().data.tokens.accessToken` is often **empty** on Memberstack DOM v2. Use:
+Webflow may load **Memberstack v1** (`v1.js`). On that build, **`getToken` is not a function** on `$memberstackDom`.
+
+Use the shared helper (scans clients, member object, cookies, storage):
 
 ```javascript
-const ms = window.$memberstackDom || window.memberstack;
-const token = await ms.getToken(); // or await ms.getMemberCookie()
+await DealalityMemberstackAuth.inspectMemberstackAuth();
+// → { hasJwt: true/false, apis: [...], jwtPreview: 'eyJ…' }
+
+const token = await DealalityMemberstackAuth.getMemberstackJwt();
 ```
 
-Or use `DealalityMemberstackAuth.getMemberstackJwt()`.
+If `hasJwt` is false but `/api/me` still returns 200 in `loadUserContext`, your Webflow script is obtaining the JWT another way — search `dashboard` custom code for `Authorization` / `Bearer` / `eyJ` and reuse that same call for My Deals.
+
+Do **not** use `mem_sb_…` as Bearer (API returns 401).
+
+### Hide “No brands assigned” for owners
+
+After `/api/me` 200, check:
+
+```javascript
+if (userContext.dealality && userContext.dealality.isOwner) {
+  // skip brand-assignment toast
+}
+```
 
 ## Toast: “Your account isn't set up in our system yet”
 

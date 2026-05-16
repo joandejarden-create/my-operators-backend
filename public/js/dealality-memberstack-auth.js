@@ -15,8 +15,104 @@
     return true;
   }
 
+  function getMemberstackClients() {
+    var list = [];
+    var seen = new Set();
+    function add(ms) {
+      if (!ms || typeof ms !== 'object' || seen.has(ms)) return;
+      seen.add(ms);
+      list.push(ms);
+    }
+    add(global.$memberstackDom);
+    add(global.memberstack);
+    add(global.memberstackDom);
+    if (global.MemberStack && typeof global.MemberStack === 'object') add(global.MemberStack);
+    if (global.memberStack && typeof global.memberStack === 'object') add(global.memberStack);
+    return list;
+  }
+
   function getMemberstackDom() {
-    return global.$memberstackDom || global.memberstack || null;
+    var clients = getMemberstackClients();
+    return clients.length ? clients[0] : null;
+  }
+
+  function deepFindJwt(value, depth) {
+    if (depth > 6 || value == null) return null;
+    if (typeof value === 'string') {
+      var s = value.trim();
+      if (s.indexOf('eyJ') === 0 && isValidBearerToken(s)) return s;
+      try {
+        var parsed = JSON.parse(s);
+        return deepFindJwt(parsed, depth + 1);
+      } catch (_) {}
+      return null;
+    }
+    if (Array.isArray(value)) {
+      for (var i = 0; i < value.length; i++) {
+        var found = deepFindJwt(value[i], depth + 1);
+        if (found) return found;
+      }
+      return null;
+    }
+    if (typeof value === 'object') {
+      var keys = Object.keys(value);
+      for (var k = 0; k < keys.length; k++) {
+        var f = deepFindJwt(value[keys[k]], depth + 1);
+        if (f) return f;
+      }
+    }
+    return null;
+  }
+
+  function jwtFromBrowserStorage() {
+    try {
+      if (global.document && global.document.cookie) {
+        var chunks = global.document.cookie.split(';');
+        for (var c = 0; c < chunks.length; c++) {
+          var part = chunks[c].trim();
+          var eq = part.indexOf('=');
+          var val = eq >= 0 ? part.slice(eq + 1) : part;
+          try {
+            val = decodeURIComponent(val);
+          } catch (_) {}
+          var fromCookie = deepFindJwt(val, 0);
+          if (fromCookie) return fromCookie;
+        }
+      }
+    } catch (_) {}
+    try {
+      if (global.localStorage) {
+        for (var i = 0; i < global.localStorage.length; i++) {
+          var key = global.localStorage.key(i);
+          if (!key || !/member|memberstack|ms[-_]/i.test(key)) continue;
+          var raw = global.localStorage.getItem(key);
+          var fromLs = deepFindJwt(raw, 0);
+          if (fromLs) return fromLs;
+        }
+      }
+    } catch (_) {}
+    try {
+      if (global.sessionStorage) {
+        for (var j = 0; j < global.sessionStorage.length; j++) {
+          var skey = global.sessionStorage.key(j);
+          if (!skey || !/member|memberstack|ms[-_]/i.test(skey)) continue;
+          var sraw = global.sessionStorage.getItem(skey);
+          var fromSs = deepFindJwt(sraw, 0);
+          if (fromSs) return fromSs;
+        }
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  function callMaybePromise(fn) {
+    try {
+      var out = fn();
+      if (out && typeof out.then === 'function') return out;
+      return Promise.resolve(out);
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   function memberHasSession(member) {
@@ -56,20 +152,43 @@
 
   async function tokenFromMemberstackDom(ms) {
     if (!ms) return null;
-    if (typeof ms.getToken === 'function') {
-      var tok = unwrapTokenValue(await ms.getToken());
-      if (tok) return tok;
-    }
-    if (typeof ms.getMemberCookie === 'function') {
-      var cookie = unwrapTokenValue(await ms.getMemberCookie());
-      if (cookie) return cookie;
+    var methodNames = [
+      'getToken',
+      'getMemberCookie',
+      'getIdToken',
+      'getAuthToken',
+      'getAccessToken',
+    ];
+    for (var m = 0; m < methodNames.length; m++) {
+      var name = methodNames[m];
+      if (typeof ms[name] !== 'function') continue;
+      try {
+        var raw = await callMaybePromise(function () {
+          return ms[name]();
+        });
+        var tok = unwrapTokenValue(raw);
+        if (tok) return tok;
+      } catch (_) {}
     }
     if (typeof ms.getCurrentMember === 'function') {
-      var member = await ms.getCurrentMember();
-      var fromMember = extractTokenFromMember(member);
-      if (fromMember) return fromMember;
+      try {
+        var member = await ms.getCurrentMember();
+        var fromMember = extractTokenFromMember(member);
+        if (fromMember) return fromMember;
+        var deep = deepFindJwt(member, 0);
+        if (deep) return deep;
+      } catch (_) {}
     }
     return null;
+  }
+
+  async function getMemberstackJwtFromAnyClient() {
+    var clients = getMemberstackClients();
+    for (var i = 0; i < clients.length; i++) {
+      var t = await tokenFromMemberstackDom(clients[i]);
+      if (t) return t;
+    }
+    return jwtFromBrowserStorage();
   }
 
   function sleep(ms) {
@@ -88,7 +207,12 @@
     var start = Date.now();
     while (Date.now() - start < limit) {
       var ms = getMemberstackDom();
-      if (ms && (typeof ms.getCurrentMember === 'function' || typeof ms.getToken === 'function')) {
+      if (
+        ms &&
+        (typeof ms.getCurrentMember === 'function' ||
+          typeof ms.getToken === 'function' ||
+          typeof ms.getMemberCookie === 'function')
+      ) {
         return ms;
       }
       await sleep(150);
@@ -121,9 +245,38 @@
    */
   async function getMemberstackJwt() {
     try {
-      return await tokenFromMemberstackDom(getMemberstackDom());
+      return await getMemberstackJwtFromAnyClient();
     } catch (_) {}
     return null;
+  }
+
+  /**
+   * Debug helper (safe): which Memberstack APIs exist; whether a JWT was found (not the token itself).
+   */
+  async function inspectMemberstackAuth() {
+    var clients = getMemberstackClients();
+    var apis = [];
+    clients.forEach(function (ms, idx) {
+      var names = [];
+      [
+        'getToken',
+        'getMemberCookie',
+        'getCurrentMember',
+        'getIdToken',
+        'openModal',
+      ].forEach(function (n) {
+        if (typeof ms[n] === 'function') names.push(n);
+      });
+      apis.push({ clientIndex: idx, methods: names });
+    });
+    var jwt = await getMemberstackJwtFromAnyClient();
+    return {
+      clientCount: clients.length,
+      apis: apis,
+      hasJwt: !!jwt,
+      jwtPreview: jwt ? jwt.slice(0, 12) + '…' : null,
+      storageJwt: !!jwtFromBrowserStorage(),
+    };
   }
 
   /**
@@ -197,6 +350,7 @@
   global.DealalityMemberstackAuth = {
     LOGIN_MSG: LOGIN_MSG,
     getMemberstackDom: getMemberstackDom,
+    getMemberstackClients: getMemberstackClients,
     waitForMemberstackDom: waitForMemberstackDom,
     waitForLoggedInMember: waitForLoggedInMember,
     getMemberstackJwt: getMemberstackJwt,
@@ -205,5 +359,6 @@
     authFetch: authFetch,
     fetchMyDealsList: fetchMyDealsList,
     notifyLoginRequired: notifyLoginRequired,
+    inspectMemberstackAuth: inspectMemberstackAuth,
   };
 })(typeof window !== 'undefined' ? window : globalThis);
