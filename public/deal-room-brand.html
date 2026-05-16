@@ -330,6 +330,7 @@
     </div>
   </div>
 
+  <script src="/js/dealality-memberstack-auth.js"></script>
   <script>
     (function () {
       var STORAGE_BRAND = "dealRoomBrandContext";
@@ -542,7 +543,7 @@
         uniq.forEach(function (id) {
           uniqSet[id] = true;
         });
-        fetch("/api/my-deals?view=core")
+        window.DealalityMemberstackAuth.fetchMyDealsList("/api/my-deals?view=core")
           .then(function (r) {
             return r.json().then(function (j) {
               return { ok: r.ok, j: j };

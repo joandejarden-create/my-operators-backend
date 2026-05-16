@@ -119,6 +119,11 @@ import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
 import { getMe } from "./api/me.js";
+import { getAuthMe } from "./api/auth-me.js";
+import { memberstackAuth } from "./middleware/memberstackAuth.js";
+import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
+import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
+import { requireDealRecordAccess } from "./middleware/requireDealRecordAccess.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -339,6 +344,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/api/me", getMe);
 app.post("/api/me", getMe);
 
+// Memberstack auth + Dealality user (MVP)
+app.get("/api/auth/me", memberstackAuth, requireDealalityUser, getAuthMe);
+
 app.post("/api/intake/third-party-operator", handleThirdPartyOperatorIntake);
 app.post("/api/third-party-operators/submit", handleThirdPartyOperatorIntake);
 app.get("/api/intake/third-party-operator/mapping-report", getThirdPartyOperatorMappingReport);
@@ -354,8 +362,10 @@ app.get("/api/third-party-operators-new", listThirdPartyOperators);
 app.patch("/api/intake/third-party-operators/:recordId/status", updateThirdPartyOperatorStatus);
 
 // My Deals API (more specific routes first so /outreach-default and /outreach-setup are not treated as recordId)
-app.get("/api/my-deals", getMyDeals);
-app.post("/api/my-deals", createDeal);
+const myDealsAuth = [memberstackAuth, requireDealalityUser, requireMyDealsAccess];
+const myDealsDealAuth = [...myDealsAuth, requireDealRecordAccess];
+app.get("/api/my-deals", ...myDealsAuth, getMyDeals);
+app.post("/api/my-deals", ...myDealsAuth, createDeal);
 app.get("/api/my-deals/outreach-default", getOutreachDefault);
 app.patch("/api/my-deals/outreach-default", updateOutreachDefault);
 app.get("/api/my-deals/:recordId/outreach-setup", getOutreachSetup);
@@ -363,11 +373,11 @@ app.patch("/api/my-deals/:recordId/outreach-setup", updateOutreachSetup);
 app.delete("/api/my-deals/:recordId/outreach-setup", deleteOutreachSetup);
 app.get("/api/franchise-application/:dealId", getFranchiseApplication);
 app.patch("/api/franchise-application/:dealId", updateFranchiseApplication);
-app.get("/api/my-deals/:recordId", getDealById);
+app.get("/api/my-deals/:recordId", ...myDealsDealAuth, getDealById);
 app.get("/api/my-deals/:recordId/alternative-brands", getAlternativeBrands);
 app.get("/api/my-deals/:recordId/match-score-breakdown", getMatchScoreBreakdown);
 app.get("/api/my-deals/:recordId/operator-match-score-breakdown", getOperatorMatchScoreBreakdown);
-app.patch("/api/my-deals/:recordId", updateMyDealById);
+app.patch("/api/my-deals/:recordId", ...myDealsDealAuth, updateMyDealById);
 app.post("/api/my-deals/:recordId/add-recommended-brand", addRecommendedBrand);
 app.post("/api/my-deals/:recordId/refresh-brand-cache", refreshDealBrandCache);
 // Deal Readiness Review (deterministic + optional Airtable save via env field names)

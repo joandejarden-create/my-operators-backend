@@ -462,6 +462,7 @@
     </div>
   </div>
 
+  <script src="/js/dealality-memberstack-auth.js"></script>
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search || "");
@@ -810,7 +811,7 @@
         if (!dealSelect) return;
         dealSelect.innerHTML = '<option value="">Loading deals...</option>';
         try {
-          var res = await fetch("/api/my-deals").then(function (r) { return r.json(); });
+          var res = await window.DealalityMemberstackAuth.fetchMyDealsList("/api/my-deals").then(function (r) { return r.json(); });
           var deals = Array.isArray(res && res.deals) ? res.deals.slice() : [];
           deals.sort(function (a, b) {
             return dealLabel(a).localeCompare(dealLabel(b));

@@ -3146,10 +3146,7 @@ Please tell me which field contains the amenities data.`);
 
     async fetchDealsFromBackend() {
         const apiBase = this.getApiBaseUrl();
-        const response = await fetch(`${apiBase}/api/my-deals`, {
-            method: 'GET',
-            headers: { 'Accept': 'application/json' }
-        });
+        const response = await window.DealalityMemberstackAuth.fetchMyDealsList(`${apiBase}/api/my-deals`);
         if (!response.ok) {
             throw new Error(`Backend API error: ${response.status}`);
         }

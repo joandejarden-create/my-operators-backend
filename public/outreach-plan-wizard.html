@@ -86,6 +86,7 @@
     </div>
   </div>
 
+  <script src="/js/dealality-memberstack-auth.js"></script>
   <script>
 (function() {
   const API = '/api/outreach-hub';
@@ -133,7 +134,7 @@
     const sel = qs('#deal-select');
     sel.innerHTML = '<option value="">Loading deals…</option>';
     showErr('');
-    fetch(MY_DEALS)
+    window.DealalityMemberstackAuth.fetchMyDealsList(MY_DEALS)
       .then(function(r) {
         if (!r.ok) throw new Error(r.status === 500 ? 'Server error loading deals. Check Airtable (Deals table and API key).' : 'Failed to load deals (' + r.status + ').');
         return r.json();

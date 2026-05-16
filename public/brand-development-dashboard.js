@@ -156,7 +156,7 @@ class BrandDevelopmentDashboard {
     async fetchDealsFromBackend() {
         const base = window.location.origin || '';
         try {
-            const res = await fetch(`${base}/api/my-deals`);
+            const res = await window.DealalityMemberstackAuth.fetchMyDealsList(`${base}/api/my-deals`);
             if (!res.ok) throw new Error(`Backend API responded ${res.status}`);
             const data = await res.json();
             const deals = Array.isArray(data?.deals) ? data.deals : [];

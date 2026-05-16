@@ -2337,6 +2337,7 @@
         </div>
     </div>
 
+    <script src="/js/dealality-memberstack-auth.js"></script>
     <script src="/js/deal-package-validation.js"></script>
     <script>
         (function() {
@@ -4775,7 +4776,7 @@
                     if (emptyState) emptyState.style.display = 'none';
 
                     var apiBase = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
-                    const res = await fetch(apiBase + '/api/my-deals?view=initial');
+                    const res = await window.DealalityMemberstackAuth.fetchMyDealsList(apiBase + '/api/my-deals?view=initial');
                     if (!res.ok) {
                         const err = await res.json().catch(function() { return {}; });
                         throw new Error(err.error || 'Failed to load deals');

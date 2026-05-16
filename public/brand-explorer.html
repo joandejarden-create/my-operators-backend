@@ -180,6 +180,7 @@
         </div>
     </div>
 
+    <script src="/js/dealality-memberstack-auth.js"></script>
     <script>
 (function() {
     const escapeHtml = (s) => (s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -402,7 +403,7 @@
 
     async function loadDeals() {
         try {
-            const res = await fetch('/api/my-deals');
+            const res = await window.DealalityMemberstackAuth.fetchMyDealsList('/api/my-deals');
             const data = await res.json();
             deals = (data.deals || []).slice(0, 100);
             const sel = document.getElementById('fitDealSelect');

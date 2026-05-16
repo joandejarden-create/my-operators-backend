@@ -12,6 +12,7 @@
  * Form Status; Deal Status, Status.
  */
 
+import { INTAKE_DEALS_USER_LINK } from "./schemas/intake-deal-fields.js";
 import { getAllOutreachDealIds } from "./outreach-setup.js";
 import { computeMatchScoreForDealBrand, computeRecommendedBrand, computeTopAlternativeBrands, getBrandBasicsRecordId, resolvePreferredBrandToName } from "./match-score-server.js";
 import {
@@ -57,6 +58,7 @@ import {
 import { validateDealSetupPayload } from "./deal-setup-validate.js";
 import { fetchTargetsForDeal } from "./target-list.js";
 import { loadNewBaseOperatorBundle, buildPrefillObjectFromNewBaseRows, loadBrandNameByIdMap } from "./lib/operator-setup-new-base-read.js";
+import { filterDealsRecordsForUser } from "../lib/dealality/filter-my-deals.js";
 
 function valueToStr(v) {
   if (v == null) return "";
@@ -1709,6 +1711,19 @@ export async function getMyDeals(req, res) {
       const tDealsEnd = Date.now();
       timingSummary.phasesMs.dealsFetch = tDealsEnd - tLast;
       timingSummary.counts.dealsFetched = allRecords.length;
+      if (req.dealalityUser) {
+        const beforeAuth = allRecords.length;
+        allRecords = filterDealsRecordsForUser(allRecords, req.dealalityUser);
+        timingSummary.counts.dealsAfterAuthFilter = allRecords.length;
+        if (shouldLogMyDealsSummary()) {
+          console.log("getMyDeals: auth scope applied", {
+            requestId,
+            role: req.dealalityUser.role,
+            before: beforeAuth,
+            after: allRecords.length,
+          });
+        }
+      }
       tLast = tDealsEnd;
       if (shouldLogMyDealsSummary()) console.log("getMyDeals: deals fetched", { requestId, count: allRecords.length, elapsed: tDealsEnd - t0 });
     } catch (e) {
@@ -2243,6 +2258,19 @@ export async function createDeal(req, res) {
       "Property Name": dealName,
       [DEALS_STATUS_FIELD]: "Draft",
     };
+
+    const dealalityUser = req.dealalityUser;
+    if (dealalityUser?.userRecordId) {
+      dealFields[INTAKE_DEALS_USER_LINK] = [dealalityUser.userRecordId];
+    }
+    const companyField =
+      process.env.AIRTABLE_DEALS_COMPANY_LINK_FIELD || "Company Profile";
+    const ownerCompanyId =
+      dealalityUser?.companyId ||
+      (Array.isArray(dealalityUser?.companyIds) && dealalityUser.companyIds[0]);
+    if (ownerCompanyId) {
+      dealFields[companyField] = [ownerCompanyId];
+    }
 
     await waitAirtableSerial();
     const dealsTable = encodeURIComponent(DEALS_TABLE);
