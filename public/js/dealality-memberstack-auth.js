@@ -6,13 +6,128 @@
   'use strict';
 
   var LOGIN_MSG = 'Please log in again to continue.';
+  var MSG_EMBED_PARENT = 'Please log in on Dealality first, then open My Deals again.';
+
+  var embedJwtFromParent = null;
+  var embedJwtWaiters = [];
+  var embedMessageListenerInstalled = false;
 
   function isValidBearerToken(token) {
     if (!token || typeof token !== 'string') return false;
     var t = token.trim();
-    if (!t) return false;
+    if (!t || t.indexOf('eyJ') !== 0) return false;
     if (t.indexOf('mem_') === 0 || t.indexOf('mem_sb_') === 0) return false;
     return true;
+  }
+
+  function jwtFromUrlParams() {
+    try {
+      var search = global.location && global.location.search ? global.location.search : '';
+      var hash = global.location && global.location.hash ? global.location.hash : '';
+      var params = new URLSearchParams(search);
+      var fromQuery = params.get('msToken') || params.get('memberstackToken');
+      if (isValidBearerToken(fromQuery)) return fromQuery.trim();
+      var hashQs = hash.indexOf('?') >= 0 ? hash.slice(hash.indexOf('?') + 1) : hash.replace(/^#/, '');
+      if (hashQs) {
+        var hashParams = new URLSearchParams(hashQs);
+        var fromHash = hashParams.get('msToken') || hashParams.get('memberstackToken');
+        if (isValidBearerToken(fromHash)) return fromHash.trim();
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  function isEmbeddedFrame() {
+    try {
+      return global.window !== global.top;
+    } catch (_) {
+      return true;
+    }
+  }
+
+  function notifyEmbedJwtWaiters() {
+    if (!embedJwtFromParent) return;
+    var list = embedJwtWaiters.slice();
+    embedJwtWaiters = [];
+    for (var i = 0; i < list.length; i++) {
+      try {
+        list[i](embedJwtFromParent);
+      } catch (_) {}
+    }
+  }
+
+  function acceptEmbedJwt(token) {
+    if (!isValidBearerToken(token)) return false;
+    embedJwtFromParent = token.trim();
+    notifyEmbedJwtWaiters();
+    return true;
+  }
+
+  function installEmbedMessageListener() {
+    if (embedMessageListenerInstalled) return;
+    embedMessageListenerInstalled = true;
+    global.addEventListener('message', function (ev) {
+      var d = ev && ev.data;
+      if (!d || typeof d !== 'object') return;
+      if (d.type === 'dealality-memberstack-jwt' && d.token) {
+        acceptEmbedJwt(d.token);
+      }
+    });
+  }
+
+  function postJwtRequestToAncestors() {
+    var msg = { type: 'dealality-request-memberstack-jwt' };
+    try {
+      if (global.parent && global.parent !== global) {
+        global.parent.postMessage(msg, '*');
+      }
+    } catch (_) {}
+    try {
+      if (global.top && global.top !== global) {
+        global.top.postMessage(msg, '*');
+      }
+    } catch (_) {}
+  }
+
+  /**
+   * Cross-origin embeds (Webflow parent → Railway iframe) cannot read Memberstack storage.
+   * Parent must respond with dealality-memberstack-jwt postMessage.
+   * @param {number} [maxMs=4000]
+   * @returns {Promise<string|null>}
+   */
+  function waitForEmbedJwtFromParent(maxMs) {
+    installEmbedMessageListener();
+    var fromUrl = jwtFromUrlParams();
+    if (fromUrl) acceptEmbedJwt(fromUrl);
+    if (embedJwtFromParent) return Promise.resolve(embedJwtFromParent);
+    if (!isEmbeddedFrame()) return Promise.resolve(null);
+
+    var limit = maxMs == null ? 15000 : maxMs;
+    return new Promise(function (resolve) {
+      var done = false;
+      function finish(tok) {
+        if (done) return;
+        done = true;
+        resolve(tok || null);
+      }
+      embedJwtWaiters.push(finish);
+      postJwtRequestToAncestors();
+      var start = Date.now();
+      var tick = setInterval(function () {
+        if (embedJwtFromParent) {
+          clearInterval(tick);
+          finish(embedJwtFromParent);
+          return;
+        }
+        if ((Date.now() - start) % 400 < 150) {
+          postJwtRequestToAncestors();
+        }
+        if (Date.now() - start >= limit) {
+          clearInterval(tick);
+          finish(null);
+        }
+      }, 150);
+    });
   }
 
   function getMemberstackClients() {
@@ -244,9 +359,17 @@
    * @returns {Promise<string|null>}
    */
   async function getMemberstackJwt() {
+    installEmbedMessageListener();
+    var fromUrl = jwtFromUrlParams();
+    if (fromUrl) acceptEmbedJwt(fromUrl);
+    if (embedJwtFromParent) return embedJwtFromParent;
     try {
-      return await getMemberstackJwtFromAnyClient();
+      var jwt = await getMemberstackJwtFromAnyClient();
+      if (jwt) return jwt;
     } catch (_) {}
+    if (isEmbeddedFrame()) {
+      return waitForEmbedJwtFromParent(15000);
+    }
     return null;
   }
 
@@ -285,7 +408,14 @@
    * @returns {Promise<string|null>}
    */
   async function getMemberstackJwtWhenReady(maxMs) {
-    var member = await waitForLoggedInMember(maxMs);
+    installEmbedMessageListener();
+    if (embedJwtFromParent) return embedJwtFromParent;
+    var limit = maxMs == null ? 20000 : maxMs;
+    if (isEmbeddedFrame()) {
+      var fromParent = await waitForEmbedJwtFromParent(Math.min(limit, 18000));
+      if (fromParent) return fromParent;
+    }
+    var member = await waitForLoggedInMember(limit);
     if (member) {
       var t = extractTokenFromMember(member);
       if (t) return t;
@@ -299,10 +429,13 @@
    */
   async function getAuthHeaders(extra, options) {
     var opts = options || {};
-    var jwt = opts.waitForLogin
+    var shouldWait = opts.waitForLogin != null ? opts.waitForLogin : isEmbeddedFrame();
+    var jwt = shouldWait
       ? await getMemberstackJwtWhenReady(opts.maxWaitMs)
       : await getMemberstackJwt();
-    if (!jwt) return { error: LOGIN_MSG };
+    if (!jwt) {
+      return { error: isEmbeddedFrame() ? MSG_EMBED_PARENT : LOGIN_MSG };
+    }
     var headers = Object.assign(
       { Authorization: 'Bearer ' + jwt, Accept: 'application/json' },
       extra || {}
@@ -328,14 +461,20 @@
    * @returns {Promise<Response>}
    */
   async function authFetch(url, options) {
-    var auth = await getAuthHeaders();
+    options = options || {};
+    var auth = await getAuthHeaders(null, {
+      waitForLogin: options.waitForLogin != null ? options.waitForLogin : isEmbeddedFrame(),
+      maxWaitMs: options.maxWaitMs,
+    });
     if (auth.error) {
       notifyLoginRequired(auth.error);
       throw new Error(auth.error);
     }
-    options = options || {};
     var merged = Object.assign({}, auth.headers, options.headers || {});
-    return fetch(url, Object.assign({}, options, { headers: merged }));
+    var fetchOpts = Object.assign({}, options, { headers: merged });
+    delete fetchOpts.waitForLogin;
+    delete fetchOpts.maxWaitMs;
+    return fetch(url, fetchOpts);
   }
 
   /**
@@ -344,11 +483,15 @@
    * @returns {Promise<Response>}
    */
   async function fetchMyDealsList(url) {
-    return authFetch(url, { method: 'GET' });
+    return authFetch(url, { method: 'GET', maxWaitMs: 20000 });
   }
 
   global.DealalityMemberstackAuth = {
     LOGIN_MSG: LOGIN_MSG,
+    MSG_EMBED_PARENT: MSG_EMBED_PARENT,
+    isEmbeddedFrame: isEmbeddedFrame,
+    acceptEmbedJwt: acceptEmbedJwt,
+    waitForEmbedJwtFromParent: waitForEmbedJwtFromParent,
     getMemberstackDom: getMemberstackDom,
     getMemberstackClients: getMemberstackClients,
     waitForMemberstackDom: waitForMemberstackDom,

@@ -8117,7 +8117,13 @@
                 });
             }
 
-            loadDeals();
+            (async function startMyDealsAfterAuth() {
+                var auth = window.DealalityMemberstackAuth;
+                if (auth && auth.isEmbeddedFrame && auth.isEmbeddedFrame()) {
+                    await auth.waitForEmbedJwtFromParent(18000);
+                }
+                loadDeals();
+            })();
         })();
     </script>
 
