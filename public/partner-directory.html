@@ -1278,12 +1278,15 @@
         }
 
         .individual-card__metrics {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            gap: 8px 12px;
             width: 100%;
             margin: 14px 0 0;
-            padding: 10px 44px 12px 0; /* right: star */
+            padding: 10px 44px 12px;
             box-sizing: border-box;
             border-top: 1px solid var(--neutral--600);
             border-bottom: none;
@@ -1294,6 +1297,7 @@
             align-items: flex-start;
             gap: 6px;
             min-width: 0;
+            flex: 0 1 auto;
         }
 
         .individual-card__metric .stat-icon {
@@ -1354,7 +1358,7 @@
             width: 100%;
             max-width: none;
             flex-shrink: 0;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            justify-content: space-evenly;
             gap: 12px 16px;
             align-self: stretch;
         }
@@ -2585,6 +2589,61 @@
             position: relative;
         }
 
+        /* Connect coming soon — in-page (no browser alert / iframe origin prefix) */
+        .partner-directory-notice:not([hidden]) {
+            position: fixed;
+            inset: 0;
+            z-index: 10050;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .partner-directory-notice__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .partner-directory-notice__panel {
+            position: relative;
+            z-index: 1;
+            background: var(--neutral--800);
+            border: 1px solid var(--neutral--600);
+            border-radius: 12px;
+            padding: 24px 28px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .partner-directory-notice__message {
+            margin: 0 0 20px;
+            color: var(--neutral--100);
+            font-size: 15px;
+            line-height: 1.45;
+        }
+
+        .partner-directory-notice__ok {
+            min-width: 88px;
+            padding: 8px 24px;
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .partner-directory-notice__ok:hover {
+            background: var(--secondary--color-2);
+            transform: translateY(-1px);
+        }
+
         /* Category Selector Modal */
         .category-selector-modal {
             position: fixed;
@@ -3408,6 +3467,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Connect — in-page notice (avoids iframe browser alert prefix) -->
+    <div class="partner-directory-notice" id="connectComingSoonNotice" hidden role="dialog" aria-modal="true" aria-labelledby="connectComingSoonMessage">
+        <div class="partner-directory-notice__backdrop" id="connectComingSoonBackdrop"></div>
+        <div class="partner-directory-notice__panel">
+            <p class="partner-directory-notice__message" id="connectComingSoonMessage">Connect functionality coming soon!</p>
+            <button type="button" class="partner-directory-notice__ok" id="connectComingSoonOk">OK</button>
         </div>
     </div>
 

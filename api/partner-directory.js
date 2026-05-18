@@ -1,13 +1,17 @@
 import Airtable from "airtable";
 
 import { stripLeadingWwwFromWebsiteUrl } from "./lib/strip-www-from-website-url.js";
+import {
+  PLATFORM_USERS_TABLE_ID,
+  contactVisibilityFromFields,
+  isContactVisibleInPartnerDirectory,
+} from "../lib/airtable/platform-users-table.js";
 
 // Set PARTNER_DIRECTORY_DEBUG=true in .env to enable verbose logs (e.g. for debugging Airtable field mapping).
 const DEBUG = process.env.PARTNER_DIRECTORY_DEBUG === 'true';
 
-/** Individuals tab reads User Management by ID so renaming the table in Airtable cannot break stats. */
-const USER_MANAGEMENT_TABLE_ID =
-  process.env.USER_MANAGEMENT_TABLE_ID || "tblQEpYKf2aYNKKjw";
+/** Individuals tab reads platform Users table (consolidated from legacy User Management). */
+const PLATFORM_USERS_TABLE = PLATFORM_USERS_TABLE_ID;
 
 // Lazy initialization of Airtable base
 function getBase() {
@@ -101,13 +105,14 @@ function buildCompanyEnrichment(fields, recordCreatedTime) {
       }
     }
 
-    // Linked team/user-management references.
+    // Linked team members (Users table — prefer Team Members over legacy User Management).
     if (
+      lower === "team members" ||
+      lower.includes("team members") ||
       lower.includes("user management") ||
       lower.includes("user_management") ||
-      lower.includes("team") ||
-      (lower.includes("team") && (lower.includes("record") || lower.includes("member") || lower.includes("users"))) ||
-      lower.includes("company users")
+      lower.includes("company users") ||
+      (lower.includes("team") && (lower.includes("member") || lower.includes("users")))
     ) {
       extractRecordIdsFromValue(value, userManagementRecordIds);
     }
@@ -233,7 +238,7 @@ function attachResolvedBrandNames(records, brandNameMap) {
   });
 }
 
-/** User Management rows rarely have brand links; inherit from linked Company Profile. */
+/** User rows rarely have brand links; inherit from linked Company Profile. */
 function mergeLinkedCompanyIntoIndividuals(individuals, companies) {
   if (!Array.isArray(individuals) || !Array.isArray(companies)) return individuals || [];
 
@@ -262,13 +267,7 @@ function mergeLinkedCompanyIntoIndividuals(individuals, companies) {
     const personRegions = Array.isArray(individual.regions) ? individual.regions.filter(Boolean) : [];
     const companyRegions = Array.isArray(company.regions) ? company.regions.filter(Boolean) : [];
 
-    const brandCount = individual.brandCountFromDealsColumn
-      ? Number(individual.brandCount) || 0
-      : Math.max(
-          Number(individual.brandCount) || 0,
-          mergedBrands.length,
-          Number(company.brandCount) || 0
-        );
+    // Stats stay on the person row only — do not roll up company deal/brand counts for cards.
 
     const companyName =
       (individual.companyName || "").trim() || (company.name || "").trim();
@@ -292,7 +291,6 @@ function mergeLinkedCompanyIntoIndividuals(individuals, companies) {
       companyRegions,
       coverageTerritories: personCoverage,
       languages: personLanguages,
-      brandCount,
       brandsViaCompany: personBrands.length === 0 && companyBrands.length > 0,
       regionsViaCompany: personRegions.length === 0 && companyRegions.length > 0
     };
@@ -507,7 +505,7 @@ function readDealsUniqueBrandCountFromFields(fields) {
 const F = {
   // Users table for individuals
   users: {
-    table: "tbl6shiyz2wdUqE5F", // Users table ID
+    table: PLATFORM_USERS_TABLE_ID,
     firstName: "fldG5nbAijQkUVSzr", // First Name
     lastName: "fldV0g50iRB8J46Hh", // Last Name
     email: "fldBl7IXEscwkMhnZ", // Email
@@ -1043,12 +1041,11 @@ export async function getPartners(req, res) {
     // SKIP Users table for companies - all company data should come from Company Profile table only
     // This ensures we only use data from the Company Profile table as requested
 
-    // Fetch individuals from User Management table only
-    // (Do not blend in Users table records for the Individuals tab payload.)
+    // Fetch individuals from Users table (platform users).
     let userRecords = [];
     try {
       await new Promise((resolve, reject) => {
-        base(USER_MANAGEMENT_TABLE_ID)
+        base(PLATFORM_USERS_TABLE)
           .select({
             // Fetch complete dataset via pagination (no hard cap)
           })
@@ -1079,7 +1076,9 @@ export async function getPartners(req, res) {
           const fields = record.fields;
           const firstName = fields[F.users.firstName] || fields["First Name"] || '';
           const lastName = fields[F.users.lastName] || fields["Last Name"] || '';
-          return firstName || lastName; // Include if we have at least one name
+          if (!firstName && !lastName) return false;
+          const visibility = contactVisibilityFromFields(fields);
+          return isContactVisibleInPartnerDirectory(visibility);
         })
         .map(record => formatUserRecord(record));
     } catch (userError) {
@@ -1212,9 +1211,10 @@ function formatUserRecord(record) {
   const legacyBrandCount = parseNumericField(fields, ["Brand Count", "# of Brand", "Number of Brands", "brand_count"]);
   const dealsUnique = readDealsUniqueBrandCountFromFields(fields);
   const brandCountFromDealsColumn = dealsUnique.fromDealsColumn;
+  // Use only explicit numeric columns — never linked-brand list length (0 must stay 0).
   const resolvedBrandCount = brandCountFromDealsColumn
-    ? dealsUnique.value
-    : legacyBrandCount || (enrichment.brands?.length || 0);
+    ? (dealsUnique.value ?? 0)
+    : legacyBrandCount;
 
   const rawFields = { ...fields };
   if (!rawFields["Created Date"] && record.createdTime) {
@@ -1236,11 +1236,7 @@ function formatUserRecord(record) {
     regions,
     coverageTerritories,
     languages,
-    contactVisibility: (() => {
-      const cv = fields["Contact Visibility"];
-      if (typeof cv === "object" && cv && cv.name) return cv.name;
-      return typeof cv === "string" ? cv : "";
-    })(),
+    contactVisibility: contactVisibilityFromFields(fields),
     location: location || "",
     website: website || "",
     closedDeals,

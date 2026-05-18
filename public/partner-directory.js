@@ -75,7 +75,7 @@ const PARTNER_DIRECTORY_CONFIG = {
     ...CONFIG,
     COMPANY_PROFILE_TABLE_ID: 'tblItyfH6MlOnMKZ9',
     USERS_TABLE_ID: 'tbl6shiyz2wdUqE5F',
-    USER_MANAGEMENT_TABLE_ID: 'tblQEpYKf2aYNKKjw',
+    USER_MANAGEMENT_TABLE_ID: 'tbl6shiyz2wdUqE5F',
     USER_FAVORITES_TABLE_ID: '',
     MAX_RECORDS_PER_REQUEST: 100
 };
@@ -378,9 +378,21 @@ class PartnerDirectory {
             this.closeIndividualModal();
         });
 
+        const connectNotice = document.getElementById('connectComingSoonNotice');
+        document.getElementById('connectComingSoonOk')?.addEventListener('click', () => {
+            this.closeConnectComingSoon();
+        });
+        document.getElementById('connectComingSoonBackdrop')?.addEventListener('click', () => {
+            this.closeConnectComingSoon();
+        });
+
         // Close modals on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
+                if (connectNotice && !connectNotice.hidden) {
+                    this.closeConnectComingSoon();
+                    return;
+                }
                 const individualModal = document.getElementById('individualModal');
                 if (individualModal && individualModal.style.display === 'flex') {
                     this.closeIndividualModal();
@@ -1110,7 +1122,8 @@ class PartnerDirectory {
 
     updateStats() {
         document.getElementById('companiesCount').textContent = this.companies.length;
-        document.getElementById('individualsCount').textContent = this.individuals.length;
+        document.getElementById('individualsCount').textContent =
+            this.getIndividualsVisibleInDirectory().length;
         const favoritesCount = this.favorites.length;
         document.getElementById('favoritesCount').textContent = favoritesCount;
     }
@@ -1305,8 +1318,8 @@ class PartnerDirectory {
 
         this.filteredCompanies = filtered;
 
-        // Filter individuals (same logic as companies)
-        let filteredIndividuals = this.individuals.filter(individual => {
+        // Filter individuals (directory-visible pool only — Contact Visibility)
+        let filteredIndividuals = this.getIndividualsVisibleInDirectory().filter(individual => {
             // Search filter
             if (this.currentSearchQuery) {
                 const fullName = `${individual.firstName || ''} ${individual.lastName || ''}`.trim().toLowerCase();
@@ -2537,7 +2550,7 @@ class PartnerDirectory {
         if (connectBtn) {
             connectBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                this.connectUser(individual.id || '');
+                this.connectUser();
             });
         }
 
@@ -3866,9 +3879,34 @@ class PartnerDirectory {
         }
     }
 
-    async connectUser(userId) {
-        // Placeholder for connect functionality
-        alert('Connect functionality coming soon!');
+    /**
+     * Partner Directory lists only users with Contact Visibility = Show Contact.
+     * Hide Contact / Visible on Match / Admin Controlled are excluded (API + client).
+     */
+    isIndividualVisibleInPartnerDirectory(individual) {
+        const v = String(individual?.contactVisibility || '').trim().toLowerCase();
+        if (!v) return true;
+        return v === 'show contact';
+    }
+
+    getIndividualsVisibleInDirectory(list = this.individuals) {
+        if (!Array.isArray(list)) return [];
+        return list.filter((individual) => this.isIndividualVisibleInPartnerDirectory(individual));
+    }
+
+    connectUser() {
+        this.showConnectComingSoon();
+    }
+
+    showConnectComingSoon() {
+        const notice = document.getElementById('connectComingSoonNotice');
+        if (!notice) return;
+        notice.hidden = false;
+    }
+
+    closeConnectComingSoon() {
+        const notice = document.getElementById('connectComingSoonNotice');
+        if (notice) notice.hidden = true;
     }
 
     showSuccess(messageId, text) {
@@ -3902,7 +3940,7 @@ class PartnerDirectory {
 
         // Filter data based on insights filters
         let filteredCompanies = [...this.companies];
-        let filteredIndividuals = [...this.individuals];
+        let filteredIndividuals = [...this.getIndividualsVisibleInDirectory()];
         
         // Apply partner type filter (companies vs individuals)
         if (partnerType === 'companies') {
