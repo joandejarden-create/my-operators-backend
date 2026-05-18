@@ -653,6 +653,100 @@ body {
     display: block;
 }
 
+.app-shell-auth-gate {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    background: var(--neutral--800);
+    min-height: 0;
+}
+
+.app-shell-auth-gate[hidden] {
+    display: none !important;
+}
+
+.app-shell-auth-gate-card {
+    max-width: 420px;
+    width: 100%;
+    padding: 28px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--sidebar-border);
+    background: var(--neutral--700);
+    text-align: center;
+}
+
+.app-shell-auth-gate-card h2 {
+    color: var(--neutral--100);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+.app-shell-auth-gate-card p {
+    color: var(--neutral--400);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 16px;
+}
+
+.app-shell-auth-gate-status {
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0 0 14px !important;
+    color: var(--neutral--400);
+}
+
+.app-shell-auth-gate-status.is-error {
+    color: #ffb4b8;
+}
+
+.app-shell-auth-gate-hint {
+    font-size: 12px !important;
+    color: var(--sidebar-text-muted) !important;
+    margin-top: 14px !important;
+    margin-bottom: 0 !important;
+}
+
+.app-shell-auth-gate-hint code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 11px;
+    color: var(--neutral--400);
+}
+
+.app-shell-auth-gate-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.app-shell-auth-btn {
+    border: 1px solid var(--sidebar-border);
+    background: var(--neutral--600);
+    color: var(--neutral--100);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.app-shell-auth-btn:hover {
+    background: var(--sidebar-bg-hover);
+}
+
+.app-shell-auth-btn.primary {
+    border-color: var(--accent--primary-1);
+    background: var(--accent--primary-1);
+    color: #fff;
+}
+
+.app-shell-auth-btn.primary:hover {
+    filter: brightness(1.08);
+}
+
 @media (max-width: 1024px) {
     .sidebar {
         position: fixed;

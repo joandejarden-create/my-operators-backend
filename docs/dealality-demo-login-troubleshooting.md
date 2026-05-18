@@ -63,6 +63,26 @@ Replace with production Railway URL when testing production.
 
 Webflow should **not** show “No brands assigned” when `dealality.isOwner === true` (included in `/api/me` as of role payload). Owners use **My Deals**, not brand allow-lists.
 
+## Local app shell (`http://localhost:3000/app#/my-deals`)
+
+The app shell loads Memberstack on the parent page and passes the session JWT into embedded pages (My Deals, Deal Setup, etc.) via `msToken` and `postMessage`.
+
+1. Set in `.env`: `MEMBERSTACK_APP_ID`, `MEMBERSTACK_SECRET_KEY`, plus Airtable keys.
+2. Restart the server (`npm start`).
+3. Open `http://localhost:3000/app#/my-deals`.
+4. Click **Log in** in the shell (first visit on localhost) and sign in with your Dealality Memberstack account, then **Reload after login**.
+
+Alternatively, append a token from a published site session:
+
+`http://localhost:3000/app?msToken=eyJ…#/my-deals`
+
+Debug in the shell console:
+
+```javascript
+await DealalityMemberstackAuth.inspectMemberstackAuth();
+await DealalityAppShellAuth.whenReady();
+```
+
 ## JWT in the browser console
 
 Webflow may load **Memberstack v1** (`v1.js`). On that build, **`getToken` is not a function** on `$memberstackDom`.

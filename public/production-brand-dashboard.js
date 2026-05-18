@@ -82,7 +82,7 @@ class ProductionBrandDashboard {
             
             // New accessible tables
             brandFootprintTableId: 'tbl108u1oTAwC5XTT',      // Brand Setup - Brand Footprint table
-            userManagementTableId: 'tblQEpYKf2aYNKKjw',      // User Management table
+            userManagementTableId: 'tbl6shiyz2wdUqE5F',      // Platform users (Users table)
             feeStructureTableId: 'tblIzHQUgqrziKg10',        // Brand Setup - Fee Structure table
             brandStandardsTableId: 'tbl4MdXjldw56Kkrw',      // Brand Setup - Brand Standards table
             

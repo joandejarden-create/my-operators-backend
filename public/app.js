@@ -317,15 +317,37 @@
         return hash ? normalizeRoute(hash) : getDefaultRoute(role);
     }
 
+    function appendMsTokenToEmbedUrl(url) {
+        try {
+            var jwt = window.__dealalityMemberstackJwt;
+            if (!jwt) return url;
+            var u = new URL(url, window.location.origin);
+            if (!u.searchParams.get('msToken')) {
+                u.searchParams.set('msToken', jwt);
+            }
+            return u.pathname + u.search + (u.hash || '');
+        } catch (_err) {
+            return url;
+        }
+    }
+
+    function broadcastJwtToActiveFrames() {
+        var jwt = window.__dealalityMemberstackJwt;
+        if (!jwt || !window.DealalityEmbedParent || typeof window.DealalityEmbedParent.publishJwt !== 'function') {
+            return;
+        }
+        window.DealalityEmbedParent.publishJwt(jwt);
+    }
+
     function routeToEmbedUrl(route, role) {
         var embedQs = 'embed=1&appShell=1';
         if (route === '/opportunity-radar' && role === 'operator') {
-            return '/operator-intelligence-radar-with-list.html?' + embedQs;
+            return appendMsTokenToEmbedUrl('/operator-intelligence-radar-with-list.html?' + embedQs);
         }
         var mapped = ROUTES[route];
-        if (!mapped || !mapped.file) return '/app/home.html?' + embedQs;
+        if (!mapped || !mapped.file) return appendMsTokenToEmbedUrl('/app/home.html?' + embedQs);
         var sep = mapped.file.indexOf('?') === -1 ? '?' : '&';
-        return mapped.file + sep + embedQs;
+        return appendMsTokenToEmbedUrl(mapped.file + sep + embedQs);
     }
 
     /** Pathname the shell iframe should show for this route (matches routeToEmbedUrl, including operator radar exception). */
@@ -626,6 +648,7 @@
                 frame.title = ROUTES[target].title || 'Page content';
                 frame.src = routeToEmbedUrl(target, role);
                 frame.addEventListener('load', function () {
+                    broadcastJwtToActiveFrames();
                     applyEmbeddedPageOverrides(frame, target, role);
                 });
                 frameContainer.appendChild(frame);
@@ -653,6 +676,7 @@
                 frame.src = routeToEmbedUrl(target, role);
                 frame.addEventListener('load', function onShellEmbedRouteLoad() {
                     frame.removeEventListener('load', onShellEmbedRouteLoad);
+                    broadcastJwtToActiveFrames();
                     applyEmbeddedPageOverrides(frame, target, role);
                 });
             } else {
@@ -800,6 +824,17 @@
         });
     }
 
+    var shellNavStarted = false;
+
+    function startShellNavigation() {
+        if (shellNavStarted) return;
+        shellNavStarted = true;
+        navigate(getPath(currentRole), currentRole, false);
+        window.addEventListener('hashchange', function () {
+            navigate(getPath(currentRole), currentRole, false);
+        });
+    }
+
     function init() {
         var copyrightYearEl = document.getElementById('appShellCopyrightYear');
         if (copyrightYearEl) copyrightYearEl.textContent = String(new Date().getFullYear());
@@ -823,10 +858,22 @@
                 // Ignore — embed may call during teardown.
             }
         };
-        navigate(getPath(currentRole), currentRole, false);
-        window.addEventListener('hashchange', function () {
-            navigate(getPath(currentRole), currentRole, false);
+
+        window.addEventListener('dealality-shell-auth-ready', function () {
+            broadcastJwtToActiveFrames();
+            startShellNavigation();
         });
+
+        if (window.DealalityAppShellAuth && typeof window.DealalityAppShellAuth.whenReady === 'function') {
+            window.DealalityAppShellAuth.whenReady().then(function (result) {
+                if (result && result.ok) {
+                    broadcastJwtToActiveFrames();
+                    startShellNavigation();
+                }
+            });
+        } else {
+            startShellNavigation();
+        }
     }
 
     if (document.readyState === 'loading') {

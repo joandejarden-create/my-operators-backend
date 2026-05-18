@@ -119,6 +119,7 @@ import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBran
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
 import { getMe } from "./api/me.js";
 import { getAuthMe } from "./api/auth-me.js";
+import { getMemberstackPublicConfig } from "./api/auth-memberstack-config.js";
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
@@ -309,6 +310,7 @@ app.get("/api/me", getMe);
 app.post("/api/me", getMe);
 
 app.get("/api/auth/me", memberstackAuth, requireDealalityUser, getAuthMe);
+app.get("/api/auth/memberstack-config", getMemberstackPublicConfig);
 
 app.post("/api/intake/third-party-operator", handleThirdPartyOperatorIntake);
 app.post("/api/third-party-operators/submit", handleThirdPartyOperatorIntake);
@@ -549,6 +551,18 @@ app.get("/my-deals", (req, res) => {
 });
 app.get("/my-deals/", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'my-deals.html'));
+});
+app.get("/deal-readiness-snapshot", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/deal-readiness-snapshot.html" + q);
+});
+app.get("/deal-readiness-snapshot/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/deal-readiness-snapshot.html" + q);
+});
+app.get("/deal-readiness-snapshot.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "deal-readiness-snapshot.html"));
 });
 
 // CSP that explicitly sets connect-src so fetch/XHR aren't blocked (e.g. form or API calls)
@@ -881,7 +895,7 @@ app.get("/api/partner-directory/config", (req, res) => {
         AIRTABLE_BASE_ID: process.env.AIRTABLE_BASE_ID,
         COMPANY_PROFILE_TABLE_ID: 'tblItyfH6MlOnMKZ9',
         USERS_TABLE_ID: 'tbl6shiyz2wdUqE5F',
-        USER_MANAGEMENT_TABLE_ID: 'tblQEpYKf2aYNKKjw',
+        USER_MANAGEMENT_TABLE_ID: process.env.USERS_TABLE_ID || 'tbl6shiyz2wdUqE5F',
         USER_FAVORITES_TABLE_ID: process.env.USER_FAVORITES_TABLE_ID || '', // Add your User Favorites table ID here
         BRAND_BASICS_TABLE_ID: process.env.BRAND_BASICS_TABLE_ID || 'tbl1x6S7I7JwTcRdV',
         MAX_RECORDS_PER_REQUEST: 100

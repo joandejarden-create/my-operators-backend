@@ -1,5 +1,5 @@
 /**
- * User Management page – list, add, edit, delete users (Airtable User Management table).
+ * User Management page – list, add, edit, delete users (Airtable Users table).
  *
  * API: Frontend calls only the app proxy (API_BASE).
  * Data-source credentials are handled server-side only; never expose them in this file.

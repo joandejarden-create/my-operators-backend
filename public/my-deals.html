@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Deals - Dealality</title>
+    <link rel="stylesheet" href="/css/deal-readiness-snapshot.css">
     <link rel="stylesheet" href="/styles.css">
     <style>
         /* Match My Brands page – same layout, filters, table, loading */
@@ -664,7 +665,20 @@
             background: none; border: none; color: var(--neutral--400); font-size: 24px; line-height: 1; cursor: pointer; padding: 0 4px;
         }
         .my-deals-readiness-modal-close:hover { color: var(--neutral--100); }
-        .my-deals-readiness-modal-body { padding: 16px 20px 20px; overflow-y: auto; flex: 1; min-height: 0; }
+        .my-deals-readiness-modal-body {
+            padding: 16px 20px 20px;
+            overflow: hidden;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #myDealsReadinessContent {
+            display: none;
+        }
+        #myDealsReadinessContent.is-visible {
+            display: block;
+        }
         .my-deals-readiness-loading { text-align: center; padding: 32px 16px; color: var(--neutral--500); font-size: 13px; }
         .my-deals-readiness-error { padding: 12px 14px; border-radius: 8px; background: rgba(255, 90, 101, 0.12); border: 1px solid rgba(255, 90, 101, 0.35); color: #ffb4b8; font-size: 13px; }
         .my-deals-readiness-modal-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
@@ -1848,14 +1862,14 @@
                     <div class="my-deals-readiness-modal">
                         <div class="my-deals-readiness-modal-header">
                             <div>
-                                <h2 id="myDealsReadinessModalTitle">Deal Readiness Review</h2>
-                                <p class="sub">Deterministic score and gaps from your saved fields; narrative from AI when configured.</p>
+                                <h2 id="myDealsReadinessModalTitle">Deal Readiness Snapshot</h2>
+                                <p class="sub">Readiness signals from saved Deal Setup fields. Draft output for owner/advisor validation.</p>
                             </div>
                             <button type="button" class="my-deals-readiness-modal-close" id="myDealsReadinessModalClose" aria-label="Close">×</button>
                         </div>
                         <div class="my-deals-readiness-modal-body" id="myDealsReadinessModalBody">
                             <div class="my-deals-readiness-loading" id="myDealsReadinessLoading">Analyzing deal…</div>
-                            <div id="myDealsReadinessContent" style="display:none;"></div>
+                            <div id="myDealsReadinessContent"></div>
                         </div>
                     </div>
                 </div>
@@ -2339,6 +2353,7 @@
 
     <script src="/js/dealality-memberstack-auth.js"></script>
     <script src="/js/deal-package-validation.js"></script>
+    <script src="/js/deal-readiness-snapshot.js"></script>
     <script>
         (function() {
             (function initSidebarToggle() {
@@ -2439,19 +2454,34 @@
             function ui_readinessWorkflowLabelFromStage(stage) {
                 var s = String(stage || '').trim();
                 if (s === 'Discovery') return 'Keep in Draft';
-                if (s === 'Shaping') return 'Internal Review';
-                if (s === 'Advancing') return 'Ready for Exploratory Outreach';
+                if (s === 'Shaping') return 'Needs Clarification';
+                if (s === 'Advancing') return 'Eligible for Structured Review';
+                if (s.indexOf('Ready for External') >= 0) return 'Ready for External Review';
                 if (s === 'Ready') return 'Ready for External Review';
                 return 'Keep in Draft';
+            }
+
+            /** Short stage label for the Readiness column (line 1). */
+            function ui_readinessStageShortLabel(stage) {
+                var s = String(stage || '').trim();
+                if (s === 'Ready for External Review') return 'External Review';
+                if (s === 'Ready') return 'Ready';
+                if (s === 'Advancing') return 'Advancing';
+                if (s === 'Shaping') return 'Shaping';
+                if (s === 'Discovery') return 'Discovery';
+                if (s.length > 24) return s.slice(0, 22).trim() + '…';
+                return s;
             }
 
             function ui_readinessBadgeText(deal) {
                 var score = deal && deal.dealReadinessScore;
                 var stage = String((deal && deal.dealReadinessStage) || '').trim();
                 var hasScore = score != null && score !== '' && !Number.isNaN(Number(score));
+                var shortStage = ui_readinessStageShortLabel(stage);
                 if (!stage && !hasScore) return 'Not reviewed';
-                if (!stage && hasScore) return 'Not reviewed · ' + String(Math.round(Number(score)));
-                return stage + (hasScore ? (' · ' + String(Math.round(Number(score)))) : '');
+                if (!hasScore) return shortStage || 'Not reviewed';
+                if (!shortStage) return String(Math.round(Number(score)));
+                return String(Math.round(Number(score))) + ' · ' + shortStage;
             }
 
             /** One-line summary for tooltips / screen readers. */
@@ -2459,10 +2489,9 @@
                 var score = deal.dealReadinessScore;
                 var stage = deal.dealReadinessStage || '';
                 var wf = ui_readinessWorkflowLabelFromStage(stage);
-                var scorePart = score != null && score !== '' && !Number.isNaN(Number(score)) ? String(score) + '/100' : '—';
-                var stagePart = stage || '—';
-                var line1 = scorePart + ' · ' + stagePart;
-                return line1 + ' — ' + wf;
+                var scorePart = score != null && score !== '' && !Number.isNaN(Number(score)) ? String(Math.round(Number(score))) + '/100' : '—';
+                var stagePart = ui_readinessStageShortLabel(stage) || stage || '—';
+                return scorePart + ' · ' + stagePart + ' — ' + wf;
             }
 
             /** Table cell markup: compact readiness card text for each row. */
@@ -3269,6 +3298,7 @@
 
                 var lastResponse = null;
                 var activeDealId = null;
+                var readinessReturnFocus = null;
                 function mapPackageFieldToDealForm(rawField) {
                     var raw = String(rawField || '').trim();
                     var norm = raw.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -3391,10 +3421,34 @@
                 }
 
                 function openModal() {
+                    var active = document.activeElement;
+                    if (active && active !== document.body && active !== document.documentElement) {
+                        readinessReturnFocus = active;
+                    }
                     modal.classList.add('open');
                     modal.setAttribute('aria-hidden', 'false');
+                    if (closeBtn) {
+                        try {
+                            closeBtn.focus({ preventScroll: true });
+                        } catch (err) {
+                            closeBtn.focus();
+                        }
+                    }
                 }
                 function closeModal() {
+                    var restore = readinessReturnFocus;
+                    readinessReturnFocus = null;
+                    if (restore && typeof restore.focus === 'function') {
+                        try {
+                            restore.focus({ preventScroll: true });
+                        } catch (err) {
+                            try {
+                                restore.focus();
+                            } catch (err2) { /* ignore */ }
+                        }
+                    } else if (closeBtn && document.activeElement === closeBtn) {
+                        closeBtn.blur();
+                    }
                     modal.classList.remove('open');
                     modal.setAttribute('aria-hidden', 'true');
                 }
@@ -3431,8 +3485,15 @@
                 }
 
                 function patchDealAfterSave(dealId, apiData, savedAt) {
-                    if (!dealId || !apiData) return;
-                    syncReadinessColumnFromApi(dealId, apiData, savedAt);
+                    if (!dealId) return;
+                    var merged = (lastResponse && typeof lastResponse === 'object') ? Object.assign({}, lastResponse) : {};
+                    if (apiData && typeof apiData === 'object') {
+                        Object.assign(merged, apiData);
+                        if (apiData.readinessStage != null && String(apiData.readinessStage).trim() !== '') {
+                            merged.readinessStage = apiData.readinessStage;
+                        }
+                    }
+                    syncReadinessColumnFromApi(dealId, merged, savedAt);
                 }
 
                 function updateReadinessModalMetaChips(savedAt, missingCount, blockingCount) {
@@ -3447,153 +3508,7 @@
                     if (blockEl) blockEl.textContent = 'Blocking: ' + (Number.isFinite(Number(blockingCount)) ? String(Number(blockingCount)) : '—');
                 }
 
-                function renderReadinessBody(data) {
-                    if (!contentEl) return;
-                    function uiTwoLineLabel(label) {
-                        var txt = String(label || '').trim();
-                        if (!txt) return '';
-                        if (txt.indexOf('<br') >= 0) return txt;
-                        var parts = txt.split(/\s+/).filter(Boolean);
-                        if (parts.length <= 1) return txt;
-                        var mid = Math.ceil(parts.length / 2);
-                        return parts.slice(0, mid).join(' ') + '<br>' + parts.slice(mid).join(' ');
-                    }
-                    function sectionIconSvg(label) {
-                        var key = String(label || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-                        var map = {
-                            'project overview': '<svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/><path d="M9 12h6"/><path d="M9 16h6"/><path d="M9 8h6"/></svg>',
-                            'brand op status': '<svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 6.5 1-4.8 4.6 1.1 6.4L12 17.5l-5.8 3 1.1-6.4L2.5 10 9 8.5 12 2z"/></svg>',
-                            'location site details': '<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
-                            'property specs': '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
-                            'amenities facilities': '<svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
-                            'market performance': '<svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 2 5-6"/></svg>',
-                            'deal capital structure': '<svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
-                            'lease structure': '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>',
-                            'strategic intent': '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
-                            'operational expectations': '<svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>',
-                            'challenges priorities': '<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
-                            'support comm': '<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
-                            'contact info': '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
-                            'uploads attachments': '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>'
-                        };
-                        return map[key] || '<svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M2 12h20"/></svg>';
-                    }
-                    var baseScore = Number(data.dealReadinessScore);
-                    if (!Number.isFinite(baseScore)) baseScore = 0;
-                    var score = baseScore;
-                    var stage = String(data.readinessStage || '');
-                    var blocking = data.blockingIssues || [];
-                    var missing = data.missingInformation || [];
-                    var weak = data.weakInformation || [];
-                    var labeled = data.tabScoresLabeled && data.tabScoresLabeled.length
-                        ? data.tabScoresLabeled
-                        : data.sectionScoresLabeled;
-                    var sections = (data.tabScores && Object.keys(data.tabScores).length)
-                        ? data.tabScores
-                        : (data.sectionScores || {});
-                    var ai = data.ai;
-                    var wf = data.workflowRecommendation || {};
-                    var plan = data.scoreImprovementPlan || { targetScoreLabel: '', priorityActions: [] };
-                    var reviewedAt = data.savedAt || '';
-                    var dealContext = (typeof getDealByIdLocal === 'function' && activeDealId) ? getDealByIdLocal(activeDealId) : null;
-                    var packageValidationPayload = Object.assign(
-                        {},
-                        dealContext || {},
-                        data && data.deal ? data.deal : {},
-                        data && data.normalized ? data.normalized : {},
-                        data && data.sourceFields ? data.sourceFields : {}
-                    );
-
-                    var packageValidation = window.validateDealPackage ? window.validateDealPackage(packageValidationPayload) : null;
-                    var packageFindings = (packageValidation && Array.isArray(packageValidation.findings)) ? packageValidation.findings : [];
-                    var packageCritical = packageFindings.filter(function(f) { return f && f.severity === 'critical'; });
-                    var packageWarning = packageFindings.filter(function(f) { return f && f.severity === 'warning'; });
-                    var packageInfo = packageFindings.filter(function(f) { return f && f.severity === 'info'; });
-                    var packagePenalty = Math.min(30, (packageCritical.length * 8) + (packageWarning.length * 3) + (packageInfo.length * 1));
-                    score = Math.max(0, Math.min(100, Math.round(baseScore - packagePenalty)));
-
-                    var blockingUnified = (Array.isArray(blocking) ? blocking.slice() : []);
-                    packageCritical.forEach(function(f) {
-                        blockingUnified.push(f.title || f.suggestedFix || 'Critical package contradiction');
-                    });
-                    var missingUnified = (Array.isArray(missing) ? missing.slice() : []);
-                    packageWarning.forEach(function(f) {
-                        var mapped = pickBestMappingForFinding(f);
-                        missingUnified.push({
-                            field: mapped.field || '',
-                            highlightField: mapped.field || '',
-                            label: f.title || mapped.field || 'Clarification needed',
-                            section: mapped.section || 'Package Validation',
-                            relatedTab: mapped.tab || ''
-                        });
-                    });
-                    var tabOrder = [
-                        'Project Overview',
-                        'Brand & Op. Status',
-                        'Location & Site Details',
-                        'Property Specs',
-                        'Amenities & Facilities',
-                        'Market & Performance',
-                        'Deal & Capital Structure',
-                        'Lease Structure',
-                        'Strategic Intent',
-                        'Operational Expectations',
-                        'Challenges & Priorities',
-                        'Support & Comm.',
-                        'Contact Info',
-                        'Uploads & Attachments',
-                        'Deal Room'
-                    ];
-                    var tabOrderIndex = {};
-                    tabOrder.forEach(function(t, idx) { tabOrderIndex[t] = idx; });
-                    function tabSortIndex(v) {
-                        var key = String(v || '').trim();
-                        if (Object.prototype.hasOwnProperty.call(tabOrderIndex, key)) return tabOrderIndex[key];
-                        return 999;
-                    }
-                    var severityRank = { high: 0, critical: 0, medium: 1, warning: 1, low: 2, info: 2 };
-                    missingUnified.sort(function(a, b) {
-                        var at = (a && a.relatedTab) ? a.relatedTab : ((a && a.section) ? a.section : '');
-                        var bt = (b && b.relatedTab) ? b.relatedTab : ((b && b.section) ? b.section : '');
-                        var ai = tabSortIndex(at);
-                        var bi = tabSortIndex(bt);
-                        if (ai !== bi) return ai - bi;
-                        var af = String((a && (a.highlightField || a.field)) || '');
-                        var bf = String((b && (b.highlightField || b.field)) || '');
-                        return af.localeCompare(bf);
-                    });
-                    var weakUnified = (Array.isArray(weak) ? weak.slice() : []);
-                    packageInfo.forEach(function(f) {
-                        var mapped = pickBestMappingForFinding(f);
-                        weakUnified.push({
-                            field: mapped.field || '',
-                            highlightField: mapped.field || '',
-                            label: f.title || mapped.field || 'Data quality note',
-                            section: mapped.section || 'Package Validation',
-                            relatedTab: mapped.tab || ''
-                        });
-                    });
-                    var missingCount = missingUnified.length;
-                    var blockingCount = blockingUnified.length;
-                    if (!stage) {
-                        if (score >= 90 && blockingCount === 0) stage = 'Ready';
-                        else if (score >= 75 && blockingCount === 0) stage = 'Ready for External Review';
-                        else if (score >= 60) stage = 'Shaping';
-                        else stage = 'Discovery';
-                    } else if (blockingCount > 0 || score < 60) {
-                        stage = 'Discovery';
-                    } else if (score < 75 && /ready/i.test(stage)) {
-                        stage = 'Shaping';
-                    }
-                    // Keep the in-memory response aligned with the unified model shown in the modal.
-                    data.dealReadinessScore = score;
-                    data.readinessStage = stage;
-                    data.missingInformation = missingUnified;
-                    data.weakInformation = weakUnified;
-                    data.blockingIssues = blockingUnified;
-                    data.dealReadinessMissingCount = missingCount;
-                    data.dealReadinessBlockingCount = blockingCount;
-                    data.packageValidationFindings = packageFindings;
+                function buildUiHighlightFieldsFromReadiness(data) {
                     var highlightSeen = {};
                     var uiHighlightFields = [];
                     function pushHighlight(name) {
@@ -3602,296 +3517,50 @@
                         highlightSeen[key] = true;
                         uiHighlightFields.push(key);
                     }
-                    missingUnified.forEach(function(m) { if (m && m.field) pushHighlight(m.field); });
-                    weakUnified.forEach(function(w) { if (w && w.field) pushHighlight(w.field); });
-                    (plan.priorityActions || []).forEach(function(a) { if (a && a.relatedField) pushHighlight(a.relatedField); });
-                    packageFindings.forEach(function(f) {
-                        (f && f.relatedFields || []).forEach(function(rf) {
-                            var mapped = mapPackageFieldToDealForm(rf);
-                            pushHighlight(mapped.field || rf);
-                        });
-                    });
+                    (data.missingInformation || []).forEach(function (m) { if (m && m.field) pushHighlight(m.field); });
+                    (data.weakInformation || []).forEach(function (w) { if (w && w.field) pushHighlight(w.field); });
+                    var plan = data.scoreImprovementPlan || {};
+                    (plan.priorityActions || []).forEach(function (a) { if (a && a.relatedField) pushHighlight(a.relatedField); });
                     data.uiHighlightFields = uiHighlightFields;
+                    return uiHighlightFields;
+                }
 
-                    var actions = [];
-                    var blockingActions = [];
-                    (plan.priorityActions || []).slice(0, 4).forEach(function(a) {
-                        if (!a) return;
-                        var label = a.label || 'Action';
-                        var why = a.reason ? (': ' + a.reason) : '';
-                        actions.push(label + why);
+                function renderReadinessBody(data) {
+                    if (!contentEl) return;
+                    if (!window.DealReadinessSnapshot || typeof window.DealReadinessSnapshot.render !== 'function') {
+                        contentEl.innerHTML = '<div class="my-deals-readiness-error">Snapshot renderer failed to load.</div>';
+                        contentEl.classList.add('is-visible');
+                        if (loadingEl) loadingEl.style.display = 'none';
+                        return;
+                    }
+                    var dealContext = (typeof getDealByIdLocal === 'function' && activeDealId) ? getDealByIdLocal(activeDealId) : null;
+                    buildUiHighlightFieldsFromReadiness(data);
+                    var missingCount = (data.missingInformation || []).length;
+                    var blockingCount = (data.blockingIssues || []).length;
+                    data.dealReadinessMissingCount = missingCount;
+                    data.dealReadinessBlockingCount = blockingCount;
+                    var editHref = activeDealId ? newDealSetupEditUrl(activeDealId, 'highlightReadinessGaps=1') : '';
+                    var fullPageHref = activeDealId
+                        ? '/deal-readiness-snapshot.html?dealId=' + encodeURIComponent(activeDealId)
+                        : '';
+                    window.DealReadinessSnapshot.render(contentEl, data, {
+                        embed: true,
+                        dealId: activeDealId,
+                        listDeal: dealContext,
+                        editDealHref: editHref,
+                        fullPageHref: fullPageHref,
+                        footerHtml: '<p class="my-deals-readiness-save-status" id="myDealsReadinessSaveStatus" aria-live="polite"></p>',
+                        generatedAt: data.savedAt || new Date().toISOString(),
                     });
-                    blockingUnified.slice(0, 3).forEach(function(b) { blockingActions.push('Resolve blocking issue: ' + b); });
-                    missingUnified.slice(0, 2).forEach(function(m) {
-                        var lbl = (m && m.field) ? m.field : String(m || '');
-                        actions.push('Complete missing item: ' + lbl);
-                    });
-                    if (!actions.length) actions.push('No urgent actions detected. Keep details current and re-run before outreach.');
-                    actions = blockingActions.concat(actions);
-
-                    var html = '';
-                    html += '<div class="my-deals-readiness-modal-badges">';
-                    html += '<span class="my-deals-readiness-badge-chip">Score: ' + esc(score) + '/100</span>';
-                    html += '<span class="my-deals-readiness-badge-chip">Stage: ' + esc(stage) + '</span>';
-                    html += '<span class="my-deals-readiness-badge-chip muted">' + esc(wf.label || 'Unified readiness') + '</span>';
-                    html += '<span class="my-deals-readiness-badge-chip muted" id="myDealsReadinessBadgeLastReviewed">Last reviewed: ' + esc(reviewedAt ? String(reviewedAt).slice(0, 10) : 'Not saved') + '</span>';
-                    html += '<span class="my-deals-readiness-badge-chip muted" id="myDealsReadinessBadgeMissing">Missing: ' + esc(missingCount != null ? missingCount : '—') + '</span>';
-                    html += '<span class="my-deals-readiness-badge-chip muted" id="myDealsReadinessBadgeBlocking">Blocking: ' + esc(blockingCount != null ? blockingCount : '—') + '</span>';
-                    html += '</div>';
-
-                    html += '<div class="my-deals-readiness-layout">';
-                    html += '<div class="my-deals-readiness-card"><h3>Action queue (start here)</h3><ul class="my-deals-readiness-action-list">';
-                    actions.slice(0, 6).forEach(function(item) { html += '<li>' + esc(item) + '</li>'; });
-                    html += '</ul></div>';
-                    html += '<div class="my-deals-readiness-card"><h3>Snapshot</h3><div class="my-deals-readiness-mini-stats">';
-                    html += '<div class="my-deals-readiness-mini-stat"><div class="k">Missing fields</div><div class="v">' + esc(missingCount != null ? missingCount : 0) + '</div></div>';
-                    html += '<div class="my-deals-readiness-mini-stat"><div class="k">Blocking issues</div><div class="v">' + esc(blockingCount != null ? blockingCount : 0) + '</div></div>';
-                    html += '<div class="my-deals-readiness-mini-stat"><div class="k">Weak fields</div><div class="v">' + esc(weakUnified.length) + '</div></div>';
-                    html += '<div class="my-deals-readiness-mini-stat"><div class="k">Validation flags</div><div class="v">' + esc(packageFindings.length) + '</div></div>';
-                    html += '</div></div>';
-                    html += '</div>';
-
-                    if (activeDealId) {
-                        html += '<p style="margin:12px 0 0 0;line-height:1.45;">' +
-                            '<a class="my-deals-readiness-edit-link" data-deal-readiness-form="1" href="' + newDealSetupEditUrl(activeDealId, 'highlightReadinessGaps=1') + '">Edit deal — highlight gaps on each tab →</a>' +
-                            '</p>';
-                        html += '<p style="font-size:12px;color:var(--neutral--500);margin:8px 0 0 0;">Opens the deal form; each tab shows outlines on missing or thin fields from this review. Save there to update this score.</p>';
-                    }
-
-                    html += '<details class="my-deals-readiness-accordion" open><summary>SCORES BY FORM TAB</summary><div class="my-deals-readiness-accordion-body">';
-                    html += '<div class="my-deals-readiness-section">' +
-                        '<p style="font-size:12px;color:var(--neutral--500);margin:0 0 10px 0;">Matches the left navigation on Create / Edit Deal (same names as the tabs you click).</p>' +
-                        '<div class="my-deals-readiness-section-grid">';
-                    if (labeled && labeled.length) {
-                        labeled.forEach(function(row) {
-                            var pctStr = (row.score == null || row.score === '') ? '—' : esc(row.score) + '%';
-                            html += '<div class="my-deals-readiness-section-card"><div class="icon">' + sectionIconSvg(row.label || row.id) + '</div><div class="pct">' + pctStr + '</div>' +
-                                '<div class="lbl">' + uiTwoLineLabel(esc(row.label || row.id)) + '</div></div>';
-                        });
-                    } else {
-                        Object.keys(sections).forEach(function(k) {
-                            var v = sections[k];
-                            var pctStr2 = (v == null || v === '') ? '—' : esc(v) + '%';
-                            html += '<div class="my-deals-readiness-section-card"><div class="icon">' + sectionIconSvg(k) + '</div><div class="pct">' + pctStr2 + '</div>' +
-                                '<div class="lbl">' + uiTwoLineLabel(esc(k)) + '</div></div>';
-                        });
-                    }
-                    html += '</div></div></div></details>';
-
-                    if (blockingUnified.length) {
-                        html += '<details class="my-deals-readiness-accordion"><summary>BLOCKING ISSUES (' + esc(blockingUnified.length) + ')</summary><div class="my-deals-readiness-accordion-body">';
-                        html += '<div class="my-deals-readiness-blocking-callout"><ul class="my-deals-readiness-list block">';
-                        blockingUnified.forEach(function(t) { html += '<li>' + esc(t) + '</li>'; });
-                        html += '</ul></div></div></details>';
-                    }
-
-                    (function renderPriorityMissingInformation() {
-                        var items = [];
-                        function normalizeDedupText(v) {
-                            return String(v || '')
-                                .toLowerCase()
-                                .replace(/^provide\s+["']?/, '')
-                                .replace(/["']$/, '')
-                                .replace(/\s+/g, ' ')
-                                .trim();
-                        }
-                        function severityWeight(sev) {
-                            var s = String(sev || '').toLowerCase();
-                            if (s === 'high' || s === 'critical') return 3;
-                            if (s === 'medium' || s === 'warning') return 2;
-                            return 1;
-                        }
-                        function defaultReasonForItem(item) {
-                            var sev = String(item && item.severity || 'medium').toLowerCase();
-                            var field = String(item && item.field || item && item.label || 'this item');
-                            if (sev === 'high' || sev === 'critical') {
-                                return 'Resolve this high-priority gap so readiness and external package quality are not blocked.';
-                            }
-                            return 'Update ' + field + ' to improve readiness quality and proposal clarity.';
-                        }
-                        function pushItem(item) {
-                            if (!item || !item.label) return;
-                            items.push({
-                                severity: item.severity || 'medium',
-                                tab: item.tab || '',
-                                section: item.section || '',
-                                field: item.field || '',
-                                label: item.label || '',
-                                reason: item.reason || defaultReasonForItem(item)
-                            });
-                        }
-                        (plan.priorityActions || []).forEach(function(a) {
-                            if (!a) return;
-                            pushItem({
-                                severity: a.severity || 'medium',
-                                tab: a.relatedTab || '',
-                                section: a.relatedSection || '',
-                                field: a.relatedField || '',
-                                label: a.label || a.relatedField || 'Priority update',
-                                reason: a.reason || ''
-                            });
-                        });
-                        missingUnified.forEach(function(m) {
-                            if (!m) return;
-                            pushItem({
-                                severity: 'medium',
-                                tab: m.relatedTab || m.section || '',
-                                section: m.section || '',
-                                field: m.highlightField || m.field || '',
-                                label: m.label || m.field || m.highlightField || 'Missing information item',
-                                reason: ''
-                            });
-                        });
-                        packageFindings.forEach(function(f) {
-                            if (!f) return;
-                            var sev = f.severity === 'critical' ? 'high' : (f.severity === 'warning' ? 'medium' : 'low');
-                            var mapped = pickBestMappingForFinding(f);
-                            pushItem({
-                                severity: sev,
-                                tab: mapped.tab || mapPackageCategoryToTab(f.category),
-                                section: mapped.section || mapPackageCategoryToSection(f.category) || 'Package Validation',
-                                field: mapped.field || '',
-                                label: f.title || 'Validation flag',
-                                reason: f.suggestedFix || ''
-                            });
-                        });
-                        if (!items.length) return;
-                        var dedup = {};
-                        var unique = [];
-                        items.forEach(function(it) {
-                            var canonicalField = normalizeDedupText(it.field || '');
-                            var canonicalLabel = normalizeDedupText(it.label || '');
-                            var identity = canonicalField || canonicalLabel;
-                            var key = [String(it.tab || '').trim(), identity || canonicalLabel].join('||');
-                            var existing = dedup[key];
-                            if (!existing) {
-                                dedup[key] = it;
-                                unique.push(it);
-                                return;
-                            }
-                            // Keep higher severity; if equal, keep the one with richer reason text.
-                            var existingWeight = severityWeight(existing.severity);
-                            var currentWeight = severityWeight(it.severity);
-                            var existingReasonLen = String(existing.reason || '').trim().length;
-                            var currentReasonLen = String(it.reason || '').trim().length;
-                            if (currentWeight > existingWeight || (currentWeight === existingWeight && currentReasonLen > existingReasonLen)) {
-                                existing.severity = it.severity;
-                                existing.label = it.label || existing.label;
-                                existing.reason = it.reason || existing.reason;
-                                existing.section = it.section || existing.section;
-                                existing.field = it.field || existing.field;
-                            } else {
-                                if (!existing.reason && it.reason) existing.reason = it.reason;
-                                if (!existing.section && it.section) existing.section = it.section;
-                                if (!existing.field && it.field) existing.field = it.field;
-                            }
-                        });
-                        unique.sort(function(a, b) {
-                            var ar = Object.prototype.hasOwnProperty.call(severityRank, a.severity) ? severityRank[a.severity] : 2;
-                            var br = Object.prototype.hasOwnProperty.call(severityRank, b.severity) ? severityRank[b.severity] : 2;
-                            if (ar !== br) return ar - br;
-                            var at = tabSortIndex(a.tab);
-                            var bt = tabSortIndex(b.tab);
-                            if (at !== bt) return at - bt;
-                            return String(a.label || '').localeCompare(String(b.label || ''));
-                        });
-                        var grouped = {};
-                        unique.forEach(function(it) {
-                            var tab = String(it.tab || '').trim() || 'Other';
-                            if (!grouped[tab]) grouped[tab] = [];
-                            grouped[tab].push(it);
-                        });
-                        html += '<details class="my-deals-readiness-accordion" open><summary>PRIORITY MISSING INFORMATION</summary><div class="my-deals-readiness-accordion-body">';
-                        if (plan.targetScoreLabel) {
-                            html += '<p style="font-size:13px;color:var(--neutral--400);margin:0 0 8px 0;">' + esc(plan.targetScoreLabel) + '</p>';
-                        }
-                        tabOrder.concat(['Other']).forEach(function(tab) {
-                            if (!grouped[tab] || !grouped[tab].length) return;
-                            html += '<div class="my-deals-readiness-section"><h3 style="margin-top:12px;">' + esc(tab) + '</h3>';
-                            html += '<ul class="my-deals-readiness-improve-list">';
-                            grouped[tab].forEach(function(it) {
-                                var sev = it.severity || 'medium';
-                                html += '<li class="my-deals-readiness-improve-item"><span class="my-deals-readiness-sev ' + esc(sev) + '">' + esc(sev) + '</span>';
-                                html += '<strong style="color:var(--neutral--100);">' + esc(it.label) + '</strong>';
-                                html += '<br/>' + esc(it.reason || defaultReasonForItem(it));
-                                var showSection = it.section && String(it.section).trim();
-                                var fieldDisplay = String(it.field || '').trim();
-                                if (showSection || fieldDisplay) {
-                                    html += '<br/><span style="color:#7e89ac;font-size:11px;">';
-                                    if (showSection) html += 'Section: ' + esc(it.section);
-                                    if (fieldDisplay) html += (showSection ? ' · ' : '') + 'Field: ' + esc(fieldDisplay);
-                                    html += '</span>';
-                                }
-                                html += '</li>';
-                            });
-                            html += '</ul></div>';
-                        });
-                        html += '</div></details>';
-                    })();
-                    if (weakUnified.length) {
-                        html += '<details class="my-deals-readiness-accordion"><summary>WEAK OR THIN FIELDS (' + esc(weakUnified.length) + ')</summary><div class="my-deals-readiness-accordion-body">';
-                        html += '<div class="my-deals-readiness-section"><ul class="my-deals-readiness-list warn">';
-                        weakUnified.slice(0, 18).forEach(function(w) {
-                            var line = (w && w.field) ? w.field : '';
-                            var tabHintW = (w && w.relatedTab && String(w.relatedTab).trim()) ? String(w.relatedTab).trim()
-                                : ((w && w.section) ? String(w.section).trim() : '');
-                            var secW = tabHintW ? ' (' + esc(tabHintW) + ')' : '';
-                            html += '<li>' + esc(line) + secW + '</li>';
-                        });
-                        html += '</ul></div></div></details>';
-                    }
-
-                    if (wf.explanation) {
-                        html += '<details class="my-deals-readiness-accordion"><summary>WORKFLOW RECOMMENDATION</summary><div class="my-deals-readiness-accordion-body">';
-                        html += '<div class="my-deals-readiness-section"><p style="font-size:13px;">' +
-                            esc(wf.explanation) + '</p>';
-                        if (wf.allowedNextActions && wf.allowedNextActions.length) {
-                            html += '<ul class="my-deals-readiness-list">';
-                            wf.allowedNextActions.forEach(function(ac) { html += '<li>' + esc(ac) + '</li>'; });
-                            html += '</ul>';
-                        }
-                        html += '</div></div></details>';
-                    }
-
-                    if (ai) {
-                        html += '<details class="my-deals-readiness-accordion"><summary>AI NARRATIVE AND FOLLOW-UP</summary><div class="my-deals-readiness-accordion-body">';
-                        html += '<div class="my-deals-readiness-section"><p>' + esc(ai.executiveSummary) + '</p></div>';
-                        if (ai.dealStrengths && ai.dealStrengths.length) {
-                            html += '<div class="my-deals-readiness-section"><h3>Strengths</h3><ul class="my-deals-readiness-list">';
-                            ai.dealStrengths.forEach(function(s) { html += '<li>' + esc(s) + '</li>'; });
-                            html += '</ul></div>';
-                        }
-                        if (ai.riskFlags && ai.riskFlags.length) {
-                            html += '<div class="my-deals-readiness-section"><h3>Risk flags</h3><ul class="my-deals-readiness-list warn">';
-                            ai.riskFlags.forEach(function(r) {
-                                html += '<li><strong>' + esc(r.title || 'Risk') + '</strong> — ' + esc(r.detail || '') + '</li>';
-                            });
-                            html += '</ul></div>';
-                        }
-                        if (ai.ownerQuestions && ai.ownerQuestions.length) {
-                            html += '<div class="my-deals-readiness-section"><h3>Follow-up questions</h3><ul class="my-deals-readiness-list">';
-                            ai.ownerQuestions.forEach(function(q) { html += '<li>' + esc(q) + '</li>'; });
-                            html += '</ul></div>';
-                        }
-                        html += '<div class="my-deals-readiness-section"><h3>Recommended workflow (AI guidance)</h3><p>' +
-                            esc(ai.recommendedWorkflowStepExplanation) + '</p></div>';
-                        html += '</div></details>';
-                    } else {
-                        html += '<div class="my-deals-readiness-section my-deals-readiness-ai-note">AI narrative is not available. Deterministic readiness scoring is still available.</div>';
-                    }
-
-                    html += '<div class="my-deals-readiness-footer">';
-                    html += '<p class="my-deals-readiness-save-status" id="myDealsReadinessSaveStatus" aria-live="polite"></p>';
-                    html += '</div>';
-
-                    contentEl.innerHTML = html;
-                    contentEl.style.display = 'block';
+                    contentEl.classList.add('is-visible');
                     if (loadingEl) loadingEl.style.display = 'none';
 
                     (function autoSaveReadinessReviewToAirtable() {
                         if (!activeDealId || !lastResponse) return;
                         var statusEl = document.getElementById('myDealsReadinessSaveStatus');
                         if (statusEl) statusEl.textContent = 'Saving review to deal record…';
+                        var score = lastResponse.dealReadinessScore;
+                        var stage = lastResponse.readinessStage;
                         fetch('/api/ai/deal-readiness-review/save', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -3900,14 +3569,14 @@
                                 review: {
                                     dealReadinessScore: score,
                                     readinessStage: stage,
-                                    missingInformation: missingUnified,
-                                    weakInformation: weakUnified,
-                                    blockingIssues: blockingUnified,
+                                    missingInformation: lastResponse.missingInformation,
+                                    weakInformation: lastResponse.weakInformation,
+                                    blockingIssues: lastResponse.blockingIssues,
                                     sectionScores: lastResponse.sectionScores,
                                     ai: lastResponse.ai,
                                     workflowRecommendation: lastResponse.workflowRecommendation,
                                     scoreImprovementPlan: lastResponse.scoreImprovementPlan,
-                                    humanReadableSummary: (lastResponse.humanReadableSummary || '') + (packageFindings.length ? ('\n\nPackage validation findings merged: ' + packageFindings.length) : ''),
+                                    humanReadableSummary: lastResponse.humanReadableSummary || '',
                                 },
                             }),
                         })
@@ -3918,13 +3587,14 @@
                                     if (statusEl) {
                                         if (res.code === 'SAVE_NOT_CONFIGURED' || pack.status === 501 ||
                                                 (res.error && /not configured/i.test(res.error))) {
-                                            statusEl.textContent = 'Review complete. Saving to Airtable is not configured yet.';
+                                            statusEl.textContent = 'Review complete. Table updated; saving to Airtable is not configured yet.';
                                         } else {
-                                            statusEl.textContent = res.error || 'Could not save review.';
+                                            statusEl.textContent = (res.error || 'Could not save to deal record.') +
+                                                ' Table shows latest review; re-run after fixing Airtable fields.';
                                         }
                                     }
-                                    if (typeof console !== 'undefined' && console.warn) {
-                                        console.warn('[my-deals readiness save]', res.error || res.code || pack.status);
+                                    if (lastResponse && activeDealId) {
+                                        syncReadinessColumnFromApi(activeDealId, lastResponse);
                                     }
                                     return;
                                 }
@@ -3932,17 +3602,13 @@
                                 if (lastResponse && typeof lastResponse === 'object') {
                                     lastResponse.savedAt = res.savedAt || lastResponse.savedAt || '';
                                 }
-                                updateReadinessModalMetaChips(
-                                    res.savedAt || '',
-                                    missingCount,
-                                    blockingCount
-                                );
+                                updateReadinessModalMetaChips(res.savedAt || '', missingCount, blockingCount);
                                 patchDealAfterSave(activeDealId, res, res.savedAt);
                             })
                             .catch(function(err) {
                                 if (statusEl) statusEl.textContent = err.message || 'Save failed.';
-                                if (typeof console !== 'undefined' && console.warn) {
-                                    console.warn('[my-deals readiness save]', err);
+                                if (lastResponse && activeDealId) {
+                                    syncReadinessColumnFromApi(activeDealId, lastResponse);
                                 }
                             });
                     })();
@@ -3955,7 +3621,7 @@
                     openModal();
                     if (loadingEl) loadingEl.style.display = 'block';
                     contentEl.innerHTML = '';
-                    contentEl.style.display = 'none';
+                    contentEl.classList.remove('is-visible');
                     fetch('/api/ai/deal-readiness-review', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -3965,17 +3631,18 @@
                         .then(function(data) {
                             if (!data.success) {
                                 if (loadingEl) loadingEl.style.display = 'none';
-                                contentEl.style.display = 'block';
+                                contentEl.classList.add('is-visible');
                                 contentEl.innerHTML = '<div class="my-deals-readiness-error">' +
                                     String(data.error || 'Request failed').replace(/</g, '&lt;') + '</div>';
                                 return;
                             }
                             lastResponse = data;
+                            syncReadinessColumnFromApi(dealId, data);
                             renderReadinessBody(data);
                         })
                         .catch(function(err) {
                             if (loadingEl) loadingEl.style.display = 'none';
-                            contentEl.style.display = 'block';
+                            contentEl.classList.add('is-visible');
                             contentEl.innerHTML = '<div class="my-deals-readiness-error">' +
                                 String(err.message || 'Network error').replace(/</g, '&lt;') + '</div>';
                         });

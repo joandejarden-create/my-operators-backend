@@ -419,6 +419,77 @@
         .brochure-card-body .card-label { font-size: 0.8rem; color: #b7c4e6; font-weight: 600; }
         .brochure-card-body#cardOpportunity .card-line { white-space: normal; }
 
+        .brochure-owner-status {
+            background: rgba(16, 25, 53, 0.92);
+            border: 1px solid var(--neutral--600);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            margin: 0 1.5rem 0.75rem;
+        }
+        .brochure-owner-status-title {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--secondary--color-5);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .brochure-owner-status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem 0.75rem;
+        }
+        @media (max-width: 800px) {
+            .brochure-owner-status-grid { grid-template-columns: 1fr 1fr; }
+        }
+        .brochure-owner-status-item label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--neutral--500);
+            margin-bottom: 0.15rem;
+        }
+        .brochure-owner-status-item span {
+            font-size: 0.78rem;
+            color: var(--neutral--100);
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        .brochure-validation-block {
+            margin-top: 0.65rem;
+            padding-top: 0.55rem;
+            border-top: 1px solid var(--neutral--600);
+        }
+        .brochure-validation-block h4 {
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--neutral--400);
+            margin: 0 0 0.35rem;
+            font-weight: 700;
+        }
+        .brochure-validation-list {
+            margin: 0;
+            padding-left: 1.1rem;
+            font-size: 0.72rem;
+            color: var(--neutral--300);
+            line-height: 1.35;
+        }
+        .brochure-recipient-cta-btn {
+            display: inline-block;
+            margin-top: 0.35rem;
+            padding: 0.45rem 0.75rem;
+            border-radius: 6px;
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        body.brief-mode-recipient .brochure-owner-status { display: none !important; }
+        body.brief-mode-owner .brochure-recipient-only { display: none !important; }
+
         .brochure-detail-strip {
             background: #ffffff;
             color: var(--secondary--color-1);
@@ -706,12 +777,29 @@
                 <div class="brochure-page-wrap brochure-page-2">
                     <div class="brochure-page brochure-content-page">
             <div class="brochure-highlights">
+                <div id="briefOwnerStatus" class="brochure-owner-status" hidden>
+                    <div class="brochure-owner-status-title">Brief Status &amp; Readiness</div>
+                    <div class="brochure-owner-status-grid">
+                        <div class="brochure-owner-status-item"><label>Readiness Score</label><span id="briefReadinessScore">—</span></div>
+                        <div class="brochure-owner-status-item"><label>Readiness Stage</label><span id="briefReadinessStage">—</span></div>
+                        <div class="brochure-owner-status-item"><label>Brief Status</label><span id="briefStatusLabel">—</span></div>
+                        <div class="brochure-owner-status-item"><label>External Sharing</label><span id="briefExternalSharing">—</span></div>
+                    </div>
+                    <div id="briefValidationBlock" class="brochure-validation-block" hidden>
+                        <h4>Key Validation Items</h4>
+                        <ul id="briefValidationList" class="brochure-validation-list"></ul>
+                    </div>
+                </div>
                 <div class="brochure-icon-strip">
                     <div class="brochure-icon-item"><span class="icon"></span> <strong id="hlRooms">—</strong> Rooms</div>
                     <div class="brochure-icon-item"><span class="icon"></span> <strong id="hlDealType">—</strong> Deal Type</div>
                     <div class="brochure-icon-item"><span class="icon"></span> <strong id="hlBids">—</strong> Who Receives Bids</div>
                 </div>
                 <div class="brochure-cards">
+                    <div class="brochure-card" id="briefStatusCard" hidden>
+                        <div class="brochure-card-title">Brief Status</div>
+                        <div class="brochure-card-body" id="cardBriefStatus">—</div>
+                    </div>
                     <div class="brochure-card">
                         <div class="brochure-card-title">The Opportunity</div>
                         <div class="brochure-card-body" id="cardOpportunity">—</div>
@@ -739,7 +827,8 @@
                     <div class="brochure-contact-row">
                         <div class="brochure-contact-detail" id="detailContact"></div>
                         <div class="brochure-contact-cta-wrap">
-                            <p class="brochure-cta">Visit Dealality to learn more and submit a proposal.</p>
+                            <p class="brochure-cta" id="briefContactCta">Visit Dealality to learn more and submit a proposal.</p>
+                            <a href="#" class="brochure-recipient-cta-btn brochure-recipient-only" id="briefProposalCta" hidden>Submit proposal in Dealality</a>
                             <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" class="brochure-cta-logo" width="80" height="auto">
                         </div>
                     </div>
@@ -758,6 +847,7 @@
     <div id="brochureError" class="brochure-error" style="display: none;"></div>
 
     <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/deal-brief-v2.js"></script>
     <script>
         (function() {
             function getParam(name) {
@@ -862,7 +952,13 @@
                     ['Soft vs Hard Brand', ['Soft vs Hard Brand Preference']],
                     ['Plan to Self-Manage or Third Party?', ['Plan to Self-Manage or Hire Third Party?']]
                 ]},
-                { title: 'Strategic & Priorities', col: 3, rows: [
+                { title: 'Brand / Operator Review Path', col: 3, rows: [
+                    ['Who receives bids', ['Who should receive bids for this project?']],
+                    ['Preferred brands', ['Preferred Brands (up to 4)']],
+                    ['Preferred chain scales', ['Preferred Chain Scales']],
+                    ['Franchise vs management', ['Franchise vs Management Preference']]
+                ]},
+                { title: 'Strategic Priorities', col: 3, rows: [
                     ['Top Success Metrics', ['Top 3 Success Metrics']],
                     ['Top Priorities', ['Top Priorities for Project']],
                     ['Top Concerns', ['Top Concerns for this Project']],
@@ -887,10 +983,18 @@
                 if (typeof val === 'string' && val.trim() === '') return false;
                 return true;
             }
-            function renderDetailSection(fields, section, skipTitle) {
+            function isOwnerDraftMode(ctx) {
+                return ctx && ctx.mode === (window.DealBriefV2 && DealBriefV2.MODES.OWNER_DRAFT);
+            }
+            function renderDetailSection(fields, section, skipTitle, ctx) {
+                ctx = ctx || {};
+                var V2 = window.DealBriefV2;
+                var ownerDraft = isOwnerDraftMode(ctx);
                 var visible = [];
                 section.rows.forEach(function(r) {
                     var label = r[0], keys = r[1];
+                    var airtableKey = keys[0] || '';
+                    if (V2 && !V2.isFieldShownInBrief(airtableKey, fields, ctx.readiness)) return;
                     var val = getField(fields, keys);
                     if (val === 'Franchise + Third-Party Management') val = 'Franchise + 3rd Party Mgmt.';
                     if (label === 'Current brand/operator') {
@@ -907,34 +1011,103 @@
                     if (label === 'Meeting Space') {
                         val = (fields['Meeting Space'] != null && fields['Meeting Space'] !== '') ? (String(fields['Meeting Space']) + (fields['Meeting Space Unit'] ? ' ' + formatFieldValue(fields['Meeting Space Unit']) : '')) : '';
                     }
-                    if (!hasValue(val)) return;
-                    visible.push({ label: label, val: val });
+                    if (!hasValue(val)) {
+                        if (!ownerDraft) return;
+                        val = 'Not provided';
+                    }
+                    var displayLabel = V2 ? V2.executiveFieldLabel(airtableKey || label) : label;
+                    visible.push({ label: displayLabel, val: val });
                 });
                 if (visible.length === 0) return '';
-                var html = skipTitle ? '' : '<div class="brochure-detail-section-title">' + escapeHtml(section.title) + '</div>';
+                var block = skipTitle ? '' : '<div class="brochure-detail-section-title">' + escapeHtml(section.title) + '</div>';
                 visible.forEach(function(item, i) {
                     var label = item.label, val = item.val;
                     var isExecSummaryRow = (label === 'Executive summary');
                     var rowClass = isExecSummaryRow ? ' brochure-detail-row exec-summary-text' : ' brochure-detail-row';
                     if (i === visible.length - 1) rowClass += ' last-in-section';
+                    var valClass = val === 'Not provided' ? ' v empty' : ' v';
                     if (isExecSummaryRow) {
-                        html += '<div class="' + rowClass.trim() + '"><span class="v">' + escapeHtml(val) + '</span></div>';
+                        block += '<div class="' + rowClass.trim() + '"><span class="v">' + escapeHtml(val) + '</span></div>';
                     } else {
-                        html += '<div class="' + rowClass.trim() + '"><span class="l">' + escapeHtml(label) + '</span><span class="v">' + escapeHtml(val) + '</span></div>';
+                        block += '<div class="' + rowClass.trim() + '"><span class="l">' + escapeHtml(label) + '</span><span class="' + valClass.trim() + '">' + escapeHtml(val) + '</span></div>';
                     }
                 });
-                return html;
+                return block;
             }
 
-            function render(fields, normalized) {
-                function buildDealalityExecutiveSummary() {
-                    var keysVal = getField(fields, ['Total Number of Rooms/Keys']) || normalized.totalKeys || '';
-                    var locationVal = getField(fields, ['City & State', 'Country', 'Hotel Submarket & Location']) || normalized.hotelLocation || 'the identified market';
-                    var currentStatus = getField(fields, ['Current Brand Affiliation', 'Operator Name Current']) || 'current operating setup';
-                    var dealPath = getField(fields, ['Preferred Deal Path', 'Preferred Deal Structure', 'Who should receive bids for this project?']) || normalized.dealStructureLabel || 'the preferred deal path';
-                    var goals = getField(fields, ['Primary Goal for the Hotel', 'Top Priorities for Project']) || 'long-term asset value and execution certainty';
-                    return 'Dealality reviewed this ' + (keysVal ? (keysVal + '-key ') : '') + 'opportunity in ' + locationVal + '; the asset is currently under ' + currentStatus + ' and the owner is evaluating ' + dealPath + ' options. ' +
-                        'Respondents should focus on economics, flexibility, and guest positioning aligned with owner priorities around ' + goals + '.';
+            function applyBriefModeToDocument(ctx) {
+                var V2 = window.DealBriefV2;
+                if (!V2) return;
+                var ownerDraft = ctx.mode === V2.MODES.OWNER_DRAFT;
+                document.body.classList.toggle('brief-mode-owner', ownerDraft);
+                document.body.classList.toggle('brief-mode-recipient', !ownerDraft);
+                var cover = V2.coverCopyForMode(ctx.mode);
+                document.getElementById('coverConfidential').textContent = cover.confidential;
+                document.getElementById('coverSub').textContent = cover.sub;
+                var disc = document.querySelector('.brochure-cover-disclaimer');
+                if (disc) disc.textContent = cover.disclaimer;
+                var contact = V2.contactCopyForMode(ctx.mode);
+                var ctaEl = document.getElementById('briefContactCta');
+                if (ctaEl) ctaEl.textContent = contact.cta;
+                var propCta = document.getElementById('briefProposalCta');
+                if (propCta) propCta.hidden = !contact.showProposalCta;
+                var ownerPanel = document.getElementById('briefOwnerStatus');
+                if (ownerPanel) ownerPanel.hidden = !ownerDraft;
+                var statusCard = document.getElementById('briefStatusCard');
+                if (statusCard) statusCard.hidden = true;
+            }
+            function renderOwnerReadinessPanel(readiness) {
+                var V2 = window.DealBriefV2;
+                if (!V2 || !readiness) return;
+                var stage = readiness.readinessStage || '—';
+                var score = readiness.dealReadinessScore;
+                var mapped = V2.mapBriefStatusFromStage(stage);
+                document.getElementById('briefReadinessScore').textContent =
+                  score != null && score !== '' ? score + ' / 100' : '—';
+                document.getElementById('briefReadinessStage').textContent = stage;
+                document.getElementById('briefStatusLabel').textContent = mapped.briefStatus;
+                document.getElementById('briefExternalSharing').textContent = mapped.externalSharing;
+                var cardBrief = document.getElementById('cardBriefStatus');
+                if (cardBrief) {
+                  cardBrief.innerHTML =
+                    '<div class="card-line"><span class="card-label">Brief:</span> ' + escapeHtml(mapped.briefStatus) + '</div>' +
+                    '<div class="card-line"><span class="card-label">Sharing:</span> ' + escapeHtml(mapped.externalSharing) + '</div>' +
+                    '<div class="card-line"><span class="card-label">Review:</span> ' + escapeHtml(mapped.reviewStatusLabel) + '</div>';
+                }
+                var items = V2.buildValidationItems(readiness);
+                var block = document.getElementById('briefValidationBlock');
+                var list = document.getElementById('briefValidationList');
+                if (block && list) {
+                  if (items.length) {
+                    block.hidden = false;
+                    list.innerHTML = items.map(function (l) { return '<li>' + escapeHtml(l) + '</li>'; }).join('');
+                  } else {
+                    block.hidden = true;
+                    list.innerHTML = '';
+                  }
+                }
+            }
+            function render(fields, normalized, ctx) {
+                ctx = ctx || { mode: (window.DealBriefV2 && DealBriefV2.MODES.OWNER_DRAFT) };
+                var V2 = window.DealBriefV2;
+                var ownerDraft = ctx.mode === (V2 && V2.MODES.OWNER_DRAFT);
+                applyBriefModeToDocument(ctx);
+                function buildRecipientOpportunitySummary() {
+                    if (!V2) return getField(fields, ['Company Executive Summary']) || '';
+                    var meta = {
+                      keyCount: getField(fields, ['Total Number of Rooms/Keys']) || normalized.totalKeys || '',
+                      marketLine: getField(fields, ['City & State', 'Country', 'Hotel Submarket & Location']) || normalized.hotelLocation || 'the identified market',
+                      projectType: normalized.projectType || getField(fields, ['Project Type']) || ''
+                    };
+                    return V2.buildRecipientOpportunityLead(meta, normalized);
+                }
+                function buildOwnerOpportunitySummary() {
+                    if (!V2) return getField(fields, ['Company Executive Summary']) || '';
+                    var meta = {
+                      projectType: normalized.projectType || getField(fields, ['Project Type']) || '—',
+                      targetPositioning: getField(fields, ['Brand Positioning', 'Target Chain Scale', 'Hotel Chain Scale', 'Preferred Chain Scales']) || ''
+                    };
+                    return V2.buildOwnerOpportunityLead(meta);
                 }
 
                 var projectName = normalized.projectName || getField(fields, ['Project Name', 'Property Name']) || '—';
@@ -958,19 +1131,26 @@
                 document.getElementById('coverTitle').textContent = projectName;
                 document.getElementById('coverLocation').textContent = location;
                 var dealHookParts = [];
+                var positioning = getField(fields, ['Brand Positioning', 'Target Chain Scale', 'Hotel Chain Scale', 'Preferred Chain Scales']);
                 if (roomKeys) dealHookParts.push(roomKeys + ' keys');
                 if (projectType && projectType !== '—') dealHookParts.push(projectType);
-                if (opening && opening !== '—') dealHookParts.push('Target ' + opening);
-                if (normalized.dealStructureLabel) dealHookParts.push(normalized.dealStructureLabel);
+                if (positioning) dealHookParts.push(positioning);
                 document.getElementById('coverDealHook').textContent = dealHookParts.length ? dealHookParts.join(' · ') : '—';
                 var prepDate = new Date();
-                document.getElementById('coverDatePrepared').textContent = 'Prepared ' + prepDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                var cover = V2 ? V2.coverCopyForMode(ctx.mode) : null;
+                document.getElementById('coverDatePrepared').textContent =
+                  (ownerDraft ? 'Generated ' : 'Prepared ') +
+                  prepDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) +
+                  (cover && ownerDraft ? ' · ' + cover.dateSuffix : '');
                 document.getElementById('hlRooms').textContent = roomKeys || '—';
                 document.getElementById('hlDealType').textContent = projectType;
                 document.getElementById('hlBids').textContent = dealBidDisplay;
 
-                /* Opportunity card: Dealality executive narrative (avoid repetitive field list) */
-                var execSummaryInCard = getField(fields, ['Company Executive Summary']) || buildDealalityExecutiveSummary();
+                if (ownerDraft && ctx.readiness) renderOwnerReadinessPanel(ctx.readiness);
+                var execSummaryInCard = getField(fields, ['Company Executive Summary']);
+                if (!execSummaryInCard) {
+                  execSummaryInCard = ownerDraft ? buildOwnerOpportunitySummary() : buildRecipientOpportunitySummary();
+                }
                 var oppLines = [];
                 if (execSummaryInCard) oppLines.push('<div class="card-line">' + escapeHtml(execSummaryInCard) + '</div>');
                 document.getElementById('cardOpportunity').innerHTML = oppLines.length ? oppLines.join('') : '<div class="card-line">See Project Information below.</div>';
@@ -1033,14 +1213,16 @@
                 document.getElementById('cardDeal').innerHTML = dealLines.length ? dealLines.join('') : '<div class="card-line">See Deal & Capital Structure column below.</div>';
 
                 var existingExecSummary = getField(fields, ['Company Executive Summary']);
-                if (!existingExecSummary) {
-                    fields['Company Executive Summary'] = buildDealalityExecutiveSummary();
+                if (!existingExecSummary && ownerDraft) {
+                    fields['Company Executive Summary'] = buildOwnerOpportunitySummary();
+                } else if (!existingExecSummary && !ownerDraft) {
+                    fields['Company Executive Summary'] = buildRecipientOpportunitySummary();
                 }
 
                 var c1 = '', c2 = '', c3 = '';
                 detailSections.forEach(function(s) {
                     var skipTitle = (s.col === 'contact');
-                    var block = renderDetailSection(fields, s, skipTitle);
+                    var block = renderDetailSection(fields, s, skipTitle, ctx);
                     if (s.col === 1) c1 += block;
                     else if (s.col === 2) c2 += block;
                     else if (s.col === 3) c3 += block;
@@ -1158,7 +1340,8 @@
             if (dealId === 'demo') {
                 document.getElementById('brochureLoading').style.display = 'none';
                 document.getElementById('brochureContent').style.display = 'block';
-                render(alcoveGloriaDemo.fields, alcoveGloriaDemo.normalized);
+                var demoCtx = { mode: (window.DealBriefV2 && DealBriefV2.resolveBriefMode(new URLSearchParams(window.location.search))) };
+                render(alcoveGloriaDemo.fields, alcoveGloriaDemo.normalized, demoCtx);
                 return;
             }
 
@@ -1227,7 +1410,25 @@
                             'Existing MEP Capacity (Conversion)': loc.existingMEPCapacity
                         });
                     }
-                    render(fields, data.normalized || {});
+                    var params = new URLSearchParams(window.location.search || '');
+                    var briefCtx = {
+                      mode: window.DealBriefV2
+                        ? DealBriefV2.resolveBriefMode(params)
+                        : 'ownerDraft',
+                      readiness: null
+                    };
+                    if (briefCtx.mode === (DealBriefV2 && DealBriefV2.MODES.OWNER_DRAFT)) {
+                      try {
+                        var rr = await auth.fetchMyDealsApi('/api/ai/deal-readiness-review', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ dealId: dealId })
+                        });
+                        var rd = await rr.json();
+                        if (rd && rd.success) briefCtx.readiness = rd;
+                      } catch (readinessErr) { /* optional */ }
+                    }
+                    render(fields, data.normalized || {}, briefCtx);
                 } catch (err) {
                     document.getElementById('brochureLoading').style.display = 'none';
                     document.getElementById('brochureError').style.display = 'block';

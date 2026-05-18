@@ -1,0 +1,19 @@
+  function renderPage1Narrative(data, options, ctx) {
+    var meta = ctx.meta;
+    var fields = ctx.fields;
+    var score = data.dealReadinessScore;
+    var stage = data.readinessStage || "—";
+    var reviewStatus = mapReviewStatusLabel(stage, score);
+    var areaRows = buildReviewAreaRows(data);
+    var clarifications = buildClarificationAreas(data);
+    var strengths = buildNarrativeStrengths(data, meta, fields);
+    var workflowRows = buildWorkflowRows(data, stage, score);
+
+    var html = '<div class="drs-book-page-inner drs-content-page drs-page-narrative">';
+
+    html += '<motionless></motionless>'.slice(0,0);
+    html += '<div class="drs-brief-highlights">';
+    html += '<p class="drs-brief-kicker">Readiness Narrative</p>';
+    html += '<div class="drs-brief-score-cards">';
+    html += '<div class="drs-brief-card"><div class="drs-brief-card-title">Readiness Score</div>';
+    html += '<div class="drs-brief-card-body drs-brief-card-body--score"><span class="drs-score-num">' + esc(score != null && score !== "" ? score : "—") + '</span><span class="drs-score-of"> / 100</span></div></motionless></motionless>'.slice(0,0);

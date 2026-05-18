@@ -3,6 +3,7 @@ import Airtable from "airtable";
 import { stripLeadingWwwFromWebsiteUrl } from "./lib/strip-www-from-website-url.js";
 import {
   PLATFORM_USERS_TABLE_ID,
+  PUF,
   contactVisibilityFromFields,
   isContactVisibleInPartnerDirectory,
 } from "../lib/airtable/platform-users-table.js";
@@ -37,6 +38,77 @@ function generateDefaultDescription(companyName, userType) {
   }
   
   return `${company} is a ${typeText}.`;
+}
+
+/** Normalize to Partner Directory filter buckets (owners / brands / mgmt). */
+function normalizePartnerDirectoryType(type) {
+  if (!type) return "";
+  const upperType = String(type).trim().toUpperCase();
+
+  if (
+    upperType === "HOTEL OWNERS" ||
+    upperType === "HOTEL OWNER" ||
+    upperType === "OWNER" ||
+    upperType === "OWNERS"
+  ) {
+    return "HOTEL OWNERS";
+  }
+  if (
+    upperType === "HOTEL BRANDS (FRANCHISE)" ||
+    upperType === "HOTEL BRAND" ||
+    upperType === "HOTEL BRANDS" ||
+    upperType === "BRAND" ||
+    upperType === "BRANDS" ||
+    upperType === "FRANCHISE"
+  ) {
+    return "HOTEL BRANDS (FRANCHISE)";
+  }
+  if (
+    upperType === "HOTEL MGMT. COMPANY" ||
+    upperType === "HOTEL MGMT COMPANY" ||
+    upperType === "HOTEL MANAGEMENT COMPANY" ||
+    upperType === "MGMT" ||
+    upperType === "MANAGEMENT" ||
+    upperType === "OPERATOR" ||
+    upperType === "3RD PARTY OPERATOR"
+  ) {
+    return "HOTEL MGMT. COMPANY";
+  }
+  if (upperType.includes("BRAND") || upperType.includes("FRANCHISE")) {
+    return "HOTEL BRANDS (FRANCHISE)";
+  }
+  if (
+    upperType.includes("MGMT") ||
+    upperType.includes("MANAGEMENT") ||
+    upperType.includes("OPERATOR")
+  ) {
+    return "HOTEL MGMT. COMPANY";
+  }
+  if (upperType.includes("OWNER")) {
+    return "HOTEL OWNERS";
+  }
+  return "";
+}
+
+function isKnownPartnerDirectoryType(normalized) {
+  return (
+    normalized === "HOTEL OWNERS" ||
+    normalized === "HOTEL BRANDS (FRANCHISE)" ||
+    normalized === "HOTEL MGMT. COMPANY"
+  );
+}
+
+/** User row type, else linked company's Company Type / User Type (not Platform Role job title). */
+function resolveDirectoryPartnerType(personType, company) {
+  const fromPerson = normalizePartnerDirectoryType(personType);
+  if (isKnownPartnerDirectoryType(fromPerson)) return fromPerson;
+  if (company) {
+    const fromCompany = normalizePartnerDirectoryType(
+      company.userType || company.companyType || ""
+    );
+    if (isKnownPartnerDirectoryType(fromCompany)) return fromCompany;
+  }
+  return "";
 }
 
 function isRecordId(value) {
@@ -279,9 +351,16 @@ function mergeLinkedCompanyIntoIndividuals(individuals, companies) {
       ? individual.languages.filter(Boolean)
       : [];
 
+    const directoryUserType = resolveDirectoryPartnerType(individual.userType, company);
+    const personDirectoryType = normalizePartnerDirectoryType(individual.userType);
+
     return {
       ...individual,
       companyName,
+      userType: directoryUserType,
+      userTypeViaCompany:
+        !isKnownPartnerDirectoryType(personDirectoryType) &&
+        isKnownPartnerDirectoryType(directoryUserType),
       brands: mergedBrands,
       brandRecordIds: uniqueStrings([
         ...(individual.brandRecordIds || []),
@@ -488,17 +567,10 @@ function parseNumericField(fields, names) {
   return 0;
 }
 
-/** Partner Directory stat: unique brands represented across deals (User Management column). */
-const DEALS_UNIQUE_BRAND_COUNT_FIELDS = ["Unique Brands (Deals)", "Deals Unique Brands"];
-
-function readDealsUniqueBrandCountFromFields(fields) {
-  const safe = fields && typeof fields === "object" ? fields : {};
-  for (const name of DEALS_UNIQUE_BRAND_COUNT_FIELDS) {
-    const raw = getFieldRawInsensitive(safe, [name]);
-    const num = coerceFiniteNumber(raw);
-    if (num !== null) return { value: num, fromDealsColumn: true };
-  }
-  return { value: null, fromDealsColumn: false };
+function readPersonStatFromFields(fields, airtableColumnName) {
+  const raw = getFieldRawInsensitive(fields, [airtableColumnName]);
+  const num = coerceFiniteNumber(raw);
+  return num !== null ? num : 0;
 }
 
 // Field mappings for Airtable tables
@@ -1147,7 +1219,10 @@ function formatUserRecord(record) {
   const userType =
     fields[F.users.userType] ||
     fields["User Type"] ||
+    "";
+  const platformRole =
     fields["Platform Role"] ||
+    fields[F.users.userType] ||
     "";
   const email =
     fields[F.users.email] ||
@@ -1206,15 +1281,9 @@ function formatUserRecord(record) {
     }
     enrichment.brands = uniqueStrings(enrichment.brands);
   }
-  const closedDeals = parseNumericField(fields, ["Closed Deals", "closed_deals"]);
-  const submittedBids = parseNumericField(fields, ["Submitted Bids", "submitted_bids"]);
-  const legacyBrandCount = parseNumericField(fields, ["Brand Count", "# of Brand", "Number of Brands", "brand_count"]);
-  const dealsUnique = readDealsUniqueBrandCountFromFields(fields);
-  const brandCountFromDealsColumn = dealsUnique.fromDealsColumn;
-  // Use only explicit numeric columns — never linked-brand list length (0 must stay 0).
-  const resolvedBrandCount = brandCountFromDealsColumn
-    ? (dealsUnique.value ?? 0)
-    : legacyBrandCount;
+  const closedDeals = readPersonStatFromFields(fields, PUF.closedDeals);
+  const brandCount = readPersonStatFromFields(fields, PUF.uniqueBrandsDeals);
+  const submittedBids = readPersonStatFromFields(fields, PUF.submittedBids);
 
   const rawFields = { ...fields };
   if (!rawFields["Created Date"] && record.createdTime) {
@@ -1232,7 +1301,7 @@ function formatUserRecord(record) {
     email: email || "",
     companyEmail: email || "",
     userType: userType || "",
-    platformRole: fields["Platform Role"] || userType || "",
+    platformRole: platformRole || "",
     regions,
     coverageTerritories,
     languages,
@@ -1240,8 +1309,7 @@ function formatUserRecord(record) {
     location: location || "",
     website: website || "",
     closedDeals,
-    brandCount: resolvedBrandCount,
-    brandCountFromDealsColumn,
+    brandCount,
     submittedBids,
     profilePicture: profilePicture || null,
     responsivenessCombinedBadge:

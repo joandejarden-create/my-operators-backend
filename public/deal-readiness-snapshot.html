@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Readiness Snapshot - Dealality</title>
+    <link rel="stylesheet" href="/css/deal-readiness-snapshot.css">
+</head>
+<body>
+    <div class="drs-page" id="drsPage">
+        <div class="drs-page-loading" id="drsPageLoading">Loading Deal Readiness Snapshot…</div>
+        <div id="drsPageRoot" hidden></div>
+    </div>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/deal-readiness-snapshot.js"></script>
+    <script>
+    (function () {
+        var params = new URLSearchParams(window.location.search || "");
+        var dealId = (params.get("dealId") || "").trim();
+        var chromeless = params.get("embed") === "1" || params.get("embed") === "true";
+        var autoPrint = params.get("print") === "1";
+        var page = document.getElementById("drsPage");
+        var loading = document.getElementById("drsPageLoading");
+        var root = document.getElementById("drsPageRoot");
+
+        if (page) {
+            page.classList.add("drs-page--full");
+            if (chromeless) page.classList.add("drs-page--chromeless");
+        }
+
+        function showError(msg) {
+            if (loading) loading.style.display = "none";
+            if (root) {
+                root.hidden = false;
+                root.innerHTML = '<div class="drs-page-error">' + String(msg || "Request failed").replace(/</g, "&lt;") + "</div>";
+            }
+        }
+
+        if (!dealId || dealId.indexOf("rec") !== 0) {
+            showError("A valid dealId query parameter is required (e.g. ?dealId=rec…).");
+            return;
+        }
+
+        function runReview() {
+            var fetchFn = window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.fetchMyDealsApi
+                ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+                : function (url, opts) { return fetch(url, opts); };
+
+            fetchFn("/api/ai/deal-readiness-review", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ dealId: dealId }),
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (!data.success) {
+                        showError(data.error || "Could not load readiness review.");
+                        return;
+                    }
+                    if (loading) loading.style.display = "none";
+                    if (!root || !window.DealReadinessSnapshot) {
+                        showError("Snapshot renderer failed to load.");
+                        return;
+                    }
+                    root.hidden = false;
+                    window.DealReadinessSnapshot.render(root, data, {
+                        embed: false,
+                        fullPage: true,
+                        dealId: dealId,
+                        generatedAt: new Date().toISOString(),
+                    });
+                    if (autoPrint) {
+                        window.setTimeout(function () {
+                            window.print();
+                        }, 600);
+                    }
+                })
+                .catch(function (err) {
+                    showError(err.message || "Network error");
+                });
+        }
+
+        if (window.DealalityMemberstackAuth && typeof window.DealalityMemberstackAuth.whenReady === "function") {
+            window.DealalityMemberstackAuth.whenReady(runReview);
+        } else {
+            runReview();
+        }
+    })();
+    </script>
+</body>
+</html>

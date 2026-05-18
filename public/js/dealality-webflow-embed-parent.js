@@ -13,13 +13,23 @@
     return true;
   }
 
+  function embedPageNeedsMsToken(pathname) {
+    if (!pathname) return false;
+    return /\/(my-deals|new-deal-setup|deal-summary|brand-development-dashboard|deal-room-owner|deal-room-brand|outreach-plan-wizard|brand-explorer)(\.html)?$/i.test(
+      pathname
+    );
+  }
+
   function appendTokenToIframeSrc(frame, token) {
     if (!frame || !isApiJwt(token)) return;
     try {
       var src = frame.getAttribute('src') || frame.src || '';
-      if (!src || src.indexOf('my-operators-backend') === -1) return;
-      if (src.indexOf('my-deals') === -1) return;
+      if (!src || src === 'about:blank') return;
       var url = new URL(src, global.location.href);
+      var isRailway = src.indexOf('my-operators-backend') !== -1;
+      var isLocalEmbed = embedPageNeedsMsToken(url.pathname);
+      if (!isRailway && !isLocalEmbed) return;
+      if (isRailway && src.indexOf('my-deals') === -1) return;
       if (url.searchParams.get('msToken')) return;
       url.searchParams.set('msToken', token.trim());
       frame.src = url.toString();

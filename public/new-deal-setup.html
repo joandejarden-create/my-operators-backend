@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Deal - Dealality Platform</title>
+    <link rel="stylesheet" href="/css/deal-readiness-snapshot.css">
     <style>
         /* CSS Variables – match Brand Setup */
         :root {
@@ -729,7 +730,17 @@
             background: none; border: none; color: var(--neutral--400); font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 8px;
         }
         .deal-readiness-modal-close:hover { color: var(--neutral--100); }
-        .deal-readiness-modal-body { padding: 16px 20px 20px; overflow-y: auto; flex: 1; min-height: 0; }
+        .deal-readiness-modal-body {
+            padding: 16px 20px 20px;
+            overflow: hidden;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #dealReadinessContent:not(.hidden) {
+            display: block;
+        }
         .deal-readiness-score-pill {
             display: inline-flex; align-items: baseline; gap: 8px; margin-bottom: 12px;
             padding: 8px 12px; border-radius: 8px; background: rgba(20, 202, 116, 0.12); border: 1px solid rgba(20, 202, 116, 0.35);
@@ -845,8 +856,8 @@
                     <div class="deal-readiness-modal">
                         <div class="deal-readiness-modal-header">
                             <div>
-                                <h2 id="dealReadinessModalTitle">Deal Readiness Review</h2>
-                                <p class="sub">Deterministic score and gaps from your saved fields; narrative from AI when configured.</p>
+                                <h2 id="dealReadinessModalTitle">Deal Readiness Snapshot</h2>
+                                <p class="sub">Readiness signals from saved Deal Setup fields. Draft output for owner/advisor validation.</p>
                             </div>
                             <button type="button" class="deal-readiness-modal-close" id="dealReadinessModalClose" aria-label="Close">×</button>
                         </div>
@@ -3089,6 +3100,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/dealality-webflow-nav.js"></script>
     <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/deal-readiness-snapshot.js"></script>
     <script>
 (function () {
     var form = document.getElementById("dealForm");
@@ -5329,133 +5341,22 @@
 
         function renderReadiness(data) {
             if (!contentEl) return;
-            var score = data.dealReadinessScore;
-            var stage = String(data.readinessStage || "");
-            var blocking = data.blockingIssues || [];
-            var missing = data.missingInformation || [];
-            var weak = data.weakInformation || [];
-            var labeled = data.sectionScoresLabeled;
-            var sections = data.sectionScores || {};
-            var ai = data.ai;
-            var wf = data.workflowRecommendation || {};
-            var plan = data.scoreImprovementPlan || { targetScoreLabel: "", priorityActions: [] };
-
-            var html = "";
-            html += '<div class="deal-readiness-modal-badges">';
-            html += '<span class="deal-readiness-badge-chip">Score: ' + esc(score) + "/100</span>";
-            html += '<span class="deal-readiness-badge-chip">Stage: ' + esc(stage) + "</span>";
-            html += '<span class="deal-readiness-badge-chip muted">' + esc(wf.label || "Workflow") + "</span>";
-            html += "</div>";
-
-            html += '<div class="deal-readiness-section"><h3>Section scores</h3><div class="deal-readiness-section-grid">';
-            if (labeled && labeled.length) {
-                labeled.forEach(function (row) {
-                    var pctStr = (row.score == null || row.score === "") ? "—" : esc(row.score) + "%";
-                    html += '<div class="deal-readiness-section-card"><div class="pct">' + pctStr + "</div>" +
-                        '<div class="lbl">' + esc(row.label || row.id) + "</div></div>";
-                });
-            } else {
-                Object.keys(sections).forEach(function (k) {
-                    var v = sections[k];
-                    var pctStr2 = (v == null || v === "") ? "—" : esc(v) + "%";
-                    html += '<div class="deal-readiness-section-card"><div class="pct">' + pctStr2 + "</div>" +
-                        '<div class="lbl">' + esc(k) + "</div></div>";
-                });
+            if (!window.DealReadinessSnapshot || typeof window.DealReadinessSnapshot.render !== "function") {
+                contentEl.innerHTML = '<div class="deal-readiness-error">Snapshot renderer failed to load.</div>';
+                contentEl.classList.remove("hidden");
+                if (loadingEl) loadingEl.classList.add("hidden");
+                return;
             }
-            html += "</div></div>";
-
-            if (plan.targetScoreLabel) {
-                html += '<div class="deal-readiness-section"><h3>How to improve score</h3><p style="font-size:13px;color:var(--neutral--400);margin:0 0 8px 0;">' +
-                    esc(plan.targetScoreLabel) + "</p>";
-                html += '<ul class="deal-readiness-improve-list">';
-                (plan.priorityActions || []).forEach(function (a) {
-                    var sev = (a && a.severity) ? a.severity : "medium";
-                    html += '<li class="deal-readiness-improve-item"><span class="deal-readiness-sev ' + esc(sev) + '">' +
-                        esc(sev) + '</span><strong style="color:var(--neutral--100);">' + esc(a.label) +
-                        "</strong><br/>" + esc(a.reason);
-                    if (a.relatedTab || a.relatedSection || a.relatedField) {
-                        html += '<br/><span style="color:#7e89ac;font-size:11px;">';
-                        if (a.relatedTab) html += "Tab: " + esc(a.relatedTab);
-                        if (a.relatedSection) html += (a.relatedTab ? " · " : "") + "Section: " + esc(a.relatedSection);
-                        if (a.relatedField) html += ((a.relatedTab || a.relatedSection) ? " · " : "") + "Field: " + esc(a.relatedField);
-                        html += "</span>";
-                    }
-                    html += "</li>";
-                });
-                html += "</ul></div>";
-            }
-
-            if (blocking.length) {
-                html += '<div class="deal-readiness-blocking-callout"><h3>Blocking issues</h3><ul class="deal-readiness-list block">';
-                blocking.forEach(function (t) { html += "<li>" + esc(t) + "</li>"; });
-                html += "</ul></div>";
-            }
-
-            if (missing.length) {
-                html += '<div class="deal-readiness-section"><h3>Missing information</h3><ul class="deal-readiness-list warn">';
-                missing.slice(0, 28).forEach(function (m) {
-                    var label = (m && m.field) ? m.field : JSON.stringify(m);
-                    var tabHint = (m && m.relatedTab && String(m.relatedTab).trim()) ? String(m.relatedTab).trim()
-                        : ((m && m.section) ? String(m.section).trim() : "");
-                    var sec = tabHint ? " (" + esc(tabHint) + ")" : "";
-                    html += "<li>" + esc(label) + sec + "</li>";
-                });
-                if (missing.length > 28) html += "<li>…and " + (missing.length - 28) + " more</li>";
-                html += "</ul></div>";
-            }
-            if (weak.length) {
-                html += '<div class="deal-readiness-section"><h3>Placeholder-style text (optional penalty)</h3><ul class="deal-readiness-list warn">';
-                weak.slice(0, 18).forEach(function (w) {
-                    var line = (w && w.field) ? w.field : "";
-                    var tabHintW = (w && w.relatedTab && String(w.relatedTab).trim()) ? String(w.relatedTab).trim()
-                        : ((w && w.section) ? String(w.section).trim() : "");
-                    var secW = tabHintW ? " (" + esc(tabHintW) + ")" : "";
-                    html += "<li>" + esc(line) + secW + "</li>";
-                });
-                html += "</ul></div>";
-            }
-
-            if (wf.explanation) {
-                html += '<div class="deal-readiness-section"><h3>Workflow recommendation</h3><p style="font-size:13px;">' +
-                    esc(wf.explanation) + "</p>";
-                if (wf.allowedNextActions && wf.allowedNextActions.length) {
-                    html += '<ul class="deal-readiness-list">';
-                    wf.allowedNextActions.forEach(function (ac) { html += "<li>" + esc(ac) + "</li>"; });
-                    html += "</ul>";
-                }
-                html += "</div>";
-            }
-
-            if (ai) {
-                html += '<div class="deal-readiness-section"><h3>Executive summary</h3><p>' + esc(ai.executiveSummary) + "</p></div>";
-                if (ai.dealStrengths && ai.dealStrengths.length) {
-                    html += '<div class="deal-readiness-section"><h3>Strengths</h3><ul class="deal-readiness-list">';
-                    ai.dealStrengths.forEach(function (s) { html += "<li>" + esc(s) + "</li>"; });
-                    html += "</ul></div>";
-                }
-                if (ai.riskFlags && ai.riskFlags.length) {
-                    html += '<div class="deal-readiness-section"><h3>Risk flags</h3><ul class="deal-readiness-list warn">';
-                    ai.riskFlags.forEach(function (r) {
-                        html += "<li><strong>" + esc(r.title || "Risk") + "</strong> — " + esc(r.detail || "") + "</li>";
-                    });
-                    html += "</ul></div>";
-                }
-                if (ai.ownerQuestions && ai.ownerQuestions.length) {
-                    html += '<div class="deal-readiness-section"><h3>Follow-up questions</h3><ul class="deal-readiness-list">';
-                    ai.ownerQuestions.forEach(function (q) { html += "<li>" + esc(q) + "</li>"; });
-                    html += "</ul></div>";
-                }
-                html += '<div class="deal-readiness-section"><h3>Recommended workflow (AI guidance)</h3><p>' +
-                    esc(ai.recommendedWorkflowStepExplanation) + "</p></div>";
-            } else {
-                html += '<div class="deal-readiness-section deal-readiness-ai-note">AI narrative is not available. Deterministic readiness scoring is still available.</div>';
-            }
-
-            html += '<div class="deal-readiness-footer">';
-            html += '<p class="deal-readiness-save-status" id="dealReadinessSaveStatus" aria-live="polite"></p>';
-            html += "</div>";
-
-            contentEl.innerHTML = html;
+            var fullPageHref = dealId
+                ? "/deal-readiness-snapshot.html?dealId=" + encodeURIComponent(dealId)
+                : "";
+            window.DealReadinessSnapshot.render(contentEl, data, {
+                embed: true,
+                dealId: dealId,
+                fullPageHref: fullPageHref,
+                footerHtml: '<p class="deal-readiness-save-status" id="dealReadinessSaveStatus" aria-live="polite"></p>',
+                generatedAt: data.savedAt || new Date().toISOString(),
+            });
             contentEl.classList.remove("hidden");
             if (loadingEl) loadingEl.classList.add("hidden");
 
@@ -5494,9 +5395,6 @@
                                     statusEl.textContent = res.error || "Could not save review.";
                                 }
                             }
-                            if (typeof console !== "undefined" && console.warn) {
-                                console.warn("[deal-setup readiness save]", res.error || res.code || pack.status);
-                            }
                             setHeaderRunBadge(lastDealReadinessResponse, false);
                             return;
                         }
@@ -5505,9 +5403,6 @@
                     })
                     .catch(function (err) {
                         if (statusEl) statusEl.textContent = err.message || "Save failed.";
-                        if (typeof console !== "undefined" && console.warn) {
-                            console.warn("[deal-setup readiness save]", err);
-                        }
                         setHeaderRunBadge(lastDealReadinessResponse, false);
                     });
             })();

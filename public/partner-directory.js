@@ -153,9 +153,9 @@ class PartnerDirectory {
             userType: 'User Type',
             location: 'Country', // Primary location field (also checks "Location")
             website: 'Website', // Also checks "Personal Website"
-            closedDeals: 'Closed Deals',
-            brandCount: 'Brand Count',
-            submittedBids: 'Submitted Bids',
+            closedDeals: PartnerDirectory.INDIVIDUAL_STAT_COLUMNS.closedDeals,
+            brandCount: PartnerDirectory.INDIVIDUAL_STAT_COLUMNS.brandCount,
+            submittedBids: PartnerDirectory.INDIVIDUAL_STAT_COLUMNS.submittedBids,
             regions: 'Regions', // Can be array or checkbox fields
             companyName: 'Company Name', // From Company Profile linked record
             companyRecordId: null, // Not a field, but stored for lookups
@@ -850,9 +850,10 @@ class PartnerDirectory {
         const website = stripLeadingWwwFromWebsiteUrl(
             String(fields["Website"] || fields["Personal Website"] || '').trim()
         );
-        const closedDeals = fields["Closed Deals"] ? Number(fields["Closed Deals"]) : 0;
-        const brandCount = fields["Brand Count"] ? Number(fields["Brand Count"]) : 0;
-        const submittedBids = fields["Submitted Bids"] ? Number(fields["Submitted Bids"]) : 0;
+        const statCols = PartnerDirectory.INDIVIDUAL_STAT_COLUMNS;
+        const closedDeals = this.coerceAirtableStat(fields[statCols.closedDeals]);
+        const brandCount = this.coerceAirtableStat(fields[statCols.brandCount]);
+        const submittedBids = this.coerceAirtableStat(fields[statCols.submittedBids]);
         
         // Debug: Log company name extraction
         if (firstName || lastName) {
@@ -1029,33 +1030,46 @@ class PartnerDirectory {
         return '';
     }
 
-    /**
-     * Individual stats from API (`closedDeals`, `brandCount`, `submittedBids`), with fallback to `rawFields`
-     * when a property is missing (commas/spacing in Airtable values are tolerated).
-     */
-    getIndividualMetric(individual, propName, airtableKeys) {
-        const coerce = (raw) => {
-            if (raw == null || raw === '') return null;
-            const n = Number(String(raw).replace(/,/g, '').trim());
-            return Number.isFinite(n) ? n : null;
+    coerceAirtableStat(raw) {
+        if (raw == null || raw === '') return 0;
+        const n = Number(String(raw).replace(/,/g, '').trim());
+        return Number.isFinite(n) ? n : 0;
+    }
+
+    /** Exact Users-table field names from the Airtable API (UI grid may label them with a leading #). */
+    static INDIVIDUAL_STAT_COLUMNS = {
+        closedDeals: 'Closed Deals',
+        brandCount: 'Unique Brands (Deals)',
+        submittedBids: 'Submitted Bids',
+    };
+
+    readPersonStatColumn(rawFields, columnName) {
+        if (!rawFields || typeof rawFields !== 'object' || !columnName) return undefined;
+        if (Object.prototype.hasOwnProperty.call(rawFields, columnName)) {
+            return rawFields[columnName];
+        }
+        const want = String(columnName).trim().toLowerCase();
+        for (const key of Object.keys(rawFields)) {
+            if (key.trim().toLowerCase() === want) return rawFields[key];
+        }
+        return undefined;
+    }
+
+    /** Direct read: one Airtable column on the person row → one stat (no alternate fields). */
+    getIndividualDirectoryStats(individual) {
+        const cols = PartnerDirectory.INDIVIDUAL_STAT_COLUMNS;
+        const rf = individual?.rawFields;
+        return {
+            closedDeals: this.coerceAirtableStat(
+                this.readPersonStatColumn(rf, cols.closedDeals) ?? individual?.closedDeals
+            ),
+            brandCount: this.coerceAirtableStat(
+                this.readPersonStatColumn(rf, cols.brandCount) ?? individual?.brandCount
+            ),
+            submittedBids: this.coerceAirtableStat(
+                this.readPersonStatColumn(rf, cols.submittedBids) ?? individual?.submittedBids
+            ),
         };
-        const top = coerce(individual[propName]);
-        if (top !== null) return top;
-
-        const rf = individual.rawFields;
-        if (!rf || typeof rf !== 'object') return 0;
-
-        const lowerMap = {};
-        for (const k of Object.keys(rf)) {
-            lowerMap[k.trim().toLowerCase()] = rf[k];
-        }
-        for (const key of airtableKeys) {
-            let raw = rf[key];
-            if (raw === undefined) raw = lowerMap[String(key).trim().toLowerCase()];
-            const n = coerce(raw);
-            if (n !== null) return n;
-        }
-        return 0;
     }
 
     async fetchPartners() {
@@ -1263,29 +1277,7 @@ class PartnerDirectory {
     }
 
     applyFilters() {
-        // Normalize filter values and company types for comparison
-        const normalizeType = (type) => {
-            if (!type) return '';
-            const upperType = String(type).trim().toUpperCase();
-            
-            // Normalize singular to plural and handle variations
-            if (upperType === "HOTEL OWNERS" || upperType === "HOTEL OWNER" || upperType === "OWNER" || upperType === "OWNERS") {
-                return "HOTEL OWNERS";
-            } else if (upperType === "HOTEL BRANDS (FRANCHISE)" || upperType === "HOTEL BRAND" || upperType === "HOTEL BRANDS" || upperType === "BRAND" || upperType === "BRANDS" || upperType === "FRANCHISE") {
-                return "HOTEL BRANDS (FRANCHISE)";
-            } else if (upperType === "HOTEL MGMT. COMPANY" || upperType === "HOTEL MGMT COMPANY" || upperType === "HOTEL MANAGEMENT COMPANY" || upperType === "MGMT" || upperType === "MANAGEMENT" || upperType === "OPERATOR") {
-                return "HOTEL MGMT. COMPANY";
-            } else if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                return "HOTEL BRANDS (FRANCHISE)";
-            } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                return "HOTEL MGMT. COMPANY";
-            } else if (upperType.includes('OWNER')) {
-                return "HOTEL OWNERS";
-            }
-            return upperType;
-        };
-
-        const filterType = normalizeType(this.currentUserTypeFilter);
+        const filterType = this.normalizePartnerDirectoryType(this.currentUserTypeFilter);
 
         // Apply filters
         let filtered = this.companies.filter(company => {
@@ -1299,7 +1291,9 @@ class PartnerDirectory {
             
             // Type filter
             if (filterType) {
-                const companyType = normalizeType(company.userType);
+                const companyType = this.normalizePartnerDirectoryType(
+                    company.userType || company.companyType || ''
+                );
                 if (companyType !== filterType) {
                     return false;
                 }
@@ -1331,7 +1325,7 @@ class PartnerDirectory {
             
             // Type filter
             if (filterType) {
-                const individualType = normalizeType(individual.userType);
+                const individualType = this.getIndividualPartnerType(individual);
                 if (individualType !== filterType) {
                     return false;
                 }
@@ -2033,6 +2027,10 @@ class PartnerDirectory {
             if (!card) {
                 card = type === 'company' ? this.createCompanyCard(item) : this.createIndividualCard(item);
                 newCards.push(card);
+            } else if (type === 'individual') {
+                this.applyIndividualCardTypeStyling(card, item);
+            } else if (type === 'company') {
+                this.applyCompanyCardTypeStyling(card, item);
             }
             return card;
         });
@@ -2116,27 +2114,7 @@ class PartnerDirectory {
         });
         
         // Step 3: Apply all filters (search, user type, region) to favorite companies
-        const normalizeType = (type) => {
-            if (!type) return '';
-            const upperType = String(type).trim().toUpperCase();
-            
-            if (upperType === "HOTEL OWNERS" || upperType === "HOTEL OWNER" || upperType === "OWNER" || upperType === "OWNERS") {
-                return "HOTEL OWNERS";
-            } else if (upperType === "HOTEL BRANDS (FRANCHISE)" || upperType === "HOTEL BRAND" || upperType === "HOTEL BRANDS" || upperType === "BRAND" || upperType === "BRANDS" || upperType === "FRANCHISE") {
-                return "HOTEL BRANDS (FRANCHISE)";
-            } else if (upperType === "HOTEL MGMT. COMPANY" || upperType === "HOTEL MGMT COMPANY" || upperType === "HOTEL MANAGEMENT COMPANY" || upperType === "MGMT" || upperType === "MANAGEMENT" || upperType === "OPERATOR") {
-                return "HOTEL MGMT. COMPANY";
-            } else if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                return "HOTEL BRANDS (FRANCHISE)";
-            } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                return "HOTEL MGMT. COMPANY";
-            } else if (upperType.includes('OWNER')) {
-                return "HOTEL OWNERS";
-            }
-            return upperType;
-        };
-        
-        const filterType = normalizeType(this.currentUserTypeFilter);
+        const filterType = this.normalizePartnerDirectoryType(this.currentUserTypeFilter);
         
         let filteredFavoriteCompanies = favoriteCompanies.filter(company => {
             // Search filter
@@ -2149,7 +2127,9 @@ class PartnerDirectory {
             
             // Type filter
             if (filterType) {
-                const companyType = normalizeType(company.userType);
+                const companyType = this.normalizePartnerDirectoryType(
+                    company.userType || company.companyType || ''
+                );
                 if (companyType !== filterType) {
                     return false;
                 }
@@ -2176,7 +2156,7 @@ class PartnerDirectory {
             
             // Type filter
             if (filterType) {
-                const individualType = normalizeType(individual.userType);
+                const individualType = this.getIndividualPartnerType(individual);
                 if (individualType !== filterType) {
                     return false;
                 }
@@ -2240,30 +2220,7 @@ class PartnerDirectory {
         const card = document.createElement('div');
         card.dataset.itemId = company.id || company.companyId;
         
-        // Determine company type for color differentiation
-        const normalizeType = (type) => {
-            if (!type) return '';
-            const upperType = String(type).trim().toUpperCase();
-            
-            if (upperType === "HOTEL OWNERS" || upperType === "HOTEL OWNER" || upperType === "OWNER" || upperType === "OWNERS") {
-                return "owners";
-            } else if (upperType === "HOTEL BRANDS (FRANCHISE)" || upperType === "HOTEL BRAND" || upperType === "HOTEL BRANDS" || upperType === "BRAND" || upperType === "BRANDS" || upperType === "FRANCHISE") {
-                return "brands";
-            } else if (upperType === "HOTEL MGMT. COMPANY" || upperType === "HOTEL MGMT COMPANY" || upperType === "HOTEL MANAGEMENT COMPANY" || upperType === "MGMT" || upperType === "MANAGEMENT" || upperType === "OPERATOR") {
-                return "mgmt";
-            } else if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                return "brands";
-            } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                return "mgmt";
-            } else if (upperType.includes('OWNER')) {
-                return "owners";
-            }
-            return '';
-        };
-        
-        const companyType = normalizeType(company.userType);
-        const typeClass = companyType ? `company-type-${companyType}` : '';
-        card.className = `company-card ${typeClass}`;
+        this.applyCompanyCardTypeStyling(card, company);
         
         // Check if favorited
         const isFavorited = this.isFavorited(company.id, 'company');
@@ -2350,43 +2307,7 @@ class PartnerDirectory {
         const card = document.createElement('div');
         card.dataset.itemId = individual.id;
         
-        // Determine user type for color differentiation (same logic as companies)
-        const normalizeType = (type) => {
-            if (!type) return '';
-            const upperType = String(type).trim().toUpperCase();
-            
-            if (upperType === "HOTEL OWNERS" || upperType === "HOTEL OWNER" || upperType === "OWNER" || upperType === "OWNERS") {
-                return "owners";
-            } else if (upperType === "HOTEL BRANDS (FRANCHISE)" || upperType === "HOTEL BRAND" || upperType === "HOTEL BRANDS" || upperType === "BRAND" || upperType === "BRANDS" || upperType === "FRANCHISE") {
-                return "brands";
-            } else if (upperType === "HOTEL MGMT. COMPANY" || upperType === "HOTEL MGMT COMPANY" || upperType === "HOTEL MANAGEMENT COMPANY" || upperType === "MGMT" || upperType === "MANAGEMENT" || upperType === "OPERATOR") {
-                return "mgmt";
-            } else if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                return "brands";
-            } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                return "mgmt";
-            } else if (upperType.includes('OWNER')) {
-                return "owners";
-            }
-            return '';
-        };
-        
-        // Try to get user type from multiple sources
-        // 1. Direct userType field
-        // 2. Company Title (might contain user type info)
-        // 3. Company name lookup (if we have company info)
-        let userTypeToCheck = individual.userType || individual.companyTitle || '';
-        
-        // If we have a company name, we could also try to look it up from companies array
-        // But for now, use what we have
-        const userType = normalizeType(userTypeToCheck);
-        const typeClass = userType ? `individual-type-${userType}` : '';
-        card.className = `individual-card ${typeClass}`;
-        
-        // Debug: Log user type determination
-        if (!userType && (individual.firstName || individual.lastName)) {
-            const fullName = `${individual.firstName || ''} ${individual.lastName || ''}`.trim();
-        }
+        this.applyIndividualCardTypeStyling(card, individual);
         
         const firstName = (individual.firstName || '').trim();
         const lastName = (individual.lastName || '').trim();
@@ -2432,16 +2353,8 @@ class PartnerDirectory {
         const coverageCardText = displayCtx.coverageTerritoriesText || '';
         const languagesCardText = this.formatLanguagesListForDisplay(displayCtx.languages);
 
-        // Stats from API when present (merged brand counts may appear on individual)
-        const closedDealsDisplay = this.getIndividualMetric(individual, 'closedDeals', ['Closed Deals']);
-        const brandCountDisplay = this.getIndividualMetric(individual, 'brandCount', [
-            'Unique Brands (Deals)',
-            'Deals Unique Brands',
-            'Brand Count',
-            '# of Brand',
-            'Number of Brands',
-        ]);
-        const submittedBidsDisplay = this.getIndividualMetric(individual, 'submittedBids', ['Submitted Bids']);
+        const { closedDeals: closedDealsDisplay, brandCount: brandCountDisplay, submittedBids: submittedBidsDisplay } =
+            this.getIndividualDirectoryStats(individual);
 
         const coverageValueClass = coverageCardText
             ? 'individual-card__meta-value'
@@ -3720,15 +3633,8 @@ class PartnerDirectory {
         const responsivenessExplanation = this.getResponsivenessExplanation(individual);
         const companyLabel = linkedCompany?.name || companyName;
 
-        const closedDealsDisplay = this.getIndividualMetric(individual, 'closedDeals', ['Closed Deals']);
-        const brandCountDisplay = this.getIndividualMetric(individual, 'brandCount', [
-            'Unique Brands (Deals)',
-            'Deals Unique Brands',
-            'Brand Count',
-            '# of Brand',
-            'Number of Brands',
-        ]);
-        const submittedBidsDisplay = this.getIndividualMetric(individual, 'submittedBids', ['Submitted Bids']);
+        const { closedDeals: closedDealsDisplay, brandCount: brandCountDisplay, submittedBids: submittedBidsDisplay } =
+            this.getIndividualDirectoryStats(individual);
 
         let avatarHtml = '';
         if (individual.profilePicture) {
@@ -3894,6 +3800,98 @@ class PartnerDirectory {
         return list.filter((individual) => this.isIndividualVisibleInPartnerDirectory(individual));
     }
 
+    /** Match filter buttons: HOTEL OWNERS | HOTEL BRANDS (FRANCHISE) | HOTEL MGMT. COMPANY */
+    normalizePartnerDirectoryType(type) {
+        if (!type) return '';
+        const upperType = String(type).trim().toUpperCase();
+
+        if (upperType === 'HOTEL OWNERS' || upperType === 'HOTEL OWNER' || upperType === 'OWNER' || upperType === 'OWNERS') {
+            return 'HOTEL OWNERS';
+        }
+        if (
+            upperType === 'HOTEL BRANDS (FRANCHISE)' ||
+            upperType === 'HOTEL BRAND' ||
+            upperType === 'HOTEL BRANDS' ||
+            upperType === 'BRAND' ||
+            upperType === 'BRANDS' ||
+            upperType === 'FRANCHISE'
+        ) {
+            return 'HOTEL BRANDS (FRANCHISE)';
+        }
+        if (
+            upperType === 'HOTEL MGMT. COMPANY' ||
+            upperType === 'HOTEL MGMT COMPANY' ||
+            upperType === 'HOTEL MANAGEMENT COMPANY' ||
+            upperType === 'MGMT' ||
+            upperType === 'MANAGEMENT' ||
+            upperType === 'OPERATOR' ||
+            upperType === '3RD PARTY OPERATOR'
+        ) {
+            return 'HOTEL MGMT. COMPANY';
+        }
+        if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
+            return 'HOTEL BRANDS (FRANCHISE)';
+        }
+        if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
+            return 'HOTEL MGMT. COMPANY';
+        }
+        if (upperType.includes('OWNER')) {
+            return 'HOTEL OWNERS';
+        }
+        return '';
+    }
+
+    isKnownPartnerDirectoryType(normalized) {
+        return (
+            normalized === 'HOTEL OWNERS' ||
+            normalized === 'HOTEL BRANDS (FRANCHISE)' ||
+            normalized === 'HOTEL MGMT. COMPANY'
+        );
+    }
+
+    partnerDirectoryTypeToCardClass(normalized) {
+        if (normalized === 'HOTEL OWNERS') return 'owners';
+        if (normalized === 'HOTEL BRANDS (FRANCHISE)') return 'brands';
+        if (normalized === 'HOTEL MGMT. COMPANY') return 'mgmt';
+        return '';
+    }
+
+    applyCompanyCardTypeStyling(card, company) {
+        if (!card || !company) return;
+        const partnerType = this.normalizePartnerDirectoryType(
+            company.userType || company.companyType || ''
+        );
+        const typeCss = this.partnerDirectoryTypeToCardClass(partnerType);
+        card.classList.remove('company-type-owners', 'company-type-brands', 'company-type-mgmt');
+        card.classList.add('company-card');
+        if (typeCss) card.classList.add(`company-type-${typeCss}`);
+    }
+
+    applyIndividualCardTypeStyling(card, individual) {
+        if (!card || !individual) return;
+        const partnerType = this.getIndividualPartnerType(individual);
+        const typeCss = this.partnerDirectoryTypeToCardClass(partnerType);
+        card.classList.remove('individual-type-owners', 'individual-type-brands', 'individual-type-mgmt');
+        card.classList.add('individual-card');
+        if (typeCss) card.classList.add(`individual-type-${typeCss}`);
+    }
+
+    /** Ecosystem type for filters: person User Type, else linked company's type (not Platform Role). */
+    getIndividualPartnerType(individual) {
+        if (!individual) return '';
+        const fromPerson = this.normalizePartnerDirectoryType(individual.userType || '');
+        if (this.isKnownPartnerDirectoryType(fromPerson)) return fromPerson;
+
+        const company = this.findCompanyForIndividual(individual);
+        if (company) {
+            const fromCompany = this.normalizePartnerDirectoryType(
+                company.userType || company.companyType || ''
+            );
+            if (this.isKnownPartnerDirectoryType(fromCompany)) return fromCompany;
+        }
+        return '';
+    }
+
     connectUser() {
         this.showConnectComingSoon();
     }
@@ -3949,36 +3947,17 @@ class PartnerDirectory {
             filteredCompanies = [];
         }
 
-        // Normalize type function for filtering
-        const normalizeType = (type) => {
-            if (!type) return 'Unknown';
-            const upperType = String(type).trim().toUpperCase();
-            
-            if (upperType === "HOTEL OWNERS" || upperType === "HOTEL OWNER" || upperType === "OWNER" || upperType === "OWNERS") {
-                return "HOTEL OWNERS";
-            } else if (upperType === "HOTEL BRANDS (FRANCHISE)" || upperType === "HOTEL BRAND" || upperType === "HOTEL BRANDS" || upperType === "BRAND" || upperType === "BRANDS" || upperType === "FRANCHISE") {
-                return "HOTEL BRANDS (FRANCHISE)";
-            } else if (upperType === "HOTEL MGMT. COMPANY" || upperType === "HOTEL MGMT COMPANY" || upperType === "HOTEL MANAGEMENT COMPANY" || upperType === "MGMT" || upperType === "MANAGEMENT" || upperType === "OPERATOR") {
-                return "HOTEL MGMT. COMPANY";
-            } else if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                return "HOTEL BRANDS (FRANCHISE)";
-            } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                return "HOTEL MGMT. COMPANY";
-            } else if (upperType.includes('OWNER')) {
-                return "HOTEL OWNERS";
-            }
-            return upperType;
-        };
-
         // Apply type filter first - normalize both filter value and data values
         if (type !== 'all') {
-            const normalizedFilterType = normalizeType(type);
+            const normalizedFilterType = this.normalizePartnerDirectoryType(type);
             filteredCompanies = filteredCompanies.filter(company => {
-                const normalizedCompanyType = normalizeType(company.userType);
+                const normalizedCompanyType = this.normalizePartnerDirectoryType(
+                    company.userType || company.companyType || ''
+                );
                 return normalizedCompanyType === normalizedFilterType;
             });
             filteredIndividuals = filteredIndividuals.filter(individual => {
-                const normalizedIndividualType = normalizeType(individual.userType);
+                const normalizedIndividualType = this.getIndividualPartnerType(individual);
                 return normalizedIndividualType === normalizedFilterType;
             });
         }
@@ -4080,39 +4059,18 @@ class PartnerDirectory {
         // We just need to display what's in the filtered data
         
         // Normalize type function - matches the one used elsewhere in the code
-        const normalizeType = (type) => {
-            if (!type) return 'Unknown';
-            const upperType = String(type).trim().toUpperCase();
-            
-            if (upperType === "HOTEL OWNERS" || upperType === "HOTEL OWNER" || upperType === "OWNER" || upperType === "OWNERS") {
-                return "HOTEL OWNERS";
-            } else if (upperType === "HOTEL BRANDS (FRANCHISE)" || upperType === "HOTEL BRAND" || upperType === "HOTEL BRANDS" || upperType === "BRAND" || upperType === "BRANDS" || upperType === "FRANCHISE") {
-                return "HOTEL BRANDS (FRANCHISE)";
-            } else if (upperType === "HOTEL MGMT. COMPANY" || upperType === "HOTEL MGMT COMPANY" || upperType === "HOTEL MANAGEMENT COMPANY" || upperType === "MGMT" || upperType === "MANAGEMENT" || upperType === "OPERATOR") {
-                return "HOTEL MGMT. COMPANY";
-            } else if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                return "HOTEL BRANDS (FRANCHISE)";
-            } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                return "HOTEL MGMT. COMPANY";
-            } else if (upperType.includes('OWNER')) {
-                return "HOTEL OWNERS";
-            }
-            return 'Unknown';
-        };
-        
         // Partner Distribution by Type - Count both companies and individuals
-        // Normalize types first to prevent duplicates
         const typeData = {};
         
-        // Count companies by normalized type
         companies.forEach(company => {
-            const normalizedType = normalizeType(company.userType);
+            const normalizedType =
+                this.normalizePartnerDirectoryType(company.userType || company.companyType || '') ||
+                'Unknown';
             typeData[normalizedType] = (typeData[normalizedType] || 0) + 1;
         });
         
-        // Count individuals by normalized type
         individuals.forEach(individual => {
-            const normalizedType = normalizeType(individual.userType);
+            const normalizedType = this.getIndividualPartnerType(individual) || 'Unknown';
             typeData[normalizedType] = (typeData[normalizedType] || 0) + 1;
         });
 
