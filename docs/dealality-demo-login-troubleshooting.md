@@ -63,6 +63,17 @@ Replace with production Railway URL when testing production.
 
 Webflow should **not** show “No brands assigned” when `dealality.isOwner === true` (included in `/api/me` as of role payload). Owners use **My Deals**, not brand allow-lists.
 
+### `window.__dealalityUserContext.dealality` is `undefined`
+
+The footer only skips the toast when `dealality.isOwner` / `dealality.isAdmin` exist. If `dealality` is missing:
+
+1. **Staging/production Railway** may be running an older build (no `dealality` key in JSON). Deploy current `api/me.js` and retry.
+2. In the console, run `Object.keys(window.__dealalityUserContext || {})` — you should see `dealality`, `permissions`, `airtable`, etc.
+
+### Role lives on Company Profile, not Users
+
+If Users has no **User Type** / **Platform Role**, `/api/me` resolves role from the linked **Company Profile → Company Type** (e.g. `Hotel Owner` → `isOwner: true`). Ensure Justin’s Users row links **Company Profile** and that company’s **Company Type** is set.
+
 ## Local app shell (`http://localhost:3000/app#/my-deals`)
 
 The app shell loads Memberstack on the parent page and passes the session JWT into embedded pages (My Deals, Deal Setup, etc.) via `msToken` and `postMessage`.

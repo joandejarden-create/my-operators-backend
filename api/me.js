@@ -23,7 +23,7 @@ import {
   INTAKE_USERS_LAST_NAME,
   INTAKE_USERS_UNIQUE_WEBFLOW_ID,
 } from "./schemas/intake-deal-fields.js";
-import { roleInfoFromUserFields } from "../lib/dealality/resolve-user.js";
+import { roleInfoFromUserFieldsAsync } from "../lib/dealality/resolve-user.js";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 const BRAND_NAME_FIELD = process.env.AIRTABLE_BRAND_NAME_FIELD || "Brand Name";
@@ -250,7 +250,25 @@ async function getMe(req, res) {
   const email = cellToStringList(fields[INTAKE_USERS_EMAIL])[0] || null;
   const firstName = cellToStringList(fields[INTAKE_USERS_FIRST_NAME])[0] || null;
   const lastName = cellToStringList(fields[INTAKE_USERS_LAST_NAME])[0] || null;
-  const dealalityRole = roleInfoFromUserFields(fields);
+  let dealalityRole;
+  try {
+    dealalityRole = await roleInfoFromUserFieldsAsync(base, fields);
+  } catch (roleErr) {
+    console.warn("[api/me] role resolution failed:", roleErr.message);
+    dealalityRole = {
+      role: "unknown",
+      roleRaw: null,
+      roleSource: null,
+      isAdmin: false,
+      isOwner: false,
+      isBrand: false,
+      isOperator: false,
+    };
+    warnings.push("role_resolve_failed");
+  }
+  if (dealalityRole.roleSource === "company") {
+    warnings.push("role_from_company_type");
+  }
 
   const brandLinks = fields[BRAND_LINK_FIELD];
   const linkedBrandIds = Array.isArray(brandLinks) ? brandLinks.filter(Boolean) : [];
@@ -302,6 +320,9 @@ async function getMe(req, res) {
     dealality: {
       role: dealalityRole.role,
       roleRaw: dealalityRole.roleRaw,
+      roleSource: dealalityRole.roleSource || null,
+      userRoleRaw: dealalityRole.userRoleRaw || null,
+      companyTypeRaw: dealalityRole.companyTypeRaw || null,
       isOwner: dealalityRole.isOwner,
       isBrand: dealalityRole.isBrand,
       isOperator: dealalityRole.isOperator,
