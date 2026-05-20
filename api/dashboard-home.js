@@ -265,7 +265,7 @@ async function buildLoiDealVolumeChartData() {
 }
 
 /**
- * Build the home dashboard ViewModel. Mock data for now; wire to Airtable/DB later.
+ * Build the home dashboard ViewModel. Sample preview metrics for layout; wire live data later.
  * @param {{ userId?: string, role: string }} opts
  * @returns {Object} ViewModel
  */
@@ -337,46 +337,46 @@ export function buildHomeDashboardViewModel(opts = {}) {
   return {
     success: true,
     role,
+    contentMode: 'sample',
     header: {
-      userName: 'Joan',
+      greeting: 'Welcome to your Dealality command center',
       lastSyncLabel: '2 min ago',
       ctas: [
         { key: 'new-deal', label: 'New Deal', href: '/new-deal-setup', primary: true },
         { key: 'outreach', label: 'Start Outreach', href: '/outreach' },
-        { key: 'messages', label: 'Messages', href: '/outreach/inbox' },
-        { key: 'invite', label: 'Invite Partner', href: '#' }
+        { key: 'messages', label: 'Messages', href: '/outreach/inbox' }
       ]
     },
     kpis,
     pipeline,
     signals: [
-      { type: 'risk', title: '2 threads stalled (3–7 days)', subtitle: 'Punta Cana & Cancun deals—no reply in 4+ days.', ctaLabel: 'Fix', ctaHref: '/outreach/inbox' },
-      { type: 'opportunity', title: '3 deals have strong engagement but no next step scheduled', subtitle: 'Brands viewed PIP; schedule follow-up.', ctaLabel: 'View', ctaHref: '/my-deals' },
-      { type: 'watch', title: 'Response frequency dipped below 95% this week', subtitle: 'A few partners slowed replies.', ctaLabel: 'Open responsiveness', ctaHref: '#' },
-      { type: 'opportunity', title: '1 deal advanced to negotiation', subtitle: 'Hilton Guadalajara moved to term review.', ctaLabel: 'Open deal', ctaHref: '/my-deals' }
+      { type: 'risk', title: '2 threads stalled (3–7 days)', subtitle: 'Sample scenario: partner replies pending on two deals.', ctaLabel: 'Fix', ctaHref: '/outreach/inbox' },
+      { type: 'opportunity', title: '3 deals have strong engagement but no next step scheduled', subtitle: 'Sample scenario: brands viewed PIP; schedule follow-up.', ctaLabel: 'View', ctaHref: '/my-deals' },
+      { type: 'watch', title: 'Response frequency dipped below 95% this week', subtitle: 'Sample scenario: a few partners slowed replies.', ctaLabel: 'Open messages', ctaHref: '/outreach/inbox' },
+      { type: 'opportunity', title: '1 deal advanced to negotiation', subtitle: 'Sample scenario: deal moved to term review.', ctaLabel: 'Open deal', ctaHref: '/my-deals' }
     ],
     nextActions: [
-      { priority: 'urgent', title: 'LOI due in 48 hours', contextLabel: 'Guadalajara Conversion', dueLabel: 'Today', ctaLabel: 'Open', ctaHref: '/my-deals' },
-      { priority: 'medium', title: 'Review PIP feedback', contextLabel: 'Cancun Boutique', dueLabel: 'Tomorrow', ctaLabel: 'Open', ctaHref: '/my-deals' },
-      { priority: 'urgent', title: 'Follow up on stalled thread', contextLabel: 'Punta Cana Resort', dueLabel: 'In 2 days', ctaLabel: 'Open', ctaHref: '/outreach/inbox' },
-      { priority: 'low', title: 'Deals needing follow-up', contextLabel: '4 deals', dueLabel: '—', ctaLabel: 'View', ctaHref: '/my-deals' }
+      { priority: 'urgent', title: 'LOI due in 48 hours', contextLabel: 'Sample deal · Conversion project', dueLabel: 'Today', ctaLabel: 'Open', ctaHref: '/my-deals' },
+      { priority: 'medium', title: 'Review PIP feedback', contextLabel: 'Sample deal · Boutique project', dueLabel: 'Tomorrow', ctaLabel: 'Open', ctaHref: '/my-deals' },
+      { priority: 'urgent', title: 'Follow up on stalled thread', contextLabel: 'Sample deal · Resort project', dueLabel: 'In 2 days', ctaLabel: 'Open', ctaHref: '/outreach/inbox' },
+      { priority: 'low', title: 'Deals needing follow-up', contextLabel: '4 deals (sample)', dueLabel: '—', ctaLabel: 'View', ctaHref: '/my-deals' }
     ],
     recentActivity: [
-      { type: 'deal', title: 'Response received', contextLabel: 'Guadalajara Conversion', timeAgo: '2h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/outreach/inbox' },
-      { type: 'deal', title: 'Deal advanced to Shared', contextLabel: 'Cancun Boutique', timeAgo: '4h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
-      { type: 'market', title: 'Santo Domingo RevPAR up 12% YOY', contextLabel: null, timeAgo: '5h ago', badgeLabel: 'Market Action', badgeType: 'info', ctaHref: '/market-alerts' },
-      { type: 'deal', title: 'Message sent', contextLabel: 'Madrid Hotel', timeAgo: '5h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/outreach/inbox' },
-      { type: 'deal', title: 'Proposal viewed', contextLabel: 'Miami Beach', timeAgo: '6h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
-      { type: 'news', title: 'Mexico City Airport expansion timeline announced', contextLabel: null, timeAgo: '8h ago', badgeLabel: 'Market News', badgeType: 'info', ctaHref: '/market-alerts' },
-      { type: 'deal', title: 'Follow-up reminder', contextLabel: 'Punta Cana Resort', timeAgo: '1d ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
-      { type: 'news', title: 'Soft brand launch in Caribbean', contextLabel: null, timeAgo: '1d ago', badgeLabel: 'Market News', badgeType: 'info', ctaHref: '/market-alerts' }
+      { type: 'deal', title: 'Response received', contextLabel: 'Sample deal activity', timeAgo: '2h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/outreach/inbox' },
+      { type: 'deal', title: 'Deal advanced to Shared', contextLabel: 'Sample deal activity', timeAgo: '4h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
+      { type: 'market', title: 'Sample: RevPAR trend highlight', contextLabel: null, timeAgo: '5h ago', badgeLabel: 'Market Action', badgeType: 'info', ctaHref: '/market-alerts' },
+      { type: 'deal', title: 'Message sent', contextLabel: 'Sample deal activity', timeAgo: '5h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/outreach/inbox' },
+      { type: 'deal', title: 'Proposal viewed', contextLabel: 'Sample deal activity', timeAgo: '6h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
+      { type: 'news', title: 'Sample: Market headline', contextLabel: null, timeAgo: '8h ago', badgeLabel: 'Market News', badgeType: 'info', ctaHref: '/market-alerts' },
+      { type: 'deal', title: 'Follow-up reminder', contextLabel: 'Sample deal activity', timeAgo: '1d ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
+      { type: 'news', title: 'Sample: Brand launch headline', contextLabel: null, timeAgo: '1d ago', badgeLabel: 'Market News', badgeType: 'info', ctaHref: '/market-alerts' }
     ],
     marketIntel: [
-      { type: 'brand', title: 'Hilton expands in Caribbean', subtitle: 'New flag announced for Punta Cana region.', timeAgo: '2h ago', ctaLabel: 'View', ctaHref: '#' },
-      { type: 'supply', title: '3 new PIP-ready properties in Mexico City', subtitle: 'Opportunity for reflag/conversion.', timeAgo: '5h ago', ctaLabel: 'View', ctaHref: '#' },
-      { type: 'airport', title: 'Cancún Airport expansion timeline', subtitle: 'May affect demand and valuations.', timeAgo: '8h ago', ctaLabel: 'View', ctaHref: '#' },
-      { type: 'financing', title: 'Regional lender rate update', subtitle: 'Rates down 25 bps for hospitality.', timeAgo: '1d ago', ctaLabel: 'View', ctaHref: '#' },
-      { type: 'brand', title: 'Marriott soft brand launch in CALA', subtitle: 'New conversion opportunity for lifestyle properties.', timeAgo: '3h ago', ctaLabel: 'View', ctaHref: '#' }
+      { type: 'brand', title: 'Sample: Hilton expands in Caribbean', subtitle: 'Illustrative market headline for layout preview.', timeAgo: '2h ago', ctaLabel: 'View alerts', ctaHref: '/market-alerts' },
+      { type: 'supply', title: 'Sample: PIP-ready properties in Mexico City', subtitle: 'Illustrative supply signal for layout preview.', timeAgo: '5h ago', ctaLabel: 'View alerts', ctaHref: '/market-alerts' },
+      { type: 'airport', title: 'Sample: Airport expansion timeline', subtitle: 'Illustrative market signal for layout preview.', timeAgo: '8h ago', ctaLabel: 'View alerts', ctaHref: '/market-alerts' },
+      { type: 'financing', title: 'Sample: Regional lender rate update', subtitle: 'Illustrative financing signal for layout preview.', timeAgo: '1d ago', ctaLabel: 'View alerts', ctaHref: '/market-alerts' },
+      { type: 'brand', title: 'Sample: Soft brand launch in CALA', subtitle: 'Illustrative brand signal for layout preview.', timeAgo: '3h ago', ctaLabel: 'View alerts', ctaHref: '/market-alerts' }
     ],
     charts: { keepExisting: true },
     loiDealVolumeChartData: {
@@ -395,8 +395,8 @@ export function buildHomeDashboardViewModel(opts = {}) {
       trendLabel: '+3% vs prior period',
       whyItMatters: 'Execution Reliability measures how quickly and consistently you and your partners respond. Fast response times and high frequency help close deals faster and build trust.',
       drivers: [
-        { title: '2 threads stalled > 3 days', subtitle: 'Punta Cana & Cancun—no reply', ctaLabel: 'Open Messages', ctaHref: '/outreach/inbox' },
-        { title: 'Response frequency dipped', subtitle: 'Partners slowed replies this week', ctaLabel: 'Open Deal', ctaHref: '/my-deals' }
+        { title: '2 threads stalled > 3 days', subtitle: 'Sample scenario: replies pending', ctaLabel: 'Open Messages', ctaHref: '/outreach/inbox' },
+        { title: 'Response frequency dipped', subtitle: 'Sample scenario: slower partner replies', ctaLabel: 'Open Deal', ctaHref: '/my-deals' }
       ]
     },
     toolboxLinks: [

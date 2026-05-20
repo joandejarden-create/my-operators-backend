@@ -20,20 +20,21 @@
         <div class="dc-header__title-row">
           <h1 class="dc-header__page-title">Today's Deal Pulse</h1>
         </div>
-        <p class="dc-header__description">Your command center for deal metrics, pipeline status, signals, and next actions.</p>
-        <div class="dc-header__warning" role="note" aria-live="polite">
-          <span class="dc-header__warning-icon" aria-hidden="true">⚠</span>
-          <span class="dc-header__warning-text">Mock Data Display: This dashboard shows sample data to demonstrate the intended presentation format.</span>
+        <p class="dc-header__description">Your command center for deal metrics, pipeline status, signals, and next actions. Illustrative sample metrics may appear until your account data is fully connected.</p>
+        <div class="dc-header__warning" id="dc-sample-data-banner" role="note" aria-live="polite" hidden>
+          <span class="dc-header__warning-icon" aria-hidden="true">ℹ</span>
+          <span class="dc-header__warning-text">Internal QA: sample metrics shown for layout preview only.</span>
         </div>
       </div>
       <div class="dc-header__right">
-        <div class="dc-role-switch" role="group" aria-label="View as role">
-          <span class="dc-role-switch__label">View as:</span>
+        <div class="dc-role-switch" role="group" aria-label="Preview as role">
+          <span class="dc-role-switch__label">Preview as:</span>
           <div class="dc-role-switch__toggle" id="dc-role-toggle">
             <button type="button" class="dc-role-btn active" data-role="owner" aria-pressed="true">Owner</button>
             <button type="button" class="dc-role-btn" data-role="brand" aria-pressed="false">Brand</button>
             <button type="button" class="dc-role-btn" data-role="operator" aria-pressed="false">Operator</button>
           </div>
+          <p class="dc-role-switch__hint">Sample layout only. Your account, menu, and deal data do not change.</p>
         </div>
         <span class="dc-header__sync" id="dc-sync"></span>
         <div class="dc-header__actions" id="dc-header-actions"></div>
@@ -44,7 +45,7 @@
     <div class="dc-main dc-main--activity-top">
       <!-- Top row: three section labels aligned across the screen -->
       <header class="dc-main__header" role="banner">
-        <div class="dc-step-label">Key Insights</div>
+        <div class="dc-step-label">Key Insights <span class="dc-preview-tag" id="dc-preview-tag-kpis" hidden>· Sample preview</span></div>
         <div class="dc-step-label">Pipeline Snapshot</div>
         <div class="dc-step-label">Recent Activity</div>
       </header>
@@ -66,16 +67,16 @@
         <!-- Row: Signals Today (left) | Next Actions (right) -->
         <div class="dc-main__row">
           <div class="dc-section-wrap">
-            <div class="dc-step-label">Signals Today</div>
+            <div class="dc-step-label">Signals Today <span class="dc-preview-tag" id="dc-preview-tag-signals" hidden>· Sample preview</span></div>
             <section class="dc-section dc-section--signals">
               <div class="dc-section__body" id="dc-signals"></div>
               <div class="dc-section__footer">
-                <a href="/market-alerts" class="dc-link">▾ View All</a>
+                <a href="/app#/market-alerts" target="_top" class="dc-link">▾ View All</a>
               </div>
             </section>
           </div>
           <div class="dc-section-wrap">
-            <div class="dc-step-label">Next Actions</div>
+            <div class="dc-step-label">Next Actions <span class="dc-preview-tag" id="dc-preview-tag-actions" hidden>· Sample preview</span></div>
             <section class="dc-section dc-section--actions">
               <div class="dc-section__body" id="dc-next-actions"></div>
               <div class="dc-section__footer">
@@ -123,7 +124,7 @@
               <div class="dc-section__body" id="dc-market-intel"></div>
               <div class="dc-section__footer">
                 <button type="button" id="dc-market-intel-toggle" class="dc-link dc-link-btn" aria-pressed="false">Pause Scroll</button>
-                <a href="/market-alerts" class="dc-link">▾ View All</a>
+                <a href="/app#/market-alerts" target="_top" class="dc-link">▾ View All</a>
               </div>
             </section>
           </div>
@@ -153,8 +154,8 @@
           <section class="dc-widget dc-widget--exec" aria-label="Execution reliability">
             <button type="button" class="dc-exec-why-btn" id="dc-exec-why-btn" aria-label="Why it matters" title="Why it matters">ℹ</button>
             <div class="dc-widget__body dc-widget__body--exec" id="dc-responsiveness"></div>
-            <div class="dc-widget__footer">
-              <a href="#" class="dc-link">Open responsiveness →</a>
+            <div class="dc-widget__footer" id="dc-responsiveness-footer" hidden>
+              <a href="/app#/outreach/inbox" target="_top" class="dc-link" id="dc-responsiveness-link">Open messages →</a>
             </div>
           </section>
         </div>
