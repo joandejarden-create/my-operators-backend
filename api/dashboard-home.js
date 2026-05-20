@@ -341,16 +341,16 @@ export function buildHomeDashboardViewModel(opts = {}) {
       userName: 'Joan',
       lastSyncLabel: '2 min ago',
       ctas: [
-        { key: 'new-deal', label: 'New Deal', href: '/deal-setup', primary: true },
-        { key: 'outreach', label: 'Start Outreach', href: '/outreach-plans' },
-        { key: 'messages', label: 'Messages', href: '/outreach-inbox' },
+        { key: 'new-deal', label: 'New Deal', href: '/new-deal-setup', primary: true },
+        { key: 'outreach', label: 'Start Outreach', href: '/outreach' },
+        { key: 'messages', label: 'Messages', href: '/outreach/inbox' },
         { key: 'invite', label: 'Invite Partner', href: '#' }
       ]
     },
     kpis,
     pipeline,
     signals: [
-      { type: 'risk', title: '2 threads stalled (3–7 days)', subtitle: 'Punta Cana & Cancun deals—no reply in 4+ days.', ctaLabel: 'Fix', ctaHref: '/outreach-inbox' },
+      { type: 'risk', title: '2 threads stalled (3–7 days)', subtitle: 'Punta Cana & Cancun deals—no reply in 4+ days.', ctaLabel: 'Fix', ctaHref: '/outreach/inbox' },
       { type: 'opportunity', title: '3 deals have strong engagement but no next step scheduled', subtitle: 'Brands viewed PIP; schedule follow-up.', ctaLabel: 'View', ctaHref: '/my-deals' },
       { type: 'watch', title: 'Response frequency dipped below 95% this week', subtitle: 'A few partners slowed replies.', ctaLabel: 'Open responsiveness', ctaHref: '#' },
       { type: 'opportunity', title: '1 deal advanced to negotiation', subtitle: 'Hilton Guadalajara moved to term review.', ctaLabel: 'Open deal', ctaHref: '/my-deals' }
@@ -358,14 +358,14 @@ export function buildHomeDashboardViewModel(opts = {}) {
     nextActions: [
       { priority: 'urgent', title: 'LOI due in 48 hours', contextLabel: 'Guadalajara Conversion', dueLabel: 'Today', ctaLabel: 'Open', ctaHref: '/my-deals' },
       { priority: 'medium', title: 'Review PIP feedback', contextLabel: 'Cancun Boutique', dueLabel: 'Tomorrow', ctaLabel: 'Open', ctaHref: '/my-deals' },
-      { priority: 'urgent', title: 'Follow up on stalled thread', contextLabel: 'Punta Cana Resort', dueLabel: 'In 2 days', ctaLabel: 'Open', ctaHref: '/outreach-inbox' },
+      { priority: 'urgent', title: 'Follow up on stalled thread', contextLabel: 'Punta Cana Resort', dueLabel: 'In 2 days', ctaLabel: 'Open', ctaHref: '/outreach/inbox' },
       { priority: 'low', title: 'Deals needing follow-up', contextLabel: '4 deals', dueLabel: '—', ctaLabel: 'View', ctaHref: '/my-deals' }
     ],
     recentActivity: [
-      { type: 'deal', title: 'Response received', contextLabel: 'Guadalajara Conversion', timeAgo: '2h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/outreach-inbox' },
+      { type: 'deal', title: 'Response received', contextLabel: 'Guadalajara Conversion', timeAgo: '2h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/outreach/inbox' },
       { type: 'deal', title: 'Deal advanced to Shared', contextLabel: 'Cancun Boutique', timeAgo: '4h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
       { type: 'market', title: 'Santo Domingo RevPAR up 12% YOY', contextLabel: null, timeAgo: '5h ago', badgeLabel: 'Market Action', badgeType: 'info', ctaHref: '/market-alerts' },
-      { type: 'deal', title: 'Message sent', contextLabel: 'Madrid Hotel', timeAgo: '5h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/outreach-inbox' },
+      { type: 'deal', title: 'Message sent', contextLabel: 'Madrid Hotel', timeAgo: '5h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/outreach/inbox' },
       { type: 'deal', title: 'Proposal viewed', contextLabel: 'Miami Beach', timeAgo: '6h ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
       { type: 'news', title: 'Mexico City Airport expansion timeline announced', contextLabel: null, timeAgo: '8h ago', badgeLabel: 'Market News', badgeType: 'info', ctaHref: '/market-alerts' },
       { type: 'deal', title: 'Follow-up reminder', contextLabel: 'Punta Cana Resort', timeAgo: '1d ago', badgeLabel: 'Deal Activity', badgeType: 'info', ctaHref: '/my-deals' },
@@ -395,19 +395,18 @@ export function buildHomeDashboardViewModel(opts = {}) {
       trendLabel: '+3% vs prior period',
       whyItMatters: 'Execution Reliability measures how quickly and consistently you and your partners respond. Fast response times and high frequency help close deals faster and build trust.',
       drivers: [
-        { title: '2 threads stalled > 3 days', subtitle: 'Punta Cana & Cancun—no reply', ctaLabel: 'Open Messages', ctaHref: '/outreach-inbox' },
+        { title: '2 threads stalled > 3 days', subtitle: 'Punta Cana & Cancun—no reply', ctaLabel: 'Open Messages', ctaHref: '/outreach/inbox' },
         { title: 'Response frequency dipped', subtitle: 'Partners slowed replies this week', ctaLabel: 'Open Deal', ctaHref: '/my-deals' }
       ]
     },
     toolboxLinks: [
       { id: 'my-deals', label: 'My Deals', labelHtml: 'My<br>Deals', iconKey: 'briefcase', href: '/my-deals', status: 'Live' },
-      { id: 'outreach', label: 'Outreach Plans', labelHtml: 'Outreach<br>Plans', iconKey: 'mail', href: '/outreach-plans', status: 'Live' },
+      { id: 'outreach', label: 'Outreach Plans', labelHtml: 'Outreach<br>Plans', iconKey: 'mail', href: '/outreach', status: 'Live' },
       { id: 'partner-directory', label: 'Partner Directory', iconKey: 'users', href: '/partner-directory', status: 'Live' },
       { id: 'market-intel', label: 'Fee Estimator', iconKey: 'trending-up', href: '/franchise-fee-estimator', status: 'Live' },
       { id: 'financial-term', label: 'Term Library', iconKey: 'file-text', href: '/financial-term-library', status: 'Live' },
       { id: 'legal-clause', label: 'Clause Library', iconKey: 'file', href: '/clause-library', status: 'Live' },
-      { id: 'message-center', label: 'Message Center', iconKey: 'message', href: '/outreach-inbox', status: 'Beta' },
-      { id: 'company-profiles', label: 'Brand Explorer', iconKey: 'building', href: '/brand-library', status: 'Live' },
+      { id: 'message-center', label: 'Message Center', iconKey: 'message', href: '/outreach/inbox', status: 'Beta' },
       { id: 'deal-compare', label: 'Deal Compare', iconKey: 'scale', href: '/deal-compare', status: 'Beta' }
     ]
   };
