@@ -1259,7 +1259,6 @@
                     <a href="/clause-library"><span>📚</span><span class="sidebar-label">Legal Library</span></a>
                     <a href="/my-brands"><span>🏷️</span><span class="sidebar-label">My Brands</span></a>
                     <a href="/brand-development-dashboard"><span>🎯</span><span class="sidebar-label">My Brand Deals</span></a>
-                    <a href="/brand-library"><span>📚</span><span class="sidebar-label">Browse brands</span></a>
                     <a href="/partner-directory"><span>👥</span><span class="sidebar-label">Partner Directory</span></a>
                     <a href="#"><span>📋</span><span class="sidebar-label">Platform Resources</span></a>
                     <a href="#"><span>⚙️</span><span class="sidebar-label">Settings</span></a>
@@ -1896,7 +1895,7 @@
                             <button class="btn-clear" type="button" id="dealCompareResetBtn">Reset View</button>
                         </div>
                         <div class="filter-group filter-group-reset">
-                            <button class="btn-clear" type="button" id="dealCompareSelectWinnerBtn">Select Winning Brand</button>
+                            <button class="btn-clear" type="button" id="dealCompareSelectWinnerBtn" hidden disabled aria-hidden="true" title="Winner selection is not available in this release">Select Winning Brand</button>
                         </div>
                     </div>
                     <div class="deal-compare-iframe-wrap" style="position: relative;">
@@ -2449,6 +2448,23 @@
                     return;
                 }
                 window.location.href = url;
+            }
+
+            function openBrandShortlistTab(dealId) {
+                var btn = document.querySelector('.my-deals-section-nav .section-nav-item[data-tab="target-list"]');
+                if (btn && typeof btn.click === 'function') btn.click();
+                var deal = (allDeals || []).find(function (d) { return d && d.id === dealId; });
+                var searchEl = document.getElementById('shortlistSearchInput');
+                if (deal && searchEl) {
+                    var q = String(deal.projectName || deal.propertyName || '').trim();
+                    if (q) {
+                        searchEl.value = q;
+                        if (typeof applyShortlistFilters === 'function') applyShortlistFilters();
+                    }
+                }
+                if (typeof showMyDealsToast === 'function') {
+                    showMyDealsToast('Opened Brand Shortlist for this deal.', true);
+                }
             }
 
             function ui_readinessWorkflowLabelFromStage(stage) {
@@ -3531,8 +3547,8 @@
                         contentEl.innerHTML = '<div class="my-deals-readiness-error">Snapshot renderer failed to load.</div>';
                         contentEl.classList.add('is-visible');
                         if (loadingEl) loadingEl.style.display = 'none';
-                        return;
-                    }
+                                return;
+                            }
                     var dealContext = (typeof getDealByIdLocal === 'function' && activeDealId) ? getDealByIdLocal(activeDealId) : null;
                     buildUiHighlightFieldsFromReadiness(data);
                     var missingCount = (data.missingInformation || []).length;
@@ -4554,7 +4570,7 @@
                         }
                         if (action === 'view') { navigateMyDealsPage('/deal-summary.html?id=' + encodeURIComponent(dealId)); }
                         if (action === 'edit') { navigateMyDealsPage(newDealSetupEditUrl(dealId)); }
-                        if (action === 'fit-list') { window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals'; }
+                        if (action === 'fit-list') { openBrandShortlistTab(dealId); }
                         if (action === 'delete') {
                             var row = actionBtn.closest('tr');
                             if (row) {
@@ -4679,7 +4695,7 @@
                         }
                         if (action === 'view') { navigateMyDealsPage('/deal-summary.html?id=' + encodeURIComponent(dealId)); }
                         if (action === 'edit') { navigateMyDealsPage(newDealSetupEditUrl(dealId)); }
-                        if (action === 'fit-list') { window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals'; }
+                        if (action === 'fit-list') { openBrandShortlistTab(dealId); }
                         if (action === 'delete') {
                             var row = actionBtn.closest('tr');
                             if (row) {
@@ -4807,7 +4823,7 @@
                     }
                     if (action === 'view' && dealId) navigateMyDealsPage('/deal-summary.html?id=' + encodeURIComponent(dealId));
                     if (action === 'edit' && dealId) navigateMyDealsPage(newDealSetupEditUrl(dealId));
-                    if (action === 'fit-list' && dealId) window.location.href = '/recommended-fit-list.html?dealId=' + encodeURIComponent(dealId) + '&source=my-deals';
+                    if (action === 'fit-list' && dealId) openBrandShortlistTab(dealId);
                 });
             }
 
@@ -6062,6 +6078,11 @@
                 if (tab === 'outreach' || tab === 'franchise-application' || tab === 'deal-information') return;
                 var allowed = ['matched', 'contacted', 'target-list', 'deal-compare', 'archived'];
                 if (allowed.indexOf(tab) === -1) return;
+                var dealId = (params.get('dealId') || '').trim();
+                if (tab === 'target-list' && dealId) {
+                    openBrandShortlistTab(dealId);
+                    return;
+                }
                 var btn = document.querySelector('.my-deals-section-nav .section-nav-item[data-tab="' + tab + '"]');
                 if (btn && typeof btn.click === 'function') btn.click();
             }
@@ -6328,7 +6349,7 @@
                 if (iframe) iframe.src = 'about:blank';
             }
             var dealCompareSelectWinnerBtn = document.getElementById('dealCompareSelectWinnerBtn');
-            if (dealCompareSelectWinnerBtn) {
+            if (dealCompareSelectWinnerBtn && !dealCompareSelectWinnerBtn.disabled) {
                 dealCompareSelectWinnerBtn.addEventListener('click', function() {
                     showDealCompareWinnerModal();
                 });
@@ -7798,7 +7819,7 @@
                 if (auth && auth.isEmbeddedFrame && auth.isEmbeddedFrame()) {
                     await auth.waitForEmbedJwtFromParent(18000);
                 }
-                loadDeals();
+            loadDeals();
             })();
         })();
     </script>

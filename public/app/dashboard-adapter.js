@@ -146,16 +146,16 @@
         lastSync: lastSync,
         lastSyncLabel: lastSync,
         ctas: [
-          { label: 'New Deal', href: '/deal-setup', primary: true },
-          { label: 'Start Outreach', href: '/outreach-plans' },
-          { label: 'Messages', href: '/outreach-inbox' },
+          { label: 'New Deal', href: '/new-deal-setup', primary: true },
+          { label: 'Start Outreach', href: '/outreach' },
+          { label: 'Messages', href: '/outreach/inbox' },
           { label: 'Invite Partner', href: '#' },
           { label: 'Export', href: '#' }
         ]
       },
       chips: [
         { id: 'follow-up', icon: '📌', label: 'Deals needing follow-up', count: 4, href: resolveMyDealsHref('filter=follow-up') },
-        { id: 'responses', icon: '💬', label: 'New responses received', count: 3, href: '/outreach-inbox' },
+        { id: 'responses', icon: '💬', label: 'New responses received', count: 3, href: '/outreach/inbox' },
         { id: 'deadlines', icon: '⏰', label: 'Deadlines in next 48h', count: 2, href: resolveMyDealsHref('filter=deadlines') },
         { id: 'at-risk', icon: '⚠', label: 'Deals at risk (stalled/unresponsive)', count: 2, href: resolveMyDealsHref('filter=at-risk') }
       ],
@@ -185,7 +185,7 @@
       dealsByCountryMapOverlay: { country: 'Mexico', value: '2.1 K' },
       todayFocus: [
         { id: 'follow-up', icon: '📌', label: 'Deals needing follow-up', count: 4, href: resolveMyDealsHref('filter=follow-up'), variant: 'action' },
-        { id: 'responses', icon: '💬', label: 'New responses', count: 3, href: '/outreach-inbox', variant: null },
+        { id: 'responses', icon: '💬', label: 'New responses', count: 3, href: '/outreach/inbox', variant: null },
         { id: 'deadlines', icon: '⏰', label: 'Deadlines in 48h', count: 2, href: resolveMyDealsHref('filter=deadlines'), variant: 'warn' },
         { id: 'at-risk', icon: '⚠', label: 'At risk', count: 2, href: resolveMyDealsHref('filter=at-risk'), variant: 'action' }
       ],
@@ -199,7 +199,7 @@
         { id: 'at-risk', label: 'At Risk', value: 2, subtext: '2 stalled', trend: 'up' }
       ],
       signalsToday: [
-        { tag: 'Risk', tagClass: 'risk', headline: '2 threads stalled (3–7 days)', why: 'Punta Cana & Cancun deals—no reply in 4+ days.', cta: 'Fix', href: '/outreach-inbox' },
+        { tag: 'Risk', tagClass: 'risk', headline: '2 threads stalled (3–7 days)', why: 'Punta Cana & Cancun deals—no reply in 4+ days.', cta: 'Fix', href: '/outreach/inbox' },
         { tag: 'Opportunity', tagClass: 'opportunity', headline: '3 deals have strong engagement but no next step scheduled', why: 'Brands viewed PIP; schedule follow-up.', cta: 'View', href: resolveMyDealsHref('') },
         { tag: 'Watch', tagClass: 'watch', headline: 'Response frequency dipped below 95% this week', why: 'A few partners slowed replies.', cta: 'Open responsiveness', href: '#' },
         { tag: 'Opportunity', tagClass: 'opportunity', headline: '1 deal advanced to negotiation', why: 'Hilton Guadalajara moved to term review.', cta: 'Open deal', href: resolveMyDealsHref('') }
@@ -242,10 +242,10 @@
         cta: { label: 'View My Deals', href: resolveMyDealsHref('') }
       },
       recentActivity: [
-        { id: '1', iconKey: 'message', event: 'Response received', deal: 'Guadalajara Conversion', time: '2h ago', tag: 'Deal Activity', type: 'deal', href: '/outreach-inbox' },
+        { id: '1', iconKey: 'message', event: 'Response received', deal: 'Guadalajara Conversion', time: '2h ago', tag: 'Deal Activity', type: 'deal', href: '/outreach/inbox' },
         { id: '2', iconKey: 'file', event: 'Deal advanced to Shared', deal: 'Cancun Boutique', time: '4h ago', tag: 'Deal Activity', type: 'deal', href: resolveMyDealsHref('') },
         { id: '3', iconKey: 'trending-up', event: 'Santo Domingo RevPAR up 12% YOY', deal: null, time: '5h ago', tag: 'Market Action', type: 'market', href: '/market-alerts' },
-        { id: '4', iconKey: 'mail', event: 'Message sent', deal: 'Madrid Hotel', time: '5h ago', tag: 'Deal Activity', type: 'deal', href: '/outreach-inbox' },
+        { id: '4', iconKey: 'mail', event: 'Message sent', deal: 'Madrid Hotel', time: '5h ago', tag: 'Deal Activity', type: 'deal', href: '/outreach/inbox' },
         { id: '5', iconKey: 'eye', event: 'Proposal viewed', deal: 'Miami Beach', time: '6h ago', tag: 'Deal Activity', type: 'deal', href: resolveMyDealsHref('') },
         { id: '6', iconKey: 'building', event: 'Mexico City Airport expansion timeline announced', deal: null, time: '8h ago', tag: 'Market News', type: 'news', href: '/market-alerts' },
         { id: '7', iconKey: 'pin', event: 'Follow-up reminder', deal: 'Punta Cana Resort', time: '1d ago', tag: 'Deal Activity', type: 'deal', href: resolveMyDealsHref('') },
@@ -255,7 +255,7 @@
       nextActions: [
         { id: '1', title: 'LOI due in 48 hours', deal: 'Guadalajara Conversion', due: 'Today', severity: 'high', href: resolveMyDealsHref('') },
         { id: '2', title: 'Review PIP feedback', deal: 'Cancun Boutique', due: 'Tomorrow', severity: 'medium', href: resolveMyDealsHref('') },
-        { id: '3', title: 'Follow up on stalled thread', deal: 'Punta Cana Resort', due: 'In 2 days', severity: 'high', href: '/outreach-inbox' },
+        { id: '3', title: 'Follow up on stalled thread', deal: 'Punta Cana Resort', due: 'In 2 days', severity: 'high', href: '/outreach/inbox' },
         { id: '4', title: 'Deals needing follow-up', deal: '4 deals', due: '—', severity: null, href: resolveMyDealsHref('') }
       ],
       topMarkets: [
@@ -285,13 +285,12 @@
       ],
       toolboxLinks: [
         { id: 'my-deals', label: 'My Deals', labelHtml: 'My<br>Deals', iconKey: 'briefcase', href: resolveMyDealsHref(''), status: 'Live' },
-        { id: 'outreach', label: 'Outreach Plans', labelHtml: 'Outreach<br>Plans', iconKey: 'mail', href: '/outreach-plans', status: 'Live' },
+        { id: 'outreach', label: 'Outreach Plans', labelHtml: 'Outreach<br>Plans', iconKey: 'mail', href: '/outreach', status: 'Live' },
         { id: 'partner-directory', label: 'Partner Directory', iconKey: 'users', href: '/partner-directory', status: 'Live' },
         { id: 'market-intel', label: 'Fee Estimator', iconKey: 'trending-up', href: '/franchise-fee-estimator', status: 'Live' },
         { id: 'financial-term', label: 'Term Library', iconKey: 'file-text', href: '/financial-term-library', status: 'Live' },
         { id: 'legal-clause', label: 'Clause Library', iconKey: 'file', href: '/clause-library', status: 'Live' },
-        { id: 'message-center', label: 'Message Center', iconKey: 'message', href: '/outreach-inbox', status: 'Beta' },
-        { id: 'company-profiles', label: 'Browse brands', iconKey: 'building', href: '/brand-library', status: 'Live' },
+        { id: 'message-center', label: 'Message Center', iconKey: 'message', href: '/outreach/inbox', status: 'Beta' },
         { id: 'deal-compare', label: 'Deal Compare', iconKey: 'scale', href: '/deal-compare', status: 'Beta' }
       ]
     };

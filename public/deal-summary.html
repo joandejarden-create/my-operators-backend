@@ -859,7 +859,7 @@
             }
             var backLink = document.getElementById('brochureBackLink');
             if (backLink && getParam('from') === 'bwp') {
-                backLink.href = '/brand-workspace-pipeline.html';
+                backLink.href = '/brand-development-dashboard';
                 backLink.textContent = '\u2190 Back to My Brand Deals';
             }
             if (backLink && getParam('from') === 'bdd') {
@@ -1464,11 +1464,11 @@
                     e.preventDefault();
                     try {
                         window.parent.postMessage(
-                            { type: "dealality-navigate", path: "/brand-workspace-pipeline.html" },
+                            { type: "dealality-navigate", path: "/brand-development-dashboard" },
                             window.location.origin
                         );
                     } catch (err) {
-                        window.top.location.href = a.getAttribute("href") || "/brand-workspace-pipeline.html";
+                        window.top.location.href = a.getAttribute("href") || "/brand-development-dashboard";
                     }
                 }
             });

@@ -725,6 +725,40 @@ app.get("/webflow-brand-dashboard.html", (req, res) => {
     res.redirect("/app.html#/brand-development-dashboard");
 });
 
+
+// Retired brand workspace pipeline page → active brand development dashboard.
+function redirectBrandWorkspacePipeline(req, res) {
+    const q = req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : "";
+    res.redirect(302, "/brand-development-dashboard" + q);
+}
+app.get("/brand-workspace-pipeline", redirectBrandWorkspacePipeline);
+app.get("/brand-workspace-pipeline.html", redirectBrandWorkspacePipeline);
+
+// Legacy fit-list page → My Deals Brand Shortlist tab.
+function redirectRecommendedFitList(req, res) {
+    const params = new URLSearchParams(req.query);
+    const dealId = params.get("dealId");
+    const target = new URL("/my-deals.html", "http://local");
+    target.searchParams.set("tab", "target-list");
+    if (dealId) target.searchParams.set("dealId", dealId);
+    const qs = target.search;
+    res.redirect(302, "/my-deals.html" + qs);
+}
+app.get("/recommended-fit-list", redirectRecommendedFitList);
+app.get("/recommended-fit-list.html", redirectRecommendedFitList);
+
+// Winner-selection page not shipped — send users back to My Deals deal compare tab.
+function redirectDealCompareSelectWinner(req, res) {
+    const params = new URLSearchParams(req.query);
+    const dealId = params.get("dealId");
+    const target = new URL("/my-deals.html", "http://local");
+    target.searchParams.set("tab", "deal-compare");
+    if (dealId) target.searchParams.set("dealId", dealId);
+    res.redirect(302, "/my-deals.html" + target.search);
+}
+app.get("/deal-compare-select-winner", redirectDealCompareSelectWinner);
+app.get("/deal-compare-select-winner.html", redirectDealCompareSelectWinner);
+
 // Serve the brand development dashboard
 app.get("/brand-development-dashboard", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'brand-development-dashboard.html'));
@@ -982,9 +1016,9 @@ app.use(express.static(path.join(__dirname, 'deal-capture-landing-webflow')));
 // Static files (public app pages, signup, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve the brand library pages
+// Legacy URL: list UI moved to combined Brand Explorer (app shell aliases /brand-library → /brand-explorer-combined).
 app.get("/brand-library", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'brand-library.html'));
+    res.redirect(302, "/brand-explorer-combined");
 });
 
 // Serve the brand explorer page

@@ -38,7 +38,7 @@
         return window.DealalityWebflowNav.myDealsHref();
       }
     } catch (_e) {}
-    return '/my-deals';
+    return toShellHref('/my-deals');
   }
 
   function isExternalHref(href) {
@@ -130,7 +130,7 @@
             timeAgo: e.timeAgo || '',
             badgeLabel: e.badgeLabel || 'Deal Activity',
             badgeType: e.badgeType || 'info',
-            ctaHref: e.ctaHref || '/outreach-deal-activity-log'
+            ctaHref: e.ctaHref || '/activity-log'
           };
         });
       })
@@ -147,7 +147,7 @@
     var actionsEl = document.getElementById('dc-header-actions');
     if (actionsEl && h.ctas && h.ctas.length) {
       actionsEl.innerHTML = h.ctas.map(function (c) {
-        return '<a href="' + escapeAttr(c.href) + '" class="dc-btn' + (c.primary ? ' dc-btn--primary' : '') + '">' + escapeHtml(c.label) + '</a>';
+        return '<a href="' + escapeAttr(toShellHref(c.href)) + '" class="dc-btn' + (c.primary ? ' dc-btn--primary' : '') + '" target="_top">' + escapeHtml(c.label) + '</a>';
       }).join('');
     }
   }
@@ -452,7 +452,7 @@
         '<div class="dc-signal__row">' +
         '<span class="dc-signal__tag dc-signal__tag--' + escapeAttr(tagClass) + '">' + escapeHtml(tag) + '</span>' +
         '<span class="dc-signal__headline">' + escapeHtml(toTitleCase(a.title)) + '</span>' +
-        '<a href="' + escapeAttr(a.ctaHref || a.href || '#') + '" class="dc-link">' + escapeHtml(a.ctaLabel || 'Open') + '</a>' +
+        '<a href="' + escapeAttr(toShellHref(a.ctaHref || a.href || '#')) + '" class="dc-link" target="_top">' + escapeHtml(a.ctaLabel || 'Open') + '</a>' +
         '</div>' +
         '<p class="dc-signal__why">' + escapeHtml(why) + '</p>' +
         '</div>';
@@ -520,7 +520,7 @@
         '<div class="dc-signal__row">' +
         '<span class="dc-signal__tag dc-signal__tag--' + escapeAttr(tagClass) + '">' + escapeHtml(tag) + '</span>' +
         '<span class="dc-signal__headline">' + escapeHtml(toTitleCase(s.title || s.headline)) + '</span>' +
-        '<a href="' + escapeAttr(s.ctaHref || s.href || '#') + '" class="dc-link">' + escapeHtml(s.ctaLabel || s.cta || 'View') + '</a>' +
+        '<a href="' + escapeAttr(toShellHref(s.ctaHref || s.href || '#')) + '" class="dc-link" target="_top">' + escapeHtml(s.ctaLabel || s.cta || 'View') + '</a>' +
         '</div>' +
         ((s.subtitle || s.why) ? '<p class="dc-signal__why">' + escapeHtml(s.subtitle || s.why) + '</p>' : '') +
         '</div>';
@@ -608,7 +608,9 @@
       if ((tag || '').toLowerCase().indexOf('supply') !== -1 || (tag || '').toLowerCase().indexOf('airport') !== -1) iconSvg = activityIconMap['trending-up'];
       else if ((tag || '').toLowerCase().indexOf('financing') !== -1) iconSvg = activityIconMap.clipboard;
       var href = i.ctaHref || i.href;
-      var linkStart = href ? '<a href="' + escapeAttr(href) + '" class="dc-activity-feed__link"' + linkTargetAttrs(href) + '>' : '';
+      var shellHref = href ? toShellHref(href) : '';
+      var targetAttrs = shellHref && /^\/app#/.test(shellHref) ? ' target="_top"' : linkTargetAttrs(shellHref);
+      var linkStart = shellHref ? '<a href="' + escapeAttr(shellHref) + '" class="dc-activity-feed__link"' + targetAttrs + '>' : '';
       var linkEnd = href ? '</a>' : '';
       return '<li class="dc-activity-feed__item">' +
         '<span class="dc-activity-feed__line" aria-hidden="true"></span>' +
@@ -706,7 +708,7 @@
     var trendLabel = (r && r.trendLabel) || (er && er.trendLabel) || 'vs prior period';
     var drivers = er && er.drivers && er.drivers.length ? er.drivers.slice(0, 2) : [];
     var driversHtml = drivers.length ? '<div class="dc-exec-drivers"><div class="dc-exec-drivers__title">What\'s hurting your badge?</div>' + drivers.map(function (d) {
-      return '<div class="dc-exec-driver">' + '<div class="dc-exec-driver__title">' + escapeHtml(d.title) + '</div>' + (d.subtitle ? '<div class="dc-exec-driver__sub">' + escapeHtml(d.subtitle) + '</div>' : '') + (d.ctaHref ? '<a href="' + escapeAttr(d.ctaHref) + '" class="dc-link dc-exec-driver__cta">' + escapeHtml(d.ctaLabel || 'Open') + '</a>' : '') + '</div>';
+      return '<div class="dc-exec-driver">' + '<div class="dc-exec-driver__title">' + escapeHtml(d.title) + '</div>' + (d.subtitle ? '<div class="dc-exec-driver__sub">' + escapeHtml(d.subtitle) + '</div>' : '') + (d.ctaHref ? '<a href="' + escapeAttr(toShellHref(d.ctaHref)) + '" class="dc-link dc-exec-driver__cta" target="_top">' + escapeHtml(d.ctaLabel || 'Open') + '</a>' : '') + '</div>';
     }).join('') + '</div>' : '';
     var scoreVal = freqPct != null ? escapeHtml(String(freqPct)) + '%' : '—';
     var html = '<div class="dc-exec-summary">' +
@@ -970,7 +972,7 @@
     var role = getStoredRole();
     updateRoleToggle(role);
     var homeMyDealsLink = document.getElementById('dc-home-my-deals-link');
-    if (homeMyDealsLink) homeMyDealsLink.href = myDealsHref();
+    if (homeMyDealsLink) homeMyDealsLink.href = toShellHref('/my-deals');
     var toggle = document.getElementById('dc-role-toggle');
     if (toggle) {
       toggle.addEventListener('click', function (e) {
