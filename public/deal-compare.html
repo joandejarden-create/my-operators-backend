@@ -2147,7 +2147,7 @@
             } else {
                 loadBrands().then(function () {
                     if (allBrands.length === 0 && brandChipsRowEl) {
-                        brandChipsRowEl.innerHTML = '<p style="color: var(--neutral--500); padding: 8px 0;">No brands available. Check API and Airtable connection.</p>';
+                        brandChipsRowEl.innerHTML = '<p style="color: var(--neutral--500); padding: 8px 0;">We could not load comparison data right now. Please refresh or try again later.</p>';
                     }
                 });
             }
