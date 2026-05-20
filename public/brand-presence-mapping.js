@@ -119,7 +119,7 @@ function initializeMap() {
 async function loadHotelData() {
     try {
         showLoading(true);
-        showSystemStatus('Loading hotel data...', '3-5 seconds');
+        showSystemStatus('Loading market signals…');
         
         // Fetch all data from API with high limit
         const response = await fetch('/api/brand-presence?limit=100000', {
@@ -130,14 +130,14 @@ async function loadHotelData() {
         const result = await response.json();
         
         if (result.success) {
-            updateSystemStatus('Processing hotel data...', '1-2 seconds');
+            updateSystemStatus('Processing market signals…');
             allHotels = result.hotels;
             window.allHotels = allHotels;
             hotelData = [...allHotels];
             currentFilteredHotels = [...allHotels];
             if (result.skippedNoCoordinates) console.warn(result.skippedNoCoordinates + " Airtable records have no coordinates and are not shown on the map.");
             
-            updateSystemStatus('Displaying hotels on map...', '1 second');
+            updateSystemStatus('Displaying hotels on map…');
             // Display all hotels initially
             await displayHotels(hotelData);
             updateStatistics(hotelData);
@@ -211,7 +211,7 @@ async function displayHotels(hotels) {
         // Update progress and allow UI to update between batches
         if (i + batchSize < hotels.length) {
             const progress = Math.round(((i + batchSize) / hotels.length) * 100);
-            updateSystemStatus(`Displaying hotels on map... ${progress}%`, '1 second');
+            updateSystemStatus(`Displaying hotels on map… ${progress}%`);
             await new Promise(resolve => setTimeout(resolve, 10));
         }
     }
@@ -564,7 +564,7 @@ function showMapHint(message) {
 let statusStartTime = null;
 let statusProgressInterval = null;
 
-function showSystemStatus(message = 'Processing...', timeEstimate = '2-3 seconds') {
+function showSystemStatus(message = 'Processing…', timeEstimate = '') {
     const statusElement = document.getElementById('systemStatus');
     const statusText = statusElement.querySelector('.status-text');
     const statusTime = statusElement.querySelector('.status-time');
@@ -572,7 +572,13 @@ function showSystemStatus(message = 'Processing...', timeEstimate = '2-3 seconds
     
     // Update content
     statusText.querySelector('div:first-child').textContent = message;
-    statusTime.textContent = `Estimated time: ${timeEstimate}`;
+    if (timeEstimate) {
+        statusTime.textContent = `Estimated time: ${timeEstimate}`;
+        statusTime.style.display = '';
+    } else {
+        statusTime.textContent = '';
+        statusTime.style.display = 'none';
+    }
     
     // Reset progress
     progressBar.style.width = '0%';
@@ -645,6 +651,10 @@ function updateSystemStatus(message, timeEstimate = null) {
         statusText.querySelector('div:first-child').textContent = message;
         if (timeEstimate) {
             statusTime.textContent = `Estimated time: ${timeEstimate}`;
+            statusTime.style.display = '';
+        } else {
+            statusTime.textContent = '';
+            statusTime.style.display = 'none';
         }
     }
 }

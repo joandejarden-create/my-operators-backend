@@ -595,24 +595,18 @@
 
                     setViewState(false, false, false);
                     if (feedItems.length === 0) {
-                        setViewState(false, false, true, 'No alerts found. Try widening time window or changing filters.');
+                        setViewState(false, false, true, 'No market signals are available for the selected filters yet.');
                         return;
                     }
                     setViewState(false, true, false);
                     updateResetViewButton();
                     renderAll();
                 } catch (e) {
-                    setViewState(false, false, true, (e && e.message) ? e.message + ' Please try Refresh.' : 'Unable to load alerts. Please try Refresh.');
+                    setViewState(false, false, true, 'We could not load market signals right now. Please refresh or try again later.');
                 }
             })
-            .catch(function (err) {
-                var message = (err && err.message) ? err.message : 'Unable to load alerts.';
-                if (message.indexOf('Failed to fetch') !== -1 || message.indexOf('NetworkError') !== -1) {
-                    message = 'Network error. Is the server running? Please try Refresh.';
-                } else if (message !== 'Airtable not configured' && message !== 'Failed to load market alerts') {
-                    message = message + ' Please try Refresh.';
-                }
-                setViewState(false, false, true, message);
+            .catch(function () {
+                setViewState(false, false, true, 'We could not load market signals right now. Please refresh or try again later.');
             });
     }
 
