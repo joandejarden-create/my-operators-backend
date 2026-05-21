@@ -197,8 +197,27 @@ html, body {
 
 .dc-role-switch {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--dc-space-2);
+  max-width: 320px;
+}
+.dc-role-switch__hint {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--dc-text-muted);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.dc-preview-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dc-text-muted);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 .dc-role-switch__label {
   font-size: 11px;

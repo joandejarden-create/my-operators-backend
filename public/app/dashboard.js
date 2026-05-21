@@ -32,6 +32,15 @@
     return String(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  function myDealsHref() {
+    try {
+      if (typeof window !== 'undefined' && window.DealalityWebflowNav && typeof window.DealalityWebflowNav.myDealsHref === 'function') {
+        return window.DealalityWebflowNav.myDealsHref();
+      }
+    } catch (_e) {}
+    return toShellHref('/my-deals');
+  }
+
   function isExternalHref(href) {
     if (!href) return false;
     return /^https?:\/\//i.test(String(href));
@@ -42,13 +51,52 @@
   }
 
   function toShellHref(href) {
-    if (!href) return '#';
+    if (!href) return '';
     var s = String(href).trim();
-    if (!s || s === '#') return '#';
+    if (!s || s === '#') return '';
     if (/^https?:\/\//i.test(s)) return s;
     if (s.indexOf('/app#') === 0) return s;
     if (s.charAt(0) !== '/') s = '/' + s;
     return '/app#' + s;
+  }
+
+  function isUsableHref(href) {
+    if (!href) return false;
+    var s = String(href).trim();
+    return !!s && s !== '#';
+  }
+
+  function isInternalQaMode() {
+    try {
+      if (/localhost|127\.0\.0\.1/i.test(window.location.hostname)) return true;
+      if (/(?:\?|&)devNav=1(?:&|$)/.test(window.location.search)) return true;
+      if (/(?:\?|&)showSampleBanner=1(?:&|$)/.test(window.location.search)) return true;
+      if (window.localStorage && window.localStorage.getItem('dc_internal_qa') === '1') return true;
+      if (window.parent && window.parent !== window) {
+        try {
+          if (/(?:\?|&)devNav=1(?:&|$)/.test(window.parent.location.search)) return true;
+        } catch (_parentErr) {
+          // Cross-origin parent — ignore.
+        }
+      }
+    } catch (_err) {
+      return false;
+    }
+    return false;
+  }
+
+  function initSampleDataBanner() {
+    var banner = document.getElementById('dc-sample-data-banner');
+    if (!banner) return;
+    banner.hidden = !isInternalQaMode();
+  }
+
+  function setPreviewTagsVisible(show) {
+    var ids = ['dc-preview-tag-kpis', 'dc-preview-tag-signals', 'dc-preview-tag-actions'];
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.hidden = !show;
+    });
   }
 
   function timeAgoFromDate(dateStr) {
@@ -121,7 +169,7 @@
             timeAgo: e.timeAgo || '',
             badgeLabel: e.badgeLabel || 'Deal Activity',
             badgeType: e.badgeType || 'info',
-            ctaHref: e.ctaHref || '/outreach-deal-activity-log'
+            ctaHref: e.ctaHref || '/activity-log'
           };
         });
       })
@@ -137,8 +185,11 @@
     if (syncEl) syncEl.textContent = (h.lastSyncLabel ? 'Data Last Updated · ' + h.lastSyncLabel : 'Data Last Updated');
     var actionsEl = document.getElementById('dc-header-actions');
     if (actionsEl && h.ctas && h.ctas.length) {
-      actionsEl.innerHTML = h.ctas.map(function (c) {
-        return '<a href="' + escapeAttr(c.href) + '" class="dc-btn' + (c.primary ? ' dc-btn--primary' : '') + '">' + escapeHtml(c.label) + '</a>';
+      var ctas = h.ctas.filter(function (c) {
+        return isUsableHref(c.href);
+      });
+      actionsEl.innerHTML = ctas.map(function (c) {
+        return '<a href="' + escapeAttr(toShellHref(c.href)) + '" class="dc-btn' + (c.primary ? ' dc-btn--primary' : '') + '" target="_top">' + escapeHtml(c.label) + '</a>';
       }).join('');
     }
   }
@@ -412,12 +463,19 @@
     var el = document.getElementById('dc-today-focus-body');
     if (!el) return;
     if (!chips || !chips.length) {
-      el.innerHTML = '<p class="dc-activity-log__empty">Nothing urgent. <a href="/my-deals" class="dc-link">View deals</a></p>';
+      el.innerHTML = '<p class="dc-activity-log__empty">Nothing urgent. <a href="' + escapeAttr(myDealsHref()) + '" class="dc-link">View deals</a></p>';
       return;
     }
     var html = '<div class="dc-focus-chips">' + chips.map(function (c) {
       var chipClass = 'dc-focus-chip' + (c.variant ? ' dc-focus-chip--' + c.variant : '');
-      return '<a href="' + escapeAttr(c.href) + '" class="' + chipClass + '">' +
+      var chipHref = isUsableHref(c.href) ? toShellHref(c.href) : '';
+      if (!chipHref) {
+        return '<span class="' + chipClass + ' dc-focus-chip--static">' +
+          '<span class="dc-focus-chip__count">' + escapeHtml(String(c.count)) + '</span>' +
+          escapeHtml(c.icon || '') + ' ' + escapeHtml(c.label) +
+          '</span>';
+      }
+      return '<a href="' + escapeAttr(chipHref) + '" class="' + chipClass + '" target="_top">' +
         '<span class="dc-focus-chip__count">' + escapeHtml(String(c.count)) + '</span>' +
         escapeHtml(c.icon || '') + ' ' + escapeHtml(c.label) +
         '</a>';
@@ -430,7 +488,7 @@
     var el = document.getElementById('dc-next-actions');
     if (!el) return;
     if (!actions || !actions.length) {
-      el.innerHTML = '<p class="dc-activity-log__empty">No upcoming actions. <a href="/my-deals" class="dc-link">Create follow-ups</a></p>';
+      el.innerHTML = '<p class="dc-activity-log__empty">No upcoming actions. <a href="' + escapeAttr(myDealsHref()) + '" class="dc-link">Create follow-ups</a></p>';
       return;
     }
     var items = actions.slice(0, MAX_NEXT_ACTIONS);
@@ -443,7 +501,9 @@
         '<div class="dc-signal__row">' +
         '<span class="dc-signal__tag dc-signal__tag--' + escapeAttr(tagClass) + '">' + escapeHtml(tag) + '</span>' +
         '<span class="dc-signal__headline">' + escapeHtml(toTitleCase(a.title)) + '</span>' +
-        '<a href="' + escapeAttr(a.ctaHref || a.href || '#') + '" class="dc-link">' + escapeHtml(a.ctaLabel || 'Open') + '</a>' +
+        (isUsableHref(a.ctaHref || a.href)
+          ? '<a href="' + escapeAttr(toShellHref(a.ctaHref || a.href)) + '" class="dc-link" target="_top">' + escapeHtml(a.ctaLabel || 'Open') + '</a>'
+          : '') +
         '</div>' +
         '<p class="dc-signal__why">' + escapeHtml(why) + '</p>' +
         '</div>';
@@ -499,7 +559,7 @@
     var el = document.getElementById('dc-signals');
     if (!el) return;
     if (!items.length) {
-      el.innerHTML = '<p class="dc-activity-log__empty">No signals. <a href="/market-alerts" class="dc-link">View market alerts</a></p>';
+      el.innerHTML = '<p class="dc-activity-log__empty">No signals. <a href="' + escapeAttr(toShellHref('/market-alerts')) + '" class="dc-link" target="_top">View market alerts</a></p>';
       return;
     }
     var typeToTag = { risk: 'Risk', opportunity: 'Opportunity', watch: 'Watch', trend: 'Trend', action: 'Action' };
@@ -507,11 +567,16 @@
     var html = items.map(function (s) {
       var tag = s.tag || typeToTag[s.type] || 'Watch';
       var tagClass = s.tagClass || typeToClass[s.type] || 'watch';
+      var rawCtaHref = s.ctaHref || s.href;
+      var ctaHref = isUsableHref(rawCtaHref) ? toShellHref(rawCtaHref) : '';
+      var ctaHtml = ctaHref
+        ? '<a href="' + escapeAttr(ctaHref) + '" class="dc-link" target="_top">' + escapeHtml(s.ctaLabel || s.cta || 'View') + '</a>'
+        : '';
       return '<div class="dc-signal">' +
         '<div class="dc-signal__row">' +
         '<span class="dc-signal__tag dc-signal__tag--' + escapeAttr(tagClass) + '">' + escapeHtml(tag) + '</span>' +
         '<span class="dc-signal__headline">' + escapeHtml(toTitleCase(s.title || s.headline)) + '</span>' +
-        '<a href="' + escapeAttr(s.ctaHref || s.href || '#') + '" class="dc-link">' + escapeHtml(s.ctaLabel || s.cta || 'View') + '</a>' +
+        ctaHtml +
         '</div>' +
         ((s.subtitle || s.why) ? '<p class="dc-signal__why">' + escapeHtml(s.subtitle || s.why) + '</p>' : '') +
         '</div>';
@@ -589,7 +654,7 @@
     var el = document.getElementById('dc-market-intel');
     if (!el) return;
     if (!items.length) {
-      el.innerHTML = '<p class="dc-activity-log__empty">No Market Intelligence. <a href="/market-alerts" class="dc-link">View market alerts</a></p>';
+      el.innerHTML = '<p class="dc-activity-log__empty">No Market Intelligence. <a href="' + escapeAttr(toShellHref('/market-alerts')) + '" class="dc-link" target="_top">View market alerts</a></p>';
       return;
     }
     var html = '<ul class="dc-activity-feed">' + items.map(function (i) {
@@ -599,8 +664,10 @@
       if ((tag || '').toLowerCase().indexOf('supply') !== -1 || (tag || '').toLowerCase().indexOf('airport') !== -1) iconSvg = activityIconMap['trending-up'];
       else if ((tag || '').toLowerCase().indexOf('financing') !== -1) iconSvg = activityIconMap.clipboard;
       var href = i.ctaHref || i.href;
-      var linkStart = href ? '<a href="' + escapeAttr(href) + '" class="dc-activity-feed__link"' + linkTargetAttrs(href) + '>' : '';
-      var linkEnd = href ? '</a>' : '';
+      var shellHref = isUsableHref(href) ? toShellHref(href) : '';
+      var targetAttrs = shellHref && /^\/app#/.test(shellHref) ? ' target="_top"' : linkTargetAttrs(shellHref);
+      var linkStart = shellHref ? '<a href="' + escapeAttr(shellHref) + '" class="dc-activity-feed__link"' + targetAttrs + '>' : '';
+      var linkEnd = shellHref ? '</a>' : '';
       return '<li class="dc-activity-feed__item">' +
         '<span class="dc-activity-feed__line" aria-hidden="true"></span>' +
         '<span class="' + iconClass + '" aria-hidden="true" title="' + escapeAttr(tag || '') + '">' + iconSvg + '</span>' +
@@ -655,8 +722,8 @@
     var html = '<ul class="dc-activity-feed">' + items.map(function (a) {
       var iconClass = 'dc-activity-feed__icon ' + iconClassForType(a.type || 'deal');
       var rawHref = a.ctaHref || a.href;
-      var href = toShellHref(rawHref);
-      var targetAttrs = /^\/app#/.test(href)
+      var href = isUsableHref(rawHref) ? toShellHref(rawHref) : '';
+      var targetAttrs = href && /^\/app#/.test(href)
         ? ' target="_top"'
         : linkTargetAttrs(href);
       var linkStart = href ? '<a href="' + escapeAttr(href) + '" class="dc-activity-feed__link"' + targetAttrs + '>' : '';
@@ -697,7 +764,10 @@
     var trendLabel = (r && r.trendLabel) || (er && er.trendLabel) || 'vs prior period';
     var drivers = er && er.drivers && er.drivers.length ? er.drivers.slice(0, 2) : [];
     var driversHtml = drivers.length ? '<div class="dc-exec-drivers"><div class="dc-exec-drivers__title">What\'s hurting your badge?</div>' + drivers.map(function (d) {
-      return '<div class="dc-exec-driver">' + '<div class="dc-exec-driver__title">' + escapeHtml(d.title) + '</div>' + (d.subtitle ? '<div class="dc-exec-driver__sub">' + escapeHtml(d.subtitle) + '</div>' : '') + (d.ctaHref ? '<a href="' + escapeAttr(d.ctaHref) + '" class="dc-link dc-exec-driver__cta">' + escapeHtml(d.ctaLabel || 'Open') + '</a>' : '') + '</div>';
+      var driverCta = isUsableHref(d.ctaHref)
+        ? '<a href="' + escapeAttr(toShellHref(d.ctaHref)) + '" class="dc-link dc-exec-driver__cta" target="_top">' + escapeHtml(d.ctaLabel || 'Open') + '</a>'
+        : '';
+      return '<div class="dc-exec-driver">' + '<div class="dc-exec-driver__title">' + escapeHtml(d.title) + '</div>' + (d.subtitle ? '<div class="dc-exec-driver__sub">' + escapeHtml(d.subtitle) + '</div>' : '') + driverCta + '</div>';
     }).join('') + '</div>' : '';
     var scoreVal = freqPct != null ? escapeHtml(String(freqPct)) + '%' : '—';
     var html = '<div class="dc-exec-summary">' +
@@ -842,8 +912,9 @@
     var html = '<div class="dc-toolbox-list">' + links.map(function (t) {
       var statusClass = t.status === 'Live' ? 'live' : t.status === 'Beta' ? 'beta' : 'soon';
       var iconSvg = toolboxIconMap[t.iconKey] || toolboxIconMap.briefcase;
-      var href = t.href || '#';
-      var shellHref = (/^https?:\/\//i.test(href) || href.indexOf('/app#') === 0 || href === '#')
+      var href = t.href || '';
+      if (!isUsableHref(href)) return '';
+      var shellHref = /^https?:\/\//i.test(href) || href.indexOf('/app#') === 0
         ? href
         : '/app#' + (href.charAt(0) === '/' ? href : ('/' + href));
       return '<a href="' + escapeAttr(shellHref) + '" class="dc-toolbox-item" target="_top">' +
@@ -851,7 +922,7 @@
         '<span>' + (t.labelHtml || escapeHtml(t.label)) + '</span>' +
         '<span class="dc-toolbox-item__status dc-toolbox-item__status--' + statusClass + '">' + escapeHtml(t.status) + '</span>' +
         '</a>';
-    }).join('') + '</div>';
+    }).filter(Boolean).join('') + '</div>';
     el.innerHTML = html;
   }
 
@@ -878,6 +949,7 @@
 
   function applyVm(vm) {
     if (!vm) return;
+    setPreviewTagsVisible(vm.contentMode === 'sample');
     renderHeader(vm);
     renderTrendChart(vm);
     renderMapOverlay(vm);
@@ -958,8 +1030,17 @@
   }
 
   function init() {
+    initSampleDataBanner();
     var role = getStoredRole();
     updateRoleToggle(role);
+    var homeMyDealsLink = document.getElementById('dc-home-my-deals-link');
+    if (homeMyDealsLink) homeMyDealsLink.href = toShellHref('/my-deals');
+    var responsivenessFooter = document.getElementById('dc-responsiveness-footer');
+    var responsivenessLink = document.getElementById('dc-responsiveness-link');
+    if (responsivenessFooter && responsivenessLink) {
+      responsivenessLink.href = toShellHref('/outreach/inbox');
+      responsivenessFooter.hidden = false;
+    }
     var toggle = document.getElementById('dc-role-toggle');
     if (toggle) {
       toggle.addEventListener('click', function (e) {

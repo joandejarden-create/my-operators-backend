@@ -34,11 +34,56 @@
             --system--blue-100: #eaf4ff;
             --system--blue-300: #1d88fe;
             --system--blue-200: #8fc3ff;
+            --scrollbar-size: 6px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html { scrollbar-gutter: stable; }
+        /* Same blue scrollbar as My Deals (styles.css) — this page is often embedded without styles.css */
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+            color-scheme: dark;
+        }
+        /* Viewport scrollbar (esp. Deal Compare embedded in My Deals iframe) */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: var(--scrollbar-size);
+            height: var(--scrollbar-size);
+        }
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track {
+            background: #080f25;
+            border-left: 1px solid rgba(87, 195, 255, 0.35);
+        }
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb {
+            background: #37446b;
+            border-radius: 0;
+        }
+        html::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover {
+            background: #7e89ac;
+        }
+        *::-webkit-scrollbar {
+            width: var(--scrollbar-size);
+            height: var(--scrollbar-size);
+        }
+        *::-webkit-scrollbar-track {
+            background: #080f25;
+            border-left: 1px solid rgba(87, 195, 255, 0.35);
+        }
+        *::-webkit-scrollbar-thumb {
+            background: #37446b;
+            border-radius: 0;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+            background: #7e89ac;
+        }
+        *::-webkit-scrollbar-corner {
+            background: #080f25;
+        }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -49,7 +94,8 @@
             font-weight: 500;
             line-height: 1.5em;
             min-height: 100vh;
-            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
         }
 
         .page-wrapper { min-height: 100vh; display: flex; }
@@ -138,18 +184,7 @@
             margin-bottom: 8px;
         }
 
-        .deal-capture-logo {
-            height: 32px;
-            display: flex;
-            align-items: center;
-        }
 
-        .deal-capture-logo img {
-            height: 100%;
-            width: auto;
-            max-width: 120px;
-            object-fit: contain;
-        }
 
         .deal-compare__header h1 {
             color: var(--neutral--100);
@@ -529,6 +564,27 @@
             border-radius: 8px;
             overflow: auto;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+        /* Explicit webkit scrollbar on the scroll container (My Deals iframe / some browsers skip universal * rules here) */
+        .table-wrapper::-webkit-scrollbar {
+            width: var(--scrollbar-size);
+            height: var(--scrollbar-size);
+        }
+        .table-wrapper::-webkit-scrollbar-track {
+            background: #080f25;
+            border-left: 1px solid rgba(87, 195, 255, 0.35);
+        }
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #37446b;
+            border-radius: 0;
+        }
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #7e89ac;
+        }
+        .table-wrapper::-webkit-scrollbar-corner {
+            background: #080f25;
         }
 
         .comparison-table {
@@ -889,7 +945,7 @@
                     <a href="#">🏢 Deal Room</a>
                     <a href="#">🤝 Outreach Hub</a>
                     <a href="clause-library.html">📚 Legal Library</a>
-                    <a href="brand-library.html">🏨 Brand Library</a>
+                    <a href="brand-library.html">🏨 Browse brands</a>
                     <a href="deal-compare.html" class="active">⚖️ Deal Compare</a>
                     <a href="partner-directory.html">👥 Partner Directory</a>
                     <a href="#">📋 Platform Resources</a>
@@ -2046,18 +2102,34 @@
                 if (sel) sel.style.display = 'none';
                 comparisonContentEl.style.display = 'block';
                 emptyStateEl.style.display = 'none';
-                comparisonTbodyEl.innerHTML = '<tr><td colspan="20" style="padding:40px;text-align:center;vertical-align:middle;"><div class="loading-deals"><div class="loading"><div class="loading-content"><div class="wave-container"><div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div><div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div></div><div><div class="loading-text-main">Loading proposals...</div><div class="loading-text-time">Estimated time: 5–15 seconds</div></div></div><div class="loading-progress"><div class="loading-progress-bar"></div></div></div></div></td></tr>';
+                comparisonTheadEl.innerHTML = '';
+                comparisonTbodyEl.innerHTML = '<tr><td colspan="20" style="padding:40px;text-align:center;vertical-align:middle;"><div class="loading-deals"><div class="loading"><div class="loading-content"><div class="wave-container"><div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div><div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div></div><div><div class="loading-text-main">Loading comparison data…</div></div></div><div class="loading-progress"><div class="loading-progress-bar"></div></div></div></div></td></tr>';
                 return fetch('/api/deal-compare/proposals?dealId=' + encodeURIComponent(dealIdFromUrl))
                     .then(function (r) { return r.json(); })
                     .then(function (data) {
                         if (!data.success || !data.brands) {
+                            comparisonTheadEl.innerHTML = '';
                             comparisonTbodyEl.innerHTML = '<tr><td colspan="2" style="color:var(--neutral--500);padding:24px;">Failed to load proposals.</td></tr>';
                             return;
                         }
-                        var brands = data.brands;
-                        if (brands.length === 0) {
+                        function bddProposalStatusSubmitted(b) {
+                            return String(b && b.proposalStatus != null ? b.proposalStatus : '').trim().toLowerCase() === 'submitted';
+                        }
+                        var rawBrands = data.brands || [];
+                        if (rawBrands.length === 0) {
+                            comparisonTheadEl.innerHTML = '';
+                            comparisonTbodyEl.innerHTML = '';
                             emptyStateEl.style.display = 'block';
                             emptyStateEl.innerHTML = '<p>No contacted brands for this deal. Add brands from Matched Brands and send communications.</p>';
+                            comparisonContentEl.style.display = 'none';
+                            return;
+                        }
+                        var brands = rawBrands.filter(bddProposalStatusSubmitted);
+                        if (brands.length === 0) {
+                            comparisonTheadEl.innerHTML = '';
+                            comparisonTbodyEl.innerHTML = '';
+                            emptyStateEl.style.display = 'block';
+                            emptyStateEl.innerHTML = '<p>No brands with <strong>Submitted</strong> proposal status for this deal yet. Submit proposals from the brand workspace or wait until brands submit.</p>';
                             comparisonContentEl.style.display = 'none';
                             return;
                         }
@@ -2065,6 +2137,7 @@
                         updateBackToTopVisibility();
                     })
                     .catch(function (err) {
+                        comparisonTheadEl.innerHTML = '';
                         comparisonTbodyEl.innerHTML = '<tr><td colspan="2" style="color:var(--system--300);padding:24px;">Error: ' + (err.message || 'Failed to load') + '</td></tr>';
                     });
             }
@@ -2074,12 +2147,14 @@
             } else {
                 loadBrands().then(function () {
                     if (allBrands.length === 0 && brandChipsRowEl) {
-                        brandChipsRowEl.innerHTML = '<p style="color: var(--neutral--500); padding: 8px 0;">No brands available. Check API and Airtable connection.</p>';
+                        brandChipsRowEl.innerHTML = '<p style="color: var(--neutral--500); padding: 8px 0;">We could not load comparison data right now. Please refresh or try again later.</p>';
                     }
                 });
             }
         })();
     </script>
     <button type="button" class="back-to-top" id="backToTopBtn" aria-label="Scroll back to top" title="Back to top">↑</button>
+
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>
