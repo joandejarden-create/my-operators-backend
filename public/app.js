@@ -277,6 +277,24 @@
         return /localhost|127\.0\.0\.1/i.test(window.location.hostname) || /(?:\?|&)devNav=1(?:&|$)/.test(window.location.search);
     }
 
+    /** True when this shell document is embedded in Webflow (or another parent), not opened standalone. */
+    function isEmbeddedInParent() {
+        try {
+            return window.self !== window.top;
+        } catch (_err) {
+            return true;
+        }
+    }
+
+    /** Hide sidebar/footer when the shell itself is iframed on dealality.com (Webflow dashboard). */
+    function applyChromelessShellIfEmbedded() {
+        if (!isEmbeddedInParent() || computeDevMode()) return;
+        document.documentElement.classList.add('app-chromeless-embed');
+        if (sidebar) sidebar.setAttribute('hidden', '');
+        var footer = document.querySelector('.app-shell-footer');
+        if (footer) footer.setAttribute('hidden', '');
+    }
+
     function getStoredDevWorkspace() {
         try {
             var stored = (window.localStorage && window.localStorage.getItem(DEV_WORKSPACE_STORAGE_KEY)) || '';
@@ -843,6 +861,8 @@
     }
 
     function init() {
+        applyChromelessShellIfEmbedded();
+
         var copyrightYearEl = document.getElementById('appShellCopyrightYear');
         if (copyrightYearEl) copyrightYearEl.textContent = String(new Date().getFullYear());
 

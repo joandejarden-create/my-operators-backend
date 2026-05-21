@@ -1,6 +1,8 @@
 <!--
   Dealality Command Center – Redesigned per dashboard principles
   ROUTE: /app/home | URL: http://localhost:3000/app/home.html
+  Webflow iframe (content only, same pattern as My Deals):
+    https://<railway-host>/app/home.html?embed=1&appShell=1
   Layout: Hero → Work → Context → Tools. Charts, funnel, asymmetric grid.
 -->
 <!DOCTYPE html>
@@ -187,9 +189,17 @@
 
   <script>
     (function () {
+      var page = document.getElementById('dc-dashboard-page');
+      if (!page) return;
       var params = new URLSearchParams(window.location.search);
-      if (params.get('embed') === '1') {
-        document.getElementById('dc-dashboard-page').classList.add('embed-mode');
+      var inIframe = false;
+      try {
+        inIframe = window.self !== window.top;
+      } catch (_e) {
+        inIframe = true;
+      }
+      if (params.get('embed') === '1' || params.get('appShell') === '1' || inIframe) {
+        page.classList.add('embed-mode');
       }
     })();
   </script>

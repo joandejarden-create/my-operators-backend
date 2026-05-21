@@ -15,6 +15,7 @@
 
   function embedPageNeedsMsToken(pathname) {
     if (!pathname) return false;
+    if (/\/app\/home\.html$/i.test(pathname)) return true;
     return /\/(my-deals|new-deal-setup|deal-summary|brand-development-dashboard|deal-room-owner|deal-room-brand|outreach-plan-wizard|brand-explorer)(\.html)?$/i.test(
       pathname
     );
@@ -29,7 +30,7 @@
       var isRailway = src.indexOf('my-operators-backend') !== -1;
       var isLocalEmbed = embedPageNeedsMsToken(url.pathname);
       if (!isRailway && !isLocalEmbed) return;
-      if (isRailway && src.indexOf('my-deals') === -1) return;
+      if (isRailway && !embedPageNeedsMsToken(url.pathname)) return;
       if (url.searchParams.get('msToken')) return;
       url.searchParams.set('msToken', token.trim());
       frame.src = url.toString();

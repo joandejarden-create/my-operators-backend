@@ -66,7 +66,20 @@
     return !!s && s !== '#';
   }
 
+  function isEmbedPresentation() {
+    if (/(?:\?|&)embed=1(?:&|$)/.test(window.location.search)) return true;
+    if (/(?:\?|&)appShell=1(?:&|$)/.test(window.location.search)) return true;
+    try {
+      return window.self !== window.top;
+    } catch (_iframeErr) {
+      return true;
+    }
+  }
+
   function isInternalQaMode() {
+    if (isEmbedPresentation() && !/(?:\?|&)showSampleBanner=1(?:&|$)/.test(window.location.search)) {
+      return false;
+    }
     try {
       if (/localhost|127\.0\.0\.1/i.test(window.location.hostname)) return true;
       if (/(?:\?|&)devNav=1(?:&|$)/.test(window.location.search)) return true;
@@ -949,7 +962,7 @@
 
   function applyVm(vm) {
     if (!vm) return;
-    setPreviewTagsVisible(vm.contentMode === 'sample');
+    setPreviewTagsVisible(vm.contentMode === 'sample' && !isEmbedPresentation());
     renderHeader(vm);
     renderTrendChart(vm);
     renderMapOverlay(vm);

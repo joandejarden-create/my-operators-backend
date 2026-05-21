@@ -770,3 +770,19 @@ body {
         width: 100%;
     }
 }
+
+/* Parent site embed (e.g. Webflow /hotel-owner/dashboard): hide shell chrome */
+html.app-chromeless-embed .sidebar,
+html.app-chromeless-embed .app-shell-footer {
+    display: none !important;
+}
+
+html.app-chromeless-embed .app-layout {
+    display: block;
+}
+
+html.app-chromeless-embed .main-content {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+}
