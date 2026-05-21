@@ -268,6 +268,42 @@ function parseCompanyProfileArrays(req, res, next) {
 
 const app = express();
 
+const DEFAULT_EMBED_ANCESTORS = [
+  "https://www.dealality.com",
+  "https://dealality.com",
+  "https://mvp-deal-capture.webflow.io",
+  "https://*.webflow.io",
+  "http://localhost:*",
+  "http://127.0.0.1:*",
+];
+const EMBED_ALLOWED_ANCESTORS = [
+  ...new Set([
+    ...DEFAULT_EMBED_ANCESTORS,
+    ...(process.env.FRAME_ANCESTORS || "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean),
+  ]),
+];
+
+function isEmbeddableShellRequest(req) {
+  const p = req.path || "";
+  if (p === "/app" || p.startsWith("/app/")) return true;
+  return (
+    p === "/operator-explorer-gold-mock.html" ||
+    p === "/operator-explorer-gold-mock" ||
+    p === "/operator-explorer-gold-mock/"
+  );
+}
+
+function applyEmbedFramePolicy(res) {
+  res.removeHeader("X-Frame-Options");
+  res.setHeader(
+    "Content-Security-Policy",
+    "frame-ancestors 'self' " + EMBED_ALLOWED_ANCESTORS.join(" ") + ";"
+  );
+}
+
 // CORS so Webflow (and other origins) can call API from the browser
 const CORS_ORIGIN = process.env.CORS_ORIGIN || "https://mvp-deal-capture.webflow.io";
 app.use((req, res, next) => {
@@ -281,7 +317,11 @@ app.use((req, res, next) => {
 // Security headers for deployment
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  if (isEmbeddableShellRequest(req)) {
+    applyEmbedFramePolicy(res);
+  } else {
+    res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  }
   res.setHeader("X-XSS-Protection", "1; mode=block");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   next();

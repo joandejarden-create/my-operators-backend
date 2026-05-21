@@ -268,13 +268,44 @@ function parseCompanyProfileArrays(req, res, next) {
 }
 
 const app = express();
-const EMBED_ALLOWED_ANCESTORS = (
-  process.env.FRAME_ANCESTORS ||
-  "https://www.dealality.com,https://dealality.com,https://deal-capture.design.webflow.com,https://*.webflow.io,https://*.webflow.com"
-)
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
+
+const DEFAULT_EMBED_ANCESTORS = [
+  "https://www.dealality.com",
+  "https://dealality.com",
+  "https://deal-capture.design.webflow.com",
+  "https://mvp-deal-capture.webflow.io",
+  "https://*.webflow.io",
+  "https://*.webflow.com",
+  "http://localhost:*",
+  "http://127.0.0.1:*",
+];
+const EMBED_ALLOWED_ANCESTORS = [
+  ...new Set([
+    ...DEFAULT_EMBED_ANCESTORS,
+    ...(process.env.FRAME_ANCESTORS || "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean),
+  ]),
+];
+
+function isEmbeddableShellRequest(req) {
+  const p = req.path || "";
+  if (p === "/app" || p.startsWith("/app/")) return true;
+  return (
+    p === "/operator-explorer-gold-mock.html" ||
+    p === "/operator-explorer-gold-mock" ||
+    p === "/operator-explorer-gold-mock/"
+  );
+}
+
+function applyEmbedFramePolicy(res) {
+  res.removeHeader("X-Frame-Options");
+  res.setHeader(
+    "Content-Security-Policy",
+    "frame-ancestors 'self' " + EMBED_ALLOWED_ANCESTORS.join(" ") + ";"
+  );
+}
 
 // CORS so Webflow + live origins can call API from browser.
 // Env config is additive, so core production origins stay allowed.
@@ -305,16 +336,8 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   const isEmbedRequest = req.query && String(req.query.embed || "") === "1";
-  const isHtmlPage = typeof req.path === "string" && req.path.endsWith(".html");
-  const allowsFraming = isEmbedRequest || isHtmlPage;
-
-  if (allowsFraming) {
-    // Allow approved Dealality/Webflow ancestors to embed HTML/embed pages.
-    res.removeHeader("X-Frame-Options");
-    res.setHeader(
-      "Content-Security-Policy",
-      "frame-ancestors 'self' " + EMBED_ALLOWED_ANCESTORS.join(" ")
-    );
+  if (isEmbeddableShellRequest(req) || isEmbedRequest) {
+    applyEmbedFramePolicy(res);
   } else {
     res.setHeader("X-Frame-Options", "SAMEORIGIN");
   }
