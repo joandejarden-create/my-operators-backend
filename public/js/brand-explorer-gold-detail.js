@@ -743,6 +743,11 @@
 
   function presentationFootprintLine(brand) {
     var fp = brand.footprint || {};
+    if (typeof BrandExplorerCensusMetrics !== 'undefined' && BrandExplorerCensusMetrics.footprintDisplayModel) {
+      var disp = BrandExplorerCensusMetrics.footprintDisplayModel(brand);
+      if (!disp.showVerifiedMetrics) return '';
+      fp = disp.fp || fp;
+    }
     var openH = fp.totalExistingHotels;
     var pipH = (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0);
     var rd = fp.regionalDistribution && typeof fp.regionalDistribution === 'object' ? fp.regionalDistribution : {};

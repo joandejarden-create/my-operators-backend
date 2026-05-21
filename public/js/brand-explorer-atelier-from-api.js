@@ -372,10 +372,14 @@
     return cards;
   }
 
-  function footprintSummaryLine(fp) {
+  /** Hero / overview footprint line — same display footprint as Footprint Metrics tables. */
+  function footprintSummaryLine(brand) {
+    var disp = resolveFootprintDisplay(brand);
+    if (!disp.showVerifiedMetrics) return '';
+    var fp = disp.fp || {};
     if (!fp || typeof fp !== 'object') return '';
     var openH = fp.totalExistingHotels;
-    var pipH = (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0);
+    var pipH = fpMetricNum(fp.totalNewBuildHotels) + fpMetricNum(fp.totalConversionHotels);
     var rd = fp.regionalDistribution && typeof fp.regionalDistribution === 'object' ? fp.regionalDistribution : {};
     var rdKeys = Object.keys(rd);
     if (openH == null || openH === '') {
@@ -733,9 +737,10 @@
   }
 
   function renderAtelierOverview(brand) {
-    var fp = brand.footprint || {};
+    var disp = resolveFootprintDisplay(brand);
+    var fp = disp.fp || brand.footprint || {};
     var fv = fp.formValues || {};
-    var footLine = footprintSummaryLine(fp);
+    var footLine = footprintSummaryLine(brand);
     var loyaltyLine = loyaltyStrengthLine(brand);
     var geoFocus = regionOfferedLine(brand);
     var typicalUse = typicalUseCaseFromBrand(brand);
@@ -1215,6 +1220,43 @@
         ? '<div class="presence-intel-card__value">' + escapeHtml(fmtCell(value)) + '</div>'
         : '<div class="presence-intel-card__value oe-dd--empty">&nbsp;</div>') +
       '</div>'
+    );
+  }
+
+  function presenceIntelFootprintMetric(label, hotels, rooms) {
+    function metricBlock(count, unit) {
+      var n = Number(count);
+      var show = hasVal(count) || (Number.isFinite(n) && n >= 0 && count !== '');
+      if (!show) {
+        return (
+          '<div class="presence-intel-card__metric presence-intel-card__metric--empty">' +
+          '<span class="presence-intel-card__metric-value oe-dd--empty">&nbsp;</span>' +
+          '<span class="presence-intel-card__metric-unit">' +
+          escapeHtml(unit) +
+          '</span></div>'
+        );
+      }
+      return (
+        '<div class="presence-intel-card__metric">' +
+        '<span class="presence-intel-card__metric-value">' +
+        escapeHtml(fmtNum(count)) +
+        '</span>' +
+        '<span class="presence-intel-card__metric-unit">' +
+        escapeHtml(unit) +
+        '</span></div>'
+      );
+    }
+    return (
+      '<div class="presence-intel-card presence-intel-card--footprint-metrics">' +
+      '<div class="presence-intel-card__label">' +
+      escapeHtml(label) +
+      '</div>' +
+      '<div class="presence-intel-card__metrics" aria-label="' +
+      escapeHtml(label + ' hotels and rooms') +
+      '">' +
+      metricBlock(hotels, 'hotels') +
+      metricBlock(rooms, 'rooms') +
+      '</div></div>'
     );
   }
 
@@ -3004,11 +3046,167 @@
     );
   }
 
+  function fpMetricNum(v) {
+    var n = Number(v);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function fpMetricCell(v) {
+    if (v == null || v === '') return '&nbsp;';
+    var n = Number(v);
+    if (!Number.isFinite(n)) return '&nbsp;';
+    return escapeHtml(fmtNum(n));
+  }
+
+  function fpMetricAvgKeys(hotels, rooms) {
+    var h = fpMetricNum(hotels);
+    var r = fpMetricNum(rooms);
+    if (h <= 0) return '&nbsp;';
+    return escapeHtml(fmtNum(Math.round(r / h)));
+  }
+
+  var FP_METRIC_COLGROUP =
+    '<colgroup><col class="brand-fp-col-label" /><col class="brand-fp-col-metric" span="7" /></colgroup>';
+
+  var FP_METRIC_HEADER =
+    '<thead><tr>' +
+    '<th scope="col">Region</th>' +
+    '<th scope="col">Open Hotels</th>' +
+    '<th scope="col">Open Rooms</th>' +
+    '<th scope="col">Pipeline Hotels</th>' +
+    '<th scope="col">Pipeline Rooms</th>' +
+    '<th scope="col">Total Hotels</th>' +
+    '<th scope="col">Total Rooms</th>' +
+    '<th scope="col">Avg Keys</th>' +
+    '</tr></thead><tbody>';
+
+  function fpMetricRowHtml(label, openH, openR, pipeH, pipeR, isTotal) {
+    var totalH = fpMetricNum(openH) + fpMetricNum(pipeH);
+    var totalR = fpMetricNum(openR) + fpMetricNum(pipeR);
+    return (
+      '<tr' +
+      (isTotal ? ' class="brand-ft-total-row"' : '') +
+      '>' +
+      '<th scope="row">' +
+      escapeHtml(label) +
+      '</th><td>' +
+      fpMetricCell(openH) +
+      '</td><td>' +
+      fpMetricCell(openR) +
+      '</td><td>' +
+      fpMetricCell(pipeH) +
+      '</td><td>' +
+      fpMetricCell(pipeR) +
+      '</td><td>' +
+      fpMetricCell(totalH) +
+      '</td><td>' +
+      fpMetricCell(totalR) +
+      '</td><td>' +
+      (isTotal && totalH <= 0 ? '&nbsp;' : fpMetricAvgKeys(totalH, totalR)) +
+      '</td></tr>'
+    );
+  }
+
+  function resolveFootprintDisplay(brand) {
+    var M = typeof BrandExplorerCensusMetrics !== 'undefined' ? BrandExplorerCensusMetrics : null;
+    if (M && typeof M.footprintDisplayModel === 'function') {
+      return M.footprintDisplayModel(brand);
+    }
+    return {
+      fp: brand.footprint || {},
+      showVerifiedMetrics: true,
+      displaySourceLabel: null,
+      sourceNote: null,
+      countryBreakdown: null,
+      locationTypeBreakdown: null
+    };
+  }
+
+  function buildFpRowsFromCensusBreakdown(breakdownRows) {
+    if (!breakdownRows || !breakdownRows.length) return '';
+    var M = typeof BrandExplorerCensusMetrics !== 'undefined' ? BrandExplorerCensusMetrics : null;
+    var sorted =
+      M && typeof M.sortBreakdownForPortfolioDisplay === 'function'
+        ? M.sortBreakdownForPortfolioDisplay(breakdownRows)
+        : breakdownRows;
+    var sumOpenH = 0;
+    var sumOpenR = 0;
+    var sumPipeH = 0;
+    var sumPipeR = 0;
+    var body = sorted
+      .map(function (row) {
+        var n =
+          M && typeof M.normalizeBreakdownRow === 'function' ? M.normalizeBreakdownRow(row) : null;
+        if (!n && row && row.label) {
+          n = {
+            label: row.label,
+            hotels: Number(row.hotels) || 0,
+            keys: Number(row.keys) || 0,
+            pipelineHotels: Number(row.pipelineHotels) || 0,
+            pipelineKeys: Number(row.pipelineKeys) || 0
+          };
+        }
+        if (!n || !n.label) return '';
+        sumOpenH += n.hotels;
+        sumOpenR += n.keys;
+        sumPipeH += n.pipelineHotels;
+        sumPipeR += n.pipelineKeys;
+        return fpMetricRowHtml(n.label, n.hotels, n.keys, n.pipelineHotels, n.pipelineKeys, false);
+      })
+      .join('');
+    if (!body) return '';
+    body += fpMetricRowHtml('Total (Portfolio)', sumOpenH, sumOpenR, sumPipeH, sumPipeR, true);
+    return body;
+  }
+
+  function buildFpRegionDistributionRows(reg, regionKeys) {
+    if (!regionKeys.length) return '';
+    var sorted = regionKeys.slice().sort(function (a, b) {
+      var ta = fpMetricNum((reg[a] || {}).hotels) + fpMetricNum((reg[a] || {}).pipelineHotels);
+      var tb = fpMetricNum((reg[b] || {}).hotels) + fpMetricNum((reg[b] || {}).pipelineHotels);
+      return tb - ta;
+    });
+    var sumOpenH = 0;
+    var sumOpenR = 0;
+    var sumPipeH = 0;
+    var sumPipeR = 0;
+    var body = sorted
+      .map(function (region) {
+        var o = reg[region] || {};
+        var openH = fpMetricNum(o.hotels);
+        var openR = fpMetricNum(o.rooms);
+        var pipeH = fpMetricNum(o.pipelineHotels);
+        var pipeR = fpMetricNum(o.pipelineRooms);
+        sumOpenH += openH;
+        sumOpenR += openR;
+        sumPipeH += pipeH;
+        sumPipeR += pipeR;
+        return fpMetricRowHtml(region, openH, openR, pipeH, pipeR, false);
+      })
+      .join('');
+    body += fpMetricRowHtml('Total (Portfolio)', sumOpenH, sumOpenR, sumPipeH, sumPipeR, true);
+    return body;
+  }
+
   function renderFootprintGrowth(brand, footprintPropertyPayloadSink) {
-    var fp = brand.footprint || {};
+    var disp = resolveFootprintDisplay(brand);
+    if (!disp.showVerifiedMetrics) {
+      var emptyMsg =
+        (typeof BrandExplorerCensusMetrics !== 'undefined' &&
+          BrandExplorerCensusMetrics.unverifiedFootprintHtml &&
+          BrandExplorerCensusMetrics.unverifiedFootprintHtml(disp.verifiedEmptyMessage || 'Portfolio data being verified.')) ||
+        '<p class="be-footprint-unverified">Portfolio data being verified.</p>';
+      return (
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Footprint Metrics</h2>' +
+        emptyMsg +
+        '</section>'
+      );
+    }
+    var fp = disp.fp || {};
     var fv = fp.formValues || {};
-    var pipH = (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0);
-    var pipR = (Number(fp.totalNewBuildRooms) || 0) + (Number(fp.totalConversionRooms) || 0);
+    var pipH = fpMetricNum(fp.totalNewBuildHotels) + fpMetricNum(fp.totalConversionHotels);
+    var pipR = fpMetricNum(fp.totalNewBuildRooms) + fpMetricNum(fp.totalConversionRooms);
     var reg = fp.regionalDistribution && typeof fp.regionalDistribution === 'object' ? fp.regionalDistribution : {};
     var regionKeys = Object.keys(reg);
     var regionsSummary =
@@ -3026,31 +3224,9 @@
       '</div>';
     var openH = fp.totalExistingHotels;
     var openR = fp.totalExistingRooms;
-    var tableRow =
-      '<tr class="brand-ft-data-row">' +
-      '<th scope="row">Total (Portfolio)</th>' +
-      '<td>' +
-      (hasVal(openH) ? escapeHtml(fmtNum(openH)) : '&nbsp;') +
-      '</td><td>' +
-      (hasVal(openR) ? escapeHtml(fmtNum(openR)) : '&nbsp;') +
-      '</td><td>' +
-      (pipH > 0 ? escapeHtml(fmtNum(pipH)) : '&nbsp;') +
-      '</td><td>' +
-      (pipR > 0 ? escapeHtml(fmtNum(pipR)) : '&nbsp;') +
-      '</td></tr>';
+    var portfolioTotalsRow = fpMetricRowHtml('Total (Portfolio)', openH, openR, pipH, pipR, true);
     var fp8Empty =
       '<tr><th scope="row">&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
-    var fp8Head =
-      '<thead><tr>' +
-      '<th scope="col">Region</th>' +
-      '<th scope="col">Open Hotels</th>' +
-      '<th scope="col">Open Rooms</th>' +
-      '<th scope="col">Pipeline Hotels</th>' +
-      '<th scope="col">Pipeline Rooms</th>' +
-      '<th scope="col">Total Hotels</th>' +
-      '<th scope="col">Total rooms</th>' +
-      '<th scope="col">Avg Keys</th>' +
-      '</tr></thead><tbody>';
     var fp8HeadCountry =
       '<thead><tr>' +
       '<th scope="col">Country</th>' +
@@ -3059,7 +3235,7 @@
       '<th scope="col">Pipeline Hotels</th>' +
       '<th scope="col">Pipeline Rooms</th>' +
       '<th scope="col">Total Hotels</th>' +
-      '<th scope="col">Total rooms</th>' +
+      '<th scope="col">Total Rooms</th>' +
       '<th scope="col">Avg Keys</th>' +
       '</tr></thead><tbody>';
     var fp8HeadArchetype =
@@ -3070,48 +3246,40 @@
       '<th scope="col">Pipeline Hotels</th>' +
       '<th scope="col">Pipeline Rooms</th>' +
       '<th scope="col">Total Hotels</th>' +
-      '<th scope="col">Total rooms</th>' +
+      '<th scope="col">Total Rooms</th>' +
       '<th scope="col">Avg Keys</th>' +
       '</tr></thead><tbody>';
-    var distRows = '';
-    if (regionKeys.length) {
-      distRows = regionKeys
-        .map(function (region) {
-          var o = reg[region] || {};
-          var h = o.hotels;
-          var r = o.rooms;
-          return (
-            '<tr><th scope="row">' +
-            escapeHtml(region) +
-            '</th><td>' +
-            (hasVal(h) ? escapeHtml(fmtNum(h)) : '&nbsp;') +
-            '</td><td>' +
-            (hasVal(r) ? escapeHtml(fmtNum(r)) : '&nbsp;') +
-            '</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>'
-          );
-        })
-        .join('');
-    } else {
-      distRows = fp8Empty;
-    }
+    var distRows = regionKeys.length ? buildFpRegionDistributionRows(reg, regionKeys) : fp8Empty;
+    var countryRows = disp.countryBreakdown
+      ? buildFpRowsFromCensusBreakdown(disp.countryBreakdown)
+      : '';
+    var archetypeRows = disp.locationTypeBreakdown
+      ? buildFpRowsFromCensusBreakdown(disp.locationTypeBreakdown)
+      : '';
     var regionPanel =
       '<div class="brand-fp-table-wrap brand-fp-panel brand-fp-panel-region" role="tabpanel" aria-label="By Region">' +
-      '<table class="brand-fp-table">' +
-      fp8Head +
+      '<table class="brand-fp-table brand-fp-table--metrics">' +
+      FP_METRIC_COLGROUP +
+      FP_METRIC_HEADER +
       distRows +
       '</tbody></table></div>';
     var countryPanel =
       '<div class="brand-fp-table-wrap brand-fp-panel brand-fp-panel-country" role="tabpanel" aria-label="By Country">' +
-      '<table class="brand-fp-table">' +
+      '<table class="brand-fp-table brand-fp-table--metrics">' +
+      FP_METRIC_COLGROUP +
       fp8HeadCountry +
-      fp8Empty +
+      (countryRows || fp8Empty) +
       '</tbody></table></div>';
     var archetypePanel =
       '<div class="brand-fp-table-wrap brand-fp-panel brand-fp-panel-archetype" role="tabpanel" aria-label="By Asset Archetype">' +
-      '<table class="brand-fp-table">' +
+      '<table class="brand-fp-table brand-fp-table--metrics">' +
+      FP_METRIC_COLGROUP +
       fp8HeadArchetype +
-      fp8Empty +
+      (archetypeRows || fp8Empty) +
       '</tbody></table></div>';
+    var fpSourceNote = disp.sourceNote
+      ? '<p class="brand-fp-table-note brand-fp-source-note">' + escapeHtml(disp.sourceNote) + '</p>'
+      : '';
     var portfolioDistribution =
       '<div class="brand-fp-subsection brand-fp-distribution be-atelier-fp-dist">' +
       '<div class="brand-fp-distribution-head">' +
@@ -3129,23 +3297,23 @@
       regionPanel +
       countryPanel +
       archetypePanel +
+      fpSourceNote +
       '<p class="brand-fp-table-note">Illustrative Directional View · Not Audited Financials or Property-Level Disclosure</p>' +
       '</div>';
     var openPipelineSub =
       '<div class="brand-fp-subsection">' +
       '<h3 class="brand-fp-table-title">Open vs. Pipeline (Portfolio)</h3>' +
       '<div class="brand-fp-table-wrap" role="region" aria-label="Open Versus Pipeline Portfolio Totals">' +
-      '<table class="brand-fp-table">' +
-      '<thead><tr><th scope="col"></th>' +
-      '<th scope="col">Open Hotels</th><th scope="col">Open Rooms</th>' +
-      '<th scope="col">Pipeline Hotels</th><th scope="col">Pipeline Rooms</th></tr></thead><tbody>' +
-      tableRow +
+      '<table class="brand-fp-table brand-fp-table--metrics">' +
+      FP_METRIC_COLGROUP +
+      FP_METRIC_HEADER +
+      portfolioTotalsRow +
       '</tbody></table></div></div>';
     var metricsBlock = '<div class="brand-fp-metrics">' + openPipelineSub + portfolioDistribution + '</div>';
     var presenceRow =
       '<div class="presence-intel-row">' +
-      presenceIntelCard('Open Hotels (Public)', openH) +
-      presenceIntelCard('Pipeline (Public)', pipH > 0 ? pipH : '') +
+      presenceIntelFootprintMetric('Open Hotels (Public)', openH, openR) +
+      presenceIntelFootprintMetric('Pipeline (Public)', pipH, pipR) +
       presenceIntelCard('Primary Regions', regionsSummary) +
       presenceIntelCard('Typical Asset Pattern', brand.hotelServiceModel) +
       presenceIntelCard('Growth Style', brand.brandDevelopmentStage) +

@@ -8,6 +8,12 @@ function getBase() {
     return new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 }
 
+/** When true, GET /api/brand-library/brand attaches read-only brand.censusSummary from Hotel Census. */
+function isBrandExplorerCensusMetricsEnabled() {
+  const v = (process.env.BRAND_EXPLORER_CENSUS_METRICS || "").trim().toLowerCase();
+  return v === "1" || v === "true" || v === "yes";
+}
+
 // Field mappings for Brand Library
 //
 // Brand Setup tabs → Airtable tables → read vs write:
@@ -1865,6 +1871,25 @@ export async function getBrandLibraryBrandById(req, res) {
       brandDetails[k] = v;
     }
     if (loadWarnings.length > 0) brandDetails.loadWarnings = loadWarnings;
+
+    if (isBrandExplorerCensusMetricsEnabled()) {
+      try {
+        const { buildBrandCensusSummary } = await import(
+          "../lib/hotel-census/build-brand-census-summary.js"
+        );
+        brandDetails.censusSummary = await buildBrandCensusSummary(
+          brandName,
+          brandDetails.parentCompany || null
+        );
+      } catch (censusErr) {
+        console.error("Error building brand censusSummary:", censusErr.message);
+        brandDetails.censusSummary = {
+          available: false,
+          fallbackRecommended: true,
+          warnings: [`CENSUS_SUMMARY_ERROR: ${censusErr.message}`],
+        };
+      }
+    }
 
     if (req.query && req.query.debug === "projectFit") {
       brandDetails.projectFitDebug = {
