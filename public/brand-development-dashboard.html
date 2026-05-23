@@ -817,15 +817,16 @@
             padding-top: 2px;
         }
         .bdd-kpi-metric-card__footer .bdd-insight-card__badge {
+            display: inline-block;
             align-self: flex-end;
             max-width: 100%;
             text-align: center;
-            justify-content: center;
-            flex-wrap: wrap;
             font-size: var(--bdd-kpi-footer-size);
             padding: 3px 6px;
-            line-height: 1.25;
-            white-space: normal;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             border-radius: 4px;
         }
         .bdd-kpi-metric-card__footer--meta {
@@ -3601,8 +3602,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="loading-text-main">Loading deals...</div>
-                                    <div class="loading-text-time">Estimated time: 10–30 seconds</div>
+                                    <div class="loading-text-main">Loading Deals…</div>
                                 </div>
                             </div>
                             <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -3633,7 +3633,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="loading-text-main">Loading activity log...</div>
+                                    <div class="loading-text-main">Loading Activity Log…</div>
                                     <div class="loading-text-time">Please wait</div>
                                 </div>
                             </div>
@@ -4000,6 +4000,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/dealality-memberstack-auth.js"></script>
+    <script type="module">
+        import * as Pipeline from '/lib/deal-workspace-pipeline.js';
+        import { updateWorkspaceInsights } from '/js/deal-workspace-insights.js';
+        window.DealWorkspacePipeline = Pipeline;
+        window.DealWorkspaceInsights = { update: updateWorkspaceInsights };
+    </script>
     <script src="brand-development-dashboard.js"></script>
 
     <script src="/embed-chrome.js" defer></script>

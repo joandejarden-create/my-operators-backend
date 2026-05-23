@@ -63,6 +63,15 @@
     return true;
   }
 
+  /** Clear in-memory JWT cache (e.g. after logout). Does not call Memberstack logout. */
+  function clearSession() {
+    embedJwtFromParent = null;
+    embedJwtWaiters = [];
+    try {
+      global.__dealalityMemberstackJwt = null;
+    } catch (_) {}
+  }
+
   function installEmbedMessageListener() {
     if (embedMessageListenerInstalled) return;
     embedMessageListenerInstalled = true;
@@ -537,6 +546,7 @@
     MSG_EMBED_PARENT: MSG_EMBED_PARENT,
     isEmbeddedFrame: isEmbeddedFrame,
     acceptEmbedJwt: acceptEmbedJwt,
+    clearSession: clearSession,
     waitForEmbedJwtFromParent: waitForEmbedJwtFromParent,
     getMemberstackDom: getMemberstackDom,
     getMemberstackClients: getMemberstackClients,

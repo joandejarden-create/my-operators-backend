@@ -112,11 +112,13 @@ class PartnerDirectory {
         this.filteredIndividuals = [];
         this.companyUserTypesMap = {}; // Map of company record IDs to userTypes for color coding
         this.currentUserTypeFilter = '';
+        this.currentCompanyRoleFilter = '';
         this.currentRegionFilter = '';
         this.currentResponsivenessSpeedFilter = '';
         this.currentResponsivenessFrequencyFilter = '';
         this.currentSearchQuery = '';
         this.currentSort = 'name-asc';
+        this.currentViewMode = 'grid';
         this.currentTab = 'companies';
         this.favorites = []; // Will be loaded from Airtable API
         this.currentFavoriteCategory = 'all'; // Filter favorites by category
@@ -125,7 +127,8 @@ class PartnerDirectory {
         this.favoritesMap = new Map(); // Map for quick lookup: key = "type-id", value = favorite object
         // TTL cache for partner list (uses PARTNER_DIRECTORY_CONFIG.CACHE_TTL)
         this.PARTNERS_CACHE_TTL_MS = PARTNER_DIRECTORY_CONFIG.CACHE_TTL || 5 * 60 * 1000;
-        this.partnersCache = null; // { companies, individuals, timestamp }
+        this.partnersCache = null; // { v, companies, individuals, timestamp }
+        this.PARTNERS_CACHE_VERSION = 3; // bump when company payload shape changes (e.g. companyType filter keys)
         
         // Caching for modal data to improve performance
         this.teamMembersCache = new Map(); // Cache: companyId -> teamMembers array
@@ -166,6 +169,9 @@ class PartnerDirectory {
     }
 
     async init() {
+        window.DEALALITY_COMPANY_ROLE?.populateFilterSelect?.('companyRoleFilter');
+        window.DEALALITY_COMPANY_TYPE?.populateFilterSelect?.('userTypeFilter');
+        window.DEALALITY_COMPANY_TYPE?.populateInsightsTypeSelect?.('insightsType');
         this.setupEventListeners();
         this.setupResponsivenessTooltips();
         this.updateFilterCount();
@@ -298,6 +304,13 @@ class PartnerDirectory {
             this.applyFilters();
         });
 
+        document.getElementById('companyRoleFilter')?.addEventListener('change', (e) => {
+            this.currentCompanyRoleFilter = (e.target.value || '').trim();
+            this.invalidateAllTabCaches();
+            this.updateFilterCount();
+            this.applyFilters();
+        });
+
         document.getElementById('regionFilter')?.addEventListener('change', (e) => {
             this.currentRegionFilter = e.target.value;
             this.invalidateAllTabCaches();
@@ -336,6 +349,13 @@ class PartnerDirectory {
             this.currentSort = e.target.value;
             this.invalidateAllTabCaches();
             this.applyFilters();
+        });
+
+        document.getElementById('gridViewBtn')?.addEventListener('click', () => {
+            this.setViewMode('grid');
+        });
+        document.getElementById('listViewBtn')?.addEventListener('click', () => {
+            this.setViewMode('list');
         });
 
         // Sort icon - toggle between A-Z and Z-A
@@ -1076,7 +1096,11 @@ class PartnerDirectory {
         this.showLoading();
         try {
             // Use cached data if still valid (speeds up tab switches and repeat visits)
-            if (this.partnersCache && (Date.now() - this.partnersCache.timestamp) < this.PARTNERS_CACHE_TTL_MS) {
+            if (
+                this.partnersCache &&
+                this.partnersCache.v === this.PARTNERS_CACHE_VERSION &&
+                (Date.now() - this.partnersCache.timestamp) < this.PARTNERS_CACHE_TTL_MS
+            ) {
                 this.companies = this.partnersCache.companies;
                 this.individuals = this.partnersCache.individuals;
                 this.hideLoading();
@@ -1108,7 +1132,12 @@ class PartnerDirectory {
             this.applyFilters();
 
             // Store in cache for TTL (avoids refetch on tab switch / repeat visits)
-            this.partnersCache = { companies: this.companies, individuals: this.individuals, timestamp: Date.now() };
+            this.partnersCache = {
+                v: this.PARTNERS_CACHE_VERSION,
+                companies: this.companies,
+                individuals: this.individuals,
+                timestamp: Date.now(),
+            };
         } catch (error) {
             console.error('Error fetching partners:', error);
             this.hideLoading();
@@ -1123,6 +1152,7 @@ class PartnerDirectory {
         }
         document.getElementById('filtersSection').style.display = 'flex';
         document.getElementById('resultsGrid').classList.remove('hidden');
+        this.updateResultsToolbarVisibility();
     }
 
     showLoading() {
@@ -1132,6 +1162,7 @@ class PartnerDirectory {
         }
         document.getElementById('filtersSection').style.display = 'none';
         document.getElementById('resultsGrid').classList.add('hidden');
+        document.getElementById('resultsToolbar')?.classList.add('hidden');
     }
 
     updateStats() {
@@ -1244,6 +1275,128 @@ class PartnerDirectory {
             this.updateInsightsFilterCount();
             this.updateInsights();
         }
+
+        this.updateResultsToolbarVisibility();
+        this.updateResultsCount();
+        this.applyViewMode();
+    }
+
+    updateResultsToolbarVisibility() {
+        const toolbar = document.getElementById('resultsToolbar');
+        if (!toolbar) return;
+        const show = this.currentTab === 'companies' || this.currentTab === 'individuals' || this.currentTab === 'favorites';
+        toolbar.classList.toggle('hidden', !show);
+    }
+
+    updateResultsCount() {
+        const el = document.getElementById('resultsCount');
+        if (!el || this.currentTab === 'insights') return;
+
+        let shown = 0;
+        let total = 0;
+        let noun = 'partners';
+
+        if (this.currentTab === 'companies') {
+            shown = this.filteredCompanies.length;
+            total = this.companies.length;
+            noun = total === 1 ? 'company' : 'companies';
+        } else if (this.currentTab === 'individuals') {
+            shown = this.filteredIndividuals.length;
+            total = this.getIndividualsVisibleInDirectory().length;
+            noun = total === 1 ? 'individual' : 'individuals';
+        } else if (this.currentTab === 'favorites') {
+            const fav = this.getFilteredFavoritesCounts();
+            shown = fav.shown;
+            total = fav.total;
+            noun = total === 1 ? 'favorite' : 'favorites';
+        }
+
+        el.innerHTML = `Showing <strong>${shown}</strong> of <strong>${total}</strong> ${noun}`;
+    }
+
+    getFilteredFavoritesCounts() {
+        let filteredFavorites = this.favorites;
+        if (this.currentFavoriteCategory !== 'all') {
+            filteredFavorites = this.favorites.filter((fav) => fav.category === this.currentFavoriteCategory);
+        }
+
+        const favoriteCompanies = [];
+        const favoriteIndividuals = [];
+        filteredFavorites.forEach((favorite) => {
+            if (favorite.type === 'company') {
+                const company = this.companies.find((c) => c.id === favorite.id);
+                if (company) favoriteCompanies.push(company);
+            } else if (favorite.type === 'individual') {
+                const individual = this.individuals.find((i) => i.id === favorite.id);
+                if (individual) favoriteIndividuals.push(individual);
+            }
+        });
+
+        const filterType = this.normalizePartnerDirectoryType(this.currentUserTypeFilter);
+        const total = favoriteCompanies.length + favoriteIndividuals.length;
+
+        const matchesCompany = (company) => {
+            if (this.currentSearchQuery) {
+                const companyName = (company.name || '').toLowerCase();
+                if (!companyName.includes(this.currentSearchQuery)) return false;
+            }
+            if (filterType) {
+                const companyType = this.normalizePartnerDirectoryType(company.userType || company.companyType || '');
+                if (companyType !== filterType) return false;
+            }
+            if (!this.companyMatchesRoleFilter(company)) return false;
+            if (this.currentRegionFilter && !this.hasRegion(company.regions, this.currentRegionFilter)) return false;
+            return true;
+        };
+
+        const matchesIndividual = (individual) => {
+            if (this.currentSearchQuery) {
+                const fullName = `${individual.firstName || ''} ${individual.lastName || ''}`.trim().toLowerCase();
+                const companyName = (individual.companyName || '').toLowerCase();
+                if (!fullName.includes(this.currentSearchQuery) && !companyName.includes(this.currentSearchQuery)) return false;
+            }
+            if (filterType) {
+                const individualType = this.getIndividualPartnerType(individual);
+                if (individualType !== filterType) return false;
+            }
+            if (!this.companyMatchesRoleFilter(individual)) return false;
+            if (this.currentRegionFilter && !this.hasRegion(individual.regions, this.currentRegionFilter)) return false;
+            if (this.currentResponsivenessSpeedFilter) {
+                const individualSpeed = (individual.responsivenessTimeCategory || '').trim();
+                if (individualSpeed !== this.currentResponsivenessSpeedFilter) return false;
+            }
+            if (this.currentResponsivenessFrequencyFilter) {
+                const individualFreq = (individual.responsivenessFrequencyCategory || '').trim();
+                if (individualFreq !== this.currentResponsivenessFrequencyFilter) return false;
+            }
+            return true;
+        };
+
+        const shown =
+            favoriteCompanies.filter(matchesCompany).length +
+            favoriteIndividuals.filter(matchesIndividual).length;
+
+        return { shown, total };
+    }
+
+    setViewMode(mode) {
+        if (mode !== 'grid' && mode !== 'list') return;
+        this.currentViewMode = mode;
+        this.applyViewMode();
+    }
+
+    applyViewMode() {
+        const grid = document.getElementById('resultsGrid');
+        const gridBtn = document.getElementById('gridViewBtn');
+        const listBtn = document.getElementById('listViewBtn');
+        if (!grid) return;
+
+        const isList = this.currentViewMode === 'list';
+        grid.classList.toggle('results-grid--list', isList);
+        gridBtn?.classList.toggle('active', !isList);
+        listBtn?.classList.toggle('active', isList);
+        gridBtn?.setAttribute('aria-pressed', String(!isList));
+        listBtn?.setAttribute('aria-pressed', String(isList));
     }
 
     toggleFilterButton(type) {
@@ -1276,6 +1429,41 @@ class PartnerDirectory {
         this.tabContainers.favorites = null;
     }
 
+    /**
+     * Matches Partner Directory Company Role filter to API `companyRole`
+     * (from Airtable Company Profile: "Company's role in the hotel ecosystem").
+     */
+    companyMatchesRoleFilter(companyOrIndividual) {
+        if (!this.currentCompanyRoleFilter) return true;
+        const role = this.getPartnerCompanyRole(companyOrIndividual);
+        return role === this.currentCompanyRoleFilter;
+    }
+
+    /** Normalized role on company; for individuals, linked company's role from same Airtable field. */
+    getPartnerCompanyRole(entity) {
+        if (!entity) return '';
+        const fromApi = entity.companyRole ? String(entity.companyRole).trim() : '';
+        if (fromApi) return fromApi;
+
+        const rawFields = entity.rawFields;
+        if (rawFields && window.DEALALITY_COMPANY_ROLE?.roleFromFields) {
+            const fromRaw = window.DEALALITY_COMPANY_ROLE.roleFromFields(rawFields);
+            if (fromRaw) return fromRaw;
+        }
+
+        const company = entity.companyRecordId
+            ? this.findCompanyForIndividual(entity)
+            : entity.id
+              ? this.companies.find((c) => c.id === entity.id)
+              : null;
+        if (!company) return '';
+        if (company.companyRole) return String(company.companyRole).trim();
+        if (company.rawFields && window.DEALALITY_COMPANY_ROLE?.roleFromFields) {
+            return window.DEALALITY_COMPANY_ROLE.roleFromFields(company.rawFields) || '';
+        }
+        return '';
+    }
+
     applyFilters() {
         const filterType = this.normalizePartnerDirectoryType(this.currentUserTypeFilter);
 
@@ -1297,6 +1485,10 @@ class PartnerDirectory {
                 if (companyType !== filterType) {
                     return false;
                 }
+            }
+
+            if (!this.companyMatchesRoleFilter(company)) {
+                return false;
             }
             
             // Region filter
@@ -1330,6 +1522,10 @@ class PartnerDirectory {
                     return false;
                 }
             }
+
+            if (!this.companyMatchesRoleFilter(individual)) {
+                return false;
+            }
             
             // Region filter
             if (this.currentRegionFilter && !this.hasRegion(individual.regions, this.currentRegionFilter)) {
@@ -1357,6 +1553,7 @@ class PartnerDirectory {
         this.filteredIndividuals = filteredIndividuals;
 
         this.updateFilterCount();
+        this.updateResultsToolbarVisibility();
         this.renderResults();
     }
 
@@ -1432,6 +1629,7 @@ class PartnerDirectory {
 
         let count = 0;
         if (this.currentUserTypeFilter) count++;
+        if (this.currentCompanyRoleFilter) count++;
         if (this.currentRegionFilter) count++;
         if (this.currentResponsivenessSpeedFilter) count++;
         if (this.currentResponsivenessFrequencyFilter) count++;
@@ -1476,6 +1674,7 @@ class PartnerDirectory {
 
     resetFilters() {
         this.currentUserTypeFilter = '';
+        this.currentCompanyRoleFilter = '';
         this.currentRegionFilter = '';
         this.currentResponsivenessSpeedFilter = '';
         this.currentResponsivenessFrequencyFilter = '';
@@ -1493,6 +1692,8 @@ class PartnerDirectory {
         }
         
         document.getElementById('userTypeFilter').value = '';
+        const companyRoleFilter = document.getElementById('companyRoleFilter');
+        if (companyRoleFilter) companyRoleFilter.value = '';
         document.getElementById('regionFilter').value = '';
         const speedEl = document.getElementById('responsivenessSpeedFilter');
         const freqEl = document.getElementById('responsivenessFrequencyFilter');
@@ -1994,6 +2195,8 @@ class PartnerDirectory {
             this.tabContainers[tabKey] = null;
             resultsGrid.classList.add('hidden');
             emptyState.classList.remove('hidden');
+            this.updateResultsCount();
+            this.applyViewMode();
             return;
         }
 
@@ -2044,6 +2247,9 @@ class PartnerDirectory {
         if (newCards.length > 0) {
             this.loadLazyImages();
         }
+
+        this.updateResultsCount();
+        this.applyViewMode();
     }
 
     ensureCategoryFilter() {
@@ -2087,117 +2293,78 @@ class PartnerDirectory {
         // Ensure category filter exists
         this.ensureCategoryFilter();
         
-        // Step 1: Filter favorites by category
         let filteredFavorites = this.favorites;
         if (this.currentFavoriteCategory !== 'all') {
-            filteredFavorites = this.favorites.filter(fav => fav.category === this.currentFavoriteCategory);
+            filteredFavorites = this.favorites.filter((fav) => fav.category === this.currentFavoriteCategory);
         }
-        
-        // Step 2: Get the actual company/individual objects from favorites
+
         const favoriteCompanies = [];
         const favoriteIndividuals = [];
-        
-        filteredFavorites.forEach(favorite => {
+        filteredFavorites.forEach((favorite) => {
             if (favorite.type === 'company') {
-                const company = this.companies.find(c => c.id === favorite.id);
-                if (company) {
-                    favoriteCompanies.push(company);
-                } else {
-                }
+                const company = this.companies.find((c) => c.id === favorite.id);
+                if (company) favoriteCompanies.push(company);
             } else if (favorite.type === 'individual') {
-                const individual = this.individuals.find(i => i.id === favorite.id);
-                if (individual) {
-                    favoriteIndividuals.push(individual);
-                } else {
-                }
+                const individual = this.individuals.find((i) => i.id === favorite.id);
+                if (individual) favoriteIndividuals.push(individual);
             }
         });
-        
-        // Step 3: Apply all filters (search, user type, region) to favorite companies
+
         const filterType = this.normalizePartnerDirectoryType(this.currentUserTypeFilter);
-        
-        let filteredFavoriteCompanies = favoriteCompanies.filter(company => {
-            // Search filter
+
+        let filteredFavoriteCompanies = favoriteCompanies.filter((company) => {
             if (this.currentSearchQuery) {
                 const companyName = (company.name || '').toLowerCase();
-                if (!companyName.includes(this.currentSearchQuery)) {
-                    return false;
-                }
+                if (!companyName.includes(this.currentSearchQuery)) return false;
             }
-            
-            // Type filter
             if (filterType) {
-                const companyType = this.normalizePartnerDirectoryType(
-                    company.userType || company.companyType || ''
-                );
-                if (companyType !== filterType) {
-                    return false;
-                }
+                const companyType = this.normalizePartnerDirectoryType(company.userType || company.companyType || '');
+                if (companyType !== filterType) return false;
             }
-            
-            // Region filter
-            if (this.currentRegionFilter && !this.hasRegion(company.regions, this.currentRegionFilter)) {
-                return false;
-            }
-            
+            if (!this.companyMatchesRoleFilter(company)) return false;
+            if (this.currentRegionFilter && !this.hasRegion(company.regions, this.currentRegionFilter)) return false;
             return true;
         });
-        
-        // Step 4: Apply all filters to favorite individuals
-        let filteredFavoriteIndividuals = favoriteIndividuals.filter(individual => {
-            // Search filter
+
+        let filteredFavoriteIndividuals = favoriteIndividuals.filter((individual) => {
             if (this.currentSearchQuery) {
                 const fullName = `${individual.firstName || ''} ${individual.lastName || ''}`.trim().toLowerCase();
                 const companyName = (individual.companyName || '').toLowerCase();
-                if (!fullName.includes(this.currentSearchQuery) && !companyName.includes(this.currentSearchQuery)) {
-                    return false;
-                }
+                if (!fullName.includes(this.currentSearchQuery) && !companyName.includes(this.currentSearchQuery)) return false;
             }
-            
-            // Type filter
             if (filterType) {
                 const individualType = this.getIndividualPartnerType(individual);
-                if (individualType !== filterType) {
-                    return false;
-                }
+                if (individualType !== filterType) return false;
             }
-            
-            // Region filter
-            if (this.currentRegionFilter && !this.hasRegion(individual.regions, this.currentRegionFilter)) {
-                return false;
-            }
-
-            // Responsiveness (speed) filter
+            if (!this.companyMatchesRoleFilter(individual)) return false;
+            if (this.currentRegionFilter && !this.hasRegion(individual.regions, this.currentRegionFilter)) return false;
             if (this.currentResponsivenessSpeedFilter) {
                 const individualSpeed = (individual.responsivenessTimeCategory || '').trim();
                 if (individualSpeed !== this.currentResponsivenessSpeedFilter) return false;
             }
-
-            // Responsiveness (frequency) filter
             if (this.currentResponsivenessFrequencyFilter) {
                 const individualFreq = (individual.responsivenessFrequencyCategory || '').trim();
                 if (individualFreq !== this.currentResponsivenessFrequencyFilter) return false;
             }
-            
             return true;
         });
-        
-        // Step 5: Apply sorting
+
         filteredFavoriteCompanies = this.sortCompanies(filteredFavoriteCompanies);
         filteredFavoriteIndividuals = this.sortIndividuals(filteredFavoriteIndividuals);
-        
-        // Step 6: Combine and render
+
         const totalFiltered = filteredFavoriteCompanies.length + filteredFavoriteIndividuals.length;
         
         if (totalFiltered === 0) {
             this.tabContainers.favorites = null;
             resultsGrid.classList.add('hidden');
             emptyState.classList.remove('hidden');
-            const hasFilters = this.currentSearchQuery || this.currentUserTypeFilter || this.currentRegionFilter || this.currentResponsivenessSpeedFilter || this.currentResponsivenessFrequencyFilter || this.currentFavoriteCategory !== 'all';
+            const hasFilters = this.currentSearchQuery || this.currentUserTypeFilter || this.currentCompanyRoleFilter || this.currentRegionFilter || this.currentResponsivenessSpeedFilter || this.currentResponsivenessFrequencyFilter || this.currentFavoriteCategory !== 'all';
             emptyState.innerHTML = `
                 <h3>No favorites found</h3>
                 <p>${hasFilters ? 'No favorites match the current filters.' : 'Click the star icon on any company or individual card to add them to your favorites.'}</p>
             `;
+            this.updateResultsCount();
+            this.applyViewMode();
             return;
         }
         
@@ -2214,6 +2381,8 @@ class PartnerDirectory {
         });
         this.tabContainers.favorites = cardList;
         resultsGrid.replaceChildren(...cardList);
+        this.updateResultsCount();
+        this.applyViewMode();
     }
 
     createCompanyCard(company) {
@@ -2434,7 +2603,6 @@ class PartnerDirectory {
                 </div>
             </div>
             <div class="individual-card__footer">
-                <p class="individual-card__stats-note">Sample figures for demo — not live pipeline totals.</p>
                 <div class="individual-card__footer-actions">
                     <button type="button" class="individual-card__connect-btn">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2483,9 +2651,14 @@ class PartnerDirectory {
         return div.innerHTML;
     }
 
-    /** Map internal Airtable user type to display label (Airtable values unchanged) */
+    /** Map directory filter key / Company Type to card display label. */
     getUserTypeDisplayLabel(userType) {
         if (!userType) return '';
+        const key = this.normalizePartnerDirectoryType(userType) || String(userType).trim();
+        if (window.DEALALITY_COMPANY_TYPE?.filterLabel) {
+            const label = window.DEALALITY_COMPANY_TYPE.filterLabel(key);
+            if (label) return label;
+        }
         const upper = String(userType).trim().toUpperCase();
         if (upper === 'HOTEL MGMT. COMPANY' || upper === 'HOTEL MGMT COMPANY' || upper.includes('MGMT') || upper.includes('MANAGEMENT') || upper.includes('OPERATOR')) {
             return '3rd Party Operator';
@@ -2755,8 +2928,7 @@ class PartnerDirectory {
             }
         }
         
-        // Additional information fallback: keep meaningful text-based values while
-        // filtering raw/debug noise seen in modal captures.
+        // Additional information: only human-readable fields (no linked-record ID dumps).
         let additionalFields = [];
         if (company.rawFields && typeof company.rawFields === 'object' && !Array.isArray(company.rawFields)) {
             const excludedFieldNames = new Set([
@@ -2780,17 +2952,38 @@ class PartnerDirectory {
                 'User Management',
                 'USER MANAGEMENT',
                 'user management',
+                'Users',
+                'USERS',
+                'Team Members',
+                'TEAM MEMBERS',
+                'Jurisdictions Licensed',
+                'JURISDICTIONS LICENSED',
                 'Primary Services',
                 'Additional Services',
                 'PRIMARY SERVICES',
                 'ADDITIONAL SERVICES',
                 'Primary Services Provided',
-                'Additional Services Provided'
+                'Additional Services Provided',
+                'Brands You Operate / Support',
+                'Brands You Operate/Support',
+                'Year Founded',
+                'Company ID',
+                'Property Address',
+                'Additional Office Regions',
             ]);
             const normalizeField = (fieldName) => String(fieldName || '').toLowerCase().replace(/\s+/g, ' ').trim();
+            const looksLikeLinkedRecordIds = (displayValue) => {
+                const s = String(displayValue || '').trim();
+                if (!s) return true;
+                if (/^rec[a-z0-9]+(\s*,\s*rec[a-z0-9]+)*$/i.test(s)) return true;
+                if (/^\d+(\s*,\s*\d+)*$/.test(s)) return true;
+                return false;
+            };
             const shouldExcludeField = (fieldName) => {
                 if (excludedFieldNames.has(fieldName)) return true;
                 const normalized = normalizeField(fieldName);
+                if (normalized === 'users' || normalized === 'team members') return true;
+                if (normalized.includes('jurisdictions') && normalized.includes('licensed')) return true;
                 if (normalized.includes('region -')) return true;
                 if (normalized.includes('region') && normalized.includes('america')) return true;
                 if (normalized.includes('region') && normalized.includes('latin')) return true;
@@ -2801,6 +2994,7 @@ class PartnerDirectory {
                 if (normalized.includes('region') && normalized.includes('asia pacific')) return true;
                 if (normalized.includes('brand name (from brands you operate / support)')) return true;
                 if (normalized.includes('brand_basics_id')) return true;
+                if (normalized.startsWith('primary - ') || normalized.startsWith('addl - ')) return true;
                 return false;
             };
 
@@ -2818,12 +3012,12 @@ class PartnerDirectory {
                             if (typeof v === 'number') return String(v);
                             return '';
                         })
-                        .filter((v) => v && !v.startsWith('rec'));
+                        .filter((v) => v && !/^rec[a-z0-9]+$/i.test(v) && !/^\d+$/.test(v));
                     if (cleaned.length) displayValue = cleaned.join(', ');
                 } else {
                     displayValue = String(value).trim();
                 }
-                if (!displayValue) continue;
+                if (!displayValue || looksLikeLinkedRecordIds(displayValue)) continue;
                 additionalFields.push({ key, value: displayValue });
             }
         }
@@ -3678,7 +3872,6 @@ class PartnerDirectory {
                         </div>
                     </div>
                 </div>
-                <p class="individual-modal-header-stats-note">Sample figures for demo — not live pipeline totals.</p>
                 </div>
             </div>
             <div class="company-modal-header-info">
@@ -3800,59 +3993,27 @@ class PartnerDirectory {
         return list.filter((individual) => this.isIndividualVisibleInPartnerDirectory(individual));
     }
 
-    /** Match filter buttons: HOTEL OWNERS | HOTEL BRANDS (FRANCHISE) | HOTEL MGMT. COMPANY */
+    /** Company Profile "Company Type" → filter key (see lib/company-type-normalize.js). */
     normalizePartnerDirectoryType(type) {
         if (!type) return '';
-        const upperType = String(type).trim().toUpperCase();
-
-        if (upperType === 'HOTEL OWNERS' || upperType === 'HOTEL OWNER' || upperType === 'OWNER' || upperType === 'OWNERS') {
-            return 'HOTEL OWNERS';
-        }
-        if (
-            upperType === 'HOTEL BRANDS (FRANCHISE)' ||
-            upperType === 'HOTEL BRAND' ||
-            upperType === 'HOTEL BRANDS' ||
-            upperType === 'BRAND' ||
-            upperType === 'BRANDS' ||
-            upperType === 'FRANCHISE'
-        ) {
-            return 'HOTEL BRANDS (FRANCHISE)';
-        }
-        if (
-            upperType === 'HOTEL MGMT. COMPANY' ||
-            upperType === 'HOTEL MGMT COMPANY' ||
-            upperType === 'HOTEL MANAGEMENT COMPANY' ||
-            upperType === 'MGMT' ||
-            upperType === 'MANAGEMENT' ||
-            upperType === 'OPERATOR' ||
-            upperType === '3RD PARTY OPERATOR'
-        ) {
-            return 'HOTEL MGMT. COMPANY';
-        }
-        if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-            return 'HOTEL BRANDS (FRANCHISE)';
-        }
-        if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-            return 'HOTEL MGMT. COMPANY';
-        }
-        if (upperType.includes('OWNER')) {
-            return 'HOTEL OWNERS';
+        if (window.DEALALITY_COMPANY_TYPE?.normalizeToFilterKey) {
+            return window.DEALALITY_COMPANY_TYPE.normalizeToFilterKey(type) || '';
         }
         return '';
     }
 
     isKnownPartnerDirectoryType(normalized) {
-        return (
-            normalized === 'HOTEL OWNERS' ||
-            normalized === 'HOTEL BRANDS (FRANCHISE)' ||
-            normalized === 'HOTEL MGMT. COMPANY'
-        );
+        if (!normalized) return false;
+        const known = window.DEALALITY_COMPANY_TYPE?.filterOptions || [];
+        return known.some((o) => o.value && o.value === normalized);
     }
 
     partnerDirectoryTypeToCardClass(normalized) {
         if (normalized === 'HOTEL OWNERS') return 'owners';
         if (normalized === 'HOTEL BRANDS (FRANCHISE)') return 'brands';
         if (normalized === 'HOTEL MGMT. COMPANY') return 'mgmt';
+        if (normalized === 'HOSPITALITY CONSULTANTS') return 'advisor';
+        if (normalized === 'OTHER') return 'other';
         return '';
     }
 
@@ -3862,7 +4023,7 @@ class PartnerDirectory {
             company.userType || company.companyType || ''
         );
         const typeCss = this.partnerDirectoryTypeToCardClass(partnerType);
-        card.classList.remove('company-type-owners', 'company-type-brands', 'company-type-mgmt');
+        card.classList.remove('company-type-owners', 'company-type-brands', 'company-type-mgmt', 'company-type-advisor', 'company-type-other');
         card.classList.add('company-card');
         if (typeCss) card.classList.add(`company-type-${typeCss}`);
     }
@@ -3871,7 +4032,7 @@ class PartnerDirectory {
         if (!card || !individual) return;
         const partnerType = this.getIndividualPartnerType(individual);
         const typeCss = this.partnerDirectoryTypeToCardClass(partnerType);
-        card.classList.remove('individual-type-owners', 'individual-type-brands', 'individual-type-mgmt');
+        card.classList.remove('individual-type-owners', 'individual-type-brands', 'individual-type-mgmt', 'individual-type-advisor', 'individual-type-other');
         card.classList.add('individual-card');
         if (typeCss) card.classList.add(`individual-type-${typeCss}`);
     }

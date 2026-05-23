@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Alignment Snapshot - Dealality</title>
+    <link rel="stylesheet" href="/css/brand-alignment-snapshot.css">
+    <link rel="stylesheet" href="/css/snapshot-page-shell.css">
+</head>
+<body>
+    <div class="snapshot-page bas-page" id="basPage">
+        <div class="bas-page-loading" id="basPageLoading" role="status" aria-live="polite">
+            <div class="loading">
+                <div class="loading-content">
+                    <div class="wave-container">
+                        <div class="wave wave-1"></div>
+                        <div class="wave wave-2"></div>
+                        <div class="wave wave-3"></div>
+                        <div class="wave-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="loading-text-main">Building Brand Alignment Snapshot…</div>
+                    </div>
+                </div>
+                <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+            </div>
+        </div>
+        <div id="basPageRoot" hidden></div>
+    </div>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/brand-alignment-snapshot.js"></script>
+    <script>
+    (function () {
+        var params = new URLSearchParams(window.location.search || "");
+        var dealId = (params.get("dealId") || "").trim();
+        var chromeless = params.get("embed") === "1" || params.get("embed") === "true";
+        var autoPrint = params.get("print") === "1";
+        var page = document.getElementById("basPage");
+        var loading = document.getElementById("basPageLoading");
+        var root = document.getElementById("basPageRoot");
+
+        if (page) {
+            page.classList.add("bas-page--full", "snapshot-page--full");
+            if (chromeless) page.classList.add("bas-page--chromeless");
+        }
+
+        function showError(msg) {
+            if (loading) loading.style.display = "none";
+            if (root) {
+                root.hidden = false;
+                root.innerHTML = '<div class="bas-page-error">' + String(msg || "Request failed").replace(/</g, "&lt;") + "</div>";
+            }
+        }
+
+        if (!dealId || dealId.indexOf("rec") !== 0) {
+            showError("A valid dealId query parameter is required (e.g. ?dealId=rec…).");
+            return;
+        }
+
+        function runSnapshot() {
+            var fetchFn = window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.fetchMyDealsApi
+                ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+                : function (url, opts) { return fetch(url, opts); };
+
+            fetchFn("/api/ai/brand-alignment-snapshot", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ dealId: dealId, brandUniverse: "owner_preferred_then_pipeline", maxBrands: 8 }),
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (!data.success) {
+                        showError(data.error || "Could not load brand alignment snapshot.");
+                        return;
+                    }
+                    if (loading) loading.style.display = "none";
+                    if (!root || !window.BrandAlignmentSnapshot) {
+                        showError("Snapshot renderer failed to load.");
+                        return;
+                    }
+                    root.hidden = false;
+                    var backHref = "/my-deals.html";
+                    window.BrandAlignmentSnapshot.render(root, data, {
+                        embed: false,
+                        fullPage: true,
+                        dealId: dealId,
+                        backHref: backHref,
+                        generatedAt: data.generatedAt || new Date().toISOString(),
+                    });
+                    if (autoPrint) {
+                        window.setTimeout(function () { window.print(); }, 600);
+                    }
+                })
+                .catch(function (err) {
+                    showError(err.message || "Network error");
+                });
+        }
+
+        if (window.DealalityMemberstackAuth && typeof window.DealalityMemberstackAuth.whenReady === "function") {
+            window.DealalityMemberstackAuth.whenReady(runSnapshot);
+        } else {
+            runSnapshot();
+        }
+    })();
+    </script>
+</body>
+</html>

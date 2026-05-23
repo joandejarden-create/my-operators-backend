@@ -132,7 +132,7 @@
   // Step 1: Load deals from My Deals API (same Airtable base / Deals table)
   function loadDeals() {
     const sel = qs('#deal-select');
-    sel.innerHTML = '<option value="">Loading deals…</option>';
+    sel.innerHTML = '<option value="">Loading Deals…</option>';
     showErr('');
     window.DealalityMemberstackAuth.fetchMyDealsList(MY_DEALS)
       .then(function(r) {

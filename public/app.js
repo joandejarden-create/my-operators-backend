@@ -24,6 +24,7 @@
         '/new-deal-setup': { file: '/new-deal-setup.html', title: 'Add New Deal' },
         '/deal-setup': { file: '/deal-setup.html', title: 'Deal Setup' },
         '/deal-summary': { file: '/deal-summary.html', title: 'Deal Summary' },
+        '/deal-brief-snapshot': { file: '/deal-brief-snapshot.html', title: 'Deal Brief' },
         '/deal-compare': { file: '/deal-compare.html', title: 'Deal Compare' },
         '/market-alerts': { file: '/market-alerts.html', title: 'Market Alerts' },
         '/opportunity-radar': { file: '/deal-capture-radar-with-ranked-list.html', title: 'The Radar' },
@@ -45,6 +46,7 @@
         '/outreach/deal-activity-log': { file: '/outreach-deal-activity-log.html', title: 'Outreach Deal Activity Log' },
         '/outreach/templates': { file: '/outreach-template-manager.html', title: 'Outreach Templates' },
         '/brand-explorer-combined': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
+        '/brand-explorer-export': { file: '/brand-explorer-export.html', title: 'Brand Explorer PDF' },
         '/brand-library-atelier': { file: '/brand-library-atelier-north.html', title: 'Brand Explorer (Mock Up)' },
         '/financial-term-library': { file: '/financial-term-library.html', title: 'Financial Term Library' },
         '/clause-library': { file: '/clause-library.html', title: 'Clause Library' },
@@ -171,7 +173,7 @@
                     label: 'Settings',
                     icon: NAV_ICONS.settings,
                     children: [
-                        { label: 'Company Settings', route: '/company-settings', roles: ['owner', 'brand', 'admin'] },
+                        { label: 'Company Settings', route: '/company-settings', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'Profile Settings', route: '/profile-settings', roles: ['owner', 'brand', 'operator', 'admin'] },
                         { label: 'User Management', route: '/user-management', roles: ['admin'] },
                         { label: 'Operator Setup', route: '/third-party-operator-intake', roles: ['operator', 'admin'] },
@@ -195,6 +197,7 @@
         '/new-deal-setup.html': '/new-deal-setup',
         '/deal-setup.html': '/deal-setup',
         '/deal-summary.html': '/deal-summary',
+        '/deal-brief-snapshot.html': '/deal-brief-snapshot',
         '/deal-compare.html': '/deal-compare',
         '/market-alerts.html': '/market-alerts',
         '/deal-capture-radar-with-ranked-list.html': '/opportunity-radar',
@@ -777,7 +780,14 @@
         if (accountLogout) {
             accountLogout.addEventListener('click', function (e) {
                 e.preventDefault();
-                navigate('/profile-settings', currentRole, true);
+                if (accountWrap) accountWrap.classList.remove('open');
+                if (accountTrigger) accountTrigger.setAttribute('aria-expanded', 'false');
+                if (accountMenu) accountMenu.setAttribute('aria-hidden', 'true');
+                if (window.DealalityAppShellAuth && typeof window.DealalityAppShellAuth.logout === 'function') {
+                    window.DealalityAppShellAuth.logout();
+                    return;
+                }
+                window.location.reload();
             });
         }
 
@@ -889,6 +899,16 @@
         window.addEventListener('dealality-shell-auth-ready', function () {
             broadcastJwtToActiveFrames();
             startShellNavigation();
+        });
+
+        window.addEventListener('dealality-shell-auth-logout', function () {
+            if (frameContainer) {
+                frameContainer.querySelectorAll('.app-frame').forEach(function (frame) {
+                    try {
+                        frame.src = 'about:blank';
+                    } catch (_err) {}
+                });
+            }
         });
 
         if (window.DealalityAppShellAuth && typeof window.DealalityAppShellAuth.whenReady === 'function') {

@@ -882,8 +882,7 @@
                             <div class="wave wave-3"></div>
                         </div>
                         <div>
-                            <div class="loading-text-main">Loading operators...</div>
-                            <div class="loading-text-time">Estimated time: 1–2 seconds</div>
+                            <div class="loading-text-main">Loading Operators…</div>
                         </div>
                     </div>
                     <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -913,8 +912,8 @@
                                 <div class="wave wave-3"></div>
                             </div>
                             <div>
-                                <div class="loading-text-main" id="goldMockPopupLoadingTitle">Loading operator profile...</div>
-                                <div class="loading-text-time" id="goldMockPopupLoadingText">Waiting for live operator data...</div>
+                                <div class="loading-text-main" id="goldMockPopupLoadingTitle">Loading Operator Profile…</div>
+                                <div class="loading-text-time" id="goldMockPopupLoadingText">Waiting for Live Operator Data…</div>
                             </div>
                         </div>
                         <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -1312,8 +1311,8 @@
                     loading.hidden = true;
                     loading.classList.remove('is-error');
                 }
-                if (loadingTitle) loadingTitle.textContent = 'Loading operator profile';
-                if (loadingText) loadingText.textContent = 'Waiting for live operator data...';
+                if (loadingTitle) loadingTitle.textContent = 'Loading Operator Profile…';
+                if (loadingText) loadingText.textContent = 'Waiting for Live Operator Data…';
                 if (frame) {
                     frame.classList.remove('is-ready');
                     frame.src = 'about:blank';
@@ -1339,8 +1338,8 @@
                     loading.hidden = false;
                     loading.classList.remove('is-error');
                 }
-                if (loadingTitle) loadingTitle.textContent = 'Loading operator profile';
-                if (loadingText) loadingText.textContent = 'Waiting for live operator data...';
+                if (loadingTitle) loadingTitle.textContent = 'Loading Operator Profile…';
+                if (loadingText) loadingText.textContent = 'Waiting for Live Operator Data…';
                 frame.src = '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(id) + '&embed=1&popupToken=' + encodeURIComponent(goldMockPopupToken);
                 
                 popup.style.display = 'flex';

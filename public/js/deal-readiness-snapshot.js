@@ -1874,14 +1874,24 @@
     if (options.embed) snapClass += " drs--embed";
     if (options.fullPage) snapClass += " drs--full-page";
     html += '<div class="' + snapClass + '">';
+    if (options.fullPage) {
+      html +=
+        '<nav class="snapshot-page-nav drs-no-print" aria-label="Page">' +
+        '<a class="snapshot-page-back" href="' +
+        esc(options.backHref || "/my-deals.html") +
+        '">' +
+        esc(options.backLabel || "\u2190 Back to My Deals") +
+        "</a></nav>";
+    }
     html += '<div class="drs-toolbar drs-no-print"><div class="drs-toolbar-actions">';
     html +=
       '<span class="drs-print-tip drs-no-print">' +
       "Turn off <strong>Headers and footers</strong> and enable <strong>Background graphics</strong> in the print dialog." +
       "</span>";
+    html += '<div class="drs-toolbar-buttons drs-no-print">';
     html +=
       '<button type="button" class="drs-btn drs-btn-primary drs-toolbar-print" data-drs-print>Print / Save as PDF</button>';
-    html += "</div></div>";
+    html += "</div></div></div>";
 
     html += '<div class="drs-book-shell">';
     html += '<article class="drs-document drs-book-document">';

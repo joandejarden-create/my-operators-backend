@@ -1,6 +1,11 @@
 import Airtable from "airtable";
 
 import { stripLeadingWwwFromWebsiteUrl } from "./lib/strip-www-from-website-url.js";
+import { companyTypeFromProfileFields } from "../lib/company-type-normalize.js";
+import {
+  COMPANY_ROLE_AIRTABLE_FIELD,
+  companyRoleFromEcosystemField,
+} from "../lib/company-role-normalize.js";
 import {
   PLATFORM_USERS_TABLE_ID,
   PUF,
@@ -602,7 +607,9 @@ const F = {
     closedDeals: "Closed Deals",
     brandCount: "Brand Count", // or "# of Brand" or "Number of Brands"
     submittedBids: "Submitted Bids",
-    logo: "Logo" // or "Company Logo"
+    logo: "Logo", // or "Company Logo"
+    /** Partner Directory Company Role filter ↔ Airtable single-select */
+    companyRoleInEcosystem: COMPANY_ROLE_AIRTABLE_FIELD,
   },
   // Brand Setup - Brand Basics for hotel brands (franchise) - as backup
   brands: {
@@ -801,47 +808,8 @@ export async function getPartners(req, res) {
             const submittedBids = fields[F.companyProfile.submittedBids] || fields["Submitted Bids"];
             const logo = fields[F.companyProfile.logo] || fields["Logo"] || fields["Company Logo"];
 
-            // Determine user type - normalize Company Type to expected format
-            let normalizedUserType = "HOTEL OWNERS"; // Default
-            try {
-              if (companyType && typeof companyType === 'string' && companyType.trim()) {
-                // Normalize Company Type to expected format
-                const upperType = companyType.toUpperCase().trim();
-                if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperType.includes('OWNER')) {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else {
-                  // If it doesn't match any pattern, use as-is (uppercase)
-                  normalizedUserType = upperType;
-                }
-              } else if (userType && typeof userType === 'string' && userType.trim()) {
-                // Fallback to User Type and normalize
-                const upperUserType = userType.toUpperCase().trim();
-                // Handle exact matches first (check these before pattern matching)
-                if (upperUserType === "HOTEL OWNERS" || upperUserType === "HOTEL OWNER" || upperUserType === "OWNER" || upperUserType === "OWNERS") {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else if (upperUserType === "HOTEL BRANDS (FRANCHISE)" || upperUserType === "HOTEL BRAND" || upperUserType === "HOTEL BRANDS" || upperUserType === "BRAND" || upperUserType === "BRANDS" || upperUserType === "FRANCHISE") {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperUserType === "HOTEL MGMT. COMPANY" || upperUserType === "HOTEL MGMT COMPANY" || upperUserType === "HOTEL MANAGEMENT COMPANY" || upperUserType === "MGMT" || upperUserType === "MANAGEMENT" || upperUserType === "OPERATOR") {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperUserType.includes('BRAND') || upperUserType.includes('FRANCHISE')) {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperUserType.includes('MGMT') || upperUserType.includes('MANAGEMENT') || upperUserType.includes('OPERATOR')) {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperUserType.includes('OWNER')) {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else {
-                  normalizedUserType = upperUserType;
-                }
-              } else {
-                // use default normalizedUserType
-              }
-            } catch (userTypeError) {
-              // use default normalizedUserType
-            }
+            // Company Type → directory filter key (User Type column is usually empty)
+            const normalizedUserType = companyTypeFromProfileFields(fields);
 
             // Get logo - use first letter of company name as default
             // Only use logo URL if it's a valid image URL, otherwise use initials
@@ -862,12 +830,14 @@ export async function getPartners(req, res) {
             }
 
             const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
+            const companyRole = companyRoleFromEcosystemField(fields);
             return {
               id: record.id || '',
               companyId: companyId || '', // Company ID field (like Term ID in Financial Term Library)
               name: companyName || '',
               userType: normalizedUserType,
               companyType: companyType || '', // Include original Company Type from Airtable for reference
+              companyRole,
               location: location || '', // No fallback - use exactly what's in Airtable
               website: website || '', // No fallback - use exactly what's in Airtable
               description: description || '', // Only use Company Overview - no fallback
@@ -1027,41 +997,7 @@ export async function getPartners(req, res) {
               const brandCount = fields["Brand Count"] || fields["# of Brand"];
               const submittedBids = fields["Submitted Bids"];
 
-              // Normalize Company Type to expected format
-              let normalizedUserType = "HOTEL OWNERS"; // Default
-              if (companyType && typeof companyType === 'string' && companyType.trim()) {
-                // Normalize Company Type to expected format
-                const upperType = companyType.toUpperCase().trim();
-                if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperType.includes('OWNER')) {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else {
-                  // If it doesn't match any pattern, use as-is (uppercase)
-                  normalizedUserType = upperType;
-                }
-              } else if (userType && typeof userType === 'string' && userType.trim()) {
-                // Fallback to User Type and normalize
-                const upperUserType = userType.toUpperCase().trim();
-                // Handle exact matches first (check these before pattern matching)
-                if (upperUserType === "HOTEL OWNERS" || upperUserType === "HOTEL OWNER" || upperUserType === "OWNER" || upperUserType === "OWNERS") {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else if (upperUserType === "HOTEL BRANDS (FRANCHISE)" || upperUserType === "HOTEL BRAND" || upperUserType === "HOTEL BRANDS" || upperUserType === "BRAND" || upperUserType === "BRANDS" || upperUserType === "FRANCHISE") {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperUserType === "HOTEL MGMT. COMPANY" || upperUserType === "HOTEL MGMT COMPANY" || upperUserType === "HOTEL MANAGEMENT COMPANY" || upperUserType === "MGMT" || upperUserType === "MANAGEMENT" || upperUserType === "OPERATOR") {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperUserType.includes('BRAND') || upperUserType.includes('FRANCHISE')) {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperUserType.includes('MGMT') || upperUserType.includes('MANAGEMENT')) {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperUserType.includes('OWNER')) {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else {
-                  normalizedUserType = upperUserType;
-                }
-              }
+              const normalizedUserType = companyTypeFromProfileFields(fields);
 
               // Get logo - use first letter of company name as default only if no logo in Airtable
               let logoDisplay = '';
@@ -1078,12 +1014,14 @@ export async function getPartners(req, res) {
               const companyId = fields[F.companyProfile.companyId] || fields["Company ID"] || '';
               
               const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
+              const companyRole = companyRoleFromEcosystemField(fields);
               return {
                 id: record.id || '',
                 companyId: companyId || '', // Company ID field (like Term ID in Financial Term Library)
                 name: companyName || '',
                 userType: normalizedUserType,
                 companyType: companyType || '', // Include original Company Type from Airtable for reference
+                companyRole,
                 location: location || '', // No fallback - use exactly what's in Airtable
                 website: website || '', // No fallback - use exactly what's in Airtable
                 description: description || '', // Only use Company Overview - no fallback
@@ -1514,26 +1452,17 @@ export async function getCompanyById(req, res) {
       logoDisplay = { type: 'image', url: logo };
     }
     
-    // Normalize user type
-    let normalizedUserType = companyType || userType || '';
-    if (normalizedUserType) {
-      const upperType = String(normalizedUserType).trim().toUpperCase();
-      if (upperType === "HOTEL OWNERS" || upperType === "HOTEL OWNER" || upperType === "OWNER" || upperType === "OWNERS") {
-        normalizedUserType = "HOTEL OWNERS";
-      } else if (upperType === "HOTEL BRANDS (FRANCHISE)" || upperType === "HOTEL BRAND" || upperType === "HOTEL BRANDS" || upperType === "BRAND" || upperType === "BRANDS" || upperType === "FRANCHISE") {
-        normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-      } else if (upperType === "HOTEL MGMT. COMPANY" || upperType === "HOTEL MGMT COMPANY" || upperType === "HOTEL MANAGEMENT COMPANY" || upperType === "MGMT" || upperType === "MANAGEMENT" || upperType === "OPERATOR") {
-        normalizedUserType = "HOTEL MGMT. COMPANY";
-      }
-    }
+    const normalizedUserType = companyTypeFromProfileFields(fields);
 
     const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
+    const companyRole = companyRoleFromEcosystemField(fields);
     const company = {
       id: record.id || '',
       companyId: companyId || '',
       name: companyName || '',
       userType: normalizedUserType,
       companyType: companyType || '',
+      companyRole,
       location: location || '',
       website: website || '',
       description: companyOverview || '',

@@ -133,6 +133,8 @@ function runSyntheticCases(M) {
       }),
       expectSource: "unverified",
       expectLabel: "Portfolio data being verified.",
+      expectShowMetrics: true,
+      expectDisplaySource: "mvp-footprint",
     },
     {
       label: "census fallback + MVP Needs Review",
@@ -144,6 +146,8 @@ function runSyntheticCases(M) {
       }),
       expectSource: "unverified",
       expectLabel: "Portfolio data being verified.",
+      expectShowMetrics: true,
+      expectDisplaySource: "mvp-footprint",
     },
     {
       label: "Footprint Figures As Of on zero-census fallback",
@@ -175,6 +179,8 @@ function runSyntheticCases(M) {
       }),
       expectSource: "unverified",
       expectLabel: "Portfolio data being verified.",
+      expectShowMetrics: true,
+      expectDisplaySource: "mvp-footprint",
     },
     {
       label: "no verification fields — legacy unverified fallback",
@@ -184,6 +190,8 @@ function runSyntheticCases(M) {
       }),
       expectSource: "unverified",
       expectLabel: "Portfolio data being verified.",
+      expectShowMetrics: true,
+      expectDisplaySource: "mvp-footprint",
     },
   ];
 
@@ -195,10 +203,63 @@ function runSyntheticCases(M) {
       trust.displaySourceLabel === c.expectLabel,
       `${c.label}: label got "${trust.displaySourceLabel}"`
     );
-    assert(disp.sourceUsed === c.expectSource, `${c.label}: display source`);
+    assert(disp.sourceUsed === (c.expectDisplaySource || c.expectSource), `${c.label}: display source`);
+    if (c.expectShowMetrics === true) {
+      assert(disp.showVerifiedMetrics === true, `${c.label}: should show footprint metrics`);
+    }
+    if (c.expectShowMetrics === false) {
+      assert(disp.showVerifiedMetrics === false, `${c.label}: should hide footprint metrics`);
+    }
     assertTrustParity(c.brand, M);
     console.log(`PASS (synthetic): ${c.label} → ${c.expectSource}`);
   }
+
+  const pipeBrand = syntheticBrand({
+    footprint: {
+      totalExistingHotels: 51,
+      totalExistingRooms: 5000,
+      totalNewBuildHotels: 51,
+      totalNewBuildRooms: 5000,
+      regionalDistribution: {
+        AM: { hotels: 30, rooms: 3000, pipelineHotels: 3, pipelineRooms: 300 },
+        EU: { hotels: 8, rooms: 750, pipelineHotels: 1, pipelineRooms: 75 },
+        CALA: { hotels: 5, rooms: 500, pipelineHotels: 1, pipelineRooms: 50 },
+        MEA: { hotels: 3, rooms: 250, pipelineHotels: 3, pipelineRooms: 25 },
+        APAC: { hotels: 5, rooms: 500, pipelineHotels: 1, pipelineRooms: 50 },
+      },
+    },
+  });
+  const pipe = M.footprintPipelineTotals(pipeBrand.footprint);
+  assert(pipe.hotels === 9, `pipeline hotels expected 9 got ${pipe.hotels}`);
+  assert(pipe.rooms === 500, `pipeline rooms expected 500 got ${pipe.rooms}`);
+  console.log("PASS (synthetic): regional pipeline totals beat portfolio new-build sum");
+
+  const censusNoDist = syntheticBrand({
+    footprint: {
+      totalExistingHotels: 10,
+      totalExistingRooms: 1000,
+      regionalDistribution: {
+        AM: { hotels: 10, rooms: 1000, pipelineHotels: 1, pipelineRooms: 100 },
+      },
+    },
+    censusSummary: {
+      available: true,
+      fallbackRecommended: false,
+      metrics: { totalOpenHotels: 12, totalOpenKeys: 1200, totalPipelineHotels: 2, totalPipelineKeys: 200, countryCount: 3 },
+      breakdowns: { dealalityRegion: [], country: [] },
+    },
+  });
+  const censusDisp = M.footprintDisplayModel(censusNoDist);
+  assert(censusDisp.showVerifiedMetrics === true, "census without breakdown still shows metrics");
+  assert(
+    Object.keys(censusDisp.fp.regionalDistribution || {}).length === 1,
+    "census without breakdown falls back to MVP regional distribution"
+  );
+  assert(
+    !censusDisp.censusBreakdownNotice,
+    "no breakdown notice when MVP regional fills the gap"
+  );
+  console.log("PASS (synthetic): census missing distribution uses MVP regional rows");
 }
 
 async function main() {

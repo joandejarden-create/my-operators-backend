@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Brief - Dealality</title>
+    <link rel="stylesheet" href="/css/brand-alignment-snapshot.css">
+    <link rel="stylesheet" href="/css/deal-brief-snapshot.css">
+    <link rel="stylesheet" href="/css/snapshot-page-shell.css">
+</head>
+<body>
+    <div class="snapshot-page bas-page" id="briefPage">
+        <div class="bas-page-loading snapshot-page-loading" id="briefPageLoading" role="status" aria-live="polite">
+            <div class="loading">
+                <div class="loading-content">
+                    <div class="wave-container">
+                        <div class="wave wave-1"></div>
+                        <div class="wave wave-2"></div>
+                        <div class="wave wave-3"></div>
+                        <div class="wave-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="loading-text-main">Building Deal Brief…</div>
+                    </div>
+                </div>
+                <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+            </div>
+        </div>
+        <div id="briefPageRoot" hidden></div>
+    </div>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/deal-brief-v2.js"></script>
+    <script src="/js/deal-brief-render-html.js"></script>
+    <script src="/js/deal-brief-snapshot.js"></script>
+    <script>
+    (function () {
+        var params = new URLSearchParams(window.location.search || "");
+        var dealId = (params.get("dealId") || params.get("id") || "").trim();
+        var chromeless = params.get("embed") === "1" || params.get("embed") === "true";
+        var autoPrint = params.get("print") === "1";
+        var page = document.getElementById("briefPage");
+        var loading = document.getElementById("briefPageLoading");
+        var root = document.getElementById("briefPageRoot");
+
+        if (page) {
+            page.classList.add("bas-page--full", "snapshot-page--full");
+            if (chromeless) page.classList.add("bas-page--chromeless");
+        }
+
+        function showError(msg) {
+            if (loading) loading.style.display = "none";
+            if (root) {
+                root.hidden = false;
+                root.innerHTML = '<div class="snapshot-page-error bas-page-error">' +
+                    String(msg || "Request failed").replace(/</g, "&lt;") + "</div>";
+            }
+        }
+
+        if (!dealId || dealId.indexOf("rec") !== 0) {
+            showError("A valid dealId query parameter is required (e.g. ?dealId=rec…).");
+            return;
+        }
+
+        function runBrief() {
+            var fetchFn = window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.fetchMyDealsApi
+                ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+                : function (url, opts) { return fetch(url, opts); };
+
+            fetchFn("/api/my-deals/" + encodeURIComponent(dealId), { method: "GET" })
+                .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+                .then(function (pack) {
+                    var data = pack.data;
+                    if (!pack.ok || !data.success || !data.deal) {
+                        showError((data && (data.message || data.error)) || "Could not load deal brief.");
+                        return;
+                    }
+                    if (loading) loading.style.display = "none";
+                    if (!root || !window.DealBriefSnapshot) {
+                        showError("Deal brief renderer failed to load.");
+                        return;
+                    }
+                    root.hidden = false;
+                    var backHref = "/my-deals.html";
+                    if (params.get("from") === "bwp" || params.get("from") === "bdd") {
+                        backHref = "/brand-development-dashboard";
+                    }
+                    window.DealBriefSnapshot.render(root, data, {
+                        embed: false,
+                        fullPage: true,
+                        dealId: dealId,
+                        backHref: backHref,
+                        mode: window.DealBriefV2 && window.DealBriefV2.MODES
+                            ? window.DealBriefV2.MODES.OWNER_DRAFT
+                            : "ownerDraft",
+                    });
+                    if (autoPrint) {
+                        window.setTimeout(function () { window.print(); }, 600);
+                    }
+                })
+                .catch(function (err) {
+                    showError(err.message || "Network error");
+                });
+        }
+
+        if (window.DealalityMemberstackAuth && typeof window.DealalityMemberstackAuth.whenReady === "function") {
+            window.DealalityMemberstackAuth.whenReady(runBrief);
+        } else {
+            runBrief();
+        }
+    })();
+    </script>
+</body>
+</html>

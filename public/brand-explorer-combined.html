@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-brand-explorer-gold-defer="1" data-brand-explorer-unified-tabs="1">
 <head>
-    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}var p=new URLSearchParams(window.location.search||'');if(p.get('exportPdf')==='1'||p.get('exportPdf')==='true'){document.documentElement.classList.add('be-export-pdf');if(p.get('spacious')!=='1'&&p.get('spacious')!=='true'){document.documentElement.classList.add('be-export-pdf--compact');}var l=document.createElement('link');l.rel='stylesheet';l.href='/css/brand-explorer-export-compact.css';document.head.appendChild(l);}})();</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brand Explorer — Dealality</title>
@@ -196,7 +196,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--hero-tag, #8fc3ff);
+            color: var(--hero-tag, var(--accent--primary-1, #8fc3ff));
             background: var(--accent-soft, rgba(108, 114, 255, 0.14));
             border: 0.6px solid var(--accent-line, rgba(108, 114, 255, 0.45));
             border-radius: 6px;
@@ -413,7 +413,6 @@
             margin-bottom: 16px;
             overflow: visible;
             line-height: 1.4;
-            --hero-tag: #8fc3ff;
         }
         .be-combined-presentation-hero.brand-hero::before {
             content: "";
@@ -519,6 +518,26 @@
             line-height: 1.35;
         }
         .be-combined-presentation-hero.brand-hero .brand-hero__mock-warning-text strong { font-weight: 700; }
+        html.be-export-pdf .be-export-pdf-caveat-mount {
+            display: block;
+            margin: 0 0 14px;
+        }
+        html.be-export-pdf .be-export-pdf-caveat-wrap {
+            padding: 10px 14px;
+            border: 2px solid #facc15;
+            border-radius: 8px;
+            background: rgba(8, 15, 37, 0.85);
+            box-sizing: border-box;
+        }
+        html.be-export-pdf .be-export-pdf-caveat-wrap__text {
+            margin: 0;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            line-height: 1.45;
+            color: #fde047;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
         .be-combined-presentation-hero.brand-hero .brand-hero__parent {
             font-size: 0.875rem;
             font-weight: 500;
@@ -547,7 +566,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--hero-tag, #8fc3ff);
+            color: var(--hero-tag, var(--accent--primary-1, #8fc3ff));
             background: var(--accent-soft, rgba(108, 114, 255, 0.14));
             border: 0.6px solid var(--accent-line, rgba(108, 114, 255, 0.45));
             border-radius: 6px;
@@ -903,6 +922,68 @@
             font-size: 13px;
             color: #f5a623;
         }
+        /* PDF export mode (?exportPdf=1) — all tabs visible, color-preserving print */
+        html.be-export-pdf body {
+            background: #080f25;
+        }
+        html.be-export-pdf #beCombinedListView {
+            display: none !important;
+        }
+        html.be-export-pdf #beCombinedDetailView,
+        html.be-export-pdf #beCombinedDetailView.hidden {
+            display: block !important;
+        }
+        html.be-export-pdf .be-detail-top,
+        html.be-export-pdf .breadcrumb,
+        html.be-export-pdf .be-combined-gold-divider,
+        html.be-export-pdf .be-combined-gold-kicker,
+        html.be-export-pdf #brandTabs,
+        html.be-export-pdf #brandPanels,
+        html.be-export-pdf .be-atelier-tier-label {
+            display: none !important;
+        }
+        html.be-export-pdf [data-be-atelier-nav][hidden] {
+            display: none !important;
+        }
+        html.be-export-pdf:not(.be-export-pdf--compact) .be-atelier-tab-panel {
+            display: block !important;
+            page-break-before: always;
+            break-before: page;
+            padding-top: 20px;
+        }
+        html.be-export-pdf:not(.be-export-pdf--compact) .be-atelier-tab-panel:first-of-type {
+            page-break-before: auto;
+            break-before: auto;
+        }
+        html.be-export-pdf.be-export-pdf--compact .be-atelier-tab-panel {
+            display: block !important;
+            padding-top: 12px;
+        }
+        html.be-export-pdf .be-export-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin: 0 0 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #6c72ff;
+        }
+        @media print {
+            html.be-export-pdf,
+            html.be-export-pdf body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            html.be-export-pdf #brandRoot,
+            html.be-export-pdf .be-atelier-tab-panel,
+            html.be-export-pdf .brand-hero,
+            html.be-export-pdf .scenario-card,
+            html.be-export-pdf .meta-card,
+            html.be-export-pdf .explorer-detail-card {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1006,8 +1087,7 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="loading-text-main">Loading brands...</div>
-                                <div class="loading-text-time">Estimated time: 1–2 seconds</div>
+                                <div class="loading-text-main">Loading Brands…</div>
                             </div>
                         </div>
                         <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -1026,6 +1106,7 @@
             <div class="be-detail-top">
                 <button type="button" id="beCombinedBackBtn">← Back to directory</button>
                 <a id="beCombinedBrandSetupLink" href="/brand-setup" class="be-combined-toolbar-primary">Edit in Brand Setup</a>
+                <a id="beCombinedExportPdfLink" href="#" class="be-combined-toolbar-primary be-combined-export-pdf-link" hidden>Export PDF</a>
                 <a href="/brand-library-compare">Compare brands</a>
             </div>
             <div id="brandLoading" class="be-detail-loading" style="display:none" aria-live="polite">
@@ -1043,8 +1124,8 @@
                             </div>
                         </div>
                         <div>
-                            <div class="loading-text-main">Loading brand profile...</div>
-                            <div class="loading-text-time">Waiting for live brand data...</div>
+                            <div class="loading-text-main">Loading Brand Profile…</div>
+                            <div class="loading-text-time">Waiting for Live Brand Data…</div>
                         </div>
                     </div>
                     <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -1055,6 +1136,7 @@
                 <p id="brandErrorMessage" style="margin-top:8px"></p>
             </div>
             <div id="brandRoot" style="display:none">
+                <div id="beExportPdfCaveatMount" class="be-export-pdf-caveat-mount" hidden></div>
                 <div id="heroMount"></div>
                 <div class="breadcrumb">
                     <a href="#" id="beCombinedBreadcrumbList">Brand Explorer</a>
@@ -1095,8 +1177,7 @@
                             </div>
                         </div>
                         <div>
-                            <div class="loading-text-main">Loading brand…</div>
-                            <div class="loading-text-time">Estimated time: 2–6 seconds</div>
+                            <div class="loading-text-main">Loading Brand…</div>
                         </div>
                     </div>
                     <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -1136,6 +1217,7 @@
     <script src="/js/brand-explorer-favorites.js" defer></script>
     <script src="/js/brand-explorer-gold-detail.js" defer></script>
     <script src="/js/brand-explorer-census-metrics.js"></script>
+    <script src="/js/external-owner-copy.js" defer></script>
     <script src="/js/brand-explorer-atelier-from-api.js" defer></script>
     <script defer>
 (function () {
@@ -1146,6 +1228,7 @@
     var listView = document.getElementById('beCombinedListView');
     var detailView = document.getElementById('beCombinedDetailView');
     var brandSetupLink = document.getElementById('beCombinedBrandSetupLink');
+    var exportPdfLink = document.getElementById('beCombinedExportPdfLink');
     var backBtn = document.getElementById('beCombinedBackBtn');
     var breadcrumbList = document.getElementById('beCombinedBreadcrumbList');
     var resultsList = document.getElementById('resultsList');
@@ -1365,9 +1448,19 @@
         return div.innerHTML;
     }
 
+    function isExportPdfMode() {
+        var p = new URLSearchParams(window.location.search || '');
+        return p.get('exportPdf') === '1' || p.get('exportPdf') === 'true';
+    }
+
     function getQueryBrandId() {
         var p = new URLSearchParams(window.location.search || '');
-        return p.get('id') || p.get('brandId') || '';
+        return p.get('id') || p.get('brandId') || p.get('brand') || p.get('name') || '';
+    }
+
+    function exportPdfPageUrl(brandId) {
+        if (!brandId) return '/brand-explorer-export.html';
+        return '/brand-explorer-export.html?' + new URLSearchParams({ id: brandId }).toString();
     }
 
     function sortedUniqueField(brands, key) {
@@ -1409,6 +1502,7 @@
     }
 
     function showListUi() {
+        if (exportPdfLink) exportPdfLink.hidden = true;
         if (window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.clearChainScaleTheme) {
             window.BrandExplorerGoldDetail.clearChainScaleTheme();
         }
@@ -1427,6 +1521,10 @@
         detailView.classList.remove('hidden');
         if (brandSetupLink && brandId) {
             brandSetupLink.href = '/brand-setup?id=' + encodeURIComponent(brandId);
+        }
+        if (exportPdfLink && brandId) {
+            exportPdfLink.href = exportPdfPageUrl(brandId);
+            exportPdfLink.hidden = false;
         }
         if (addHistory) {
             var path = window.location.pathname || '/brand-explorer-combined';
@@ -1753,6 +1851,11 @@
         filterBrands();
     }
 
+    function isExplorerBrandActive(brand) {
+        var s = String((brand && brand.status) || '').trim().toLowerCase();
+        return s === 'active' || s === 'live';
+    }
+
     function filterBrands() {
         var searchText = ((document.getElementById('searchInput') || {}).value || '').toLowerCase().trim();
         var parentCompany = (document.getElementById('parentCompanyFilter') || {}).value || '';
@@ -1764,6 +1867,7 @@
         var favSet = activeListTab === 'favorites' ? favoriteIdsSet() : null;
 
         filteredBrands = allBrands.filter(function (brand) {
+            if (!isExplorerBrandActive(brand)) return false;
             if (favSet && !favSet[brand.id]) return false;
             var okSearch =
                 !searchText ||
@@ -1921,10 +2025,10 @@
                 window.BrandExplorerFavorites && window.BrandExplorerFavorites.ready
                     ? window.BrandExplorerFavorites.ready()
                     : Promise.resolve();
-            var brandsUrl = '/api/brand-library/brands';
+            var brandsUrl = '/api/brand-library/brands?refresh=1';
             try {
                 if (new URLSearchParams(window.location.search).get('fresh') === '1') {
-                    brandsUrl += (brandsUrl.indexOf('?') >= 0 ? '&' : '?') + 'refresh=1';
+                    brandsUrl += '&fresh=1';
                 }
             } catch (_) {}
             var brandsRes = await fetch(brandsUrl, { cache: 'no-store' });
@@ -2058,6 +2162,20 @@
             void window.BrandExplorerFavorites.ready();
         }
         var initialId = getQueryBrandId();
+        if (isExportPdfMode()) {
+            if (initialId) {
+                showDetailUi(initialId, false, true);
+            } else {
+                var errBox = document.getElementById('brandError');
+                if (errBox) errBox.style.display = 'block';
+                var miss = document.getElementById('brandErrorMessage');
+                if (miss) {
+                    miss.textContent =
+                        'Add a brand id or name to the URL (e.g. ?id=Radisson%20(Choice) or ?brandId=rec…).';
+                }
+            }
+            return;
+        }
         if (initialId) {
             showDetailUi(initialId, false);
         } else {

@@ -111,6 +111,14 @@ Paste **one** phrase in **Body** (Title optional). Matching is case-insensitive.
 **Numeric shortcut (`1`–`6` or `4/6`):** `1` Minimal · `2` Low · `3` Moderate · `4` Medium · `5` High · `6` Very high.
 
 **Radisson example set:** Design `High` · Conversion `Very high` · Localization `High` · Operational rigidity `Moderate` · PIP `Moderate` · Prototype `Low`.
+
+**Enforcement (required):** Every brand must use the **same answer shape** per slot key. Do **not** mix canonical levels with narrative paragraphs or compound phrases (`Moderate to High`) on `operations.flexibility.*`—the UI bar label is the Body text exactly. Put prose in `operations.standards_philosophy`, `overview.development_model`, or other editorial slots.
+
+**Normalize / audit:**
+- `node scripts/generate-choice-tier1-explorer-full.mjs` — regenerates CHI `*-full.json` fixtures with canonical flex levels.
+- `node scripts/normalize-flexibility-presentation.mjs --fixtures` — patch existing JSON fixtures.
+- `node scripts/normalize-flexibility-presentation.mjs --airtable` — patch live Airtable rows (optional `--brand-name`).
+- `node scripts/audit-brand-explorer-presentation-formats.mjs` — report cross-brand format conflicts.
 | `overview.scenarios` | Scenario strip (3 cards) | Optional: up to **3** paragraphs in **Body** (blocks merged with `\n\n`); fills card bodies before per-card overrides. |
 | `overview.scenario.1` … `overview.scenario.3` | Same | **Three separate Airtable rows** (each its own **Slot Key**). **Title** / **Body** override that card’s title and paragraph; **`Image`** (first attachment) replaces the gray “Image” placeholder. If those rows do not exist yet, add them manually or re-run apply from a fixture that includes them (e.g. Radisson example after `--replace`). |
 | `overview.why_value` | “Why this brand wins” bullet list | If any row’s merged text is non-empty, that text (split like other bullets: newlines / `;` / `•`) replaces **Brand profile analysis** / **Brand value proposition** for the five list items. |
@@ -185,6 +193,34 @@ When presentation rows are absent, the tab still renders from Brand Setup (`feeS
 | `loyalty.implications.pnl` | Property & Owner Implications → P&amp;L card | Merged body or fallback copy. |
 | `loyalty.implications.ops` | Operations & Guest Experience | Same. |
 | `loyalty.implications.systems` | Systems & Data | Same. |
+
+### Atelier Commercial Engine (`renderCommercialEngine`)
+
+Benefit/impact framing for owners comparing brands—not sales scripts or per-lever diligence checklists. Lever **Body** uses two parts separated by `Project impact:` (legacy `Owner lens:` still parses).
+
+| Slot key | Where it appears | Behavior |
+|----------|------------------|----------|
+| `commercial.intro` | Intro under **How This Brand Can Lift Your Project** | Merged **Body**; brand-specific in Tier 1 fixtures (tagline + positioning). |
+| `commercial.differentiator` | **Commercial edge on this brand** card | **Title** optional; **Body** = one-line benefit hook (Tier 1: first `bestAt` from profile). |
+| `commercial.kpi.channels` | KPI strip | **Title** = label, **Body** = value; defaults: channels in franchise materials. |
+| `commercial.kpi.campaigns` | KPI strip | Same pattern (campaign rhythm). |
+| `commercial.kpi.b2b` | KPI strip | B2B programs. |
+| `commercial.kpi.lens` | KPI strip | Owner underwriting lens. |
+| `commercial.lever.distribution` | Strength card | **Title** = lever headline (optional override). **Body** = what the lever is + `\n\nProject impact: …` (brand-specific benefit in Tier 1; see `scripts/lib/choice-tier1-commercial-impacts.mjs`) |
+| `commercial.lever.revenue_management` | Strength card | Same. |
+| `commercial.lever.digital_marketing` | Strength card | Same. |
+| `commercial.lever.corporate_group` | Strength card | Same. |
+| `commercial.lever.leisure_destination` | Strength card | Same. |
+| `commercial.lever.international` | Strength card | Same. |
+| `commercial.lever.sales_catering` | Strength card | Same. |
+| `commercial.lever.reputation_qa` | Strength card | Same. |
+| `commercial.lever.data_analytics` | Strength card | Same. |
+| `commercial.theme` | **Where This Brand Tends to Win** (multiple rows) | **Body** = bullet line; Tier 1 uses `bestAt` from profile (replaces static list when any row present). |
+| `commercial.demand` | **Demand Scenario View** (multiple rows) | **Title** = scenario name, **Body** = directional label (Strong, Moderate–strong, Not a fit, etc.). |
+
+Tier 1 Choice full fixtures include these keys via `scripts/lib/choice-explorer-full-builder.mjs` (`buildCommercialRows`). Regenerate: `npm run generate-choice-tier1-explorer-full`. Push: `npm run apply-brand-explorer-presentation -- --brand-name "Comfort Inn & Suites" --fixture fixtures/brand-explorer-presentation-comfort-inn-suites-full.json --only-missing`.
+
+**Market Perception** still uses Brand Basics **Brand Positioning** (`explorerDetailCard`) unless a future `commercial.perception` slot is added.
 
 ### Atelier Dealality Insight (`renderDealalityInsight`)
 

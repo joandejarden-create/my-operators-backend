@@ -1,0 +1,2118 @@
+/* Deal Readiness Snapshot â€” document-style webpage (screen + print) */
+
+.brand-alignment-snapshot {
+  --bas-paper: #ffffff;
+  --bas-ink: #101935;
+  --bas-ink-muted: #4a5568;
+  --bas-border: #d9e1fa;
+  --bas-accent: #6c72ff;
+  --bas-accent-soft: rgba(108, 114, 255, 0.12);
+  --bas-badge-bg: #f4f6fc;
+  --bas-badge-border: #c5cee8;
+  --bas-font: "Mona Sans", "Inter", system-ui, sans-serif;
+  font-family: var(--bas-font);
+  color: var(--bas-ink);
+  line-height: 1.5;
+}
+
+.brand-alignment-snapshot.bas--embed {
+  padding: 0;
+}
+
+.brand-alignment-snapshot .bas-toolbar {
+  margin-bottom: 12px;
+}
+
+.brand-alignment-snapshot .bas-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-alignment-snapshot .bas-toolbar-actions .bas-print-tip {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.brand-alignment-snapshot .bas-toolbar-actions .bas-toolbar-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.brand-alignment-snapshot .bas-toolbar-actions .bas-toolbar-print {
+  flex-shrink: 0;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-btn-secondary {
+  color: #d1dbf9;
+  border-color: #3d4f7c;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-btn-secondary:hover {
+  background: rgba(61, 79, 124, 0.35);
+}
+
+.brand-alignment-snapshot .bas-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.brand-alignment-snapshot .bas-btn-primary {
+  background: var(--bas-accent);
+  color: #fff;
+  border-color: var(--bas-accent);
+}
+
+.brand-alignment-snapshot .bas-btn-primary:hover {
+  background: #5a5fe8;
+}
+
+.brand-alignment-snapshot .bas-btn-secondary {
+  background: transparent;
+  color: var(--bas-accent);
+  border-color: var(--bas-border);
+}
+
+.brand-alignment-snapshot .bas-btn-secondary:hover {
+  background: var(--bas-accent-soft);
+}
+
+.brand-alignment-snapshot .bas-document {
+  background: var(--bas-paper);
+  border: 1px solid var(--bas-border);
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(8, 15, 37, 0.12);
+}
+
+.bas--embed .bas-document {
+  box-shadow: none;
+  border-radius: 10px;
+}
+
+.brand-alignment-snapshot .bas-book-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-alignment-snapshot .bas-book-document {
+  width: 100%;
+  max-width: 816px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.brand-alignment-snapshot .bas-book-page > .bas-cover-page {
+  height: 100%;
+}
+
+/* US Letter proportions (8.5in x 11in) â€” screen book viewport */
+.brand-alignment-snapshot .bas-book-viewport {
+  position: relative;
+  width: min(816px, calc(100vw - 48px));
+  aspect-ratio: 8.5 / 11;
+  max-height: min(calc(100vh - 160px), 1056px);
+  margin: 0 auto;
+  perspective: 2400px;
+  outline: none;
+  box-shadow: 0 16px 48px rgba(8, 15, 37, 0.22);
+  border-radius: 4px;
+  background: #101935;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-toolbar {
+  flex-shrink: 0;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-host-footer {
+  flex-shrink: 0;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-book-shell {
+  width: 100%;
+  align-items: stretch;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-book-document {
+  width: 100%;
+  max-width: none;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-book-viewport {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  aspect-ratio: 8.5 / 11;
+  max-height: min(72vh, calc(100vw * 11 / 8.5));
+}
+
+/* Standalone / full-page: letter size scaled to viewport */
+.brand-alignment-snapshot.bas--full-page .bas-book-shell {
+  width: 100%;
+}
+
+.brand-alignment-snapshot.bas--full-page .bas-book-document {
+  max-width: none;
+  width: 100%;
+}
+
+/* Full-page viewport sizing lives in snapshot-page-shell.css (100% width × viewport height) */
+
+.brand-alignment-snapshot.bas--full-page .bas-book-page:has(.bas-book-page-inner) {
+  background: var(--bas-paper);
+}
+
+.brand-alignment-snapshot.bas--full-page .bas-book-page:has(> .bas-cover-page) {
+  background: #080f25;
+}
+
+.brand-alignment-snapshot.bas--full-page .bas-book-page-inner {
+  min-height: 100%;
+}
+
+.brand-alignment-snapshot .bas-book-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.brand-alignment-snapshot .bas-book-page {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bas-paper);
+  transform-style: preserve-3d;
+  transition: transform 0.75s ease-in-out, opacity 0.4s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  transform: rotateY(88deg);
+  z-index: 1;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.brand-alignment-snapshot .bas-book-page:has(> .bas-cover-page) {
+  background: #080f25;
+}
+
+.brand-alignment-snapshot .bas-book-page.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: rotateY(0deg);
+  z-index: 3;
+}
+
+.brand-alignment-snapshot .bas-book-page.flip-out-forward {
+  transform: rotateY(-88deg);
+  opacity: 0;
+  z-index: 2;
+  backface-visibility: hidden;
+}
+
+.brand-alignment-snapshot .bas-book-page.flip-out-back {
+  transform: rotateY(88deg);
+  opacity: 0;
+  z-index: 2;
+  backface-visibility: hidden;
+}
+
+.brand-alignment-snapshot .bas-book-page.flip-in-forward {
+  transform: rotateY(0deg);
+  opacity: 1;
+  z-index: 4;
+  backface-visibility: hidden;
+}
+
+.brand-alignment-snapshot .bas-book-page.flip-in-back {
+  transform: rotateY(0deg);
+  opacity: 1;
+  z-index: 4;
+  backface-visibility: hidden;
+}
+
+.brand-alignment-snapshot.bas--full-page .bas-page-indicator {
+  color: #4a5568;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+
+.brand-alignment-snapshot .bas-book-page-inner {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Content pages â€” Deal Brief styling, scrollable full content */
+.brand-alignment-snapshot .bas-content-page {
+  display: block;
+  min-height: 100%;
+  background: #080f25;
+  color: #aeb9e1;
+  font-family: var(--bas-font);
+  padding-bottom: 2.25rem;
+}
+
+.brand-alignment-snapshot .bas-brief-highlights,
+.brand-alignment-snapshot .bas-brief-band {
+  padding: 1rem 1.25rem 0.75rem;
+}
+
+.brand-alignment-snapshot .bas-brief-band--footer {
+  padding: 0.85rem 1.25rem 1rem;
+  background: #ffffff;
+  color: #101935;
+}
+
+.brand-alignment-snapshot .bas-brief-kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7e89ac;
+}
+
+.brand-alignment-snapshot .bas-brief-lead {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #d1dbf9;
+}
+
+.brand-alignment-snapshot .bas-brief-muted {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: #7e89ac;
+}
+
+.brand-alignment-snapshot .bas-brief-score-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.brand-alignment-snapshot .bas-brief-card {
+  background: #212c4d;
+  border: 1px solid #37446b;
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+}
+
+.brand-alignment-snapshot .bas-brief-card-title {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fdb52a;
+  margin-bottom: 0.25rem;
+}
+
+.brand-alignment-snapshot .bas-brief-card-body {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.brand-alignment-snapshot .bas-brief-card-body--score .bas-score-num {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.brand-alignment-snapshot .bas-brief-card-body--score .bas-score-of {
+  font-size: 0.85rem;
+  color: #aeb9e1;
+  font-weight: 600;
+}
+
+.brand-alignment-snapshot .bas-brief-panel,
+.brand-alignment-snapshot .bas-brief-detail-strip {
+  display: block;
+  background: #ffffff;
+  color: #101935;
+  padding: 0.85rem 1.25rem 1rem;
+  margin: 0;
+}
+
+.brand-alignment-snapshot .bas-section--brief {
+  margin-bottom: 0.65rem;
+}
+
+/* Narrative: if a section does not fit, move it to the next page (header stays with block) */
+.brand-alignment-snapshot .bas-page-narrative .bas-section--keep {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.brand-alignment-snapshot .bas-page-narrative .bas-table-wrap--keep,
+.brand-alignment-snapshot .bas-page-narrative .bas-brief-panel .bas-table-wrap {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.brand-alignment-snapshot .bas-page-narrative .bas-section-title {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.brand-alignment-snapshot .bas-page-narrative .bas-summary {
+  orphans: 3;
+  widows: 3;
+}
+
+.brand-alignment-snapshot .bas-page-narrative .bas-brief-table thead {
+  display: table-header-group;
+}
+
+.brand-alignment-snapshot .bas-section--brief .bas-section-title {
+  font-size: 0.74rem;
+  color: #101935;
+  border-bottom-color: #6c72ff;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.2rem;
+}
+
+.brand-alignment-snapshot .bas-section--brief .bas-summary,
+.brand-alignment-snapshot .bas-section--brief .bas-muted,
+.brand-alignment-snapshot .bas-brief-panel .bas-detail-list {
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #343b4f;
+}
+
+.brand-alignment-snapshot .bas-page-narrative .bas-summary {
+  margin: 0 0 0.85rem;
+  font-size: 0.76rem;
+  line-height: 1.62;
+  color: #1a2238;
+  text-align: left;
+}
+
+.brand-alignment-snapshot .bas-page-narrative .bas-summary:last-child {
+  margin-bottom: 0;
+}
+
+.brand-alignment-snapshot .bas-strength-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.brand-alignment-snapshot .bas-strength-block {
+  margin: 0;
+  padding: 0;
+}
+
+.brand-alignment-snapshot .bas-strength-title {
+  margin: 0 0 0.2rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #101935;
+  line-height: 1.35;
+}
+
+.brand-alignment-snapshot .bas-strength-body {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #343b4f;
+}
+
+.brand-alignment-snapshot .bas-section--technical-note .bas-muted {
+  font-size: 0.66rem;
+  line-height: 1.4;
+}
+
+.brand-alignment-snapshot .bas-score-calc {
+  margin-bottom: 0.5rem;
+}
+
+.brand-alignment-snapshot .bas-score-calc-lead {
+  margin-bottom: 0.55rem;
+}
+
+.brand-alignment-snapshot .bas-score-calc-table th {
+  width: 42%;
+  font-weight: 600;
+  color: #101935;
+  vertical-align: top;
+}
+
+.brand-alignment-snapshot .bas-score-calc-subtitle {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #101935;
+  margin: 0.5rem 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.brand-alignment-snapshot .bas-score-calc-caps {
+  margin-bottom: 0.45rem;
+}
+
+.brand-alignment-snapshot .bas-score-calc-note {
+  margin-top: 0.45rem;
+  padding: 0.35rem 0.5rem;
+  background: #f4f6fc;
+  border-left: 3px solid #6c72ff;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-detail-list {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-detail-list li {
+  margin-bottom: 0.35rem;
+  color: #101935;
+}
+
+.brand-alignment-snapshot .bas-section-title--on-dark {
+  color: #9a91fb !important;
+  border-bottom-color: #37446b !important;
+}
+
+.brand-alignment-snapshot .bas-section--brief-dark {
+  margin-bottom: 0.45rem;
+}
+
+.brand-alignment-snapshot .bas-section-title--dark {
+  font-size: 0.62rem;
+  color: #9a91fb !important;
+  border-bottom-color: #37446b !important;
+  margin-bottom: 0.25rem;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-review-status-label {
+  color: #101935;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.brand-alignment-snapshot .bas-review-status-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #101935;
+  margin: 0 0 0.35rem;
+}
+
+.brand-alignment-snapshot .bas-narrative-tail {
+  display: block;
+}
+
+.brand-alignment-snapshot .bas-brief-highlights .bas-brief-lead--warn {
+  color: #fbd38d;
+  background: rgba(253, 181, 42, 0.12);
+  border: 1px solid rgba(253, 181, 42, 0.35);
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+}
+
+.brand-alignment-snapshot .bas-detail-list {
+  margin: 0 0 0.5rem;
+  padding-left: 1.1rem;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #343b4f;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-detail-list {
+  color: #343b4f;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-detail-list li {
+  margin-bottom: 0.25rem;
+}
+
+.brand-alignment-snapshot .bas-page-technical .bas-section--keep {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.brand-alignment-snapshot .bas-page-technical .bas-summary,
+.brand-alignment-snapshot .bas-page-technical .bas-muted {
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #343b4f;
+}
+
+.brand-alignment-snapshot .bas-page-technical .bas-section--brief .bas-section-title {
+  font-size: 0.74rem;
+  color: #101935;
+  border-bottom-color: #6c72ff;
+}
+
+.brand-alignment-snapshot .bas-brand-card-text {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #343b4f;
+}
+
+.brand-alignment-snapshot .bas-brief-table {
+  font-size: 0.64rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.brand-alignment-snapshot .bas-brief-table th,
+.brand-alignment-snapshot .bas-brief-table td {
+  padding: 0.28rem 0.4rem;
+  border: 1px solid #d9e1fa;
+  vertical-align: top;
+  text-align: left;
+  color: #101935;
+}
+
+.brand-alignment-snapshot .bas-brief-table th {
+  background: #f4f6fc;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #4a5568;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-status-table th {
+  width: 42%;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-status-table td {
+  background: #ffffff;
+  color: #101935;
+}
+
+.brand-alignment-snapshot .bas-brief-table--dark {
+  width: 100%;
+  border-collapse: collapse;
+  color: #d1dbf9;
+}
+
+.brand-alignment-snapshot .bas-brief-table--dark th {
+  color: #7e89ac;
+  font-weight: 600;
+  text-align: left;
+  width: 42%;
+}
+
+.brand-alignment-snapshot .bas-strength-cards--panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: disc;
+  padding-left: 1.1rem;
+}
+
+.brand-alignment-snapshot .bas-strength-cards--panel .bas-strength-card {
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: #101935;
+  padding: 0;
+  background: none;
+  border: none;
+  list-style: disc;
+  display: list-item;
+}
+
+.brand-alignment-snapshot .bas-tab-grid--brief {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-tab-card {
+  background: #f4f6fc;
+  border: 1px solid #d9e1fa;
+  border-radius: 6px;
+  padding: 0.4rem 0.3rem;
+  text-align: center;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-tab-pct {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #6c72ff;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-tab-label {
+  font-size: 0.5rem;
+  color: #343b4f;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-output-note--brief {
+  margin: 0.5rem 0 0;
+  padding: 0.45rem 0 0;
+  border-top: 1px solid #d9e1fa;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-output-note--brief p {
+  font-size: 0.62rem;
+  color: #4a5568;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.brand-alignment-snapshot .bas-print-tip {
+  font-size: 0.72rem;
+  color: var(--bas-ink-muted);
+  max-width: 22rem;
+  line-height: 1.4;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-print-tip {
+  color: #7e89ac;
+}
+
+.brand-alignment-snapshot .bas-cover-page.bas-book-page-surface {
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.brand-alignment-snapshot .bas-turn-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: #fdb52a;
+  border: none;
+  padding: 0.5rem 0.35rem;
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 20;
+  opacity: 0.92;
+}
+
+.brand-alignment-snapshot .bas-turn-btn:hover:not(:disabled) {
+  opacity: 1;
+}
+
+.brand-alignment-snapshot .bas-turn-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.brand-alignment-snapshot .bas-turn-btn.bas-turn-prev {
+  left: 0.35rem;
+}
+
+.brand-alignment-snapshot .bas-turn-btn.bas-turn-next {
+  right: 0.35rem;
+}
+
+.brand-alignment-snapshot .bas-page-indicator {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.68rem;
+  color: #aeb9e1;
+  letter-spacing: 0.06em;
+  z-index: 25;
+  margin: 0;
+  pointer-events: none;
+  padding: 0.2rem 0.65rem;
+  border-radius: 4px;
+  background: rgba(8, 15, 37, 0.88);
+}
+
+.brand-alignment-snapshot.bas--embed .bas-page-indicator {
+  color: #7e89ac;
+}
+
+/* Cover page â€” matches Deal Brief brochure cover (deal-summary.html) */
+.brand-alignment-snapshot .bas-cover-page {
+  --bas-cover-bg: #080f25;
+  --bas-cover-ink: #ffffff;
+  --bas-cover-muted: #7e89ac;
+  --bas-cover-soft: #d1dbf9;
+  --bas-cover-accent: #6c72ff;
+  --bas-cover-gold: #fdb52a;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bas-cover-bg);
+  position: relative;
+  overflow: hidden;
+  font-family: var(--bas-font);
+}
+
+.brand-alignment-snapshot .bas-cover-page::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -15%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse at center, #212c4d 0%, transparent 70%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.brand-alignment-snapshot .bas-cover-page::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--bas-cover-accent), #9a91fb);
+  pointer-events: none;
+}
+
+.brand-alignment-snapshot .bas-cover-geometric {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.brand-alignment-snapshot .bas-cover-geometric::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.brand-alignment-snapshot .bas-cover-geometric::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.07) 50%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.07) 50%, transparent 52%);
+  background-size: 40px 40px;
+}
+
+.brand-alignment-snapshot .bas-cover-confidential {
+  position: absolute;
+  top: 1.5rem;
+  left: 2rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bas-cover-muted);
+  margin: 0;
+  z-index: 1;
+}
+
+.brand-alignment-snapshot .bas-cover-block {
+  flex: 1;
+  padding: 2rem 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-alignment-snapshot .bas-cover-doc-type {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bas-cover-muted);
+  margin: 0 0 0.75rem 0;
+}
+
+.brand-alignment-snapshot .bas-cover-title {
+  font-size: clamp(1.75rem, 5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--bas-cover-ink);
+  margin: 0 0 1rem;
+  max-width: 14ch;
+}
+
+.brand-alignment-snapshot .bas-cover-location {
+  font-size: 1.15rem;
+  color: var(--bas-cover-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin: 0 0 2rem;
+}
+
+.brand-alignment-snapshot .bas-cover-accent-line {
+  width: 48px;
+  height: 3px;
+  background: var(--bas-cover-accent);
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.brand-alignment-snapshot .bas-cover-deal-hook {
+  font-size: 0.95rem;
+  color: var(--bas-cover-soft);
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
+  max-width: 42em;
+  line-height: 1.5;
+}
+
+.brand-alignment-snapshot .bas-cover-sub {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--bas-cover-muted);
+  margin: 0 0 0.35rem;
+}
+
+.brand-alignment-snapshot .bas-cover-date {
+  font-size: 7.5pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bas-cover-gold);
+  margin: 0;
+}
+
+.brand-alignment-snapshot .bas-cover-disclaimer {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 2rem;
+  font-size: 0.6rem;
+  color: var(--bas-cover-muted);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  max-width: min(36em, 75%);
+  margin: 0;
+  z-index: 1;
+}
+
+.brand-alignment-snapshot .bas-cover-hero {
+  padding: 2rem 2.5rem 2.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-alignment-snapshot .bas-cover-logo-block {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.brand-alignment-snapshot .bas-cover-logo-img {
+  max-width: 140px;
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  opacity: 0.95;
+}
+
+@media (max-width: 700px) {
+  .brand-alignment-snapshot .bas-cover-block {
+    padding: 1.5rem 1.5rem 2rem;
+  }
+  .brand-alignment-snapshot .bas-cover-title {
+    max-width: none;
+  }
+  .brand-alignment-snapshot .bas-cover-hero {
+    padding: 1.5rem;
+    justify-content: flex-start;
+  }
+  .brand-alignment-snapshot .bas-cover-logo-img {
+    max-width: 112px;
+  }
+  .brand-alignment-snapshot .bas-cover-confidential,
+  .brand-alignment-snapshot .bas-cover-disclaimer {
+    left: 1.5rem;
+  }
+}
+
+.brand-alignment-snapshot .bas-page-sheet {
+  margin-bottom: 32px;
+}
+
+.brand-alignment-snapshot .bas-page-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bas-ink-muted);
+  margin: 0 0 10px;
+}
+
+.brand-alignment-snapshot .bas-page-label--first {
+  margin-top: 0;
+}
+
+.brand-alignment-snapshot .bas-page-narrative {
+  padding-bottom: 8px;
+}
+
+.brand-alignment-snapshot .bas-book-page .bas-page-technical {
+  padding-top: 0;
+  border-top: none;
+}
+
+.brand-alignment-snapshot .bas-doc-header {
+  border-bottom: 2px solid var(--bas-ink);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.brand-alignment-snapshot .bas-doc-kicker {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--bas-accent);
+}
+
+.brand-alignment-snapshot .bas-deal-subtitle {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-meta-grid--header {
+  margin-top: 12px;
+}
+
+.brand-alignment-snapshot .bas-brand-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.brand-alignment-snapshot .bas-brand-mark {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bas-accent);
+}
+
+.brand-alignment-snapshot .bas-doc-type {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-deal-title {
+  margin: 0 0 12px;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--bas-ink);
+  line-height: 1.2;
+}
+
+.brand-alignment-snapshot .bas-status-badge {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--bas-badge-bg);
+  border: 1px solid var(--bas-badge-border);
+  color: var(--bas-ink);
+}
+
+.brand-alignment-snapshot .bas-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px 20px;
+  margin: 0;
+}
+
+.brand-alignment-snapshot .bas-meta-grid dt {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bas-ink-muted);
+  margin: 0 0 2px;
+}
+
+.brand-alignment-snapshot .bas-meta-grid dd {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bas-ink);
+}
+
+.brand-alignment-snapshot .bas-hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.brand-alignment-snapshot .bas-metric-card {
+  border: 1px solid var(--bas-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  background: #fafbfd;
+}
+
+.brand-alignment-snapshot .bas-metric-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bas-ink-muted);
+  margin-bottom: 6px;
+}
+
+.brand-alignment-snapshot .bas-metric-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--bas-ink);
+  line-height: 1.1;
+}
+
+.brand-alignment-snapshot .bas-metric-value-stage {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.brand-alignment-snapshot .bas-metric-suffix {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-section {
+  margin-bottom: 28px;
+}
+
+.brand-alignment-snapshot .bas-section-title {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bas-ink);
+  border-bottom: 1px solid var(--bas-border);
+  padding-bottom: 8px;
+}
+
+.brand-alignment-snapshot .bas-section-lead,
+.brand-alignment-snapshot .bas-muted {
+  font-size: 13px;
+  color: var(--bas-ink-muted);
+  margin: 0 0 12px;
+}
+
+.brand-alignment-snapshot .bas-summary {
+  font-size: 14px;
+  color: var(--bas-ink);
+  margin: 0;
+  line-height: 1.65;
+}
+
+.brand-alignment-snapshot .bas-score-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  align-items: flex-end;
+  margin-bottom: 14px;
+}
+
+.brand-alignment-snapshot .bas-score-main {
+  line-height: 1;
+}
+
+.brand-alignment-snapshot .bas-score-num {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: var(--bas-ink);
+}
+
+.brand-alignment-snapshot .bas-score-of {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--bas-ink-muted);
+  margin-left: 4px;
+}
+
+.brand-alignment-snapshot .bas-score-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.brand-alignment-snapshot .bas-score-stage-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-score-stage-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--bas-ink);
+}
+
+.brand-alignment-snapshot .bas-score-basis {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-interpretation {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--bas-ink);
+  margin: 0;
+}
+
+.brand-alignment-snapshot .bas-review-status-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--bas-ink);
+  margin: 0 0 8px;
+}
+
+.brand-alignment-snapshot .bas-breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.brand-alignment-snapshot .bas-breakdown-table th,
+.brand-alignment-snapshot .bas-breakdown-table td {
+  padding: 10px;
+  border: 1px solid var(--bas-border);
+  vertical-align: top;
+  text-align: left;
+}
+
+.brand-alignment-snapshot .bas-breakdown-table th {
+  background: #f4f6fc;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-strength-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.brand-alignment-snapshot .bas-strength-card {
+  padding: 12px 14px;
+  border: 1px solid var(--bas-border);
+  border-radius: 8px;
+  background: #fafbfd;
+  font-size: 13px;
+  color: var(--bas-ink);
+}
+
+.brand-alignment-snapshot .bas-tech-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--bas-border);
+}
+
+.brand-alignment-snapshot .bas-tech-title {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--bas-ink);
+}
+
+.brand-alignment-snapshot .bas-output-note--technical {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--bas-border);
+}
+
+.brand-alignment-snapshot .bas-status-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.brand-alignment-snapshot .bas-status-table th,
+.brand-alignment-snapshot .bas-status-table td {
+  padding: 10px 12px;
+  border: 1px solid var(--bas-border);
+  text-align: left;
+}
+
+.brand-alignment-snapshot .bas-status-table th {
+  width: 38%;
+  font-weight: 600;
+  background: #f4f6fc;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-tab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.brand-alignment-snapshot .bas-tab-card {
+  border: 1px solid var(--bas-border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  background: #fafbfd;
+}
+
+.brand-alignment-snapshot .bas-tab-pct {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--bas-accent);
+}
+
+.brand-alignment-snapshot .bas-tab-label {
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--bas-ink-muted);
+  line-height: 1.3;
+}
+
+.brand-alignment-snapshot .bas-strength-list,
+.brand-alignment-snapshot .bas-detail-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  color: var(--bas-ink);
+}
+
+.brand-alignment-snapshot .bas-strength-list li,
+.brand-alignment-snapshot .bas-detail-list li {
+  margin-bottom: 6px;
+}
+
+.brand-alignment-snapshot .bas-table-wrap {
+  overflow-x: auto;
+}
+
+.brand-alignment-snapshot .bas-clar-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.brand-alignment-snapshot .bas-clar-table th,
+.brand-alignment-snapshot .bas-clar-table td {
+  padding: 10px;
+  border: 1px solid var(--bas-border);
+  vertical-align: top;
+}
+
+.brand-alignment-snapshot .bas-clar-table th {
+  background: #f4f6fc;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-edit-link {
+  color: var(--bas-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.brand-alignment-snapshot .bas-edit-link:hover {
+  text-decoration: underline;
+}
+
+.brand-alignment-snapshot .bas-output-note {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 2px solid var(--bas-border);
+}
+
+.brand-alignment-snapshot .bas-output-note p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-host-footer {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--bas-ink-muted);
+}
+
+/* Standalone page shell */
+.bas-page {
+  min-height: 100vh;
+  background: #080f25;
+  padding: 20px;
+}
+
+.bas-page.bas-page--full {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 1.5rem 1.25rem;
+  background: #080f25;
+}
+
+.bas-page.bas-page--full #basPageRoot {
+  width: 100%;
+  max-width: none;
+}
+
+.bas-page.bas-page--chromeless {
+  background: #080f25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bas-page.bas-page--chromeless .brand-alignment-snapshot .bas-toolbar {
+  margin-bottom: 16px;
+}
+
+.bas-page.bas-page--chromeless .bas-btn-secondary {
+  color: #d1dbf9;
+  border-color: #3d4f7c;
+}
+
+.bas-page-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: min(50vh, 420px);
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 24px 20px;
+  background: transparent;
+}
+
+.bas-page-loading .loading {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  min-width: 280px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bas-page-loading .loading-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bas-page-loading .wave-container {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  background: #333;
+  border-radius: 50%;
+  border: 2px solid #555;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.bas-page-loading .wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.bas-page-loading .wave-1 {
+  height: 40%;
+  background: linear-gradient(45deg, #d69e2e, #f4d03f);
+  animation: bas-page-wave-1 2s ease-in-out infinite;
+}
+
+.bas-page-loading .wave-2 {
+  height: 60%;
+  background: linear-gradient(45deg, #b8860b, #d69e2e);
+  animation: bas-page-wave-2 2s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.bas-page-loading .wave-3 {
+  height: 80%;
+  background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+  animation: bas-page-wave-3 2s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+.bas-page-loading .wave-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.bas-page-loading .particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #d69e2e;
+  border-radius: 50%;
+  animation: bas-page-particle-float 3s ease-in-out infinite;
+  box-shadow: 0 0 4px #d69e2e;
+}
+
+.bas-page-loading .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+.bas-page-loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+.bas-page-loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+.bas-page-loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+
+.bas-page-loading .loading-text-main {
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  margin: 0;
+}
+
+.bas-page-loading .loading-progress {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.bas-page-loading .loading-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #fdb52a, #d5691b);
+  border-radius: 2px;
+  animation: bas-page-progress 3s ease-in-out infinite;
+}
+
+@keyframes bas-page-progress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+@keyframes bas-page-wave-1 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; }
+  50% { transform: translateX(0%) scaleY(1.2); opacity: 1; }
+}
+
+@keyframes bas-page-wave-2 {
+  0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; }
+  50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; }
+}
+
+@keyframes bas-page-wave-3 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; }
+  50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; }
+}
+
+@keyframes bas-page-particle-float {
+  0% { transform: translateY(100%) scale(0); opacity: 0; }
+  20% { transform: translateY(80%) scale(1); opacity: 1; }
+  80% { transform: translateY(20%) scale(1); opacity: 1; }
+  100% { transform: translateY(0%) scale(0); opacity: 0; }
+}
+
+.bas-page-error {
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: #fff5f5;
+  border: 1px solid #f5c6cb;
+  color: #101935;
+  font-size: 14px;
+}
+
+/* Modal hosts (My Deals / Deal Setup) */
+.my-deals-readiness-modal-body .brand-alignment-snapshot,
+.deal-readiness-modal-body .brand-alignment-snapshot {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.my-deals-readiness-modal-body .bas-book-shell,
+.deal-readiness-modal-body .bas-book-shell,
+.my-deals-readiness-modal-body .bas-book-document,
+.deal-readiness-modal-body .bas-book-document,
+.my-deals-readiness-modal-body .bas-book-viewport,
+.deal-readiness-modal-body .bas-book-viewport {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.my-deals-readiness-modal {
+  max-width: 920px;
+  width: min(96vw, 920px);
+}
+
+.deal-readiness-modal {
+  max-width: 920px;
+  width: min(96vw, 920px);
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  body,
+  .bas-page {
+    background: #fff !important;
+    padding: 0 !important;
+  }
+
+  .bas-no-print,
+  .bas-page-loading,
+  .sidebar-wrapper,
+  .intake-header,
+  .embed-chrome,
+  nav,
+  header:not(.bas-doc-header) {
+    display: none !important;
+  }
+
+  /* Print clone host: hide the rest of the page (avoids blank pages from visibility:hidden layout) */
+  #bas-print-host {
+    position: fixed;
+    left: -10000px;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  body.bas-print-active > *:not(#bas-print-host) {
+    display: none !important;
+  }
+
+  body.bas-print-active #bas-print-host {
+    display: block !important;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body.bas-print-active #bas-print-host .brand-alignment-snapshot {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .brand-alignment-snapshot,
+  .brand-alignment-snapshot * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .brand-alignment-snapshot .bas-book-viewport {
+    height: auto !important;
+    overflow: visible !important;
+    perspective: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    aspect-ratio: auto !important;
+    max-height: none !important;
+    width: 100% !important;
+  }
+
+  .brand-alignment-snapshot .bas-book-stage {
+    position: static !important;
+    height: auto !important;
+    transform-style: flat !important;
+  }
+
+  .brand-alignment-snapshot .bas-book-page {
+    position: static !important;
+    display: block !important;
+    opacity: 1 !important;
+    transform: none !important;
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    box-shadow: none !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+    pointer-events: auto !important;
+  }
+
+  /* Cover on its own sheet; narrative + technical flow without forced chapter breaks */
+  .brand-alignment-snapshot .bas-book-page:first-child {
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .brand-alignment-snapshot .bas-book-page .bas-cover-page {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    /* A4 printable height (297mm âˆ’ 12mm margins Ã— 2) */
+    min-height: 273mm !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: hidden;
+    box-sizing: border-box !important;
+  }
+
+  .brand-alignment-snapshot .bas-book-page .bas-content-page {
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+    background: #080f25 !important;
+  }
+
+  /* Narrative: compact typography to reduce overflow; clean section breaks */
+  .brand-alignment-snapshot .bas-page-narrative .bas-brief-highlights {
+    padding: 0.35rem 0.85rem 0.3rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-brief-panel {
+    padding: 0.35rem 0.85rem 0.45rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-section--brief {
+    margin-bottom: 0.4rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-summary {
+    font-size: 0.68rem !important;
+    line-height: 1.48 !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-strength-blocks {
+    gap: 0.4rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-strength-title {
+    font-size: 0.68rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-strength-body {
+    font-size: 0.66rem !important;
+    line-height: 1.38 !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-strength-block {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-brief-table th,
+  .brand-alignment-snapshot .bas-page-narrative .bas-brief-table td {
+    padding: 0.18rem 0.32rem !important;
+    font-size: 0.56rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-section--keep {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-table-wrap--keep,
+  .brand-alignment-snapshot .bas-page-narrative .bas-brief-panel .bas-table-wrap {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-section-title {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-narrative .bas-narrative-tail {
+    padding-top: 0.1rem;
+  }
+
+  .brand-alignment-snapshot .bas-page-technical .bas-brief-highlights {
+    padding: 0.35rem 0.85rem 0.3rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-technical .bas-brief-panel {
+    padding: 0.35rem 0.85rem 0.45rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-technical .bas-section--brief {
+    margin-bottom: 0.4rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-technical .bas-brief-table th,
+  .brand-alignment-snapshot .bas-page-technical .bas-brief-table td {
+    padding: 0.18rem 0.32rem !important;
+    font-size: 0.56rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-page-technical .bas-brand-card {
+    margin-bottom: 0.35rem !important;
+    padding: 0.45rem 0.55rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-book-page-inner {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-panel,
+  .brand-alignment-snapshot .bas-brief-detail-strip {
+    overflow: visible !important;
+    padding: 0.4rem 0.9rem 0.5rem !important;
+    background: #ffffff !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-highlights,
+  .brand-alignment-snapshot .bas-brief-band {
+    padding: 0.4rem 0.9rem 0.35rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-band--footer {
+    padding: 0.4rem 0.9rem 0.5rem !important;
+    background: #ffffff !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-page::before {
+    display: none !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-geometric {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-confidential {
+    font-size: 0.5rem !important;
+    top: 12mm !important;
+    left: 12mm !important;
+    color: #7e89ac !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-deal-hook {
+    font-size: 0.82rem !important;
+    color: #d1dbf9 !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-disclaimer {
+    font-size: 0.55rem !important;
+    color: #7e89ac !important;
+    bottom: 12mm !important;
+    left: 12mm !important;
+    max-width: min(36em, 75%) !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-date {
+    font-size: 7.5pt !important;
+    color: #fdb52a !important;
+    text-transform: uppercase !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-block {
+    padding: 18mm 14mm 12mm !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-doc-type {
+    font-size: 0.65rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-title {
+    font-size: 1.75rem !important;
+    margin-bottom: 0.4rem !important;
+    color: #fff !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-location {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-accent-line {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-sub {
+    font-size: 0.72rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-hero {
+    padding: 1rem 14mm !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-logo-img {
+    max-width: 98px !important;
+  }
+
+  .brand-alignment-snapshot .bas-cover-page {
+    background: #080f25 !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-kicker {
+    font-size: 0.65rem !important;
+    color: #7e89ac !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-lead {
+    font-size: 0.72rem !important;
+    color: #d1dbf9 !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-muted {
+    font-size: 0.64rem !important;
+    color: #7e89ac !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-card {
+    background: #212c4d !important;
+    border-color: #37446b !important;
+    padding: 0.45rem 0.6rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-card-title {
+    font-size: 0.62rem !important;
+    color: #fdb52a !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-card-body {
+    font-size: 0.76rem !important;
+    color: #ffffff !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-card-body--score .bas-score-num {
+    font-size: 1.35rem !important;
+    color: #ffffff !important;
+  }
+
+  .brand-alignment-snapshot .bas-section--brief {
+    margin-bottom: 0.35rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-section--brief .bas-section-title {
+    font-size: 0.74rem !important;
+    color: #101935 !important;
+    border-bottom-color: #6c72ff !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-section--brief .bas-summary,
+  .brand-alignment-snapshot .bas-section--brief .bas-muted,
+  .brand-alignment-snapshot .bas-detail-list {
+    font-size: 0.64rem !important;
+    line-height: 1.35 !important;
+    color: #343b4f !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-table {
+    font-size: 0.6rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-table th,
+  .brand-alignment-snapshot .bas-brief-table td {
+    padding: 0.12rem 0.3rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-tab-grid--brief {
+    gap: 0.3rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-panel .bas-tab-card {
+    background: #f4f6fc !important;
+    border-color: #d9e1fa !important;
+    padding: 0.3rem 0.2rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-panel .bas-tab-pct {
+    font-size: 0.82rem !important;
+    color: #6c72ff !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-panel .bas-tab-label {
+    font-size: 0.48rem !important;
+    color: #343b4f !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-panel .bas-detail-list li {
+    color: #101935 !important;
+    font-size: 0.62rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-section-title--dark {
+    font-size: 0.62rem !important;
+    color: #9a91fb !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-panel .bas-review-status-label {
+    font-size: 0.76rem !important;
+    color: #101935 !important;
+  }
+
+  .brand-alignment-snapshot .bas-strength-cards--brief .bas-strength-card {
+    font-size: 0.6rem !important;
+    color: #d1dbf9 !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-table--dark th {
+    color: #7e89ac !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-table--dark td {
+    color: #d1dbf9 !important;
+    font-size: 0.6rem !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-panel .bas-output-note--brief p {
+    font-size: 0.52rem !important;
+    color: #4a5568 !important;
+  }
+
+  .brand-alignment-snapshot .bas-brief-panel .bas-status-table td {
+    color: #101935 !important;
+    background: #ffffff !important;
+  }
+}
+
+.brand-alignment-snapshot .bas-brand-card {
+  border: 1px solid #d9e1fa;
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  margin-bottom: 0.55rem;
+  background: #f8f9fd;
+}
+
+.brand-alignment-snapshot .bas-brand-card-title {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+.brand-alignment-snapshot .bas-brand-card-sub {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-brand-card-h4 {
+  margin: 12px 0 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bas-ink-muted);
+}
+
+.brand-alignment-snapshot .bas-signal-list {
+  margin: 0 0 0.5rem;
+  padding-left: 1.1rem;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: #343b4f;
+}
+
+.brand-alignment-snapshot .bas-brief-panel .bas-muted {
+  color: #4a5568;
+}
+
+.brand-alignment-snapshot.bas--embed .bas-document {
+  border: none;
+  border-radius: 0;
+}
+
+.bas-page-error {
+  padding: 24px;
+  color: #b42318;
+}
+
+.brand-alignment-snapshot .bas-brand-card-h4--technical {
+  margin-top: 1rem;
+  color: #7e89ac;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.brand-alignment-snapshot .bas-technical-hint {
+  font-size: 0.68rem;
+  margin: 0 0 0.35rem;
+}
+
+.brand-alignment-snapshot .bas-signal-list--technical {
+  font-size: 0.68rem;
+  color: #aeb9e1;
+}
+

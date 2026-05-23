@@ -78,6 +78,43 @@
     return true;
   }
 
+  function stripMsTokenFromUrl(url) {
+    try {
+      url.searchParams.delete('msToken');
+      url.searchParams.delete('memberstackToken');
+      var hash = url.hash || '';
+      if (hash.indexOf('?') >= 0) {
+        var base = hash.slice(0, hash.indexOf('?'));
+        var hp = new URLSearchParams(hash.slice(hash.indexOf('?') + 1));
+        hp.delete('msToken');
+        hp.delete('memberstackToken');
+        var qs = hp.toString();
+        url.hash = base + (qs ? '?' + qs : '');
+      }
+    } catch (_) {}
+    return url;
+  }
+
+  function clearJwt() {
+    global.__dealalityMemberstackJwt = null;
+    if (broadcastIntervalId != null) {
+      global.clearInterval(broadcastIntervalId);
+      broadcastIntervalId = null;
+    }
+    try {
+      var frames = global.document ? global.document.querySelectorAll('iframe') : [];
+      for (var i = 0; i < frames.length; i++) {
+        try {
+          var src = frames[i].getAttribute('src') || frames[i].src || '';
+          if (!src || src === 'about:blank') continue;
+          var url = new URL(src, global.location.href);
+          stripMsTokenFromUrl(url);
+          frames[i].src = url.toString();
+        } catch (_) {}
+      }
+    } catch (_) {}
+  }
+
   global.addEventListener('message', function (ev) {
     var d = ev && ev.data;
     if (!d || d.type !== 'dealality-request-memberstack-jwt') return;
@@ -91,5 +128,6 @@
   global.DealalityEmbedParent = {
     publishJwt: publishJwt,
     broadcastJwtToIframes: broadcastJwtToIframes,
+    clearJwt: clearJwt,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

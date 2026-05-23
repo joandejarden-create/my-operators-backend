@@ -1,0 +1,131 @@
+/* Brand Explorer PDF export shell (iframe hosts brand-explorer-combined?exportPdf=1) */
+
+.bee-page {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #080f25;
+  color: #d9e1fa;
+  font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.bee-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 14px 20px;
+  border-bottom: 0.6px solid rgba(255, 255, 255, 0.1);
+  background: #0c132c;
+}
+
+.bee-toolbar__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.bee-toolbar__hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #7e89ac;
+  max-width: 36rem;
+  line-height: 1.45;
+}
+
+.bee-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.bee-btn {
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 0.6px solid #6c72ff;
+  background: #6c72ff;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.bee-btn:hover {
+  filter: brightness(1.08);
+}
+
+.bee-btn--secondary {
+  background: transparent;
+  color: #aeb9e1;
+  border-color: #37446b;
+}
+
+.bee-btn--secondary:hover {
+  color: #fff;
+  border-color: #6c72ff;
+}
+
+.bee-frame-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.bee-frame {
+  display: block;
+  width: 100%;
+  min-height: calc(100vh - 88px);
+  border: 0;
+  background: #080f25;
+}
+
+.bee-loading {
+  position: absolute;
+  inset: 88px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #7e89ac;
+  pointer-events: none;
+}
+
+.bee-loading.hidden {
+  display: none;
+}
+
+.bee-page-error {
+  padding: 24px 20px;
+  color: #ffb4b8;
+  font-size: 14px;
+}
+
+@media print {
+  .bee-no-print {
+    display: none !important;
+  }
+
+  .bee-page {
+    background: #fff;
+  }
+
+  .bee-frame-wrap {
+    position: static;
+  }
+
+  .bee-frame {
+    min-height: 0;
+    height: auto;
+  }
+
+  .bee-loading {
+    display: none !important;
+  }
+}

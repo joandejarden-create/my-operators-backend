@@ -370,7 +370,7 @@
 
     async function loadUsers() {
         showError('');
-        tableBody.innerHTML = '<tr><td colspan="10" class="um-loading">Loading users…</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="10" class="um-loading">Loading Users…</td></tr>';
         try {
             const res = await fetch(API_BASE);
             if (!res.ok) throw new Error(res.statusText || 'Failed to load users');

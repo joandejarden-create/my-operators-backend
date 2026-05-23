@@ -343,20 +343,19 @@ export async function restoreFromDeleted(req, res) {
       return res.status(404).json({ success: false, error: "No deleted target found for this brand" });
     }
 
-    const targetId = existing[0].id;
-    await base(TARGET_LIST_TABLE).update([
-      {
-        id: targetId,
-        fields: {
-          Status: "Considering",
-          "Last Updated": new Date().toISOString(),
-        },
+    const now = new Date().toISOString();
+    const updates = existing.map((r) => ({
+      id: r.id,
+      fields: {
+        Status: "Considering",
+        "Last Updated": now,
       },
-    ]);
+    }));
+    await base(TARGET_LIST_TABLE).update(updates);
 
-    console.log("[target-list] RESTORE - Restored record:", targetId);
+    console.log("[target-list] RESTORE - Restored", updates.length, "record(s):", updates.map((u) => u.id).join(", "));
     invalidateTargetListCache();
-    res.json({ success: true, targetId });
+    res.json({ success: true, targetId: existing[0].id, restoredCount: updates.length });
   } catch (err) {
     const msg = err.error || err.message || String(err);
     console.error("[target-list] RESTORE error:", msg);

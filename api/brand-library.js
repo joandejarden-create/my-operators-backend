@@ -1,4 +1,22 @@
 import Airtable from "airtable";
+import { sanitizeExternalCopy } from "../lib/external-owner-copy.mjs";
+import {
+  BRAND_STATUS_ACTIVE_FORMULA,
+  isBrandStatusActive,
+} from "../lib/brand-status-active.js";
+
+/** Strip internal ETL/editor phrasing from string fields on nested brand payloads. */
+function sanitizeStringFieldsDeep(obj) {
+  if (obj == null) return obj;
+  if (typeof obj === "string") return sanitizeExternalCopy(obj);
+  if (Array.isArray(obj)) return obj.map((item) => sanitizeStringFieldsDeep(item));
+  if (typeof obj !== "object") return obj;
+  const out = { ...obj };
+  for (const [k, v] of Object.entries(out)) {
+    out[k] = sanitizeStringFieldsDeep(v);
+  }
+  return out;
+}
 
 // Lazy initialization - only connect when needed
 function getBase() {
@@ -445,8 +463,8 @@ function normalizeBrandExplorerPresentationRecords(records) {
     if (inactive) continue;
     const slotKey = (getFieldValue(f, 'Slot Key') ?? getFieldValue(f, 'slot_key') ?? '').toString().trim();
     if (!slotKey) continue;
-    const title = (getFieldValue(f, 'Title') ?? '').toString().trim();
-    const body = (getFieldValue(f, 'Body') ?? '').toString().trim();
+    const title = sanitizeExternalCopy((getFieldValue(f, 'Title') ?? '').toString().trim());
+    const body = sanitizeExternalCopy((getFieldValue(f, 'Body') ?? '').toString().trim());
     const sortRaw = getFieldValue(f, 'Sort Order') ?? getFieldValue(f, 'sort_order');
     let sort = 0;
     if (typeof sortRaw === 'number' && !Number.isNaN(sortRaw)) sort = sortRaw;
@@ -492,11 +510,11 @@ function normalizeBrandExplorerPresentationRecords(records) {
       sort,
       imageUrl,
       summaryUrl,
-      caseSummaryOverview,
-      caseSummaryOwnerObjective,
-      caseSummaryBrandRelevance,
-      caseSummaryInterpretation,
-      caseSummaryTags,
+      caseSummaryOverview: sanitizeExternalCopy(caseSummaryOverview),
+      caseSummaryOwnerObjective: sanitizeExternalCopy(caseSummaryOwnerObjective),
+      caseSummaryBrandRelevance: sanitizeExternalCopy(caseSummaryBrandRelevance),
+      caseSummaryInterpretation: sanitizeExternalCopy(caseSummaryInterpretation),
+      caseSummaryTags: sanitizeExternalCopy(caseSummaryTags),
     });
   }
   blocks.sort((a, b) => {
@@ -747,7 +765,7 @@ export async function getBrandLibraryBrands(req, res) {
 
     const tableName = encodeURIComponent(F.brandBasics.table);
     const useFilter = !allStatuses;
-    const formula = encodeURIComponent("FIND('Active', {Brand Status}) > 0");
+    const formula = encodeURIComponent(BRAND_STATUS_ACTIVE_FORMULA);
 
     // Fetch all records from Airtable REST API (paginated)
     let allRecords = [];
@@ -822,14 +840,18 @@ export async function getBrandLibraryBrands(req, res) {
         serviceModel: valueToStr(fields[F.brandBasics.serviceModel]),
         architecture: archVal,
         regionOffered: valuesToStrList(regionRaw),
-        status: (fields[F.brandBasics.status] || '').toString().trim(),
+        status: valueToStr(fields[F.brandBasics.status]),
         yearBrandLaunched: (fields[F.brandBasics.yearLaunched] || '').toString().trim(),
         positioning: (fields[F.brandBasics.positioning] || '').toString().trim(),
         tagline: (fields[F.brandBasics.tagline] || '').toString().trim()
       };
     });
 
-    brandList.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' }));
+    const visibleBrands = allStatuses
+      ? brandList
+      : brandList.filter((b) => isBrandStatusActive(b.status));
+
+    visibleBrands.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' }));
 
     const parentCompanies = [...new Set(brandList.map(b => (b.parentCompany || '').trim()).filter(Boolean))].sort();
     const chainScales = [...new Set(brandList.map(b => (b.chainScale || '').trim()).filter(Boolean))].sort();
@@ -862,9 +884,10 @@ export async function getBrandLibraryBrands(req, res) {
 
     const payload = {
       success: true,
-      brands: brandList,
-      totalCount: brandList.length,
-      filterOptions
+      brands: visibleBrands,
+      totalCount: visibleBrands.length,
+      filterOptions,
+      statusFilter: allStatuses ? "all" : "active",
     };
     if (allRecords.length > 0) {
       payload._debug = { airtableColumnLabels: [...allFieldNames].sort() };
@@ -916,7 +939,7 @@ export async function getBrandsGroupedByParentCompany(req, res) {
           F.brandBasics.parentCompany,
           F.brandBasics.status
         ],
-        filterByFormula: "FIND('Active', {Brand Status}) > 0",
+        filterByFormula: BRAND_STATUS_ACTIVE_FORMULA,
         maxRecords: 500
       })
       .all();
@@ -1225,6 +1248,14 @@ export async function getBrandLibraryBrandById(req, res) {
           };
         });
 
+        let totalPipelineHotels = 0;
+        let totalPipelineRooms = 0;
+        standardRegions.forEach((region) => {
+          const rd = regionalDistribution[region] || {};
+          totalPipelineHotels += rd.pipelineHotels || 0;
+          totalPipelineRooms += rd.pipelineRooms || 0;
+        });
+
         // Preload form values using same mapping as write: form field name → Airtable column
         const LOCATION_TYPE_FORM_NAMES = ['locationTypeUrban', 'locationTypeSuburban', 'locationTypeResort', 'locationTypeAirport', 'locationTypeSmallMetro', 'locationTypeInterstate'];
         const EXPERIENCE_PERCENT_FORM_NAMES = ['newBuildExperience', 'conversionExperience', 'turnaroundExperience', 'renovationExperience', 'typicalManagedPercent', 'typicalFranchisedPercent'];
@@ -1262,6 +1293,8 @@ export async function getBrandLibraryBrandById(req, res) {
           totalConversionHotels,
           totalNewBuildRooms,
           totalConversionRooms,
+          totalPipelineHotels,
+          totalPipelineRooms,
           newBuildPercent: Math.round(newBuildPercent * 10) / 10,
           conversionPercent: Math.round(conversionPercent * 10) / 10,
           newBuildRoomsPercent: Math.round(newBuildRoomsPercent * 10) / 10,
@@ -1377,7 +1410,12 @@ export async function getBrandLibraryBrandById(req, res) {
           if ((formId.endsWith('Basis') || formId === 'typicalApplicationFeeBasis') && val) {
             val = normalizeFeeBasisValue(val);
           }
-          feeStructureData[formId] = val !== undefined && val !== null && val !== '' ? (typeof val === 'string' ? val.trim() : val) : '';
+          feeStructureData[formId] =
+            val !== undefined && val !== null && val !== ""
+              ? typeof val === "string"
+                ? sanitizeExternalCopy(val.trim())
+                : val
+              : "";
         }
       }
     } catch (error) {
@@ -1862,7 +1900,8 @@ export async function getBrandLibraryBrandById(req, res) {
       if (formKey === 'targetGuestSegments' || formKey === 'regionOffered') {
         brandDetails[formKey] = valuesToStrList(raw);
       } else if (raw !== undefined && raw !== null && raw !== '') {
-        brandDetails[formKey] = typeof raw === 'string' ? raw.trim() : valueToStr(raw) || raw;
+        const v = typeof raw === 'string' ? raw.trim() : valueToStr(raw) || raw;
+        brandDetails[formKey] = typeof v === 'string' ? sanitizeExternalCopy(v) : v;
       } else {
         brandDetails[formKey] = '';
       }
@@ -1916,7 +1955,7 @@ export async function getBrandLibraryBrandById(req, res) {
 
     res.json({
       success: true,
-      brand: brandDetails
+      brand: sanitizeStringFieldsDeep(brandDetails),
     });
 
   } catch (error) {

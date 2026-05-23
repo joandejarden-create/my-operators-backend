@@ -9,8 +9,11 @@
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-record-id recXXXXXXXX
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --fixture fixtures/other.json --brand-name Radisson
- *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --replace
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --only-missing
+ *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --replace
+ *     WARNING: --replace deletes ALL presentation rows for the brand (including Image attachments).
+ *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --replace-slot-prefix commercial.
+ *     Deletes only rows whose Slot Key starts with the prefix, then inserts matching fixture rows.
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --only-missing --slot-keys operations.standards_philosophy,operations.operator_compat.summary
  *   node scripts/apply-brand-explorer-presentation-fixture.mjs --brand-name Radisson --prune-except-slot-keys operations.standards_philosophy,operations.operator_compat.summary,operations.operator_compat.tags,operations.operator_compat.fit
  *
@@ -43,6 +46,13 @@ function parseArgs(argv) {
     if (a === "--dry-run") flags.add("dry-run");
     else if (a === "--replace") flags.add("replace");
     else if (a === "--only-missing") flags.add("only-missing");
+    else if (a === "--replace-slot-prefix") {
+      const next = args[i + 1];
+      if (next && !next.startsWith("--")) {
+        kv["replace-slot-prefix"] = next;
+        i++;
+      } else kv["replace-slot-prefix"] = true;
+    }
     else if (a.startsWith("--")) {
       const key = a.slice(2);
       const next = args[i + 1];
@@ -63,6 +73,7 @@ function parseArgs(argv) {
   return {
     dryRun: flags.has("dry-run"),
     replace: flags.has("replace"),
+    replaceSlotPrefix: String(kv["replace-slot-prefix"] || "").trim(),
     onlyMissing: flags.has("only-missing"),
     pruneExceptSlotKeys: kv["prune-except-slot-keys"] ? slotKeysFilter : null,
     slotKeysFilter: kv["slot-keys"] ? slotKeysFilter : null,
@@ -83,6 +94,52 @@ function existingSlotKeysSet(records) {
     if (sk) set.add(sk);
   }
   return set;
+}
+
+/** @param {import('airtable').Record<any>[]} records */
+function existingSlotKeyCounts(records) {
+  /** @type {Map<string, number>} */
+  const counts = new Map();
+  for (const rec of records) {
+    const sk = slotKeyFromRecord(rec);
+    if (!sk) continue;
+    counts.set(sk, (counts.get(sk) || 0) + 1);
+  }
+  return counts;
+}
+
+/** @param {{ slotKey?: string }[]} rows */
+function fixtureSlotKeyCounts(rows) {
+  /** @type {Map<string, number>} */
+  const counts = new Map();
+  for (const r of rows) {
+    const sk = String(r.slotKey || "").trim();
+    if (!sk) continue;
+    counts.set(sk, (counts.get(sk) || 0) + 1);
+  }
+  return counts;
+}
+
+/**
+ * Supports multiple fixture rows sharing one Slot Key (e.g. commercial.theme).
+ * @param {{ slotKey?: string }[]} fixtureRows
+ * @param {import('airtable').Record<any>[]} existingRecords
+ */
+function rowsToCreateOnlyMissing(fixtureRows, existingRecords) {
+  const need = fixtureSlotKeyCounts(fixtureRows);
+  const have = existingSlotKeyCounts(existingRecords);
+  /** @type {Map<string, number>} */
+  const queued = new Map();
+  return fixtureRows.filter((r) => {
+    const sk = String(r.slotKey || "").trim();
+    if (!sk) return false;
+    const q = queued.get(sk) || 0;
+    const h = have.get(sk) || 0;
+    const n = need.get(sk) || 0;
+    if (h + q >= n) return false;
+    queued.set(sk, q + 1);
+    return true;
+  });
 }
 
 function getBase() {
@@ -298,6 +355,32 @@ async function main() {
     }
   }
 
+  if (opts.replace && opts.replaceSlotPrefix) {
+    throw new Error("Use either --replace or --replace-slot-prefix, not both.");
+  }
+
+  if (opts.replaceSlotPrefix) {
+    const prefix = opts.replaceSlotPrefix;
+    const toDrop = existing.filter((rec) => slotKeyFromRecord(rec).startsWith(prefix));
+    if (!toDrop.length) {
+      console.log(`--replace-slot-prefix "${prefix}": no existing rows with that prefix.`);
+    } else {
+      console.log(
+        `--replace-slot-prefix "${prefix}": deleting ${toDrop.length} row(s) (other slot keys untouched)…`
+      );
+      if (!opts.dryRun) {
+        await deleteRecords(
+          base,
+          toDrop.map((r) => r.id)
+        );
+      }
+    }
+    rows = rows.filter((r) => String(r.slotKey || "").trim().startsWith(prefix));
+    if (!rows.length) {
+      throw new Error(`No fixture rows match --replace-slot-prefix "${prefix}"`);
+    }
+  }
+
   if (opts.replace) {
     const freshExisting = opts.pruneExceptSlotKeys && !opts.dryRun
       ? await selectPresentationForBrand(base, brandRecId, brandNameForSelect)
@@ -321,18 +404,23 @@ async function main() {
       ? await selectPresentationForBrand(base, brandRecId, brandNameForSelect)
       : opts.replace && !opts.dryRun
         ? []
-        : existing;
-    const have = existingSlotKeysSet(afterPrune);
-    rowsToCreate = rows.filter((r) => !have.has(String(r.slotKey || "").trim()));
+        : opts.replaceSlotPrefix && !opts.dryRun
+          ? await selectPresentationForBrand(base, brandRecId, brandNameForSelect)
+          : existing;
+    rowsToCreate = rowsToCreateOnlyMissing(rows, afterPrune);
     const skipped = rows.length - rowsToCreate.length;
     if (skipped) {
-      console.log(`--only-missing: skipping ${skipped} row(s) — slot key already present.`);
+      console.log(`--only-missing: skipping ${skipped} row(s) already represented in Airtable.`);
     }
     if (!rowsToCreate.length) {
       console.log("--only-missing: nothing to create.");
       return;
     }
     console.log(`--only-missing: will create ${rowsToCreate.length} row(s).`);
+  } else if (opts.replaceSlotPrefix && !opts.replace) {
+    /* After prefix delete, insert all matching fixture rows */
+    rowsToCreate = rows;
+    console.log(`--replace-slot-prefix: will create ${rowsToCreate.length} row(s).`);
   }
 
   await createAllRows(base, brandRecId, rowsToCreate, opts.dryRun, brandNameForSelect);

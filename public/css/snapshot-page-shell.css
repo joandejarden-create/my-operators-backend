@@ -1,0 +1,138 @@
+/* Shared standalone shell for Deal Brief, Brand Alignment, and Deal Readiness snapshots */
+
+.snapshot-page,
+.bas-page,
+.drs-page {
+  min-height: 100vh;
+  background: #080f25;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.snapshot-page.snapshot-page--full,
+.bas-page.bas-page--full,
+.drs-page.drs-page--full {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 1.5rem 1.25rem;
+}
+
+.snapshot-page.snapshot-page--full > [id$="PageRoot"],
+.bas-page.bas-page--full #basPageRoot,
+.drs-page.drs-page--full #drsPageRoot {
+  width: 100%;
+  max-width: none;
+}
+
+.snapshot-page-nav {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 1rem 0 0.75rem;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Full-page book: full viewport width + height (not a narrow letter card) */
+.bas-page--full .brand-alignment-snapshot,
+.bas-page--full .deal-brief-snapshot,
+.bas-page--full .operator-capability-snapshot,
+.drs-page--full .deal-readiness-snapshot {
+  width: 100%;
+  max-width: none;
+}
+
+.bas-page--full .brand-alignment-snapshot .bas-toolbar,
+.bas-page--full .deal-brief-snapshot .bas-toolbar,
+.bas-page--full .operator-capability-snapshot .bas-toolbar,
+.drs-page--full .deal-readiness-snapshot .drs-toolbar {
+  width: 100%;
+  max-width: none;
+}
+
+.bas-page--full .brand-alignment-snapshot .bas-book-shell,
+.bas-page--full .deal-brief-snapshot .bas-book-shell,
+.bas-page--full .operator-capability-snapshot .bas-book-shell,
+.drs-page--full .deal-readiness-snapshot .drs-book-shell {
+  width: 100%;
+  align-items: stretch;
+}
+
+.bas-page--full .brand-alignment-snapshot .bas-book-document,
+.bas-page--full .deal-brief-snapshot .bas-book-document,
+.bas-page--full .operator-capability-snapshot .bas-book-document,
+.drs-page--full .deal-readiness-snapshot .drs-book-document {
+  width: 100%;
+  max-width: none;
+}
+
+.bas-page--full .brand-alignment-snapshot .bas-book-viewport,
+.bas-page--full .deal-brief-snapshot .bas-book-viewport,
+.bas-page--full .operator-capability-snapshot .bas-book-viewport,
+.drs-page--full .deal-readiness-snapshot .drs-book-viewport {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  aspect-ratio: unset;
+  height: calc(100vh - 10.5rem);
+  min-height: 28rem;
+  max-height: none;
+}
+
+.snapshot-page-back {
+  color: #9a91fb;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  font-family: "Mona Sans", "Inter", system-ui, sans-serif;
+}
+
+.snapshot-page-back:hover {
+  text-decoration: underline;
+}
+
+.snapshot-page-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: min(50vh, 420px);
+  max-width: none;
+  margin: 0;
+  padding: 24px 0;
+  width: 100%;
+}
+
+.snapshot-page-error {
+  max-width: none;
+  margin: 2rem 0;
+  padding: 1rem 1.25rem;
+  background: rgba(33, 44, 77, 0.9);
+  border: 1px solid #37446b;
+  border-radius: 8px;
+  color: #d1dbf9;
+  font-family: "Mona Sans", "Inter", system-ui, sans-serif;
+}
+
+/* Full-page toolbar on dark shell */
+.bas-page--full .brand-alignment-snapshot .bas-print-tip,
+.bas-page--full .deal-brief-snapshot .bas-print-tip,
+.bas-page--full .operator-capability-snapshot .bas-print-tip,
+.drs-page--full .deal-readiness-snapshot .drs-print-tip {
+  color: #7e89ac;
+}
+
+.bas-page--full .brand-alignment-snapshot .bas-btn-secondary,
+.bas-page--full .deal-brief-snapshot .bas-btn-secondary,
+.drs-page--full .deal-readiness-snapshot .drs-btn-secondary {
+  color: #d1dbf9;
+  border-color: #3d4f7c;
+}
+
+.bas-page--full .brand-alignment-snapshot .bas-btn-secondary:hover,
+.bas-page--full .deal-brief-snapshot .bas-btn-secondary:hover,
+.bas-page--full .operator-capability-snapshot .bas-btn-secondary:hover,
+.drs-page--full .deal-readiness-snapshot .drs-btn-secondary:hover {
+  background: rgba(61, 79, 124, 0.35);
+}

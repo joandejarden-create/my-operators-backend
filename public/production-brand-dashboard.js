@@ -3111,7 +3111,7 @@ Please tell me which field contains the amenities data.`);
         const startTime = performance.now();
         
         try {
-            this.showLoading(true, 'Loading deals...', '2-3 seconds');
+            this.showLoading(true, 'Loading Deals…');
             await this.showLoadingWave(true);
             
             console.log('🔄 Starting backend deal loading process...');
@@ -6781,7 +6781,7 @@ Success rate: ${((successful/(successful+failed))*100).toFixed(1)}%`;
                 // Clear brand data cache when brand changes to get fresh data
                 console.log('🔄 Clearing brand data cache for fresh Airtable data...');
                 this.cache.brandData.clear();
-            this.showLoading(true, 'Loading deals for selected brand...', '1-2 seconds');
+            this.showLoading(true, 'Loading Deals for Selected Brand…');
             await this.loadDeals();
         });
         } else {
@@ -6854,7 +6854,7 @@ Success rate: ${((successful/(successful+failed))*100).toFixed(1)}%`;
         window.open(`mailto:${deal.ownerEmail}?subject=${subject}&body=${body}`);
     }
 
-    showLoading(show, message = 'Processing...', estimatedTime = '2-3 seconds') {
+    showLoading(show, message = 'Processing...', _estimatedTime = '') {
         const systemStatus = document.getElementById('systemStatus');
         if (systemStatus) {
             if (show) {
@@ -6863,7 +6863,10 @@ Success rate: ${((successful/(successful+failed))*100).toFixed(1)}%`;
                 const statusTime = systemStatus.querySelector('.status-time');
                 
                 if (statusText) statusText.textContent = message;
-                if (statusTime) statusTime.textContent = `Estimated time: ${estimatedTime}`;
+                if (statusTime) {
+                    statusTime.textContent = '';
+                    statusTime.hidden = true;
+                }
                 
                 // Show the system status
                 systemStatus.style.display = 'block';
@@ -6896,7 +6899,7 @@ Success rate: ${((successful/(successful+failed))*100).toFixed(1)}%`;
                                 </div>
                             </div>
                         </div>
-                        <div class="loading-wave-text">Loading deals...</div>
+                        <div class="loading-wave-text">Loading Deals…</div>
                     </div>
                 `;
             } else {

@@ -9,6 +9,29 @@ import {
   LEASE_STRUCTURE_FORM_FIELDS,
   isLeaseStructureDealApplicableFromMergedFields,
 } from "./schemas/deal-setup-fields.js";
+import { resolveProjectTypeKind } from "../lib/project-type.js";
+
+/** Map canonical project-type kind → readiness context bucket. */
+function projectTypeContextFromKind(kind) {
+  switch (kind) {
+    case "new_build":
+      return "new_build";
+    case "conversion_reflag":
+      return "conversion_reflag";
+    case "renovation_repositioning":
+      return "renovation_repositioning";
+    case "existing_operating":
+      return "operating_asset";
+    case "adaptive_reuse":
+      return "adaptive_reuse";
+    case "mixed_use":
+      return "mixed_use";
+    case "other_tbc":
+      return "other_tbc";
+    default:
+      return "unknown";
+  }
+}
 
 const LEASE_STRUCTURE_FIELD_SET = new Set(LEASE_STRUCTURE_FORM_FIELDS);
 
@@ -21,6 +44,13 @@ const READINESS_ALTERNATE_KEYS = {
 
 const OPERATOR_DETAIL_FIELDS = new Set([
   "Is the hotel currently managed by a third-party operator?",
+  "Current Operating Model",
+  "Preferred Future Operating Model",
+  "Operator Strategy Status",
+  "Operator Capability Priorities",
+  "Owner Reporting Package",
+  "Owner Reporting Frequency",
+  "Preferred Reporting Frequency",
   "Minimum Operator Experience (years)",
   "Preferred Third-Party Operators (names)",
   "Preferred Third-Party Operator Profile",
@@ -28,6 +58,8 @@ const OPERATOR_DETAIL_FIELDS = new Set([
   "Other Operator Criteria or Notes",
   "Level of Involvement in Day-to-Day Ops",
   "Plan to Self-Manage or Hire Third Party?",
+  "Primary Market Region",
+  "Opening / Transition Phase",
 ]);
 
 const CONVERSION_PIP_FIELDS = new Set([
@@ -102,12 +134,17 @@ function isExistingAssetContext(ctx) {
   return (
     ctx.projectTypeContext === "conversion_reflag" ||
     ctx.projectTypeContext === "renovation_repositioning" ||
-    ctx.projectTypeContext === "operating_asset"
+    ctx.projectTypeContext === "operating_asset" ||
+    ctx.projectTypeContext === "mixed_use"
   );
 }
 
 function isPreOperatingContext(ctx) {
-  return ctx.projectTypeContext === "new_build" || ctx.projectTypeContext === "land_development_site";
+  return (
+    ctx.projectTypeContext === "new_build" ||
+    ctx.projectTypeContext === "land_development_site" ||
+    ctx.projectTypeContext === "adaptive_reuse"
+  );
 }
 
 function isOperatorInScope(ctx) {
@@ -153,47 +190,13 @@ export function inferReadinessContext(fields) {
   const planManage = normFieldValue(planManageRaw);
   const hotelType = normFieldValue(hotelTypeRaw);
 
-  let projectTypeContext = "unknown";
+  let projectTypeContext = projectTypeContextFromKind(resolveProjectTypeKind(projectTypeRaw));
+
   if (
-    matchesAny(projectTypeRaw, [
-      /conversion/,
-      /reflag/,
-      /re-flag/,
-      /brand change/,
-    ])
+    projectTypeContext === "unknown" &&
+    matchesAny(projectTypeRaw, [/land\b/, /development site/, /site only/, /greenfield/])
   ) {
-    projectTypeContext = "conversion_reflag";
-  } else if (
-    matchesAny(projectTypeRaw, [/renovation/, /reposition/, /rebrand/, /upgrade/]) &&
-    !/new build/i.test(projectType)
-  ) {
-    projectTypeContext = "renovation_repositioning";
-  } else if (matchesAny(projectTypeRaw, [/new build/, /ground.?up/, /development hotel/])) {
     projectTypeContext = "new_build";
-  } else if (matchesAny(projectTypeRaw, [/land\b/, /development site/, /site only/, /greenfield/])) {
-    projectTypeContext = "land_development_site";
-  } else if (
-    matchesAny(projectTypeRaw, [/operating/, /existing hotel/, /stabilized/, /open hotel/]) ||
-    matchesAny(stageRaw, [/operating/, /open/, /stabilized/, /in operation/])
-  ) {
-    projectTypeContext = "operating_asset";
-  } else if (
-    matchesAny(projectTypeRaw, [/reposition/, /rebrand/]) ||
-    (matchesAny(stageRaw, [/renovation/, /reposition/]) && !/new build/i.test(projectType))
-  ) {
-    projectTypeContext = "renovation_repositioning";
-  } else if (
-    matchesAny(stageRaw, [
-      /pre-?development/,
-      /planning/,
-      /entitlement/,
-      /site control/,
-      /under construction/,
-      /construction/,
-    ]) &&
-    !isExistingAssetContext({ projectTypeContext: "operating_asset" })
-  ) {
-    projectTypeContext = /land|site/i.test(projectType) ? "land_development_site" : "new_build";
   }
 
   // Repositioning signals in property name or stage when Project Type is blank
@@ -328,6 +331,12 @@ export function projectTypeContextLabel(ctx) {
       return "existing operating asset";
     case "land_development_site":
       return "land/development site";
+    case "adaptive_reuse":
+      return "adaptive reuse";
+    case "mixed_use":
+      return "mixed-use hospitality";
+    case "other_tbc":
+      return "project type to be confirmed";
     default:
       return "hospitality";
   }
@@ -472,7 +481,11 @@ export function getFieldRelevanceForContext(fieldKey, fields, context) {
   }
 
   if (fieldKey === "PIP Budget Range (if conversion)") {
-    if (ctx.projectTypeContext === "conversion_reflag" || ctx.projectTypeContext === "renovation_repositioning") {
+    if (
+      ctx.projectTypeContext === "conversion_reflag" ||
+      ctx.projectTypeContext === "renovation_repositioning" ||
+      ctx.projectTypeContext === "adaptive_reuse"
+    ) {
       return {
         relevance: "important",
         severityIfMissing: "limiting",

@@ -33,7 +33,8 @@
   var ATELIER_TAB_DEFS = [
     { id: 'atelier-overview', label: 'Overview' },
     { id: 'atelier-value-owners', label: 'Value to<br>Owners' },
-    { id: 'atelier-ops', label: 'Operations &<br>Standards' },
+    { id: 'atelier-ops', label: 'Operating<br>Model' },
+    { id: 'atelier-standards-owner', label: 'Owner<br>Considerations' },
     { id: 'atelier-commercial', label: 'Commercial<br>Engine' },
     { id: 'atelier-economics', label: 'Economics &<br>Obligations' },
     { id: 'atelier-loyalty', label: 'Loyalty<br>Program' },
@@ -43,6 +44,9 @@
   ];
 
   function getGoldAppendTabs() {
+    if (document.documentElement.getAttribute('data-brand-explorer-unified-tabs') === '1') {
+      return [];
+    }
     var G = window.BrandExplorerGoldDetail;
     if (!G || !G.TAB_DEFS || typeof G.buildPanels !== 'function') return [];
     return G.TAB_DEFS.map(function (t) {
@@ -71,14 +75,65 @@
     spark:
       '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
     wallet:
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3H7a2 2 0 0 1-2-2 2 2 0 0 1 2-2h16" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>'
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3H7a2 2 0 0 1-2-2 2 2 0 0 1 2-2h16" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+    checklist:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>'
   };
+
+  function isExportPdfMode() {
+    return !!(document.documentElement && document.documentElement.classList.contains('be-export-pdf'));
+  }
+
+  /** Lazy images below the fold never load before print unless eager in PDF export mode. */
+  function exportPdfImgAttrs() {
+    return isExportPdfMode()
+      ? ' loading="eager" decoding="sync" referrerpolicy="no-referrer"'
+      : ' loading="lazy" referrerpolicy="no-referrer"';
+  }
+
+  /**
+   * PDF export shows every tab at once; wait for remote images (Airtable CDN) before print-ready.
+   */
+  function waitForExportImages(scopeEl, maxMs) {
+    if (!isExportPdfMode()) return Promise.resolve();
+    var root = scopeEl || document.getElementById('brandRoot') || document.body;
+    if (!root || !root.querySelectorAll) return Promise.resolve();
+    var imgs = root.querySelectorAll('img[src]');
+    var pending = [];
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      try {
+        img.loading = 'eager';
+        img.removeAttribute('loading');
+      } catch (_) {}
+      if (img.complete && img.naturalWidth > 0) continue;
+      pending.push(
+        new Promise(function (resolve) {
+          function finish() {
+            resolve();
+          }
+          img.addEventListener('load', finish, { once: true });
+          img.addEventListener('error', finish, { once: true });
+          try {
+            img.scrollIntoView({ block: 'center', inline: 'nearest' });
+          } catch (_) {}
+        })
+      );
+    }
+    var allDone = pending.length ? Promise.all(pending) : Promise.resolve();
+    var cap = typeof maxMs === 'number' && maxMs > 0 ? maxMs : 18000;
+    var timeout = new Promise(function (r) {
+      window.setTimeout(r, cap);
+    });
+    return Promise.race([allDone, timeout]);
+  }
 
   /** Stable icon per atelier tab id (do not rely on array index when tabs are added). */
   var ATELIER_TAB_ICON_BY_ID = {
     'atelier-overview': ICONS.overview,
     'atelier-value-owners': ICONS.chart,
     'atelier-ops': ICONS.ops,
+    'atelier-standards-owner': ICONS.checklist,
     'atelier-commercial': ICONS.bars,
     'atelier-economics': ICONS.wallet,
     'atelier-loyalty': ICONS.star,
@@ -282,6 +337,13 @@
     return x.toLocaleString('en-US', { maximumFractionDigits: 4, minimumFractionDigits: 0 });
   }
 
+  function sanitizeDisplayCopy(text) {
+    if (typeof window !== 'undefined' && window.DealalitySanitizeExternalCopy) {
+      return window.DealalitySanitizeExternalCopy.sanitizeExternalCopy(text);
+    }
+    return text == null ? '' : String(text);
+  }
+
   function fmtCell(v) {
     if (v == null || v === '') return '';
     if (Array.isArray(v)) {
@@ -293,7 +355,7 @@
         .join(', ');
     }
     if (typeof v === 'boolean') return v ? 'Yes' : 'No';
-    return String(v);
+    return sanitizeDisplayCopy(String(v));
   }
 
   function linkIfUrl(val) {
@@ -379,7 +441,8 @@
     var fp = disp.fp || {};
     if (!fp || typeof fp !== 'object') return '';
     var openH = fp.totalExistingHotels;
-    var pipH = fpMetricNum(fp.totalNewBuildHotels) + fpMetricNum(fp.totalConversionHotels);
+    var pipeTotals = footprintPipelineTotals(fp);
+    var pipH = pipeTotals.hotels;
     var rd = fp.regionalDistribution && typeof fp.regionalDistribution === 'object' ? fp.regionalDistribution : {};
     var rdKeys = Object.keys(rd);
     if (openH == null || openH === '') {
@@ -390,13 +453,6 @@
         });
         if (sumOpen) openH = sumOpen;
       }
-    }
-    if (!pipH && rdKeys.length) {
-      var sumPipe = 0;
-      rdKeys.forEach(function (k) {
-        sumPipe += Number((rd[k] || {}).pipelineHotels) || 0;
-      });
-      if (sumPipe) pipH = sumPipe;
     }
     var parts = [];
     if (hasVal(openH) || pipH > 0) {
@@ -626,8 +682,9 @@
 
   function pipelineLineForProof(fp) {
     if (!fp || typeof fp !== 'object') return '';
-    var pipH = (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0);
-    var pipR = (Number(fp.totalNewBuildRooms) || 0) + (Number(fp.totalConversionRooms) || 0);
+    var pipeTotals = footprintPipelineTotals(fp);
+    var pipH = pipeTotals.hotels;
+    var pipR = pipeTotals.rooms;
     if (!pipH && !pipR) return '';
     return (fmtNum(pipH) || '0') + ' pipeline hotels / ' + (fmtNum(pipR) || '0') + ' pipeline rooms';
   }
@@ -807,7 +864,9 @@
         var visual = hasVal(imgUrl)
           ? '<div class="scenario-card__visual"><img src="' +
             escapeHtml(imgUrl) +
-            '" alt="" loading="lazy" referrerpolicy="no-referrer"/></div>'
+            '" alt=""' +
+            exportPdfImgAttrs() +
+            '/></div>'
           : '<div class="scenario-card__visual scenario-card__visual--empty" aria-hidden="true">Image</div>';
         return (
           '<div class="scenario-card scenario-card--visual">' +
@@ -1267,16 +1326,75 @@
     return '<div class="demand-cell"><strong>' + escapeHtml(label) + '</strong> ' + pill + '</div>';
   }
 
-  /** Trusted static HTML (education parity) — do not pass user input. */
-  function commercialScenarioCardHtml(h4, htmlMain, htmlSample) {
+  var COMMERCIAL_LEVER_KEYS = [
+    'distribution',
+    'revenue_management',
+    'digital_marketing',
+    'corporate_group',
+    'leisure_destination',
+    'international',
+    'sales_catering',
+    'reputation_qa',
+    'data_analytics'
+  ];
+
+  function parseCommercialLeverBody(body) {
+    var raw = body == null ? '' : String(body).trim();
+    if (!raw) return { mechanism: '', projectImpact: '' };
+    var parts = raw.split(/\n\n(?:Project impact|Owner lens):\s*/i);
+    if (parts.length >= 2) {
+      return {
+        mechanism: parts[0].trim(),
+        projectImpact: parts.slice(1).join('\n\nProject impact: ').trim()
+      };
+    }
+    return { mechanism: raw, projectImpact: '' };
+  }
+
+  function commercialLeverFromSlot(brand, slotKey, defTitle, defMechanism, defProjectImpact) {
+    var block = explorerFirstBlock(brand, slotKey);
+    var title = defTitle;
+    var mechanism = defMechanism;
+    var projectImpact = defProjectImpact;
+    if (block) {
+      if (hasVal(block.title)) title = String(block.title).trim();
+      if (hasVal(block.body)) {
+        var parsed = parseCommercialLeverBody(block.body);
+        if (hasVal(parsed.mechanism)) mechanism = parsed.mechanism;
+        if (hasVal(parsed.projectImpact)) projectImpact = parsed.projectImpact;
+      }
+    }
+    return commercialStrengthCardHtml(
+      title,
+      hasVal(mechanism) ? escapeHtml(mechanism) : '',
+      hasVal(projectImpact) ? escapeHtml(projectImpact) : ''
+    );
+  }
+
+  function commercialKpiFromSlot(brand, slotKey, defLabel, defVal) {
+    var r = explorerFirstBlock(brand, slotKey);
+    var lbl = defLabel;
+    var val = defVal;
+    if (r) {
+      if (hasVal(r.title)) lbl = String(r.title).trim();
+      if (hasVal(r.body)) val = String(r.body).trim();
+    }
+    return kpiCard(lbl, val);
+  }
+
+  /** Trusted static HTML — owner-facing commercial lever cards (no sales-script labels). */
+  function commercialStrengthCardHtml(h4, htmlMechanism, htmlOwnerLens) {
+    var ownerBlock = htmlOwnerLens
+      ? '<p><span class="scenario-card__label">Project impact</span>' + htmlOwnerLens + '</p>'
+      : '';
     return (
       '<div class="scenario-card"><h4>' +
       escapeHtml(h4) +
       '</h4><p>' +
-      (htmlMain || '&nbsp;') +
-      '</p><p><span class="scenario-card__label">Sample Brand-to-Owner Message</span>' +
-      (htmlSample || '&nbsp;') +
-      '</p></div>'
+      (htmlMechanism || '&nbsp;') +
+      '</p>' +
+      ownerBlock +
+      '</div>'
     );
   }
 
@@ -1614,96 +1732,378 @@
     );
   }
 
+  var STANDARDS_OWNER_OUTPUT_NOTE =
+    'This section summarizes typical brand requirement areas and owner planning considerations from Dealality presentation data. ' +
+    'It supports internal review and does not constitute a recommendation, franchise advice, or a property-specific compliance determination—confirm all items with brand disclosure and your agreement.';
+
+  function parseRequirementBody(raw) {
+    var out = {
+      typical: '',
+      owner: '',
+      applies: '',
+      status: '',
+      notesToConfirm: '',
+      flexibilityNotes: '',
+      sourceConfidence: ''
+    };
+    if (!hasVal(raw)) return out;
+    String(raw)
+      .split(/\n/)
+      .forEach(function (line) {
+        var t = line.trim();
+        if (!t) return;
+        if (/^Typical consideration:/i.test(t) || /^Blu consideration:/i.test(t)) {
+          out.typical = t
+            .replace(/^Typical consideration:\s*/i, '')
+            .replace(/^Blu consideration:\s*/i, '')
+            .trim();
+        } else if (/^Owner planning consideration:/i.test(t)) {
+          out.owner = t.replace(/^Owner planning consideration:\s*/i, '').trim();
+        } else if (/^Owner planning:/i.test(t)) {
+          out.owner = t.replace(/^Owner planning:\s*/i, '').trim();
+        } else if (/^Applies to:/i.test(t)) {
+          out.applies = t.replace(/^Applies to:\s*/i, '').trim();
+        } else if (/^Typical status:/i.test(t)) {
+          out.status = t.replace(/^Typical status:\s*/i, '').trim();
+        } else if (/^Flexibility\s*\/?\s*exception notes:/i.test(t) || /^Flexibility:/i.test(t)) {
+          out.flexibilityNotes = t
+            .replace(/^Flexibility\s*\/?\s*exception notes:\s*/i, '')
+            .replace(/^Flexibility:\s*/i, '')
+            .trim();
+        } else if (/^Notes to confirm:/i.test(t)) {
+          out.notesToConfirm = t.replace(/^Notes to confirm:\s*/i, '').trim();
+        } else if (/^Source confidence:/i.test(t)) {
+          out.sourceConfidence = t.replace(/^Source confidence:\s*/i, '').trim();
+        }
+      });
+    return out;
+  }
+
+  function standardsOwnerTableCell(text) {
+    return hasVal(text) ? escapeHtml(text).replace(/\n/g, '<br>') : '—';
+  }
+
+  function standardsOwnerNotesConfirmCell(parsed) {
+    var parts = [];
+    if (parsed.applies) {
+      parts.push(
+        '<span class="be-standards-owner-table__subnote"><strong>Applies To:</strong> ' +
+          escapeHtml(parsed.applies).replace(/\n/g, '<br>') +
+          '</span>'
+      );
+    }
+    if (parsed.notesToConfirm) {
+      parts.push(escapeHtml(parsed.notesToConfirm).replace(/\n/g, '<br>'));
+    }
+    if (parsed.flexibilityNotes) {
+      parts.push(
+        '<span class="be-standards-owner-table__subnote"><strong>Flexibility / Exception:</strong> ' +
+          escapeHtml(parsed.flexibilityNotes).replace(/\n/g, '<br>') +
+          '</span>'
+      );
+    }
+    if (parsed.sourceConfidence) {
+      parts.push(
+        '<span class="be-standards-owner-table__subnote"><strong>Source Confidence:</strong> ' +
+          escapeHtml(parsed.sourceConfidence) +
+          '</span>'
+      );
+    }
+    return parts.length ? parts.join('<br><br>') : '—';
+  }
+
+  function buildStandardsOwnerTableHtml(requirementRows) {
+    if (!requirementRows.length) return '';
+    var bodyRows = requirementRows
+      .map(function (row) {
+        var area = hasVal(row.title) ? String(row.title).trim() : 'Requirement Area';
+        var parsed = parseRequirementBody(row.body);
+        var typical = standardsOwnerTableCell(parsed.typical);
+        var owner = standardsOwnerTableCell(parsed.owner);
+        var status = standardsOwnerTableCell(parsed.status || 'Confirm With Brand');
+        var notes = standardsOwnerNotesConfirmCell(parsed);
+        if (typical === '—' && owner === '—' && notes === '—' && hasVal(row.body)) {
+          typical = standardsOwnerTableCell(row.body);
+        }
+        return (
+          '<tr>' +
+          '<th scope="row" class="be-standards-owner-table__area">' +
+          escapeHtml(area) +
+          '</th>' +
+          '<td class="be-standards-owner-table__typical">' +
+          typical +
+          '</td>' +
+          '<td class="be-standards-owner-table__owner">' +
+          owner +
+          '</td>' +
+          '<td class="be-standards-owner-table__status">' +
+          status +
+          '</td>' +
+          '<td class="be-standards-owner-table__notes">' +
+          notes +
+          '</td></tr>'
+        );
+      })
+      .join('');
+    return (
+      '<div class="be-standards-table-wrap" role="region" aria-label="Standard Detail Table">' +
+      '<table class="be-atelier-mini-table be-standards-owner-table be-standards-owner-table--five-col">' +
+      '<thead><tr>' +
+      '<th scope="col">Requirement Area</th>' +
+      '<th scope="col">Typical Consideration</th>' +
+      '<th scope="col">Owner Planning Consideration</th>' +
+      '<th scope="col">Typical Status</th>' +
+      '<th scope="col">Notes to Confirm</th>' +
+      '</tr></thead><tbody>' +
+      bodyRows +
+      '</tbody></table></div>'
+    );
+  }
+
+  function renderStandardsOwnerConsiderations(brand) {
+    var intro = explorerMergedBody(brand, 'standards.intro');
+    var lastReviewed = explorerPresentationLine(brand, 'standards.last_reviewed');
+    var sourceConfidence = explorerPresentationLine(brand, 'standards.source_confidence');
+    var requirementRows = explorerCardRowsForSlot(brand, 'standards.requirement');
+    var conversion = explorerMergedBody(brand, 'standards.conversion');
+    var questionsRaw = explorerMergedBody(brand, 'standards.questions');
+    var dealInputsRaw = explorerMergedBody(brand, 'standards.deal_inputs');
+    var std = brand.brandStandards && typeof brand.brandStandards === 'object' ? brand.brandStandards : {};
+
+    var metaBits = [];
+    if (hasVal(lastReviewed)) {
+      metaBits.push('<span><strong>Last Reviewed:</strong> ' + escapeHtml(lastReviewed) + '</span>');
+    }
+    if (hasVal(sourceConfidence)) {
+      metaBits.push('<span><strong>Source Confidence:</strong> ' + escapeHtml(sourceConfidence) + '</span>');
+    }
+    var metaHtml = metaBits.length
+      ? '<p class="be-standards-meta">' + metaBits.join(' · ') + '</p>'
+      : '';
+
+    var tableHtml = buildStandardsOwnerTableHtml(requirementRows);
+    var introHint = hasVal(intro)
+      ? '<p class="oe-section-hint be-standards-intro">' + escapeHtml(intro).replace(/\n/g, '<br>') + '</p>'
+      : '<p class="oe-section-hint">Confirm each row with brand disclosure and your agreement. Status labels are illustrative, not a property audit.</p>';
+
+    var requirementsSection = '';
+    if (requirementRows.length) {
+      requirementsSection =
+        '<section class="oe-section oe-section--standards-table">' +
+        '<h2 class="oe-section-title">Standard Detail, Where Available</h2>' +
+        introHint +
+        tableHtml +
+        '</section>';
+    } else {
+      var fallback =
+        hasVal(std.brandStandards) || hasVal(std.brandStandardsNotes)
+          ? explorerDetailCard(
+              'Brand Setup Narrative (Structured Fields)',
+              [std.brandStandards, std.brandStandardsNotes].filter(hasVal).join('\n\n')
+            )
+          : '';
+      requirementsSection =
+        '<section class="oe-section oe-section--standards-table">' +
+        '<h2 class="oe-section-title">Standard Detail, Where Available</h2>' +
+        '<p class="be-atelier-placeholder">No owner planning checklist is published in Brand Explorer presentation for this brand yet. Confirm requirements with brand disclosure, the franchise agreement, and design standards manuals.</p>' +
+        fallback +
+        '</section>';
+    }
+
+    var secondaryParts = [];
+    if (hasVal(conversion)) {
+      secondaryParts.push(
+        '<section class="oe-section oe-section--standards-secondary">' +
+          '<h2 class="oe-section-title">Conversion &amp; Sister-Flag Transitions</h2>' +
+          '<p class="be-standards-secondary-body">' +
+          escapeHtml(conversion).replace(/\n/g, '<br>') +
+          '</p></section>'
+      );
+    }
+    if (hasVal(questionsRaw)) {
+      secondaryParts.push(
+        '<section class="oe-section oe-section--standards-secondary">' +
+          '<h2 class="oe-section-title">Confirm With Brand</h2>' +
+          explorerLinesAsUl(escapeHtml, questionsRaw) +
+          '</section>'
+      );
+    }
+    if (hasVal(dealInputsRaw)) {
+      secondaryParts.push(
+        '<section class="oe-section oe-section--standards-secondary">' +
+          '<h2 class="oe-section-title">Deal Context Inputs</h2>' +
+          '<p class="be-standards-deal-inputs">' +
+          escapeHtml(fmtCell(dealInputsRaw)).replace(/\n/g, '<br>') +
+          '</p></section>'
+      );
+    }
+
+    return wrapOe(
+      '<div class="be-standards-output-note" role="note">' +
+        '<p><strong>Output Note.</strong> ' +
+        escapeHtml(STANDARDS_OWNER_OUTPUT_NOTE) +
+        '</p></div>' +
+        metaHtml +
+        requirementsSection +
+        (secondaryParts.length
+          ? '<div class="be-standards-secondary-wrap">' + secondaryParts.join('') + '</div>'
+          : '')
+    );
+  }
+
   function renderCommercialEngine(brand) {
+    var bn = brand.name ? String(brand.name).trim() : 'This brand';
+    var commIntroSlot = explorerMergedBody(brand, 'commercial.intro');
     var COMM_STATIC = [
       [
         'Distribution & Retail Reach',
-        'Puts the hotel in branded retail paths guests already use—CRS connectivity, brand.com and app, retail OTA relationships, and packages—so the property shows up in consideration sets where independents often under-index.',
-        '“We expand your shelf space”—more qualified traffic without you funding a global platform alone. Directional example: participation in portfolio-wide retail campaigns and rate plans that match how guests actually shop.'
+        'Branded retail paths guests already use—CRS connectivity, brand.com and app, retail OTA relationships, and packages—so the property shows up in consideration sets where independents often under-index.',
+        'Evaluate whether you get more qualified demand without funding a global platform alone—portfolio campaigns and rate plans that match how guests shop in your segment.'
       ],
       [
         'Revenue Management & Pricing Discipline',
-        'Helps translate demand into better revenue outcomes through forecasting tools, competitive sets, restriction strategies, and brand-level playbooks tuned to upper-upscale / luxury-adjacent positioning—not just discounting.',
-        'Consistency between sales story and price: protecting ADR where the asset can support it and avoiding race-to-the-bottom in high-demand windows. Owners hear about 24/7 support models and escalation paths during peaks or shocks.'
+        'Forecasting tools, competitive sets, restriction strategies, and brand-level playbooks tuned to the chain scale—not only discounting.',
+        'Underwrite ADR protection in peak windows and escalation support during shocks; confirm what is included in your agreement tier.'
       ],
       [
         'Digital Marketing & Performance Media',
-        'Drives customers through paid/owned media, search, social, and retargeting at a scale few independents match—often with creative templates that still allow property-level storytelling.',
-        'Lower customer-acquisition cost <em>at the margin</em> because spend is pooled; always-on brand search defending the flag; seasonal demand bursts aligned to holidays, events, and city calendars.'
+        'Paid and owned media, search, social, and retargeting at portfolio scale, with creative templates that can still carry property-level story.',
+        'Pooled spend can lower acquisition cost at the margin; expect always-on brand search and seasonal bursts aligned to holidays, events, and city calendars.'
       ],
       [
         'Corporate, SME & Group Pull',
-        'Surfaces the hotel to contracted travelers, small meetings, and negotiated programs where the brand acts as a trusted filter—especially in urban and gateway markets with mixed transient/group mix.',
-        'Access to RFP tools, account coverage, and brand-standard proposals that help sales teams open doors the property could not open as easily alone. Brands often quantify “addressable corporate demand” directionally by market tier.'
+        'Contracted travelers, small meetings, and negotiated programs where the flag acts as a trusted filter—especially in urban and gateway mixed-use assets.',
+        'RFP tools, account coverage, and standard proposals can open corporate doors; size addressable demand directionally for your market tier.'
       ],
       [
         'Leisure & Destination Visibility',
-        'Captures high-intent leisure shoppers through inspiration content, packages, partnerships, and destination narratives—critical when rate premium depends on aspiration and uniqueness.',
-        'Creative differentiation (design, F&amp;B, local ties) <em>plus</em> distribution—so the story converts, not just looks good. Common owner talking point: “We help the right guests find you earlier in the journey.”'
+        'Inspiration content, packages, partnerships, and destination narratives for high-intent leisure shoppers—when rate premium depends on aspiration and uniqueness.',
+        'Local design, F&amp;B, and ties still matter; distribution should convert the story—earlier visibility to the right guests in the booking journey.'
       ],
       [
         'International & Feeder Markets',
-        'Improves visibility to inbound guests and cross-border feeders where the brand’s global recognition reduces perceived risk—airport gateways, hub cities, and resort endpoints with international mix.',
-        'Language, currency, and channel coverage in key feeder countries; participation in portfolio campaigns timed to holidays and carrier routes. Brands caveat performance by market maturity and airlift.'
+        'Inbound and cross-border feeders where global recognition reduces perceived risk—gateways, hubs, and resorts with international mix.',
+        'Language, currency, and channel coverage in feeder countries; portfolio campaigns tied to holidays and routes—performance varies by market maturity and airlift.'
       ],
       [
         'Sales & Catering Brand Pull',
-        'Helps group and event buyers shortlist the property faster—brand credibility, lead flow from central inquiries, and tools for proposals where the hotel competes for weddings, SMERF, and small corporate meetings.',
-        'Higher lead quality and faster “trust transfer” than an unknown independent; standardized collateral that still allows local customization. Owners evaluate contribution vs. in-house sales cost.'
+        'Brand credibility, central inquiry flow, and proposal tools for weddings, SMERF, and small corporate meetings.',
+        'Compare lead quality and trust transfer against going independent; weigh brand contribution vs. in-house sales and catering cost.'
       ],
       [
         'Reputation, Reviews & QA Lift',
-        'Improves conversion after the click—guests choose brands they recognize; QA programs and service standards reduce variance that hurts reviews and repeat visits.',
-        'Review response frameworks, service recovery playbooks, and brand-led recovery offers that protect long-term rate power. “Fewer surprises for guests” is a recurring sales line tied to RevPAR resilience.'
+        'Recognizable flags improve post-click conversion; QA and service standards reduce variance that hurts reviews and repeat visits.',
+        'Review response, recovery playbooks, and brand-led offers can protect long-term rate power when executed consistently on property.'
       ],
       [
         'Data, Analytics & Experimentation',
-        'Gives owners and operators portfolio benchmarks, test-and-learn programs, and guest insights that refine offers, room types, and channel mix—turning soft demand signals into actions.',
-        'Access to network learning (what works across similar assets), test campaigns, and reporting that lenders and institutional owners expect. Brands position this as <strong style="color:var(--text,#fff);font-weight:600;">commercial intelligence</strong>, not just reporting.'
+        'Portfolio benchmarks, test-and-learn, and guest insights to refine offers, room types, and channel mix.',
+        'Network learning, test campaigns, and reporting many lenders expect—treat as commercial intelligence for decisions, not vanity metrics.'
       ]
     ];
     var scenGrid =
       '<div class="scenario-card-grid" style="grid-template-columns:repeat(3,1fr)">' +
-      COMM_STATIC.map(function (row) {
-        return commercialScenarioCardHtml(row[0], row[1], row[2]);
+      COMM_STATIC.map(function (row, idx) {
+        var key = COMMERCIAL_LEVER_KEYS[idx];
+        var slotKey = key ? 'commercial.lever.' + key : '';
+        if (slotKey && explorerBlocksForSlot(brand, slotKey).length) {
+          return commercialLeverFromSlot(brand, slotKey, row[0], row[1], row[2]);
+        }
+        return commercialStrengthCardHtml(row[0], row[1], row[2]);
       }).join('') +
       '</div>';
     var kpis =
       '<div class="brand-markets-kpi" style="margin-bottom:16px" aria-label="Illustrative Commercial Footprint">' +
-      kpiCard('Channels & Brand Names in Materials', 'Brand.com · major OTAs · GDS · metasearch') +
-      kpiCard('Campaign Story in Owner Docs', 'Always-on + seasonal / market bursts') +
-      kpiCard('B2B Storyline', 'RFP & account programs (where active)') +
-      kpiCard('Lens Owners Still Apply', 'Net contribution after costs') +
+      commercialKpiFromSlot(
+        brand,
+        'commercial.kpi.channels',
+        'Channels in Franchise Materials',
+        'Brand.com · major OTAs · GDS · metasearch'
+      ) +
+      commercialKpiFromSlot(
+        brand,
+        'commercial.kpi.campaigns',
+        'Campaign Rhythm',
+        'Always-on + seasonal / market bursts'
+      ) +
+      commercialKpiFromSlot(brand, 'commercial.kpi.b2b', 'B2B Programs', 'RFP & account programs (where active)') +
+      commercialKpiFromSlot(
+        brand,
+        'commercial.kpi.lens',
+        'Owner Underwriting Lens',
+        'Net contribution after fees and channel costs'
+      ) +
       '</div>';
-    var anchorUl =
-      '<li><strong style="color:var(--text,#fff);font-weight:600;">“More demand at the top of the funnel”</strong> — retail presence, search, and inspiration media guests see before they choose a city or date.</li>' +
-      '<li><strong style="color:var(--text,#fff);font-weight:600;">“Better conversion at the bottom”</strong> — trust, reviews, loyalty, and frictionless booking paths that turn lookers into stays.</li>' +
-      '<li><strong style="color:var(--text,#fff);font-weight:600;">“Repeat and higher-quality guests”</strong> — loyalty, corporate accounts, and recognition that increase lifetime value versus one-off OTA transactions.</li>' +
-      '<li><strong style="color:var(--text,#fff);font-weight:600;">“Commercial systems, not just a logo”</strong> — pricing, sales support, and analytics framed as how the brand helps owners <em>earn</em> the fee.</li>';
-    var COMM_DEMAND = [
-      ['Gateway Urban', 'Strong'],
-      ['Regional & Secondary Upscale', 'Moderate–strong'],
-      ['Corporate-Led Urban', 'Strong'],
-      ['Resort / Coastal Leisure', 'Strong'],
-      ['Conversion / Repositioning', 'Strong'],
-      ['Pure Economy / Highway', 'Not a fit']
-    ];
-    var demandHtml = COMM_DEMAND.map(function (pair) {
-      return demandCell(pair[0], pair[1]);
-    }).join('');
-    var commIntro =
-      '<p class="explorer-detail-card__body">This section is built as a <strong style="color:var(--text,#fff);font-weight:600;">marketing reference</strong>: for each commercial lever you get the underlying business idea, then a <strong style="color:var(--text,#fff);font-weight:600;">sample brand-to-owner message</strong>—the kind of language and storyline brands use in decks, calls, and emails to show how affiliation helps <strong style="color:var(--text,#fff);font-weight:600;">pull demand and protect rate</strong>. Use it to understand positioning, not as a performance guarantee.</p>';
+    var themeRows = explorerCardRowsForSlot(brand, 'commercial.theme').filter(function (x) {
+      return hasVal(x.body) || hasVal(x.title);
+    });
+    var anchorUl;
+    if (themeRows.length) {
+      anchorUl = themeRows
+        .map(function (tr) {
+          var line = hasVal(tr.body) ? tr.body : tr.title;
+          return '<li>' + positionBody(line) + '</li>';
+        })
+        .join('');
+    } else {
+      anchorUl =
+        '<li><strong style="color:var(--text,#fff);font-weight:600;">More demand at the top of the funnel</strong> — retail presence, search, and inspiration media guests see before they choose a city or date.</li>' +
+        '<li><strong style="color:var(--text,#fff);font-weight:600;">Better conversion at the bottom</strong> — trust, reviews, loyalty, and frictionless booking paths that turn lookers into stays.</li>' +
+        '<li><strong style="color:var(--text,#fff);font-weight:600;">Repeat and higher-quality guests</strong> — loyalty, corporate accounts, and recognition that increase lifetime value versus one-off OTA transactions.</li>' +
+        '<li><strong style="color:var(--text,#fff);font-weight:600;">Commercial systems, not just a logo</strong> — pricing, sales support, and analytics that should earn the fee in your pro forma.</li>';
+    }
+    var demandRows = explorerCardRowsForSlot(brand, 'commercial.demand').filter(function (x) {
+      return hasVal(x.title) || hasVal(x.body);
+    });
+    var demandHtml;
+    if (demandRows.length) {
+      demandHtml = demandRows
+        .map(function (dr) {
+          return demandCell(dr.title || 'Scenario', dr.body || '');
+        })
+        .join('');
+    } else {
+      var COMM_DEMAND = [
+        ['Gateway Urban', 'Strong'],
+        ['Regional & Secondary Upscale', 'Moderate–strong'],
+        ['Corporate-Led Urban', 'Strong'],
+        ['Resort / Coastal Leisure', 'Strong'],
+        ['Conversion / Repositioning', 'Strong'],
+        ['Pure Economy / Highway', 'Not a fit']
+      ];
+      demandHtml = COMM_DEMAND.map(function (pair) {
+        return demandCell(pair[0], pair[1]);
+      }).join('');
+    }
+    var diffBlock = explorerFirstBlock(brand, 'commercial.differentiator');
+    var diffHtml = '';
+    if (diffBlock && (hasVal(diffBlock.body) || hasVal(diffBlock.title))) {
+      diffHtml =
+        '<div class="explorer-detail-card" style="margin-bottom:14px">' +
+        '<h3 class="explorer-detail-card__label">' +
+        escapeHtml(hasVal(diffBlock.title) ? String(diffBlock.title).trim() : 'Commercial edge on this brand') +
+        '</h3>' +
+        positionBody(hasVal(diffBlock.body) ? diffBlock.body : diffBlock.title) +
+        '</div>';
+    }
+    var commIntro = hasVal(commIntroSlot)
+      ? positionBody(commIntroSlot)
+      : positionBodyHtml(
+          escapeHtml(bn) +
+            ' — how affiliation with this flag can affect <strong style="color:var(--text,#fff);font-weight:600;">demand, rate, and channel mix</strong> on your project. Each lever includes a <strong style="color:var(--text,#fff);font-weight:600;">project impact</strong> line specific to this brand where published; illustrative only—not a performance guarantee.'
+        );
     return wrapOe(
       '<section class="oe-section">' +
         '<h2 class="oe-section-title">Commercial Strengths</h2>' +
-        '<p class="oe-section-hint">Brand-to-Owner Messaging — Sample Narratives and Proof Points Used in Development, Diligence, and Sales Conversations (Illustrative; Not Property-Specific Performance)</p>' +
+        '<p class="oe-section-hint">Brand-Specific Benefits and Channel Levers (Illustrative; Not Property-Specific Performance)</p>' +
         '<div class="explorer-detail-card" style="margin-bottom:14px">' +
-        '<h3 class="explorer-detail-card__label">How Brands Communicate Commercial Value</h3>' +
+        '<h3 class="explorer-detail-card__label">How This Brand Can Lift Your Project</h3>' +
         commIntro +
         '</div>' +
+        diffHtml +
         kpis +
         scenGrid +
-        '<div class="oe-cluster" style="margin-top:4px"><h3>Anchor Lines Brands Repeat in Owner-Facing Materials</h3><ul>' +
+        '<div class="oe-cluster" style="margin-top:4px"><h3>Where This Brand Tends to Win</h3><ul>' +
         anchorUl +
         '</ul></div></section>' +
         '<section class="oe-section">' +
@@ -3122,6 +3522,30 @@
     };
   }
 
+  function footprintPipelineTotals(fp) {
+    var M = typeof BrandExplorerCensusMetrics !== 'undefined' ? BrandExplorerCensusMetrics : null;
+    if (M && typeof M.footprintPipelineTotals === 'function') {
+      return M.footprintPipelineTotals(fp);
+    }
+    if (!fp || typeof fp !== 'object') return { hotels: 0, rooms: 0 };
+    return {
+      hotels: fpMetricNum(fp.totalNewBuildHotels) + fpMetricNum(fp.totalConversionHotels),
+      rooms: fpMetricNum(fp.totalNewBuildRooms) + fpMetricNum(fp.totalConversionRooms)
+    };
+  }
+
+  function footprintMetricsNoticeHtml(disp) {
+    if (!disp) return '';
+    var M = typeof BrandExplorerCensusMetrics !== 'undefined' ? BrandExplorerCensusMetrics : null;
+    if (!M || typeof M.unverifiedFootprintHtml !== 'function') return '';
+    var msg =
+      disp.metricsBanner ||
+      (disp.showVerifiedMetrics ? disp.censusBreakdownNotice : null) ||
+      (!disp.showVerifiedMetrics ? disp.verifiedEmptyMessage : null);
+    if (!msg) return '';
+    return M.unverifiedFootprintHtml(msg);
+  }
+
   function buildFpRowsFromCensusBreakdown(breakdownRows) {
     if (!breakdownRows || !breakdownRows.length) return '';
     var M = typeof BrandExplorerCensusMetrics !== 'undefined' ? BrandExplorerCensusMetrics : null;
@@ -3190,23 +3614,12 @@
 
   function renderFootprintGrowth(brand, footprintPropertyPayloadSink) {
     var disp = resolveFootprintDisplay(brand);
-    if (!disp.showVerifiedMetrics) {
-      var emptyMsg =
-        (typeof BrandExplorerCensusMetrics !== 'undefined' &&
-          BrandExplorerCensusMetrics.unverifiedFootprintHtml &&
-          BrandExplorerCensusMetrics.unverifiedFootprintHtml(disp.verifiedEmptyMessage || 'Portfolio data being verified.')) ||
-        '<p class="be-footprint-unverified">Portfolio data being verified.</p>';
-      return (
-        '<section class="oe-section">' +
-        '<h2 class="oe-section-title">Footprint Metrics</h2>' +
-        emptyMsg +
-        '</section>'
-      );
-    }
     var fp = disp.fp || {};
+    var metricsNotice = footprintMetricsNoticeHtml(disp);
     var fv = fp.formValues || {};
-    var pipH = fpMetricNum(fp.totalNewBuildHotels) + fpMetricNum(fp.totalConversionHotels);
-    var pipR = fpMetricNum(fp.totalNewBuildRooms) + fpMetricNum(fp.totalConversionRooms);
+    var pipeTotals = footprintPipelineTotals(fp);
+    var pipH = pipeTotals.hotels;
+    var pipR = pipeTotals.rooms;
     var reg = fp.regionalDistribution && typeof fp.regionalDistribution === 'object' ? fp.regionalDistribution : {};
     var regionKeys = Object.keys(reg);
     var regionsSummary =
@@ -3309,7 +3722,13 @@
       FP_METRIC_HEADER +
       portfolioTotalsRow +
       '</tbody></table></div></div>';
-    var metricsBlock = '<div class="brand-fp-metrics">' + openPipelineSub + portfolioDistribution + '</div>';
+    var metricsBlock =
+      '<div class="brand-fp-metrics">' +
+      metricsNotice +
+      (disp.showVerifiedMetrics
+        ? openPipelineSub + portfolioDistribution
+        : '<p class="brand-fp-table-note">Footprint tables are hidden until portfolio metrics are verified.</p>') +
+      '</div>';
     var presenceRow =
       '<div class="presence-intel-row">' +
       presenceIntelFootprintMetric('Open Hotels (Public)', openH, openR) +
@@ -3958,7 +4377,9 @@
         escapeHtml(imgUrl) +
         '" alt="' +
         escapeHtml(title || 'Property') +
-        '" loading="lazy" />';
+        '"' +
+        exportPdfImgAttrs() +
+        ' />';
     }
     var situationSn = hasVal(p.situation) ? String(p.situation).trim() : '';
     if (!hasVal(situationSn)) {
@@ -4100,7 +4521,9 @@
             escapeHtml(caption) +
             '"><img src="' +
             escapeHtml(imgUrl) +
-            '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" />' +
+            '" alt=""' +
+            (isExportPdfMode() ? ' loading="eager" decoding="sync"' : ' loading="lazy" decoding="async"') +
+            ' referrerpolicy="no-referrer" />' +
             '<span class="gallery-card__cap">' +
             escapeHtml(caption) +
             '</span></div>'
@@ -4124,7 +4547,9 @@
         '</div></section>' +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Image Gallery</h2>' +
-        '<p class="oe-section-hint">Slots <code>materials.gallery.1</code> … <code>materials.gallery.6</code> — attach image to each row’s Image field</p>' +
+        (isExportPdfMode()
+          ? ''
+          : '<p class="oe-section-hint">Slots <code>materials.gallery.1</code> … <code>materials.gallery.6</code> — attach image to each row’s Image field</p>') +
         '<div class="gallery-grid">' +
         gallery +
         '</div></section>'
@@ -4194,7 +4619,7 @@
         '</div></section>' +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Caution Areas &amp; Tradeoffs</h2>' +
-        '<p class="oe-section-hint">How Brands Surface Limits and Risk — Typical Diligence Talking Points (Illustrative)</p>' +
+        '<p class="oe-section-hint">Limits and Risk — Illustrative Diligence Themes (Not Property-Specific)</p>' +
         '<div class="scenario-card-grid scenario-card-grid--owner-value" style="grid-template-columns:repeat(2,1fr)">' +
         cautionGrid +
         '</div></section>' +
@@ -4219,6 +4644,7 @@
       'atelier-overview': renderAtelierOverview(brand),
       'atelier-value-owners': renderValueToOwners(brand),
       'atelier-ops': renderOperationsStandards(brand),
+      'atelier-standards-owner': renderStandardsOwnerConsiderations(brand),
       'atelier-commercial': renderCommercialEngine(brand),
       'atelier-economics': renderAtelierEconomicsObligations(brand),
       'atelier-loyalty': renderLoyaltyProgram(brand),
@@ -4316,6 +4742,38 @@
     });
   }
 
+  function tabLabelPlain(labelHtml) {
+    return String(labelHtml || '')
+      .replace(/<br\s*\/?>/gi, ' ')
+      .replace(/<[^>]+>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /** PDF export: show every tab panel with a section heading (no tab switching). */
+  function prepareAllPanelsForExport(rootEl) {
+    if (!rootEl) return;
+    var panelsWrap = rootEl.querySelector('[data-be-atelier-panels]');
+    if (!panelsWrap) return;
+    var labelById = {};
+    combinedTabRowDefs().forEach(function (t) {
+      labelById[t.id] = tabLabelPlain(t.label);
+    });
+    panelsWrap.querySelectorAll('.be-atelier-tab-panel').forEach(function (panel) {
+      panel.classList.add('active');
+      var panelId = panel.getAttribute('data-atelier-panel') || '';
+      var titleText = labelById[panelId] || panelId;
+      if (!panel.querySelector('.be-export-section-title')) {
+        var heading = document.createElement('h2');
+        heading.className = 'be-export-section-title';
+        heading.textContent = titleText;
+        panel.insertBefore(heading, panel.firstChild);
+      }
+    });
+    var nav = rootEl.querySelector('[data-be-atelier-nav]');
+    if (nav) nav.setAttribute('hidden', 'hidden');
+  }
+
   function mountAtelierIntoRoot(rootEl, brand) {
     if (!rootEl || !brand) return;
     var nav = rootEl.querySelector('[data-be-atelier-nav]');
@@ -4329,6 +4787,9 @@
     if (window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.applyChainScaleTheme) {
       window.BrandExplorerGoldDetail.applyChainScaleTheme(brand, rootEl);
     }
+    if (document.documentElement.classList.contains('be-export-pdf')) {
+      prepareAllPanelsForExport(rootEl);
+    }
   }
 
   function mountAtelierFromBrand(brand) {
@@ -4336,10 +4797,38 @@
     mountAtelierIntoRoot(root, brand);
   }
 
+  function notifyExportReady() {
+    if (!document.documentElement.classList.contains('be-export-pdf')) return;
+    try {
+      window.dispatchEvent(new CustomEvent('brand-explorer-export-ready'));
+    } catch (_) {}
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'brand-explorer-export-ready' }, '*');
+      }
+    } catch (_) {}
+    var p = new URLSearchParams(window.location.search || '');
+    if (p.get('print') === '1' || p.get('print') === 'true') {
+      window.setTimeout(function () {
+        try {
+          window.print();
+        } catch (_) {}
+      }, 400);
+    }
+  }
+
   function onDetailLoaded(ev) {
     var brand = ev.detail && ev.detail.brand;
     if (!brand) return;
     mountAtelierFromBrand(brand);
+    var root = document.getElementById('brandRoot');
+    if (isExportPdfMode()) {
+      waitForExportImages(root).then(function () {
+        notifyExportReady();
+      });
+      return;
+    }
+    notifyExportReady();
   }
 
   wireBrandCaseStudyModalOnce();
@@ -4348,6 +4837,7 @@
 
   window.BrandExplorerAtelierFromApi = {
     mountIntoRoot: mountAtelierIntoRoot,
-    mountFromBrand: mountAtelierFromBrand
+    mountFromBrand: mountAtelierFromBrand,
+    prepareAllPanelsForExport: prepareAllPanelsForExport
   };
 })();

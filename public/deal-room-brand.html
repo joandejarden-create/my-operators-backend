@@ -197,7 +197,7 @@
         <div class="grow">
           <label for="drBrandDealSelect">Deals</label>
           <select id="drBrandDealSelect">
-            <option value="">Loading deals...</option>
+            <option value="">Loading Deals…</option>
           </select>
           <div class="small" style="margin-top:6px;">Choose the hotel or development the owner invited you to. Each line shows location (when available), project title, deal type, and status — the same idea as the owner Deal Room. Changing the list loads that project automatically.</div>
           <div id="drBrandSelectedProjectReadout" style="display:none; margin-top:10px; padding:10px 12px; border-radius:8px; border:1px solid rgba(55,68,107,0.9); background:rgba(16,25,53,0.45);" aria-live="polite"></div>
@@ -456,7 +456,7 @@
           var opt = dealSelect.options[dealSelect.selectedIndex];
           if (opt && opt.value === dealId) label = (opt.textContent || "").trim();
         }
-        if (!label || label === "Select a deal..." || label === "Loading deals..." || label === "Failed to load deals" || label === "No deals found") {
+        if (!label || label === "Select a deal..." || label === "Loading Deals…" || label === "Failed to load deals" || label === "No deals found") {
           el.style.display = "none";
           el.textContent = "";
           return;
@@ -826,8 +826,8 @@
       }
 
       async function bootstrap() {
-        if (dealSelect) dealSelect.innerHTML = '<option value="">Loading deals...</option>';
-        setBanner("info", "Loading your brand requests…");
+        if (dealSelect) dealSelect.innerHTML = '<option value="">Loading Deals…</option>';
+        setBanner("info", "Loading Your Brand Requests…");
         try {
           var urlDedicated = contextBrand
             ? "/api/deal-room/brand-requests?brand=" + encodeURIComponent(contextBrand)

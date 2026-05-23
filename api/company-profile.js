@@ -9,8 +9,15 @@
 import Airtable from "airtable";
 
 import { stripLeadingWwwFromWebsiteUrl } from "./lib/strip-www-from-website-url.js";
+import {
+  COMPANY_ROLE_AIRTABLE_FIELD,
+  COMPANY_ROLE_FORM_TO_AIRTABLE,
+  companyRoleDisplayLabel,
+  normalizeCompanyRoleToForm,
+} from "../lib/company-role-normalize.js";
 
 const COMPANY_PROFILE_TABLE_ID = "tblItyfH6MlOnMKZ9";
+const COMPANY_ADDRESS_AIRTABLE_FIELD = "Company Address";
 
 function getBase() {
   if (!process.env.AIRTABLE_API_KEY || !process.env.AIRTABLE_BASE_ID) {
@@ -63,15 +70,6 @@ const COUNTRY_CODE_TO_NAME = {
   Other: "Other",
 };
 
-const COMPANY_ROLE_FORM_TO_AIRTABLE = {
-  Brand: "We represent a hotel brand (franchise/licensing platform)",
-  Operator: "We operate hotels under third-party brands (operator only)",
-  Both: "We both represent a brand and operate hotels",
-  Owner: "We are an owner, developer, or investor",
-  Advisor: "We are a broker, consultant, or service provider",
-  Lender: "We are a lender or legal/advisory firm",
-};
-
 const PLATFORM_VISIBILITY_FORM_TO_AIRTABLE = {
   Public: "Public",
   "Matched Only": "Visible to Matched Users Only",
@@ -99,12 +97,6 @@ const NUMBER_OF_EMPLOYEES_AIRTABLE_TO_FORM = Object.fromEntries(
 );
 const COUNTRY_NAME_TO_CODE = Object.fromEntries(
   Object.entries(COUNTRY_CODE_TO_NAME).map(([code, name]) => [name, code])
-);
-const COMPANY_ROLE_AIRTABLE_TO_FORM = Object.fromEntries(
-  Object.entries(COMPANY_ROLE_FORM_TO_AIRTABLE).map(([formVal, airtableVal]) => [
-    airtableVal,
-    formVal,
-  ])
 );
 const PLATFORM_VISIBILITY_AIRTABLE_TO_FORM = Object.fromEntries(
   Object.entries(PLATFORM_VISIBILITY_FORM_TO_AIRTABLE).map(([formVal, airtableVal]) => [
@@ -137,21 +129,6 @@ const BRAND_NAMES_FIELDS = [
 const COMPANY_LOGO_FIELDS = ["Logo", "Company Logo"];
 const BRAND_BASICS_TABLE = "Brand Setup - Brand Basics";
 const BRAND_BASICS_NAME_FIELD = "Brand Name";
-
-function normalizeCompanyRoleToForm(rawValue) {
-  const raw = toStr(rawValue);
-  if (!raw) return "";
-  if (COMPANY_ROLE_AIRTABLE_TO_FORM[raw]) return COMPANY_ROLE_AIRTABLE_TO_FORM[raw];
-
-  const lower = raw.toLowerCase();
-  if (lower.startsWith("brand")) return "Brand";
-  if (lower.startsWith("operator")) return "Operator";
-  if (lower.startsWith("both")) return "Both";
-  if (lower.startsWith("owner")) return "Owner";
-  if (lower.startsWith("advisor")) return "Advisor";
-  if (lower.startsWith("lender")) return "Lender";
-  return raw;
-}
 
 // —— Form primaryServices / additionalServices value → Airtable checkbox column name (suffix after "Primary - " or "Addl - ") ——
 const SERVICE_FORM_VALUE_TO_COLUMN_SUFFIX = {
@@ -269,13 +246,14 @@ function buildEmptyPrefill() {
     yearFounded: "",
     companyOverview: "",
     additionalOfficeRegions: "",
-    propertyAddress: "",
+    companyAddress: "",
     regions: [],
     brandsOperateSupport: [],
     primaryServices: [],
     additionalServices: [],
     jurisdictionsLicensed: "",
     companyRole: "",
+    companyRoleLabel: "",
     platformVisibility: "",
     openToContact: "",
     companyLogoUrl: "",
@@ -300,11 +278,12 @@ function airtableFieldsToPrefill(fields) {
   prefill.yearFounded = toStr(f["Year Founded"]);
   prefill.companyOverview = toStr(f["Company Overview"]);
   prefill.additionalOfficeRegions = toStr(f["Additional Office Regions"]);
-  prefill.propertyAddress = toStr(f["Property Address"]);
+  prefill.companyAddress =
+    toStr(f[COMPANY_ADDRESS_AIRTABLE_FIELD]) || toStr(f["Property Address"]);
   prefill.jurisdictionsLicensed = toStr(f["Jurisdictions Licensed"]);
-  prefill.companyRole = normalizeCompanyRoleToForm(
-    f["Company's role in the hotel ecosystem"]
-  );
+  const companyRoleRaw = toStr(f[COMPANY_ROLE_AIRTABLE_FIELD]);
+  prefill.companyRole = normalizeCompanyRoleToForm(companyRoleRaw);
+  prefill.companyRoleLabel = companyRoleDisplayLabel(companyRoleRaw, prefill.companyRole);
   prefill.platformVisibility =
     PLATFORM_VISIBILITY_AIRTABLE_TO_FORM[toStr(f["Company Platform Visibility"])] ||
     toStr(f["Company Platform Visibility"]);
@@ -489,8 +468,12 @@ export function formToAirtableFields(body) {
     fields["Company Overview"] = String(body.companyOverview).trim();
   if (body.additionalOfficeRegions != null && body.additionalOfficeRegions !== "")
     fields["Additional Office Regions"] = String(body.additionalOfficeRegions).trim();
-  if (body.propertyAddress != null && body.propertyAddress !== "")
-    fields["Property Address"] = String(body.propertyAddress).trim();
+  const companyAddress =
+    body.companyAddress != null && body.companyAddress !== ""
+      ? body.companyAddress
+      : body.propertyAddress;
+  if (companyAddress != null && companyAddress !== "")
+    fields[COMPANY_ADDRESS_AIRTABLE_FIELD] = String(companyAddress).trim();
   if (body.jurisdictionsLicensed != null && body.jurisdictionsLicensed !== "")
     fields["Jurisdictions Licensed"] = String(body.jurisdictionsLicensed).trim();
 
@@ -518,7 +501,7 @@ export function formToAirtableFields(body) {
   if (body.companyRole != null && body.companyRole !== "") {
     const mapped =
       COMPANY_ROLE_FORM_TO_AIRTABLE[body.companyRole] ?? body.companyRole;
-    fields["Company's role in the hotel ecosystem"] = mapped;
+    fields[COMPANY_ROLE_AIRTABLE_FIELD] = mapped;
   }
   if (body.platformVisibility != null && body.platformVisibility !== "") {
     const mapped =
@@ -691,6 +674,59 @@ export async function updateCompanyProfile(req, res) {
   }
 }
 
+async function findCompanyProfileRecord(base, { recordId, companyName }) {
+  if (recordId) {
+    return base(COMPANY_PROFILE_TABLE_ID).find(recordId);
+  }
+  if (companyName) {
+    const formula = `LOWER({Company Name})='${escapeAirtableFormulaString(
+      companyName.toLowerCase()
+    )}'`;
+    const rows = await base(COMPANY_PROFILE_TABLE_ID)
+      .select({
+        maxRecords: 1,
+        filterByFormula: formula,
+      })
+      .firstPage();
+    return rows && rows.length ? rows[0] : null;
+  }
+  return null;
+}
+
+async function buildCompanyProfilePrefillPayload(base, { recordId, companyName }) {
+  if (!recordId && !companyName) {
+    return {
+      success: true,
+      recordId: null,
+      source: "none",
+      prefill: buildEmptyPrefill(),
+    };
+  }
+
+  const record = await findCompanyProfileRecord(base, { recordId, companyName });
+  if (!record) {
+    return {
+      success: true,
+      recordId: null,
+      source: "airtable",
+      prefill: buildEmptyPrefill(),
+    };
+  }
+
+  const prefill = airtableFieldsToPrefill(record.fields || {});
+  if (prefill.brandsOperateSupport.length === 0 && prefill.brandsOperateSupportNames.length) {
+    const resolved = await resolveBrandIdsByName(base, prefill.brandsOperateSupportNames);
+    pushUnique(prefill.brandsOperateSupport, resolved);
+  }
+
+  return {
+    success: true,
+    recordId: record.id,
+    source: "airtable",
+    prefill,
+  };
+}
+
 /**
  * GET /api/company-profile/prefill – return normalized prefill payload.
  * Query params:
@@ -707,59 +743,57 @@ export async function getCompanyProfilePrefill(req, res) {
       });
     }
 
-    const recordId = toStr(req.query.recordId);
-    const companyName = toStr(req.query.companyName);
-    let record = null;
-
-    if (recordId) {
-      record = await base(COMPANY_PROFILE_TABLE_ID).find(recordId);
-    } else if (companyName) {
-      const formula = `LOWER({Company Name})='${escapeAirtableFormulaString(
-        companyName.toLowerCase()
-      )}'`;
-      const rows = await base(COMPANY_PROFILE_TABLE_ID)
-        .select({
-          maxRecords: 1,
-          filterByFormula: formula,
-        })
-        .firstPage();
-      record = rows && rows.length ? rows[0] : null;
-    } else {
-      return res.json({
-        success: true,
-        recordId: null,
-        source: "none",
-        prefill: buildEmptyPrefill(),
-      });
-    }
-
-    if (!record) {
-      return res.json({
-        success: true,
-        recordId: null,
-        source: "airtable",
-        prefill: buildEmptyPrefill(),
-      });
-    }
-
-    const prefill = airtableFieldsToPrefill(record.fields || {});
-    if (prefill.brandsOperateSupport.length === 0 && prefill.brandsOperateSupportNames.length) {
-      const resolved = await resolveBrandIdsByName(base, prefill.brandsOperateSupportNames);
-      pushUnique(prefill.brandsOperateSupport, resolved);
-    }
-
-    return res.json({
-      success: true,
-      recordId: record.id,
-      source: "airtable",
-      prefill,
+    const payload = await buildCompanyProfilePrefillPayload(base, {
+      recordId: toStr(req.query.recordId),
+      companyName: toStr(req.query.companyName),
     });
+    return res.json(payload);
   } catch (err) {
     console.error("Company profile prefill error:", err);
     const status = err.statusCode === 404 ? 404 : err.statusCode ?? 500;
     return res.status(status).json({
       success: false,
       error: err.message || "Failed to load company profile prefill",
+    });
+  }
+}
+
+/**
+ * GET /api/company-profile/mine – prefill for the signed-in user's linked Company Profile.
+ * Requires Memberstack JWT + Users row (see requireDealalityUser).
+ */
+export async function getMyCompanyProfilePrefill(req, res) {
+  try {
+    const base = getBase();
+    if (!base) {
+      return res.status(503).json({
+        success: false,
+        error: "Airtable not configured (AIRTABLE_API_KEY / AIRTABLE_BASE_ID)",
+      });
+    }
+
+    const user = req.dealalityUser || {};
+    const recordId = toStr(user.companyId);
+    const companyName = recordId ? "" : toStr(user.companyName);
+
+    if (!recordId && !companyName) {
+      return res.json({
+        success: true,
+        recordId: null,
+        source: "none",
+        prefill: buildEmptyPrefill(),
+        hint: "no_company_linked",
+      });
+    }
+
+    const payload = await buildCompanyProfilePrefillPayload(base, { recordId, companyName });
+    return res.json(payload);
+  } catch (err) {
+    console.error("Company profile mine prefill error:", err);
+    const status = err.statusCode === 404 ? 404 : err.statusCode ?? 500;
+    return res.status(status).json({
+      success: false,
+      error: err.message || "Failed to load your company profile",
     });
   }
 }

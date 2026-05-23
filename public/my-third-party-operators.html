@@ -446,8 +446,8 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="loading-text-main" id="loadingMainText">Loading companies...</div>
-                                    <div class="loading-text-time" id="loadingTimeText">Estimated time: 5-15 seconds</div>
+                                    <div class="loading-text-main" id="loadingMainText">Loading Companies…</div>
+                                    <div class="loading-text-time" id="loadingTimeText" hidden></div>
                                 </div>
                             </div>
                             <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -810,14 +810,13 @@
                 try {
                     loadingStartedAt = Date.now();
                     if (loadingState) loadingState.style.display = 'block';
-                    if (loadingMainText) loadingMainText.textContent = 'Loading companies...';
-                    if (loadingTimeText) loadingTimeText.textContent = 'Estimated time: 5-15 seconds';
+                    if (loadingMainText) loadingMainText.textContent = 'Loading Companies…';
+                    if (loadingTimeText) {
+                        loadingTimeText.textContent = '';
+                        loadingTimeText.hidden = true;
+                    }
                     if (loadingTimer) clearInterval(loadingTimer);
-                    loadingTimer = setInterval(function () {
-                        if (!loadingTimeText || !loadingStartedAt) return;
-                        var elapsed = Math.max(0, Math.floor((Date.now() - loadingStartedAt) / 1000));
-                        loadingTimeText.textContent = 'Estimated time: 5-15 seconds • Elapsed: ' + elapsed + 's';
-                    }, 1000);
+                    loadingTimer = null;
                     if (dataTable) dataTable.style.display = 'none';
                     emptyState.style.display = 'none';
 

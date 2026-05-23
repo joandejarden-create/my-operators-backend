@@ -308,9 +308,10 @@ class BrandDevelopmentDashboard {
         if (map[b] != null && map[b] !== '') return Number(map[b]);
         const lower = b.toLowerCase();
         for (const key of Object.keys(map)) {
-            if (key != null && String(key).trim().toLowerCase() === lower) return Number(map[key]);
+            if (key != null && String(key).trim().toLowerCase() === lower) {
+                if (map[key] != null && map[key] !== '') return Number(map[key]);
+            }
         }
-        if (deal.matchScoreNew != null && deal.matchScoreNew !== '' && !Number.isNaN(Number(deal.matchScoreNew))) return Number(deal.matchScoreNew);
         return null;
     }
 
@@ -1842,27 +1843,9 @@ class BrandDevelopmentDashboard {
     }
 
     deriveWorkspaceBucket(row) {
-        try {
-            const st = (row._requestStatus || '').trim();
-            if (['Declined', 'Responded - Declined', 'Archived'].includes(st)) return 'archived';
-            if (st === 'Revisit Later') return 'advanced';
-            if (st === 'More Info Requested') return 'awaiting-info';
-            const nda = (row.ndaStatus || '').trim();
-            const dra = (row.dealRoomAccess || '').trim();
-            const prop = (row.proposalStatus || '').trim();
-            const inNdaFlow = st === 'Deal Room Active' ||
-                nda === 'Not Sent' || nda === 'Sent' ||
-                (nda === 'Signed - Owner Confirmed' && dra && dra !== 'Granted');
-            if (inNdaFlow) return 'nda-room';
-            if (['Pre-LOI', 'Pre-LOI / Term Comparison'].includes(st) || prop === 'Draft' || prop === 'Submitted') return 'terms-proposal';
-            if (['Finalist', 'Feasibility', 'Feasibility In Progress', 'LOI Signed', 'LOI Signed / Platform Exit'].includes(st)) return 'advanced';
-            if (['Accepted', 'Responded - Accepted'].includes(st)) return 'awaiting-info';
-            if (['Brand Viewed', 'Viewed'].includes(st)) return 'active-review';
-            if (['New', 'Sent / Awaiting Response'].includes(st) || !st) return 'new';
-            return 'awaiting-info';
-        } catch (_) {
-            return 'new';
-        }
+        const P = window.DealWorkspacePipeline;
+        if (P && P.deriveWorkspaceBucket) return P.deriveWorkspaceBucket(row);
+        return 'new';
     }
 
     deriveStageLabel(row) {
@@ -1879,25 +1862,8 @@ class BrandDevelopmentDashboard {
     }
 
     deriveNextAction(row) {
-        const st = (row._requestStatus || '').trim();
-        const nda = (row.ndaStatus || '').trim();
-        const dra = (row.dealRoomAccess || '').trim();
-        const prop = (row.proposalStatus || '').trim();
-        if (['Declined', 'Archived', 'Responded - Declined'].includes(st)) return 'No action required';
-        if (st === 'New' || st === 'Sent / Awaiting Response' || !st) return 'Review new opportunity';
-        if (st === 'More Info Requested') return 'Follow up with owner';
-        if (st === 'Revisit Later') return 'Revisit later';
-        if (st === 'Brand Viewed' || st === 'Viewed') return 'Mark decision';
-        if (nda === 'Not Sent' || nda === '') return 'Send NDA';
-        if (nda === 'Sent') return 'Awaiting signed NDA';
-        if (nda === 'Signed - Owner Confirmed' && dra !== 'Granted') return 'Open deal room';
-        if (dra === 'Granted' && prop !== 'Submitted') return 'Review documents';
-        if (prop === 'Draft') return 'Prepare preliminary terms';
-        if (['Pre-LOI', 'Pre-LOI / Term Comparison'].includes(st)) return 'Prepare preliminary terms';
-        if (prop === 'Submitted') return 'Follow up with owner';
-        if (['Accepted', 'Responded - Accepted'].includes(st)) return 'Request missing owner information';
-        if (['Finalist', 'Feasibility', 'Feasibility In Progress'].includes(st)) return 'Internal review';
-        if (['LOI Signed', 'LOI Signed / Platform Exit'].includes(st)) return 'Revisit later';
+        const P = window.DealWorkspacePipeline;
+        if (P && P.deriveBrandNextAction) return P.deriveBrandNextAction(row);
         return 'Follow up with owner';
     }
 
@@ -2255,15 +2221,8 @@ class BrandDevelopmentDashboard {
     }
 
     isStalledRow(row) {
-        if (row.workspaceBucket === 'archived') return false;
-        const fu = this._parseDateMs(row.nextFollowupDate);
-        if (fu != null) {
-            const start = new Date();
-            start.setHours(0, 0, 0, 0);
-            if (fu < start.getTime()) return true;
-        }
-        const last = row.lastActivitySort;
-        if (last != null && Date.now() - last > 14 * 86400000) return true;
+        const P = window.DealWorkspacePipeline;
+        if (P && P.isStalledRow) return P.isStalledRow(row);
         return false;
     }
 
@@ -2402,7 +2361,9 @@ class BrandDevelopmentDashboard {
     }
 
     _buildKpiScopeKey(p) {
-        return ['v1', p.brand || '_', p.status || '_', p.score || '_', p.propertyType || '_', p.country || '_'].join('|');
+        const P = window.DealWorkspacePipeline;
+        if (P && P.buildKpiScopeKey) return P.buildKpiScopeKey('brand', p);
+        return ['v2', 'brand', p.brand || '_', p.status || '_', p.score || '_', p.propertyType || '_', p.country || '_'].join('|');
     }
 
     /** Same rules as workspace table filters (brand, status, score band, property type, country). */
@@ -2932,12 +2893,12 @@ class BrandDevelopmentDashboard {
             return { text: '—', trend: 'neutral' };
         }
         const d = cur - prevWindowCount;
-        if (d === 0) return { text: 'same vs prior 7d', trend: 'neutral' };
+        if (d === 0) return { text: 'No change (7d)', trend: 'neutral' };
         const pos = d > 0;
         const trend = invertColors ? (pos ? 'negative' : 'positive') : (pos ? 'positive' : 'negative');
         const arrow = pos ? '▲' : '▼';
         const sign = pos ? '+' : '';
-        return { text: `${arrow} ${sign}${d} vs prior 7 days`, trend };
+        return { text: `${arrow} ${sign}${d} (7d)`, trend };
     }
 
     /** My deal flow strip: five card wrappers; optional card title = native tooltip (what this counts). */
@@ -3001,112 +2962,21 @@ class BrandDevelopmentDashboard {
 
     async updateWorkspaceKpis() {
         const p = this._getFilterParamsFromDom();
-        const scopeKey = this._buildKpiScopeKey(p);
         const rows = this._filterWorkspaceRowsByDashboardFilters(this.allWorkspaceRows || [], p);
-        const brandActionLabels = new Set([
-            'Review new opportunity', 'Mark decision', 'Send NDA', 'Open deal room', 'Review documents',
-            'Prepare preliminary terms', 'Request missing owner information', 'Internal review', 'Follow up with owner'
-        ]);
-        const active = rows.filter((r) => r.workspaceBucket !== 'archived');
-        const needsAction = active.filter((r) => brandActionLabels.has((r.nextActionLabel || '').trim())).length;
-        const now = Date.now();
-        const newRolling7d = this._bddCountRequestSentInRange(rows, now - 7 * 86400000, now + 1);
-        const newRollingPrev7d = this._bddCountRequestSentInRange(rows, now - 14 * 86400000, now - 7 * 86400000);
-        const inReview = active.filter((r) => r.workspaceBucket === 'active-review').length;
-        const awaitingOwner = active.filter((r) => r.workspaceBucket === 'awaiting-info').length;
-        const atRisk = rows.filter((r) => this.isStalledRow(r)).length;
-
-        const pNew = rows.filter((r) => r.workspaceBucket === 'new');
-        const pReview = rows.filter((r) => r.workspaceBucket === 'active-review');
-        const pBid = rows.filter((r) => r.workspaceBucket === 'terms-proposal');
-        const pNeg = rows.filter((r) => r.workspaceBucket === 'nda-room' || r.workspaceBucket === 'advanced');
-        const pClosed = rows.filter((r) => r.workspaceBucket === 'archived' && !this._bddIsPassedArchived(r));
-        const pPassed = rows.filter((r) => r.workspaceBucket === 'archived' && this._bddIsPassedArchived(r));
-
-        const wk = this._bddIsoWeekKey(new Date());
-        const prevWk = this._bddPrevIsoWeekKey(wk);
-        let serverWeeks = {};
-        try {
-            const base = window.location.origin || '';
-            const res = await fetch(base + '/api/brand-workspace/kpi-history?scopeKey=' + encodeURIComponent(scopeKey));
-            if (res.ok) {
-                const j = await res.json();
-                if (j.success && j.weeks && typeof j.weeks === 'object') serverWeeks = j.weeks;
-            }
-        } catch (_) { /* offline */ }
-
-        const localWeeks = this._bddReadScopedWeekCache(scopeKey);
-        const mergedWeeks = { ...localWeeks, ...serverWeeks };
-        const prev = prevWk ? mergedWeeks[prevWk] : null;
-
-        const snap = {
-            needsAction,
-            newRolling7d,
-            inReview,
-            awaitingOwner,
-            atRisk,
-            pipeline: {
-                newInbound: pNew.length,
-                underReview: pReview.length,
-                bidSubmitted: pBid.length,
-                negotiation: pNeg.length,
-                closed: pClosed.length,
-                passed: pPassed.length
-            }
-        };
-        mergedWeeks[wk] = snap;
-        this._bddWriteScopedWeekCache(scopeKey, mergedWeeks);
-        this._scheduleBddKpiServerSync(scopeKey, wk, snap);
-
-        const dashWoW = { text: '—', trend: 'neutral' };
-        const tNewRoll = this._bddFormatRolling7dDelta(newRolling7d, newRollingPrev7d, false);
-        const tRisk = this._bddFormatWoWTrend(atRisk, prev ? prev.atRisk : null, true);
-
-        const reqSentHint =
-            'Counts rows whose owner request was sent to your brand in the last 7 days (each row’s request-sent date). Same filters as the table.';
-
-        const insightsHtml = this._bddRenderKpiInsightsStrip([
-            {
-                label: 'Brand action',
-                value: needsAction,
-                badgeText: dashWoW.text,
-                trend: dashWoW.trend,
-                opts: { highlight: true }
-            },
-            { label: 'Awaiting owner', value: awaitingOwner, badgeText: dashWoW.text, trend: dashWoW.trend, opts: {} },
-            { label: 'Stuck / at risk', value: atRisk, badgeText: tRisk.text, trend: tRisk.trend, opts: { atRisk: true } },
-            {
-                label: 'Requests sent (7d)',
-                value: newRolling7d,
-                badgeText: tNewRoll.text,
-                trend: tNewRoll.trend,
-                opts: { cardTitle: reqSentHint }
-            },
-            { label: 'Under review', value: inReview, badgeText: dashWoW.text, trend: dashWoW.trend, opts: {} }
-        ]);
-
-        const pipelineStages = [
-            { label: 'New inbound', list: pNew, key: 'newInbound' },
-            { label: 'Under review', list: pReview, key: 'underReview' },
-            /* Bucket = terms-proposal: Pre-LOI / term comparison, or proposal Draft/Submitted — not “bids submitted” only */
-            { label: 'Terms & proposal', list: pBid, key: 'bidSubmitted' },
-            /* pNeg = nda-room ∪ advanced (NDA/deal room + finalist/LOI/feasibility) — not the same as terms-proposal */
-            { label: 'Deal room & finalist', list: pNeg, key: 'negotiation' },
-            { label: 'Closed', list: pClosed, key: 'closed' },
-            { label: 'Passed', list: pPassed, key: 'passed' }
-        ];
-        const pipelineHtml = this._bddRenderPipelineStrip(
-            pipelineStages.map((s) => ({
-                label: s.label,
-                count: s.list.length,
-                metaHtml: this._bddPipelineStageMeta(s.list)
-            }))
-        );
-
-        const insEl = document.getElementById('bddKpiInsights');
-        const pipeEl = document.getElementById('bddKpiPipeline');
-        if (insEl) insEl.innerHTML = insightsHtml;
-        if (pipeEl) pipeEl.innerHTML = pipelineHtml;
+        if (window.DealWorkspaceInsights && window.DealWorkspacePipeline) {
+            await window.DealWorkspaceInsights.update({
+                persona: 'brand',
+                rows,
+                filterParts: p,
+                Pipeline: window.DealWorkspacePipeline,
+                insightsElId: 'bddKpiInsights',
+                pipelineElId: 'bddKpiPipeline',
+                stuckPopoverId: 'bddKpiStuckPopover',
+                flowTitleElId: null,
+                pipelineTitleElId: null
+            });
+            return;
+        }
     }
 
     updateWorkspaceTabBadges() {
@@ -3970,7 +3840,7 @@ class BrandDevelopmentDashboard {
             return;
         }
 
-        content.innerHTML = '<div class="modal-section"><p style="color: var(--neutral--400);">Loading breakdown…</p></div>';
+        content.innerHTML = '<div class="modal-section"><p style="color: var(--neutral--400);">Loading Breakdown…</p></div>';
         modal.classList.add('active');
 
         try {
@@ -4369,7 +4239,7 @@ class BrandDevelopmentDashboard {
                                             </div>
                                         </div>
                                         <div class="loading-text">
-                                            <div class="loading-text-main">Recalculating match scores...</div>
+                                            <div class="loading-text-main">Recalculating Match Scores…</div>
                                             <div class="loading-text-time">${selectedBrand || 'selected brand'}</div>
                                         </div>
                                     </div>
@@ -4801,7 +4671,7 @@ class BrandDevelopmentDashboard {
         const dr = (row.dealRoomAccess || '').trim() || '—';
         const prop = (row.proposalStatus || '').trim() || '—';
         const dealRoomLink = reqId ? '/deal-room-brand.html?requestId=' + encodeURIComponent(reqId) : '';
-        const summaryLink = '/deal-summary.html?id=' + encodeURIComponent(dealId) + '&from=bdd';
+        const summaryLink = '/deal-brief-snapshot.html?dealId=' + encodeURIComponent(dealId) + '&from=bdd';
 
         const responseNotesText = (row.responseNotes || '').trim();
         const responseNotesBlock = responseNotesText
@@ -6525,7 +6395,7 @@ class BrandDevelopmentDashboard {
                         </div>
                     </div>
                     <div class="loading-text">
-                        <div class="loading-text-main">Finding alternative brands...</div>
+                        <div class="loading-text-main">Finding Alternative Brands…</div>
                         <div class="loading-text-time">Calculating match scores</div>
                     </div>
                 </div>
@@ -6642,7 +6512,7 @@ class BrandDevelopmentDashboard {
                         </div>
                     </div>
                     <div class="loading-text">
-                        <div class="loading-text-main">Comparing brands...</div>
+                        <div class="loading-text-main">Comparing Brands…</div>
                         <div class="loading-text-time">Calculating match scores</div>
                     </div>
                 </div>

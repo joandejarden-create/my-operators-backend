@@ -271,7 +271,7 @@
                 </tr>
               </thead>
               <tbody id="activityTableBody">
-                <tr class="activity-empty-row"><td colspan="5">Loading activity...</td></tr>
+                <tr class="activity-empty-row"><td colspan="5">Loading Activity…</td></tr>
               </tbody>
             </table>
           </div>
@@ -435,8 +435,8 @@
       }
 
       function fetchActivity() {
-        metaEl.innerHTML = 'Loading activity...';
-        tableBody.innerHTML = '<tr class="activity-empty-row"><td colspan="5">Loading activity...</td></tr>';
+        metaEl.innerHTML = 'Loading Activity…';
+        tableBody.innerHTML = '<tr class="activity-empty-row"><td colspan="5">Loading Activity…</td></tr>';
         fetch('/api/outreach/deal-activity-log?limit=200')
           .then(function (res) { return res.json(); })
           .then(function (json) {

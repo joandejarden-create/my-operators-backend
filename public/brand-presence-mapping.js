@@ -119,7 +119,7 @@ function initializeMap() {
 async function loadHotelData() {
     try {
         showLoading(true);
-        showSystemStatus('Loading market signals…');
+        showSystemStatus('Loading Market Signals…');
         
         // Fetch all data from API with high limit
         const response = await fetch('/api/brand-presence?limit=100000', {
@@ -130,7 +130,7 @@ async function loadHotelData() {
         const result = await response.json();
         
         if (result.success) {
-            updateSystemStatus('Processing market signals…');
+            updateSystemStatus('Processing Market Signals…');
             allHotels = result.hotels;
             window.allHotels = allHotels;
             hotelData = [...allHotels];
@@ -572,13 +572,9 @@ function showSystemStatus(message = 'Processing…', timeEstimate = '') {
     
     // Update content
     statusText.querySelector('div:first-child').textContent = message;
-    if (timeEstimate) {
-        statusTime.textContent = `Estimated time: ${timeEstimate}`;
-        statusTime.style.display = '';
-    } else {
-        statusTime.textContent = '';
-        statusTime.style.display = 'none';
-    }
+    statusTime.textContent = '';
+    statusTime.style.display = 'none';
+    statusTime.hidden = true;
     
     // Reset progress
     progressBar.style.width = '0%';
@@ -649,13 +645,9 @@ function updateSystemStatus(message, timeEstimate = null) {
     
     if (statusElement.style.display !== 'none') {
         statusText.querySelector('div:first-child').textContent = message;
-        if (timeEstimate) {
-            statusTime.textContent = `Estimated time: ${timeEstimate}`;
-            statusTime.style.display = '';
-        } else {
-            statusTime.textContent = '';
-            statusTime.style.display = 'none';
-        }
+        statusTime.textContent = '';
+        statusTime.style.display = 'none';
+        statusTime.hidden = true;
     }
 }
 

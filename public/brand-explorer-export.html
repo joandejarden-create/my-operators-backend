@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Explorer — PDF Export</title>
+    <link rel="stylesheet" href="/css/brand-explorer-export.css">
+</head>
+<body class="bee-page">
+    <header class="bee-toolbar bee-no-print" id="beeToolbar">
+        <div>
+            <p class="bee-toolbar__title" id="beeToolbarTitle">Brand Explorer — PDF export</p>
+            <p class="bee-toolbar__hint">
+                Compact layout (fewer pages). Wait until <strong>Print / Save as PDF</strong> is enabled (images finish loading), then print with
+                <strong>Background graphics</strong> on and <strong>Headers and footers</strong> off. Add <code>?spacious=1</code> for one section per page.
+            </p>
+        </div>
+        <div class="bee-toolbar__actions">
+            <button type="button" class="bee-btn" id="beePrintBtn" disabled>Print / Save as PDF</button>
+            <a class="bee-btn bee-btn--secondary" id="beeOpenInAppLink" href="/app#/brand-explorer-combined">Open in app</a>
+        </div>
+    </header>
+    <p class="bee-page-error hidden" id="beePageError" role="alert"></p>
+    <div class="bee-frame-wrap">
+        <p class="bee-loading" id="beeLoading" role="status" aria-live="polite">Loading Brand Profile…</p>
+        <iframe
+            class="bee-frame"
+            id="beeFrame"
+            title="Brand Explorer export preview"
+            src="about:blank"
+        ></iframe>
+    </div>
+    <script>
+    (function () {
+        'use strict';
+
+        var DEFAULT_BRAND = 'Radisson (Choice)';
+        var params = new URLSearchParams(window.location.search || '');
+        var brandKey = (
+            params.get('id') ||
+            params.get('brandId') ||
+            params.get('brand') ||
+            params.get('name') ||
+            DEFAULT_BRAND
+        ).trim();
+        var autoPrint = params.get('print') === '1' || params.get('print') === 'true';
+
+        var frame = document.getElementById('beeFrame');
+        var loading = document.getElementById('beeLoading');
+        var printBtn = document.getElementById('beePrintBtn');
+        var openApp = document.getElementById('beeOpenInAppLink');
+        var pageError = document.getElementById('beePageError');
+        var toolbarTitle = document.getElementById('beeToolbarTitle');
+        var exportReady = false;
+
+        function showError(msg) {
+            if (loading) loading.classList.add('hidden');
+            if (pageError) {
+                pageError.textContent = msg;
+                pageError.classList.remove('hidden');
+            }
+            if (frame) frame.style.display = 'none';
+        }
+
+        function buildIframeSrc() {
+            var q = new URLSearchParams();
+            q.set('embed', '1');
+            q.set('exportPdf', '1');
+            if (brandKey) q.set('id', brandKey);
+            if (autoPrint) q.set('print', '1');
+            if (params.get('spacious') === '1' || params.get('spacious') === 'true') {
+                q.set('spacious', '1');
+            }
+            return '/brand-explorer-combined.html?' + q.toString();
+        }
+
+        function resizeFrame() {
+            if (!frame || !frame.contentDocument || !frame.contentDocument.body) return;
+            try {
+                var h = frame.contentDocument.documentElement.scrollHeight;
+                if (h > 200) frame.style.height = Math.max(h + 24, window.innerHeight - 88) + 'px';
+            } catch (_) {}
+        }
+
+        function onExportReady() {
+            exportReady = true;
+            if (loading) loading.classList.add('hidden');
+            if (printBtn) printBtn.disabled = false;
+            resizeFrame();
+            if (autoPrint) {
+                window.setTimeout(printExport, 500);
+            }
+        }
+
+        function printExport() {
+            if (!frame || !frame.contentWindow) {
+                window.print();
+                return;
+            }
+            try {
+                frame.contentWindow.focus();
+                frame.contentWindow.print();
+            } catch (_) {
+                window.print();
+            }
+        }
+
+        if (
+            !params.get('id') &&
+            !params.get('brandId') &&
+            !params.get('brand') &&
+            !params.get('name')
+        ) {
+            try {
+                var shareUrl = new URL(window.location.href);
+                shareUrl.searchParams.set('name', DEFAULT_BRAND);
+                window.history.replaceState({}, '', shareUrl);
+            } catch (_) {}
+        }
+
+        if (toolbarTitle) {
+            toolbarTitle.textContent = 'Brand Explorer — ' + brandKey;
+        }
+        if (openApp) {
+            openApp.href = '/app#/brand-explorer-combined?id=' + encodeURIComponent(brandKey);
+        }
+
+        if (printBtn) {
+            printBtn.addEventListener('click', printExport);
+        }
+
+        window.addEventListener('message', function (ev) {
+            if (!ev.data || ev.data.type !== 'brand-explorer-export-ready') return;
+            onExportReady();
+        });
+
+        if (frame) {
+            frame.addEventListener('load', function () {
+                window.setTimeout(resizeFrame, 400);
+                window.setTimeout(resizeFrame, 2000);
+            });
+            frame.src = buildIframeSrc();
+        }
+
+        window.setTimeout(function () {
+            if (!exportReady && loading && !loading.classList.contains('hidden')) {
+                if (printBtn) printBtn.disabled = false;
+            }
+        }, 45000);
+    })();
+    </script>
+</body>
+</html>

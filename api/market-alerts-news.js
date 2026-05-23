@@ -56,56 +56,59 @@ function parseRssXml(xml, source) {
   return items;
 }
 
+function normKey(item) {
+  const link = (item.link || "").trim().toLowerCase().replace(/\/+$/, "");
+  if (link) return link.replace(/\?.*$/, "");
+  return (item.title || "").trim().toLowerCase().slice(0, 200);
+}
+
+/** Fetch + dedupe hospitality RSS (used by API and CLI). */
+export async function fetchMarketAlertsRssItems({ limit = 50 } = {}) {
+  const allItems = [];
+  const fetchOptions = {
+    timeout: 12000,
+    headers: { "User-Agent": "DealCapture-MarketAlerts/1.0 (Hotel industry news aggregator)" },
+    validateStatus: () => true,
+  };
+
+  for (const { url, source } of RSS_FEEDS) {
+    try {
+      const { data, status } = await axios.get(url, { ...fetchOptions, responseType: "text" });
+      if (status !== 200 || typeof data !== "string") continue;
+      const items = parseRssXml(data, source);
+      allItems.push(...items);
+    } catch (err) {
+      console.warn("RSS fetch failed:", url, err.message);
+    }
+  }
+
+  allItems.sort((a, b) => {
+    const da = a.pubDate ? new Date(a.pubDate).getTime() : 0;
+    const db = b.pubDate ? new Date(b.pubDate).getTime() : 0;
+    return db - da;
+  });
+
+  const seen = new Set();
+  const unique = [];
+  for (const item of allItems) {
+    const key = normKey(item);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    unique.push(item);
+  }
+
+  const max = Math.min(Math.max(parseInt(String(limit), 10) || 50, 1), 100);
+  return unique.slice(0, max);
+}
+
 export async function getMarketAlertsNews(req, res) {
   try {
     if (cached && Date.now() - cachedAt < CACHE_MS) {
       return res.json({ success: true, items: cached, cached: true });
     }
 
-    const allItems = [];
-    const fetchOptions = {
-      timeout: 12000,
-      headers: { "User-Agent": "DealCapture-MarketAlerts/1.0 (Hotel industry news aggregator)" },
-      validateStatus: () => true,
-    };
-
-    for (const { url, source } of RSS_FEEDS) {
-      try {
-        const { data, status } = await axios.get(url, { ...fetchOptions, responseType: "text" });
-        if (status !== 200 || typeof data !== "string") continue;
-        const items = parseRssXml(data, source);
-        allItems.push(...items);
-      } catch (err) {
-        console.warn("RSS fetch failed:", url, err.message);
-      }
-    }
-
-    // Sort by date first (newest first), so dedupe keeps the newest version of each article
-    allItems.sort((a, b) => {
-      const da = a.pubDate ? new Date(a.pubDate).getTime() : 0;
-      const db = b.pubDate ? new Date(b.pubDate).getTime() : 0;
-      return db - da;
-    });
-
-    // Normalize link for dedup (lowercase, strip trailing slash and query params)
-    function normKey(item) {
-      const link = (item.link || "").trim().toLowerCase().replace(/\/+$/, "");
-      if (link) return link.replace(/\?.*$/, "");
-      return (item.title || "").trim().toLowerCase().slice(0, 200);
-    }
-
-    // Deduplicate by link (or title if no link); keep first = newest after sort
-    const seen = new Set();
-    const unique = [];
-    for (const item of allItems) {
-      const key = normKey(item);
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      unique.push(item);
-    }
-
     const limit = Math.min(parseInt(req.query.limit, 10) || 50, 100);
-    const items = unique.slice(0, limit);
+    const items = await fetchMarketAlertsRssItems({ limit });
 
     cached = items;
     cachedAt = Date.now();

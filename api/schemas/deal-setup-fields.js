@@ -4,6 +4,8 @@
  * Used by api/my-deals.js updateMyDealById and by deal-setup validation.
  */
 
+import { isOperatorInScopeFromFields } from "../../lib/operator-capability-inputs.js";
+
 // ---------------------------------------------------------------------------
 // Table names (env or default)
 // ---------------------------------------------------------------------------
@@ -90,7 +92,7 @@ const DEALS_FRANCHISE_AFFILIATION_AIRTABLE =
   DEALS_FRANCHISE_AFFILIATION_AIRTABLE_TYPO;
 
 const DEALS_OPERATOR_NAME_AIRTABLE =
-  process.env.AIRTABLE_DEALS_OPERATOR_NAME_FIELD || "Operator Name";
+  process.env.AIRTABLE_DEALS_OPERATOR_NAME_FIELD || "Operator Name Current";
 
 const DEALS_FRANCHISE_AFFILIATION_FORM_KEY =
   "Has there ever been a franchise, branded management, affiliation or similar agreement pertaining to the proposed hotel or site?";
@@ -100,6 +102,29 @@ export const DEALS_FORM_TO_AIRTABLE = {
   "Are you open to considering other brands with favorable terms?": "Are you open to lesser-known or emerging brands with favorable terms?",
   "Operator Name Current": DEALS_OPERATOR_NAME_AIRTABLE,
 };
+
+/** P0 Operator Capability Snapshot — Deals table only (form name = Airtable column). */
+export const DEALS_OPERATOR_CAPABILITY_FORM_FIELDS = [
+  "Current Operating Model",
+  "Opening / Transition Phase",
+];
+
+/** P0 Operator Capability — re-exported field names for APIs and scripts. */
+export {
+  DEALS_FIELDS,
+  LOCATION_FIELDS,
+  SI_FIELDS,
+  P0_DEALS_FORM_FIELDS,
+  P0_LOCATION_FORM_FIELDS,
+  P0_SI_FORM_FIELDS,
+} from "../../lib/operator-capability-inputs.js";
+
+export {
+  PROJECT_TYPE_CANONICAL_OPTIONS,
+  normalizeProjectTypeLabel,
+  resolveProjectTypeKind,
+  isDeprecatedProjectTypeWriteValue,
+} from "../../lib/project-type.js";
 
 /** Airtable column name → form field name (for GET merge so client rebind uses form keys). */
 export const DEALS_AIRTABLE_TO_FORM = {
@@ -185,6 +210,7 @@ export const LOCATION_FORM_TO_AIRTABLE = {
   "Micro-Location Type": "Micro-Location Type",
   "Demand Mix Targets": "Demand Mix Targets",
   "Operational Complexity Profile": "Operational Complexity Profile",
+  "Primary Market Region": "Primary Market Region",
 };
 
 /** Form field names that belong to Location & Property (used to route and delete from deal fields). */
@@ -196,6 +222,30 @@ export const LOCATION_MULTI_SELECT_FORM_KEYS = new Set([
   "Access to Transit or Highway",
   "Demand Mix Targets",
   "Operational Complexity Profile",
+]);
+
+/** Deals-only form keys (not in LOCATION/SI lists). */
+export const DEALS_ONLY_FORM_FIELDS = new Set([
+  "Property Name",
+  "Project Type",
+  "Stage of Development",
+  "Expected Opening or Rebranding Date",
+  ...DEALS_OPERATOR_CAPABILITY_FORM_FIELDS,
+  "Has there ever been a franchise, branded management, affiliation or similar agreement pertaining to the proposed hotel or site?",
+  "Is the hotel currently branded?",
+  "Is the hotel currently managed by a third-party operator?",
+  "Are you open to considering other brands with favorable terms?",
+  "Have you worked with any of your preferred brands/operators before?",
+  "Operator Name Current",
+  "Current Brand Affiliation",
+  "Parent Company Name",
+  "F&B Outlets?",
+  "Meeting Space",
+  "Number of Meeting Rooms",
+  "Condo Residences?",
+  "Hotel Rental Program?",
+  "Parking Amenities?",
+  "Additional Amenities",
 ]);
 
 /**
@@ -327,7 +377,17 @@ export const STRATEGIC_INTENT_FORM_FIELDS = [
   "Planned Hold Period",
   "Primary Goal for the Hotel",
   "Primary Goal for the Hotel Other",
+  "Strategy Type",
+  "Brand Role Intent",
+  "Decision Horizon",
+  "Owner Control Priorities",
+  "Contract Flexibility Priorities",
   "Plan to Self-Manage or Hire Third Party?",
+  "Preferred Future Operating Model",
+  "Operator Strategy Status",
+  "Operator Capability Priorities",
+  "Owner Reporting Package",
+  "Owner Reporting Frequency",
   "Who should receive bids for this project?",
   "Minimum Operator Experience (years)",
   "Preferred Third-Party Operators (names)",
@@ -394,8 +454,26 @@ export const SI_FORM_TO_AIRTABLE = {
   "Critical Deadlines Description": "Critical Deadlines Text",
   "Must-haves From Brand or Operator": "Must-Haves From Brand/Operator",
   "Must-haves From Brand or Operator Other": "Must-Haves From Brand/Operator Other Text",
-  "Incentive Types Interested In Other": "Incentive Types Interested In Other Text"
+  "Incentive Types Interested In Other": "Incentive Types Interested In Other Text",
 };
+
+/** Strategic Intent fields stored as multi-select in Airtable. */
+export const SI_MULTI_SELECT_FORM_KEYS = new Set([
+  "Owner Control Priorities",
+  "Contract Flexibility Priorities",
+  "Operator Capability Priorities",
+  "Owner Reporting Package",
+  "Preferred Third-Party Operator Profile",
+  "Services Required From Operator",
+  "Top 3 Success Metrics",
+  "Top Priorities for Project",
+  "Top Concerns for this Project",
+  "Top 3 Deal Breakers",
+  "Must-haves From Brand or Operator",
+  "Incentive Types Interested In",
+  "Preferred Chain Scales",
+  "Preferred Brands (up to 4)",
+]);
 
 export const SI_AIRTABLE_TO_FORM = {
   "Preferred Brands": "Preferred Brands (up to 4)",
@@ -533,6 +611,7 @@ const _DEAL_SETUP_LOC_KEYS = new Set(LOCATION_FORM_FIELDS);
 const _DEAL_SETUP_SI_KEYS = new Set(STRATEGIC_INTENT_FORM_FIELDS);
 const _DEAL_SETUP_CU_KEYS = new Set(CONTACT_UPLOADS_FORM_FIELDS);
 const _DEAL_SETUP_LS_KEYS = new Set(LEASE_STRUCTURE_FORM_FIELDS);
+const _DEAL_SETUP_DEALS_ONLY_KEYS = DEALS_ONLY_FORM_FIELDS;
 
 /** Target Airtable table for a Deal Setup form field name (same routing as PATCH). */
 export function classifyDealSetupFormField(fieldName) {
@@ -541,27 +620,62 @@ export function classifyDealSetupFormField(fieldName) {
   if (_DEAL_SETUP_SI_KEYS.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.STRATEGIC_INTENT;
   if (_DEAL_SETUP_CU_KEYS.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.CONTACT_UPLOADS;
   if (_DEAL_SETUP_LS_KEYS.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.LEASE;
+  if (_DEAL_SETUP_DEALS_ONLY_KEYS.has(fieldName)) return DEAL_SETUP_AIRTABLE_TABLE_NAMES.DEALS;
   return DEAL_SETUP_AIRTABLE_TABLE_NAMES.DEALS;
+}
+
+/**
+ * Conditional required fields for Operator Capability P0 (when operator path is in scope).
+ * @param {Record<string, unknown>} fields — merged deal fields
+ * @returns {string[]}
+ */
+export function operatorCapabilityConditionalRequiredFields(fields) {
+  if (!isOperatorInScopeFromFields(fields)) return [];
+  const out = [
+    "Current Operating Model",
+    "Preferred Future Operating Model",
+    "Primary Market Region",
+    "Opening / Transition Phase",
+    "Operator Strategy Status",
+    "Operator Capability Priorities",
+  ];
+  const preferred = String(
+    fields["Preferred Future Operating Model"] ||
+      fields["Plan to Self-Manage or Hire Third Party?"] ||
+      ""
+  );
+  if (/third.party|brand \+ third/i.test(preferred)) {
+    out.push("Owner Reporting Frequency");
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------
 // Required fields by section (M1 source of truth; section 7 = Lease, skip when Lease hidden)
 // ---------------------------------------------------------------------------
 export const REQUIRED_DEAL_SETUP_FIELDS_BY_SECTION = {
-  0: ["Property Name", "Project Type", "Stage of Development"],
+  0: [
+    "Property Name",
+    "Project Type",
+    "Stage of Development",
+    "Opening / Transition Phase",
+  ],
   1: [
     "Has there ever been a franchise, branded management, affiliation or similar agreement pertaining to the proposed hotel or site?",
     "Is the hotel currently branded?",
     "Is the hotel currently managed by a third-party operator?",
+    "Current Operating Model",
     "Are you open to considering other brands with favorable terms?",
     "Have you worked with any of your preferred brands/operators before?",
   ],
   2: [
     "Full Address",
+    "Country",
     "Hotel Chain Scale",
     "Hotel Type",
     "Hotel Submarket & Location",
     "Hotel Service Model",
+    "Primary Market Region",
     "Ownership/Brand History or Track Record",
     "Zoned for Hotel Development",
     "Site/Development Restrictions?",
@@ -593,6 +707,7 @@ export const REQUIRED_DEAL_SETUP_FIELDS_BY_SECTION = {
     "IRR/Yield Goals",
     "Open to Outside Capital or Partnerships?",
     "Plan to Self-Manage or Hire Third Party?",
+    "Preferred Future Operating Model",
     "Preferred Chain Scales",
     "Open to Soft Brand First Then Reflag?",
     "Target Guest Segment",
@@ -600,10 +715,12 @@ export const REQUIRED_DEAL_SETUP_FIELDS_BY_SECTION = {
     "Planned Hold Period",
     "Primary Goal for the Hotel",
     "Who should receive bids for this project?",
+    "Operator Strategy Status",
     "Minimum Operator Experience (years)",
     "Preferred Third-Party Operators (names)",
     "Preferred Third-Party Operator Profile",
     "Services Required From Operator",
+    "Operator Capability Priorities",
     "Other Operator Criteria or Notes",
     "Level of Involvement in Day-to-Day Ops",
   ],

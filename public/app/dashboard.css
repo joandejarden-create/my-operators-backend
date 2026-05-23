@@ -1481,7 +1481,7 @@ html, body {
 
 .dc-toolbox-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.4rem;
   padding: 0.35rem 0.5rem;
   background: transparent;
@@ -1501,19 +1501,12 @@ html, body {
   color: #fff;
 }
 
-.dc-toolbox-item span:not(.dc-toolbox-item__icon):not(.dc-toolbox-item__status) {
-  overflow-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
-  line-height: 1.3;
+.dc-toolbox-item__label {
   flex: 1;
   min-width: 0;
   text-align: left;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  max-height: 2.6em;
+  line-height: 1.25;
+  white-space: normal;
   padding-right: 4px;
 }
 
@@ -1677,6 +1670,17 @@ html, body {
   font-size: 11px;
   color: var(--dc-text-muted);
   margin-top: 2px;
+}
+
+/* Market Intelligence rail: cap commentary to ~3 lines */
+#dc-market-intel .dc-activity-feed__deal {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  line-height: 1.45;
+  max-height: calc(1.45em * 3);
+  word-break: break-word;
 }
 
 /* ----- Links ----- */

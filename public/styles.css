@@ -2607,6 +2607,28 @@ html {
     font-size: 1rem;
 }
 
+/* Wave loaders: hide subline when empty (duration estimates removed platform-wide) */
+.loading-text-time:empty,
+.status-time:empty {
+    display: none !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+}
+
+/* Loading / status animation copy — title case per word (Loading Brand… not Loading brand…) */
+.loading-text-main,
+.loading-text-time:not(:empty),
+.loading-text,
+.oh-loading,
+.loading-wave-text,
+.bee-loading,
+.um-loading,
+.system-status .status-text > div:first-child,
+.ranked-list-loading > span,
+.loading:not(:has(.loading-content)):not(:has(.wave-container)):not(:has(.loading-text-main)) {
+    text-transform: capitalize;
+}
+
 /* Notifications */
 .notification {
     position: fixed;

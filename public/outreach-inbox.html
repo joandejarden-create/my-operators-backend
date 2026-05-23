@@ -37,7 +37,7 @@
                 <span id="inbox-count" class="inbox-count">—</span>
               </div>
             </div>
-            <div id="inbox-loading" class="oh-loading" style="padding: 20px; display: none;">Loading threads…</div>
+            <div id="inbox-loading" class="oh-loading" style="padding: 20px; display: none;">Loading Threads…</div>
             <div id="inbox-empty" class="oh-muted" style="padding: 20px; display: none;">No threads match. Open Plans to view all.</div>
             <div id="inbox-thread-list-scroll" class="inbox-thread-list-scroll" style="display: none;"></div>
           </div>
@@ -97,7 +97,7 @@
                 <button type="button" class="btn btn-primary" id="inbox-save-thread-btn">Save thread</button>
               </div>
               <div class="inbox-reading-messages-shell">
-                <div id="inbox-msg-loading" class="oh-loading inbox-msg-loading-bar" style="display: none;">Loading messages…</div>
+                <div id="inbox-msg-loading" class="oh-loading inbox-msg-loading-bar" style="display: none;">Loading Messages…</div>
                 <div id="inbox-reading-messages" class="inbox-reading-messages"></div>
               </div>
               <div class="inbox-compose">
@@ -312,7 +312,7 @@
     var parts = [];
     if (dealId && /^rec/.test(dealId)) {
       var dealLabel = dealNameById[dealId] ? escapeHtml(dealNameById[dealId]) : 'Open deal summary';
-      parts.push('<a href="/deal-summary.html?id=' + encodeURIComponent(dealId) + '" target="_blank" rel="noopener">' + dealLabel + '</a>');
+      parts.push('<a href="/deal-brief-snapshot.html?dealId=' + encodeURIComponent(dealId) + '" target="_blank" rel="noopener">' + dealLabel + '</a>');
     }
     if (planId && /^rec/.test(planId)) {
       parts.push('<a href="/outreach-plans#thread=' + encodeURIComponent(selectedThread.id) + '" target="_blank" rel="noopener">Open in Outreach Plans</a>');

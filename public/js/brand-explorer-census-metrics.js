@@ -130,7 +130,7 @@
         isMvpFallback: false,
         isUnverifiedFallback: true,
         displaySourceLabel: VERIFIED_EMPTY_MESSAGE,
-        showVerifiedMetrics: false
+        showVerifiedMetrics: hasMetrics
       };
     }
 
@@ -240,6 +240,37 @@
     return fp;
   }
 
+  /**
+   * Portfolio pipeline totals aligned with regional "Pipeline Hotel/Rooms" columns.
+   * Prefers summing regionalDistribution; falls back to totalPipeline* then new build + conversion.
+   */
+  function footprintPipelineTotals(fp) {
+    if (!fp || typeof fp !== 'object') return { hotels: 0, rooms: 0 };
+    var reg = fp.regionalDistribution;
+    if (reg && typeof reg === 'object') {
+      var keys = Object.keys(reg);
+      if (keys.length) {
+        var sumH = 0;
+        var sumR = 0;
+        for (var i = 0; i < keys.length; i++) {
+          var o = reg[keys[i]] || {};
+          sumH += Number(o.pipelineHotels) || 0;
+          sumR += Number(o.pipelineRooms) || 0;
+        }
+        return { hotels: sumH, rooms: sumR };
+      }
+    }
+    var ph = Number(fp.totalPipelineHotels);
+    var pr = Number(fp.totalPipelineRooms);
+    if ((!isNaN(ph) && ph > 0) || (!isNaN(pr) && pr > 0)) {
+      return { hotels: isNaN(ph) ? 0 : ph, rooms: isNaN(pr) ? 0 : pr };
+    }
+    return {
+      hotels: (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0),
+      rooms: (Number(fp.totalNewBuildRooms) || 0) + (Number(fp.totalConversionRooms) || 0)
+    };
+  }
+
   function breakdownToRegionalDistribution(rows) {
     var rd = {};
     (rows || []).forEach(function (row) {
@@ -347,6 +378,27 @@
     var trust = footprintTrustModel(brand);
 
     if (trust.sourceUsed === 'unverified') {
+      if (footprintHasMetricValues(baseFp)) {
+        var mvpFromUnverified = Object.assign({}, baseFp);
+        mvpFromUnverified.formValues = Object.assign({}, baseFp.formValues || {});
+        return {
+          useCensus: false,
+          sourceUsed: 'mvp-footprint',
+          isCensusBacked: false,
+          isMvpFallback: true,
+          isUnverifiedFallback: true,
+          showVerifiedMetrics: true,
+          displaySourceLabel: trust.displaySourceLabel,
+          sourceNote: SOURCE_NOTE_MVP,
+          metricsBanner: trust.displaySourceLabel,
+          verifiedEmptyMessage: VERIFIED_EMPTY_MESSAGE,
+          breakdownEmptyMessage: BREAKDOWN_EMPTY_MESSAGE,
+          fp: mvpFromUnverified,
+          countryBreakdown: null,
+          chainScaleBreakdown: null,
+          locationTypeBreakdown: null
+        };
+      }
       return {
         useCensus: false,
         sourceUsed: 'unverified',
@@ -356,6 +408,7 @@
         showVerifiedMetrics: false,
         displaySourceLabel: trust.displaySourceLabel,
         sourceNote: null,
+        metricsBanner: trust.displaySourceLabel,
         verifiedEmptyMessage: VERIFIED_EMPTY_MESSAGE,
         breakdownEmptyMessage: BREAKDOWN_EMPTY_MESSAGE,
         fp: emptyDisplayFootprint(baseFp),
@@ -398,8 +451,25 @@
     fp.totalConversionHotels = 0;
     fp.totalConversionRooms = 0;
     fp.formValues.numberOfMarkets = m.countryCount;
-    fp.regionalDistribution = breakdownToRegionalDistribution(b.dealalityRegion);
+    var censusRegionRows = sortBreakdownForPortfolioDisplay(b.dealalityRegion || []);
+    var censusCountryRows = sortBreakdownForPortfolioDisplay(b.country || []);
+    var regionalDistribution = breakdownToRegionalDistribution(b.dealalityRegion);
+    var censusDistributionMissing =
+      !censusRegionRows.length && !censusCountryRows.length;
+    if (
+      censusDistributionMissing &&
+      baseFp.regionalDistribution &&
+      typeof baseFp.regionalDistribution === 'object' &&
+      Object.keys(baseFp.regionalDistribution).length
+    ) {
+      regionalDistribution = Object.assign({}, baseFp.regionalDistribution);
+    }
+    var stillNoDistribution = !Object.keys(regionalDistribution).length;
+    fp.regionalDistribution = regionalDistribution;
     fp.locationDistribution = breakdownToLocationDistribution(b.locationType);
+    var pipeTotals = footprintPipelineTotals(fp);
+    fp.totalPipelineHotels = pipeTotals.hotels;
+    fp.totalPipelineRooms = pipeTotals.rooms;
 
     return {
       useCensus: true,
@@ -410,11 +480,13 @@
       showVerifiedMetrics: true,
       displaySourceLabel: trust.displaySourceLabel,
       sourceNote: SOURCE_NOTE_CENSUS,
+      metricsBanner: null,
+      censusBreakdownNotice: stillNoDistribution ? BREAKDOWN_EMPTY_MESSAGE : null,
       verifiedEmptyMessage: VERIFIED_EMPTY_MESSAGE,
       breakdownEmptyMessage: BREAKDOWN_EMPTY_MESSAGE,
       fp: fp,
-      countryBreakdown: sortBreakdownForPortfolioDisplay(b.country || []),
-      dealalityRegionBreakdown: sortBreakdownForPortfolioDisplay(b.dealalityRegion || []),
+      countryBreakdown: censusCountryRows.length ? censusCountryRows : null,
+      dealalityRegionBreakdown: censusRegionRows.length ? censusRegionRows : null,
       chainScaleBreakdown: sortBreakdownForPortfolioDisplay(b.chainScale || []),
       locationTypeBreakdown: sortBreakdownForPortfolioDisplay(b.locationType || [])
     };
@@ -430,6 +502,8 @@
     useCensusSummary: useCensusSummary,
     footprintTrustModel: footprintTrustModel,
     footprintDisplayModel: footprintDisplayModel,
+    footprintPipelineTotals: footprintPipelineTotals,
+    footprintHasMetricValues: footprintHasMetricValues,
     breakdownToTableRows: breakdownToTableRows,
     breakdownRowToPortfolioRow: breakdownRowToPortfolioRow,
     normalizeBreakdownRow: normalizeBreakdownRow,

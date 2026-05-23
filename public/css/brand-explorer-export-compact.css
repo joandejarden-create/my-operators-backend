@@ -1,0 +1,220 @@
+/**
+ * Compact Brand Explorer PDF export — fewer pages, continuous flow.
+ * Active when html has be-export-pdf be-export-pdf--compact (default for ?exportPdf=1).
+ * Use ?spacious=1 on the export URL for one section per page (legacy layout).
+ */
+
+html.be-export-pdf.be-export-pdf--compact .be-export-pdf-caveat-mount {
+  margin-bottom: 10px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-export-pdf-caveat-wrap {
+  padding: 8px 12px;
+  border-width: 2px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-export-pdf-caveat-wrap__text {
+  font-size: 0.625rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-export-section-title {
+  font-size: 1.05rem;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  page-break-after: avoid;
+  break-after: avoid-page;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-oe {
+  --oe-card-h: 120px;
+  --explorer-card-media-height: 120px;
+  /* Openings / Examples cards — taller hero strip (default explorer ~200px) */
+  --property-example-media-height: 168px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .oe-section {
+  padding: 10px 12px 12px;
+  margin-bottom: 10px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .oe-section-title {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .oe-section-hint {
+  margin-bottom: 10px;
+  font-size: 0.7rem;
+}
+
+/* Footprint openings — preserve readable photo area in export preview (not squashed to 100px) */
+html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .property-example-card__top {
+  height: var(--property-example-media-height, 168px);
+  min-height: var(--property-example-media-height, 168px);
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .property-example-card__top img {
+  max-height: none;
+  height: 100%;
+  min-height: var(--property-example-media-height, 168px);
+  object-fit: cover;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-section {
+  margin-bottom: 16px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-section-title {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-metrics-row {
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .be-atelier-meta-card {
+  padding: 8px 10px;
+}
+
+html.be-export-pdf.be-export-pdf--compact .btn,
+html.be-export-pdf.be-export-pdf--compact button.btn,
+html.be-export-pdf.be-export-pdf--compact .be-brand-save-btn,
+html.be-export-pdf.be-export-pdf--compact .favorite-star,
+html.be-export-pdf.be-export-pdf--compact .be-airtable-path {
+  display: none !important;
+}
+
+html.be-export-pdf.be-export-pdf--compact .brand-hero__actions,
+html.be-export-pdf.be-export-pdf--compact .brand-hero__save-wrap {
+  display: none !important;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact,
+  html.be-export-pdf.be-export-pdf--compact body {
+    font-size: 10.5px;
+    line-height: 1.4;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe {
+    --oe-card-h: 100px;
+    --explorer-card-media-height: 100px;
+    --property-example-media-height: 152px;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .property-example-card__top {
+    height: var(--property-example-media-height, 152px) !important;
+    min-height: var(--property-example-media-height, 152px) !important;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .property-example-card__top img {
+    max-height: none !important;
+    height: 100% !important;
+    min-height: var(--property-example-media-height, 152px) !important;
+    object-fit: cover;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .gallery-card--has-image img,
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .case-study-card__media img {
+    max-height: 100px !important;
+    height: 100px !important;
+    object-fit: cover;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .proof-card,
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .leader-card {
+    min-height: 0 !important;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .proof-card img,
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .leader-card img {
+    height: 100px !important;
+    min-height: 0 !important;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .oe-grid-2,
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .oe-grid-3,
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .scenario-card-grid {
+    gap: 8px;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .oe-grid-2.oe-grid-2--snapshot,
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-oe .oe-grid-2.oe-grid-2--operating-model {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .brand-hero.be-combined-presentation-hero {
+    padding: 12px 14px 14px;
+    margin-bottom: 12px;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .brand-hero__title {
+    font-size: 1.35rem;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .brand-hero__summary {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .brand-hero .meta-card {
+    padding: 8px 10px;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-tab-panel {
+    page-break-before: auto !important;
+    break-before: auto !important;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-export-section-title {
+    page-break-before: auto;
+    break-before: auto;
+    margin-top: 14px;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-tab-panel > .be-export-section-title:first-child {
+    margin-top: 0;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .oe-section,
+  html.be-export-pdf.be-export-pdf--compact .explorer-detail-card,
+  html.be-export-pdf.be-export-pdf--compact .scenario-card {
+    page-break-inside: avoid;
+    break-inside: avoid-page;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-gold-embed .be-panel {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-standards-owner-table {
+    min-width: 0;
+    font-size: 9px;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-mini-table th,
+  html.be-export-pdf.be-export-pdf--compact .be-atelier-mini-table td {
+    padding: 4px 6px;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .oe-section--standards-table {
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+
+  html.be-export-pdf.be-export-pdf--compact .be-standards-owner-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid-page;
+  }
+}

@@ -524,8 +524,7 @@ document.addEventListener("DOMContentLoaded", function () {
       '      <div class="wave wave-3"></div>' +
       "    </div>" +
       "    <div>" +
-      '      <div class="loading-text-main">Loading operator...</div>' +
-      '      <div class="loading-text-time">Estimated time: 2-6 seconds</div>' +
+      '      <div class="loading-text-main">Loading Operator…</div>' +
       "    </div>" +
       "  </div>" +
       '  <div class="loading-progress"><div class="loading-progress-bar"></div></div>' +

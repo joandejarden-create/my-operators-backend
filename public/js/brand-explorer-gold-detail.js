@@ -1,6 +1,6 @@
 /**
  * Brand Explorer detail — Operator Gold Mock shell + full Brand Setup API payload.
- * Tabs: Requirements & Standards, Dev. Support & Legal.
+ * Tabs: Requirements & Standards, Dev. Support & Legal (legacy embed only — hidden on combined unified explorer; see atelier-standards-owner tab).
  */
 (function () {
   'use strict';
@@ -36,6 +36,20 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  function footprintPipelineTotals(fp) {
+    if (
+      typeof BrandExplorerCensusMetrics !== 'undefined' &&
+      BrandExplorerCensusMetrics.footprintPipelineTotals
+    ) {
+      return BrandExplorerCensusMetrics.footprintPipelineTotals(fp);
+    }
+    if (!fp || typeof fp !== 'object') return { hotels: 0, rooms: 0 };
+    return {
+      hotels: (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0),
+      rooms: (Number(fp.totalNewBuildRooms) || 0) + (Number(fp.totalConversionRooms) || 0)
+    };
   }
 
   function humanizeKey(k) {
@@ -348,26 +362,32 @@
       return b[5] - a[5];
     });
 
+    var pipeTotals = footprintPipelineTotals(fp);
+    var pipH = pipeTotals.hotels;
+    var pipR = pipeTotals.rooms;
+    var openH = toNumber(fp.totalExistingHotels);
+    var openR = toNumber(fp.totalExistingRooms);
+
     var cs = brand.hotelChainScale || 'Unknown';
     var chainRows = [[
       cs,
-      toNumber(fp.totalExistingHotels),
-      toNumber(fp.totalExistingRooms),
-      toNumber(fp.totalNewBuildHotels) + toNumber(fp.totalConversionHotels),
-      toNumber(fp.totalNewBuildRooms) + toNumber(fp.totalConversionRooms),
-      toNumber(fp.totalExistingHotels) + toNumber(fp.totalNewBuildHotels) + toNumber(fp.totalConversionHotels),
-      toNumber(fp.totalExistingRooms) + toNumber(fp.totalNewBuildRooms) + toNumber(fp.totalConversionRooms)
+      openH,
+      openR,
+      pipH,
+      pipR,
+      openH + pipH,
+      openR + pipR
     ]];
 
     var bname = brand.name || brand.brandName || 'Brand';
     var brandRows = [[
       bname,
-      toNumber(fp.totalExistingHotels),
-      toNumber(fp.totalExistingRooms),
-      toNumber(fp.totalNewBuildHotels) + toNumber(fp.totalConversionHotels),
-      toNumber(fp.totalNewBuildRooms) + toNumber(fp.totalConversionRooms),
-      toNumber(fp.totalExistingHotels) + toNumber(fp.totalNewBuildHotels) + toNumber(fp.totalConversionHotels),
-      toNumber(fp.totalExistingRooms) + toNumber(fp.totalNewBuildRooms) + toNumber(fp.totalConversionRooms)
+      openH,
+      openR,
+      pipH,
+      pipR,
+      openH + pipH,
+      openR + pipR
     ]];
 
     return {
@@ -673,6 +693,10 @@
     chainScaleThemeRoots(extraRoots).forEach(function (el) {
       applyChainScaleThemeVars(el, hex);
     });
+    ['brandHero', 'brandHeroPopup'].forEach(function (hid) {
+      var heroEl = document.getElementById(hid);
+      if (heroEl) applyChainScaleThemeVars(heroEl, hex);
+    });
     applyHeroStripe(brand);
   }
 
@@ -682,7 +706,9 @@
     });
     ['brandHero', 'brandHeroPopup'].forEach(function (hid) {
       var el = document.getElementById(hid);
-      if (el) el.style.removeProperty('--hero-stripe-bg');
+      if (!el) return;
+      applyChainScaleThemeVars(el, null);
+      el.style.removeProperty('--hero-stripe-bg');
     });
   }
 
@@ -749,7 +775,7 @@
       fp = disp.fp || fp;
     }
     var openH = fp.totalExistingHotels;
-    var pipH = (Number(fp.totalNewBuildHotels) || 0) + (Number(fp.totalConversionHotels) || 0);
+    var pipH = footprintPipelineTotals(fp).hotels;
     var rd = fp.regionalDistribution && typeof fp.regionalDistribution === 'object' ? fp.regionalDistribution : {};
     var rdKeys = Object.keys(rd);
     if (openH == null || openH === '') {
@@ -760,13 +786,6 @@
         });
         if (sumOpen) openH = sumOpen;
       }
-    }
-    if (!pipH && rdKeys.length) {
-      var sumPipe = 0;
-      rdKeys.forEach(function (k) {
-        sumPipe += Number((rd[k] || {}).pipelineHotels) || 0;
-      });
-      if (sumPipe) pipH = sumPipe;
     }
     var parts = [];
     if ((openH != null && openH !== '') || pipH > 0) {
@@ -872,6 +891,36 @@
     );
   }
 
+  var PRESENTATION_EXPORT_PDF_CAVEAT =
+    'Working sample for discussion only. Brand positioning and development fit information are illustrative and subject to validation. Economic information is initially informed by publicly available FDD materials where applicable and should not be treated as legal, financial, or franchise advice.';
+
+  /** Shown only on Brand Explorer PDF export (?exportPdf=1), not in-app combined view. */
+  function presentationExportPdfCaveatHtml() {
+    if (!document.documentElement || !document.documentElement.classList.contains('be-export-pdf')) {
+      return '';
+    }
+    return (
+      '<div class="be-export-pdf-caveat-wrap" role="note" aria-label="Working sample disclaimer">' +
+      '<p class="be-export-pdf-caveat-wrap__text">' +
+      escapeHtml(PRESENTATION_EXPORT_PDF_CAVEAT) +
+      '</p></div>'
+    );
+  }
+
+  function syncPresentationExportPdfCaveat() {
+    var mount = document.getElementById('beExportPdfCaveatMount');
+    if (!mount) return;
+    var html = presentationExportPdfCaveatHtml();
+    mount.innerHTML = html;
+    if (html) {
+      mount.hidden = false;
+      mount.removeAttribute('hidden');
+    } else {
+      mount.innerHTML = '';
+      mount.hidden = true;
+    }
+  }
+
   /** Atelier North education–style header (unified combined + modal). opts.heroId defaults to brandHero; use brandHeroPopup in modal. */
   function renderPresentationHero(brand, opts) {
     opts = opts || {};
@@ -928,15 +977,18 @@
         escapeHtml((name || '?').charAt(0).toUpperCase()) +
         '</div>';
 
-    var bannerHtml = isDemo
-      ? '<div class="brand-hero__mock-warning" role="note" aria-live="polite">' +
-        '<svg class="brand-hero__mock-warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>' +
-        '<line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>' +
-        '</svg>' +
-        '<span class="brand-hero__mock-warning-text"><strong>Mock Data Display:</strong> This dashboard shows sample data to demonstrate the intended presentation format.</span>' +
-        '</div>'
-      : '';
+    var isExportPdf =
+      document.documentElement && document.documentElement.classList.contains('be-export-pdf');
+    var bannerHtml =
+      !isExportPdf && isDemo
+        ? '<div class="brand-hero__mock-warning" role="note" aria-live="polite">' +
+          '<svg class="brand-hero__mock-warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>' +
+          '<line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>' +
+          '</svg>' +
+          '<span class="brand-hero__mock-warning-text"><strong>Mock Data Display:</strong> This dashboard shows sample data to demonstrate the intended presentation format.</span>' +
+          '</div>'
+        : '';
 
     var updatedMeta = isDemo
       ? '<span class="meta-muted">Last updated March 2026</span>'
@@ -1083,8 +1135,9 @@
 
     var existingHotels = toNumber(fp.totalExistingHotels);
     var existingRooms = toNumber(fp.totalExistingRooms);
-    var pipelineHotels = toNumber(fp.totalNewBuildHotels) + toNumber(fp.totalConversionHotels);
-    var pipelineRooms = toNumber(fp.totalNewBuildRooms) + toNumber(fp.totalConversionRooms);
+    var pipeTotals = footprintPipelineTotals(fp);
+    var pipelineHotels = pipeTotals.hotels;
+    var pipelineRooms = pipeTotals.rooms;
 
     var totalTable = footprintTableFromRows([
       ['', 'Existing Hotels', 'Existing Rooms', 'Pipeline Hotels', 'Pipeline Rooms'],
@@ -1440,6 +1493,7 @@
       if (heroMount) {
         heroMount.innerHTML = unifiedTabs ? renderPresentationHero(brand) : renderHero(brand);
       }
+      syncPresentationExportPdfCaveat();
       applyChainScaleTheme(brand);
       if (unifiedTabs) {
         wirePresentationMetaValueTooltips();

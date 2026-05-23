@@ -5,10 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deal Readiness Snapshot - Dealality</title>
     <link rel="stylesheet" href="/css/deal-readiness-snapshot.css">
+    <link rel="stylesheet" href="/css/snapshot-page-shell.css">
 </head>
 <body>
-    <div class="drs-page" id="drsPage">
-        <div class="drs-page-loading" id="drsPageLoading">Loading Deal Readiness Snapshot…</div>
+    <div class="snapshot-page drs-page" id="drsPage">
+        <div class="drs-page-loading" id="drsPageLoading" role="status" aria-live="polite">
+            <div class="loading">
+                <div class="loading-content">
+                    <div class="wave-container">
+                        <div class="wave wave-1"></div>
+                        <div class="wave wave-2"></div>
+                        <div class="wave wave-3"></div>
+                        <div class="wave-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="loading-text-main">Analyzing Deal Readiness…</div>
+                    </div>
+                </div>
+                <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+            </div>
+        </div>
         <div id="drsPageRoot" hidden></div>
     </div>
     <script src="/js/dealality-memberstack-auth.js"></script>
@@ -24,7 +45,7 @@
         var root = document.getElementById("drsPageRoot");
 
         if (page) {
-            page.classList.add("drs-page--full");
+            page.classList.add("drs-page--full", "snapshot-page--full");
             if (chromeless) page.classList.add("drs-page--chromeless");
         }
 
@@ -67,6 +88,7 @@
                         embed: false,
                         fullPage: true,
                         dealId: dealId,
+                        backHref: "/my-deals.html",
                         generatedAt: new Date().toISOString(),
                     });
                     if (autoPrint) {

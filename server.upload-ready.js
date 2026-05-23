@@ -46,6 +46,7 @@ import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
 import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } from "./api/operators-by-brand-region.js";
 import { getTravelInfrastructure } from "./api/travel-infrastructure.js";
+import { getDealalityScout, getDealalityScoutFilters } from "./api/dealality-scout.js";
 import { getBrandReviewDeals, updateDealStatus, getDealDetails, bulkUpdateDeals, getBrandReviewStats, getMatchedBrands } from "./api/brand-review.js";
 import { analyzeBrandFit, getDealBrandFit, getAllDealsForAnalysis } from "./api/brand-fit-analyzer.js";
 import { getClauses, getClauseById, getClauseVariables, getClauseIds, createClause } from "./api/clause-library.js";
@@ -86,6 +87,7 @@ import {
   createCompanyProfile,
   updateCompanyProfile,
   getCompanyProfilePrefill,
+  getMyCompanyProfilePrefill,
 } from "./api/company-profile.js";
 import {
   listUsers as listUserManagementUsers,
@@ -96,6 +98,8 @@ import {
   listCompanies as listUserManagementCompanies,
 } from "./api/user-management.js";
 import { getMyDeals, getDealById, updateMyDealById, createDeal, addRecommendedBrand, getAlternativeBrands, getMatchScoreBreakdown, getOperatorMatchScoreBreakdown, refreshDealBrandCache, uploadDealAttachments, ALLOWED_ATTACHMENT_EXTENSIONS, MAX_ATTACHMENT_FILE_SIZE_BYTES } from "./api/my-deals.js";
+import { getDealReadinessMeta, postDealReadinessReview, postDealReadinessSave } from "./api/deal-readiness-review.js";
+import { postBrandAlignmentSnapshot } from "./api/brand-alignment-snapshot.js";
 import { getOutreachSetup, updateOutreachSetup, getOutreachDefault, updateOutreachDefault, deleteOutreachSetup } from "./api/outreach-setup.js";
 import { getFranchiseApplication, updateFranchiseApplication } from "./api/franchise-application.js";
 import { list as outreachHubList, get as outreachHubGet, create as outreachHubCreate, update as outreachHubUpdate, remove as outreachHubRemove } from "./api/outreach-hub.js";
@@ -350,6 +354,12 @@ app.get("/api/me", getMe);
 app.post("/api/me", getMe);
 
 app.get("/api/auth/me", memberstackAuth, requireDealalityUser, getAuthMe);
+app.get(
+  "/api/company-profile/mine",
+  memberstackAuth,
+  requireDealalityUser,
+  getMyCompanyProfilePrefill
+);
 app.get("/api/auth/memberstack-config", getMemberstackPublicConfig);
 
 app.post("/api/intake/third-party-operator", handleThirdPartyOperatorIntake);
@@ -385,6 +395,11 @@ app.get("/api/my-deals/:recordId/operator-match-score-breakdown", getOperatorMat
 app.patch("/api/my-deals/:recordId", ...myDealsDealAuth, updateMyDealById);
 app.post("/api/my-deals/:recordId/add-recommended-brand", addRecommendedBrand);
 app.post("/api/my-deals/:recordId/refresh-brand-cache", refreshDealBrandCache);
+// Deal Readiness Review + Brand Alignment Snapshot
+app.get("/api/ai/deal-readiness-review/meta", getDealReadinessMeta);
+app.post("/api/ai/deal-readiness-review", postDealReadinessReview);
+app.post("/api/ai/deal-readiness-review/save", postDealReadinessSave);
+app.post("/api/ai/brand-alignment-snapshot", postBrandAlignmentSnapshot);
 // Target List (brand shortlist) API
 app.get("/api/target-list/:dealId", getTargetList);
 app.post("/api/target-list", addToTargetList);
@@ -603,6 +618,18 @@ app.get("/deal-readiness-snapshot/", (req, res) => {
 app.get("/deal-readiness-snapshot.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "deal-readiness-snapshot.html"));
+});
+app.get("/brand-alignment-snapshot", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/brand-alignment-snapshot.html" + q);
+});
+app.get("/brand-alignment-snapshot/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/brand-alignment-snapshot.html" + q);
+});
+app.get("/brand-alignment-snapshot.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "brand-alignment-snapshot.html"));
 });
 
 // CSP that explicitly sets connect-src so fetch/XHR aren't blocked (e.g. form or API calls)
@@ -880,6 +907,9 @@ app.get("/api/operators-by-brand-region/filters", getOperatorsByBrandRegionFilte
 // Travel Infrastructure API endpoints
 app.get("/api/travel-infrastructure", getTravelInfrastructure);
 
+app.get("/api/dealality-scout", getDealalityScout);
+app.get("/api/dealality-scout/filters", getDealalityScoutFilters);
+
 // Brand Review API endpoints
 app.get("/api/brand-review/deals", getBrandReviewDeals);
 app.post("/api/brand-review/update-status", updateDealStatus);
@@ -992,11 +1022,18 @@ app.get("/deal-capture-radar", (req, res) => {
 app.get("/deal-capture-radar-with-ranked-list", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'deal-capture-radar-with-ranked-list.html'));
 });
+app.get("/dealality-scout", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "dealality-scout.html"));
+});
+app.get("/dealality-scout/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "dealality-scout.html"));
+});
 
 // Deal Capture landing and subpages (reviews, for-owners, etc.) at root
 app.use(express.static(path.join(__dirname, 'deal-capture-landing-webflow')));
 
 // Static files (public app pages, signup, etc.)
+app.use("/lib", express.static(path.join(__dirname, "lib")));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Legacy URL: list UI moved to combined Brand Explorer (app shell aliases /brand-library → /brand-explorer-combined).

@@ -244,7 +244,7 @@
     var stopWatch = null;
     if (loginBtn) {
       loginBtn.disabled = true;
-      loginBtn.textContent = "Loading sign-in…";
+      loginBtn.textContent = "Loading Sign-In…";
     }
     setGateStatus("Loading Memberstack…", false);
     try {
@@ -437,6 +437,53 @@
     return bootstrap();
   }
 
+  function clearMsTokenFromBrowserUrl() {
+    try {
+      var u = new URL(global.location.href);
+      u.searchParams.delete("msToken");
+      u.searchParams.delete("memberstackToken");
+      var hash = u.hash || "";
+      if (hash.indexOf("?") >= 0) {
+        var base = hash.slice(0, hash.indexOf("?"));
+        var hp = new URLSearchParams(hash.slice(hash.indexOf("?") + 1));
+        hp.delete("msToken");
+        hp.delete("memberstackToken");
+        var qs = hp.toString();
+        u.hash = base + (qs ? "?" + qs : "");
+      }
+      global.history.replaceState({}, "", u.pathname + u.search + u.hash);
+    } catch (_) {}
+  }
+
+  async function logout() {
+    closeMemberstackModal();
+    var auth = getAuthModule();
+    var clients = auth && auth.getMemberstackClients ? auth.getMemberstackClients() : [];
+    if (!clients.length) {
+      var single = memberstackClientReady();
+      if (single) clients = [single];
+    }
+    for (var i = 0; i < clients.length; i++) {
+      var ms = clients[i];
+      if (!ms || typeof ms.logout !== "function") continue;
+      try {
+        var out = ms.logout();
+        if (out && typeof out.then === "function") await out;
+      } catch (_) {}
+    }
+
+    if (auth && typeof auth.clearSession === "function") auth.clearSession();
+    global.__dealalityMemberstackJwt = null;
+    var embed = getEmbedParent();
+    if (embed && typeof embed.clearJwt === "function") embed.clearJwt();
+
+    bootPromise = null;
+    clearMsTokenFromBrowserUrl();
+    showAuthGate(shellAppId);
+    dispatch("dealality-shell-auth-logout", { ok: true });
+    return { ok: true };
+  }
+
   global.DealalityAppShellAuth = {
     bootstrap: bootstrap,
     whenReady: whenReady,
@@ -445,6 +492,7 @@
     showAuthGate: showAuthGate,
     hideAuthGate: hideAuthGate,
     openLoginModal: openLoginModal,
+    logout: logout,
   };
 
   if (global.document && global.document.readyState === "loading") {

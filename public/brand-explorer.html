@@ -139,7 +139,7 @@
                     <button type="button" class="btn btn-primary" id="compareSelectedBtn">Compare Selected (0)</button>
                 </div>
                 <div class="results-count" id="resultsCount">Loading...</div>
-                <div class="loading" id="loadingState">Loading brands...</div>
+                <div class="loading" id="loadingState">Loading Brands…</div>
                 <div class="brands-grid hidden" id="brandsGrid"></div>
                 <div class="empty-state hidden" id="emptyState"><p>No brands match your filters.</p></div>
             </div>
@@ -290,7 +290,7 @@
     async function openBrandDetail(brandKey) {
         showView('detail');
         const content = document.getElementById('detailContent');
-        content.innerHTML = '<div class="loading">Loading brand...</div>';
+        content.innerHTML = '<div class="loading">Loading Brand…</div>';
         try {
             const res = await fetch('/api/brand-explorer/brand/' + encodeURIComponent(brandKey));
             const data = await res.json();
@@ -373,7 +373,7 @@
             return;
         }
         const keys = Array.from(selectedForCompare).slice(0, 3);
-        content.innerHTML = '<div class="loading">Loading compare data...</div>';
+        content.innerHTML = '<div class="loading">Loading Compare Data…</div>';
         Promise.all(keys.map(k => fetch('/api/brand-explorer/brand/' + encodeURIComponent(k)).then(r => r.json())))
             .then(results => {
                 const compareData = results.filter(r => r.success).map(r => ({ key: r.brand_key, name: r.partner_page?.brand_name || r.brand_key, cf: r.compare_fields || {} }));

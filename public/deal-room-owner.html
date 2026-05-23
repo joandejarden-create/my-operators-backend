@@ -256,7 +256,7 @@
         <div class="grow">
           <label for="drOwnerDealSelect">Deals</label>
           <select id="drOwnerDealSelect">
-            <option value="">Loading deals...</option>
+            <option value="">Loading Deals…</option>
           </select>
           <div class="small" style="margin-top:6px;">Changing the deal in the list loads it automatically. Use Load if you only edited the Deal ID field.</div>
         </div>
@@ -809,7 +809,7 @@
 
       async function loadDealOptions() {
         if (!dealSelect) return;
-        dealSelect.innerHTML = '<option value="">Loading deals...</option>';
+        dealSelect.innerHTML = '<option value="">Loading Deals…</option>';
         try {
           var res = await window.DealalityMemberstackAuth.fetchMyDealsList("/api/my-deals").then(function (r) { return r.json(); });
           var deals = Array.isArray(res && res.deals) ? res.deals.slice() : [];

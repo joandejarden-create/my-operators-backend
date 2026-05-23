@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - Dealality</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/css/mvp-deal-capture.webflow.shared.36895bd16.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/signup-deality-theme.css">
+</head>
+<body class="signup-page">
+    <div class="page-wrapper">
+        <div class="dashboard-main-section">
+            <div class="dashboard-content">
+                <div class="dashboard-main-content sales-page min-h-90vh">
+                    <div class="signup-wrapper">
+                        <div class="signup-left" style="max-width: 640px; margin: 0 auto;">
+                            <div class="form-block v2">
+                                <div class="logo-holder">
+                                    <img src="/assets/dealality-logo.png" width="840" height="334" loading="lazy" alt="Dealality">
+                                </div>
+                                <h3 class="display-4 medium mg-bottom-12px upppercase">EMAIL VERIFICATION</h3>
+                                <p id="verify-status" class="paragraph-large mg-bottom-32px">Confirming your email…</p>
+                                <p id="verify-detail" class="paragraph-large" style="display: none;"></p>
+                                <p style="margin-top: 1.5rem;">
+                                    <a id="dealality-home-link" href="https://www.dealality.com/" class="entry-link">← Back to Dealality</a>
+                                </p>
+                                <p id="verify-resend-wrap" style="margin-top: 1rem; display: none;">
+                                    <button type="button" class="btn-submit" id="verify-resend-btn" data-ms-action="resend-verification-email">Resend verification email</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/verify-page.js"></script>
+</body>
+</html>

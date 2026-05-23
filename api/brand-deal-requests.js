@@ -368,6 +368,33 @@ export async function listForBrand(req, res) {
 }
 
 /**
+ * Full contacted-row shape for My Deals + workspace KPIs (parity with listForDeals).
+ * @param {import("airtable").Record} record
+ */
+export function mapBdrToContactedRow(record) {
+  const base = mapBdrToResponse(record);
+  const f = record.fields || {};
+  const requestSentAt = f["Request Sent At"] || "";
+  const responseDate = f["Response Date"] || "";
+  const lastUpdated = f["Last Updated"] || "";
+  const dates = [requestSentAt, responseDate, lastUpdated]
+    .filter(Boolean)
+    .map((d) => new Date(d).getTime());
+  const lastActivity =
+    dates.length > 0 ? new Date(Math.max(...dates)).toISOString() : requestSentAt || null;
+  const status = f["Status"] || "New";
+  const stage = f["Stage"] || getStageFromStatus(status);
+  const proposalStatus = f["Proposal Status"] ? String(f["Proposal Status"]).trim() : "";
+  return {
+    ...base,
+    stage,
+    lastActivity,
+    responseDate: responseDate || null,
+    proposalStatus: proposalStatus || (base.proposal && base.proposal.proposalStatus) || "",
+  };
+}
+
+/**
  * GET /api/brand-deal-requests?dealIds=rec1,rec2,rec3
  * List requests for multiple deals (for My Deals - Contacted Brands & Matched Brands filtering)
  */
@@ -402,22 +429,7 @@ export async function listForDeals(req, res) {
       return dealId && idSet.has(dealId);
     });
 
-    const contacted = filtered.map((r) => {
-      const base = mapBdrToResponse(r);
-      const requestSentAt = r.fields["Request Sent At"] || "";
-      const responseDate = r.fields["Response Date"] || "";
-      const lastUpdated = r.fields["Last Updated"] || "";
-      const dates = [requestSentAt, responseDate, lastUpdated].filter(Boolean).map((d) => new Date(d).getTime());
-      const lastActivity = dates.length > 0 ? new Date(Math.max(...dates)).toISOString() : requestSentAt || null;
-      const status = r.fields["Status"] || "New";
-      const stage = r.fields["Stage"] || getStageFromStatus(status);
-      return {
-        ...base,
-        stage,
-        lastActivity,
-        responseDate: responseDate || null,
-      };
-    });
+    const contacted = filtered.map((r) => mapBdrToContactedRow(r));
 
     res.json({ success: true, contacted });
   } catch (err) {
@@ -781,7 +793,7 @@ function hasAnyProposalData(fields) {
 }
 
 /** Map BDR record to API response including NDA/Deal Room and proposal fields */
-function mapBdrToResponse(r) {
+export function mapBdrToResponse(r) {
   const dealId = firstLinkedDealIdFromBdrFields(r.fields);
   const base = {
     id: r.id,
