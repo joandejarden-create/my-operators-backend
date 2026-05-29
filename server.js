@@ -84,6 +84,11 @@ import {
   deleteBrandExplorerFavorite,
 } from "./api/brand-explorer-favorites.js";
 import {
+  getOperatorExplorerFavorites,
+  createOperatorExplorerFavorite,
+  deleteOperatorExplorerFavorite,
+} from "./api/operator-explorer-favorites.js";
+import {
   createCompanyProfile,
   updateCompanyProfile,
   getCompanyProfilePrefill,
@@ -97,13 +102,17 @@ import {
   bulkDeleteUsers,
   listCompanies as listUserManagementCompanies,
 } from "./api/user-management.js";
-import { getMyDeals, getDealById, updateMyDealById, createDeal, addRecommendedBrand, getAlternativeBrands, getMatchScoreBreakdown, getOperatorMatchScoreBreakdown, refreshDealBrandCache, uploadDealAttachments, ALLOWED_ATTACHMENT_EXTENSIONS, MAX_ATTACHMENT_FILE_SIZE_BYTES } from "./api/my-deals.js";
+import { getMyDeals, postMyDealsInitialMatchedSupport, getDealById, updateMyDealById, createDeal, addRecommendedBrand, getAlternativeBrands, getMatchScoreBreakdown, getOperatorMatchScoreBreakdown, refreshDealBrandCache, uploadDealAttachments, ALLOWED_ATTACHMENT_EXTENSIONS, MAX_ATTACHMENT_FILE_SIZE_BYTES } from "./api/my-deals.js";
 import { getDealReadinessMeta, postDealReadinessReview, postDealReadinessSave } from "./api/deal-readiness-review.js";
 import { postBrandAlignmentSnapshot } from "./api/brand-alignment-snapshot.js";
 import {
   getOperatorCapabilitySnapshot,
   postOperatorCapabilitySnapshot,
 } from "./api/operator-capability-snapshot.js";
+import {
+  getOperatorAlignmentSnapshotProfile,
+  getOperatorAlignmentSnapshotCompanies,
+} from "./api/operator-alignment-snapshot.js";
 import { getOutreachSetup, updateOutreachSetup, getOutreachDefault, updateOutreachDefault, deleteOutreachSetup } from "./api/outreach-setup.js";
 import { getFranchiseApplication, updateFranchiseApplication } from "./api/franchise-application.js";
 import { list as outreachHubList, get as outreachHubGet, create as outreachHubCreate, update as outreachHubUpdate, remove as outreachHubRemove } from "./api/outreach-hub.js";
@@ -112,6 +121,14 @@ import { getDashboardHome } from "./api/dashboard-home.js";
 import { getTargetList, addToTargetList, updateTarget, removeFromTargetList, batchRemoveFromTargetList, markAsDeleted, restoreFromDeleted } from "./api/target-list.js";
 import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDealRoom as listBrandDealRequestsForDealRoom, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getDealMetaBatch as getBrandDealMetaBatch, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
 import { getBrandWorkspaceKpiHistory, postBrandWorkspaceKpiSnapshot } from "./api/brand-workspace-kpi-history.js";
+import {
+  listOperatorDealRequests,
+  getOperatorDealRequestById,
+  getOperatorDealActivity,
+  getOperatorDealMetaBatch,
+  updateOperatorDealRequest,
+  bulkUpdateOperatorDealRequests,
+} from "./api/operator-deal-requests.js";
 import {
   list as listDealRoomDocuments,
   listForBrandRequest as listDealRoomDocumentsForBrandRequest,
@@ -125,12 +142,18 @@ import {
 import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
+import {
+  createMyDealsOperatorRequest,
+  listMyDealsOperatorRequestsByDeals,
+} from "./api/my-deals-operator-requests.js";
 import { getMe } from "./api/me.js";
 import { getAuthMe } from "./api/auth-me.js";
 import { getMemberstackPublicConfig } from "./api/auth-memberstack-config.js";
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
+import { requireOperatorDealsAccess } from "./middleware/requireOperatorDealsAccess.js";
+import { requireOwnerOdrCreateAccess } from "./middleware/requireOwnerOdrCreateAccess.js";
 import { requireDealRecordAccess } from "./middleware/requireDealRecordAccess.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -402,8 +425,12 @@ app.patch("/api/intake/third-party-operators/:recordId/status", updateThirdParty
 // My Deals API (more specific routes first so /outreach-default and /outreach-setup are not treated as recordId)
 const myDealsAuth = [memberstackAuth, requireDealalityUser, requireMyDealsAccess];
 const myDealsDealAuth = [...myDealsAuth, requireDealRecordAccess];
+const ownerOdrAuth = [...myDealsAuth, requireOwnerOdrCreateAccess];
+const ownerOdrDealAuth = [...myDealsDealAuth, requireOwnerOdrCreateAccess];
 app.get("/api/my-deals", ...myDealsAuth, getMyDeals);
 app.post("/api/my-deals", ...myDealsAuth, createDeal);
+app.post("/api/my-deals/initial-matched-support", ...myDealsAuth, postMyDealsInitialMatchedSupport);
+app.post("/api/my-deals/operator-requests/by-deals", ...ownerOdrAuth, listMyDealsOperatorRequestsByDeals);
 app.get("/api/my-deals/outreach-default", getOutreachDefault);
 app.patch("/api/my-deals/outreach-default", updateOutreachDefault);
 app.get("/api/my-deals/:recordId/outreach-setup", getOutreachSetup);
@@ -418,6 +445,7 @@ app.get("/api/my-deals/:recordId/operator-match-score-breakdown", getOperatorMat
 app.patch("/api/my-deals/:recordId", ...myDealsDealAuth, updateMyDealById);
 app.post("/api/my-deals/:recordId/add-recommended-brand", addRecommendedBrand);
 app.post("/api/my-deals/:recordId/refresh-brand-cache", refreshDealBrandCache);
+app.post("/api/my-deals/:recordId/operator-requests", ...ownerOdrDealAuth, createMyDealsOperatorRequest);
 // Deal Readiness Review (deterministic + optional Airtable save via env field names)
 app.get("/api/ai/deal-readiness-review/meta", getDealReadinessMeta);
 app.post("/api/ai/deal-readiness-review", postDealReadinessReview);
@@ -433,6 +461,24 @@ app.get(
   getOperatorCapabilitySnapshot
 );
 app.post("/api/ai/operator-capability-snapshot", postOperatorCapabilitySnapshot);
+app.get(
+  "/api/operator-alignment-snapshot/:dealId/profile",
+  (req, _res, next) => {
+    req.params.recordId = req.params.dealId;
+    next();
+  },
+  ...myDealsDealAuth,
+  getOperatorAlignmentSnapshotProfile
+);
+app.get(
+  "/api/operator-alignment-snapshot/:dealId/companies",
+  (req, _res, next) => {
+    req.params.recordId = req.params.dealId;
+    next();
+  },
+  ...myDealsDealAuth,
+  getOperatorAlignmentSnapshotCompanies
+);
 // Target List (brand shortlist) API
 app.get("/api/target-list/:dealId", getTargetList);
 app.post("/api/target-list", addToTargetList);
@@ -464,6 +510,14 @@ app.get("/api/brand-deal-requests/:requestId/proposal-draft", getProposalDraft);
 app.post("/api/brand-deal-requests/:requestId/submit-proposal", submitProposal);
 app.patch("/api/brand-deal-requests/:requestId", updateBrandDealRequestStatus);
 app.post("/api/brand-deal-requests/bulk-update", bulkUpdateBrandDealRequestStatus);
+// Operator Deal Requests — Phase 2 scoped (see docs/operator-deal-requests-phase-2-scoping.md)
+const operatorDealsAuth = [memberstackAuth, requireDealalityUser, requireOperatorDealsAccess];
+app.post("/api/operator-deal-requests/bulk-update", ...operatorDealsAuth, bulkUpdateOperatorDealRequests);
+app.get("/api/operator-deal-requests/deal-meta", ...operatorDealsAuth, getOperatorDealMetaBatch);
+app.get("/api/operator-deal-requests/activity", ...operatorDealsAuth, getOperatorDealActivity);
+app.get("/api/operator-deal-requests", ...operatorDealsAuth, listOperatorDealRequests);
+app.get("/api/operator-deal-requests/:requestId", ...operatorDealsAuth, getOperatorDealRequestById);
+app.patch("/api/operator-deal-requests/:requestId", ...operatorDealsAuth, updateOperatorDealRequest);
 app.get("/api/brand-workspace/kpi-history", getBrandWorkspaceKpiHistory);
 app.post("/api/brand-workspace/kpi-history", postBrandWorkspaceKpiSnapshot);
 // Deal Room Documents (specific paths before generic :id)
@@ -677,6 +731,18 @@ app.get("/operator-capability-snapshot.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "operator-capability-snapshot.html"));
 });
+app.get("/operator-alignment-snapshot", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-alignment-snapshot.html" + q);
+});
+app.get("/operator-alignment-snapshot/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-alignment-snapshot.html" + q);
+});
+app.get("/operator-alignment-snapshot.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "operator-alignment-snapshot.html"));
+});
 app.get("/brand-explorer-export", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/brand-explorer-export.html" + q);
@@ -845,6 +911,14 @@ app.get("/deal-compare-select-winner.html", redirectDealCompareSelectWinner);
 // Serve the brand development dashboard
 app.get("/brand-development-dashboard", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'brand-development-dashboard.html'));
+});
+
+// Serve the operator development dashboard (My Operator Deals)
+app.get("/operator-development-dashboard", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'operator-development-dashboard.html'));
+});
+app.get("/my-operator-deals", (req, res) => {
+    res.redirect(302, "/operator-development-dashboard");
 });
 
 // Serve the My Brands page (Brand Development structure, lists all Airtable brands)
@@ -1053,6 +1127,11 @@ app.get("/api/brand-explorer/favorites", getBrandExplorerFavorites);
 app.post("/api/brand-explorer/favorites", createBrandExplorerFavorite);
 app.delete("/api/brand-explorer/favorites", deleteBrandExplorerFavorite);
 app.delete("/api/brand-explorer/favorites/:favoriteId", deleteBrandExplorerFavorite);
+
+app.get("/api/operator-explorer/favorites", getOperatorExplorerFavorites);
+app.post("/api/operator-explorer/favorites", createOperatorExplorerFavorite);
+app.delete("/api/operator-explorer/favorites", deleteOperatorExplorerFavorite);
+app.delete("/api/operator-explorer/favorites/:favoriteId", deleteOperatorExplorerFavorite);
 
 // Partner Directory config endpoint (for local development)
 app.get("/api/user-management", listUserManagementUsers);
@@ -1282,4 +1361,7 @@ app.listen(PORT, () => {
   console.log("   GET /api/third-party-operators-new/list");
   console.log("   GET /api/third-party-operators-new");
   console.log("   GET /api/intake/third-party-operator/prefill-qa");
+  console.log("✅ Operator Alignment Snapshot API (OAS):");
+  console.log("   GET /api/operator-alignment-snapshot/:dealId/profile");
+  console.log("   GET /api/operator-alignment-snapshot/:dealId/companies");
 });

@@ -332,6 +332,11 @@ export function buildNewBaseTablePayloads({
         if (!fieldName || fieldName === "Operator") continue;
         if (!formName) continue;
         let value = body[formName];
+        if (formName === "regions" && fieldName === "specificMarkets") {
+            const fromRegions = parseArrayValue(body.regions);
+            if (fromRegions.length) value = fromRegions.join(", ");
+            else if (body.specificMarkets != null && body.specificMarkets !== "") value = body.specificMarkets;
+        }
         if (fieldName === "brands") value = linkedBrandRecordIds;
         if (fieldName === "numberOfBrands") value = derived.numberOfBrands;
         // Same as stringifyJsonArrayField in legacy intake: never pass a raw object[] into long-text coercion.
@@ -412,6 +417,19 @@ export async function createOrUpdateOperatorMaster({ body, existingRecordId, cor
         throw err;
     }
     fields.submission_status = "Submitted";
+    const adminMap = [
+      ["dataConfidenceLevel", "Data Confidence Level", "singleSelect"],
+      ["sourceType", "Source Type", "multipleSelects"],
+      ["lastUpdatedDate", "Last Updated Date", "date"],
+    ];
+    for (const [bodyKey, col, airtableType] of adminMap) {
+      const v = body[bodyKey];
+      if (v == null || v === "") continue;
+      if (Array.isArray(v) && v.length === 0) continue;
+      const coerced = coerceFieldValue(v, airtableType);
+      if (coerced == null || (Array.isArray(coerced) && coerced.length === 0)) continue;
+      fields[col] = coerced;
+    }
 
     let record = null;
     if (existingRecordId) {

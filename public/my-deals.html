@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/css/deal-readiness-snapshot.css">
     <link rel="stylesheet" href="/css/brand-alignment-snapshot.css">
     <link rel="stylesheet" href="/css/operator-capability-snapshot.css">
+    <link rel="stylesheet" href="/css/operator-alignment-snapshot.css?v=oas-cover-265">
+    <link rel="stylesheet" href="/css/operator-alignment-my-deals-preview.css">
+    <link rel="stylesheet" href="/css/operator-strategy-my-deals.css">
     <link rel="stylesheet" href="/css/deal-brief-snapshot.css">
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/css/deal-workspace-insights.css">
@@ -27,7 +30,14 @@
             --system--green-400: #11845b;
             --system--red-400: #c53030;
         }
-        body { background: var(--neutral--800); color: var(--neutral--400); font-size: 14px; color-scheme: dark; min-height: 100vh; }
+        body {
+            background: var(--neutral--800);
+            color: var(--neutral--400);
+            font-family: "Mona Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+            color-scheme: dark;
+            min-height: 100vh;
+        }
         .page-wrapper { min-height: 100vh; display: flex; }
         .sidebar-wrapper {
             z-index: 500; border-right: 0.6px solid var(--neutral--600); background-color: var(--neutral--800);
@@ -584,6 +594,41 @@
         }
         #matchedDealsTable th { white-space: nowrap; }
         #matchedDealsTable .cell-call-to-action { min-width: 0; padding-left: 8px; }
+        /* Matched Brands — room for Chain Scale / Project Type / Target Opening Date (override global compact + ellipsis) */
+        #matchedDealsTable {
+            table-layout: auto;
+        }
+        #matchedDealsTable th[data-sort="hotelChainScale"],
+        #matchedDealsTable th[data-sort="projectType"],
+        #matchedDealsTable th[data-sort="targetOpeningDate"] {
+            width: auto !important;
+            max-width: none !important;
+            white-space: nowrap;
+        }
+        #matchedDealsTable th[data-sort="targetOpeningDate"] > span {
+            max-width: none;
+            white-space: nowrap;
+        }
+        #matchedDealsTable tbody tr td:nth-child(4),
+        #matchedDealsTable tbody tr td:nth-child(5),
+        #matchedDealsTable tbody tr td:nth-child(6) {
+            min-width: 0;
+            overflow: visible;
+            text-overflow: clip;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.35;
+            vertical-align: top;
+        }
+        #matchedDealsTable tbody tr td:nth-child(4) {
+            min-width: 7.25rem;
+        }
+        #matchedDealsTable tbody tr td:nth-child(5) {
+            min-width: 8.5rem;
+        }
+        #matchedDealsTable tbody tr td:nth-child(6) {
+            min-width: 6.75rem;
+        }
         .deals-table .project-name-text { color: var(--neutral--100); font-weight: 600; }
         .deals-table .status-active { color: var(--system--green-400); }
         .deals-table .status-select {
@@ -685,7 +730,7 @@
         }
         .my-deals-readiness-modal-overlay.open { display: flex; }
         .my-deals-readiness-modal {
-            width: 100%;
+            width: min(96vw, 1120px);
             max-width: 1120px;
             max-height: 90vh;
             display: flex;
@@ -738,11 +783,30 @@
             display: inline-block;
             width: auto;
             max-width: 100%;
+            font-family: inherit;
+        }
+        .my-deals-modal-loading .loading-text-main,
+        .my-deals-modal-loading .loading-text-time {
+            font-family: inherit;
         }
         #myDealsBrandAlignmentContent { display: none; }
         #myDealsBrandAlignmentContent.is-visible { display: block; }
         #myDealsOperatorCapabilityContent { display: none; }
         #myDealsOperatorCapabilityContent.is-visible { display: block; }
+        #myDealsOperatorAlignmentContent { display: none; }
+        #myDealsOperatorAlignmentContent.is-visible { display: block; }
+        #myDealsOperatorProfileFrame {
+            display: none;
+            flex: 1 1 auto;
+            min-height: 0;
+            width: 100%;
+            border: none;
+            background: #080f25;
+        }
+        #myDealsOperatorProfileFrame.is-visible { display: block; }
+        #myDealsOperatorProfileFrame.is-visible {
+            min-height: min(72vh, 680px);
+        }
         .my-deals-readiness-error { padding: 12px 14px; border-radius: 8px; background: rgba(255, 90, 101, 0.12); border: 1px solid rgba(255, 90, 101, 0.35); color: #ffb4b8; font-size: 13px; }
         .my-deals-readiness-modal-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
         .my-deals-readiness-badge-chip { padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: var(--neutral--700); color: var(--neutral--200); }
@@ -1090,7 +1154,13 @@
         .loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
         .loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
         .loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
-        .loading-text-main { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 4px; }
+        .loading-text-main {
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 4px;
+        }
         .loading-text-time { font-size: 12px; color: var(--neutral--400); }
         .loading-progress { width: 100%; height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; margin-top: 8px; }
         .loading-progress-bar { height: 100%; background: linear-gradient(90deg, #fdb52a, #d5691b); border-radius: 2px; animation: bl-progress 3s ease-in-out infinite; }
@@ -1380,6 +1450,11 @@
                         <span class="section-nav-label">Matched<br>Brands</span>
                         <span class="tab-count" id="tabCountMatchedBrands">0</span>
                     </button>
+                    <button type="button" class="section-nav-item" data-tab="operator-strategy" title="Operator Strategy">
+                        <div class="section-nav-icon" title="Operator Strategy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg></div>
+                        <span class="section-nav-label">Operator<br>Strategy</span>
+                        <span class="tab-count" id="tabCountOperatorStrategy">—</span>
+                    </button>
                     <button type="button" class="section-nav-item" data-tab="outreach">
                         <div class="section-nav-icon" title="Outreach Setup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div>
                         <span class="section-nav-label">Outreach<br>Setup</span>
@@ -1588,7 +1663,7 @@
                                     <th data-sort="hotelChainScale" ><span style="display:inline-flex;align-items:center;">Chain Scale<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="projectType" ><span style="display:inline-flex;align-items:center;">Project Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="targetOpeningDate" ><span style="display:inline-flex;align-items:center;">Target Opening Date<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
-                                    <th data-sort="dealType" style="width:9%;"><span style="display:inline-flex;align-items:center;">Deal Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th data-sort="dealType" ><span style="display:inline-flex;align-items:center;">Deal Type<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="hasOutreachSetup" style="width:8%;"><span style="display:inline-flex;align-items:center;">Outreach<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="preferredBrandsChosen" style="width:12%;"><span style="display:inline-flex;align-items:center;">Preferred Brand<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
                                     <th data-sort="matchScoreNew" style="width:10%;"><span style="display:inline-flex;align-items:center;">Match Score<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
@@ -1689,6 +1764,80 @@
                             <div id="brandComparisonContent" class="modal-body"></div>
                         </div>
                     </div>
+                </div>
+
+                <div id="sectionOperatorStrategy" class="my-deals-tab-panel operator-strategy-panel" style="display: none;" data-component="operator-strategy" aria-label="Operator Strategy">
+                    <div class="filters-section operator-strategy-filters">
+                        <div class="filter-group">
+                            <label class="filter-label" for="operatorStrategySearchInput">Search</label>
+                            <input type="text" class="filter-input" id="operatorStrategySearchInput" placeholder="Search company or deal…">
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label" for="operatorStrategyAlignmentFilter">Alignment Signal</label>
+                            <select class="filter-select" id="operatorStrategyAlignmentFilter">
+                                <option value="all">All alignment signals</option>
+                                <option value="strong">Strong Alignment Signals</option>
+                                <option value="moderate">Moderate Alignment Signals</option>
+                                <option value="conditional">Conditional Alignment Signals</option>
+                                <option value="limited">Limited Alignment Signals</option>
+                                <option value="insufficient">Insufficient Data</option>
+                            </select>
+                        </div>
+                        <div class="filter-group filter-group-reset">
+                            <button class="btn-clear operator-strategy-reset-btn" type="button" id="operatorStrategyClearFiltersBtn">Reset View
+                                <span class="filter-count-badge" id="operatorStrategyFilterCountBadge" style="display: none;">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="operatorStrategyDealFilterChip" class="operator-strategy-filter-chip" style="display: none;"></div>
+                    <div class="results-row operator-strategy-meta-row">
+                        <div class="results-count operator-strategy-row-count" id="operatorStrategyResultsCount">Showing 0 operator-company rows</div>
+                        <div class="operator-strategy-bulk-wrap">
+                            <button type="button" class="btn-bulk-actions" id="operatorStrategyBulkActionsBtn" disabled aria-haspopup="menu" aria-expanded="false" aria-controls="operatorStrategyBulkDropdown">
+                                Bulk Actions <span style="margin-left:4px;" aria-hidden="true">▼</span>
+                            </button>
+                            <div id="operatorStrategyBulkDropdown" class="operator-strategy-bulk-dropdown" role="menu" aria-label="Operator strategy bulk actions">
+                                <button type="button" class="operator-strategy-bulk-dropdown__item operator-strategy-bulk-dropdown__item--disabled" role="menuitem" disabled title="Operator review set workflow coming soon">Add to Operator Review</button>
+                                <button type="button" class="operator-strategy-bulk-dropdown__item operator-strategy-bulk-dropdown__item--disabled" role="menuitem" disabled title="Operator outreach workflow coming soon">Prepare Outreach</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="operatorStrategyPartialError" class="operator-strategy-banner operator-strategy-banner--warn" style="display: none;" role="status">Some operator strategy rows could not be loaded.</div>
+                    <div id="operatorStrategyFatalError" class="operator-strategy-state operator-strategy-state--error" style="display: none;" role="alert"></div>
+                    <div class="loading-deals" id="operatorStrategyLoadingState" style="display: none;">
+                        <div class="loading">
+                            <div class="loading-content">
+                                <div class="wave-container">
+                                    <div class="wave wave-1"></div>
+                                    <div class="wave wave-2"></div>
+                                    <div class="wave wave-3"></div>
+                                </div>
+                                <div>
+                                    <div class="loading-text-main">Loading operator strategy…</div>
+                                </div>
+                            </div>
+                            <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                        </div>
+                    </div>
+                    <div class="deals-table-container operator-strategy-table-wrap" id="operatorStrategyTableWrap">
+                        <table class="deals-table operator-strategy-table" id="operatorStrategyTable" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th class="cell-checkbox"><input type="checkbox" id="operatorStrategySelectAllCheckbox" title="Select all"></th>
+                                    <th class="col-deal" data-sort="projectName"><span style="display:inline-flex;align-items:center;">Project / Deal<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th class="col-company" data-sort="companyName"><span style="display:inline-flex;align-items:center;">Operating Company<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th class="col-location" data-sort="location"><span style="display:inline-flex;align-items:center;">Project Location<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th class="col-score" data-sort="alignmentScoreOptional"><span style="display:inline-flex;align-items:center;">Score<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th class="col-status" data-sort="reviewStatus"><span style="display:inline-flex;align-items:center;">Outreach Status<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th class="col-consideration" data-sort="keyConsideration"><span style="display:inline-flex;align-items:center;">Key Consideration<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th class="col-confidence" data-sort="dataConfidence"><span style="display:inline-flex;align-items:center;">Data Confidence<span class="sort-indicator"><span class="sort-indicator-arrow sort-indicator-arrow-up"></span><span class="sort-indicator-arrow sort-indicator-arrow-down"></span></span></span></th>
+                                    <th class="col-cta">Call to Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="operatorStrategyTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="operatorStrategyEmptyState" class="operator-strategy-state empty-deals" style="display: none;">Operator strategy rows will appear once operator alignment signals are available for active deals.</div>
                 </div>
 
                 <div id="sectionContactedBrands" class="my-deals-tab-panel" style="display: none;">
@@ -1935,6 +2084,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="my-deals-readiness-modal-overlay" id="myDealsOperatorProfileModal" aria-hidden="true" role="dialog" aria-labelledby="myDealsOperatorProfileModalTitle">
+                    <div class="my-deals-readiness-modal">
+                        <div class="my-deals-readiness-modal-header">
+                            <div>
+                                <h2 id="myDealsOperatorProfileModalTitle">Operator Profile</h2>
+                                <p class="sub">Operator Explorer profile for review. Close to return to My Deals.</p>
+                            </div>
+                            <button type="button" class="my-deals-readiness-modal-close" id="myDealsOperatorProfileModalClose" aria-label="Close">×</button>
+                        </div>
+                        <div class="my-deals-readiness-modal-body" id="myDealsOperatorProfileModalBody">
+                            <iframe id="myDealsOperatorProfileFrame" title="Operator Profile" src="about:blank"></iframe>
+                        </div>
+                    </div>
+                </div>
                 <div id="dealCompareWinnerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1004; overflow-y: auto; padding: 12px;">
                     <div class="modal-inner" style="max-width: 840px; margin: 12px auto; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 12px; padding: 0; max-height: 75vh; display: flex; flex-direction: column;">
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--neutral--600); flex-shrink: 0;">
@@ -2051,6 +2214,42 @@
                                 </div>
                             </div>
                             <div id="myDealsOperatorCapabilityContent"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-deals-readiness-modal-overlay" id="myDealsOperatorAlignmentModal" aria-hidden="true" role="dialog" aria-labelledby="myDealsOperatorAlignmentModalTitle">
+                    <div class="my-deals-readiness-modal">
+                        <div class="my-deals-readiness-modal-header">
+                            <div>
+                                <h2 id="myDealsOperatorAlignmentModalTitle">Operator Alignment Snapshot</h2>
+                                <p class="sub">Review operator profile alignment signals based on the available deal profile. Not an operator recommendation or shortlist.</p>
+                            </div>
+                            <button type="button" class="my-deals-readiness-modal-close" id="myDealsOperatorAlignmentModalClose" aria-label="Close">×</button>
+                        </div>
+                        <div class="my-deals-readiness-modal-body" id="myDealsOperatorAlignmentModalBody">
+                            <div class="my-deals-modal-loading" id="myDealsOperatorAlignmentLoading" role="status" aria-live="polite">
+                                <div class="loading">
+                                    <div class="loading-content">
+                                        <div class="wave-container">
+                                            <div class="wave wave-1"></div>
+                                            <div class="wave wave-2"></div>
+                                            <div class="wave wave-3"></div>
+                                            <div class="wave-particles">
+                                                <div class="particle"></div>
+                                                <div class="particle"></div>
+                                                <div class="particle"></div>
+                                                <div class="particle"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="loading-text-main">Building Operator Alignment Snapshot…</div>
+                                        </div>
+                                    </div>
+                                    <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                                </div>
+                            </div>
+                            <div id="myDealsOperatorAlignmentContent"></div>
                         </div>
                     </div>
                 </div>
@@ -2575,6 +2774,8 @@
     <script src="/js/deal-readiness-snapshot.js"></script>
     <script src="/js/brand-alignment-snapshot.js"></script>
     <script src="/js/operator-capability-snapshot.js"></script>
+    <script src="/js/operator-alignment-snapshot.js?v=oas-cover-265"></script>
+    <script src="/js/operator-strategy-my-deals.js?v=os-preload-20260529b"></script>
     <script src="/js/deal-brief-v2.js"></script>
     <script src="/js/deal-brief-render-html.js"></script>
     <script src="/js/deal-brief-snapshot.js"></script>
@@ -2676,14 +2877,148 @@
             let sortDirection = 'asc';
             let dealsLoading = false;
             let activeSectionTab = 'deal-information';
+            /** Last deal the user interacted with in My Deals (row actions, single checkbox, deep link). */
+            let workspaceActiveDealId = null;
+
+            function getSingleCheckedDealIdFromTable(tbodySelector) {
+                var tbody = document.querySelector(tbodySelector);
+                if (!tbody) return '';
+                var checked = tbody.querySelectorAll('.deal-row-checkbox:checked');
+                if (checked.length !== 1) return '';
+                return String(checked[0].getAttribute('data-deal-id') || '').trim();
+            }
+
+            function getWorkspaceActiveDealId() {
+                if (workspaceActiveDealId && String(workspaceActiveDealId).indexOf('rec') === 0) {
+                    return workspaceActiveDealId;
+                }
+                var fromDealInfo = getSingleCheckedDealIdFromTable('#dealsTableBody');
+                if (fromDealInfo) return fromDealInfo;
+                var fromMatched = getSingleCheckedDealIdFromTable('#matchedDealsTableBody');
+                if (fromMatched) return fromMatched;
+                try {
+                    var params = new URLSearchParams(window.location.search);
+                    var urlDeal = (params.get('dealId') || '').trim();
+                    if (urlDeal.indexOf('rec') === 0) return urlDeal;
+                } catch (e) {}
+                return '';
+            }
+
+            function setWorkspaceActiveDealId(dealId) {
+                var id = String(dealId || '').trim();
+                if (!id || id.indexOf('rec') !== 0) return;
+                workspaceActiveDealId = id;
+            }
+
+            function touchWorkspaceActiveDealId(dealId) {
+                setWorkspaceActiveDealId(dealId);
+            }
+
+            function getWorkspaceActiveDealName(dealId) {
+                var deal = getDealByIdLocal(dealId);
+                if (!deal) return '';
+                return String(deal.projectName || deal.propertyName || '').trim();
+            }
+
+            window.myDealsGetWorkspaceActiveDealId = getWorkspaceActiveDealId;
+            window.myDealsSetWorkspaceActiveDealId = setWorkspaceActiveDealId;
             // Performance: hidden-tab data is loaded after initial paint.
             let nonCriticalDataLoaded = false;
             let nonCriticalDataPromise = null;
             // Lightweight preload for top-nav counts without full enrichment.
             let topNavCountsLoaded = false;
             let topNavCountsPromise = null;
+            let initialMatchedSupportPromise = null;
             /** Incremented on each loadDeals() so we ignore stale responses when multiple loads are in flight. */
             let loadVersion = 0;
+
+            function applyInitialMatchedSupportPayload(support) {
+                if (!support) return;
+                contactedPairs = support.contactedPairs || [];
+                contactedPairsHydrated = true;
+                targetListCache = support.targetListByDeal || {};
+                targetListsHydrated = true;
+                updateTargetListTabCount();
+                var initialCounts = support.tabCounts || {};
+                var tabCountContacted = document.getElementById('tabCountContacted');
+                if (tabCountContacted) {
+                    tabCountContacted.textContent = String(initialCounts.contacted != null ? initialCounts.contacted : contactedPairs.length);
+                }
+                var tabCountDealCompare = document.getElementById('tabCountDealCompare');
+                if (tabCountDealCompare) {
+                    tabCountDealCompare.textContent = String(initialCounts.dealCompare != null ? initialCounts.dealCompare : 0);
+                }
+                topNavCountsLoaded = true;
+                scheduleRefreshMyDealsInsights(contactedPairs);
+                populateDealCompareDealSelect();
+                applyFilters();
+            }
+
+            async function fetchInitialMatchedSupportLegacyFallback(loadToken) {
+                if (!targetListsHydrated) {
+                    await loadAllTargetLists();
+                    targetListsHydrated = true;
+                    if (typeof loadToken === 'number' && isStaleLoad(loadToken)) return false;
+                }
+                if (!contactedPairsHydrated) {
+                    await fetchContactedPairs();
+                    contactedPairsHydrated = true;
+                    if (typeof loadToken === 'number' && isStaleLoad(loadToken)) return false;
+                }
+                var tabCountContacted = document.getElementById('tabCountContacted');
+                if (tabCountContacted) tabCountContacted.textContent = String((contactedPairs || []).length);
+                var dealsWithProposalsCount = (allDeals || []).filter(function(d) {
+                    var dealId = d.id;
+                    if (!dealId) return false;
+                    return (contactedPairs || []).some(function(c) {
+                        return c.dealId === dealId && c.proposal && String(c.proposal.proposalStatus || '').trim() === 'Submitted';
+                    });
+                }).length;
+                var tabCountDealCompare = document.getElementById('tabCountDealCompare');
+                if (tabCountDealCompare) tabCountDealCompare.textContent = String(dealsWithProposalsCount);
+                topNavCountsLoaded = true;
+                return true;
+            }
+
+            function fetchInitialMatchedSupport(loadToken) {
+                if (typeof loadToken === 'number' && isStaleLoad(loadToken)) return Promise.resolve(false);
+                if (contactedPairsHydrated && targetListsHydrated) return Promise.resolve(true);
+                if (initialMatchedSupportPromise) return initialMatchedSupportPromise;
+                initialMatchedSupportPromise = (async function() {
+                    var ids = (allDeals || []).map(function(d) { return d.id; }).filter(Boolean);
+                    if (ids.length === 0) {
+                        applyInitialMatchedSupportPayload({
+                            contactedPairs: [],
+                            targetListByDeal: {},
+                            tabCounts: { contacted: 0, dealCompare: 0 }
+                        });
+                        return true;
+                    }
+                    try {
+                        var res = await window.DealalityMemberstackAuth.fetchMyDealsApi('/api/my-deals/initial-matched-support', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ dealIds: ids })
+                        });
+                        if (typeof loadToken === 'number' && isStaleLoad(loadToken)) return false;
+                        if (res.ok) {
+                            var data = await res.json();
+                            if (data && data.initialMatchedSupport) {
+                                applyInitialMatchedSupportPayload(data.initialMatchedSupport);
+                                return true;
+                            }
+                        } else if (res.status !== 404) {
+                            console.warn('fetchInitialMatchedSupport failed:', res.status, await res.text().catch(function() { return ''; }));
+                        }
+                    } catch (err) {
+                        console.warn('fetchInitialMatchedSupport error:', err);
+                    }
+                    return fetchInitialMatchedSupportLegacyFallback(loadToken);
+                })().finally(function() {
+                    if (!contactedPairsHydrated || !targetListsHydrated) initialMatchedSupportPromise = null;
+                });
+                return initialMatchedSupportPromise;
+            }
 
             function escapeHtml(text) {
                 if (text == null || text === '') return '';
@@ -2852,6 +3187,7 @@
             var openMyDealsReadinessForDeal = null;
             var openMyDealsBrandAlignmentForDeal = null;
             var openMyDealsOperatorCapabilityForDeal = null;
+            var openMyDealsOperatorAlignmentForDeal = null;
             var openMyDealsDealBriefForDeal = null;
 
             // Performance: debounce text filtering to avoid rerendering on every keystroke.
@@ -2905,16 +3241,18 @@
                 if (nonCriticalDataLoaded) return Promise.resolve(true);
                 if (nonCriticalDataPromise) return nonCriticalDataPromise;
                 nonCriticalDataPromise = (async function() {
-                    if (!targetListsHydrated) {
-                        await loadAllTargetLists();
-                        targetListsHydrated = true;
+                    var bgTasks = [];
+                    if (!targetListsHydrated || !contactedPairsHydrated) {
+                        bgTasks.push(fetchInitialMatchedSupport(loadToken));
+                    }
+                    if (window.OperatorStrategyMyDeals && typeof window.OperatorStrategyMyDeals.preloadFromDeals === 'function') {
+                        bgTasks.push(window.OperatorStrategyMyDeals.preloadFromDeals(allDeals));
+                    }
+                    if (bgTasks.length) {
+                        await Promise.all(bgTasks);
                         if (typeof loadToken === 'number' && isStaleLoad(loadToken)) return false;
                     }
-                    if (!contactedPairsHydrated) {
-                        await fetchContactedPairs();
-                        contactedPairsHydrated = true;
-                        if (typeof loadToken === 'number' && isStaleLoad(loadToken)) return false;
-                    } else if (!topNavCountsLoaded) {
+                    if (!topNavCountsLoaded && (contactedPairsHydrated || targetListsHydrated)) {
                         var topCountsLoaded = await ensureTopNavCountsLoaded(loadToken);
                         if (!topCountsLoaded) return false;
                     }
@@ -3581,7 +3919,6 @@
                     const actionIcons = '<div class="action-icons">' +
                         '<button type="button" class="action-icon" title="Run Deal Readiness Review" data-action="deal-readiness" data-deal-id="' + escapeHtml(id) + '"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"/><path d="m9 14 2 2 4-4"/></svg></button>' +
                         '<button type="button" class="action-icon" title="View Brand Alignment Snapshot" data-action="brand-alignment" data-deal-id="' + escapeHtml(id) + '"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><path d="M10 12h4"/></svg></button>' +
-                        '<button type="button" class="action-icon" title="View Operator Capability Snapshot" data-action="operator-capability" data-deal-id="' + escapeHtml(id) + '"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg></button>' +
                         '<button type="button" class="action-icon" title="View" data-action="view" data-deal-id="' + escapeHtml(id) + '"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>' +
                         '<button type="button" class="action-icon" title="Edit" data-action="edit" data-deal-id="' + escapeHtml(id) + '"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>' +
                         '<button type="button" class="action-icon" title="More" data-action="more" data-deal-id="' + escapeHtml(id) + '"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>' +
@@ -4081,6 +4418,8 @@
                 function closeModal() {
                     modal.classList.remove('open');
                     modal.setAttribute('aria-hidden', 'true');
+                    contentEl.innerHTML = '';
+                    contentEl.classList.remove('is-visible');
                     if (returnFocus && returnFocus.focus) returnFocus.focus();
                 }
                 function escBlock(e) {
@@ -4094,13 +4433,9 @@
                         if (loadingEl) loadingEl.style.display = 'none';
                         return;
                     }
-                    var fullPageHref = activeDealId
-                        ? '/operator-capability-snapshot.html?dealId=' + encodeURIComponent(activeDealId)
-                        : '';
                     window.OperatorCapabilitySnapshot.render(contentEl, data, {
                         embed: true,
                         dealId: activeDealId,
-                        fullPageHref: fullPageHref,
                         generatedAt: data.generatedAt || new Date().toISOString(),
                     });
                     contentEl.classList.add('is-visible');
@@ -4147,12 +4482,194 @@
                 }
 
                 openMyDealsOperatorCapabilityForDeal = loadSnapshot;
+                window.openMyDealsOperatorCapabilityForDeal = loadSnapshot;
 
                 if (closeBtn) closeBtn.addEventListener('click', closeModal);
                 modal.addEventListener('click', function (e) {
                     if (e.target === modal) closeModal();
                 });
                 document.addEventListener('keydown', escBlock);
+            })();
+
+            (function setupMyDealsOperatorAlignmentModal() {
+                var modal = document.getElementById('myDealsOperatorAlignmentModal');
+                var loadingEl = document.getElementById('myDealsOperatorAlignmentLoading');
+                var contentEl = document.getElementById('myDealsOperatorAlignmentContent');
+                var closeBtn = document.getElementById('myDealsOperatorAlignmentModalClose');
+                if (!modal || !contentEl) return;
+
+                var activeDealId = null;
+                var returnFocus = null;
+
+                function openModal() {
+                    modal.classList.add('open');
+                    modal.setAttribute('aria-hidden', 'false');
+                    returnFocus = document.activeElement;
+                }
+                function closeModal() {
+                    modal.classList.remove('open');
+                    modal.setAttribute('aria-hidden', 'true');
+                    contentEl.innerHTML = '';
+                    contentEl.classList.remove('is-visible');
+                    if (returnFocus && returnFocus.focus) returnFocus.focus();
+                }
+                function escBlock(e) {
+                    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+                }
+
+                function renderBody(data) {
+                    if (
+                        !window.OperatorAlignmentSnapshot ||
+                        typeof window.OperatorAlignmentSnapshot.render !== 'function'
+                    ) {
+                        contentEl.innerHTML =
+                            '<div class="my-deals-readiness-error">Snapshot renderer failed to load.</div>';
+                        contentEl.classList.add('is-visible');
+                        if (loadingEl) loadingEl.style.display = 'none';
+                        return;
+                    }
+                    var fullPageHref = activeDealId
+                        ? '/operator-alignment-snapshot.html?dealId=' + encodeURIComponent(activeDealId)
+                        : '';
+                    window.OperatorAlignmentSnapshot.render(contentEl, data, {
+                        embed: true,
+                        dealId: activeDealId,
+                        fullPageHref: fullPageHref,
+                        generatedAt: data.generatedAt || new Date().toISOString(),
+                    });
+                    contentEl.classList.add('is-visible');
+                    if (loadingEl) loadingEl.style.display = 'none';
+                }
+
+                function loadSnapshot(dealId) {
+                    if (!dealId || String(dealId).indexOf('rec') !== 0) return;
+                    activeDealId = dealId;
+                    openModal();
+                    if (loadingEl) loadingEl.style.display = 'flex';
+                    contentEl.innerHTML = '';
+                    contentEl.classList.remove('is-visible');
+                    var fetchFn =
+                        window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.fetchMyDealsApi
+                            ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+                            : function (url, opts) {
+                                  return fetch(url, opts);
+                              };
+                    fetchFn(
+                        '/api/operator-alignment-snapshot/' + encodeURIComponent(dealId) + '/profile',
+                        { method: 'GET' }
+                    )
+                        .then(function (r) {
+                            if (r.status === 401 || r.status === 403) {
+                                throw new Error(
+                                    'Sign in required to view operator alignment. Open My Deals while logged in.'
+                                );
+                            }
+                            return r.json().then(function (data) {
+                                return { ok: r.ok, status: r.status, data: data };
+                            });
+                        })
+                        .then(function (pack) {
+                            var data = pack.data || {};
+                            if (!pack.ok || !data.success) {
+                                if (loadingEl) loadingEl.style.display = 'none';
+                                contentEl.classList.add('is-visible');
+                                var errMsg =
+                                    data.error ||
+                                    data.message ||
+                                    'Operator alignment signals could not be loaded for this deal.';
+                                if (pack.status === 404) {
+                                    errMsg =
+                                        'Deal not found or server route missing. Restart the Node server so GET /api/operator-alignment-snapshot/:dealId/profile is registered.';
+                                }
+                                contentEl.innerHTML =
+                                    '<div class="my-deals-readiness-error">' +
+                                    String(errMsg).replace(/</g, '&lt;') +
+                                    '</div>';
+                                return;
+                            }
+                            return fetchFn(
+                                '/api/operator-alignment-snapshot/' + encodeURIComponent(dealId) + '/companies',
+                                { method: 'GET' }
+                            )
+                                .then(function (r2) {
+                                    return r2.json().then(function (cdata) {
+                                        return { ok: r2.ok, status: r2.status, body: cdata };
+                                    });
+                                })
+                                .catch(function () {
+                                    return { ok: false, status: 0, body: null, networkError: true };
+                                })
+                                .then(function (cpack) {
+                                    if (
+                                        window.OperatorAlignmentSnapshot &&
+                                        window.OperatorAlignmentSnapshot.attachCompaniesSnapshot
+                                    ) {
+                                        window.OperatorAlignmentSnapshot.attachCompaniesSnapshot(data, cpack);
+                                    } else if (cpack.ok && cpack.body && cpack.body.success) {
+                                        data.companiesSnapshot = cpack.body;
+                                    }
+                                    renderBody(data);
+                                });
+                        })
+                        .catch(function (err) {
+                            if (loadingEl) loadingEl.style.display = 'none';
+                            contentEl.classList.add('is-visible');
+                            contentEl.innerHTML =
+                                '<div class="my-deals-readiness-error">' +
+                                String(err.message || 'Network error').replace(/</g, '&lt;') +
+                                '</div>';
+                        });
+                }
+
+                openMyDealsOperatorAlignmentForDeal = loadSnapshot;
+                window.openMyDealsOperatorAlignmentForDeal = loadSnapshot;
+
+                if (closeBtn) closeBtn.addEventListener('click', closeModal);
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', escBlock);
+            })();
+
+            (function setupMyDealsOperatorProfileModal() {
+                var modal = document.getElementById('myDealsOperatorProfileModal');
+                var iframe = document.getElementById('myDealsOperatorProfileFrame');
+                var closeBtn = document.getElementById('myDealsOperatorProfileModalClose');
+                if (!modal || !iframe) return;
+
+                var returnFocus = null;
+
+                function closeModal() {
+                    modal.classList.remove('open');
+                    modal.setAttribute('aria-hidden', 'true');
+                    iframe.classList.remove('is-visible');
+                    iframe.src = 'about:blank';
+                    if (returnFocus && returnFocus.focus) returnFocus.focus();
+                }
+
+                function openProfile(operatorId, dealId) {
+                    if (!operatorId || String(operatorId).indexOf('rec') !== 0) return;
+                    returnFocus = document.activeElement;
+                    var url =
+                        '/operator-explorer-gold-mock.html?id=' +
+                        encodeURIComponent(operatorId) +
+                        '&embed=1' +
+                        (dealId ? '&dealId=' + encodeURIComponent(dealId) : '');
+                    iframe.src = url;
+                    iframe.classList.add('is-visible');
+                    modal.classList.add('open');
+                    modal.setAttribute('aria-hidden', 'false');
+                }
+
+                window.openMyDealsOperatorProfileForDeal = openProfile;
+
+                if (closeBtn) closeBtn.addEventListener('click', closeModal);
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+                });
             })();
 
             (function setupMyDealsDealBriefModal() {
@@ -5065,6 +5582,7 @@
                 nonCriticalDataPromise = null;
                 topNavCountsLoaded = false;
                 topNavCountsPromise = null;
+                initialMatchedSupportPromise = null;
                 // Correctness: clear deferred data/counts for new load to avoid stale flashes.
                 contactedPairs = [];
                 contactedPairsHydrated = false;
@@ -5073,6 +5591,11 @@
                 if (tabCountContacted) tabCountContacted.textContent = '…';
                 var tabCountDealCompare = document.getElementById('tabCountDealCompare');
                 if (tabCountDealCompare) tabCountDealCompare.textContent = '…';
+                var tabCountOperatorStrategy = document.getElementById('tabCountOperatorStrategy');
+                if (tabCountOperatorStrategy) tabCountOperatorStrategy.textContent = '…';
+                if (window.OperatorStrategyMyDeals && typeof window.OperatorStrategyMyDeals.onDealsReset === 'function') {
+                    window.OperatorStrategyMyDeals.onDealsReset();
+                }
                 var dealCompareDealSelect = document.getElementById('dealCompareDealSelect');
                 if (dealCompareDealSelect) dealCompareDealSelect.innerHTML = '<option value="">— Select a deal —</option>';
                 var matchedBrandsLoadingState = document.getElementById('matchedBrandsLoadingState');
@@ -5095,26 +5618,23 @@
                         return;
                     }
                     allDeals = data.deals || [];
+                    if (window.OperatorStrategyMyDeals && typeof window.OperatorStrategyMyDeals.preloadFromDeals === 'function') {
+                        window.OperatorStrategyMyDeals.preloadFromDeals(allDeals).catch(function(err) {
+                            console.warn('Operator Strategy preload failed:', err);
+                        });
+                    }
                     filteredDeals = allDeals.slice();
                     window._filterOptions = data.filterOptions || {};
                     dealStatusOptions = (data.filterOptions && data.filterOptions.dealStatuses) || [];
                     if (data.initialMatchedSupport) {
-                        contactedPairs = data.initialMatchedSupport.contactedPairs || [];
-                        contactedPairsHydrated = true;
-                        targetListCache = data.initialMatchedSupport.targetListByDeal || {};
-                        targetListsHydrated = true;
-                        updateTargetListTabCount();
-                        var initialCounts = data.initialMatchedSupport.tabCounts || {};
-                    var tabCountContacted = document.getElementById('tabCountContacted');
-                        if (tabCountContacted) tabCountContacted.textContent = String(initialCounts.contacted != null ? initialCounts.contacted : contactedPairs.length);
-                    var tabCountDealCompare = document.getElementById('tabCountDealCompare');
-                        if (tabCountDealCompare) tabCountDealCompare.textContent = String(initialCounts.dealCompare != null ? initialCounts.dealCompare : 0);
-                        topNavCountsLoaded = true;
+                        applyInitialMatchedSupportPayload(data.initialMatchedSupport);
                     }
 
                     populateFilterOptions();
                     applyFilters();
-                    scheduleRefreshMyDealsInsights(contactedPairs);
+                    if (!contactedPairsHydrated) {
+                        scheduleRefreshMyDealsInsights([]);
+                    }
                     if (tabCountDealInfo) tabCountDealInfo.textContent = allDeals.length;
                     applyInitialOutreachParams();
                     applyInitialFranchiseParams();
@@ -5122,9 +5642,15 @@
                     applyPendingAutoEditIntent();
                     populateFranchiseFilterOptions();
                     applyFranchiseFilters();
-                    // Background preload remains for non-critical deferred tabs.
+                    // Hydrate contacted/shortlist data after first paint (or legacy inline bundle when server sends it).
                     setTimeout(function() {
                         if (isStaleLoad(thisLoad)) return;
+                        if (!contactedPairsHydrated || !targetListsHydrated) {
+                            fetchInitialMatchedSupport(thisLoad).catch(function(err) {
+                                if (isStaleLoad(thisLoad)) return;
+                                console.warn('Initial matched-support hydrate failed:', err);
+                            });
+                        }
                         ensureNonCriticalDataLoaded(thisLoad).catch(function(err) {
                             if (isStaleLoad(thisLoad)) return;
                             console.warn('Background tab preload failed:', err);
@@ -5255,6 +5781,7 @@
                     if (readinessInlineLink) {
                         e.preventDefault();
                         var readinessDealId = readinessInlineLink.getAttribute('data-deal-id');
+                        if (readinessDealId) touchWorkspaceActiveDealId(readinessDealId);
                         if (readinessDealId && openMyDealsReadinessForDeal) openMyDealsReadinessForDeal(readinessDealId);
                         return;
                     }
@@ -5263,6 +5790,7 @@
                         e.preventDefault();
                         const action = actionBtn.getAttribute('data-action');
                         const dealId = actionBtn.getAttribute('data-deal-id');
+                        if (dealId) touchWorkspaceActiveDealId(dealId);
                         if (action === 'alternative-brands') {
                             showAlternativeBrandsModal(dealId);
                             return;
@@ -5273,10 +5801,6 @@
                         }
                         if (action === 'brand-alignment') {
                             if (dealId && openMyDealsBrandAlignmentForDeal) openMyDealsBrandAlignmentForDeal(dealId);
-                            return;
-                        }
-                        if (action === 'operator-capability') {
-                            if (dealId && openMyDealsOperatorCapabilityForDeal) openMyDealsOperatorCapabilityForDeal(dealId);
                             return;
                         }
                         if (action === 'view') {
@@ -5442,6 +5966,7 @@
                         e.preventDefault();
                         var action = actionBtn.getAttribute('data-action');
                         var dealId = actionBtn.getAttribute('data-deal-id');
+                        if (dealId) touchWorkspaceActiveDealId(dealId);
                         if (action === 'add-target') {
                             var brand = actionBtn.getAttribute('data-brand');
                             var score = actionBtn.getAttribute('data-score');
@@ -5629,6 +6154,17 @@
                 if (title) title.textContent = 'Communications';
                 modal.style.display = 'block';
             }
+
+            function openMyDealsIframeModal(modalTitle, url) {
+                var modal = document.getElementById('submitProposalModal');
+                var iframe = document.getElementById('submitProposalIframe');
+                var title = document.getElementById('submitProposalModalTitle');
+                if (!modal || !iframe || !url) return;
+                iframe.src = url;
+                if (title) title.textContent = modalTitle || 'View';
+                modal.style.display = 'block';
+            }
+            window.openMyDealsIframeModal = openMyDealsIframeModal;
 
             function closeSubmitProposalModal() {
                 var modal = document.getElementById('submitProposalModal');
@@ -6203,9 +6739,13 @@
                 var target = e.target;
                 if (dealsTableBody && target && target.classList && target.classList.contains('deal-row-checkbox') && dealsTableBody.contains(target)) {
                     if (bulkActionsBtn) bulkActionsBtn.disabled = !dealsTableBody.querySelector('.deal-row-checkbox:checked');
+                    var soleDeal = getSingleCheckedDealIdFromTable('#dealsTableBody');
+                    if (soleDeal) touchWorkspaceActiveDealId(soleDeal);
                 }
                 if (matchedDealsTableBody && target && target.classList && target.classList.contains('deal-row-checkbox') && matchedDealsTableBody.contains(target)) {
                     if (matchedBulkActionsBtn) matchedBulkActionsBtn.disabled = !matchedDealsTableBody.querySelector('.deal-row-checkbox:checked');
+                    var soleMatchedDeal = getSingleCheckedDealIdFromTable('#matchedDealsTableBody');
+                    if (soleMatchedDeal) touchWorkspaceActiveDealId(soleMatchedDeal);
                 }
                 var contactedDealsTableBody = document.getElementById('contactedDealsTableBody');
                 if (contactedDealsTableBody && target && target.classList && target.classList.contains('deal-row-checkbox') && contactedDealsTableBody.contains(target)) {
@@ -6370,6 +6910,7 @@
 
             var sectionDealInformation = document.getElementById('sectionDealInformation');
             var sectionMatchedBrands = document.getElementById('sectionMatchedBrands');
+            var sectionOperatorStrategy = document.getElementById('sectionOperatorStrategy');
             var sectionContactedBrands = document.getElementById('sectionContactedBrands');
             var sectionTargetList = document.getElementById('sectionTargetList');
             var sectionDealCompare = document.getElementById('sectionDealCompare');
@@ -6817,6 +7358,7 @@
                 if (sectionDealCompare) sectionDealCompare.style.display = 'none';
                 if (sectionOutreachSetup) sectionOutreachSetup.style.display = 'none';
                 if (sectionMatchedBrands) sectionMatchedBrands.style.display = 'none';
+                if (sectionOperatorStrategy) sectionOperatorStrategy.style.display = 'none';
                 if (sectionArchived) sectionArchived.style.display = 'none';
                 if (sectionFranchiseApplication) sectionFranchiseApplication.style.display = 'block';
                 document.querySelectorAll('.my-deals-section-nav .section-nav-item').forEach(function(t) {
@@ -6833,11 +7375,19 @@
                 var tab = (params.get('tab') || '').trim();
                 if (!tab) return;
                 if (tab === 'outreach' || tab === 'franchise-application' || tab === 'deal-information') return;
-                var allowed = ['matched', 'contacted', 'target-list', 'deal-compare', 'archived'];
+                var allowed = ['matched', 'operator-strategy', 'contacted', 'target-list', 'deal-compare', 'archived'];
                 if (allowed.indexOf(tab) === -1) return;
                 var dealId = (params.get('dealId') || '').trim();
                 if (tab === 'target-list' && dealId) {
                     openBrandShortlistTab(dealId);
+                    return;
+                }
+                if (tab === 'operator-strategy' && dealId) {
+                    var osBtnEarly = document.querySelector('.my-deals-section-nav .section-nav-item[data-tab="operator-strategy"]');
+                    if (osBtnEarly && typeof osBtnEarly.click === 'function') osBtnEarly.click();
+                    if (window.OperatorStrategyMyDeals && typeof window.OperatorStrategyMyDeals.setDealFilter === 'function') {
+                        window.OperatorStrategyMyDeals.setDealFilter(dealId);
+                    }
                     return;
                 }
                 var btn = document.querySelector('.my-deals-section-nav .section-nav-item[data-tab="' + tab + '"]');
@@ -6867,6 +7417,7 @@
                     var tab = btn.getAttribute('data-tab');
                     if (tab === 'deal-information') activeSectionTab = 'deal-information';
                     if (tab === 'matched') activeSectionTab = 'matched';
+                    if (tab === 'operator-strategy') activeSectionTab = 'operator-strategy';
                     if (tab === 'target-list') activeSectionTab = 'target-list';
                     if (tab === 'contacted') activeSectionTab = 'contacted';
                     if (tab === 'franchise-application') activeSectionTab = 'franchise-application';
@@ -6920,6 +7471,45 @@
                             } else {
                                 if (matchedLoadingEl) matchedLoadingEl.style.display = 'none';
                                 applyFilters();
+                            }
+                        }
+                    }
+                    if (sectionOperatorStrategy) {
+                        sectionOperatorStrategy.style.display = (tab === 'operator-strategy') ? 'block' : 'none';
+                        if (tab === 'operator-strategy') {
+                            var osMod = window.OperatorStrategyMyDeals;
+                            var osLoadingEl = document.getElementById('operatorStrategyLoadingState');
+                            var osTableWrap = document.getElementById('operatorStrategyTableWrap');
+                            var osTableEl = document.getElementById('operatorStrategyTable');
+                            var osEmptyEl = document.getElementById('operatorStrategyEmptyState');
+                            var osReady = osMod && typeof osMod.isPipelineReady === 'function' && osMod.isPipelineReady();
+                            var osNeedsFetch = dealsLoading || !osReady;
+                            if (osNeedsFetch && osLoadingEl) {
+                                osLoadingEl.style.display = 'block';
+                                if (osTableWrap) osTableWrap.style.display = 'none';
+                                if (osTableEl) osTableEl.style.display = 'none';
+                                if (osEmptyEl) osEmptyEl.style.display = 'none';
+                            }
+                            function activateOperatorStrategyTab() {
+                                var activeBtn = document.querySelector('.my-deals-section-nav .section-nav-item.active');
+                                if (!activeBtn || activeBtn.getAttribute('data-tab') !== 'operator-strategy') return;
+                                if (osMod && typeof osMod.onTabActivated === 'function') {
+                                    osMod.onTabActivated().catch(function(err) {
+                                        console.warn('Operator Strategy tab activate failed:', err);
+                                    });
+                                }
+                            }
+                            if (osNeedsFetch) {
+                                ensureNonCriticalDataLoaded(tabLoadToken).then(function(loaded) {
+                                    if (!loaded || isStaleLoad(tabLoadToken)) return;
+                                    activateOperatorStrategyTab();
+                                }).catch(function(err) {
+                                    if (isStaleLoad(tabLoadToken)) return;
+                                    console.warn('Failed loading operator-strategy data:', err);
+                                    activateOperatorStrategyTab();
+                                });
+                            } else if (osMod && typeof osMod.onTabActivated === 'function') {
+                                osMod.onTabActivated();
                             }
                         }
                     }
@@ -6997,9 +7587,29 @@
                         sectionArchived.style.display = (tab === 'archived') ? 'block' : 'none';
                         if (tab === 'archived') applyArchivedFilters();
                     }
-                    if (tab !== 'deal-information' && tab !== 'deal-compare' && tab !== 'outreach' && tab !== 'matched' && tab !== 'contacted' && tab !== 'target-list' && tab !== 'franchise-application' && tab !== 'archived' && sectionDealInformation) sectionDealInformation.style.display = 'none';
+                    if (tab !== 'deal-information' && tab !== 'deal-compare' && tab !== 'outreach' && tab !== 'matched' && tab !== 'operator-strategy' && tab !== 'contacted' && tab !== 'target-list' && tab !== 'franchise-application' && tab !== 'archived' && sectionDealInformation) sectionDealInformation.style.display = 'none';
                 });
             });
+
+            if (window.OperatorStrategyMyDeals && typeof window.OperatorStrategyMyDeals.init === 'function') {
+                var osParams = new URLSearchParams(window.location.search);
+                var osUrlDeal = (osParams.get('dealId') || '').trim();
+                window.OperatorStrategyMyDeals.init({
+                    getAllDeals: function () { return allDeals || []; },
+                    getDealMeta: function (dealId) {
+                        var deal = getDealByIdLocal(dealId);
+                        if (!deal) return { projectName: '', location: '' };
+                        return {
+                            projectName: String(deal.projectName || deal.propertyName || '').trim(),
+                            location: String(deal.hotelLocation || '').trim(),
+                        };
+                    },
+                    openDealView: function (dealId) {
+                        if (dealId && openMyDealsDealBriefForDeal) openMyDealsDealBriefForDeal(dealId);
+                    },
+                    initialDealFilterId: (osParams.get('tab') === 'operator-strategy' && osUrlDeal.indexOf('rec') === 0 ? osUrlDeal : ''),
+                });
+            }
 
             function populateDealCompareDealSelect() {
                 var sel = document.getElementById('dealCompareDealSelect');

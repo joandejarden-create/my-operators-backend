@@ -1,0 +1,1225 @@
+/* Operator Alignment Snapshot — profile-level document (reuses BAS print + toolbar) */
+
+
+
+.operator-alignment-snapshot {
+
+  --oas-accent: #4a5fc1;
+
+  --oas-accent-soft: rgba(74, 95, 193, 0.12);
+
+  --oas-ink: #101935;
+
+  --oas-ink-muted: #4a5568;
+
+  --oas-border: #d9e1fa;
+
+  --oas-paper: #ffffff;
+
+  --oas-font: "Mona Sans", "Inter", system-ui, sans-serif;
+
+  font-family: var(--oas-font);
+
+  color: var(--oas-ink);
+
+  line-height: 1.5;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-operator-detail-title {
+  display: block;
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--oas-ink);
+  line-height: 1.25;
+}
+
+.operator-alignment-snapshot .oas-operator-detail-sub {
+  margin: 0 0 0.5rem;
+  font-size: 12px;
+  color: var(--oas-ink-muted);
+}
+
+.operator-alignment-snapshot .oas-operator-detail-gap {
+  font-size: 12px;
+  margin: 0 0 0.5rem;
+}
+
+.operator-alignment-snapshot .oas-operator-detail-meta {
+  display: block;
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  color: var(--oas-ink-muted);
+  line-height: 1.4;
+}
+
+.operator-alignment-snapshot .oas-operator-detail-meta strong {
+  color: var(--oas-ink);
+  font-weight: 700;
+}
+
+.operator-alignment-snapshot .bas-section-title {
+
+  color: var(--oas-ink);
+
+  border-bottom-color: var(--oas-border);
+
+  font-size: 13px;
+
+  letter-spacing: 0.06em;
+
+}
+
+
+
+.operator-alignment-snapshot .bas-muted,
+
+.operator-alignment-snapshot .bas-summary {
+
+  color: var(--oas-ink-muted);
+
+}
+
+
+
+.operator-alignment-snapshot .bas-detail-list li {
+
+  color: var(--oas-ink);
+
+}
+
+
+
+.operator-alignment-snapshot.oas--full-page .oas-book-shell {
+
+  width: 100%;
+
+  align-items: stretch;
+
+  padding: 0 0 1.5rem;
+
+  box-sizing: border-box;
+
+}
+
+
+
+.operator-alignment-snapshot.oas--full-page .oas-document {
+
+  width: 100%;
+
+  max-width: 816px;
+
+  margin: 0 auto;
+
+  background: var(--oas-paper);
+
+  border: 1px solid var(--oas-border);
+
+  border-radius: 12px;
+
+  overflow: visible;
+
+  box-sizing: border-box;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-scroll-document {
+
+  padding: 1.5rem 1.75rem 2rem;
+
+  box-sizing: border-box;
+
+}
+
+
+
+/* OAS summary cards — light paper (override BAS dark .bas-brief-card on shared root class) */
+.operator-alignment-snapshot.brand-alignment-snapshot .oas-brief-card,
+.operator-alignment-snapshot .oas-brief-card {
+  border: 1px solid var(--oas-border);
+  border-radius: 10px;
+  background: #ffffff !important;
+  padding: 12px 14px;
+  color: var(--oas-ink) !important;
+}
+
+.operator-alignment-snapshot.brand-alignment-snapshot .oas-brief-card-title,
+.operator-alignment-snapshot .oas-brief-card-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--oas-accent) !important;
+  margin: 0 0 8px;
+}
+
+.operator-alignment-snapshot.brand-alignment-snapshot .oas-brief-card-body,
+.operator-alignment-snapshot .oas-brief-card-body {
+  font-size: 13px;
+  color: var(--oas-ink) !important;
+  line-height: 1.4;
+}
+
+.operator-alignment-snapshot .oas-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.operator-alignment-snapshot .oas-summary-facts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.operator-alignment-snapshot .oas-summary-facts__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid #eef1fb;
+  font-size: 12px;
+}
+
+.operator-alignment-snapshot .oas-summary-facts__row:last-child {
+  border-bottom: none;
+}
+
+.operator-alignment-snapshot .oas-summary-facts__label {
+  font-weight: 600;
+  color: var(--oas-ink-muted);
+  min-width: 7.5rem;
+}
+
+.operator-alignment-snapshot .oas-summary-facts__value {
+  color: var(--oas-ink);
+  flex: 1 1 8rem;
+}
+
+.operator-alignment-snapshot .oas-summary-card .oas-review-signal {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.operator-alignment-snapshot .oas-summary-card .oas-review-signal__rationale {
+  font-size: 12px;
+  margin: 0 0 8px;
+  line-height: 1.45;
+}
+
+.operator-alignment-snapshot .oas-section--summary {
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+@media (max-width: 720px) {
+  .operator-alignment-snapshot .oas-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Compact list blocks (profiles + companies) */
+.operator-alignment-snapshot .oas-compact-block {
+  margin-top: 10px;
+}
+
+.operator-alignment-snapshot .oas-compact-block__title {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--oas-ink-muted);
+}
+
+.operator-alignment-snapshot .oas-compact-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--oas-ink);
+}
+
+.operator-alignment-snapshot .oas-compact-list li {
+  margin-bottom: 0.25rem;
+}
+
+.operator-alignment-snapshot .oas-profile-card__more {
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+
+
+
+.operator-alignment-snapshot .oas-section {
+
+  margin-bottom: 1.35rem;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-section--deal-context {
+
+  break-inside: avoid-page;
+
+  page-break-inside: avoid;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-section--profiles {
+
+  break-inside: auto;
+
+  page-break-inside: auto;
+
+}
+
+
+
+/* Deal context grid — self-contained (do not rely on OCS stylesheet) */
+
+.operator-alignment-snapshot .oas-deal-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 14px 24px;
+
+  margin: 0.5rem 0 0;
+
+  padding: 0;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-deal-kv {
+
+  min-width: 0;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-deal-kv dt {
+
+  margin: 0 0 4px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: var(--oas-ink-muted);
+
+  letter-spacing: 0.02em;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-deal-kv dd {
+
+  margin: 0;
+
+  font-size: 14px;
+
+  color: var(--oas-ink);
+
+  line-height: 1.45;
+
+  word-break: break-word;
+
+}
+
+
+
+@media (max-width: 640px) {
+
+  .operator-alignment-snapshot .oas-deal-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .operator-alignment-snapshot .oas-scroll-document {
+
+    padding: 1.25rem 1.25rem 1.75rem;
+
+  }
+
+}
+
+
+
+/* Operator review signal */
+
+.operator-alignment-snapshot .oas-review-signal {
+
+  padding: 14px 16px;
+
+  border: 1px solid var(--oas-border);
+
+  border-radius: 10px;
+
+  background: #f8f9fd;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-signal__row {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 10px 14px;
+
+  margin-bottom: 10px;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-signal__label {
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: var(--oas-ink-muted);
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-signal__intro {
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  margin: 0 0 8px;
+
+  color: var(--oas-ink);
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-signal__rationale {
+
+  font-size: 14px;
+
+  margin: 0 0 12px;
+
+  color: var(--oas-ink);
+
+  line-height: 1.55;
+
+  max-width: 42rem;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-level {
+
+  display: inline-block;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.02em;
+
+  text-transform: none;
+
+  padding: 5px 12px;
+
+  border-radius: 6px;
+
+  background: var(--oas-accent-soft);
+
+  color: var(--oas-accent);
+
+  border: 1px solid rgba(74, 95, 193, 0.35);
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-level--high {
+
+  background: rgba(20, 202, 116, 0.12);
+
+  color: #0d7a47;
+
+  border-color: rgba(20, 202, 116, 0.35);
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-level--medium {
+
+  background: rgba(29, 136, 254, 0.1);
+
+  color: #086cd9;
+
+  border-color: rgba(29, 136, 254, 0.35);
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-level--low {
+
+  background: rgba(126, 137, 172, 0.15);
+
+  color: #37446b;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-review-level--insufficient-data {
+
+  background: rgba(253, 181, 42, 0.15);
+
+  color: #8a5a00;
+
+}
+
+
+
+/* Signal chips */
+
+.operator-alignment-snapshot .oas-chip-block {
+
+  margin-top: 10px;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-chip-block__title {
+
+  margin: 0 0 8px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: var(--oas-ink-muted);
+
+  letter-spacing: 0.01em;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-chip-list {
+
+  list-style: none;
+
+  margin: 0;
+
+  padding: 0;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-chip {
+
+  display: inline-block;
+
+  font-size: 12px;
+
+  line-height: 1.35;
+
+  padding: 5px 11px;
+
+  border-radius: 999px;
+
+  background: #eef1fb;
+
+  border: 1px solid #d9e1fa;
+
+  color: #37446b;
+
+  max-width: 100%;
+
+}
+
+
+
+/* Shared card header (profiles + companies) */
+.operator-alignment-snapshot .oas-card-header {
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--oas-border);
+}
+
+.operator-alignment-snapshot .oas-card-header__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-bottom: 6px;
+}
+
+.operator-alignment-snapshot .oas-card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--oas-ink) !important;
+  letter-spacing: -0.02em;
+  flex: 1 1 10rem;
+}
+
+.operator-alignment-snapshot .oas-card-band {
+  flex-shrink: 0;
+  font-size: 11px !important;
+  padding: 5px 10px !important;
+}
+
+.operator-alignment-snapshot .oas-card-lead {
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--oas-ink);
+}
+
+.operator-alignment-snapshot .oas-card-header__chips .oas-chip-block {
+  margin-top: 6px;
+}
+
+.operator-alignment-snapshot .oas-card-header__chips .oas-chip-block__title {
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.operator-alignment-snapshot .oas-card-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+}
+
+.operator-alignment-snapshot .oas-card-grid--two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.operator-alignment-snapshot .oas-closing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.operator-alignment-snapshot .oas-key-panel {
+  border: 1px solid var(--oas-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #f8f9fd;
+}
+
+.operator-alignment-snapshot .oas-key-panel__title {
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--oas-ink-muted);
+}
+
+.operator-alignment-snapshot .oas-closing-more {
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+
+/* Profile cards */
+.operator-alignment-snapshot .oas-profile-card {
+  border: 1px solid var(--oas-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+
+
+.operator-alignment-snapshot .oas-profile-card .oas-compact-block {
+  margin-top: 6px;
+}
+
+.operator-alignment-snapshot .oas-profile-card .oas-compact-list {
+  font-size: 11px;
+}
+
+
+
+.operator-alignment-snapshot .oas-band {
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.02em;
+
+  text-transform: none;
+
+  padding: 6px 12px;
+
+  border-radius: 8px;
+
+  border: 1px solid #c5cee8;
+
+  background: #f4f6fc;
+
+  color: #37446b;
+
+  white-space: nowrap;
+
+  flex-shrink: 0;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-band--strong {
+
+  background: rgba(20, 202, 116, 0.12);
+
+  border-color: rgba(20, 202, 116, 0.4);
+
+  color: #0d7a47;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-band--moderate {
+
+  background: rgba(29, 136, 254, 0.1);
+
+  border-color: rgba(29, 136, 254, 0.35);
+
+  color: #086cd9;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-band--conditional {
+
+  background: rgba(253, 181, 42, 0.12);
+
+  border-color: rgba(253, 181, 42, 0.45);
+
+  color: #8a5a00;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-band--limited {
+
+  background: rgba(126, 137, 172, 0.15);
+
+  border-color: #aeb9e1;
+
+  color: #37446b;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-band--insufficient {
+
+  background: #f4f6fc;
+
+  border-style: dashed;
+
+  color: #7e89ac;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-profile-card__lead {
+
+  font-size: 14px;
+
+  margin: 0;
+
+  color: var(--oas-ink);
+
+  line-height: 1.55;
+
+  max-width: 40rem;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-profile-card__note {
+
+  font-size: 13px;
+
+  margin: 0 0 12px;
+
+  line-height: 1.5;
+
+  max-width: 40rem;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-list-block {
+
+  margin-top: 12px;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-list-title {
+
+  margin: 0 0 6px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.02em;
+
+  text-transform: none;
+
+  color: var(--oas-ink-muted);
+
+}
+
+
+
+.operator-alignment-snapshot .oas-list-block .bas-detail-list {
+
+  margin: 0;
+
+  padding-left: 1.15rem;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-list-block .bas-detail-list li {
+
+  margin-bottom: 0.35rem;
+
+  line-height: 1.5;
+
+  max-width: 40rem;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-list--gaps .bas-detail-list li {
+
+  color: #5a4a2a;
+
+}
+
+
+
+.operator-alignment-snapshot .oas-footer-disclaimer {
+
+  margin-top: 1rem;
+
+  font-size: 12px;
+
+  color: var(--oas-ink-muted);
+
+}
+
+
+
+.bas-page--full .operator-alignment-snapshot {
+
+  width: 100%;
+
+  max-width: none;
+
+}
+
+
+
+.bas-page--full .operator-alignment-snapshot .bas-toolbar {
+
+  width: 100%;
+
+  max-width: none;
+
+}
+
+
+
+/* Print: cover + book layout come from brand-alignment-snapshot.css (same as Brand Alignment iframe). */
+@media print {
+
+  .operator-alignment-snapshot .oas-profile-card,
+  .operator-alignment-snapshot .oas-company-card {
+    margin-bottom: 4px;
+    padding: 8px 10px !important;
+  }
+
+  .operator-alignment-snapshot .oas-card-grid--two-col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px !important;
+  }
+
+  .operator-alignment-snapshot .oas-card-title,
+  .operator-alignment-snapshot .oas-company-card__title {
+    font-size: 11pt !important;
+    color: #101935 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .operator-alignment-snapshot .oas-card-band,
+  .operator-alignment-snapshot .oas-band {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .operator-alignment-snapshot .oas-brief-card {
+    background: #fff !important;
+    color: #101935 !important;
+  }
+
+  .operator-alignment-snapshot .oas-section--profiles .bas-section-title,
+  .operator-alignment-snapshot .oas-section--companies .bas-section-title {
+    page-break-after: avoid;
+  }
+
+
+
+  .operator-alignment-snapshot .oas-section--profiles {
+
+    break-inside: auto;
+
+    page-break-inside: auto;
+
+  }
+
+
+
+  .operator-alignment-snapshot .oas-scroll-document {
+
+    padding: 0.25rem 0 1rem !important;
+
+  }
+
+
+
+  .operator-alignment-snapshot .oas-deal-grid {
+
+    gap: 10px 18px;
+
+  }
+
+
+
+  .operator-alignment-snapshot.brand-alignment-snapshot .bas-page-technical .oas-operator-detail-title {
+    display: block !important;
+    visibility: visible !important;
+    color: #101935 !important;
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    margin: 0 0 0.25rem !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .operator-alignment-snapshot.brand-alignment-snapshot .bas-page-technical .oas-operator-detail-meta {
+    display: block !important;
+    visibility: visible !important;
+    color: #343b4f !important;
+    font-size: 9pt !important;
+    margin: 0 0 0.5rem !important;
+  }
+
+  .operator-alignment-snapshot.brand-alignment-snapshot .bas-page-technical .oas-operator-detail-meta strong {
+    color: #101935 !important;
+  }
+
+  .operator-alignment-snapshot .oas-company-card--limited-extra,
+  .operator-alignment-snapshot .oas-companies-show-all {
+    display: none !important;
+  }
+
+  .operator-alignment-snapshot .oas-section--companies .bas-section-title {
+    page-break-after: avoid;
+  }
+
+  .operator-alignment-snapshot .oas-common-gaps {
+    page-break-after: avoid;
+  }
+
+  .operator-alignment-snapshot.oas-print-flattened .oas-print-viewport-flat,
+  .operator-alignment-snapshot.oas-print-flattened .oas-print-document,
+  body.bas-print-active #bas-print-host .operator-alignment-snapshot .oas-print-viewport-flat,
+  body.bas-print-active #bas-print-host .operator-alignment-snapshot .oas-print-document {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: unset !important;
+    overflow: visible !important;
+    perspective: none !important;
+    box-shadow: none !important;
+  }
+
+  .operator-alignment-snapshot.oas-print-flattened .oas-print-document > .bas-book-page-inner,
+  body.bas-print-active #bas-print-host .operator-alignment-snapshot .oas-print-document > .bas-book-page-inner {
+    position: static !important;
+    display: block !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-before: auto !important;
+    break-before: auto !important;
+  }
+
+  .operator-alignment-snapshot.oas-print-flattened .oas-print-document > .bas-book-page-inner:last-child,
+  body.bas-print-active #bas-print-host .operator-alignment-snapshot .oas-print-document > .bas-book-page-inner:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* One cover sheet: 265mm printable height (flat print doc — no blank page 2). */
+  .brand-alignment-snapshot .oas-print-cover-sheet.bas-cover-page,
+  body.bas-print-active #bas-print-host .brand-alignment-snapshot .oas-print-cover-sheet.bas-cover-page {
+    min-height: 265mm !important;
+    height: 265mm !important;
+    max-height: 265mm !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet,
+  body.bas-print-active #bas-print-host .operator-alignment-snapshot .oas-print-cover-sheet {
+    display: grid !important;
+    grid-template-rows: min-content minmax(0, 1fr) min-content !important;
+    grid-template-areas: "tag" "main" "foot" !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    height: 265mm !important;
+    min-height: 265mm !important;
+    max-height: 265mm !important;
+    overflow: hidden !important;
+    padding: 14mm 14mm 15mm !important;
+    margin: 0 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    position: relative !important;
+    background: #080f25 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet.oas-print-cover-sheet--scaled {
+    overflow: hidden !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet .bas-cover-confidential {
+    grid-area: tag !important;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 0 0 9mm !important;
+    font-size: 0.58rem !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet .bas-cover-block {
+    grid-area: main !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    flex: none !important;
+    min-height: 0 !important;
+    padding: 9mm 0 6mm !important;
+    position: static !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet .bas-cover-doc-type {
+    font-size: 0.72rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet .bas-cover-title {
+    font-size: 2.5rem !important;
+    margin-bottom: 0.55rem !important;
+    line-height: 1.08 !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet .bas-cover-location {
+    font-size: 1.15rem !important;
+    margin-bottom: 0.9rem !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet .bas-cover-accent-line {
+    width: 56px !important;
+    height: 4px !important;
+    margin-bottom: 0.9rem !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet .bas-cover-sub {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-sheet .bas-cover-date {
+    font-size: 8pt !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-foot {
+    grid-area: foot !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-foot .bas-cover-disclaimer {
+    position: static !important;
+    flex: 1 1 auto !important;
+    max-width: min(36em, 70%) !important;
+    margin: 0 !important;
+    bottom: auto !important;
+    left: auto !important;
+    padding: 0 !important;
+    font-size: 0.55rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-foot .bas-cover-hero {
+    position: static !important;
+    flex: 0 0 auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  .operator-alignment-snapshot .oas-print-cover-foot .bas-cover-logo-img {
+    display: block !important;
+    max-width: 120px !important;
+    width: auto !important;
+    height: auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .operator-alignment-snapshot .oas-profile-card__title {
+
+    font-size: 14pt;
+
+  }
+
+
+
+  .operator-alignment-snapshot .oas-band,
+
+  .operator-alignment-snapshot .oas-review-level {
+
+    -webkit-print-color-adjust: exact;
+
+    print-color-adjust: exact;
+
+  }
+
+
+
+}
+
+/* My Deals modal — match Deal Info readiness shells (1120px, full-width book) */
+
+#myDealsOperatorAlignmentContent {
+  display: none;
+}
+
+#myDealsOperatorAlignmentContent.is-visible {
+  display: block;
+}
+
+#myDealsOperatorAlignmentModal .my-deals-readiness-modal {
+  max-width: 1120px;
+  width: min(96vw, 1120px);
+}
+
+.my-deals-readiness-modal-body .operator-alignment-snapshot,
+#myDealsOperatorAlignmentModal .operator-alignment-snapshot {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.my-deals-readiness-modal-body .operator-alignment-snapshot.bas--embed,
+#myDealsOperatorAlignmentModal .operator-alignment-snapshot.bas--embed {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.my-deals-readiness-modal-body .operator-alignment-snapshot .bas-book-shell,
+#myDealsOperatorAlignmentModal .operator-alignment-snapshot .bas-book-shell,
+.my-deals-readiness-modal-body .operator-alignment-snapshot .bas-book-document,
+#myDealsOperatorAlignmentModal .operator-alignment-snapshot .bas-book-document,
+.my-deals-readiness-modal-body .operator-alignment-snapshot .bas-book-viewport,
+#myDealsOperatorAlignmentModal .operator-alignment-snapshot .bas-book-viewport {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+

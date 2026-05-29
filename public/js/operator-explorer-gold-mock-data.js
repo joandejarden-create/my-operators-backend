@@ -178,6 +178,9 @@
         if (p[k] != null && p[k] !== "") out[k] = p[k];
       }
     });
+    if (global.OperatorExplorerNewBaseProfile && global.OperatorExplorerNewBaseProfile.mergeNewBaseKeysIntoExplorer) {
+      return global.OperatorExplorerNewBaseProfile.mergeNewBaseKeysIntoExplorer(out, p);
+    }
     return out;
   }
 
@@ -1032,6 +1035,14 @@
       brandProfiles: brandProfiles,
       listRow: listRow || {},
       ownerDiligenceQa: ownerDiligenceQa,
+      explorerHeroVerification:
+        nz(detailPayload.explorerHeroVerification) ||
+        nz(prefill.explorerHeroVerification) ||
+        nz(listRow && listRow.explorerHeroVerification),
+      explorerHeroDataSource:
+        nz(detailPayload.explorerHeroDataSource) ||
+        nz(prefill.explorerHeroDataSource) ||
+        nz(listRow && listRow.explorerHeroDataSource),
     };
   }
 
@@ -1255,7 +1266,15 @@
       titledCard("Industry Recognition", p.industryRecognition) +
       titledCard("Notable Achievements", p.achievements);
 
+    var newBaseSnapshotRail = "";
+    if (global.OperatorExplorerNewBaseProfile) {
+      newBaseSnapshotRail = global.OperatorExplorerNewBaseProfile.buildSnapshotRailHtml(
+        global.OperatorExplorerNewBaseProfile.buildFieldMap(vm)
+      );
+    }
+
     var ProfilePositioning =
+      newBaseSnapshotRail +
       heroSummarySection() +
       (nz(vm.statement)
         ? '<section class="section"><h2 class="section-title">Company Background</h2>' +
@@ -1884,6 +1903,7 @@
   }
 
   function mount(vm, panels) {
+    document.documentElement.classList.remove("gold-profile--loading");
     var nameEl = document.getElementById("heroName");
     var logoEl = document.getElementById("heroLogo");
     var tagEl = document.querySelector(".hero .tag");
@@ -1896,9 +1916,12 @@
     if (logoEl) {
       if (vm.logoUrl) {
         logoEl.src = vm.logoUrl;
+        logoEl.removeAttribute("hidden");
         logoEl.style.display = "block";
+        if (vm.companyName) logoEl.alt = vm.companyName + " logo";
       } else {
         logoEl.style.display = "none";
+        logoEl.setAttribute("hidden", "");
       }
     }
     if (tagEl) {
@@ -1978,6 +2001,9 @@
         });
       });
     }
+    if (global.OperatorExplorerNewBaseProfile) {
+      global.OperatorExplorerNewBaseProfile.mountProfileChrome(vm);
+    }
   }
 
   async function bootstrap(options) {
@@ -2012,7 +2038,20 @@
         var vm = buildViewModel(bundle.detail, bundle.listRow);
         var panels = buildPanels(vm);
         mount(vm, panels);
-        return { mode: "live", recordId: id, vm: vm };
+        var dealId = params.get("dealId") || "";
+        if (dealId && global.OperatorExplorerNewBaseProfile) {
+          var profileId =
+            (bundle.detail &&
+              (bundle.detail.operatorId ||
+                (bundle.detail.prefill && bundle.detail.prefill.operatorId))) ||
+            "";
+          await global.OperatorExplorerNewBaseProfile.mountAlignmentContext(
+            dealId,
+            id,
+            profileId || id
+          );
+        }
+        return { mode: "live", recordId: id, vm: vm, dealId: dealId };
       } catch (e) {
         console.warn("[gold-mock] Live load failed, falling back to demo", e);
         if (typeof options.onDemoFallback === "function") options.onDemoFallback(e);

@@ -18,6 +18,7 @@ import {
   logOperatorReadPath,
 } from "./lib/operator-setup-new-base-read.js";
 import { normalizeOperatorSetupSelectPrefill } from "./lib/third-party-operator-select-prefill-normalize.js";
+import { pickExplorerHeroLabelsFromMasterFields } from "../lib/operator-explorer-hero-labels.js";
 
 const airtableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
@@ -115,6 +116,7 @@ export default async function getThirdPartyOperatorDetail(req, res) {
       prefill.caseStudiesDetail = caseStudiesDetail;
       prefill.ownerDiligenceQa = ownerDiligenceQa;
       normalizeOperatorSetupSelectPrefill(prefill);
+      const heroLabels = pickExplorerHeroLabelsFromMasterFields(master.fields);
 
       logOperatorReadPath("third_party_operator_detail", {
         read_path: "new_base",
@@ -132,6 +134,8 @@ export default async function getThirdPartyOperatorDetail(req, res) {
           brandProfiles: Array.isArray(brandProfiles) ? brandProfiles : [],
           representativeProperties: [],
           leadershipTeam,
+          explorerHeroVerification: heroLabels.explorerHeroVerification,
+          explorerHeroDataSource: heroLabels.explorerHeroDataSource,
           prefill,
         },
       });

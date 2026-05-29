@@ -3,10 +3,27 @@
 .snapshot-page,
 .bas-page,
 .drs-page {
+  --snapshot-platform-font: "Mona Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
   background: #080f25;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--snapshot-platform-font);
+  color: #aeb9e1;
+  font-size: 14px;
+}
+
+/* Loaders sit outside .brand-alignment-snapshot / .operator-alignment-snapshot — set font explicitly */
+.bas-page-loading .loading,
+.bas-page-loading .loading-text-main,
+.bas-page-loading .loading-text-time,
+.drs-page-loading .loading,
+.drs-page-loading .loading-text-main,
+.drs-page-loading .loading-text-time,
+.snapshot-page-loading .loading,
+.snapshot-page-loading .loading-text-main,
+.snapshot-page-loading .loading-text-time {
+  font-family: var(--snapshot-platform-font);
 }
 
 .snapshot-page.snapshot-page--full,
@@ -18,8 +35,50 @@
   padding: 0 1.5rem 1.25rem;
 }
 
+/* Platform scrollbars (Operator Explorer / My Deals) */
+.bas-page--full,
+.snapshot-page--full,
+.drs-page--full {
+  scrollbar-width: thin;
+  scrollbar-color: #37446b #080f25;
+}
+
+.bas-page--full *::-webkit-scrollbar,
+.snapshot-page--full *::-webkit-scrollbar,
+.drs-page--full *::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.bas-page--full *::-webkit-scrollbar-track,
+.snapshot-page--full *::-webkit-scrollbar-track,
+.drs-page--full *::-webkit-scrollbar-track {
+  background: #080f25;
+  border-left: 1px solid rgba(87, 195, 255, 0.35);
+}
+
+.bas-page--full *::-webkit-scrollbar-thumb,
+.snapshot-page--full *::-webkit-scrollbar-thumb,
+.drs-page--full *::-webkit-scrollbar-thumb {
+  background: #37446b;
+  border-radius: 0;
+}
+
+.bas-page--full *::-webkit-scrollbar-thumb:hover,
+.snapshot-page--full *::-webkit-scrollbar-thumb:hover,
+.drs-page--full *::-webkit-scrollbar-thumb:hover {
+  background: #7e89ac;
+}
+
+.bas-page--full *::-webkit-scrollbar-corner,
+.snapshot-page--full *::-webkit-scrollbar-corner,
+.drs-page--full *::-webkit-scrollbar-corner {
+  background: #080f25;
+}
+
 .snapshot-page.snapshot-page--full > [id$="PageRoot"],
 .bas-page.bas-page--full #basPageRoot,
+.bas-page.bas-page--full #oasPageRoot,
 .drs-page.drs-page--full #drsPageRoot {
   width: 100%;
   max-width: none;
@@ -39,6 +98,7 @@
 .bas-page--full .brand-alignment-snapshot,
 .bas-page--full .deal-brief-snapshot,
 .bas-page--full .operator-capability-snapshot,
+.bas-page--full .operator-alignment-snapshot,
 .drs-page--full .deal-readiness-snapshot {
   width: 100%;
   max-width: none;
@@ -47,6 +107,7 @@
 .bas-page--full .brand-alignment-snapshot .bas-toolbar,
 .bas-page--full .deal-brief-snapshot .bas-toolbar,
 .bas-page--full .operator-capability-snapshot .bas-toolbar,
+.bas-page--full .operator-alignment-snapshot .bas-toolbar,
 .drs-page--full .deal-readiness-snapshot .drs-toolbar {
   width: 100%;
   max-width: none;
@@ -71,6 +132,7 @@
 .bas-page--full .brand-alignment-snapshot .bas-book-viewport,
 .bas-page--full .deal-brief-snapshot .bas-book-viewport,
 .bas-page--full .operator-capability-snapshot .bas-book-viewport,
+.bas-page--full .operator-alignment-snapshot .bas-book-viewport,
 .drs-page--full .deal-readiness-snapshot .drs-book-viewport {
   width: 100%;
   max-width: none;

@@ -450,6 +450,40 @@
             margin-bottom: 30px;
         }
 
+        .operator-explorer-container .brand-card .favorite-star {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            z-index: 10;
+            border: none;
+            padding: 0;
+        }
+        .operator-explorer-container .brand-card .favorite-star:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: scale(1.08);
+        }
+        .operator-explorer-container .brand-card .favorite-star svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: var(--neutral--500, #7e89ac);
+            stroke-width: 2;
+            transition: fill 0.2s ease, stroke 0.2s ease;
+        }
+        .operator-explorer-container .brand-card .favorite-star.favorited svg {
+            fill: var(--accent--primary-1, #6c72ff);
+            stroke: var(--accent--primary-1, #6c72ff);
+        }
+
         .brand-card {
             position: relative;
             background: var(--secondary--color-1);
@@ -635,10 +669,17 @@
         .loading .wave-1 { height: 40%; background: linear-gradient(45deg, #d69e2e, #f4d03f); animation: blib-wave-1 2s ease-in-out infinite; }
         .loading .wave-2 { height: 60%; background: linear-gradient(45deg, #b8860b, #d69e2e); animation: blib-wave-2 2s ease-in-out infinite; animation-delay: 0.3s; }
         .loading .wave-3 { height: 80%; background: linear-gradient(45deg, #f4d03f, #f7dc6f); animation: blib-wave-3 2s ease-in-out infinite; animation-delay: 0.6s; }
+        .loading .wave-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .loading .particle { position: absolute; width: 2px; height: 2px; background: #d69e2e; border-radius: 50%; animation: blib-particle-float 3s ease-in-out infinite; box-shadow: 0 0 4px #d69e2e; }
+        .loading .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+        .loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+        .loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
         @keyframes blib-wave-1 { 0%,100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; } 50% { transform: translateX(0%) scaleY(1.2); opacity: 1; } }
         @keyframes blib-wave-2 { 0%,100% { transform: translateX(100%) scaleY(1); opacity: 0.6; } 50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; } }
         @keyframes blib-wave-3 { 0%,100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; } 50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; } }
-        .loading-text-main { font-size: 14px; font-weight: 500; color: var(--neutral--100); }
+        @keyframes blib-particle-float { 0% { transform: translateY(100%) scale(0); opacity: 0; } 20% { transform: translateY(80%) scale(1); opacity: 1; } 80% { transform: translateY(20%) scale(1); opacity: 1; } 100% { transform: translateY(0%) scale(0); opacity: 0; } }
+        .loading-text-main { font-size: 14px; font-weight: 500; color: var(--neutral--100); margin-bottom: 4px; }
         .loading-text-time { font-size: 12px; color: var(--neutral--400); }
         .loading-progress { width: 100%; height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; margin-top: 8px; }
         .loading-progress-bar { height: 100%; background: linear-gradient(90deg, var(--secondary--color-5), var(--system--orange-400)); border-radius: 2px; animation: progress-animation 3s ease-in-out infinite; }
@@ -716,26 +757,18 @@
         .gold-mock-popup-frame.is-ready {
             opacity: 1;
         }
+        /* Profile popup loading — same pattern as Brand Explorer .brand-detail-popup-loading */
         .gold-mock-popup-loading {
             position: absolute;
             inset: 0;
-            z-index: 10001;
+            z-index: 10002;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 18px;
             background: linear-gradient(180deg, rgba(8, 15, 37, 0.94), rgba(16, 25, 53, 0.96));
         }
         .gold-mock-popup-loading[hidden] {
             display: none !important;
-        }
-        .gold-mock-popup-loading-card {
-            width: min(92%, 560px);
-            background: var(--secondary--color-1);
-            border: 0.6px solid var(--neutral--600);
-            border-radius: 10px;
-            padding: 18px 20px;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
         }
         .gold-mock-popup-loading .loading {
             position: static;
@@ -746,9 +779,6 @@
             border: 0.6px solid var(--neutral--600);
             border-radius: 12px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-        }
-        .gold-mock-popup-loading .loading-progress {
-            margin-top: 10px;
         }
         .gold-mock-popup-loading.is-error .loading-progress-bar {
             animation: none;
@@ -795,11 +825,16 @@
                     </div>
                 </div>
 
-                <nav class="tabs-section" aria-label="Operator Explorer sections">
+                <nav class="tabs-section" aria-label="Operator Explorer sections" id="operatorExplorerListTabs">
                     <button type="button" class="section-nav-item active" data-tab="operators">
                         <div class="section-nav-icon" title="Operators"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
                         <span class="section-nav-label">Operators</span>
                         <span class="tab-count" id="operatorsTabCount">0</span>
+                    </button>
+                    <button type="button" class="section-nav-item" data-tab="favorites">
+                        <div class="section-nav-icon" title="Favorites"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+                        <span class="section-nav-label">Favorites</span>
+                        <span class="tab-count" id="favoritesTabCount">0</span>
                     </button>
                 </nav>
 
@@ -903,27 +938,31 @@
         <div class="gold-mock-popup-panel" role="dialog" aria-modal="true" aria-label="Operator profile">
             <button type="button" class="gold-mock-popup-close" id="goldMockPopupClose" aria-label="Close">&times;</button>
             <div class="gold-mock-popup-loading" id="goldMockPopupLoading" hidden>
-                <div class="gold-mock-popup-loading-card">
-                    <div class="loading">
-                        <div class="loading-content">
-                            <div class="wave-container">
-                                <div class="wave wave-1"></div>
-                                <div class="wave wave-2"></div>
-                                <div class="wave wave-3"></div>
-                            </div>
-                            <div>
-                                <div class="loading-text-main" id="goldMockPopupLoadingTitle">Loading Operator Profile…</div>
-                                <div class="loading-text-time" id="goldMockPopupLoadingText">Waiting for Live Operator Data…</div>
+                <div class="loading">
+                    <div class="loading-content">
+                        <div class="wave-container">
+                            <div class="wave wave-1"></div>
+                            <div class="wave wave-2"></div>
+                            <div class="wave wave-3"></div>
+                            <div class="wave-particles">
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
                             </div>
                         </div>
-                        <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                        <div>
+                            <div class="loading-text-main" id="goldMockPopupLoadingTitle">Loading Operator Profile…</div>
+                        </div>
                     </div>
+                    <div class="loading-progress"><div class="loading-progress-bar"></div></div>
                 </div>
             </div>
             <iframe class="gold-mock-popup-frame" id="goldMockPopupFrame" title="Operator profile" src="about:blank"></iframe>
         </div>
     </div>
 
+    <script src="/js/operator-explorer-favorites.js?v=oe-favorites-20260529" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const resultsList = document.getElementById('resultsList');
@@ -932,10 +971,13 @@
             const sortSelect = document.getElementById('sortSelect');
             const loadingState = document.getElementById('loadingState');
             const operatorsTabCount = document.getElementById('operatorsTabCount');
+            const favoritesTabCount = document.getElementById('favoritesTabCount');
+            const listTabsNav = document.getElementById('operatorExplorerListTabs');
             const filterCountBadge = document.getElementById('filterCountBadge');
 
             let allOperators = [];
             let filteredOperators = [];
+            let activeListTab = 'operators';
             let goldMockPopupToken = '';
             let goldMockPopupTimeout = null;
             /** Legend-only chain scale filter (normalized, e.g. "luxury", "upper upscale"). */
@@ -1006,10 +1048,19 @@
                     populateRegionFilter([...new Set(allOperators.flatMap(function(o) { return o.geography || []; }))].sort());
                     populateAssetTypeFilter([...new Set(allOperators.flatMap(function(o) { return o.asset_classes || []; }))].sort());
                     populateExperienceTypeFilter([...new Set(allOperators.flatMap(function(o) { return o.operating_situations || []; }))].sort());
-                    operatorsTabCount.textContent = String(allOperators.length);
+                    updateTabCounts();
                     updateChainScaleQuickFilterStates();
-                    filterOperators();
-                    showLoading(false);
+                    var favReady = window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.ready
+                        ? window.OperatorExplorerFavorites.ready()
+                        : Promise.resolve();
+                    favReady.then(function() {
+                        updateTabCounts();
+                        filterOperators();
+                        showLoading(false);
+                    }).catch(function() {
+                        filterOperators();
+                        showLoading(false);
+                    });
                 } catch (error) {
                     console.error('Error fetching operators:', error);
                     showLoading(false);
@@ -1135,7 +1186,13 @@
                 }
                 logoHtml += '</div>';
 
+                const favStarHtml = op.id
+                    ? '<button type="button" class="favorite-star" data-oe-operator-id="' + escapeHtml(op.id) + '" aria-label="Add to favorites" aria-pressed="false" title="Save to favorites">' +
+                      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>'
+                    : '';
+
                 card.innerHTML =
+                    favStarHtml +
                     '<div class="brand-card__scale-stripe" style="background:' + stripeBackground + ';"></div>' +
                     '<div class="brand-card__header">' +
                     logoHtml +
@@ -1153,7 +1210,38 @@
                     e.stopPropagation();
                     openGoldMockPopup(op.id);
                 });
+                if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.wireCardStars) {
+                    window.OperatorExplorerFavorites.wireCardStars(card);
+                }
                 return card;
+            }
+
+            function favoriteIdsSet() {
+                const ids = window.OperatorExplorerFavorites ? window.OperatorExplorerFavorites.load() : [];
+                const set = {};
+                ids.forEach(function(id) { set[id] = true; });
+                return set;
+            }
+
+            function updateTabCounts() {
+                if (operatorsTabCount) operatorsTabCount.textContent = String(allOperators.length);
+                if (favoritesTabCount) {
+                    const favCount = window.OperatorExplorerFavorites ? window.OperatorExplorerFavorites.load().length : 0;
+                    favoritesTabCount.textContent = String(favCount);
+                }
+            }
+
+            function setActiveListTab(tab) {
+                const next = tab === 'favorites' ? 'favorites' : 'operators';
+                activeListTab = next;
+                if (listTabsNav) {
+                    listTabsNav.querySelectorAll('.section-nav-item[data-tab]').forEach(function(btn) {
+                        const isActive = btn.getAttribute('data-tab') === next;
+                        btn.classList.toggle('active', isActive);
+                        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    });
+                }
+                filterOperators();
             }
 
             function sortOperators() {
@@ -1174,16 +1262,31 @@
 
             function renderOperators() {
                 resultsList.innerHTML = '';
+                const poolTotal = activeListTab === 'favorites'
+                    ? (window.OperatorExplorerFavorites ? window.OperatorExplorerFavorites.load().length : 0)
+                    : allOperators.length;
                 if (filteredOperators.length === 0) {
                     resultsList.classList.add('hidden');
                     emptyState.classList.remove('hidden');
-                    resultsCount.innerHTML = 'Showing <strong>0</strong> of <strong>' + allOperators.length + '</strong> operators';
+                    if (activeListTab === 'favorites') {
+                        emptyState.innerHTML = poolTotal === 0
+                            ? '<h3>No favorites yet</h3><p>Click the star on an operator card or <strong>Save</strong> on its profile to add it here.</p>'
+                            : '<h3>No operators found</h3><p>No saved operators match these filters. Clear filters or try a different search term.</p>';
+                    } else {
+                        emptyState.innerHTML = '<h3>No operators found</h3><p>No operators match these filters. Clear filters or try a different search term.</p>';
+                    }
+                    resultsCount.innerHTML = 'Showing <strong>0</strong> of <strong>' + poolTotal + '</strong> ' +
+                        (activeListTab === 'favorites' ? 'favorites' : 'operators');
                     return;
                 }
                 resultsList.classList.remove('hidden');
                 emptyState.classList.add('hidden');
                 filteredOperators.forEach(function(op) { resultsList.appendChild(createOperatorCard(op)); });
-                resultsCount.innerHTML = 'Showing <strong>' + filteredOperators.length + '</strong> of <strong>' + allOperators.length + '</strong> operators';
+                if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.wireCardStars) {
+                    window.OperatorExplorerFavorites.wireCardStars(resultsList);
+                }
+                resultsCount.innerHTML = 'Showing <strong>' + filteredOperators.length + '</strong> of <strong>' + poolTotal + '</strong> ' +
+                    (activeListTab === 'favorites' ? 'favorites' : 'operators');
             }
 
             function getActiveFilterCount() {
@@ -1242,8 +1345,10 @@
                 const assetType = document.getElementById('assetTypeFilter').value;
                 const brandedIndependent = document.getElementById('brandedIndependentFilter').value;
                 const experienceType = document.getElementById('experienceTypeFilter').value;
+                const favSet = activeListTab === 'favorites' ? favoriteIdsSet() : null;
 
                 filteredOperators = allOperators.filter(function(op) {
+                    if (favSet && !favSet[op.id]) return false;
                     const searchable = [
                         op.operator_name,
                         (op.geography || []).join(' '),
@@ -1296,7 +1401,6 @@
                 var frame = document.getElementById('goldMockPopupFrame');
                 var loading = document.getElementById('goldMockPopupLoading');
                 var loadingTitle = document.getElementById('goldMockPopupLoadingTitle');
-                var loadingText = document.getElementById('goldMockPopupLoadingText');
                 if (popup) {
                     popup.style.display = 'none';
                     popup.setAttribute('aria-hidden', 'true');
@@ -1312,7 +1416,6 @@
                     loading.classList.remove('is-error');
                 }
                 if (loadingTitle) loadingTitle.textContent = 'Loading Operator Profile…';
-                if (loadingText) loadingText.textContent = 'Waiting for Live Operator Data…';
                 if (frame) {
                     frame.classList.remove('is-ready');
                     frame.src = 'about:blank';
@@ -1320,11 +1423,11 @@
             }
 
             function openGoldMockPopup(id) {
+                if (!id || String(id).indexOf('rec') !== 0) return;
                 var popup = document.getElementById('goldMockPopup');
                 var frame = document.getElementById('goldMockPopupFrame');
                 var loading = document.getElementById('goldMockPopupLoading');
                 var loadingTitle = document.getElementById('goldMockPopupLoadingTitle');
-                var loadingText = document.getElementById('goldMockPopupLoadingText');
                 if (!popup || !frame) return;
 
                 if (goldMockPopupTimeout) {
@@ -1339,8 +1442,10 @@
                     loading.classList.remove('is-error');
                 }
                 if (loadingTitle) loadingTitle.textContent = 'Loading Operator Profile…';
-                if (loadingText) loadingText.textContent = 'Waiting for Live Operator Data…';
-                frame.src = '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(id) + '&embed=1&popupToken=' + encodeURIComponent(goldMockPopupToken);
+                var dealIdParam = (new URLSearchParams(window.location.search || '')).get('dealId') || '';
+                var profileUrl = '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(id) + '&embed=1&popupToken=' + encodeURIComponent(goldMockPopupToken);
+                if (dealIdParam) profileUrl += '&dealId=' + encodeURIComponent(dealIdParam);
+                frame.src = profileUrl;
                 
                 popup.style.display = 'flex';
                 popup.setAttribute('aria-hidden', 'false');
@@ -1352,8 +1457,10 @@
                         loading.hidden = false;
                         loading.classList.add('is-error');
                     }
-                    if (loadingTitle) loadingTitle.textContent = 'Live profile is taking longer than expected';
-                    if (loadingText) loadingText.textContent = 'Still waiting for live data. You can close this panel and try again.';
+                    if (loadingTitle) {
+                        loadingTitle.textContent =
+                            'Live profile is taking longer than expected. You can close this panel and try again.';
+                    }
                 }, 8000);
             }
 
@@ -1369,7 +1476,6 @@
                 var frame = document.getElementById('goldMockPopupFrame');
                 var loading = document.getElementById('goldMockPopupLoading');
                 var loadingTitle = document.getElementById('goldMockPopupLoadingTitle');
-                var loadingText = document.getElementById('goldMockPopupLoadingText');
                 if (!frame) return;
 
                 if (goldMockPopupTimeout) {
@@ -1388,8 +1494,10 @@
                     loading.hidden = false;
                     loading.classList.add('is-error');
                 }
-                if (loadingTitle) loadingTitle.textContent = 'Live profile unavailable';
-                if (loadingText) loadingText.textContent = 'This operator did not return live profile data.';
+                if (loadingTitle) {
+                    loadingTitle.textContent =
+                        'Live profile unavailable. This operator did not return live profile data.';
+                }
             });
 
             document.getElementById('goldMockPopupClose').addEventListener('click', closeGoldMockPopup);
@@ -1416,6 +1524,27 @@
                 if (!btn) return;
                 applyChainScaleQuickFilter(btn.getAttribute('data-scale') || 'all');
             });
+
+            if (listTabsNav) {
+                listTabsNav.addEventListener('click', function(e) {
+                    const btn = e.target && e.target.closest && e.target.closest('.section-nav-item[data-tab]');
+                    if (!btn || !listTabsNav.contains(btn)) return;
+                    const tab = btn.getAttribute('data-tab');
+                    if (tab === 'operators' || tab === 'favorites') setActiveListTab(tab);
+                });
+            }
+
+            window.addEventListener('operator-explorer-favorites-changed', function() {
+                updateTabCounts();
+                if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.wireCardStars && resultsList) {
+                    window.OperatorExplorerFavorites.wireCardStars(resultsList);
+                }
+                if (activeListTab === 'favorites') filterOperators();
+            });
+
+            if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.ready) {
+                void window.OperatorExplorerFavorites.ready();
+            }
 
             fetchOperators();
         });

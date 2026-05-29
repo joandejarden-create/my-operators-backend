@@ -1,0 +1,31 @@
+/** Source page URL -> hoteldam hero image (browser-assisted pass). */
+export const IMAGE_BY_SOURCE_URL = {
+  "https://www.choicehotels.com/dominican-republic/santo-domingo/quality-inn-hotels/do002":
+    "https://www.choicehotels.com/hoteldam/do/do003/images/480/DO003ExteriorTemp1.jpg",
+  "https://www.choicehotels.com/colombia/medellin/radisson-individuals-hotels/cb030":
+    "https://www.choicehotels.com/hoteldam/cb/cb030/images/2048/CB030TerraceTemp001_1.jpg",
+  "https://www.choicehotels.com/es-us/sonora/obregon/quality-inn-hotels/mx054?mc=llrsxxmx":
+    "https://www.choicehotels.com/hoteldam/mx/mx054/images/1280/MX054ExteriorTemp01_1.jpg",
+  "https://www.choicehotels.com/trinidad-and-tobago/scarborough/comfort-inn-hotels/tt005":
+    "https://www.choicehotels.com/hoteldam/tt/tt005/images/1280/TT005Hexterior01_1.jpeg",
+  "https://www.choicehotels.com/costa-rica/san-jose/quality-inn-hotels/cr010":
+    "https://www.choicehotels.com/hoteldam/cr/cr013/images/480/CR013ExteriorTemp01_1.jpg",
+  "https://www.choicehotels.com/costa-rica/san-jose/sleep-inn-hotels/cr013":
+    "https://www.choicehotels.com/hoteldam/cr/cr013/images/1280/CR013ExteriorTemp01_1.jpg",
+  "https://www.choicehotels.com/chile/vallenar/park-inn-hotels/cl011":
+    "https://www.choicehotels.com/hoteldam/cl/cl011/images/1280/CL011Exterior1_1.JPG",
+  "https://www.choicehotels.com/dominican-republic/juan-dolio-beach/ascend-hotels/do012":
+    "https://www.choicehotels.com/hoteldam/do/do012/images/2048/do012exterior2_1.jpg",
+  "https://www.choicehotels.com/colombia/cartagena/radisson-individuals-hotels/cb018":
+    "https://www.choicehotels.com/hoteldam/cb/cb018/images/2048/CB018PoolCourtyard4_1.JPG",
+  "https://www.choicehotels.com/aruba/palm-beach/radisson-blu-hotels/aw007":
+    "https://www.choicehotels.com/hoteldam/aw/aw007/images/2048/AW007Exterior5_1.JPG",
+  "https://www.choicehotels.com/honduras/french-harbour-roatan/clarion-hotels/hn011":
+    "https://www.choicehotels.com/hoteldam/hn/hn011/images/1280/Exterior1.JPG",
+  "https://www.choicehotels.com/mexico/cuajimalpa-de-morelos/sleep-inn-hotels/mx108":
+    "https://www.choicehotels.com/hoteldam/mx/mx108/images/1280/MX108Exterior01_1.jpg",
+  "https://www.choicehotels.com/argentina/rosario/radisson-red-hotels/aa024":
+    "https://www.choicehotels.com/hoteldam/aa/aa024/images/1280/AA024ExteriorTemp1.jpg",
+  "https://www.choicehotels.com/es-mx/panama/panama/radisson-hotels/pn018":
+    "https://www.choicehotels.com/hoteldam/pn/pn018/images/1280/PN018AerialTemp1_1.jpg",
+};

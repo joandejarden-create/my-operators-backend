@@ -1,4 +1,9 @@
 import axios from "axios";
+import {
+  decodeHtmlEntities,
+  decodeHtmlEntitiesPreserveWhitespace,
+} from "../lib/decode-html-entities.js";
+import { sanitizeMarketAlertText } from "./lib/market-alerts-rss-airtable.js";
 
 // Hotel industry RSS feeds (see HOTEL_INDUSTRY_RSS_FEEDS.md)
 const RSS_FEEDS = [
@@ -21,7 +26,7 @@ function extractTag(block, tag) {
   const m = block.match(re);
   if (!m) return "";
   let s = m[1].replace(/<!\[CDATA\[([\s\S]*?)\]\]>/gi, "$1").trim();
-  return s.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').trim();
+  return s.replace(/<[^>]+>/g, "").trim();
 }
 
 function extractLinkHref(block) {
@@ -45,10 +50,12 @@ function parseRssXml(xml, source) {
     const description = extractTag(block, "description") || extractTag(block, "content") || extractTag(block, "summary");
     if (title || link) {
       items.push({
-        title: title || "(No title)",
+        title: decodeHtmlEntities(title || "(No title)"),
         link: link || "",
         pubDate: pubDate || null,
-        summary: description ? description.slice(0, 500) : "",
+        summary: description
+          ? decodeHtmlEntitiesPreserveWhitespace(description).slice(0, 500)
+          : "",
         source,
       });
     }
@@ -97,7 +104,7 @@ export async function fetchMarketAlertsRssItems({ limit = 50 } = {}) {
     unique.push(item);
   }
 
-  const max = Math.min(Math.max(parseInt(String(limit), 10) || 50, 1), 100);
+  const max = Math.min(Math.max(parseInt(String(limit), 10) || 50, 1), 250);
   return unique.slice(0, max);
 }
 
@@ -108,7 +115,13 @@ export async function getMarketAlertsNews(req, res) {
     }
 
     const limit = Math.min(parseInt(req.query.limit, 10) || 50, 100);
-    const items = await fetchMarketAlertsRssItems({ limit });
+    const rawItems = await fetchMarketAlertsRssItems({ limit });
+    const items = rawItems.map((item) => ({
+      ...item,
+      title: sanitizeMarketAlertText(item.title || ""),
+      summary: sanitizeMarketAlertText(item.summary || "", { preserveWhitespace: true }),
+      source: sanitizeMarketAlertText(item.source || ""),
+    }));
 
     cached = items;
     cachedAt = Date.now();

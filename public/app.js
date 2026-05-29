@@ -15,6 +15,7 @@
     var ALLOWED_ROLES = ['owner', 'brand', 'operator', 'admin'];
     var ALLOWED_WORKSPACES = ['owner', 'brand', 'operator', 'admin', 'all'];
     var currentBaseRole = 'owner';
+    var authenticatedRole = '';
     var devWorkspace = '';
     var isDevMode = false;
 
@@ -54,7 +55,8 @@
         '/partner-directory': { file: '/partner-directory.html', title: 'Partner Directory' },
         '/my-brands': { file: '/all-brands-dashboard.html', title: 'My Brands' },
         '/my-operators': { file: '/my-third-party-operators-new.html', title: 'My Operators' },
-        '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'My Brand Deals' },
+        '/brand-development-dashboard': { file: '/brand-development-dashboard.html', title: 'My Brand Deals', roles: ['brand', 'admin'] },
+        '/operator-development-dashboard': { file: '/operator-development-dashboard.html', title: 'My Operator Deals', roles: ['operator', 'admin'] },
         '/third-party-operator-intake': { file: '/third-party-operator-setup-new-two.html', title: 'Operator Setup' },
         '/brand-setup': { file: '/brand-setup.html', title: 'Brand Setup' },
         '/reports': { file: '/reports-dashboard.html', title: 'Reports' },
@@ -98,6 +100,7 @@
                         { label: 'Add New Deal', route: '/new-deal-setup', roles: ['owner', 'admin'] },
                         { label: 'My Deals', route: '/my-deals', roles: ['owner', 'operator', 'admin'] },
                         { label: 'My Brand Deals', route: '/brand-development-dashboard', roles: ['brand', 'admin'] },
+                        { label: 'My Operator Deals', route: '/operator-development-dashboard', roles: ['operator', 'admin'] },
                         { label: 'My Brands', route: '/my-brands', roles: ['owner', 'brand', 'admin'] },
                         { label: 'My Operators', route: '/my-operators', roles: ['owner', 'operator', 'admin'] }
                     ]
@@ -238,6 +241,9 @@
         '/brand-workspace-pipeline.html': '/brand-development-dashboard',
         '/webflow-brand-dashboard.html': '/brand-development-dashboard',
         '/brand-development-dashboard.html': '/brand-development-dashboard',
+        '/operator-development-dashboard.html': '/operator-development-dashboard',
+        '/my-operator-deals': '/operator-development-dashboard',
+        '/my-operator-deals.html': '/operator-development-dashboard',
         '/recommended-fit-list': '/my-deals',
         '/recommended-fit-list.html': '/my-deals',
         '/my-operators.html': '/my-operators',
@@ -323,7 +329,43 @@
 
     function getEffectiveRole() {
         if (isDevMode && devWorkspace) return devWorkspace;
-        return currentBaseRole;
+        return authenticatedRole || currentBaseRole;
+    }
+
+    function getRouteAccessRole() {
+        return authenticatedRole || currentBaseRole;
+    }
+
+    function isRouteAllowedForRole(route, role) {
+        var meta = ROUTES[normalizeRoute(route)];
+        if (!meta || !meta.roles || !meta.roles.length) return true;
+        if (role === 'admin' || role === 'all') return true;
+        return meta.roles.indexOf(role) !== -1;
+    }
+
+    /** Shell may preview workspace routes in dev; API auth still uses the logged-in account. */
+    function canNavigateToRoute(route) {
+        var normalized = normalizeRoute(route);
+        var authRole = getRouteAccessRole();
+        if (isRouteAllowedForRole(normalized, authRole)) return true;
+        if (!isDevMode || !devWorkspace) return false;
+        if (devWorkspace === 'all') return true;
+        return isRouteAllowedForRole(normalized, devWorkspace);
+    }
+
+    function applyRoleFromMe(meResult) {
+        if (!meResult || !meResult.ok || !meResult.data || !meResult.data.dealality) return false;
+        var nextRole = String(meResult.data.dealality.role || '').toLowerCase();
+        if (ALLOWED_ROLES.indexOf(nextRole) === -1) return false;
+        authenticatedRole = nextRole;
+        currentBaseRole = nextRole;
+        if (!isDevMode || !devWorkspace) {
+            devWorkspace = nextRole;
+        }
+        currentRole = getEffectiveRole();
+        if (devWorkspaceSelect && isDevMode) devWorkspaceSelect.value = devWorkspace;
+        if (devWorkspaceWrap) devWorkspaceWrap.setAttribute('data-workspace', currentRole);
+        return true;
     }
 
     function normalizeRoute(route) {
@@ -337,7 +379,9 @@
     }
 
     function getDefaultRoute(role) {
-        return role === 'brand' ? '/brand-development-dashboard' : '/home';
+        if (role === 'brand') return '/brand-development-dashboard';
+        if (role === 'operator') return '/operator-development-dashboard';
+        return '/home';
     }
 
     function getPath(role) {
@@ -633,10 +677,27 @@
         }
     }
 
+    var WORKSPACE_DASHBOARD_ROUTES = {
+        '/brand-development-dashboard': true,
+        '/operator-development-dashboard': true,
+    };
+
     function showFrame(route) {
         if (!frameContainer) return;
         frameContainer.querySelectorAll('.app-frame').forEach(function (frame) {
-            frame.classList.toggle('active', frame.getAttribute('data-path') === route);
+            var framePath = frame.getAttribute('data-path');
+            var isActive = framePath === route;
+            frame.classList.toggle('active', isActive);
+            if (!isActive && WORKSPACE_DASHBOARD_ROUTES[framePath]) {
+                try {
+                    if (frame.src && frame.src.indexOf('about:blank') === -1) {
+                        frame.setAttribute('data-saved-src', frame.src);
+                        frame.src = 'about:blank';
+                    }
+                } catch (_blankErr) {
+                    /* ignore cross-origin src read */
+                }
+            }
         });
     }
 
@@ -658,7 +719,10 @@
 
     function navigate(route, role, updateHash) {
         var normalized = normalizeRoute(route);
-        var target = ROUTES[normalized] ? normalized : getDefaultRoute(role);
+        if (authenticatedRole && !canNavigateToRoute(normalized)) {
+            normalized = getDefaultRoute(getRouteAccessRole());
+        }
+        var target = ROUTES[normalized] ? normalized : getDefaultRoute(getRouteAccessRole());
         currentRoute = target;
 
         if (updateHash !== false && window.location.hash !== '#' + target) {
@@ -691,7 +755,12 @@
              */
             var expectedPath = getEmbedPathnameForRoute(target, role);
             var mustReloadFrame = false;
-            if (expectedPath && frame.contentWindow) {
+            var savedSrc = frame.getAttribute('data-saved-src');
+            if (savedSrc) {
+                mustReloadFrame = true;
+            } else if (frame.src && frame.src.indexOf('about:blank') !== -1) {
+                mustReloadFrame = true;
+            } else if (expectedPath && frame.contentWindow) {
                 try {
                     if (frame.contentWindow.location.pathname !== expectedPath) {
                         mustReloadFrame = true;
@@ -701,6 +770,7 @@
                 }
             }
             if (mustReloadFrame) {
+                frame.removeAttribute('data-saved-src');
                 frame.src = routeToEmbedUrl(target, role);
                 frame.addEventListener('load', function onShellEmbedRouteLoad() {
                     frame.removeEventListener('load', onShellEmbedRouteLoad);
@@ -896,7 +966,14 @@
             }
         };
 
-        window.addEventListener('dealality-shell-auth-ready', function () {
+        window.addEventListener('dealality-shell-auth-ready', function (e) {
+            if (applyRoleFromMe(e.detail)) {
+                renderNav(currentRole, searchText);
+                var path = getPath(currentRole);
+                if (!canNavigateToRoute(path)) {
+                    navigate(getDefaultRoute(getRouteAccessRole()), currentRole, true);
+                }
+            }
             broadcastJwtToActiveFrames();
             startShellNavigation();
         });
@@ -914,6 +991,7 @@
         if (window.DealalityAppShellAuth && typeof window.DealalityAppShellAuth.whenReady === 'function') {
             window.DealalityAppShellAuth.whenReady().then(function (result) {
                 if (result && result.ok) {
+                    applyRoleFromMe(result.me);
                     broadcastJwtToActiveFrames();
                     startShellNavigation();
                 }

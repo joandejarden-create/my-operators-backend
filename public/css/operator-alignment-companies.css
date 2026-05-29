@@ -1,0 +1,207 @@
+/* Operating Companies for Consideration — BAS-parity pass 2 */
+
+.operator-alignment-snapshot .oas-section--companies {
+  margin-top: 1rem;
+}
+
+.operator-alignment-snapshot .oas-company-level-note,
+.operator-alignment-snapshot .oas-companies-count {
+  font-size: 12px;
+  margin: 0 0 10px;
+  max-width: 42rem;
+  line-height: 1.45;
+}
+
+.operator-alignment-snapshot .oas-common-gaps {
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--oas-border, #d9e1fa);
+  border-radius: 8px;
+  background: #f8f9fd;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+.operator-alignment-snapshot .oas-common-gaps__title {
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--oas-ink-muted, #4a5568);
+}
+
+.operator-alignment-snapshot .oas-company-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.operator-alignment-snapshot .oas-company-card {
+  border: 1px solid var(--oas-border, #d9e1fa);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  break-inside: avoid-page;
+  page-break-inside: avoid;
+}
+
+.operator-alignment-snapshot .oas-company-card--limited-extra {
+  display: none;
+}
+
+.operator-alignment-snapshot .oas-company-grid.oas-companies--expanded .oas-company-card--limited-extra {
+  display: block;
+}
+
+.operator-alignment-snapshot .oas-companies-show-all {
+  margin-top: 10px;
+}
+
+.operator-alignment-snapshot .oas-company-card__header {
+  border-bottom: 1px solid var(--oas-border, #d9e1fa);
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+}
+
+.operator-alignment-snapshot .oas-company-card__title,
+.operator-alignment-snapshot .oas-company-card [data-oas-company-name] {
+  color: #101935 !important;
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+}
+
+.operator-alignment-snapshot .oas-company-card__meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.operator-alignment-snapshot .oas-company-card__score {
+  font-size: 10px;
+  color: var(--oas-ink-muted, #4a5568);
+  font-weight: 500;
+}
+
+.operator-alignment-snapshot .oas-company-card__sub {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--oas-ink-muted, #4a5568);
+}
+
+.operator-alignment-snapshot .oas-company-card__body {
+  font-size: 12px;
+}
+
+.operator-alignment-snapshot .oas-company-card__markets {
+  margin-bottom: 6px;
+}
+
+.operator-alignment-snapshot .oas-company-card .oas-compact-block {
+  margin-top: 6px;
+}
+
+.operator-alignment-snapshot .oas-company-card .oas-compact-list {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.operator-alignment-snapshot .oas-market-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.operator-alignment-snapshot .oas-market-chip {
+  font-size: 10px;
+  line-height: 1.25;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #eef1fb;
+  border: 1px solid #d9e1fa;
+  color: #37446b;
+}
+
+.operator-alignment-snapshot .oas-market-chip--more {
+  background: #fff;
+  font-weight: 600;
+}
+
+.operator-alignment-snapshot .oas-meta-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 6px;
+  border: 1px solid #c5cee8;
+  background: #f4f6fc;
+  color: #37446b;
+}
+
+.operator-alignment-snapshot .oas-meta-badge--ok {
+  background: rgba(20, 202, 116, 0.1);
+  border-color: rgba(20, 202, 116, 0.35);
+  color: #0d7a47;
+}
+
+.operator-alignment-snapshot .oas-meta-badge--warn {
+  background: rgba(253, 181, 42, 0.12);
+  border-color: rgba(253, 181, 42, 0.4);
+  color: #8a5a00;
+}
+
+.operator-alignment-snapshot .oas-company-card__gap-note {
+  font-size: 11px;
+  margin: 0 0 6px;
+  color: #8a5a00;
+}
+
+.operator-alignment-snapshot .oas-companies-gated {
+  margin-top: 8px;
+  max-width: 42rem;
+}
+
+@media (max-width: 720px) {
+  .operator-alignment-snapshot .oas-company-grid,
+  .operator-alignment-snapshot .oas-card-grid--two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .operator-alignment-snapshot .oas-company-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px !important;
+  }
+
+  .operator-alignment-snapshot .oas-company-card--limited-extra,
+  .operator-alignment-snapshot .oas-companies-show-all {
+    display: none !important;
+  }
+
+  .operator-alignment-snapshot .oas-company-card,
+  .operator-alignment-snapshot .oas-common-gaps {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  .operator-alignment-snapshot .oas-company-card__title,
+  .operator-alignment-snapshot [data-oas-company-name] {
+    font-size: 11pt !important;
+    color: #101935 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* My Deals preview */
+.oas-preview-company-card .oas-preview-profile-card__title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.oas-preview-company-card .oas-preview-markets {
+  margin: 4px 0;
+}

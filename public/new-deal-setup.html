@@ -1058,6 +1058,9 @@
                                         <option value="Unknown">Unknown</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div id="oasBrandAgreementInject" class="oas-inject-block"></div>
+                            <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label">Are you open to considering other brands with favorable terms? <span class="required">*</span><span class="help-text">Yes if you would consider emerging or lesser-known brands.</span></label>
                                     <select class="form-select" name="Are you open to considering other brands with favorable terms?">
@@ -1915,7 +1918,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Preferred Deal Structure <span class="required">*</span><span class="help-text">Franchise, management, hybrid, or other.</span></label>
+                                    <label class="form-label">Preferred Deal Structure <span class="required">*</span><span class="help-text">Brand/franchise economics path (legacy). Use Brand agreement structure and Preferred management structure for operator alignment.</span></label>
                                     <select class="form-select" name="Preferred Deal Structure">
                                         <option value="">Select One…</option>
                                         <option value="Franchise Only">Franchise Only</option>
@@ -2438,6 +2441,7 @@
                             <h3 class="project-fit-subheader">Third-Party Operator Preferences</h3>
                             <p class="subsection-description">If you want to receive bids from third-party management companies (in addition to or instead of hotel brands), tell us your preferences below. This helps match you with operators who fit your project.</p>
                             <div id="operatorCapabilityP0Block" class="ocs-p0-block">
+                            <div id="oasOperatorStrategyInject" class="oas-inject-block"></div>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label ocs-required-when-visible">Operator Strategy Status <span class="required">*</span><span class="help-text">Where you are in operator planning (not a recommendation).</span></label>
@@ -2535,6 +2539,7 @@
                             <h2 class="form-section-title">Operational Expectations</h2>
                             <p class="form-section-subtitle">Level of involvement and operational priorities.</p>
                             <p class="required-note"><span class="required">*</span> Marked fields are Required <span class="required-count"></span></p>
+                            <div id="oasOperationsCommercialInject" class="oas-inject-block"></div>
                             <div class="form-grid">
                                 <div class="form-group full-width">
                                     <label class="form-label">Level of Involvement in Day-to-Day Ops <span class="required">*</span><span class="help-text">Hands-on, oversight, or passive involvement.</span></label>
@@ -3221,6 +3226,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/operator-capability-intake.js?v=20260522-file-multiple"></script>
+    <script src="/js/oas-inject-form-fields.js?v=oas-5b-20260525"></script>
     <script src="/dealality-webflow-nav.js"></script>
     <script src="/js/dealality-memberstack-auth.js"></script>
     <script src="/js/deal-readiness-snapshot.js"></script>

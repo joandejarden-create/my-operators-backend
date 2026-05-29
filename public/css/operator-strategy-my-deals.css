@@ -1,0 +1,364 @@
+/* Operator Strategy tab — My Deals pipeline table */
+
+.operator-strategy-panel {
+  padding-bottom: 24px;
+}
+
+.operator-strategy-filters {
+  margin-bottom: 12px;
+}
+
+.operator-strategy-meta-row {
+  margin-bottom: 8px;
+}
+
+.operator-strategy-outreach-status {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--neutral--200, #d9e1fa);
+}
+
+.operator-strategy-outreach-status--active {
+  font-weight: 600;
+}
+
+.operator-strategy-outreach-status--none {
+  color: var(--neutral--500, #7e89ac);
+}
+
+.operator-strategy-outreach-status--sent {
+  color: var(--system--blue-300, #54a0ff);
+}
+
+.operator-strategy-outreach-status--viewed {
+  color: var(--system--blue-300, #54a0ff);
+}
+
+.operator-strategy-outreach-status--more-info {
+  color: var(--system--orange-300, #ff9f43);
+}
+
+.operator-strategy-outreach-status--accepted {
+  color: var(--system--green-300, #14ca74);
+}
+
+.operator-strategy-outreach-status--declined {
+  color: var(--neutral--500, #7e89ac);
+}
+
+.operator-strategy-outreach-status--archived {
+  color: var(--neutral--600, #5a6488);
+  font-style: italic;
+}
+
+.operator-strategy-outreach-status--progress {
+  color: var(--system--green-300, #14ca74);
+}
+
+.operator-strategy-review-sub {
+  display: block;
+  font-size: 11px;
+  color: var(--neutral--500, #7e89ac);
+  margin-top: 2px;
+}
+
+.operator-strategy-bulk-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.operator-strategy-bulk-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  min-width: 220px;
+  padding: 6px;
+  border-radius: 10px;
+  background: var(--secondary--color-1);
+  border: 1px solid var(--neutral--600);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  display: none;
+  z-index: 10005;
+}
+
+.operator-strategy-bulk-dropdown.open {
+  display: block;
+}
+
+.operator-strategy-bulk-dropdown__item {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--neutral--100);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.operator-strategy-bulk-dropdown__item--disabled,
+.operator-strategy-bulk-dropdown__item:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.operator-strategy-table .cell-checkbox {
+  width: 40px;
+  min-width: 40px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.operator-strategy-row-count {
+  font-size: 12px;
+  color: var(--neutral--500);
+}
+
+.operator-strategy-row-count strong {
+  color: var(--neutral--300);
+  font-weight: 600;
+}
+
+.operator-strategy-reset-btn {
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.operator-strategy-filter-chip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--neutral--700);
+  border: 0.6px solid var(--neutral--600);
+  font-size: 13px;
+}
+
+.operator-strategy-filter-chip__label {
+  color: var(--neutral--500);
+}
+
+.operator-strategy-filter-chip__name {
+  color: var(--neutral--100);
+  font-weight: 600;
+}
+
+.operator-strategy-filter-chip__clear {
+  margin-left: auto;
+}
+
+.operator-strategy-banner {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.operator-strategy-banner--warn {
+  background: rgba(253, 181, 42, 0.1);
+  border: 1px solid rgba(253, 181, 42, 0.35);
+  color: var(--secondary--color-5);
+}
+
+.operator-strategy-table-wrap {
+  margin-bottom: 12px;
+}
+
+.operator-strategy-table.deals-table {
+  table-layout: auto;
+}
+
+.operator-strategy-table.deals-table th,
+.operator-strategy-table.deals-table td {
+  font-size: 12px;
+  vertical-align: top;
+}
+
+.operator-strategy-table .col-deal {
+  width: 15%;
+}
+.operator-strategy-table .col-company {
+  width: 14%;
+}
+.operator-strategy-table .col-location {
+  width: 12%;
+  min-width: 11rem;
+}
+.operator-strategy-table th.col-location,
+.operator-strategy-table td.col-location {
+  white-space: nowrap;
+  line-height: 1.35;
+}
+.operator-strategy-table th.col-location > span {
+  white-space: nowrap;
+}
+.operator-strategy-table .col-score {
+  width: 8%;
+  text-align: center;
+  vertical-align: middle;
+}
+.operator-strategy-table .col-status {
+  width: 14%;
+}
+.operator-strategy-table .col-consideration {
+  width: 18%;
+}
+.operator-strategy-table .col-confidence {
+  width: 9%;
+}
+.operator-strategy-table .col-cta,
+.operator-strategy-table .cell-call-to-action {
+  width: auto;
+  min-width: 168px;
+  white-space: nowrap;
+}
+
+.operator-strategy-deal-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.operator-strategy-deal-link:hover .operator-strategy-deal-name {
+  color: var(--secondary--color-2);
+}
+
+.operator-strategy-deal-name {
+  color: var(--neutral--100);
+  font-weight: 600;
+  display: block;
+}
+
+.operator-strategy-location {
+  color: var(--neutral--400);
+  font-size: 12px;
+  line-height: 1.35;
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.operator-strategy-company-name {
+  color: var(--neutral--100);
+  font-weight: 600;
+  display: block;
+}
+
+.operator-strategy-company-parent {
+  color: var(--neutral--500);
+  font-size: 11px;
+  margin-top: 2px;
+  display: block;
+}
+
+.operator-strategy-table .match-score-cell--compact {
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.operator-strategy-table .match-score-cell--compact .match-score-badge {
+  min-width: 44px;
+  padding: 5px 8px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.operator-strategy-table .match-score-cell--compact.match-score-cell {
+  color: var(--neutral--400);
+  font-size: 14px;
+}
+
+.operator-strategy-table .action-icons {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.operator-strategy-table .action-icon {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+}
+
+.action-icon.action-icon--disabled,
+.action-icon:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.operator-strategy-more-menu {
+  position: fixed;
+  z-index: 10005;
+  min-width: 220px;
+  padding: 6px;
+  border-radius: 10px;
+  background: var(--secondary--color-1);
+  border: 1px solid var(--neutral--600);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.operator-strategy-more-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--neutral--100);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.operator-strategy-more-menu__item--disabled,
+.operator-strategy-more-menu__item:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.operator-strategy-more-menu__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral--400);
+}
+
+.operator-strategy-more-menu__label {
+  line-height: 1.3;
+}
+
+.operator-strategy-state {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--neutral--400);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.operator-strategy-state--error {
+  color: #f87171;
+}

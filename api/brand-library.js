@@ -4,6 +4,8 @@ import {
   BRAND_STATUS_ACTIVE_FORMULA,
   isBrandStatusActive,
 } from "../lib/brand-status-active.js";
+import { resolvePortfolioLadderTier } from "../lib/brand-explorer-portfolio-ladder.mjs";
+import { portfolioLadderTierForAirtableBrandName } from "../scripts/lib/choice-chi-portfolio-context.mjs";
 
 /** Strip internal ETL/editor phrasing from string fields on nested brand payloads. */
 function sanitizeStringFieldsDeep(obj) {
@@ -829,9 +831,11 @@ export async function getBrandLibraryBrands(req, res) {
         (regionOfferedFieldKey && fields[regionOfferedFieldKey]) ??
         fields[F.brandBasics.regionOffered] ??
         fields['Region Offered'];
+      const name = (fields[F.brandBasics.name] || '').toString().trim() || 'Unknown Brand';
+      const chiLadderTier = portfolioLadderTierForAirtableBrandName(name);
       return {
         id: rec.id,
-        name: (fields[F.brandBasics.name] || '').toString().trim() || 'Unknown Brand',
+        name,
         logo: extractLogoUrl(fields),
         website: (fields["Brand Website"] || fields["Website"] || '').toString().trim(),
         parentCompany: (fields[F.brandBasics.parentCompany] || '').toString().trim(),
@@ -843,7 +847,8 @@ export async function getBrandLibraryBrands(req, res) {
         status: valueToStr(fields[F.brandBasics.status]),
         yearBrandLaunched: (fields[F.brandBasics.yearLaunched] || '').toString().trim(),
         positioning: (fields[F.brandBasics.positioning] || '').toString().trim(),
-        tagline: (fields[F.brandBasics.tagline] || '').toString().trim()
+        tagline: (fields[F.brandBasics.tagline] || '').toString().trim(),
+        ...(typeof chiLadderTier === 'number' ? { portfolioLadderTier: chiLadderTier } : {})
       };
     });
 
@@ -1909,6 +1914,7 @@ export async function getBrandLibraryBrandById(req, res) {
     for (const [k, v] of Object.entries(sustainabilityEsgData)) {
       brandDetails[k] = v;
     }
+    brandDetails.portfolioLadderTier = resolvePortfolioLadderTier(brandDetails);
     if (loadWarnings.length > 0) brandDetails.loadWarnings = loadWarnings;
 
     if (isBrandExplorerCensusMetricsEnabled()) {

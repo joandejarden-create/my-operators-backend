@@ -1,4 +1,5 @@
 import Airtable from "airtable";
+import { sanitizeMarketAlertText } from "./lib/market-alerts-rss-airtable.js";
 
 // Airtable table + field configuration – MUST match contract in spec
 const TABLE_ALERTS = process.env.AIRTABLE_TABLE_MARKET_ALERTS || "MarketAlerts";
@@ -237,9 +238,11 @@ export async function listMarketAlerts(req, res) {
       return {
         id: r.id,
         fields: {
-          [F_ALERT.title]: fields[F_ALERT.title] || "",
-          [F_ALERT.summary]: fields[F_ALERT.summary] || "",
-          [F_ALERT.sourceName]: fields[F_ALERT.sourceName] || "",
+          [F_ALERT.title]: sanitizeMarketAlertText(fields[F_ALERT.title] || ""),
+          [F_ALERT.summary]: sanitizeMarketAlertText(fields[F_ALERT.summary] || "", {
+            preserveWhitespace: true,
+          }),
+          [F_ALERT.sourceName]: sanitizeMarketAlertText(fields[F_ALERT.sourceName] || ""),
           [F_ALERT.sourceUrl]: fields[F_ALERT.sourceUrl] || "",
           [F_ALERT.publishedAt]: fields[F_ALERT.publishedAt] || null,
           [F_ALERT.category]: fields[F_ALERT.category] || "",
@@ -308,9 +311,11 @@ export async function getMarketAlertsRail(req, res) {
       return {
         id: r.id,
         fields: {
-          [F_ALERT.title]: fields[F_ALERT.title] || "",
-          [F_ALERT.summary]: fields[F_ALERT.summary] || "",
-          [F_ALERT.sourceName]: fields[F_ALERT.sourceName] || "",
+          [F_ALERT.title]: sanitizeMarketAlertText(fields[F_ALERT.title] || ""),
+          [F_ALERT.summary]: sanitizeMarketAlertText(fields[F_ALERT.summary] || "", {
+            preserveWhitespace: true,
+          }),
+          [F_ALERT.sourceName]: sanitizeMarketAlertText(fields[F_ALERT.sourceName] || ""),
           [F_ALERT.sourceUrl]: fields[F_ALERT.sourceUrl] || "",
           [F_ALERT.publishedAt]: fields[F_ALERT.publishedAt] || null,
           [F_ALERT.category]: fields[F_ALERT.category] || "",

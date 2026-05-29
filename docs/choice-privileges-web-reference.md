@@ -46,4 +46,11 @@ Bluegreen Vacations, Penn Gaming Hotels, Westgate Resorts, Preferred Hotels & Re
 | `loyalty.earn` | 10 pts/$1; 5-night Gold; Titanium; Return & earn bullets |
 | `loyalty.proof` | Multiple rows: U.S. News #1, 8k min night, partners |
 
-Apply via `Brand Setup - Brand Explorer Presentation` or a shared fixture applied with `--only-missing` per brand.
+Apply via `Brand Setup - Brand Explorer Presentation`:
+
+```bash
+npm run apply-choice-loyalty-presentation-batch -- --dry-run
+npm run apply-choice-loyalty-presentation-batch
+```
+
+Refreshes all `loyalty.*` slots for Parent Company = Choice Hotels International (replaces existing loyalty rows; does not delete Image attachments on other slots).

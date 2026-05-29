@@ -26,6 +26,51 @@
       .replace(/"/g, "&quot;");
   }
 
+  /** Strip legacy transition copy that must not appear outside Operating model transition. */
+  function isLegacyTransitionCopy(text) {
+    var s = String(text || "");
+    return (
+      /Operating model transition(s)? to validate/i.test(s) ||
+      /Current model is owner-operated while the preferred future model is third-party/i.test(s)
+    );
+  }
+
+  function scrubCopyLines(lines) {
+    if (!lines || !lines.length) return [];
+    return lines
+      .map(function (line) {
+        return String(line || "").trim();
+      })
+      .filter(function (line) {
+        return line && !isLegacyTransitionCopy(line);
+      });
+  }
+
+  function resolveReviewContext(data) {
+    var ctx = String((data && data.reviewContext) || "").trim();
+    if (!ctx || isLegacyTransitionCopy(ctx)) {
+      return data && data.snapshotStatus === "limited"
+        ? "Limited internal draft. Resolve the clarification below before external sharing."
+        : "";
+    }
+    if (/Internal draft only — not approved/i.test(ctx)) {
+      return "Limited internal draft. Resolve the clarification below before external sharing.";
+    }
+    return ctx;
+  }
+
+  function resolveKnownGaps(data) {
+    var gaps = scrubCopyLines(data && data.knownGapsClarifications);
+    return gaps;
+  }
+
+  function resolveTransitionSummary(data) {
+    var summary = String((data && data.operatingModelTransitionSummary) || "").trim();
+    if (summary && !isLegacyTransitionCopy(summary)) return summary;
+    var fallback = scrubCopyLines(data && data.operatingModelTransitionsToValidate);
+    return fallback.length ? fallback[0] : "";
+  }
+
   function formatDate(iso) {
     if (!iso) return "";
     try {
@@ -84,12 +129,15 @@
 
   function renderBriefSection(title, items, extraClass) {
     if (!items || !items.length) return "";
+    var sectionClass = "bas-section bas-section--brief";
+    if (extraClass === "ocs-section--flow") {
+      sectionClass += " ocs-section--flow";
+    } else {
+      sectionClass += " bas-section--keep";
+      if (extraClass) sectionClass += " " + extraClass;
+    }
     var html =
-      '<section class="bas-section bas-section--brief bas-section--keep' +
-      (extraClass ? " " + extraClass : "") +
-      '"><h2 class="bas-section-title">' +
-      esc(title) +
-      "</h2>";
+      '<section class="' + sectionClass + '"><h2 class="bas-section-title">' + esc(title) + "</h2>";
     html += '<ul class="bas-detail-list">';
     items.forEach(function (item) {
       html += "<li>" + esc(item) + "</li>";
@@ -117,13 +165,12 @@
         "</div></div>";
     }
     html += "</div>";
-    if (data.reviewContext) {
-      html += '<p class="bas-brief-lead">' + esc(data.reviewContext) + "</p>";
+    var reviewContext = resolveReviewContext(data);
+    if (reviewContext) {
+      html += '<p class="bas-brief-lead">' + esc(reviewContext) + "</p>";
     }
     if (data.requiresManualReview) {
       html += '<p class="bas-brief-lead bas-brief-lead--warn">Manual review required before external use.</p>';
-    } else if (isLimited && !isBlocked) {
-      html += '<p class="bas-brief-muted">Internal draft only — not approved for external distribution.</p>';
     }
     html += "</div>";
     return html;
@@ -132,7 +179,7 @@
   function renderOperatingPathways(pathways) {
     if (!pathways || !pathways.length) return "";
     var html =
-      '<section class="bas-section bas-section--brief bas-section--keep"><h2 class="bas-section-title">Operating pathways to validate</h2>';
+      '<section class="bas-section bas-section--brief ocs-section--flow"><h2 class="bas-section-title">Operating pathways to validate</h2>';
     html += '<ul class="ocs-cap-list ocs-pathway-list">';
     pathways.forEach(function (p) {
       html += '<li class="ocs-cap-item ocs-pathway-item"><strong>' + esc(p.label) + "</strong>";
@@ -160,7 +207,7 @@
         html += '<p class="ocs-pathway-question"><span class="ocs-pathway-label">What to validate:</span> ' + esc(c.whatToValidate) + "</p>";
       }
       html +=
-        '<p class="ocs-cap-source"><span class="ocs-pathway-label">Source:</span> ' +
+        '<p class="ocs-cap-source bas-no-print"><span class="ocs-pathway-label">Source:</span> ' +
         esc(c.sourceLabel || (c.sources || []).join(", ") || "—") +
         (c.ruleTrigger ? ' · <span class="ocs-pathway-label">Rule:</span> ' + esc(c.ruleTrigger) : "") +
         "</p></li>";
@@ -184,15 +231,12 @@
     if (String(reviewLabel).toLowerCase() !== String(statusCopy).toLowerCase()) {
       html += '<p class="ocs-banner__status">' + esc(statusCopy) + "</p>";
     }
-    if (data.reviewContext) {
-      html += '<p class="ocs-banner__context">' + esc(data.reviewContext) + "</p>";
+    var reviewContextBanner = resolveReviewContext(data);
+    if (reviewContextBanner) {
+      html += '<p class="ocs-banner__context">' + esc(reviewContextBanner) + "</p>";
     }
     if (data.requiresManualReview) {
       html += '<p class="ocs-banner__manual">Manual Review Required</p>';
-    }
-    if (isLimited && !isBlocked) {
-      html +=
-        '<p class="ocs-banner__draft-note">Internal draft only — not approved for external distribution.</p>';
     }
     html += "</div>";
     return html;
@@ -224,15 +268,33 @@
     return html;
   }
 
-  function renderPageOverview(data) {
+  function renderNewBuildGuidance(rows) {
+    if (!rows || !rows.length) return "";
+    var html =
+      '<section class="bas-section bas-section--brief ocs-section--flow"><h2 class="bas-section-title">New build operating guidance</h2>';
+    html += '<ul class="ocs-guidance-grid">';
+    rows.forEach(function (row) {
+      html += '<li class="ocs-guidance-item"><strong>' + esc(row.title) + "</strong>";
+      html += "<span>" + esc(row.detail) + "</span></li>";
+    });
+    html += "</ul></section>";
+    return html;
+  }
+
+  function renderPageContent(data) {
     var ctx = data.operatingContext || {};
     var status = data.snapshotStatus || "limited";
     var missing = data.missingInputs || [];
     var diligence = data.diligenceQuestions || [];
-    var gaps = data.knownGapsClarifications || data.clarifications || [];
+    var gaps = resolveKnownGaps(data);
     var isBlocked = status === "blocked";
 
-    var html = '<div class="bas-book-page-inner bas-content-page bas-page-narrative">';
+    var caps = data.capabilityAreas || [];
+    var reporting = data.reporting || {};
+    var newBuild = data.newBuildGuidance || [];
+    var transitionSummary = resolveTransitionSummary(data);
+
+    var html = '<div class="bas-book-page-inner bas-content-page bas-page-narrative bas-page-content">';
     html += renderStatusHighlights(data);
     html += '<div class="bas-brief-panel">';
 
@@ -265,8 +327,12 @@
           renderBriefParagraphs(data.ownerAdvisorReviewTakeaway) +
           "</section>";
       }
-      if ((data.operatingModelTransitionsToValidate || []).length) {
-        html += renderBriefSection("Operating model transitions to validate", data.operatingModelTransitionsToValidate);
+      if (transitionSummary) {
+        html +=
+          '<section class="bas-section bas-section--brief bas-section--keep"><h2 class="bas-section-title">Operating model transition</h2>' +
+          '<p class="bas-summary">' +
+          esc(transitionSummary) +
+          "</p></section>";
       }
       if ((data.whyOperatorStrategyMatters || []).length) {
         html +=
@@ -287,71 +353,43 @@
       ]);
       html += "</section>";
       html += renderOperatingPathways(data.operatingPathways || []);
-      html += renderBriefSection("Decision points before outreach", data.decisionPointsBeforeOutreach || []);
+      html += renderBriefSection(
+        "Decision points before outreach",
+        scrubCopyLines(data.decisionPointsBeforeOutreach || [])
+      );
       if ((data.brandManagedGuidance || []).length) {
         html += renderBriefSection("Brand-managed pathway notes", data.brandManagedGuidance);
       }
       if (gaps.length) {
         html += renderBriefSection("Known gaps / clarifications", gaps);
       }
-    }
-    html += "</div></div>";
-    return html;
-  }
-
-  function renderPageTechnical(data) {
-    var status = data.snapshotStatus || "limited";
-    var caps = data.capabilityAreas || [];
-    var diligence = data.diligenceQuestions || [];
-    var reporting = data.reporting || {};
-    var isBlocked = status === "blocked";
-    var newBuild = data.newBuildGuidance || [];
-
-    var html = '<div class="bas-book-page-inner bas-content-page bas-page-technical">';
-    html += '<div class="bas-brief-highlights">';
-    html += '<p class="bas-brief-kicker">Capability detail</p>';
-    html +=
-      '<p class="bas-brief-lead">Supporting capability signals, reporting context, and diligence themes — not operator recommendations or shortlists.</p>';
-    html += "</div>";
-    html += '<div class="bas-brief-panel">';
-    if (!isBlocked) {
-      html += renderBriefSection("Capability implications", data.capabilityImplications || []);
+      html += renderBriefSection("Capability implications", data.capabilityImplications || [], "ocs-section--flow");
       html +=
-        '<section class="bas-section bas-section--brief bas-section--keep"><h2 class="bas-section-title">Capability areas to review</h2>';
-      html += '<p class="bas-muted">Themes from stated priorities and deal context.</p>';
+        '<p class="ocs-signals-line bas-muted ocs-section--flow">Signals used: stated operator capability priorities, project type, opening/transition phase, primary market region, and current/future operating model inputs.</p>';
+      html +=
+        '<section class="bas-section bas-section--brief ocs-section--flow"><h2 class="bas-section-title">Capability areas to review</h2>';
       html += renderEnrichedCapabilityCards(caps);
       if ((data.ruleTriggers || []).length) {
         html +=
-          '<p class="bas-muted ocs-rules"><strong>Rules triggered:</strong> ' +
+          '<p class="bas-muted ocs-rules bas-no-print"><strong>Rules triggered:</strong> ' +
           esc((data.ruleTriggers || []).join(", ")) +
           "</p>";
       }
       html += "</section>";
-      if (newBuild.length) {
-        html +=
-          '<section class="bas-section bas-section--brief bas-section--keep"><h2 class="bas-section-title">New build operating guidance</h2><ul class="ocs-cap-list">';
-        newBuild.forEach(function (row) {
-          html += '<li class="ocs-cap-item"><strong>' + esc(row.title) + "</strong>";
-          html += '<span class="ocs-cap-meta">' + esc(row.detail) + "</span></li>";
-        });
-        html += "</ul></section>";
-      }
+      html += renderNewBuildGuidance(newBuild);
       html +=
-        '<section class="bas-section bas-section--brief bas-section--keep"><h2 class="bas-section-title">Reporting &amp; oversight</h2>';
+        '<section class="bas-section bas-section--brief ocs-section--flow ocs-reporting-diligence"><h2 class="bas-section-title">Reporting &amp; oversight</h2>';
       html += renderKvGrid([
         ["Owner reporting frequency", reporting.ownerReportingFrequency],
         ["Owner reporting package", reporting.ownerReportingPackage],
       ]);
       html += "</section>";
-      html += renderBriefSection("Diligence questions", diligence);
-    } else {
-      html +=
-        '<section class="bas-section bas-section--brief"><h2 class="bas-section-title">Capability detail</h2>';
-      html += '<p class="bas-muted">Not available until required deal inputs are complete.</p></section>';
-      html += renderBriefSection("Diligence questions", diligence);
+      if (diligence.length) {
+        html += renderBriefSection("Diligence questions", diligence, "ocs-section--flow");
+      }
     }
     html +=
-      '<footer class="bas-output-note bas-output-note--brief bas-section--keep"><p>' +
+      '<footer class="bas-output-note bas-output-note--brief ocs-footer-disclaimer"><p>' +
       esc(data.disclaimer || COVER_NOTE) +
       "</p></footer>";
     html += "</div></div>";
@@ -396,12 +434,6 @@
     html +=
       '<span class="bas-print-tip bas-no-print">Turn off <strong>Headers and footers</strong> and enable <strong>Background graphics</strong> in the print dialog.</span>';
     html += '<div class="bas-toolbar-buttons bas-no-print">';
-    if (options.embed && options.fullPageHref) {
-      html +=
-        '<a class="bas-btn bas-btn-secondary" href="' +
-        esc(options.fullPageHref) +
-        '" target="_blank" rel="noopener">Open full page</a>';
-    }
     html +=
       '<button type="button" class="bas-btn bas-btn-primary bas-toolbar-print" data-bas-print>Print / Save as PDF</button>';
     html += "</div></div></div>";
@@ -409,14 +441,13 @@
     html += '<div class="bas-book-shell"><article class="bas-document bas-book-document">';
     html += '<div class="bas-book-viewport" data-bas-book-viewport tabindex="0"><div class="bas-book-stage">';
     html += wrapBookPage(0, renderCover(data, options), true);
-    html += wrapBookPage(1, renderPageOverview(data), false);
-    html += wrapBookPage(2, renderPageTechnical(data), false);
+    html += wrapBookPage(1, renderPageContent(data), false);
     html += "</div>";
     html +=
       '<button type="button" class="bas-turn-btn bas-turn-prev bas-no-print" data-bas-turn-prev aria-label="Previous page" disabled>‹</button>';
     html +=
       '<button type="button" class="bas-turn-btn bas-turn-next bas-no-print" data-bas-turn-next aria-label="Next page">›</button>';
-    html += '<span class="bas-page-indicator bas-no-print" data-bas-page-indicator>1 of 3</span>';
+    html += '<span class="bas-page-indicator bas-no-print" data-bas-page-indicator>1 of 2</span>';
     html += "</div>";
     if (options.footerHtml) {
       html += '<div class="bas-host-footer bas-no-print">' + options.footerHtml + "</div>";

@@ -8,6 +8,8 @@ import { airtableBasicsFieldsToPrefill } from "./third-party-operator-basics-to-
 import { applyNewTwoPrefillFromSplitTables } from "./third-party-operator-new-two-fields.js";
 import { applyOperatorServiceGranularPrefill } from "./operator-setup-service-granular-fields.js";
 import { normalizeCaseStudySituationForForm } from "./third-party-operator-select-prefill-normalize.js";
+import { applyOperatorAlignmentPrefillAliases } from "../../lib/operator-alignment-prefill-map.js";
+import { pickExplorerHeroLabelsFromMasterFields } from "../../lib/operator-explorer-hero-labels.js";
 
 export const NEW_BASE_MASTER_TABLE = "Operator Setup - Master";
 export const NEW_BASE_PROFILE_TABLE = "Operator Setup - Profile & Positioning";
@@ -197,6 +199,7 @@ export function buildNewBaseListRow({
     })();
 
     const dealStatus = formatListValue(mf.submission_status) || "";
+    const heroLabels = pickExplorerHeroLabelsFromMasterFields(mf);
 
     return {
         id: master.id,
@@ -226,6 +229,8 @@ export function buildNewBaseListRow({
         ownerDiligenceQa,
         _readPath: "new_base",
         _recordIdKind: "master",
+        explorerHeroVerification: heroLabels.explorerHeroVerification,
+        explorerHeroDataSource: heroLabels.explorerHeroDataSource,
     };
 }
 
@@ -273,6 +278,13 @@ export function mapNewBaseLeadershipForDetail(rows) {
 export function mapNewBaseCaseStudiesForDetail(rows) {
     return (rows || []).map((r) => {
         const row = r.fields || {};
+        const rawImage = row.image_url;
+        const imageUrl =
+            typeof rawImage === "string" && rawImage.startsWith("http")
+                ? rawImage
+                : Array.isArray(rawImage) && rawImage[0] && rawImage[0].url
+                ? String(rawImage[0].url)
+                : "";
         return {
             property_name: formatListValue(row.property_name),
             hotel_type: formatListValue(row.hotel_type),
@@ -282,7 +294,7 @@ export function mapNewBaseCaseStudiesForDetail(rows) {
             services: formatListValue(row.services),
             outcome: formatListValue(row.outcome),
             owner_relevance: formatListValue(row.owner_relevance),
-            image_url: formatListValue(row.image_url),
+            image_url: imageUrl || formatListValue(row.image_url),
         };
     });
 }
@@ -412,6 +424,13 @@ export function buildPrefillObjectFromNewBaseRows(master, profile, platform, com
     }
 
     const prefill = airtableBasicsFieldsToPrefill(mergedRaw);
+    const heroLabels = pickExplorerHeroLabelsFromMasterFields(master && master.fields);
+    if (heroLabels.explorerHeroVerification) {
+        prefill.explorerHeroVerification = heroLabels.explorerHeroVerification;
+    }
+    if (heroLabels.explorerHeroDataSource) {
+        prefill.explorerHeroDataSource = heroLabels.explorerHeroDataSource;
+    }
 
     applyNewTwoPrefillFromSplitTables(prefill, {
         f: mergedRaw,
@@ -452,6 +471,8 @@ export function buildPrefillObjectFromNewBaseRows(master, profile, platform, com
 
     /** Per-option checkbox columns + aggregate multis on Governance (legacy path always ran this). */
     applyOperatorServiceGranularPrefill(mergeServiceAggregateAliases(mergedRaw), prefill);
+
+    applyOperatorAlignmentPrefillAliases(mergedRaw, prefill);
 
     const cn = mergedRaw.company_name != null ? String(mergedRaw.company_name).trim() : "";
     if (cn && (prefill.companyName == null || String(prefill.companyName).trim() === "")) {

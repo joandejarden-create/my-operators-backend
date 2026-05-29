@@ -74,7 +74,105 @@
       background: var(--hero-stripe-bg, var(--accent--primary-1));
       pointer-events: none;
     }
-    .hero h1 { margin: 0 0 6px 0; font-size: 28px; }
+    .hero h1 { margin: 0; font-size: 28px; font-weight: 700; line-height: 1.15; }
+    .oe-presentation-hero .oe-hero__title-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: start;
+      gap: 12px 16px;
+      margin-bottom: 8px;
+    }
+    .oe-presentation-hero .oe-hero__logo-wrap {
+      display: flex;
+      align-items: flex-start;
+    }
+    .oe-presentation-hero .oe-hero__title-block { min-width: 0; }
+    .oe-presentation-hero .oe-hero__verified-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 10px;
+      margin-top: 6px;
+    }
+    .oe-presentation-hero .oe-hero-badge-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent--primary-1, #6c72ff);
+    }
+    .oe-presentation-hero .oe-hero-badge-verified svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .oe-presentation-hero .oe-hero__verified-line .meta-muted {
+      font-size: 12px;
+      color: var(--muted, #7e89ac);
+    }
+    .oe-presentation-hero .oe-hero__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+      justify-self: end;
+    }
+    .oe-presentation-hero .oe-hero__actions .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .oe-presentation-hero .oe-hero__actions .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 0.6px solid var(--border, #37446b);
+      background: var(--panel, #101935);
+      color: #fff;
+      font-family: inherit;
+    }
+    .oe-presentation-hero .oe-hero__actions .btn--primary {
+      background: rgba(108, 114, 255, 0.35);
+      border-color: rgba(108, 114, 255, 0.55);
+      opacity: 0.85;
+      cursor: not-allowed;
+    }
+    .oe-presentation-hero .oe-operator-save-btn--saved {
+      border-color: var(--accent--primary-1, #6c72ff);
+      color: #8fc3ff;
+      background: rgba(108, 114, 255, 0.12);
+    }
+    .oe-presentation-hero .oe-hero-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: flex-end;
+      max-width: min(100%, 280px);
+    }
+    .oe-presentation-hero .oe-hero-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #8fc3ff;
+      background: rgba(108, 114, 255, 0.14);
+      border: 0.6px solid rgba(108, 114, 255, 0.45);
+      border-radius: 6px;
+      line-height: 1.2;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .oe-presentation-hero .oe-hero__title-row { grid-template-columns: 1fr; }
+      .oe-presentation-hero .oe-hero__actions { justify-self: start; width: 100%; align-items: flex-start; }
+      .oe-presentation-hero .oe-hero__actions .btn-row,
+      .oe-presentation-hero .oe-hero__actions .oe-hero-chip-row { justify-content: flex-start; }
+    }
     .hero-title {
       display: flex;
       align-items: center;
@@ -616,38 +714,188 @@
       line-height: 1.5;
       color: var(--muted);
     }
+    html.gold-profile--loading .hero .tag,
+    html.gold-profile--loading .hero .statement,
+    html.gold-profile--loading #heroLogo {
+      display: none !important;
+    }
+    html.gold-profile--loading #heroName {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    html.gold-profile--loading #tabs,
+    html.gold-profile--loading #panels {
+      display: none;
+    }
+    .gold-profile-load-error {
+      margin: 0;
+      padding: 20px 22px;
+      border-radius: 12px;
+      border: 0.6px solid var(--border);
+      background: rgba(255, 90, 101, 0.08);
+      color: var(--neutral--400);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .gold-profile-load-error strong {
+      display: block;
+      color: var(--neutral--100);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .oe-demo-banner {
+      margin: 0 0 16px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(108, 114, 255, 0.45);
+      background: rgba(108, 114, 255, 0.12);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--neutral--300);
+    }
+    .oe-demo-banner strong { color: var(--neutral--100); }
+    .oe-profile-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 4px;
+    }
+    .oe-profile-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      line-height: 1.35;
+      border: 0.6px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--neutral--200);
+    }
+    .oe-profile-badge--market { border-color: rgba(52, 152, 219, 0.45); }
+    .oe-profile-badge--capability { border-color: rgba(46, 204, 113, 0.4); }
+    .oe-profile-badge--governance { border-color: rgba(155, 89, 182, 0.45); }
+    .oe-profile-badge--confidence { border-color: rgba(230, 126, 34, 0.45); }
+    .oe-new-base-snapshot-rail .oe-snapshot-rail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .oe-snapshot-section {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 0.6px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .oe-snapshot-section-title {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .oe-snapshot-dl { margin: 0; }
+    .oe-snapshot-row { margin: 0 0 8px; }
+    .oe-snapshot-row dt {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+    .oe-snapshot-row dd {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--neutral--100);
+    }
+    .oe-alignment-context {
+      margin: 0 0 18px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 0.6px solid rgba(108, 114, 255, 0.35);
+      background: rgba(11, 23, 56, 0.55);
+    }
+    .oe-alignment-context-title {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--neutral--100);
+    }
+    .oe-alignment-context-disclaimer {
+      margin: 0 0 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .oe-alignment-context-band { margin-bottom: 12px; font-size: 14px; }
+    .oe-alignment-context-score { color: var(--muted); font-size: 13px; }
+    .oe-alignment-context-block { margin-bottom: 10px; }
+    .oe-alignment-context-block h3 {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+    .oe-alignment-context-block ul { margin: 0; padding-left: 18px; font-size: 13px; }
+    .oe-alignment-context-link {
+      color: #9aa0ff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .oe-alignment-context-link:hover { text-decoration: underline; }
+    .oe-alignment-context--empty p { margin: 0; color: var(--muted); font-size: 13px; }
+    .oe-alignment-context-loading { margin: 0; font-size: 13px; color: var(--muted); }
   </style>
+  <script>
+    (function () {
+      var q = window.location.search || "";
+      if (/[?&](id|operatorId|recordId)=/.test(q)) {
+        document.documentElement.classList.add("gold-profile--loading");
+      }
+    })();
+  </script>
 </head>
 <body>
   <div class="page">
-    <header class="hero">
-      <div class="hero-title">
-        <img class="hero-logo" id="heroLogo" alt="Altura Hospitality Group logo" />
-        <h1 id="heroName">Altura Hospitality Group</h1>
+    <div id="demoBanner" hidden></div>
+    <div id="alignmentContext" hidden></div>
+    <header class="hero oe-presentation-hero">
+      <div class="oe-hero__title-row">
+        <div class="oe-hero__logo-wrap">
+          <img class="hero-logo" id="heroLogo" alt="" hidden />
+        </div>
+        <div class="oe-hero__title-block">
+          <h1 id="heroName">Loading operator profile…</h1>
+          <div id="heroVerifiedLine" class="oe-hero__verified-line" hidden></div>
+        </div>
+        <div id="heroActions" class="oe-hero__actions"></div>
       </div>
-      <div class="tag">Institutional-grade operations with local market precision</div>
-      <div class="statement">Altura Hospitality Group combines institutional operating discipline, data-led commercial strategy, and regionally grounded execution across urban and resort hospitality assets. The platform is built for owners and developers seeking strong governance, scalable operating depth, and decision-grade reporting.</div>
+      <div class="tag" style="display: none"></div>
+      <div class="statement" style="display: none"></div>
       <div class="hero-meta" id="heroMeta"></div>
     </header>
     <nav class="tabs-section" id="tabs"></nav>
     <main id="panels"></main>
   </div>
-  <script src="js/operator-explorer-gold-mock-data.js"></script>
+  <script src="js/operator-explorer-favorites.js?v=oe-favorites-20260529"></script>
+  <script src="js/operator-explorer-new-base-profile.js?v=oe-master-hero-labels-20260529"></script>
+  <script src="js/operator-explorer-gold-mock-data.js?v=oe-master-hero-labels-20260529"></script>
   <script>
     function renderGoldMockEmbeddedDemo() {
     const REF_YEAR = new Date().getFullYear();
     const GOLD_YEAR_FOUNDED = REF_YEAR - 18;
     const GOLD_OPERATOR = {
-      name: "Altura Hospitality Group",
+      name: "Sample Operator Platform",
       tagline: "Institutional-grade operations with local market precision",
-      positioning: "Altura Hospitality Group combines institutional operating discipline, data-led commercial strategy, and regionally grounded execution across urban and resort hospitality assets. The platform is built for owners and developers seeking strong governance, scalable operating depth, and decision-grade reporting.",
+      positioning: "Sample layout for internal preview only. Live Operator Explorer profiles load from Operator Setup when an operator id is provided.",
       hq: "Miami, USA",
       yearFounded: GOLD_YEAR_FOUNDED,
       years: String(REF_YEAR - GOLD_YEAR_FOUNDED),
       hotelsManaged: "35",
       roomsManaged: "8,750",
       regions: "Latin America, North America, Southern Europe", brandsSupported: "9", brandMix: "Balanced Branded + Independent",
-      logo: "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='84' viewBox='0 0 360 84'%3E%3Crect width='360' height='84' rx='8' fill='%230b1738'/%3E%3Ccircle cx='40' cy='42' r='18' fill='%236c72ff'/%3E%3Cpath d='M31 42l7 7 12-14' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='72' y='36' fill='%23ffffff' font-family='Inter,Segoe UI,Arial,sans-serif' font-size='21' font-weight='700'%3EAltura%3C/text%3E%3Ctext x='72' y='60' fill='%238fc3ff' font-family='Inter,Segoe UI,Arial,sans-serif' font-size='18' font-weight='600'%3EHospitality Group%3C/text%3E%3C/svg%3E",
+      logo: "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='84' viewBox='0 0 360 84'%3E%3Crect width='360' height='84' rx='8' fill='%230b1738'/%3E%3Ccircle cx='40' cy='42' r='18' fill='%236c72ff'/%3E%3Cpath d='M31 42l7 7 12-14' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='72' y='48' fill='%23ffffff' font-family='Inter,Segoe UI,Arial,sans-serif' font-size='18' font-weight='700'%3ESample%3C/text%3E%3C/svg%3E",
       images: {
         proof1: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
         proof2: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
@@ -707,6 +955,14 @@
     }
     const SERVICE_OFFERINGS_DEMO_HTML = `<section class="section"><h2 class="section-title">Service Offerings</h2><div class="gold-service-offerings-grid"><div class="gold-service-category"><h4 class="gold-service-category-title">Revenue Management Services</h4><ul class="gold-service-list"><li>In-House Revenue Management Team</li><li>Dedicated Revenue Manager Per Property</li><li>Advanced Analytics and Forecasting</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Sales &amp; Marketing Support</h4><ul class="gold-service-list"><li>Dedicated Sales Team</li><li>Digital Marketing Services</li><li>Social Media Management</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Accounting &amp; Financial Reporting</h4><ul class="gold-service-list"><li>Weekly Financial Reporting</li><li>Monthly P&amp;L Statements</li><li>Budget vs. Actual Analysis</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Procurement Services</h4><ul class="gold-service-list"><li>Centralized Purchasing</li><li>Preferred Vendor Network</li><li>Supply Chain Management</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">HR &amp; Training Services</h4><ul class="gold-service-list"><li>Recruitment and Hiring</li><li>Ongoing Training Programs</li><li>Leadership Development</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Technology Services</h4><ul class="gold-service-list"><li>IT Support and Helpdesk</li><li>System Integrations</li><li>Cybersecurity Services</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Design &amp; Renovation Support</h4><ul class="gold-service-list"><li>In-House Design Team</li><li>FF&amp;E Procurement</li><li>Space Planning and Design</li></ul></div><div class="gold-service-category"><h4 class="gold-service-category-title">Development Services</h4><ul class="gold-service-list"><li>Pre-Opening Services</li><li>Conversion Project Management</li><li>Feasibility Studies</li></ul></div></div></section>`;
     document.getElementById("heroName").textContent = GOLD_OPERATOR.name;
+    if (window.OperatorExplorerNewBaseProfile && typeof window.OperatorExplorerNewBaseProfile.mountProfileChrome === "function") {
+      window.OperatorExplorerNewBaseProfile.mountProfileChrome({
+        companyName: GOLD_OPERATOR.name,
+        prefill: {},
+        fields: {},
+        listRow: {},
+      });
+    }
     document.getElementById("heroLogo").src = GOLD_OPERATOR.logo;
     document.getElementById("heroMeta").innerHTML=[["Headquarters",GOLD_OPERATOR.hq],["Years in Business",GOLD_OPERATOR.years],["Hotels Managed",GOLD_OPERATOR.hotelsManaged],["Rooms Managed",GOLD_OPERATOR.roomsManaged],["Brands Supported",GOLD_OPERATOR.brandsSupported],["Brand Mix",GOLD_OPERATOR.brandMix]].map(([l,v])=>`<div class="meta-card"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
     const tabsEl=document.getElementById("tabs");
@@ -768,25 +1024,78 @@
     const panelsRoot=document.getElementById("panels");
     panelsRoot.innerHTML=tabs.map((tab,i)=>`<section class="tab-panel ${i===0?"active":""}" data-panel="${tab}">${panels[tab]}</section>`).join("");
     tabsEl.addEventListener("click",(e)=>{const btn=e.target.closest(".section-nav-item");if(!btn)return;const tab=btn.dataset.tab;document.querySelectorAll(".section-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));document.querySelectorAll(".tab-panel").forEach(p=>p.classList.toggle("active",p.dataset.panel===tab));});
+    document.documentElement.classList.remove("gold-profile--loading");
     }
+    function showGoldProfileLoadError(message) {
+      document.documentElement.classList.remove("gold-profile--loading");
+      var nameEl = document.getElementById("heroName");
+      var metaEl = document.getElementById("heroMeta");
+      var tabsEl = document.getElementById("tabs");
+      var panelsRoot = document.getElementById("panels");
+      var logoEl = document.getElementById("heroLogo");
+      var tagEl = document.querySelector(".hero .tag");
+      var stmtEl = document.querySelector(".hero .statement");
+      if (nameEl) nameEl.textContent = "Operator profile unavailable";
+      if (logoEl) logoEl.style.display = "none";
+      if (tagEl) tagEl.style.display = "none";
+      if (stmtEl) stmtEl.style.display = "none";
+      if (metaEl) {
+        metaEl.innerHTML = "";
+        metaEl.style.display = "none";
+      }
+      if (tabsEl) tabsEl.innerHTML = "";
+      if (panelsRoot) {
+        panelsRoot.innerHTML =
+          '<div class="gold-profile-load-error" role="alert"><strong>Could not load this operator profile</strong>' +
+          String(message || "Try again or open the operator from Operator Explorer.").replace(/</g, "&lt;") +
+          "</div>";
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", async function () {
+      if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.ready) {
+        try {
+          await window.OperatorExplorerFavorites.ready();
+        } catch (_) {}
+      }
       var params = new URLSearchParams(window.location.search || "");
       var id = params.get("id") || params.get("operatorId") || params.get("recordId");
       var popupToken = params.get("popupToken") || "";
       var isLive = false;
-      if (id && window.OperatorExplorerGoldMock) {
-        var r = await window.OperatorExplorerGoldMock.bootstrap();
-        if (r && r.mode === "live") {
-          isLive = true;
+      if (id) {
+        document.documentElement.classList.add("gold-profile--loading");
+        if (window.OperatorExplorerGoldMock) {
+          var r = await window.OperatorExplorerGoldMock.bootstrap();
+          if (r && r.mode === "live") {
+            isLive = true;
+          } else {
+            showGoldProfileLoadError((r && r.error && r.error.message) || "Operator not found or profile data is unavailable.");
+          }
         } else {
-          renderGoldMockEmbeddedDemo();
+          showGoldProfileLoadError("Profile renderer failed to load.");
         }
-      } else if (id) {
-        renderGoldMockEmbeddedDemo();
       } else {
+        document.documentElement.classList.remove("gold-profile--loading");
+        document.documentElement.classList.add("oe-profile--demo");
         renderGoldMockEmbeddedDemo();
+        if (window.OperatorExplorerNewBaseProfile) {
+          window.OperatorExplorerNewBaseProfile.mountProfileChrome({
+            companyName: "Sample Operator Platform",
+            prefill: {},
+            fields: {},
+            listRow: {},
+            explorerHeroVerification: "Demo — Not Brand-Verified",
+            explorerHeroDataSource: "Mock Data for Presentation",
+          });
+        }
         if (window.OperatorExplorerGoldMock) await window.OperatorExplorerGoldMock.bootstrap();
       }
+      window.addEventListener("operator-explorer-favorites-changed", function () {
+        if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.wireSaveButtons) {
+          window.OperatorExplorerFavorites.wireSaveButtons(document);
+        }
+      });
+
       try {
         if (window.parent && window.parent !== window) {
           window.parent.postMessage({

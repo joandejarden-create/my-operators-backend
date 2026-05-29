@@ -24,6 +24,7 @@ import {
   INTAKE_USERS_UNIQUE_WEBFLOW_ID,
 } from "./schemas/intake-deal-fields.js";
 import { roleInfoFromUserFieldsAsync } from "../lib/dealality/resolve-user.js";
+import { resolveOperatorScope, MAP_OPERATOR_SCOPE } from "../lib/dealality/resolve-operator-scope.js";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 const BRAND_NAME_FIELD = process.env.AIRTABLE_BRAND_NAME_FIELD || "Brand Name";
@@ -299,6 +300,34 @@ async function getMe(req, res) {
     warnings.push("memberstack_app_id_not_set_audience_not_validated");
   }
 
+  let operatorScope = {
+    allowedOperatingCompanyNames: [],
+    allowedOperatorSetupIds: [],
+    primaryOperatingCompanyName: null,
+    mappingStatus: "no_user_record",
+    warnings: [],
+  };
+  if (dealalityRole.isOperator || dealalityRole.isAdmin) {
+    try {
+      operatorScope = await resolveOperatorScope({
+        userRecordId: rec.id,
+        isAdmin: dealalityRole.isAdmin,
+        isOperator: dealalityRole.isOperator,
+      });
+      if (operatorScope.warnings?.length) {
+        warnings.push(...operatorScope.warnings);
+      }
+    } catch (opErr) {
+      console.warn("[api/me] operator scope resolution failed:", opErr.message);
+      warnings.push("operator_scope_resolve_failed");
+      operatorScope = {
+        ...operatorScope,
+        mappingStatus: "lookup_error",
+        warnings: ["operator_scope_resolve_failed"],
+      };
+    }
+  }
+
   return res.json({
     success: true,
     memberstack: {
@@ -316,6 +345,9 @@ async function getMe(req, res) {
       allowedBrandNames,
       allowedBrandRecordIds,
       allowedRegions,
+      allowedOperatingCompanyNames: operatorScope.allowedOperatingCompanyNames || [],
+      allowedOperatorSetupIds: operatorScope.allowedOperatorSetupIds || [],
+      primaryOperatingCompanyName: operatorScope.primaryOperatingCompanyName || null,
     },
     dealality: {
       role: dealalityRole.role,
@@ -332,9 +364,11 @@ async function getMe(req, res) {
       usersTable: USERS_TABLE,
       memberstackMatchFields: MEMBERSTACK_MATCH_FIELDS,
       brandBasicsLinkField: BRAND_LINK_FIELD,
+      operatorSetupLinkField: MAP_OPERATOR_SCOPE.usersOperatorSetupLink,
       regionsField: REGIONS_FIELD,
+      operatorMappingStatus: operatorScope.mappingStatus || null,
       matchedBy,
-      warnings,
+      warnings: [...new Set(warnings)],
     },
   });
 }

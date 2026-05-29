@@ -70,6 +70,15 @@ import { validateDealSetupPayload } from "./deal-setup-validate.js";
 import { fetchTargetsForDeal } from "./target-list.js";
 import { loadNewBaseOperatorBundle, buildPrefillObjectFromNewBaseRows, loadBrandNameByIdMap } from "./lib/operator-setup-new-base-read.js";
 import { filterDealsRecordsForUser } from "../lib/dealality/filter-my-deals.js";
+import { normalizeOperatorAlignmentDealInputs } from "../lib/operator-alignment-deal-normalize.js";
+import {
+  scoreDealStructureFactor,
+  scoreServiceOfferingsFactor,
+  scoreGeographyFactor,
+  scoreAssetStageFactor,
+  scoreSystemsReportingFactor,
+  buildFactorMeta,
+} from "../lib/operator-alignment-scoring-factors.js";
 
 function valueToStr(v) {
   if (v == null) return "";
@@ -440,6 +449,73 @@ async function fetchInitialMatchedSupportState(baseId, apiKey, deals) {
   };
 }
 
+/** Resolve deal IDs the caller may see (auth-scoped). */
+async function resolveAllowedDealIdsForMatchedSupport(baseId, apiKey, dealIds, dealalityUser) {
+  const ids = [...new Set((dealIds || []).map((id) => String(id).trim()).filter((id) => id.startsWith("rec")))];
+  if (ids.length === 0) return [];
+  if (!dealalityUser || dealalityUser.isAdmin) return ids;
+
+  const { map } = await fetchAirtableRecordsByIdsBatched({
+    baseId,
+    apiKey,
+    tableName: DEALS_TABLE,
+    recordIds: ids,
+    chunkSize: getBatchChunkSize("DEALS_AUTH"),
+    delayMs: getBatchDelayMs("DEALS_AUTH"),
+    stats: { linkedIds: ids.length, fetched: 0, missing: 0, chunks: 0 },
+    phaseName: "dealsAuth",
+  });
+  const records = [...map.values()].map((row) => ({ id: row.id, fields: row.fields || {} }));
+  return filterDealsRecordsForUser(records, dealalityUser).map((rec) => rec.id);
+}
+
+/**
+ * POST /api/my-deals/initial-matched-support
+ * Body: { dealIds: string[] } — contacted brands, target lists, and tab counts for My Deals (deferred from ?view=initial).
+ */
+export async function postMyDealsInitialMatchedSupport(req, res) {
+  const t0 = Date.now();
+  try {
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    const apiKey = process.env.AIRTABLE_API_KEY;
+    if (!baseId || !apiKey) {
+      return res.status(500).json({
+        success: false,
+        error: "Airtable API credentials not configured (AIRTABLE_BASE_ID, AIRTABLE_API_KEY).",
+      });
+    }
+
+    const rawIds = req.body && req.body.dealIds;
+    const requestedIds = Array.isArray(rawIds)
+      ? rawIds
+      : typeof rawIds === "string"
+        ? rawIds.split(",")
+        : [];
+    const allowedIds = await resolveAllowedDealIdsForMatchedSupport(
+      baseId,
+      apiKey,
+      requestedIds,
+      req.dealalityUser
+    );
+    const deals = allowedIds.map((id) => ({ id }));
+    const initialMatchedSupport = await fetchInitialMatchedSupportState(baseId, apiKey, deals);
+    if (shouldLogMyDealsSummary()) {
+      console.log("postMyDealsInitialMatchedSupport: ok", {
+        requested: requestedIds.length,
+        allowed: allowedIds.length,
+        contacted: initialMatchedSupport.contactedPairs.length,
+        elapsedMs: Date.now() - t0,
+      });
+    }
+    return res.json({ success: true, initialMatchedSupport });
+  } catch (err) {
+    const errMsg = (err && err.message) ? String(err.message) : "Internal Server Error";
+    console.error("postMyDealsInitialMatchedSupport:", errMsg);
+    if (err && err.stack) console.error(err.stack);
+    return res.status(500).json({ success: false, error: errMsg });
+  }
+}
+
 /** Convert Strategic Intent Airtable record to form field names and values (arrays → comma-sep for multi-select). */
 function strategicIntentToFormFields(siFields) {
   if (!siFields || typeof siFields !== "object") return {};
@@ -777,6 +853,11 @@ const MY_DEALS_MIN_GAP_MS = parseInt(process.env.MY_DEALS_MIN_GAP_MS || "1500", 
 const MY_DEALS_PHASE_GAP_MS = parseInt(process.env.MY_DEALS_PHASE_GAP_MS || "100", 10) || 100;
 // Performance: keep retry-rebuild optional and off by default so one blank field does not block response.
 const MY_DEALS_ENABLE_RETRY_REBUILD = /^(1|true|on|yes)$/i.test(String(process.env.MY_DEALS_ENABLE_RETRY_REBUILD || "0"));
+
+/** When true (default), BDR + Target List hydration runs via POST /api/my-deals/initial-matched-support after first paint. Set 0 to restore inline bundle on GET ?view=initial. */
+const MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT = !/^(0|false|off|no)$/i.test(
+  String(process.env.MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT ?? "1")
+);
 
 /** Phase 5: Full linked-table batching. Default ON for fast mode; set to 0/false/off/no to disable. */
 const MY_DEALS_USE_BATCHED_LINKED_FETCHES = !/^(0|false|off|no)$/i.test(String(process.env.MY_DEALS_USE_BATCHED_LINKED_FETCHES ?? "1"));
@@ -1660,6 +1741,7 @@ export async function getMyDeals(req, res) {
       requestId,
       view: coreView ? "core" : (initialView ? "initial" : "full"),
       retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
+      deferInitialMatchedSupport: MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT,
     });
   }
   let tLast = t0;
@@ -1673,6 +1755,7 @@ export async function getMyDeals(req, res) {
       minGapMs: MY_DEALS_MIN_GAP_MS,
       phaseGapMs: MY_DEALS_PHASE_GAP_MS,
       retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
+      deferInitialMatchedSupport: MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT,
       view: coreView ? "core" : (initialView ? "initial" : "full"),
       mpFetchDelayMs: MY_DEALS_MP_FETCH_DELAY_MS,
       mpConcurrency: MY_DEALS_MP_CONCURRENCY,
@@ -2208,7 +2291,7 @@ export async function getMyDeals(req, res) {
     let initialMatchedSupport = null;
     const [choices, initialSupport] = await Promise.all([
       getDealStatusChoiceNames(baseId, apiKey).catch(() => []),
-      initialView
+      initialView && !MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT
         ? fetchInitialMatchedSupportState(baseId, apiKey, deals).catch((err) => {
             console.warn("getMyDeals: initialMatchedSupport fetch failed", err && err.message ? err.message : err);
             return null;
@@ -2791,23 +2874,29 @@ function includesAnyToken(text, tokens) {
   return (tokens || []).some((tk) => tk && t.includes(String(tk).toLowerCase()));
 }
 
-function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, operatorPrefill, brandNameById = null) {
-  const dealCountry = toStr(locValue(locationData, "Country", "country") || dealFields?.Country || dealFields?.country);
-  const dealScale = toStr(locValue(locationData, "Hotel Chain Scale", "hotelChainScale") || dealFields?.["Hotel Chain Scale"]);
-  const dealProjectType = toStr(dealFields?.["Project Type"]);
-  const dealBuildingType = toStr(locValue(locationData, "Building Type", "buildingType") || dealFields?.["Building Type"]);
-  const dealStage = toStr(dealFields?.["Stage of Development"] || locValue(locationData, "Stage of Development", "stageOfDevelopment"));
-  const dealStructure = toStr((mpData || {})["Preferred Deal Structure"]);
-  const dealPreferredBrands = toList((siData || {})["Preferred Brands"]);
-  const dealBreakers = toList((siData || {})["Top 3 Deal Breakers"]);
-  const dealMustHaves = toList((siData || {})["Must-Haves From Brand/Operator"] || (siData || {})["Must-Haves From Brand or Operator"]);
-  const dealRoy = toStr((mpData || {})[MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS]);
-  const dealMktFee = toStr((mpData || {})[MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS]);
-  const dealLoyaltyFee = toStr((mpData || {})[MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS]);
+export function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, operatorPrefill, brandNameById = null) {
+  const deal = normalizeOperatorAlignmentDealInputs(dealFields, locationData, mpData, siData);
+  const dealRoy = toStr((mpData || {})[MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS]) || deal.dealRoy;
+  const dealMktFee = toStr((mpData || {})[MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS]) || deal.dealMktFee;
+  const dealLoyaltyFee = toStr((mpData || {})[MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS]) || deal.dealLoyaltyFee;
+  const dealStructureLegacy = deal.legacyDealStructure;
 
   const op = operatorPrefill || {};
-  const opMarkets = toList(firstPresent(op, ["specificMarkets", "market_fit", "topMarkets", "regionsSupported", "bestFitGeographies"]));
-  const opScale = toList(firstPresent(op, ["chainScale", "chainScalesYouSupport", "chain_scales"]));
+  const opCountries = toList(firstPresent(op, ["activeCountries"]));
+  const opActiveMarkets = toList(firstPresent(op, ["activeMarkets"]));
+  const opMarkets = [
+    ...new Set(
+      [...opActiveMarkets, ...toList(firstPresent(op, [
+        "specificMarkets",
+        "market_fit",
+        "topMarkets",
+        "regionsSupported",
+        "bestFitGeographies",
+      ]))].map((x) => String(x || "").trim()).filter(Boolean)
+    ),
+  ];
+  const opPresenceTypes = toList(firstPresent(op, ["marketPresenceType"]));
+  const opScale = toList(firstPresent(op, ["chainScale", "chainScalesYouSupport", "chainScalesSupported", "chain_scales"]));
   const opProject = (() => {
     const base = toList(firstPresent(op, [
       "bestFitAssetTypes",
@@ -2817,17 +2906,30 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
       "propertyTypes",
       "projectTypes",
       "assetType",
+      "serviceModelsSupported",
     ]));
     const extra = collectValuesByKeyToken(op, ["asset", "property type", "project type", "tower", "podium", "resort", "urban"], 10);
     return [...new Set([...base, ...extra].map((x) => String(x || "").trim()).filter(Boolean))];
   })();
   const opStages = (() => {
-    const base = toList(firstPresent(op, ["operatingSituations", "projectStages", "operating_situations", "stageOfDevelopment"]));
+    const base = toList(firstPresent(op, [
+      "operatingSituations",
+      "projectStages",
+      "operating_situations",
+      "stageOfDevelopment",
+      "newBuildOpeningExperience",
+    ]));
     const extra = collectValuesByKeyToken(op, ["stage", "construction", "pre-opening", "opening", "conversion", "transition", "stabilized"], 10);
     return [...new Set([...base, ...extra].map((x) => String(x || "").trim()).filter(Boolean))];
   })();
   const opStructures = (() => {
-    const base = toList(firstPresent(op, ["bestFitDealStructures", "typicalAssignmentTypes", "serviceModels", "service_models"]));
+    const base = toList(firstPresent(op, [
+      "managementStructuresSupported",
+      "bestFitDealStructures",
+      "typicalAssignmentTypes",
+      "serviceModels",
+      "service_models",
+    ]));
     const extra = collectValuesByKeyToken(op, ["structure", "assignment", "franchise", "management", "lease", "contract"], 8);
     return [...new Set([...base, ...extra].map((x) => String(x || "").trim()).filter(Boolean))];
   })();
@@ -2836,11 +2938,11 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     brandNameById
   );
   const opServices = collectPresentList(op, [
+    "offeredServices",
     "primaryServices",
     "additionalServices",
     "primary_services",
     "additional_services",
-    // New Two / granular service arrays
     "revenueManagementServices",
     "salesMarketingSupport",
     "accountingReporting",
@@ -2849,11 +2951,12 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     "technologyServices",
     "designRenovationSupport",
     "developmentServices",
-    // Narrative fallback used on some records
     "serviceDifferentiators",
   ]);
   const opSystems = toList(firstPresent(op, ["technologySystems", "systemsStack", "primaryPMS", "reportTypesProvided"]));
   const opReporting = toStr(firstPresent(op, ["ownerReportingCadence", "reportingFrequency", "ownerCommunicationStyle"]));
+  const opReportingLevel = toStr(firstPresent(op, ["ownerReportingLevel"]));
+  const opGovernance = toStr(firstPresent(op, ["governanceCadence"]));
   const opOwnerRel = toStr(firstPresent(op, ["ownerCommunicationStyle", "operatingCollaborationMode", "typicalResponseTimeForOwnerInquiries", "ownerReferencesAvailable"]));
   const opLessIdeal = toStr(firstPresent(op, ["lessIdealSituations", "less_proven_areas"]));
   const opFee = (() => {
@@ -2870,32 +2973,59 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     return inferred.join(", ");
   })();
 
+  const opExtras = {
+    preOpeningSupportCapability: firstPresent(op, ["preOpeningSupportCapability"]),
+    newBuildOpeningExperience: firstPresent(op, ["newBuildOpeningExperience"]),
+    revenueManagementCapability: firstPresent(op, ["revenueManagementCapability"]),
+    serviceModelsSupported: firstPresent(op, ["serviceModelsSupported"]),
+    offeredServices: opServices,
+  };
+
+  const geoMeta = buildFactorMeta(
+    scoreGeographyFactor(deal, opMarkets, opCountries, opPresenceTypes),
+    "Countries: " +
+      (opCountries.join(", ") || "—") +
+      "; Markets: " +
+      (opActiveMarkets.length ? opActiveMarkets.join(", ") : opMarkets.join(", ") || "—")
+  );
+  const structureMeta = buildFactorMeta(
+    scoreDealStructureFactor(deal, opStructures),
+    "Accepted structures: " + (opStructures.join(", ") || "—")
+  );
+  const serviceMeta = buildFactorMeta(
+    scoreServiceOfferingsFactor(deal, opServices, opExtras),
+    "Services/capabilities: " + (opServices.join(", ") || "—")
+  );
+  const stageMeta = buildFactorMeta(
+    scoreAssetStageFactor(deal, opProject, opStages, opExtras),
+    "Best-fit assets: " + (opProject.join(", ") || "—") + "; Stages: " + (opStages.join(", ") || "—")
+  );
+  const reportingMeta = buildFactorMeta(
+    scoreSystemsReportingFactor(deal, opSystems, opReporting, opReportingLevel, opGovernance),
+    "Systems/reporting: " + ([opSystems.join(", "), opReportingLevel || opReporting, opGovernance].filter(Boolean).join("; ") || "—")
+  );
+
   const factors = {
     geographyMarkets: {
       label: "Geography & Markets",
       weight: OPERATOR_MATCH_WEIGHTS.geographyMarkets,
-      dealValue: "Country: " + (dealCountry || "—"),
-      operatorValue: "Supported markets: " + (opMarkets.join(", ") || "—"),
-      note: "Compares deal market/country with operator's supported regions and markets.",
-      score: (() => {
-        if (!dealCountry && opMarkets.length === 0) return null;
-        if (!dealCountry) return 60;
-        if (opMarkets.length === 0) return 35;
-        const direct = opMarkets.some((m) => String(m).toLowerCase().includes(dealCountry.toLowerCase()));
-        return direct ? 100 : 35;
-      })(),
+      ...geoMeta,
     },
     chainScale: {
       label: "Chain Scale",
       weight: OPERATOR_MATCH_WEIGHTS.chainScale,
-      dealValue: "Hotel Chain Scale: " + (dealScale || "—"),
+      dealValue: "Hotel Chain Scale: " + (deal.dealScale || "—"),
       operatorValue: "Supported chain scales: " + (opScale.join(", ") || "—"),
       note: "Checks whether the operator works in the same chain-scale band.",
+      fieldSource: deal.dealScale ? "location" : "none",
+      missingDataClass: null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
-        if (!dealScale) return null;
-        if (opScale.length === 0) return 45;
-        const same = opScale.some((s) => String(s).toLowerCase() === dealScale.toLowerCase());
-        const partial = opScale.some((s) => String(s).toLowerCase().includes(dealScale.toLowerCase()) || dealScale.toLowerCase().includes(String(s).toLowerCase()));
+        if (!deal.dealScale) return null;
+        if (opScale.length === 0) return null;
+        const same = opScale.some((s) => String(s).toLowerCase() === deal.dealScale.toLowerCase());
+        const partial = opScale.some((s) => String(s).toLowerCase().includes(deal.dealScale.toLowerCase()) || deal.dealScale.toLowerCase().includes(String(s).toLowerCase()));
         if (same) return 100;
         if (partial) return 65;
         return 25;
@@ -2904,87 +3034,56 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     assetProjectStageFit: {
       label: "Asset / Project / Stage Fit",
       weight: OPERATOR_MATCH_WEIGHTS.assetProjectStageFit,
-      dealValue: "Project Type: " + (dealProjectType || "—") + "; Building Type: " + (dealBuildingType || "—") + "; Stage: " + (dealStage || "—"),
-      operatorValue: "Best-fit assets: " + (opProject.join(", ") || "—") + "; Operating situations: " + (opStages.join(", ") || "—"),
-      note: "Evaluates whether the operator's target assets and delivery stage match this deal.",
-      score: (() => {
-        const projectScore = overlapScore([dealProjectType, dealBuildingType].filter(Boolean), opProject, 30);
-        const stageScore = overlapScore([dealStage].filter(Boolean), opStages, 35);
-        if (projectScore == null && stageScore == null) return null;
-        if (projectScore == null) return stageScore;
-        if (stageScore == null) return projectScore;
-        return Math.round(((projectScore * 0.7) + (stageScore * 0.3)) * 10) / 10;
-      })(),
+      ...stageMeta,
     },
     dealStructureAssignment: {
       label: "Deal Structure / Assignment",
       weight: OPERATOR_MATCH_WEIGHTS.dealStructureAssignment,
-      dealValue: "Preferred Deal Structure: " + (dealStructure || "—"),
-      operatorValue: "Accepted structures: " + (opStructures.join(", ") || "—"),
-      note: "Compares preferred deal structure with the operator's assignment and structure profile.",
-      score: (() => {
-        if (!dealStructure) return null;
-        if (opStructures.length === 0) return 45;
-        const lower = dealStructure.toLowerCase();
-        const exact = opStructures.some((s) => String(s).toLowerCase() === lower);
-        const partial = opStructures.some((s) => String(s).toLowerCase().includes(lower) || lower.includes(String(s).toLowerCase()));
-        if (exact) return 100;
-        if (partial) return 65;
-        return 20;
-      })(),
+      ...structureMeta,
     },
     feeCommercial: {
       label: "Fee / Commercial",
       weight: OPERATOR_MATCH_WEIGHTS.feeCommercial,
-      dealValue: "Fee expectations: " + ([dealRoy && ("Royalty " + dealRoy), dealMktFee && ("Marketing " + dealMktFee), dealLoyaltyFee && ("Loyalty " + dealLoyaltyFee), dealStructure && ("Preferred Structure " + dealStructure)].filter(Boolean).join("; ") || "—"),
+      dealValue:
+        "Fee expectations: " +
+        ([dealRoy && ("Royalty " + dealRoy), dealMktFee && ("Marketing " + dealMktFee), dealLoyaltyFee && ("Loyalty " + dealLoyaltyFee), dealStructureLegacy && ("Legacy structure " + dealStructureLegacy)].filter(Boolean).join("; ") || "—"),
       operatorValue: "Commercial terms: " + (opFee || "—"),
       note: "Uses available fee expectations and operator commercial positioning.",
+      fieldSource: "legacy_mp",
+      missingDataClass: null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
         const dealHas = Boolean(dealRoy || dealMktFee || dealLoyaltyFee);
         if (!dealHas && !opFee) return null;
-        if (!dealHas || !opFee) return 55;
+        if (!dealHas || !opFee) return null;
         return 75;
       })(),
     },
     serviceOfferings: {
       label: "Service Offerings",
       weight: OPERATOR_MATCH_WEIGHTS.serviceOfferings,
-      dealValue: "Must-haves from operator: " + (dealMustHaves.join(", ") || "—"),
-      operatorValue: "Primary/additional services: " + (opServices.join(", ") || "—"),
-      note: "Compares owner must-haves against operator service depth.",
-      score: (() => {
-        if (dealMustHaves.length === 0 && opServices.length === 0) return null;
-        if (dealMustHaves.length === 0) return 75;
-        return overlapScore(dealMustHaves, opServices, 30);
-      })(),
+      ...serviceMeta,
     },
     systemsReporting: {
       label: "Systems & Reporting",
       weight: OPERATOR_MATCH_WEIGHTS.systemsReporting,
-      dealValue:
-        "Reporting preference: " +
-        (toStr(
-          (siData || {})["Owner Reporting Frequency"] ||
-            (siData || {})["Preferred Reporting Frequency"] ||
-            (siData || {})["Owner Reporting Cadence"] ||
-            ""
-        ) || "—"),
-      operatorValue: "Systems/reporting: " + ([opSystems.join(", "), opReporting].filter(Boolean).join("; ") || "—"),
-      note: "Checks whether the operator has systems and reporting cadence signals for owner oversight.",
-      score: (() => {
-        if (opSystems.length === 0 && !opReporting) return 40;
-        if (opSystems.length > 0 && opReporting) return 90;
-        return 70;
-      })(),
+      ...reportingMeta,
     },
     ownerRelations: {
       label: "Owner Relations",
       weight: OPERATOR_MATCH_WEIGHTS.ownerRelations,
-      dealValue: "Owner priority: responsive communication and collaboration",
+      dealValue:
+        (deal.ownerControlPreference ? "Owner control: " + deal.ownerControlPreference + "; " : "") +
+        "Owner priority: responsive communication and collaboration",
       operatorValue: opOwnerRel || "—",
       note: "Uses owner-relations signals such as response style, collaboration mode, and references.",
+      fieldSource: deal.ownerControlPreference ? "structured" : "default",
+      missingDataClass: !opOwnerRel ? "needs_validation" : null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
-        if (!opOwnerRel) return 45;
+        if (!opOwnerRel) return null;
         if (includesAnyToken(opOwnerRel, ["weekly", "monthly", "collaborat", "owner ref", "advisory"])) return 90;
         return 70;
       })(),
@@ -2992,24 +3091,33 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     brandPortfolioRelevance: {
       label: "Brand / Portfolio Relevance",
       weight: OPERATOR_MATCH_WEIGHTS.brandPortfolioRelevance,
-      dealValue: "Preferred brands: " + (dealPreferredBrands.join(", ") || "—"),
+      dealValue: "Preferred brands: " + (deal.dealPreferredBrands.join(", ") || "—"),
       operatorValue: "Brands managed: " + (opBrands.join(", ") || "—"),
       note: "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+      fieldSource: deal.dealPreferredBrands.length ? "structured_si" : "none",
+      missingDataClass: null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
-        if (dealPreferredBrands.length === 0 && opBrands.length === 0) return null;
-        if (dealPreferredBrands.length === 0) return 70;
-        return overlapScore(dealPreferredBrands, opBrands, 25);
+        if (deal.dealPreferredBrands.length === 0 && opBrands.length === 0) return null;
+        if (deal.dealPreferredBrands.length === 0) return null;
+        if (opBrands.length === 0) return null;
+        return overlapScore(deal.dealPreferredBrands, opBrands, 25);
       })(),
     },
     negativeFitPenalty: {
       label: "Negative-Fit Penalty",
       weight: OPERATOR_MATCH_WEIGHTS.negativeFitPenalty,
-      dealValue: "Top deal breakers: " + (dealBreakers.join(", ") || "—"),
+      dealValue: "Top deal breakers: " + (deal.dealBreakers.join(", ") || "—"),
       operatorValue: "Less ideal situations: " + (opLessIdeal || "—"),
       note: "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+      fieldSource: "structured_si",
+      missingDataClass: null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
-        if (dealBreakers.length === 0 || !opLessIdeal) return 100;
-        const hasConflict = dealBreakers.some((b) => b && opLessIdeal.toLowerCase().includes(b.toLowerCase()));
+        if (deal.dealBreakers.length === 0 || !opLessIdeal) return 100;
+        const hasConflict = deal.dealBreakers.some((b) => b && opLessIdeal.toLowerCase().includes(b.toLowerCase()));
         return hasConflict ? 20 : 100;
       })(),
     },
@@ -3018,8 +3126,10 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
   let weighted = 0;
   let totalW = 0;
   for (const f of Object.values(factors)) {
-    totalW += f.weight;
-    if (f.score != null && !Number.isNaN(Number(f.score))) weighted += (Number(f.score) * f.weight);
+    if (f.score != null && !Number.isNaN(Number(f.score))) {
+      totalW += f.weight;
+      weighted += Number(f.score) * f.weight;
+    }
   }
   const finalScore = totalW > 0 ? Math.round((weighted / totalW) * 10) / 10 : 0;
 
@@ -3028,13 +3138,21 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     breakdownDetails[k] = {
       label: f.label,
       weight: f.weight,
-      brandValue: f.operatorValue,
+      brandValue: f.operatorValue || f.brandValue,
       dealValue: f.dealValue,
       note: f.note,
       score: f.score == null ? "—" : Math.round(Number(f.score) * 10) / 10,
+      fieldSource: f.fieldSource || null,
+      missingDataClass: f.missingDataClass || null,
+      rationale: f.rationale || null,
+      includedInDenominator: f.includedInDenominator !== false && f.score != null,
     };
   }
-  return { score: Math.min(100, Math.max(0, finalScore)), breakdownDetails };
+  return {
+    score: Math.min(100, Math.max(0, finalScore)),
+    breakdownDetails,
+    dealInputsNormalized: deal,
+  };
 }
 
 /**

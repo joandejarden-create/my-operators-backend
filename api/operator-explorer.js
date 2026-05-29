@@ -216,6 +216,17 @@ export async function getOperatorById(req, res) {
       return getThirdPartyOperatorDetail(detailReq, res);
     }
 
+    const allowMocks =
+      process.env.OPERATOR_EXPLORER_ALLOW_MOCKS === "1" ||
+      process.env.OPERATOR_EXPLORER_ALLOW_MOCKS === "true";
+    if (!allowMocks) {
+      return res.status(404).json({
+        success: false,
+        error: "Operator not found",
+        hint: "Live Operator Explorer profiles require an Operator Setup record id (rec…).",
+      });
+    }
+
     const operator = MOCK_OPERATORS.find(
       (o) => o.id === id || o.operator_name?.toLowerCase() === String(id).toLowerCase()
     );
@@ -257,7 +268,11 @@ export async function getOperatorById(req, res) {
       gap_flags: [],
     };
 
-    res.json({ success: true, operator: detail });
+    res.json({
+      success: true,
+      operator: detail,
+      meta: { sampleOperatorProfile: true, demoData: true },
+    });
   } catch (err) {
     console.error("Operator Explorer detail error:", err);
     res.status(500).json({ success: false, error: err.message });

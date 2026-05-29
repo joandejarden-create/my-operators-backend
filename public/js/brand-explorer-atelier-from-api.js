@@ -639,6 +639,23 @@
 
   /** Overview snapshot: position within parent portfolio (not Brand Positioning long copy). */
   function relativePositioningFromBrand(brand) {
+    var ctxRow = explorerFirstBlock(brand, 'overview.portfolio_context');
+    if (ctxRow && hasVal(ctxRow.body)) {
+      var tierInTitle = hasVal(ctxRow.title) ? String(ctxRow.title).trim() : '';
+      var bodyText = String(ctxRow.body).trim();
+      if (tierInTitle || /^\d\s/.test(bodyText) || /^\d$/.test(bodyText.split(/\n/)[0])) {
+        if (!tierInTitle && bodyText) {
+          var lines = bodyText.split(/\n+/).map(function (s) {
+            return s.trim();
+          });
+          if (lines.length && /^\d$/.test(lines[0])) {
+            return lines.slice(1).join('\n\n').trim();
+          }
+        }
+        return bodyText;
+      }
+      return bodyText;
+    }
     var slot = explorerMergedBody(brand, 'overview.relative_positioning');
     if (hasVal(slot)) return String(slot).trim();
     var row = explorerFirstBlock(brand, 'overview.relative_positioning');
@@ -699,6 +716,58 @@
     return 2;
   }
 
+  function ladderTierIndexFromPresentationRaw(raw) {
+    if (!hasVal(raw)) return null;
+    var text = String(raw).trim();
+    var firstToken = text.split(/\s+/)[0];
+    var n = parseInt(firstToken, 10);
+    if (!isNaN(n) && n >= 0 && n <= 3) return n;
+    var key = text.toLowerCase();
+    if (key === 'economy' || key === 'tier0' || key === 'tier-0') return 0;
+    if (key === 'upper_mid' || key === 'upper-mid' || key === 'midscale' || key === 'tier1' || key === 'tier-1')
+      return 1;
+    if (key === 'upscale' || key === 'premium' || key === 'tier2' || key === 'tier-2') return 2;
+    if (
+      key === 'upper_upscale' ||
+      key === 'upper-upscale' ||
+      key === 'luxury' ||
+      key === 'flagship' ||
+      key === 'tier3' ||
+      key === 'tier-3'
+    )
+      return 3;
+    return null;
+  }
+
+  /** Overview Portfolio Context ladder step (0–3); API + presentation slot override chain scale. */
+  function portfolioLadderTierIndex(brand) {
+    if (brand && typeof brand.portfolioLadderTier === 'number') {
+      var preset = brand.portfolioLadderTier;
+      if (preset >= 0 && preset <= 3) return preset;
+    }
+    var ctxRow = explorerFirstBlock(brand, 'overview.portfolio_context');
+    if (ctxRow) {
+      var tierRaw = hasVal(ctxRow.title) ? String(ctxRow.title).trim() : '';
+      if (!tierRaw && hasVal(ctxRow.body)) {
+        var firstLine = String(ctxRow.body).trim().split(/\n+/)[0];
+        if (/^\d$/.test(firstLine)) tierRaw = firstLine;
+      }
+      var fromCtx = ladderTierIndexFromPresentationRaw(tierRaw);
+      if (fromCtx != null) return fromCtx;
+    }
+    var row = explorerFirstBlock(brand, 'overview.portfolio_ladder_tier');
+    if (row) {
+      var raw = hasVal(row.body)
+        ? String(row.body).trim()
+        : hasVal(row.title)
+          ? String(row.title).trim()
+          : '';
+      var fromLegacy = ladderTierIndexFromPresentationRaw(raw);
+      if (fromLegacy != null) return fromLegacy;
+    }
+    return ladderIndexForScale(brand && (brand.hotelChainScale || brand.chainScale));
+  }
+
   function ladderTierFallbackLabels() {
     return [
       'Lower-scale brands',
@@ -706,6 +775,26 @@
       'Upscale brands',
       'Upper-scale brands'
     ];
+  }
+
+  function ladderTierFallbackLabelsForBrand(brand) {
+    var parentKey = normalizePortfolioParentKey(brand && brand.parentCompany);
+    if (parentKey.indexOf('choice hotels') !== -1) {
+      return [
+        'Economy / Core Midscale',
+        'Upper Mid / Mainstream Upscale',
+        'Premium / Upper Upscale',
+        'Luxury & Lifestyle Flagship'
+      ];
+    }
+    return ladderTierFallbackLabels();
+  }
+
+  function portfolioLadderTierForListBrand(b) {
+    if (b && typeof b.portfolioLadderTier === 'number' && b.portfolioLadderTier >= 0 && b.portfolioLadderTier <= 3) {
+      return b.portfolioLadderTier;
+    }
+    return ladderIndexForScale(b && (b.hotelChainScale || b.chainScale));
   }
 
   function normalizePortfolioParentKey(parent) {
@@ -733,8 +822,7 @@
       if (!nm) return;
       var bid = b.id != null ? String(b.id) : '';
       if (currentId && bid === currentId) return;
-      var scale = b.hotelChainScale || b.chainScale || '';
-      tiers[ladderIndexForScale(scale)].push(nm);
+      tiers[portfolioLadderTierForListBrand(b)].push(nm);
     });
     tiers.forEach(function (names) {
       names.sort(function (a, b) {
@@ -751,11 +839,9 @@
   }
 
   function buildPortfolioLadderCellsHtml(brand) {
-    var fallbacks = ladderTierFallbackLabels();
+    var fallbacks = ladderTierFallbackLabelsForBrand(brand);
     var tierNames = portfolioSiblingNamesByLadderTier(brand, explorerBrandListForPortfolio());
-    var ladderIdx = ladderIndexForScale(
-      brand && (brand.hotelChainScale || brand.chainScale)
-    );
+    var ladderIdx = portfolioLadderTierIndex(brand);
     var brandName = brand && brand.name ? String(brand.name).trim() : '';
     return fallbacks
       .map(function (fallback, i) {
@@ -1049,28 +1135,7 @@
       })
       .join('');
 
-    var ladderIdx = ladderIndexForScale(brand.hotelChainScale);
-    var ladderTierLabels = [
-      'Economy / Core Midscale',
-      'Upper Mid / Mainstream Upscale',
-      'Premium / Upper Upscale',
-      'Luxury & Lifestyle Flagship'
-    ];
-    var ladderCells = ladderTierLabels
-      .map(function (lbl, i) {
-        var active = i === ladderIdx;
-        var label = active ? (hasVal(brand.name) ? String(brand.name) : lbl) : lbl;
-        return (
-          '<div class="ladder__step' +
-          (active ? ' ladder__step--active' : '') +
-          '"' +
-          (active ? ' aria-current="true"' : '') +
-          '>' +
-          escapeHtml(label) +
-          '</div>'
-        );
-      })
-      .join('');
+    var ladderCells = buildPortfolioLadderCellsHtml(brand);
 
     var hasOpenings = explorerBlocksForSlot(brand, FOOTPRINT_OPENINGS_SLOT).length > 0;
     var openingsJumpBtn =
@@ -3053,12 +3118,24 @@
   function renderLoyaltyProgram(brand) {
     var fp = brand.footprint || {};
     var fpFv = fp.formValues || {};
+    var progNameEarly = lcFv(brand, 'typicalLoyaltyProgramName');
+    var isChoiceFamily =
+      String(brand && brand.parentCompany || '').toLowerCase().indexOf('choice hotels') >= 0 ||
+      String(progNameEarly || '').toLowerCase().indexOf('choice privileges') >= 0 ||
+      String(brand && brand.name || '').toLowerCase().indexOf('choice') >= 0;
     var memM = lcFv(brand, 'totalGlobalMembersMillions');
-    var defMembersVal = hasVal(memM) ? '~' + String(memM).trim() + 'M members (est.)' : '—';
-    var defHotelsVal =
-      hasVal(fp.totalExistingHotels) || Number(fp.totalExistingHotels) === 0
-        ? fmtNum(fp.totalExistingHotels) + '+ hotels in portfolio (open)'
+    var defMembersVal = hasVal(memM)
+      ? '~' + String(memM).trim() + 'M members (est.)'
+      : isChoiceFamily
+        ? '~70M members (program-wide)'
         : '—';
+    var openHotels = Number(fp.totalExistingHotels);
+    var defHotelsVal = '—';
+    if (hasVal(fp.totalExistingHotels) && openHotels > 0) {
+      defHotelsVal = fmtNum(fp.totalExistingHotels) + '+ hotels in portfolio (open)';
+    } else if (isChoiceFamily) {
+      defHotelsVal = '7,100+ properties (Choice Privileges network)';
+    }
     var marketsN = fpFv.numberOfMarkets;
     var defMarketsVal = hasVal(marketsN)
       ? fmtNum(marketsN) +
@@ -3068,7 +3145,9 @@
           : hasVal(fp.priorityCities)
             ? String(fp.priorityCities).trim()
             : 'regional mix')
-      : '—';
+      : isChoiceFamily
+        ? 'Global · 20+ brands in portfolio'
+        : '—';
     var mixPct = lcFv(brand, 'typicalLoyaltyRoomsPercent');
     var defMixVal = hasVal(mixPct) ? '~' + String(mixPct).trim() + '% of rooms from loyalty (est.)' : '—';
 
@@ -3177,25 +3256,48 @@
             .join('')
         : staticProofGrid;
 
+    var isChoicePrivileges =
+      String(brand && brand.parentCompany || '').toLowerCase().indexOf('choice hotels') >= 0 ||
+      String(progName || '').toLowerCase().indexOf('choice privileges') >= 0 ||
+      String(brand && brand.name || '').toLowerCase().indexOf('choice') >= 0;
+
     var earnMerged = explorerMergedBody(brand, 'loyalty.earn', '\n');
     var earnUl = explorerLinesAsUl(escapeHtml, earnMerged);
     if (!earnUl) {
-      earnUl =
-        '<ul>' +
-        '<li><strong>Base Earn:</strong> 10 points per US$1 eligible spend on room and qualifying folio charges.</li>' +
-        '<li><strong>Promotions:</strong> Seasonal accelerators on direct bookings (e.g. +2–4k bonus points per stay during campaign windows).</li>' +
-        '<li><strong>Partners:</strong> Car, rideshare, and retail partners with periodic bonus campaigns.</li>' +
-        '</ul>';
+      if (isChoicePrivileges) {
+        earnUl =
+          '<ul>' +
+          '<li><strong>Base Earn:</strong> Up to 10 points per US$1 on qualifying stays booked direct.</li>' +
+          '<li><strong>Status Progression:</strong> Elite status can be earned via nights or Elite Qualifying Credits (EQCs).</li>' +
+          '<li><strong>Program Accelerators:</strong> Campaign bonuses and card-linked EQCs may increase earn velocity by season.</li>' +
+          '</ul>';
+      } else {
+        earnUl =
+          '<ul>' +
+          '<li><strong>Base Earn:</strong> 10 points per US$1 eligible spend on room and qualifying folio charges.</li>' +
+          '<li><strong>Promotions:</strong> Seasonal accelerators on direct bookings (e.g. +2–4k bonus points per stay during campaign windows).</li>' +
+          '<li><strong>Partners:</strong> Car, rideshare, and retail partners with periodic bonus campaigns.</li>' +
+          '</ul>';
+      }
     }
     var redeemMerged = explorerMergedBody(brand, 'loyalty.redeem', '\n');
     var redeemUl = explorerLinesAsUl(escapeHtml, redeemMerged);
     if (!redeemUl) {
-      redeemUl =
-        '<ul>' +
-        '<li><strong>Free Nights:</strong> Dynamic award nights tied to demand (illustrative band: 22k–58k points/night by season).</li>' +
-        '<li><strong>Cash + Points:</strong> Partial redemption options on direct paths where enabled.</li>' +
-        '<li><strong>Experiences:</strong> Curated events and on-property credits in select tiers.</li>' +
-        '</ul>';
+      if (isChoicePrivileges) {
+        redeemUl =
+          '<ul>' +
+          '<li><strong>Reward Nights:</strong> Redemption starts at approximately 8,000 points (property/date dependent).</li>' +
+          '<li><strong>Cash + Points:</strong> Points + cash options are available on eligible stays where enabled.</li>' +
+          '<li><strong>Additional Uses:</strong> Points can also be used for partner rewards and select non-room redemption paths.</li>' +
+          '</ul>';
+      } else {
+        redeemUl =
+          '<ul>' +
+          '<li><strong>Free Nights:</strong> Dynamic award nights tied to demand (illustrative band: 22k–58k points/night by season).</li>' +
+          '<li><strong>Cash + Points:</strong> Partial redemption options on direct paths where enabled.</li>' +
+          '<li><strong>Experiences:</strong> Curated events and on-property credits in select tiers.</li>' +
+          '</ul>';
+      }
     }
 
     var eliteRows = explorerCardRowsForSlot(brand, 'loyalty.elite').filter(function (x) {
@@ -3213,10 +3315,15 @@
               );
             })
             .join('')
-        : '<div class="diff-card"><strong>Club / Silver</strong><br/>Member rates, milestone rewards path, baseline perks (illustrative).</div>' +
-          '<div class="diff-card"><strong>Gold</strong><br/>Enhanced earn, welcome amenities pattern, better upgrade priority vs base tiers.</div>' +
-          '<div class="diff-card"><strong>Platinum</strong><br/>Stronger upgrade priority, late checkout benefits, annual choice benefits (where program rules apply).</div>' +
-          '<div class="diff-card"><strong>Diamond</strong><br/>Top-tier recognition—highest upgrade priority and dedicated support pathways where offered.</div>';
+        : isChoicePrivileges
+          ? '<div class="diff-card"><strong>Gold</strong><br/>5 nights or 10,000 EQCs. Entry elite tier with bonus points and recognition benefits.</div>' +
+            '<div class="diff-card"><strong>Platinum</strong><br/>15 nights or 30,000 EQCs. Higher bonus earn and stronger recognition benefits.</div>' +
+            '<div class="diff-card"><strong>Diamond</strong><br/>35 nights or 70,000 EQCs. Top-tier mainstream recognition and elevated service benefits.</div>' +
+            '<div class="diff-card"><strong>Titanium</strong><br/>55 nights or 110,000 EQCs. Highest published tier with premium program benefits.</div>'
+          : '<div class="diff-card"><strong>Club / Silver</strong><br/>Member rates, milestone rewards path, baseline perks (illustrative).</div>' +
+            '<div class="diff-card"><strong>Gold</strong><br/>Enhanced earn, welcome amenities pattern, better upgrade priority vs base tiers.</div>' +
+            '<div class="diff-card"><strong>Platinum</strong><br/>Stronger upgrade priority, late checkout benefits, annual choice benefits (where program rules apply).</div>' +
+            '<div class="diff-card"><strong>Diamond</strong><br/>Top-tier recognition—highest upgrade priority and dedicated support pathways where offered.</div>';
 
     var LOY_DEMAND = [
       ['Gateway Urban', 'Strong'],

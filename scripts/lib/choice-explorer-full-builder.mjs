@@ -16,6 +16,9 @@ import {
   formatCommercialLeverBody,
 } from "../../lib/brand-explorer-commercial-levers.mjs";
 import { projectImpactForBrandLever } from "./choice-tier1-commercial-impacts.mjs";
+import { defaultFootprintOpeningsForBrand } from "./choice-default-footprint-openings.mjs";
+import { externalSimilarPeersForBrand } from "./choice-chi-insight-similar-external.mjs";
+import { portfolioContextForAirtableBrand } from "./choice-chi-portfolio-context.mjs";
 
 /** @param {import('./choice-tier1-explorer-profiles.mjs').Tier1Profile} p */
 function row(slotKey, body, { title = "", sort = 0 } = {}) {
@@ -25,6 +28,42 @@ function row(slotKey, body, { title = "", sort = 0 } = {}) {
     body: sanitizeExternalCopy(body),
     sort,
   };
+}
+
+/** @param {import('./choice-tier1-explorer-profiles.mjs').Tier1Profile} p */
+function segmentPositioningPhrase(p) {
+  if (p.segment === "upscale" || p.segment === "softCollection") {
+    return "design-led guest positioning and stronger rate posture";
+  }
+  if (p.segment === "extendedStay") {
+    return "longer-stay demand resilience and efficient operating economics";
+  }
+  if (p.segment === "economy") {
+    return "high-visibility value positioning and broad drive-to demand";
+  }
+  return "balanced mainstream positioning and reliable franchise demand";
+}
+
+/**
+ * @param {import('./choice-tier1-explorer-profiles.mjs').Tier1Profile} p
+ * @param {"am"|"cala"|"eu"|"mea"|"apac"} region
+ */
+function footprintRegionBody(p, region) {
+  const scale = p.scaleLabel.toLowerCase();
+  const segmentEdge = segmentPositioningPhrase(p);
+  if (region === "am") {
+    return `Americas\n\nIn the Americas, ${p.name} is positioned as a ${scale} option with ${segmentEdge}. Regional scale, distribution visibility, and brand familiarity support a strong growth narrative for owners in competitive franchise corridors.`;
+  }
+  if (region === "cala") {
+    return `CALA\n\nIn CALA, ${p.name} is positioned around gateway-city and resort momentum, giving owners a brand story that travels across business and leisure demand. The regional profile supports credible international positioning while staying commercially relevant to local market dynamics.`;
+  }
+  if (region === "eu") {
+    return `Europe\n\nIn Europe, ${p.name} benefits from a globally visible brand context that reinforces quality perception and investor confidence. This regional positioning helps owners present a stronger international brand narrative for higher-consideration demand segments.`;
+  }
+  if (region === "mea") {
+    return `MEA\n\nIn MEA, ${p.name} contributes to a broader global footprint in high-visibility destinations, supporting international brand recognition. For owners, this strengthens long-term brand credibility and portfolio depth in cross-border conversations.`;
+  }
+  return `APAC\n\nIn APAC, ${p.name} gains strategic exposure in fast-moving travel markets, reinforcing a forward-growth brand narrative. This regional positioning supports broader global relevance and helps owners market the asset with stronger international context.`;
 }
 
 /** @param {import('./choice-tier1-explorer-profiles.mjs').Tier1Profile} p */
@@ -272,7 +311,51 @@ function lifecycleWeight(p) {
 /** @param {import('./choice-tier1-explorer-profiles.mjs').Tier1Profile} p */
 function buildOverviewRows(p) {
   const ov = overviewForBrand(p.name);
-  if (!ov) return [];
+  if (!ov) {
+    const scenarioBodies = p.scenarios.slice(0, 3);
+    while (scenarioBodies.length < 3) scenarioBodies.push(p.typicalUseCase);
+    const rows = [row("overview.scenarios", scenarioBodies.join("\n\n"), { sort: 0 })];
+    for (let i = 0; i < 3; i++) {
+      rows.push(
+        row(`overview.scenario.${i + 1}`, scenarioBodies[i] || "", {
+          title: ["Conversion & repositioning", "CALA / gateway growth", "Portfolio standardization"][i],
+          sort: 0,
+        })
+      );
+    }
+    rows.push(
+      row("overview.why_value", p.positioning, { sort: 0 }),
+      row("overview.owner_experience", p.heroPurpose, { sort: 0 }),
+      row("overview.proof_operator", p.bestAt[0] || p.tagline, { sort: 0 }),
+      row("overview.differentiators.identity", p.tagline, { sort: 0 }),
+      row("overview.differentiators.commercial", p.developmentModel, { sort: 0 })
+    );
+    for (let i = 0; i < 3; i++) {
+      rows.push(
+        row(`overview.bestAt.${i + 1}`, p.bestAt[i] || p.growthThemes[i] || "", {
+          title: p.bestAt[i]?.split("—")[0]?.trim() || `Best at ${i + 1}`,
+          sort: 0,
+        })
+      );
+    }
+    let proofCards = [];
+    try {
+      proofCards = buildProofCards(p.name);
+    } catch {
+      proofCards = [
+        { title: "Choice distribution", body: `${p.name} uses Choice enterprise channels and Choice Privileges—confirm mix in FDD Item 19.` },
+        { title: "Prototype economics", body: `${p.scaleLabel} capex and amenity stack must match ${p.name} standards—not a generic midscale box.` },
+        { title: "CALA context", body: "Select CHI brands expand in CALA—confirm authorized geography and opening pipeline in LOI." },
+        { title: "Operator fit", body: p.heroPurpose },
+        { title: "Loyalty participation", body: "Choice Privileges member rates and direct paths support contribution when fulfillment is staffed." },
+        { title: "Tier discipline", body: `Compare fee stack to ${p.similarBrands[0]} before signing—same parent, different tier requirements.` },
+      ];
+    }
+    proofCards.forEach((pr, i) => {
+      rows.push(row(`overview.proof.${i + 1}`, pr.body, { title: pr.title, sort: i }));
+    });
+    return rows;
+  }
 
   const rows = [row("overview.scenarios", ov.scenarioBodies.join("\n\n"), { sort: 0 })];
   for (let i = 0; i < 3; i++) {
@@ -589,32 +672,32 @@ export function buildFullPresentationRows(p) {
   rows.push(
     row(
       "footprint.geo_intro",
-      `${p.name} is a ${p.scaleLabel} flag in the Choice Hotels International portfolio. ${p.pipelineStats} Evaluate fit on market tier, prototype, loyalty contribution, and competitive set—not generic upscale or economy assumptions.`,
+      `${p.name} is a ${p.scaleLabel} brand within the Choice Hotels International portfolio. ${p.pipelineStats} For owners, the key question is fit: confirm local demand drivers, required investment level, prototype/PIP scope, and net return versus your true competitive set.`,
       { sort: 10 }
     ),
     row(
       "footprint.region.am",
-      "Americas\n\nPrimary growth region for Choice-affiliated CHI brands. Confirm area-of-protection and comp set versus other CHI flags in your corridor.",
+      footprintRegionBody(p, "am"),
       { sort: 11, title: "Americas" }
     ),
     row(
       "footprint.region.cala",
-      "CALA\n\nSelect CHI and Radisson-family brands expand in CALA—confirm whether your asset is in an authorized geography and which Radisson vs Choice standards apply.",
+      footprintRegionBody(p, "cala"),
       { sort: 12, title: "CALA" }
     ),
     row(
       "footprint.region.eu",
-      "Europe\n\nRadisson-family brands may reference RHG standards globally; Americas agreements run through Choice—do not assume European ramp curves for U.S. deals.",
+      footprintRegionBody(p, "eu"),
       { sort: 13, title: "Europe" }
     ),
     row(
       "footprint.region.mea",
-      "MEA\n\nLimited direct relevance for typical U.S. franchisees—confirm counts in FDD if evaluating international portfolio context.",
+      footprintRegionBody(p, "mea"),
       { sort: 14, title: "MEA" }
     ),
     row(
       "footprint.region.apac",
-      "APAC\n\nGuest awareness may exist from international travel—base underwriting on your market’s domestic demand and disclosure counts.",
+      footprintRegionBody(p, "apac"),
       { sort: 15, title: "APAC" }
     ),
     row("footprint.growth_themes", p.growthThemes.join("\n"), { sort: 20 }),
@@ -661,20 +744,19 @@ export function buildFullPresentationRows(p) {
     )
   );
 
-  if (p.footprintOpenings?.length) {
-    for (const o of p.footprintOpenings) {
-      rows.push({
-        slotKey: "footprint.openings",
-        title: sanitizeExternalCopy(o.title),
-        body: sanitizeExternalCopy(o.body),
-        sort: o.sort ?? 0,
-        caseSummaryOverview: sanitizeExternalCopy(o.caseSummaryOverview),
-        caseSummaryOwnerObjective: sanitizeExternalCopy(o.caseSummaryOwnerObjective),
-        caseSummaryBrandRelevance: sanitizeExternalCopy(o.caseSummaryBrandRelevance),
-        caseSummaryInterpretation: sanitizeExternalCopy(o.caseSummaryInterpretation),
-        caseSummaryTags: sanitizeExternalCopy(o.caseSummaryTags),
-      });
-    }
+  const footprintOpenings = defaultFootprintOpeningsForBrand(p);
+  for (const o of footprintOpenings) {
+    rows.push({
+      slotKey: "footprint.openings",
+      title: sanitizeExternalCopy(o.title),
+      body: sanitizeExternalCopy(o.body),
+      sort: o.sort ?? 0,
+      caseSummaryOverview: sanitizeExternalCopy(o.caseSummaryOverview),
+      caseSummaryOwnerObjective: sanitizeExternalCopy(o.caseSummaryOwnerObjective),
+      caseSummaryBrandRelevance: sanitizeExternalCopy(o.caseSummaryBrandRelevance),
+      caseSummaryInterpretation: sanitizeExternalCopy(o.caseSummaryInterpretation),
+      caseSummaryTags: sanitizeExternalCopy(o.caseSummaryTags),
+    });
   }
 
   // —— Operations ——
@@ -772,7 +854,20 @@ export function buildFullPresentationRows(p) {
     ),
     row("hero.operator_compat", p.heroPurpose, { sort: 0 }),
     row("overview.typical_use_case", p.typicalUseCase, { sort: 0 }),
-    row("overview.relative_positioning", p.positioning, { sort: 0 }),
+    ...(portfolioContextForAirtableBrand(p.name)
+      ? [
+          row(
+            "overview.portfolio_context",
+            portfolioContextForAirtableBrand(p.name).relativePositioning,
+            {
+              title: String(portfolioContextForAirtableBrand(p.name).ladderTier),
+              sort: 0,
+            }
+          ),
+        ]
+      : [
+          row("overview.relative_positioning", p.positioning, { sort: 0 }),
+        ]),
     row("overview.development_model", p.developmentModel, { sort: 0 }),
     ...buildOverviewRows(p)
   );
@@ -821,9 +916,11 @@ export function buildFullPresentationRows(p) {
       "Award nights from 8,000 points where enabled—pricing demand-responsive.\nCash + points where offered.\nPartner redemptions for storytelling—not audited economics without disclosure.",
       { sort: 0 }
     ),
-    row("loyalty.elite", "Member — baseline rates and recognition.", { sort: 0, title: "Member" }),
-    row("loyalty.elite", "Gold — 5 nights or qualifying activity; enhanced recognition.", { sort: 1, title: "Gold" }),
-    row("loyalty.elite", "Platinum / Diamond / Titanium — published tier thresholds; confirm benefits table in program rules.", { sort: 2, title: "Platinum+" }),
+    row("loyalty.elite", "Member — baseline rates, milestone rewards path, points never expire.", { sort: 0, title: "Member" }),
+    row("loyalty.elite", "Gold — 5 nights or 10,000 EQCs; bonus points on stays and enhanced recognition.", { sort: 1, title: "Gold" }),
+    row("loyalty.elite", "Platinum — 15 nights or 30,000 EQCs; stronger earn bonus and elite benefits where available.", { sort: 2, title: "Platinum" }),
+    row("loyalty.elite", "Diamond — 35 nights or 70,000 EQCs; top mainstream tier with upgrades and milestone rewards where published.", { sort: 3, title: "Diamond" }),
+    row("loyalty.elite", "Titanium — 55 nights or 110,000 EQCs; highest published tier including Titanium Travel Award where offered.", { sort: 4, title: "Titanium" }),
     row(
       "loyalty.implications.pnl",
       `Model net after distribution, member discounts, and redemption—strongest when direct/member mix supports ${p.scaleLabel} ADR.`,
@@ -844,12 +941,27 @@ export function buildFullPresentationRows(p) {
       `${p.name} fits when you want ${p.scaleLabel} Choice distribution with clear prototype economics and Choice Privileges participation—not a mismatched tier (e.g., ${p.similarBrands[0]} vs ${p.name} without comparing fee stack and amenity requirements). Best with operator tier experience, honest ramp plan, and FDD-backed channel mix. Weaker where market ADR cannot support required product or PIP exceeds conversion ROI.`,
       { sort: 0 }
     ),
-    row(
-      "insight.similar",
-      `Compare diligence to: ${p.similarBrands.join(", ")} — same parent company, different tier economics.`,
-      { sort: 0 }
-    )
   );
+
+  const externalSimilar = externalSimilarPeersForBrand(p.name);
+  if (externalSimilar?.length) {
+    for (const peer of externalSimilar) {
+      rows.push(
+        row("insight.similar", peer.body, {
+          title: peer.title,
+          sort: peer.sort,
+        })
+      );
+    }
+  } else {
+    rows.push(
+      row(
+        "insight.similar",
+        `Compare diligence to: ${p.similarBrands.join(", ")} — same parent company, different tier economics.`,
+        { sort: 0 }
+      )
+    );
+  }
 
   return rows;
 }

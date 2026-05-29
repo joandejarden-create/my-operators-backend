@@ -2357,7 +2357,7 @@
                             brandedIndependent: cs.branded_independent || '',
                             situation: cs.situation || cs.services || '',
                             shortCaption: cs.owner_relevance || cs.outcome || cs.situation || 'Representative assignment pulled from case data.',
-                            imageUrl: ''
+                            imageUrl: extractImageUrl(cs.image_url || cs.imageUrl || cs.heroImageUrl || cs.image || cs.heroImage)
                         };
                     });
                 }
@@ -3088,7 +3088,7 @@
                         situation: cleanText(c.situation || c.assignmentType) || 'Operational Assignment',
                         result: cleanText(c.outcome || c.outcomeSummary) || 'Outcome demonstrates execution capability',
                         why: cleanText(c.owner_relevance || c.ownerRelevance) || 'Provides validation for owner screening and diligence.',
-                        image: extractImageUrl(c.imageUrl || c.heroImageUrl || c.image || c.heroImage)
+                        image: extractImageUrl(c.image_url || c.imageUrl || c.heroImageUrl || c.image || c.heroImage)
                     };
                 }));
                 while (proofCards.length < 3) {

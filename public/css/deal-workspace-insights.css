@@ -9,6 +9,9 @@
   --bdd-kpi-value-size: clamp(1.2rem, 2.1vw, 1.55rem);
   --bdd-kpi-footer-size: 9px;
   --bdd-kpi-card-height: 132px;
+  /* Fixed footer band so badges align on one row across all cards */
+  --bdd-kpi-footer-slot-height: 2.5rem;
+  --bdd-kpi-footer-badge-height: 2.35rem;
 }
 
 .bdd-insights-dashboard {
@@ -89,9 +92,12 @@
   padding: 5px 4px 6px;
   height: var(--bdd-kpi-card-height);
   display: grid;
-  grid-template-rows: auto minmax(0, 2.35rem) auto;
+  grid-template-rows: auto minmax(0, 1fr) var(--bdd-kpi-footer-slot-height);
   row-gap: 2px;
   position: relative;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 .bdd-kpi-metric-card--action {
   border-color: rgba(20, 202, 116, 0.55);
@@ -120,19 +126,77 @@
   color: var(--neutral--100, #fff);
   font-variant-numeric: tabular-nums;
 }
-.bdd-kpi-metric-card__footer .bdd-insight-card__badge {
-  display: inline-block;
+.bdd-kpi-metric-card__footer {
+  grid-row: 3;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  align-self: end;
+  width: 100%;
+  min-width: 0;
+  height: var(--bdd-kpi-footer-slot-height);
+  min-height: var(--bdd-kpi-footer-slot-height);
+  max-height: var(--bdd-kpi-footer-slot-height);
+  padding: 0 2px;
+  box-sizing: border-box;
+}
+.bdd-kpi-metric-card__footer--meta {
   font-size: var(--bdd-kpi-footer-size);
-  padding: 3px 6px;
+  font-weight: 600;
+  color: var(--neutral--400, #aeb9e1);
+  line-height: 1.2;
+  text-align: center;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}
+.bdd-kpi-pipeline-meta-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1px;
+  width: 100%;
+  max-width: 100%;
+  max-height: var(--bdd-kpi-footer-badge-height);
+  overflow: hidden;
+}
+.bdd-kpi-pipeline-meta-line {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.2;
+  font-size: var(--bdd-kpi-footer-size);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.bdd-kpi-metric-card__footer .bdd-insight-card__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--bdd-kpi-footer-badge-height);
+  max-height: var(--bdd-kpi-footer-badge-height);
+  font-size: var(--bdd-kpi-footer-size);
+  padding: 2px 4px;
   border-radius: 4px;
   border: 0.6px solid rgba(126, 137, 172, 0.35);
   background: rgba(126, 137, 172, 0.12);
   color: var(--neutral--500, #7e89ac);
-  white-space: nowrap;
-  line-height: 1.2;
+  white-space: normal;
+  line-height: 1.15;
   max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-align: center;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .bdd-insight-card__badge.positive {
   border-color: rgba(20, 202, 116, 0.5);

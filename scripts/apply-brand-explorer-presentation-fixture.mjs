@@ -241,6 +241,10 @@ function buildFieldsForRow(brandRecordId, linkField, r, brandNameForRow) {
   if (csTags) fields["Case Summary Tags"] = csTags;
   const n = String(brandNameForRow || "").trim();
   if (n) fields["Brand Name"] = n;
+  const imageUrl = String(r.imageUrl ?? "").trim();
+  if (imageUrl && /^https?:\/\//i.test(imageUrl)) {
+    fields.Image = [{ url: imageUrl }];
+  }
   return fields;
 }
 

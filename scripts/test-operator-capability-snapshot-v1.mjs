@@ -129,21 +129,31 @@ function testOperatingModelTransitionNotConflict() {
   const snap = buildOperatorCapabilitySnapshotV1(fields, "recTESTtransition");
   const transitions = snap.operatingModelTransitionsToValidate || [];
   assert(
-    transitions.some((t) => /transition to validate/i.test(t)),
-    "transition to validate label present"
+    transitions.some((t) => /Current model:/i.test(t) && /Preferred future model:/i.test(t)),
+    "single operating model transition summary present"
   );
   assert(
-    transitions.some((t) => /owner-operated while the preferred future model is third-party/i.test(t)),
-    "neutral owner-operated → third-party transition copy"
+    snap.operatingModelTransitionSummary === transitions[0],
+    "operatingModelTransitionSummary matches transition block"
+  );
+  assert(
+    transitions.length === 1,
+    "transition stated once in dedicated field"
   );
   const blob = JSON.stringify(snap);
   assert(!/operating model conflict/i.test(blob), "no operating model conflict wording in snapshot");
   assert(
     !(snap.clarifications || []).some((c) => /Review operating model consistency/i.test(c)),
-    "clarifications use neutral transition language"
+    "clarifications omit raw operating model consistency items"
+  );
+  assert(
+    !(snap.clarifications || []).some((c) => /Operating model transition to validate/i.test(c)),
+    "clarifications omit legacy transition prefix copy"
   );
   const pathway = (snap.operatingPathways || []).find((p) => p.id === "third_party");
-  assert(pathway && /pathway to validate|structured review/i.test(pathway.relevance), "pathways are validation paths");
+  assert(pathway && /pathway to validate/i.test(pathway.relevance), "pathways are validation paths");
+  const transitionMentions = (blob.match(/Operating model transition to validate/gi) || []).length;
+  assert(transitionMentions <= 2, "transition phrase not repeated across snapshot");
 }
 
 function testAmsterdamBrandManagedNarrative() {
@@ -164,13 +174,10 @@ function testAmsterdamBrandManagedNarrative() {
   assert(snap.snapshotStatus === SNAPSHOT_STATUS.LIMITED, "Amsterdam brand-managed → limited");
   assert(isBrandManagedPreferred(snap.operatingContext.preferredFutureOperatingModel), "brand-managed preferred");
   assert(
-    (snap.brandManagedGuidance || []).some((l) => /appears in current inputs/i.test(l)),
-    "brand-managed framed as input to validate"
+    (snap.operatingPathways || []).some((p) => p.id === "brand_managed"),
+    "brand-managed pathway listed for validation"
   );
-  assert(
-    (snap.whyOperatorStrategyMatters || []).some((l) => /pathway to validate/i.test(l)),
-    "pathway-to-validate language for brand-managed"
-  );
+  assert((snap.whyOperatorStrategyMatters || []).length <= 2, "why operator strategy is concise");
   assert(
     (snap.operatingPathways || []).length >= 4,
     "operating pathways section populated"
@@ -184,11 +191,11 @@ function testAmsterdamBrandManagedNarrative() {
     "Amsterdam asks brand direct management"
   );
   assert(
-    snap.diligenceQuestions.some((q) => /third-party manager/i.test(q)),
+    snap.diligenceQuestions.some((q) => /third[\u2011-]party manager/i.test(q)),
     "Amsterdam asks third-party fallback"
   );
   assert(
-    snap.diligenceQuestions.some((q) => /pre-opening planning/i.test(q)),
+    snap.diligenceQuestions.some((q) => /pre[\u2011-]opening planning/i.test(q)),
     "Amsterdam asks pre-opening ownership"
   );
   assert((snap.newBuildGuidance || []).length >= 6, "new build guidance themes");
@@ -210,9 +217,10 @@ function testExecutiveSummaryReadable() {
   const snap = buildOperatorCapabilitySnapshotV1(fields, "recTESTexec");
   const summary = (snap.executiveSummary || []).join(" ");
   assert(/opportunity in CALA/i.test(summary), "executive summary names market");
-  assert(/may need to be reviewed/i.test(summary), "executive summary uses neutral review language");
+  assert(/may need review/i.test(summary), "executive summary uses neutral review language");
   assert(!/summarizes operating capability themes for/i.test(summary), "old database-style opener removed");
-  assert((snap.ownerAdvisorReviewTakeaway || []).length >= 2, "owner/advisor takeaway present");
+  assert((snap.ownerAdvisorReviewTakeaway || []).length >= 1, "owner/advisor takeaway present");
+  assert((snap.diligenceQuestions || []).length <= 8, "diligence capped at 8 questions");
 }
 
 function testOutOfScopeClarificationNotDiligenceQuestion() {
@@ -244,7 +252,34 @@ function testLimitedHasExpandedNarrative() {
   };
   const snap = buildOperatorCapabilitySnapshotV1(fields, "recTESTnarrative");
   assert(snap.snapshotStatus === SNAPSHOT_STATUS.LIMITED, "limited deal for narrative test");
-  assert((snap.executiveSummary || []).length >= 2, "expanded executive summary");
+  const summary = (snap.executiveSummary || []).join(" ");
+  assert((snap.executiveSummary || []).length >= 1, "executive summary present");
+  assert(!/Pre-opening \/ opening support/i.test(summary), "executive summary uses compact theme labels");
+  assert(
+    !/Internal draft only — not approved for external distribution/i.test(snap.reviewContext || ""),
+    "limited reviewContext does not repeat draft distribution line"
+  );
+  const transitionPhrase =
+    "timing, approval requirements, economics, reporting package, and handover responsibilities";
+  const re = new RegExp(transitionPhrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+  const visibleCopy = [
+    snap.reviewContext,
+    ...(snap.executiveSummary || []),
+    ...(snap.ownerAdvisorReviewTakeaway || []),
+    snap.operatingModelTransitionSummary,
+    ...(snap.decisionPointsBeforeOutreach || []),
+    ...(snap.knownGapsClarifications || []),
+  ].join(" ");
+  const transitionCount = (visibleCopy.match(re) || []).length;
+  assert(transitionCount <= 2, "transition timing language appears only in transition + known gaps");
+  assert(
+    !(snap.decisionPointsBeforeOutreach || []).some((p) => /handover responsibilities|Current model:/i.test(p)),
+    "decision points omit operating model transition duplicate"
+  );
+  assert(
+    (snap.knownGapsClarifications || []).some((g) => /contemplated operating model transition/i.test(g)),
+    "known gaps use generic transition clarification"
+  );
   assert((snap.whyOperatorStrategyMatters || []).length >= 1, "why operator strategy matters");
   assert((snap.capabilityImplications || []).length >= 1, "capability implications");
   assert((snap.decisionPointsBeforeOutreach || []).length >= 1, "decision points");

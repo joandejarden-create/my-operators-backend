@@ -737,20 +737,30 @@
             border: 0;
             background: var(--neutral--900);
         }
+        /* Profile popup loading — match Brand Explorer .brand-detail-popup-loading */
         .gold-mock-popup-loading {
             position: absolute;
             inset: 0;
-            z-index: 10001;
+            z-index: 10002;
             display: none;
             align-items: center;
             justify-content: center;
-            background: rgba(5, 12, 34, 0.88);
-            backdrop-filter: blur(2px);
+            background: linear-gradient(180deg, rgba(8, 15, 37, 0.94), rgba(16, 25, 53, 0.96));
         }
         .gold-mock-popup-loading .loading {
             position: static;
             transform: none;
+            min-width: 320px;
             margin: 0;
+            background: #000000;
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+        .gold-mock-popup-loading.is-error .loading-progress-bar {
+            animation: none;
+            width: 100%;
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
         }
 
         @media (max-width: 768px) {

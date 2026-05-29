@@ -39,12 +39,17 @@
     (function () {
         var params = new URLSearchParams(window.location.search || "");
         var dealId = (params.get("dealId") || "").trim();
+        var chromeless =
+            params.get("embed") === "1" ||
+            params.get("embed") === "true" ||
+            window !== window.top;
         var page = document.getElementById("ocsPage");
         var loading = document.getElementById("ocsPageLoading");
         var root = document.getElementById("ocsPageRoot");
 
         if (page) {
             page.classList.add("bas-page--full", "snapshot-page--full");
+            if (chromeless) page.classList.add("bas-page--chromeless");
         }
 
         function showError(msg) {
@@ -78,10 +83,10 @@
                 }
                 root.hidden = false;
                 window.OperatorCapabilitySnapshot.render(root, data, {
-                    embed: false,
+                    embed: chromeless,
                     fullPage: true,
                     dealId: dealId,
-                    backHref: "/my-deals.html",
+                    backHref: chromeless ? "" : "/my-deals.html",
                     generatedAt: data.generatedAt || new Date().toISOString(),
                 });
                 document.title = (data.dealName || "Deal") + " — Operator Capability Snapshot";

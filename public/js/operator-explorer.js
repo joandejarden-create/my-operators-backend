@@ -522,9 +522,15 @@ document.addEventListener("DOMContentLoaded", function () {
       '      <div class="wave wave-1"></div>' +
       '      <div class="wave wave-2"></div>' +
       '      <div class="wave wave-3"></div>' +
+      '      <div class="wave-particles">' +
+      '        <div class="particle"></div>' +
+      '        <div class="particle"></div>' +
+      '        <div class="particle"></div>' +
+      '        <div class="particle"></div>' +
+      "      </div>" +
       "    </div>" +
       "    <div>" +
-      '      <div class="loading-text-main">Loading Operator…</div>' +
+      '      <div class="loading-text-main" id="goldMockPopupLoadingTitle">Loading Operator Profile…</div>' +
       "    </div>" +
       "  </div>" +
       '  <div class="loading-progress"><div class="loading-progress-bar"></div></div>' +
@@ -534,14 +540,22 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function openGoldMockPopup(id) {
+    if (!id || String(id).indexOf("rec") !== 0) return;
     var popup = document.getElementById("goldMockPopup");
     var frame = document.getElementById("goldMockPopupFrame");
     var popupLoading = ensureGoldMockPopupLoading();
     if (!popup || !frame) return;
     if (popupLoading) popupLoading.style.display = "flex";
     frame.style.visibility = "hidden";
-    frame.src =
-      __dealityApiUrl("/operator-explorer-gold-mock.html") + "?id=" + encodeURIComponent(id);
+    var params = new URLSearchParams(global.location.search || "");
+    var dealId = params.get("dealId") || "";
+    var url =
+      __dealityApiUrl("/operator-explorer-gold-mock.html") +
+      "?id=" +
+      encodeURIComponent(id) +
+      "&embed=1";
+    if (dealId) url += "&dealId=" + encodeURIComponent(dealId);
+    frame.src = url;
     popup.style.display = "flex";
     popup.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";

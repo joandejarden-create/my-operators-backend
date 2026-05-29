@@ -21,6 +21,24 @@ const KPI_CONFIG = {
       { label: "Passed", bucket: "passed" },
     ],
   },
+  operator: {
+    flowTitle: "My Deal Flow",
+    pipelineTitle: "Operating pipeline by stage",
+    needsActionLabel: "Operator action",
+    awaitingLabel: "Awaiting owner",
+    requestsSentLabel: "Inbound (7d)",
+    requestsSentHint:
+      "Counts operating opportunities owners sent to your company in the last 7 days (request-sent date). Same filters as the table.",
+    inReviewLabel: "Under review",
+    pipelineStages: [
+      { label: "New inbound", bucket: "new" },
+      { label: "Under review", bucket: "active-review" },
+      { label: "Terms review", bucket: "terms-proposal" },
+      { label: "NDA & advanced", bucket: "nda-room,advanced" },
+      { label: "Closed", bucket: "closed" },
+      { label: "Passed", bucket: "passed" },
+    ],
+  },
   owner: {
     flowTitle: "My Deal Flow",
     pipelineTitle: "Deal pipeline by stage",
@@ -56,12 +74,15 @@ function formatWoWTrend(cur, prev, invertColors) {
     return { text: "—", trend: "neutral" };
   }
   const d = cur - prev;
-  if (d === 0) return { text: "same vs last week", trend: "neutral" };
+  if (d === 0) {
+    return { text: "Same vs last wk", trend: "neutral", title: "Same vs last week" };
+  }
   const pos = d > 0;
   const trend = invertColors ? (pos ? "negative" : "positive") : pos ? "positive" : "negative";
   const arrow = pos ? "▲" : "▼";
   const sign = pos ? "+" : "";
-  return { text: `${arrow} ${sign}${d} vs last week`, trend };
+  const full = `${arrow} ${sign}${d} vs last week`;
+  return { text: `${arrow} ${sign}${d} vs last wk`, trend, title: full };
 }
 
 function formatRolling7dDelta(cur, prevWindowCount, invertColors) {
@@ -69,12 +90,15 @@ function formatRolling7dDelta(cur, prevWindowCount, invertColors) {
     return { text: "—", trend: "neutral" };
   }
   const d = cur - prevWindowCount;
-  if (d === 0) return { text: "No change (7d)", trend: "neutral" };
+  if (d === 0) {
+    return { text: "No change · 7d", trend: "neutral", title: "No change (7d)" };
+  }
   const pos = d > 0;
   const trend = invertColors ? (pos ? "negative" : "positive") : pos ? "positive" : "negative";
   const arrow = pos ? "▲" : "▼";
   const sign = pos ? "+" : "";
-  return { text: `${arrow} ${sign}${d} (7d)`, trend };
+  const full = `${arrow} ${sign}${d} (7d)`;
+  return { text: `${arrow} ${sign}${d} · 7d`, trend, title: full };
 }
 
 function readLocalWeeks(scopeKey) {
@@ -182,6 +206,9 @@ function renderInsightsStrip(items, stuckPopoverId) {
         'aria-haspopup="dialog" aria-label="How Stuck at risk is calculated">ℹ</button></span>';
     }
     const infoCls = infoBtn ? " bdd-kpi-metric-card--has-info" : "";
+    const badgeTitleAttr = it.badgeTitle
+      ? ' title="' + esc(it.badgeTitle) + '"'
+      : "";
     return (
       '<div class="bdd-kpi-metric-card' +
       cardHi +
@@ -201,7 +228,9 @@ function renderInsightsStrip(items, stuckPopoverId) {
       '<div class="bdd-kpi-metric-card__footer">' +
       '<span class="bdd-insight-card__badge ' +
       badgeClass +
-      '">' +
+      '"' +
+      badgeTitleAttr +
+      ">" +
       esc(it.badgeText) +
       "</span>" +
       "</div>" +
@@ -244,15 +273,16 @@ function renderPipelineStrip(stages) {
 
 /**
  * @param {object} opts
- * @param {'brand'|'owner'} opts.persona
+ * @param {'brand'|'owner'|'operator'} opts.persona
  * @param {object[]} opts.rows
  * @param {object} opts.filterParts
  * @param {typeof import('../../lib/deal-workspace-pipeline.js')} opts.Pipeline
  */
 export async function updateWorkspaceInsights(opts) {
   const Pipeline = opts.Pipeline;
-  const persona = opts.persona === "owner" ? "owner" : "brand";
-  const cfg = KPI_CONFIG[persona];
+  const persona =
+    opts.persona === "owner" ? "owner" : opts.persona === "operator" ? "operator" : "brand";
+  const cfg = KPI_CONFIG[persona] || KPI_CONFIG.brand;
   const insEl = document.getElementById(opts.insightsElId || "bddKpiInsights");
   const pipeEl = document.getElementById(opts.pipelineElId || "bddKpiPipeline");
   const wrap = opts.wrapElId ? document.getElementById(opts.wrapElId) : null;
@@ -304,6 +334,7 @@ export async function updateWorkspaceInsights(opts) {
       label: "Stuck / at risk",
       value: snap.atRisk,
       badgeText: tRisk.text,
+      badgeTitle: tRisk.title,
       trend: tRisk.trend,
       atRisk: true,
     },
@@ -311,6 +342,7 @@ export async function updateWorkspaceInsights(opts) {
       label: cfg.requestsSentLabel,
       value: snap.newRolling7d,
       badgeText: tNewRoll.text,
+      badgeTitle: tNewRoll.title,
       trend: tNewRoll.trend,
       cardTitle: cfg.requestsSentHint,
     },
