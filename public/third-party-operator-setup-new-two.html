@@ -3228,6 +3228,28 @@ Standard operating playbooks</textarea>
     <select class="form-select form-select--single" name="cap_signal_trans" id="cap_signal_trans" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="95% or higher">95% or higher</option><option value="90–94%">90–94%</option><option value="80–89%" selected>80–89%</option><option value="70–79%">70–79%</option><option value="Below 70%">Below 70%</option></select>
     </div>
     </div>
+    <h3 class="project-fit-subheader">Explorer DNA — Operating Platform pillars (JSON)</h3>
+    <p class="subsection-hint">Optional. Up to six custom capability tiles per pillar on the Operator Explorer DNA profile. Legacy multiline fields above still work as fallbacks until these are filled.</p>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="op_commercial_engine_json">Commercial Engine capability tiles (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="op_commercial_engine_json" id="op_commercial_engine_json" rows="6" data-explorer-payload="1" placeholder='{ "intro": "...", "items": [{ "title": "...", "description": "..." }] }'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="op_owner_reporting_json">Owner Reporting &amp; Communication tiles (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="op_owner_reporting_json" id="op_owner_reporting_json" rows="6" data-explorer-payload="1" placeholder='{ "intro": "...", "items": [{ "title": "...", "description": "..." }] }'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="op_preopening_transition_json">Pre-Opening &amp; Transition Support tiles (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="op_preopening_transition_json" id="op_preopening_transition_json" rows="6" data-explorer-payload="1" placeholder='{ "intro": "...", "items": [{ "title": "...", "description": "..." }] }'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="op_conversion_repositioning_json">Conversion &amp; Repositioning tiles (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="op_conversion_repositioning_json" id="op_conversion_repositioning_json" rows="6" data-explorer-payload="1" placeholder='{ "intro": "...", "items": [{ "title": "...", "description": "..." }] }'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="op_fb_lifestyle_resort_json">F&amp;B, Lifestyle &amp; Resort capability tiles (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="op_fb_lifestyle_resort_json" id="op_fb_lifestyle_resort_json" rows="6" data-explorer-payload="1" placeholder='{ "intro": "...", "items": [{ "title": "...", "description": "..." }] }'></textarea>
+    </div>
   </div>
 <div class="form-section" data-section="3" data-explorer-tab="Brand Experience">
     <h2 class="form-section-title">Brand &amp; Relationships</h2>
@@ -3298,6 +3320,31 @@ Independent asset operating confidence</textarea>
     <select class="form-select form-select--single" name="brand_signal_soft_retention" id="brand_signal_soft_retention" autocomplete="off" data-explorer-payload="1"><option value="Not Measured / N/A">Not Measured / N/A</option><option value="Below 80%">Below 80%</option><option value="80–84%">80–84%</option><option value="85–89%">85–89%</option><option value="90–94%" selected>90–94%</option><option value="95%+">95%+</option></select>
     </div>
       </div>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="brand_conversion_project_count">
+      Brand Conversions Completed (count)
+      <span class="help-text">Optional numeric count used in Brand &amp; Relationship snapshot context.</span>
+    </label>
+    <input class="form-input" type="number" min="0" step="1" name="brand_conversion_project_count" id="brand_conversion_project_count" data-explorer-payload="1" placeholder="e.g. 12">
+    </div>
+    <h3 class="project-fit-subheader">Explorer DNA — Brand &amp; Relationships subsections (JSON)</h3>
+    <p class="subsection-hint">Optional. Powers portfolio mix, relationship depth, execution, and governance cards on the DNA Brand tab.</p>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="brand_portfolio_mix_json">Portfolio mix by brand / flag type (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_portfolio_mix_json" id="brand_portfolio_mix_json" rows="6" data-explorer-payload="1" placeholder='[{ "brandFlagType", "portfolioMix", "assetContext", "relationshipStatus" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="brand_relationship_depth_json">Brands &amp; relationship depth (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_relationship_depth_json" id="brand_relationship_depth_json" rows="6" data-explorer-payload="1" placeholder='[{ "brandSegment", "relationshipType", "depth", "ownerContext" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="brand_execution_capabilities_json">Brand execution capabilities (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_execution_capabilities_json" id="brand_execution_capabilities_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="brand_governance_compliance_json">Brand governance &amp; compliance support (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="brand_governance_compliance_json" id="brand_governance_compliance_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
     </div>
   </div>
 <div class="form-section" data-section="4" data-explorer-tab="Markets">
@@ -3790,6 +3837,16 @@ Urban and resort execution models</textarea>
     <input class="form-input" type="text" name="mkt_signal_mix" id="mkt_signal_mix" value="54% / 31%" placeholder="e.g. 54% / 31%" data-explorer-payload="1">
     </div>
     </div>
+    <h3 class="project-fit-subheader">Explorer DNA — Markets subsections (JSON)</h3>
+    <p class="subsection-hint">Optional. Powers regional expertise and market fit signal rows on the DNA Markets tab.</p>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="mkt_regional_expertise_json">Local / regional expertise (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="mkt_regional_expertise_json" id="mkt_regional_expertise_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="mkt_market_fit_signals_json">Market fit signals (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="mkt_market_fit_signals_json" id="mkt_market_fit_signals_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
   </div>
 <div class="form-section" data-section="5" data-explorer-tab="Owner Value">
     <h2 class="form-section-title">Owner Value &amp; Engagement</h2>
@@ -3881,7 +3938,32 @@ Budget and forecast updates</textarea>
     </div>
     </div>
     </div>
-  
+    <h3 class="project-fit-subheader">Explorer DNA — Owner Engagement subsections (JSON)</h3>
+    <p class="subsection-hint">Optional. Powers Owner Engagement &amp; Reporting subsections on the DNA profile (replaces demo defaults when populated).</p>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="ov_strategic_owner_value_json">Strategic owner value (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="ov_strategic_owner_value_json" id="ov_strategic_owner_value_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="ov_engagement_cadence_json">Owner engagement cadence (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="ov_engagement_cadence_json" id="ov_engagement_cadence_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="ov_controls_governance_json">Controls &amp; governance (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="ov_controls_governance_json" id="ov_controls_governance_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="ov_reports_received_json">Reports owners receive (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="ov_reports_received_json" id="ov_reports_received_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="ov_owner_tools_json">Owner tools &amp; support channels (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="ov_owner_tools_json" id="ov_owner_tools_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="ov_lifecycle_support_json">Owner support across asset lifecycle (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="ov_lifecycle_support_json" id="ov_lifecycle_support_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
 
     <h3 class="project-fit-subheader">Performance &amp; Operations</h3>
     <div class="intake-subsection">
@@ -4836,6 +4918,64 @@ Gateway and resort markets</textarea>
     <div class="char-count explorer-char-count" aria-live="polite"><span class="explorer-char-count-num">0</span>/500</div>
     </div>
     </div>
+    <h3 class="project-fit-subheader">Leadership &amp; Team — Explorer presentation (JSON)</h3>
+    <p class="subsection-hint">Powers Organization Structure, Team Depth, Languages, Governance, Markets, and Owner Relationship on the public profile. Create Airtable columns listed in <code>docs/operator-leadership-explorer-airtable-fields.md</code>. Use &ldquo;Load sample JSON&rdquo; for a CALA-realistic template, then edit.</p>
+    <p class="subsection-hint"><button type="button" class="btn btn-secondary btn-sm" id="leadExplorerLoadSampleBtn">Load sample JSON</button></p>
+    <div class="field-wrap">
+      <label class="form-label label-spacing" for="lead_avg_hospitality_experience">Avg. hospitality experience (snapshot KPI)</label>
+      <input class="form-input" type="text" name="lead_avg_hospitality_experience" id="lead_avg_hospitality_experience" value="18 yrs" placeholder="e.g. 18 yrs" data-explorer-payload="1" />
+    </div>
+    <div class="field-wrap">
+      <label class="form-label label-spacing" for="lead_org_structure_json">Organization structure (JSON array)</label>
+      <textarea class="form-textarea tall explorer-story-field" name="lead_org_structure_json" id="lead_org_structure_json" rows="6" data-explorer-payload="1" placeholder="[{ &quot;title&quot;: &quot;...&quot;, &quot;description&quot;: &quot;...&quot;, &quot;tags&quot;: [&quot;...&quot;] }]"></textarea>
+    </div>
+    <div class="field-wrap">
+      <label class="form-label label-spacing" for="lead_team_depth_json">Team depth by function (JSON array)</label>
+      <textarea class="form-textarea tall explorer-story-field" name="lead_team_depth_json" id="lead_team_depth_json" rows="6" data-explorer-payload="1" placeholder="[{ &quot;function&quot;: &quot;...&quot;, &quot;leadRole&quot;: &quot;...&quot;, &quot;depth&quot;: &quot;Strong&quot;, &quot;relevance&quot;: &quot;...&quot; }]"></textarea>
+    </div>
+    <div class="field-wrap">
+      <label class="form-label label-spacing" for="lead_language_capability_json">Language &amp; regional capability (JSON array)</label>
+      <textarea class="form-textarea tall explorer-story-field" name="lead_language_capability_json" id="lead_language_capability_json" rows="5" data-explorer-payload="1"></textarea>
+    </div>
+    <div class="field-wrap">
+      <label class="form-label label-spacing" for="lead_governance_cadence_json">Governance &amp; communication cadence (JSON array)</label>
+      <textarea class="form-textarea tall explorer-story-field" name="lead_governance_cadence_json" id="lead_governance_cadence_json" rows="5" data-explorer-payload="1"></textarea>
+    </div>
+    <div class="field-wrap">
+      <label class="form-label label-spacing" for="lead_team_markets_json">Team experience markets (JSON array)</label>
+      <textarea class="form-textarea tall explorer-story-field" name="lead_team_markets_json" id="lead_team_markets_json" rows="5" data-explorer-payload="1"></textarea>
+    </div>
+    <div class="field-wrap">
+      <label class="form-label label-spacing" for="lead_owner_relationship_json">Owner relationship model (JSON array)</label>
+      <textarea class="form-textarea tall explorer-story-field" name="lead_owner_relationship_json" id="lead_owner_relationship_json" rows="6" data-explorer-payload="1"></textarea>
+    </div>
+    <script>
+    (function () {
+      var btn = document.getElementById("leadExplorerLoadSampleBtn");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        fetch("/fixtures/operator-leadership-explorer-antillano-norte.json")
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            var map = {
+              lead_avg_hospitality_experience: "lead_avg_hospitality_experience",
+              lead_org_structure_json: "lead_org_structure_json",
+              lead_team_depth_json: "lead_team_depth_json",
+              lead_language_capability_json: "lead_language_capability_json",
+              lead_governance_cadence_json: "lead_governance_cadence_json",
+              lead_team_markets_json: "lead_team_markets_json",
+              lead_owner_relationship_json: "lead_owner_relationship_json"
+            };
+            Object.keys(map).forEach(function (id) {
+              var el = document.getElementById(id);
+              if (!el || !d[id]) return;
+              el.value = typeof d[id] === "string" ? d[id] : JSON.stringify(d[id], null, 2);
+            });
+          })
+          .catch(function (e) { console.warn("[leadership-explorer] sample load failed", e); });
+      });
+    })();
+    </script>
     <h3 class="project-fit-subheader">Executive Function Coverage</h3>
     <p class="subsection-hint">Select the disciplines your platform covers at the executive level. The count below updates automatically from your selections.</p>
     <div class="lead-functions-kpi-block">
@@ -5353,6 +5493,28 @@ Assignments without transition runway</textarea>
       <input type="hidden" name="bf_q_deals" id="bf_q_deals" value="4" data-explorer-payload="1" />
       <p class="bf-quant-count-readout" aria-live="polite">Count (for your profile): <strong class="bf-quant-count-strong" id="bf_q_deals_readout">4</strong></p>
     </div>
+    </div>
+    <h3 class="project-fit-subheader">Explorer DNA — Project Fit subsections (JSON)</h3>
+    <p class="subsection-hint">Optional. Powers Project Fit &amp; Deal Profile subsections on the DNA profile.</p>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="bf_fit_criteria_json">Operator fit criteria (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="bf_fit_criteria_json" id="bf_fit_criteria_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="bf_best_fit_project_types_json">Best-fit project types (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="bf_best_fit_project_types_json" id="bf_best_fit_project_types_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="bf_preferred_deal_profile_json">Preferred deal profile (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="bf_preferred_deal_profile_json" id="bf_preferred_deal_profile_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="bf_evaluation_path_json">Evaluation path (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="bf_evaluation_path_json" id="bf_evaluation_path_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
+    </div>
+    <div class="field-wrap">
+    <label class="form-label label-spacing" for="bf_red_flags_json">Potential red flags (JSON)</label>
+    <textarea class="form-textarea tall explorer-story-field" name="bf_red_flags_json" id="bf_red_flags_json" rows="6" data-explorer-payload="1" placeholder='[{ "title", "description" }]'></textarea>
     </div>
     <h3 class="project-fit-subheader">Best Fit — Decision Signals (4)</h3>
     <div class="signal-grid">
@@ -6549,10 +6711,17 @@ Assignments without transition runway</textarea>
                                             <option value="Pre-Opening">Pre-Opening</option>
                                             <option value="Conversion">Conversion</option>
                                             <option value="Transition">Transition</option>
-                                            <option value="Turnaround">Turnaround</option>
                                             <option value="Repositioning">Repositioning</option>
+                                            <option value="Turnaround">Turnaround</option>
                                             <option value="Stabilized">Stabilized</option>
                                         </select>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">
+                                            Challenge
+                                            <span class="help-text">Starting condition for owners (2–3 sentences). Shown as <strong>Challenge</strong> on the DNA profile case study modal—not the Situation label alone.</span>
+                                        </label>
+                                        <textarea class="form-textarea cs-challenge" rows="2" maxlength="800" placeholder="e.g. Underperforming leisure asset with weak direct booking and unclear F&B priorities."></textarea>
                                     </div>
                                     <div class="form-group full-span">
                                         <label class="form-label">
@@ -6574,6 +6743,13 @@ Assignments without transition runway</textarea>
                                             <span class="help-text">Narrative standard. Why this case predicts success for a similar investor—no duplicate of Outcome numbers.</span>
                                         </label>
                                         <textarea class="form-textarea cs-owner-relevance" rows="2" maxlength="600" placeholder="Similar investor or situation this predicts—do not repeat Outcome numbers here."></textarea>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label class="form-label">
+                                            Data status
+                                            <span class="help-text">How owners should treat this example (e.g. operator-provided proof, partial detail, representative format).</span>
+                                        </label>
+                                        <input type="text" class="form-input cs-data-status" maxlength="200" placeholder="e.g. Operator-provided proof in setup.">
                                     </div>
                                 </div>
                                 <h3 class="project-fit-subheader case-study-row-subheader">Image</h3>
@@ -6663,6 +6839,20 @@ Assignments without transition runway</textarea>
                         <textarea class="form-textarea" id="diligenceDocumentLinks" name="diligenceDocumentLinks" rows="3" maxlength="2000" placeholder="https://…"></textarea>
                         <div class="char-count"><span id="diligenceDocumentLinksCount">0</span>/2000 characters</div>
 
+                        <label class="form-label label-spacing spacing-top-16">
+                            Operator materials (structured, optional)
+                            <span class="help-text">JSON array for Explorer file cards. Example: <code>[{"title":"Company overview","href":"https://…","kind":"PDF"}]</code>. When set, this overrides the URL list above on the Operator DNA profile.</span>
+                        </label>
+                        <textarea class="form-textarea form-textarea--mono" id="operator_materials_json" name="operator_materials_json" rows="5" maxlength="8000" placeholder='{"files":[{"title":"Company Overview Deck","body":"Short description for owners.","href":"https://…"}]}'></textarea>
+                        <div class="char-count"><span id="operator_materials_jsonCount">0</span>/8000 characters</div>
+
+                        <label class="form-label label-spacing spacing-top-16">
+                            Image gallery (structured, optional)
+                            <span class="help-text">Up to 6 images for the Operator DNA gallery. Example: <code>[{"title":"Lobby","imageUrl":"https://…"}]</code></span>
+                        </label>
+                        <textarea class="form-textarea form-textarea--mono" id="operator_materials_gallery_json" name="operator_materials_gallery_json" rows="4" maxlength="8000" placeholder='[{"title":"Lobby","imageUrl":"https://…"}]'></textarea>
+                        <div class="char-count"><span id="operator_materials_gallery_jsonCount">0</span>/8000 characters</div>
+
                         </div>
                     </div>
                     </div>
@@ -6684,7 +6874,8 @@ Assignments without transition runway</textarea>
     </div>
 
     <!-- Load before inline init: async prefill microtasks run before the next <script>, so this must exist before loadRecordPrefillIfAny. -->
-    <script src="js/operator-setup-explorer-behavior.js"></script>
+    <script src="js/operator-leadership-member-map.js?v=oe-leadership-profile-20260530h"></script>
+    <script src="js/operator-setup-explorer-behavior.js?v=oe-leadership-profile-20260530h"></script>
 
     <script>
         /**
@@ -8296,9 +8487,11 @@ Assignments without transition runway</textarea>
                                         set('.cs-situation', cs.situation);
                                     }
                                 })();
+                                set('.cs-challenge', cs.challenge);
                                 set('.cs-services', cs.services);
                                 set('.cs-outcome', cs.outcome);
                                 set('.cs-owner-relevance', cs.owner_relevance);
+                                set('.cs-data-status', cs.data_status);
                                 set('.cs-image-url', cs.image_url);
                             });
                         }
@@ -8823,7 +9016,9 @@ Assignments without transition runway</textarea>
                     'specializations': 'specializationsCount',
                     'ownerPortalFeatures': 'ownerPortalFeaturesCount',
                     'additionalNotes': 'additionalNotesCount',
-                    'diligenceDocumentLinks': 'diligenceDocumentLinksCount'
+                    'diligenceDocumentLinks': 'diligenceDocumentLinksCount',
+                    'operator_materials_json': 'operator_materials_jsonCount',
+                    'operator_materials_gallery_json': 'operator_materials_gallery_jsonCount'
                 };
 
                 Object.keys(textareas).forEach(textareaId => {
@@ -8902,9 +9097,11 @@ Assignments without transition runway</textarea>
                             region: v('.cs-region'),
                             branded_independent: v('.cs-branded-independent'),
                             situation: v('.cs-situation'),
+                            challenge: v('.cs-challenge'),
                             services: v('.cs-services'),
                             outcome: v('.cs-outcome'),
                             owner_relevance: v('.cs-owner-relevance'),
+                            data_status: v('.cs-data-status'),
                             image_url: v('.cs-image-url')
                         };
                         if (Object.keys(o).some(function(k) { return o[k]; })) out.push(o);

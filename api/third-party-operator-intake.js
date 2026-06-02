@@ -64,6 +64,27 @@ function envFlag(name) {
     return v === "1" || v === "true" || v === "yes" || v === "on";
 }
 
+function buildUploadedLogoAttachment(req, correlationId) {
+    if (!req || !req.file || !req.file.filename) return null;
+    const baseUrl =
+        process.env.PUBLIC_URL ||
+        (req.protocol && req.get && `${req.protocol}://${req.get("host")}`) ||
+        "http://localhost:3000";
+    const logoUrl = `${String(baseUrl).replace(/\/$/, "")}/uploads/${req.file.filename}`;
+    if (String(logoUrl).includes("localhost")) {
+        logOperatorIntake(
+            "logo_localhost_warn",
+            correlationId,
+            {
+                message:
+                    "Logo URL is localhost — Airtable cannot fetch it from the internet. Set PUBLIC_URL for a public base URL.",
+            },
+            "warn"
+        );
+    }
+    return [{ url: logoUrl, filename: req.file.originalname || req.file.filename }];
+}
+
 function isProductionRuntime() {
     const nodeEnv = String(process.env.NODE_ENV || "").trim().toLowerCase();
     return nodeEnv === "production" || nodeEnv === "prod";
@@ -488,6 +509,11 @@ export default async function submitThirdPartyOperator(req, res) {
 
         correlationId = randomUUID();
         await mergeExistingBasicsIntoBodyForUpdate(req, correlationId);
+        const uploadedLogoAttachment = buildUploadedLogoAttachment(req, correlationId);
+        if (uploadedLogoAttachment && req.body && !req.body.companyLogo) {
+            // Canonical new-base writer consumes body values directly; mirror multipart upload there.
+            req.body.companyLogo = uploadedLogoAttachment;
+        }
 
         const writeModeInfo = resolveOperatorSetupWriteMode();
         const writeMode = writeModeInfo.mode;
@@ -1428,24 +1454,8 @@ export default async function submitThirdPartyOperator(req, res) {
             'Ideal Projects Additional Notes': idealProjectsAdditionalNotes ? String(idealProjectsAdditionalNotes).trim() : '',
         };
 
-        if (req.file && req.file.filename) {
-            const baseUrl =
-                process.env.PUBLIC_URL ||
-                (req.protocol && req.get && `${req.protocol}://${req.get('host')}`) ||
-                'http://localhost:3000';
-            const logoUrl = `${String(baseUrl).replace(/\/$/, '')}/uploads/${req.file.filename}`;
-            fields['Company Logo'] = [{ url: logoUrl, filename: req.file.originalname || req.file.filename }];
-            if (String(logoUrl).includes('localhost')) {
-                logOperatorIntake(
-                    "logo_localhost_warn",
-                    correlationId,
-                    {
-                        message:
-                            "Logo URL is localhost — Airtable cannot fetch it from the internet. Set PUBLIC_URL for a public base URL.",
-                    },
-                    "warn"
-                );
-            }
+        if (uploadedLogoAttachment) {
+            fields["Company Logo"] = uploadedLogoAttachment;
         }
 
         // Add submitted timestamp if provided

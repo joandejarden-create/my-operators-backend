@@ -10,6 +10,8 @@ import { applyOperatorServiceGranularPrefill } from "./operator-setup-service-gr
 import { normalizeCaseStudySituationForForm } from "./third-party-operator-select-prefill-normalize.js";
 import { applyOperatorAlignmentPrefillAliases } from "../../lib/operator-alignment-prefill-map.js";
 import { pickExplorerHeroLabelsFromMasterFields } from "../../lib/operator-explorer-hero-labels.js";
+import { mapAirtableRowToCaseStudyDetail } from "./operator-case-study-airtable-map.js";
+import { mapLeadershipMemberFieldsFromAirtable } from "./operator-leadership-member-map.js";
 
 export const NEW_BASE_MASTER_TABLE = "Operator Setup - Master";
 export const NEW_BASE_PROFILE_TABLE = "Operator Setup - Profile & Positioning";
@@ -19,6 +21,7 @@ export const NEW_BASE_GOVERNANCE_TABLE = "Operator Setup - Governance, Delivery 
 export const NEW_BASE_LEADERSHIP_TABLE = "Operator Setup - Leadership Team Members";
 export const NEW_BASE_CASE_STUDIES_TABLE = "Operator Setup - Case Studies";
 export const NEW_BASE_DILIGENCE_TABLE = "Operator Setup - Diligence QA";
+export const NEW_BASE_EXPLORER_MATERIALS_TABLE = "Operator Setup - Explorer Materials";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 
@@ -167,19 +170,9 @@ export function buildNewBaseListRow({
     const numberFromProfile = pf.numberOfBrands != null && String(pf.numberOfBrands).trim() !== "" ? String(pf.numberOfBrands) : "";
     const brandCountFallback = Array.isArray(pf.brands) ? pf.brands.length : 0;
 
-    const caseStudies = (caseStudyRows || []).map((r) => {
-        const row = r.fields || {};
-        return {
-            property_name: formatListValue(row.property_name),
-            hotel_type: formatListValue(row.hotel_type),
-            region: formatListValue(row.region),
-            branded_independent: formatListValue(row.branded_independent),
-            situation: normalizeCaseStudySituationForForm(formatListValue(row.situation)),
-            services: formatListValue(row.services),
-            outcome: formatListValue(row.outcome),
-            owner_relevance: formatListValue(row.owner_relevance),
-        };
-    });
+    const caseStudies = (caseStudyRows || []).map((r) =>
+        mapAirtableRowToCaseStudyDetail(r.fields || {})
+    );
 
     const ownerDiligenceQa = (diligenceRows || []).map((r) => {
         const row = r.fields || {};
@@ -191,7 +184,7 @@ export function buildNewBaseListRow({
     });
 
     const logoUrl = (() => {
-        const att = pf.companyLogo;
+        const att = pf.companyLogo || pf["Company Logo"];
         if (!Array.isArray(att) || att.length === 0) return "";
         const first = att[0];
         if (first && typeof first.url === "string") return first.url;
@@ -252,6 +245,8 @@ export function mapNewBaseLeadershipForDetail(rows) {
                 : "";
         const summary = formatListValue(rf.summary);
         const bio = formatListValue(rf.bio);
+        const profile = mapLeadershipMemberFieldsFromAirtable(rf);
+        const langList = profile.languages || [];
         return {
             id: r.id,
             operatorRecordId: "",
@@ -263,40 +258,27 @@ export function mapNewBaseLeadershipForDetail(rows) {
             summary,
             bio,
             shortBio: summary || bio,
-            languages: "",
-            languageFluencyLevel: "",
+            languages: langList,
+            languageFluencyLevel: langList.join(", "),
             tenureInRole: "",
             experienceSummary: summary,
             calaExperienceSummary: "",
             displayOrder: formatListValue(rf.display_order),
             displayOnExplorer: true,
             headshotUrl,
+            hospitalityExperienceYears: profile.hospitalityExperienceYears,
+            companyTenureYears: profile.companyTenureYears,
+            priorBackground: profile.priorBackground,
+            marketExperience: profile.marketExperience,
+            coreExpertise: profile.coreExpertise,
+            relevantAssetTypes: profile.relevantAssetTypes,
+            experienceLine: profile.experienceLine,
         };
     });
 }
 
 export function mapNewBaseCaseStudiesForDetail(rows) {
-    return (rows || []).map((r) => {
-        const row = r.fields || {};
-        const rawImage = row.image_url;
-        const imageUrl =
-            typeof rawImage === "string" && rawImage.startsWith("http")
-                ? rawImage
-                : Array.isArray(rawImage) && rawImage[0] && rawImage[0].url
-                ? String(rawImage[0].url)
-                : "";
-        return {
-            property_name: formatListValue(row.property_name),
-            hotel_type: formatListValue(row.hotel_type),
-            region: formatListValue(row.region),
-            branded_independent: formatListValue(row.branded_independent),
-            situation: normalizeCaseStudySituationForForm(formatListValue(row.situation)),
-            services: formatListValue(row.services),
-            outcome: formatListValue(row.outcome),
-            owner_relevance: formatListValue(row.owner_relevance),
-            image_url: imageUrl || formatListValue(row.image_url),
-        };
-    });
+    return (rows || []).map((r) => mapAirtableRowToCaseStudyDetail(r.fields || {}));
 }
 
 export function mapNewBaseDiligenceForDetail(rows) {
@@ -328,6 +310,9 @@ export function buildBasicsShapedFieldsFromNewBase({ master, profile, platform, 
         "Company Description": formatListValue(pf.companyDescription),
         "Company Tagline": formatListValue(pf.companyTagline),
         "Mission Statement": formatListValue(pf.missionStatement),
+        "Company History": formatListValue(pf.companyHistory),
+        Differentiators: formatListValue(pf.differentiators),
+        "Management Philosophy": formatListValue(pf.managementPhilosophy),
         "Primary Service Model": formatListValue(pf.primaryServiceModel),
         "Company Size": formatListValue(pf.companySize),
         "Years in Business": pf.yearsInBusiness,
@@ -335,6 +320,7 @@ export function buildBasicsShapedFieldsFromNewBase({ master, profile, platform, 
         "Brands Managed": pf.brands,
         "Number of Brands Supported": pf.numberOfBrands,
         "Chain Scales You Support": pf.chainScalesSupported,
+        brand_conversion_project_count: pf.brand_conversion_project_count,
         "Chain Scale": plf.chainScale,
         "Total Properties Managed": plf.totalProperties,
         "Total Rooms Managed": plf.totalRooms,
@@ -478,6 +464,10 @@ export function buildPrefillObjectFromNewBaseRows(master, profile, platform, com
     if (cn && (prefill.companyName == null || String(prefill.companyName).trim() === "")) {
         prefill.companyName = cn;
     }
+    if (!Array.isArray(prefill.companyLogo) || prefill.companyLogo.length === 0) {
+        const logo = mergedRaw.companyLogo || mergedRaw["Company Logo"];
+        if (Array.isArray(logo) && logo.length) prefill.companyLogo = logo;
+    }
     return prefill;
 }
 
@@ -516,7 +506,8 @@ export async function loadNewBaseOperatorBundle(masterId) {
     const master = await findRecordByIdRest(NEW_BASE_MASTER_TABLE, masterId);
     if (!master) return null;
 
-    const [profRows, platRows, commRows, govRows, leadership, cases, diligence] = await Promise.all([
+    const [profRows, platRows, commRows, govRows, leadership, cases, diligence, explorerMaterials] =
+        await Promise.all([
         fetchRecordsLinkedToMaster(NEW_BASE_PROFILE_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_PLATFORM_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_COMMERCIAL_TABLE, master.id).catch(() => []),
@@ -524,6 +515,7 @@ export async function loadNewBaseOperatorBundle(masterId) {
         fetchRecordsLinkedToMaster(NEW_BASE_LEADERSHIP_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_CASE_STUDIES_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_DILIGENCE_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_EXPLORER_MATERIALS_TABLE, master.id).catch(() => []),
     ]);
 
     const profile = profRows[0] || null;
@@ -540,6 +532,7 @@ export async function loadNewBaseOperatorBundle(masterId) {
         leadership,
         cases,
         diligence,
+        explorerMaterials,
     };
 }
 
