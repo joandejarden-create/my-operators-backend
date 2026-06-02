@@ -29,6 +29,27 @@ function enc(t) {
     return encodeURIComponent(t);
 }
 
+function contractDiagEnabled() {
+    try {
+        const env = String(process.env.OPERATOR_SETUP_CONTRACT_DIAGNOSTICS || "").trim().toLowerCase();
+        return env === "1" || env === "true" || env === "yes" || env === "on";
+    } catch {
+        return false;
+    }
+}
+
+function emitContractDiag(payload) {
+    if (!contractDiagEnabled()) return;
+    try {
+        console.debug(
+            "[operator_setup_contract_diag]",
+            JSON.stringify({ scope: "new_base_read_mapper", ...(payload || {}) })
+        );
+    } catch {
+        // no-op
+    }
+}
+
 export async function airtableFetchJson(url, options = {}) {
     const apiKey = process.env.AIRTABLE_API_KEY;
     const r = await fetch(url, {
@@ -247,6 +268,24 @@ export function mapNewBaseLeadershipForDetail(rows) {
         const bio = formatListValue(rf.bio);
         const profile = mapLeadershipMemberFieldsFromAirtable(rf);
         const langList = profile.languages || [];
+        // Canonical-first contract: role/summary/bio/headshot come from Airtable child-row columns.
+        // Compatibility detail keys (function/shortBio/experienceSummary/headshotUrl) are derived aliases.
+        emitContractDiag({
+            concept: "leadership_child_mapping",
+            leadershipRecordId: r.id,
+            canonicalFieldMap: {
+                role: "function",
+                summary: ["summary", "shortBio", "experienceSummary"],
+                bio: "bio",
+                headshot: "headshotUrl",
+            },
+            sourcePresence: {
+                role: !!formatListValue(rf.role),
+                summary: !!summary,
+                bio: !!bio,
+                headshot: !!headshotUrl,
+            },
+        });
         return {
             id: r.id,
             operatorRecordId: "",

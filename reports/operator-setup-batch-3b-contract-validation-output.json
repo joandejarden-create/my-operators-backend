@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "explorer_companyName_canonical_first_order",
+      "pass": true,
+      "details": {
+        "expected": "companyName first, then aliases"
+      }
+    },
+    {
+      "name": "explorer_serviceModelsSupported_canonical_first_order",
+      "pass": true,
+      "details": {
+        "expected": "serviceModelsSupported first in fallback stack"
+      }
+    },
+    {
+      "name": "explorer_chainScalesSupported_canonical_first_order",
+      "pass": true,
+      "details": {
+        "expected": "chainScalesSupported first in fallback stack"
+      }
+    },
+    {
+      "name": "explorer_geography_key_family_present",
+      "pass": true,
+      "details": {
+        "expected": "canonical geography keys and aliases are explicitly stacked"
+      }
+    },
+    {
+      "name": "explorer_resolution_diagnostics_present",
+      "pass": true,
+      "details": {
+        "expected": "non-user-facing fallback diagnostics added in pickField/pickList"
+      }
+    },
+    {
+      "name": "alignment_prefill_preserves_existing_canonical_value",
+      "pass": true,
+      "details": {
+        "value": "Full hotel management"
+      }
+    },
+    {
+      "name": "alignment_prefill_resolves_from_alias_when_canonical_missing",
+      "pass": true,
+      "details": {
+        "value": "Full hotel management"
+      }
+    },
+    {
+      "name": "leadership_child_mapping_contract_shape",
+      "pass": true,
+      "details": {
+        "function": "Executive Leadership",
+        "summary": "Summary text",
+        "shortBio": "Summary text",
+        "experienceSummary": "Summary text",
+        "bio": "Bio text",
+        "headshotUrl": "https://example.com/headshot.png"
+      }
+    },
+    {
+      "name": "mirror_masking_diagnostics_present",
+      "pass": true,
+      "details": {
+        "expected": "explorerProfileJson masking diagnostics are present and compatibility retained"
+      }
+    }
+  ]
+}

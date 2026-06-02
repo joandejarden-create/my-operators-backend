@@ -82,37 +82,148 @@
       .filter(Boolean);
   }
 
-  function pickField(ex, prefill, fields, keys) {
+  function contractDiagEnabled() {
+    try {
+      if (global && (global.__OPERATOR_SETUP_CONTRACT_DIAGNOSTICS === true || global.__OPERATOR_SETUP_CONTRACT_DIAGNOSTICS === "1")) {
+        return true;
+      }
+      if (typeof localStorage !== "undefined") {
+        var v = localStorage.getItem("operator_setup_contract_diagnostics");
+        return v === "1" || v === "true";
+      }
+    } catch (_err) {}
+    return false;
+  }
+
+  function emitContractDiag(payload) {
+    if (!contractDiagEnabled()) return;
+    try {
+      console.debug(
+        "[operator_setup_contract_diag]",
+        JSON.stringify(Object.assign({ scope: "explorer_read_key_resolution" }, payload || {}))
+      );
+    } catch (_err) {}
+  }
+
+  function pickField(ex, prefill, fields, keys, opts) {
     var list = Array.isArray(keys) ? keys : [keys];
+    var canonicalKey = (opts && opts.canonicalKey) || list[0] || "";
+    var concept = (opts && opts.concept) || canonicalKey;
+    var canonicalSource = "";
+    var usedSource = "";
+    var usedKey = "";
+    var usedValue = "";
     var i;
     for (i = 0; i < list.length; i++) {
       var k = list[i];
       var a = nz(ex && ex[k]);
-      if (a) return a;
+      if (a) {
+        usedSource = "ex";
+        usedKey = k;
+        usedValue = a;
+        if (k === canonicalKey) canonicalSource = "ex";
+        break;
+      }
       var b = nz(prefill && prefill[k]);
-      if (b) return b;
-      if (fields && fields[k] != null && nz(fields[k])) return nz(fields[k]);
+      if (b) {
+        usedSource = "prefill";
+        usedKey = k;
+        usedValue = b;
+        if (k === canonicalKey) canonicalSource = "prefill";
+        break;
+      }
+      if (fields && fields[k] != null && nz(fields[k])) {
+        usedSource = "fields";
+        usedKey = k;
+        usedValue = nz(fields[k]);
+        if (k === canonicalKey) canonicalSource = "fields";
+        break;
+      }
+      if (!canonicalSource && k === canonicalKey) {
+        canonicalSource = "missing";
+      }
     }
+    if (usedValue) {
+      emitContractDiag({
+        concept: concept,
+        kind: "scalar",
+        canonicalKey: canonicalKey,
+        canonicalSource: canonicalSource || "missing",
+        keyUsed: usedKey,
+        sourceUsed: usedSource,
+        fallbackUsed: usedKey !== canonicalKey,
+        fallbackKey: usedKey !== canonicalKey ? usedKey : "",
+      });
+      return usedValue;
+    }
+    emitContractDiag({
+      concept: concept,
+      kind: "scalar",
+      canonicalKey: canonicalKey,
+      canonicalSource: canonicalSource || "missing",
+      keyUsed: "",
+      sourceUsed: "none",
+      fallbackUsed: false,
+      fallbackKey: "",
+      unresolved: true,
+    });
     return "";
   }
 
-  function pickList(ex, prefill, fields, keys) {
+  function pickList(ex, prefill, fields, keys, opts) {
     var list = Array.isArray(keys) ? keys : [keys];
+    var canonicalKey = (opts && opts.canonicalKey) || list[0] || "";
+    var concept = (opts && opts.concept) || canonicalKey;
+    var canonicalSource = "";
+    var usedSource = "";
+    var usedKey = "";
+    var out = [];
     var i;
     for (i = 0; i < list.length; i++) {
       var k = list[i];
       var fromEx = ex && ex[k];
-      if (fromEx != null && fromEx !== "") return arrayish(fromEx);
+      if (fromEx != null && fromEx !== "") {
+        usedSource = "ex";
+        usedKey = k;
+        out = arrayish(fromEx);
+        if (k === canonicalKey) canonicalSource = "ex";
+        break;
+      }
       var fromP = prefill && prefill[k];
-      if (fromP != null && fromP !== "") return arrayish(fromP);
+      if (fromP != null && fromP !== "") {
+        usedSource = "prefill";
+        usedKey = k;
+        out = arrayish(fromP);
+        if (k === canonicalKey) canonicalSource = "prefill";
+        break;
+      }
+      if (!canonicalSource && k === canonicalKey) canonicalSource = "missing";
     }
-    if (fields) {
+    if (!out.length && fields) {
       for (i = 0; i < list.length; i++) {
         var fk = list[i];
-        if (fields[fk] != null && fields[fk] !== "") return arrayish(fields[fk]);
+        if (fields[fk] != null && fields[fk] !== "") {
+          usedSource = "fields";
+          usedKey = fk;
+          out = arrayish(fields[fk]);
+          if (fk === canonicalKey) canonicalSource = "fields";
+          break;
+        }
       }
     }
-    return [];
+    emitContractDiag({
+      concept: concept,
+      kind: "list",
+      canonicalKey: canonicalKey,
+      canonicalSource: canonicalSource || "missing",
+      keyUsed: usedKey,
+      sourceUsed: usedSource || "none",
+      fallbackUsed: !!usedKey && usedKey !== canonicalKey,
+      fallbackKey: !!usedKey && usedKey !== canonicalKey ? usedKey : "",
+      unresolved: out.length === 0,
+      itemCount: out.length,
+    });
+    return out;
   }
 
   function mergeNewBaseKeysIntoExplorer(ex, prefill) {
@@ -132,33 +243,59 @@
 
     return {
       operatorId: pickField(ex, prefill, fields, ["operatorId"]) || nz(listRow.id),
+      // Canonical-first contract: prefer `companyName`; keep aliases for compatibility.
       companyName:
         nz(vm && vm.companyName) ||
-        pickField(ex, prefill, fields, ["companyName", "company_name", "Company Name"]),
+        pickField(ex, prefill, fields, ["companyName", "company_name", "Company Name"], {
+          concept: "companyName",
+          canonicalKey: "companyName",
+        }),
       companyDescription:
         nz(vm && vm.statement) ||
         pickField(ex, prefill, fields, ["companyDescription", "Company Description"]),
       website: pickField(ex, prefill, fields, ["website", "Website"]),
       headquarters: pickField(ex, prefill, fields, ["headquarters", "Headquarters"]),
-      parentCompany: pickField(ex, prefill, fields, ["parentCompany", "platform", "Platform"]),
+      parentCompany: pickField(ex, prefill, fields, ["parentCompany", "platform", "Platform"], {
+        concept: "parentCompany",
+        canonicalKey: "parentCompany",
+      }),
       yearEstablished: pickField(ex, prefill, fields, ["yearEstablished", "Year Established"]),
       yearsInBusiness: pickField(ex, prefill, fields, ["yearsInBusiness", "Years in Business"]),
-      activeCountries: pickList(ex, prefill, fields, ["activeCountries", "Active Countries"]),
-      activeMarkets: pickList(ex, prefill, fields, ["activeMarkets", "Active Markets / Cities", "active_markets"]),
+      // Canonical-first contract: prefer camelCase keys, then legacy titles/snake_case fallbacks.
+      activeCountries: pickList(ex, prefill, fields, ["activeCountries", "Active Countries"], {
+        concept: "activeCountries",
+        canonicalKey: "activeCountries",
+      }),
+      activeMarkets: pickList(ex, prefill, fields, ["activeMarkets", "Active Markets / Cities", "active_markets"], {
+        concept: "activeMarkets",
+        canonicalKey: "activeMarkets",
+      }),
       marketPresenceType: pickField(ex, prefill, fields, ["marketPresenceType", "Market Presence Type"]),
-      regions: pickList(ex, prefill, fields, ["regions", "regionsSupported", "Regions Supported"]),
-      specificMarkets: pickList(ex, prefill, fields, ["specificMarkets", "Specific Markets"]),
+      regions: pickList(ex, prefill, fields, ["regions", "regionsSupported", "Regions Supported"], {
+        concept: "regions",
+        canonicalKey: "regions",
+      }),
+      specificMarkets: pickList(ex, prefill, fields, ["specificMarkets", "Specific Markets"], {
+        concept: "specificMarkets",
+        canonicalKey: "specificMarkets",
+      }),
       serviceModelsSupported: pickList(ex, prefill, fields, [
         "serviceModelsSupported",
         "Service Models Supported",
         "primaryServiceModel",
-      ]),
+      ], {
+        concept: "serviceModelsSupported",
+        canonicalKey: "serviceModelsSupported",
+      }),
       chainScalesSupported: pickList(ex, prefill, fields, [
         "chainScalesSupported",
         "Chain Scales Supported",
         "chainScale",
         "chainScales",
-      ]),
+      ], {
+        concept: "chainScalesSupported",
+        canonicalKey: "chainScalesSupported",
+      }),
       managementStructuresSupported: pickList(ex, prefill, fields, [
         "managementStructuresSupported",
         "Management Structures Supported",
@@ -211,6 +348,43 @@
     return hay.some(function (x) {
       return String(x).toLowerCase().indexOf(n) !== -1 || n.indexOf(String(x).toLowerCase()) !== -1;
     });
+  }
+
+  function hexToRgba(hex, alpha) {
+    var h = String(hex || "").replace(/^#/, "");
+    if (h.length === 3) {
+      h = h
+        .split("")
+        .map(function (c) {
+          return c + c;
+        })
+        .join("");
+    }
+    if (h.length !== 6) return "rgba(108, 114, 255, " + alpha + ")";
+    var r = parseInt(h.slice(0, 2), 16);
+    var g = parseInt(h.slice(2, 4), 16);
+    var b = parseInt(h.slice(4, 6), 16);
+    return "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+  }
+
+  function heroHighlightChipHtml(label) {
+    var text = String(label || "").toUpperCase();
+    var Gold = global.OperatorExplorerGoldMock;
+    var color = Gold && Gold.chainScaleLabelToColor ? Gold.chainScaleLabelToColor(label) : null;
+    if (!color) {
+      return '<span class="oe-hero-chip">' + escapeHtml(text) + "</span>";
+    }
+    return (
+      '<span class="oe-hero-chip oe-hero-chip--chain-scale" style="color:' +
+      escapeHtml(color) +
+      ";border-color:" +
+      escapeHtml(color) +
+      ";background:" +
+      hexToRgba(color, 0.14) +
+      '">' +
+      escapeHtml(text) +
+      "</span>"
+    );
   }
 
   /** Up to three highlight chips for the hero top-right (Brand Explorer parity). */
@@ -302,13 +476,7 @@
     var chips = isDemo
       ? ["Upscale", "Third-party management", "Regional footprint"]
       : buildHeroHighlightChips(fieldMap, 3);
-    var chipHtml = chips
-      .map(function (c) {
-        return (
-          '<span class="oe-hero-chip">' + escapeHtml(String(c).toUpperCase()) + "</span>"
-        );
-      })
-      .join("");
+    var chipHtml = chips.map(heroHighlightChipHtml).join("");
     var opId = (fieldMap && fieldMap.operatorId) || (vm && vm.operatorId) || "";
     var saveBtn =
       opId && String(opId).indexOf("rec") === 0

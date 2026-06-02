@@ -4,6 +4,29 @@
  * Loaded after the intake form on consolidated setup pages.
  */
 (function () {
+  function contractDiagEnabled() {
+    try {
+      if (window && (window.__OPERATOR_SETUP_CONTRACT_DIAGNOSTICS === true || window.__OPERATOR_SETUP_CONTRACT_DIAGNOSTICS === "1")) {
+        return true;
+      }
+      if (typeof localStorage !== "undefined") {
+        var v = localStorage.getItem("operator_setup_contract_diagnostics");
+        return v === "1" || v === "true";
+      }
+    } catch (_err) {}
+    return false;
+  }
+
+  function emitContractDiag(payload) {
+    if (!contractDiagEnabled()) return;
+    try {
+      console.debug(
+        "[operator_setup_contract_diag]",
+        JSON.stringify(Object.assign({ scope: "explorer_profile_mirror_contract" }, payload || {}))
+      );
+    } catch (_err) {}
+  }
+
   function isExplorerFieldName(k) {
     if (!k || typeof k !== "string") return false;
     if (k === "marketDepthOptIn" || k === "displayLeadershipOnExplorer") return true;
@@ -56,11 +79,38 @@
     });
   }
 
+  function injectExecutiveProfileFields(rowsEl) {
+    var mapApi = global.OperatorLeadershipMemberMap;
+    if (!mapApi || !mapApi.buildExecProfileFieldsHtml || !rowsEl) return;
+    rowsEl.querySelectorAll(".repeater-row").forEach(function (row, idx) {
+      if (row.querySelector("[data-exec-profile-detail]")) return;
+      var headshot = row.querySelector(".exec-headshot-section");
+      if (!headshot) return;
+      var wrap = document.createElement("div");
+      wrap.innerHTML = mapApi.buildExecProfileFieldsHtml(idx + 1);
+      var block = wrap.firstElementChild;
+      if (block) row.insertBefore(block, headshot);
+    });
+  }
+
+  function setExecutiveMultiSelect(form, execIndex, suffix, values) {
+    var el = form.querySelector('[name="exec_' + execIndex + "_" + suffix + '"]');
+    if (!el || el.tagName !== "SELECT") return;
+    var sel = {};
+    (Array.isArray(values) ? values : []).forEach(function (v) {
+      sel[String(v)] = true;
+    });
+    Array.prototype.forEach.call(el.options, function (opt) {
+      opt.selected = !!sel[opt.value];
+    });
+  }
+
   function bindExecutiveRepeater(form) {
     if (form.dataset.executiveRepeaterBound === "1") return;
     form.dataset.executiveRepeaterBound = "1";
     var rowsEl = document.getElementById("repeater-executives");
     if (!rowsEl) return;
+    injectExecutiveProfileFields(rowsEl);
     var rid = "executives";
     rowsEl.querySelectorAll(".repeater-row").forEach(function (row) {
       bindRemoveExecutiveRow(row, rowsEl);
@@ -75,6 +125,7 @@
         });
         rowsEl.appendChild(clone);
         reindexExecutiveRows(rowsEl);
+        injectExecutiveProfileFields(rowsEl);
         bindRemoveExecutiveRow(clone, rowsEl);
       });
     });
@@ -141,6 +192,13 @@
       set("summary", sum);
       set("bio", bioText);
       set("headshot", row.headshotUrl || "");
+      set("hospitality_experience_years", row.hospitalityExperienceYears != null ? row.hospitalityExperienceYears : "");
+      set("company_tenure_years", row.companyTenureYears != null ? row.companyTenureYears : "");
+      set("prior_background", row.priorBackground || "");
+      setExecutiveMultiSelect(form, n, "languages", row.languages);
+      setExecutiveMultiSelect(form, n, "market_experience", row.marketExperience);
+      setExecutiveMultiSelect(form, n, "core_expertise", row.coreExpertise);
+      setExecutiveMultiSelect(form, n, "relevant_asset_types", row.relevantAssetTypes);
       ["summary", "bio"].forEach(function (suf) {
         var el = form.querySelector('[name="exec_' + n + "_" + suf + '"]');
         if (el) el.dispatchEvent(new Event("input", { bubbles: true }));
@@ -370,9 +428,24 @@
     var neededExec = maxExecIndexFromPayload(obj);
     if (neededExec > 0) ensureExecutiveRowCount(form, neededExec);
 
+    var mirrorAppliedWhenStructuredEmpty = [];
     Object.keys(obj).forEach(function (k) {
       if (!isExplorerFieldName(k)) return;
+      var ctrl = form.querySelector('[name="' + k + '"]');
+      var before = ctrl ? (ctrl.value == null ? "" : String(ctrl.value).trim()) : "";
       setExplorerControl(form, k, obj[k]);
+      if (before === "") {
+        mirrorAppliedWhenStructuredEmpty.push(k);
+      }
+    });
+
+    // Canonical-first contract: structured fields are primary source of truth.
+    // Mirror JSON is compatibility only; this diagnostic flags potential masking when mirror filled empty controls.
+    emitContractDiag({
+      event: "mirror_prefill_applied",
+      totalMirrorKeys: Object.keys(obj).filter(isExplorerFieldName).length,
+      populatedIntoEmptyStructuredControls: mirrorAppliedWhenStructuredEmpty.length,
+      sampleMirrorMaskingKeys: mirrorAppliedWhenStructuredEmpty.slice(0, 12),
     });
 
     syncMarketDepthFromCheckbox(form);
@@ -444,8 +517,10 @@
       if (hid) data.keyLeadership = hid.value || "";
     }
     var explorer = {};
+    var structuredExplorerKeys = [];
     Object.keys(data).forEach(function (k) {
       if (!isExplorerFieldName(k)) return;
+      structuredExplorerKeys.push(k);
       explorer[k] = data[k];
       delete data[k];
     });
@@ -455,6 +530,14 @@
     // explorerProfileJson so Save Section / Full Submit both persist structured + child rows.
     Object.keys(explorer).forEach(function (k) {
       data[k] = explorer[k];
+    });
+
+    emitContractDiag({
+      event: "mirror_write_contract",
+      structuredExplorerKeyCount: structuredExplorerKeys.length,
+      mirrorExplorerKeyCount: Object.keys(explorer).length,
+      sampleExplorerKeys: structuredExplorerKeys.slice(0, 12),
+      mirrorRetainedForCompatibility: true,
     });
   };
 
