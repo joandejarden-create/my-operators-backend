@@ -3,12 +3,17 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { parseMultiValue } from "./third-party-operator-value-utils.js";
+import { mapCaseStudyDetailToNewBaseChildRow } from "./operator-case-study-airtable-map.js";
 import {
     buildGovernanceGranularAirtableFields,
     GOVERNANCE_AGGREGATE_INTERNAL_TO_AIRTABLE,
     isGovernanceGranularCheckboxWriteMode,
     OPERATOR_SERVICE_AGGREGATE_FIELD_NAMES,
 } from "./operator-setup-service-granular-fields.js";
+import {
+    EXEC_FORM_FIELD_PATTERN,
+    mapExecRowToAirtableChildFields,
+} from "./operator-leadership-member-map.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -277,7 +282,7 @@ export function computeDerivedOperatorFields({ linkedBrandRecordIds }) {
 function buildLeadershipRows(body) {
     const byIndex = new Map();
     Object.keys(body || {}).forEach((k) => {
-        const m = /^exec_(\d+)_(name|title|role|summary|bio|headshot)$/.exec(k);
+        const m = EXEC_FORM_FIELD_PATTERN.exec(k);
         if (!m) return;
         const idx = parseInt(m[1], 10);
         const field = m[2];
@@ -286,16 +291,14 @@ function buildLeadershipRows(body) {
     });
     return Array.from(byIndex.entries())
         .sort((a, b) => a[0] - b[0])
-        .map(([, row]) => ({
-            display_order: row.display_order,
-            name: normalizeWhitespace(row.name || ""),
-            title: normalizeWhitespace(row.title || ""),
-            role: normalizeWhitespace(row.role || ""),
-            summary: normalizeWhitespace(row.summary || ""),
-            bio: normalizeWhitespace(row.bio || ""),
-            headshot: normalizeWhitespace(row.headshot || ""),
-        }))
-        .filter((r) => Object.values(r).some((v) => v && String(v).trim() !== ""));
+        .map(([, row]) => mapExecRowToAirtableChildFields(row))
+        .filter((r) =>
+            Object.entries(r).some(([key, v]) => {
+                if (key === "display_order") return false;
+                if (Array.isArray(v)) return v.length > 0;
+                return v != null && String(v).trim() !== "";
+            })
+        );
 }
 
 function parseJsonArrayInput(value) {
@@ -310,6 +313,14 @@ function parseJsonArrayInput(value) {
         }
     }
     return [];
+}
+
+function coerceServiceModelsSupportedFromPrimary(body, currentValue) {
+    const existing = parseArrayValue(currentValue);
+    if (existing.length) return existing;
+    const primary = body && body.primaryServiceModel != null ? String(body.primaryServiceModel).trim() : "";
+    if (!primary) return null;
+    return [primary];
 }
 
 export function buildNewBaseTablePayloads({
@@ -336,6 +347,11 @@ export function buildNewBaseTablePayloads({
             const fromRegions = parseArrayValue(body.regions);
             if (fromRegions.length) value = fromRegions.join(", ");
             else if (body.specificMarkets != null && body.specificMarkets !== "") value = body.specificMarkets;
+        }
+        // Batch 3C canonical contract: keep primaryServiceModel compatibility, but ensure canonical
+        // serviceModelsSupported is populated when only primaryServiceModel is provided.
+        if (formName === "serviceModelsSupported") {
+            value = coerceServiceModelsSupportedFromPrimary(body, value);
         }
         if (fieldName === "brands") value = linkedBrandRecordIds;
         if (fieldName === "numberOfBrands") value = derived.numberOfBrands;
@@ -376,18 +392,7 @@ export function buildNewBaseTablePayloads({
     const leadershipRows = buildLeadershipRows(body);
     const caseRows = parseJsonArrayInput(caseStudiesDetail)
         .filter((x) => x && typeof x === "object")
-        .map((item, idx) => ({
-            display_order: idx + 1,
-            property_name: normalizeWhitespace(item.property_name || ""),
-            hotel_type: normalizeWhitespace(item.hotel_type || ""),
-            region: normalizeWhitespace(item.region || ""),
-            branded_independent: normalizeWhitespace(item.branded_independent || ""),
-            situation: normalizeWhitespace(item.situation || ""),
-            services: normalizeWhitespace(item.services || ""),
-            outcome: normalizeWhitespace(item.outcome || ""),
-            owner_relevance: normalizeWhitespace(item.owner_relevance || ""),
-            image_url: normalizeWhitespace(item.image_url || ""),
-        }))
+        .map((item, idx) => mapCaseStudyDetailToNewBaseChildRow(item, idx))
         .filter((r) => Object.entries(r).some(([k, v]) => k !== "display_order" && v));
     const diligenceRows = parseJsonArrayInput(ownerDiligenceQa)
         .filter((x) => x && typeof x === "object")

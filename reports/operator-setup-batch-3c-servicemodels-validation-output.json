@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "baseUrl": "http://127.0.0.1:8098",
+  "createdRecordId": "recjGbr8A5RkDcLN9",
+  "checks": [
+    {
+      "name": "serviceModels_save_canonical_mode",
+      "pass": true,
+      "details": {
+        "status": 201,
+        "writeMode": "canonical",
+        "recordId": "recjGbr8A5RkDcLN9"
+      }
+    },
+    {
+      "name": "serviceModels_reload_prefill_present",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "readPath": "new_base",
+        "serviceModelsSupported": [
+          "Third-Party Management"
+        ],
+        "primaryServiceModel": "Third-Party Management"
+      }
+    },
+    {
+      "name": "serviceModels_detail_readback_present",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "readPath": "new_base"
+      }
+    },
+    {
+      "name": "serviceModels_update_canonical_mode",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "writeMode": "canonical"
+      }
+    },
+    {
+      "name": "serviceModels_post_update_prefill_present",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "serviceModelsSupported": [
+          "Third-Party Management"
+        ],
+        "primaryServiceModel": "Third-Party Management"
+      }
+    },
+    {
+      "name": "serviceModels_explorer_payload_has_canonical",
+      "pass": true,
+      "details": {
+        "status": 200,
+        "serviceModelsSupported": [
+          "Third-Party Management"
+        ],
+        "primaryServiceModel": "Third-Party Management"
+      }
+    },
+    {
+      "name": "serviceModels_output_parity",
+      "pass": true,
+      "details": {
+        "canonicalDisplayValue": "Third-Party Management",
+        "fallbackDisplayValue": "Third-Party Management"
+      }
+    },
+    {
+      "name": "serviceModels_fallback_order_unchanged",
+      "pass": true,
+      "details": {
+        "expectedOrder": [
+          "serviceModelsSupported",
+          "Service Models Supported",
+          "primaryServiceModel"
+        ]
+      }
+    },
+    {
+      "name": "scoring_stability_no_change",
+      "pass": true,
+      "details": {
+        "dealId": null,
+        "operatorId": "recBVEgtm8cS96mu7",
+        "scoreA": null,
+        "scoreB": null,
+        "note": "deal not found; runtime scoring check skipped, scoring modules unchanged"
+      }
+    }
+  ]
+}

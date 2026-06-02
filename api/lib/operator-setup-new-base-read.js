@@ -437,6 +437,17 @@ function normalizeDirectPrefillCell(k, v) {
     return formatListValue(v);
 }
 
+function normalizeServiceModelList(raw) {
+    if (raw == null || raw === "") return [];
+    if (Array.isArray(raw)) return raw.map((x) => formatListValue(x)).filter(Boolean);
+    const s = formatListValue(raw);
+    if (!s) return [];
+    return s
+        .split(/\s*,\s*/)
+        .map((x) => x.trim())
+        .filter(Boolean);
+}
+
 /**
  * Merge Master + one-to-one rows into form-shaped `prefill` (same keys as legacy Basics detail).
  * Raw Airtable titles ("Company Name") and direct camelCase columns are both normalized.
@@ -498,6 +509,19 @@ export function buildPrefillObjectFromNewBaseRows(master, profile, platform, com
     applyOperatorServiceGranularPrefill(mergeServiceAggregateAliases(mergedRaw), prefill);
 
     applyOperatorAlignmentPrefillAliases(mergedRaw, prefill);
+
+    // Batch 3C canonical contract: serviceModelsSupported must be available as canonical prefill key.
+    const canonicalServiceModels = normalizeServiceModelList(
+        mergedRaw.serviceModelsSupported || mergedRaw["Service Models Supported"]
+    );
+    if (canonicalServiceModels.length) {
+        prefill.serviceModelsSupported = canonicalServiceModels;
+    } else {
+        const primaryFallback = formatListValue(mergedRaw.primaryServiceModel);
+        if (primaryFallback && (!Array.isArray(prefill.serviceModelsSupported) || prefill.serviceModelsSupported.length === 0)) {
+            prefill.serviceModelsSupported = [primaryFallback];
+        }
+    }
 
     const cn = mergedRaw.company_name != null ? String(mergedRaw.company_name).trim() : "";
     if (cn && (prefill.companyName == null || String(prefill.companyName).trim() === "")) {
