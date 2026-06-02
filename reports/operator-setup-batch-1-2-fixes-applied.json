@@ -1,0 +1,135 @@
+{
+  "report": "operator-setup-batch-1-2-fixes-applied",
+  "generatedAt": "2026-06-02",
+  "scope": "Batch 1 + Batch 2 only",
+  "filesChanged": [
+    "api/operator-explorer.js",
+    "api/third-party-operator-detail.js",
+    "api/third-party-operator-intake.js"
+  ],
+  "behaviorChanged": {
+    "batch1": [
+      {
+        "filePath": "api/operator-explorer.js",
+        "change": "Owner-facing detail now enforces rec-id format for normal path; non-rec returns controlled 404 with INVALID_OPERATOR_ID_FORMAT."
+      },
+      {
+        "filePath": "api/operator-explorer.js",
+        "change": "Mock detail fallback now requires diagnostic-only gating: non-production + OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS + explicit request signal."
+      },
+      {
+        "filePath": "api/third-party-operator-detail.js",
+        "change": "Added response meta.readPath = new_base|legacy for read-path observability while keeping legacy fallback behavior."
+      }
+    ],
+    "batch2": [
+      {
+        "filePath": "api/third-party-operator-intake.js",
+        "change": "Introduced deterministic mode resolver for canonical|diagnostic-shadow|legacy-maintenance."
+      },
+      {
+        "filePath": "api/third-party-operator-intake.js",
+        "change": "Canonical mode maps to new-base writer only and fail-closed behavior on write errors."
+      },
+      {
+        "filePath": "api/third-party-operator-intake.js",
+        "change": "Added production safety override forcing canonical mode unless OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD=1."
+      },
+      {
+        "filePath": "api/third-party-operator-intake.js",
+        "change": "Added writeMode and mode-source observability in logs and API responses."
+      }
+    ]
+  },
+  "environmentBehaviorAfterChange": {
+    "modeResolution": [
+      "Use OPERATOR_SETUP_WRITE_MODE when set to allowed enum value.",
+      "Else derive from legacy flags for backward compatibility.",
+      "In production, non-canonical mode is forced to canonical unless OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD=1."
+    ],
+    "modeEffects": {
+      "canonical": "writeOperatorSetupToNewBase primary and only go-live path; fail closed.",
+      "diagnostic-shadow": "legacy primary path with optional diagnostic shadow to new-base.",
+      "legacy-maintenance": "legacy primary path for controlled maintenance scenarios."
+    }
+  },
+  "flags": {
+    "added": [
+      "OPERATOR_SETUP_WRITE_MODE",
+      "OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD",
+      "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS"
+    ],
+    "reinterpreted": [
+      "OPERATOR_SETUP_USE_NEW_BASE_WRITER",
+      "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE",
+      "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN"
+    ],
+    "removed": []
+  },
+  "goLiveBehavior": [
+    "Owner-facing explorer detail does not return mock data for non-rec IDs.",
+    "Explorer detail expects rec-id Airtable-backed lookup.",
+    "Canonical writes use writeOperatorSetupToNewBase.",
+    "Canonical mode disables legacy/shadow/fail-open behavior.",
+    "New-base write errors fail closed with explicit API error."
+  ],
+  "devDiagnosticBehavior": [
+    "Diagnostic mocks are available only when explicitly gated and non-production.",
+    "Diagnostic-shadow and legacy-maintenance modes require explicit configuration."
+  ],
+  "testsRun": [
+    {
+      "name": "Node syntax checks for changed API files",
+      "result": "pass"
+    },
+    {
+      "name": "Direct handler test: production non-rec detail blocks mock",
+      "result": "pass"
+    },
+    {
+      "name": "Direct handler test: development diagnostic non-rec detail allows mock",
+      "result": "pass"
+    },
+    {
+      "name": "Direct handler test: canonical mode fail-closed with legacy flags present",
+      "result": "pass"
+    },
+    {
+      "name": "Static check: detail response includes meta.readPath for new_base and legacy branches",
+      "result": "pass"
+    },
+    {
+      "name": "Live endpoint probe against existing local server",
+      "result": "not_reliable_stale_runtime"
+    }
+  ],
+  "testResults": {
+    "passed": [
+      "non-rec owner-facing request does not return mock in production path",
+      "diagnostic-only mock behavior in dev path",
+      "canonical mode fail-closed error behavior",
+      "syntax validity for modified files",
+      "read-path observability fields present"
+    ],
+    "notRunOrPartial": [
+      "Fresh-runtime live rec-id detail success with updated server instance",
+      "Full Airtable-backed canonical create/update write verification"
+    ],
+    "reasonsNotRun": [
+      "Active local port bound by existing process running older snapshot; no forced restart to avoid disruption.",
+      "Session lacked trusted Airtable creds for safe end-to-end write verification."
+    ]
+  },
+  "remainingRisks": [
+    "Production env misconfiguration may change behavior if non-canonical override is explicitly enabled.",
+    "Legacy read fallback remains by design and can still be used when new-base bundle not found.",
+    "Long-lived server processes may serve stale code until restarted."
+  ],
+  "rollbackSteps": [
+    "Revert api/operator-explorer.js, api/third-party-operator-detail.js, api/third-party-operator-intake.js",
+    "Remove/disable newly introduced mode env vars",
+    "Restore previous legacy flag behavior if needed",
+    "Restart runtime to ensure old code is active"
+  ],
+  "recommendedCommitMessage": "harden operator explorer source-of-truth and stabilize canonical intake writes"
+}

@@ -19,6 +19,7 @@ import {
 } from "./lib/operator-setup-new-base-read.js";
 import { normalizeOperatorSetupSelectPrefill } from "./lib/third-party-operator-select-prefill-normalize.js";
 import { pickExplorerHeroLabelsFromMasterFields } from "../lib/operator-explorer-hero-labels.js";
+import { normalizeOperatorExplorerPresentationRecords } from "./lib/operator-materials-explorer-presentation-map.js";
 
 const airtableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
@@ -96,7 +97,8 @@ export default async function getThirdPartyOperatorDetail(req, res) {
     ]);
 
     if (bundle && bundle.master) {
-      const { master, profile, platform, commercial, governance, leadership, cases, diligence } = bundle;
+      const { master, profile, platform, commercial, governance, leadership, cases, diligence, explorerMaterials } =
+        bundle;
       const brandNameById = brandNameByIdFromCtx(ctx);
       const prefill = buildPrefillObjectFromNewBaseRows(master, profile, platform, commercial, governance);
       resolvePrefillBrandsToNames(prefill, brandNameById);
@@ -111,6 +113,7 @@ export default async function getThirdPartyOperatorDetail(req, res) {
       const caseStudiesDetail = mapNewBaseCaseStudiesForDetail(cases);
       const ownerDiligenceQa = mapNewBaseDiligenceForDetail(diligence);
       const leadershipTeam = mapNewBaseLeadershipForDetail(leadership);
+      const operatorExplorerMaterials = normalizeOperatorExplorerPresentationRecords(explorerMaterials);
 
       /** Same shape as legacy Basics prefill — client `loadRecordPrefillIfAny` only reads these from `prefill`, not from sibling `operator` keys. */
       prefill.caseStudiesDetail = caseStudiesDetail;
@@ -126,6 +129,7 @@ export default async function getThirdPartyOperatorDetail(req, res) {
 
       return res.json({
         success: true,
+        meta: { readPath: "new_base" },
         operator: {
           id: master.id,
           fields,
@@ -134,6 +138,7 @@ export default async function getThirdPartyOperatorDetail(req, res) {
           brandProfiles: Array.isArray(brandProfiles) ? brandProfiles : [],
           representativeProperties: [],
           leadershipTeam,
+          operatorExplorerMaterials,
           explorerHeroVerification: heroLabels.explorerHeroVerification,
           explorerHeroDataSource: heroLabels.explorerHeroDataSource,
           prefill,
@@ -228,6 +233,7 @@ export default async function getThirdPartyOperatorDetail(req, res) {
 
     return res.json({
       success: true,
+      meta: { readPath: "legacy" },
       operator: {
         id: operator.id,
         fields: f,
