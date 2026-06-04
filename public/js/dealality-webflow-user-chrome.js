@@ -13,7 +13,10 @@
     ".sidebar-footer, #accountDropdownWrap, .user-block, .account-dropdown, " +
     ".account-dropdown-header, .account-dropdown-trigger, [data-dealality-account-chrome]";
 
-  var REAPPLY_DELAYS_MS = [400, 2000];
+  var REAPPLY_DELAYS_MS = [400, 2000, 5000, 8000];
+  var pinnedPhotoUrl = null;
+  var pinnedInitial = "";
+  var avatarObservers = [];
 
   function userPayloadFromMe(data) {
     if (!data || typeof data !== "object") return null;
@@ -88,6 +91,7 @@
   function isInsideAccountChrome(el, roots) {
     if (!el || !el.closest) return false;
     if (el.matches && el.matches("[data-dealality-user-avatar]")) return true;
+    if (el.closest("[data-dealality-user-avatar]")) return true;
     var list = roots || getAllAccountRoots(global.document);
     for (var i = 0; i < list.length; i++) {
       if (list[i].contains(el)) return true;
@@ -114,7 +118,10 @@
       out.push(el);
     }
 
-    doc.querySelectorAll("[data-dealality-user-avatar]").forEach(add);
+    doc.querySelectorAll("[data-dealality-user-avatar]").forEach(function (marker) {
+      add(marker);
+      marker.querySelectorAll("img").forEach(add);
+    });
 
     roots.forEach(function (root) {
       root.querySelectorAll("img").forEach(add);
@@ -145,6 +152,52 @@
           prev.textContent = name;
         }
       }
+    });
+  }
+
+  function urlsSame(a, b) {
+    if (!a || !b) return false;
+    if (a === b) return true;
+    try {
+      return String(a).split("?")[0] === String(b).split("?")[0];
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function disconnectAvatarObservers() {
+    avatarObservers.forEach(function (observer) {
+      observer.disconnect();
+    });
+    avatarObservers = [];
+  }
+
+  function watchAvatarImg(img, url, initial) {
+    if (!img || img.tagName !== "IMG") return;
+    var observer = new MutationObserver(function () {
+      if (!pinnedPhotoUrl) return;
+      if (!urlsSame(img.src, pinnedPhotoUrl) && img.getAttribute("src") !== pinnedPhotoUrl) {
+        setImgSrc(img, pinnedPhotoUrl, initial || pinnedInitial);
+      }
+    });
+    observer.observe(img, { attributes: true, attributeFilter: ["src"] });
+    avatarObservers.push(observer);
+  }
+
+  /** Keep Airtable photo when Memberstack (data-ms-member) rewrites src later. */
+  function pinMarkedAvatars(doc, url, initial) {
+    pinnedPhotoUrl = url;
+    pinnedInitial = initial;
+    disconnectAvatarObservers();
+    doc.querySelectorAll("[data-dealality-user-avatar]").forEach(function (marker) {
+      var imgs =
+        marker.tagName === "IMG"
+          ? [marker]
+          : Array.prototype.slice.call(marker.querySelectorAll("img"));
+      imgs.forEach(function (img) {
+        setImgSrc(img, url, initial);
+        watchAvatarImg(img, url, initial);
+      });
     });
   }
 
@@ -216,9 +269,16 @@
 
     var photoApplied = false;
     if (photoUrl) {
+      pinMarkedAvatars(doc, photoUrl, initial);
       collectAvatarElements(doc).forEach(function (el) {
         if (applyPhotoToElement(el, photoUrl, initial)) photoApplied = true;
       });
+      if (!photoApplied && doc.querySelector("[data-dealality-user-avatar]")) {
+        photoApplied = true;
+      }
+    } else {
+      disconnectAvatarObservers();
+      pinnedPhotoUrl = null;
     }
 
     if (!photoApplied) {
