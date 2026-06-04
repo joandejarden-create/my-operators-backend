@@ -13,7 +13,7 @@
     ".sidebar-footer, #accountDropdownWrap, .user-block, .account-dropdown, " +
     ".account-dropdown-header, .account-dropdown-trigger, [data-dealality-account-chrome]";
 
-  var REAPPLY_DELAYS_MS = [400, 2000, 5000, 8000];
+  var REAPPLY_DELAYS_MS = [400, 2000, 5000, 8000, 12000];
   var pinnedPhotoUrl = null;
   var pinnedInitial = "";
   var avatarObservers = [];
@@ -180,7 +180,7 @@
         setImgSrc(img, pinnedPhotoUrl, initial || pinnedInitial);
       }
     });
-    observer.observe(img, { attributes: true, attributeFilter: ["src"] });
+    observer.observe(img, { attributes: true, attributeFilter: ["src", "srcset"] });
     avatarObservers.push(observer);
   }
 
@@ -208,6 +208,8 @@
     img.alt = initial || "Profile";
     img.removeAttribute("hidden");
     img.style.display = "";
+    img.removeAttribute("srcset");
+    img.removeAttribute("sizes");
     if (img.src === next || img.getAttribute("src") === next) {
       img.removeAttribute("src");
       img.src = next;
@@ -279,6 +281,11 @@
     } else {
       disconnectAvatarObservers();
       pinnedPhotoUrl = null;
+      if (doc.querySelector("[data-dealality-user-avatar]") && global.location && /dealality\.com|railway/i.test(global.location.hostname || "")) {
+        console.warn(
+          "[DealalityWebflowUserChrome] No profilePhotoUrl from /api/me — add a Profile attachment on the Airtable Users row."
+        );
+      }
     }
 
     if (!photoApplied) {
@@ -299,6 +306,30 @@
     return photoApplied;
   }
 
+  function debugState() {
+    var doc = global.document;
+    var ctx = global.__dealalityUserContext;
+    var payload = userPayloadFromMe(ctx);
+    var marker = doc.querySelector("[data-dealality-user-avatar]");
+    var img = marker ? (marker.tagName === "IMG" ? marker : marker.querySelector("img")) : null;
+    return {
+      hasUserContext: !!ctx,
+      profilePhotoUrl: (payload && payload.profilePhotoUrl) || null,
+      hasAvatarMarker: !!marker,
+      markerTag: marker ? marker.tagName : null,
+      currentImgSrc: img ? img.src : null,
+      currentSrcset: img ? img.getAttribute("srcset") : null,
+      pinnedPhotoUrl: pinnedPhotoUrl || null,
+      accountRootsFound: getAllAccountRoots(doc).length,
+    };
+  }
+
+  function tryApplyStoredContext() {
+    if (global.__dealalityUserContext) {
+      apply(global.__dealalityUserContext);
+    }
+  }
+
   function apply(data) {
     applyUserChrome(data);
     REAPPLY_DELAYS_MS.forEach(function (ms) {
@@ -312,9 +343,17 @@
   global.DealalityWebflowUserChrome = {
     apply: apply,
     applyOnce: applyUserChrome,
+    debug: debugState,
     userPayloadFromMe: userPayloadFromMe,
     collectAvatarElements: collectAvatarElements,
     getAllAccountRoots: getAllAccountRoots,
     accountRootSelectors: ACCOUNT_ROOTS,
   };
+
+  if (global.document) {
+    global.addEventListener("load", tryApplyStoredContext);
+    global.document.addEventListener("dealality-me-ready", function (ev) {
+      if (ev && ev.detail && ev.detail.data) apply(ev.detail.data);
+    });
+  }
 })(typeof window !== "undefined" ? window : global);
