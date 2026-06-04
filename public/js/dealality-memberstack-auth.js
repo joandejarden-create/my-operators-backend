@@ -1,6 +1,13 @@
 /**
  * Browser-side Memberstack JWT for protected Dealality API calls.
  * Pattern aligned with public/js/brand-explorer-favorites.js — never use mem_sb_ / mem_ as Bearer.
+ *
+ * Authorization: Memberstack proves identity (JWT). Workspace Access, Owner-Operator, and Demo
+ * permissions come from GET /api/me (Airtable Company Profile + Users) — not from Memberstack
+ * plan names or a single Memberstack custom field alone.
+ *
+ * App shell workspace switching uses dealality_active_workspace (public/app.js).
+ * Command Center dashboard preview uses dc_dashboard_role_view — do not conflate the two keys.
  */
 (function (global) {
   'use strict';

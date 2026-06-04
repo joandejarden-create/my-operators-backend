@@ -102,6 +102,15 @@ Set the same URL in Memberstack → **Plans → Basic → Redirects** (On Signup
 
 If verification links still 404, check **Memberstack → Settings → Site URL / domain** points at the host serving `/verify` (not an old Webflow path only).
 
+### Blank page after “Confirm my email” (logo only)
+
+If the URL looks like `https://dealality.com/verify?member={"verified":true}&forceRefetch=true` but you only see a centered logo and no “Your email is verified” message:
+
+1. **Wrong host** — `dealality.com/verify` may be a **Webflow** page without `verify-page.js`. Memberstack must redirect to the **Railway** host that serves `public/verify.html` (same host as `/signup`), **or** add Webflow custom code that loads `/js/verify-page.js` from Railway.
+2. **Deploy** — Ensure latest `server.js` includes `GET /verify` (not only static `verify.html`).
+3. **Memberstack** — **Plans → Basic → Redirects** → On Verification / On Signup: use `https://<railway-host>/verify` while testing; update production when DNS/proxy routes `/verify` to Railway.
+4. After deploy, hard-refresh the verify link; you should see **Your email is verified** and the pending-approval note.
+
 ## Disable Zapier
 
 After Railway signup is verified in production:

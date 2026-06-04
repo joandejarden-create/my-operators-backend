@@ -23,11 +23,18 @@ import {
   INTAKE_USERS_LAST_NAME,
   INTAKE_USERS_UNIQUE_WEBFLOW_ID,
 } from "./schemas/intake-deal-fields.js";
+import { extractLinkedRecordIds, cellToString } from "../lib/airtable-utils.js";
 import { roleInfoFromUserFieldsAsync } from "../lib/dealality/resolve-user.js";
 import { resolveOperatorScope, MAP_OPERATOR_SCOPE } from "../lib/dealality/resolve-operator-scope.js";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 const BRAND_NAME_FIELD = process.env.AIRTABLE_BRAND_NAME_FIELD || "Brand Name";
+const USERS_COMPANY_FIELD =
+  process.env.AIRTABLE_USERS_COMPANY_LINK_FIELD || "Company Profile";
+const COMPANY_PROFILE_TABLE =
+  process.env.AIRTABLE_COMPANY_PROFILE_TABLE || "Company Profile";
+const COMPANY_NAME_FIELD =
+  process.env.AIRTABLE_COMPANY_PROFILE_NAME_FIELD || "Company Name";
 
 const USERS_TABLE = process.env.AIRTABLE_ME_USERS_TABLE || INTAKE_USERS_TABLE;
 const BRAND_LINK_FIELD =
@@ -251,6 +258,19 @@ async function getMe(req, res) {
   const email = cellToStringList(fields[INTAKE_USERS_EMAIL])[0] || null;
   const firstName = cellToStringList(fields[INTAKE_USERS_FIRST_NAME])[0] || null;
   const lastName = cellToStringList(fields[INTAKE_USERS_LAST_NAME])[0] || null;
+  const companyProfileIds = extractLinkedRecordIds(fields[USERS_COMPANY_FIELD]);
+  const companyProfileId = companyProfileIds[0] || null;
+  let companyName = null;
+  if (companyProfileId) {
+    try {
+      const companyRec = await base(COMPANY_PROFILE_TABLE).find(companyProfileId);
+      companyName =
+        cellToString(companyRec.fields && companyRec.fields[COMPANY_NAME_FIELD]) || null;
+    } catch (companyErr) {
+      console.warn("[api/me] company name lookup failed:", companyErr.message);
+      warnings.push("company_profile_lookup_failed");
+    }
+  }
   let dealalityRole;
   try {
     dealalityRole = await roleInfoFromUserFieldsAsync(base, fields);
@@ -269,6 +289,11 @@ async function getMe(req, res) {
   }
   if (dealalityRole.roleSource === "company") {
     warnings.push("role_from_company_type");
+  }
+  if (Array.isArray(dealalityRole.warnings)) {
+    for (const w of dealalityRole.warnings) {
+      if (w) warnings.push(w);
+    }
   }
 
   const brandLinks = fields[BRAND_LINK_FIELD];
@@ -307,12 +332,16 @@ async function getMe(req, res) {
     mappingStatus: "no_user_record",
     warnings: [],
   };
-  if (dealalityRole.isOperator || dealalityRole.isAdmin) {
+  const operatorWorkspaceAllowed =
+    dealalityRole.canAccessOperatorWorkspace ||
+    dealalityRole.isOperator ||
+    dealalityRole.isAdmin;
+  if (operatorWorkspaceAllowed) {
     try {
       operatorScope = await resolveOperatorScope({
         userRecordId: rec.id,
         isAdmin: dealalityRole.isAdmin,
-        isOperator: dealalityRole.isOperator,
+        isOperator: dealalityRole.isOperator || dealalityRole.canAccessOperatorWorkspace,
       });
       if (operatorScope.warnings?.length) {
         warnings.push(...operatorScope.warnings);
@@ -330,6 +359,7 @@ async function getMe(req, res) {
 
   return res.json({
     success: true,
+    memberstackId,
     memberstack: {
       id: memberstackId,
       tokenIssuedAt: payload.iat != null ? payload.iat : null,
@@ -337,9 +367,12 @@ async function getMe(req, res) {
     },
     airtable: {
       userRecordId: rec.id,
+      airtableUserId: rec.id,
       email,
       firstName,
       lastName,
+      companyProfileId,
+      companyName,
     },
     permissions: {
       allowedBrandNames,
@@ -350,15 +383,47 @@ async function getMe(req, res) {
       primaryOperatingCompanyName: operatorScope.primaryOperatingCompanyName || null,
     },
     dealality: {
+      /** Legacy nav / old consumers — use workspaceAccess for permissions. */
       role: dealalityRole.role,
+      primaryRole: dealalityRole.primaryRole || dealalityRole.role,
+      legacyRole: dealalityRole.legacyRole || dealalityRole.role,
       roleRaw: dealalityRole.roleRaw,
       roleSource: dealalityRole.roleSource || null,
       userRoleRaw: dealalityRole.userRoleRaw || null,
+      companyType: dealalityRole.companyType || dealalityRole.companyTypeRaw || null,
       companyTypeRaw: dealalityRole.companyTypeRaw || null,
+      companyProfileId,
+      companyName,
+      workspaceAccess: dealalityRole.workspaceAccess || [],
+      flags: dealalityRole.flags || {
+        isOwner: !!dealalityRole.isOwner,
+        isOperator: !!dealalityRole.isOperator,
+        isBrand: !!dealalityRole.isBrand,
+        isDemo: !!dealalityRole.isDemo,
+        isAdmin: !!dealalityRole.isAdmin,
+        isOwnerOperator: !!dealalityRole.isOwnerOperator,
+      },
       isOwner: dealalityRole.isOwner,
       isBrand: dealalityRole.isBrand,
       isOperator: dealalityRole.isOperator,
+      isDemo: !!dealalityRole.isDemo,
       isAdmin: dealalityRole.isAdmin,
+      isOwnerOperator: !!dealalityRole.isOwnerOperator,
+      canAccessOwnerWorkspace: !!dealalityRole.canAccessOwnerWorkspace,
+      canAccessOperatorWorkspace: !!dealalityRole.canAccessOperatorWorkspace,
+      canAccessBrandWorkspace: !!dealalityRole.canAccessBrandWorkspace,
+      canAccessDemoWorkspace: !!dealalityRole.canAccessDemoWorkspace,
+      demoPreviewWorkspaces: Array.isArray(dealalityRole.demoPreviewWorkspaces)
+        ? dealalityRole.demoPreviewWorkspaces
+        : [],
+      thirdPartyManagementAvailable: !!dealalityRole.thirdPartyManagementAvailable,
+      activeWorkspace: dealalityRole.activeWorkspace || null,
+      operatorExplorerEligible: !!dealalityRole.operatorExplorerEligible,
+      operatorDealRequestEligible: !!dealalityRole.operatorDealRequestEligible,
+      reviewBeforeOutreach: !!dealalityRole.reviewBeforeOutreach,
+      thirdPartyManagementAvailabilityStatus:
+        dealalityRole.thirdPartyManagementAvailabilityStatus || null,
+      eligibilitySource: dealalityRole.eligibilitySource || null,
     },
     meta: {
       usersTable: USERS_TABLE,

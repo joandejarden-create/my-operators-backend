@@ -6,27 +6,57 @@
 
   var MS_SCRIPT_SRC = "https://static.memberstack.com/scripts/v1/memberstack.js";
 
+  var VERIFIED_TITLE = "Your email is verified.";
+  var VERIFIED_DETAIL =
+    "Your account stays under review until our team approves access (typically 1–2 business days). You will receive another email when you are approved.";
+
   function parseMemberQuery() {
     try {
       var params = new URLSearchParams(global.location.search || "");
       var raw = params.get("member");
       if (!raw) return null;
-      return JSON.parse(raw);
+      var decoded = raw;
+      try {
+        decoded = decodeURIComponent(raw);
+      } catch (_) {
+        decoded = raw;
+      }
+      return JSON.parse(decoded);
     } catch (_) {
       return null;
     }
+  }
+
+  function urlIndicatesVerified() {
+    var parsed = parseMemberQuery();
+    if (parsed && parsed.verified === true) return true;
+    var params = new URLSearchParams(global.location.search || "");
+    if (params.get("forceRefetch") === "true" && params.get("member")) {
+      var raw = params.get("member") || "";
+      if (/verified["']?\s*:\s*true/i.test(raw)) return true;
+    }
+    return false;
   }
 
   function setStatus(title, detail, showResend) {
     var statusEl = global.document.getElementById("verify-status");
     var detailEl = global.document.getElementById("verify-detail");
     var resendWrap = global.document.getElementById("verify-resend-wrap");
+    var panel = global.document.getElementById("verify-panel");
     if (statusEl) statusEl.textContent = title;
     if (detailEl) {
       detailEl.textContent = detail || "";
       detailEl.style.display = detail ? "block" : "none";
     }
     if (resendWrap) resendWrap.style.display = showResend ? "block" : "none";
+    if (panel) panel.classList.add("verify-panel--ready");
+    if (global.document.body) global.document.body.classList.add("verify-page--ready");
+  }
+
+  function showVerifiedFromUrl() {
+    if (!urlIndicatesVerified()) return false;
+    setStatus(VERIFIED_TITLE, VERIFIED_DETAIL, false);
+    return true;
   }
 
   function loadMemberstackScript(appId) {
@@ -88,9 +118,7 @@
     var data = member.data || member;
     if (data.verified === true) return true;
     if (data.auth && data.auth.verified === true) return true;
-    var parsed = parseMemberQuery();
-    if (parsed && parsed.verified === true) return true;
-    return false;
+    return urlIndicatesVerified();
   }
 
   function applyHomeUrl(homeUrl) {
@@ -100,22 +128,23 @@
   }
 
   async function run() {
-    try {
-      var cfgRes = await fetch("/api/signup/config");
-      var cfg = await cfgRes.json();
-      if (cfg && cfg.homeUrl) applyHomeUrl(cfg.homeUrl);
-    } catch (_) {
-      /* default href in HTML */
+    if (showVerifiedFromUrl()) {
+      try {
+        var cfgRes = await fetch("/api/signup/config");
+        var cfg = await cfgRes.json();
+        if (cfg && cfg.homeUrl) applyHomeUrl(cfg.homeUrl);
+      } catch (_) {
+        /* default href in HTML */
+      }
+      return;
     }
 
-    var parsed = parseMemberQuery();
-    if (parsed && parsed.verified === true) {
-      setStatus(
-        "Your email is verified.",
-        "Your account stays under review until our team approves access (typically 1–2 business days). You will receive another email when you are approved.",
-        false
-      );
-      return;
+    try {
+      var cfgRes0 = await fetch("/api/signup/config");
+      var cfg0 = await cfgRes0.json();
+      if (cfg0 && cfg0.homeUrl) applyHomeUrl(cfg0.homeUrl);
+    } catch (_) {
+      /* default href in HTML */
     }
 
     try {
@@ -135,11 +164,7 @@
         try {
           var member = await ms.getCurrentMember();
           if (memberLooksVerified(member)) {
-            setStatus(
-              "Your email is verified.",
-              "Your account stays under review until our team approves access (typically 1–2 business days).",
-              false
-            );
+            setStatus(VERIFIED_TITLE, VERIFIED_DETAIL, false);
             return;
           }
         } catch (_) {
@@ -153,6 +178,10 @@
         true
       );
     } catch (err) {
+      if (urlIndicatesVerified()) {
+        setStatus(VERIFIED_TITLE, VERIFIED_DETAIL, false);
+        return;
+      }
       setStatus(
         "We could not load verification.",
         (err && err.message) || "Refresh the page or contact support.",
@@ -161,9 +190,14 @@
     }
   }
 
-  if (global.document.readyState === "loading") {
-    global.document.addEventListener("DOMContentLoaded", run);
-  } else {
+  function boot() {
+    showVerifiedFromUrl();
     run();
+  }
+
+  if (global.document.readyState === "loading") {
+    global.document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
   }
 })(window);

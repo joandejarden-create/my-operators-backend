@@ -72,6 +72,7 @@ import {
 import submitThirdPartyOperator from "./api/third-party-operator-intake.js";
 import listThirdPartyOperators from "./api/third-party-operators-list.js";
 import getThirdPartyOperatorDetail from "./api/third-party-operator-detail.js";
+import getOperatorCensusFootprint from "./api/operator-census-footprint.js";
 import getThirdPartyOperatorMappingReport from "./api/third-party-operator-mapping-report.js";
 import getThirdPartyOperatorPrefillQa from "./api/third-party-operator-prefill-qa.js";
 import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js";
@@ -294,6 +295,30 @@ function parseCompanyProfileArrays(req, res, next) {
     try { req.body.additionalServices = JSON.parse(req.body.additionalServicesJson); } catch (_) {}
     delete req.body.additionalServicesJson;
   }
+  if (req.body.companyCapabilitiesJson) {
+    try {
+      req.body.companyCapabilities = JSON.parse(req.body.companyCapabilitiesJson);
+    } catch (_) {}
+    delete req.body.companyCapabilitiesJson;
+  }
+  if (req.body.companyTypeTagsJson) {
+    try { req.body.companyTypeTags = JSON.parse(req.body.companyTypeTagsJson); } catch (_) {}
+    delete req.body.companyTypeTagsJson;
+  }
+  if (req.body.workspaceAccessJson) {
+    try { req.body.workspaceAccess = JSON.parse(req.body.workspaceAccessJson); } catch (_) {}
+    delete req.body.workspaceAccessJson;
+  }
+  if (req.body.potentialConflictFlagsJson) {
+    try {
+      req.body.potentialConflictFlags = JSON.parse(req.body.potentialConflictFlagsJson);
+    } catch (_) {}
+    delete req.body.potentialConflictFlagsJson;
+  }
+  // Form must not send Airtable column names on req.body (only mapped in api/company-profile.js).
+  if (req.body && Object.prototype.hasOwnProperty.call(req.body, "Company Type")) {
+    delete req.body["Company Type"];
+  }
   next();
 }
 
@@ -413,6 +438,7 @@ app.post("/api/third-party-operators/submit", handleThirdPartyOperatorIntake);
 app.get("/api/intake/third-party-operator/mapping-report", getThirdPartyOperatorMappingReport);
 app.get("/api/intake/third-party-operator/prefill-qa", getThirdPartyOperatorPrefillQa);
 // Operator list for My 3rd Party Ops. dashboard (multiple paths for proxies / older clients)
+app.get("/api/intake/third-party-operators/:recordId/census-footprint", getOperatorCensusFootprint);
 app.get("/api/intake/third-party-operators/:recordId", getThirdPartyOperatorDetail);
 app.get("/api/intake/third-party-operators", listThirdPartyOperators);
 app.get("/api/third-party-operators/list", listThirdPartyOperators);
@@ -773,26 +799,36 @@ app.get("/knowledge-base/", (req, res) => {
 });
 
 // CSP that explicitly sets connect-src so fetch/XHR aren't blocked (e.g. form or API calls)
-const SIGNUP_CSP =
+const SIGNUP_VERIFY_CSP =
   "default-src 'self'; " +
   "connect-src 'self' https:; " +
-  "script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net; " +
+  "script-src 'self' 'unsafe-inline' https://code.jquery.com https://cdn.jsdelivr.net https://static.memberstack.com; " +
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdn.prod.website-files.com; " +
   "font-src https://fonts.gstatic.com https://cdn.prod.website-files.com data:; " +
   "img-src 'self' data: https:;";
 
 // Signup routes (before express.static so they are always matched and we set CSP)
 app.get("/signup", (req, res) => {
-    res.setHeader("Content-Security-Policy", SIGNUP_CSP);
+    res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
     res.sendFile(path.join(__dirname, 'public', 'signup.html'));
 });
 app.get("/signup-temp", (req, res) => {
-    res.setHeader("Content-Security-Policy", SIGNUP_CSP);
+    res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
     res.sendFile(path.join(__dirname, 'public', 'signup-temp.html'));
 });
 app.get("/signup-temp.html", (req, res) => {
-    res.setHeader("Content-Security-Policy", SIGNUP_CSP);
+    res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
     res.sendFile(path.join(__dirname, 'public', 'signup-temp.html'));
+});
+app.get("/verify", (req, res) => {
+    res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
+    res.setHeader("Cache-Control", "no-store");
+    res.sendFile(path.join(__dirname, "public", "verify.html"));
+});
+app.get("/verify.html", (req, res) => {
+    res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
+    res.setHeader("Cache-Control", "no-store");
+    res.sendFile(path.join(__dirname, "public", "verify.html"));
 });
 
 // Redirect /deal-compare to the static file so it works even when another server proxies static files
@@ -1182,6 +1218,13 @@ app.get("/dealality-scout/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "dealality-scout.html"));
 });
 
+// AO client engagements (not part of Dealality app) — e.g. AH Hospitality Advisors mockups
+const AH_COMMERCIAL_HUB =
+    "/engagements/ah-hospitality-advisors/commercial-performance-hub-mockup.html";
+app.get("/commercial-performance-hub-mockup.html", (req, res) => res.redirect(302, AH_COMMERCIAL_HUB));
+app.get("/commercial-performance-hub-mockup", (req, res) => res.redirect(302, AH_COMMERCIAL_HUB));
+app.use("/engagements", express.static(path.join(__dirname, "engagements")));
+
 // Deal Capture landing and subpages (reviews, for-owners, etc.) at root
 app.use(express.static(path.join(__dirname, 'deal-capture-landing-webflow')));
 
@@ -1221,6 +1264,13 @@ app.get("/operator-explorer/", (req, res) => {
 
 app.get("/operator-explorer-detail", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-explorer-detail.html'));
+});
+
+app.get("/operator-dna-profile", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'operator-dna-profile.html'));
+});
+app.get("/operator-dna-profile/", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'operator-dna-profile.html'));
 });
 
 app.get("/operator-explorer-gold-mock", (req, res) => {
