@@ -26,6 +26,7 @@ import {
 import { extractLinkedRecordIds, cellToString } from "../lib/airtable-utils.js";
 import { roleInfoFromUserFieldsAsync } from "../lib/dealality/resolve-user.js";
 import { resolveOperatorScope, MAP_OPERATOR_SCOPE } from "../lib/dealality/resolve-operator-scope.js";
+import { profilePhotoUrlFromFields } from "../lib/airtable/platform-users-table.js";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 const BRAND_NAME_FIELD = process.env.AIRTABLE_BRAND_NAME_FIELD || "Brand Name";
@@ -258,6 +259,7 @@ async function getMe(req, res) {
   const email = cellToStringList(fields[INTAKE_USERS_EMAIL])[0] || null;
   const firstName = cellToStringList(fields[INTAKE_USERS_FIRST_NAME])[0] || null;
   const lastName = cellToStringList(fields[INTAKE_USERS_LAST_NAME])[0] || null;
+  const profilePhotoUrl = profilePhotoUrlFromFields(fields) || null;
   const companyProfileIds = extractLinkedRecordIds(fields[USERS_COMPANY_FIELD]);
   const companyProfileId = companyProfileIds[0] || null;
   let companyName = null;
@@ -365,12 +367,19 @@ async function getMe(req, res) {
       tokenIssuedAt: payload.iat != null ? payload.iat : null,
       tokenExpiresAt: payload.exp != null ? payload.exp : null,
     },
+    user: {
+      email,
+      firstName,
+      lastName,
+      profilePhotoUrl,
+    },
     airtable: {
       userRecordId: rec.id,
       airtableUserId: rec.id,
       email,
       firstName,
       lastName,
+      profilePhotoUrl,
       companyProfileId,
       companyName,
     },
@@ -394,6 +403,7 @@ async function getMe(req, res) {
       companyTypeRaw: dealalityRole.companyTypeRaw || null,
       companyProfileId,
       companyName,
+      profilePhotoUrl,
       workspaceAccess: dealalityRole.workspaceAccess || [],
       flags: dealalityRole.flags || {
         isOwner: !!dealalityRole.isOwner,

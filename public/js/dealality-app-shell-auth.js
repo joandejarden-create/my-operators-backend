@@ -326,8 +326,13 @@
   }
 
   function updateShellUserFromMe(data) {
-    if (!data || !data.user) return;
-    var u = data.user;
+    if (!data) return;
+    if (global.DealalityWebflowUserChrome && typeof global.DealalityWebflowUserChrome.apply === "function") {
+      global.DealalityWebflowUserChrome.apply(data);
+      return;
+    }
+    var u = data.user || data.airtable;
+    if (!u) return;
     var name =
       [u.firstName, u.lastName].filter(Boolean).join(" ").trim() ||
       (u.email ? String(u.email).split("@")[0] : "") ||
