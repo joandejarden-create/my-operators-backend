@@ -1,18 +1,19 @@
 /**
- * Apply /api/me identity (name + Airtable profile photo) to Webflow left nav / account chrome.
+ * Apply /api/me identity (name + Airtable profile photo) to Webflow left nav account chrome ONLY.
+ * Never touches main content, nav menu icons, or header images.
  * Load on dealality.com site footer; call apply() after loadUserContext.
+ *
+ * Optional: add data-dealality-user-avatar on the sidebar account <img> in Webflow Designer.
  */
 (function (global) {
   "use strict";
 
-  var AVATAR_SELECTORS =
-    ".user-avatar, .user-block img, .account-dropdown-header img, img.user-avatar-image, " +
-    "[data-dealality-user-avatar], .sidebar img, aside img, [class*='sidebar'] img, " +
-    "[class*='nav-user'] img, [class*='profile-pic'] img, [class*='avatar'] img, " +
-    "img[class*='avatar'], img[class*='profile']";
+  /** Bottom-of-sidebar account block only — not the nav menu list. */
+  var ACCOUNT_ROOTS =
+    ".sidebar-footer, #accountDropdownWrap, .user-block, .account-dropdown, " +
+    ".account-dropdown-header, .account-dropdown-trigger, [data-dealality-account-chrome]";
 
-  var REAPPLY_DELAYS_MS = [300, 1000, 2500, 5000];
-  var pendingReapplyTimer = null;
+  var REAPPLY_DELAYS_MS = [400, 2000];
 
   function userPayloadFromMe(data) {
     if (!data || typeof data !== "object") return null;
@@ -39,17 +40,14 @@
     return "Account";
   }
 
-  function isLikelyNavAvatarImg(img) {
-    if (!img || img.tagName !== "IMG") return false;
-    try {
-      var w = img.naturalWidth || img.width || img.offsetWidth || 0;
-      var h = img.naturalHeight || img.height || img.offsetHeight || 0;
-      if (w > 120 || h > 120) return false;
-      if (w === 0 && h === 0) return true;
-      return w <= 96 && h <= 96;
-    } catch (_) {
-      return true;
-    }
+  function isInsideAccountChrome(el) {
+    if (!el || !el.closest) return false;
+    if (el.matches && el.matches("[data-dealality-user-avatar]")) return true;
+    return !!el.closest(ACCOUNT_ROOTS);
+  }
+
+  function forEachAccountRoot(doc, fn) {
+    doc.querySelectorAll(ACCOUNT_ROOTS).forEach(fn);
   }
 
   function collectAvatarElements(doc) {
@@ -58,28 +56,28 @@
 
     function add(el) {
       if (!el || seen.has(el)) return;
+      if (!isInsideAccountChrome(el) && !el.matches("[data-dealality-user-avatar]")) return;
       seen.add(el);
       out.push(el);
     }
 
-    doc.querySelectorAll(AVATAR_SELECTORS).forEach(add);
+    doc.querySelectorAll("[data-dealality-user-avatar]").forEach(add);
 
-    doc.querySelectorAll(".user-name, [class*='user-name'], [class*='User-Name']").forEach(function (nameEl) {
-      var root =
-        nameEl.closest(
-          "button, a, li, [class*='user'], [class*='account'], [class*='sidebar'], [class*='nav']"
-        ) || nameEl.parentElement;
-      if (!root) return;
-      root.querySelectorAll("img").forEach(function (img) {
-        if (isLikelyNavAvatarImg(img)) add(img);
+    forEachAccountRoot(doc, function (root) {
+      root.querySelectorAll("img").forEach(add);
+      root.querySelectorAll(".user-avatar, img.user-avatar-image").forEach(add);
+    });
+
+    return out;
+  }
+
+  function queryAccountText(doc, selector) {
+    var out = [];
+    forEachAccountRoot(doc, function (root) {
+      root.querySelectorAll(selector).forEach(function (el) {
+        out.push(el);
       });
-      root.querySelectorAll("[class*='avatar'], [class*='profile'], [class*='photo']").forEach(add);
     });
-
-    doc.querySelectorAll("aside img, nav img, [class*='sidebar'] img").forEach(function (img) {
-      if (isLikelyNavAvatarImg(img)) add(img);
-    });
-
     return out;
   }
 
@@ -112,6 +110,7 @@
       }
       return false;
     }
+    if (!el.classList || !el.classList.contains("user-avatar")) return false;
     el.textContent = "";
     el.style.backgroundImage = 'url("' + String(url).replace(/"/g, "%22") + '")';
     el.style.backgroundSize = "cover";
@@ -122,12 +121,12 @@
   }
 
   function applyInitialToElement(el, initial) {
-    if (!el) return;
+    if (!el || el.tagName === "IMG") return;
     el.textContent = initial;
     el.style.backgroundImage = "";
     el.style.color = "";
     var nested = el.querySelector("img");
-    if (nested && el.tagName !== "IMG") {
+    if (nested) {
       nested.removeAttribute("src");
       nested.style.display = "none";
     }
@@ -137,64 +136,52 @@
     var u = userPayloadFromMe(data);
     if (!u) return false;
 
+    var doc = global.document;
     var name = displayNameFromUser(u);
     var meta = u.email || (data.dealality && data.dealality.role ? data.dealality.role : "Account settings");
     var initial = name.charAt(0).toUpperCase();
     var photoUrl = u.profilePhotoUrl ? String(u.profilePhotoUrl).trim() : "";
 
-    global.document
-      .querySelectorAll(
-        ".user-block .user-name, .account-dropdown-header .user-name, " +
-          "[class*='user-name'], [class*='User-Name']"
-      )
-      .forEach(function (el) {
-        el.textContent = name;
-      });
-    global.document
-      .querySelectorAll(
-        ".user-block .user-meta, .account-dropdown-header .user-meta, " +
-          "[class*='user-meta'], [class*='account-meta']"
-      )
-      .forEach(function (el) {
-        el.textContent = meta;
-      });
+    queryAccountText(doc, ".user-name").forEach(function (el) {
+      el.textContent = name;
+    });
+    queryAccountText(doc, ".user-meta").forEach(function (el) {
+      el.textContent = meta;
+    });
 
     var photoApplied = false;
     if (photoUrl) {
-      collectAvatarElements(global.document).forEach(function (el) {
+      collectAvatarElements(doc).forEach(function (el) {
         if (applyPhotoToElement(el, photoUrl, initial)) photoApplied = true;
       });
     }
 
     if (!photoApplied) {
-      global.document.querySelectorAll(".user-avatar, [class*='avatar']").forEach(function (el) {
-        if (el.tagName === "IMG") return;
-        applyInitialToElement(el, initial);
+      forEachAccountRoot(doc, function (root) {
+        root.querySelectorAll(".user-avatar").forEach(function (el) {
+          if (el.tagName !== "IMG") applyInitialToElement(el, initial);
+        });
       });
     }
 
-    if (photoUrl && !photoApplied && global.location && /localhost|127\.0\.0\.1|staging|railway|dealality\.com/i.test(global.location.hostname || "")) {
-      console.warn("[DealalityWebflowUserChrome] profilePhotoUrl present but no nav avatar matched:", photoUrl.slice(0, 80));
+    if (photoUrl && !photoApplied && global.location && /dealality\.com|localhost|127\.0\.0\.1|railway/i.test(global.location.hostname || "")) {
+      console.warn(
+        "[DealalityWebflowUserChrome] profilePhotoUrl present but no account avatar found inside",
+        ACCOUNT_ROOTS,
+        "— add data-dealality-user-avatar on the sidebar account image in Webflow."
+      );
     }
 
     return photoApplied;
   }
 
-  function scheduleReapply(data) {
-    if (pendingReapplyTimer) {
-      global.clearTimeout(pendingReapplyTimer);
-      pendingReapplyTimer = null;
-    }
+  function apply(data) {
+    applyUserChrome(data);
     REAPPLY_DELAYS_MS.forEach(function (ms) {
       global.setTimeout(function () {
         applyUserChrome(data);
       }, ms);
     });
-  }
-
-  function apply(data) {
-    applyUserChrome(data);
-    scheduleReapply(data);
     return data;
   }
 
@@ -203,5 +190,6 @@
     applyOnce: applyUserChrome,
     userPayloadFromMe: userPayloadFromMe,
     collectAvatarElements: collectAvatarElements,
+    accountRootSelectors: ACCOUNT_ROOTS,
   };
 })(typeof window !== "undefined" ? window : global);
