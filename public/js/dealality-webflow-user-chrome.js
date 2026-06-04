@@ -128,26 +128,47 @@
     return out;
   }
 
-  function updateLabelsInRoot(root, name, meta) {
-    root.querySelectorAll(".user-name").forEach(function (el) {
-      if (!isInsideDropdownMenu(el)) el.textContent = name;
-    });
-    root.querySelectorAll(".user-meta").forEach(function (el) {
-      if (!isInsideDropdownMenu(el)) el.textContent = meta;
-    });
+  function accountMetaSubtext(u) {
+    if (u.email) return String(u.email).trim();
+    return null;
+  }
 
-    root.querySelectorAll("div, span, p").forEach(function (el) {
+  function shouldUpdateDisplayName(name) {
+    return !!name && name !== "Account";
+  }
+
+  function updateLabelsInRoot(root, name, metaEmail) {
+    if (shouldUpdateDisplayName(name)) {
+      root.querySelectorAll(".user-name, [data-dealality-user-name]").forEach(function (el) {
+        if (!isInsideDropdownMenu(el)) el.textContent = name;
+      });
+    }
+
+    if (metaEmail) {
+      root.querySelectorAll(".user-meta, [data-dealality-user-meta]").forEach(function (el) {
+        if (!isInsideDropdownMenu(el)) el.textContent = metaEmail;
+      });
+    }
+  }
+
+  /** Webflow toggle: first text line = name; last = email only when we have one. Never overwrite with role. */
+  function updateToggleLabels(toggle, name, metaEmail) {
+    if (!toggle || !shouldUpdateDisplayName(name)) return;
+
+    var lines = [];
+    toggle.querySelectorAll("div, span, p").forEach(function (el) {
       if (el.children.length > 0 || isInsideDropdownMenu(el)) return;
       var t = (el.textContent || "").trim();
       if (!t) return;
-      if (/account\s*settings/i.test(t)) {
-        el.textContent = meta;
-        var prev = el.previousElementSibling;
-        if (prev && !isInsideDropdownMenu(prev) && (!prev.querySelector("img") || prev.children.length === 0)) {
-          prev.textContent = name;
-        }
-      }
+      lines.push({ el: el, t: t });
     });
+
+    if (!lines.length) return;
+
+    lines[0].el.textContent = name;
+    if (metaEmail && lines.length > 1) {
+      lines[lines.length - 1].el.textContent = metaEmail;
+    }
   }
 
   function urlsSame(a, b) {
@@ -250,13 +271,14 @@
 
     var doc = global.document;
     var name = displayNameFromUser(u);
-    var meta = u.email || (data.dealality && data.dealality.role ? data.dealality.role : "Account settings");
+    var metaEmail = accountMetaSubtext(u);
     var initial = name.charAt(0).toUpperCase();
     var photoUrl = u.profilePhotoUrl ? String(u.profilePhotoUrl).trim() : "";
 
     getLabelUpdateRoots(doc).forEach(function (root) {
-      updateLabelsInRoot(root, name, meta);
+      updateLabelsInRoot(root, name, metaEmail);
     });
+    updateToggleLabels(findAccountDropdownToggle(doc), name, metaEmail);
 
     var photoApplied = false;
     if (photoUrl) {
