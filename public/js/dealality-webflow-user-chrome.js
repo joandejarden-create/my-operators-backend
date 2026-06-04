@@ -1,17 +1,17 @@
 /**
  * Apply /api/me identity (name + Airtable profile photo) to Webflow left nav account chrome ONLY.
- * Never touches main content, nav menu icons, or header images.
- *
- * Webflow: targets the last sidebar dropdown (account menu) and .avatar-circle inside it.
- * Optional: add data-dealality-user-avatar on the account <img> in Webflow Designer.
+ * Photo target: [data-dealality-user-avatar] only — never dropdown menu item icons.
  */
 (function (global) {
   "use strict";
 
-  /** Railway /app shell account block. */
-  var ACCOUNT_ROOTS =
-    ".sidebar-footer, #accountDropdownWrap, .user-block, .account-dropdown, " +
-    ".account-dropdown-header, .account-dropdown-trigger, [data-dealality-account-chrome]";
+  var ACCOUNT_LABEL_ROOTS =
+    ".sidebar-footer, #accountDropdownWrap, .user-block, .account-dropdown-header, " +
+    ".account-dropdown-trigger, [data-dealality-account-chrome]";
+
+  var DROPDOWN_MENU_EXCLUDE =
+    ".w-dropdown-list, [class*='dropdown-list'], [class*='dropdown-menu'], " +
+    ".account-dropdown-item, [role='menu'], [role='menuitem']";
 
   var REAPPLY_DELAYS_MS = [400, 2000, 5000, 8000, 12000];
   var pinnedPhotoUrl = null;
@@ -53,25 +53,19 @@
     );
   }
 
-  /** Webflow account menu = last dropdown in the left sidebar. */
-  function findWebflowAccountRoots(doc) {
+  /** Webflow account trigger only — not the open menu list with item icons. */
+  function findAccountDropdownToggle(doc) {
     var sidebar = findSidebarContainer(doc);
-    if (!sidebar) return [];
-
-    var dropdowns = sidebar.querySelectorAll('.w-dropdown, [class*="dropdown"]:not([class*="menu"])');
-    if (dropdowns.length) {
-      return [dropdowns[dropdowns.length - 1]];
-    }
-
-    var toggles = sidebar.querySelectorAll('[class*="dropdown-toggle"], .w-dropdown-toggle');
-    if (toggles.length) {
-      return [toggles[toggles.length - 1].closest(".w-dropdown, [class*='dropdown']") || toggles[toggles.length - 1]];
-    }
-
-    return [];
+    if (!sidebar) return null;
+    var toggles = sidebar.querySelectorAll(".w-dropdown-toggle, [class*='dropdown-toggle']");
+    return toggles.length ? toggles[toggles.length - 1] : null;
   }
 
-  function getAllAccountRoots(doc) {
+  function isInsideDropdownMenu(el) {
+    return !!(el && el.closest && el.closest(DROPDOWN_MENU_EXCLUDE));
+  }
+
+  function getLabelUpdateRoots(doc) {
     var seen = new Set();
     var roots = [];
 
@@ -81,22 +75,11 @@
       roots.push(el);
     }
 
-    doc.querySelectorAll(ACCOUNT_ROOTS).forEach(add);
-    findWebflowAccountRoots(doc).forEach(add);
-    doc.querySelectorAll("[data-dealality-account-chrome]").forEach(add);
+    doc.querySelectorAll(ACCOUNT_LABEL_ROOTS).forEach(add);
+    var toggle = findAccountDropdownToggle(doc);
+    if (toggle) add(toggle);
 
     return roots;
-  }
-
-  function isInsideAccountChrome(el, roots) {
-    if (!el || !el.closest) return false;
-    if (el.matches && el.matches("[data-dealality-user-avatar]")) return true;
-    if (el.closest("[data-dealality-user-avatar]")) return true;
-    var list = roots || getAllAccountRoots(global.document);
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].contains(el)) return true;
-    }
-    return !!el.closest(ACCOUNT_ROOTS);
   }
 
   function isAvatarShell(el) {
@@ -106,49 +89,61 @@
     return /avatar-circle/i.test(el.className || "");
   }
 
+  /** Only the marked sidebar avatar — never menu icons. */
   function collectAvatarElements(doc) {
-    var roots = getAllAccountRoots(doc);
-    var seen = new Set();
     var out = [];
+    var seen = new Set();
 
     function add(el) {
-      if (!el || seen.has(el)) return;
-      if (!isInsideAccountChrome(el, roots) && !(el.matches && el.matches("[data-dealality-user-avatar]"))) return;
+      if (!el || seen.has(el) || isInsideDropdownMenu(el)) return;
       seen.add(el);
       out.push(el);
     }
 
     doc.querySelectorAll("[data-dealality-user-avatar]").forEach(function (marker) {
-      add(marker);
-      marker.querySelectorAll("img").forEach(add);
+      if (isInsideDropdownMenu(marker)) return;
+      if (marker.tagName === "IMG") {
+        add(marker);
+        return;
+      }
+      var img = marker.querySelector("img");
+      if (img) add(img);
+      else add(marker);
     });
 
-    roots.forEach(function (root) {
-      root.querySelectorAll("img").forEach(add);
-      root.querySelectorAll(
-        ".user-avatar, img.user-avatar-image, .avatar-circle, [class*='avatar-circle']"
-      ).forEach(add);
-    });
+    if (!out.length) {
+      var toggle = findAccountDropdownToggle(doc);
+      if (toggle) {
+        var circle = toggle.querySelector(".avatar-circle, [class*='avatar-circle']");
+        if (circle) {
+          if (circle.tagName === "IMG") add(circle);
+          else {
+            var nested = circle.querySelector("img");
+            add(nested || circle);
+          }
+        }
+      }
+    }
 
     return out;
   }
 
   function updateLabelsInRoot(root, name, meta) {
     root.querySelectorAll(".user-name").forEach(function (el) {
-      el.textContent = name;
+      if (!isInsideDropdownMenu(el)) el.textContent = name;
     });
     root.querySelectorAll(".user-meta").forEach(function (el) {
-      el.textContent = meta;
+      if (!isInsideDropdownMenu(el)) el.textContent = meta;
     });
 
     root.querySelectorAll("div, span, p").forEach(function (el) {
-      if (el.children.length > 0) return;
+      if (el.children.length > 0 || isInsideDropdownMenu(el)) return;
       var t = (el.textContent || "").trim();
       if (!t) return;
       if (/account\s*settings/i.test(t)) {
         el.textContent = meta;
         var prev = el.previousElementSibling;
-        if (prev && (!prev.querySelector("img") || prev.children.length === 0)) {
+        if (prev && !isInsideDropdownMenu(prev) && (!prev.querySelector("img") || prev.children.length === 0)) {
           prev.textContent = name;
         }
       }
@@ -173,7 +168,7 @@
   }
 
   function watchAvatarImg(img, url, initial) {
-    if (!img || img.tagName !== "IMG") return;
+    if (!img || img.tagName !== "IMG" || isInsideDropdownMenu(img)) return;
     var observer = new MutationObserver(function () {
       if (!pinnedPhotoUrl) return;
       if (!urlsSame(img.src, pinnedPhotoUrl) && img.getAttribute("src") !== pinnedPhotoUrl) {
@@ -184,25 +179,20 @@
     avatarObservers.push(observer);
   }
 
-  /** Keep Airtable photo when Memberstack (data-ms-member) rewrites src later. */
   function pinMarkedAvatars(doc, url, initial) {
     pinnedPhotoUrl = url;
     pinnedInitial = initial;
     disconnectAvatarObservers();
-    doc.querySelectorAll("[data-dealality-user-avatar]").forEach(function (marker) {
-      var imgs =
-        marker.tagName === "IMG"
-          ? [marker]
-          : Array.prototype.slice.call(marker.querySelectorAll("img"));
-      imgs.forEach(function (img) {
-        setImgSrc(img, url, initial);
-        watchAvatarImg(img, url, initial);
-      });
+    var applied = false;
+    collectAvatarElements(doc).forEach(function (target) {
+      if (applyPhotoToElement(target, url, initial)) applied = true;
+      if (target.tagName === "IMG") watchAvatarImg(target, url, initial);
     });
+    return applied;
   }
 
   function setImgSrc(img, url, initial) {
-    if (!img || !url) return false;
+    if (!img || !url || isInsideDropdownMenu(img)) return false;
     var next = String(url).trim();
     if (!next) return false;
     img.alt = initial || "Profile";
@@ -220,12 +210,12 @@
   }
 
   function applyPhotoToElement(el, url, initial) {
-    if (!el || !url) return false;
+    if (!el || !url || isInsideDropdownMenu(el)) return false;
     if (el.tagName === "IMG") {
       return setImgSrc(el, url, initial);
     }
     var nested = el.querySelector("img");
-    if (nested) {
+    if (nested && !isInsideDropdownMenu(nested)) {
       if (setImgSrc(nested, url, initial)) {
         if (el !== nested) el.textContent = "";
         return true;
@@ -243,7 +233,7 @@
   }
 
   function applyInitialToElement(el, initial) {
-    if (!el || el.tagName === "IMG") return;
+    if (!el || el.tagName === "IMG" || isInsideDropdownMenu(el)) return;
     el.textContent = initial;
     el.style.backgroundImage = "";
     el.style.color = "";
@@ -259,25 +249,18 @@
     if (!u) return false;
 
     var doc = global.document;
-    var roots = getAllAccountRoots(doc);
     var name = displayNameFromUser(u);
     var meta = u.email || (data.dealality && data.dealality.role ? data.dealality.role : "Account settings");
     var initial = name.charAt(0).toUpperCase();
     var photoUrl = u.profilePhotoUrl ? String(u.profilePhotoUrl).trim() : "";
 
-    roots.forEach(function (root) {
+    getLabelUpdateRoots(doc).forEach(function (root) {
       updateLabelsInRoot(root, name, meta);
     });
 
     var photoApplied = false;
     if (photoUrl) {
-      pinMarkedAvatars(doc, photoUrl, initial);
-      collectAvatarElements(doc).forEach(function (el) {
-        if (applyPhotoToElement(el, photoUrl, initial)) photoApplied = true;
-      });
-      if (!photoApplied && doc.querySelector("[data-dealality-user-avatar]")) {
-        photoApplied = true;
-      }
+      photoApplied = pinMarkedAvatars(doc, photoUrl, initial);
     } else {
       disconnectAvatarObservers();
       pinnedPhotoUrl = null;
@@ -288,11 +271,9 @@
       }
     }
 
-    if (!photoApplied) {
-      roots.forEach(function (root) {
-        root.querySelectorAll(".user-avatar, .avatar-circle, [class*='avatar-circle']").forEach(function (el) {
-          if (el.tagName !== "IMG") applyInitialToElement(el, initial);
-        });
+    if (!photoApplied && !photoUrl) {
+      collectAvatarElements(doc).forEach(function (el) {
+        if (el.tagName !== "IMG") applyInitialToElement(el, initial);
       });
     }
 
@@ -318,9 +299,8 @@
       hasAvatarMarker: !!marker,
       markerTag: marker ? marker.tagName : null,
       currentImgSrc: img ? img.src : null,
-      currentSrcset: img ? img.getAttribute("srcset") : null,
+      avatarTargets: collectAvatarElements(doc).length,
       pinnedPhotoUrl: pinnedPhotoUrl || null,
-      accountRootsFound: getAllAccountRoots(doc).length,
     };
   }
 
@@ -346,8 +326,7 @@
     debug: debugState,
     userPayloadFromMe: userPayloadFromMe,
     collectAvatarElements: collectAvatarElements,
-    getAllAccountRoots: getAllAccountRoots,
-    accountRootSelectors: ACCOUNT_ROOTS,
+    accountRootSelectors: ACCOUNT_LABEL_ROOTS,
   };
 
   if (global.document) {
