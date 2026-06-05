@@ -90,6 +90,9 @@
     if (global.DealalityWebflowUserChrome && typeof global.DealalityWebflowUserChrome.apply === 'function') {
       global.DealalityWebflowUserChrome.apply(data);
     }
+    if (global.DealalityWebflowAccountNotice && typeof global.DealalityWebflowAccountNotice.apply === 'function') {
+      global.DealalityWebflowAccountNotice.apply(data);
+    }
     dispatch('dealality-me-ready', { ok: true, status: res.status, data: data, error: null });
   }
 

@@ -14,7 +14,8 @@
  */
 
 import Airtable from "airtable";
-import memberstackAdmin from "@memberstack/admin";
+import { verifyMemberstackToken } from "../lib/memberstack/verify-token.js";
+import { shouldSyncMemberstackIdToUsersRow } from "../lib/memberstack/environment.js";
 
 import {
   INTAKE_USERS_TABLE,
@@ -26,6 +27,7 @@ import {
 import { extractLinkedRecordIds, cellToString } from "../lib/airtable-utils.js";
 import { roleInfoFromUserFieldsAsync } from "../lib/dealality/resolve-user.js";
 import { resolveOperatorScope, MAP_OPERATOR_SCOPE } from "../lib/dealality/resolve-operator-scope.js";
+import { resolveAccountAccessStatus } from "../lib/dealality/account-access-status.js";
 import {
   emailFromUserFields,
   profilePhotoUrlFromFields,
@@ -51,16 +53,6 @@ const MEMBERSTACK_MATCH_FIELDS = (process.env.AIRTABLE_ME_USERS_MEMBERSTACK_FIEL
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
-
-let memberstackClient;
-
-function getMemberstack() {
-  if (!memberstackClient) {
-    const secret = process.env.MEMBERSTACK_SECRET_KEY || "unused_verify_only";
-    memberstackClient = memberstackAdmin.init(secret);
-  }
-  return memberstackClient;
-}
 
 function airtableStringLiteral(value) {
   return String(value).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
@@ -156,8 +148,13 @@ function pickEmailFromPayload(payload) {
 
 async function findUserByEmail(base, email) {
   const lit = airtableStringLiteral(email.toLowerCase());
-  const formula = `LOWER({${INTAKE_USERS_EMAIL}}) = '${lit}'`;
-  return base(USERS_TABLE).select({ filterByFormula: formula, maxRecords: 1 }).firstPage();
+  const fields = [INTAKE_USERS_EMAIL, "Email"];
+  for (let i = 0; i < fields.length; i++) {
+    const formula = `LOWER({${fields[i]}}) = '${lit}'`;
+    const rows = await base(USERS_TABLE).select({ filterByFormula: formula, maxRecords: 1 }).firstPage();
+    if (rows.length) return rows;
+  }
+  return [];
 }
 
 async function getMe(req, res) {
@@ -174,11 +171,9 @@ async function getMe(req, res) {
     });
   }
 
-  let payload;
+  let verified;
   try {
-    const ms = getMemberstack();
-    const audience = process.env.MEMBERSTACK_APP_ID || undefined;
-    payload = await ms.verifyToken({ token, ...(audience ? { audience } : {}) });
+    verified = await verifyMemberstackToken(token);
   } catch (err) {
     const msg = (err && err.message) || String(err);
     const expired = /expired|exp/i.test(msg);
@@ -189,7 +184,7 @@ async function getMe(req, res) {
     });
   }
 
-  const memberstackId = payload && (payload.id || payload.sub);
+  const memberstackId = verified && verified.id;
   if (!memberstackId || typeof memberstackId !== "string") {
     return res.status(401).json({
       success: false,
@@ -198,7 +193,12 @@ async function getMe(req, res) {
     });
   }
 
-  const emailFromToken = pickEmailFromPayload(payload);
+  const emailFromToken =
+    (verified.email && String(verified.email).trim().toLowerCase()) ||
+    pickEmailFromPayload(verified.raw);
+
+  const tokenPayload =
+    verified.raw && typeof verified.raw === "object" ? verified.raw : {};
 
   const apiKey = process.env.AIRTABLE_API_KEY;
   const baseId = process.env.AIRTABLE_BASE_ID;
@@ -242,21 +242,31 @@ async function getMe(req, res) {
   const warnings = [];
   if (matchedBy === "email") {
     warnings.push("user_matched_by_email");
-    try {
-      const syncFields = { [INTAKE_USERS_UNIQUE_WEBFLOW_ID]: memberstackId };
-      const slugFieldId = process.env.AIRTABLE_USERS_SLUG_FIELD || "fldEgbHu5MvfyrxgE";
-      if (
-        MEMBERSTACK_MATCH_FIELDS.includes("slug") ||
-        MEMBERSTACK_MATCH_FIELDS.includes("Slug") ||
-        MEMBERSTACK_MATCH_FIELDS.includes(slugFieldId)
-      ) {
-        syncFields[slugFieldId] = memberstackId;
+    const existingMsId =
+      cellToStringList(fields[INTAKE_USERS_UNIQUE_WEBFLOW_ID])[0] ||
+      cellToStringList(fields["Unique Webflow ID"])[0] ||
+      cellToStringList(fields["Unique_Webflow_ID"])[0] ||
+      cellToStringList(fields.Slug)[0] ||
+      "";
+    if (!shouldSyncMemberstackIdToUsersRow(existingMsId, memberstackId)) {
+      warnings.push("memberstack_id_sync_skipped_preserve_live_id");
+    } else {
+      try {
+        const syncFields = { [INTAKE_USERS_UNIQUE_WEBFLOW_ID]: memberstackId };
+        const slugFieldId = process.env.AIRTABLE_USERS_SLUG_FIELD || "fldEgbHu5MvfyrxgE";
+        if (
+          MEMBERSTACK_MATCH_FIELDS.includes("slug") ||
+          MEMBERSTACK_MATCH_FIELDS.includes("Slug") ||
+          MEMBERSTACK_MATCH_FIELDS.includes(slugFieldId)
+        ) {
+          syncFields[slugFieldId] = memberstackId;
+        }
+        await base(USERS_TABLE).update(rec.id, syncFields, { typecast: true });
+        warnings.push("memberstack_id_synced_to_users_row");
+      } catch (syncErr) {
+        console.warn("[api/me] could not sync Memberstack id to Users row:", syncErr.message);
+        warnings.push("memberstack_id_sync_failed");
       }
-      await base(USERS_TABLE).update(rec.id, syncFields, { typecast: true });
-      warnings.push("memberstack_id_synced_to_users_row");
-    } catch (syncErr) {
-      console.warn("[api/me] could not sync Memberstack id to Users row:", syncErr.message);
-      warnings.push("memberstack_id_sync_failed");
     }
   }
 
@@ -372,13 +382,23 @@ async function getMe(req, res) {
     }
   }
 
+  const accountStatusField =
+    (process.env.SIGNUP_AIRTABLE_STATUS_FIELD || "Account Status").trim();
+  const accountStatusRaw = accountStatusField
+    ? cellToString(fields[accountStatusField]) || null
+    : null;
+  const accountAccess = resolveAccountAccessStatus({
+    dealalityRole,
+    accountStatusRaw,
+  });
+
   return res.json({
     success: true,
     memberstackId,
     memberstack: {
       id: memberstackId,
-      tokenIssuedAt: payload.iat != null ? payload.iat : null,
-      tokenExpiresAt: payload.exp != null ? payload.exp : null,
+      tokenIssuedAt: tokenPayload.iat != null ? tokenPayload.iat : null,
+      tokenExpiresAt: tokenPayload.exp != null ? tokenPayload.exp : null,
     },
     user: {
       email,
@@ -448,6 +468,7 @@ async function getMe(req, res) {
         dealalityRole.thirdPartyManagementAvailabilityStatus || null,
       eligibilitySource: dealalityRole.eligibilitySource || null,
     },
+    accountAccess,
     meta: {
       usersTable: USERS_TABLE,
       memberstackMatchFields: MEMBERSTACK_MATCH_FIELDS,

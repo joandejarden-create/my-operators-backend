@@ -6,7 +6,8 @@ Users row **`rec32VycDpnAp3OmP`** (Joan Dejarden, Hotel Owner) must have:
 
 - **Email:** `dealalitydemo@dealality.com`
 - **Platform Role / User Type:** Owner (e.g. `Hotel Owner`)
-- **Unique Webflow ID** (`flddTfp7oLdcPwBIC`) and **Slug** (`fldEgbHu5MvfyrxgE`) must equal the **same** `mem_sb_…` as the logged-in Memberstack session (not an old id).
+- **Unique Webflow ID** (`flddTfp7oLdcPwBIC`) and **Slug** (`fldEgbHu5MvfyrxgE`) must equal the **Live** Memberstack id on **`dealality.com`** (e.g. `mem_cmq0460yc28rv0slkartj6fif`). Do **not** overwrite with localhost sandbox `mem_sb_…` ids.
+- **Localhost (`npm start`):** Memberstack **does not allow localhost in Application Domains** (Live or Test) — skip that step entirely. Local login always uses Test Mode (`mem_sb_…` ids). Keep the **Live** `MEMBERSTACK_APP_ID` + live `MEMBERSTACK_SECRET_KEY` (`sk_…`) for dealality.com parity; add `MEMBERSTACK_TEST_SECRET_KEY=sk_sb_…` so `/api/me` can resolve sandbox sessions by email **without** overwriting the Live id in Airtable. For live `mem_cmq…` ids on localhost, log in on **dealality.com** and open `http://localhost:8080/app?msToken=<eyJ…>`.
 - Railway env: `AIRTABLE_ME_USERS_MEMBERSTACK_FIELDS=flddTfp7oLdcPwBIC,fldEgbHu5MvfyrxgE` (do **not** use lowercase `slug` for writes — Airtable field name is **Slug**).
 
 Verify locally:
@@ -18,7 +19,7 @@ node scripts/verify-demo-user-setup.mjs
 Manual link if needed:
 
 ```bash
-node scripts/link-airtable-user-memberstack.mjs --email dealalitydemo@dealality.com --memberstack-id mem_sb_XXXXX
+node scripts/link-airtable-user-memberstack.mjs --email dealalitydemo@dealality.com --memberstack-id mem_cmq0460yc28rv0slkartj6fif
 ```
 
 ## Console: `No Member has logged in` (login:128)
@@ -57,11 +58,37 @@ Replace with production Railway URL when testing production.
 })();
 ```
 
+## Basic plan / pending approval (signup waiting for admin)
+
+New signups on **Basic** have no workspace access yet. `/api/me` includes:
+
+```json
+"accountAccess": {
+  "state": "pending_approval",
+  "pendingApproval": true,
+  "userTitle": "Account pending approval",
+  "userMessage": "Thanks for signing up…",
+  "suppressBrandAssignmentToast": true
+}
+```
+
+**Webflow footer:** load `dealality-webflow-account-notice.js` after `dealality-webflow-me-bootstrap.js`. It shows a banner and sets `window.__dealalitySuppressBrandToast = true`.
+
+In existing `loadUserContext` toast logic, skip the brand toast when:
+
+```javascript
+if (window.__dealalitySuppressBrandToast || (data.accountAccess && data.accountAccess.pendingApproval)) {
+  return; // pending signup — do not show "No brands assigned"
+}
+```
+
 ## “No brands assigned” (blue Information toast)
 
 `/api/me` returns **200** but `permissions.allowedBrandNames` is empty. That is **normal for Hotel Owner** demo accounts (no Brand Basics link on the Users row).
 
 Webflow should **not** show “No brands assigned” when `dealality.isOwner === true` (included in `/api/me` as of role payload). Owners use **My Deals**, not brand allow-lists.
+
+Also skip for **pending approval** signups (`accountAccess.pendingApproval === true`) — they are not brand users yet.
 
 ### `window.__dealalityUserContext.dealality` is `undefined`
 
