@@ -15,9 +15,51 @@
   var REAPPLY_DELAYS_MS = [400, 2000, 5000, 8000, 12000];
   var CACHE_KEY = "dealality_user_chrome_cache_v1";
   var CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+  var PENDING_FALLBACK_MS = 2800;
   var pinnedPhotoUrl = null;
   var pinnedInitial = "";
   var avatarObservers = [];
+  var lastAppliedSignature = "";
+  var chromePendingCleared = false;
+
+  function injectPendingStyle() {
+    var doc = global.document;
+    if (!doc || doc.getElementById("dealality-chrome-pending-style")) return;
+    var style = doc.createElement("style");
+    style.id = "dealality-chrome-pending-style";
+    style.textContent =
+      "body.dealality-chrome-pending [data-dealality-user-name]," +
+      "body.dealality-chrome-pending .user-name," +
+      "body.dealality-chrome-pending [data-dealality-user-avatar]," +
+      "body.dealality-chrome-pending .avatar-circle{visibility:hidden}";
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
+  function setChromePending(on) {
+    var body = global.document && global.document.body;
+    if (!body) return;
+    if (on) body.classList.add("dealality-chrome-pending");
+    else {
+      body.classList.remove("dealality-chrome-pending");
+      chromePendingCleared = true;
+    }
+  }
+
+  function clearChromePendingSoon() {
+    if (chromePendingCleared) return;
+    setChromePending(false);
+  }
+
+  function schedulePendingFallback() {
+    global.setTimeout(function () {
+      clearChromePendingSoon();
+    }, PENDING_FALLBACK_MS);
+  }
+
+  function userApplySignature(u) {
+    if (!u) return "";
+    return [u.email, u.firstName, u.lastName, u.profilePhotoUrl].join("|");
+  }
 
   function cachePayloadFromMe(data) {
     var u = userPayloadFromMe(data);
@@ -200,6 +242,8 @@
     "joan dejarden",
     "dealality demo",
     "user name",
+    "…",
+    "...",
   ];
 
   function isKnownDemoAccountName(text) {
@@ -377,12 +421,10 @@
     img.style.display = "";
     img.removeAttribute("srcset");
     img.removeAttribute("sizes");
-    if (img.src === next || img.getAttribute("src") === next) {
-      img.removeAttribute("src");
-      img.src = next;
-    } else {
-      img.src = next;
+    if (urlsSame(img.src, next) || urlsSame(img.getAttribute("src"), next)) {
+      return true;
     }
+    img.src = next;
     return true;
   }
 
@@ -425,16 +467,21 @@
     var u = userPayloadFromMe(data);
     if (!u) return false;
 
+    var signature = userApplySignature(u);
+    var isRepeatApply = signature === lastAppliedSignature;
+
     var doc = global.document;
     var name = displayNameFromUser(u);
     var metaEmail = accountMetaSubtext(u);
     var initial = name.charAt(0).toUpperCase();
     var photoUrl = u.profilePhotoUrl ? String(u.profilePhotoUrl).trim() : "";
 
-    getLabelUpdateRoots(doc).forEach(function (root) {
-      updateLabelsInRoot(root, name, metaEmail);
-    });
-    updateToggleLabels(findAccountDropdownToggle(doc), name, metaEmail);
+    if (!isRepeatApply) {
+      getLabelUpdateRoots(doc).forEach(function (root) {
+        updateLabelsInRoot(root, name, metaEmail);
+      });
+      updateToggleLabels(findAccountDropdownToggle(doc), name, metaEmail);
+    }
 
     var photoApplied = false;
     if (photoUrl) {
@@ -462,6 +509,8 @@
       );
     }
 
+    lastAppliedSignature = signature;
+    clearChromePendingSoon();
     return photoApplied;
   }
 
@@ -511,12 +560,17 @@
     accountRootSelectors: ACCOUNT_LABEL_ROOTS,
   };
 
-  applyCachedUserChrome();
-
   if (global.document) {
-    if (global.document.readyState === "loading") {
-      global.document.addEventListener("DOMContentLoaded", applyCachedUserChrome);
+    injectPendingStyle();
+    setChromePending(true);
+    schedulePendingFallback();
+
+    if (!applyCachedUserChrome() && global.document.readyState === "loading") {
+      global.document.addEventListener("DOMContentLoaded", function () {
+        applyCachedUserChrome();
+      });
     }
+
     global.addEventListener("load", tryApplyStoredContext);
     global.document.addEventListener("dealality-me-ready", function (ev) {
       if (ev && ev.detail && ev.detail.data) apply(ev.detail.data);
