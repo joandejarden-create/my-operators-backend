@@ -268,23 +268,255 @@
     return "match-score-poor";
   }
 
-  function renderScoreCell(score) {
-    if (score == null || score === "") {
+  function renderScoreCell(row) {
+    if (!row || row.alignmentScoreOptional == null || row.alignmentScoreOptional === "") {
       return '<div class="match-score-cell match-score-cell--compact">—</div>';
     }
-    var n = Number(score);
+    var n = Number(row.alignmentScoreOptional);
     if (!Number.isFinite(n)) {
       return '<div class="match-score-cell match-score-cell--compact">—</div>';
     }
     var scoreClass = getAlignmentScoreClass(n);
+    var canBreakdown = isLiveOperatorId(row.operatorId) && isLiveOperatorId(row.dealId);
+    if (!canBreakdown) {
+      return (
+        '<div class="match-score-cell match-score-cell--compact">' +
+        '<span class="match-score-badge ' +
+        esc(scoreClass) +
+        '">' +
+        esc(n.toFixed(1)) +
+        "</span></div>"
+      );
+    }
     return (
       '<div class="match-score-cell match-score-cell--compact">' +
-      '<span class="match-score-badge ' +
+      '<button type="button" class="match-score-badge operator-strategy-score-btn ' +
       esc(scoreClass) +
+      '" data-os-action="score-breakdown" data-deal-id="' +
+      esc(row.dealId) +
+      '" data-operator-id="' +
+      esc(row.operatorId) +
+      '" title="View operator alignment score breakdown" aria-label="View operator alignment score breakdown for ' +
+      esc(row.companyName || "this operator") +
       '">' +
       esc(n.toFixed(1)) +
-      "</span></div>"
+      "</button></div>"
     );
+  }
+
+  function getBreakdownScoreClass(score) {
+    if (score == null || score === "") return "medium";
+    var n = Number(score);
+    if (!Number.isFinite(n)) return "medium";
+    if (n >= 80) return "high";
+    if (n >= 50) return "medium";
+    if (n >= 25) return "low";
+    return "poor";
+  }
+
+  function getOperatorScoreBreakdownModalParts() {
+    var modal = document.getElementById("matchedBrandsScoreNewModal");
+    var content = document.getElementById("matchedBrandsScoreNewModalContent");
+    var titleEl = modal ? modal.querySelector("h2") : null;
+    return { modal: modal, content: content, titleEl: titleEl };
+  }
+
+  function buildOperatorAlignmentScoreSummary(score, operatorName, details) {
+    var op = operatorName ? String(operatorName).trim() : null;
+    var opPhrase = op ? op + "'s" : "this operator's";
+    var withOp = op ? " with " + op : "";
+    var strong = [];
+    var weak = [];
+    if (details && typeof details === "object") {
+      Object.keys(details).forEach(function (k) {
+        var d = details[k];
+        var s = d && d.score != null && d.score !== "—" ? Number(d.score) : null;
+        var lbl = d && d.label ? d.label : k;
+        if (s == null || Number.isNaN(s)) return;
+        if (s >= 80) strong.push(lbl);
+        else if (s < 50) weak.push(lbl);
+      });
+    }
+    var strongStr = strong.length ? strong.slice(0, 3).join(", ") : null;
+    var weakStr = weak.length ? weak.slice(0, 3).join(", ") : null;
+    if (score >= 80) {
+      var p =
+        "With a score of " +
+        score.toFixed(0) +
+        ", your project shows strong alignment signals against " +
+        opPhrase +
+        " Operator Setup profile across most scored factors. ";
+      if (strongStr) {
+        p +=
+          "The strongest areas are " +
+          strongStr +
+          "—these indicate overlap between your deal inputs and what this operating company documents in Operator Setup. ";
+      }
+      p +=
+        "This is a promising fit signal for your review set; validate open items before any outreach or term discussions.";
+      return p;
+    }
+    if (score >= 50) {
+      var p =
+        "At " + score.toFixed(0) + ", you have moderate alignment signals" + withOp + ". ";
+      if (strongStr) p += "Strengths include " + strongStr + ". ";
+      if (weakStr) p += "Main gaps to validate are " + weakStr + ". ";
+      p +=
+        "Proceed only after confirming geography, scale, structure, and commercial assumptions with the operator team.";
+      return p;
+    }
+    if (score >= 25) {
+      var p =
+        "A score of " +
+        score.toFixed(0) +
+        " indicates notable gaps between your project and " +
+        opPhrase +
+        " documented scope. ";
+      if (weakStr) p += "The largest gaps are in " + weakStr + ". ";
+      if (strongStr) p += "Some positives remain (" + strongStr + "), but weak areas may be harder to bridge. ";
+      p += "Clarify whether those gaps can be addressed before investing more review time on this company.";
+      return p;
+    }
+    var p =
+      "With a score of " +
+      score.toFixed(0) +
+      ", alignment signals are limited relative to " +
+      opPhrase +
+      " documented profile. ";
+    if (weakStr) p += "Major gaps include " + weakStr + ". ";
+    p +=
+      "Consider other operating companies in your strategy table where deal inputs and Operator Setup data overlap more clearly.";
+    return p;
+  }
+
+  function renderOperatorBreakdownHtml(score, operatorName, details) {
+    var scoreDisplay = score != null ? Number(score).toFixed(1) : "—";
+    var subTitle = operatorName
+      ? ' for <span style="color: var(--accent--primary-1);">' + esc(operatorName) + "</span>"
+      : "";
+    var colorNote =
+      ' Score bands: <span style="color: var(--system--green-400);">80–100 = strong</span>, <span style="color: var(--system--orange-400);">50–79 = moderate</span>, <span style="color: var(--system--red-400);">25–49 = weak</span>, <span style="color: #6B2D2D;">0–24 = poor</span>.';
+    var html =
+      '<div class="modal-section"><h3>Overall Operator Alignment Score: <span style="color: var(--accent--primary-1);">' +
+      esc(scoreDisplay) +
+      "/100</span>" +
+      subTitle +
+      "</h3>" +
+      '<p style="color: var(--neutral--400); font-size: 14px; line-height: 1.5; margin: 10px 0 0 0;">This score compares what this operating company supports with what your project offers. It weighs nine factors across geography and markets, chain scale, asset and stage fit, deal structure, commercial terms, services, systems and reporting, owner relations, and portfolio relevance.' +
+      colorNote +
+      " The breakdown below shows how each factor scored and why. Alignment scores highlight fit signals and data gaps—they do not indicate operator approval, availability, or commercial terms.</p></div>";
+
+    if (details && typeof details === "object" && Object.keys(details).length > 0) {
+      html += '<div class="modal-section"><h3>Quantitative Breakdown</h3><div class="match-score-breakdown">';
+      Object.keys(details).forEach(function (factorKey) {
+        var d = details[factorKey];
+        if (!d) return;
+        var label = d.label || factorKey;
+        var weight = d.weight != null ? d.weight : 0;
+        var sc =
+          d.score != null && d.score !== "—" ? getBreakdownScoreClass(Number(d.score)) : "low";
+        var scorePct =
+          d.score != null && d.score !== "—"
+            ? Math.min(100, Math.max(0, Number(d.score)))
+            : 0;
+        var setupValue = d.operatorValue || d.brandValue || "—";
+        html +=
+          '<div class="score-category"><div class="score-category-label">' +
+          '<div class="score-factor-heading">' +
+          esc(label) +
+          "</div>" +
+          (weight ? '<div class="score-factor-weight">(Weight: ' + esc(String(weight)) + "%)</div>" : "") +
+          "</div>" +
+          '<div class="score-category-value"><div class="score-bar"><div class="score-bar-fill ' +
+          esc(sc) +
+          '" style="width: ' +
+          esc(String(scorePct)) +
+          '%"></div></div>' +
+          '<span class="score-number">' +
+          (d.score != null && d.score !== "—" ? esc(String(d.score)) : "—") +
+          "</span></div>";
+        if (setupValue || d.dealValue || d.note) {
+          html +=
+            '<div class="score-factor-details">' +
+            '<div><strong style="color: var(--neutral--300);">Operator setup:</strong> ' +
+            esc(setupValue) +
+            "</div>" +
+            '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">Deal setup:</strong> ' +
+            esc(d.dealValue || "—") +
+            "</div>" +
+            (d.note
+              ? '<div style="margin-top: 4px;"><strong style="color: var(--neutral--300);">How match works:</strong> ' +
+                esc(d.note) +
+                "</div>"
+              : "") +
+            "</div>";
+        }
+        html += "</div>";
+      });
+      html += "</div></div>";
+    } else {
+      html +=
+        '<div class="modal-section"><h3>Quantitative Breakdown</h3><p style="color: var(--neutral--400);">Breakdown details are not available for this operator. This usually means Operator Setup data is incomplete or the deal is missing required intake fields.</p></div>';
+    }
+
+    if (score != null && !Number.isNaN(Number(score))) {
+      var summary = buildOperatorAlignmentScoreSummary(Number(score), operatorName, details);
+      if (summary) {
+        html +=
+          '<div class="modal-section"><h3>What This Score Means For You</h3><p class="match-score-summary" style="color: var(--neutral--300); font-size: 15px; line-height: 1.6; margin: 0;">' +
+          esc(summary) +
+          "</p></div>";
+      }
+    }
+    return html;
+  }
+
+  function showOperatorMatchScoreBreakdown(dealId, operatorId, companyName) {
+    var parts = getOperatorScoreBreakdownModalParts();
+    if (!parts.modal || !parts.content) {
+      toast("Score breakdown modal is not available on this page.", false);
+      return;
+    }
+    if (!dealId || !operatorId) {
+      toast("Missing deal or operator for score breakdown.", false);
+      return;
+    }
+    if (parts.titleEl) parts.titleEl.textContent = "Operator Alignment Score Breakdown";
+    parts.content.innerHTML =
+      '<div class="modal-section"><p style="color: var(--neutral--400);">Loading breakdown…</p></div>';
+    parts.modal.style.display = "block";
+
+    var url =
+      "/api/my-deals/" +
+      encodeURIComponent(dealId) +
+      "/operator-match-score-breakdown?operatorId=" +
+      encodeURIComponent(operatorId);
+    fetchApi(url)
+      .then(function (res) {
+        if (res.status === 401 || res.status === 403) {
+          parts.content.innerHTML =
+            '<div class="modal-section"><p style="color: var(--neutral--400);">Sign in required to view operator alignment breakdown.</p></div>';
+          return;
+        }
+        if (!res.ok || !res.data || !res.data.success) {
+          var msg =
+            (res.data && (res.data.error || res.data.message)) ||
+            "Could not load operator alignment breakdown.";
+          parts.content.innerHTML =
+            '<div class="modal-section"><p style="color: var(--neutral--400);">' + esc(msg) + "</p></div>";
+          return;
+        }
+        var operatorName = res.data.operatorName || companyName || "Selected operator";
+        parts.content.innerHTML = renderOperatorBreakdownHtml(
+          res.data.operatorScore,
+          operatorName,
+          res.data.operatorBreakdownDetails || {}
+        );
+      })
+      .catch(function () {
+        parts.content.innerHTML =
+          '<div class="modal-section"><p style="color: var(--neutral--400);">An error occurred while loading the breakdown. Please try again.</p></div>';
+      });
   }
 
   function isLiveOperatorId(id) {
@@ -812,7 +1044,7 @@
         var locationCell = row.location
           ? '<span class="operator-strategy-location">' + esc(row.location) + "</span>"
           : "—";
-        var score = renderScoreCell(row.alignmentScoreOptional);
+        var score = renderScoreCell(row);
         var profileDisabled = !isLiveOperatorId(opId);
         var outreachLabel = row.outreachStatusLabel || "Not contacted";
         var statusMod = outreachStatusModifier(row);
@@ -1090,6 +1322,15 @@
     var dealId = btn.getAttribute("data-deal-id") || "";
     var operatorId = btn.getAttribute("data-operator-id") || "";
 
+    if (action === "score-breakdown" && dealId && operatorId) {
+      var scoreRow = findRowByIds(dealId, operatorId);
+      showOperatorMatchScoreBreakdown(
+        dealId,
+        operatorId,
+        scoreRow ? scoreRow.companyName : ""
+      );
+      return;
+    }
     if (action === "open-deal" && dealId) {
       if (typeof options.openDealView === "function") {
         options.openDealView(dealId);
@@ -1346,5 +1587,6 @@
     loadPipeline: loadPipeline,
     setDealFilter: setDealFilter,
     validateDomCopy: validateDomCopy,
+    showOperatorMatchScoreBreakdown: showOperatorMatchScoreBreakdown,
   };
 })(typeof window !== "undefined" ? window : global);
