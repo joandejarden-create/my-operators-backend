@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dealality Live App Embeds — Marketing Preview</title>
+  <link rel="stylesheet" href="/marketing/dealality-live-embed.css">
+</head>
+<body class="dl-live-showcase">
+  <div class="dl-live-showcase__inner">
+    <p class="dl-live-showcase__label">Dealality Marketing</p>
+    <h1>Live app iframes (demo data)</h1>
+    <p class="dl-live-showcase__lead">Each frame loads the real Railway app UI. Deal workflow frames use the CALA demo deal from <code>/api/marketing/demo-embeds</code>.</p>
+    <p class="dl-live-showcase__meta" id="dl-demo-meta">Loading demo config…</p>
+
+    <div class="dl-live-showcase__grid">
+      <section>
+        <p class="dl-live-showcase__label">01 · Command Center (hero)</p>
+        <div class="dl-iframe dl-iframe--tall" data-dealality-embed="heroDashboard" data-embed-title="Today's Deal Pulse — Command Center"></div>
+      </section>
+      <section>
+        <p class="dl-live-showcase__label">02 · Brand Explorer</p>
+        <div class="dl-iframe dl-iframe--tall" data-dealality-embed="brandExplorer" data-embed-title="Brand Explorer — Atelier North"></div>
+      </section>
+      <section>
+        <p class="dl-live-showcase__label">03 · Operator Explorer</p>
+        <div class="dl-iframe dl-iframe--tall" data-dealality-embed="operatorExplorer" data-embed-title="Operator DNA gold mock"></div>
+      </section>
+      <section>
+        <p class="dl-live-showcase__label">04 · Market Intelligence</p>
+        <div class="dl-iframe" data-dealality-embed="marketIntelligence" data-embed-title="Market Alerts"></div>
+      </section>
+      <section>
+        <p class="dl-live-showcase__label">05 · Commercial Term Comparison</p>
+        <div class="dl-iframe dl-iframe--wide dl-iframe--tall" data-dealality-embed="termComparison" data-embed-title="Deal Compare — CALA demo deal"></div>
+      </section>
+      <section>
+        <p class="dl-live-showcase__label">06 · NDA-Gated Deal Room</p>
+        <div class="dl-iframe dl-iframe--wide dl-iframe--tall" data-dealality-embed="dealRoom" data-embed-title="Deal Room — CALA demo deal"></div>
+      </section>
+      <section>
+        <p class="dl-live-showcase__label">07 · LOI / Deal Setup workflow</p>
+        <div class="dl-iframe dl-iframe--wide dl-iframe--tall" data-dealality-embed="loiHandoff" data-embed-title="Deal Setup — CALA demo deal"></div>
+      </section>
+    </div>
+  </div>
+  <script src="/marketing/dealality-live-embed.js"></script>
+  <script>
+    fetch('/api/marketing/demo-embeds')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var el = document.getElementById('dl-demo-meta');
+        if (!el || !d) return;
+        el.textContent = 'Demo deal: ' + (d.demoDealName || d.demoDealId) + ' (' + d.demoDealId + ') · App base: ' + d.baseUrl;
+      })
+      .catch(function () {
+        var el = document.getElementById('dl-demo-meta');
+        if (el) el.textContent = 'Demo config unavailable — using local fallback URLs.';
+      });
+  </script>
+</body>
+</html>

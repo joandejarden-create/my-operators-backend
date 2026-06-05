@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dealality — A Private Decision Layer for Hotel Brand and Operator Selection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080F25;--bg2:#0D1530;--bg3:#111B3A;--bg4:#0A1228;
+  --purple:#6C72FF;--purple-hover:#5A5FE6;--pl:#8B90FF;--pd:rgba(108,114,255,.12);
+  --gold:#D78E2C;--cream:#FAF3E1;--white:#fff;
+  --mu:rgba(255,255,255,.38);--se:rgba(255,255,255,.6);
+  --bo:rgba(255,255,255,.07);--bp:rgba(108,114,255,.28);
+  --font:'Plus Jakarta Sans',sans-serif;--serif:'Lora',serif;
+  --ease-out:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+.dg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(45deg,rgba(108,114,255,.03) 1px,transparent 1px),linear-gradient(-45deg,rgba(108,114,255,.03) 1px,transparent 1px);background-size:52px 52px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:66px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,15,37,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--bo);transition:background .3s}
+nav.sc{background:rgba(8,15,37,.98)}
+.logo{text-decoration:none;display:flex;align-items:center;line-height:0}
+.logo img{height:28px;width:auto;display:block}
+.nl{display:flex;gap:28px;list-style:none}
+.nl a{font-size:13.5px;font-weight:500;color:var(--se);text-decoration:none;transition:color .2s}
+.nl a:hover{color:var(--white)}
+.nr{display:flex;gap:10px;align-items:center}
+.bg{font-size:13.5px;font-weight:500;color:var(--se);background:none;border:none;cursor:pointer;padding:8px 14px;border-radius:6px;transition:color .2s,background .2s;text-decoration:none}
+.bg:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.bn{font-size:13.5px;font-weight:700;color:var(--white);background:var(--purple);border:none;cursor:pointer;padding:9px 20px;border-radius:6px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s;white-space:nowrap}
+.bn:hover{background:var(--purple-hover);transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,114,255,.28)}
+
+/* ── HERO (text-only) ── */
+#hero{position:relative;min-height:88vh;display:flex;align-items:center;justify-content:center;padding:140px 56px 100px;overflow:hidden;text-align:center}
+.hero-glow{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:720px;height:480px;pointer-events:none;background:radial-gradient(ellipse at center,rgba(108,114,255,.07) 0%,transparent 70%)}
+.hero-cols{position:relative;z-index:1;max-width:780px;margin:0 auto;width:100%}
+.hero-text{text-align:center}
+
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,114,255,.1);border:1px solid var(--bp);padding:6px 16px;border-radius:100px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pl);margin-bottom:32px;animation:fu .6s both}
+.puls{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:.85}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+.hstatic{font-weight:800;font-size:clamp(28px,4vw,52px);line-height:1.08;letter-spacing:-.035em;color:var(--white);animation:fu .6s .1s both}
+.hrwrap{display:block;height:clamp(38px,5.2vw,68px);overflow:hidden;margin-bottom:8px;animation:fu .6s .12s both}
+.hrinner{display:flex;flex-direction:column;transition:transform .58s cubic-bezier(.77,0,.18,1)}
+.hrword{display:block;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(30px,4.2vw,56px);line-height:clamp(38px,5.2vw,68px);height:clamp(38px,5.2vw,68px);color:var(--gold);white-space:nowrap}
+
+.hsub{font-size:clamp(15px,1.9vw,18px);color:var(--se);line-height:1.72;margin:28px auto 40px;max-width:640px;animation:fu .6s .22s both}
+.hctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;animation:fu .6s .32s both;justify-content:center}
+.bp2{font-size:14px;font-weight:700;color:var(--white);background:var(--purple);border:none;cursor:pointer;padding:13px 26px;border-radius:8px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s}
+.bp2:hover{background:var(--purple-hover);transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,114,255,.3)}
+.bs2{font-size:14px;font-weight:600;color:var(--white);background:transparent;border:1.5px solid var(--bp);cursor:pointer;padding:13px 26px;border-radius:8px;text-decoration:none;transition:all .2s}
+.bs2:hover{border-color:var(--purple);background:var(--pd);transform:translateY(-2px)}
+.htrust{font-size:11.5px;color:var(--mu);letter-spacing:.04em;animation:fu .6s .42s both;max-width:560px;margin:0 auto}
+.htrust em{font-style:normal;color:var(--se)}
+
+/* ── PRODUCT SCREENSHOTS ── */
+.shot-frame{background:rgba(13,21,48,.92);backdrop-filter:blur(20px);border:1px solid rgba(108,114,255,.28);border-radius:14px;overflow:hidden;box-shadow:0 20px 48px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04)}
+.shot-chrome{padding:10px 14px;background:rgba(108,114,255,.08);border-bottom:1px solid rgba(108,114,255,.2);display:flex;align-items:center;gap:8px}
+.shot-dots{display:flex;gap:5px}
+.shot-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.12)}
+.shot-dots span:first-child{background:rgba(255,90,90,.55)}
+.shot-dots span:nth-child(2){background:rgba(253,181,42,.55)}
+.shot-dots span:nth-child(3){background:rgba(34,197,94,.45)}
+.shot-url{flex:1;font-size:10.5px;font-weight:600;color:var(--mu);letter-spacing:.02em;padding:4px 10px;background:rgba(0,0,0,.25);border-radius:5px;border:1px solid var(--bo);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shot-live{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#22c55e;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.28);padding:3px 7px;border-radius:4px;flex-shrink:0}
+.shot-frame img{display:block;width:100%;height:auto;vertical-align:top}
+.shot-cap{margin-top:10px;font-size:11px;color:var(--mu);line-height:1.5;text-align:center}
+
+/* Product screenshots — native 2x assets, never upscale past layout width */
+.mkt-shot-img{display:block;width:100%;max-width:100%;height:auto;border-radius:8px;border:1px solid var(--bo);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+
+.proof-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.proof-tile{border:1px solid var(--bo);border-radius:12px;overflow:hidden;background:var(--bg2)}
+.proof-tile .mkt-shot-img{border:none;border-radius:0}
+.proof-tile-cap{padding:12px 14px;font-size:11.5px;color:var(--mu);line-height:1.45;border-top:1px solid var(--bo)}
+
+/* Five-beat image panels */
+.fb-shot .mkt-shot-img{border-radius:8px}
+.fb-shot-cap{font-size:11.5px;color:var(--mu);margin-top:12px;line-height:1.55}
+.intel-map-wrap{margin-top:40px}
+.intel-map-wrap .shot-frame{animation:none}
+.intel-cards-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.intel-mini{background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:16px}
+.intel-mini-t{font-size:12px;font-weight:700;color:var(--white);margin-bottom:6px}
+.intel-mini-b{font-size:11.5px;color:var(--mu);line-height:1.55}
+.brands-visual{margin-top:40px}
+.brands-visual .shot-frame{animation:none}
+
+/* ── MARQUEE ── */
+#marquee{overflow:hidden;background:var(--bg3);border-top:1px solid var(--bo);border-bottom:1px solid var(--bo);padding:14px 0;white-space:nowrap}
+.mq-track{display:inline-flex;gap:0;animation:mq 52s linear infinite}
+.mq-track:hover{animation-play-state:paused}
+.mq-item{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);padding:0 20px;white-space:nowrap}
+.mq-sep{color:var(--bp);font-size:10px;margin:0 4px}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── PERSONA ── */
+#persona{padding:52px 48px 96px;max-width:1240px;margin:0 auto}
+#persona .fb-ey{margin-bottom:22px}
+.prow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:stretch}
+.pc{background:var(--bg2);border:1px solid var(--bo);border-radius:12px;padding:28px;display:flex;flex-direction:column;height:100%;text-decoration:none;transition:all .25s;transform-style:preserve-3d}
+.pc:hover{border-color:var(--bp);background:var(--bg3)}
+.pctag{font-size:12px;font-weight:700;letter-spacing:.03em;margin-bottom:11px}
+.to{color:var(--gold)}.tb{color:var(--pl)}.tp{color:rgba(250,243,225,.55)}
+.pctitle{font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--white);margin-bottom:9px;line-height:1.3}
+.pcbody{font-size:13px;color:var(--se);line-height:1.6;flex:1}
+.pccta{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;margin-top:auto;padding-top:16px;transition:gap .2s}
+.pc:hover .pccta{gap:10px}
+
+/* ── SECTION BASE ── */
+section{position:relative;padding:96px 48px}
+.si{max-width:1200px;margin:0 auto}
+.ey{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--pl);margin-bottom:14px}
+.eyg{color:var(--gold)}
+.h2{font-size:clamp(26px,3.6vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:14px}
+.lead{font-size:16px;color:var(--se);line-height:1.68;max-width:560px;margin-bottom:56px}
+.dvb{width:44px;height:2px;background:linear-gradient(90deg,var(--purple),transparent);margin-bottom:28px}
+
+/* ── PROBLEM ── */
+#problem{background:var(--bg2);border-top:1px solid var(--bo);border-bottom:1px solid var(--bo)}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);align-items:stretch;background:var(--bo);border:1px solid var(--bo);border-radius:12px;overflow:hidden;gap:1px;margin-top:56px}
+.pcol{display:flex;flex-direction:column;height:100%;background:var(--bg2);padding:34px 30px;transition:background .2s}
+.pcol:hover{background:var(--bg3)}
+.pwho{font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--mu);margin-bottom:12px}
+.ph{font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--white);margin-bottom:14px;line-height:1.25}
+.pb{flex:1;font-size:14.5px;color:var(--se);line-height:1.68;margin-bottom:0}
+.pr{margin-top:auto;font-size:14px;color:rgba(215,142,44,.75);font-weight:600;padding-top:16px;border-top:1px solid var(--bo)}
+
+.posbanner{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;background:rgba(108,114,255,.05);border:1px solid var(--bp);border-radius:10px;padding:18px 26px;margin-top:20px}
+.pbl{font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--pl);flex-shrink:0;padding-top:2px}
+.pbd{width:1px;min-height:24px;background:var(--bp);flex-shrink:0}
+.pbt{font-size:14.5px;color:var(--se);line-height:1.58}
+.pbt strong{color:var(--white)}
+
+/* ── FIVE-BEAT INTERACTIVE (centerpiece) ── */
+#fivebeat{background:var(--bg4);border-top:1px solid var(--bo);border-bottom:1px solid var(--bo);padding:104px 56px}
+.fb-inner{max-width:1200px;margin:0 auto}
+.fb-ey{text-align:center;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--pl);margin-bottom:12px}
+.fb-h2{text-align:center;font-size:clamp(26px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin-bottom:14px}
+.fb-lead{text-align:center;font-size:15px;color:var(--se);line-height:1.65;max-width:620px;margin:0 auto 40px}
+.fb-label{text-align:center;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--mu);margin-bottom:20px}
+.fb-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:0;background:var(--bo);border:1px solid var(--bo);border-radius:10px;overflow:hidden;margin-bottom:2px}
+.fb-tab{background:var(--bg4);padding:20px 16px;cursor:pointer;transition:all .25s;border-right:1px solid var(--bo);position:relative}
+.fb-tab:last-child{border-right:none}
+.fb-tab:hover{background:var(--bg3)}
+.fb-tab.active{background:var(--bg2)}
+.fb-tab.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--purple)}
+.fb-num{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.fb-title{font-size:13px;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:5px;letter-spacing:-.01em}
+.fb-sub{font-size:11px;color:var(--mu);line-height:1.5}
+
+.fb-panels{border:1px solid var(--bp);border-radius:12px;overflow:hidden;margin-top:0;min-height:360px;box-shadow:0 24px 56px rgba(0,0,0,.28)}
+.fb-panel{display:none;padding:32px;background:var(--bg2)}
+.fb-panel.active{display:block}
+
+/* Panel content styles */
+.fpp{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.fpp-title{font-size:14px;font-weight:700;color:var(--white);letter-spacing:-.01em;margin-bottom:12px}
+.fpp-mock{background:var(--bg3);border:1px solid var(--bo);border-radius:8px;padding:16px}
+.fpp-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bo);font-size:12.5px}
+.fpp-row:last-child{border-bottom:none}
+.fpp-row-label{color:var(--se)}
+.fpp-row-val{font-weight:700;color:var(--white);font-size:12px}
+.fpp-row-val.gold{color:var(--gold)}
+.fpp-row-val.good{color:#22c55e}
+.fpp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.fpp-chip{font-size:11px;font-weight:600;color:var(--pl);background:var(--pd);border:1px solid var(--bp);border-radius:4px;padding:3px 8px}
+.fpp-check{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--se);padding:6px 0}
+.fpp-check-icon{width:16px;height:16px;border-radius:50%;background:rgba(108,114,255,.12);border:1px solid rgba(108,114,255,.35);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--purple);flex-shrink:0}
+.fpp-check-icon.pend{background:rgba(215,142,44,.1);border-color:rgba(215,142,44,.3);color:var(--gold)}
+.comp-table{width:100%;font-size:12px}
+.comp-table th{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);padding:6px 10px;text-align:left;border-bottom:1px solid var(--bo)}
+.comp-table td{padding:8px 10px;border-bottom:1px solid var(--bo);color:var(--se)}
+.comp-table td.best{color:#22c55e;font-weight:700}
+.comp-table td.co{color:var(--white);font-weight:600}
+.nda-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#22c55e;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);padding:4px 10px;border-radius:4px;margin-bottom:12px}
+.file-item{display:flex;align-items:center;gap:8px;padding:9px;background:var(--bg2);border:1px solid var(--bo);border-radius:6px;margin-bottom:6px;font-size:12.5px;color:var(--se)}
+.file-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;color:var(--purple);flex-shrink:0}
+.file-icon svg{display:block;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── THE PLATFORM ── */
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:56px}
+.dc{background:var(--bg2);border:1px solid var(--bo);border-radius:10px;padding:24px;transition:all .25s;cursor:default;display:flex;flex-direction:column}
+.dc:hover{border-color:var(--bp);background:var(--bg3)}
+/* Platform-faithful icon rings — match explorer active tab accent */
+.mkt-icon-ring{width:32px;height:32px;border-radius:50%;border:2px solid var(--purple);display:inline-flex;align-items:center;justify-content:center;color:var(--pl);background:rgba(108,114,255,.14);flex-shrink:0;box-shadow:0 0 0 1px rgba(108,114,255,.12);line-height:0;vertical-align:middle}
+.dc-icon.mkt-icon-ring,.biico.mkt-icon-ring,.fcico.mkt-icon-ring,.picn.mkt-icon-ring{display:inline-flex}
+.dc .mkt-icon-ring{width:36px;height:36px;margin-bottom:14px}
+.dc .mkt-icon-ring svg{width:18px;height:18px;stroke-width:1.85}
+.mkt-icon-ring--sm{width:24px;height:24px;border-width:1.5px}
+.mkt-icon-ring svg{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.mkt-icon-ring--sm svg{width:13px;height:13px}
+.dc-icon,.biico,.fcico,.picn{flex-shrink:0}
+.dc-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.3;letter-spacing:-.01em}
+.dc-body{font-size:12.5px;color:var(--se);line-height:1.62}
+
+/* ── INTELLIGENCE HUB ── */
+#intelligence{background:var(--bg2);border-top:1px solid var(--bo);border-bottom:1px solid var(--bo)}
+.intel-kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--se);margin-bottom:16px;padding:5px 14px;border:1px solid var(--bo);border-radius:100px;background:rgba(255,255,255,.03)}
+
+.intel-hub-wrap{position:relative;margin-top:56px}
+.intel-hub-grid{display:grid;grid-template-columns:1fr 200px 1fr;grid-template-rows:1fr 60px 1fr;gap:0;position:relative}
+.ihub-center{grid-column:2;grid-row:2;display:flex;align-items:center;justify-content:center;z-index:2}
+.ihub-node{background:linear-gradient(135deg,rgba(108,114,255,.2),rgba(108,114,255,.06));border:1.5px solid rgba(108,114,255,.45);border-radius:50%;width:110px;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 0 24px rgba(108,114,255,.14);position:relative}
+.ihub-label{font-size:10px;font-weight:700;letter-spacing:.03em;color:var(--purple);margin-bottom:4px}
+.ihub-name{font-size:12px;font-weight:800;color:var(--white);line-height:1.2;letter-spacing:-.01em}
+
+.ihub-tl{grid-column:1;grid-row:1;padding:16px 20px 16px 0}
+.ihub-tr{grid-column:3;grid-row:1;padding:16px 0 16px 20px}
+.ihub-bl{grid-column:1;grid-row:3;padding:16px 20px 0 0}
+.ihub-br{grid-column:3;grid-row:3;padding:16px 0 0 20px}
+
+.icard{background:var(--bg3);border:1px solid var(--bo);border-radius:12px;padding:22px;cursor:pointer;transition:all .3s;height:100%}
+.icard:hover{border-color:var(--bp);background:var(--bg2)}
+.icard-tag{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--purple);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.icard-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px;letter-spacing:-.01em}
+.icard-body{font-size:12px;color:var(--se);line-height:1.6;margin-bottom:12px}
+.icard-signals{display:flex;flex-wrap:wrap;gap:5px}
+.isig{font-size:10.5px;font-weight:600;color:var(--mu);background:rgba(255,255,255,.04);border:1px solid var(--bo);border-radius:3px;padding:2px 7px;transition:all .2s}
+.icard:hover .isig{color:var(--se);border-color:var(--bp)}
+
+/* SVG connector lines */
+.intel-svg{position:absolute;inset:0;pointer-events:none;z-index:1}
+.conn-line{stroke:rgba(108,114,255,.22);stroke-width:1;fill:none}
+
+/* statement block */
+.intel-stmt{background:linear-gradient(135deg,rgba(108,114,255,.1),rgba(108,114,255,.04));border:1px solid rgba(108,114,255,.28);border-radius:12px;padding:28px 32px;margin-bottom:32px}
+.intel-stmt-text{font-size:clamp(15px,2vw,19px);color:var(--cream-dim,rgba(250,243,225,.7));line-height:1.65;font-family:var(--serif);font-style:italic;max-width:760px}
+.intel-stmt-text strong{font-style:normal;color:var(--white)}
+
+/* ── OWNERS ── */
+#owners{border-top:1px solid var(--bo)}
+.og{display:grid;grid-template-columns:1.2fr 1fr;gap:72px;align-items:start}
+.blist{list-style:none;display:flex;flex-direction:column;gap:14px}
+.bi{display:flex;gap:14px;align-items:flex-start;padding:18px;background:var(--bg2);border:1px solid var(--bo);border-radius:10px;transition:all .25s}
+.bi:hover{border-color:var(--bp)}
+.biico{margin-top:2px}
+.bit{font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px}
+.bid{font-size:12.5px;color:var(--se);line-height:1.55}
+
+.betabox{background:linear-gradient(135deg,rgba(108,114,255,.1),rgba(215,142,44,.06));border:1px solid var(--bp);border-radius:12px;padding:28px;margin-top:28px}
+.betal{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.betah{font-size:24px;font-weight:800;letter-spacing:-.03em;color:var(--white);margin-bottom:10px;line-height:1.2}
+.betab{font-size:13px;color:var(--se);line-height:1.65;margin-bottom:20px}
+.betarows{display:flex;flex-direction:column;margin-bottom:20px}
+.betar{display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid var(--bo)}
+.betarl{color:var(--se)}.betarv{font-weight:700;color:var(--white)}
+.betanote{font-size:11.5px;color:var(--mu);line-height:1.6;margin-bottom:20px;font-style:italic}
+.bfull{font-size:14px;font-weight:700;color:var(--white);background:var(--purple);border:none;cursor:pointer;padding:13px;border-radius:7px;display:block;text-align:center;text-decoration:none;transition:background .2s,box-shadow .2s}
+.bfull:hover{background:var(--purple-hover);box-shadow:0 6px 22px rgba(108,114,255,.28)}
+
+/* ── BRANDS ── */
+.rgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:56px}
+.rc{background:var(--bg2);border:1px solid var(--bo);border-radius:10px;padding:24px;transition:all .25s}
+.rc:hover{border-color:var(--bp)}
+.rcn{font-size:28px;font-weight:800;color:rgba(108,114,255,.18);letter-spacing:-.05em;line-height:1;margin-bottom:9px}
+.rct{font-size:14.5px;font-weight:700;color:var(--white);margin-bottom:5px}
+.rcb{font-size:12.5px;color:var(--se);line-height:1.62}
+.brow{display:flex;gap:12px;flex-wrap:wrap}
+.bout{font-size:14px;font-weight:700;color:var(--white);background:transparent;border:1.5px solid var(--bp);cursor:pointer;padding:12px 24px;border-radius:7px;text-decoration:none;transition:all .2s}
+.bout:hover{border-color:var(--purple);background:var(--pd)}
+
+/* ── SERVICE PARTNERS ── */
+#partners{border-top:1px solid var(--bo)}
+.ptrow{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.ptags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.ptag{font-size:11.5px;font-weight:600;color:var(--se);background:var(--bg2);border:1px solid var(--bo);border-radius:100px;padding:5px 14px}
+.pcards{display:flex;flex-direction:column;gap:12px}
+.pcard{background:var(--bg2);border:1px solid var(--bo);border-radius:10px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start;transition:all .25s}
+.pcard:hover{border-color:var(--bp)}
+.picn{flex-shrink:0;margin-top:1px}
+.pct{font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px}
+.pcd{font-size:12.5px;color:var(--se);line-height:1.55}
+
+/* ── HOW IT WORKS ── */
+#how{background:var(--bg2);border-top:1px solid var(--bo);border-bottom:1px solid var(--bo)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);background:var(--bo);border:1px solid var(--bo);border-radius:12px;overflow:hidden;gap:1px;margin-top:56px}
+.step{background:var(--bg2);padding:30px 26px;transition:all .25s;cursor:default}
+.step:hover{background:var(--bg3)}
+.sn{font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--pl);margin-bottom:11px}
+.st{font-size:15.5px;font-weight:700;color:var(--white);margin-bottom:7px;letter-spacing:-.01em}
+.sb{font-size:13px;color:var(--se);line-height:1.62}
+
+/* ── FEATURES + DEAL READINESS ── */
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:56px}
+.fc{background:var(--bg2);border:1px solid var(--bo);border-radius:12px;padding:26px;transition:all .25s}
+.fc:hover{border-color:var(--bp)}
+.fcico{margin-bottom:14px}
+.fct{font-size:15.5px;font-weight:700;color:var(--white);margin-bottom:7px;letter-spacing:-.01em}
+.fcb{font-size:12.5px;color:var(--se);line-height:1.65}
+.fctag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:rgba(215,142,44,.1);padding:3px 8px;border-radius:4px;margin-top:11px}
+
+/* Deal readiness visual */
+.dr-wrap{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;background:var(--bg2);border:1px solid var(--bp);border-radius:12px;padding:32px;margin-top:36px}
+.dr-ring-wrap{position:relative;width:140px;height:140px;flex-shrink:0}
+.dr-ring-svg{transform:rotate(-90deg)}
+.dr-ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:8}
+.dr-ring-fill{fill:none;stroke:url(#ringGrad);stroke-width:8;stroke-linecap:round;stroke-dasharray:380;stroke-dashoffset:380;transition:stroke-dashoffset 2s cubic-bezier(.22,1,.36,1)}
+.dr-ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.dr-ring-val{font-size:28px;font-weight:800;letter-spacing:-.04em;color:var(--white);line-height:1}
+.dr-ring-lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+.dr-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.drm{background:var(--bg3);border:1px solid var(--bo);border-radius:8px;padding:14px}
+.drm-label{font-size:11px;font-weight:600;color:var(--mu);margin-bottom:6px}
+.drm-bar-track{height:4px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;margin-bottom:6px}
+.drm-bar{height:100%;width:0%;border-radius:100px;background:linear-gradient(90deg,var(--purple),var(--pl));transition:width 1.6s cubic-bezier(.22,1,.36,1)}
+.drm-val{font-size:13px;font-weight:700;color:var(--white)}
+
+/* Term comparison table */
+.tc-section{background:var(--bg2);border:1px solid var(--bo);border-radius:12px;padding:32px;margin-top:36px;overflow-x:auto}
+.tc-heading{font-size:14px;font-weight:700;color:var(--white);margin-bottom:20px;letter-spacing:-.01em}
+.tc-table{width:100%;font-size:13px;border-collapse:collapse}
+.tc-table th{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);padding:8px 14px;text-align:left;border-bottom:1px solid var(--bo)}
+.tc-table td{padding:12px 14px;border-bottom:1px solid var(--bo);color:var(--se)}
+.tc-table td:first-child{color:var(--white);font-weight:600}
+.tc-table .best{color:#22c55e;font-weight:700}
+.tc-table .neutral{color:var(--se)}
+.tc-note{font-size:11.5px;color:var(--mu);margin-top:14px;font-style:italic}
+
+.planb{background:var(--bg2);border:1px solid var(--bp);border-radius:10px;padding:20px 26px;margin-top:20px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.plbl{font-size:12.5px;font-weight:700;letter-spacing:.03em;color:var(--pl);flex-shrink:0;padding-top:2px}
+.pdiv{width:1px;min-height:24px;background:var(--bp);flex-shrink:0}
+.ptxt{font-size:13px;color:var(--se);line-height:1.6}
+.ptxt strong{color:var(--white)}
+
+/* ── WHY WE EXIST ── */
+.wgrid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.wq{max-width:34em;margin-bottom:20px}
+.wq p{font-family:var(--font);font-size:clamp(15px,1.75vw,18px);font-weight:400;color:rgba(250,243,225,.82);line-height:1.7;margin:0 0 14px;letter-spacing:-.01em}
+.wq p:last-child{margin-bottom:0}
+.wa{font-size:13px;color:var(--mu);font-weight:500;margin-top:4px}
+.wcards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.wc{background:var(--bg2);border:1px solid var(--bo);border-radius:10px;padding:20px;transition:border-color .2s}
+.wc:hover{border-color:var(--bp)}
+.wcl{font-size:12px;color:var(--se);line-height:1.5}
+.wcl strong{display:block;font-size:13.5px;font-weight:700;color:var(--white);margin-bottom:4px}
+
+/* ── FAQ ACCORDION ── */
+#faq{background:var(--bg2);border-top:1px solid var(--bo);border-bottom:1px solid var(--bo)}
+.faq-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--bo);border-radius:12px;overflow:hidden;margin-top:48px}
+.faq-item{}
+.faq-q{width:100%;background:var(--bg2);border:none;border-bottom:1px solid var(--bo);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .2s;text-align:left}
+.faq-item:last-child .faq-q{border-bottom:none}
+.faq-item.open .faq-q{background:var(--bg3);border-bottom:1px solid var(--bo)}
+.faq-q-text{font-size:15px;font-weight:700;color:var(--white);letter-spacing:-.01em}
+.faq-icon{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--bp);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .3s,background .2s}
+.faq-icon svg{width:10px;height:10px;stroke:var(--pl);stroke-width:2;fill:none;transition:transform .3s}
+.faq-item.open .faq-icon{background:var(--pd);border-color:var(--purple)}
+.faq-item.open .faq-icon svg{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.22,1,.36,1)}
+.faq-a-inner{padding:0 24px 20px;font-size:14px;color:var(--se);line-height:1.7}
+
+/* ── VALUES (compact) ── */
+#values{padding:56px 48px}
+.vrow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:36px}
+.vc{border-left:2px solid var(--bp);padding:16px 18px;transition:all .2s}
+.vc:hover{border-left-color:var(--purple);background:rgba(108,114,255,.04);border-radius:0 8px 8px 0}
+.vcn{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-bottom:7px}
+.vct{font-size:13px;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:5px}
+.vcb{font-size:11.5px;color:var(--mu);line-height:1.55}
+
+/* ── FINAL CTA ── */
+#cta{text-align:center;padding:112px 48px;position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:680px;height:380px;pointer-events:none;background:radial-gradient(ellipse,rgba(108,114,255,.14) 0%,transparent 70%)}
+.cta-in{position:relative;z-index:1;max-width:600px;margin:0 auto}
+.ctah{font-size:clamp(28px,4.5vw,50px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:14px}
+.ctasub{font-size:16px;color:var(--se);line-height:1.65;margin-bottom:36px}
+.ctapair{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.ctafine{font-size:11.5px;color:var(--mu)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg2);border-top:1px solid var(--bo);padding:56px 48px 32px}
+.ft{max-width:1200px;margin:0 auto}
+.ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:44px;border-bottom:1px solid var(--bo);margin-bottom:28px}
+.fbrand{margin-bottom:12px;line-height:0}
+.fbrand img{height:24px;width:auto;display:block}
+.ftag{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);line-height:1.8}
+.fcolh{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:14px}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:9px}
+.flinks a{font-size:13px;color:var(--se);text-decoration:none;transition:color .2s}
+.flinks a:hover{color:var(--white)}
+.fbot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.fcopy{font-size:12px;color:var(--mu)}
+.flegal{display:flex;gap:18px}
+.flegal a{font-size:12px;color:var(--mu);text-decoration:none;transition:color .2s}
+.flegal a:hover{color:var(--se)}
+
+/* ── SCROLL ANIMATIONS ── */
+.fu{opacity:0;transform:translateY(22px);transition:opacity .58s ease,transform .58s ease}
+.fu.vis{opacity:1;transform:none}
+/* Avoid subpixel blur on hi-res screenshots during scroll fade */
+.fb-panels.fu,.proof-strip.fu{transform:none;opacity:0;transition:opacity .58s ease}
+.fb-panels.fu.vis,.proof-strip.fu.vis{opacity:1}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  nav{padding:0 20px}.nl{display:none}
+  section,#cta,#fivebeat,#values,#marquee{padding:68px 20px}
+  #persona{padding:40px 20px 68px}
+  #hero{padding:120px 20px 80px;min-height:auto}
+  .proof-strip{grid-template-columns:1fr}
+  .prow,.dgrid,.rgrid,.fgrid,.og,.ptrow,.wgrid,.wcards,.vrow,.ftop{grid-template-columns:1fr}
+  .pgrid,.steps{grid-template-columns:1fr}
+  .fb-tabs{grid-template-columns:1fr 1fr}
+  .fpp{grid-template-columns:1fr}
+  .intel-hub-grid{grid-template-columns:1fr;grid-template-rows:auto}
+  .ihub-center,.ihub-tl,.ihub-tr,.ihub-bl,.ihub-br{grid-column:1;grid-row:auto;padding:8px 0}
+  .intel-svg{display:none}
+  .dr-wrap{grid-template-columns:1fr}
+  .dr-ring-wrap{margin:0 auto}
+}
+@media(max-width:540px){
+  .ftop,.vrow{grid-template-columns:1fr}
+  .dr-metrics{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo"><img src="/assets/dealality-logo.png" width="320" height="127" alt="Dealality" loading="eager"></a>
+  <ul class="nl">
+    <li><a href="#fivebeat">How It Works</a></li>
+    <li><a href="#owners">For Owners</a></li>
+    <li><a href="#brands">For Brands</a></li>
+    <li><a href="#intelligence">Intelligence</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <div class="nr">
+    <a href="#" class="bg">Sign In</a>
+    <a href="#cta" class="bn">Request Early Access →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="dg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-cols">
+
+    <div class="hero-text">
+      <div class="hbadge"><span class="puls"></span>Private Beta · Now Open</div>
+      <h1 class="hstatic">A more confidential, structured way to manage</h1>
+      <div class="hrwrap">
+        <div class="hrinner" id="rotator">
+          <span class="hrword">hotel brand selection.</span>
+          <span class="hrword">operator evaluation.</span>
+          <span class="hrword">commercial terms.</span>
+          <span class="hrword">deal readiness.</span>
+          <span class="hrword">hotel brand selection.</span>
+        </div>
+      </div>
+      <p class="hsub">Dealality helps hotel owners evaluate brands, operators, market context, and commercial terms before outreach begins — then manage a confidential, structured selection process through LOI.</p>
+      <div class="hctas">
+        <a href="#owners" class="bp2">Submit a Project for Review →</a>
+        <a href="#brands" class="bs2">Join as a Brand or Operator</a>
+      </div>
+      <p class="htrust">Informed by conversations with hotel owners, brands, operators, advisors, and development leaders across <em>the Americas, Canada, and Europe.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div id="marquee">
+  <div class="mq-track" id="mq">
+    <span class="mq-item">Brand Fit Signals</span><span class="mq-sep">·</span>
+    <span class="mq-item">Operator Capabilities</span><span class="mq-sep">·</span>
+    <span class="mq-item">Market Context</span><span class="mq-sep">·</span>
+    <span class="mq-item">Fee Structures</span><span class="mq-sep">·</span>
+    <span class="mq-item">PIP Expectations</span><span class="mq-sep">·</span>
+    <span class="mq-item">Conversion Flexibility</span><span class="mq-sep">·</span>
+    <span class="mq-item">Territory Terms</span><span class="mq-sep">·</span>
+    <span class="mq-item">Owner Reporting</span><span class="mq-sep">·</span>
+    <span class="mq-item">Deal Readiness</span><span class="mq-sep">·</span>
+    <span class="mq-item">NDA-Gated Access</span><span class="mq-sep">·</span>
+    <span class="mq-item">Confidential Process</span><span class="mq-sep">·</span>
+    <span class="mq-item">Structured Comparison</span><span class="mq-sep">·</span>
+    <span class="mq-item">Permission-Based Access</span><span class="mq-sep">·</span>
+    <span class="mq-item">LOI Handoff</span><span class="mq-sep">·</span>
+    <!-- duplicate for seamless loop -->
+    <span class="mq-item">Brand Fit Signals</span><span class="mq-sep">·</span>
+    <span class="mq-item">Operator Capabilities</span><span class="mq-sep">·</span>
+    <span class="mq-item">Market Context</span><span class="mq-sep">·</span>
+    <span class="mq-item">Fee Structures</span><span class="mq-sep">·</span>
+    <span class="mq-item">PIP Expectations</span><span class="mq-sep">·</span>
+    <span class="mq-item">Conversion Flexibility</span><span class="mq-sep">·</span>
+    <span class="mq-item">Territory Terms</span><span class="mq-sep">·</span>
+    <span class="mq-item">Owner Reporting</span><span class="mq-sep">·</span>
+    <span class="mq-item">Deal Readiness</span><span class="mq-sep">·</span>
+    <span class="mq-item">NDA-Gated Access</span><span class="mq-sep">·</span>
+    <span class="mq-item">Confidential Process</span><span class="mq-sep">·</span>
+    <span class="mq-item">Structured Comparison</span><span class="mq-sep">·</span>
+    <span class="mq-item">Permission-Based Access</span><span class="mq-sep">·</span>
+    <span class="mq-item">LOI Handoff</span><span class="mq-sep">·</span>
+  </div>
+</div>
+
+<!-- PERSONA FORK -->
+<div id="persona">
+  <p class="fb-ey">Who are you?</p>
+  <div class="prow">
+    <a href="#owners" class="pc">
+      <div class="pctag to">Hotel Owner / Investor</div>
+      <div class="pctitle">You need a more informed, confidential process for evaluating brands and operators.</div>
+      <div class="pcbody">Move from scattered outreach to structured, owner-controlled evaluation — with market intelligence, standardized comparison, and the confidentiality your project deserves.</div>
+      <div class="pccta" style="color:var(--gold)">Free to submit during private beta →</div>
+    </a>
+    <a href="#brands" class="pc">
+      <div class="pctag tb">Brand / Operator</div>
+      <div class="pctitle">You want better-fit opportunities with better information upfront.</div>
+      <div class="pcbody">Spend less time on incomplete leads and more time evaluating projects that match your growth strategy, market appetite, and operating model.</div>
+      <div class="pccta" style="color:var(--pl)">Join as a brand or operator →</div>
+    </a>
+    <a href="#partners" class="pc">
+      <div class="pctag tp">Advisor / Service Partner</div>
+      <div class="pctitle">You want to be part of the process — not brought in at the end.</div>
+      <div class="pcbody">Advisors, brokers, lenders, and consultants gain structured access to deal workflows at the right moment, with the right context already in place.</div>
+      <div class="pccta" style="color:rgba(250,243,225,.55)">Create your profile →</div>
+    </a>
+  </div>
+</div>
+
+<!-- INTERACTIVE FIVE-BEAT (centerpiece — moved up) -->
+<div id="fivebeat">
+  <div class="fb-inner">
+    <p class="fb-ey fu">How Dealality Works</p>
+    <h2 class="fb-h2 fu">Five beats from intelligence<br>to LOI — privately.</h2>
+    <p class="fb-lead fu">The full owner workflow in one sequence. Click each beat to see how the platform supports confidential brand and operator selection.</p>
+    <p class="fb-label fu">Explore the workflow</p>
+    <div class="fb-tabs fu">
+      <div class="fb-tab active" data-panel="0">
+        <div class="fb-num">01</div>
+        <div class="fb-title">Know the Landscape</div>
+        <div class="fb-sub">Before outreach begins</div>
+      </div>
+      <div class="fb-tab" data-panel="1">
+        <div class="fb-num">02</div>
+        <div class="fb-title">Share Selectively</div>
+        <div class="fb-sub">Owner-controlled access</div>
+      </div>
+      <div class="fb-tab" data-panel="2">
+        <div class="fb-num">03</div>
+        <div class="fb-title">Compare Responses</div>
+        <div class="fb-sub">Structured format</div>
+      </div>
+      <div class="fb-tab" data-panel="3">
+        <div class="fb-num">04</div>
+        <div class="fb-title">Secure Deal Room</div>
+        <div class="fb-sub">NDA-gated access</div>
+      </div>
+      <div class="fb-tab" data-panel="4">
+        <div class="fb-num">05</div>
+        <div class="fb-title">Step Back at LOI</div>
+        <div class="fb-sub">Platform handoff</div>
+      </div>
+    </div>
+    <div class="fb-panels fu">
+      <div class="fb-panel active">
+        <div class="fb-shot"><img class="mkt-shot-img" src="screenshots/brand-explorer.png" width="1024" height="673" alt="Brand and market intelligence in Dealality" decoding="async"></div>
+        <p class="fb-shot-cap"><strong>Beat 01 — Know the landscape.</strong> Brand Explorer, Operator Explorer, and market maps give owners structured intelligence before any project is shared.</p>
+      </div>
+      <div class="fb-panel">
+        <div class="fb-shot"><img class="mkt-shot-img" src="screenshots/matched-brands.png" width="1024" height="517" alt="Owner-controlled matched brands shortlist" decoding="async"></div>
+        <p class="fb-shot-cap"><strong>Beat 02 — Share selectively.</strong> Owners control who sees the project. Matched Brands surfaces only criteria-aligned parties — no public listings.</p>
+      </div>
+      <div class="fb-panel">
+        <div class="fb-shot"><img class="mkt-shot-img" src="screenshots/deal-compare.png" width="1024" height="463" alt="Structured commercial term comparison" decoding="async"></div>
+        <p class="fb-shot-cap"><strong>Beat 03 — Compare responses.</strong> Brands submit terms in a standardized matrix. Owners compare fees, royalties, and contract length before direct calls.</p>
+      </div>
+      <div class="fb-panel">
+        <div class="fb-shot"><img class="mkt-shot-img" src="screenshots/deal-room.png" width="1024" height="497" alt="NDA-gated deal room with brand requests and document folders" decoding="async"></div>
+        <p class="fb-shot-cap"><strong>Beat 04 — Secure deal room.</strong> Brand deal requests, NDA execution, and explorer-style folders — Owner, Brand, Operator, and Shared — with confidentiality gates before finalists access confidential materials.</p>
+      </div>
+      <div class="fb-panel">
+        <div class="fpp">
+          <div>
+            <div class="fpp-title">Platform Milestones</div>
+            <div class="fpp-mock">
+              <div class="fpp-check"><div class="fpp-check-icon">✓</div>Intelligence review complete</div>
+              <div class="fpp-check"><div class="fpp-check-icon">✓</div>Criteria-matched shortlist created</div>
+              <div class="fpp-check"><div class="fpp-check-icon">✓</div>Terms compared side-by-side</div>
+              <div class="fpp-check"><div class="fpp-check-icon">✓</div>Finalists in NDA-gated deal room</div>
+              <div class="fpp-check"><div class="fpp-check-icon pend">→</div>LOI stage — Dealality steps back</div>
+            </div>
+          </div>
+          <div>
+            <div class="fpp-title">What Happens Next</div>
+            <div class="fpp-mock">
+              <div style="font-size:13px;color:var(--se);line-height:1.7">Final negotiations, MA/FA drafting, and legal documentation proceed directly between the parties and their professional advisors.</div>
+              <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--bo);font-size:11.5px;color:var(--mu)">Dealality's role ends at LOI. No ongoing intermediation. No commission bias.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="si">
+    <p class="ey fu">The Problem</p>
+    <h2 class="h2 fu">Most owners do not lack options.<br>They lack a structured way to understand them.</h2>
+    <p class="lead fu">Selecting a hotel brand, operator, or franchise partner is one of the most consequential decisions an owner makes. The information environment and process around it have not kept pace with that importance.</p>
+    <div class="pgrid fu">
+      <div class="pcol">
+        <div class="pwho">For Owners</div>
+        <div class="ph">Incomplete Information.<br>No Structured Comparison.</div>
+        <div class="pb">Owners approach multiple brands simultaneously, repeat their story to each one, and receive responses in inconsistent formats — with no structured way to understand which options actually fit the asset, market, ownership goals, conversion economics, or long-term operating strategy.</div>
+        <div class="pr">Result: Major decisions made without the intelligence to support them.</div>
+      </div>
+      <div class="pcol">
+        <div class="pwho">For Brands & Operators</div>
+        <div class="ph">Misaligned Outreach.<br>Misqualified Leads.</div>
+        <div class="pb">Development teams spend significant time responding to poorly scoped opportunities. The cost is not just effort — it is missed alignment with owners who were the right fit but came through the wrong channel with the wrong information.</div>
+        <div class="pr">Result: Wasted pipeline capacity and conversations that should never have started.</div>
+      </div>
+      <div class="pcol">
+        <div class="pwho">For Advisors & Partners</div>
+        <div class="ph">Looped in Late.<br>Limited Context.</div>
+        <div class="pb">Lenders, attorneys, and consultants typically enter after key conversations have already taken place. By the time they are engaged, deal structure is partially set and fragmented information is spread across emails, PDFs, and informal discussions.</div>
+        <div class="pr">Result: Constrained influence and decisions already shaped without them.</div>
+      </div>
+    </div>
+    <div class="posbanner fu">
+      <div class="pbl">What Dealality Is</div>
+      <div class="pbd"></div>
+      <div class="pbt"><strong>Dealality is not a public marketplace. It is a private decision layer</strong> for hotel owners evaluating brands, operators, and deal partners — combining market intelligence, structured comparison, and confidential deal workflow in one purpose-built platform.</div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PLATFORM -->
+<section id="what">
+  <div class="si">
+    <p class="ey fu">The Platform</p>
+    <h2 class="h2 fu">Built for how hotel transactions<br>actually get done.</h2>
+    <p class="lead fu">Privately and confidentially — with the owner in control of who sees what and when. Market intelligence and structured comparison enter the process before outreach begins.</p>
+    <div class="dgrid fu">
+      <div class="dc"><span class="dc-icon mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><div class="dc-title">Confidential First</div><div class="dc-body">No public listings. Owners control who sees their project and when. Identity stays protected until the owner chooses to engage.</div></div>
+      <div class="dc"><span class="dc-icon mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><div class="dc-title">Permission-Based Access</div><div class="dc-body">Owners select which brands and operators to engage. No open browsing, no unsolicited outreach, no information shared without explicit consent.</div></div>
+      <div class="dc"><span class="dc-icon mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></span><div class="dc-title">Intelligence Before Outreach</div><div class="dc-body">Brand Explorer, Operator Explorer, and Market Intelligence give owners a structured view of the landscape before a project is ever shared.</div></div>
+      <div class="dc"><span class="dc-icon mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg></span><div class="dc-title">Structured Comparison</div><div class="dc-body">Brands submit terms in a standardized format. Owners compare fees, PIP requirements, royalties, and territory terms side-by-side before the first call.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTELLIGENCE HUB -->
+<section id="intelligence">
+  <div class="si">
+    <div class="intel-kicker fu"><span class="mkt-icon-ring mkt-icon-ring--sm" style="margin:0" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></span>Not a directory. A decision layer.</div>
+    <p class="ey fu">Platform Intelligence</p>
+    <h2 class="h2 fu">Know the landscape<br>before you start the conversation.</h2>
+    <div class="intel-stmt fu">
+      <p class="intel-stmt-text">Owners often begin brand and operator conversations without a clear view of the landscape. <strong>Dealality brings that intelligence into the process before the project is shared.</strong></p>
+    </div>
+
+    <div class="intel-hub-wrap fu">
+      <div class="intel-hub-grid" id="ihubgrid">
+        <div class="ihub-tl">
+          <div class="icard" id="ic0">
+            <div class="icard-tag"><span class="mkt-icon-ring mkt-icon-ring--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>Brand Explorer</div>
+            <div class="icard-title">Understand Which Brands May Fit — and Why</div>
+            <div class="icard-body">Evaluate positioning, development appetite, conversion flexibility, fee structures, and owner-fit signals by asset type and market.</div>
+          </div>
+        </div>
+        <div class="ihub-center">
+          <div class="ihub-node">
+            <div class="ihub-label">Owner</div>
+            <div class="ihub-name">Project<br>Hub</div>
+          </div>
+        </div>
+        <div class="ihub-tr">
+          <div class="icard" id="ic1">
+            <div class="icard-tag"><span class="mkt-icon-ring mkt-icon-ring--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Operator Explorer</div>
+            <div class="icard-title">Evaluate Operators Before You Engage Them on a Deal</div>
+            <div class="icard-body">Assess geography, transition experience, reporting cadence, capex support, and brand relationship depth.</div>
+          </div>
+        </div>
+        <div class="ihub-bl">
+          <div class="icard" id="ic2">
+            <div class="icard-tag"><span class="mkt-icon-ring mkt-icon-ring--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span>Market Intelligence</div>
+            <div class="icard-title">Context That Shapes Which Partners Are Most Relevant</div>
+            <div class="icard-body">Review brand presence, chain scale gaps, travel infrastructure, and conversion suitability by submarket.</div>
+          </div>
+        </div>
+        <div class="ihub-br">
+          <div class="icard" id="ic3">
+            <div class="icard-tag"><span class="mkt-icon-ring mkt-icon-ring--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg></span>Deal Readiness</div>
+            <div class="icard-title">Identify Gaps Before Partners Are Invited In</div>
+            <div class="icard-body">Surface missing information and key questions so owners generate stronger, more consistent responses.</div>
+          </div>
+        </div>
+      </div>
+      <svg class="intel-svg" id="ihubsvg" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true">
+        <line id="sl0" x1="0" y1="0" x2="0" y2="0" class="conn-line"/>
+        <line id="sl1" x1="0" y1="0" x2="0" y2="0" class="conn-line"/>
+        <line id="sl2" x1="0" y1="0" x2="0" y2="0" class="conn-line"/>
+        <line id="sl3" x1="0" y1="0" x2="0" y2="0" class="conn-line"/>
+      </svg>
+    </div>
+    <div class="proof-strip fu">
+      <div class="proof-tile">
+        <img class="mkt-shot-img" src="screenshots/market-map.png" width="839" height="904" alt="Market intelligence map" loading="lazy" decoding="async">
+        <div class="proof-tile-cap">Market maps — supply, chain scale, and infrastructure layers.</div>
+      </div>
+      <div class="proof-tile">
+        <img class="mkt-shot-img" src="screenshots/fee-estimator.png" width="1024" height="510" alt="Fee estimator projection" loading="lazy" decoding="async">
+        <div class="proof-tile-cap">Fee Estimator — model economics before serious conversations.</div>
+      </div>
+      <div class="proof-tile">
+        <img class="mkt-shot-img" src="screenshots/operator-track-record.png" width="1024" height="670" alt="Operator proof and track record" loading="lazy" decoding="async">
+        <div class="proof-tile-cap">Operator Explorer — proof, case studies, and references.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR OWNERS -->
+<section id="owners">
+  <div class="si">
+    <p class="ey eyg fu">For Owners & Investors</p>
+    <div class="og">
+      <div>
+        <div class="dvb"></div>
+        <h2 class="h2 fu">More control.<br>Better intelligence.<br>A cleaner process.</h2>
+        <p style="font-size:16px;color:var(--se);line-height:1.68;max-width:480px;margin-bottom:32px" class="fu">Owners submit once. Dealality helps them understand the landscape, identify the right partners, compare terms, and move qualified conversations forward — without repeating their story or losing confidentiality.</p>
+        <ul class="blist fu">
+          <li class="bi"><span class="biico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></span><div><div class="bit">Intelligence Before the First Outreach</div><div class="bid">Brand Explorer, Operator Explorer, and Market Intelligence help owners understand which options fit the asset and market — before a project is shared with anyone.</div></div></li>
+          <li class="bi"><span class="biico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><div><div class="bit">Criteria-Matched Partners Only</div><div class="bid">Your project reaches only brands and operators who meet your goals, asset type, market, and fee thresholds. No noise, no misaligned responses.</div></div></li>
+          <li class="bi"><span class="biico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span><div><div class="bit">Staged Disclosure, Owner-Controlled</div><div class="bid">Start with a blind teaser. Share full details only with parties you have selected. Exit the process at any point.</div></div></li>
+          <li class="bi"><span class="biico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="18" rx="1"/></svg></span><div><div class="bit">Structured Term Comparison</div><div class="bid">Compare franchise fees, royalties, PIP expectations, and territory terms side-by-side before the first conversation — not after.</div></div></li>
+        </ul>
+      </div>
+      <div class="fu">
+        <div class="betabox">
+          <div class="betal">Private Beta Access</div>
+          <div class="betah">Free to submit<br>during private beta.</div>
+          <div class="betab">Create a project, receive a readiness summary, access Brand and Operator Explorer, and review potential fit options at no upfront cost.</div>
+          <div class="betarows">
+            <div class="betar"><span class="betarl">Submit a project</span><span class="betarv">Free</span></div>
+            <div class="betar"><span class="betarl">Deal readiness summary</span><span class="betarv">Included</span></div>
+            <div class="betar"><span class="betarl">Brand &amp; Operator Explorer</span><span class="betarv">Included</span></div>
+            <div class="betar"><span class="betarl">Matched partner review</span><span class="betarv">Included</span></div>
+            <div class="betar"><span class="betarl">Success-based pricing</span><span class="betarv">At LOI milestone</span></div>
+          </div>
+          <div class="betanote">Success-based fees apply only if a project advances to a selected partner milestone. Full fee structure discussed during onboarding.</div>
+          <a href="#cta" class="bfull">Submit a Project for Review →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR BRANDS -->
+<section id="brands">
+  <div class="si">
+    <p class="ey fu">For Brands & Operators</p>
+    <div class="dvb"></div>
+    <h2 class="h2 fu">Better-fit opportunities.<br>Better information upfront.</h2>
+    <p class="lead fu">Dealality helps development teams spend less time chasing incomplete leads and more time evaluating projects that match their growth strategy, market appetite, and operating model.</p>
+    <div class="rgrid fu">
+      <div class="rc"><div class="rcn">01</div><div class="rct">Qualified Projects Matched to Your Criteria</div><div class="rcb">Our matching engine surfaces opportunities aligned to your size, segment, territory, and fee parameters. Standardized intake means structured information — not scattered teasers.</div></div>
+      <div class="rc"><div class="rcn">02</div><div class="rct">Reach Owners Evaluating Your Category</div><div class="rcb">When your brand is invited in through Brand Explorer, the owner already understands your positioning — introductions start from a more informed position on both sides.</div></div>
+      <div class="rc"><div class="rcn">03</div><div class="rct">Reduce Speculative Qualification Work</div><div class="rcb">AI-generated deal summaries and deal readiness signals help reduce preliminary qualification time, so capacity goes to conversations that are genuinely worth having.</div></div>
+      <div class="rc"><div class="rcn">04</div><div class="rct">Designed Around Positioning, Not Volume</div><div class="rcb">Structured, permission-based introductions only. The process is confidential by design, protecting your brand's positioning while keeping introductions relevant and owner-initiated.</div></div>
+    </div>
+    <div class="brow fu" style="margin-top:8px">
+      <a href="#cta" class="bfull" style="display:inline-block;padding:13px 28px;width:auto">Join as a Brand or Operator →</a>
+      <a href="#how" class="bout">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE PARTNERS -->
+<section id="partners">
+  <div class="si">
+    <div class="ptrow">
+      <div class="fu">
+        <p class="ey">For Service Partners</p>
+        <div class="dvb"></div>
+        <h2 class="h2">Part of the process<br>from the right moment.</h2>
+        <p style="font-size:15px;color:var(--se);line-height:1.68;margin-bottom:20px">Advisors, brokers, lenders, PIP consultants, and attorneys often enter deal flow after key discussions have happened. Dealality integrates service partners into workflows at the stage where their contribution is most valuable.</p>
+        <div class="ptags"><span class="ptag">M&A Advisors</span><span class="ptag">Brokers</span><span class="ptag">Lenders</span><span class="ptag">PIP Consultants</span><span class="ptag">Attorneys</span></div>
+        <div style="margin-top:24px"><a href="#cta" class="bout">Create Your Profile</a></div>
+      </div>
+      <div class="pcards fu">
+        <div class="pcard"><span class="picn mkt-icon-ring mkt-icon-ring--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><div><div class="pct">Embedded in Live Deal Workflows</div><div class="pcd">Access leads from owners and brands in live conversations — not after the key decisions have been made.</div></div></div>
+        <div class="pcard"><span class="picn mkt-icon-ring mkt-icon-ring--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span><div><div class="pct">Branded Profiles & Lead Scoring</div><div class="pcd">Featured listings and lead scoring surface your profile to relevant parties at the right stage of the process.</div></div></div>
+        <div class="pcard"><span class="picn mkt-icon-ring mkt-icon-ring--sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="pct">Broker Attribution, Preserved</div><div class="pcd">Broker-attributed deals can be clearly identified and managed within the platform, helping preserve attribution while keeping the owner's process structured and confidential.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="si">
+    <p class="ey fu">How It Works</p>
+    <h2 class="h2 fu">From intelligence to intake<br>to LOI — privately.</h2>
+    <p class="lead fu">Dealality structures the evaluation from initial intelligence gathering through to LOI. Final negotiations and legal steps remain between the parties and their professional advisors.</p>
+    <div class="steps fu">
+      <div class="step"><div class="sn">Step 01</div><div class="st">Brand & Operator Intelligence</div><div class="sb">Owner accesses Brand Explorer, Operator Explorer, and Market Intelligence to understand which partners may fit and where readiness gaps exist — before anything is shared.</div></div>
+      <div class="step"><div class="sn">Step 02</div><div class="st">Guided Deal Intake</div><div class="sb">Owner submits project details once through structured intake. Readiness summary identifies what to address before outreach begins.</div></div>
+      <div class="step"><div class="sn">Step 03</div><div class="st">Criteria-Based Matching</div><div class="sb">Platform scores and aligns the project with brand and operator profiles. Only parties meeting the owner's stated criteria are surfaced.</div></div>
+      <div class="step"><div class="sn">Step 04</div><div class="st">Owner Selects Who to Engage</div><div class="sb">Owner reviews the matched shortlist and selects which parties to invite. Selected parties respond with commercial terms in a standardized format.</div></div>
+      <div class="step"><div class="sn">Step 05</div><div class="st">Structured Term Comparison</div><div class="sb">Owner compares offers side-by-side — fees, royalties, PIP scope, territory terms — and shortlists finalists before the first direct call.</div></div>
+      <div class="step"><div class="sn">Step 06</div><div class="st">NDA-Gated Deal Room & Exit</div><div class="sb">Secure virtual room for finalists. NDAs executed digitally. Platform steps back at LOI — final negotiations proceed between the parties and their advisors.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES + DEAL READINESS + TERM COMPARISON -->
+<section id="features">
+  <div class="si">
+    <p class="ey fu">Workflow Tools</p>
+    <h2 class="h2 fu">Purpose-built for the<br>full evaluation process.</h2>
+    <p class="lead fu">Every tool designed around real hotel development workflows — not repurposed from generic CRM or listing software.</p>
+    <div class="fgrid">
+      <div class="fc fu"><span class="fcico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></span><div class="fct">Smart Matching Engine</div><div class="fcb">Projects scored against brand and operator profiles based on size, segment, market, and fee parameters. Parties receive only criteria-aligned opportunities — ordered by fit.</div></div>
+      <div class="fc fu"><span class="fcico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><div class="fct">NDA-Gated Deal Rooms</div><div class="fcb">Confidential materials — brochures, PIP scopes, pro formas — in secure virtual rooms, accessible only after NDAs are executed digitally through the platform.</div></div>
+      <div class="fc fu"><span class="fcico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><div class="fct">AI Deal Summaries</div><div class="fcb">Structured, executive-ready deal summaries generated from owner submissions — helping reduce preliminary qualification time for both sides.</div><span class="fctag">AI-Assisted</span></div>
+      <div class="fc fu"><span class="fcico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span><div class="fct">Brand & Operator Comparison</div><div class="fcb">Side-by-side comparison of submitted terms: fees, royalty percentages, PIP requirements, territory protections — on a consistent framework before direct engagement.</div></div>
+      <div class="fc fu"><span class="fcico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg></span><div class="fct">Franchise Fee Estimator</div><div class="fcb">Estimates total franchise costs based on brand parameters and owner-provided revenue assumptions. Reduces speculative feasibility work before serious conversations begin.</div></div>
+      <div class="fc fu"><span class="fcico mkt-icon-ring" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span><div class="fct">Pipeline Reporting & Heatmaps</div><div class="fcb">Track viewed, active, and declined projects. Deal activity heatmaps visualize flow by geography, brand fit, and deal stage. CRM integration in development.</div><span class="fctag">Enterprise</span></div>
+    </div>
+
+    <!-- Deal Readiness Visual -->
+    <div class="dr-wrap fu" id="drwrap">
+      <div class="dr-ring-wrap">
+        <svg class="dr-ring-svg" width="140" height="140" viewBox="0 0 140 140">
+          <defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6C72FF"/><stop offset="100%" stop-color="#8B90FF"/></linearGradient></defs>
+          <circle class="dr-ring-bg" cx="70" cy="70" r="58"/>
+          <circle class="dr-ring-fill" id="drring" cx="70" cy="70" r="58"/>
+        </svg>
+        <div class="dr-ring-center"><div class="dr-ring-val" id="drval">0%</div><div class="dr-ring-lbl">Readiness</div></div>
+      </div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px;letter-spacing:-.01em">Deal Readiness Score</div>
+        <div style="font-size:12.5px;color:var(--se);margin-bottom:20px;line-height:1.5">Identifies information gaps, unresolved assumptions, and key questions before brands and operators are invited into the process.</div>
+        <div class="dr-metrics">
+          <div class="drm"><div class="drm-label">Project Completeness</div><div class="drm-bar-track"><div class="drm-bar" data-val="78" style="width:0%"></div></div><div class="drm-val">78%</div></div>
+          <div class="drm"><div class="drm-label">Commercial Inputs</div><div class="drm-bar-track"><div class="drm-bar" data-val="64" style="width:0%"></div></div><div class="drm-val">64%</div></div>
+          <div class="drm"><div class="drm-label">Market Context</div><div class="drm-bar-track"><div class="drm-bar" data-val="82" style="width:0%"></div></div><div class="drm-val">82%</div></div>
+          <div class="drm"><div class="drm-label">Partner Fit Signals</div><div class="drm-bar-track"><div class="drm-bar" data-val="71" style="width:0%"></div></div><div class="drm-val">71%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Term Comparison (static — no row animation) -->
+    <div class="tc-section fu" id="tcsection">
+      <div class="tc-heading">Commercial Term Comparison — How It Looks in Practice</div>
+      <table class="tc-table">
+        <thead><tr><th>Term</th><th>Brand A</th><th>Brand B</th><th>Brand C</th></tr></thead>
+        <tbody>
+          <tr><td>Initial License Fee</td><td class="best">$55,000</td><td>$70,000</td><td>$75,000</td></tr>
+          <tr><td>Royalty Fee</td><td>6.0%</td><td class="best">5.0%</td><td>5.5%</td></tr>
+          <tr><td>Marketing / Program Fee</td><td class="best">2.0%</td><td>2.5%</td><td>2.5%</td></tr>
+          <tr><td>Estimated PIP Scope</td><td class="best">$1.6M</td><td>$2.0M</td><td>$2.3M</td></tr>
+          <tr><td>Territory Protection</td><td>Non-exclusive</td><td class="best">Exclusive 5mi</td><td>Exclusive 3mi</td></tr>
+        </tbody>
+      </table>
+      <div class="tc-note">All terms submitted in a standardized format. Comparison is available before the first direct call with any brand.</div>
+    </div>
+
+    <div class="planb fu">
+      <div class="plbl">Alternative Pathways</div>
+      <div class="pdiv"></div>
+      <div class="ptxt">When a project is passed by a top-choice brand or operator, <strong>Dealality surfaces next-best alternatives</strong> based on the owner's original criteria — so the evaluation process keeps moving without starting over.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY WE EXIST -->
+<section id="about">
+  <div class="si">
+    <p class="ey fu">Why We Exist</p>
+    <div class="wgrid">
+      <div class="fu">
+        <div class="dvb"></div>
+        <div class="wq">
+          <p>Hotel owners are asked to make some of their most important partnership decisions with fragmented information, inconsistent proposals, and too little structured comparison.</p>
+          <p>Dealality exists to bring more clarity, confidentiality, and control to that process.</p>
+        </div>
+        <p class="wa">— Joan Dejarden, Founder, Dealality</p>
+      </div>
+      <div class="wcards fu">
+        <div class="wc"><div class="wcl"><strong>Before Outreach</strong>Understand the brand, operator, and market landscape before a project is shared.</div></div>
+        <div class="wc"><div class="wcl"><strong>During Evaluation</strong>Use standardized intake, structured terms, and side-by-side comparison to reduce noise and focus conversations.</div></div>
+        <div class="wc"><div class="wcl"><strong>Deal Readiness</strong>Identify missing information, unresolved assumptions, and key questions before partners are invited in.</div></div>
+        <div class="wc"><div class="wcl"><strong>At LOI</strong>Step back when the parties are ready to move forward with final negotiations and legal documentation.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ ACCORDION -->
+<section id="faq">
+  <div class="si">
+    <p class="ey fu">Frequently Asked Questions</p>
+    <h2 class="h2 fu" style="max-width:500px">Questions stakeholders<br>actually ask.</h2>
+    <div class="faq-list fu">
+      <div class="faq-item">
+        <button class="faq-q"><span class="faq-q-text">Is Dealality a broker?</span><span class="faq-icon"><svg viewBox="0 0 10 10"><line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/></svg></span></button>
+        <div class="faq-a"><div class="faq-a-inner">No. Dealality is a software platform — not a broker, not an advisor, and not an intermediary. We facilitate the structure and workflow of the evaluation process. We do not advise on brand choice, represent either party, or earn commissions from transactions. Our role ends at LOI. Final negotiations, franchise agreements, and management agreements are handled directly between the parties and their professional advisors.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="faq-q-text">Who sees my project?</span><span class="faq-icon"><svg viewBox="0 0 10 10"><line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/></svg></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Only the parties you select. There are no public listings on Dealality and no open browsing capability. Owners control who sees their project at every stage. You can start with a blind teaser to protect your identity, share details only with parties you have approved, and remove any party from the process at any point.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="faq-q-text">How is confidentiality handled?</span><span class="faq-icon"><svg viewBox="0 0 10 10"><line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/></svg></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Confidentiality is the foundation of how the platform works — not a feature added on top. All projects are private by default. Confidential materials such as PIP scopes, pro formas, and technical briefs are stored in NDA-gated deal rooms. NDAs are executed digitally through the platform before any confidential document is accessible. No information is shared across parties or used for any purpose other than the specific deal it was submitted for.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="faq-q-text">What happens at LOI?</span><span class="faq-icon"><svg viewBox="0 0 10 10"><line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/></svg></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Dealality's role ends at LOI. Once the owner has selected a preferred brand or operator and the parties are ready to proceed, they move offline for MA/FA drafting, franchise agreement negotiation, and legal documentation. Dealality does not participate in those discussions and does not earn any ongoing commission from the transaction. Our success-based fee for owners applies at the LOI milestone.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="faq-q-text">How are brands and operators selected for the platform?</span><span class="faq-icon"><svg viewBox="0 0 10 10"><line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/></svg></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Membership on the brand and operator side is by application and approval. We do not list every brand or operator — only those who are actively engaged in development and willing to participate in a structured, responsive process. Brands and operators complete a profile that includes their development criteria, geography, chain scale, fee parameters, and operational model. This profile is what owners see in Brand Explorer and Operator Explorer.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="faq-q-text">How does AI support the process?</span><span class="faq-icon"><svg viewBox="0 0 10 10"><line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/></svg></span></button>
+        <div class="faq-a"><div class="faq-a-inner">AI is used as a supporting capability — not the core product. Specifically, AI generates structured deal summaries from owner submissions, helping reduce preliminary qualification time for brands and operators. It is not used to make decisions, recommend brands, evaluate projects, or substitute for professional judgment. All matching, comparison, and selection decisions remain with the owner and the parties involved.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" style="border-bottom:none"><span class="faq-q-text">What does the private beta include?</span><span class="faq-icon"><svg viewBox="0 0 10 10"><line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/></svg></span></button>
+        <div class="faq-a"><div class="faq-a-inner">During the private beta, owners can submit a project at no cost and receive a deal readiness summary, access Brand Explorer and Operator Explorer, and review a matched partner shortlist. Brands and operators can create a profile and begin receiving matched opportunities. Success-based pricing for owners and subscription access for brands applies if a project advances to the LOI milestone. Full pricing details are discussed during onboarding.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES (compact) -->
+<section id="values">
+  <div class="si">
+    <p class="ey fu">Our Values</p>
+    <p style="font-size:14px;color:var(--mu);margin-bottom:0;margin-top:4px" class="fu">The principles that guide every deal, decision, and detail.</p>
+    <div class="vrow fu">
+      <div class="vc"><div class="vcn">01</div><div class="vct">We Are at the Service of Others</div><div class="vcb">We lead by serving — clients, partners, teammates.</div></div>
+      <div class="vc"><div class="vcn">02</div><div class="vct">We Build With Purpose</div><div class="vcb">We measure impact by the value that continues after the deal is done.</div></div>
+      <div class="vc"><div class="vcn">03</div><div class="vct">We Lead with Wisdom</div><div class="vcb">Strong decisions are shaped by collaboration, not pride.</div></div>
+      <div class="vc"><div class="vcn">04</div><div class="vct">We Steward What Matters</div><div class="vcb">Resources and influence managed with care and long-term vision.</div></div>
+      <div class="vc"><div class="vcn">05</div><div class="vct">Integrity in Every Detail</div><div class="vcb">Integrity earns trust. Trust builds partnerships that last.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="cta">
+  <div class="dg"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-in fu">
+    <p style="font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Private Beta · Selected Participants</p>
+    <h2 class="ctah">A better process starts<br>with a more informed one.</h2>
+    <p class="ctasub">Membership is limited to owners, brands, operators, and advisors actively involved in hotel development, brand expansion, or operational growth.</p>
+    <div class="ctapair">
+      <a href="#" class="bp2">Submit a Project for Review →</a>
+      <a href="#" class="bs2">Join as a Brand or Operator</a>
+    </div>
+    <p class="ctafine">We will follow up within 48 hours · No commitment required</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div class="ftop">
+      <div><div class="fbrand"><img src="/assets/dealality-logo.png" width="320" height="127" alt="Dealality" loading="lazy"></div><div class="ftag">Reduce Friction.<br>Improve Deal Flow.<br>Smarter Decisions.</div></div>
+      <div><div class="fcolh">For Owners</div><ul class="flinks"><li><a href="#">Submit Your Project</a></li><li><a href="#">Brand Explorer</a></li><li><a href="#">How It Works</a></li><li><a href="#">Private Beta</a></li></ul></div>
+      <div><div class="fcolh">For Brands</div><ul class="flinks"><li><a href="#">Join as a Brand</a></li><li><a href="#">Operator Explorer</a></li><li><a href="#">Platform Access</a></li><li><a href="#">How It Works</a></li></ul></div>
+      <div><div class="fcolh">Company</div><ul class="flinks"><li><a href="#">About</a></li><li><a href="#">Our Team</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+    <div class="fbot">
+      <div class="fcopy">© 2026 Dealality. All rights reserved.</div>
+      <div class="flegal"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">Contact</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Nav scroll
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>navEl.classList.toggle('sc',scrollY>60),{passive:true});
+
+// ── Scroll fade-up
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.07,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+
+// ── Rotating headline
+const rot=document.getElementById('rotator');
+const ic=rot.children.length-1;
+let ri=0;
+const gH=()=>rot.children[0].offsetHeight||62;
+const rotMs=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:4600;
+if(rotMs>0)setInterval(()=>{
+  ri++;
+  const h=gH();
+  rot.style.transition='transform .7s cubic-bezier(.77,0,.18,1)';
+  rot.style.transform=`translateY(-${ri*h}px)`;
+  if(ri>=ic){setTimeout(()=>{rot.style.transition='none';rot.style.transform='translateY(0)';ri=0},750)}
+},rotMs);
+window.addEventListener('resize',()=>{const h=gH();rot.style.transition='none';rot.style.transform=`translateY(-${ri*h}px)`});
+
+// ── Five-beat tabs
+document.querySelectorAll('.fb-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.fb-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.fb-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.fb-panel')[+tab.dataset.panel].classList.add('active');
+  });
+});
+
+// ── Intelligence hub — static connector lines
+function drawLines(){
+  const grid=document.getElementById('ihubgrid');
+  if(!grid)return;
+  const gr=grid.getBoundingClientRect();
+  const hub=grid.querySelector('.ihub-node');
+  if(!hub)return;
+  const hr=hub.getBoundingClientRect();
+  const hcx=hr.left+hr.width/2-gr.left;
+  const hcy=hr.top+hr.height/2-gr.top;
+  [['ic0','sl0'],['ic1','sl1'],['ic2','sl2'],['ic3','sl3']].forEach(([id,sid])=>{
+    const el=document.getElementById(id);
+    const sl=document.getElementById(sid);
+    if(!el||!sl)return;
+    const er=el.getBoundingClientRect();
+    const ecx=er.left+er.width/2-gr.left;
+    const ecy=er.top+er.height/2-gr.top;
+    const W=gr.width||1200;const H=gr.height||600;
+    sl.setAttribute('x1',(ecx/W*100)+'%');
+    sl.setAttribute('y1',(ecy/H*100)+'%');
+    sl.setAttribute('x2',(hcx/W*100)+'%');
+    sl.setAttribute('y2',(hcy/H*100)+'%');
+  });
+}
+setTimeout(drawLines,400);
+window.addEventListener('resize',drawLines);
+
+// ── Deal readiness ring + bars — animate on scroll (once)
+const drObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      // Ring
+      const ring=document.getElementById('drring');
+      const drval=document.getElementById('drval');
+      const R=58;const C=2*Math.PI*R;
+      const target=74;const offset=C-(C*target/100);
+      if(ring){ring.style.strokeDashoffset=offset}
+      if(drval){
+        const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if(reduced){drval.textContent=target+'%'}
+        else{let n=0;const t=setInterval(()=>{n=Math.min(n+1,target);drval.textContent=n+'%';if(n>=target)clearInterval(t)},36)}
+      }
+      // Sub-bars
+      document.querySelectorAll('.drm-bar').forEach(b=>{b.style.width=b.dataset.val+'%'});
+      drObs.disconnect();
+    }
+  });
+},{threshold:.3});
+const drw=document.getElementById('drwrap');
+if(drw)drObs.observe(drw);
+
+// ── FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item=btn.parentElement;
+    const answer=item.querySelector('.faq-a');
+    const isOpen=item.classList.contains('open');
+    // close all
+    document.querySelectorAll('.faq-item').forEach(i=>{
+      i.classList.remove('open');
+      i.querySelector('.faq-a').style.maxHeight='0';
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      answer.style.maxHeight=answer.querySelector('.faq-a-inner').scrollHeight+'px';
+    }
+  });
+});
+</script>
+</body>
+</html>
