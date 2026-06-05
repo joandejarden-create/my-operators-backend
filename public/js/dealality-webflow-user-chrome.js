@@ -151,12 +151,27 @@
     return words.length >= 2 && words.length <= 6;
   }
 
-  function shouldReplaceStaleName(current, canonical, u) {
+  var KNOWN_DEMO_NAV_NAMES = [
+    "john carter",
+    "gustavo sarago carter",
+    "joan dejarden",
+    "dealality demo",
+  ];
+
+  function isAccountChromeElement(el) {
+    if (!el || !el.closest) return false;
+    return !!el.closest(
+      ".sidebar-footer, #accountDropdownWrap, .user-block, .account-dropdown-header, " +
+        ".account-dropdown-trigger, [data-dealality-account-chrome], .w-dropdown-toggle"
+    );
+  }
+
+  function shouldReplaceStaleName(current, canonical) {
     if (!canonical || current === canonical) return false;
     if (!looksLikePersonName(current)) return false;
-    var first = u && u.firstName ? String(u.firstName).trim() : "";
-    if (first && current.indexOf(first) === 0) return true;
-    return false;
+    var lower = current.toLowerCase();
+    if (KNOWN_DEMO_NAV_NAMES.indexOf(lower) >= 0) return true;
+    return lower !== String(canonical).trim().toLowerCase();
   }
 
   /** Marked class, Webflow name classes, or first person-name-like text in scope. */
@@ -206,7 +221,7 @@
     return null;
   }
 
-  function applyDisplayName(scope, name, u) {
+  function applyDisplayName(scope, name) {
     if (!scope || !shouldUpdateDisplayName(name)) return;
 
     scope.querySelectorAll(".user-name, [data-dealality-user-name]").forEach(function (el) {
@@ -214,20 +229,18 @@
     });
 
     var nameEl = findAccountNameElement(scope);
-    if (nameEl) {
-      nameEl.textContent = name;
-      return;
-    }
+    if (nameEl) nameEl.textContent = name;
 
     scope.querySelectorAll("div, span, p, strong").forEach(function (el) {
       if (isInsideDropdownMenu(el) || el.children.length > 0) return;
+      if (!isAccountChromeElement(el)) return;
       var t = (el.textContent || "").trim();
-      if (shouldReplaceStaleName(t, name, u)) el.textContent = name;
+      if (shouldReplaceStaleName(t, name)) el.textContent = name;
     });
   }
 
-  function updateLabelsInRoot(root, name, metaEmail, u) {
-    applyDisplayName(root, name, u);
+  function updateLabelsInRoot(root, name, metaEmail) {
+    applyDisplayName(root, name);
 
     if (metaEmail) {
       var metaEl = findAccountMetaElement(root);
@@ -239,10 +252,10 @@
   }
 
   /** Webflow toggle: name from /api/me; email on marked meta or last line — keep "Account settings" middle lines. */
-  function updateToggleLabels(toggle, name, metaEmail, u) {
+  function updateToggleLabels(toggle, name, metaEmail) {
     if (!toggle || !shouldUpdateDisplayName(name)) return;
 
-    applyDisplayName(toggle, name, u);
+    applyDisplayName(toggle, name);
 
     var lines = [];
     toggle.querySelectorAll("div, span, p").forEach(function (el) {
@@ -369,12 +382,12 @@
     var photoUrl = u.profilePhotoUrl ? String(u.profilePhotoUrl).trim() : "";
 
     getLabelUpdateRoots(doc).forEach(function (root) {
-      updateLabelsInRoot(root, name, metaEmail, u);
+      updateLabelsInRoot(root, name, metaEmail);
     });
-    updateToggleLabels(findAccountDropdownToggle(doc), name, metaEmail, u);
+    updateToggleLabels(findAccountDropdownToggle(doc), name, metaEmail);
 
     var sidebar = findSidebarContainer(doc);
-    if (sidebar) applyDisplayName(sidebar, name, u);
+    if (sidebar) applyDisplayName(sidebar, name);
 
     var photoApplied = false;
     if (photoUrl) {
