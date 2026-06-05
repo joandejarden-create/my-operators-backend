@@ -66,10 +66,7 @@
       " h2{margin:0 0 8px;font-size:1.125rem;font-weight:600;color:#fff;}" +
       "#" +
       BANNER_ID +
-      " p{margin:0;font-size:.9375rem;line-height:1.55;color:#dbe6f8;}" +
-      "#" +
-      BANNER_ID +
-      " .dealality-account-notice__hint{margin-top:12px;font-size:.8125rem;color:#9eb4d4;}";
+      " p{margin:0;font-size:.9375rem;line-height:1.55;color:#dbe6f8;}";
     (doc.head || doc.documentElement).appendChild(style);
   }
 
@@ -112,8 +109,7 @@
         access.userMessage ||
           "Thanks for signing up. Our team will enable your platform access after review."
       ) +
-      "</p>" +
-      '<p class="dealality-account-notice__hint">Questions? Contact support@dealality.com</p>';
+      "</p>";
 
     doc.body.appendChild(banner);
   }
