@@ -13,9 +13,60 @@
     ".account-dropdown-item, [role='menu'], [role='menuitem']";
 
   var REAPPLY_DELAYS_MS = [400, 2000, 5000, 8000, 12000];
+  var CACHE_KEY = "dealality_user_chrome_cache_v1";
+  var CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
   var pinnedPhotoUrl = null;
   var pinnedInitial = "";
   var avatarObservers = [];
+
+  function cachePayloadFromMe(data) {
+    var u = userPayloadFromMe(data);
+    if (!u || !data || data.success !== true) return;
+    try {
+      sessionStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({
+          user: u,
+          memberstackId: data.memberstackId || null,
+          ts: Date.now(),
+        })
+      );
+    } catch (err) {
+      if (global.console && global.console.warn) {
+        global.console.warn("[DealalityWebflowUserChrome] could not cache user chrome:", err.message);
+      }
+    }
+  }
+
+  function mePayloadFromCache() {
+    try {
+      var raw = sessionStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      if (!parsed || !parsed.user || !parsed.ts) return null;
+      if (Date.now() - parsed.ts > CACHE_MAX_AGE_MS) return null;
+      return {
+        success: true,
+        memberstackId: parsed.memberstackId || null,
+        user: parsed.user,
+        airtable: {
+          email: parsed.user.email || null,
+          firstName: parsed.user.firstName || null,
+          lastName: parsed.user.lastName || null,
+          profilePhotoUrl: parsed.user.profilePhotoUrl || null,
+        },
+      };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function applyCachedUserChrome() {
+    var cached = mePayloadFromCache();
+    if (!cached) return false;
+    applyUserChrome(cached);
+    return true;
+  }
 
   function userPayloadFromMe(data) {
     if (!data || typeof data !== "object") return null;
@@ -438,6 +489,9 @@
   }
 
   function apply(data) {
+    if (data && data.success === true) {
+      cachePayloadFromMe(data);
+    }
     applyUserChrome(data);
     REAPPLY_DELAYS_MS.forEach(function (ms) {
       global.setTimeout(function () {
@@ -450,13 +504,19 @@
   global.DealalityWebflowUserChrome = {
     apply: apply,
     applyOnce: applyUserChrome,
+    applyCached: applyCachedUserChrome,
     debug: debugState,
     userPayloadFromMe: userPayloadFromMe,
     collectAvatarElements: collectAvatarElements,
     accountRootSelectors: ACCOUNT_LABEL_ROOTS,
   };
 
+  applyCachedUserChrome();
+
   if (global.document) {
+    if (global.document.readyState === "loading") {
+      global.document.addEventListener("DOMContentLoaded", applyCachedUserChrome);
+    }
     global.addEventListener("load", tryApplyStoredContext);
     global.document.addEventListener("dealality-me-ready", function (ev) {
       if (ev && ev.detail && ev.detail.data) apply(ev.detail.data);

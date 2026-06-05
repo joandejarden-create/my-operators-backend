@@ -86,6 +86,10 @@
       return;
     }
 
+    global.__dealalityUserContext = data;
+    if (global.DealalityWebflowUserChrome && typeof global.DealalityWebflowUserChrome.apply === 'function') {
+      global.DealalityWebflowUserChrome.apply(data);
+    }
     dispatch('dealality-me-ready', { ok: true, status: res.status, data: data, error: null });
   }
 
