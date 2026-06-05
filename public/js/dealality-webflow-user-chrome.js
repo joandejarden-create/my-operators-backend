@@ -137,37 +137,130 @@
     return !!name && name !== "Account";
   }
 
-  function updateLabelsInRoot(root, name, metaEmail) {
-    if (shouldUpdateDisplayName(name)) {
-      root.querySelectorAll(".user-name, [data-dealality-user-name]").forEach(function (el) {
-        if (!isInsideDropdownMenu(el)) el.textContent = name;
+  function isSkippableLabelText(t) {
+    if (!t) return true;
+    if (t.indexOf("@") >= 0) return true;
+    if (/^account\s*settings$/i.test(t)) return true;
+    return false;
+  }
+
+  function looksLikePersonName(t) {
+    if (!t || t.length > 120) return false;
+    if (isSkippableLabelText(t)) return false;
+    var words = t.trim().split(/\s+/);
+    return words.length >= 2 && words.length <= 6;
+  }
+
+  function shouldReplaceStaleName(current, canonical, u) {
+    if (!canonical || current === canonical) return false;
+    if (!looksLikePersonName(current)) return false;
+    var first = u && u.firstName ? String(u.firstName).trim() : "";
+    if (first && current.indexOf(first) === 0) return true;
+    return false;
+  }
+
+  /** Marked class, Webflow name classes, or first person-name-like text in scope. */
+  function findAccountNameElement(scope) {
+    if (!scope) return null;
+
+    var marked = scope.querySelector("[data-dealality-user-name]");
+    if (marked && !isInsideDropdownMenu(marked)) return marked;
+
+    var byClass = scope.querySelector(
+      ".user-name, [class*='user-name'], [class*='account-name'], [class*='Account-Name']"
+    );
+    if (byClass && !isInsideDropdownMenu(byClass)) return byClass;
+
+    var candidates = [];
+    scope.querySelectorAll("div, span, p, strong").forEach(function (el) {
+      if (isInsideDropdownMenu(el)) return;
+      var t = (el.textContent || "").trim();
+      if (!looksLikePersonName(t)) return;
+      var depth = 0;
+      var p = el;
+      while (p && p !== scope) {
+        depth++;
+        p = p.parentElement;
+      }
+      candidates.push({
+        el: el,
+        depth: depth,
+        leaf: el.childElementCount === 0,
       });
+    });
+
+    if (!candidates.length) return null;
+    candidates.sort(function (a, b) {
+      if (a.leaf !== b.leaf) return a.leaf ? -1 : 1;
+      return a.depth - b.depth;
+    });
+    return candidates[0].el;
+  }
+
+  function findAccountMetaElement(scope) {
+    if (!scope) return null;
+    var marked = scope.querySelector("[data-dealality-user-meta]");
+    if (marked && !isInsideDropdownMenu(marked)) return marked;
+    var byClass = scope.querySelector(".user-meta, [class*='user-meta'], [class*='user-email']");
+    if (byClass && !isInsideDropdownMenu(byClass)) return byClass;
+    return null;
+  }
+
+  function applyDisplayName(scope, name, u) {
+    if (!scope || !shouldUpdateDisplayName(name)) return;
+
+    scope.querySelectorAll(".user-name, [data-dealality-user-name]").forEach(function (el) {
+      if (!isInsideDropdownMenu(el)) el.textContent = name;
+    });
+
+    var nameEl = findAccountNameElement(scope);
+    if (nameEl) {
+      nameEl.textContent = name;
+      return;
     }
 
+    scope.querySelectorAll("div, span, p, strong").forEach(function (el) {
+      if (isInsideDropdownMenu(el) || el.children.length > 0) return;
+      var t = (el.textContent || "").trim();
+      if (shouldReplaceStaleName(t, name, u)) el.textContent = name;
+    });
+  }
+
+  function updateLabelsInRoot(root, name, metaEmail, u) {
+    applyDisplayName(root, name, u);
+
     if (metaEmail) {
+      var metaEl = findAccountMetaElement(root);
+      if (metaEl) metaEl.textContent = metaEmail;
       root.querySelectorAll(".user-meta, [data-dealality-user-meta]").forEach(function (el) {
         if (!isInsideDropdownMenu(el)) el.textContent = metaEmail;
       });
     }
   }
 
-  /** Webflow toggle: first text line = name; last = email only when we have one. Never overwrite with role. */
-  function updateToggleLabels(toggle, name, metaEmail) {
+  /** Webflow toggle: name from /api/me; email on marked meta or last line — keep "Account settings" middle lines. */
+  function updateToggleLabels(toggle, name, metaEmail, u) {
     if (!toggle || !shouldUpdateDisplayName(name)) return;
+
+    applyDisplayName(toggle, name, u);
 
     var lines = [];
     toggle.querySelectorAll("div, span, p").forEach(function (el) {
       if (el.children.length > 0 || isInsideDropdownMenu(el)) return;
       var t = (el.textContent || "").trim();
-      if (!t) return;
+      if (!t || isSkippableLabelText(t)) return;
       lines.push({ el: el, t: t });
     });
 
-    if (!lines.length) return;
-
-    lines[0].el.textContent = name;
-    if (metaEmail && lines.length > 1) {
-      lines[lines.length - 1].el.textContent = metaEmail;
+    if (lines.length) {
+      if (lines[0].t !== name) lines[0].el.textContent = name;
+      if (metaEmail) {
+        var metaEl = findAccountMetaElement(toggle);
+        if (metaEl) metaEl.textContent = metaEmail;
+        else if (lines.length > 1 && lines[lines.length - 1].t.indexOf("@") >= 0) {
+          lines[lines.length - 1].el.textContent = metaEmail;
+        }
+      }
     }
   }
 
@@ -276,9 +369,12 @@
     var photoUrl = u.profilePhotoUrl ? String(u.profilePhotoUrl).trim() : "";
 
     getLabelUpdateRoots(doc).forEach(function (root) {
-      updateLabelsInRoot(root, name, metaEmail);
+      updateLabelsInRoot(root, name, metaEmail, u);
     });
-    updateToggleLabels(findAccountDropdownToggle(doc), name, metaEmail);
+    updateToggleLabels(findAccountDropdownToggle(doc), name, metaEmail, u);
+
+    var sidebar = findSidebarContainer(doc);
+    if (sidebar) applyDisplayName(sidebar, name, u);
 
     var photoApplied = false;
     if (photoUrl) {
