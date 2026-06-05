@@ -55,33 +55,35 @@
     style.textContent =
       "#" +
       BANNER_ID +
-      "{box-sizing:border-box;max-width:720px;margin:24px auto;padding:20px 24px;" +
-      "border-radius:12px;border:1px solid rgba(100,180,255,.35);" +
-      "background:linear-gradient(135deg,rgba(8,20,48,.95),rgba(12,32,64,.92));" +
-      "color:#e8eef8;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;" +
-      "box-shadow:0 8px 32px rgba(0,0,0,.35);}" +
+      "{box-sizing:border-box;position:fixed;top:20px;left:50%;transform:translateX(-50%);" +
+      "width:min(720px,calc(100vw - 32px));padding:20px 24px;z-index:2147483000;" +
+      "border-radius:12px;border:1px solid rgba(120,190,255,.55);" +
+      "background:#0b1a3a;color:#f0f4fc;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;" +
+      "box-shadow:0 12px 40px rgba(0,0,0,.55);filter:none!important;-webkit-filter:none!important;" +
+      "backdrop-filter:none!important;-webkit-backdrop-filter:none!important;isolation:isolate;}" +
       "#" +
       BANNER_ID +
       " h2{margin:0 0 8px;font-size:1.125rem;font-weight:600;color:#fff;}" +
       "#" +
       BANNER_ID +
-      " p{margin:0;font-size:.9375rem;line-height:1.55;color:#c5d4ea;}" +
+      " p{margin:0;font-size:.9375rem;line-height:1.55;color:#dbe6f8;}" +
       "#" +
       BANNER_ID +
-      " .dealality-account-notice__hint{margin-top:12px;font-size:.8125rem;color:#8fa3c4;}";
+      " .dealality-account-notice__hint{margin-top:12px;font-size:.8125rem;color:#9eb4d4;}";
     (doc.head || doc.documentElement).appendChild(style);
   }
 
-  function findBannerHost() {
-    var doc = global.document;
-    if (!doc || !doc.body) return null;
-    return (
-      doc.querySelector("main") ||
-      doc.querySelector('[class*="main-content"]') ||
-      doc.querySelector('[class*="page-wrapper"]') ||
-      doc.querySelector(".page-wrapper") ||
-      doc.body
-    );
+  function clearPageLoaderOverlays(doc) {
+    if (!doc || !doc.body) return;
+    doc.body.classList.remove("overflow-hidden");
+    try {
+      if (global.$) {
+        global.$(".page-loader").remove();
+      }
+    } catch (_) {}
+    doc.querySelectorAll(".page-loader").forEach(function (el) {
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    });
   }
 
   function removeBanner() {
@@ -95,9 +97,7 @@
 
     injectStyles();
     removeBanner();
-
-    var host = findBannerHost();
-    if (!host) return;
+    clearPageLoaderOverlays(doc);
 
     var banner = doc.createElement("section");
     banner.id = BANNER_ID;
@@ -115,7 +115,7 @@
       "</p>" +
       '<p class="dealality-account-notice__hint">Questions? Contact support@dealality.com</p>';
 
-    host.insertBefore(banner, host.firstChild || null);
+    doc.body.appendChild(banner);
   }
 
   function escapeHtml(text) {
