@@ -221,8 +221,25 @@
     return null;
   }
 
+  /** Legacy Webflow + Memberstack: first/last in separate data-ms-member nodes (John + Carter demo). */
+  function applyLegacyMemberstackSplitName(scope, name) {
+    if (!scope || !shouldUpdateDisplayName(name)) return;
+    scope.querySelectorAll('[data-ms-member="first-name"]').forEach(function (el) {
+      if (isInsideDropdownMenu(el)) return;
+      el.setAttribute("data-dealality-user-name", "");
+      el.textContent = name;
+    });
+    scope.querySelectorAll('[data-ms-member="last-name"]').forEach(function (el) {
+      if (isInsideDropdownMenu(el)) return;
+      el.style.display = "none";
+      el.textContent = "";
+    });
+  }
+
   function applyDisplayName(scope, name) {
     if (!scope || !shouldUpdateDisplayName(name)) return;
+
+    applyLegacyMemberstackSplitName(scope, name);
 
     scope.querySelectorAll(".user-name, [data-dealality-user-name]").forEach(function (el) {
       if (!isInsideDropdownMenu(el)) el.textContent = name;
