@@ -1,14 +1,51 @@
 /**
- * Webflow: show a clear pending-approval message for Basic-plan signups.
- * Suppresses misleading "No brands assigned" toasts via window.__dealalitySuppressBrandToast.
- *
- * Load after dealality-webflow-me-bootstrap.js (or any script that sets __dealalityUserContext).
+ * Webflow: pending-approval banner + suppress misleading "No brands assigned" toast.
+ * Works with inline loadUserContext even if footer was not updated to call .apply().
  */
 (function (global) {
   "use strict";
 
   var STYLE_ID = "dealality-account-notice-style";
   var BANNER_ID = "dealality-account-pending-banner";
+  var TOAST_PATCHED = false;
+  var CONTEXT_POLL_MS = 250;
+  var CONTEXT_POLL_MAX_MS = 30000;
+
+  function shouldSuppressBrandToast() {
+    if (global.__dealalitySuppressBrandToast) return true;
+    var data = global.__dealalityUserContext;
+    if (!data || data.success !== true) return false;
+    var access = data.accountAccess;
+    if (access && access.pendingApproval) return true;
+    var d = data.dealality;
+    if (d && (d.isOwner || d.isAdmin)) return true;
+    return false;
+  }
+
+  function patchBrandAssignmentToast() {
+    if (TOAST_PATCHED || !global.$ || typeof global.$.toast !== "function") return false;
+    var original = global.$.toast;
+    global.$.toast = function (options) {
+      var text = options && options.text ? String(options.text) : "";
+      if (/no brands assigned/i.test(text) && shouldSuppressBrandToast()) {
+        return;
+      }
+      return original.apply(this, arguments);
+    };
+    TOAST_PATCHED = true;
+    return true;
+  }
+
+  function ensureToastPatch() {
+    if (patchBrandAssignmentToast()) return;
+    var attempts = 0;
+    var timer = global.setInterval(function () {
+      attempts += 1;
+      if (patchBrandAssignmentToast() || attempts >= 80) {
+        global.clearInterval(timer);
+      }
+    }, CONTEXT_POLL_MS);
+  }
 
   function injectStyles() {
     var doc = global.document;
@@ -42,6 +79,7 @@
       doc.querySelector("main") ||
       doc.querySelector('[class*="main-content"]') ||
       doc.querySelector('[class*="page-wrapper"]') ||
+      doc.querySelector(".page-wrapper") ||
       doc.body
     );
   }
@@ -77,11 +115,7 @@
       "</p>" +
       '<p class="dealality-account-notice__hint">Questions? Contact support@dealality.com</p>';
 
-    if (host === doc.body) {
-      host.insertBefore(banner, host.firstChild);
-    } else {
-      host.insertBefore(banner, host.firstChild || null);
-    }
+    host.insertBefore(banner, host.firstChild || null);
   }
 
   function escapeHtml(text) {
@@ -97,28 +131,46 @@
     var access = data.accountAccess;
     if (!access) return;
 
-    if (access.suppressBrandAssignmentToast) {
+    if (access.suppressBrandAssignmentToast || access.pendingApproval) {
       global.__dealalitySuppressBrandToast = true;
-    } else {
-      global.__dealalitySuppressBrandToast = false;
-      removeBanner();
+      showPendingBanner(access);
       return;
     }
 
-    showPendingBanner(access);
+    global.__dealalitySuppressBrandToast = false;
+    removeBanner();
+  }
+
+  function watchUserContext() {
+    var started = Date.now();
+    var timer = global.setInterval(function () {
+      if (global.__dealalityUserContext && global.__dealalityUserContext.success === true) {
+        applyFromMe(global.__dealalityUserContext);
+      }
+      if (Date.now() - started >= CONTEXT_POLL_MAX_MS) {
+        global.clearInterval(timer);
+      }
+    }, CONTEXT_POLL_MS);
   }
 
   if (global.document) {
+    ensureToastPatch();
+    watchUserContext();
+
     global.document.addEventListener("dealality-me-ready", function (ev) {
       if (ev && ev.detail && ev.detail.data) applyFromMe(ev.detail.data);
     });
+
+    global.document.addEventListener("DOMContentLoaded", function () {
+      ensureToastPatch();
+      if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);
+    });
+
     if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);
   }
 
   global.DealalityWebflowAccountNotice = {
     apply: applyFromMe,
-    shouldSuppressBrandToast: function () {
-      return !!global.__dealalitySuppressBrandToast;
-    },
+    shouldSuppressBrandToast: shouldSuppressBrandToast,
   };
 })(typeof window !== "undefined" ? window : global);
