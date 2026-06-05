@@ -9,8 +9,20 @@
   var PARENT_SOURCE = "dealality-landing-parent";
   var CHILD_SOURCE = "dealality-landing-embed";
 
+  var MIN_IFRAME_HEIGHT_PX = 2400;
+
   function getIframe() {
     return global.document.getElementById(IFRAME_ID);
+  }
+
+  function applyIframeHeight(px) {
+    var iframe = getIframe();
+    if (!iframe) return;
+    var height = Math.max(Number(px) || 0, MIN_IFRAME_HEIGHT_PX);
+    iframe.style.height = height + "px";
+    iframe.style.minHeight = "80vh";
+    iframe.style.display = "block";
+    iframe.style.width = "100%";
   }
 
   function postScroll(id) {
@@ -26,8 +38,7 @@
     var data = event.data;
     if (!data || data.source !== CHILD_SOURCE) return;
     if (data.type === "resize" && typeof data.height === "number") {
-      var iframe = getIframe();
-      if (iframe) iframe.style.height = Math.max(data.height, 400) + "px";
+      applyIframeHeight(data.height);
     }
   });
 
@@ -46,7 +57,10 @@
   });
 
   global.addEventListener("load", function () {
+    applyIframeHeight(MIN_IFRAME_HEIGHT_PX);
     var hash = (global.location.hash || "").replace(/^#/, "");
     if (hash) global.setTimeout(function () { postScroll(hash); }, 800);
   });
+
+  global.setTimeout(function () { applyIframeHeight(MIN_IFRAME_HEIGHT_PX); }, 1200);
 })(window);

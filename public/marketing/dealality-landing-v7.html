@@ -26,11 +26,15 @@ nav.sc{background:rgba(8,15,37,.98)}
 .nbg:hover{color:var(--white);background:rgba(255,255,255,.05)}
 .nbn{font-size:14px;font-weight:700;color:var(--white);background:var(--purple);border:none;cursor:pointer;padding:9px 20px;border-radius:6px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s}
 .nbn:hover{background:var(--purple-hover);transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,114,255,.28)}
-#hero{position:relative;min-height:88vh;display:flex;align-items:center;justify-content:center;padding:140px 48px 100px;overflow:hidden;text-align:center}
+#hero{position:relative;min-height:88vh;display:flex;align-items:center;justify-content:center;padding:140px 48px 100px;overflow:hidden;text-align:left}
 .bg-blob{position:absolute;pointer-events:none;z-index:0;user-select:none;width:min(780px,92vw);height:auto;opacity:.92}
-#hero .bg-blob{top:-14%;left:50%;transform:translateX(-50%);max-width:none}
+#hero .bg-blob{top:-10%;right:-8%;left:auto;transform:none;max-width:none;width:min(720px,55vw);opacity:.55}
 #cta .bg-blob{top:50%;left:50%;transform:translate(-50%,-50%);width:min(640px,88vw);opacity:.75}
-.hcols{position:relative;z-index:1;max-width:780px;margin:0 auto;width:100%}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,4vw,56px);align-items:center;max-width:1200px;margin:0 auto;width:100%}
+.hleft{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+.hero-video{animation:fu .7s .28s both}
+.hero-video-frame{border-radius:14px;overflow:hidden;border:1px solid rgba(108,114,255,.32);box-shadow:0 32px 72px rgba(0,0,0,.55),0 0 0 1px rgba(108,114,255,.1);background:#000}
+.hero-video-frame video{display:block;width:100%;height:auto;vertical-align:top;aspect-ratio:16/9;object-fit:cover;background:#000}
 .hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,114,255,.1);border:1px solid var(--bp);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pl);margin-bottom:32px;animation:fu .7s both}
 .puls{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 3s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -39,13 +43,13 @@ nav.sc{background:rgba(8,15,37,.98)}
 .hrwrap{display:block;height:clamp(36px,4.8vw,64px);overflow:hidden;margin-bottom:6px;animation:fu .7s .12s both}
 .hrinner{display:flex;flex-direction:column;transition:transform .65s cubic-bezier(.77,0,.18,1)}
 .hrword{display:block;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(29px,3.9vw,52px);line-height:clamp(36px,4.8vw,64px);height:clamp(36px,4.8vw,64px);color:var(--gold);white-space:nowrap}
-.hsub{font-size:17px;color:var(--se);line-height:1.72;margin:26px auto 36px;max-width:640px;animation:fu .7s .22s both}
-.hctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;animation:fu .7s .32s both;justify-content:center}
+.hsub{font-size:17px;color:var(--se);line-height:1.72;margin:26px 0 36px;max-width:540px;animation:fu .7s .22s both}
+.hctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;animation:fu .7s .32s both;justify-content:flex-start}
 .bp2{font-size:15px;font-weight:700;color:var(--white);background:var(--purple);border:none;cursor:pointer;padding:13px 26px;border-radius:8px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s}
 .bp2:hover{background:var(--purple-hover);transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,114,255,.3)}
 .bs2{font-size:15px;font-weight:600;color:var(--white);background:transparent;border:1.5px solid var(--bp);cursor:pointer;padding:13px 26px;border-radius:8px;text-decoration:none;transition:border-color .2s,background .2s}
 .bs2:hover{border-color:var(--purple);background:var(--pd)}
-.htrust{font-size:12.5px;color:var(--mu);letter-spacing:.04em;animation:fu .7s .42s both;line-height:1.6;max-width:560px;margin:0 auto}
+.htrust{font-size:12.5px;color:var(--mu);letter-spacing:.04em;animation:fu .7s .42s both;line-height:1.6;max-width:520px;margin:0}
 .htrust em{font-style:normal;color:var(--se)}
 .owner-shot{margin-bottom:22px}
 .owner-shot .sf{animation:none;box-shadow:0 24px 56px rgba(0,0,0,.45)}
@@ -269,13 +273,14 @@ footer{background:var(--bg2);border-top:1px solid var(--bo);padding:56px 48px 32
 .flegal a:hover{color:var(--se)}
 .fu{opacity:0;transform:translateY(18px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
 .fu.vis{opacity:1;transform:none}
-@media(max-width:1024px){#hero .bg-blob{top:-8%;left:50%;transform:translateX(-50%);width:min(620px,120vw);opacity:.8}}
-@media(max-width:960px){nav{padding:0 20px}.nl{display:none}section,#cta,#fivebeat,#values,#faq{padding:68px 20px}#persona{padding:40px 20px 68px}.prow,.dgrid,.rgrid,.fgrid,.og,.ptrow,.wgrid,.wcards,.vrow,.ftop{grid-template-columns:1fr}.pgrid,.steps{grid-template-columns:1fr}.hgrid{grid-template-columns:1fr;grid-template-rows:auto}.hnc,.h-tl,.h-tr,.h-bl,.h-br{grid-column:1;grid-row:auto;padding:8px 0}.fbtabs{grid-template-columns:1fr 1fr}.fbp2{grid-template-columns:1fr}.dr-wrap{grid-template-columns:1fr}.dr-ring{margin:0 auto}.dr-metrics{grid-template-columns:1fr}}
+@media(max-width:1024px){#hero .bg-blob{top:-6%;right:-20%;width:min(560px,70vw);opacity:.45}.hero-grid{grid-template-columns:1fr;gap:40px}}
+@media(max-width:960px){nav{padding:0 20px}.nl{display:none}#hero{padding:120px 20px 80px;min-height:auto;text-align:center}.hero-grid{gap:32px}.hleft{align-items:center;text-align:center}.hsub{margin-left:auto;margin-right:auto}.hctas{justify-content:center}.htrust{margin:0 auto}section,#cta,#fivebeat,#values,#faq{padding:68px 20px}#persona{padding:40px 20px 68px}.prow,.dgrid,.rgrid,.fgrid,.og,.ptrow,.wgrid,.wcards,.vrow,.ftop{grid-template-columns:1fr}.pgrid,.steps{grid-template-columns:1fr}.hgrid{grid-template-columns:1fr;grid-template-rows:auto}.hnc,.h-tl,.h-tr,.h-bl,.h-br{grid-column:1;grid-row:auto;padding:8px 0}.fbtabs{grid-template-columns:1fr 1fr}.fbp2{grid-template-columns:1fr}.dr-wrap{grid-template-columns:1fr}.dr-ring{margin:0 auto}.dr-metrics{grid-template-columns:1fr}}
 @media(max-width:640px){.ftop{grid-template-columns:1fr}}
 html.dl-embed-shell #nav,html.dl-embed-shell footer{display:none!important}
-html.dl-embed-shell #hero{padding-top:88px;min-height:70vh}
+html.dl-embed-shell #hero{padding-top:48px;min-height:70vh}
 html.dl-embed-shell [id]{scroll-margin-top:72px}
 html.dl-embed-shell body{background:#080f25}
+html.dl-embed-shell .fu{opacity:1!important;transform:none!important}
 </style>
 <script>if(new URLSearchParams(location.search).get("embed")==="1")document.documentElement.classList.add("dl-embed-shell");</script>
 </head>
@@ -289,18 +294,27 @@ html.dl-embed-shell body{background:#080f25}
 
 <section id="hero">
   <div class="dg"></div><img class="bg-blob" src="assets/sales-home-bg-blob.svg" width="638" height="676" alt="" aria-hidden="true" decoding="async">
-  <div class="hcols">
-    <div class="hbadge"><span class="puls"></span>Private Beta · Now Open</div>
-    <h1 class="hstatic">A more confidential, structured way to manage</h1>
-    <div class="hrwrap"><div class="hrinner" id="rotator">
-      <span class="hrword">hotel brand selection.</span><span class="hrword">operator evaluation.</span>
-      <span class="hrword">brand discovery.</span><span class="hrword">market intelligence.</span>
-      <span class="hrword">deal readiness.</span><span class="hrword">partner comparison.</span>
-      <span class="hrword">conversion strategy.</span><span class="hrword">hotel brand selection.</span>
-    </div></div>
-    <p class="hsub">Dealality helps hotel owners evaluate brands, operators, market context, and commercial terms before outreach begins — then manage a confidential, structured selection process through LOI.</p>
-    <div class="hctas"><a href="#owners" class="bp2">Submit a Project for Review →</a><a href="#brands" class="bs2">Join as a Brand or Operator</a></div>
-    <p class="htrust">Informed by conversations with hotel owners, brands, operators, advisors, and development leaders across <em>the Americas, Canada, and Europe.</em></p>
+  <div class="hero-grid">
+    <div class="hleft">
+      <div class="hbadge"><span class="puls"></span>Private Beta · Now Open</div>
+      <h1 class="hstatic">A more confidential, structured way to manage</h1>
+      <div class="hrwrap"><div class="hrinner" id="rotator">
+        <span class="hrword">hotel brand selection.</span><span class="hrword">operator evaluation.</span>
+        <span class="hrword">brand discovery.</span><span class="hrword">market intelligence.</span>
+        <span class="hrword">deal readiness.</span><span class="hrword">partner comparison.</span>
+        <span class="hrword">conversion strategy.</span><span class="hrword">hotel brand selection.</span>
+      </div></div>
+      <p class="hsub">Dealality helps hotel owners evaluate brands, operators, market context, and commercial terms before outreach begins — then manage a confidential, structured selection process through LOI.</p>
+      <div class="hctas"><a href="https://dealality.com/signup" target="_top" class="bp2">Submit a Project for Review →</a><a href="https://dealality.com/signup" target="_top" class="bs2">Join as a Brand or Operator</a></div>
+      <p class="htrust">Informed by conversations with hotel owners, brands, operators, advisors, and development leaders across <em>the Americas, Canada, and Europe.</em></p>
+    </div>
+    <div class="hero-video">
+      <div class="hero-video-frame">
+        <video controls playsinline preload="metadata" aria-label="Dealality platform overview video">
+          <source src="https://res.cloudinary.com/dos2eqnzd/video/upload/v1775832428/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -309,9 +323,9 @@ html.dl-embed-shell body{background:#080f25}
 <div id="persona">
   <p class="sec-kicker">Who are you?</p>
   <div class="prow">
-    <a href="#owners" class="pc"><div class="pctag to">Hotel Owner / Investor</div><div class="pctitle">You need a more informed, confidential process for evaluating brands and operators.</div><div class="pcbody">Move from scattered outreach to structured, owner-controlled evaluation — with market intelligence, standardized comparison, and the confidentiality your project deserves.</div><div class="pccta" style="color:var(--gold)">Free to submit during private beta →</div></a>
-    <a href="#brands" class="pc"><div class="pctag tb">Brand / Operator</div><div class="pctitle">You want better-fit opportunities with better information upfront.</div><div class="pcbody">Spend less time on incomplete leads and more time evaluating projects that match your growth strategy, market appetite, and operating model.</div><div class="pccta" style="color:var(--pl)">Join as a brand or operator →</div></a>
-    <a href="#partners" class="pc"><div class="pctag tp">Advisor / Service Partner</div><div class="pctitle">You want to be part of the process — not brought in at the end.</div><div class="pcbody">Advisors, brokers, lenders, and consultants gain structured access to deal workflows at the right moment, with the right context already in place.</div><div class="pccta" style="color:rgba(250,243,225,.5)">Create your profile →</div></a>
+    <a href="https://dealality.com/signup" target="_top" class="pc"><div class="pctag to">Hotel Owner / Investor</div><div class="pctitle">You need a more informed, confidential process for evaluating brands and operators.</div><div class="pcbody">Move from scattered outreach to structured, owner-controlled evaluation — with market intelligence, standardized comparison, and the confidentiality your project deserves.</div><div class="pccta" style="color:var(--gold)">Free to submit during private beta →</div></a>
+    <a href="https://dealality.com/signup" target="_top" class="pc"><div class="pctag tb">Brand / Operator</div><div class="pctitle">You want better-fit opportunities with better information upfront.</div><div class="pcbody">Spend less time on incomplete leads and more time evaluating projects that match your growth strategy, market appetite, and operating model.</div><div class="pccta" style="color:var(--pl)">Join as a brand or operator →</div></a>
+    <a href="https://dealality.com/signup" target="_top" class="pc"><div class="pctag tp">Advisor / Service Partner</div><div class="pctitle">You want to be part of the process — not brought in at the end.</div><div class="pcbody">Advisors, brokers, lenders, and consultants gain structured access to deal workflows at the right moment, with the right context already in place.</div><div class="pccta" style="color:rgba(250,243,225,.5)">Create your profile →</div></a>
   </div>
 </div>
 
@@ -453,7 +467,7 @@ html.dl-embed-shell body{background:#080f25}
             <div class="betar"><span class="betarl">Success-based pricing</span><span class="betarv">At LOI Milestone</span></div>
           </div>
           <div class="beta-n">Success-based fees apply only if a project advances to a selected partner milestone. Full fee structure discussed during onboarding.</div>
-          <a href="#cta" class="bfull">Submit a Project for Review →</a>
+          <a href="https://dealality.com/signup" target="_top" class="bfull">Submit a Project for Review →</a>
         </div>
       </div>
     </div>
@@ -472,7 +486,7 @@ html.dl-embed-shell body{background:#080f25}
       <div class="rc"><div class="rcn">03</div><div class="rct">Reduce Speculative Qualification Work</div><div class="rcb">AI-generated deal summaries and deal readiness signals help reduce preliminary qualification time, so capacity goes to conversations genuinely worth having.</div></div>
       <div class="rc"><div class="rcn">04</div><div class="rct">Designed Around Positioning, Not Volume</div><div class="rcb">Structured, permission-based introductions only. Confidential by design, protecting your brand's positioning while keeping introductions relevant and owner-initiated.</div></div>
     </div>
-    <div class="brow fu"><a href="#cta" class="bfull" style="display:inline-block;padding:13px 28px;width:auto">Join as a Brand or Operator →</a><a href="#how" class="bout">See How It Works</a></div>
+    <div class="brow fu"><a href="https://dealality.com/signup" target="_top" class="bfull" style="display:inline-block;padding:13px 28px;width:auto">Join as a Brand or Operator →</a><a href="#how" class="bout">See How It Works</a></div>
   </div>
 </section>
 
@@ -485,7 +499,7 @@ html.dl-embed-shell body{background:#080f25}
         <h2 class="h2">Part of the process<br>from the right moment.</h2>
         <p style="font-size:16px;color:var(--se);line-height:1.7;margin-bottom:20px">Advisors, brokers, lenders, PIP consultants, and attorneys often enter deal flow after key discussions have happened. Dealality integrates service partners into workflows at the stage where their contribution is most valuable.</p>
         <div class="ptags"><span class="ptag">M&amp;A Advisors</span><span class="ptag">Brokers</span><span class="ptag">Lenders</span><span class="ptag">PIP Consultants</span><span class="ptag">Attorneys</span></div>
-        <div style="margin-top:24px"><a href="#cta" class="bout">Create Your Profile</a></div>
+        <div style="margin-top:24px"><a href="https://dealality.com/signup" target="_top" class="bout">Create Your Profile</a></div>
       </div>
       <div class="pcards fu">
         <div class="pcard"><span class="pi"><svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg></span><div><div class="pt">Embedded in Live Deal Workflows</div><div class="pd">Access leads from owners and brands in live conversations — not after the key decisions have been made.</div></div></div>
@@ -593,7 +607,7 @@ html.dl-embed-shell body{background:#080f25}
     <p style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Private Beta · Selected Participants</p>
     <h2 class="ctah">A better process starts<br>with a more informed one.</h2>
     <p class="ctasub">Membership is limited to owners, brands, operators, and advisors actively involved in hotel development, brand expansion, or operational growth.</p>
-    <div class="ctapair"><a href="#" class="bp2">Submit a Project for Review →</a><a href="#" class="bs2">Join as a Brand or Operator</a></div>
+    <div class="ctapair"><a href="https://dealality.com/signup" target="_top" class="bp2">Submit a Project for Review →</a><a href="https://dealality.com/signup" target="_top" class="bs2">Join as a Brand or Operator</a></div>
     <p class="ctafine">We will follow up within 48 hours · No commitment required</p>
   </div>
 </section>
@@ -602,11 +616,11 @@ html.dl-embed-shell body{background:#080f25}
   <div class="ft">
     <div class="ftop">
       <div><div class="fbrand"><img src="/assets/dealality-logo.png" width="320" height="127" alt="Dealality" loading="lazy"></div><div class="ftag">Reduce Friction.<br>Improve Deal Flow.<br>Smarter Decisions.</div></div>
-      <div><div class="fcolh">For Owners</div><ul class="flinks"><li><a href="#">Submit Your Project</a></li><li><a href="#">Brand Explorer</a></li><li><a href="#">How It Works</a></li><li><a href="#">Private Beta</a></li></ul></div>
-      <div><div class="fcolh">For Brands</div><ul class="flinks"><li><a href="#">Join as a Brand</a></li><li><a href="#">Operator Explorer</a></li><li><a href="#">Platform Access</a></li><li><a href="#">How It Works</a></li></ul></div>
-      <div><div class="fcolh">Company</div><ul class="flinks"><li><a href="#">About</a></li><li><a href="#">Our Team</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div><div class="fcolh">For Owners</div><ul class="flinks"><li><a href="https://dealality.com/signup" target="_top">Submit Your Project</a></li><li><a href="https://dealality.com/brand-explorer-combined" target="_top">Brand Explorer</a></li><li><a href="#how">How It Works</a></li><li><a href="https://dealality.com/signup" target="_top">Private Beta</a></li></ul></div>
+      <div><div class="fcolh">For Brands</div><ul class="flinks"><li><a href="https://dealality.com/signup" target="_top">Join as a Brand</a></li><li><a href="https://dealality.com/operator-explorer" target="_top">Operator Explorer</a></li><li><a href="https://dealality.com/for-brands-operators" target="_top">Platform Access</a></li><li><a href="#how">How It Works</a></li></ul></div>
+      <div><div class="fcolh">Company</div><ul class="flinks"><li><a href="#about">About</a></li><li><a href="https://dealality.com/about" target="_top">Our Team</a></li><li><a href="mailto:contact@dealcapture.com?subject=Careers">Careers</a></li><li><a href="mailto:contact@dealcapture.com">Contact</a></li></ul></div>
     </div>
-    <div class="fbot"><div class="fcopy">© 2026 Dealality. All rights reserved.</div><div class="flegal"><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">Contact</a></div></div>
+    <div class="fbot"><div class="fcopy">© 2026 Dealality. All rights reserved.</div><div class="flegal"><a href="https://dealality.com/terms" target="_top">Terms of Service</a><a href="https://dealality.com/privacy" target="_top">Privacy Policy</a><a href="mailto:contact@dealcapture.com">Contact</a></div></div>
   </div>
 </footer>
 

@@ -1,20 +1,37 @@
-<!--
-  Webflow Embed — Full landing body (no nav/footer) from Railway.
-  Use on Home v7 with your Webflow navbar above this block.
-
-  1. Replace YOUR-RAILWAY-HOST with production Railway URL.
-  2. Set Webflow nav links to: #hero #owners #brands #partners #how #faq
-  3. Sign In → /log-in (or your Memberstack login page)
-  4. Request Early Access → /signup-new (or Railway /signup)
--->
-<link rel="stylesheet" href="https://YOUR-RAILWAY-HOST/marketing/dealality-landing-webflow-parent.css">
+<!-- Paste into Webflow Embed below navbar (home-new). -->
+<style>
+  .dl-landing-embed-full,
+  .dl-landing-embed-wrap {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 80vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #080f25 !important;
+    line-height: 0 !important;
+    overflow: visible !important;
+  }
+  #dealality-landing-embed,
+  .dl-landing-embed-iframe {
+    display: block !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    min-height: 80vh !important;
+    height: 3200px !important;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #080f25 !important;
+  }
+</style>
 <div class="dl-landing-embed-wrap">
   <iframe
     id="dealality-landing-embed"
     class="dl-landing-embed-iframe"
-    src="https://YOUR-RAILWAY-HOST/marketing/dealality-landing-v7.html?embed=1"
+    src="https://my-operators-backend-staging.up.railway.app/marketing/dealality-landing-v7.html?embed=1"
     title="Dealality — hotel brand and operator selection"
-    loading="lazy"
+    style="display:block;width:100%;min-height:80vh;height:3200px;border:0;background:#080f25"
   ></iframe>
 </div>
-<script src="https://YOUR-RAILWAY-HOST/marketing/dealality-landing-webflow-parent.js" defer></script>
+<script src="https://my-operators-backend-staging.up.railway.app/marketing/dealality-landing-webflow-parent.js" defer></script>
