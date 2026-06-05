@@ -22,6 +22,8 @@
 
     Owner: "We are an owner, developer, or investor",
 
+    OwnerOperator: "We own, develop, or control hotel assets and we operate hotels",
+
     Advisor: "We are a broker, consultant, or service provider",
 
     Lender: "We are a lender or legal/advisory firm",
@@ -40,6 +42,8 @@
 
     Owner: "Owner - " + FORM_DISPLAY_LABELS.Owner,
 
+    OwnerOperator: "Owner-Operator - " + FORM_DISPLAY_LABELS.OwnerOperator,
+
     Advisor: "Advisor - " + FORM_DISPLAY_LABELS.Advisor,
 
     Lender: "Lender - " + FORM_DISPLAY_LABELS.Lender,
@@ -57,6 +61,9 @@
     Both: "Both - We Both Represent A Brand And Operate Hotels",
 
     Owner: "Owner - We Are An Owner, Developer, Or Investor",
+
+    OwnerOperator:
+      "Owner-Operator - We Own, Develop, Or Control Hotel Assets And We Operate Hotels",
 
     Advisor: "Advisor - We Are A Broker, Consultant, Or Service Provider",
 
@@ -156,6 +163,12 @@
 
 
 
+    const lower = raw.toLowerCase();
+
+    if (lower.startsWith("owner-operator") || lower.startsWith("owner operator")) {
+      return "OwnerOperator";
+    }
+
     const prefixMatch = raw.match(/^([A-Za-z]+)\s*[-–—]\s*/);
 
     if (prefixMatch) {
@@ -165,10 +178,6 @@
       if (key) return key;
 
     }
-
-
-
-    const lower = raw.toLowerCase();
 
     if (lower.startsWith("brand") || lower.includes("franchise/licensing platform")) return "Brand";
 
@@ -213,6 +222,12 @@
     { value: "Both", label: "Brand & Operator (Both)", airtable: AIRTABLE_CHOICES.Both },
 
     { value: "Owner", label: "Owner / Developer / Investor", airtable: AIRTABLE_CHOICES.Owner },
+
+    {
+      value: "OwnerOperator",
+      label: "Owner-Operator",
+      airtable: AIRTABLE_CHOICES.OwnerOperator,
+    },
 
     { value: "Advisor", label: "Advisor / Consultant", airtable: AIRTABLE_CHOICES.Advisor },
 

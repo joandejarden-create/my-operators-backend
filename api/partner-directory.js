@@ -831,6 +831,12 @@ export async function getPartners(req, res) {
 
             const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
             const companyRole = companyRoleFromEcosystemField(fields);
+            const operatingModel =
+              fields["Operating Model"] != null ? String(fields["Operating Model"]).trim() : "";
+            const thirdPartyManagementAvailability =
+              fields["Third-Party Management Availability"] != null
+                ? String(fields["Third-Party Management Availability"]).trim()
+                : "";
             return {
               id: record.id || '',
               companyId: companyId || '', // Company ID field (like Term ID in Financial Term Library)
@@ -838,6 +844,8 @@ export async function getPartners(req, res) {
               userType: normalizedUserType,
               companyType: companyType || '', // Include original Company Type from Airtable for reference
               companyRole,
+              operatingModel,
+              thirdPartyManagementAvailability,
               location: location || '', // No fallback - use exactly what's in Airtable
               website: website || '', // No fallback - use exactly what's in Airtable
               description: description || '', // Only use Company Overview - no fallback
@@ -1015,6 +1023,12 @@ export async function getPartners(req, res) {
               
               const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
               const companyRole = companyRoleFromEcosystemField(fields);
+              const operatingModel =
+                fields["Operating Model"] != null ? String(fields["Operating Model"]).trim() : "";
+              const thirdPartyManagementAvailability =
+                fields["Third-Party Management Availability"] != null
+                  ? String(fields["Third-Party Management Availability"]).trim()
+                  : "";
               return {
                 id: record.id || '',
                 companyId: companyId || '', // Company ID field (like Term ID in Financial Term Library)
@@ -1022,6 +1036,8 @@ export async function getPartners(req, res) {
                 userType: normalizedUserType,
                 companyType: companyType || '', // Include original Company Type from Airtable for reference
                 companyRole,
+                operatingModel,
+                thirdPartyManagementAvailability,
                 location: location || '', // No fallback - use exactly what's in Airtable
                 website: website || '', // No fallback - use exactly what's in Airtable
                 description: description || '', // Only use Company Overview - no fallback

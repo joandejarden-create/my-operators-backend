@@ -104,6 +104,36 @@ async function loadConfig() {
 }
 
 // Partner Directory JavaScript
+/** Swatch / card border colors per Partner Directory user type (Company Type). */
+const PARTNER_DIRECTORY_USER_TYPE_COLORS = {
+    'HOTEL MGMT. COMPANY': '#14ca74',
+    'HOTEL BRANDS (FRANCHISE)': '#d69e2e',
+    'HOTEL OWNERS': '#667eea',
+    OWNER_OPERATOR: '#57b4e9',
+    'HOSPITALITY CONSULTANTS': '#a855f7',
+    OTHER: '#94a3b8',
+};
+
+/** User Type legend chip order (left → right), after All. */
+const USER_TYPE_LEGEND_ORDER = [
+    'HOTEL OWNERS',
+    'OWNER_OPERATOR',
+    'HOTEL BRANDS (FRANCHISE)',
+    'HOTEL MGMT. COMPANY',
+    'HOSPITALITY CONSULTANTS',
+    'OTHER',
+];
+
+/** Legend display labels (filter keys unchanged). */
+const USER_TYPE_LEGEND_LABELS = {
+    'HOTEL OWNERS': 'Hotel Owners',
+    OWNER_OPERATOR: 'Hotel Owner - Operator',
+    'HOTEL BRANDS (FRANCHISE)': 'Hotel Brands',
+    'HOTEL MGMT. COMPANY': '3rd Party Operators',
+    'HOSPITALITY CONSULTANTS': 'Advisor / Consultant',
+    OTHER: 'Other',
+};
+
 class PartnerDirectory {
     constructor() {
         this.companies = [];
@@ -114,6 +144,9 @@ class PartnerDirectory {
         this.currentUserTypeFilter = '';
         this.currentCompanyRoleFilter = '';
         this.currentRegionFilter = '';
+        this.currentOperatingModelFilter = '';
+        this.currentThirdPartyMgmtFilter = '';
+        this.currentBrandFilter = '';
         this.currentResponsivenessSpeedFilter = '';
         this.currentResponsivenessFrequencyFilter = '';
         this.currentSearchQuery = '';
@@ -128,7 +161,7 @@ class PartnerDirectory {
         // TTL cache for partner list (uses PARTNER_DIRECTORY_CONFIG.CACHE_TTL)
         this.PARTNERS_CACHE_TTL_MS = PARTNER_DIRECTORY_CONFIG.CACHE_TTL || 5 * 60 * 1000;
         this.partnersCache = null; // { v, companies, individuals, timestamp }
-        this.PARTNERS_CACHE_VERSION = 3; // bump when company payload shape changes (e.g. companyType filter keys)
+        this.PARTNERS_CACHE_VERSION = 4; // operatingModel + thirdPartyManagementAvailability on companies
         
         // Caching for modal data to improve performance
         this.teamMembersCache = new Map(); // Cache: companyId -> teamMembers array
@@ -172,6 +205,9 @@ class PartnerDirectory {
         window.DEALALITY_COMPANY_ROLE?.populateFilterSelect?.('companyRoleFilter');
         window.DEALALITY_COMPANY_TYPE?.populateFilterSelect?.('userTypeFilter');
         window.DEALALITY_COMPANY_TYPE?.populateInsightsTypeSelect?.('insightsType');
+        window.DEALALITY_PARTNER_DIRECTORY_FILTERS?.populateStaticFilterSelects?.();
+        window.DEALALITY_PARTNER_DIRECTORY_FILTERS?.populateInsightsFilterSelects?.();
+        this.initUserTypeLegend();
         this.setupEventListeners();
         this.setupResponsivenessTooltips();
         this.updateFilterCount();
@@ -286,12 +322,28 @@ class PartnerDirectory {
             this.resetInsightsFilters();
         });
 
-        // Filter button clicks - use event delegation to handle dynamically added buttons
+        // Filter button clicks - legacy segmented buttons (hidden; legend is primary)
         document.addEventListener('click', (e) => {
             if (e.target.closest('.filter-button')) {
                 const btn = e.target.closest('.filter-button');
                 const type = btn.dataset.type;
                 this.toggleFilterButton(type);
+            }
+        });
+
+        document.getElementById('userTypeLegend')?.addEventListener('click', (e) => {
+            const btn = e.target.closest('.user-type-legend-item');
+            if (!btn) return;
+            const type = btn.dataset.type || '';
+            if (type === 'all') {
+                this.applyUserTypeQuickFilter('');
+                return;
+            }
+            if (btn.classList.contains('no-records')) return;
+            if (this.currentUserTypeFilter === type) {
+                this.applyUserTypeQuickFilter('');
+            } else {
+                this.applyUserTypeQuickFilter(type);
             }
         });
 
@@ -318,6 +370,27 @@ class PartnerDirectory {
             this.applyFilters();
         });
 
+        document.getElementById('operatingModelFilter')?.addEventListener('change', (e) => {
+            this.currentOperatingModelFilter = (e.target.value || '').trim();
+            this.invalidateAllTabCaches();
+            this.updateFilterCount();
+            this.applyFilters();
+        });
+
+        document.getElementById('thirdPartyMgmtFilter')?.addEventListener('change', (e) => {
+            this.currentThirdPartyMgmtFilter = (e.target.value || '').trim();
+            this.invalidateAllTabCaches();
+            this.updateFilterCount();
+            this.applyFilters();
+        });
+
+        document.getElementById('brandsFilter')?.addEventListener('change', (e) => {
+            this.currentBrandFilter = (e.target.value || '').trim();
+            this.invalidateAllTabCaches();
+            this.updateFilterCount();
+            this.applyFilters();
+        });
+
         document.getElementById('responsivenessSpeedFilter')?.addEventListener('change', (e) => {
             this.currentResponsivenessSpeedFilter = (e.target.value || '').trim();
             this.invalidateAllTabCaches();
@@ -334,6 +407,7 @@ class PartnerDirectory {
 
         document.getElementById('resetFiltersBtn')?.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             this.resetFilters();
         });
 
@@ -1153,6 +1227,8 @@ class PartnerDirectory {
         document.getElementById('filtersSection').style.display = 'flex';
         document.getElementById('resultsGrid').classList.remove('hidden');
         this.updateResultsToolbarVisibility();
+        this.updateUserTypeLegendVisibility();
+        this.updateUserTypeLegendStates();
     }
 
     showLoading() {
@@ -1163,6 +1239,7 @@ class PartnerDirectory {
         document.getElementById('filtersSection').style.display = 'none';
         document.getElementById('resultsGrid').classList.add('hidden');
         document.getElementById('resultsToolbar')?.classList.add('hidden');
+        document.getElementById('userTypeLegendBar')?.classList.add('hidden');
     }
 
     updateStats() {
@@ -1171,6 +1248,8 @@ class PartnerDirectory {
             this.getIndividualsVisibleInDirectory().length;
         const favoritesCount = this.favorites.length;
         document.getElementById('favoritesCount').textContent = favoritesCount;
+        this.populateBrandsFilter();
+        this.updateUserTypeLegendStates();
     }
 
     switchTab(tab) {
@@ -1277,6 +1356,7 @@ class PartnerDirectory {
         }
 
         this.updateResultsToolbarVisibility();
+        this.updateUserTypeLegendVisibility();
         this.updateResultsCount();
         this.applyViewMode();
     }
@@ -1346,6 +1426,9 @@ class PartnerDirectory {
             }
             if (!this.companyMatchesRoleFilter(company)) return false;
             if (this.currentRegionFilter && !this.hasRegion(company.regions, this.currentRegionFilter)) return false;
+            if (!this.entityMatchesOperatingModelFilter(company)) return false;
+            if (!this.entityMatchesThirdPartyMgmtFilter(company)) return false;
+            if (!this.entityMatchesBrandFilter(company)) return false;
             return true;
         };
 
@@ -1361,6 +1444,9 @@ class PartnerDirectory {
             }
             if (!this.companyMatchesRoleFilter(individual)) return false;
             if (this.currentRegionFilter && !this.hasRegion(individual.regions, this.currentRegionFilter)) return false;
+            if (!this.entityMatchesOperatingModelFilter(individual)) return false;
+            if (!this.entityMatchesThirdPartyMgmtFilter(individual)) return false;
+            if (!this.entityMatchesBrandFilter(individual)) return false;
             if (this.currentResponsivenessSpeedFilter) {
                 const individualSpeed = (individual.responsivenessTimeCategory || '').trim();
                 if (individualSpeed !== this.currentResponsivenessSpeedFilter) return false;
@@ -1401,15 +1487,101 @@ class PartnerDirectory {
 
     toggleFilterButton(type) {
         if (this.currentUserTypeFilter === type) {
-            this.currentUserTypeFilter = '';
+            this.applyUserTypeQuickFilter('');
         } else {
-            this.currentUserTypeFilter = type;
+            this.applyUserTypeQuickFilter(type);
         }
+    }
+
+    initUserTypeLegend() {
+        const legend = document.getElementById('userTypeLegend');
+        if (!legend || legend.querySelector('.user-type-legend-item[data-type]:not([data-type="all"])')) {
+            return;
+        }
+        const byValue = Object.fromEntries(
+            (window.DEALALITY_COMPANY_TYPE?.filterOptions || [])
+                .filter((o) => o.value)
+                .map((o) => [o.value, o])
+        );
+        const frag = document.createDocumentFragment();
+        for (const value of USER_TYPE_LEGEND_ORDER) {
+            const opt = byValue[value];
+            if (!opt) continue;
+            const displayLabel = USER_TYPE_LEGEND_LABELS[value] || opt.label;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'user-type-legend-item';
+            btn.dataset.type = opt.value;
+            btn.setAttribute('aria-label', `Filter by ${displayLabel}`);
+            const color = PARTNER_DIRECTORY_USER_TYPE_COLORS[opt.value] || '#94a3b8';
+            const swatch = document.createElement('div');
+            swatch.className = 'user-type-legend-swatch';
+            swatch.style.background = color;
+            const label = document.createElement('span');
+            label.className = 'user-type-legend-label';
+            label.textContent = displayLabel;
+            btn.append(swatch, label);
+            frag.appendChild(btn);
+        }
+        legend.appendChild(frag);
+        this.updateUserTypeLegendActive();
+    }
+
+    applyUserTypeQuickFilter(type) {
+        this.currentUserTypeFilter = type || '';
+        const select = document.getElementById('userTypeFilter');
+        if (select) select.value = this.currentUserTypeFilter;
         this.updateFilterButtons();
-        document.getElementById('userTypeFilter').value = this.currentUserTypeFilter;
         this.invalidateAllTabCaches();
         this.updateFilterCount();
         this.applyFilters();
+    }
+
+    countPartnersForUserType(filterKey) {
+        if (!filterKey) return 0;
+        let count = 0;
+        for (const company of this.companies) {
+            const normalized = this.normalizePartnerDirectoryType(
+                company.userType || company.companyType || ''
+            );
+            if (normalized === filterKey) count++;
+        }
+        for (const individual of this.getIndividualsVisibleInDirectory()) {
+            if (this.getIndividualPartnerType(individual) === filterKey) count++;
+        }
+        return count;
+    }
+
+    updateUserTypeLegendActive() {
+        const activeKey = this.currentUserTypeFilter || '';
+        document.querySelectorAll('.user-type-legend-item').forEach((btn) => {
+            const type = btn.dataset.type || '';
+            const isAll = type === 'all';
+            const active = (isAll && !activeKey) || (!isAll && type === activeKey);
+            btn.classList.toggle('active', active);
+        });
+    }
+
+    updateUserTypeLegendStates() {
+        document.querySelectorAll('.user-type-legend-item[data-type]').forEach((btn) => {
+            const type = btn.dataset.type || '';
+            if (type === 'all') return;
+            const count = this.countPartnersForUserType(type);
+            btn.classList.toggle('no-records', count === 0);
+            if (count === 0) btn.setAttribute('aria-disabled', 'true');
+            else btn.removeAttribute('aria-disabled');
+        });
+        this.updateUserTypeLegendActive();
+    }
+
+    updateUserTypeLegendVisibility() {
+        const bar = document.getElementById('userTypeLegendBar');
+        if (!bar) return;
+        const show =
+            this.currentTab !== 'insights' &&
+            document.getElementById('loadingState')?.style.display !== 'block';
+        bar.classList.toggle('hidden', !show);
+        bar.setAttribute('aria-hidden', show ? 'false' : 'true');
     }
 
     updateFilterButtons() {
@@ -1420,6 +1592,7 @@ class PartnerDirectory {
                 btn.classList.remove('active');
             }
         });
+        this.updateUserTypeLegendActive();
     }
 
     /** Call when user changes search/filter/sort so tab caches are rebuilt on next render */
@@ -1495,6 +1668,18 @@ class PartnerDirectory {
             if (this.currentRegionFilter && !this.hasRegion(company.regions, this.currentRegionFilter)) {
                 return false;
             }
+
+            if (!this.entityMatchesOperatingModelFilter(company)) {
+                return false;
+            }
+
+            if (!this.entityMatchesThirdPartyMgmtFilter(company)) {
+                return false;
+            }
+
+            if (!this.entityMatchesBrandFilter(company)) {
+                return false;
+            }
             
             return true;
         });
@@ -1529,6 +1714,18 @@ class PartnerDirectory {
             
             // Region filter
             if (this.currentRegionFilter && !this.hasRegion(individual.regions, this.currentRegionFilter)) {
+                return false;
+            }
+
+            if (!this.entityMatchesOperatingModelFilter(individual)) {
+                return false;
+            }
+
+            if (!this.entityMatchesThirdPartyMgmtFilter(individual)) {
+                return false;
+            }
+
+            if (!this.entityMatchesBrandFilter(individual)) {
                 return false;
             }
 
@@ -1631,6 +1828,9 @@ class PartnerDirectory {
         if (this.currentUserTypeFilter) count++;
         if (this.currentCompanyRoleFilter) count++;
         if (this.currentRegionFilter) count++;
+        if (this.currentOperatingModelFilter) count++;
+        if (this.currentThirdPartyMgmtFilter) count++;
+        if (this.currentBrandFilter) count++;
         if (this.currentResponsivenessSpeedFilter) count++;
         if (this.currentResponsivenessFrequencyFilter) count++;
         
@@ -1644,6 +1844,97 @@ class PartnerDirectory {
             filterCountBadge.style.display = 'inline-flex';
         } else {
             filterCountBadge.style.display = 'none';
+        }
+    }
+
+    getPartnerFilterApi() {
+        return window.DEALALITY_PARTNER_DIRECTORY_FILTERS || null;
+    }
+
+    getCompanyOperatingModel(company) {
+        if (!company) return '';
+        const api = this.getPartnerFilterApi();
+        if (api?.operatingModelFromEntity) {
+            return api.normalizeOperatingModelForFilter(api.operatingModelFromEntity(company));
+        }
+        return (company.operatingModel || '').trim();
+    }
+
+    getCompanyThirdPartyMgmt(company) {
+        if (!company) return '';
+        const api = this.getPartnerFilterApi();
+        if (api?.thirdPartyMgmtFromEntity) {
+            return api.normalizeThirdPartyMgmtForFilter(api.thirdPartyMgmtFromEntity(company));
+        }
+        return (company.thirdPartyManagementAvailability || '').trim();
+    }
+
+    getEntityBrandNames(entity) {
+        if (!entity) return [];
+        const brands = Array.isArray(entity.brands) ? entity.brands : [];
+        return brands.map((b) => String(b || '').trim()).filter(Boolean);
+    }
+
+    entityMatchesOperatingModelFilter(entity) {
+        if (!this.currentOperatingModelFilter) return true;
+        const company =
+            entity.companyRecordId != null
+                ? this.findCompanyForIndividual(entity)
+                : entity;
+        const model = this.getCompanyOperatingModel(company || entity);
+        return model === this.currentOperatingModelFilter;
+    }
+
+    entityMatchesThirdPartyMgmtFilter(entity) {
+        if (!this.currentThirdPartyMgmtFilter) return true;
+        const company =
+            entity.companyRecordId != null
+                ? this.findCompanyForIndividual(entity)
+                : entity;
+        const value = this.getCompanyThirdPartyMgmt(company || entity);
+        return value === this.currentThirdPartyMgmtFilter;
+    }
+
+    entityMatchesBrandFilter(entity) {
+        if (!this.currentBrandFilter) return true;
+        const names = this.getEntityBrandNames(entity);
+        if (names.length === 0 && entity.companyRecordId) {
+            const company = this.findCompanyForIndividual(entity);
+            if (company) return this.getEntityBrandNames(company).includes(this.currentBrandFilter);
+        }
+        return names.some(
+            (name) => name.toLowerCase() === this.currentBrandFilter.toLowerCase()
+        );
+    }
+
+    populateBrandsFilter() {
+        const select = document.getElementById('brandsFilter');
+        if (!select) return;
+        const current = this.currentBrandFilter || select.value || '';
+        const names = new Set();
+        for (const company of this.companies) {
+            this.getEntityBrandNames(company).forEach((n) => names.add(n));
+        }
+        for (const individual of this.getIndividualsVisibleInDirectory()) {
+            this.getEntityBrandNames(individual).forEach((n) => names.add(n));
+        }
+        const sorted = [...names].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+        select.innerHTML = '';
+        const allOpt = document.createElement('option');
+        allOpt.value = '';
+        allOpt.textContent = 'All Brands';
+        select.appendChild(allOpt);
+        for (const name of sorted) {
+            const opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = name;
+            select.appendChild(opt);
+        }
+        if (current && sorted.includes(current)) {
+            select.value = current;
+        } else if (current) {
+            this.currentBrandFilter = '';
+            select.value = '';
         }
     }
 
@@ -1676,6 +1967,9 @@ class PartnerDirectory {
         this.currentUserTypeFilter = '';
         this.currentCompanyRoleFilter = '';
         this.currentRegionFilter = '';
+        this.currentOperatingModelFilter = '';
+        this.currentThirdPartyMgmtFilter = '';
+        this.currentBrandFilter = '';
         this.currentResponsivenessSpeedFilter = '';
         this.currentResponsivenessFrequencyFilter = '';
         this.currentSearchQuery = '';
@@ -1695,6 +1989,12 @@ class PartnerDirectory {
         const companyRoleFilter = document.getElementById('companyRoleFilter');
         if (companyRoleFilter) companyRoleFilter.value = '';
         document.getElementById('regionFilter').value = '';
+        const operatingModelEl = document.getElementById('operatingModelFilter');
+        const thirdPartyEl = document.getElementById('thirdPartyMgmtFilter');
+        const brandsEl = document.getElementById('brandsFilter');
+        if (operatingModelEl) operatingModelEl.value = '';
+        if (thirdPartyEl) thirdPartyEl.value = '';
+        if (brandsEl) brandsEl.value = '';
         const speedEl = document.getElementById('responsivenessSpeedFilter');
         const freqEl = document.getElementById('responsivenessFrequencyFilter');
         if (speedEl) speedEl.value = '';
@@ -2323,6 +2623,9 @@ class PartnerDirectory {
             }
             if (!this.companyMatchesRoleFilter(company)) return false;
             if (this.currentRegionFilter && !this.hasRegion(company.regions, this.currentRegionFilter)) return false;
+            if (!this.entityMatchesOperatingModelFilter(company)) return false;
+            if (!this.entityMatchesThirdPartyMgmtFilter(company)) return false;
+            if (!this.entityMatchesBrandFilter(company)) return false;
             return true;
         });
 
@@ -2338,6 +2641,9 @@ class PartnerDirectory {
             }
             if (!this.companyMatchesRoleFilter(individual)) return false;
             if (this.currentRegionFilter && !this.hasRegion(individual.regions, this.currentRegionFilter)) return false;
+            if (!this.entityMatchesOperatingModelFilter(individual)) return false;
+            if (!this.entityMatchesThirdPartyMgmtFilter(individual)) return false;
+            if (!this.entityMatchesBrandFilter(individual)) return false;
             if (this.currentResponsivenessSpeedFilter) {
                 const individualSpeed = (individual.responsivenessTimeCategory || '').trim();
                 if (individualSpeed !== this.currentResponsivenessSpeedFilter) return false;
@@ -2358,7 +2664,17 @@ class PartnerDirectory {
             this.tabContainers.favorites = null;
             resultsGrid.classList.add('hidden');
             emptyState.classList.remove('hidden');
-            const hasFilters = this.currentSearchQuery || this.currentUserTypeFilter || this.currentCompanyRoleFilter || this.currentRegionFilter || this.currentResponsivenessSpeedFilter || this.currentResponsivenessFrequencyFilter || this.currentFavoriteCategory !== 'all';
+            const hasFilters =
+                this.currentSearchQuery ||
+                this.currentUserTypeFilter ||
+                this.currentCompanyRoleFilter ||
+                this.currentRegionFilter ||
+                this.currentOperatingModelFilter ||
+                this.currentThirdPartyMgmtFilter ||
+                this.currentBrandFilter ||
+                this.currentResponsivenessSpeedFilter ||
+                this.currentResponsivenessFrequencyFilter ||
+                this.currentFavoriteCategory !== 'all';
             emptyState.innerHTML = `
                 <h3>No favorites found</h3>
                 <p>${hasFilters ? 'No favorites match the current filters.' : 'Click the star icon on any company or individual card to add them to your favorites.'}</p>
@@ -2651,6 +2967,34 @@ class PartnerDirectory {
         return div.innerHTML;
     }
 
+    /** Company Profile capability tags (multi-select) → display pills in modal. */
+    parseCompanyTypeTags(value) {
+        if (value == null || value === '') return [];
+        if (Array.isArray(value)) {
+            return value.map((v) => String(v).trim()).filter(Boolean);
+        }
+        if (typeof value === 'string') {
+            return value
+                .split(',')
+                .map((s) => s.trim())
+                .filter(Boolean);
+        }
+        return [];
+    }
+
+    buildCompanyTypeTagsPillsHtml(tags) {
+        const list = Array.isArray(tags) ? tags : [];
+        if (!list.length) {
+            return '<span class="company-modal-meta-empty">—</span>';
+        }
+        return `<div class="company-modal-tag-pills">${list
+            .map(
+                (tag) =>
+                    `<span class="company-modal-tag-pill">${this.escapeHtml(tag)}</span>`
+            )
+            .join('')}</div>`;
+    }
+
     /** Map directory filter key / Company Type to card display label. */
     getUserTypeDisplayLabel(userType) {
         if (!userType) return '';
@@ -2930,6 +3274,7 @@ class PartnerDirectory {
         
         // Additional information: only human-readable fields (no linked-record ID dumps).
         let additionalFields = [];
+        let companyTypeTags = [];
         if (company.rawFields && typeof company.rawFields === 'object' && !Array.isArray(company.rawFields)) {
             const excludedFieldNames = new Set([
                 'Company_ID',
@@ -2970,8 +3315,16 @@ class PartnerDirectory {
                 'Company ID',
                 'Property Address',
                 'Additional Office Regions',
+                'Company Type Tags',
+                'Core Profile Status',
+                'Owner Profile Status',
+                'Operator Profile Status',
+                'Developer Profile Status',
             ]);
             const normalizeField = (fieldName) => String(fieldName || '').toLowerCase().replace(/\s+/g, ' ').trim();
+            companyTypeTags = this.parseCompanyTypeTags(
+                company.rawFields['Company Type Tags']
+            );
             const looksLikeLinkedRecordIds = (displayValue) => {
                 const s = String(displayValue || '').trim();
                 if (!s) return true;
@@ -2982,6 +3335,7 @@ class PartnerDirectory {
             const shouldExcludeField = (fieldName) => {
                 if (excludedFieldNames.has(fieldName)) return true;
                 const normalized = normalizeField(fieldName);
+                if (normalized.includes('profile status')) return true;
                 if (normalized === 'users' || normalized === 'team members') return true;
                 if (normalized.includes('jurisdictions') && normalized.includes('licensed')) return true;
                 if (normalized.includes('region -')) return true;
@@ -3173,20 +3527,28 @@ class PartnerDirectory {
                     </div>
                 ` : ''}
 
-                ${additionalFields.length > 0 ? `
+                ${(additionalFields.length > 0 || companyTypeTags.length > 0) ? `
                     <div class="company-modal-section">
                         <div class="company-modal-section-title">ADDITIONAL INFORMATION</div>
-                        <div class="company-modal-section-content">
+                        <div class="company-modal-section-content company-modal-additional-meta">
                             ${additionalFields.map(field => `
-                                <div style="margin-bottom: 12px;">
-                                    <div style="font-weight: 600; color: var(--neutral--100); margin-bottom: 4px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">
+                                <div class="company-modal-meta-item">
+                                    <div class="company-modal-meta-label">
                                         ${this.escapeHtml(field.key)}
                                     </div>
-                                    <div style="color: var(--neutral--400); font-size: 14px;">
+                                    <div class="company-modal-meta-value">
                                         ${this.escapeHtml(field.value)}
                                     </div>
                                 </div>
                             `).join('')}
+                            ${companyTypeTags.length > 0 ? `
+                                <div class="company-modal-meta-item">
+                                    <div class="company-modal-meta-label">Company Type Tags</div>
+                                    <div class="company-modal-meta-value">
+                                        ${this.buildCompanyTypeTagsPillsHtml(companyTypeTags)}
+                                    </div>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 ` : ''}
@@ -4013,6 +4375,7 @@ class PartnerDirectory {
         if (normalized === 'HOTEL BRANDS (FRANCHISE)') return 'brands';
         if (normalized === 'HOTEL MGMT. COMPANY') return 'mgmt';
         if (normalized === 'HOSPITALITY CONSULTANTS') return 'advisor';
+        if (normalized === 'OWNER_OPERATOR') return 'owner-operator';
         if (normalized === 'OTHER') return 'other';
         return '';
     }
@@ -4023,7 +4386,14 @@ class PartnerDirectory {
             company.userType || company.companyType || ''
         );
         const typeCss = this.partnerDirectoryTypeToCardClass(partnerType);
-        card.classList.remove('company-type-owners', 'company-type-brands', 'company-type-mgmt', 'company-type-advisor', 'company-type-other');
+        card.classList.remove(
+            'company-type-owners',
+            'company-type-brands',
+            'company-type-mgmt',
+            'company-type-advisor',
+            'company-type-owner-operator',
+            'company-type-other'
+        );
         card.classList.add('company-card');
         if (typeCss) card.classList.add(`company-type-${typeCss}`);
     }
@@ -4032,7 +4402,14 @@ class PartnerDirectory {
         if (!card || !individual) return;
         const partnerType = this.getIndividualPartnerType(individual);
         const typeCss = this.partnerDirectoryTypeToCardClass(partnerType);
-        card.classList.remove('individual-type-owners', 'individual-type-brands', 'individual-type-mgmt', 'individual-type-advisor', 'individual-type-other');
+        card.classList.remove(
+            'individual-type-owners',
+            'individual-type-brands',
+            'individual-type-mgmt',
+            'individual-type-advisor',
+            'individual-type-owner-operator',
+            'individual-type-other'
+        );
         card.classList.add('individual-card');
         if (typeCss) card.classList.add(`individual-type-${typeCss}`);
     }

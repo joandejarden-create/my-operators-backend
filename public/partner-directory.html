@@ -338,47 +338,120 @@
             color: #6c72ff;
         }
 
-        /* Filters Section - Wraps to multiple rows when needed; no scrollbar */
+        /* Filters Section — Brand Explorer single-row layout */
         .filters-section {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
             background: var(--neutral--800);
             border: 0.6px solid var(--neutral--600);
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px 15px;
             margin-bottom: 20px;
             display: flex;
             align-items: flex-end;
-            gap: 16px;
-            flex-wrap: wrap;
+            gap: 10px;
+            flex-wrap: nowrap;
             overflow: hidden;
         }
 
-        /* On wide screens, keep filters in a single row */
-        @media (min-width: 1400px) {
+        @media (max-width: 1200px) {
             .filters-section {
-                flex-wrap: nowrap;
+                flex-wrap: wrap;
             }
         }
-        
+
         .filters-section-left {
+            display: none;
+        }
+
+        .filters-section-middle {
             display: flex;
             align-items: flex-end;
             gap: 8px;
-            flex-shrink: 0;
+            flex: 1;
+            min-width: 0;
+            flex-shrink: 1;
         }
-        
+
         .filters-section-right {
             display: flex;
             align-items: flex-end;
             gap: 8px;
-            flex-shrink: 0;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             margin-left: auto;
             min-width: 0;
+            flex-shrink: 0;
         }
 
         .filter-group-search {
-            min-width: 120px;
-            max-width: 220px;
+            min-width: 160px;
+            max-width: 200px;
+            width: 100%;
+        }
+
+        .filters-section-right .filter-group:has(.filter-select) {
+            max-width: 118px;
+        }
+
+        .filters-section-right .filter-group.filter-group--third-party:has(.filter-select) {
+            min-width: 252px;
+            max-width: 280px;
+            flex-shrink: 0;
+        }
+
+        .filters-section-right .filter-group--third-party .filter-label {
+            white-space: nowrap;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        .filters-section-right .filter-group--brands {
+            max-width: 130px;
+        }
+
+        .filter-group-reset {
+            overflow: visible !important;
+            max-width: none !important;
+        }
+
+        .btn-clear {
+            padding: 8px 16px;
+            background: var(--secondary--color-5);
+            border: 1px solid var(--secondary--color-5);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            width: auto;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .btn-clear:hover {
+            background: var(--system--orange-400);
+            border-color: var(--system--orange-400);
+            transform: translateY(-1px);
+        }
+
+        .filter-group--company-role-sr {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         .filter-search-input {
@@ -439,21 +512,7 @@
             min-width: 140px;
         }
 
-        .filter-spacer {
-            width: 24px;
-            flex-shrink: 0;
-        }
-
-        .filters-section-middle {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            flex: 0 1 360px; /* keep search + sort from pushing into right-side filters */
-            min-width: 0;
-            justify-content: flex-start;
-        }
-
-        /* Filter buttons – Today's Deal Pulse segmented style (Owner/Brand/Operator) */
+        /* Filter buttons – legacy (hidden) */
         .filter-buttons-group {
             display: flex;
             gap: 0;
@@ -495,6 +554,95 @@
         .filter-button.active {
             background: var(--accent--primary-1);
             color: #fff;
+        }
+
+        /* Legacy segmented type buttons — replaced by user-type legend bar */
+        .filter-buttons-group {
+            display: none !important;
+        }
+
+        .filter-group--user-type-sr {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .user-type-legend-bar {
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .user-type-legend-bar.hidden {
+            display: none;
+        }
+
+        .user-type-legend {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 8px 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .user-type-legend > span:first-child {
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .user-type-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-family: inherit;
+            cursor: pointer;
+            background: transparent;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .user-type-legend-item:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .user-type-legend-item.active {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            border-color: var(--accent--primary-1);
+        }
+
+        .user-type-legend-item.no-records {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .user-type-legend-swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .user-type-legend-label {
+            color: inherit;
+            font-size: 12px;
         }
 
         .filter-group {
@@ -976,6 +1124,15 @@
             border-color: #cbd5e1;
         }
 
+        .company-card.company-type-owner-operator {
+            border-left-color: #57b4e9;
+        }
+
+        .company-card.company-type-owner-operator:hover {
+            border-left-color: #57b4e9;
+            border-color: #57b4e9;
+        }
+
         .company-card__header {
             display: flex;
             align-items: flex-start;
@@ -1281,6 +1438,15 @@
         .individual-card.individual-type-other:hover {
             border-left-color: #cbd5e1;
             border-color: #cbd5e1;
+        }
+
+        .individual-card.individual-type-owner-operator {
+            border-left-color: #57b4e9;
+        }
+
+        .individual-card.individual-type-owner-operator:hover {
+            border-left-color: #57b4e9;
+            border-color: #57b4e9;
         }
 
         .individual-card__header {
@@ -2257,6 +2423,52 @@
             line-height: 1.7;
         }
 
+        .company-modal-additional-meta .company-modal-meta-item {
+            margin-bottom: 14px;
+        }
+
+        .company-modal-additional-meta .company-modal-meta-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .company-modal-meta-label {
+            font-weight: 600;
+            color: var(--neutral--100);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .company-modal-meta-value {
+            color: var(--neutral--400);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .company-modal-tag-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .company-modal-tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.35;
+            color: var(--neutral--200);
+            background: rgba(96, 165, 250, 0.12);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+        }
+
+        .company-modal-meta-empty {
+            color: var(--neutral--500);
+        }
+
         /* Individual modal: bold caps labels, normal body text */
         .company-modal-inline-label {
             font-weight: 700;
@@ -3222,24 +3434,10 @@
 
                 <!-- Filters Section -->
                 <div class="filters-section" id="filtersSection" style="display: none;">
-                    <div class="filters-section-left">
-                        <div class="filter-buttons-group">
-                            <button class="filter-button" data-type="HOTEL MGMT. COMPANY" id="filterMgmt">
-                                3RD PARTY<br>OPERATOR
-                            </button>
-                            <button class="filter-button" data-type="HOTEL BRANDS (FRANCHISE)" id="filterBrands">
-                                HOTEL BRANDS<br>(FRANCHISE)
-                            </button>
-                            <button class="filter-button" data-type="HOTEL OWNERS" id="filterOwners">
-                                HOTEL<br>OWNERS
-                            </button>
-                        </div>
-                        <div class="filter-spacer"></div>
-                    </div>
                     <div class="filters-section-middle">
                         <div class="filter-group filter-group-search">
-                            <label class="filter-label">Search</label>
-                            <input type="text" class="filter-search-input" id="searchInput" placeholder="Search by company name...">
+                            <label class="filter-label" for="searchInput">Search</label>
+                            <input type="text" class="filter-search-input" id="searchInput" placeholder="Search by company or contact name...">
                         </div>
                     </div>
                     <div class="filters-section-right">
@@ -3255,8 +3453,8 @@
                                 <option value="Partners">Partners</option>
                             </select>
                         </div>
-                        <div class="filter-group" title="Company Profile → Company Type">
-                            <label class="filter-label" for="userTypeFilter">User Type</label>
+                        <div class="filter-group filter-group--user-type-sr" title="Company Profile → Company Type">
+                            <label class="filter-label visually-hidden" for="userTypeFilter">User Type</label>
                             <select
                                 class="filter-select"
                                 id="userTypeFilter"
@@ -3266,10 +3464,10 @@
                             >
                                 <option value="">All Types</option>
                             </select>
-                            <span class="visually-hidden" id="userTypeFilterHint">Filters by the Company Profile field &quot;Company Type&quot; (e.g. Hotel Owner, Hospitality Consultants).</span>
+                            <span class="visually-hidden" id="userTypeFilterHint">Filters by the Company Profile field &quot;Company Type&quot;.</span>
                         </div>
-                        <div class="filter-group" title="Company Profile → Company's role in the hotel ecosystem">
-                            <label class="filter-label" for="companyRoleFilter">Company Role</label>
+                        <div class="filter-group filter-group--company-role-sr" title="Company Profile → Company's role in the hotel ecosystem">
+                            <label class="filter-label visually-hidden" for="companyRoleFilter">Company Role</label>
                             <select
                                 class="filter-select"
                                 id="companyRoleFilter"
@@ -3280,18 +3478,34 @@
                             >
                                 <option value="">All Roles</option>
                             </select>
-                            <span class="visually-hidden" id="companyRoleFilterHint">Filters by the Company Profile field &quot;Company's role in the hotel ecosystem&quot;.</span>
+                            <span class="visually-hidden" id="companyRoleFilterHint">Filters by company role in the hotel ecosystem.</span>
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">Region</label>
-                            <select class="filter-select" id="regionFilter">
+                            <label class="filter-label" for="operatingModelFilter">Operating Model</label>
+                            <select class="filter-select" id="operatingModelFilter" aria-label="Operating Model">
+                                <option value="">All Models</option>
+                            </select>
+                        </div>
+                        <div class="filter-group filter-group--third-party">
+                            <label class="filter-label" for="thirdPartyMgmtFilter">Third-Party Mgmt. Availability</label>
+                            <select
+                                class="filter-select"
+                                id="thirdPartyMgmtFilter"
+                                aria-label="Third-Party Mgmt. Availability"
+                            >
+                                <option value="">All Availability</option>
+                            </select>
+                        </div>
+                        <div class="filter-group filter-group--brands">
+                            <label class="filter-label" for="brandsFilter">Brands</label>
+                            <select class="filter-select" id="brandsFilter" aria-label="Brands">
+                                <option value="">All Brands</option>
+                            </select>
+                        </div>
+                        <div class="filter-group filter-group--region">
+                            <label class="filter-label" for="regionFilter">Region</label>
+                            <select class="filter-select" id="regionFilter" aria-label="Region">
                                 <option value="">All Regions</option>
-                                <option value="GLOBAL">Global</option>
-                                <option value="AMERICAS">Americas</option>
-                                <option value="CALA">CALA</option>
-                                <option value="EUROPE">Europe</option>
-                                <option value="MEA">MEA</option>
-                                <option value="AP">AP</option>
                             </select>
                         </div>
                         <div id="responsivenessFiltersWrapper" aria-hidden="true" style="visibility: hidden;">
@@ -3359,13 +3573,7 @@
                                     </div>
                                 </label>
                                 <select class="filter-select" id="responsivenessSpeedFilter">
-                                    <option value="">All speeds</option>
-                                    <option value="Lightning Fast">Lightning Fast</option>
-                                    <option value="Very Fast">Very Fast</option>
-                                    <option value="Responsive">Responsive</option>
-                                    <option value="Slow">Slow</option>
-                                    <option value="Stalled">Stalled</option>
-                                    <option value="Unresponsive">Unresponsive</option>
+                                    <option value="">All Speeds</option>
                                 </select>
                             </div>
                             <div class="filter-group filter-group--responsiveness">
@@ -3408,19 +3616,25 @@
                                     </div>
                                 </label>
                                 <select class="filter-select" id="responsivenessFrequencyFilter">
-                                    <option value="">All frequencies</option>
-                                    <option value="Frequently">Frequently</option>
-                                    <option value="Occasionally">Occasionally</option>
-                                    <option value="Rarely">Rarely</option>
+                                    <option value="">All Frequencies</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="filter-group">
-                            <a href="#" class="filter-reset-btn" id="resetFiltersBtn">
+                        <div class="filter-group filter-group-reset">
+                            <label class="filter-label">&nbsp;</label>
+                            <button type="button" class="btn-clear" id="resetFiltersBtn">
                                 Reset View
                                 <span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span>
-                            </a>
+                            </button>
                         </div>
+                    </div>
+                </div>
+
+                <!-- User Type quick filter (chain-scale style; colors match card borders) -->
+                <div class="user-type-legend-bar hidden" id="userTypeLegendBar" aria-hidden="true">
+                    <div class="user-type-legend" id="userTypeLegend" role="group" aria-label="Filter by user type">
+                        <span>User Type</span>
+                        <button type="button" class="user-type-legend-item active" data-type="all" id="userTypeLegendAll">All</button>
                     </div>
                 </div>
 
@@ -3502,14 +3716,8 @@
                         <div class="filters-section-right">
                             <div class="filter-group">
                                 <label class="filter-label">Region</label>
-                                <select class="filter-select" id="insightsRegion">
+                                <select class="filter-select" id="insightsRegion" aria-label="Region">
                                     <option value="all">All Regions</option>
-                                    <option value="GLOBAL">Global</option>
-                                    <option value="AMERICAS">Americas</option>
-                                    <option value="CALA">CALA</option>
-                                    <option value="EUROPE">Europe</option>
-                                    <option value="MEA">MEA</option>
-                                    <option value="AP">Asia Pacific</option>
                                 </select>
                             </div>
                             <div class="filter-group">
@@ -3654,6 +3862,7 @@
     <div id="partnerDirectoryTooltipContainer" style="position: fixed; top: 20px; left: 20px; z-index: 999999; pointer-events: none;"></div>
     <script src="/js/company-type-options.js"></script>
     <script src="/js/company-role-options.js"></script>
+    <script src="/js/partner-directory-filter-options.js"></script>
     <script src="partner-directory.js"></script>
 
     <script src="/embed-chrome.js" defer></script>

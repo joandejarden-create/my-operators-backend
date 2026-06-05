@@ -4,23 +4,35 @@
 (function () {
   const AIRTABLE_FIELD = "Company Type";
 
+  const OWNER_OPERATOR_AIRTABLE = "Hotel Owner - Operator";
+
   const FILTER_TO_AIRTABLE = {
     "HOTEL MGMT. COMPANY": "Hotel Management Company",
     "HOTEL BRANDS (FRANCHISE)": "Hotel Brands (Franchise)",
     "HOTEL OWNERS": "Hotel Owner",
     "HOSPITALITY CONSULTANTS": "Hospitality Consultants",
+    OWNER_OPERATOR: OWNER_OPERATOR_AIRTABLE,
     OTHER: "Other",
   };
 
-  const AIRTABLE_TO_FILTER = Object.fromEntries(
-    Object.entries(FILTER_TO_AIRTABLE).map(([k, v]) => [v, k])
-  );
+  const OWNER_OPERATOR_ALIASES = [
+    OWNER_OPERATOR_AIRTABLE,
+    "Owner-Operator",
+    "Owner Operator",
+    "Hotel Owner Operator",
+  ];
+
+  const AIRTABLE_TO_FILTER = {
+    ...Object.fromEntries(Object.entries(FILTER_TO_AIRTABLE).map(([k, v]) => [v, k])),
+    ...Object.fromEntries(OWNER_OPERATOR_ALIASES.map((v) => [v, "OWNER_OPERATOR"])),
+  };
 
   const FILTER_OPTIONS = [
     { value: "", label: "All Types" },
-    { value: "HOTEL MGMT. COMPANY", label: "3rd Party Operator" },
-    { value: "HOTEL BRANDS (FRANCHISE)", label: "Hotel Brands (Franchise)" },
     { value: "HOTEL OWNERS", label: "Hotel Owners" },
+    { value: "OWNER_OPERATOR", label: "Hotel Owner - Operator" },
+    { value: "HOTEL BRANDS (FRANCHISE)", label: "Hotel Brands" },
+    { value: "HOTEL MGMT. COMPANY", label: "3rd Party Operators" },
     { value: "HOSPITALITY CONSULTANTS", label: "Advisor / Consultant" },
     { value: "OTHER", label: "Other" },
   ];
@@ -54,7 +66,24 @@
     if (!raw) return "";
     if (AIRTABLE_TO_FILTER[raw]) return AIRTABLE_TO_FILTER[raw];
 
-    const upper = raw.toUpperCase();
+    const upper = raw
+      .toUpperCase()
+      .replace(/[\u2013\u2014]/g, "-")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (
+      upper === "HOTEL OWNER - OPERATOR" ||
+      upper === "HOTEL OWNER OPERATOR" ||
+      upper === "OWNER-OPERATOR" ||
+      upper === "OWNER OPERATOR" ||
+      upper === "OWNER_OPERATOR" ||
+      upper.includes("OWNER-OPERATOR") ||
+      upper.includes("OWNER OPERATOR") ||
+      /HOTEL\s+OWNER\s*-\s*OPERATOR/.test(upper) ||
+      /HOTEL\s+OWNER\s+OPERATOR/.test(upper)
+    ) {
+      return "OWNER_OPERATOR";
+    }
     if (
       upper === "HOTEL OWNERS" ||
       upper === "HOTEL OWNER" ||
@@ -70,12 +99,13 @@
     ) {
       return "HOTEL BRANDS (FRANCHISE)";
     }
-    if (
-      upper.includes("MGMT") ||
-      upper.includes("MANAGEMENT") ||
-      upper.includes("OPERATOR") ||
-      upper === "3RD PARTY OPERATOR"
-    ) {
+    if (upper.includes("MGMT") || upper.includes("MANAGEMENT")) {
+      return "HOTEL MGMT. COMPANY";
+    }
+    if (upper === "OPERATOR" || upper === "3RD PARTY OPERATOR") {
+      return "HOTEL MGMT. COMPANY";
+    }
+    if (upper.includes("OPERATOR") && !upper.includes("OWNER")) {
       return "HOTEL MGMT. COMPANY";
     }
     if (
