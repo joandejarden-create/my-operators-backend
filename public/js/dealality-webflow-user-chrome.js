@@ -21,6 +21,13 @@
   var avatarObservers = [];
   var lastAppliedSignature = "";
   var chromePendingCleared = false;
+  var avatarMismatchWarned = false;
+
+  function pageHasAccountChrome(doc) {
+    if (!doc || !doc.body) return false;
+    if (doc.querySelector("[data-dealality-user-avatar]")) return true;
+    return !!(findSidebarContainer(doc) && findAccountDropdownToggle(doc));
+  }
 
   function injectPendingStyle() {
     var doc = global.document;
@@ -502,7 +509,15 @@
       });
     }
 
-    if (photoUrl && !photoApplied && global.location && /dealality\.com|localhost|127\.0\.0\.1|railway/i.test(global.location.hostname || "")) {
+    if (
+      photoUrl &&
+      !photoApplied &&
+      !avatarMismatchWarned &&
+      pageHasAccountChrome(doc) &&
+      global.location &&
+      /dealality\.com|localhost|127\.0\.0\.1|railway/i.test(global.location.hostname || "")
+    ) {
+      avatarMismatchWarned = true;
       console.warn(
         "[DealalityWebflowUserChrome] profilePhotoUrl present but no account avatar matched.",
         "Add data-dealality-user-avatar on the sidebar Avatar Circle image in Webflow."
