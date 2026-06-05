@@ -6,8 +6,7 @@
   "use strict";
 
   var ACCOUNT_LABEL_ROOTS =
-    ".sidebar-footer, #accountDropdownWrap, .user-block, .account-dropdown-header, " +
-    ".account-dropdown-trigger, [data-dealality-account-chrome]";
+    ".sidebar-footer, #accountDropdownWrap, .user-block, [data-dealality-account-chrome]";
 
   var DROPDOWN_MENU_EXCLUDE =
     ".w-dropdown-list, [class*='dropdown-list'], [class*='dropdown-menu'], " +
@@ -144,37 +143,34 @@
     return false;
   }
 
-  function looksLikePersonName(t) {
-    if (!t || t.length > 120) return false;
-    if (isSkippableLabelText(t)) return false;
-    var words = t.trim().split(/\s+/);
-    return words.length >= 2 && words.length <= 6;
-  }
-
   var KNOWN_DEMO_NAV_NAMES = [
     "john carter",
     "gustavo sarago carter",
     "joan dejarden",
     "dealality demo",
+    "user name",
   ];
 
-  function isAccountChromeElement(el) {
-    if (!el || !el.closest) return false;
-    return !!el.closest(
-      ".sidebar-footer, #accountDropdownWrap, .user-block, .account-dropdown-header, " +
-        ".account-dropdown-trigger, [data-dealality-account-chrome], .w-dropdown-toggle"
-    );
+  function isKnownDemoAccountName(text) {
+    var lower = String(text || "")
+      .trim()
+      .toLowerCase();
+    return KNOWN_DEMO_NAV_NAMES.indexOf(lower) >= 0;
   }
 
-  function shouldReplaceStaleName(current, canonical) {
-    if (!canonical || current === canonical) return false;
-    if (!looksLikePersonName(current)) return false;
-    var lower = current.toLowerCase();
-    if (KNOWN_DEMO_NAV_NAMES.indexOf(lower) >= 0) return true;
-    return lower !== String(canonical).trim().toLowerCase();
+  /** True only for explicit account-name targets — never infer from multi-word nav labels. */
+  function isExplicitAccountNameElement(el) {
+    if (!el || !el.closest || isInsideDropdownMenu(el)) return false;
+    if (el.matches("[data-dealality-user-name], .user-name, [class*='user-name'], [class*='account-name']")) {
+      return true;
+    }
+    if (el.closest("[data-dealality-user-name], .user-name, [class*='user-name'], [class*='account-name']")) {
+      return true;
+    }
+    if (el.closest('[data-ms-member="first-name"], [data-ms-member="last-name"]')) return true;
+    return false;
   }
 
-  /** Marked class, Webflow name classes, or first person-name-like text in scope. */
   function findAccountNameElement(scope) {
     if (!scope) return null;
 
@@ -186,30 +182,10 @@
     );
     if (byClass && !isInsideDropdownMenu(byClass)) return byClass;
 
-    var candidates = [];
-    scope.querySelectorAll("div, span, p, strong").forEach(function (el) {
-      if (isInsideDropdownMenu(el)) return;
-      var t = (el.textContent || "").trim();
-      if (!looksLikePersonName(t)) return;
-      var depth = 0;
-      var p = el;
-      while (p && p !== scope) {
-        depth++;
-        p = p.parentElement;
-      }
-      candidates.push({
-        el: el,
-        depth: depth,
-        leaf: el.childElementCount === 0,
-      });
-    });
+    var msFirst = scope.querySelector('[data-ms-member="first-name"]');
+    if (msFirst && !isInsideDropdownMenu(msFirst)) return msFirst;
 
-    if (!candidates.length) return null;
-    candidates.sort(function (a, b) {
-      if (a.leaf !== b.leaf) return a.leaf ? -1 : 1;
-      return a.depth - b.depth;
-    });
-    return candidates[0].el;
+    return null;
   }
 
   function findAccountMetaElement(scope) {
@@ -250,9 +226,9 @@
 
     scope.querySelectorAll("div, span, p, strong").forEach(function (el) {
       if (isInsideDropdownMenu(el) || el.children.length > 0) return;
-      if (!isAccountChromeElement(el)) return;
+      if (!isExplicitAccountNameElement(el) && !isKnownDemoAccountName(el.textContent)) return;
       var t = (el.textContent || "").trim();
-      if (shouldReplaceStaleName(t, name)) el.textContent = name;
+      if (t !== name) el.textContent = name;
     });
   }
 
@@ -283,7 +259,13 @@
     });
 
     if (lines.length) {
-      if (lines[0].t !== name) lines[0].el.textContent = name;
+      var first = lines[0];
+      if (
+        first.t !== name &&
+        (isExplicitAccountNameElement(first.el) || isKnownDemoAccountName(first.t))
+      ) {
+        first.el.textContent = name;
+      }
       if (metaEmail) {
         var metaEl = findAccountMetaElement(toggle);
         if (metaEl) metaEl.textContent = metaEmail;
@@ -402,9 +384,6 @@
       updateLabelsInRoot(root, name, metaEmail);
     });
     updateToggleLabels(findAccountDropdownToggle(doc), name, metaEmail);
-
-    var sidebar = findSidebarContainer(doc);
-    if (sidebar) applyDisplayName(sidebar, name);
 
     var photoApplied = false;
     if (photoUrl) {
