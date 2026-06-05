@@ -26,7 +26,11 @@ import {
 import { extractLinkedRecordIds, cellToString } from "../lib/airtable-utils.js";
 import { roleInfoFromUserFieldsAsync } from "../lib/dealality/resolve-user.js";
 import { resolveOperatorScope, MAP_OPERATOR_SCOPE } from "../lib/dealality/resolve-operator-scope.js";
-import { profilePhotoUrlFromFields } from "../lib/airtable/platform-users-table.js";
+import {
+  emailFromUserFields,
+  profilePhotoUrlFromFields,
+  PUF,
+} from "../lib/airtable/platform-users-table.js";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 const BRAND_NAME_FIELD = process.env.AIRTABLE_BRAND_NAME_FIELD || "Brand Name";
@@ -256,9 +260,18 @@ async function getMe(req, res) {
     }
   }
 
-  const email = cellToStringList(fields[INTAKE_USERS_EMAIL])[0] || null;
-  const firstName = cellToStringList(fields[INTAKE_USERS_FIRST_NAME])[0] || null;
-  const lastName = cellToStringList(fields[INTAKE_USERS_LAST_NAME])[0] || null;
+  const email =
+    emailFromUserFields(fields) ||
+    cellToStringList(fields[INTAKE_USERS_EMAIL])[0] ||
+    null;
+  const firstName =
+    cellToStringList(fields[PUF.firstName])[0] ||
+    cellToStringList(fields[INTAKE_USERS_FIRST_NAME])[0] ||
+    null;
+  const lastName =
+    cellToStringList(fields[PUF.lastName])[0] ||
+    cellToStringList(fields[INTAKE_USERS_LAST_NAME])[0] ||
+    null;
   const profilePhotoUrl = profilePhotoUrlFromFields(fields) || null;
   const companyProfileIds = extractLinkedRecordIds(fields[USERS_COMPANY_FIELD]);
   const companyProfileId = companyProfileIds[0] || null;
