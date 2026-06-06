@@ -182,7 +182,8 @@
     if (!iframe) return;
     var pageY = global.pageYOffset || global.document.documentElement.scrollTop || 0;
     var iframeTop = iframe.getBoundingClientRect().top + pageY;
-    var target = iframeTop + Number(offsetTop || 0) - getNavbarHeight();
+    var target =
+      iframeTop + Number(offsetTop || 0) - getNavbarHeight() - HERO_GAP_BELOW_NAV_PX;
     global.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
   }
 

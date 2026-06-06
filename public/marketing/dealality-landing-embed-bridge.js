@@ -30,18 +30,36 @@
     global.parent.postMessage({ source: SOURCE, type: "resize", height: height }, "*");
   }
 
+  function getOffsetTopInIframeDocument(el) {
+    if (!el) return 0;
+    var frame = global.frameElement;
+    if (!frame) {
+      return (
+        el.getBoundingClientRect().top +
+        (global.pageYOffset || global.document.documentElement.scrollTop || 0)
+      );
+    }
+    return el.getBoundingClientRect().top - frame.getBoundingClientRect().top;
+  }
+
+  function postScrollToParent(id, top) {
+    if (global.parent === global) return;
+    var payload = { source: SOURCE, type: "scrollToOffset", id: id, top: top };
+    global.parent.postMessage(payload, "*");
+    global.setTimeout(function () {
+      global.parent.postMessage(payload, "*");
+    }, 150);
+    global.setTimeout(function () {
+      global.parent.postMessage(payload, "*");
+    }, 500);
+  }
+
   function scrollToId(id) {
     if (!id) return;
     var el = global.document.getElementById(id);
     if (!el) return;
     if (global.parent !== global) {
-      var top =
-        el.getBoundingClientRect().top +
-        (global.pageYOffset || global.document.documentElement.scrollTop || 0);
-      global.parent.postMessage(
-        { source: SOURCE, type: "scrollToOffset", id: id, top: top },
-        "*"
-      );
+      postScrollToParent(id, getOffsetTopInIframeDocument(el));
       return;
     }
     el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -75,7 +93,7 @@
     }
   }
 
-  global.document.addEventListener("click", handleInPageAnchorClick);
+  global.document.addEventListener("click", handleInPageAnchorClick, true);
 
   global.addEventListener("message", function (event) {
     var data = event.data;

@@ -493,7 +493,6 @@
     global.__dealalityLandingParentLoading = true;
     var script = doc.createElement("script");
     script.src = base + "/marketing/dealality-landing-webflow-parent.js";
-    script.defer = true;
     script.onload = function () {
       global.__dealalityLandingParentLoading = false;
     };
