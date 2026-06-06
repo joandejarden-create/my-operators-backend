@@ -126,10 +126,11 @@
       document.querySelector(".navbar-2.w-nav") ||
       document.querySelector('[role="banner"].w-nav') ||
       document.querySelector(".w-nav");
+    var heroGapBelowNavPx = 8;
     var offset = nav ? Math.ceil(nav.getBoundingClientRect().height) : 48;
     var wrap = document.querySelector(".dl-landing-embed-wrap");
     if (wrap) {
-      wrap.style.paddingTop = offset + "px";
+      wrap.style.paddingTop = offset + heroGapBelowNavPx + "px";
       wrap.style.minHeight = "0";
     }
     document.body.classList.remove("overflow-hidden", "h-100-vh");
