@@ -23,7 +23,18 @@
   function scrollToId(id) {
     if (!id) return;
     var el = global.document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!el) return;
+    if (global.parent !== global) {
+      var top =
+        el.getBoundingClientRect().top +
+        (global.pageYOffset || global.document.documentElement.scrollTop || 0);
+      global.parent.postMessage(
+        { source: SOURCE, type: "scrollToOffset", id: id, top: top },
+        "*"
+      );
+      return;
+    }
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   global.addEventListener("message", function (event) {

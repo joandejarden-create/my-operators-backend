@@ -277,15 +277,16 @@ footer{background:var(--bg2);border-top:1px solid var(--bo);padding:56px 48px 32
 @media(max-width:960px){nav{padding:0 20px}.nl{display:none}#hero{padding:120px 20px 80px;min-height:auto;text-align:center}.hero-grid{gap:32px}.hleft{align-items:center;text-align:center}.hsub{margin-left:auto;margin-right:auto}.hctas{justify-content:center}.htrust{margin:0 auto}section,#cta,#fivebeat,#values,#faq{padding:68px 20px}#persona{padding:40px 20px 68px}.prow,.dgrid,.rgrid,.fgrid,.og,.ptrow,.wgrid,.wcards,.vrow,.ftop{grid-template-columns:1fr}.pgrid,.steps{grid-template-columns:1fr}.hgrid{grid-template-columns:1fr;grid-template-rows:auto}.hnc,.h-tl,.h-tr,.h-bl,.h-br{grid-column:1;grid-row:auto;padding:8px 0}.fbtabs{grid-template-columns:1fr 1fr}.fbp2{grid-template-columns:1fr}.dr-wrap{grid-template-columns:1fr}.dr-ring{margin:0 auto}.dr-metrics{grid-template-columns:1fr}}
 @media(max-width:640px){.ftop{grid-template-columns:1fr}}
 html.dl-embed-shell #nav,html.dl-embed-shell footer{display:none!important}
-html.dl-embed-shell #hero{padding:12px 48px 48px!important;min-height:0!important;align-items:flex-start!important;justify-content:flex-start!important}
+html.dl-embed-shell #hero{padding:12px clamp(24px,4vw,80px) 48px!important;min-height:0!important;align-items:flex-start!important;justify-content:flex-start!important}
 html.dl-embed-shell [id]{scroll-margin-top:48px}
 html.dl-embed-shell body{background:#080f25;margin:0;padding:0}
 html.dl-embed-shell .fu{opacity:1!important;transform:none!important}
-html.dl-embed-shell,html.dl-embed-shell body{scrollbar-width:thin;scrollbar-color:#6c72ff #080f25}
-html.dl-embed-shell::-webkit-scrollbar,html.dl-embed-shell body::-webkit-scrollbar{width:8px}
-html.dl-embed-shell::-webkit-scrollbar-track,html.dl-embed-shell body::-webkit-scrollbar-track{background:#080f25;border-left:1px solid rgba(87,195,255,.35)}
-html.dl-embed-shell::-webkit-scrollbar-thumb,html.dl-embed-shell body::-webkit-scrollbar-thumb{background:#6c72ff}
-html.dl-embed-shell::-webkit-scrollbar-thumb:hover,html.dl-embed-shell body::-webkit-scrollbar-thumb:hover{background:#8b90ff}
+html.dl-embed-shell,html.dl-embed-shell body{overflow:visible!important;overflow-y:visible!important;height:auto!important;scrollbar-width:none!important;-ms-overflow-style:none!important}
+html.dl-embed-shell::-webkit-scrollbar,html.dl-embed-shell body::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+html.dl-embed-shell .hero-grid{max-width:min(1480px,94vw)}
+html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl-embed-shell #persona{max-width:min(1400px,94vw)}
+@media(min-width:1440px){html.dl-embed-shell .hero-grid{max-width:min(1580px,92vw);gap:clamp(40px,4vw,72px)}html.dl-embed-shell .hstatic{font-size:clamp(34px,3vw,56px)}}
+@media(min-width:1680px){html.dl-embed-shell .hero-grid{max-width:min(1680px,90vw)}html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl-embed-shell #persona{max-width:min(1520px,90vw)}}
 </style>
 <script>if(new URLSearchParams(location.search).get("embed")==="1")document.documentElement.classList.add("dl-embed-shell");</script>
 </head>
@@ -315,7 +316,7 @@ html.dl-embed-shell::-webkit-scrollbar-thumb:hover,html.dl-embed-shell body::-we
     </div>
     <div class="hero-video">
       <div class="hero-video-frame">
-        <video controls playsinline preload="metadata" aria-label="Dealality platform overview video">
+        <video controls playsinline webkit-playsinline preload="metadata" aria-label="Dealality platform overview video">
           <source src="https://res.cloudinary.com/dos2eqnzd/video/upload/v1775832428/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.mp4" type="video/mp4">
         </video>
       </div>

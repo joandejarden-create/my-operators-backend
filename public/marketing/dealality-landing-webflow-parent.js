@@ -13,6 +13,15 @@
 
   var MIN_IFRAME_HEIGHT_PX = 2400;
 
+  var NAV_LABEL_TO_ID = {
+    "for owners": "owners",
+    "for brands": "brands",
+    "for partners": "partners",
+    "how it works": "how",
+    "faqs": "faq",
+    "faq": "faq",
+  };
+
   function injectScrollbarStyles() {
     var doc = global.document;
     if (!doc || doc.getElementById(SCROLLBAR_STYLE_ID)) return;
@@ -99,16 +108,36 @@
     }
   }
 
+  function configureIframe() {
+    var iframe = getIframe();
+    if (!iframe) return;
+    iframe.setAttribute("scrolling", "no");
+    iframe.setAttribute("allowfullscreen", "");
+    iframe.setAttribute("webkitallowfullscreen", "");
+    iframe.setAttribute("allow", "fullscreen");
+    iframe.style.overflow = "hidden";
+    iframe.style.display = "block";
+    iframe.style.width = "100%";
+    iframe.style.visibility = "visible";
+    iframe.style.opacity = "1";
+    iframe.style.border = "0";
+  }
+
   function applyIframeHeight(px) {
     var iframe = getIframe();
     if (!iframe) return;
     var height = Math.max(Number(px) || 0, MIN_IFRAME_HEIGHT_PX);
     iframe.style.height = height + "px";
-    iframe.style.minHeight = "80vh";
-    iframe.style.display = "block";
-    iframe.style.width = "100%";
-    iframe.style.visibility = "visible";
-    iframe.style.opacity = "1";
+    iframe.style.minHeight = "0";
+  }
+
+  function scrollParentToIframeOffset(offsetTop) {
+    var iframe = getIframe();
+    if (!iframe) return;
+    var pageY = global.pageYOffset || global.document.documentElement.scrollTop || 0;
+    var iframeTop = iframe.getBoundingClientRect().top + pageY;
+    var target = iframeTop + Number(offsetTop || 0) - getNavbarHeight();
+    global.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
   }
 
   function postScroll(id) {
@@ -120,11 +149,30 @@
     );
   }
 
+  function resolveNavId(link) {
+    if (!link) return null;
+    var href = (link.getAttribute("href") || "").trim();
+    if (href) {
+      if (href.charAt(0) === "#" && href.length > 1) return href.slice(1);
+      try {
+        var url = new URL(href, global.location.href);
+        if (url.hash && url.hash.length > 1) return url.hash.slice(1);
+      } catch (err) {
+        if (typeof console !== "undefined" && console.warn) {
+          console.warn("[dealality-landing-parent] resolveNavId href parse failed", err);
+        }
+      }
+    }
+    var text = (link.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
+    return NAV_LABEL_TO_ID[text] || null;
+  }
+
   function bootstrapShell() {
     injectScrollbarStyles();
     unlockPageScroll();
     hideLoadingBar();
     applyEmbedOffset();
+    configureIframe();
     applyIframeHeight(MIN_IFRAME_HEIGHT_PX);
   }
 
@@ -134,19 +182,24 @@
     if (data.type === "resize" && typeof data.height === "number") {
       applyIframeHeight(data.height);
     }
+    if (data.type === "scrollToOffset" && typeof data.top === "number") {
+      scrollParentToIframeOffset(data.top);
+      if (data.id && global.history && global.history.replaceState) {
+        global.history.replaceState(null, "", "#" + data.id);
+      }
+    }
   });
 
   global.document.addEventListener("click", function (event) {
     var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
     if (!link) return;
-    var href = (link.getAttribute("href") || "").trim();
-    if (!href || href.charAt(0) !== "#" || href.length < 2) return;
-    var id = href.slice(1);
     if (!getIframe()) return;
+    var id = resolveNavId(link);
+    if (!id) return;
     event.preventDefault();
     postScroll(id);
     if (global.history && global.history.replaceState) {
-      global.history.replaceState(null, "", href);
+      global.history.replaceState(null, "", "#" + id);
     }
   });
 
