@@ -24,13 +24,18 @@
     "faq": "faq",
   };
 
-  var LANDING_HOME_PATH =
-    (global.DEALALITY_LANDING_HOME_PATH || "/home-new").replace(/\/+$/, "") || "/home-new";
+  function normalizeLandingHomePath(path) {
+    var raw = String(path || "/").trim();
+    if (!raw || raw === "/") return "/";
+    return raw.replace(/\/+$/, "");
+  }
+
+  var LANDING_HOME_PATH = normalizeLandingHomePath(global.DEALALITY_LANDING_HOME_PATH);
 
   function isLandingHomePage() {
     try {
-      var path = (global.location.pathname || "").replace(/\/+$/, "") || "/";
-      return path === LANDING_HOME_PATH || path === "/";
+      var path = normalizeLandingHomePath(global.location.pathname || "/");
+      return path === LANDING_HOME_PATH;
     } catch (err) {
       return false;
     }
@@ -38,6 +43,7 @@
 
   function landingHomeHref(sectionId) {
     var hash = sectionId ? "#" + sectionId : "";
+    if (LANDING_HOME_PATH === "/") return "/" + hash;
     return LANDING_HOME_PATH + hash;
   }
 
