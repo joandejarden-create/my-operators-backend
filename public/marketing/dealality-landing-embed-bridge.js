@@ -47,6 +47,36 @@
     el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  function resolveHashLink(link) {
+    if (!link) return null;
+    var href = (link.getAttribute("href") || "").trim();
+    if (!href || href === "#") return null;
+    if (href.charAt(0) === "#" && href.length > 1) return href.slice(1);
+    try {
+      var url = new URL(href, global.location.href);
+      if (url.hash && url.hash.length > 1) return url.hash.slice(1);
+    } catch (err) {
+      if (global.console && global.console.warn) {
+        global.console.warn("[dealality-landing-embed] resolveHashLink failed", err);
+      }
+    }
+    return null;
+  }
+
+  function handleInPageAnchorClick(event) {
+    var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
+    if (!link) return;
+    var id = resolveHashLink(link);
+    if (!id || !global.document.getElementById(id)) return;
+    event.preventDefault();
+    scrollToId(id);
+    if (global.history && global.history.replaceState) {
+      global.history.replaceState(null, "", "#" + id);
+    }
+  }
+
+  global.document.addEventListener("click", handleInPageAnchorClick);
+
   global.addEventListener("message", function (event) {
     var data = event.data;
     if (!data || data.source !== PARENT_SOURCE) return;
