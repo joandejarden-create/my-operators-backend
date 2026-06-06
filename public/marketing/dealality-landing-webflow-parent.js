@@ -9,7 +9,7 @@
   var PARENT_SOURCE = "dealality-landing-parent";
   var CHILD_SOURCE = "dealality-landing-embed";
   var NAV_OFFSET_FALLBACK_PX = 48;
-  var HERO_GAP_BELOW_NAV_PX = 8;
+  var HERO_GAP_BELOW_NAV_PX = 16;
   var SCROLLBAR_STYLE_ID = "dl-landing-shell-scrollbar";
 
   var MIN_IFRAME_HEIGHT_PX = 2400;
