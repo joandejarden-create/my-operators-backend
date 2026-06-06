@@ -51,7 +51,9 @@
     return !!(
       link &&
       link.closest &&
-      link.closest(".navbar-2, .w-nav, .navbar_content, .nav_links, .nav-compact")
+      link.closest(
+        ".navbar-2, .w-nav, .navbar_content, .nav_links, .nav-compact, .w-nav-menu, .w-nav-link, .nav_link"
+      )
     );
   }
 
@@ -245,7 +247,7 @@
     }
   }
 
-  if (!global.__dealalityLandingNavInstalled) {
+  if (!global.__dealalityLandingNavInstalled && !global.__dealalityAuthNavInstalled) {
     global.__dealalityLandingNavInstalled = true;
     global.document.addEventListener("click", handleNavbarSectionClick);
   }

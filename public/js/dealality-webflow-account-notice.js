@@ -7,12 +7,25 @@
 
   var STYLE_ID = "dealality-account-notice-style";
   var AUTH_BG_STYLE_ID = "dl-auth-landing-bg-style";
+  var AUTH_BG_EARLY_STYLE_ID = "dl-auth-landing-bg-early";
   var AUTH_BG_ROOT_ID = "dl-auth-bg-root";
   var BANNER_ID = "dealality-account-pending-banner";
   var LANDING_BG = "#080f25";
+  var WEBFLOW_BLOB_URL =
+    "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/68108c2a063eeb5d1bd7b088_sales-home-bg-blob-small-dashdark-webflow-template.svg";
   var TOAST_PATCHED = false;
   var CONTEXT_POLL_MS = 250;
   var CONTEXT_POLL_MAX_MS = 30000;
+  var AUTH_NAV_LABEL_TO_ID = {
+    "for owners": "owners",
+    "for brands": "brands",
+    "for brands & operators": "brands",
+    "for partners": "partners",
+    "how it works": "how",
+    faqs: "faq",
+    faq: "faq",
+  };
+  var LANDING_SECTION_IDS = ["owners", "brands", "partners", "how", "faq", "hero", "persona"];
 
   function shouldSuppressBrandToast() {
     if (global.__dealalitySuppressBrandToast) return true;
@@ -112,6 +125,114 @@
     }
   }
 
+  function normalizeLandingHomePath(path) {
+    var raw = String(path || "/").trim();
+    if (!raw || raw === "/") return "/";
+    return raw.replace(/\/+$/, "");
+  }
+
+  var LANDING_HOME_PATH = normalizeLandingHomePath(global.DEALALITY_LANDING_HOME_PATH);
+
+  function isLandingHomePage() {
+    try {
+      return normalizeLandingHomePath(global.location.pathname || "/") === LANDING_HOME_PATH;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function landingHomeHref(sectionId) {
+    var hash = sectionId ? "#" + sectionId : "";
+    if (LANDING_HOME_PATH === "/") return "/" + hash;
+    return LANDING_HOME_PATH + hash;
+  }
+
+  function resolveRailwayScriptBase() {
+    return (global.DEALALITY_API_BASE || global.DEALALITY_API_BASE_URL || "")
+      .trim()
+      .replace(/\/+$/, "");
+  }
+
+  function applyAuthPageEarlySkin() {
+    if (!isAuthMarketingPage() || !global.document) return;
+    var doc = global.document;
+    doc.documentElement.classList.add("dl-auth-landing-skin");
+    if (doc.getElementById(AUTH_BG_EARLY_STYLE_ID)) return;
+    var style = doc.createElement("style");
+    style.id = AUTH_BG_EARLY_STYLE_ID;
+    style.textContent =
+      "html,body{background:" +
+      LANDING_BG +
+      "!important;color:rgba(255,255,255,.62)!important}" +
+      "html.dl-auth-landing-skin .signup-page-bg,html.dl-auth-landing-skin .coming-soon-ss," +
+      "html.dl-auth-landing-skin .coming-soon-overlay,html.dl-auth-landing-skin .coming-soon-img," +
+      "html.dl-auth-landing-skin .loading-bar-wrapper,html.dl-auth-landing-skin .page-loader{display:none!important}";
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
+  applyAuthPageEarlySkin();
+
+  function isNavbarLink(link) {
+    return !!(
+      link &&
+      link.closest &&
+      link.closest(
+        ".navbar-2, .w-nav, .navbar_content, .nav_links, .nav-compact, .w-nav-menu, .w-nav-link, .nav_link"
+      )
+    );
+  }
+
+  function resolveAuthNavId(link) {
+    if (!link) return null;
+    var href = (link.getAttribute("href") || "").trim();
+    if (href) {
+      if (href.charAt(0) === "#" && href.length > 1) return href.slice(1);
+      try {
+        var url = new URL(href, global.location.href);
+        if (url.hash && url.hash.length > 1) return url.hash.slice(1);
+      } catch (err) {
+        if (global.console && global.console.warn) {
+          global.console.warn("[DealalityWebflowAccountNotice] resolveAuthNavId failed", err);
+        }
+      }
+    }
+    var text = (link.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
+    return AUTH_NAV_LABEL_TO_ID[text] || null;
+  }
+
+  function handleAuthPageNavbarClick(event) {
+    var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
+    if (!link || !isNavbarLink(link)) return;
+    var id = resolveAuthNavId(link);
+    if (!id) return;
+
+    if (isAuthMarketingPage()) {
+      event.preventDefault();
+      event.stopPropagation();
+      global.location.href = landingHomeHref(id);
+      return;
+    }
+
+    if (!global.document.getElementById("dealality-landing-embed") && !isLandingHomePage()) {
+      event.preventDefault();
+      global.location.href = landingHomeHref(id);
+    }
+  }
+
+  function redirectAuthPageHashOnLoad() {
+    if (!isAuthMarketingPage()) return;
+    var hash = (global.location.hash || "").replace(/^#/, "").toLowerCase();
+    if (!hash || LANDING_SECTION_IDS.indexOf(hash) < 0) return;
+    global.location.replace(landingHomeHref(hash));
+  }
+
+  function installAuthPageNavBridge() {
+    if (!global.document || global.__dealalityAuthNavInstalled) return;
+    global.__dealalityAuthNavInstalled = true;
+    global.document.addEventListener("click", handleAuthPageNavbarClick, true);
+    redirectAuthPageHashOnLoad();
+  }
+
   function injectAuthLandingBackgroundStyles(doc) {
     if (!doc || doc.getElementById(AUTH_BG_STYLE_ID)) return;
     var style = doc.createElement("style");
@@ -146,7 +267,9 @@
       "#" +
       AUTH_BG_ROOT_ID +
       " .dl-auth-bg-blob{position:absolute;top:-10%;right:-8%;left:auto;width:min(720px,55vw);max-width:none;opacity:.55;height:auto}" +
-      "html.dl-auth-landing-skin .coming-soon-overlay,html.dl-auth-landing-skin .loading-bar-wrapper{display:none!important}";
+      "html.dl-auth-landing-skin .signup-page-bg,html.dl-auth-landing-skin .coming-soon-ss," +
+      "html.dl-auth-landing-skin .coming-soon-img,html.dl-auth-landing-skin .coming-soon-overlay," +
+      "html.dl-auth-landing-skin .loading-bar-wrapper,html.dl-auth-landing-skin .page-loader{display:none!important}";
     (doc.head || doc.documentElement).appendChild(style);
   }
 
@@ -162,15 +285,16 @@
     root.appendChild(grid);
 
     var base = resolveRailwayScriptBase();
-    if (base) {
-      var blob = doc.createElement("img");
-      blob.className = "dl-auth-bg-blob";
-      blob.src = base + "/marketing/assets/sales-home-bg-blob.svg";
-      blob.alt = "";
-      blob.setAttribute("aria-hidden", "true");
-      blob.decoding = "async";
-      root.appendChild(blob);
-    }
+    var blob = doc.createElement("img");
+    blob.className = "dl-auth-bg-blob";
+    blob.src = base
+      ? base + "/marketing/assets/sales-home-bg-blob.svg"
+      : WEBFLOW_BLOB_URL;
+    blob.alt = "";
+    blob.setAttribute("aria-hidden", "true");
+    blob.decoding = "async";
+    blob.loading = "eager";
+    root.appendChild(blob);
 
     doc.body.insertBefore(root, doc.body.firstChild);
   }
@@ -312,13 +436,6 @@
     }, CONTEXT_POLL_MS);
   }
 
-  function resolveRailwayScriptBase() {
-    var base = (global.DEALALITY_API_BASE || global.DEALALITY_API_BASE_URL || "")
-      .trim()
-      .replace(/\/+$/, "");
-    return base;
-  }
-
   function ensureLandingNavbarBridge(doc) {
     if (!doc || global.__dealalityLandingNavInstalled || global.__dealalityLandingParentLoading) {
       return;
@@ -348,6 +465,7 @@
   }
 
   if (global.document) {
+    installAuthPageNavBridge();
     ensureToastPatch();
     applyAuthPageLandingSkin(global.document);
     ensureLandingNavbarBridge(global.document);
