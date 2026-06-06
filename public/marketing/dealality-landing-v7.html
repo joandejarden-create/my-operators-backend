@@ -267,6 +267,8 @@ footer{background:var(--bg2);border-top:1px solid var(--bo);padding:56px 48px 32
 .flinks{list-style:none;display:flex;flex-direction:column;gap:9px}
 .flinks a{font-size:14px;color:var(--se);text-decoration:none;transition:color .2s}
 .flinks a:hover{color:var(--white)}
+.flink-disabled{font-size:14px;color:rgba(255,255,255,.24);cursor:default;pointer-events:none;user-select:none}
+.flegal .flink-disabled{font-size:12.5px}
 .fbot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .fcopy{font-size:12.5px;color:var(--mu)}
 .flegal{display:flex;gap:18px}
@@ -629,9 +631,9 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
       <div><div class="fbrand"><img src="/assets/dealality-logo.png" width="320" height="127" alt="Dealality" loading="lazy"></div><div class="ftag">Reduce Friction.<br>Improve Deal Flow.<br>Smarter Decisions.</div></div>
       <div><div class="fcolh">For Owners</div><ul class="flinks"><li><a href="https://dealality.com/signup" target="_top">Submit Your Project</a></li><li><a href="https://dealality.com/brand-explorer-combined" target="_top">Brand Explorer</a></li><li><a href="#how">How It Works</a></li><li><a href="https://dealality.com/signup" target="_top">Private Beta</a></li></ul></div>
       <div><div class="fcolh">For Brands</div><ul class="flinks"><li><a href="https://dealality.com/signup" target="_top">Join as a Brand</a></li><li><a href="https://dealality.com/operator-explorer" target="_top">Operator Explorer</a></li><li><a href="https://dealality.com/for-brands-operators" target="_top">Platform Access</a></li><li><a href="#how">How It Works</a></li></ul></div>
-      <div><div class="fcolh">Company</div><ul class="flinks"><li><a href="#about">About</a></li><li><a href="https://dealality.com/about" target="_top">Our Team</a></li><li><a href="mailto:contact@dealcapture.com?subject=Careers">Careers</a></li><li><a href="mailto:contact@dealcapture.com">Contact</a></li></ul></div>
+      <div><div class="fcolh">Company</div><ul class="flinks"><li><span class="flink-disabled" aria-disabled="true">About</span></li><li><span class="flink-disabled" aria-disabled="true">Our Team</span></li><li><span class="flink-disabled" aria-disabled="true">Careers</span></li><li><span class="flink-disabled" aria-disabled="true">Contact</span></li></ul></div>
     </div>
-    <div class="fbot"><div class="fcopy">© 2026 Dealality. All rights reserved.</div><div class="flegal"><a href="https://dealality.com/terms" target="_top">Terms of Service</a><a href="https://dealality.com/privacy" target="_top">Privacy Policy</a><a href="mailto:contact@dealcapture.com">Contact</a></div></div>
+    <div class="fbot"><div class="fcopy">© 2026 Dealality. All rights reserved.</div><div class="flegal"><span class="flink-disabled" aria-disabled="true">Terms of Service</span><span class="flink-disabled" aria-disabled="true">Privacy Policy</span><span class="flink-disabled" aria-disabled="true">Contact</span></div></div>
   </div>
 </footer>
 
