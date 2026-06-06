@@ -12,7 +12,7 @@ For Webflow: upload images to Webflow Assets and replace `screenshots/*.png` pat
 
 ### Webflow navbar + Railway body (recommended)
 
-Keep the **navbar in Webflow**; embed the full landing (no nav/footer) from Railway.
+Keep the **navbar in Webflow**; embed the landing body from Railway (nav hidden in iframe; footer shown).
 
 | Piece | Where |
 |-------|--------|
@@ -39,9 +39,9 @@ Replace `YOUR-RAILWAY-HOST` in the embed snippet with your production Railway UR
 
 **Signup/login background:** The same footer script applies the landing iframe skin (`#080f25`, diagonal grid, blob) on `/signup`, `/signup-new`, `/log-in`, and `/login`.
 
-**Deploy requirement:** Railway must serve `public/marketing/` (including screenshots). `?embed=1` hides the Railway nav/footer and allows iframe embedding on `dealality.com` / `*.webflow.io`.
+**Deploy requirement:** Railway must serve `public/marketing/` (including screenshots). `?embed=1` hides the Railway nav (Webflow navbar is used) but keeps the landing footer visible inside the iframe.
 
-**Local test:** open `dealality-landing-v7.html?embed=1` — nav and footer should be hidden.
+**Local test:** open `dealality-landing-v7.html?embed=1` — nav should be hidden; footer should appear at the bottom.
 
 ---
 
