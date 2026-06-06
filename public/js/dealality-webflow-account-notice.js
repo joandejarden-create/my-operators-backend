@@ -92,9 +92,9 @@
     var style = doc.createElement("style");
     style.id = NAVBAR_SPACING_STYLE_ID;
     style.textContent =
-      ".navbar-2 .navbar_content{min-height:52px!important;padding-top:4px!important;padding-bottom:4px!important}" +
+      ".navbar-2 .navbar_content{min-height:58px!important;padding-top:4px!important;padding-bottom:4px!important}" +
       ".navbar-2 .navbar_logo-link{height:auto!important;min-height:0!important}" +
-      ".navbar-2 .navbar_logo{height:28px!important;max-height:28px!important;width:auto!important}" +
+      ".navbar-2 .navbar_logo{height:50px!important;max-height:50px!important;width:auto!important}" +
       ".navbar-2 .nav_links,.navbar-2 a.nav_links{padding:.35rem .5rem!important;margin-left:0!important;margin-right:0!important}" +
       ".navbar-2 .nav-compact,.navbar-2 a.nav-compact{padding:.4rem .85rem!important;line-height:1.2!important;margin-left:0!important;margin-right:0!important}" +
       ".navbar-2 .w-nav-menu{display:flex!important;align-items:center!important;column-gap:0!important;row-gap:0!important}";
@@ -379,13 +379,13 @@
     applyGlobalNavbarSpacing(doc);
     if (nav) {
       nav.querySelectorAll(".navbar_content").forEach(function (el) {
-        el.style.minHeight = "52px";
+        el.style.minHeight = "58px";
         el.style.paddingTop = "4px";
         el.style.paddingBottom = "4px";
       });
       nav.querySelectorAll(".navbar_logo").forEach(function (el) {
-        el.style.height = "28px";
-        el.style.maxHeight = "28px";
+        el.style.height = "50px";
+        el.style.maxHeight = "50px";
       });
     }
     var offset = nav ? Math.ceil(nav.getBoundingClientRect().height) : 48;

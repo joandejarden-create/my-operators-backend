@@ -107,13 +107,13 @@
     var nav = global.document.querySelector(".navbar-2.w-nav") || global.document.querySelector(".w-nav");
     if (!nav) return;
     nav.querySelectorAll(".navbar_content").forEach(function (el) {
-      el.style.minHeight = "52px";
+      el.style.minHeight = "58px";
       el.style.paddingTop = "4px";
       el.style.paddingBottom = "4px";
     });
     nav.querySelectorAll(".navbar_logo").forEach(function (el) {
-      el.style.height = "28px";
-      el.style.maxHeight = "28px";
+      el.style.height = "50px";
+      el.style.maxHeight = "50px";
       el.style.width = "auto";
     });
     nav.querySelectorAll(".navbar_logo-link").forEach(function (el) {
