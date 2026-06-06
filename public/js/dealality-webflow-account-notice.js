@@ -153,6 +153,14 @@
       .replace(/\/+$/, "");
   }
 
+  function hasNativeAuthBlob(doc) {
+    return !!(
+      doc &&
+      doc.querySelector &&
+      doc.querySelector(".signup-page-bg .coming-soon-img, .signup-page-bg img")
+    );
+  }
+
   function applyAuthPageEarlySkin() {
     if (!isAuthMarketingPage() || !global.document) return;
     var doc = global.document;
@@ -164,9 +172,16 @@
       "html,body{background:" +
       LANDING_BG +
       "!important;color:rgba(255,255,255,.62)!important}" +
-      "html.dl-auth-landing-skin .signup-page-bg,html.dl-auth-landing-skin .coming-soon-ss," +
-      "html.dl-auth-landing-skin .coming-soon-overlay,html.dl-auth-landing-skin .coming-soon-img," +
-      "html.dl-auth-landing-skin .loading-bar-wrapper,html.dl-auth-landing-skin .page-loader{display:none!important}";
+      "html.dl-auth-landing-skin .page-wrapper,html.dl-auth-landing-skin .dashboard-main-section," +
+      "html.dl-auth-landing-skin .dashboard-content,html.dl-auth-landing-skin .dashboard-main-content{background:transparent!important;background-image:none!important}" +
+      "html.dl-auth-landing-skin .signup-page-bg{position:fixed!important;inset:0!important;z-index:0!important;" +
+      "pointer-events:none!important;background:" +
+      LANDING_BG +
+      "!important}" +
+      "html.dl-auth-landing-skin .signup-page-bg .coming-soon-img{position:absolute;top:-10%;right:-8%;left:auto;" +
+      "width:min(720px,55vw);max-width:none;opacity:.55;height:auto}" +
+      "html.dl-auth-landing-skin .coming-soon-overlay,html.dl-auth-landing-skin .loading-bar-wrapper," +
+      "html.dl-auth-landing-skin .page-loader{display:none!important}";
     (doc.head || doc.documentElement).appendChild(style);
   }
 
@@ -242,10 +257,18 @@
       LANDING_BG +
       "!important;color:rgba(255,255,255,.62)!important}" +
       "html.dl-auth-landing-skin .page-wrapper,html.dl-auth-landing-skin .dashboard-main-section," +
-      "html.dl-auth-landing-skin .dashboard-content,html.dl-auth-landing-skin .dashboard-main-content," +
+      "html.dl-auth-landing-skin .dashboard-content,html.dl-auth-landing-skin .dashboard-main-content{background:transparent!important;background-image:none!important}" +
       "html.dl-auth-landing-skin .dashboard-footer-wrapper{background:" +
       LANDING_BG +
       "!important;background-image:none!important}" +
+      "html.dl-auth-landing-skin .signup-page-bg{position:fixed!important;inset:0!important;z-index:0!important;" +
+      "pointer-events:none!important;background:" +
+      LANDING_BG +
+      "!important}" +
+      "html.dl-auth-landing-skin .signup-page-bg .coming-soon-ss," +
+      "html.dl-auth-landing-skin .signup-page-bg .coming-soon-img{display:block!important}" +
+      "html.dl-auth-landing-skin .signup-page-bg .coming-soon-img{position:absolute;top:-10%;right:-8%;left:auto;" +
+      "width:min(720px,55vw);max-width:none;opacity:.55;height:auto}" +
       "html.dl-auth-landing-skin .signup-wrapper,html.dl-auth-landing-skin .signup-left," +
       "html.dl-auth-landing-skin .signup-right,html.dl-auth-landing-skin .login-wrapper," +
       "html.dl-auth-landing-skin .login-left,html.dl-auth-landing-skin .login-right," +
@@ -267,9 +290,8 @@
       "#" +
       AUTH_BG_ROOT_ID +
       " .dl-auth-bg-blob{position:absolute;top:-10%;right:-8%;left:auto;width:min(720px,55vw);max-width:none;opacity:.55;height:auto}" +
-      "html.dl-auth-landing-skin .signup-page-bg,html.dl-auth-landing-skin .coming-soon-ss," +
-      "html.dl-auth-landing-skin .coming-soon-img,html.dl-auth-landing-skin .coming-soon-overlay," +
-      "html.dl-auth-landing-skin .loading-bar-wrapper,html.dl-auth-landing-skin .page-loader{display:none!important}";
+      "html.dl-auth-landing-skin .coming-soon-overlay,html.dl-auth-landing-skin .loading-bar-wrapper," +
+      "html.dl-auth-landing-skin .page-loader{display:none!important}";
     (doc.head || doc.documentElement).appendChild(style);
   }
 
@@ -284,17 +306,19 @@
     grid.className = "dl-auth-bg-grid";
     root.appendChild(grid);
 
-    var base = resolveRailwayScriptBase();
-    var blob = doc.createElement("img");
-    blob.className = "dl-auth-bg-blob";
-    blob.src = base
-      ? base + "/marketing/assets/sales-home-bg-blob.svg"
-      : WEBFLOW_BLOB_URL;
-    blob.alt = "";
-    blob.setAttribute("aria-hidden", "true");
-    blob.decoding = "async";
-    blob.loading = "eager";
-    root.appendChild(blob);
+    if (!hasNativeAuthBlob(doc)) {
+      var base = resolveRailwayScriptBase();
+      var blob = doc.createElement("img");
+      blob.className = "dl-auth-bg-blob";
+      blob.src = base
+        ? base + "/marketing/assets/sales-home-bg-blob.svg"
+        : WEBFLOW_BLOB_URL;
+      blob.alt = "";
+      blob.setAttribute("aria-hidden", "true");
+      blob.decoding = "async";
+      blob.loading = "eager";
+      root.appendChild(blob);
+    }
 
     doc.body.insertBefore(root, doc.body.firstChild);
   }
