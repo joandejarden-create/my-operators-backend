@@ -217,8 +217,44 @@
     }, CONTEXT_POLL_MS);
   }
 
+  function resolveRailwayScriptBase() {
+    var base = (global.DEALALITY_API_BASE || global.DEALALITY_API_BASE_URL || "")
+      .trim()
+      .replace(/\/+$/, "");
+    return base;
+  }
+
+  function ensureLandingNavbarBridge(doc) {
+    if (!doc || global.__dealalityLandingNavInstalled || global.__dealalityLandingParentLoading) {
+      return;
+    }
+    if (!doc.querySelector(".navbar-2.w-nav, .w-nav")) return;
+
+    var base = resolveRailwayScriptBase();
+    if (!base) return;
+
+    global.__dealalityLandingParentLoading = true;
+    var script = doc.createElement("script");
+    script.src = base + "/marketing/dealality-landing-webflow-parent.js";
+    script.defer = true;
+    script.onload = function () {
+      global.__dealalityLandingParentLoading = false;
+    };
+    script.onerror = function () {
+      global.__dealalityLandingParentLoading = false;
+      if (global.console && global.console.warn) {
+        global.console.warn(
+          "[DealalityWebflowAccountNotice] Could not load landing navbar bridge:",
+          script.src
+        );
+      }
+    };
+    (doc.head || doc.documentElement).appendChild(script);
+  }
+
   if (global.document) {
     ensureToastPatch();
+    ensureLandingNavbarBridge(global.document);
     watchUserContext();
 
     global.document.addEventListener("dealality-me-ready", function (ev) {
@@ -227,6 +263,7 @@
 
     global.document.addEventListener("DOMContentLoaded", function () {
       ensureToastPatch();
+      ensureLandingNavbarBridge(global.document);
       bootstrapHomeNewLandingShell(global.document);
       if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);
     });

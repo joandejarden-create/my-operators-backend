@@ -17,11 +17,37 @@
   var NAV_LABEL_TO_ID = {
     "for owners": "owners",
     "for brands": "brands",
+    "for brands & operators": "brands",
     "for partners": "partners",
     "how it works": "how",
     "faqs": "faq",
     "faq": "faq",
   };
+
+  var LANDING_HOME_PATH =
+    (global.DEALALITY_LANDING_HOME_PATH || "/home-new").replace(/\/+$/, "") || "/home-new";
+
+  function isLandingHomePage() {
+    try {
+      var path = (global.location.pathname || "").replace(/\/+$/, "") || "/";
+      return path === LANDING_HOME_PATH || path === "/";
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function landingHomeHref(sectionId) {
+    var hash = sectionId ? "#" + sectionId : "";
+    return LANDING_HOME_PATH + hash;
+  }
+
+  function isNavbarLink(link) {
+    return !!(
+      link &&
+      link.closest &&
+      link.closest(".navbar-2, .w-nav, .navbar_content, .nav_links, .nav-compact")
+    );
+  }
 
   function injectScrollbarStyles() {
     var doc = global.document;
@@ -191,18 +217,32 @@
     }
   });
 
-  global.document.addEventListener("click", function (event) {
+  function handleNavbarSectionClick(event) {
     var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
-    if (!link) return;
-    if (!getIframe()) return;
+    if (!link || !isNavbarLink(link)) return;
     var id = resolveNavId(link);
     if (!id) return;
-    event.preventDefault();
-    postScroll(id);
-    if (global.history && global.history.replaceState) {
-      global.history.replaceState(null, "", "#" + id);
+
+    var iframe = getIframe();
+    if (iframe) {
+      event.preventDefault();
+      postScroll(id);
+      if (global.history && global.history.replaceState) {
+        global.history.replaceState(null, "", "#" + id);
+      }
+      return;
     }
-  });
+
+    if (!isLandingHomePage()) {
+      event.preventDefault();
+      global.location.href = landingHomeHref(id);
+    }
+  }
+
+  if (!global.__dealalityLandingNavInstalled) {
+    global.__dealalityLandingNavInstalled = true;
+    global.document.addEventListener("click", handleNavbarSectionClick);
+  }
 
   if (global.document.readyState === "loading") {
     global.document.addEventListener("DOMContentLoaded", bootstrapShell);
