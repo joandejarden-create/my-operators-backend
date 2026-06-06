@@ -37,6 +37,8 @@ Replace `YOUR-RAILWAY-HOST` in the embed snippet with your production Railway UR
 
 **Navbar on signup/login (and other pages):** Site footer should load `dealality-webflow-account-notice.js` (after `dealality-webflow-me-bootstrap.js`). It auto-loads `dealality-landing-webflow-parent.js` when a Webflow navbar is present so section links navigate to `/#owners` (etc.) from non-landing pages.
 
+**Signup/login background:** The same footer script applies the landing iframe skin (`#080f25`, diagonal grid, blob) on `/signup`, `/signup-new`, `/log-in`, and `/login`.
+
 **Deploy requirement:** Railway must serve `public/marketing/` (including screenshots). `?embed=1` hides the Railway nav/footer and allows iframe embedding on `dealality.com` / `*.webflow.io`.
 
 **Local test:** open `dealality-landing-v7.html?embed=1` — nav and footer should be hidden.

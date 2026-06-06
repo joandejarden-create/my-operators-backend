@@ -6,7 +6,10 @@
   "use strict";
 
   var STYLE_ID = "dealality-account-notice-style";
+  var AUTH_BG_STYLE_ID = "dl-auth-landing-bg-style";
+  var AUTH_BG_ROOT_ID = "dl-auth-bg-root";
   var BANNER_ID = "dealality-account-pending-banner";
+  var LANDING_BG = "#080f25";
   var TOAST_PATCHED = false;
   var CONTEXT_POLL_MS = 250;
   var CONTEXT_POLL_MAX_MS = 30000;
@@ -90,6 +93,98 @@
     doc.querySelectorAll(".loading-bar-wrapper").forEach(function (el) {
       el.style.display = "none";
     });
+  }
+
+  function isAuthMarketingPage() {
+    try {
+      var path = (global.location.pathname || "").replace(/\/+$/, "").toLowerCase();
+      return (
+        path === "/signup" ||
+        path === "/signup-new" ||
+        path === "/log-in" ||
+        path === "/login" ||
+        path === "/join" ||
+        path.indexOf("/signup") === 0 ||
+        path.indexOf("/log-in") === 0
+      );
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function injectAuthLandingBackgroundStyles(doc) {
+    if (!doc || doc.getElementById(AUTH_BG_STYLE_ID)) return;
+    var style = doc.createElement("style");
+    style.id = AUTH_BG_STYLE_ID;
+    style.textContent =
+      "html.dl-auth-landing-skin,html.dl-auth-landing-skin body{background:" +
+      LANDING_BG +
+      "!important;color:rgba(255,255,255,.62)!important}" +
+      "html.dl-auth-landing-skin .page-wrapper,html.dl-auth-landing-skin .dashboard-main-section," +
+      "html.dl-auth-landing-skin .dashboard-content,html.dl-auth-landing-skin .dashboard-main-content," +
+      "html.dl-auth-landing-skin .dashboard-footer-wrapper{background:" +
+      LANDING_BG +
+      "!important;background-image:none!important}" +
+      "html.dl-auth-landing-skin .signup-wrapper,html.dl-auth-landing-skin .signup-left," +
+      "html.dl-auth-landing-skin .signup-right,html.dl-auth-landing-skin .login-wrapper," +
+      "html.dl-auth-landing-skin .login-left,html.dl-auth-landing-skin .login-right," +
+      "html.dl-auth-landing-skin .memberstack-form{background:transparent!important;background-image:none!important}" +
+      "html.dl-auth-landing-skin .dashboard-main-content.sales-page{position:relative;overflow:hidden;min-height:90vh}" +
+      "html.dl-auth-landing-skin .page-wrapper,html.dl-auth-landing-skin .dashboard-main-section," +
+      "html.dl-auth-landing-skin .dashboard-content,html.dl-auth-landing-skin .w-nav," +
+      "html.dl-auth-landing-skin .navbar-2,html.dl-auth-landing-skin main{position:relative;z-index:1}" +
+      "#" +
+      AUTH_BG_ROOT_ID +
+      "{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:" +
+      LANDING_BG +
+      "}" +
+      "#" +
+      AUTH_BG_ROOT_ID +
+      " .dl-auth-bg-grid{position:absolute;inset:0;background-image:" +
+      "linear-gradient(45deg,rgba(108,114,255,.025) 1px,transparent 1px)," +
+      "linear-gradient(-45deg,rgba(108,114,255,.025) 1px,transparent 1px);background-size:56px 56px}" +
+      "#" +
+      AUTH_BG_ROOT_ID +
+      " .dl-auth-bg-blob{position:absolute;top:-10%;right:-8%;left:auto;width:min(720px,55vw);max-width:none;opacity:.55;height:auto}" +
+      "html.dl-auth-landing-skin .coming-soon-overlay,html.dl-auth-landing-skin .loading-bar-wrapper{display:none!important}";
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
+  function mountAuthLandingBackgroundLayers(doc) {
+    if (!doc || !doc.body || doc.getElementById(AUTH_BG_ROOT_ID)) return;
+
+    var root = doc.createElement("div");
+    root.id = AUTH_BG_ROOT_ID;
+    root.setAttribute("aria-hidden", "true");
+
+    var grid = doc.createElement("div");
+    grid.className = "dl-auth-bg-grid";
+    root.appendChild(grid);
+
+    var base = resolveRailwayScriptBase();
+    if (base) {
+      var blob = doc.createElement("img");
+      blob.className = "dl-auth-bg-blob";
+      blob.src = base + "/marketing/assets/sales-home-bg-blob.svg";
+      blob.alt = "";
+      blob.setAttribute("aria-hidden", "true");
+      blob.decoding = "async";
+      root.appendChild(blob);
+    }
+
+    doc.body.insertBefore(root, doc.body.firstChild);
+  }
+
+  function applyAuthPageLandingSkin(doc) {
+    if (!doc || !isAuthMarketingPage()) return;
+    doc.documentElement.classList.add("dl-auth-landing-skin");
+    if (doc.body) {
+      doc.body.classList.add("signup-page");
+    }
+    injectAuthLandingBackgroundStyles(doc);
+    injectLandingScrollbarStyles(doc);
+    clearPageLoaderOverlays(doc);
+    mountAuthLandingBackgroundLayers(doc);
   }
 
   function injectLandingScrollbarStyles(doc) {
@@ -254,6 +349,7 @@
 
   if (global.document) {
     ensureToastPatch();
+    applyAuthPageLandingSkin(global.document);
     ensureLandingNavbarBridge(global.document);
     watchUserContext();
 
@@ -263,12 +359,14 @@
 
     global.document.addEventListener("DOMContentLoaded", function () {
       ensureToastPatch();
+      applyAuthPageLandingSkin(global.document);
       ensureLandingNavbarBridge(global.document);
       bootstrapHomeNewLandingShell(global.document);
       if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);
     });
 
     global.addEventListener("load", function () {
+      applyAuthPageLandingSkin(global.document);
       bootstrapHomeNewLandingShell(global.document);
     });
     global.setTimeout(function () {
@@ -285,5 +383,6 @@
   global.DealalityWebflowAccountNotice = {
     apply: applyFromMe,
     shouldSuppressBrandToast: shouldSuppressBrandToast,
+    applyAuthPageLandingSkin: applyAuthPageLandingSkin,
   };
 })(typeof window !== "undefined" ? window : global);
