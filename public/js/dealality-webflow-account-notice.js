@@ -26,6 +26,7 @@
     faq: "faq",
   };
   var LANDING_SECTION_IDS = ["owners", "brands", "partners", "how", "faq", "hero", "persona"];
+  var NAVBAR_SPACING_STYLE_ID = "dl-navbar-spacing-lock";
 
   function shouldSuppressBrandToast() {
     if (global.__dealalitySuppressBrandToast) return true;
@@ -84,6 +85,25 @@
       BANNER_ID +
       " p{margin:0;font-size:.9375rem;line-height:1.55;color:#dbe6f8;}";
     (doc.head || doc.documentElement).appendChild(style);
+  }
+
+  function injectGlobalNavbarSpacingStyles(doc) {
+    if (!doc || doc.getElementById(NAVBAR_SPACING_STYLE_ID)) return;
+    var style = doc.createElement("style");
+    style.id = NAVBAR_SPACING_STYLE_ID;
+    style.textContent =
+      ".navbar-2 .navbar_content{min-height:52px!important;padding-top:4px!important;padding-bottom:4px!important}" +
+      ".navbar-2 .navbar_logo-link{height:auto!important;min-height:0!important}" +
+      ".navbar-2 .navbar_logo{height:28px!important;max-height:28px!important;width:auto!important}" +
+      ".navbar-2 .nav_links,.navbar-2 a.nav_links{padding:.35rem .5rem!important;margin-left:0!important;margin-right:0!important}" +
+      ".navbar-2 .nav-compact,.navbar-2 a.nav-compact{padding:.4rem .85rem!important;line-height:1.2!important;margin-left:0!important;margin-right:0!important}" +
+      ".navbar-2 .w-nav-menu{display:flex!important;align-items:center!important;column-gap:0!important;row-gap:0!important}";
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
+  function applyGlobalNavbarSpacing(doc) {
+    if (!doc) return;
+    injectGlobalNavbarSpacingStyles(doc);
   }
 
   function clearPageLoaderOverlays(doc) {
@@ -356,6 +376,7 @@
       doc.querySelector(".navbar-2.w-nav") ||
       doc.querySelector('[role="banner"].w-nav') ||
       doc.querySelector(".w-nav");
+    applyGlobalNavbarSpacing(doc);
     if (nav) {
       nav.querySelectorAll(".navbar_content").forEach(function (el) {
         el.style.minHeight = "52px";
@@ -489,6 +510,7 @@
   }
 
   if (global.document) {
+    applyGlobalNavbarSpacing(global.document);
     installAuthPageNavBridge();
     ensureToastPatch();
     applyAuthPageLandingSkin(global.document);

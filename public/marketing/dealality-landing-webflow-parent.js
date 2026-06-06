@@ -120,6 +120,17 @@
       el.style.height = "auto";
       el.style.minHeight = "0";
     });
+    nav.querySelectorAll(".nav_links").forEach(function (el) {
+      el.style.padding = "0.35rem 0.5rem";
+      el.style.marginLeft = "0";
+      el.style.marginRight = "0";
+    });
+    nav.querySelectorAll(".nav-compact").forEach(function (el) {
+      el.style.padding = "0.4rem 0.85rem";
+      el.style.lineHeight = "1.2";
+      el.style.marginLeft = "0";
+      el.style.marginRight = "0";
+    });
   }
 
   function applyEmbedOffset() {
