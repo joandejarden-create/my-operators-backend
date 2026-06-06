@@ -73,6 +73,12 @@
   function clearPageLoaderOverlays(doc) {
     if (!doc || !doc.body) return;
     doc.body.classList.remove("overflow-hidden");
+    doc.body.classList.remove("h-100-vh");
+    doc.documentElement.style.overflow = "visible";
+    doc.documentElement.style.height = "auto";
+    doc.body.style.overflow = "visible";
+    doc.body.style.height = "auto";
+    doc.body.style.minHeight = "100vh";
     try {
       if (global.$) {
         global.$(".page-loader").remove();
@@ -81,6 +87,68 @@
     doc.querySelectorAll(".page-loader").forEach(function (el) {
       if (el && el.parentNode) el.parentNode.removeChild(el);
     });
+    doc.querySelectorAll(".loading-bar-wrapper").forEach(function (el) {
+      el.style.display = "none";
+    });
+  }
+
+  function injectLandingScrollbarStyles(doc) {
+    if (!doc || doc.getElementById("dl-landing-shell-scrollbar")) return;
+    var style = doc.createElement("style");
+    style.id = "dl-landing-shell-scrollbar";
+    style.textContent =
+      "html,body{scrollbar-width:thin!important;scrollbar-color:#6c72ff #080f25!important}" +
+      "html::-webkit-scrollbar,body::-webkit-scrollbar{width:8px!important}" +
+      "html::-webkit-scrollbar-track,body::-webkit-scrollbar-track{background:#080f25!important;border-left:1px solid rgba(87,195,255,.35)!important}" +
+      "html::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb{background:#6c72ff!important}" +
+      "html::-webkit-scrollbar-thumb:hover,body::-webkit-scrollbar-thumb:hover{background:#8b90ff!important}";
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
+  function bootstrapHomeNewLandingShell(doc) {
+    if (!doc || !doc.getElementById("dealality-landing-embed")) return;
+    injectLandingScrollbarStyles(doc);
+    clearPageLoaderOverlays(doc);
+    var nav =
+      doc.querySelector(".navbar-2.w-nav") ||
+      doc.querySelector('[role="banner"].w-nav') ||
+      doc.querySelector(".w-nav");
+    if (nav) {
+      nav.querySelectorAll(".navbar_content").forEach(function (el) {
+        el.style.minHeight = "52px";
+        el.style.paddingTop = "4px";
+        el.style.paddingBottom = "4px";
+      });
+      nav.querySelectorAll(".navbar_logo").forEach(function (el) {
+        el.style.height = "28px";
+        el.style.maxHeight = "28px";
+      });
+    }
+    var offset = nav ? Math.ceil(nav.getBoundingClientRect().height) : 48;
+    var shell = doc.querySelector(".dl-landing-embed-full");
+    var wrap = doc.querySelector(".dl-landing-embed-wrap");
+    if (shell) {
+      shell.style.paddingTop = "0";
+      shell.style.overflow = "visible";
+      shell.style.width = "100%";
+      shell.style.background = "#080f25";
+    }
+    if (wrap) {
+      wrap.style.paddingTop = offset + "px";
+      wrap.style.overflow = "visible";
+      wrap.style.minHeight = "0";
+      wrap.style.width = "100%";
+      wrap.style.background = "#080f25";
+    }
+    var iframe = doc.getElementById("dealality-landing-embed");
+    if (iframe) {
+      iframe.style.display = "block";
+      iframe.style.width = "100%";
+      iframe.style.minHeight = "80vh";
+      iframe.style.height = Math.max(Number(iframe.offsetHeight) || 0, 3200) + "px";
+      iframe.style.visibility = "visible";
+      iframe.style.opacity = "1";
+    }
   }
 
   function removeBanner() {
@@ -159,10 +227,22 @@
 
     global.document.addEventListener("DOMContentLoaded", function () {
       ensureToastPatch();
+      bootstrapHomeNewLandingShell(global.document);
       if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);
     });
 
+    global.addEventListener("load", function () {
+      bootstrapHomeNewLandingShell(global.document);
+    });
+    global.setTimeout(function () {
+      bootstrapHomeNewLandingShell(global.document);
+    }, 1200);
+    global.addEventListener("resize", function () {
+      bootstrapHomeNewLandingShell(global.document);
+    });
+
     if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);
+    bootstrapHomeNewLandingShell(global.document);
   }
 
   global.DealalityWebflowAccountNotice = {
