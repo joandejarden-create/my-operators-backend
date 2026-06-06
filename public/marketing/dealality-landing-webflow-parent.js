@@ -169,12 +169,19 @@
     iframe.style.border = "0";
   }
 
-  function applyIframeHeight(px) {
+  function applyIframeHeight(px, fromChild) {
     var iframe = getIframe();
     if (!iframe) return;
-    var height = Math.max(Number(px) || 0, MIN_IFRAME_HEIGHT_PX);
+    var height = Math.max(Number(px) || 0, 0);
+    if (!fromChild && height < MIN_IFRAME_HEIGHT_PX) {
+      height = MIN_IFRAME_HEIGHT_PX;
+    }
     iframe.style.setProperty("height", height + "px", "important");
-    iframe.style.setProperty("min-height", height + "px", "important");
+    iframe.style.setProperty(
+      "min-height",
+      fromChild ? "0" : height + "px",
+      "important"
+    );
   }
 
   function scrollParentToIframeOffset(offsetTop) {
@@ -227,7 +234,7 @@
     var data = event.data;
     if (!data || data.source !== CHILD_SOURCE) return;
     if (data.type === "resize" && typeof data.height === "number") {
-      applyIframeHeight(data.height);
+      applyIframeHeight(data.height, true);
     }
     if (data.type === "scrollToOffset" && typeof data.top === "number") {
       scrollParentToIframeOffset(data.top);

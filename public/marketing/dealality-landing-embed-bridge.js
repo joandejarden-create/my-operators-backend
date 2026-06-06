@@ -11,22 +11,24 @@
   var SOURCE = "dealality-landing-embed";
   var PARENT_SOURCE = "dealality-landing-parent";
 
-  var HEIGHT_BUFFER_PX = 64;
-
   function measureDocumentHeight() {
     var doc = global.document.documentElement;
     var body = global.document.body;
+    var footer = global.document.querySelector("footer");
+    if (footer) {
+      var rect = footer.getBoundingClientRect();
+      var scrollTop = global.pageYOffset || (doc && doc.scrollTop) || 0;
+      return Math.ceil(rect.bottom + scrollTop);
+    }
     return Math.max(
       doc ? doc.scrollHeight : 0,
-      doc ? doc.offsetHeight : 0,
-      body ? body.scrollHeight : 0,
-      body ? body.offsetHeight : 0
+      body ? body.scrollHeight : 0
     );
   }
 
   function postHeight() {
     if (global.parent === global) return;
-    var height = measureDocumentHeight() + HEIGHT_BUFFER_PX;
+    var height = measureDocumentHeight();
     global.parent.postMessage({ source: SOURCE, type: "resize", height: height }, "*");
   }
 

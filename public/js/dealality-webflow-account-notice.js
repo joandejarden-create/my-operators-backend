@@ -408,8 +408,7 @@
     if (iframe) {
       iframe.style.display = "block";
       iframe.style.width = "100%";
-      iframe.style.minHeight = "80vh";
-      iframe.style.height = Math.max(Number(iframe.offsetHeight) || 0, 3200) + "px";
+      iframe.style.overflow = "hidden";
       iframe.style.visibility = "visible";
       iframe.style.opacity = "1";
     }
