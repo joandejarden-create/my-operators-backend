@@ -11,12 +11,22 @@
   var SOURCE = "dealality-landing-embed";
   var PARENT_SOURCE = "dealality-landing-parent";
 
+  var HEIGHT_BUFFER_PX = 64;
+
+  function measureDocumentHeight() {
+    var doc = global.document.documentElement;
+    var body = global.document.body;
+    return Math.max(
+      doc ? doc.scrollHeight : 0,
+      doc ? doc.offsetHeight : 0,
+      body ? body.scrollHeight : 0,
+      body ? body.offsetHeight : 0
+    );
+  }
+
   function postHeight() {
     if (global.parent === global) return;
-    var height = Math.max(
-      global.document.documentElement.scrollHeight,
-      global.document.body ? global.document.body.scrollHeight : 0
-    );
+    var height = measureDocumentHeight() + HEIGHT_BUFFER_PX;
     global.parent.postMessage({ source: SOURCE, type: "resize", height: height }, "*");
   }
 
@@ -47,7 +57,20 @@
     postHeight();
     global.setTimeout(postHeight, 400);
     global.setTimeout(postHeight, 1200);
+    global.setTimeout(postHeight, 3000);
   });
+
+  global.addEventListener(
+    "load",
+    function () {
+      global.document.querySelectorAll("img").forEach(function (img) {
+        if (!img.complete) {
+          img.addEventListener("load", postHeight, { once: true });
+        }
+      });
+    },
+    true
+  );
   global.addEventListener("resize", postHeight);
 
   if (typeof global.ResizeObserver === "function" && global.document.body) {

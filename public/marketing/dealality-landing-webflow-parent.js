@@ -128,8 +128,8 @@
     var iframe = getIframe();
     if (!iframe) return;
     var height = Math.max(Number(px) || 0, MIN_IFRAME_HEIGHT_PX);
-    iframe.style.height = height + "px";
-    iframe.style.minHeight = "0";
+    iframe.style.setProperty("height", height + "px", "important");
+    iframe.style.setProperty("min-height", height + "px", "important");
   }
 
   function scrollParentToIframeOffset(offsetTop) {
