@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Standalone export of dealality-landing-v9.html — self-contained; keep with marketing/screenshots and marketing/assets folders -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -415,7 +416,7 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
 <body>
 
 <nav id="nav">
-  <a href="#" class="logo"><img src="/assets/dealality-logo.png" width="320" height="127" alt="Dealality" loading="eager"></a>
+  <a href="#" class="logo"><img src="../assets/dealality-logo.png" width="320" height="127" alt="Dealality" loading="eager"></a>
   <ul class="nl"><li><a href="#owners">For Owners</a></li><li><a href="#brands">For Brands</a></li><li><a href="#partners">For Partners</a></li><li><a href="#how">How It Works</a></li><li><a href="#faq">FAQ</a></li></ul>
   <button type="button" class="nmenu" id="nmenu" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>
   <div class="nr"><a href="#" class="nbg">Sign In</a><a href="#cta" class="nbn">Request Early Access →</a></div>
@@ -785,7 +786,7 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
 <footer>
   <div class="ft">
     <div class="ftop">
-      <div><div class="fbrand"><img src="/assets/dealality-logo.png" width="320" height="127" alt="Dealality" loading="lazy"></div><div class="ftag">Reduce Friction.<br>Improve Deal Flow.<br>Smarter Decisions.</div></div>
+      <div><div class="fbrand"><img src="../assets/dealality-logo.png" width="320" height="127" alt="Dealality" loading="lazy"></div><div class="ftag">Reduce Friction.<br>Improve Deal Flow.<br>Smarter Decisions.</div></div>
       <div><div class="fcolh">For Owners</div><ul class="flinks"><li><a href="https://dealality.com/signup" target="_top">Submit Your Project</a></li><li><a href="https://dealality.com/brand-explorer-combined" target="_top">Brand Explorer</a></li><li><a href="#how">The Platform</a></li><li><a href="https://dealality.com/signup" target="_top">Private Beta</a></li></ul></div>
       <div><div class="fcolh">For Brands</div><ul class="flinks"><li><a href="https://dealality.com/signup" target="_top">Join as a Brand</a></li><li><a href="https://dealality.com/operator-explorer" target="_top">Operator Explorer</a></li><li><a href="https://dealality.com/for-brands-operators" target="_top">Platform Access</a></li><li><a href="#how">The Platform</a></li></ul></div>
       <div><div class="fcolh">Company</div><ul class="flinks"><li><a href="#why">Our Approach</a></li><li><span class="flink-disabled" aria-disabled="true">Our Team</span></li><li><span class="flink-disabled" aria-disabled="true">Careers</span></li><li><span class="flink-disabled" aria-disabled="true">Contact</span></li></ul></div>
@@ -1148,7 +1149,6 @@ document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',(
   const btn=document.getElementById('hero-notify-submit');
   const note=document.getElementById('hero-notify-note');
   if(!input||!btn||!note)return;
-  const defaultNote=note.textContent;
   const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   let busy=false;
   function setNote(text,kind){
@@ -1182,6 +1182,78 @@ document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',(
   input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submit();}});
 })();
 </script>
-<script src="dealality-landing-embed-bridge.js"></script>
+<script>
+(function(global){
+  "use strict";
+  var params=new URLSearchParams(global.location.search);
+  if(params.get("embed")!=="1")return;
+  var SOURCE="dealality-landing-embed",PARENT_SOURCE="dealality-landing-parent";
+  function measureDocumentHeight(){
+    var doc=global.document.documentElement,body=global.document.body,footer=global.document.querySelector("footer");
+    if(footer){var rect=footer.getBoundingClientRect(),scrollTop=global.pageYOffset||(doc&&doc.scrollTop)||0;return Math.ceil(rect.bottom+scrollTop);}
+    return Math.max(doc?doc.scrollHeight:0,body?body.scrollHeight:0);
+  }
+  function postHeight(){
+    if(global.parent===global)return;
+    global.parent.postMessage({source:SOURCE,type:"resize",height:measureDocumentHeight()},"*");
+  }
+  function getOffsetTopInIframeDocument(el){
+    if(!el)return 0;
+    var frame=global.frameElement;
+    if(!frame)return el.getBoundingClientRect().top+(global.pageYOffset||global.document.documentElement.scrollTop||0);
+    return el.getBoundingClientRect().top-frame.getBoundingClientRect().top;
+  }
+  function postScrollToParent(id,top){
+    if(global.parent===global)return;
+    var payload={source:SOURCE,type:"scrollToOffset",id:id,top:top};
+    global.parent.postMessage(payload,"*");
+    global.setTimeout(function(){global.parent.postMessage(payload,"*");},150);
+    global.setTimeout(function(){global.parent.postMessage(payload,"*");},500);
+  }
+  var SECTION_ID_ALIASES={platform:"how"};
+  function scrollToId(id){
+    if(!id)return;
+    if(SECTION_ID_ALIASES[id])id=SECTION_ID_ALIASES[id];
+    var el=global.document.getElementById(id);
+    if(!el)return;
+    if(global.parent!==global){postScrollToParent(id,getOffsetTopInIframeDocument(el));return;}
+    el.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  function resolveHashLink(link){
+    if(!link)return null;
+    var href=(link.getAttribute("href")||"").trim();
+    if(!href||href==="#")return null;
+    if(href.charAt(0)==="#"&&href.length>1)return href.slice(1);
+    try{var url=new URL(href,global.location.href);if(url.hash&&url.hash.length>1)return url.hash.slice(1);}catch(err){}
+    return null;
+  }
+  global.document.addEventListener("click",function(event){
+    var link=event.target&&event.target.closest?event.target.closest("a[href]"):null;
+    if(!link)return;
+    var id=resolveHashLink(link);
+    if(!id||!global.document.getElementById(id))return;
+    event.preventDefault();scrollToId(id);
+    if(global.history&&global.history.replaceState)global.history.replaceState(null,"","#"+id);
+  },true);
+  global.addEventListener("message",function(event){
+    var data=event.data;
+    if(!data||data.source!==PARENT_SOURCE)return;
+    if(data.type==="scrollTo")scrollToId(data.id);
+  });
+  global.addEventListener("load",function(){
+    postHeight();global.setTimeout(postHeight,400);global.setTimeout(postHeight,1200);global.setTimeout(postHeight,3000);
+  });
+  global.addEventListener("load",function(){
+    global.document.querySelectorAll("img").forEach(function(img){
+      if(!img.complete)img.addEventListener("load",postHeight,{once:true});
+    });
+  },true);
+  global.addEventListener("resize",postHeight);
+  if(typeof global.ResizeObserver==="function"&&global.document.body)new global.ResizeObserver(postHeight).observe(global.document.body);
+  global.document.querySelectorAll(".faq-q").forEach(function(btn){
+    btn.addEventListener("click",function(){global.setTimeout(postHeight,500);});
+  });
+})(window);
+</script>
 </body>
 </html>

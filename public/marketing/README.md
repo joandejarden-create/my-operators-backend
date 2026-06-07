@@ -2,7 +2,20 @@
 
 ## Landing page (screenshots)
 
-**`dealality-landing-v5.html`** — full marketing landing page with real product screenshots.
+**`dealality-landing-v9.html`** — current production landing (Webflow embed source).
+
+| Local preview | `http://localhost:8080/marketing/dealality-landing-v9.html` |
+| Embed test | `http://localhost:8080/marketing/dealality-landing-v9.html?embed=1` |
+
+**`dealality-landing-v7.html`** — alias of v9 (same content) for existing Railway/Webflow URLs.
+
+| Local preview | `http://localhost:8080/marketing/dealality-landing-v7.html` |
+
+**`dealality-landing-v8.html`** — earlier restructure preview (archived for comparison).
+
+| Local preview | `http://localhost:8080/marketing/dealality-landing-v8.html` |
+
+**`dealality-landing-v5.html`** — earlier landing with real product screenshots.
 
 | Local preview | `http://localhost:8080/marketing/dealality-landing-v5.html` |
 | Screenshots | `public/marketing/screenshots/` — captured at **2× DPR** (~1140–1200 CSS px wide). Re-capture: `node scripts/capture-marketing-screenshots.mjs` (server on :8080). |
@@ -18,7 +31,7 @@ Keep the **navbar in Webflow**; embed the landing body from Railway (nav hidden 
 |-------|--------|
 | Navbar | Webflow **Dealality Navbar** on `Home v7 (draft)` |
 | Page body | Webflow **Embed** → paste `components-iframe/00-landing-full-body.html` |
-| Landing HTML | Railway `/marketing/dealality-landing-v7.html?embed=1` |
+| Landing HTML | Railway `/marketing/dealality-landing-v9.html?embed=1` (v7 URL kept as alias) |
 | Home URL | Webflow site root `/` (override with `window.DEALALITY_LANDING_HOME_PATH` if different) |
 
 Replace `YOUR-RAILWAY-HOST` in the embed snippet with your production Railway URL.
@@ -41,7 +54,7 @@ Replace `YOUR-RAILWAY-HOST` in the embed snippet with your production Railway UR
 
 **Deploy requirement:** Railway must serve `public/marketing/` (including screenshots). `?embed=1` hides the Railway nav (Webflow navbar is used) but keeps the landing footer visible inside the iframe.
 
-**Local test:** open `dealality-landing-v7.html?embed=1` — nav should be hidden; footer should appear at the bottom.
+**Local test:** open `dealality-landing-v9.html?embed=1` — nav should be hidden; footer should appear at the bottom.
 
 ---
 

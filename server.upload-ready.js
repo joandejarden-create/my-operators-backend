@@ -76,6 +76,7 @@ import getThirdPartyOperatorMappingReport from "./api/third-party-operator-mappi
 import getThirdPartyOperatorPrefillQa from "./api/third-party-operator-prefill-qa.js";
 import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js";
 import signup from "./api/signup.js";
+import marketingBetaNotify from "./api/marketing-beta-notify.js";
 import memberstackWebhook from "./api/memberstack-webhook.js";
 import { getPartners, createUser, updateUser } from "./api/partner-directory.js";
 import { getUserFavorites, createFavorite, deleteFavorite, updateFavorite } from "./api/partner-directory-favorites.js";
@@ -982,6 +983,7 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 app.post("/api/intake/deal", dealIntake);
 app.post("/api/intake/user", userIntake);
 app.post("/api/signup", signup);
+app.post("/api/marketing/beta-notify", marketingBetaNotify);
 app.post("/api/webhooks/memberstack", memberstackWebhook);
 
 // Market Alerts API endpoints – live beta (Airtable-backed)

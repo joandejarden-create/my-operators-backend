@@ -20,9 +20,13 @@
     "for brands & operators": "brands",
     "for partners": "partners",
     "how it works": "how",
+    "the platform": "how",
+    "see the platform": "how",
     "faqs": "faq",
     "faq": "faq",
   };
+
+  var SECTION_ID_ALIASES = { platform: "how" };
 
   function normalizeLandingHomePath(path) {
     var raw = String(path || "/").trim();
@@ -183,6 +187,7 @@
   function postScroll(id) {
     var iframe = getIframe();
     if (!iframe || !iframe.contentWindow) return;
+    if (SECTION_ID_ALIASES[id]) id = SECTION_ID_ALIASES[id];
     iframe.contentWindow.postMessage(
       { source: PARENT_SOURCE, type: "scrollTo", id: id },
       "*"
@@ -193,10 +198,16 @@
     if (!link) return null;
     var href = (link.getAttribute("href") || "").trim();
     if (href) {
-      if (href.charAt(0) === "#" && href.length > 1) return href.slice(1);
+      if (href.charAt(0) === "#" && href.length > 1) {
+        var hashId = href.slice(1);
+        return SECTION_ID_ALIASES[hashId] || hashId;
+      }
       try {
         var url = new URL(href, global.location.href);
-        if (url.hash && url.hash.length > 1) return url.hash.slice(1);
+        if (url.hash && url.hash.length > 1) {
+          var urlHashId = url.hash.slice(1);
+          return SECTION_ID_ALIASES[urlHashId] || urlHashId;
+        }
       } catch (err) {
         if (typeof console !== "undefined" && console.warn) {
           console.warn("[dealality-landing-parent] resolveNavId href parse failed", err);
@@ -273,7 +284,10 @@
   global.addEventListener("load", function () {
     bootstrapShell();
     var hash = (global.location.hash || "").replace(/^#/, "");
-    if (hash) global.setTimeout(function () { postScroll(hash); }, 800);
+    if (hash) {
+      if (SECTION_ID_ALIASES[hash]) hash = SECTION_ID_ALIASES[hash];
+      global.setTimeout(function () { postScroll(hash); }, 800);
+    }
   });
 
   global.setTimeout(bootstrapShell, 1200);

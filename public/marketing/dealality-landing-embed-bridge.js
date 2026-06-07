@@ -56,8 +56,11 @@
     }, 500);
   }
 
+  var SECTION_ID_ALIASES = { platform: "how" };
+
   function scrollToId(id) {
     if (!id) return;
+    if (SECTION_ID_ALIASES[id]) id = SECTION_ID_ALIASES[id];
     var el = global.document.getElementById(id);
     if (!el) return;
     if (global.parent !== global) {
