@@ -58,7 +58,8 @@ nav.sc{background:rgba(8,15,37,.98)}
 .hero-video-modal[hidden]{display:none!important}
 .hero-video-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.94);backdrop-filter:blur(8px)}
 .hero-video-modal-in{position:relative;z-index:1;width:min(960px,92vw)}
-.hero-video-iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#000;box-shadow:0 32px 80px rgba(0,0,0,.65)}
+.hero-video-player{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#000;box-shadow:0 32px 80px rgba(0,0,0,.65);object-fit:contain}
+html.dl-embed-shell .hero-video-modal{z-index:2147483646}
 .hero-video-close{position:absolute;top:10px;right:10px;z-index:2;background:rgba(8,15,37,.72);border:1px solid rgba(255,255,255,.18);border-radius:8px;color:var(--white);font-size:1.5rem;line-height:1;cursor:pointer;padding:6px 12px;opacity:.9;transition:opacity .2s,background .2s}
 .hero-video-close:hover{opacity:1}
 .hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,114,255,.1);border:1px solid var(--bp);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pl);margin-bottom:32px;animation:fu .7s both}
@@ -467,14 +468,17 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
       </div>
     </div>
   </div>
-  <div id="hero-video-modal" class="hero-video-modal" role="dialog" aria-modal="true" aria-label="Dealality platform overview video" hidden>
-    <div class="hero-video-modal-bg" data-video-close></div>
-    <div class="hero-video-modal-in">
-      <button type="button" class="hero-video-close" aria-label="Close video" data-video-close>×</button>
-      <iframe id="hero-video-frame" class="hero-video-iframe" title="Dealality platform overview video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  </div>
 </section>
+
+<div id="hero-video-modal" class="hero-video-modal" role="dialog" aria-modal="true" aria-label="Dealality platform overview video" hidden>
+  <div class="hero-video-modal-bg" data-video-close></div>
+  <div class="hero-video-modal-in">
+    <button type="button" class="hero-video-close" aria-label="Close video" data-video-close>×</button>
+    <video id="hero-video-player" class="hero-video-player" controls playsinline preload="metadata">
+      <source id="hero-video-source" src="https://res.cloudinary.com/dos2eqnzd/video/upload/v1775832428/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
 
 <div id="proofbar"><div class="proofbar-in"><span class="ps-item" style="color:#D78E2C;font-weight:600;">Free to submit during private beta</span><span class="proof-sep">·</span><span class="proof-stat">Americas · Canada · Europe</span><span class="proof-sep">·</span><span>Owner-initiated process</span><span class="proof-sep">·</span><span>NDA-gated deal rooms</span><span class="proof-sep">·</span><span>Not a broker · Steps back at LOI</span><span class="proof-sep">·</span><span>Active projects across <strong>6 markets</strong></span><span class="proof-sep">·</span><span><strong>Every brand approached</strong> during beta expressed interest</span><span class="proof-sep">·</span><span>Owners, brands, and operators across <strong>the Americas and Canada</strong></span></div></div>
 
@@ -961,18 +965,17 @@ if(rot){
 (function(){
   const learn=document.getElementById('hero-learn-more');
   const modal=document.getElementById('hero-video-modal');
-  const frame=document.getElementById('hero-video-frame');
-  if(!learn||!modal||!frame)return;
-  const videoUrl='https://res.cloudinary.com/dos2eqnzd/video/upload/v1775832428/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.mp4';
-  const srcdoc='<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;height:100%;background:#000}video{display:block;width:100%;height:100%;object-fit:contain;background:#000}</style></head><body><video controls autoplay playsinline src="'+videoUrl+'"></video></body></html>';
+  const player=document.getElementById('hero-video-player');
+  if(!learn||!modal||!player)return;
   const open=()=>{
     modal.hidden=false;
     document.body.style.overflow='hidden';
-    frame.srcdoc=srcdoc;
+    player.currentTime=0;
+    player.play().catch(()=>{});
   };
   const close=()=>{
-    frame.srcdoc='';
-    frame.removeAttribute('srcdoc');
+    player.pause();
+    player.currentTime=0;
     modal.hidden=true;
     document.body.style.overflow='';
   };
