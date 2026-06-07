@@ -32,7 +32,8 @@
   var LANDING_SECTION_IDS = ["owners", "brands", "partners", "how", "faq", "hero", "persona", "platform"];
   var NAVBAR_SPACING_STYLE_ID = "dl-navbar-spacing-lock";
   var NAVBAR_LOGO_RELEASE_STYLE_ID = "dl-navbar-logo-release";
-  var NAVBAR_LOGO_HEIGHT_PX = 75;
+  var NAVBAR_LOGO_HEIGHT_PX = 50;
+  var NAVBAR_CONTENT_MIN_HEIGHT_PX = 58;
 
   function stripEmbedNavbarLogoOverrides(doc) {
     if (!doc) return;
@@ -56,11 +57,28 @@
       (doc.body || doc.head || doc.documentElement).appendChild(style);
     }
     style.textContent =
+      ".navbar-2 .navbar_content{min-height:" +
+      NAVBAR_CONTENT_MIN_HEIGHT_PX +
+      "px!important;padding-top:4px!important;padding-bottom:4px!important}" +
+      ".navbar-2 .navbar_logo-link{height:auto!important;min-height:0!important}" +
       ".navbar-2 .navbar_logo,.navbar-2 img.navbar_logo{height:" +
       NAVBAR_LOGO_HEIGHT_PX +
       "px!important;max-height:" +
       NAVBAR_LOGO_HEIGHT_PX +
       "px!important;width:auto!important}";
+    var nav = doc.querySelector(".navbar-2.w-nav") || doc.querySelector(".w-nav");
+    if (nav) {
+      nav.querySelectorAll(".navbar_content").forEach(function (el) {
+        el.style.minHeight = NAVBAR_CONTENT_MIN_HEIGHT_PX + "px";
+        el.style.paddingTop = "4px";
+        el.style.paddingBottom = "4px";
+      });
+      nav.querySelectorAll(".navbar_logo").forEach(function (el) {
+        el.style.height = NAVBAR_LOGO_HEIGHT_PX + "px";
+        el.style.maxHeight = NAVBAR_LOGO_HEIGHT_PX + "px";
+        el.style.width = "auto";
+      });
+    }
     doc.querySelectorAll(".navbar-2 img.navbar_logo").forEach(function (img) {
       img.removeAttribute("height");
       img.style.setProperty("height", NAVBAR_LOGO_HEIGHT_PX + "px", "important");
