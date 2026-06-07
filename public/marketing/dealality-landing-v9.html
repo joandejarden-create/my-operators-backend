@@ -61,8 +61,19 @@ nav.sc{background:rgba(8,15,37,.98)}
 .hero-overview-ey{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pl);margin:0}
 .hero-overview-close{font-size:13px;font-weight:600;color:var(--se);background:rgba(255,255,255,.04);border:1px solid var(--bo);border-radius:6px;cursor:pointer;padding:7px 12px;font-family:inherit;transition:border-color .2s,color .2s,background .2s}
 .hero-overview-close:hover{color:var(--white);border-color:var(--bp);background:var(--pd)}
-.hero-overview-frame{border-radius:12px;overflow:hidden;border:1px solid rgba(108,114,255,.32);box-shadow:0 24px 56px rgba(0,0,0,.45),0 0 0 1px rgba(108,114,255,.1);background:#000}
-.hero-overview-frame video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#000;vertical-align:top}
+.hero-overview-frame{position:relative;border-radius:12px;overflow:hidden;border:1px solid rgba(108,114,255,.32);box-shadow:0 24px 56px rgba(0,0,0,.45),0 0 0 1px rgba(108,114,255,.1);background:#000;aspect-ratio:16/9}
+.hero-overview-poster{position:absolute;inset:0;display:block;width:100%;height:100%;margin:0;padding:0;border:0;cursor:pointer;background:#000;font:inherit;color:inherit;text-align:left}
+.hero-overview-poster[hidden]{display:none!important}
+.hero-overview-poster img{display:block;width:100%;height:100%;object-fit:cover}
+.hero-overview-play{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,rgba(8,15,37,.2),rgba(8,15,37,.55));transition:background .25s}
+.hero-overview-poster:hover .hero-overview-play,.hero-overview-poster:focus-visible .hero-overview-play{background:linear-gradient(180deg,rgba(8,15,37,.35),rgba(8,15,37,.68))}
+.hero-overview-play-icon{width:58px;height:58px;border-radius:50%;background:rgba(108,114,255,.92);border:1px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px rgba(0,0,0,.45);transition:transform .2s,background .2s}
+.hero-overview-poster:hover .hero-overview-play-icon,.hero-overview-poster:focus-visible .hero-overview-play-icon{transform:scale(1.06);background:var(--purple)}
+.hero-overview-play-icon svg{width:22px;height:22px;margin-left:3px;fill:var(--white)}
+.hero-overview-play-label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--white);text-shadow:0 2px 12px rgba(0,0,0,.55)}
+.hero-overview-frame video{display:block;width:100%;height:100%;object-fit:cover;background:#000;vertical-align:top}
+.hero-overview-frame video[hidden]{display:none!important}
+.hero-overview-poster.is-loading .hero-overview-play-label::after{content:' · Loading…'}
 .hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,114,255,.1);border:1px solid var(--bp);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pl);margin-bottom:32px;animation:fu .7s both}
 .puls{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 3s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -478,9 +489,14 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
       <button type="button" class="hero-overview-close" id="hero-overview-close" aria-label="Hide overview video">Hide video</button>
     </div>
     <div class="hero-overview-frame">
-      <video id="hero-overview-video" controls playsinline webkit-playsinline preload="none" poster="https://res.cloudinary.com/dos2eqnzd/video/upload/so_0/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.jpg" aria-labelledby="hero-overview-label">
-        <source src="https://res.cloudinary.com/dos2eqnzd/video/upload/v1775832428/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.mp4" type="video/mp4">
-      </video>
+      <button type="button" class="hero-overview-poster" id="hero-overview-poster" aria-label="Play Dealality platform overview video">
+        <img src="https://res.cloudinary.com/dos2eqnzd/video/upload/so_0/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.jpg" alt="" decoding="async" loading="lazy">
+        <span class="hero-overview-play" aria-hidden="true">
+          <span class="hero-overview-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.14v13.72L19 12 8 5.14z"/></svg></span>
+          <span class="hero-overview-play-label">Play overview</span>
+        </span>
+      </button>
+      <video id="hero-overview-video" controls playsinline webkit-playsinline preload="none" hidden aria-labelledby="hero-overview-label"></video>
     </div>
   </div>
 </section>
@@ -970,19 +986,63 @@ if(rot){
 (function(){
   const learn=document.getElementById('hero-learn-more');
   const panel=document.getElementById('hero-overview-wrap');
+  const poster=document.getElementById('hero-overview-poster');
   const video=document.getElementById('hero-overview-video');
   const closeBtn=document.getElementById('hero-overview-close');
-  if(!learn||!panel||!video)return;
+  const VIDEO_MP4='https://res.cloudinary.com/dos2eqnzd/video/upload/v1775832428/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.mp4';
+  if(!learn||!panel||!poster||!video)return;
+  let videoReady=false;
+  let videoLoading=false;
   const notifyResize=()=>{window.dispatchEvent(new Event('resize'));};
+  const showPoster=()=>{poster.hidden=false;video.hidden=true;};
+  const showVideo=()=>{poster.hidden=true;video.hidden=false;};
+  const ensureVideoSource=()=>{
+    if(videoReady||video.querySelector('source'))return;
+    const source=document.createElement('source');
+    source.src=VIDEO_MP4;
+    source.type='video/mp4';
+    video.appendChild(source);
+    video.load();
+  };
+  const playFromPoster=()=>{
+    if(videoLoading)return;
+    videoLoading=true;
+    poster.classList.add('is-loading');
+    ensureVideoSource();
+    const onReady=()=>{
+      video.removeEventListener('loadeddata',onReady);
+      video.removeEventListener('error',onError);
+      videoLoading=false;
+      poster.classList.remove('is-loading');
+      videoReady=true;
+      showVideo();
+      video.play().catch(()=>{});
+      notifyResize();
+    };
+    const onError=()=>{
+      video.removeEventListener('loadeddata',onReady);
+      video.removeEventListener('error',onError);
+      videoLoading=false;
+      poster.classList.remove('is-loading');
+      showVideo();
+      notifyResize();
+    };
+    if(video.readyState>=2){
+      onReady();
+      return;
+    }
+    video.addEventListener('loadeddata',onReady,{once:true});
+    video.addEventListener('error',onError,{once:true});
+  };
   const openOverview=()=>{
     panel.hidden=false;
     panel.classList.add('is-open');
     learn.setAttribute('aria-expanded','true');
     learn.textContent='Hide Overview';
-    video.load();
+    if(videoReady)showVideo();
+    else showPoster();
     globalThis.requestAnimationFrame(()=>{
       panel.scrollIntoView({behavior:'smooth',block:'nearest'});
-      video.play().catch(()=>{});
       notifyResize();
       globalThis.setTimeout(notifyResize,400);
     });
@@ -996,6 +1056,7 @@ if(rot){
     notifyResize();
   };
   learn.addEventListener('click',()=>{panel.hidden?openOverview():closeOverview();});
+  poster.addEventListener('click',playFromPoster);
   if(closeBtn)closeBtn.addEventListener('click',closeOverview);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)closeOverview();});
 })();
