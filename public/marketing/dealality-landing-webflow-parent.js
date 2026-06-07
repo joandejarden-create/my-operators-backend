@@ -10,7 +10,8 @@
   var CHILD_SOURCE = "dealality-landing-embed";
   var NAVBAR_SHELL_HEIGHT_PX = 66;
   var NAV_OFFSET_FALLBACK_PX = NAVBAR_SHELL_HEIGHT_PX;
-  var HERO_GAP_BELOW_NAV_PX = 48;
+  var HERO_GAP_BELOW_NAV_PX = 24;
+  var SECTION_SCROLL_BUFFER_PX = 12;
   var EMBED_TOP_PADDING_PX = NAVBAR_SHELL_HEIGHT_PX + HERO_GAP_BELOW_NAV_PX;
   var SCROLLBAR_STYLE_ID = "dl-landing-shell-scrollbar";
 
@@ -182,7 +183,7 @@
     var pageY = global.pageYOffset || global.document.documentElement.scrollTop || 0;
     var iframeTop = iframe.getBoundingClientRect().top + pageY;
     var target =
-      iframeTop + Number(offsetTop || 0) - getNavbarHeight() - HERO_GAP_BELOW_NAV_PX;
+      iframeTop + Number(offsetTop || 0) - getNavbarHeight() - SECTION_SCROLL_BUFFER_PX;
     global.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
   }
 

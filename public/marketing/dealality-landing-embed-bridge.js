@@ -75,16 +75,24 @@
     });
   }
 
+  function sectionScrollAnchor(section) {
+    if (!section) return null;
+    return (
+      section.querySelector(":scope > .si > .ey, :scope > .si > .h2, :scope > .si, :scope > .ey, :scope > .h2") ||
+      section
+    );
+  }
+
   function resolveScrollTarget(id) {
     if (!id) return null;
     if (SECTION_ID_ALIASES[id]) id = SECTION_ID_ALIASES[id];
     if (Object.prototype.hasOwnProperty.call(AUDIENCE_SECTION_IDS, id)) {
       activateAudienceTab(AUDIENCE_SECTION_IDS[id]);
       var audiences = global.document.getElementById("audiences");
-      return audiences ? { el: audiences, hashId: id } : null;
+      return audiences ? { el: sectionScrollAnchor(audiences), hashId: id } : null;
     }
     var el = global.document.getElementById(id);
-    return el ? { el: el, hashId: id } : null;
+    return el ? { el: sectionScrollAnchor(el), hashId: id } : null;
   }
 
   function scrollToId(id) {
