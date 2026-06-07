@@ -22,10 +22,14 @@
     "for brands & operators": "brands",
     "for partners": "partners",
     "how it works": "how",
+    "the platform": "how",
+    "see the platform": "how",
     faqs: "faq",
     faq: "faq",
   };
-  var LANDING_SECTION_IDS = ["owners", "brands", "partners", "how", "faq", "hero", "persona"];
+  var LANDING_SECTION_ALIASES = { platform: "how", persona: "owners" };
+  var LANDING_PARENT_SOURCE = "dealality-landing-parent";
+  var LANDING_SECTION_IDS = ["owners", "brands", "partners", "how", "faq", "hero", "persona", "platform"];
   var NAVBAR_SPACING_STYLE_ID = "dl-navbar-spacing-lock";
   var NAVBAR_LOGO_RELEASE_STYLE_ID = "dl-navbar-logo-release";
   var NAVBAR_LOGO_HEIGHT_PX = 75;
@@ -263,9 +267,40 @@
       link &&
       link.closest &&
       link.closest(
-        ".navbar-2, .w-nav, .navbar_content, .nav_links, .nav-compact, .w-nav-menu, .w-nav-link, .nav_link"
+        ".navbar-2, .w-nav, .navbar_content, .nav_links, .nav_link, .nav-compact, .w-nav-menu, .w-nav-link, nav, header"
       )
     );
+  }
+
+  function normalizeLandingSectionId(id) {
+    if (!id) return id;
+    var key = String(id).toLowerCase();
+    return LANDING_SECTION_ALIASES[key] || key;
+  }
+
+  function postScrollToLandingEmbed(id) {
+    var iframe = global.document && global.document.getElementById("dealality-landing-embed");
+    if (!iframe || !iframe.contentWindow) return false;
+    id = normalizeLandingSectionId(id);
+    var msg = { source: LANDING_PARENT_SOURCE, type: "scrollTo", id: id };
+    [0, 350, 900, 1800].forEach(function (delay) {
+      global.setTimeout(function () {
+        if (iframe.contentWindow) iframe.contentWindow.postMessage(msg, "*");
+      }, delay);
+    });
+    return true;
+  }
+
+  function scrollLandingHomeHashOnLoad() {
+    if (!isLandingHomePage() || !global.document.getElementById("dealality-landing-embed")) return;
+    var hash = (global.location.hash || "").replace(/^#/, "");
+    if (!hash) return;
+    hash = normalizeLandingSectionId(hash);
+    [500, 1100, 2000, 3200].forEach(function (delay) {
+      global.setTimeout(function () {
+        postScrollToLandingEmbed(hash);
+      }, delay);
+    });
   }
 
   function resolveAuthNavId(link) {
@@ -291,11 +326,22 @@
     if (!link || !isNavbarLink(link)) return;
     var id = resolveAuthNavId(link);
     if (!id) return;
+    id = normalizeLandingSectionId(id);
 
     if (isAuthMarketingPage()) {
       event.preventDefault();
       event.stopPropagation();
       global.location.href = landingHomeHref(id);
+      return;
+    }
+
+    if (global.document.getElementById("dealality-landing-embed") && isLandingHomePage()) {
+      event.preventDefault();
+      event.stopPropagation();
+      postScrollToLandingEmbed(id);
+      if (global.history && global.history.replaceState) {
+        global.history.replaceState(null, "", "#" + id);
+      }
       return;
     }
 
@@ -317,6 +363,18 @@
     global.__dealalityAuthNavInstalled = true;
     global.document.addEventListener("click", handleAuthPageNavbarClick, true);
     redirectAuthPageHashOnLoad();
+    global.addEventListener("hashchange", function () {
+      if (!isLandingHomePage() || !global.document.getElementById("dealality-landing-embed")) return;
+      var hash = (global.location.hash || "").replace(/^#/, "");
+      if (!hash) return;
+      postScrollToLandingEmbed(normalizeLandingSectionId(hash));
+    });
+    if (global.document.readyState === "loading") {
+      global.document.addEventListener("DOMContentLoaded", scrollLandingHomeHashOnLoad);
+    } else {
+      scrollLandingHomeHashOnLoad();
+    }
+    global.addEventListener("load", scrollLandingHomeHashOnLoad);
   }
 
   function injectAuthLandingBackgroundStyles(doc) {

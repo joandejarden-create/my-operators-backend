@@ -56,7 +56,7 @@
       link &&
       link.closest &&
       link.closest(
-        ".navbar-2, .w-nav, .navbar_content, .nav_links, .nav-compact, .w-nav-menu, .w-nav-link, .nav_link"
+        ".navbar-2, .w-nav, .navbar_content, .nav_links, .nav_link, .nav-compact, .w-nav-menu, .w-nav-link, nav, header"
       )
     );
   }
@@ -150,7 +150,7 @@
     iframe.setAttribute("scrolling", "no");
     iframe.setAttribute("allowfullscreen", "");
     iframe.setAttribute("webkitallowfullscreen", "");
-    iframe.setAttribute("allow", "fullscreen");
+    iframe.setAttribute("allow", "autoplay; fullscreen; encrypted-media; picture-in-picture");
     iframe.style.overflow = "hidden";
     iframe.style.display = "block";
     iframe.style.width = "100%";
@@ -188,10 +188,12 @@
     var iframe = getIframe();
     if (!iframe || !iframe.contentWindow) return;
     if (SECTION_ID_ALIASES[id]) id = SECTION_ID_ALIASES[id];
-    iframe.contentWindow.postMessage(
-      { source: PARENT_SOURCE, type: "scrollTo", id: id },
-      "*"
-    );
+    var msg = { source: PARENT_SOURCE, type: "scrollTo", id: id };
+    [0, 350, 900, 1800].forEach(function (delay) {
+      global.setTimeout(function () {
+        if (iframe.contentWindow) iframe.contentWindow.postMessage(msg, "*");
+      }, delay);
+    });
   }
 
   function resolveNavId(link) {
@@ -270,9 +272,9 @@
     }
   }
 
-  if (!global.__dealalityLandingNavInstalled && !global.__dealalityAuthNavInstalled) {
+  if (!global.__dealalityLandingNavInstalled) {
     global.__dealalityLandingNavInstalled = true;
-    global.document.addEventListener("click", handleNavbarSectionClick);
+    global.document.addEventListener("click", handleNavbarSectionClick, true);
   }
 
   if (global.document.readyState === "loading") {
@@ -281,14 +283,19 @@
     bootstrapShell();
   }
 
+  function scrollFromLocationHash() {
+    var hash = (global.location.hash || "").replace(/^#/, "");
+    if (!hash) return;
+    if (SECTION_ID_ALIASES[hash]) hash = SECTION_ID_ALIASES[hash];
+    postScroll(hash);
+  }
+
   global.addEventListener("load", function () {
     bootstrapShell();
-    var hash = (global.location.hash || "").replace(/^#/, "");
-    if (hash) {
-      if (SECTION_ID_ALIASES[hash]) hash = SECTION_ID_ALIASES[hash];
-      global.setTimeout(function () { postScroll(hash); }, 800);
-    }
+    scrollFromLocationHash();
   });
+
+  global.addEventListener("hashchange", scrollFromLocationHash);
 
   global.setTimeout(bootstrapShell, 1200);
   global.addEventListener("resize", applyEmbedOffset);

@@ -56,7 +56,7 @@
     }, 500);
   }
 
-  var SECTION_ID_ALIASES = { platform: "how" };
+  var SECTION_ID_ALIASES = { platform: "how", persona: "owners" };
   var AUDIENCE_SECTION_IDS = { owners: 0, brands: 1, partners: 2, persona: 0, audiences: 0 };
 
   function activateAudienceTab(idx) {
@@ -98,8 +98,8 @@
       }
       target.el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    global.requestAnimationFrame(function () {
-      global.setTimeout(runScroll, 60);
+    [60, 220, 520, 1000].forEach(function (delay) {
+      global.setTimeout(runScroll, delay);
     });
   }
 
