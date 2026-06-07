@@ -57,17 +57,50 @@
   }
 
   var SECTION_ID_ALIASES = { platform: "how" };
+  var AUDIENCE_SECTION_IDS = { owners: 0, brands: 1, partners: 2, persona: 0, audiences: 0 };
+
+  function activateAudienceTab(idx) {
+    var tabs = global.document.querySelectorAll("#audiences .audt");
+    var panels = global.document.querySelectorAll("#audiences .audp");
+    if (!tabs.length || !panels.length) return;
+    tabs.forEach(function (tab, i) {
+      var on = i === idx;
+      tab.classList.toggle("on", on);
+      tab.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    panels.forEach(function (panel, i) {
+      var on = i === idx;
+      panel.classList.toggle("on", on);
+      panel.hidden = !on;
+    });
+  }
+
+  function resolveScrollTarget(id) {
+    if (!id) return null;
+    if (SECTION_ID_ALIASES[id]) id = SECTION_ID_ALIASES[id];
+    if (Object.prototype.hasOwnProperty.call(AUDIENCE_SECTION_IDS, id)) {
+      activateAudienceTab(AUDIENCE_SECTION_IDS[id]);
+      var audiences = global.document.getElementById("audiences");
+      return audiences ? { el: audiences, hashId: id } : null;
+    }
+    var el = global.document.getElementById(id);
+    return el ? { el: el, hashId: id } : null;
+  }
 
   function scrollToId(id) {
-    if (!id) return;
-    if (SECTION_ID_ALIASES[id]) id = SECTION_ID_ALIASES[id];
-    var el = global.document.getElementById(id);
-    if (!el) return;
-    if (global.parent !== global) {
-      postScrollToParent(id, getOffsetTopInIframeDocument(el));
-      return;
+    var target = resolveScrollTarget(id);
+    if (!target || !target.el) return;
+    function runScroll() {
+      if (global.parent !== global) {
+        postScrollToParent(target.hashId, getOffsetTopInIframeDocument(target.el));
+        postHeight();
+        return;
+      }
+      target.el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    global.requestAnimationFrame(function () {
+      global.setTimeout(runScroll, 60);
+    });
   }
 
   function resolveHashLink(link) {
@@ -90,7 +123,7 @@
     var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
     if (!link) return;
     var id = resolveHashLink(link);
-    if (!id || !global.document.getElementById(id)) return;
+    if (!id || !resolveScrollTarget(id)) return;
     event.preventDefault();
     scrollToId(id);
     if (global.history && global.history.replaceState) {
