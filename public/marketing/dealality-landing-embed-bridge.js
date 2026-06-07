@@ -44,16 +44,22 @@
     return el.getBoundingClientRect().top - frame.getBoundingClientRect().top;
   }
 
+  var activeScrollId = null;
+  var activeScrollTimer = null;
+
+  function cancelPendingScroll() {
+    if (activeScrollTimer) {
+      global.clearTimeout(activeScrollTimer);
+      activeScrollTimer = null;
+    }
+  }
+
   function postScrollToParent(id, top) {
     if (global.parent === global) return;
-    var payload = { source: SOURCE, type: "scrollToOffset", id: id, top: top };
-    global.parent.postMessage(payload, "*");
-    global.setTimeout(function () {
-      global.parent.postMessage(payload, "*");
-    }, 150);
-    global.setTimeout(function () {
-      global.parent.postMessage(payload, "*");
-    }, 500);
+    global.parent.postMessage(
+      { source: SOURCE, type: "scrollToOffset", id: id, top: top },
+      "*"
+    );
   }
 
   var SECTION_ID_ALIASES = { platform: "how", persona: "owners" };
@@ -75,8 +81,14 @@
     });
   }
 
-  function sectionScrollAnchor(section) {
+  function sectionScrollAnchor(section, id) {
     if (!section) return null;
+    if (id === "how") {
+      return section.querySelector(":scope > .si > .h2, :scope > .si") || section;
+    }
+    if (id === "hero") {
+      return section.querySelector(".hbadge, .h1wrap, .hero-grid") || section;
+    }
     return (
       section.querySelector(":scope > .si > .ey, :scope > .si > .h2, :scope > .si, :scope > .ey, :scope > .h2") ||
       section
@@ -89,26 +101,33 @@
     if (Object.prototype.hasOwnProperty.call(AUDIENCE_SECTION_IDS, id)) {
       activateAudienceTab(AUDIENCE_SECTION_IDS[id]);
       var audiences = global.document.getElementById("audiences");
-      return audiences ? { el: sectionScrollAnchor(audiences), hashId: id } : null;
+      return audiences ? { el: sectionScrollAnchor(audiences, id), hashId: id } : null;
     }
     var el = global.document.getElementById(id);
-    return el ? { el: sectionScrollAnchor(el), hashId: id } : null;
+    return el ? { el: sectionScrollAnchor(el, id), hashId: id } : null;
   }
 
   function scrollToId(id) {
+    cancelPendingScroll();
+    activeScrollId = id;
     var target = resolveScrollTarget(id);
     if (!target || !target.el) return;
-    function runScroll() {
+
+    function runScroll(isFinal) {
+      if (activeScrollId !== id) return;
       if (global.parent !== global) {
         postScrollToParent(target.hashId, getOffsetTopInIframeDocument(target.el));
-        postHeight();
+        if (isFinal) postHeight();
         return;
       }
-      target.el.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.el.scrollIntoView({ behavior: "auto", block: "start" });
     }
-    [60, 220, 520, 1000].forEach(function (delay) {
-      global.setTimeout(runScroll, delay);
-    });
+
+    runScroll(false);
+    activeScrollTimer = global.setTimeout(function () {
+      activeScrollTimer = null;
+      runScroll(true);
+    }, id === "how" ? 520 : 300);
   }
 
   function resolveHashLink(link) {

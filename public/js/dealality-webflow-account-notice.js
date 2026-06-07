@@ -35,7 +35,7 @@
   var NAVBAR_LOGO_HEIGHT_PX = 50;
   var NAVBAR_CONTENT_MIN_HEIGHT_PX = 58;
   var NAVBAR_SHELL_HEIGHT_PX = 66;
-  var HERO_GAP_BELOW_NAV_PX = 24;
+  var HERO_GAP_BELOW_NAV_PX = 36;
   var EMBED_TOP_PADDING_PX = NAVBAR_SHELL_HEIGHT_PX + HERO_GAP_BELOW_NAV_PX;
 
   function stripEmbedNavbarLogoOverrides(doc) {
@@ -52,6 +52,7 @@
 
   function applyNavbarLogoSize(doc) {
     if (!doc) return;
+    wireNavbarLogoHome(doc);
     stripEmbedNavbarLogoOverrides(doc);
     var style = doc.getElementById(NAVBAR_LOGO_RELEASE_STYLE_ID);
     if (!style) {
@@ -327,12 +328,48 @@
     if (!iframe || !iframe.contentWindow) return false;
     id = normalizeLandingSectionId(id);
     var msg = { source: LANDING_PARENT_SOURCE, type: "scrollTo", id: id };
-    [0, 350, 900, 1800].forEach(function (delay) {
-      global.setTimeout(function () {
-        if (iframe.contentWindow) iframe.contentWindow.postMessage(msg, "*");
-      }, delay);
-    });
+    iframe.contentWindow.postMessage(msg, "*");
+    global.setTimeout(function () {
+      if (iframe.contentWindow) iframe.contentWindow.postMessage(msg, "*");
+    }, 420);
     return true;
+  }
+
+  function isNavbarLogoLink(link) {
+    if (!link) return false;
+    if (link.closest && link.closest(".navbar_logo-link, .w-nav-brand")) return true;
+    if (link.classList && (link.classList.contains("navbar_logo-link") || link.classList.contains("w-nav-brand"))) {
+      return true;
+    }
+    return !!(link.querySelector && link.querySelector(".navbar_logo, img.navbar_logo"));
+  }
+
+  function wireNavbarLogoHome(doc) {
+    if (!doc) return;
+    var homeHref = landingHomeHref();
+    doc.querySelectorAll(".navbar_logo-link, .w-nav-brand, a.navbar_logo-link").forEach(function (link) {
+      link.setAttribute("href", homeHref);
+      link.setAttribute("aria-label", "Dealality home");
+    });
+  }
+
+  function handleNavbarLogoClick(event) {
+    var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
+    if (!link || !isNavbarLogoLink(link)) return;
+    wireNavbarLogoHome(global.document);
+    if (isLandingHomePage() && global.document.getElementById("dealality-landing-embed")) {
+      event.preventDefault();
+      event.stopPropagation();
+      global.history.replaceState(null, "", "/");
+      global.scrollTo({ top: 0, behavior: "auto" });
+      postScrollToLandingEmbed("hero");
+      return;
+    }
+    if (!isLandingHomePage()) {
+      event.preventDefault();
+      event.stopPropagation();
+      global.location.href = landingHomeHref();
+    }
   }
 
   function scrollLandingHomeHashOnLoad() {
@@ -340,11 +377,10 @@
     var hash = (global.location.hash || "").replace(/^#/, "");
     if (!hash) return;
     hash = normalizeLandingSectionId(hash);
-    [500, 1100, 2000, 3200].forEach(function (delay) {
-      global.setTimeout(function () {
-        postScrollToLandingEmbed(hash);
-      }, delay);
-    });
+    postScrollToLandingEmbed(hash);
+    global.setTimeout(function () {
+      postScrollToLandingEmbed(hash);
+    }, 700);
   }
 
   function resolveAuthNavId(link) {
@@ -405,6 +441,7 @@
   function installAuthPageNavBridge() {
     if (!global.document || global.__dealalityAuthNavInstalled) return;
     global.__dealalityAuthNavInstalled = true;
+    global.document.addEventListener("click", handleNavbarLogoClick, true);
     global.document.addEventListener("click", handleAuthPageNavbarClick, true);
     redirectAuthPageHashOnLoad();
     global.addEventListener("hashchange", function () {

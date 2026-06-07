@@ -10,9 +10,12 @@
   var CHILD_SOURCE = "dealality-landing-embed";
   var NAVBAR_SHELL_HEIGHT_PX = 66;
   var NAV_OFFSET_FALLBACK_PX = NAVBAR_SHELL_HEIGHT_PX;
-  var HERO_GAP_BELOW_NAV_PX = 24;
+  var HERO_GAP_BELOW_NAV_PX = 36;
   var SECTION_SCROLL_BUFFER_PX = 12;
   var EMBED_TOP_PADDING_PX = NAVBAR_SHELL_HEIGHT_PX + HERO_GAP_BELOW_NAV_PX;
+  var pendingParentScrollTimer = null;
+  var lastParentScrollKey = "";
+  var lastParentScrollAt = 0;
   var SCROLLBAR_STYLE_ID = "dl-landing-shell-scrollbar";
 
   var MIN_IFRAME_HEIGHT_PX = 2400;
@@ -177,14 +180,24 @@
     );
   }
 
-  function scrollParentToIframeOffset(offsetTop) {
+  function scrollParentToIframeOffset(offsetTop, id) {
     var iframe = getIframe();
     if (!iframe) return;
     var pageY = global.pageYOffset || global.document.documentElement.scrollTop || 0;
     var iframeTop = iframe.getBoundingClientRect().top + pageY;
     var target =
       iframeTop + Number(offsetTop || 0) - getNavbarHeight() - SECTION_SCROLL_BUFFER_PX;
-    global.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
+    target = Math.max(0, target);
+    var scrollKey = String(id || "") + ":" + Math.round(target);
+    var now = Date.now();
+    if (scrollKey === lastParentScrollKey && now - lastParentScrollAt < 900) return;
+    lastParentScrollKey = scrollKey;
+    lastParentScrollAt = now;
+    if (pendingParentScrollTimer) global.clearTimeout(pendingParentScrollTimer);
+    pendingParentScrollTimer = global.setTimeout(function () {
+      pendingParentScrollTimer = null;
+      global.scrollTo({ top: target, behavior: "auto" });
+    }, 40);
   }
 
   function postScroll(id) {
@@ -192,11 +205,10 @@
     if (!iframe || !iframe.contentWindow) return;
     if (SECTION_ID_ALIASES[id]) id = SECTION_ID_ALIASES[id];
     var msg = { source: PARENT_SOURCE, type: "scrollTo", id: id };
-    [0, 350, 900, 1800].forEach(function (delay) {
-      global.setTimeout(function () {
-        if (iframe.contentWindow) iframe.contentWindow.postMessage(msg, "*");
-      }, delay);
-    });
+    iframe.contentWindow.postMessage(msg, "*");
+    global.setTimeout(function () {
+      if (iframe.contentWindow) iframe.contentWindow.postMessage(msg, "*");
+    }, 420);
   }
 
   function resolveNavId(link) {
@@ -229,6 +241,19 @@
     }
   }
 
+  function wireNavbarLogoHome() {
+    var homeHref = "/";
+    try {
+      if (LANDING_HOME_PATH && LANDING_HOME_PATH !== "/") homeHref = LANDING_HOME_PATH;
+    } catch (err) {
+      /* use default */
+    }
+    global.document.querySelectorAll(".navbar_logo-link, .w-nav-brand, a.navbar_logo-link").forEach(function (link) {
+      link.setAttribute("href", homeHref);
+      link.setAttribute("aria-label", "Dealality home");
+    });
+  }
+
   function bootstrapShell() {
     injectScrollbarStyles();
     unlockPageScroll();
@@ -237,6 +262,7 @@
     configureIframe();
     applyIframeHeight(MIN_IFRAME_HEIGHT_PX);
     applyNavbarLogoFromShell();
+    wireNavbarLogoHome();
   }
 
   global.addEventListener("message", function (event) {
@@ -246,7 +272,7 @@
       applyIframeHeight(data.height, true);
     }
     if (data.type === "scrollToOffset" && typeof data.top === "number") {
-      scrollParentToIframeOffset(data.top);
+      scrollParentToIframeOffset(data.top, data.id);
       if (data.id && global.history && global.history.replaceState) {
         global.history.replaceState(null, "", "#" + data.id);
       }
