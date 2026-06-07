@@ -264,9 +264,10 @@ section{position:relative;padding:100px 48px}
 footer{background:var(--bg2);border-top:1px solid var(--bo);padding:56px 48px 32px}
 .ft{max-width:1200px;margin:0 auto}
 .ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:44px;border-bottom:1px solid var(--bo);margin-bottom:28px}
-.fbrand{margin-bottom:12px;line-height:0;display:inline-block;overflow:visible}
-.fbrand img{height:32px;width:auto;display:block}
-.ftag{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);line-height:1.8}
+.ftop>div:first-child{display:flex;flex-direction:column;align-items:flex-start}
+.fbrand{margin:0 0 12px;line-height:0;display:block;overflow:visible}
+.fbrand img{height:clamp(40px,4.2vw,48px);width:auto;display:block;margin:0}
+.ftag{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);line-height:1.8;margin:0;align-self:flex-start}
 .fcolh{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-bottom:14px}
 .flinks{list-style:none;display:flex;flex-direction:column;gap:9px}
 .flinks a{font-size:14px;color:var(--se);text-decoration:none;transition:color .2s}
