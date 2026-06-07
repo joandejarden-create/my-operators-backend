@@ -53,14 +53,16 @@ nav.sc{background:rgba(8,15,37,.98)}
 #hero.hero--center .hero-readability{background:linear-gradient(90deg,rgba(8,15,37,.5) 0%,rgba(8,15,37,.24) 28%,var(--bg) 46%,var(--bg) 100%)}
 @media(max-width:960px){#hero.hero--center .hero-mesh{-webkit-mask-image:linear-gradient(180deg,#fff 0%,#fff 22%,rgba(255,255,255,.35) 32%,transparent 42%);mask-image:linear-gradient(180deg,#fff 0%,#fff 22%,rgba(255,255,255,.35) 32%,transparent 42%)}#hero.hero--center .hero-readability{background:linear-gradient(180deg,rgba(8,15,37,.55) 0%,rgba(8,15,37,.28) 26%,var(--bg) 42%,var(--bg) 100%)}}
 .hleft{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;max-width:100%;width:100%;overflow:visible}
-.hero-video-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:clamp(16px,4vw,40px)}
-.hero-video-modal[hidden]{display:none!important}
-.hero-video-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.94);backdrop-filter:blur(8px)}
-.hero-video-modal-in{position:relative;z-index:1;width:min(960px,92vw)}
-.hero-video-iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#000;box-shadow:0 32px 80px rgba(0,0,0,.65)}
-html.dl-embed-shell .hero-video-modal{z-index:2147483646}
-.hero-video-close{position:absolute;top:10px;right:10px;z-index:2;background:rgba(8,15,37,.72);border:1px solid rgba(255,255,255,.18);border-radius:8px;color:var(--white);font-size:1.5rem;line-height:1;cursor:pointer;padding:6px 12px;opacity:.9;transition:opacity .2s,background .2s}
-.hero-video-close:hover{opacity:1}
+.hero-overview-wrap{background:var(--bg);border-top:1px solid var(--bo);padding:0 clamp(20px,4vw,48px)}
+.hero-overview-wrap[hidden]{display:none!important}
+.hero-overview-wrap.is-open{padding:clamp(28px,4vw,40px) clamp(20px,4vw,48px) clamp(40px,5vw,64px)}
+.hero-overview-in{max-width:min(720px,94vw);margin:0 auto}
+.hero-overview-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.hero-overview-ey{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pl);margin:0}
+.hero-overview-close{font-size:13px;font-weight:600;color:var(--se);background:rgba(255,255,255,.04);border:1px solid var(--bo);border-radius:6px;cursor:pointer;padding:7px 12px;font-family:inherit;transition:border-color .2s,color .2s,background .2s}
+.hero-overview-close:hover{color:var(--white);border-color:var(--bp);background:var(--pd)}
+.hero-overview-frame{border-radius:12px;overflow:hidden;border:1px solid rgba(108,114,255,.32);box-shadow:0 24px 56px rgba(0,0,0,.45),0 0 0 1px rgba(108,114,255,.1);background:#000}
+.hero-overview-frame video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#000;vertical-align:top}
 .hbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,114,255,.1);border:1px solid var(--bp);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--pl);margin-bottom:32px;animation:fu .7s both}
 .puls{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 3s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -456,7 +458,7 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
         </span></span>
       </h1>
       <p class="hsub">Owners, brands, operators, and advisors all face the same gap — strong options, but no structured way to evaluate them. Dealality is the confidential platform for that work: research before outreach, criteria-based matching, side-by-side term comparison, NDA-gated deal rooms, and a clean handoff at LOI — permission-based and free of broker bias.</p>
-      <div class="hctas"><a href="https://dealality.com/signup" target="_top" class="bp2">Get Started →</a><button type="button" class="bs2" id="hero-learn-more">Watch Overview</button></div>
+      <div class="hctas"><a href="https://dealality.com/signup" target="_top" class="bp2">Get Started →</a><button type="button" class="bs2" id="hero-learn-more" aria-expanded="false" aria-controls="hero-overview-wrap">Watch Overview</button></div>
       <div class="email-capture">
         <p class="ec-label">Or stay informed for beta updates</p>
         <div class="ec-row">
@@ -469,13 +471,19 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
   </div>
 </section>
 
-<div id="hero-video-modal" class="hero-video-modal" role="dialog" aria-modal="true" aria-label="Dealality platform overview video" hidden>
-  <div class="hero-video-modal-bg" data-video-close></div>
-  <div class="hero-video-modal-in">
-    <button type="button" class="hero-video-close" aria-label="Close video" data-video-close>×</button>
-    <iframe id="hero-video-iframe" class="hero-video-iframe" title="Dealality platform overview video" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+<section id="hero-overview-wrap" class="hero-overview-wrap" hidden aria-label="Dealality platform overview video">
+  <div class="hero-overview-in">
+    <div class="hero-overview-head">
+      <p id="hero-overview-label" class="hero-overview-ey">Platform overview</p>
+      <button type="button" class="hero-overview-close" id="hero-overview-close" aria-label="Hide overview video">Hide video</button>
+    </div>
+    <div class="hero-overview-frame">
+      <video id="hero-overview-video" controls playsinline webkit-playsinline preload="none" poster="https://res.cloudinary.com/dos2eqnzd/video/upload/so_0/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.jpg" aria-labelledby="hero-overview-label">
+        <source src="https://res.cloudinary.com/dos2eqnzd/video/upload/v1775832428/Video_Deck_Dealality_-_Short_Elevator_Pitch_Deck_Video_irnayw.mp4" type="video/mp4">
+      </video>
+    </div>
   </div>
-</div>
+</section>
 
 <div id="proofbar"><div class="proofbar-in"><span class="ps-item" style="color:#D78E2C;font-weight:600;">Free to submit during private beta</span><span class="proof-sep">·</span><span class="proof-stat">Americas · Canada · Europe</span><span class="proof-sep">·</span><span>Owner-initiated process</span><span class="proof-sep">·</span><span>NDA-gated deal rooms</span><span class="proof-sep">·</span><span>Not a broker · Steps back at LOI</span><span class="proof-sep">·</span><span>Active projects across <strong>6 markets</strong></span><span class="proof-sep">·</span><span><strong>Every brand approached</strong> during beta expressed interest</span><span class="proof-sep">·</span><span>Owners, brands, and operators across <strong>the Americas and Canada</strong></span></div></div>
 
@@ -961,25 +969,35 @@ if(rot){
 }
 (function(){
   const learn=document.getElementById('hero-learn-more');
-  const modal=document.getElementById('hero-video-modal');
-  const iframe=document.getElementById('hero-video-iframe');
-  const VIDEO_SRC='dealality-overview-video.html';
-  if(!learn||!modal||!iframe)return;
-  const openModal=()=>{
-    modal.hidden=false;
-    document.body.style.overflow='hidden';
-    if(!iframe.src||iframe.src.indexOf(VIDEO_SRC)<0){
-      iframe.src=VIDEO_SRC;
-    }
+  const panel=document.getElementById('hero-overview-wrap');
+  const video=document.getElementById('hero-overview-video');
+  const closeBtn=document.getElementById('hero-overview-close');
+  if(!learn||!panel||!video)return;
+  const notifyResize=()=>{window.dispatchEvent(new Event('resize'));};
+  const openOverview=()=>{
+    panel.hidden=false;
+    panel.classList.add('is-open');
+    learn.setAttribute('aria-expanded','true');
+    learn.textContent='Hide Overview';
+    video.load();
+    globalThis.requestAnimationFrame(()=>{
+      panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+      video.play().catch(()=>{});
+      notifyResize();
+      globalThis.setTimeout(notifyResize,400);
+    });
   };
-  const closeModal=()=>{
-    iframe.src='about:blank';
-    modal.hidden=true;
-    document.body.style.overflow='';
+  const closeOverview=()=>{
+    video.pause();
+    panel.hidden=true;
+    panel.classList.remove('is-open');
+    learn.setAttribute('aria-expanded','false');
+    learn.textContent='Watch Overview';
+    notifyResize();
   };
-  learn.addEventListener('click',openModal);
-  modal.querySelectorAll('[data-video-close]').forEach(el=>el.addEventListener('click',closeModal));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeModal();});
+  learn.addEventListener('click',()=>{panel.hidden?openOverview():closeOverview();});
+  if(closeBtn)closeBtn.addEventListener('click',closeOverview);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)closeOverview();});
 })();
 const stageTabs=document.querySelectorAll('#how .fbt');
 const stagePanels=document.querySelectorAll('#how .fbp');
