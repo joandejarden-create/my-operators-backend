@@ -450,7 +450,7 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
           <span class="hrword">hotel brand.</span>
           <span class="hrword">operator.</span>
           <span class="hrword">commercial fit.</span>
-          <span class="hrword">strategic fit.</span>
+          <span class="hrword">market position.</span>
           <span class="hrword">growth opportunity.</span>
           <span class="hrword">franchise partner.</span>
           <span class="hrword">strategic advisor.</span>
@@ -938,7 +938,14 @@ if(rot){
   let ri=start;
   const h1=rot.closest('.h1wrap');
   const centerSlot=()=>window.matchMedia('(max-width:960px)').matches?1:2;
-  const gh=()=>words[0].offsetHeight||48;
+  const gh=()=>{
+    const probe=words[start]||words[0];
+    const hadOn=probe.classList.contains('on');
+    probe.classList.add('on');
+    const h=probe.offsetHeight||48;
+    if(!hadOn)probe.classList.remove('on');
+    return h;
+  };
   const setWidth=()=>{
     if(!wrap)return;
     let mx=0;
