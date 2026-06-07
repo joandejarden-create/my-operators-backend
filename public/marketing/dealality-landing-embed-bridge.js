@@ -87,7 +87,7 @@
       return section.querySelector(":scope > .si > .h2, :scope > .si") || section;
     }
     if (id === "hero") {
-      return section.querySelector(".h1wrap, .hero-headline-stack, .hero-grid") || section;
+      return section.querySelector(".hbadge, .h1wrap, .hero-grid") || section;
     }
     return (
       section.querySelector(":scope > .si > .ey, :scope > .si > .h2, :scope > .si, :scope > .ey, :scope > .h2") ||
