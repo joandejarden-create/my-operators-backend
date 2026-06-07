@@ -28,25 +28,58 @@
   var LANDING_SECTION_IDS = ["owners", "brands", "partners", "how", "faq", "hero", "persona"];
   var NAVBAR_SPACING_STYLE_ID = "dl-navbar-spacing-lock";
   var NAVBAR_LOGO_RELEASE_STYLE_ID = "dl-navbar-logo-release";
+  var NAVBAR_LOGO_HEIGHT_PX = 75;
 
-  function releaseWebflowNavbarLogoSizing(doc) {
-    if (!doc || doc.getElementById(NAVBAR_LOGO_RELEASE_STYLE_ID)) return;
-    var style = doc.createElement("style");
-    style.id = NAVBAR_LOGO_RELEASE_STYLE_ID;
-    style.textContent =
-      ".navbar-2 .navbar_logo,.navbar-2 img.navbar_logo{height:unset!important;max-height:unset!important;width:auto!important}";
-    (doc.body || doc.head || doc.documentElement).appendChild(style);
+  function stripEmbedNavbarLogoOverrides(doc) {
+    if (!doc) return;
+    doc.querySelectorAll(".dl-landing-embed-full style, .w-embed style").forEach(function (styleEl) {
+      var css = styleEl.textContent || "";
+      if (css.indexOf("navbar_logo") === -1 && css.indexOf("navbar_content") === -1) return;
+      styleEl.textContent = css
+        .replace(/\.navbar-2\s+\.navbar_logo-link\s*\{[^}]*\}/gi, "")
+        .replace(/\.navbar-2\s+\.navbar_content\s*\{[^}]*\}/gi, "")
+        .replace(/\.navbar-2\s+\.navbar_logo\s*\{[^}]*\}/gi, "");
+    });
   }
 
-  function scheduleNavbarLogoRelease(doc) {
+  function applyNavbarLogoSize(doc) {
     if (!doc) return;
-    releaseWebflowNavbarLogoSizing(doc);
-    global.setTimeout(function () {
-      releaseWebflowNavbarLogoSizing(doc);
-    }, 100);
-    global.setTimeout(function () {
-      releaseWebflowNavbarLogoSizing(doc);
-    }, 800);
+    stripEmbedNavbarLogoOverrides(doc);
+    var style = doc.getElementById(NAVBAR_LOGO_RELEASE_STYLE_ID);
+    if (!style) {
+      style = doc.createElement("style");
+      style.id = NAVBAR_LOGO_RELEASE_STYLE_ID;
+      (doc.body || doc.head || doc.documentElement).appendChild(style);
+    }
+    style.textContent =
+      ".navbar-2 .navbar_logo,.navbar-2 img.navbar_logo{height:" +
+      NAVBAR_LOGO_HEIGHT_PX +
+      "px!important;max-height:" +
+      NAVBAR_LOGO_HEIGHT_PX +
+      "px!important;width:auto!important}";
+    doc.querySelectorAll(".navbar-2 img.navbar_logo").forEach(function (img) {
+      img.removeAttribute("height");
+      img.style.setProperty("height", NAVBAR_LOGO_HEIGHT_PX + "px", "important");
+      img.style.setProperty("max-height", NAVBAR_LOGO_HEIGHT_PX + "px", "important");
+      img.style.setProperty("width", "auto", "important");
+    });
+  }
+
+  function scheduleNavbarLogoFix(doc) {
+    if (!doc) return;
+    applyNavbarLogoSize(doc);
+    [100, 500, 1500, 3000].forEach(function (ms) {
+      global.setTimeout(function () {
+        applyNavbarLogoSize(doc);
+      }, ms);
+    });
+    if (typeof global.MutationObserver === "function" && doc.body && !global.__dealalityNavbarLogoObserver) {
+      global.__dealalityNavbarLogoObserver = true;
+      var observer = new global.MutationObserver(function () {
+        applyNavbarLogoSize(doc);
+      });
+      observer.observe(doc.body, { childList: true, subtree: true });
+    }
   }
 
   function shouldSuppressBrandToast() {
@@ -516,7 +549,7 @@
 
   if (global.document) {
     applyGlobalNavbarSpacing(global.document);
-    scheduleNavbarLogoRelease(global.document);
+    scheduleNavbarLogoFix(global.document);
     installAuthPageNavBridge();
     ensureToastPatch();
     applyAuthPageLandingSkin(global.document);
@@ -531,14 +564,14 @@
       ensureToastPatch();
       applyAuthPageLandingSkin(global.document);
       ensureLandingNavbarBridge(global.document);
-      scheduleNavbarLogoRelease(global.document);
+      scheduleNavbarLogoFix(global.document);
       bootstrapHomeNewLandingShell(global.document);
       if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);
     });
 
     global.addEventListener("load", function () {
       applyAuthPageLandingSkin(global.document);
-      scheduleNavbarLogoRelease(global.document);
+      scheduleNavbarLogoFix(global.document);
       bootstrapHomeNewLandingShell(global.document);
     });
     global.setTimeout(function () {
@@ -556,5 +589,8 @@
     apply: applyFromMe,
     shouldSuppressBrandToast: shouldSuppressBrandToast,
     applyAuthPageLandingSkin: applyAuthPageLandingSkin,
+    applyNavbarLogoSize: function () {
+      applyNavbarLogoSize(global.document);
+    },
   };
 })(typeof window !== "undefined" ? window : global);

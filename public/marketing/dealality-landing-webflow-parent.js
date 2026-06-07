@@ -207,6 +207,12 @@
     return NAV_LABEL_TO_ID[text] || null;
   }
 
+  function applyNavbarLogoFromShell() {
+    if (global.DealalityWebflowAccountNotice && typeof global.DealalityWebflowAccountNotice.applyNavbarLogoSize === "function") {
+      global.DealalityWebflowAccountNotice.applyNavbarLogoSize();
+    }
+  }
+
   function bootstrapShell() {
     injectScrollbarStyles();
     unlockPageScroll();
@@ -214,6 +220,7 @@
     applyEmbedOffset();
     configureIframe();
     applyIframeHeight(MIN_IFRAME_HEIGHT_PX);
+    applyNavbarLogoFromShell();
   }
 
   global.addEventListener("message", function (event) {
