@@ -27,6 +27,27 @@
   };
   var LANDING_SECTION_IDS = ["owners", "brands", "partners", "how", "faq", "hero", "persona"];
   var NAVBAR_SPACING_STYLE_ID = "dl-navbar-spacing-lock";
+  var NAVBAR_LOGO_RELEASE_STYLE_ID = "dl-navbar-logo-release";
+
+  function releaseWebflowNavbarLogoSizing(doc) {
+    if (!doc || doc.getElementById(NAVBAR_LOGO_RELEASE_STYLE_ID)) return;
+    var style = doc.createElement("style");
+    style.id = NAVBAR_LOGO_RELEASE_STYLE_ID;
+    style.textContent =
+      ".navbar-2 .navbar_logo,.navbar-2 img.navbar_logo{height:unset!important;max-height:unset!important;width:auto!important}";
+    (doc.body || doc.head || doc.documentElement).appendChild(style);
+  }
+
+  function scheduleNavbarLogoRelease(doc) {
+    if (!doc) return;
+    releaseWebflowNavbarLogoSizing(doc);
+    global.setTimeout(function () {
+      releaseWebflowNavbarLogoSizing(doc);
+    }, 100);
+    global.setTimeout(function () {
+      releaseWebflowNavbarLogoSizing(doc);
+    }, 800);
+  }
 
   function shouldSuppressBrandToast() {
     if (global.__dealalitySuppressBrandToast) return true;
@@ -92,9 +113,6 @@
     var style = doc.createElement("style");
     style.id = NAVBAR_SPACING_STYLE_ID;
     style.textContent =
-      ".navbar-2 .navbar_content{min-height:83px!important;padding-top:4px!important;padding-bottom:4px!important}" +
-      ".navbar-2 .navbar_logo-link{height:auto!important;min-height:0!important}" +
-      ".navbar-2 .navbar_logo{height:75px!important;max-height:75px!important;width:auto!important}" +
       ".navbar-2 .nav_links,.navbar-2 a.nav_links{padding:.35rem .5rem!important;margin-left:0!important;margin-right:0!important}" +
       ".navbar-2 .nav-compact,.navbar-2 a.nav-compact{padding:.4rem .85rem!important;line-height:1.2!important;margin-left:0!important;margin-right:0!important}" +
       ".navbar-2 .w-nav-menu{display:flex!important;align-items:center!important;column-gap:0!important;row-gap:0!important}";
@@ -377,17 +395,6 @@
       doc.querySelector('[role="banner"].w-nav') ||
       doc.querySelector(".w-nav");
     applyGlobalNavbarSpacing(doc);
-    if (nav) {
-      nav.querySelectorAll(".navbar_content").forEach(function (el) {
-        el.style.minHeight = "83px";
-        el.style.paddingTop = "4px";
-        el.style.paddingBottom = "4px";
-      });
-      nav.querySelectorAll(".navbar_logo").forEach(function (el) {
-        el.style.height = "75px";
-        el.style.maxHeight = "75px";
-      });
-    }
     var offset = nav ? Math.ceil(nav.getBoundingClientRect().height) : 48;
     var shell = doc.querySelector(".dl-landing-embed-full");
     var wrap = doc.querySelector(".dl-landing-embed-wrap");
@@ -509,6 +516,7 @@
 
   if (global.document) {
     applyGlobalNavbarSpacing(global.document);
+    scheduleNavbarLogoRelease(global.document);
     installAuthPageNavBridge();
     ensureToastPatch();
     applyAuthPageLandingSkin(global.document);
@@ -523,12 +531,14 @@
       ensureToastPatch();
       applyAuthPageLandingSkin(global.document);
       ensureLandingNavbarBridge(global.document);
+      scheduleNavbarLogoRelease(global.document);
       bootstrapHomeNewLandingShell(global.document);
       if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);
     });
 
     global.addEventListener("load", function () {
       applyAuthPageLandingSkin(global.document);
+      scheduleNavbarLogoRelease(global.document);
       bootstrapHomeNewLandingShell(global.document);
     });
     global.setTimeout(function () {
