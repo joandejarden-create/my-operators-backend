@@ -53,6 +53,7 @@ nav.sc{background:rgba(8,15,37,.98)}
 #hero.hero--center .hero-readability{background:linear-gradient(90deg,rgba(8,15,37,.5) 0%,rgba(8,15,37,.24) 28%,var(--bg) 46%,var(--bg) 100%)}
 @media(max-width:960px){#hero.hero--center .hero-mesh{-webkit-mask-image:linear-gradient(180deg,#fff 0%,#fff 22%,rgba(255,255,255,.35) 32%,transparent 42%);mask-image:linear-gradient(180deg,#fff 0%,#fff 22%,rgba(255,255,255,.35) 32%,transparent 42%)}#hero.hero--center .hero-readability{background:linear-gradient(180deg,rgba(8,15,37,.55) 0%,rgba(8,15,37,.28) 26%,var(--bg) 42%,var(--bg) 100%)}}
 .hleft{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;max-width:100%;width:100%;overflow:visible}
+.hero-headline-stack{display:flex;flex-direction:column;align-items:center;width:100%;text-align:center}
 .hero-overview-wrap{background:var(--bg);border-top:1px solid var(--bo);padding:0 clamp(20px,4vw,48px)}
 .hero-overview-wrap[hidden]{display:none!important}
 .hero-overview-wrap.is-open{padding:clamp(28px,4vw,40px) clamp(20px,4vw,48px) clamp(40px,5vw,64px)}
@@ -285,10 +286,13 @@ footer{background:var(--bg2);border-top:1px solid var(--bo);padding:56px 48px 32
 @media(max-width:640px){.ftop{grid-template-columns:1fr}}
 html.dl-embed-shell #nav{display:none!important}
 html.dl-embed-shell footer{padding:56px clamp(24px,4vw,48px) 32px}
-html.dl-embed-shell #hero{padding:88px clamp(24px,4vw,80px) 80px!important;min-height:0!important;align-items:flex-start!important;justify-content:flex-start!important}
+html.dl-embed-shell #hero{min-height:max(680px,calc(100svh - 102px))!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(32px,5vh,56px) clamp(24px,4vw,80px) clamp(40px,6vh,72px)!important}
+html.dl-embed-shell .hero-grid{transform:translateY(clamp(-36px,-5vh,-80px))}
+html.dl-embed-shell .hero-headline-stack{padding-top:clamp(28px,5vh,56px)}
+html.dl-embed-shell .hbadge{margin-bottom:36px}
 html.dl-embed-shell [id]{scroll-margin-top:0}
 html.dl-embed-shell #audiences,html.dl-embed-shell #how,html.dl-embed-shell #faq,html.dl-embed-shell #problem,html.dl-embed-shell #why,html.dl-embed-shell #cta{padding:64px clamp(24px,4vw,48px)!important}
-@media(max-width:960px){html.dl-embed-shell #hero{padding:72px 20px 64px!important}html.dl-embed-shell #audiences,html.dl-embed-shell #how,html.dl-embed-shell #faq,html.dl-embed-shell #problem,html.dl-embed-shell #why,html.dl-embed-shell #cta{padding:48px 20px!important}}
+@media(max-width:960px){html.dl-embed-shell #hero{min-height:max(600px,calc(100svh - 102px))!important;padding:28px 20px 40px!important}html.dl-embed-shell .hero-grid{transform:translateY(clamp(-20px,-3vh,-52px))}html.dl-embed-shell .hero-headline-stack{padding-top:22px}html.dl-embed-shell #audiences,html.dl-embed-shell #how,html.dl-embed-shell #faq,html.dl-embed-shell #problem,html.dl-embed-shell #why,html.dl-embed-shell #cta{padding:48px 20px!important}}
 html.dl-embed-shell body{background:#080f25;margin:0;padding:0;padding-bottom:0!important}
 html.dl-embed-shell footer{margin-bottom:0}
 html.dl-embed-shell .fu{opacity:1!important;transform:none!important}
