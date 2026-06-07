@@ -34,6 +34,9 @@
   var NAVBAR_LOGO_RELEASE_STYLE_ID = "dl-navbar-logo-release";
   var NAVBAR_LOGO_HEIGHT_PX = 50;
   var NAVBAR_CONTENT_MIN_HEIGHT_PX = 58;
+  var NAVBAR_SHELL_HEIGHT_PX = 66;
+  var HERO_GAP_BELOW_NAV_PX = 48;
+  var EMBED_TOP_PADDING_PX = NAVBAR_SHELL_HEIGHT_PX + HERO_GAP_BELOW_NAV_PX;
 
   function stripEmbedNavbarLogoOverrides(doc) {
     if (!doc) return;
@@ -57,15 +60,30 @@
       (doc.body || doc.head || doc.documentElement).appendChild(style);
     }
     style.textContent =
-      ".navbar-2 .navbar_content{min-height:" +
+      ".navbar-2.w-nav{height:" +
+      NAVBAR_SHELL_HEIGHT_PX +
+      "px!important;min-height:" +
+      NAVBAR_SHELL_HEIGHT_PX +
+      "px!important;max-height:" +
+      NAVBAR_SHELL_HEIGHT_PX +
+      "px!important;box-sizing:border-box!important;overflow:visible!important}" +
+      ".navbar-2 .navbar_content{height:" +
       NAVBAR_CONTENT_MIN_HEIGHT_PX +
-      "px!important;padding-top:4px!important;padding-bottom:4px!important}" +
-      ".navbar-2 .navbar_logo-link{height:auto!important;min-height:0!important}" +
+      "px!important;min-height:" +
+      NAVBAR_CONTENT_MIN_HEIGHT_PX +
+      "px!important;max-height:" +
+      NAVBAR_CONTENT_MIN_HEIGHT_PX +
+      "px!important;padding-top:4px!important;padding-bottom:4px!important;box-sizing:border-box!important;overflow:visible!important}" +
+      ".navbar-2 .navbar_logo-link{height:auto!important;min-height:0!important;max-height:" +
+      NAVBAR_LOGO_HEIGHT_PX +
+      "px!important}" +
       ".navbar-2 .navbar_logo,.navbar-2 img.navbar_logo{height:" +
       NAVBAR_LOGO_HEIGHT_PX +
       "px!important;max-height:" +
       NAVBAR_LOGO_HEIGHT_PX +
-      "px!important;width:auto!important}";
+      "px!important;width:auto!important}" +
+      ".navbar-2 .nav_links,.navbar-2 a.nav_links,.navbar-2 .w-nav-link,.navbar-2 .w-nav-link.w--current{padding:.35rem .5rem!important;line-height:1.2!important;border:0!important;margin-left:0!important;margin-right:0!important;box-sizing:border-box!important}" +
+      ".navbar-2 .nav-compact,.navbar-2 a.nav-compact{padding:.4rem .85rem!important;line-height:1.2!important;margin-left:0!important;margin-right:0!important;box-sizing:border-box!important}";
     var nav = doc.querySelector(".navbar-2.w-nav") || doc.querySelector(".w-nav");
     if (nav) {
       nav.querySelectorAll(".navbar_content").forEach(function (el) {
@@ -97,10 +115,18 @@
     });
     if (typeof global.MutationObserver === "function" && doc.body && !global.__dealalityNavbarLogoObserver) {
       global.__dealalityNavbarLogoObserver = true;
+      var logoFixTimer = null;
       var observer = new global.MutationObserver(function () {
-        applyNavbarLogoSize(doc);
+        if (logoFixTimer) return;
+        logoFixTimer = global.setTimeout(function () {
+          logoFixTimer = null;
+          applyNavbarLogoSize(doc);
+        }, 400);
       });
-      observer.observe(doc.body, { childList: true, subtree: true });
+      var navRoot = doc.querySelector(".navbar-2.w-nav") || doc.querySelector(".w-nav");
+      if (navRoot) {
+        observer.observe(navRoot, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "style", "height"] });
+      }
     }
   }
 
@@ -495,16 +521,10 @@
     (doc.head || doc.documentElement).appendChild(style);
   }
 
-  function bootstrapHomeNewLandingShell(doc) {
-    if (!doc || !doc.getElementById("dealality-landing-embed")) return;
-    injectLandingScrollbarStyles(doc);
-    clearPageLoaderOverlays(doc);
-    var nav =
-      doc.querySelector(".navbar-2.w-nav") ||
-      doc.querySelector('[role="banner"].w-nav') ||
-      doc.querySelector(".w-nav");
+  function applyLandingEmbedTopPadding(doc) {
+    if (!doc) return;
+    applyNavbarLogoSize(doc);
     applyGlobalNavbarSpacing(doc);
-    var offset = nav ? Math.ceil(nav.getBoundingClientRect().height) : 48;
     var shell = doc.querySelector(".dl-landing-embed-full");
     var wrap = doc.querySelector(".dl-landing-embed-wrap");
     if (shell) {
@@ -514,12 +534,19 @@
       shell.style.background = "#080f25";
     }
     if (wrap) {
-      wrap.style.paddingTop = offset + "px";
+      wrap.style.paddingTop = EMBED_TOP_PADDING_PX + "px";
       wrap.style.overflow = "visible";
       wrap.style.minHeight = "0";
       wrap.style.width = "100%";
       wrap.style.background = "#080f25";
     }
+  }
+
+  function bootstrapHomeNewLandingShell(doc) {
+    if (!doc || !doc.getElementById("dealality-landing-embed")) return;
+    injectLandingScrollbarStyles(doc);
+    clearPageLoaderOverlays(doc);
+    applyLandingEmbedTopPadding(doc);
     var iframe = doc.getElementById("dealality-landing-embed");
     if (iframe) {
       iframe.style.display = "block";
@@ -654,7 +681,7 @@
       bootstrapHomeNewLandingShell(global.document);
     }, 1200);
     global.addEventListener("resize", function () {
-      bootstrapHomeNewLandingShell(global.document);
+      applyLandingEmbedTopPadding(global.document);
     });
 
     if (global.__dealalityUserContext) applyFromMe(global.__dealalityUserContext);

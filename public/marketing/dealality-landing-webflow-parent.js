@@ -8,8 +8,10 @@
   var IFRAME_ID = "dealality-landing-embed";
   var PARENT_SOURCE = "dealality-landing-parent";
   var CHILD_SOURCE = "dealality-landing-embed";
-  var NAV_OFFSET_FALLBACK_PX = 48;
+  var NAVBAR_SHELL_HEIGHT_PX = 66;
+  var NAV_OFFSET_FALLBACK_PX = NAVBAR_SHELL_HEIGHT_PX;
   var HERO_GAP_BELOW_NAV_PX = 48;
+  var EMBED_TOP_PADDING_PX = NAVBAR_SHELL_HEIGHT_PX + HERO_GAP_BELOW_NAV_PX;
   var SCROLLBAR_STYLE_ID = "dl-landing-shell-scrollbar";
 
   var MIN_IFRAME_HEIGHT_PX = 2400;
@@ -80,13 +82,13 @@
   }
 
   function getNavbarHeight() {
-    var nav =
-      global.document.querySelector(".navbar-2.w-nav") ||
-      global.document.querySelector('[role="banner"].w-nav') ||
-      global.document.querySelector(".w-nav");
-    if (!nav) return NAV_OFFSET_FALLBACK_PX;
-    var rect = nav.getBoundingClientRect();
-    return Math.max(Math.ceil(rect.height || 0), NAV_OFFSET_FALLBACK_PX);
+    return NAVBAR_SHELL_HEIGHT_PX;
+  }
+
+  function lockNavbarShell() {
+    if (global.DealalityWebflowAccountNotice && typeof global.DealalityWebflowAccountNotice.applyNavbarLogoSize === "function") {
+      global.DealalityWebflowAccountNotice.applyNavbarLogoSize();
+    }
   }
 
   function unlockPageScroll() {
@@ -124,8 +126,8 @@
   }
 
   function applyEmbedOffset() {
+    lockNavbarShell();
     compactNavbar();
-    var offset = getNavbarHeight();
     var wrap = global.document.querySelector(".dl-landing-embed-wrap");
     var embedShell = global.document.querySelector(".dl-landing-embed-full");
     if (embedShell) {
@@ -137,7 +139,7 @@
     }
     if (wrap) {
       wrap.style.marginTop = "0";
-      wrap.style.paddingTop = offset + HERO_GAP_BELOW_NAV_PX + "px";
+      wrap.style.paddingTop = EMBED_TOP_PADDING_PX + "px";
       wrap.style.overflow = "visible";
       wrap.style.width = "100%";
       wrap.style.minHeight = "0";
