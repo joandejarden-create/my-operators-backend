@@ -74,7 +74,7 @@
       NAVBAR_CONTENT_MIN_HEIGHT_PX +
       "px!important;max-height:" +
       NAVBAR_CONTENT_MIN_HEIGHT_PX +
-      "px!important;padding-top:4px!important;padding-bottom:4px!important;box-sizing:border-box!important;overflow:visible!important}" +
+      "px!important;padding-top:4px!important;padding-bottom:4px!important;padding-right:16px!important;box-sizing:border-box!important;overflow:visible!important}" +
       ".navbar-2 .navbar_logo-link{height:auto!important;min-height:0!important;max-height:" +
       NAVBAR_LOGO_HEIGHT_PX +
       "px!important}" +
@@ -91,6 +91,7 @@
         el.style.minHeight = NAVBAR_CONTENT_MIN_HEIGHT_PX + "px";
         el.style.paddingTop = "4px";
         el.style.paddingBottom = "4px";
+        el.style.paddingRight = "16px";
       });
       nav.querySelectorAll(".navbar_logo").forEach(function (el) {
         el.style.height = NAVBAR_LOGO_HEIGHT_PX + "px";
@@ -197,7 +198,8 @@
     style.textContent =
       ".navbar-2 .nav_links,.navbar-2 a.nav_links,.navbar-2 .nav_link,.navbar-2 a.nav_link,.navbar-2 .w-nav-link,.navbar-2 .w-nav-link.w--current{padding:.35rem .5rem!important;margin-left:0!important;margin-right:0!important;font-weight:400!important}" +
       ".navbar-2 .nav-compact,.navbar-2 a.nav-compact{padding:.4rem .85rem!important;line-height:1.2!important;margin-left:0!important;margin-right:0!important;font-weight:400!important}" +
-      ".navbar-2 .w-nav-menu{display:flex!important;align-items:center!important;column-gap:0!important;row-gap:0!important}";
+      ".navbar-2 .w-nav-menu{display:flex!important;align-items:center!important;column-gap:0!important;row-gap:0!important}" +
+      ".navbar-2 .navbar_content{padding-right:16px!important}";
     (doc.head || doc.documentElement).appendChild(style);
   }
 
