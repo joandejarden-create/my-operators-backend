@@ -9,6 +9,7 @@
   var AUTH_BG_STYLE_ID = "dl-auth-landing-bg-style";
   var AUTH_MOBILE_LAYOUT_STYLE_ID = "dl-auth-mobile-layout-style";
   var AUTH_BG_EARLY_STYLE_ID = "dl-auth-landing-bg-early";
+  var PLATFORM_EARLY_STYLE_ID = "dl-platform-shell-early";
   var AUTH_BG_ROOT_ID = "dl-auth-bg-root";
   var BANNER_ID = "dealality-account-pending-banner";
   var LANDING_BG = "#080f25";
@@ -264,6 +265,17 @@
     }
   }
 
+  function isPlatformDashboardPage() {
+    if (isAuthMarketingPage() || isLandingHomePage()) return false;
+    try {
+      var path = (global.location.pathname || "").replace(/\/+$/, "").toLowerCase();
+      if (!path) return false;
+      return /^\/(hotel-owner|brand|member|asset-manager|user-management|my-brands-v2)(\/|$)/.test(path);
+    } catch (err) {
+      return false;
+    }
+  }
+
   function landingHomeHref(sectionId) {
     var hash = sectionId ? "#" + sectionId : "";
     if (LANDING_HOME_PATH === "/") return "/" + hash;
@@ -309,6 +321,41 @@
   }
 
   applyAuthPageEarlySkin();
+
+  function applyPlatformPageEarlySkin() {
+    if (!isPlatformDashboardPage() || !global.document) return;
+    var doc = global.document;
+    doc.documentElement.classList.add("dl-platform-shell");
+    if (doc.getElementById(PLATFORM_EARLY_STYLE_ID)) return;
+    var style = doc.createElement("style");
+    style.id = PLATFORM_EARLY_STYLE_ID;
+    style.textContent =
+      "html,body{background:" +
+      LANDING_BG +
+      "!important}" +
+      "html.dl-platform-shell .page-wrapper,html.dl-platform-shell .dashboard-main-section," +
+      "html.dl-platform-shell .dashboard-content,html.dl-platform-shell .dashboard-main-content{background:" +
+      LANDING_BG +
+      "!important;background-image:none!important}" +
+      "html.dl-platform-shell .dashboard-main-section iframe,html.dl-platform-shell .dashboard-content iframe{background:" +
+      LANDING_BG +
+      "!important}" +
+      "html.dl-platform-shell .loading-bar-wrapper,html.dl-platform-shell .page-loader," +
+      "html.dl-platform-shell .coming-soon-overlay{display:none!important}";
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
+  applyPlatformPageEarlySkin();
+
+  function applyPlatformPageShell(doc) {
+    if (!doc || !isPlatformDashboardPage()) return;
+    applyPlatformPageEarlySkin();
+    clearPageLoaderOverlays(doc);
+    doc.querySelectorAll(".dashboard-main-section iframe, .dashboard-content iframe").forEach(function (frame) {
+      frame.setAttribute("loading", "eager");
+      frame.style.background = LANDING_BG;
+    });
+  }
 
   function isNavbarLink(link) {
     return !!(
@@ -717,6 +764,7 @@
     installAuthPageNavBridge();
     ensureToastPatch();
     applyAuthPageLandingSkin(global.document);
+    applyPlatformPageShell(global.document);
     ensureLandingNavbarBridge(global.document);
     watchUserContext();
 
@@ -727,6 +775,7 @@
     global.document.addEventListener("DOMContentLoaded", function () {
       ensureToastPatch();
       applyAuthPageLandingSkin(global.document);
+      applyPlatformPageShell(global.document);
       ensureLandingNavbarBridge(global.document);
       scheduleNavbarLogoFix(global.document);
       bootstrapHomeNewLandingShell(global.document);
@@ -735,6 +784,7 @@
 
     global.addEventListener("load", function () {
       applyAuthPageLandingSkin(global.document);
+      applyPlatformPageShell(global.document);
       scheduleNavbarLogoFix(global.document);
       bootstrapHomeNewLandingShell(global.document);
     });
@@ -753,6 +803,9 @@
     apply: applyFromMe,
     shouldSuppressBrandToast: shouldSuppressBrandToast,
     applyAuthPageLandingSkin: applyAuthPageLandingSkin,
+    applyPlatformPageShell: function () {
+      applyPlatformPageShell(global.document);
+    },
     applyNavbarLogoSize: function () {
       applyNavbarLogoSize(global.document);
     },
