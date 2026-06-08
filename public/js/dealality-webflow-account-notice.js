@@ -7,6 +7,7 @@
 
   var STYLE_ID = "dealality-account-notice-style";
   var AUTH_BG_STYLE_ID = "dl-auth-landing-bg-style";
+  var AUTH_MOBILE_LAYOUT_STYLE_ID = "dl-auth-mobile-layout-style";
   var AUTH_BG_EARLY_STYLE_ID = "dl-auth-landing-bg-early";
   var AUTH_BG_ROOT_ID = "dl-auth-bg-root";
   var BANNER_ID = "dealality-account-pending-banner";
@@ -507,6 +508,26 @@
     (doc.head || doc.documentElement).appendChild(style);
   }
 
+  function injectAuthMobileLayoutStyles(doc) {
+    if (!doc || doc.getElementById(AUTH_MOBILE_LAYOUT_STYLE_ID)) return;
+    var style = doc.createElement("style");
+    style.id = AUTH_MOBILE_LAYOUT_STYLE_ID;
+    style.textContent =
+      "@media(max-width:767px){" +
+      "html.dl-auth-landing-skin,html.dl-auth-landing-skin body{overflow-x:hidden!important}" +
+      "html.dl-auth-landing-skin .dashboard-content,html.dl-auth-landing-skin .dashboard-main-content.sales-page{width:100%!important;max-width:100%!important;padding-left:20px!important;padding-right:20px!important;box-sizing:border-box!important;overflow-x:hidden!important}" +
+      "html.dl-auth-landing-skin .form-block,html.dl-auth-landing-skin .signup-left .form-block{width:100%!important;max-width:min(440px,100%)!important;margin-left:auto!important;margin-right:auto!important;padding-left:0!important;padding-right:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;box-sizing:border-box!important}" +
+      "html.dl-auth-landing-skin .logo-holder{width:100%!important;max-width:100%!important;margin:0 auto 20px!important;padding:0!important;text-align:center!important;display:flex!important;justify-content:center!important}" +
+      "html.dl-auth-landing-skin .logo-holder img,html.dl-auth-landing-skin .logo-holder .image-14{display:block!important;width:min(68vw,260px)!important;max-width:100%!important;height:auto!important;margin:0 auto!important;object-fit:contain!important}" +
+      "html.dl-auth-landing-skin .login-form-block,html.dl-auth-landing-skin .login-form-block.w-form,html.dl-auth-landing-skin .signup-left .login-form-block{width:100%!important;max-width:100%!important}" +
+      "html.dl-auth-landing-skin .login-form-block form,html.dl-auth-landing-skin .login-form-block .form-field-wrap,html.dl-auth-landing-skin .signup-left .login-form-block form{width:100%!important;max-width:100%!important;box-sizing:border-box!important}" +
+      "html.dl-auth-landing-skin .input.w-input,html.dl-auth-landing-skin textarea.w-input{width:100%!important;max-width:100%!important;box-sizing:border-box!important}" +
+      "html.dl-auth-landing-skin .login-form-block input[type=submit],html.dl-auth-landing-skin .login-form-block .w-button,html.dl-auth-landing-skin .signup-left input[type=submit]{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important}" +
+      "html.dl-auth-landing-skin h3.display-4,html.dl-auth-landing-skin .paragraph-large,html.dl-auth-landing-skin .form-block h3,html.dl-auth-landing-skin .form-block p{width:100%!important;text-align:center!important}" +
+      "}";
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
   function mountAuthLandingBackgroundLayers(doc) {
     if (!doc || !doc.body || doc.getElementById(AUTH_BG_ROOT_ID)) return;
 
@@ -542,6 +563,7 @@
       doc.body.classList.add("signup-page");
     }
     injectAuthLandingBackgroundStyles(doc);
+    injectAuthMobileLayoutStyles(doc);
     injectLandingScrollbarStyles(doc);
     clearPageLoaderOverlays(doc);
     mountAuthLandingBackgroundLayers(doc);
