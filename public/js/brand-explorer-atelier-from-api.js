@@ -777,6 +777,28 @@
     ];
   }
 
+  /** IHG portfolio ladder — static until more IHG brands are in Brand Basics. */
+  var IHG_PORTFOLIO_LADDER_TIER_LABELS = [
+    'Essential & Extended Stay',
+    'Mainstream Upscale',
+    'Premium Upscale',
+    'Luxury & Lifestyle'
+  ];
+
+  var IHG_PORTFOLIO_TIER_BRANDS = [
+    ['avid hotels', 'Candlewood Suites', 'Holiday Inn Express', 'Staybridge Suites'],
+    ['Holiday Inn', 'Garner Hotels', 'Atwell Suites'],
+    ['Crowne Plaza', 'Hotel Indigo', 'voco', 'EVEN Hotels', 'HUALUXE'],
+    ['InterContinental', 'Regent', 'Six Senses', 'Vignette Collection']
+  ];
+
+  function isIhgParentCompanyKey(parentKey) {
+    return (
+      parentKey.indexOf('ihg hotels') !== -1 ||
+      parentKey.indexOf('intercontinental hotels group') !== -1
+    );
+  }
+
   function ladderTierFallbackLabelsForBrand(brand) {
     var parentKey = normalizePortfolioParentKey(brand && brand.parentCompany);
     if (parentKey.indexOf('choice hotels') !== -1) {
@@ -786,6 +808,9 @@
         'Premium / Upper Upscale',
         'Luxury & Lifestyle Flagship'
       ];
+    }
+    if (isIhgParentCompanyKey(parentKey)) {
+      return IHG_PORTFOLIO_LADDER_TIER_LABELS.slice();
     }
     return ladderTierFallbackLabels();
   }
@@ -813,22 +838,31 @@
   function portfolioSiblingNamesByLadderTier(brand, brandList) {
     var tiers = [[], [], [], []];
     var parentKey = normalizePortfolioParentKey(brand && brand.parentCompany);
-    if (!parentKey || !brandList || !brandList.length) return tiers;
-    var currentId = brand && (brand.id || brand.brandId) ? String(brand.id || brand.brandId) : '';
-    brandList.forEach(function (b) {
-      if (!b) return;
-      if (normalizePortfolioParentKey(b.parentCompany) !== parentKey) return;
-      var nm = hasVal(b.name) ? String(b.name).trim() : '';
-      if (!nm) return;
-      var bid = b.id != null ? String(b.id) : '';
-      if (currentId && bid === currentId) return;
-      tiers[portfolioLadderTierForListBrand(b)].push(nm);
-    });
-    tiers.forEach(function (names) {
-      names.sort(function (a, b) {
-        return a.localeCompare(b, undefined, { sensitivity: 'base' });
+    if (!parentKey) return tiers;
+    if (brandList && brandList.length) {
+      var currentId = brand && (brand.id || brand.brandId) ? String(brand.id || brand.brandId) : '';
+      brandList.forEach(function (b) {
+        if (!b) return;
+        if (normalizePortfolioParentKey(b.parentCompany) !== parentKey) return;
+        var nm = hasVal(b.name) ? String(b.name).trim() : '';
+        if (!nm) return;
+        var bid = b.id != null ? String(b.id) : '';
+        if (currentId && bid === currentId) return;
+        tiers[portfolioLadderTierForListBrand(b)].push(nm);
       });
-    });
+      tiers.forEach(function (names) {
+        names.sort(function (a, b) {
+          return a.localeCompare(b, undefined, { sensitivity: 'base' });
+        });
+      });
+    }
+    if (isIhgParentCompanyKey(parentKey)) {
+      for (var ti = 0; ti < 4; ti++) {
+        if (!tiers[ti].length) {
+          tiers[ti] = IHG_PORTFOLIO_TIER_BRANDS[ti].slice();
+        }
+      }
+    }
     return tiers;
   }
 
@@ -3492,7 +3526,42 @@
     );
   }
 
-  function momentumFeedItemHtml(item) {
+  /** Parent company or brand name for momentum link / section labels. */
+  function momentumPublisherDisplayName(brand) {
+    var parent = String((brand && brand.parentCompany) || '').trim();
+    var brandName = String((brand && brand.name) || '').trim();
+    var parentKey = normalizePortfolioParentKey(parent);
+    if (isIhgParentCompanyKey(parentKey)) return 'IHG';
+    if (parentKey.indexOf('choice hotels') !== -1) return 'Choice Hotels';
+    if (parent) return parent;
+    if (brandName) return brandName;
+    return '';
+  }
+
+  function momentumAnnouncementLinkLabel(url, brand) {
+    var u = String(url || '').toLowerCase();
+    if (
+      u.indexOf('ihgplc.com') !== -1 ||
+      u.indexOf('ihg.com') !== -1 ||
+      u.indexOf('kimptonhotels.com') !== -1
+    ) {
+      return 'View IHG announcement';
+    }
+    if (u.indexOf('choicehotels.com') !== -1 || u.indexOf('media.choicehotels.com') !== -1) {
+      return 'View Choice Hotels announcement';
+    }
+    var publisher = momentumPublisherDisplayName(brand);
+    if (publisher) return 'View ' + publisher + ' announcement';
+    return 'View announcement';
+  }
+
+  function momentumSectionDefaultLabel(brand) {
+    var publisher = momentumPublisherDisplayName(brand);
+    if (publisher) return publisher + ' CALA openings · linked announcements';
+    return 'Recent openings · linked announcements';
+  }
+
+  function momentumFeedItemHtml(item, brand) {
     if (!item || (!hasVal(item.headline) && !hasVal(item.description))) return '';
     var descP = hasVal(item.description)
       ? '<p>' + escapeHtml(item.description) + '</p>'
@@ -3500,7 +3569,9 @@
     var linkP = isSafeHttpUrl(item.url)
       ? '<p class="momentum-feed__link"><a href="' +
         escapeHtml(item.url) +
-        '" target="_blank" rel="noopener noreferrer">View Choice Hotels announcement</a></p>'
+        '" target="_blank" rel="noopener noreferrer">' +
+        escapeHtml(momentumAnnouncementLinkLabel(item.url, brand)) +
+        '</a></p>'
       : '';
     return (
       '<div class="momentum-feed__item">' +
@@ -3518,12 +3589,10 @@
   function renderMomentumSection(brand) {
     var blocks = explorerBlocksForSlot(brand, FOOTPRINT_MOMENTUM_SLOT);
     var labelRaw = explorerPresentationLine(brand, FOOTPRINT_MOMENTUM_LABEL_SLOT);
-    var label = hasVal(labelRaw)
-      ? labelRaw
-      : 'Choice Hotels CALA openings · linked announcements';
+    var label = hasVal(labelRaw) ? labelRaw : momentumSectionDefaultLabel(brand);
     var itemsHtml = blocks
       .map(function (b) {
-        return momentumFeedItemHtml(parseMomentumPresentationBlock(b));
+        return momentumFeedItemHtml(parseMomentumPresentationBlock(b), brand);
       })
       .filter(Boolean)
       .join('');
@@ -4616,6 +4685,7 @@
         fileCard('ZIP', 'Design Reference Gallery.zip', 'ZIP · 128 MB · Updated Dec 9, 2025');
     }
     var galleryLabels = ['Lobby', 'Guest Room', 'Rooftop / Bar', 'Arrival', 'Pool & Resort Setting', 'Restaurant'];
+    var galleryHasImage = false;
     var gallery = galleryLabels
       .map(function (lab, i) {
         var slot = 'materials.gallery.' + (i + 1);
@@ -4623,6 +4693,7 @@
         var imgUrl = row && hasVal(row.imageUrl) ? String(row.imageUrl).trim() : '';
         var caption = row && hasVal(row.title) ? String(row.title).trim() : lab;
         if (imgUrl && isSafeHttpUrl(imgUrl)) {
+          galleryHasImage = true;
           return (
             '<div class="gallery-card gallery-card--has-image" role="img" aria-label="' +
             escapeHtml(caption) +
@@ -4645,6 +4716,12 @@
         );
       })
       .join('');
+    var galleryHint = '';
+    if (!isExportPdfMode()) {
+      galleryHint = galleryHasImage
+        ? '<p class="oe-section-hint">Curated · Representative property photography</p>'
+        : '<p class="oe-section-hint oe-section-hint--admin">Slots <code>materials.gallery.1</code> … <code>materials.gallery.6</code> — attach image to each row’s Image field</p>';
+    }
     return wrapOe(
       '<section class="oe-section">' +
         '<h2 class="oe-section-title">Official Brand Materials</h2>' +
@@ -4654,9 +4731,7 @@
         '</div></section>' +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Image Gallery</h2>' +
-        (isExportPdfMode()
-          ? ''
-          : '<p class="oe-section-hint">Slots <code>materials.gallery.1</code> … <code>materials.gallery.6</code> — attach image to each row’s Image field</p>') +
+        galleryHint +
         '<div class="gallery-grid">' +
         gallery +
         '</div></section>'
@@ -4924,9 +4999,12 @@
     }
   }
 
+  var lastAtelierBrand = null;
+
   function onDetailLoaded(ev) {
     var brand = ev.detail && ev.detail.brand;
     if (!brand) return;
+    lastAtelierBrand = brand;
     mountAtelierFromBrand(brand);
     var root = document.getElementById('brandRoot');
     if (isExportPdfMode()) {
@@ -4938,9 +5016,16 @@
     notifyExportReady();
   }
 
+  function onBrandListLoaded() {
+    if (lastAtelierBrand) {
+      mountAtelierFromBrand(lastAtelierBrand);
+    }
+  }
+
   wireBrandCaseStudyModalOnce();
 
   window.addEventListener('brand-explorer-detail-loaded', onDetailLoaded);
+  window.addEventListener('brand-explorer-list-loaded', onBrandListLoaded);
 
   window.BrandExplorerAtelierFromApi = {
     mountIntoRoot: mountAtelierIntoRoot,

@@ -115,7 +115,7 @@
         } catch (e) {}
       }
 
-      function boot() {
+      async function boot() {
         var id = getBrandId();
         if (!id) {
           var loading = document.getElementById("brandLoading");
@@ -129,12 +129,26 @@
           }
           return;
         }
+        try {
+          var p = new URLSearchParams(window.location.search || "");
+          var listOpts = p.get("refresh") === "1" ? { refresh: true } : {};
+          if (
+            window.BrandExplorerBrandFetch &&
+            typeof window.BrandExplorerBrandFetch.ensureBrandList === "function"
+          ) {
+            await window.BrandExplorerBrandFetch.ensureBrandList(listOpts);
+          }
+        } catch (e) {
+          console.warn("[brand-gold-mock] brand list prefetch failed", e);
+        }
         if (window.BrandExplorerGoldDetail && typeof window.BrandExplorerGoldDetail.load === "function") {
-          window.BrandExplorerGoldDetail.load(id).then(function () {
+          try {
+            await window.BrandExplorerGoldDetail.load(id);
+          } catch (e) {
+            console.error(e);
+          } finally {
             notifyParentReady(id);
-          }).catch(function () {
-            notifyParentReady(id);
-          });
+          }
         } else {
           console.error("BrandExplorerGoldDetail.load not available");
         }

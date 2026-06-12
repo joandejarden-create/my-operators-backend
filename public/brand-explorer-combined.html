@@ -1078,7 +1078,7 @@
                         </div>
                     </div>
 
-                    <div class="loading hidden" id="loadingState">
+                    <div class="loading dealality-wave-loader hidden" id="loadingState" role="status" aria-live="polite">
                         <div class="loading-content">
                             <div class="wave-container">
                                 <div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div>
@@ -1110,7 +1110,7 @@
                 <a href="/brand-library-compare">Compare brands</a>
             </div>
             <div id="brandLoading" class="be-detail-loading" style="display:none" aria-live="polite">
-                <div class="loading">
+                <div class="loading dealality-wave-loader">
                     <div class="loading-content">
                         <div class="wave-container">
                             <div class="wave wave-1"></div>
@@ -1163,7 +1163,7 @@
         <div class="brand-detail-popup-panel" role="dialog" aria-modal="true" aria-label="Brand profile">
             <button type="button" class="brand-detail-popup-close" id="beCombinedBrandDetailPopupClose" aria-label="Close">&times;</button>
             <div class="brand-detail-popup-loading" id="beCombinedBrandDetailPopupLoading" aria-live="polite">
-                <div class="loading">
+                <div class="loading dealality-wave-loader dealality-wave-loader--fixed">
                     <div class="loading-content">
                         <div class="wave-container">
                             <div class="wave wave-1"></div>
@@ -1215,6 +1215,7 @@
     </div>
 
     <script src="/js/brand-explorer-favorites.js" defer></script>
+    <script src="/js/brand-explorer-brand-fetch.js" defer></script>
     <script src="/js/brand-explorer-gold-detail.js" defer></script>
     <script src="/js/brand-explorer-census-metrics.js"></script>
     <script src="/js/external-owner-copy.js" defer></script>
@@ -1344,11 +1345,14 @@
             name = fromList.name;
         } else if (!name) {
             try {
-                var res = await fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(brandId));
-                if (res.ok) {
-                    var data = await res.json();
-                    if (data.success && data.brand && data.brand.name) name = data.brand.name;
-                }
+                var fetchBrand =
+                    window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.fetchBrandDetail;
+                var data = fetchBrand
+                    ? await fetchBrand(brandId)
+                    : await fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(brandId)).then(function (r) {
+                          return r.ok ? r.json() : null;
+                      });
+                if (data && data.success && data.brand && data.brand.name) name = data.brand.name;
             } catch (e) {
                 /* ignore */
             }
@@ -1379,9 +1383,15 @@
             if (popRoot) popRoot.hidden = true;
             if (brandEducationLoading) brandEducationLoading.style.display = 'flex';
             try {
-                var resB = await fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(brandId));
+                var fetchBrandB =
+                    window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.fetchBrandDetail;
+                var dataB = await (fetchBrandB
+                    ? fetchBrandB(brandId)
+                    : fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(brandId)).then(function (r) {
+                          if (!r.ok) throw new Error('Failed to load brand');
+                          return r.json();
+                      }));
                 if (myGen !== educationLoadGen) return;
-                var dataB = await resB.json();
                 if (brandEducationLoading) brandEducationLoading.style.display = 'none';
                 if (dataB && dataB.success && dataB.brand && window.BrandExplorerAtelierFromApi) {
                     window.BrandExplorerAtelierFromApi.mountIntoRoot(popRoot, dataB.brand);
@@ -2025,13 +2035,13 @@
                 window.BrandExplorerFavorites && window.BrandExplorerFavorites.ready
                     ? window.BrandExplorerFavorites.ready()
                     : Promise.resolve();
-            var brandsUrl = '/api/brand-library/brands?refresh=1';
+            var brandsUrl = '/api/brand-library/brands';
             try {
                 if (new URLSearchParams(window.location.search).get('fresh') === '1') {
-                    brandsUrl += '&fresh=1';
+                    brandsUrl += (brandsUrl.indexOf('?') >= 0 ? '&' : '?') + 'refresh=1';
                 }
             } catch (_) {}
-            var brandsRes = await fetch(brandsUrl, { cache: 'no-store' });
+            var brandsRes = await fetch(brandsUrl);
             await favReady;
             if (!brandsRes.ok) throw new Error('Failed to fetch brands');
             var data = await brandsRes.json();
@@ -2039,6 +2049,11 @@
             window.getBrandExplorerListBrands = function () {
                 return allBrands.slice();
             };
+            try {
+                window.dispatchEvent(
+                    new CustomEvent('brand-explorer-list-loaded', { detail: { brands: allBrands.slice() } })
+                );
+            } catch (_) {}
             filteredBrands = allBrands.slice();
             var fo = data.filterOptions || {};
 
@@ -2157,13 +2172,20 @@
         if (p && p.style.display === 'flex') closeBrandEducationPopup();
     });
 
-    function boot() {
+    async function boot() {
         if (window.BrandExplorerFavorites && window.BrandExplorerFavorites.ready) {
             void window.BrandExplorerFavorites.ready();
         }
         var initialId = getQueryBrandId();
         if (isExportPdfMode()) {
             if (initialId) {
+                try {
+                    if (window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.ensureBrandList) {
+                        await window.BrandExplorerBrandFetch.ensureBrandList();
+                    }
+                } catch (e) {
+                    console.warn('[brand-explorer-combined] brand list prefetch failed', e);
+                }
                 showDetailUi(initialId, false, true);
             } else {
                 var errBox = document.getElementById('brandError');
@@ -2177,6 +2199,13 @@
             return;
         }
         if (initialId) {
+            try {
+                if (window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.ensureBrandList) {
+                    await window.BrandExplorerBrandFetch.ensureBrandList();
+                }
+            } catch (e) {
+                console.warn('[brand-explorer-combined] brand list prefetch failed', e);
+            }
             showDetailUi(initialId, false);
         } else {
             showListUi();
