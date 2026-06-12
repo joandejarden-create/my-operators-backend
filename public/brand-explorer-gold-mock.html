@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-brand-explorer-gold-defer="1" data-brand-explorer-unified-tabs="1">
+<head>
+  <script>
+    (function () {
+      var p = new URLSearchParams(window.location.search || "");
+      if (p.get("embed") === "1" || window !== window.top) {
+        document.documentElement.classList.add("embed-mode");
+      }
+      document.documentElement.classList.add("be-standalone-share");
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Explorer — Dealality</title>
+  <link rel="stylesheet" href="/css/dealality-explorer-platform.css" />
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/brand-explorer-gold-surface.css" />
+  <link rel="stylesheet" href="/css/brand-explorer-atelier-oe-panels.css" />
+  <style>
+    html[data-brand-explorer-unified-tabs="1"] {
+      color-scheme: dark;
+      --panel-soft: #0c132c;
+      --text: #ffffff;
+      --font: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    html[data-brand-explorer-unified-tabs="1"] body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #080f25;
+      color: #fff;
+      min-height: 100vh;
+    }
+    .be-gold-mock-page {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 20px 24px 48px;
+      box-sizing: border-box;
+    }
+    html.be-standalone-share #brandTabs,
+    html.be-standalone-share #brandPanels,
+    html.be-standalone-share .be-combined-gold-divider,
+    html.be-standalone-share .be-combined-gold-kicker,
+    html.be-standalone-share .breadcrumb,
+    html.be-standalone-share .be-atelier-tier-label {
+      display: none !important;
+    }
+    html[data-brand-explorer-unified-tabs="1"] #brandTabs,
+    html[data-brand-explorer-unified-tabs="1"] #brandPanels,
+    html[data-brand-explorer-unified-tabs="1"] .be-combined-gold-divider,
+    html[data-brand-explorer-unified-tabs="1"] .be-combined-gold-kicker {
+      display: none !important;
+    }
+    .be-detail-loading {
+      padding: 48px 0;
+    }
+    #brandError {
+      display: none;
+      margin: 24px 0;
+      padding: 16px;
+      border: 1px solid #37446b;
+      border-radius: 10px;
+      background: #101935;
+    }
+  </style>
+</head>
+<body>
+  <div class="be-gold-mock-page">
+    <div id="brandLoading" class="be-detail-loading" aria-live="polite">
+      <div class="loading dealality-wave-loader">
+        <div class="loading-content">
+          <div class="wave-container">
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+            <div class="wave wave-3"></div>
+            <div class="wave-particles">
+              <div class="particle"></div>
+              <div class="particle"></div>
+              <div class="particle"></div>
+              <div class="particle"></div>
+            </div>
+          </div>
+          <div>
+            <div class="loading-text-main">Loading Brand Profile…</div>
+            <div class="loading-text-time">Waiting for live brand data…</div>
+          </div>
+        </div>
+        <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+      </div>
+    </div>
+    <div id="brandError" role="alert">
+      <strong>Could not load brand.</strong>
+      <p id="brandErrorMessage" style="margin-top: 8px"></p>
+    </div>
+    <div id="brandRoot" style="display: none">
+      <div id="heroMount"></div>
+      <div id="beAtelierExplorer" class="be-atelier-explorer">
+        <div class="be-atelier-root" id="beAtelierRoot" data-be-atelier-root>
+          <nav class="tabs-section" id="beAtelierTabs" data-be-atelier-nav aria-label="Brand explorer tabs"></nav>
+          <div id="beAtelierPanels" data-be-atelier-panels></div>
+        </div>
+      </div>
+      <hr class="be-combined-gold-divider" />
+      <p class="be-combined-gold-kicker">Structured profile &amp; diligence (Brand Setup)</p>
+      <nav class="tabs-section" id="brandTabs" aria-label="Brand Setup sections"></nav>
+      <div id="brandPanels"></div>
+    </div>
+  </div>
+
+  <div class="be-case-modal-overlay" id="beCaseStudyModal" role="dialog" aria-modal="true" aria-labelledby="beCsModalTitle" hidden>
+    <div class="be-case-modal">
+      <h3 class="be-case-modal__title" id="beCsModalTitle">Case summary</h3>
+      <div class="be-case-modal__inner" id="beCsModalInner"></div>
+      <div class="be-case-modal__actions">
+        <button type="button" class="btn" id="beCsModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/brand-explorer-brand-fetch.js" defer></script>
+  <script src="/js/brand-explorer-census-metrics.js"></script>
+  <script src="/js/external-owner-copy.js" defer></script>
+  <script src="/js/brand-explorer-atelier-from-api.js" defer></script>
+  <script src="/js/brand-explorer-gold-detail.js" defer></script>
+  <script defer>
+    (function () {
+      "use strict";
+
+      function getBrandId() {
+        var p = new URLSearchParams(window.location.search || "");
+        return p.get("id") || p.get("brandId") || p.get("brand") || p.get("name") || "";
+      }
+
+      function notifyParentReady(brandId) {
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage(
+              { type: "brand-gold-mock-ready", brandId: brandId || "" },
+              window.location.origin
+            );
+          }
+        } catch (e) {}
+      }
+
+      function boot() {
+        var id = getBrandId();
+        if (!id) {
+          var loading = document.getElementById("brandLoading");
+          var errEl = document.getElementById("brandError");
+          var miss = document.getElementById("brandErrorMessage");
+          if (loading) loading.style.display = "none";
+          if (errEl) errEl.style.display = "block";
+          if (miss) {
+            miss.textContent =
+              "Add a brand id to the URL (e.g. ?id=recCKuXCmGvxHPfb3&embed=1).";
+          }
+          return;
+        }
+        if (window.BrandExplorerGoldDetail && typeof window.BrandExplorerGoldDetail.load === "function") {
+          window.BrandExplorerGoldDetail.load(id).then(function () {
+            notifyParentReady(id);
+          }).catch(function () {
+            notifyParentReady(id);
+          });
+        } else {
+          console.error("BrandExplorerGoldDetail.load not available");
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot);
+      } else {
+        boot();
+      }
+    })();
+  </script>
+</body>
+</html>

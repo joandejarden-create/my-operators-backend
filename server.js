@@ -353,7 +353,10 @@ function isEmbeddableShellRequest(req) {
   return (
     p === "/operator-explorer-gold-mock.html" ||
     p === "/operator-explorer-gold-mock" ||
-    p === "/operator-explorer-gold-mock/"
+    p === "/operator-explorer-gold-mock/" ||
+    p === "/brand-explorer-gold-mock.html" ||
+    p === "/brand-explorer-gold-mock" ||
+    p === "/brand-explorer-gold-mock/"
   );
 }
 
@@ -1286,6 +1289,13 @@ app.get("/operator-explorer-gold-mock", (req, res) => {
 });
 app.get("/operator-explorer-gold-mock/", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-explorer-gold-mock.html'));
+});
+
+app.get("/brand-explorer-gold-mock", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "brand-explorer-gold-mock.html"));
+});
+app.get("/brand-explorer-gold-mock/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "brand-explorer-gold-mock.html"));
 });
 
 // Legacy intake URL → Operator Setup (new two) — preserve ?recordId=… and &embed=… for edit prefill
