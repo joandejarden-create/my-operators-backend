@@ -123,6 +123,10 @@ import { getDashboardHome } from "./api/dashboard-home.js";
 import { getMarketingDemoEmbeds } from "./api/marketing-demo-embeds.js";
 import marketingBetaNotify from "./api/marketing-beta-notify.js";
 import marketingLandingEvents from "./api/marketing-landing-events.js";
+import {
+  getMarketingLandingEventsReport,
+  requireLandingAnalyticsAdmin,
+} from "./api/marketing-landing-events-report.js";
 import { getTargetList, addToTargetList, updateTarget, removeFromTargetList, batchRemoveFromTargetList, markAsDeleted, restoreFromDeleted } from "./api/target-list.js";
 import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDealRoom as listBrandDealRequestsForDealRoom, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getDealMetaBatch as getBrandDealMetaBatch, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
 import { getBrandWorkspaceKpiHistory, postBrandWorkspaceKpiSnapshot } from "./api/brand-workspace-kpi-history.js";
@@ -511,6 +515,13 @@ app.patch("/api/intake/third-party-operators/:recordId/status", updateThirdParty
 app.get("/api/marketing/demo-embeds", getMarketingDemoEmbeds);
 app.post("/api/marketing/beta-notify", marketingBetaNotify);
 app.post("/api/marketing/landing-events", marketingLandingEvents);
+app.get(
+  "/api/marketing/landing-events/report",
+  memberstackAuth,
+  requireDealalityUser,
+  requireLandingAnalyticsAdmin,
+  getMarketingLandingEventsReport
+);
 
 // My Deals API (more specific routes first so /outreach-default and /outreach-setup are not treated as recordId)
 const myDealsAuth = [memberstackAuth, requireDealalityUser, requireMyDealsAccess];

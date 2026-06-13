@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Partner Intelligence Review</title>
+  <link rel="stylesheet" href="/css/dealality-explorer-platform.css?v=pi-review-20260610" />
+  <style>
+    body { margin: 0; background: #080f24; color: #e8ecff; font-family: Inter, system-ui, sans-serif; }
+    .pi-shell { max-width: 1200px; margin: 0 auto; padding: 24px 20px 48px; }
+    .pi-head { margin-bottom: 20px; }
+    .pi-head h1 { margin: 0 0 8px; font-size: 22px; }
+    .pi-head p { margin: 0; color: #9aa8d8; font-size: 14px; }
+    .pi-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: center; }
+    .pi-toolbar select, .pi-toolbar input, .pi-toolbar button {
+      background: #101935; border: 1px solid #2a3560; color: #e8ecff; border-radius: 8px; padding: 8px 12px; font-size: 13px;
+    }
+    .pi-toolbar button { cursor: pointer; background: #6c72ff; border-color: #6c72ff; font-weight: 600; }
+    .pi-toolbar button.secondary { background: transparent; border-color: #44507a; }
+    .pi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 900px) { .pi-grid { grid-template-columns: 1fr; } }
+    .pi-panel { background: #101935; border: 1px solid #2a3560; border-radius: 12px; padding: 16px; }
+    .pi-panel h2 { margin: 0 0 12px; font-size: 15px; }
+    .pi-list { list-style: none; margin: 0; padding: 0; max-height: 420px; overflow: auto; }
+    .pi-list li { border-bottom: 1px solid #1e2848; padding: 10px 8px; cursor: pointer; }
+    .pi-list li:hover, .pi-list li.active { background: #151f42; }
+    .pi-list .meta { font-size: 12px; color: #9aa8d8; margin-top: 4px; }
+    .pi-field label { display: block; font-size: 12px; color: #9aa8d8; margin: 10px 0 4px; }
+    .pi-field textarea, .pi-field input, .pi-field select {
+      width: 100%; box-sizing: border-box; background: #080f24; border: 1px solid #2a3560; color: #e8ecff;
+      border-radius: 8px; padding: 8px 10px; font-size: 13px;
+    }
+    .pi-field textarea { min-height: 72px; resize: vertical; }
+    .pi-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .pi-actions button { flex: 1; min-width: 120px; }
+    .pi-actions button.danger { background: #8b2942; border-color: #8b2942; }
+    .pi-actions button.success { background: #1f7a4f; border-color: #1f7a4f; }
+    .pi-status { margin-top: 12px; font-size: 13px; min-height: 20px; }
+    .pi-status.error { color: #ff8a9a; }
+    .pi-status.ok { color: #7dffb2; }
+    .pi-empty { color: #9aa8d8; font-size: 14px; padding: 24px 8px; }
+    .pi-banner { margin: 0 0 16px; padding: 10px 14px; border-radius: 8px; font-size: 13px; border: 1px solid #2a3560; background: #101935; }
+    .pi-banner.error { border-color: #8b2942; color: #ff8a9a; }
+    .pi-banner.ok { border-color: #1f7a4f; color: #7dffb2; }
+    .pi-banner.info { border-color: #44507a; color: #9aa8d8; }
+  </style>
+</head>
+<body>
+  <div class="pi-shell">
+    <header class="pi-head">
+      <h1>Partner Intelligence Review</h1>
+      <p>Review extracted facts from reference material, approve values, and publish to Explorer (signed-in Dealality users).</p>
+    </header>
+
+    <div class="pi-toolbar">
+      <label>
+        Profile
+        <select id="piProfileType">
+          <option value="operator">Operator</option>
+          <option value="brand">Brand</option>
+        </select>
+      </label>
+      <label id="piOperatorLabel">
+        Operator
+        <select id="piOperatorSelect">
+          <option value="recF5Z87OAqFgndoq">Arbor Lodging (CALA)</option>
+        </select>
+      </label>
+      <label id="piBrandLabel" hidden>
+        Brand
+        <select id="piBrandSelect">
+          <option value="recCKuXCmGvxHPfb3">Kimpton Hotels (IHG)</option>
+        </select>
+      </label>
+      <label>
+        Review status
+        <select id="piStatusFilter">
+          <option value="Pending" selected>Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Edited">Edited</option>
+          <option value="Rejected">Rejected</option>
+          <option value="">All</option>
+        </select>
+      </label>
+      <button type="button" id="piRefreshBtn" class="secondary">Refresh</button>
+      <button type="button" id="piExtractBtn">Run extraction (URLs + reference folder)</button>
+    </div>
+
+    <p class="pi-help" id="piSourceSummary" style="color:#9aa8d8;font-size:13px;margin:-8px 0 16px;"></p>
+
+    <div class="pi-banner info" id="piPageBanner" hidden></div>
+
+    <div class="pi-grid">
+      <section class="pi-panel">
+        <h2>Extracted facts</h2>
+        <ul class="pi-list" id="piFactList"></ul>
+        <div class="pi-empty" id="piFactEmpty" hidden>No facts for this filter.</div>
+      </section>
+
+      <section class="pi-panel">
+        <h2>Fact detail</h2>
+        <div id="piDetailEmpty" class="pi-empty">Select a fact to review.</div>
+        <div id="piDetail" hidden>
+          <div class="pi-field">
+            <label>Field</label>
+            <input id="piFieldName" readonly />
+          </div>
+          <div class="pi-field">
+            <label>Section</label>
+            <input id="piSection" readonly />
+          </div>
+          <div class="pi-field">
+            <label>Extracted value</label>
+            <textarea id="piExtracted" readonly></textarea>
+          </div>
+          <div class="pi-field">
+            <label>Evidence</label>
+            <textarea id="piEvidence" readonly></textarea>
+          </div>
+          <div class="pi-field">
+            <label>Approved value</label>
+            <textarea id="piApproved"></textarea>
+          </div>
+          <div class="pi-field">
+            <label>Reviewer notes</label>
+            <textarea id="piNotes"></textarea>
+          </div>
+          <div class="pi-field">
+            <label>Public visibility</label>
+            <select id="piVisibility">
+              <option value="Public">Public</option>
+              <option value="Internal Only">Internal Only</option>
+              <option value="Restricted">Restricted</option>
+            </select>
+          </div>
+          <div class="pi-actions">
+            <button type="button" class="success" id="piApproveBtn">Approve</button>
+            <button type="button" id="piEditBtn">Save edited</button>
+            <button type="button" class="danger" id="piRejectBtn">Reject</button>
+            <button type="button" id="piPublishBtn">Publish to Explorer</button>
+          </div>
+          <div class="pi-status" id="piStatus"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script src="/js/dealality-memberstack-auth.js?v=pi-review-20260610"></script>
+  <script src="/js/dealality-app-shell-auth.js?v=pi-review-20260610"></script>
+  <script src="/js/partner-intelligence-review.js?v=pi-review-20260610c"></script>
+</body>
+</html>

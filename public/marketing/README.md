@@ -66,6 +66,8 @@ Disable server logging with `LANDING_ANALYTICS_ENABLED=0`.
 
 **Local inspection:** `Get-Content data/marketing-landing-events.jsonl -Tail 20`
 
+**Admin report:** `/marketing/landing-analytics-report.html` (admin sign-in) → `GET /api/marketing/landing-events/report?days=7`
+
 **Local test:** open `dealality-landing-v9.html?embed=1` — nav should be hidden; footer should appear at the bottom.
 
 ---

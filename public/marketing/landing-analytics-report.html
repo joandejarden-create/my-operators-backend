@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Landing Analytics Report</title>
+  <style>
+    body { margin: 0; background: #080f24; color: #e8ecff; font-family: Inter, system-ui, sans-serif; }
+    .shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px; }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    .sub { margin: 0 0 20px; color: #9aa8d8; font-size: 14px; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+    .toolbar select, .toolbar button {
+      background: #101935; border: 1px solid #2a3560; color: #e8ecff; border-radius: 8px; padding: 8px 12px; font-size: 13px;
+    }
+    .toolbar button { cursor: pointer; background: #6c72ff; border-color: #6c72ff; font-weight: 600; }
+    .banner { margin-bottom: 16px; padding: 10px 14px; border-radius: 8px; font-size: 13px; border: 1px solid #2a3560; }
+    .banner.error { border-color: #8b2942; color: #ff8a9a; }
+    .banner.info { border-color: #44507a; color: #9aa8d8; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .card { background: #101935; border: 1px solid #2a3560; border-radius: 12px; padding: 14px; }
+    .card .label { font-size: 12px; color: #9aa8d8; }
+    .card .value { font-size: 24px; font-weight: 700; margin-top: 6px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .panel { background: #101935; border: 1px solid #2a3560; border-radius: 12px; padding: 16px; }
+    .panel h2 { margin: 0 0 12px; font-size: 15px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #1e2848; }
+    th { color: #9aa8d8; font-weight: 600; }
+    .recent { max-height: 360px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <h1>Landing Analytics Report</h1>
+      <p class="sub">Admin summary from <code>data/marketing-landing-events.jsonl</code> (Railway disk). Sign in as admin to load.</p>
+    </header>
+
+    <div class="toolbar">
+      <label>
+        Window
+        <select id="laDays">
+          <option value="1">Last 24 hours</option>
+          <option value="7" selected>Last 7 days</option>
+          <option value="14">Last 14 days</option>
+          <option value="30">Last 30 days</option>
+        </select>
+      </label>
+      <button type="button" id="laRefresh">Refresh</button>
+    </div>
+
+    <div class="banner info" id="laBanner">Loading report…</div>
+
+    <div class="cards" id="laCards" hidden></div>
+
+    <div class="grid">
+      <section class="panel">
+        <h2>Events by type</h2>
+        <table id="laByEvent"><tbody></tbody></table>
+      </section>
+      <section class="panel">
+        <h2>CTA clicks by location</h2>
+        <table id="laCta"><tbody></tbody></table>
+      </section>
+      <section class="panel">
+        <h2>Section views</h2>
+        <table id="laSections"><tbody></tbody></table>
+      </section>
+      <section class="panel">
+        <h2>Scroll depth</h2>
+        <table id="laScroll"><tbody></tbody></table>
+      </section>
+      <section class="panel">
+        <h2>Devices</h2>
+        <table id="laDevices"><tbody></tbody></table>
+      </section>
+      <section class="panel">
+        <h2>UTM sources</h2>
+        <table id="laUtm"><tbody></tbody></table>
+      </section>
+    </div>
+
+    <section class="panel" style="margin-top:16px;">
+      <h2>Recent events</h2>
+      <div class="recent">
+        <table id="laRecent">
+          <thead>
+            <tr><th>Time</th><th>Event</th><th>Session</th><th>Detail</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260613"></script>
+  <script src="/js/dealality-app-shell-auth.js?v=la-report-20260613"></script>
+  <script>
+  (function () {
+    "use strict";
+
+    function $(id) { return document.getElementById(id); }
+
+    function setBanner(msg, kind) {
+      var el = $("laBanner");
+      el.textContent = msg || "";
+      el.className = "banner" + (kind ? " " + kind : "");
+    }
+
+    async function apiFetch(path) {
+      var headers = { "Content-Type": "application/json" };
+      if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.getAuthHeaders) {
+        var auth = await window.DealalityMemberstackAuth.getAuthHeaders(null, { waitForLogin: false });
+        if (auth.error) throw new Error(auth.error);
+        Object.assign(headers, auth.headers);
+      }
+      var res = await fetch(path, { headers: headers });
+      var data = await res.json().catch(function () { return {}; });
+      if (!res.ok) {
+        throw new Error((data && (data.message || data.error)) || res.statusText);
+      }
+      return data;
+    }
+
+    function renderRows(tableId, rows, emptyLabel) {
+      var tbody = $(tableId).querySelector("tbody");
+      tbody.innerHTML = "";
+      if (!rows || !rows.length) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = "<td colspan=\"2\">" + (emptyLabel || "No data") + "</td>";
+        tbody.appendChild(tr);
+        return;
+      }
+      rows.forEach(function (row) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = "<td>" + row.key + "</td><td>" + row.count + "</td>";
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderCards(totals) {
+      var cards = [
+        ["Sessions", totals.sessions],
+        ["Events", totals.events],
+        ["Embed sessions", totals.embedSessions],
+        ["Email captures", totals.emailCaptures],
+        ["Video completes", totals.videoCompletes],
+        ["Stage tour completes", totals.stageTourCompletes],
+        ["Median first scroll (s)", totals.medianFirstScrollSeconds != null ? totals.medianFirstScrollSeconds : "—"],
+      ];
+      var el = $("laCards");
+      el.innerHTML = "";
+      cards.forEach(function (pair) {
+        var div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = "<div class=\"label\">" + pair[0] + "</div><div class=\"value\">" + pair[1] + "</div>";
+        el.appendChild(div);
+      });
+      el.hidden = false;
+    }
+
+    function renderRecent(rows) {
+      var tbody = $("laRecent").querySelector("tbody");
+      tbody.innerHTML = "";
+      if (!rows || !rows.length) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = "<td colspan=\"4\">No recent events</td>";
+        tbody.appendChild(tr);
+        return;
+      }
+      rows.forEach(function (e) {
+        var detail = [e.section, e.location, e.label, e.persona, e.depth != null ? e.depth + "%" : null, e.outcome]
+          .filter(Boolean).join(" · ");
+        var tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td>" + (e.ts || "") + "</td>" +
+          "<td>" + (e.event || "") + "</td>" +
+          "<td>" + (e.sessionId ? e.sessionId.slice(0, 12) + "…" : "") + "</td>" +
+          "<td>" + (detail || "") + "</td>";
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function loadReport() {
+      var days = $("laDays").value || "7";
+      setBanner("Loading report…", "info");
+      try {
+        var data = await apiFetch("/api/marketing/landing-events/report?days=" + encodeURIComponent(days));
+        renderCards(data.totals || {});
+        renderRows("laByEvent", data.byEvent);
+        renderRows("laCta", data.ctaLocations, "No CTA clicks yet");
+        renderRows("laSections", data.sections, "No section views yet");
+        renderRows("laScroll", data.scrollDepths, "No scroll depth yet");
+        renderRows("laDevices", data.devices, "No device data yet");
+        renderRows("laUtm", data.utmSources, "No UTM data yet");
+        renderRecent(data.recent);
+        var range = data.window && data.window.firstEventAt && data.window.lastEventAt
+          ? data.window.firstEventAt + " → " + data.window.lastEventAt
+          : "No events in window";
+        setBanner("Report loaded. " + range, "info");
+      } catch (err) {
+        setBanner(err.message || "Could not load report", "error");
+        $("laCards").hidden = true;
+      }
+    }
+
+    $("laRefresh").addEventListener("click", loadReport);
+    $("laDays").addEventListener("change", loadReport);
+    loadReport();
+  })();
+  </script>
+</body>
+</html>
