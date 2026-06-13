@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Landing Analytics Report</title>
+  <link rel="stylesheet" href="/app.css?v=la-report-20260613b" />
   <style>
     body { margin: 0; background: #080f24; color: #e8ecff; font-family: Inter, system-ui, sans-serif; }
     .shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px; }
@@ -32,6 +33,7 @@
   </style>
 </head>
 <body>
+  <div id="frameContainer">
   <div class="shell">
     <header>
       <h1>Landing Analytics Report</h1>
@@ -49,6 +51,7 @@
         </select>
       </label>
       <button type="button" id="laRefresh">Refresh</button>
+      <button type="button" id="laSignIn" class="secondary" style="background:#101935;border:1px solid #44507a;color:#e8ecff;border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;font-weight:600;">Sign in</button>
     </div>
 
     <div class="banner info" id="laBanner">Loading report…</div>
@@ -94,9 +97,10 @@
       </div>
     </section>
   </div>
+  </div>
 
-  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260613"></script>
-  <script src="/js/dealality-app-shell-auth.js?v=la-report-20260613"></script>
+  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260613b"></script>
+  <script src="/js/dealality-app-shell-auth.js?v=la-report-20260613b"></script>
   <script>
   (function () {
     "use strict";
@@ -112,14 +116,20 @@
     async function apiFetch(path) {
       var headers = { "Content-Type": "application/json" };
       if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.getAuthHeaders) {
-        var auth = await window.DealalityMemberstackAuth.getAuthHeaders(null, { waitForLogin: false });
+        var auth = await window.DealalityMemberstackAuth.getAuthHeaders(null, {
+          waitForLogin: true,
+          maxWaitMs: 8000,
+        });
         if (auth.error) throw new Error(auth.error);
         Object.assign(headers, auth.headers);
       }
       var res = await fetch(path, { headers: headers });
       var data = await res.json().catch(function () { return {}; });
       if (!res.ok) {
-        throw new Error((data && (data.message || data.error)) || res.statusText);
+        var msg = (data && (data.message || data.error)) || res.statusText;
+        if (res.status === 401) msg = "Sign in required — use the Sign in button below.";
+        if (res.status === 403) msg = "Admin access required for this report.";
+        throw new Error(msg);
       }
       return data;
     }
@@ -201,14 +211,40 @@
           : "No events in window";
         setBanner("Report loaded. " + range, "info");
       } catch (err) {
-        setBanner(err.message || "Could not load report", "error");
+        var msg = err.message || "Could not load report";
+        if (/sign in|log in|authentication/i.test(msg)) {
+          msg += " Or sign in at https://dealality.com/log-in then reopen this page with ?msToken=your_eyJ_token.";
+        }
+        setBanner(msg, "error");
         $("laCards").hidden = true;
+      }
+    }
+
+    async function boot() {
+      setBanner("Checking sign-in…", "info");
+      if (window.DealalityAppShellAuth && window.DealalityAppShellAuth.whenReady) {
+        var result = await window.DealalityAppShellAuth.whenReady();
+        if (!result || !result.ok) {
+          setBanner("Sign in required. Click Sign in below, or log in at dealality.com and append ?msToken= to this URL.", "error");
+          return;
+        }
+      }
+      loadReport();
+    }
+
+    function openSignIn() {
+      if (window.DealalityAppShellAuth && window.DealalityAppShellAuth.resetAndBootstrap) {
+        window.DealalityAppShellAuth.resetAndBootstrap();
       }
     }
 
     $("laRefresh").addEventListener("click", loadReport);
     $("laDays").addEventListener("change", loadReport);
-    loadReport();
+    $("laSignIn").addEventListener("click", openSignIn);
+    document.addEventListener("dealality-shell-auth-ready", function () {
+      loadReport();
+    });
+    boot();
   })();
   </script>
 </body>
