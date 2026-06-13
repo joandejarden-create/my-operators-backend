@@ -123,6 +123,7 @@ import { getDashboardHome } from "./api/dashboard-home.js";
 import { getMarketingDemoEmbeds } from "./api/marketing-demo-embeds.js";
 import marketingBetaNotify from "./api/marketing-beta-notify.js";
 import marketingLandingEvents from "./api/marketing-landing-events.js";
+import marketingLandingConfig from "./api/marketing-landing-config.js";
 import {
   getMarketingLandingEventsReport,
   requireLandingAnalyticsAdmin,
@@ -513,6 +514,7 @@ app.patch("/api/intake/third-party-operators/:recordId/status", updateThirdParty
 
 // Marketing — public live iframe URL manifest (Webflow embeds)
 app.get("/api/marketing/demo-embeds", getMarketingDemoEmbeds);
+app.get("/api/marketing/landing-config", marketingLandingConfig);
 app.post("/api/marketing/beta-notify", marketingBetaNotify);
 app.post("/api/marketing/landing-events", marketingLandingEvents);
 app.get(
@@ -1463,6 +1465,12 @@ app.get("/partner-intelligence-review", (req, res) => {
 });
 app.get("/partner-intelligence-review/", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'partner-intelligence-review.html'));
+});
+app.get("/landing-analytics-report", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'marketing', 'landing-analytics-report.html'));
+});
+app.get("/landing-analytics-report/", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'marketing', 'landing-analytics-report.html'));
 });
 
 // Legacy intake URL → Operator Setup (new two) — preserve ?recordId=… and &embed=… for edit prefill
