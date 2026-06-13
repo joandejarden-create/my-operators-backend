@@ -54,6 +54,18 @@ Replace `YOUR-RAILWAY-HOST` in the embed snippet with your production Railway UR
 
 **Deploy requirement:** Railway must serve `public/marketing/` (including screenshots). `?embed=1` hides the Railway nav (Webflow navbar is used) but keeps the landing footer visible inside the iframe.
 
+### Landing analytics (top 20 metrics)
+
+`dealality-landing-analytics.js` records resonance events to:
+
+- `POST /api/marketing/landing-events` → append-only `data/marketing-landing-events.jsonl`
+- Microsoft Clarity custom events (if Clarity is on the landing page)
+- GTM `dataLayer` (if present on parent or landing)
+
+Disable server logging with `LANDING_ANALYTICS_ENABLED=0`.
+
+**Local inspection:** `Get-Content data/marketing-landing-events.jsonl -Tail 20`
+
 **Local test:** open `dealality-landing-v9.html?embed=1` — nav should be hidden; footer should appear at the bottom.
 
 ---

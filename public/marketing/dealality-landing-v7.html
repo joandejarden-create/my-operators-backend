@@ -813,6 +813,7 @@ html.dl-embed-shell .si,html.dl-embed-shell .fbi,html.dl-embed-shell .ft,html.dl
   </div>
 </footer>
 
+<script src="dealality-landing-analytics.js"></script>
 <script>
 const nav=document.getElementById('nav');
 const mnav=document.getElementById('mnav');
@@ -994,7 +995,10 @@ if(rot){
   const closeBtn=document.getElementById('hero-overview-close');
   if(!learn||!panel||!video)return;
   const notifyResize=()=>{window.dispatchEvent(new Event('resize'));};
+  let videoStartedAt=0;
   const openOverview=()=>{
+    if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackVideoOpen();
+    videoStartedAt=Date.now();
     panel.hidden=false;
     panel.classList.add('is-open');
     learn.setAttribute('aria-expanded','true');
@@ -1008,6 +1012,10 @@ if(rot){
     });
   };
   const closeOverview=()=>{
+    if(window.DealalityLandingAnalytics){
+      const watched=videoStartedAt?Math.round((Date.now()-videoStartedAt)/1000):0;
+      window.DealalityLandingAnalytics.trackVideoClose(watched);
+    }
     video.pause();
     panel.hidden=true;
     panel.classList.remove('is-open');
@@ -1065,8 +1073,9 @@ function updateTourUI(){
     fbtourPause.textContent=stageTourPaused?'Resume tour':'Pause tour';
   }
 }
-function activateStage(idx){
+function activateStage(idx,source){
   currentStage=idx;
+  if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackStageTab(idx,source||'manual');
   stageTabs.forEach((t,i)=>{
     const on=i===idx;
     t.classList.toggle('on',on);
@@ -1085,7 +1094,7 @@ function startStageTour(){
   if(stageTourIdleTimer){clearTimeout(stageTourIdleTimer);stageTourIdleTimer=null;}
   stageTourTimer=setInterval(()=>{
     if(stageTourPaused)return;
-    activateStage((currentStage+1)%stageTabs.length);
+    activateStage((currentStage+1)%stageTabs.length,'auto');
   },ms);
   updateTourUI();
 }
@@ -1129,8 +1138,14 @@ if(fbtabsScroll){
 }
 if(fbtourPause){
   fbtourPause.addEventListener('click',()=>{
-    if(stageTourPaused){stageTourPaused=false;scheduleStageTour();}
-    else userPauseStageTour();
+    if(stageTourPaused){
+      stageTourPaused=false;
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackStageTourPause(true);
+      scheduleStageTour();
+    }else{
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackStageTourPause(false);
+      userPauseStageTour();
+    }
   });
 }
 stageTabs.forEach(tab=>{
@@ -1161,7 +1176,10 @@ function audienceFromHash(){
   return key in audHashMap?audHashMap[key]:null;
 }
 audTabs.forEach(tab=>{
-  tab.addEventListener('click',()=>activateAudience(+tab.dataset.a));
+  tab.addEventListener('click',()=>{
+    if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackAudienceTab(+tab.dataset.a);
+    activateAudience(+tab.dataset.a);
+  });
   tab.addEventListener('keydown',e=>{
     if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
     e.preventDefault();
@@ -1201,7 +1219,10 @@ document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',(
   async function submit(){
     if(busy)return;
     const email=(input.value||'').trim();
-    if(!emailRe.test(email)){setNote('Enter a valid email address.','err');input.focus();return;}
+    if(!emailRe.test(email)){
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackEmailCapture('invalid');
+      setNote('Enter a valid email address.','err');input.focus();return;
+    }
     busy=true;
     input.disabled=true;
     btn.disabled=true;
@@ -1210,9 +1231,11 @@ document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',(
       const res=await fetch('/api/marketing/beta-notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
       const data=await res.json().catch(()=>({}));
       if(!res.ok)throw new Error(data.error||data.details||'Request failed');
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackEmailCapture('success');
       setNote("You're on the list — we'll reach out when your market opens.",'ok');
       btn.textContent='Subscribed';
     }catch(e){
+      if(window.DealalityLandingAnalytics)window.DealalityLandingAnalytics.trackEmailCapture('error');
       setNote((e&&e.message)||'Something went wrong. Try again.','err');
       input.disabled=false;
       btn.disabled=false;

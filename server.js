@@ -122,6 +122,7 @@ import { getOutreachDealActivityLog } from "./api/outreach-deal-activity-log.js"
 import { getDashboardHome } from "./api/dashboard-home.js";
 import { getMarketingDemoEmbeds } from "./api/marketing-demo-embeds.js";
 import marketingBetaNotify from "./api/marketing-beta-notify.js";
+import marketingLandingEvents from "./api/marketing-landing-events.js";
 import { getTargetList, addToTargetList, updateTarget, removeFromTargetList, batchRemoveFromTargetList, markAsDeleted, restoreFromDeleted } from "./api/target-list.js";
 import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDealRoom as listBrandDealRequestsForDealRoom, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getDealMetaBatch as getBrandDealMetaBatch, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
 import { getBrandWorkspaceKpiHistory, postBrandWorkspaceKpiSnapshot } from "./api/brand-workspace-kpi-history.js";
@@ -158,6 +159,28 @@ import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
 import { requireOperatorDealsAccess } from "./middleware/requireOperatorDealsAccess.js";
 import { requireOwnerOdrCreateAccess } from "./middleware/requireOwnerOdrCreateAccess.js";
+import { requirePartnerIntelligenceAccess } from "./middleware/requirePartnerIntelligenceAccess.js";
+import {
+  getPartnerIntelligencePilot,
+  listPartnerIntelligenceSources,
+  getPartnerIntelligenceSourceById,
+  createPartnerIntelligenceSource,
+  patchPartnerIntelligenceSource,
+  uploadPartnerIntelligenceSourceFile,
+  resolvePartnerIntelligenceUploadDir,
+} from "./api/partner-intelligence-sources.js";
+import {
+  postPartnerIntelligenceExtractionRun,
+  getPartnerIntelligenceExtractionContext,
+  listPartnerIntelligenceFacts,
+  getPartnerIntelligenceFactById,
+  patchPartnerIntelligenceFactReview,
+  postPartnerIntelligencePublish,
+} from "./api/partner-intelligence-workflow.js";
+import {
+  PARTNER_SOURCE_ALLOWED_UPLOAD_EXT,
+  PARTNER_SOURCE_MAX_UPLOAD_BYTES,
+} from "./lib/partner-intelligence/validate-source-payload.js";
 import { requireDealRecordAccess } from "./middleware/requireDealRecordAccess.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -281,6 +304,36 @@ const dealRoomDocsUpload = multer({
       cb(null, true);
     } else {
       cb(new Error("File type not allowed. Allowed: " + ALLOWED_ATTACHMENT_EXTENSIONS.join(", ")), false);
+    }
+  },
+});
+
+const partnerSourceUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, _file, cb) => {
+      const dir =
+        req.partnerIntelligenceUploadDir ||
+        path.join(__dirname, "data", "partner-sources", "inbox");
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      cb(null, dir);
+    },
+    filename: (_req, file, cb) => {
+      const base = (file.originalname || "source").replace(/[^a-zA-Z0-9._-]/g, "_");
+      cb(null, `${Date.now()}-${base}`);
+    },
+  }),
+  limits: { fileSize: PARTNER_SOURCE_MAX_UPLOAD_BYTES },
+  fileFilter: (_req, file, cb) => {
+    const ext = path.extname(file.originalname || "").toLowerCase();
+    if (PARTNER_SOURCE_ALLOWED_UPLOAD_EXT.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(
+        new Error(
+          "File type not allowed. Allowed: " + PARTNER_SOURCE_ALLOWED_UPLOAD_EXT.join(", ")
+        ),
+        false
+      );
     }
   },
 });
@@ -457,9 +510,11 @@ app.patch("/api/intake/third-party-operators/:recordId/status", updateThirdParty
 // Marketing — public live iframe URL manifest (Webflow embeds)
 app.get("/api/marketing/demo-embeds", getMarketingDemoEmbeds);
 app.post("/api/marketing/beta-notify", marketingBetaNotify);
+app.post("/api/marketing/landing-events", marketingLandingEvents);
 
 // My Deals API (more specific routes first so /outreach-default and /outreach-setup are not treated as recordId)
 const myDealsAuth = [memberstackAuth, requireDealalityUser, requireMyDealsAccess];
+const partnerIntelligenceAuth = [memberstackAuth, requireDealalityUser, requirePartnerIntelligenceAccess];
 const myDealsDealAuth = [...myDealsAuth, requireDealRecordAccess];
 const ownerOdrAuth = [...myDealsAuth, requireOwnerOdrCreateAccess];
 const ownerOdrDealAuth = [...myDealsDealAuth, requireOwnerOdrCreateAccess];
@@ -779,6 +834,18 @@ app.get("/operator-alignment-snapshot.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "operator-alignment-snapshot.html"));
 });
+app.get("/owner-diagnostic-sample", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/owner-diagnostic-sample.html" + q);
+});
+app.get("/owner-diagnostic-sample/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/owner-diagnostic-sample.html" + q);
+});
+app.get("/owner-diagnostic-sample.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "owner-diagnostic-sample.html"));
+});
 app.get("/brand-explorer-export", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
     res.redirect(302, "/brand-explorer-export.html" + q);
@@ -790,6 +857,38 @@ app.get("/brand-explorer-export/", (req, res) => {
 app.get("/brand-explorer-export.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "brand-explorer-export.html"));
+});
+app.get("/operator-explorer-export", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-export.html" + q);
+});
+app.get("/operator-explorer-export/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-export.html" + q);
+});
+app.get("/operator-explorer-export.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "operator-explorer-export.html"));
+});
+app.get("/operator-explorer-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-share.html" + q);
+});
+app.get("/operator-explorer-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-share.html" + q);
+});
+app.get("/operator-explorer-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "operator-explorer-share.html"));
+});
+app.get("/operator-explorer-preview", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-share.html" + q);
+});
+app.get("/operator-explorer-preview/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-share.html" + q);
 });
 app.get("/getting-started", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -1170,6 +1269,56 @@ app.post("/api/partner-directory/favorites", createFavorite);
 app.delete("/api/partner-directory/favorites/:favoriteId", deleteFavorite);
 app.put("/api/partner-directory/favorites/:favoriteId", updateFavorite);
 
+// Partner Intelligence — Source Library (Phase 3; admin auth required)
+app.get("/api/partner-intelligence/pilot", partnerIntelligenceAuth, getPartnerIntelligencePilot);
+app.get("/api/partner-intelligence/sources", partnerIntelligenceAuth, listPartnerIntelligenceSources);
+app.get("/api/partner-intelligence/sources/:recordId", partnerIntelligenceAuth, getPartnerIntelligenceSourceById);
+app.post("/api/partner-intelligence/sources", partnerIntelligenceAuth, createPartnerIntelligenceSource);
+app.patch("/api/partner-intelligence/sources/:recordId", partnerIntelligenceAuth, patchPartnerIntelligenceSource);
+app.post(
+  "/api/partner-intelligence/sources/:recordId/upload",
+  partnerIntelligenceAuth,
+  resolvePartnerIntelligenceUploadDir,
+  (req, res, next) => {
+    partnerSourceUpload.single("file")(req, res, (err) => {
+      if (err) {
+        if (err.code === "LIMIT_FILE_SIZE") {
+          return res.status(413).json({
+            ok: false,
+            success: false,
+            error: "file_too_large",
+            message: "File exceeds maximum upload size.",
+          });
+        }
+        return res.status(400).json({
+          ok: false,
+          success: false,
+          error: "upload_failed",
+          message: err.message || "Upload failed.",
+        });
+      }
+      return next();
+    });
+  },
+  uploadPartnerIntelligenceSourceFile
+);
+
+// Partner Intelligence — extraction, review, publish
+app.get(
+  "/api/partner-intelligence/extraction/context",
+  partnerIntelligenceAuth,
+  getPartnerIntelligenceExtractionContext
+);
+app.post("/api/partner-intelligence/extraction/run", partnerIntelligenceAuth, postPartnerIntelligenceExtractionRun);
+app.get("/api/partner-intelligence/facts", partnerIntelligenceAuth, listPartnerIntelligenceFacts);
+app.get("/api/partner-intelligence/facts/:recordId", partnerIntelligenceAuth, getPartnerIntelligenceFactById);
+app.patch(
+  "/api/partner-intelligence/facts/:recordId/review",
+  partnerIntelligenceAuth,
+  patchPartnerIntelligenceFactReview
+);
+app.post("/api/partner-intelligence/publish", partnerIntelligenceAuth, postPartnerIntelligencePublish);
+
 app.get("/api/brand-explorer/favorites", getBrandExplorerFavorites);
 app.post("/api/brand-explorer/favorites", createBrandExplorerFavorite);
 app.delete("/api/brand-explorer/favorites", deleteBrandExplorerFavorite);
@@ -1296,6 +1445,13 @@ app.get("/brand-explorer-gold-mock", (req, res) => {
 });
 app.get("/brand-explorer-gold-mock/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "brand-explorer-gold-mock.html"));
+});
+
+app.get("/partner-intelligence-review", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'partner-intelligence-review.html'));
+});
+app.get("/partner-intelligence-review/", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'partner-intelligence-review.html'));
 });
 
 // Legacy intake URL → Operator Setup (new two) — preserve ?recordId=… and &embed=… for edit prefill
