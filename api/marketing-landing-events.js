@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { resolveGeoFromRequest } from "../lib/client-ip-geo.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LOG_DIR = path.join(__dirname, "..", "data");
@@ -106,7 +107,21 @@ export default async function marketingLandingEvents(req, res) {
       utmSource: sanitizeString(body.utmSource, 64),
       utmMedium: sanitizeString(body.utmMedium, 64),
       utmCampaign: sanitizeString(body.utmCampaign, 64),
+      geoCountry: null,
+      geoCountryName: null,
+      geoRegion: null,
+      geoCity: null,
+      geoLabel: null,
     };
+
+    if (event === "page_land") {
+      const geo = resolveGeoFromRequest(req);
+      record.geoCountry = sanitizeString(geo.geoCountry, 8);
+      record.geoCountryName = sanitizeString(geo.geoCountryName, 64);
+      record.geoRegion = sanitizeString(geo.geoRegion, 32);
+      record.geoCity = sanitizeString(geo.geoCity, 64);
+      record.geoLabel = sanitizeString(geo.geoLabel, 96);
+    }
 
     appendEvent(record);
     return res.status(204).end();

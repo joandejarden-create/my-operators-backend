@@ -3,53 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Landing Analytics Report</title>
+  <title>Landing Analytics — Dealality</title>
   <style>
+    :root {
+      --bg: #070d1f;
+      --surface: #0f1833;
+      --surface-2: #141f3d;
+      --border: #243056;
+      --text: #eef1ff;
+      --muted: #93a0c8;
+      --accent: #7b82ff;
+      --accent-2: #3dd6c6;
+      --good: #3ecf8e;
+      --warn: #f5b942;
+      --bad: #ff7b8f;
+      --violet: #a78bfa;
+    }
     html { scrollbar-gutter: stable; }
     html, body { margin: 0; min-height: 100%; overflow-x: hidden; overflow-y: auto; }
-    body { background: #080f24; color: #e8ecff; font-family: Inter, system-ui, sans-serif; }
-    .shell { max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px; }
-    h1 { margin: 0 0 8px; font-size: 22px; }
-    .sub { margin: 0 0 20px; color: #9aa8d8; font-size: 14px; }
-    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
-    .toolbar select, .toolbar button {
-      background: #101935; border: 1px solid #2a3560; color: #e8ecff; border-radius: 8px; padding: 8px 12px; font-size: 13px;
+    body {
+      background: radial-gradient(1200px 600px at 10% -10%, #1a2450 0%, transparent 55%), var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
     }
-    .toolbar button { cursor: pointer; background: #6c72ff; border-color: #6c72ff; font-weight: 600; }
-    .banner { margin-bottom: 16px; padding: 10px 14px; border-radius: 8px; font-size: 13px; border: 1px solid #2a3560; }
-    .banner.error { border-color: #8b2942; color: #ff8a9a; }
-    .banner.info { border-color: #44507a; color: #9aa8d8; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
-    .card { background: #101935; border: 1px solid #2a3560; border-radius: 12px; padding: 14px; }
-    .card .label { font-size: 12px; color: #9aa8d8; }
-    .card .value { font-size: 24px; font-weight: 700; margin-top: 6px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-    .panel { background: #101935; border: 1px solid #2a3560; border-radius: 12px; padding: 16px; }
-    .panel h2 { margin: 0 0 12px; font-size: 15px; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #1e2848; }
-    th { color: #9aa8d8; font-weight: 600; }
-    .recent { max-height: 360px; overflow: auto; }
-    .auth-panel { margin-bottom: 16px; padding: 16px; border-radius: 12px; border: 1px solid #44507a; background: #101935; }
-    .auth-panel h2 { margin: 0 0 8px; font-size: 15px; }
-    .auth-panel p { margin: 0 0 10px; color: #9aa8d8; font-size: 13px; line-height: 1.5; }
-    .auth-panel textarea { width: 100%; box-sizing: border-box; min-height: 72px; margin: 8px 0; background: #080f24; border: 1px solid #2a3560; color: #e8ecff; border-radius: 8px; padding: 8px 10px; font-size: 12px; font-family: ui-monospace, monospace; }
+    .shell { max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
+    .page-head { margin-bottom: 24px; }
+    .page-head h1 { margin: 0 0 6px; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+    .page-head .sub { margin: 0; color: var(--muted); font-size: 14px; max-width: 62ch; }
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      margin-bottom: 16px;
+    }
+    .toolbar label { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .toolbar select, .toolbar button {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text);
+      border-radius: 10px; padding: 9px 14px; font-size: 13px;
+    }
+    .toolbar button { cursor: pointer; background: var(--accent); border-color: var(--accent); font-weight: 600; color: #fff; }
+    .banner {
+      margin-bottom: 20px; padding: 11px 14px; border-radius: 10px; font-size: 13px;
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    .banner.error { border-color: #8b2942; color: #ff9aaa; background: #1a0f18; }
+    .banner.info { color: var(--muted); }
+    .auth-panel {
+      margin-bottom: 20px; padding: 18px; border-radius: 14px;
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    .auth-panel h2 { margin: 0 0 8px; font-size: 16px; }
+    .auth-panel p { margin: 0 0 10px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .auth-panel textarea {
+      width: 100%; box-sizing: border-box; min-height: 72px; margin: 8px 0;
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      border-radius: 10px; padding: 10px 12px; font-size: 12px; font-family: ui-monospace, monospace;
+    }
     .auth-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .auth-actions a, .auth-actions button { text-decoration: none; cursor: pointer; background: #6c72ff; border: 1px solid #6c72ff; color: #fff; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; }
-    .auth-actions a.secondary, .auth-actions button.secondary { background: #101935; border-color: #44507a; color: #e8ecff; }
+    .auth-actions a, .auth-actions button {
+      text-decoration: none; cursor: pointer; background: var(--accent); border: 1px solid var(--accent);
+      color: #fff; border-radius: 10px; padding: 9px 14px; font-size: 13px; font-weight: 600;
+    }
+    .auth-actions a.secondary, .auth-actions button.secondary {
+      background: var(--surface-2); border-color: var(--border); color: var(--text);
+    }
+    .insights {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px; margin-bottom: 22px;
+    }
+    .insight {
+      border-radius: 12px; padding: 14px 16px; border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .insight h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+    .insight p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .insight--good { border-color: rgba(62, 207, 142, 0.45); background: linear-gradient(180deg, rgba(62,207,142,0.08), var(--surface)); }
+    .insight--good h3 { color: var(--good); }
+    .insight--warn { border-color: rgba(245, 185, 66, 0.45); background: linear-gradient(180deg, rgba(245,185,66,0.08), var(--surface)); }
+    .insight--warn h3 { color: var(--warn); }
+    .insight--info h3 { color: #9eb4ff; }
+    .kpi-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px; margin-bottom: 22px;
+    }
+    .kpi {
+      border-radius: 14px; padding: 16px; border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .kpi--primary { border-color: rgba(123, 130, 255, 0.5); }
+    .kpi--teal { border-color: rgba(61, 214, 198, 0.45); }
+    .kpi--violet { border-color: rgba(167, 139, 250, 0.45); }
+    .kpi--green { border-color: rgba(62, 207, 142, 0.45); }
+    .kpi__label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .kpi__value { font-size: 30px; font-weight: 700; margin: 8px 0 4px; letter-spacing: -0.03em; }
+    .kpi__sub { font-size: 12px; color: var(--muted); }
+    .layout-main {
+      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 18px; margin-bottom: 18px;
+    }
+    @media (max-width: 960px) { .layout-main { grid-template-columns: 1fr; } }
+    .layout-secondary {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px;
+    }
+    @media (max-width: 760px) { .layout-secondary { grid-template-columns: 1fr; } }
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px;
+    }
+    .panel h2 {
+      margin: 0 0 4px; font-size: 15px; font-weight: 600;
+    }
+    .panel .panel-sub {
+      margin: 0 0 14px; font-size: 12px; color: var(--muted);
+    }
+    .funnel__row { margin-bottom: 12px; }
+    .funnel__meta {
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+      margin-bottom: 6px; font-size: 13px;
+    }
+    .funnel__label { font-weight: 500; }
+    .funnel__stats { color: var(--muted); font-size: 12px; }
+    .funnel__drop { color: var(--bad); font-size: 11px; }
+    .funnel__track, .barlist__track, .journey__track {
+      height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden;
+    }
+    .funnel__bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), #9b9fff); }
+    .journey__step { display: flex; gap: 10px; align-items: flex-start; position: relative; }
+    .journey__num {
+      width: 24px; height: 24px; border-radius: 999px; flex-shrink: 0;
+      display: grid; place-items: center; font-size: 11px; font-weight: 700;
+      background: var(--surface-2); border: 1px solid var(--border); color: var(--muted);
+    }
+    .journey__body { flex: 1; min-width: 0; padding-bottom: 10px; }
+    .journey__head {
+      display: flex; justify-content: space-between; gap: 8px;
+      font-size: 13px; margin-bottom: 5px;
+    }
+    .journey__pct { color: var(--accent-2); font-weight: 600; font-size: 12px; }
+    .journey__bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent-2), #7ee8dc); }
+    .journey__count { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .journey__connector {
+      position: absolute; left: 11px; top: 26px; width: 2px; height: calc(100% - 8px);
+      background: var(--border);
+    }
+    .barlist__row { margin-bottom: 11px; }
+    .barlist__meta {
+      display: flex; justify-content: space-between; gap: 8px;
+      font-size: 13px; margin-bottom: 5px;
+    }
+    .barlist__count { color: var(--muted); font-size: 12px; }
+    .barlist__bar { height: 100%; border-radius: 999px; background: var(--violet); }
+    .barlist__bar--scroll { background: linear-gradient(90deg, #5b8cff, var(--accent)); }
+    .empty { margin: 0; font-size: 13px; color: var(--muted); }
+    details.raw-panel {
+      margin-top: 18px; border: 1px solid var(--border); border-radius: 14px;
+      background: var(--surface); padding: 0 16px 16px;
+    }
+    details.raw-panel summary {
+      cursor: pointer; padding: 14px 0; font-weight: 600; font-size: 14px;
+      color: var(--muted);
+    }
+    details.raw-panel table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    details.raw-panel th, details.raw-panel td {
+      text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border);
+    }
+    details.raw-panel th { color: var(--muted); font-weight: 600; }
+    .raw-key { color: #5c6a94; font-size: 11px; font-family: ui-monospace, monospace; }
+    .recent-wrap { max-height: 380px; overflow: auto; margin-top: 4px; }
+    #laRecent { width: 100%; border-collapse: collapse; font-size: 13px; }
+    #laRecent th, #laRecent td {
+      text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border);
+    }
+    #laRecent th { color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+    #laRecent code { font-size: 11px; color: #b8c4ea; }
   </style>
 </head>
 <body>
   <div class="shell">
-    <header>
-      <h1>Landing Analytics Report</h1>
-      <p class="sub">Admin summary from <code>data/marketing-landing-events.jsonl</code> (Railway disk). Sign in as admin to load.</p>
+    <header class="page-head">
+      <h1>Homepage landing analytics</h1>
+      <p class="sub">
+        How visitors move through the Dealality marketing landing page — from first view to signup.
+        Data is collected on Railway from the Webflow homepage embed and direct visits.
+      </p>
     </header>
 
     <div class="toolbar">
       <label>
-        Window
+        Time window
         <select id="laDays">
           <option value="1">Last 24 hours</option>
           <option value="7" selected>Last 7 days</option>
@@ -63,8 +202,8 @@
     <section class="auth-panel" id="laAuthPanel">
       <h2>Sign in via dealality.com</h2>
       <p>
-        Railway login often fails until <strong>my-operators-backend-staging.up.railway.app</strong> is added in
-        Memberstack → Settings → Application Domains. Until then, sign in on dealality.com and paste your session token below.
+        Sign in on dealality.com and paste your session token below, or add
+        <strong>my-operators-backend-staging.up.railway.app</strong> to Memberstack Application Domains.
       </p>
       <div class="auth-actions">
         <a href="https://dealality.com/log-in" target="_blank" rel="noopener">1. Open dealality.com login</a>
@@ -76,246 +215,90 @@
 
     <div class="banner info" id="laBanner">Loading report…</div>
 
-    <div class="cards" id="laCards" hidden></div>
+    <div id="laReport" hidden>
+      <section class="insights" id="laInsights" hidden></section>
 
-    <div class="grid">
-      <section class="panel">
-        <h2>Events by type</h2>
-        <table id="laByEvent"><tbody></tbody></table>
-      </section>
-      <section class="panel">
-        <h2>CTA clicks by location</h2>
-        <table id="laCta"><tbody></tbody></table>
-      </section>
-      <section class="panel">
-        <h2>Section views</h2>
-        <table id="laSections"><tbody></tbody></table>
-      </section>
-      <section class="panel">
-        <h2>Scroll depth</h2>
-        <table id="laScroll"><tbody></tbody></table>
-      </section>
-      <section class="panel">
-        <h2>Devices</h2>
-        <table id="laDevices"><tbody></tbody></table>
-      </section>
-      <section class="panel">
-        <h2>UTM sources</h2>
-        <table id="laUtm"><tbody></tbody></table>
-      </section>
-    </div>
+      <section class="kpi-grid" id="laCards"></section>
 
-    <section class="panel" style="margin-top:16px;">
-      <h2>Recent events</h2>
-      <div class="recent">
-        <table id="laRecent">
-          <thead>
-            <tr><th>Time</th><th>Event</th><th>Session</th><th>Detail</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div class="layout-main">
+        <section class="panel">
+          <h2>Conversion funnel</h2>
+          <p class="panel-sub">Share of sessions that reach each milestone. Drop-offs show where you may be losing visitors.</p>
+          <div id="laFunnel"></div>
+        </section>
+        <section class="panel">
+          <h2>Page journey</h2>
+          <p class="panel-sub">Sections in scroll order — how far visitors get down the page.</p>
+          <div id="laJourney"></div>
+        </section>
       </div>
-    </section>
+
+      <div class="layout-secondary">
+        <section class="panel">
+          <h2>Visitor countries</h2>
+          <p class="panel-sub">Approximate country from IP on first page load (no exact address).</p>
+          <div id="laGeoCountries"></div>
+        </section>
+        <section class="panel">
+          <h2>Visitor cities</h2>
+          <p class="panel-sub">City-level estimate when available — useful for CALA / regional campaigns.</p>
+          <div id="laGeoCities"></div>
+        </section>
+      </div>
+
+      <div class="layout-secondary">
+        <section class="panel">
+          <h2>CTA performance</h2>
+          <p class="panel-sub">Which “Request Early Access” buttons get clicked.</p>
+          <div id="laCta"></div>
+        </section>
+        <section class="panel">
+          <h2>Scroll depth</h2>
+          <p class="panel-sub">How far visitors scroll as a % of page height.</p>
+          <div id="laScroll"></div>
+        </section>
+        <section class="panel">
+          <h2>Devices</h2>
+          <p class="panel-sub">Desktop vs mobile vs tablet.</p>
+          <div id="laDevices"></div>
+        </section>
+        <section class="panel">
+          <h2>Campaign sources</h2>
+          <p class="panel-sub">UTM source tags on landing visits.</p>
+          <div id="laUtm"></div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h2>Recent activity</h2>
+        <p class="panel-sub">Latest visitor actions — human-readable labels.</p>
+        <div class="recent-wrap">
+          <table id="laRecent">
+            <thead>
+              <tr><th>When</th><th>Action</th><th>Location</th><th>Session</th><th>Detail</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <details class="raw-panel">
+        <summary>Technical event breakdown (for debugging)</summary>
+        <div class="layout-secondary" style="margin-top:12px;margin-bottom:0;">
+          <div>
+            <h3 style="font-size:13px;margin:0 0 8px;color:var(--muted);">Events by type</h3>
+            <table id="laByEvent"><tbody></tbody></table>
+          </div>
+          <div>
+            <h3 style="font-size:13px;margin:0 0 8px;color:var(--muted);">Section view counts</h3>
+            <table id="laSections"><tbody></tbody></table>
+          </div>
+        </div>
+      </details>
+    </div>
   </div>
 
-  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614b"></script>
-  <script>
-  (function () {
-    "use strict";
-
-    var TOKEN_KEY = "dl_la_report_token_v1";
-
-    function $(id) { return document.getElementById(id); }
-
-    function setBanner(msg, kind) {
-      var el = $("laBanner");
-      el.textContent = msg || "";
-      el.className = "banner" + (kind ? " " + kind : "");
-    }
-
-    function extractToken(raw) {
-      if (!raw) return null;
-      var s = String(raw).trim();
-      if (!s) return null;
-      try {
-        if (s.indexOf("msToken=") >= 0) {
-          var u = new URL(s.indexOf("http") === 0 ? s : "https://x.test/?" + s.replace(/^\?/, ""));
-          s = u.searchParams.get("msToken") || u.searchParams.get("memberstackToken") || s;
-        }
-      } catch (_e) {}
-      if (s.indexOf("Bearer ") === 0) s = s.slice(7).trim();
-      if (s.indexOf("eyJ") !== 0) return null;
-      return s;
-    }
-
-    function storeToken(token) {
-      try { sessionStorage.setItem(TOKEN_KEY, token); } catch (_e) {}
-      if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.acceptEmbedJwt) {
-        window.DealalityMemberstackAuth.acceptEmbedJwt(token);
-      }
-    }
-
-    function tokenFromPage() {
-      try {
-        var params = new URLSearchParams(window.location.search);
-        var fromUrl = params.get("msToken") || params.get("memberstackToken");
-        if (fromUrl) return extractToken(fromUrl);
-      } catch (_e) {}
-      try {
-        var saved = sessionStorage.getItem(TOKEN_KEY);
-        if (saved) return extractToken(saved);
-      } catch (_e2) {}
-      return null;
-    }
-
-    async function apiFetch(path) {
-      var headers = { "Content-Type": "application/json" };
-      var pre = tokenFromPage();
-      if (pre) storeToken(pre);
-      if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.getAuthHeaders) {
-        var auth = await window.DealalityMemberstackAuth.getAuthHeaders(null, {
-          waitForLogin: true,
-          maxWaitMs: 3000,
-        });
-        if (auth.error) throw new Error(auth.error);
-        Object.assign(headers, auth.headers);
-      }
-      var res = await fetch(path, { headers: headers });
-      var data = await res.json().catch(function () { return {}; });
-      if (!res.ok) {
-        var msg = (data && (data.message || data.error)) || res.statusText;
-        if (res.status === 401) msg = "Session expired — sign in at dealality.com and paste a fresh token.";
-        if (res.status === 403) msg = "Admin access required for this report.";
-        throw new Error(msg);
-      }
-      return data;
-    }
-
-    function renderRows(tableId, rows, emptyLabel) {
-      var tbody = $(tableId).querySelector("tbody");
-      tbody.innerHTML = "";
-      if (!rows || !rows.length) {
-        var tr = document.createElement("tr");
-        tr.innerHTML = "<td colspan=\"2\">" + (emptyLabel || "No data") + "</td>";
-        tbody.appendChild(tr);
-        return;
-      }
-      rows.forEach(function (row) {
-        var tr = document.createElement("tr");
-        tr.innerHTML = "<td>" + row.key + "</td><td>" + row.count + "</td>";
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderCards(totals) {
-      var cards = [
-        ["Sessions", totals.sessions],
-        ["Events", totals.events],
-        ["Embed sessions", totals.embedSessions],
-        ["Email captures", totals.emailCaptures],
-        ["Video completes", totals.videoCompletes],
-        ["Stage tour completes", totals.stageTourCompletes],
-        ["Median first scroll (s)", totals.medianFirstScrollSeconds != null ? totals.medianFirstScrollSeconds : "—"],
-      ];
-      var el = $("laCards");
-      el.innerHTML = "";
-      cards.forEach(function (pair) {
-        var div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = "<div class=\"label\">" + pair[0] + "</div><div class=\"value\">" + pair[1] + "</div>";
-        el.appendChild(div);
-      });
-      el.hidden = false;
-    }
-
-    function renderRecent(rows) {
-      var tbody = $("laRecent").querySelector("tbody");
-      tbody.innerHTML = "";
-      if (!rows || !rows.length) {
-        var tr = document.createElement("tr");
-        tr.innerHTML = "<td colspan=\"4\">No recent events</td>";
-        tbody.appendChild(tr);
-        return;
-      }
-      rows.forEach(function (e) {
-        var detail = [e.section, e.location, e.label, e.persona, e.depth != null ? e.depth + "%" : null, e.outcome]
-          .filter(Boolean).join(" · ");
-        var tr = document.createElement("tr");
-        tr.innerHTML =
-          "<td>" + (e.ts || "") + "</td>" +
-          "<td>" + (e.event || "") + "</td>" +
-          "<td>" + (e.sessionId ? e.sessionId.slice(0, 12) + "…" : "") + "</td>" +
-          "<td>" + (detail || "") + "</td>";
-        tbody.appendChild(tr);
-      });
-    }
-
-    async function loadReport() {
-      var days = $("laDays").value || "7";
-      setBanner("Loading report…", "info");
-      try {
-        var data = await apiFetch("/api/marketing/landing-events/report?days=" + encodeURIComponent(days));
-        renderCards(data.totals || {});
-        renderRows("laByEvent", data.byEvent);
-        renderRows("laCta", data.ctaLocations, "No CTA clicks yet");
-        renderRows("laSections", data.sections, "No section views yet");
-        renderRows("laScroll", data.scrollDepths, "No scroll depth yet");
-        renderRows("laDevices", data.devices, "No device data yet");
-        renderRows("laUtm", data.utmSources, "No UTM data yet");
-        renderRecent(data.recent);
-        var range = data.window && data.window.firstEventAt && data.window.lastEventAt
-          ? data.window.firstEventAt + " → " + data.window.lastEventAt
-          : "No events in window";
-        setBanner("Report loaded. " + range, "info");
-        hideAuthPanel();
-      } catch (err) {
-        setBanner(err.message || "Could not load report", "error");
-        $("laCards").hidden = true;
-        $("laAuthPanel").hidden = false;
-      }
-    }
-
-    function hideAuthPanel() {
-      var panel = $("laAuthPanel");
-      if (panel) panel.hidden = true;
-    }
-
-    function usePastedToken() {
-      var token = extractToken($("laTokenInput").value) || extractToken(tokenFromPage());
-      if (!token) {
-        setBanner("Paste a valid eyJ… token from dealality.com after signing in.", "error");
-        return;
-      }
-      storeToken(token);
-      loadReport();
-    }
-
-    async function boot() {
-      var token = tokenFromPage();
-      if (token) {
-        storeToken(token);
-        hideAuthPanel();
-        loadReport();
-        return;
-      }
-      setBanner("Sign in at dealality.com, paste your session token below, then click Load report.", "info");
-    }
-
-    $("laRefresh").addEventListener("click", loadReport);
-    $("laDays").addEventListener("change", loadReport);
-    $("laUseToken").addEventListener("click", usePastedToken);
-    $("laPasteHelp").addEventListener("click", function () {
-      alert(
-        "After signing in at dealality.com:\n\n" +
-        "1. Stay on dealality.com\n" +
-        "2. Open browser DevTools → Console\n" +
-        "3. Run: copy(await $memberstackDom.getToken())\n" +
-        "4. Paste here and click Load report with token\n\n" +
-        "Or add my-operators-backend-staging.up.railway.app to Memberstack Application Domains to log in directly on this page."
-      );
-    });
-    boot();
-  })();
-  </script>
+  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614c"></script>
+  <script src="/js/landing-analytics-report.js?v=20260614d"></script>
 </body>
 </html>
