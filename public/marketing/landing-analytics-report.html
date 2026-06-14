@@ -30,6 +30,13 @@
     th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #1e2848; }
     th { color: #9aa8d8; font-weight: 600; }
     .recent { max-height: 360px; overflow: auto; }
+    .auth-panel { margin-bottom: 16px; padding: 16px; border-radius: 12px; border: 1px solid #44507a; background: #101935; }
+    .auth-panel h2 { margin: 0 0 8px; font-size: 15px; }
+    .auth-panel p { margin: 0 0 10px; color: #9aa8d8; font-size: 13px; line-height: 1.5; }
+    .auth-panel textarea { width: 100%; box-sizing: border-box; min-height: 72px; margin: 8px 0; background: #080f24; border: 1px solid #2a3560; color: #e8ecff; border-radius: 8px; padding: 8px 10px; font-size: 12px; font-family: ui-monospace, monospace; }
+    .auth-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .auth-actions a, .auth-actions button { text-decoration: none; cursor: pointer; background: #6c72ff; border: 1px solid #6c72ff; color: #fff; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; }
+    .auth-actions a.secondary, .auth-actions button.secondary { background: #101935; border-color: #44507a; color: #e8ecff; }
   </style>
 </head>
 <body>
@@ -51,8 +58,21 @@
         </select>
       </label>
       <button type="button" id="laRefresh">Refresh</button>
-      <button type="button" id="laSignIn" class="secondary" style="background:#101935;border:1px solid #44507a;color:#e8ecff;border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;font-weight:600;">Sign in</button>
     </div>
+
+    <section class="auth-panel" id="laAuthPanel">
+      <h2>Sign in via dealality.com</h2>
+      <p>
+        Railway login often fails until <strong>my-operators-backend-staging.up.railway.app</strong> is added in
+        Memberstack → Settings → Application Domains. Until then, sign in on dealality.com and paste your session token below.
+      </p>
+      <div class="auth-actions">
+        <a href="https://dealality.com/log-in" target="_blank" rel="noopener">1. Open dealality.com login</a>
+        <button type="button" id="laPasteHelp" class="secondary">How to copy token</button>
+        <button type="button" id="laUseToken">2. Load report with token</button>
+      </div>
+      <textarea id="laTokenInput" placeholder="Paste eyJ… token from dealality.com (or full ?msToken=… URL)"></textarea>
+    </section>
 
     <div class="banner info" id="laBanner">Loading report…</div>
 
@@ -99,11 +119,12 @@
   </div>
   </div>
 
-  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260613b"></script>
-  <script src="/js/dealality-app-shell-auth.js?v=la-report-20260613b"></script>
+  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614"></script>
   <script>
   (function () {
     "use strict";
+
+    var TOKEN_KEY = "dl_la_report_token_v1";
 
     function $(id) { return document.getElementById(id); }
 
@@ -113,12 +134,49 @@
       el.className = "banner" + (kind ? " " + kind : "");
     }
 
+    function extractToken(raw) {
+      if (!raw) return null;
+      var s = String(raw).trim();
+      if (!s) return null;
+      try {
+        if (s.indexOf("msToken=") >= 0) {
+          var u = new URL(s.indexOf("http") === 0 ? s : "https://x.test/?" + s.replace(/^\?/, ""));
+          s = u.searchParams.get("msToken") || u.searchParams.get("memberstackToken") || s;
+        }
+      } catch (_e) {}
+      if (s.indexOf("Bearer ") === 0) s = s.slice(7).trim();
+      if (s.indexOf("eyJ") !== 0) return null;
+      return s;
+    }
+
+    function storeToken(token) {
+      try { sessionStorage.setItem(TOKEN_KEY, token); } catch (_e) {}
+      if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.acceptEmbedJwt) {
+        window.DealalityMemberstackAuth.acceptEmbedJwt(token);
+      }
+    }
+
+    function tokenFromPage() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var fromUrl = params.get("msToken") || params.get("memberstackToken");
+        if (fromUrl) return extractToken(fromUrl);
+      } catch (_e) {}
+      try {
+        var saved = sessionStorage.getItem(TOKEN_KEY);
+        if (saved) return extractToken(saved);
+      } catch (_e2) {}
+      return null;
+    }
+
     async function apiFetch(path) {
       var headers = { "Content-Type": "application/json" };
+      var pre = tokenFromPage();
+      if (pre) storeToken(pre);
       if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.getAuthHeaders) {
         var auth = await window.DealalityMemberstackAuth.getAuthHeaders(null, {
           waitForLogin: true,
-          maxWaitMs: 8000,
+          maxWaitMs: 3000,
         });
         if (auth.error) throw new Error(auth.error);
         Object.assign(headers, auth.headers);
@@ -127,7 +185,7 @@
       var data = await res.json().catch(function () { return {}; });
       if (!res.ok) {
         var msg = (data && (data.message || data.error)) || res.statusText;
-        if (res.status === 401) msg = "Sign in required — use the Sign in button below.";
+        if (res.status === 401) msg = "Session expired — sign in at dealality.com and paste a fresh token.";
         if (res.status === 403) msg = "Admin access required for this report.";
         throw new Error(msg);
       }
@@ -210,39 +268,52 @@
           ? data.window.firstEventAt + " → " + data.window.lastEventAt
           : "No events in window";
         setBanner("Report loaded. " + range, "info");
+        hideAuthPanel();
       } catch (err) {
-        var msg = err.message || "Could not load report";
-        if (/sign in|log in|authentication/i.test(msg)) {
-          msg += " Or sign in at https://dealality.com/log-in then reopen this page with ?msToken=your_eyJ_token.";
-        }
-        setBanner(msg, "error");
+        setBanner(err.message || "Could not load report", "error");
         $("laCards").hidden = true;
+        $("laAuthPanel").hidden = false;
       }
     }
 
-    async function boot() {
-      setBanner("Checking sign-in…", "info");
-      if (window.DealalityAppShellAuth && window.DealalityAppShellAuth.whenReady) {
-        var result = await window.DealalityAppShellAuth.whenReady();
-        if (!result || !result.ok) {
-          setBanner("Sign in required. Click Sign in below, or log in at dealality.com and append ?msToken= to this URL.", "error");
-          return;
-        }
+    function hideAuthPanel() {
+      var panel = $("laAuthPanel");
+      if (panel) panel.hidden = true;
+    }
+
+    function usePastedToken() {
+      var token = extractToken($("laTokenInput").value) || extractToken(tokenFromPage());
+      if (!token) {
+        setBanner("Paste a valid eyJ… token from dealality.com after signing in.", "error");
+        return;
       }
+      storeToken(token);
       loadReport();
     }
 
-    function openSignIn() {
-      if (window.DealalityAppShellAuth && window.DealalityAppShellAuth.resetAndBootstrap) {
-        window.DealalityAppShellAuth.resetAndBootstrap();
+    async function boot() {
+      var token = tokenFromPage();
+      if (token) {
+        storeToken(token);
+        hideAuthPanel();
+        loadReport();
+        return;
       }
+      setBanner("Sign in at dealality.com, paste your session token below, then click Load report.", "info");
     }
 
     $("laRefresh").addEventListener("click", loadReport);
     $("laDays").addEventListener("change", loadReport);
-    $("laSignIn").addEventListener("click", openSignIn);
-    document.addEventListener("dealality-shell-auth-ready", function () {
-      loadReport();
+    $("laUseToken").addEventListener("click", usePastedToken);
+    $("laPasteHelp").addEventListener("click", function () {
+      alert(
+        "After signing in at dealality.com:\n\n" +
+        "1. Stay on dealality.com\n" +
+        "2. Open browser DevTools → Console\n" +
+        "3. Run: copy(await $memberstackDom.getToken())\n" +
+        "4. Paste here and click Load report with token\n\n" +
+        "Or add my-operators-backend-staging.up.railway.app to Memberstack Application Domains to log in directly on this page."
+      );
     });
     boot();
   })();
