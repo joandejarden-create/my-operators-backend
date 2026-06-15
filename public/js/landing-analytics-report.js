@@ -129,11 +129,14 @@
       return {};
     });
     if (!res.ok) {
-      var msg = (data && (data.message || data.error)) || res.statusText;
-      if (res.status === 401) {
+      var msg = (data && data.message) || (data && data.error) || res.statusText;
+      if (res.status === 401 && !data.message) {
         msg = reportKey
-          ? "Invalid access key — check LANDING_ANALYTICS_REPORT_KEY on Railway."
-          : "Access required — open this page with ?key=YOUR_KEY in the URL (set LANDING_ANALYTICS_REPORT_KEY on Railway).";
+          ? "Access key rejected — it must match LANDING_ANALYTICS_REPORT_KEY on Railway exactly."
+          : "Access required — open with ?key=YOUR_KEY or use Advanced admin token.";
+      }
+      if (res.status === 503 && data.error === "report_key_not_configured") {
+        msg = data.message;
       }
       if (res.status === 403) msg = "Admin access required for this report.";
       throw new Error(msg);
@@ -481,6 +484,14 @@
     if (panel) panel.hidden = true;
   }
 
+  function clearReportKey() {
+    try {
+      sessionStorage.removeItem(ACCESS_KEY_STORAGE);
+    } catch (_e) {}
+    if ($("laKeyInput")) $("laKeyInput").value = "";
+    setBanner("Saved key cleared. Set LANDING_ANALYTICS_REPORT_KEY on Railway, then paste the same value.", "info");
+  }
+
   function usePastedKey() {
     var key = ($("laKeyInput") && $("laKeyInput").value) || reportKeyFromPage();
     key = key ? String(key).trim() : "";
@@ -528,6 +539,7 @@
   $("laRefresh").addEventListener("click", loadReport);
   $("laDays").addEventListener("change", loadReport);
   if ($("laUseKey")) $("laUseKey").addEventListener("click", usePastedKey);
+  if ($("laClearKey")) $("laClearKey").addEventListener("click", clearReportKey);
   if ($("laUseToken")) $("laUseToken").addEventListener("click", usePastedToken);
   if ($("laPasteHelp")) {
     $("laPasteHelp").addEventListener("click", function () {

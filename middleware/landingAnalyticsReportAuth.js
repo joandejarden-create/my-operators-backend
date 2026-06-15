@@ -9,14 +9,40 @@ import { requireLandingAnalyticsAdmin } from "../api/marketing-landing-events-re
 
 export function landingAnalyticsKeyGate(req, res, next) {
   const expected = (process.env.LANDING_ANALYTICS_REPORT_KEY || "").trim();
-  if (!expected) {
-    req.landingAnalyticsKeyAuthorized = false;
-    return next();
-  }
   const provided = String(
     req.query?.key || req.headers["x-landing-analytics-key"] || ""
   ).trim();
-  req.landingAnalyticsKeyAuthorized = provided.length > 0 && provided === expected;
+
+  req.landingAnalyticsKeyConfigured = Boolean(expected);
+
+  if (!expected) {
+    req.landingAnalyticsKeyAuthorized = false;
+    if (provided) {
+      return res.status(503).json({
+        ok: false,
+        error: "report_key_not_configured",
+        message:
+          "LANDING_ANALYTICS_REPORT_KEY is not set on this Railway service yet. Add the variable, wait for redeploy, then use the same value as ?key= in your bookmark.",
+      });
+    }
+    return next();
+  }
+
+  if (provided && provided === expected) {
+    req.landingAnalyticsKeyAuthorized = true;
+    return next();
+  }
+
+  if (provided) {
+    return res.status(401).json({
+      ok: false,
+      error: "report_key_invalid",
+      message:
+        "That access key does not match LANDING_ANALYTICS_REPORT_KEY on Railway. Copy the variable value exactly (no extra spaces).",
+    });
+  }
+
+  req.landingAnalyticsKeyAuthorized = false;
   return next();
 }
 
