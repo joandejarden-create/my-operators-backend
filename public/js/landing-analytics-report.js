@@ -2,6 +2,7 @@
   "use strict";
 
   var TOKEN_KEY = "dl_la_report_token_v1";
+  var ACCESS_KEY_STORAGE = "dl_la_report_key_v1";
 
   function $(id) {
     return document.getElementById(id);
@@ -65,6 +66,33 @@
     }
   }
 
+  function reportKeyFromPage() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var fromUrl = params.get("key");
+      if (fromUrl && String(fromUrl).trim()) return String(fromUrl).trim();
+    } catch (_e) {}
+    try {
+      var saved = sessionStorage.getItem(ACCESS_KEY_STORAGE);
+      if (saved) return String(saved).trim();
+    } catch (_e2) {}
+    return null;
+  }
+
+  function storeReportKey(key) {
+    if (!key) return;
+    try {
+      sessionStorage.setItem(ACCESS_KEY_STORAGE, key);
+    } catch (_e) {}
+  }
+
+  function appendReportKey(path) {
+    var key = reportKeyFromPage();
+    if (!key) return path;
+    var sep = path.indexOf("?") >= 0 ? "&" : "?";
+    return path + sep + "key=" + encodeURIComponent(key);
+  }
+
   function tokenFromPage() {
     try {
       var params = new URLSearchParams(window.location.search);
@@ -80,23 +108,33 @@
 
   async function apiFetch(path) {
     var headers = { "Content-Type": "application/json" };
-    var pre = tokenFromPage();
-    if (pre) storeToken(pre);
-    if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.getAuthHeaders) {
-      var auth = await window.DealalityMemberstackAuth.getAuthHeaders(null, {
-        waitForLogin: true,
-        maxWaitMs: 3000,
-      });
-      if (auth.error) throw new Error(auth.error);
-      Object.assign(headers, auth.headers);
+    var reportKey = reportKeyFromPage();
+    var fetchPath = appendReportKey(path);
+
+    if (!reportKey) {
+      var pre = tokenFromPage();
+      if (pre) storeToken(pre);
+      if (window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.getAuthHeaders) {
+        var auth = await window.DealalityMemberstackAuth.getAuthHeaders(null, {
+          waitForLogin: true,
+          maxWaitMs: 3000,
+        });
+        if (auth.error) throw new Error(auth.error);
+        Object.assign(headers, auth.headers);
+      }
     }
-    var res = await fetch(path, { headers: headers });
+
+    var res = await fetch(fetchPath, { headers: headers });
     var data = await res.json().catch(function () {
       return {};
     });
     if (!res.ok) {
       var msg = (data && (data.message || data.error)) || res.statusText;
-      if (res.status === 401) msg = "Session expired — sign in at dealality.com and paste a fresh token.";
+      if (res.status === 401) {
+        msg = reportKey
+          ? "Invalid access key — check LANDING_ANALYTICS_REPORT_KEY on Railway."
+          : "Access required — open this page with ?key=YOUR_KEY in the URL (set LANDING_ANALYTICS_REPORT_KEY on Railway).";
+      }
       if (res.status === 403) msg = "Admin access required for this report.";
       throw new Error(msg);
     }
@@ -443,6 +481,18 @@
     if (panel) panel.hidden = true;
   }
 
+  function usePastedKey() {
+    var key = ($("laKeyInput") && $("laKeyInput").value) || reportKeyFromPage();
+    key = key ? String(key).trim() : "";
+    if (!key) {
+      setBanner("Paste your report access key, or add ?key=… to the URL.", "error");
+      return;
+    }
+    storeReportKey(key);
+    hideAuthPanel();
+    loadReport();
+  }
+
   function usePastedToken() {
     var token = extractToken($("laTokenInput").value) || extractToken(tokenFromPage());
     if (!token) {
@@ -454,6 +504,13 @@
   }
 
   async function boot() {
+    var key = reportKeyFromPage();
+    if (key) {
+      storeReportKey(key);
+      hideAuthPanel();
+      loadReport();
+      return;
+    }
     var token = tokenFromPage();
     if (token) {
       storeToken(token);
@@ -461,21 +518,27 @@
       loadReport();
       return;
     }
-    setBanner("Sign in at dealality.com, paste your session token below, then click Load report.", "info");
+    $("laAuthPanel").hidden = false;
+    setBanner(
+      "Bookmark this page as /landing-analytics-report?key=YOUR_KEY (set LANDING_ANALYTICS_REPORT_KEY on Railway).",
+      "info"
+    );
   }
 
   $("laRefresh").addEventListener("click", loadReport);
   $("laDays").addEventListener("change", loadReport);
-  $("laUseToken").addEventListener("click", usePastedToken);
-  $("laPasteHelp").addEventListener("click", function () {
-    alert(
-      "After signing in at dealality.com:\n\n" +
-        "1. Stay on dealality.com\n" +
-        "2. Open browser DevTools → Console\n" +
-        "3. Run: copy(await $memberstackDom.getToken())\n" +
-        "4. Paste here and click Load report with token\n\n" +
-        "Or add my-operators-backend-staging.up.railway.app to Memberstack Application Domains to log in directly on this page."
-    );
-  });
+  if ($("laUseKey")) $("laUseKey").addEventListener("click", usePastedKey);
+  if ($("laUseToken")) $("laUseToken").addEventListener("click", usePastedToken);
+  if ($("laPasteHelp")) {
+    $("laPasteHelp").addEventListener("click", function () {
+      alert(
+        "After signing in at dealality.com:\n\n" +
+          "1. Stay on dealality.com\n" +
+          "2. Open browser DevTools → Console\n" +
+          "3. Run: copy(await $memberstackDom.getToken())\n" +
+          "4. Paste in Advanced sign-in below and click Load with token"
+      );
+    });
+  }
   boot();
 })();

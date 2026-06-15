@@ -126,8 +126,8 @@ import marketingLandingEvents from "./api/marketing-landing-events.js";
 import marketingLandingConfig from "./api/marketing-landing-config.js";
 import {
   getMarketingLandingEventsReport,
-  requireLandingAnalyticsAdmin,
 } from "./api/marketing-landing-events-report.js";
+import { landingAnalyticsReportAuth } from "./middleware/landingAnalyticsReportAuth.js";
 import { getTargetList, addToTargetList, updateTarget, removeFromTargetList, batchRemoveFromTargetList, markAsDeleted, restoreFromDeleted } from "./api/target-list.js";
 import { createRequest as createBrandDealRequest, listForBrand as listBrandDealRequests, listAll as listBrandDealRequestsAll, listForDealRoom as listBrandDealRequestsForDealRoom, listForDeals as listBrandDealRequestsByDeals, listForDealsPost as listBrandDealRequestsByDealsPost, updateStatus as updateBrandDealRequestStatus, bulkUpdateStatus as bulkUpdateBrandDealRequestStatus, getActivityLog as getBrandDealActivityLog, getDealMetaBatch as getBrandDealMetaBatch, getProposalDraft, submitProposal, getById as getBrandDealRequestById } from "./api/brand-deal-requests.js";
 import { getBrandWorkspaceKpiHistory, postBrandWorkspaceKpiSnapshot } from "./api/brand-workspace-kpi-history.js";
@@ -519,9 +519,7 @@ app.post("/api/marketing/beta-notify", marketingBetaNotify);
 app.post("/api/marketing/landing-events", marketingLandingEvents);
 app.get(
   "/api/marketing/landing-events/report",
-  memberstackAuth,
-  requireDealalityUser,
-  requireLandingAnalyticsAdmin,
+  ...landingAnalyticsReportAuth,
   getMarketingLandingEventsReport
 );
 

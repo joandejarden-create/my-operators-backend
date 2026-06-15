@@ -53,11 +53,14 @@
     }
     .auth-panel h2 { margin: 0 0 8px; font-size: 16px; }
     .auth-panel p { margin: 0 0 10px; color: var(--muted); font-size: 13px; line-height: 1.55; }
-    .auth-panel textarea {
-      width: 100%; box-sizing: border-box; min-height: 72px; margin: 8px 0;
+    .auth-panel input[type="password"],
+    .auth-panel input[type="text"] {
+      width: 100%; box-sizing: border-box; margin: 8px 0;
       background: var(--bg); border: 1px solid var(--border); color: var(--text);
-      border-radius: 10px; padding: 10px 12px; font-size: 12px; font-family: ui-monospace, monospace;
+      border-radius: 10px; padding: 10px 12px; font-size: 13px;
     }
+    .auth-panel details { margin-top: 14px; font-size: 13px; color: var(--muted); }
+    .auth-panel details summary { cursor: pointer; color: var(--text); font-weight: 500; }
     .auth-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .auth-actions a, .auth-actions button {
       text-decoration: none; cursor: pointer; background: var(--accent); border: 1px solid var(--accent);
@@ -199,18 +202,28 @@
       <button type="button" id="laRefresh">Refresh</button>
     </div>
 
-    <section class="auth-panel" id="laAuthPanel">
-      <h2>Sign in via dealality.com</h2>
+    <section class="auth-panel" id="laAuthPanel" hidden>
+      <h2>Report access key</h2>
       <p>
-        Sign in on dealality.com and paste your session token below, or add
-        <strong>my-operators-backend-staging.up.railway.app</strong> to Memberstack Application Domains.
+        No sign-in needed. In Railway → Variables, set <code>LANDING_ANALYTICS_REPORT_KEY</code> to a long random secret,
+        then bookmark:
+        <code>/landing-analytics-report?key=YOUR_SECRET</code>
       </p>
+      <label for="laKeyInput" style="font-size:13px;color:var(--muted);">Access key</label>
+      <input type="password" id="laKeyInput" autocomplete="off" placeholder="Paste the same value as LANDING_ANALYTICS_REPORT_KEY" />
       <div class="auth-actions">
-        <a href="https://dealality.com/log-in" target="_blank" rel="noopener">1. Open dealality.com login</a>
-        <button type="button" id="laPasteHelp" class="secondary">How to copy token</button>
-        <button type="button" id="laUseToken">2. Load report with token</button>
+        <button type="button" id="laUseKey">Open report</button>
       </div>
-      <textarea id="laTokenInput" placeholder="Paste eyJ… token from dealality.com (or full ?msToken=… URL)"></textarea>
+      <details>
+        <summary>Advanced: dealality.com admin token</summary>
+        <p style="margin:10px 0 8px;">Only if you prefer Memberstack admin sign-in instead of a URL key.</p>
+        <div class="auth-actions">
+          <a href="https://dealality.com/log-in" target="_blank" rel="noopener" class="secondary">Open dealality.com login</a>
+          <button type="button" id="laPasteHelp" class="secondary">How to copy token</button>
+          <button type="button" id="laUseToken">Load with token</button>
+        </div>
+        <textarea id="laTokenInput" style="width:100%;box-sizing:border-box;min-height:72px;margin:8px 0;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 12px;font-size:12px;font-family:ui-monospace,monospace;" placeholder="Paste eyJ… token from dealality.com"></textarea>
+      </details>
     </section>
 
     <div class="banner info" id="laBanner">Loading report…</div>
@@ -298,7 +311,7 @@
     </div>
   </div>
 
-  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614c"></script>
-  <script src="/js/landing-analytics-report.js?v=20260614d"></script>
+  <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614e"></script>
+  <script src="/js/landing-analytics-report.js?v=20260614e"></script>
 </body>
 </html>

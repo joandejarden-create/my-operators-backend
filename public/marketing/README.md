@@ -64,7 +64,7 @@ Replace `YOUR-RAILWAY-HOST` in the embed snippet with your production Railway UR
 
 Disable server logging with `LANDING_ANALYTICS_ENABLED=0`.
 
-**Admin report:** `https://<railway-host>/landing-analytics-report` (admin sign-in) → `GET /api/marketing/landing-events/report?days=7`
+**Admin report:** `https://<railway-host>/landing-analytics-report?key=<LANDING_ANALYTICS_REPORT_KEY>` — no Memberstack sign-in when the env key is set. Fallback: admin JWT via dealality.com.
 
 **Clarity in iframe:** set `CLARITY_PROJECT_ID` on Railway (same id as Webflow). Landing loads `dealality-landing-clarity.js` before analytics so custom events (`cta_click`, `scroll_depth`, etc.) reach Clarity.
 
