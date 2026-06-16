@@ -384,6 +384,14 @@ function parseCompanyProfileArrays(req, res, next) {
 }
 
 const app = express();
+const PRODUCTION_CANONICAL_HOSTS = new Set(["dealality.com", "www.dealality.com"]);
+
+function requestHostname(req) {
+  const host = String(req.hostname || req.headers.host || "")
+    .toLowerCase()
+    .trim();
+  return host.replace(/:\d+$/, "");
+}
 
 const DEFAULT_EMBED_ANCESTORS = [
   "https://www.dealality.com",
@@ -454,6 +462,10 @@ app.use((req, res, next) => {
 // Security headers for deployment
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
+  const host = requestHostname(req);
+  if (!PRODUCTION_CANONICAL_HOSTS.has(host)) {
+    res.setHeader("X-Robots-Tag", "noindex, nofollow");
+  }
   const isEmbedRequest = req.query && String(req.query.embed || "") === "1";
   if (isEmbeddableShellRequest(req) || isEmbedRequest) {
     applyEmbedFramePolicy(res);
