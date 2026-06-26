@@ -10,6 +10,23 @@
 
   if (!hasEmbedParam()) return;
 
+  /** Host shells (e.g. My Deals) embed child pages that render their own footer chrome. */
+  try {
+    var path = (window.location.pathname || "").replace(/\/+$/, "");
+    if (/\/my-deals$/i.test(path) || /\/my-deals\.html$/i.test(path)) return;
+  } catch (_pathErr) {
+    /* ignore */
+  }
+
+  try {
+    if (window.parent !== window) {
+      var parentPath = (window.parent.location.pathname || "").replace(/\/+$/, "");
+      if (/\/my-deals$/i.test(parentPath) || /\/my-deals\.html$/i.test(parentPath)) return;
+    }
+  } catch (_parentPathErr) {
+    /* cross-origin parent — show chrome */
+  }
+
   try {
     if (
       window.parent !== window &&
