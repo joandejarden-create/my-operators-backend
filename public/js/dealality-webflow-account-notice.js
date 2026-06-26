@@ -322,10 +322,29 @@
 
   applyAuthPageEarlySkin();
 
+  function landingShellScrollbarCss() {
+    return (
+      "html,body{scrollbar-width:thin!important;scrollbar-color:#6c72ff #080f25!important}" +
+      "html::-webkit-scrollbar,body::-webkit-scrollbar{width:8px!important}" +
+      "html::-webkit-scrollbar-track,body::-webkit-scrollbar-track{background:#080f25!important;border-left:1px solid rgba(87,195,255,.35)!important}" +
+      "html::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb{background:#6c72ff!important}" +
+      "html::-webkit-scrollbar-thumb:hover,body::-webkit-scrollbar-thumb:hover{background:#8b90ff!important}"
+    );
+  }
+
+  function injectLandingScrollbarStyles(doc) {
+    if (!doc || doc.getElementById("dl-landing-shell-scrollbar")) return;
+    var style = doc.createElement("style");
+    style.id = "dl-landing-shell-scrollbar";
+    style.textContent = landingShellScrollbarCss();
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
   function applyPlatformPageEarlySkin() {
     if (!isPlatformDashboardPage() || !global.document) return;
     var doc = global.document;
     doc.documentElement.classList.add("dl-platform-shell");
+    injectLandingScrollbarStyles(doc);
     if (doc.getElementById(PLATFORM_EARLY_STYLE_ID)) return;
     var style = doc.createElement("style");
     style.id = PLATFORM_EARLY_STYLE_ID;
@@ -614,19 +633,6 @@
     injectLandingScrollbarStyles(doc);
     clearPageLoaderOverlays(doc);
     mountAuthLandingBackgroundLayers(doc);
-  }
-
-  function injectLandingScrollbarStyles(doc) {
-    if (!doc || doc.getElementById("dl-landing-shell-scrollbar")) return;
-    var style = doc.createElement("style");
-    style.id = "dl-landing-shell-scrollbar";
-    style.textContent =
-      "html,body{scrollbar-width:thin!important;scrollbar-color:#6c72ff #080f25!important}" +
-      "html::-webkit-scrollbar,body::-webkit-scrollbar{width:8px!important}" +
-      "html::-webkit-scrollbar-track,body::-webkit-scrollbar-track{background:#080f25!important;border-left:1px solid rgba(87,195,255,.35)!important}" +
-      "html::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb{background:#6c72ff!important}" +
-      "html::-webkit-scrollbar-thumb:hover,body::-webkit-scrollbar-thumb:hover{background:#8b90ff!important}";
-    (doc.head || doc.documentElement).appendChild(style);
   }
 
   function applyLandingEmbedTopPadding(doc) {
