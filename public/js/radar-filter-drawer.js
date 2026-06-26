@@ -34,6 +34,49 @@
     return Boolean(drawer && drawer.classList.contains("is-open"));
   }
 
+  /** Keep drawer/footer within the visible iframe viewport (live Webflow embed uses nested iframes). */
+  function syncDrawerViewport() {
+    var drawer = el("radarFilterDrawer");
+    if (!drawer) return;
+    var root = document.documentElement;
+    var height = root && root.clientHeight ? root.clientHeight : window.innerHeight;
+    if (!height || height < 1) return;
+
+    var embedFooter = document.getElementById("platform-embed-chrome-footer");
+    var embedOffset = 0;
+    if (embedFooter && !embedFooter.hidden) {
+      embedOffset = Math.ceil(embedFooter.getBoundingClientRect().height) || 48;
+    }
+
+    root.style.setProperty("--radar-drawer-height", height + "px");
+    root.style.setProperty("--platform-embed-chrome-footer-offset", embedOffset + "px");
+
+    if (window.self !== window.top || embedOffset > 0) {
+      drawer.style.height = Math.max(0, height - embedOffset) + "px";
+      drawer.style.maxHeight = Math.max(0, height - embedOffset) + "px";
+    } else {
+      drawer.style.height = "";
+      drawer.style.maxHeight = "";
+    }
+  }
+
+  function bindDrawerViewportSync() {
+    var resizeTimer = null;
+    function scheduleSync() {
+      if (!isDrawerOpen()) return;
+      if (resizeTimer) window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        resizeTimer = null;
+        syncDrawerViewport();
+      }, 50);
+    }
+
+    window.addEventListener("resize", scheduleSync);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", scheduleSync);
+    }
+  }
+
   function getActiveStatuses() {
     if (typeof window.getRadarStatusFilter === "function") {
       return window.getRadarStatusFilter() || [];
@@ -197,6 +240,7 @@
     }
     overlay.classList.add("is-open");
     drawer.classList.add("is-open");
+    syncDrawerViewport();
     overlay.setAttribute("aria-hidden", "false");
     drawer.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -242,6 +286,7 @@
     });
 
     bindFilterSync();
+    bindDrawerViewportSync();
     mirrorAllOptions();
     syncDrawerFromBar();
     updateBadge();

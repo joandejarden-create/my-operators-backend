@@ -2,12 +2,21 @@
 
 .radar-filter-drawer-overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: rgba(8, 15, 37, 0.55);
   z-index: 1020;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* Standalone embed footer (?embed=1) — keep drawer actions above platform chrome */
+body.has-platform-embed-chrome-footer .radar-filter-drawer-overlay,
+body.has-platform-embed-chrome-footer .radar-filter-drawer {
+  bottom: var(--platform-embed-chrome-footer-offset, 48px);
 }
 
 .radar-filter-drawer-overlay.is-open {
@@ -28,14 +37,16 @@
   position: fixed;
   top: 0;
   right: 0;
+  bottom: 0;
   width: min(440px, 100vw);
-  height: 100vh;
-  height: 100dvh;
+  /* top + bottom anchor to the iframe viewport; avoid 100vh in nested embeds */
+  height: auto;
   background: var(--rfd-bg);
   border-left: 0.6px solid var(--rfd-border);
   z-index: 1021;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   transform: translateX(100%);
   transition: transform 0.28s ease;
   box-shadow: -10px 0 32px rgba(0, 0, 0, 0.45);
@@ -89,7 +100,9 @@
 
 .radar-filter-drawer__body {
   flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 16px 18px 20px;
   scrollbar-width: thin;
   scrollbar-color: var(--rfd-border) var(--rfd-bg-deep);
@@ -230,6 +243,7 @@
   display: flex;
   gap: 10px;
   padding: 14px 18px;
+  padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
   border-top: 0.6px solid var(--rfd-border);
   background: var(--rfd-bg-deep);
 }
