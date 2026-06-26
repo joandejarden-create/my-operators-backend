@@ -1,0 +1,279 @@
+/**
+ * Dealality wave loader — canonical copy from My Deals (my-deals.html).
+ * Use on list overlays, popups, and inline table loading states.
+ */
+
+.loading-deals {
+  padding: 40px;
+  text-align: center;
+}
+
+.loading-deals .loading,
+.dealality-wave-loader {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  margin: 0 auto;
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  min-width: 280px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dealality-wave-loader--fixed,
+.loading.dealality-wave-loader--fixed,
+#loadingState.loading,
+.gold-mock-popup-loading .loading,
+.brand-detail-popup-loading .loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: block;
+  margin: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.loading-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dealality-wave-loader .wave-container,
+.loading .wave-container,
+.loading-deals .wave-container {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  background: var(--neutral--700, #212c4d);
+  border-radius: 50%;
+  border: 2px solid var(--neutral--600, #37446b);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.dealality-wave-loader .wave,
+.loading .wave,
+.loading-deals .wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.dealality-wave-loader .wave-1,
+.loading .wave-1,
+.loading-deals .wave-1 {
+  height: 40%;
+  background: linear-gradient(45deg, #d69e2e, #f4d03f);
+  animation: bl-wave-1 2s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.dealality-wave-loader .wave-2,
+.loading .wave-2,
+.loading-deals .wave-2 {
+  height: 60%;
+  background: linear-gradient(45deg, #b8860b, #d69e2e);
+  animation: bl-wave-2 2s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.dealality-wave-loader .wave-3,
+.loading .wave-3,
+.loading-deals .wave-3 {
+  height: 80%;
+  background: linear-gradient(45deg, #f4d03f, #f7dc6f);
+  animation: bl-wave-3 2s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+.dealality-wave-loader .wave-particles,
+.loading .wave-particles,
+.loading-deals .wave-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.dealality-wave-loader .particle,
+.loading .particle,
+.loading-deals .particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #d69e2e;
+  border-radius: 50%;
+  animation: bl-particle-float 3s ease-in-out infinite;
+  box-shadow: 0 0 4px #d69e2e;
+}
+
+.dealality-wave-loader .particle:nth-child(1),
+.loading .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+.dealality-wave-loader .particle:nth-child(2),
+.loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
+.dealality-wave-loader .particle:nth-child(3),
+.loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
+.dealality-wave-loader .particle:nth-child(4),
+.loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
+
+.loading-text-main {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.loading-text-time {
+  font-size: 12px;
+  color: var(--neutral--400, #aeb9e1);
+}
+
+.loading-text-time:empty {
+  display: none !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+}
+
+.loading-progress {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.loading-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #fdb52a, #d5691b);
+  border-radius: 2px;
+  animation: bl-progress 3s ease-in-out infinite;
+}
+
+@keyframes bl-progress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+@keyframes bl-wave-1 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; }
+  50% { transform: translateX(0%) scaleY(1.2); opacity: 1; }
+}
+
+@keyframes bl-wave-2 {
+  0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; }
+  50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; }
+}
+
+@keyframes bl-wave-3 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; }
+  50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; }
+}
+
+@keyframes bl-particle-float {
+  0% { transform: translateY(100%) scale(0); opacity: 0; }
+  20% { transform: translateY(80%) scale(1); opacity: 1; }
+  80% { transform: translateY(20%) scale(1); opacity: 1; }
+  100% { transform: translateY(0%) scale(0); opacity: 0; }
+}
+
+/* Legacy keyframe aliases — keep older pages animating after centralizing styles */
+@keyframes progress-animation {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+@keyframes wave-1 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; }
+  50% { transform: translateX(0%) scaleY(1.2); opacity: 1; }
+}
+
+@keyframes wave-2 {
+  0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; }
+  50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; }
+}
+
+@keyframes wave-3 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; }
+  50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; }
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(100%) scale(0); opacity: 0; }
+  20% { transform: translateY(80%) scale(1); opacity: 1; }
+  80% { transform: translateY(20%) scale(1); opacity: 1; }
+  100% { transform: translateY(0%) scale(0); opacity: 0; }
+}
+
+@keyframes blib-wave-1 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; }
+  50% { transform: translateX(0%) scaleY(1.2); opacity: 1; }
+}
+
+@keyframes blib-wave-2 {
+  0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; }
+  50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; }
+}
+
+@keyframes blib-wave-3 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; }
+  50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; }
+}
+
+@keyframes oe-wave-1 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; }
+  50% { transform: translateX(0%) scaleY(1.2); opacity: 1; }
+}
+
+@keyframes oe-wave-2 {
+  0%, 100% { transform: translateX(100%) scaleY(1); opacity: 0.6; }
+  50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; }
+}
+
+@keyframes oe-wave-3 {
+  0%, 100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; }
+  50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; }
+}
+
+@keyframes oe-particle-float {
+  0% { transform: translateY(100%) scale(0); opacity: 0; }
+  20% { transform: translateY(80%) scale(1); opacity: 1; }
+  80% { transform: translateY(20%) scale(1); opacity: 1; }
+  100% { transform: translateY(0%) scale(0); opacity: 0; }
+}
+
+@keyframes oe-progress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+@keyframes blib-particle-float {
+  0% { transform: translateY(100%) scale(0); opacity: 0; }
+  20% { transform: translateY(80%) scale(1); opacity: 1; }
+  80% { transform: translateY(20%) scale(1); opacity: 1; }
+  100% { transform: translateY(0%) scale(0); opacity: 0; }
+}
+
+/* My Deals gold progress bar wins over page-local purple/orange overrides */
+.loading .loading-progress-bar,
+.loading-deals .loading-progress-bar,
+.dealality-wave-loader .loading-progress-bar {
+  background: linear-gradient(90deg, #fdb52a, #d5691b);
+  animation: bl-progress 3s ease-in-out infinite;
+}

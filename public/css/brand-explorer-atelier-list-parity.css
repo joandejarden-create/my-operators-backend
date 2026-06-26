@@ -1,4 +1,5 @@
 /* Brand Explorer combined list / card / filter chrome (brand-explorer-combined.html) */
+@import url('/css/dealality-wave-loader.css');
 
         /* CSS Variables - Matching Partner Directory */
         :root {
@@ -488,9 +489,21 @@
             min-width: 0;
             box-sizing: border-box;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 20px;
             margin-bottom: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .results-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            .results-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 500px) {
+            .results-grid { grid-template-columns: 1fr; }
         }
 
         /* Brand Card — Operator Explorer card language */
@@ -695,50 +708,7 @@
 
         .hidden { display: none !important; }
 
-        /* Loading - Partner Directory wave */
-        .loading {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.85);
-            color: white;
-            padding: 20px 24px;
-            border-radius: 12px;
-            z-index: 9999;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-width: 280px;
-        }
-        .loading-content { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .loading .wave-container {
-            width: 32px; height: 32px; position: relative;
-            background: var(--neutral--700);
-            border-radius: 50%;
-            border: 2px solid var(--neutral--600);
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        .loading .wave { position: absolute; bottom: 0; left: 0; right: 0; height: 100%; }
-        .loading .wave-1 { height: 40%; background: linear-gradient(45deg, #d69e2e, #f4d03f); animation: blib-wave-1 2s ease-in-out infinite; animation-delay: 0s; }
-        .loading .wave-2 { height: 60%; background: linear-gradient(45deg, #b8860b, #d69e2e); animation: blib-wave-2 2s ease-in-out infinite; animation-delay: 0.3s; }
-        .loading .wave-3 { height: 80%; background: linear-gradient(45deg, #f4d03f, #f7dc6f); animation: blib-wave-3 2s ease-in-out infinite; animation-delay: 0.6s; }
-        .loading .wave-particles { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
-        .loading .particle { position: absolute; width: 2px; height: 2px; background: #d69e2e; border-radius: 50%; animation: blib-particle-float 3s ease-in-out infinite; box-shadow: 0 0 4px #d69e2e; }
-        .loading .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
-        .loading .particle:nth-child(2) { left: 40%; animation-delay: 0.5s; }
-        .loading .particle:nth-child(3) { left: 60%; animation-delay: 1s; }
-        .loading .particle:nth-child(4) { left: 80%; animation-delay: 1.5s; }
-        .loading-text-main { font-size: 14px; font-weight: 500; color: var(--neutral--100); margin-bottom: 4px; text-transform: capitalize; }
-        .loading-text-time { font-size: 12px; color: var(--neutral--400); text-transform: capitalize; }
-        .loading-progress { width: 100%; height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; margin-top: 8px; }
-        .loading-progress-bar { height: 100%; background: linear-gradient(90deg, var(--secondary--color-5), var(--system--orange-400)); border-radius: 2px; animation: progress-animation 3s ease-in-out infinite; }
-        @keyframes progress-animation { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
-        @keyframes blib-wave-1 { 0%,100% { transform: translateX(-100%) scaleY(1); opacity: 0.8; } 50% { transform: translateX(0%) scaleY(1.2); opacity: 1; } }
-        @keyframes blib-wave-2 { 0%,100% { transform: translateX(100%) scaleY(1); opacity: 0.6; } 50% { transform: translateX(0%) scaleY(1.1); opacity: 0.9; } }
-        @keyframes blib-wave-3 { 0%,100% { transform: translateX(-100%) scaleY(1); opacity: 0.4; } 50% { transform: translateX(0%) scaleY(1.3); opacity: 0.7; } }
-        @keyframes blib-particle-float { 0% { transform: translateY(100%) scale(0); opacity: 0; } 20% { transform: translateY(80%) scale(1); opacity: 1; } 80% { transform: translateY(20%) scale(1); opacity: 1; } 100% { transform: translateY(0%) scale(0); opacity: 0; } }
+        /* Wave loader: dealality-wave-loader.css (My Deals canonical) */
 
         .brand-detail-popup {
             position: fixed;
@@ -820,7 +790,6 @@
         @media (max-width: 768px) {
             .sidebar-wrapper { display: none; }
             .dashboard-main-section { margin-left: 0; }
-            .results-grid { grid-template-columns: 1fr; }
             .filters-section { flex-direction: column; align-items: stretch; }
         }
     
