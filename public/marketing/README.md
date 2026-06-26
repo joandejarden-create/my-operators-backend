@@ -58,11 +58,19 @@ Replace `YOUR-RAILWAY-HOST` in the embed snippet with your production Railway UR
 
 `dealality-landing-analytics.js` records resonance events to:
 
-- `POST /api/marketing/landing-events` → append-only `data/marketing-landing-events.jsonl`
+- `POST /api/marketing/landing-events` → append-only JSONL log (default `data/marketing-landing-events.jsonl`)
 - Microsoft Clarity custom events (if Clarity is on the landing page)
 - GTM `dataLayer` (if present on parent or landing)
 
 Disable server logging with `LANDING_ANALYTICS_ENABLED=0`.
+
+**Persistent storage (Railway):** Railway’s default disk is ephemeral — redeploys wipe the log. Mount a [Railway Volume](https://docs.railway.app/guides/volumes) at `/data` and set:
+
+```bash
+LANDING_ANALYTICS_LOG_FILE=/data/marketing-landing-events.jsonl
+```
+
+The admin report banner shows whether storage is persistent.
 
 **Admin report:** `https://<railway-host>/landing-analytics-report?key=<LANDING_ANALYTICS_REPORT_KEY>` — no Memberstack sign-in when the env key is set. Fallback: admin JWT via dealality.com.
 

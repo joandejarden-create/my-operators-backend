@@ -3,6 +3,7 @@
 
   var TOKEN_KEY = "dl_la_report_token_v1";
   var ACCESS_KEY_STORAGE = "dl_la_report_key_v1";
+  var activeSessionId = null;
 
   function $(id) {
     return document.getElementById(id);
@@ -183,41 +184,53 @@
       {
         label: "Visitors",
         value: sessions,
-        sub: (totals.embedSessions || 0) + " from homepage embed",
+        sub: (totals.embedSessions || 0) + " From Homepage Embed",
         accent: "primary",
       },
       {
-        label: "Deep engagement",
+        label: "Deep Engagement",
         value: deepStep.rate + "%",
-        sub: "Reached FAQ / why section",
+        sub: "Reached FAQ / Why Section",
         accent: "teal",
       },
       {
-        label: "CTA clicks",
+        label: "CTA Clicks",
         value: ctaStep.count,
-        sub: ctaStep.rate + "% of sessions",
+        sub: ctaStep.rate + "% of Sessions",
         accent: "violet",
       },
       {
-        label: "Email signups",
+        label: "Email Signups",
         value: totals.emailCaptures || 0,
-        sub: "Successful captures",
+        sub: "Successful Captures",
         accent: "green",
       },
+    ];
+
+    if (totals.videoOpens > 0 && totals.videoCompletionRate != null) {
+      cards.push({
+        label: "Video Completion Rate",
+        value: totals.videoCompletionRate + "%",
+        sub: (totals.videoCompletes || 0) + " of " + totals.videoOpens + " Opens",
+        accent: "teal",
+      });
+    }
+
+    cards.push(
       {
-        label: "Avg events / visit",
+        label: "Avg Events / Visit",
         value: totals.eventsPerSession != null ? totals.eventsPerSession : "—",
-        sub: (totals.events || 0) + " total events",
+        sub: (totals.events || 0) + " Total Events",
         accent: "muted",
       },
       {
-        label: "Time to first scroll",
+        label: "Time to First Scroll",
         value:
           totals.medianFirstScrollSeconds != null ? totals.medianFirstScrollSeconds + "s" : "—",
-        sub: "Median across sessions",
+        sub: "Median Across Sessions",
         accent: "muted",
-      },
-    ];
+      }
+    );
 
     $("laCards").innerHTML = cards
       .map(function (c) {
@@ -244,7 +257,7 @@
   function renderFunnel(funnel) {
     var el = $("laFunnel");
     if (!funnel || !funnel.steps || !funnel.steps.length) {
-      el.innerHTML = '<p class="empty">No funnel data yet.</p>';
+      el.innerHTML = '<p class="empty">No Funnel Data Yet</p>';
       return;
     }
     var maxCount = funnel.steps[0].count || 1;
@@ -253,11 +266,11 @@
         var width = maxCount ? Math.max(8, Math.round((step.count / maxCount) * 100)) : 8;
         var drop =
           i > 0 && funnel.steps[i - 1].count
-            ? funnel.steps[i - 1].count - step.count
+            ? Math.max(0, funnel.steps[i - 1].count - step.count)
             : 0;
         var dropHtml =
           drop > 0
-            ? '<span class="funnel__drop">−' + drop + " from prior step</span>"
+            ? '<span class="funnel__drop">−' + drop + " From Prior Step</span>"
             : "";
         return (
           '<div class="funnel__row">' +
@@ -284,7 +297,7 @@
   function renderSectionJourney(journey) {
     var el = $("laJourney");
     if (!journey || !journey.length) {
-      el.innerHTML = '<p class="empty">No section journey yet.</p>';
+      el.innerHTML = '<p class="empty">No Section Journey Yet</p>';
       return;
     }
     el.innerHTML = journey
@@ -322,7 +335,7 @@
   function renderBarList(containerId, rows, emptyLabel) {
     var el = $(containerId);
     if (!rows || !rows.length) {
-      el.innerHTML = '<p class="empty">' + esc(emptyLabel || "No data") + "</p>";
+      el.innerHTML = '<p class="empty">' + esc(emptyLabel || "No Data") + "</p>";
       return;
     }
     var max = rows[0].count || 1;
@@ -350,7 +363,404 @@
   }
 
   function renderDevices(rows) {
-    renderBarList("laDevices", rows, "No device data yet");
+    var mapped = (rows || []).map(function (row) {
+      return { key: row.key, label: row.label || row.key, count: row.count };
+    });
+    renderBarList("laDevices", mapped, "No Device Data Yet");
+  }
+
+  function renderEngagementMilestones(rows) {
+    renderBarList(
+      "laEngagement",
+      rows,
+      "No time-on-page milestones yet — fires at 30s, 60s, and 120s."
+    );
+  }
+
+  function renderInteractions(interactions) {
+    var el = $("laInteractions");
+    if (!interactions || !interactions.items || !interactions.items.length) {
+      el.innerHTML =
+        '<p class="empty">No content interactions yet — open the hero video, expand FAQ items, or switch audience tabs on the homepage.</p>';
+      return;
+    }
+    var html = "";
+    html += '<div class="barlist">';
+    var max = interactions.items[0].count || 1;
+    html += interactions.items
+      .map(function (row) {
+        var width = Math.max(6, Math.round((row.count / max) * 100));
+        return (
+          '<div class="barlist__row">' +
+          '<div class="barlist__meta">' +
+          '<span class="barlist__label">' +
+          esc(row.label) +
+          "</span>" +
+          '<span class="barlist__count">' +
+          esc(row.count) +
+          "</span>" +
+          "</div>" +
+          '<div class="barlist__track"><div class="barlist__bar" style="width:' +
+          width +
+          '%"></div></div>' +
+          "</div>"
+        );
+      })
+      .join("");
+    html += "</div>";
+
+    if (interactions.audienceTabs && interactions.audienceTabs.length) {
+      html +=
+        '<p class="panel-sub" style="margin:14px 0 8px;">Audience Tabs</p>';
+      html += interactions.audienceTabs
+        .map(function (row) {
+          return (
+            '<div class="barlist__row">' +
+            '<div class="barlist__meta">' +
+            '<span class="barlist__label">' +
+            esc(row.label) +
+            "</span>" +
+            '<span class="barlist__count">' +
+            esc(row.count) +
+            "</span>" +
+            "</div></div>"
+          );
+        })
+        .join("");
+    }
+
+    if (interactions.navClicks && interactions.navClicks.length) {
+      html +=
+        '<p class="panel-sub" style="margin:14px 0 8px;">Top Nav Clicks</p>';
+      html += interactions.navClicks
+        .slice(0, 6)
+        .map(function (row) {
+          return (
+            '<div class="barlist__row">' +
+            '<div class="barlist__meta">' +
+            '<span class="barlist__label">' +
+            esc(row.label) +
+            "</span>" +
+            '<span class="barlist__count">' +
+            esc(row.count) +
+            "</span>" +
+            "</div></div>"
+          );
+        })
+        .join("");
+    }
+
+    el.innerHTML = html;
+  }
+
+  function renderBenchmarks(rows) {
+    var el = $("laBenchmarks");
+    if (!rows || !rows.length) {
+      el.innerHTML = '<p class="empty">No Benchmark Data Yet</p>';
+      return;
+    }
+    el.innerHTML = rows
+      .map(function (row) {
+        return (
+          '<div class="benchmark-row benchmark--' +
+          esc(row.status) +
+          '">' +
+          '<div><div>' +
+          esc(row.label) +
+          '</div><div class="benchmark__target">Target ' +
+          esc(row.targetRate) +
+          "% · Floor " +
+          esc(row.goodMin) +
+          "%</div></div>" +
+          '<div class="benchmark__rate">' +
+          esc(row.actualRate) +
+          "%</div></div>"
+        );
+      })
+      .join("");
+  }
+
+  function renderGa4(ga4) {
+    var el = $("laGa4");
+    if (!ga4) {
+      el.innerHTML = '<p class="empty">GA4 Config Unavailable</p>';
+      return;
+    }
+    var html =
+      '<div class="ga4-links">' +
+      '<a href="' +
+      esc(ga4.realtimeUrl) +
+      '" target="_blank" rel="noopener">Open GA4 Realtime (' +
+      esc(ga4.propertyId) +
+      ")</a>" +
+      '<a href="' +
+      esc(ga4.homeUrl) +
+      '" target="_blank" rel="noopener">Open GA4 Home</a>' +
+      "</div>";
+    if (ga4.hasCampaigns && ga4.campaigns.length) {
+      html += '<p class="panel-sub" style="margin:0 0 8px;">UTM Sessions in This Window</p>';
+      html += ga4.campaigns
+        .map(function (c) {
+          return (
+            '<div class="barlist__row"><div class="barlist__meta"><span>' +
+            esc(c.label) +
+            '</span><span class="barlist__count">' +
+            esc(c.sessions) +
+            " Sessions</span></div></div>"
+          );
+        })
+        .join("");
+    } else {
+      html +=
+        '<p class="empty" style="margin:0;">No UTM-tagged sessions yet. Add ?utm_source=… to campaign links to compare with GA4.</p>';
+    }
+    if (ga4.note) {
+      html += '<p class="panel-sub" style="margin-top:10px;">' + esc(ga4.note) + "</p>";
+    }
+    el.innerHTML = html;
+  }
+
+  function renderFunnelCompare(compare) {
+    var el = $("laFunnelCompare");
+    if (!compare || (!compare.embed && !compare.standalone)) {
+      el.innerHTML = '<p class="empty">No Embed vs Direct Data Yet</p>';
+      return;
+    }
+    function col(block) {
+      if (!block || !block.steps || !block.steps.length) {
+        return (
+          '<div class="compare-col"><h3>' +
+          esc(block ? block.label : "—") +
+          '</h3><p class="empty">No sessions</p></div>'
+        );
+      }
+      return (
+        '<div class="compare-col"><h3>' +
+        esc(block.label) +
+        " (" +
+        esc(block.sessionCount) +
+        " Sessions)</h3>" +
+        block.steps
+          .map(function (step) {
+            return (
+              '<div class="barlist__row"><div class="barlist__meta"><span>' +
+              esc(step.label) +
+              '</span><span class="barlist__count">' +
+              esc(step.rate) +
+              "% · " +
+              esc(step.count) +
+              "</span></div>" +
+              '<div class="barlist__track"><div class="barlist__bar" style="width:' +
+              Math.max(6, step.rate) +
+              '%"></div></div></div>'
+            );
+          })
+          .join("") +
+        "</div>"
+      );
+    }
+    el.innerHTML =
+      '<div class="compare-grid">' + col(compare.embed) + col(compare.standalone) + "</div>";
+  }
+
+  function renderCtaPaths(ctaPaths) {
+    renderBarList(
+      "laCtaPaths",
+      ctaPaths && ctaPaths.paths,
+      "No CTA Path Data Yet"
+    );
+  }
+
+  function renderFaqHeatmap(rows) {
+    renderBarList("laFaq", rows, "No FAQ Expansions Yet");
+  }
+
+  function renderReturnVisitors(data) {
+    var el = $("laReturnVisitors");
+    if (!data || !data.totalVisitors) {
+      el.innerHTML =
+        '<p class="empty">No Return Visitor Data Yet — visitor id is set on new homepage visits.</p>';
+      return;
+    }
+    var summary =
+      '<p class="panel-sub" style="margin-top:0;">' +
+      esc(data.returningVisitors) +
+      " Returning of " +
+      esc(data.totalVisitors) +
+      " Known Visitors (" +
+      esc(data.returningRate) +
+      "%)</p>";
+    if (!data.visitors || !data.visitors.length) {
+      el.innerHTML = summary + '<p class="empty">No repeat visitors in this window yet.</p>';
+      return;
+    }
+    el.innerHTML =
+      summary +
+      data.visitors
+        .map(function (v) {
+          return (
+            '<div class="return-row"><div><code>' +
+            esc(v.visitorId ? v.visitorId.slice(0, 14) + "…" : "—") +
+            "</code><div>" +
+            esc(v.sessionCount) +
+            " Sessions · " +
+            esc(v.visitDayCount) +
+            " Days</div></div><div>" +
+            esc(v.ctaSessions) +
+            " CTA</div></div>"
+          );
+        })
+        .join("") +
+      (data.note ? '<p class="panel-sub">' + esc(data.note) + "</p>" : "");
+  }
+
+  function renderTiming(timing) {
+    if (!timing) {
+      $("laTimingHours").innerHTML = '<p class="empty">No Timing Data Yet</p>';
+      $("laTimingDays").innerHTML = "";
+      return;
+    }
+    var hours = (timing.hours || []).filter(function (h) {
+      return h.count > 0;
+    });
+    renderBarList(
+      "laTimingHours",
+      hours.length ? hours : timing.hours,
+      "No Hour Data Yet"
+    );
+    renderBarList("laTimingDays", timing.days, "No Day Data Yet");
+    if (timing.peakHour && timing.peakHour.count > 0) {
+      $("laTimingHours").insertAdjacentHTML(
+        "beforeend",
+        '<p class="panel-sub">Peak hour: ' +
+          esc(timing.peakHour.label) +
+          " (" +
+          esc(timing.peakHour.count) +
+          " sessions, " +
+          esc(timing.timezone) +
+          ")</p>"
+      );
+    }
+  }
+
+  function renderSessionStrip(sessions) {
+    var el = $("laSessionStrip");
+    if (!sessions || !sessions.length) {
+      el.innerHTML = '<p class="empty">No Sessions to Replay Yet</p>';
+      $("laSessionTimeline").innerHTML = "";
+      return;
+    }
+    el.innerHTML = sessions
+      .map(function (s) {
+        var short = s.sessionId ? s.sessionId.slice(0, 12) + "…" : "—";
+        var active = s.sessionId === activeSessionId ? " is-active" : "";
+        return (
+          '<button type="button" class="session-chip' +
+          active +
+          '" data-session-id="' +
+          esc(s.sessionId) +
+          '">' +
+          esc(short) +
+          '<span class="session-chip__meta">' +
+          esc(s.embedLabel) +
+          " · " +
+          esc(s.eventCount) +
+          " ev</span></button>"
+        );
+      })
+      .join("");
+    el.querySelectorAll(".session-chip").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        loadSessionReplay(btn.getAttribute("data-session-id"));
+      });
+    });
+  }
+
+  function renderSessionTimeline(data) {
+    var el = $("laSessionTimeline");
+    if (!data || !data.timeline || !data.timeline.length) {
+      el.innerHTML = '<p class="empty">Select a Session Above</p>';
+      return;
+    }
+    el.innerHTML =
+      '<p class="panel-sub" style="margin-top:0;">' +
+      esc(data.eventCount) +
+      " Events · Session " +
+      esc(data.sessionId ? data.sessionId.slice(0, 18) + "…" : "") +
+      "</p>" +
+      data.timeline
+        .map(function (ev) {
+          return (
+            '<div class="timeline__event"><div class="timeline__time">' +
+            esc(fmtTime(ev.ts)) +
+            '</div><div><div class="timeline__label">' +
+            esc(ev.label) +
+            "</div>" +
+            (ev.detail
+              ? '<div class="timeline__detail">' + esc(ev.detail) + "</div>"
+              : "") +
+            "</div></div>"
+          );
+        })
+        .join("");
+  }
+
+  async function loadSessionReplay(sessionId) {
+    if (!sessionId) return;
+    activeSessionId = sessionId;
+    var chips = $("laSessionStrip").querySelectorAll(".session-chip");
+    chips.forEach(function (btn) {
+      btn.classList.toggle(
+        "is-active",
+        btn.getAttribute("data-session-id") === sessionId
+      );
+    });
+    $("laSessionTimeline").innerHTML = '<p class="empty">Loading Session…</p>';
+    try {
+      var days = $("laDays").value || "7";
+      var data = await apiFetch(
+        "/api/marketing/landing-events/session?sessionId=" +
+          encodeURIComponent(sessionId) +
+          "&days=" +
+          encodeURIComponent(days)
+      );
+      renderSessionTimeline(data);
+    } catch (err) {
+      $("laSessionTimeline").innerHTML =
+        '<p class="empty">' + esc(err.message || "Could not load session") + "</p>";
+    }
+  }
+
+  function downloadExport(format) {
+    var days = $("laDays").value || "7";
+    var url =
+      appendReportKey(
+        "/api/marketing/landing-events/export?days=" +
+          encodeURIComponent(days) +
+          "&format=" +
+          encodeURIComponent(format)
+      );
+    window.location.href = url;
+  }
+
+  function formatStorageBanner(storage, totals, window) {
+    var parts = [];
+    parts.push(
+      (totals && totals.sessions ? totals.sessions : 0) + " Sessions"
+    );
+    if (totals && totals.locatedSessions != null) {
+      parts.push(totals.locatedSessions + " With Location");
+    }
+    parts.push(fmtRange(window));
+    if (storage) {
+      if (storage.lineCount != null) {
+        parts.push(storage.lineCount + " Stored Events");
+      }
+      if (!storage.persistent) {
+        parts.push("Ephemeral Storage — Mount a Railway Volume to Keep History");
+      }
+    }
+    return parts.join(" · ");
   }
 
   function renderScrollDepths(rows) {
@@ -371,7 +781,7 @@
           '<div class="barlist__meta">' +
           '<span class="barlist__label">' +
           esc(row.key) +
-          "% down page</span>" +
+          "% Down Page</span>" +
           '<span class="barlist__count">' +
           esc(row.count) +
           "</span>" +
@@ -389,11 +799,20 @@
     var tbody = $("laRecent").querySelector("tbody");
     tbody.innerHTML = "";
     if (!rows || !rows.length) {
-      tbody.innerHTML = '<tr><td colspan="5">No recent activity</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5">No Recent Activity</td></tr>';
       return;
     }
     rows.forEach(function (e) {
       var tr = document.createElement("tr");
+      var sessionCell = "—";
+      if (e.sessionId) {
+        sessionCell =
+          '<code class="session-link" data-session-id="' +
+          esc(e.sessionId) +
+          '" title="View session replay">' +
+          esc(e.sessionId.slice(0, 10) + "…") +
+          "</code>";
+      }
       tr.innerHTML =
         "<td>" +
         esc(fmtTime(e.ts)) +
@@ -404,13 +823,22 @@
         "<td>" +
         esc(e.visitorLocation || "—") +
         "</td>" +
-        "<td><code>" +
-        esc(e.sessionId ? e.sessionId.slice(0, 10) + "…" : "—") +
-        "</code></td>" +
+        "<td>" +
+        sessionCell +
+        "</td>" +
         "<td>" +
         esc(e.detail || "—") +
         "</td>";
       tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll(".session-link").forEach(function (link) {
+      link.addEventListener("click", function () {
+        loadSessionReplay(link.getAttribute("data-session-id"));
+        var panel = $("laSessionTimeline");
+        if (panel && panel.scrollIntoView) {
+          panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      });
     });
   }
 
@@ -419,7 +847,7 @@
     tbody.innerHTML = "";
     if (!rows || !rows.length) {
       tbody.innerHTML =
-        '<tr><td colspan="2">' + esc(emptyLabel || "No data") + "</td></tr>";
+        '<tr><td colspan="2">' + esc(emptyLabel || "No Data") + "</td></tr>";
       return;
     }
     rows.forEach(function (row) {
@@ -440,7 +868,7 @@
 
   async function loadReport() {
     var days = $("laDays").value || "7";
-    setBanner("Loading report…", "info");
+    setBanner("Loading Report…", "info");
     $("laReport").hidden = true;
     try {
       var data = await apiFetch(
@@ -448,28 +876,40 @@
       );
       renderInsights(data.insights);
       renderHeroKpis(data.totals || {}, data.funnel);
+      renderBenchmarks(data.benchmarks);
+      renderGa4(data.ga4);
+      renderFunnelCompare(data.funnelComparison);
       renderFunnel(data.funnel);
       renderSectionJourney(data.funnel && data.funnel.sectionJourney);
-      renderBarList("laCta", data.ctaLocations, "No CTA clicks yet");
-      renderBarList("laGeoCountries", data.geography && data.geography.countries, "No country data yet — captured on new visits after deploy");
-      renderBarList("laGeoCities", data.geography && data.geography.cities, "No city data yet — captured on new visits after deploy");
+      renderCtaPaths(data.ctaPaths);
+      renderFaqHeatmap(data.faqHeatmap);
+      renderReturnVisitors(data.returnVisitors);
+      renderTiming(data.timing);
+      renderEngagementMilestones(data.engagementMilestones);
+      renderInteractions(data.interactions);
+      renderSessionStrip(data.sessionIndex);
+      if (activeSessionId) {
+        loadSessionReplay(activeSessionId);
+      } else {
+        renderSessionTimeline(null);
+      }
+      renderBarList("laCta", data.ctaLocations, "No CTA Clicks Yet");
+      renderBarList("laGeoCountries", data.geography && data.geography.countries, "No Country Data Yet — Captured on New Visits After Deploy");
+      renderBarList("laGeoCities", data.geography && data.geography.cities, "No City Data Yet — Captured on New Visits After Deploy");
       renderScrollDepths(data.scrollDepths);
       renderDevices(data.devices);
-      renderBarList("laUtm", data.utmSources, "No campaign tags yet");
+      renderBarList("laUtm", data.utmSources, "No Campaign Tags Yet");
       renderRecent(data.recent);
-      renderRawTable("laByEvent", data.byEvent, "No events", true);
-      renderRawTable("laSections", data.sections, "No section views", true);
+      renderRawTable("laByEvent", data.byEvent, "No Events", true);
+      renderRawTable("laSections", data.sections, "No Section Views", true);
       $("laReport").hidden = false;
+      var bannerKind = data.storage && !data.storage.persistent ? "warn" : "info";
       setBanner(
-        "Showing " +
-          (data.totals && data.totals.sessions ? data.totals.sessions : 0) +
-          " sessions" +
-          (data.totals && data.totals.locatedSessions != null
-            ? " · " + data.totals.locatedSessions + " with location"
-            : "") +
-          " · " +
-          fmtRange(data.window),
-        "info"
+        formatStorageBanner(data.storage, data.totals, data.window) +
+          (data.storage && data.storage.retentionNote && !data.storage.persistent
+            ? " — " + data.storage.retentionNote
+            : ""),
+        bannerKind
       );
       hideAuthPanel();
     } catch (err) {
@@ -538,6 +978,16 @@
 
   $("laRefresh").addEventListener("click", loadReport);
   $("laDays").addEventListener("change", loadReport);
+  if ($("laExportEvents")) {
+    $("laExportEvents").addEventListener("click", function () {
+      downloadExport("events");
+    });
+  }
+  if ($("laExportFunnel")) {
+    $("laExportFunnel").addEventListener("click", function () {
+      downloadExport("funnel");
+    });
+  }
   if ($("laUseKey")) $("laUseKey").addEventListener("click", usePastedKey);
   if ($("laClearKey")) $("laClearKey").addEventListener("click", clearReportKey);
   if ($("laUseToken")) $("laUseToken").addEventListener("click", usePastedToken);

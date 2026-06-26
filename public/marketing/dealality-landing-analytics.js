@@ -6,6 +6,7 @@
   "use strict";
 
   var SESSION_KEY = "dl_landing_sid_v1";
+  var VISITOR_KEY = "dl_landing_vid_v1";
   var SCROLL_DEPTHS = [25, 50, 75, 100];
   var ENGAGEMENT_SECONDS = [30, 60, 120];
   var VIDEO_PCTS = [25, 50, 75, 100];
@@ -52,6 +53,22 @@
     mobileNavOpen: false,
   };
 
+  function visitorId() {
+    try {
+      var existing = localStorage.getItem(VISITOR_KEY);
+      if (existing) return existing;
+      var id =
+        "dlv_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random().toString(36).slice(2, 11);
+      localStorage.setItem(VISITOR_KEY, id);
+      return id;
+    } catch (_e) {
+      return null;
+    }
+  }
+
   function sessionId() {
     try {
       var existing = sessionStorage.getItem(SESSION_KEY);
@@ -95,6 +112,7 @@
     var p = params();
     return {
       sessionId: sessionId(),
+      visitorId: visitorId(),
       embed: p.get("embed") === "1",
       device: deviceClass(),
       landingVersion: landingVersion(),

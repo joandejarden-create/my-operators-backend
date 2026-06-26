@@ -1,11 +1,9 @@
 import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 import { resolveGeoFromRequest } from "../lib/client-ip-geo.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const LOG_DIR = path.join(__dirname, "..", "data");
-const LOG_FILE = path.join(LOG_DIR, "marketing-landing-events.jsonl");
+import {
+  ensureLandingEventsLogDir,
+  getLandingEventsLogFile,
+} from "../lib/marketing-landing-events-path.js";
 
 const ALLOWED_EVENTS = new Set([
   "page_land",
@@ -45,10 +43,9 @@ function sanitizeString(value, maxLen) {
 }
 
 function appendEvent(record) {
-  if (!fs.existsSync(LOG_DIR)) {
-    fs.mkdirSync(LOG_DIR, { recursive: true });
-  }
-  fs.appendFileSync(LOG_FILE, JSON.stringify(record) + "\n", "utf8");
+  const logFile = getLandingEventsLogFile();
+  ensureLandingEventsLogDir(logFile);
+  fs.appendFileSync(logFile, JSON.stringify(record) + "\n", "utf8");
 }
 
 /**
