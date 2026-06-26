@@ -10,6 +10,7 @@
   var AUTH_MOBILE_LAYOUT_STYLE_ID = "dl-auth-mobile-layout-style";
   var AUTH_BG_EARLY_STYLE_ID = "dl-auth-landing-bg-early";
   var PLATFORM_EARLY_STYLE_ID = "dl-platform-shell-early";
+  var PLATFORM_SCROLLBAR_STYLE_ID = "dl-platform-shell-scrollbar";
   var AUTH_BG_ROOT_ID = "dl-auth-bg-root";
   var BANNER_ID = "dealality-account-pending-banner";
   var LANDING_BG = "#080f25";
@@ -340,11 +341,31 @@
     (doc.head || doc.documentElement).appendChild(style);
   }
 
+  /** Match app.css / Railway embed scrollbars (6px, neutral thumb — not landing purple). */
+  function platformShellScrollbarCss() {
+    return (
+      "html.dl-platform-shell,html.dl-platform-shell body{scrollbar-gutter:stable!important;scrollbar-width:thin!important;scrollbar-color:#37446b #080f25!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar,html.dl-platform-shell body::-webkit-scrollbar{width:6px!important;height:6px!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar-track,html.dl-platform-shell body::-webkit-scrollbar-track{background:#080f25!important;border-left:1px solid rgba(87,195,255,.35)!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar-thumb,html.dl-platform-shell body::-webkit-scrollbar-thumb{background:#37446b!important;border-radius:0!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar-thumb:hover,html.dl-platform-shell body::-webkit-scrollbar-thumb:hover{background:#7e89ac!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar-corner,html.dl-platform-shell body::-webkit-scrollbar-corner{background:#080f25!important}"
+    );
+  }
+
+  function injectPlatformScrollbarStyles(doc) {
+    if (!doc || doc.getElementById(PLATFORM_SCROLLBAR_STYLE_ID)) return;
+    var style = doc.createElement("style");
+    style.id = PLATFORM_SCROLLBAR_STYLE_ID;
+    style.textContent = platformShellScrollbarCss();
+    (doc.head || doc.documentElement).appendChild(style);
+  }
+
   function applyPlatformPageEarlySkin() {
     if (!isPlatformDashboardPage() || !global.document) return;
     var doc = global.document;
     doc.documentElement.classList.add("dl-platform-shell");
-    injectLandingScrollbarStyles(doc);
+    injectPlatformScrollbarStyles(doc);
     if (doc.getElementById(PLATFORM_EARLY_STYLE_ID)) return;
     var style = doc.createElement("style");
     style.id = PLATFORM_EARLY_STYLE_ID;
