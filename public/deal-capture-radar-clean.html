@@ -8,6 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>Dealality Radar - Dealality</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/travel-infrastructure-radar-filters.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1606,6 +1607,19 @@
                                 </div>
                             </div>
                         </label>
+                        <div id="infrastructureFilterWrap" class="infra-filter-wrap" style="display: none;">
+                            <div id="infrastructureFilterChips" class="infra-filter-chips" role="group" aria-label="Travel Infrastructure point type filters"></div>
+                            <p id="infrastructureEmptyState" class="infra-empty-state" style="display: none;">No travel infrastructure points found for this filter.</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="demandAnchorsToggle" onchange="toggleDemandAnchors()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Demand Anchors</span>
+                        </label>
+                        <div id="demandAnchorsFilterWrap" class="infra-filter-wrap" style="display: none;">
+                            <div id="demandAnchorsFilterChips" class="infra-filter-chips" role="group" aria-label="Demand Anchors point type filters"></div>
+                            <p id="demandAnchorsEmptyState" class="infra-empty-state" style="display: none;">No demand anchor points found for this filter.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1787,6 +1801,53 @@
                         <div class="legend-marker infrastructure-convention"></div>
                         <span>Convention Centers</span>
                     </div>
+                    <div class="legend-item" id="infrastructureLegend4" style="display: none !important;">
+                        <div class="legend-marker infrastructure-ferry"></div>
+                        <span>Ferry Terminals</span>
+                    </div>
+                    <div class="legend-item" id="infrastructureLegend5" style="display: none !important;">
+                        <div class="legend-marker infrastructure-port"></div>
+                        <span>Ports / Maritime</span>
+                    </div>
+                    <div class="legend-item" id="infrastructureLegend6" style="display: none !important;">
+                        <div class="legend-marker infrastructure-highway"></div>
+                        <span>Highway Access</span>
+                    </div>
+                    <div class="legend-item" id="infrastructureLegend7" style="display: none !important;">
+                        <div class="legend-marker infrastructure-bus"></div>
+                        <span>Bus Terminals</span>
+                    </div>
+                    <div class="legend-section" id="demandAnchorsSection" style="display: none !important;">
+                        <strong>Demand Anchors</strong>
+                    </div>
+                    <div class="legend-item" id="demandAnchorsLegend1" style="display: none !important;">
+                        <div class="legend-marker demand-anchor-beach"></div>
+                        <span>Beaches &amp; Waterfront</span>
+                    </div>
+                    <div class="legend-item" id="demandAnchorsLegend2" style="display: none !important;">
+                        <div class="legend-marker demand-anchor-attraction"></div>
+                        <span>Tourist Attractions</span>
+                    </div>
+                    <div class="legend-item" id="demandAnchorsLegend3" style="display: none !important;">
+                        <div class="legend-marker demand-anchor-entertainment"></div>
+                        <span>Entertainment Districts</span>
+                    </div>
+                    <div class="legend-item" id="demandAnchorsLegend4" style="display: none !important;">
+                        <div class="legend-marker demand-anchor-institutional"></div>
+                        <span>Medical / University</span>
+                    </div>
+                    <div class="legend-item" id="demandAnchorsLegend5" style="display: none !important;">
+                        <div class="legend-marker demand-anchor-sports"></div>
+                        <span>Sports Venues</span>
+                    </div>
+                    <div class="legend-item" id="demandAnchorsLegend6" style="display: none !important;">
+                        <div class="legend-marker demand-anchor-business"></div>
+                        <span>Business &amp; Civic</span>
+                    </div>
+                    <div class="legend-item" id="demandAnchorsLegend7" style="display: none !important;">
+                        <div class="legend-marker demand-anchor-industrial"></div>
+                        <span>Industrial / Mixed-Use / Growth</span>
+                    </div>
                 </div>
             </div>
 
@@ -1919,6 +1980,8 @@
 
 
 
+    <script src="/js/travel-infrastructure-radar-layer.js"></script>
+    <script src="/js/demand-anchors-radar-layer.js"></script>
     <script src="brand-presence-mapping-clean.js"></script>
     <script src="/embed-chrome.js" defer></script>
 </body>

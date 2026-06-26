@@ -309,6 +309,11 @@
                 radarPanel.classList.remove('rl-hidden');
                 radarPanel.style.display = 'flex';
                 listPanel.classList.add('rl-hidden');
+                setTimeout(function () {
+                    if (typeof window.refreshRadarMapSize === 'function') {
+                        window.refreshRadarMapSize({ pan: false, delay: 50 });
+                    }
+                }, 50);
             } else {
                 radarPanel.classList.add('rl-hidden');
                 radarPanel.style.display = 'none';
@@ -321,18 +326,23 @@
 
 (function () {
     function moveRadarToggles() {
-        var mount = document.getElementById('radarTogglesMount');
+        var mount = document.getElementById('radarFilterDrawerTogglesMount');
         var headerActions = document.querySelector('.mapping-header .header-actions');
         if (!mount || !headerActions) return;
         var controls = headerActions.querySelector('.overlay-controls');
         if (controls) mount.appendChild(controls);
         headerActions.remove();
+        if (window.RadarLayerDrawer && typeof window.RadarLayerDrawer.enhance === 'function') {
+            window.RadarLayerDrawer.enhance();
+        }
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', moveRadarToggles);
     else moveRadarToggles();
 })();
 
 (function () {
+    var scrollOffsetTimer = null;
+
     function setMapControlOffset() {
         var header = document.querySelector('.mapping-header');
         var mapEl = document.getElementById('map');
@@ -343,17 +353,29 @@
         var left = Math.round(r.left) + 12;
         mapEl.style.setProperty('--radar-map-zoom-top', top + 'px');
         mapEl.style.setProperty('--radar-map-zoom-left', left + 'px');
+        if (typeof window.refreshRadarMapSize === 'function') {
+            window.refreshRadarMapSize({ pan: false, delay: 150 });
+        }
     }
+
+    function scheduleMapControlOffset() {
+        if (scrollOffsetTimer) return;
+        scrollOffsetTimer = window.setTimeout(function () {
+            scrollOffsetTimer = null;
+            setMapControlOffset();
+        }, 100);
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function () {
             setMapControlOffset();
             window.addEventListener('resize', setMapControlOffset);
-            window.addEventListener('scroll', setMapControlOffset, { passive: true });
+            window.addEventListener('scroll', scheduleMapControlOffset, { passive: true });
         });
     } else {
         setMapControlOffset();
         window.addEventListener('resize', setMapControlOffset);
-        window.addEventListener('scroll', setMapControlOffset, { passive: true });
+        window.addEventListener('scroll', scheduleMapControlOffset, { passive: true });
     }
 })();
 

@@ -43,10 +43,31 @@ import {
 } from "./api/market-alerts.js";
 import { getMarketAlertsNews } from "./api/market-alerts-news.js";
 import { analyzeDeal } from "./api/deal-intelligence.js";
-import { getBrandPresence, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
+import { getBrandPresence, getBrandPresenceHotelById, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
 import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } from "./api/operators-by-brand-region.js";
-import { getTravelInfrastructure } from "./api/travel-infrastructure.js";
+import { getTravelInfrastructure, getRadarMapTravelInfrastructurePoints, postTravelInfrastructureImportPreview, postTravelInfrastructureImportCommit } from "./api/travel-infrastructure.js";
+import { getDemandAnchors, getRadarMapDemandAnchorsPoints, postDemandAnchorsImportPreview, postDemandAnchorsImportCommit } from "./api/demand-anchors.js";
+import { getRadarBuildoutCountries, getRadarBuildoutCountry } from "./api/radar-buildout.js";
+import {
+  getGrowthSignalsSummary,
+  getGrowthSignalTypes,
+  getGrowthSignalsCountries,
+  getGrowthSignalsCountryDetail,
+  getGrowthSignalsSubmarket,
+  getGrowthSignalsFlat,
+} from "./api/growth-signals.js";
 import { getDealalityScout, getDealalityScoutFilters } from "./api/dealality-scout.js";
+import { getScoutMarketCoverage } from "./api/scout-market-coverage.js";
+import { getScoutOpportunitySignals } from "./api/scout-opportunity-signals.js";
+import {
+  postScoutOpportunitySignalSave,
+  getScoutOpportunitySignalsSaved,
+  patchScoutOpportunitySignal,
+} from "./api/scout-opportunity-signals-watchlist.js";
+import { getScoutMarketMap } from "./api/scout-market-map.js";
+import { getScoutDemandOverlays } from "./api/scout-demand-overlays.js";
+import { getScoutMarketInsights } from "./api/scout-market-insights.js";
+import { getScoutInsightReview } from "./api/scout-insight-review.js";
 import { getBrandReviewDeals, updateDealStatus, getDealDetails, bulkUpdateDeals, getBrandReviewStats, getMatchedBrands } from "./api/brand-review.js";
 import { analyzeBrandFit, getDealBrandFit, getAllDealsForAnalysis } from "./api/brand-fit-analyzer.js";
 import { getClauses, getClauseById, getClauseVariables, getClauseIds, createClause } from "./api/clause-library.js";
@@ -91,6 +112,11 @@ import {
   deleteOperatorExplorerFavorite,
 } from "./api/operator-explorer-favorites.js";
 import {
+  getCapitalExplorerFavorites,
+  createCapitalExplorerFavorite,
+  deleteCapitalExplorerFavorite,
+} from "./api/capital-explorer-favorites.js";
+import {
   createCompanyProfile,
   updateCompanyProfile,
   getCompanyProfilePrefill,
@@ -111,6 +137,14 @@ import {
   getOperatorCapabilitySnapshot,
   postOperatorCapabilitySnapshot,
 } from "./api/operator-capability-snapshot.js";
+import {
+  getDealDemandCenters,
+  getDealNearbyHotelSupply,
+  getDealMarketDemandSnapshot,
+  postGenerateMarketDemandSnapshot,
+  postImportDemandCenters,
+  postPreviewDemandCenterImport,
+} from "./api/market-demand.js";
 import {
   getOperatorAlignmentSnapshotProfile,
   getOperatorAlignmentSnapshotCompanies,
@@ -152,6 +186,12 @@ import {
 import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
+import {
+  listCapitalProviders,
+  getCapitalProviderById,
+  handleCapitalProviderExplorer,
+} from "./api/capital-provider-explorer.js";
+import { optionalDealalityAuth } from "./middleware/optionalDealalityAuth.js";
 import {
   createMyDealsOperatorRequest,
   listMyDealsOperatorRequestsByDeals,
@@ -575,6 +615,16 @@ app.get(
   getOperatorCapabilitySnapshot
 );
 app.post("/api/ai/operator-capability-snapshot", postOperatorCapabilitySnapshot);
+const marketDemandDealAuth = (req, _res, next) => {
+  req.params.recordId = req.params.dealId;
+  next();
+};
+app.get("/api/deals/:dealId/demand-centers", marketDemandDealAuth, ...myDealsDealAuth, getDealDemandCenters);
+app.get("/api/deals/:dealId/nearby-hotel-supply", marketDemandDealAuth, ...myDealsDealAuth, getDealNearbyHotelSupply);
+app.get("/api/deals/:dealId/market-demand-snapshot", marketDemandDealAuth, ...myDealsDealAuth, getDealMarketDemandSnapshot);
+app.post("/api/deals/:dealId/generate-market-demand-snapshot", marketDemandDealAuth, ...myDealsDealAuth, postGenerateMarketDemandSnapshot);
+app.post("/api/deals/:dealId/preview-demand-center-import", marketDemandDealAuth, ...myDealsDealAuth, postPreviewDemandCenterImport);
+app.post("/api/deals/:dealId/import-demand-centers", marketDemandDealAuth, ...myDealsDealAuth, postImportDemandCenters);
 app.get(
   "/api/operator-alignment-snapshot/:dealId/profile",
   (req, _res, next) => {
@@ -844,6 +894,18 @@ app.get("/operator-capability-snapshot/", (req, res) => {
 app.get("/operator-capability-snapshot.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "operator-capability-snapshot.html"));
+});
+app.get("/market-demand", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/market-demand.html" + q);
+});
+app.get("/market-demand/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/market-demand.html" + q);
+});
+app.get("/market-demand.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "market-demand.html"));
 });
 app.get("/operator-alignment-snapshot", (req, res) => {
     const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
@@ -1208,6 +1270,7 @@ app.get("/api/market-alerts/news", getMarketAlertsNews);
 app.post("/api/deal-intelligence/analyze", analyzeDeal);
 
 // Brand Presence API endpoints
+app.get("/api/brand-presence/hotel/:recordId", getBrandPresenceHotelById);
 app.get("/api/brand-presence", getBrandPresence);
 app.get("/api/brand-presence/statistics", getBrandStatistics);
 app.get("/api/brand-presence/white-space", getWhiteSpaceOpportunities);
@@ -1223,10 +1286,44 @@ app.get("/api/operators-by-brand-region/filters", getOperatorsByBrandRegionFilte
 
 // Travel Infrastructure API endpoints
 app.get("/api/travel-infrastructure", getTravelInfrastructure);
+app.get("/api/radar-map-points/travel-infrastructure", getRadarMapTravelInfrastructurePoints);
+app.post("/api/radar-map-points/travel-infrastructure/import-preview", postTravelInfrastructureImportPreview);
+app.post("/api/radar-map-points/travel-infrastructure/import-commit", postTravelInfrastructureImportCommit);
+
+// Demand Anchors API endpoints
+app.get("/api/demand-anchors", getDemandAnchors);
+app.get("/api/radar-map-points/demand-anchors", getRadarMapDemandAnchorsPoints);
+app.post("/api/radar-map-points/demand-anchors/import-preview", postDemandAnchorsImportPreview);
+app.post("/api/radar-map-points/demand-anchors/import-commit", postDemandAnchorsImportCommit);
+
+// CALA Radar Buildout
+app.get("/api/radar-buildout/countries", getRadarBuildoutCountries);
+app.get("/api/radar-buildout/countries/:country", getRadarBuildoutCountry);
+
+// CALA submarket growth signals (owner/brand early-entry metadata)
+app.get("/api/growth-signals/summary", getGrowthSignalsSummary);
+app.get("/api/growth-signals/types", getGrowthSignalTypes);
+app.get("/api/growth-signals", getGrowthSignalsFlat);
+app.get("/api/growth-signals/profiles", getGrowthSignalsCountries);
+app.get("/api/growth-signals/countries/:country", getGrowthSignalsCountryDetail);
+app.get("/api/growth-signals/countries/:country/submarkets/:submarket", getGrowthSignalsSubmarket);
 
 // Dealality Scout API endpoints (mock dataset until census-backed)
 app.get("/api/dealality-scout", getDealalityScout);
 app.get("/api/dealality-scout/filters", getDealalityScoutFilters);
+
+// Scout Phase 1 — census-backed market coverage (read-only)
+app.get("/api/scout/market-coverage", getScoutMarketCoverage);
+app.get("/api/scout/market-map", getScoutMarketMap);
+app.get("/api/scout/demand-overlays", getScoutDemandOverlays);
+app.get("/api/scout/market-insights", getScoutMarketInsights);
+app.get("/api/scout/insight-review", getScoutInsightReview);
+
+// Scout Phase 2 — opportunity signals (read-only generation; saved metadata annotated)
+app.post("/api/scout/opportunity-signals/save", postScoutOpportunitySignalSave);
+app.get("/api/scout/opportunity-signals/saved", getScoutOpportunitySignalsSaved);
+app.patch("/api/scout/opportunity-signals/:signalId", patchScoutOpportunitySignal);
+app.get("/api/scout/opportunity-signals", getScoutOpportunitySignals);
 
 // Brand Review API endpoints
 app.get("/api/brand-review/deals", getBrandReviewDeals);
@@ -1262,6 +1359,11 @@ app.post("/api/brand-explorer/fit-to-deal", brandExplorerFitToDeal);
 // Operator Explorer API
 app.get("/api/operator-explorer/operators", listOperators);
 app.get("/api/operator-explorer/operator", getOperatorById);
+
+// Capital Provider Explorer API (Financing Hub)
+app.get("/api/capital-provider-explorer", optionalDealalityAuth, handleCapitalProviderExplorer);
+app.get("/api/capital-provider-explorer/providers", optionalDealalityAuth, listCapitalProviders);
+app.get("/api/capital-provider-explorer/provider", optionalDealalityAuth, getCapitalProviderById);
 
 // Brand Library API endpoints
 app.get("/api/brand-library/operational-support", getOperationalSupportByBrandId);
@@ -1351,6 +1453,11 @@ app.get("/api/operator-explorer/favorites", getOperatorExplorerFavorites);
 app.post("/api/operator-explorer/favorites", createOperatorExplorerFavorite);
 app.delete("/api/operator-explorer/favorites", deleteOperatorExplorerFavorite);
 app.delete("/api/operator-explorer/favorites/:favoriteId", deleteOperatorExplorerFavorite);
+
+app.get("/api/capital-explorer/favorites", getCapitalExplorerFavorites);
+app.post("/api/capital-explorer/favorites", createCapitalExplorerFavorite);
+app.delete("/api/capital-explorer/favorites", deleteCapitalExplorerFavorite);
+app.delete("/api/capital-explorer/favorites/:favoriteId", deleteCapitalExplorerFavorite);
 
 // Partner Directory config endpoint (for local development)
 app.get("/api/user-management", listUserManagementUsers);
@@ -1447,6 +1554,19 @@ app.get("/operator-explorer/", (req, res) => {
 
 app.get("/operator-explorer-detail", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-explorer-detail.html'));
+});
+
+app.get("/capital-provider-explorer", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer.html"));
+});
+app.get("/capital-provider-explorer/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer.html"));
+});
+app.get("/capital-provider-explorer-detail", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer-detail.html"));
+});
+app.get("/capital-provider-explorer-detail/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer-detail.html"));
 });
 
 app.get("/operator-dna-profile", (req, res) => {

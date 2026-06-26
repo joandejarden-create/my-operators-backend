@@ -1,0 +1,99 @@
+/* Travel Infrastructure / Demand Anchors layer filters — Radar drawer */
+
+.infra-filter-wrap {
+  width: 100%;
+  margin: 4px 0 0;
+  padding: 0;
+  display: none;
+}
+
+.infra-filter-wrap.is-visible {
+  display: block;
+}
+
+.infra-filter-chips {
+  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.infra-filter-chips.is-visible {
+  display: flex;
+}
+
+.infra-filter-chip {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(15, 23, 42, 0.55);
+  color: #e2e8f0;
+  font-size: 11px;
+  line-height: 1.2;
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.infra-filter-chip:hover {
+  border-color: rgba(148, 163, 184, 0.55);
+  background: rgba(30, 41, 59, 0.75);
+}
+
+.infra-filter-chip.is-active {
+  border-color: #60a5fa;
+  background: rgba(37, 99, 235, 0.35);
+  color: #fff;
+}
+
+.infra-filter-chip .infra-count {
+  opacity: 0.75;
+  margin-left: 4px;
+  font-size: 10px;
+}
+
+.infra-empty-state {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Map legend — Travel Infrastructure (pentagon) + Demand Anchors (diamond) */
+.legend-marker.infrastructure-ferry,
+.legend-marker.infrastructure-port,
+.legend-marker.infrastructure-highway,
+.legend-marker.infrastructure-bus {
+  border-radius: 0;
+  width: 12px;
+  height: 12px;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.legend-marker.infrastructure-ferry { background: #009688; }
+.legend-marker.infrastructure-port { background: #ff5722; }
+.legend-marker.infrastructure-highway { background: #795548; }
+.legend-marker.infrastructure-bus { background: #607d8b; }
+
+.legend-marker.demand-anchor-beach,
+.legend-marker.demand-anchor-attraction,
+.legend-marker.demand-anchor-entertainment,
+.legend-marker.demand-anchor-institutional,
+.legend-marker.demand-anchor-sports,
+.legend-marker.demand-anchor-business,
+.legend-marker.demand-anchor-industrial {
+  border-radius: 0;
+  width: 12px;
+  height: 12px;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.legend-marker.demand-anchor-beach { background: #00acc1; }
+.legend-marker.demand-anchor-attraction { background: #26a69a; }
+.legend-marker.demand-anchor-entertainment { background: #ab47bc; }
+.legend-marker.demand-anchor-institutional { background: #e53935; }
+.legend-marker.demand-anchor-sports { background: #43a047; }
+.legend-marker.demand-anchor-business { background: #1e88e5; }
+.legend-marker.demand-anchor-industrial { background: #6d4c41; }

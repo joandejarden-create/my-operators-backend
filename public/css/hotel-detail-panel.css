@@ -1,0 +1,1248 @@
+/* Hotel detail panel — Dealality platform theme (matches radar page tokens) */
+
+.hdp-backdrop {
+  position: fixed;
+  top: var(--hdp-backdrop-top, var(--hdp-panel-top, 12px));
+  left: var(--hdp-backdrop-left, 0);
+  width: var(--hdp-backdrop-width, 100%);
+  height: var(--hdp-backdrop-height, calc(100vh - var(--hdp-panel-top, 12px)));
+  background: rgba(8, 15, 37, 0.6);
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.hdp-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hdp-panel {
+  --hdp-bg: var(--secondary--color-1, #101935);
+  --hdp-bg-deep: var(--neutral--800, #080f25);
+  --hdp-bg-elevated: var(--neutral--700, #212c4d);
+  --hdp-border: var(--neutral--600, #37446b);
+  --hdp-text: var(--neutral--100, #ffffff);
+  --hdp-text-body: var(--neutral--400, #aeb9e1);
+  --hdp-text-muted: var(--neutral--500, #7e89ac);
+  --hdp-accent: var(--accent--primary-1, #6c72ff);
+  --hdp-accent-hover: var(--secondary--color-2, #9a91fb);
+  --hdp-highlight: var(--secondary--color-5, #fdb52a);
+
+  position: fixed;
+  top: var(--hdp-panel-top-center, 50%);
+  left: var(--hdp-panel-left, 50%);
+  right: auto;
+  bottom: auto;
+  width: min(920px, calc(100% - 24px));
+  max-height: calc(100vh - var(--hdp-panel-top, 12px) - 24px);
+  flex-shrink: 0;
+  background: var(--hdp-bg);
+  color: var(--hdp-text-body);
+  border: 0.6px solid var(--hdp-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 910;
+  display: flex;
+  flex-direction: column;
+  transform: translate(-50%, -50%) scale(0.97);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.24s ease, opacity 0.24s ease;
+  font-family: Inter, "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+.hdp-panel.is-open {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hdp-panel__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border: 0.6px solid var(--hdp-border);
+  border-radius: 50%;
+  background: var(--hdp-bg-deep);
+  color: var(--hdp-text-body);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.hdp-panel__close:hover {
+  border-color: var(--hdp-accent);
+  color: var(--hdp-text);
+}
+
+.hdp-panel__scroll {
+  flex: 1 1 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex-shrink: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--hdp-border) var(--hdp-bg-deep);
+}
+
+.hdp-panel__scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.hdp-panel__scroll::-webkit-scrollbar-track {
+  background: var(--hdp-bg-deep);
+}
+
+.hdp-panel__scroll::-webkit-scrollbar-thumb {
+  background: var(--hdp-border);
+  border-radius: 0;
+}
+
+/* ── Header band ── */
+
+.hdp-header {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  padding: 12px 14px 10px;
+  border-bottom: 0.6px solid var(--hdp-border);
+  overflow: visible;
+}
+
+.hdp-header__identity {
+  padding-right: 36px;
+}
+
+.hdp-header__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.hdp-status-pill-wrap {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.hdp-status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(253, 181, 42, 0.12);
+  border: 1px solid rgba(253, 181, 42, 0.4);
+  color: var(--hdp-highlight);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.hdp-status-pill__sublabel {
+  display: block;
+  margin-top: 2px;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--hdp-text-muted);
+}
+
+.hdp-status-pill--pipeline {
+  background: rgba(197, 48, 48, 0.12);
+  border-color: rgba(197, 48, 48, 0.45);
+  color: var(--system--red-400, #c53030);
+}
+
+.hdp-status-pill--candidate {
+  background: rgba(154, 145, 251, 0.12);
+  border-color: rgba(154, 145, 251, 0.45);
+  color: var(--hdp-accent-hover);
+}
+
+.hdp-brand {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hdp-text-muted);
+  margin-bottom: 2px;
+}
+
+.hdp-name {
+  margin: 0;
+  padding-right: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--hdp-text);
+  overflow: visible;
+  word-break: break-word;
+}
+
+.hdp-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-bottom: 0;
+}
+
+.hdp-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--hdp-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.hdp-action:hover {
+  color: var(--hdp-accent-hover);
+}
+
+.hdp-action.is-disabled {
+  color: var(--hdp-text-muted);
+  text-decoration: none;
+  pointer-events: none;
+}
+
+.hdp-action__icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--hdp-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hdp-action__icon .hdp-action-icon-img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  /* Tint to platform accent (#6c72ff) */
+  filter: brightness(0) saturate(100%) invert(45%) sepia(79%) saturate(2476%) hue-rotate(214deg) brightness(99%) contrast(101%);
+}
+
+.hdp-action:hover .hdp-action__icon .hdp-action-icon-img {
+  filter: brightness(0) saturate(100%) invert(68%) sepia(32%) saturate(1200%) hue-rotate(214deg) brightness(102%) contrast(101%);
+}
+
+.hdp-action.is-disabled .hdp-action__icon .hdp-action-icon-img {
+  filter: brightness(0) saturate(100%) invert(55%) sepia(12%) saturate(626%) hue-rotate(186deg);
+  opacity: 0.7;
+}
+
+.hdp-action__icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.hdp-action__icon svg path,
+.hdp-action__icon svg circle,
+.hdp-action__icon svg rect,
+.hdp-action__icon svg line,
+.hdp-action__icon svg polyline {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.hdp-action:hover .hdp-action__icon {
+  color: var(--hdp-accent-hover);
+}
+
+.hdp-action.is-disabled .hdp-action__icon {
+  color: var(--hdp-text-muted);
+}
+
+/* ── Amenities band ── */
+
+.hdp-context-band {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--hdp-bg-deep);
+}
+
+.hdp-tabs-section {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 8px 12px 0;
+  border-bottom: 0.6px solid var(--hdp-border);
+  background: var(--hdp-bg-deep);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.hdp-tabs-section::-webkit-scrollbar {
+  display: none;
+}
+
+.hdp-tabs-section .section-nav-item {
+  flex: 1 1 0;
+  min-width: 72px;
+  max-width: 110px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--hdp-text-body);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+  font-weight: 600;
+  border: none;
+  background: none;
+  font-family: inherit;
+  padding: 8px 4px 10px;
+  transition: color 0.2s;
+}
+
+.hdp-tabs-section .section-nav-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0.6px solid var(--hdp-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hdp-text-muted);
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.hdp-tabs-section .section-nav-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hdp-tabs-section .section-nav-label {
+  text-align: center;
+  line-height: 1.25;
+  width: 100%;
+  font-size: 10px;
+  white-space: normal;
+}
+
+.hdp-tabs-section .section-nav-item:hover {
+  color: var(--hdp-text);
+}
+
+.hdp-tabs-section .section-nav-item:hover .section-nav-icon {
+  color: var(--hdp-text);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.hdp-tabs-section .section-nav-item.active {
+  color: var(--hdp-accent);
+}
+
+.hdp-tabs-section .section-nav-item.active .section-nav-icon {
+  border-color: var(--hdp-accent);
+  border-width: 2px;
+  color: var(--hdp-accent);
+}
+
+.hdp-tab-panels {
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.hdp-tab-panels .tab-panel {
+  display: none;
+  box-sizing: border-box;
+}
+
+.hdp-tab-panels .tab-panel.active {
+  display: block;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--hdp-border) transparent;
+}
+
+.hdp-tab-panels .tab-panel.active::-webkit-scrollbar {
+  width: 6px;
+}
+
+.hdp-tab-panels .tab-panel.active::-webkit-scrollbar-thumb {
+  background: var(--hdp-border);
+}
+
+.hdp-overview-tab {
+  display: flex;
+  flex-direction: column;
+}
+
+.hdp-overview-tab .hdp-detail-row {
+  border-bottom: none;
+}
+
+.hdp-overview-tab .hdp-amenities-section {
+  padding: 12px 16px 14px;
+  border-top: 0.6px solid var(--hdp-border);
+}
+
+.hdp-tab-panels .tab-panel[data-panel="access-connectivity"],
+.hdp-tab-panels .tab-panel[data-panel="submarket-snapshot"] {
+  padding: 12px 16px 14px;
+}
+
+.hdp-tab-panels .tab-panel[data-panel="area-hotels"],
+.hdp-tab-panels .tab-panel[data-panel="demand-drivers"] {
+  padding: 0;
+}
+
+.hdp-area-hotels-tab {
+  display: flex;
+  flex-direction: column;
+}
+
+.hdp-area-hotels-tab .hdp-detail-row {
+  border-bottom: none;
+  align-items: stretch;
+}
+
+.hdp-area-hotels-existing {
+  padding: 12px 16px;
+  border-right: 0.6px solid var(--hdp-border);
+  min-width: 0;
+}
+
+.hdp-area-hotels-pipeline {
+  padding: 12px 16px;
+  min-width: 0;
+}
+
+.hdp-demand-drivers-tab {
+  display: flex;
+  flex-direction: column;
+}
+
+.hdp-demand-drivers-tab .hdp-detail-row {
+  border-bottom: none;
+  align-items: stretch;
+}
+
+.hdp-demand-drivers-tab .hdp-demand-drivers-location {
+  padding: 12px 16px;
+  border-right: 0.6px solid var(--hdp-border);
+}
+
+.hdp-demand-drivers-tab .hdp-demand-drivers-body {
+  padding: 12px 16px;
+  min-width: 0;
+}
+
+.hdp-demand-drivers__content {
+  min-height: 0;
+}
+
+.hdp-demand-drivers-tab .hdp-location p {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--hdp-text-body);
+}
+
+.hdp-demand-drivers-tab .hdp-location p:last-child {
+  margin-bottom: 0;
+}
+
+.hdp-nearby-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hdp-nearby-tab .hdp-location-section {
+  padding-bottom: 12px;
+  border-bottom: 0.6px solid var(--hdp-border);
+  margin-bottom: 0;
+}
+
+.hdp-nearby-tab__body {
+  min-height: 0;
+}
+
+.hdp-context-state {
+  padding: 8px 0;
+}
+
+.hdp-context-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hdp-context-list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(8, 15, 37, 0.35);
+}
+
+.hdp-context-list__dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+}
+
+.hdp-context-list__body {
+  min-width: 0;
+  flex: 1;
+}
+
+.hdp-context-list__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hdp-text);
+  line-height: 1.3;
+}
+
+.hdp-context-list__type {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--hdp-text-muted);
+  margin-top: 2px;
+}
+
+.hdp-context-list__meta {
+  font-size: 11px;
+  color: var(--hdp-text-body);
+  margin-top: 4px;
+}
+
+.hdp-context-list__rationale {
+  font-size: 11px;
+  color: var(--hdp-text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hdp-area-hotels-tab .hdp-competitive-summary {
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.hdp-area-hotels-tab .hdp-competitive-chip {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 8px 6px;
+}
+
+.hdp-area-hotels-tab .hdp-competitive-chip__value {
+  font-size: 14px;
+}
+
+.hdp-area-hotels-tab .hdp-competitive-chip__label {
+  font-size: 8px;
+  letter-spacing: 0.04em;
+}
+
+.hdp-area-hotels-filters {
+  margin-bottom: 12px;
+}
+
+.hdp-area-hotels-filters__title {
+  margin: 0 0 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hdp-text-body);
+}
+
+.hdp-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hdp-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(108, 114, 255, 0.08);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--hdp-text-body);
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1.3;
+}
+
+.hdp-filter-pill:hover {
+  border-color: rgba(108, 114, 255, 0.35);
+  background: rgba(108, 114, 255, 0.14);
+}
+
+.hdp-filter-pill.is-active {
+  border-color: rgba(108, 114, 255, 0.55);
+  background: rgba(108, 114, 255, 0.22);
+  color: var(--hdp-text);
+}
+
+.hdp-area-hotels-pipeline .hdp-filter-pill {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.hdp-area-hotels-pipeline .hdp-filter-pill:hover {
+  border-color: rgba(220, 38, 38, 0.35);
+  background: rgba(220, 38, 38, 0.14);
+}
+
+.hdp-area-hotels-pipeline .hdp-filter-pill.is-active {
+  border-color: rgba(220, 38, 38, 0.55);
+  background: rgba(220, 38, 38, 0.2);
+}
+
+.hdp-filter-pill__count {
+  color: var(--hdp-text-muted);
+  font-weight: 500;
+}
+
+.hdp-area-hotels-list__item[hidden],
+.hdp-filter-list__item[hidden] {
+  display: none;
+}
+
+.hdp-context-filterable-panel .hdp-competitive-summary,
+.hdp-demand-drivers__content .hdp-competitive-summary,
+.hdp-access-connectivity-tab .hdp-competitive-summary {
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.hdp-context-filterable-panel .hdp-competitive-chip,
+.hdp-demand-drivers__content .hdp-competitive-chip,
+.hdp-access-connectivity-tab .hdp-competitive-chip {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 8px 6px;
+}
+
+.hdp-context-filterable-panel .hdp-competitive-chip__value,
+.hdp-demand-drivers__content .hdp-competitive-chip__value,
+.hdp-access-connectivity-tab .hdp-competitive-chip__value {
+  font-size: 14px;
+}
+
+.hdp-context-filterable-panel .hdp-competitive-chip__label,
+.hdp-demand-drivers__content .hdp-competitive-chip__label,
+.hdp-access-connectivity-tab .hdp-competitive-chip__label {
+  font-size: 8px;
+  letter-spacing: 0.04em;
+}
+
+.hdp-area-hotels-scope-note {
+  margin: -4px 0 10px;
+}
+
+.hdp-competitive-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.hdp-competitive-chip {
+  flex: 1 1 100px;
+  min-width: 90px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(8, 15, 37, 0.35);
+  text-align: center;
+}
+
+.hdp-competitive-chip__value {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--hdp-text);
+  line-height: 1.2;
+}
+
+.hdp-competitive-chip__label {
+  display: block;
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hdp-text-muted);
+}
+
+.hdp-competitive-scales {
+  margin-bottom: 12px;
+}
+
+.hdp-competitive-scales__title {
+  margin: 0 0 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hdp-text-body);
+}
+
+.hdp-scale-pill {
+  display: inline-block;
+  margin: 0 6px 6px 0;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(108, 114, 255, 0.1);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--hdp-text-body);
+}
+
+.hdp-scale-pill__count {
+  color: var(--hdp-text-muted);
+  font-weight: 500;
+}
+
+.hdp-competitive-list {
+  margin-top: 4px;
+}
+
+.hdp-snapshot-scope {
+  margin: 0 0 10px;
+  font-size: 11px;
+  color: var(--hdp-text-muted);
+  line-height: 1.4;
+}
+
+.hdp-snapshot-meta {
+  margin: 0 0 12px;
+  font-size: 11px;
+  color: var(--hdp-text-muted);
+}
+
+.hdp-footprint-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hdp-footprint-subsection {
+  margin: 0;
+}
+
+.hdp-footprint-table-title {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hdp-text-body);
+}
+
+.hdp-footprint-table-wrap {
+  overflow-x: auto;
+  border: 0.6px solid var(--hdp-border);
+  border-radius: 8px;
+  background: rgba(8, 15, 37, 0.35);
+}
+
+.hdp-footprint-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.hdp-footprint-table th,
+.hdp-footprint-table td {
+  padding: 8px 10px;
+  border-bottom: 0.6px solid var(--hdp-border);
+  text-align: right;
+  vertical-align: middle;
+}
+
+.hdp-footprint-table thead th {
+  background: rgba(16, 25, 53, 0.95);
+  color: var(--hdp-text-muted);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.hdp-footprint-table th:first-child,
+.hdp-footprint-table td:first-child {
+  text-align: left;
+}
+
+.hdp-footprint-table tbody th[scope="row"] {
+  font-weight: 600;
+  color: var(--hdp-text);
+  background: rgba(8, 15, 37, 0.35);
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hdp-footprint-table tbody td {
+  color: var(--hdp-text-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.hdp-footprint-table .hdp-ft-total-row th,
+.hdp-footprint-table .hdp-ft-total-row td {
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.06);
+  border-top: 0.6px solid var(--hdp-border);
+}
+
+.hdp-submarket-snapshot .hdp-submarket-hotel-table-wrap {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.hdp-subsection {
+  margin-top: 12px;
+}
+
+.hdp-subsection__title {
+  margin: 0 0 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hdp-text-body);
+}
+
+.hdp-insight-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hdp-insight-card {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(8, 15, 37, 0.35);
+}
+
+.hdp-insight-card__type {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hdp-accent);
+  margin-bottom: 4px;
+}
+
+.hdp-insight-card__reason {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--hdp-text);
+}
+
+.hdp-insight-card__meta {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--hdp-text-muted);
+  text-transform: capitalize;
+}
+
+.hdp-driver-group {
+  margin-top: 12px;
+}
+
+.hdp-driver-group__title {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--hdp-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hdp-driver-group__count {
+  color: var(--hdp-text-muted);
+  font-weight: 500;
+}
+
+.hdp-driver-group__more {
+  margin: 4px 0 0;
+  font-size: 10px;
+  color: var(--hdp-text-muted);
+  font-style: italic;
+}
+
+.hdp-submarket-hotel-list {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.hdp-amenities-band {
+  padding: 12px 16px;
+  border-bottom: 0.6px solid var(--hdp-border);
+  background: var(--hdp-bg-deep);
+}
+
+.hdp-section__title {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--hdp-text-body);
+}
+
+/* ── Description + Overview row ── */
+
+.hdp-detail-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 0.6px solid var(--hdp-border);
+  align-items: start;
+}
+
+.hdp-description-section {
+  padding: 12px 16px;
+  border-right: 0.6px solid var(--hdp-border);
+}
+
+.hdp-overview-section {
+  padding: 12px 16px;
+}
+
+.hdp-description {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--hdp-text-body);
+}
+
+.hdp-description--headline {
+  font-weight: 600;
+  color: var(--hdp-text);
+  margin-bottom: 6px;
+}
+
+/* Amenities carousel */
+
+.hdp-amenities-section {
+  margin-bottom: 0;
+}
+
+.hdp-amenities-count {
+  font-weight: 500;
+  color: var(--hdp-text-muted);
+  font-size: 0.85em;
+}
+
+.hdp-amenities-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hdp-amenities-nav {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: var(--hdp-text-muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hdp-amenities-nav:hover {
+  color: var(--hdp-accent);
+}
+
+.hdp-amenities-carousel {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--hdp-border) transparent;
+  padding-bottom: 6px;
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.hdp-amenities-carousel::-webkit-scrollbar {
+  height: 4px;
+}
+
+.hdp-amenities-carousel::-webkit-scrollbar-thumb {
+  background: var(--hdp-border);
+}
+
+.hdp-amenity-card {
+  flex: 0 0 auto;
+  width: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4px;
+  gap: 4px;
+}
+
+.hdp-amenity-card__icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hdp-text);
+}
+
+.hdp-amenity-card__icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hdp-amenity-card__icon .hdp-amenity-icon-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+  /* Tint dark SVGRepo assets to platform body text */
+  filter: brightness(0) saturate(100%) invert(84%) sepia(14%) saturate(626%) hue-rotate(186deg);
+}
+
+.hdp-amenity-card__label {
+  font-size: 10px;
+  line-height: 1.2;
+  color: var(--hdp-text-body);
+  font-weight: 500;
+  max-width: 72px;
+  min-height: 2.4em;
+  text-align: center;
+}
+
+.hdp-empty {
+  font-size: 12px;
+  color: var(--hdp-text-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+.hdp-loading-name {
+  font-size: 13px;
+  color: var(--hdp-text-muted);
+  margin: 8px 0 0;
+}
+
+/* ── Overview grid ── */
+
+.hdp-section {
+  margin-bottom: 0;
+}
+
+.hdp-overview {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--hdp-bg-deep);
+}
+
+.hdp-overview__row {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: 11px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hdp-overview__row:last-child {
+  border-bottom: none;
+}
+
+.hdp-overview__row:nth-child(even) {
+  background: rgba(8, 15, 37, 0.35);
+}
+
+.hdp-overview__label {
+  color: var(--hdp-text-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}
+
+.hdp-overview__value {
+  color: var(--hdp-text);
+  word-break: break-word;
+}
+
+/* ── Amenities (overview tab only) ── */
+
+.hdp-location-section {
+  padding-bottom: 12px;
+  border-bottom: 0.6px solid var(--hdp-border);
+}
+
+.hdp-location {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--hdp-text-body);
+}
+
+.hdp-location p {
+  margin: 0 0 5px;
+}
+
+.hdp-location strong {
+  color: var(--hdp-text-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}
+
+.hdp-popup-mini {
+  min-width: 180px;
+  font-family: Inter, "Segoe UI", sans-serif;
+  padding: 2px 0;
+}
+
+.hdp-popup-mini__name {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--hdp-text);
+}
+
+.hdp-popup-mini__status {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hdp-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.hdp-popup-mini__hint {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--hdp-text-muted);
+}
+
+@media (max-width: 720px) {
+  .hdp-panel {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 88vh;
+    border-radius: 16px 16px 0 0;
+    transform: translateY(100%);
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .hdp-panel.is-open {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .hdp-detail-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hdp-description-section {
+    border-right: none;
+    border-bottom: 0.6px solid var(--hdp-border);
+  }
+
+  .hdp-demand-drivers-tab .hdp-demand-drivers-location {
+    border-right: none;
+    border-bottom: 0.6px solid var(--hdp-border);
+  }
+
+  .hdp-area-hotels-existing {
+    border-right: none;
+    border-bottom: 0.6px solid var(--hdp-border);
+  }
+}
