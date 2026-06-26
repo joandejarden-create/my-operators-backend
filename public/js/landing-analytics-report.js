@@ -625,21 +625,39 @@
 
   function renderReturnVisitors(data) {
     var el = $("laReturnVisitors");
-    if (!data || !data.totalVisitors) {
-      el.innerHTML =
-        '<p class="empty">No Return Visitor Data Yet — visitor id is set on new homepage visits.</p>';
+    if (!data) {
+      el.innerHTML = '<p class="empty">No Return Visitor Data Yet</p>';
+      return;
+    }
+    if (!data.totalVisitors) {
+      var missing =
+        data.sessionsWithoutVisitorId > 0
+          ? esc(data.sessionsWithoutVisitorId) +
+            " Sessions Recorded Without Visitor Id — Deploy the Latest Backend, Then Revisit the Homepage (Close Tab First for a Return Visit Test)."
+          : "No Return Visitor Data Yet — Visit the Homepage, Then Close the Tab and Visit Again to Test a Return.";
+      el.innerHTML = '<p class="empty">' + missing + "</p>";
+      if (data.note) {
+        el.innerHTML += '<p class="panel-sub">' + esc(data.note) + "</p>";
+      }
       return;
     }
     var summary =
       '<p class="panel-sub" style="margin-top:0;">' +
       esc(data.returningVisitors) +
-      " Returning of " +
+      " Returning · " +
+      esc(data.firstTimeVisitors != null ? data.firstTimeVisitors : data.totalVisitors - data.returningVisitors) +
+      " First-Time · " +
       esc(data.totalVisitors) +
       " Known Visitors (" +
       esc(data.returningRate) +
-      "%)</p>";
+      "% Return Rate)</p>";
     if (!data.visitors || !data.visitors.length) {
-      el.innerHTML = summary + '<p class="empty">No repeat visitors in this window yet.</p>';
+      el.innerHTML =
+        summary +
+        '<p class="empty">No Repeat Visitors in This Window Yet — Close Your Browser Tab and Revisit the Homepage to Count as a Return.</p>';
+      if (data.note) {
+        el.innerHTML += '<p class="panel-sub">' + esc(data.note) + "</p>";
+      }
       return;
     }
     el.innerHTML =

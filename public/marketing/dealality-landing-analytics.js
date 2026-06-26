@@ -7,6 +7,7 @@
 
   var SESSION_KEY = "dl_landing_sid_v1";
   var VISITOR_KEY = "dl_landing_vid_v1";
+  var VISITOR_COOKIE = "dl_landing_vid_v1";
   var SCROLL_DEPTHS = [25, 50, 75, 100];
   var ENGAGEMENT_SECONDS = [30, 60, 120];
   var VIDEO_PCTS = [25, 50, 75, 100];
@@ -53,20 +54,70 @@
     mobileNavOpen: false,
   };
 
+  function readVisitorCookie() {
+    try {
+      var parts = String(global.document.cookie || "").split(";");
+      for (var i = 0; i < parts.length; i++) {
+        var piece = parts[i].trim();
+        if (piece.indexOf(VISITOR_COOKIE + "=") === 0) {
+          return decodeURIComponent(piece.slice(VISITOR_COOKIE.length + 1));
+        }
+      }
+    } catch (_e) {}
+    return null;
+  }
+
+  function writeVisitorCookie(id) {
+    if (!id || !global.document) return;
+    try {
+      var secure = global.location.protocol === "https:" ? "; Secure" : "";
+      var embed = params().get("embed") === "1";
+      var sameSite = embed ? "; SameSite=None" : "; SameSite=Lax";
+      var partitioned = embed && secure ? "; Partitioned" : "";
+      global.document.cookie =
+        VISITOR_COOKIE +
+        "=" +
+        encodeURIComponent(id) +
+        "; path=/; max-age=" +
+        60 * 60 * 24 * 400 +
+        sameSite +
+        secure +
+        partitioned;
+    } catch (_e2) {}
+  }
+
+  function createVisitorId() {
+    return (
+      "dlv_" +
+      Date.now().toString(36) +
+      "_" +
+      Math.random().toString(36).slice(2, 11)
+    );
+  }
+
   function visitorId() {
     try {
       var existing = localStorage.getItem(VISITOR_KEY);
-      if (existing) return existing;
-      var id =
-        "dlv_" +
-        Date.now().toString(36) +
-        "_" +
-        Math.random().toString(36).slice(2, 11);
-      localStorage.setItem(VISITOR_KEY, id);
-      return id;
-    } catch (_e) {
-      return null;
+      if (existing) {
+        writeVisitorCookie(existing);
+        return existing;
+      }
+    } catch (_e) {}
+
+    var fromCookie = readVisitorCookie();
+    if (fromCookie) {
+      try {
+        localStorage.setItem(VISITOR_KEY, fromCookie);
+      } catch (_e2) {}
+      return fromCookie;
     }
+
+    var id = createVisitorId();
+    try {
+      localStorage.setItem(VISITOR_KEY, id);
+    } catch (_e3) {}
+    writeVisitorCookie(id);
+    return id;
   }
 
   function sessionId() {

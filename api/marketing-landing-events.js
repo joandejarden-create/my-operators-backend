@@ -85,6 +85,7 @@ export default async function marketingLandingEvents(req, res) {
       ts: new Date().toISOString(),
       event,
       sessionId,
+      visitorId: sanitizeString(body.visitorId, 80),
       embed: body.embed === true || body.embed === "1",
       device: sanitizeString(body.device, 16),
       landingVersion: sanitizeString(body.landingVersion, 16),
