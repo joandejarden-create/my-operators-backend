@@ -453,6 +453,305 @@
     el.innerHTML = html;
   }
 
+  function fmtDuration(seconds) {
+    if (seconds == null || seconds === 0) return "—";
+    var n = Math.round(seconds);
+    if (n < 60) return n + "s";
+    var m = Math.floor(n / 60);
+    var s = n % 60;
+    return m + "m" + (s ? " " + s + "s" : "");
+  }
+
+  function renderDashboardLegend(channels) {
+    if (!channels || !channels.length) return "";
+    return (
+      '<div class="dash-legend">' +
+      channels
+        .map(function (ch) {
+          return (
+            '<span class="dash-legend__item">' +
+            '<span class="dash-legend__swatch" style="background:' +
+            esc(ch.color) +
+            '"></span>' +
+            esc(ch.label) +
+            (ch.count != null ? " (" + esc(ch.count) + ")" : "") +
+            "</span>"
+          );
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
+  function renderAudienceOverview(audience) {
+    var el = $("laAudienceOverview");
+    if (!el) return;
+    if (!audience || !audience.days || !audience.days.length) {
+      el.innerHTML =
+        '<p class="empty">No session data yet — visits appear after homepage traffic is recorded.</p>';
+      return;
+    }
+
+    var maxSessions = 1;
+    audience.days.forEach(function (row) {
+      if (row.sessions > maxSessions) maxSessions = row.sessions;
+    });
+
+    var html = '<div class="overview-metrics">';
+    html +=
+      '<div class="overview-metric"><span class="overview-metric__value">' +
+      esc(audience.totalSessions) +
+      '</span><span class="overview-metric__label">Sessions</span></div>';
+    html +=
+      '<div class="overview-metric"><span class="overview-metric__value">' +
+      esc(fmtDuration(audience.medianDurationSeconds)) +
+      '</span><span class="overview-metric__label">Median session</span></div>';
+    html += "</div>";
+
+    var w = 400;
+    var h = 120;
+    var pad = { l: 8, r: 8, t: 12, b: 28 };
+    var innerW = w - pad.l - pad.r;
+    var innerH = h - pad.t - pad.b;
+    var days = audience.days;
+    var points = days.map(function (row, i) {
+      var x =
+        pad.l +
+        (days.length === 1 ? innerW / 2 : (i / (days.length - 1)) * innerW);
+      var y = pad.t + innerH - (row.sessions / maxSessions) * innerH;
+      return { x: x, y: y, label: row.label, sessions: row.sessions };
+    });
+    var polyline = points
+      .map(function (p) {
+        return p.x.toFixed(1) + "," + p.y.toFixed(1);
+      })
+      .join(" ");
+
+    html +=
+      '<svg class="line-chart" viewBox="0 0 ' +
+      w +
+      " " +
+      h +
+      '" role="img" aria-label="Sessions over time">';
+    html +=
+      '<polyline fill="none" stroke="#5b8cff" stroke-width="2.5" stroke-linejoin="round" points="' +
+      polyline +
+      '"/>';
+    points.forEach(function (p) {
+      html +=
+        '<circle cx="' +
+        p.x +
+        '" cy="' +
+        p.y +
+        '" r="4" fill="#5b8cff"><title>' +
+        esc(p.label) +
+        ": " +
+        esc(p.sessions) +
+        " sessions</title></circle>";
+    });
+    points.forEach(function (p, i) {
+      if (
+        i === 0 ||
+        i === days.length - 1 ||
+        (days.length > 2 && i === Math.floor(days.length / 2))
+      ) {
+        html +=
+          '<text x="' +
+          p.x +
+          '" y="' +
+          (h - 6) +
+          '" text-anchor="middle" class="line-chart__label">' +
+          esc(p.label) +
+          "</text>";
+      }
+    });
+    html += "</svg>";
+    el.innerHTML = html;
+  }
+
+  function renderAcquisitionReport(acquisition) {
+    var el = $("laAcquisition");
+    if (!el) return;
+    if (!acquisition || !acquisition.days || !acquisition.days.length) {
+      el.innerHTML =
+        '<p class="empty">No acquisition data yet — channel splits appear after landing visits.</p>';
+      return;
+    }
+
+    var maxTotal = 1;
+    acquisition.days.forEach(function (row) {
+      if (row.total > maxTotal) maxTotal = row.total;
+    });
+
+    var colHeight = 110;
+    var html =
+      '<div class="stacked-chart" role="img" aria-label="Sessions by acquisition channel">';
+    html += acquisition.days
+      .map(function (day) {
+        var stackHeight = Math.max(
+          6,
+          Math.round((day.total / maxTotal) * colHeight)
+        );
+        var segments = "";
+        day.channels.forEach(function (ch) {
+          var segH = Math.max(
+            2,
+            Math.round((ch.count / Math.max(1, day.total)) * stackHeight)
+          );
+          segments +=
+            '<div class="stacked-chart__seg" style="height:' +
+            segH +
+            "px;background:" +
+            esc(ch.color) +
+            '" title="' +
+            esc(ch.label) +
+            ": " +
+            esc(ch.count) +
+            '"></div>';
+        });
+        return (
+          '<div class="stacked-chart__col">' +
+          '<div class="stacked-chart__value">' +
+          esc(day.total) +
+          "</div>" +
+          '<div class="stacked-chart__stack" style="height:' +
+          stackHeight +
+          'px">' +
+          segments +
+          "</div>" +
+          '<div class="stacked-chart__label">' +
+          esc(day.label) +
+          "</div>" +
+          "</div>"
+        );
+      })
+      .join("");
+    html += "</div>";
+    html += renderDashboardLegend(acquisition.totals || []);
+    el.innerHTML = html;
+  }
+
+  function renderPopularPages(rows) {
+    var el = $("laPopularPages");
+    if (!el) return;
+    if (!rows || !rows.length) {
+      el.innerHTML = '<p class="empty">No page views yet.</p>';
+      return;
+    }
+    el.innerHTML =
+      '<table class="dash-table"><thead><tr><th>Page</th><th>Pageviews</th></tr></thead><tbody>' +
+      rows
+        .map(function (row) {
+          return (
+            "<tr><td class=\"dash-table__page\">" +
+            esc(row.label) +
+            "</td><td>" +
+            esc(row.pageviews) +
+            "</td></tr>"
+          );
+        })
+        .join("") +
+      "</tbody></table>";
+  }
+
+  function renderSessionsByCountry(rows) {
+    var el = $("laSessionsByCountry");
+    if (!el) return;
+    if (!rows || !rows.length) {
+      el.innerHTML =
+        '<p class="empty">No country data yet — captured on new visits after deploy.</p>';
+      return;
+    }
+    var max = rows[0].sessions || 1;
+    el.innerHTML =
+      '<div class="barlist">' +
+      rows
+        .map(function (row) {
+          var width = Math.max(6, Math.round((row.sessions / max) * 100));
+          return (
+            '<div class="barlist__row">' +
+            '<div class="barlist__meta">' +
+            '<span class="barlist__label">' +
+            esc(row.label) +
+            "</span>" +
+            '<span class="barlist__count">' +
+            esc(row.sessions) +
+            "</span>" +
+            "</div>" +
+            '<div class="barlist__track"><div class="barlist__bar barlist__bar--scroll" style="width:' +
+            width +
+            '%"></div></div>' +
+            "</div>"
+          );
+        })
+        .join("") +
+      "</div>";
+  }
+
+  function renderSessionsByDevice(rows) {
+    var el = $("laSessionsByDevice");
+    if (!el) return;
+    if (!rows || !rows.length) {
+      el.innerHTML = '<p class="empty">No device data yet.</p>';
+      return;
+    }
+
+    var gradientParts = [];
+    var start = 0;
+    rows.forEach(function (row) {
+      var end = start + row.rate;
+      gradientParts.push(row.color + " " + start + "% " + end + "%");
+      start = end;
+    });
+
+    var html = '<div class="device-donut-wrap">';
+    html +=
+      '<div class="device-donut" style="background:conic-gradient(' +
+      gradientParts.join(", ") +
+      ')" role="img" aria-label="Sessions by device"></div>';
+    html += "<div style=\"flex:1;min-width:140px\">";
+    html += rows
+      .map(function (row) {
+        return (
+          '<div class="device-row">' +
+          '<div class="device-row__meta">' +
+          '<span class="device-row__swatch" style="background:' +
+          esc(row.color) +
+          '"></span>' +
+          "<span>" +
+          esc(row.label) +
+          "</span>" +
+          "</div>" +
+          '<span class="device-row__pct">' +
+          esc(row.rate) +
+          "%</span>" +
+          "<span>" +
+          esc(row.sessions) +
+          "</span>" +
+          "</div>"
+        );
+      })
+      .join("");
+    html += "</div></div>";
+    el.innerHTML = html;
+  }
+
+  function renderDashboard(dashboard) {
+    if (!dashboard) {
+      renderAudienceOverview(null);
+      renderAcquisitionReport(null);
+      renderPopularPages(null);
+      renderSessionsByCountry(null);
+      renderSessionsByDevice(null);
+      return;
+    }
+    renderAudienceOverview(dashboard.audience);
+    renderAcquisitionReport(dashboard.acquisition);
+    renderPopularPages(dashboard.popularPages);
+    renderSessionsByCountry(dashboard.sessionsByCountry);
+    renderSessionsByDevice(dashboard.sessionsByDevice);
+  }
+
   function renderBenchmarks(rows) {
     var el = $("laBenchmarks");
     if (!rows || !rows.length) {
@@ -942,6 +1241,7 @@
       );
       renderInsights(data.insights);
       renderHeroKpis(data.totals || {}, data.funnel);
+      renderDashboard(data.dashboard);
       renderBenchmarks(data.benchmarks);
       renderDailyUniqueUsers(data.dailyUniqueUsers);
       renderFunnel(data.funnel);
