@@ -480,87 +480,135 @@
       .join("");
   }
 
-  function renderGa4(ga4) {
-    var el = $("laGa4");
-    if (!ga4) {
-      el.innerHTML = '<p class="empty">GA4 Config Unavailable</p>';
+  function renderDailyUniqueUsers(data) {
+    var el = $("laDailyUsers");
+    if (!el) return;
+    if (!data || !data.days || !data.days.length) {
+      el.innerHTML =
+        '<p class="empty">No Daily User Data Yet — visits appear after homepage traffic is recorded.</p>';
       return;
     }
-    var html =
-      '<div class="ga4-links">' +
-      '<a href="' +
-      esc(ga4.realtimeUrl) +
-      '" target="_blank" rel="noopener">Open GA4 Realtime (' +
-      esc(ga4.propertyId) +
-      ")</a>" +
-      '<a href="' +
-      esc(ga4.homeUrl) +
-      '" target="_blank" rel="noopener">Open GA4 Home</a>' +
-      "</div>";
-    if (ga4.hasCampaigns && ga4.campaigns.length) {
-      html += '<p class="panel-sub" style="margin:0 0 8px;">UTM Sessions in This Window</p>';
-      html += ga4.campaigns
-        .map(function (c) {
-          return (
-            '<div class="barlist__row"><div class="barlist__meta"><span>' +
-            esc(c.label) +
-            '</span><span class="barlist__count">' +
-            esc(c.sessions) +
-            " Sessions</span></div></div>"
-          );
-        })
-        .join("");
-    } else {
-      html +=
-        '<p class="empty" style="margin:0;">No UTM-tagged sessions yet. Add ?utm_source=… to campaign links to compare with GA4.</p>';
-    }
-    if (ga4.note) {
-      html += '<p class="panel-sub" style="margin-top:10px;">' + esc(ga4.note) + "</p>";
-    }
-    el.innerHTML = html;
-  }
 
-  function renderFunnelCompare(compare) {
-    var el = $("laFunnelCompare");
-    if (!compare || (!compare.embed && !compare.standalone)) {
-      el.innerHTML = '<p class="empty">No Embed vs Direct Data Yet</p>';
-      return;
+    var max = 1;
+    data.days.forEach(function (row) {
+      if (row.uniqueUsers > max) max = row.uniqueUsers;
+    });
+
+    var html = '<div class="daily-summary">';
+    html +=
+      "<span><strong>" +
+      esc(data.totalUniqueUsers) +
+      "</strong> Unique Users in Window</span>";
+    if (data.latestDay) {
+      html +=
+        "<span>Latest Day: <strong>" +
+        esc(data.latestDay.uniqueUsers) +
+        "</strong> (" +
+        esc(data.latestDay.label) +
+        ")</span>";
     }
-    function col(block) {
-      if (!block || !block.steps || !block.steps.length) {
+    if (data.changeVsPriorDay != null) {
+      var trendClass =
+        data.changeVsPriorDay > 0
+          ? "daily-trend--up"
+          : data.changeVsPriorDay < 0
+            ? "daily-trend--down"
+            : "daily-trend--flat";
+      var sign = data.changeVsPriorDay > 0 ? "+" : "";
+      html +=
+        '<span class="' +
+        trendClass +
+        '">Vs Prior Day: ' +
+        sign +
+        esc(data.changeVsPriorDay) +
+        "</span>";
+    }
+    if (data.weekOverWeekChange != null) {
+      var wowClass =
+        data.weekOverWeekChange > 0
+          ? "daily-trend--up"
+          : data.weekOverWeekChange < 0
+            ? "daily-trend--down"
+            : "daily-trend--flat";
+      var wowSign = data.weekOverWeekChange > 0 ? "+" : "";
+      html +=
+        '<span class="' +
+        wowClass +
+        '">Last 7 Days vs Prior 7: ' +
+        wowSign +
+        esc(data.weekOverWeekChange) +
+        " users</span>";
+    }
+    html += "</div>";
+
+    html += '<div class="daily-chart" role="img" aria-label="Unique users per day chart">';
+    html += data.days
+      .map(function (row) {
+        var height = Math.max(6, Math.round((row.uniqueUsers / max) * 110));
         return (
-          '<div class="compare-col"><h3>' +
-          esc(block ? block.label : "—") +
-          '</h3><p class="empty">No sessions</p></div>'
+          '<div class="daily-chart__col">' +
+          '<div class="daily-chart__value">' +
+          esc(row.uniqueUsers) +
+          "</div>" +
+          '<div class="daily-chart__bar" style="height:' +
+          height +
+          'px" title="' +
+          esc(row.label) +
+          ": " +
+          esc(row.uniqueUsers) +
+          " unique users, " +
+          esc(row.sessions) +
+          ' sessions"></div>' +
+          '<div class="daily-chart__label">' +
+          esc(row.label) +
+          "</div>" +
+          "</div>"
         );
-      }
-      return (
-        '<div class="compare-col"><h3>' +
-        esc(block.label) +
+      })
+      .join("");
+    html += "</div>";
+
+    html += '<div class="barlist">';
+    html += data.days
+      .slice()
+      .reverse()
+      .map(function (row) {
+        var width = Math.max(6, Math.round((row.uniqueUsers / max) * 100));
+        return (
+          '<div class="barlist__row">' +
+          '<div class="barlist__meta">' +
+          '<span class="barlist__label">' +
+          esc(row.label) +
+          "</span>" +
+          '<span class="barlist__count">' +
+          esc(row.uniqueUsers) +
+          " Users · " +
+          esc(row.sessions) +
+          " Sessions</span>" +
+          "</div>" +
+          '<div class="barlist__track"><div class="barlist__bar barlist__bar--scroll" style="width:' +
+          width +
+          '%"></div></div>' +
+          "</div>"
+        );
+      })
+      .join("");
+    html += "</div>";
+
+    if (data.peakDay && data.peakDay.uniqueUsers > 0) {
+      html +=
+        '<p class="panel-sub" style="margin:10px 0 0;">Peak day: ' +
+        esc(data.peakDay.label) +
         " (" +
-        esc(block.sessionCount) +
-        " Sessions)</h3>" +
-        block.steps
-          .map(function (step) {
-            return (
-              '<div class="barlist__row"><div class="barlist__meta"><span>' +
-              esc(step.label) +
-              '</span><span class="barlist__count">' +
-              esc(step.rate) +
-              "% · " +
-              esc(step.count) +
-              "</span></div>" +
-              '<div class="barlist__track"><div class="barlist__bar" style="width:' +
-              Math.max(6, step.rate) +
-              '%"></div></div></div>'
-            );
-          })
-          .join("") +
-        "</div>"
-      );
+        esc(data.peakDay.uniqueUsers) +
+        " users)</p>";
     }
-    el.innerHTML =
-      '<div class="compare-grid">' + col(compare.embed) + col(compare.standalone) + "</div>";
+    if (data.note) {
+      html +=
+        '<p class="panel-sub" style="margin:6px 0 0;">' + esc(data.note) + "</p>";
+    }
+
+    el.innerHTML = html;
   }
 
   function renderCtaPaths(ctaPaths) {
@@ -877,8 +925,7 @@
       renderInsights(data.insights);
       renderHeroKpis(data.totals || {}, data.funnel);
       renderBenchmarks(data.benchmarks);
-      renderGa4(data.ga4);
-      renderFunnelCompare(data.funnelComparison);
+      renderDailyUniqueUsers(data.dailyUniqueUsers);
       renderFunnel(data.funnel);
       renderSectionJourney(data.funnel && data.funnel.sectionJourney);
       renderCtaPaths(data.ctaPaths);

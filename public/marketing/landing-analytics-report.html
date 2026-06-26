@@ -227,6 +227,35 @@
       border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px;
     }
     .ga4-links a:hover { border-color: var(--accent-2); }
+    .daily-chart {
+      display: flex; align-items: flex-end; gap: 8px;
+      min-height: 150px; padding: 8px 4px 0;
+      border-bottom: 1px solid var(--border); margin-bottom: 12px;
+    }
+    .daily-chart__col {
+      flex: 1; min-width: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+    }
+    .daily-chart__value {
+      font-size: 10px; color: var(--muted); margin-bottom: 4px; min-height: 14px;
+    }
+    .daily-chart__bar {
+      width: 100%; max-width: 36px; border-radius: 4px 4px 0 0;
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      min-height: 4px;
+    }
+    .daily-chart__label {
+      font-size: 10px; color: var(--muted); margin-top: 6px;
+      text-align: center; line-height: 1.2;
+    }
+    .daily-summary {
+      display: flex; flex-wrap: wrap; gap: 12px 20px;
+      font-size: 13px; margin-bottom: 10px;
+    }
+    .daily-summary strong { color: var(--text); }
+    .daily-trend--up { color: var(--good); }
+    .daily-trend--down { color: var(--bad); }
+    .daily-trend--flat { color: var(--muted); }
     .return-row {
       display: flex; justify-content: space-between; gap: 8px;
       padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;
@@ -298,17 +327,11 @@
           <div id="laBenchmarks"></div>
         </section>
         <section class="panel">
-          <h2>GA4 Cross-Check</h2>
-          <p class="panel-sub">Open GA4 Realtime alongside this report. UTM-tagged sessions appear below when campaigns send traffic.</p>
-          <div id="laGa4"></div>
+          <h2>Unique Users per Day</h2>
+          <p class="panel-sub">Distinct visitors each day — track whether homepage traffic is growing. Dates are UTC.</p>
+          <div id="laDailyUsers"></div>
         </section>
       </div>
-
-      <section class="panel">
-        <h2>Embed vs Direct Comparison</h2>
-        <p class="panel-sub">Webflow homepage iframe (embed=1) vs direct Railway landing visits — same funnel milestones side by side.</p>
-        <div id="laFunnelCompare"></div>
-      </section>
 
       <div class="layout-main">
         <section class="panel">
@@ -436,6 +459,6 @@
   </div>
 
   <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614e"></script>
-  <script src="/js/landing-analytics-report.js?v=20260622b"></script>
+  <script src="/js/landing-analytics-report.js?v=20260622d"></script>
 </body>
 </html>

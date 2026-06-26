@@ -3274,7 +3274,6 @@ class PartnerDirectory {
         
         // Additional information: only human-readable fields (no linked-record ID dumps).
         let additionalFields = [];
-        let companyTypeTags = [];
         if (company.rawFields && typeof company.rawFields === 'object' && !Array.isArray(company.rawFields)) {
             const excludedFieldNames = new Set([
                 'Company_ID',
@@ -3316,15 +3315,18 @@ class PartnerDirectory {
                 'Property Address',
                 'Additional Office Regions',
                 'Company Type Tags',
+                'Workspace Access',
+                'workspace_access',
+                'workspaceAccess',
+                'Operating Model',
+                'Third-Party Management Availability',
+                'Third-Party Management Availability ',
                 'Core Profile Status',
                 'Owner Profile Status',
                 'Operator Profile Status',
                 'Developer Profile Status',
             ]);
             const normalizeField = (fieldName) => String(fieldName || '').toLowerCase().replace(/\s+/g, ' ').trim();
-            companyTypeTags = this.parseCompanyTypeTags(
-                company.rawFields['Company Type Tags']
-            );
             const looksLikeLinkedRecordIds = (displayValue) => {
                 const s = String(displayValue || '').trim();
                 if (!s) return true;
@@ -3335,6 +3337,7 @@ class PartnerDirectory {
             const shouldExcludeField = (fieldName) => {
                 if (excludedFieldNames.has(fieldName)) return true;
                 const normalized = normalizeField(fieldName);
+                if (normalized === 'workspace access' || normalized === 'company type tags') return true;
                 if (normalized.includes('profile status')) return true;
                 if (normalized === 'users' || normalized === 'team members') return true;
                 if (normalized.includes('jurisdictions') && normalized.includes('licensed')) return true;
@@ -3527,7 +3530,7 @@ class PartnerDirectory {
                     </div>
                 ` : ''}
 
-                ${(additionalFields.length > 0 || companyTypeTags.length > 0) ? `
+                ${additionalFields.length > 0 ? `
                     <div class="company-modal-section">
                         <div class="company-modal-section-title">ADDITIONAL INFORMATION</div>
                         <div class="company-modal-section-content company-modal-additional-meta">
@@ -3541,14 +3544,6 @@ class PartnerDirectory {
                                     </div>
                                 </div>
                             `).join('')}
-                            ${companyTypeTags.length > 0 ? `
-                                <div class="company-modal-meta-item">
-                                    <div class="company-modal-meta-label">Company Type Tags</div>
-                                    <div class="company-modal-meta-value">
-                                        ${this.buildCompanyTypeTagsPillsHtml(companyTypeTags)}
-                                    </div>
-                                </div>
-                            ` : ''}
                         </div>
                     </div>
                 ` : ''}
@@ -3574,16 +3569,6 @@ class PartnerDirectory {
                                     `}
                                     <div class="company-modal-team-info">
                                         <div class="company-modal-team-name">${this.escapeHtml(fullName)}</div>
-                                    </div>
-                                    <div class="company-modal-team-actions">
-                                        ${member.email ? `
-                                            <a href="mailto:${this.escapeHtml(member.email)}" class="company-modal-team-action" title="Email">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                                </svg>
-                                            </a>
-                                        ` : ''}
                                     </div>
                                 </div>
                             `;
@@ -3681,16 +3666,6 @@ class PartnerDirectory {
                             `}
                             <div class="company-modal-team-info">
                                 <div class="company-modal-team-name">${this.escapeHtml(fullName)}</div>
-                            </div>
-                            <div class="company-modal-team-actions">
-                                ${member.email ? `
-                                    <a href="mailto:${this.escapeHtml(member.email)}" class="company-modal-team-action" title="Email">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                            <polyline points="22,6 12,13 2,6"></polyline>
-                                        </svg>
-                                    </a>
-                                ` : ''}
                             </div>
                         </div>
                     `;
