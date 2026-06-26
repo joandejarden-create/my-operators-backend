@@ -619,12 +619,12 @@
   function amenityIconSvg(item) {
     var icons = window.HiltonAmenityIcons;
     if (icons) {
-      if (item && item.id && typeof icons.iconSvgForAmenityId === "function") {
-        return icons.iconSvgForAmenityId(item.id);
-      }
       if (item && item.label && typeof icons.iconSvgForAmenityLabel === "function") {
         var byLabel = icons.iconSvgForAmenityLabel(item.label);
         if (byLabel) return byLabel;
+      }
+      if (item && item.id && typeof icons.iconSvgForAmenityId === "function") {
+        return icons.iconSvgForAmenityId(item.id);
       }
     }
     return ICONS[iconForAmenity(item && item.label)] || ICONS.default;

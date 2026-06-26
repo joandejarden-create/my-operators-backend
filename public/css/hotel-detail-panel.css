@@ -1066,7 +1066,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--hdp-text);
+  /* Match amenity labels — PNG tint + inline SVG fallbacks use the same token */
+  color: var(--hdp-text-body);
 }
 
 .hdp-amenity-card__icon svg {
@@ -1080,12 +1081,13 @@
 }
 
 .hdp-amenity-card__icon .hdp-amenity-icon-img {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
   display: block;
-  /* Tint dark SVGRepo assets to platform body text */
+  /* Monochrome PNG/SVG assets → same body text color as labels */
   filter: brightness(0) saturate(100%) invert(84%) sepia(14%) saturate(626%) hue-rotate(186deg);
+  opacity: 1;
 }
 
 .hdp-amenity-card__label {
