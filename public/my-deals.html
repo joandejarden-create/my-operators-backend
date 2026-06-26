@@ -323,58 +323,19 @@
         .outreach-form .required { color: var(--system--orange-400); }
         .deal-compare-iframe {
             width: 100%;
-            min-height: 420px;
+            min-height: calc(100vh - 280px);
             height: 800px;
             border: none;
             border-radius: 8px;
             background: var(--secondary--color-1);
             display: block;
         }
+        .embed-mode .deal-compare-iframe {
+            border-radius: 0;
+            background: transparent;
+        }
         .deal-compare-iframe-wrap {
-            overflow: hidden;
-        }
-
-        /* Embed (Webflow): Deal Compare tab fills viewport; scroll only inside iframe. */
-        html.embed-mode body.deal-compare-tab-active {
-            overflow: hidden;
-            height: 100vh;
-        }
-        html.embed-mode body.deal-compare-tab-active .dashboard-main-section {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-        html.embed-mode body.deal-compare-tab-active .dashboard-container {
-            flex: 1;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            padding-bottom: 16px;
-            box-sizing: border-box;
-        }
-        html.embed-mode body.deal-compare-tab-active #sectionDealCompare {
-            flex: 1;
-            min-height: 0;
-            display: flex !important;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        html.embed-mode body.deal-compare-tab-active #sectionDealCompare .filters-section {
-            flex-shrink: 0;
-        }
-        html.embed-mode body.deal-compare-tab-active .deal-compare-iframe-wrap {
-            flex: 1;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        html.embed-mode body.deal-compare-tab-active .deal-compare-iframe {
-            flex: 1;
-            min-height: 0;
-            height: auto !important;
+            width: 100%;
         }
         .btn-bulk-actions {
             padding: 8px 16px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600);
@@ -7462,7 +7423,6 @@
                     document.querySelectorAll('.my-deals-section-nav .section-nav-item').forEach(function(t) { t.classList.remove('active'); });
                     btn.classList.add('active');
                     var tab = btn.getAttribute('data-tab');
-                    document.body.classList.toggle('deal-compare-tab-active', tab === 'deal-compare');
                     if (tab === 'deal-information') activeSectionTab = 'deal-information';
                     if (tab === 'matched') activeSectionTab = 'matched';
                     if (tab === 'operator-strategy') activeSectionTab = 'operator-strategy';
@@ -7582,7 +7542,6 @@
                             if (dcIframe && dcIframe.contentDocument && dcIframe.contentDocument.readyState === 'complete') {
                                 if (dcLoading) dcLoading.style.display = 'none';
                             }
-                            syncDealCompareIframeHeight();
                         }
                     }
                     if (sectionContactedBrands) {
@@ -7658,18 +7617,6 @@
                     },
                     initialDealFilterId: (osParams.get('tab') === 'operator-strategy' && osUrlDeal.indexOf('rec') === 0 ? osUrlDeal : ''),
                 });
-            }
-
-            function syncDealCompareIframeHeight() {
-                if (document.documentElement.classList.contains('embed-mode') && document.body.classList.contains('deal-compare-tab-active')) return;
-                var section = document.getElementById('sectionDealCompare');
-                var iframe = document.getElementById('dealCompareIframe');
-                if (!section || !iframe || section.style.display === 'none') return;
-                var wrap = iframe.closest('.deal-compare-iframe-wrap');
-                if (!wrap) return;
-                var top = wrap.getBoundingClientRect().top;
-                var h = Math.max(420, Math.floor(window.innerHeight - top - 20));
-                iframe.style.height = h + 'px';
             }
 
             function populateDealCompareDealSelect() {
@@ -7753,7 +7700,6 @@
                     var loadingEl = document.getElementById('dealCompareLoadingState');
                     if (loadingEl) loadingEl.style.display = 'none';
                     wireDealCompareFilters();
-                    syncDealCompareIframeHeight();
                 });
                 // ensure initial src has embed=1
                 if (!dealCompareIframe.src || dealCompareIframe.src.indexOf('embed=1') === -1) {
@@ -7762,16 +7708,6 @@
                     dealCompareIframe.src = dealId ? (baseSrc + '?dealId=' + encodeURIComponent(dealId) + '&embed=1') : (baseSrc + '?embed=1');
                 }
             }
-            var dealCompareHeightRaf = 0;
-            function scheduleDealCompareIframeHeight() {
-                if (dealCompareHeightRaf) return;
-                dealCompareHeightRaf = window.requestAnimationFrame(function () {
-                    dealCompareHeightRaf = 0;
-                    syncDealCompareIframeHeight();
-                });
-            }
-            window.addEventListener('resize', scheduleDealCompareIframeHeight);
-            window.addEventListener('scroll', scheduleDealCompareIframeHeight, { passive: true });
             function showDealCompareWinnerModal() {
                 var dealId = (dealCompareDealSelect && dealCompareDealSelect.value || '').trim();
                 if (!dealId) {

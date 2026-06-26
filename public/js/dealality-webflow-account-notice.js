@@ -344,12 +344,13 @@
   /** Match app.css / Railway embed scrollbars (6px, neutral thumb — not landing purple). */
   function platformShellScrollbarCss() {
     return (
-      "html.dl-platform-shell,html.dl-platform-shell body{scrollbar-gutter:stable!important;scrollbar-width:thin!important;scrollbar-color:#37446b #080f25!important}" +
-      "html.dl-platform-shell::-webkit-scrollbar,html.dl-platform-shell body::-webkit-scrollbar{width:6px!important;height:6px!important}" +
-      "html.dl-platform-shell::-webkit-scrollbar-track,html.dl-platform-shell body::-webkit-scrollbar-track{background:#080f25!important;border-left:1px solid rgba(87,195,255,.35)!important}" +
-      "html.dl-platform-shell::-webkit-scrollbar-thumb,html.dl-platform-shell body::-webkit-scrollbar-thumb{background:#37446b!important;border-radius:0!important}" +
-      "html.dl-platform-shell::-webkit-scrollbar-thumb:hover,html.dl-platform-shell body::-webkit-scrollbar-thumb:hover{background:#7e89ac!important}" +
-      "html.dl-platform-shell::-webkit-scrollbar-corner,html.dl-platform-shell body::-webkit-scrollbar-corner{background:#080f25!important}"
+      "html.dl-platform-shell{scrollbar-gutter:stable!important}" +
+      "html.dl-platform-shell,html.dl-platform-shell body,html.dl-platform-shell *{scrollbar-width:thin!important;scrollbar-color:#37446b #080f25!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar,html.dl-platform-shell body::-webkit-scrollbar,html.dl-platform-shell *::-webkit-scrollbar{width:6px!important;height:6px!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar-track,html.dl-platform-shell body::-webkit-scrollbar-track,html.dl-platform-shell *::-webkit-scrollbar-track{background:#080f25!important;border-left:1px solid rgba(87,195,255,.35)!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar-thumb,html.dl-platform-shell body::-webkit-scrollbar-thumb,html.dl-platform-shell *::-webkit-scrollbar-thumb{background:#37446b!important;border-radius:0!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar-thumb:hover,html.dl-platform-shell body::-webkit-scrollbar-thumb:hover,html.dl-platform-shell *::-webkit-scrollbar-thumb:hover{background:#7e89ac!important}" +
+      "html.dl-platform-shell::-webkit-scrollbar-corner,html.dl-platform-shell body::-webkit-scrollbar-corner,html.dl-platform-shell *::-webkit-scrollbar-corner{background:#080f25!important}"
     );
   }
 
