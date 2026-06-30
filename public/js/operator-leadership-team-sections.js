@@ -234,6 +234,22 @@
     return "";
   }
 
+  /** Internal Operator Setup guidance — must not render on owner-facing Explorer. */
+  function isInternalSetupHintCopy(value) {
+    var s = nz(value);
+    if (!s) return false;
+    if (/^(Mirror CALA leadership|mirror your top three leaders|\[Internal fill guidance)/i.test(s)) {
+      return true;
+    }
+    if (/Leadership Team Members:/i.test(s) && s.length > 72) return true;
+    return false;
+  }
+
+  function pickOwnerFacing(ex, p, key) {
+    var v = pick(ex, p, key);
+    return isInternalSetupHintCopy(v) ? "" : v;
+  }
+
   function parseJsonArray(raw) {
     if (raw == null || raw === "") return null;
     if (Array.isArray(raw)) return raw;
@@ -272,7 +288,7 @@
   function scalarSnapshotField(vm, fieldKey) {
     var p = (vm && vm.prefill) || {};
     var ex = (vm && vm.ex) || {};
-    var v = pick(ex, p, fieldKey);
+    var v = pickOwnerFacing(ex, p, fieldKey);
     if (nz(v)) return v;
     return SNAPSHOT_SCALAR_DEFAULTS[fieldKey] || "";
   }
@@ -562,5 +578,7 @@
     sectionData: sectionData,
     scalarSnapshotField: scalarSnapshotField,
     languageSnapshot: languageSnapshot,
+    isInternalSetupHintCopy: isInternalSetupHintCopy,
+    pickOwnerFacing: pickOwnerFacing,
   };
 })(typeof window !== "undefined" ? window : global);

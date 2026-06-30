@@ -81,8 +81,65 @@
     return (
       /^Select deal types Arbor pursues in CALA/i.test(t) ||
       /^Choose values that match the CALA deals you pursue/i.test(t) ||
-      /^\[Internal fill guidance/i.test(t)
+      /^\[Internal fill guidance/i.test(t) ||
+      /^Mirror CALA leadership/i.test(t) ||
+      /^mirror your top three leaders/i.test(t) ||
+      (/Leadership Team Members:/i.test(t) && t.length > 72)
     );
+  }
+
+  function pickOwnerFacing(ex, p, key) {
+    var v = pick(ex, p, key);
+    return isInternalFillPlaceholder(v) ? "" : nz(v);
+  }
+
+  var CROSS_BRAND_SELECT_OPTIONS = [
+    "Very Strong",
+    "Strong",
+    "High",
+    "Moderate-High",
+    "Medium",
+    "Low",
+    "Emerging",
+  ];
+
+  var HOTEL_BRAND_TOKEN_RE =
+    /\b(marriott|hilton|hyatt|ihg|choice|accor|starwood|sheraton|westin|curio|aloft|hampton|holiday inn|hotel indigo|radisson|four seasons|kimpton|independent)\b/gi;
+
+  function normalizeCrossBrandSignal(raw, leaders, vm) {
+    var s = isInternalFillPlaceholder(raw) ? "" : nz(raw);
+    if (s) {
+      var match = CROSS_BRAND_SELECT_OPTIONS.find(function (opt) {
+        return opt.toLowerCase() === s.toLowerCase();
+      });
+      if (match) return match;
+      if (s.length <= 24) return s;
+    }
+    var brands = {};
+    (leaders || []).forEach(function (L) {
+      var text = [L.priorBackground, L.coreExpertise, L.relevantAssetTypes]
+        .map(nz)
+        .join(" ");
+      var m;
+      HOTEL_BRAND_TOKEN_RE.lastIndex = 0;
+      while ((m = HOTEL_BRAND_TOKEN_RE.exec(text)) !== null) {
+        brands[m[1].toLowerCase()] = true;
+      }
+    });
+    var brandCount = Object.keys(brands).length;
+    if (brandCount >= 4) return "Very Strong";
+    if (brandCount >= 3) return "High";
+    if (brandCount >= 2) return "Moderate-High";
+    var p = (vm && vm.prefill) || {};
+    var brandList = nz(p.brands || p.additionalBrands);
+    if (brandList) {
+      var parts = brandList.split(/[,;|]+/).filter(function (x) {
+        return nz(x);
+      });
+      if (parts.length >= 5) return "High";
+      if (parts.length >= 2) return "Moderate-High";
+    }
+    return "—";
   }
 
   function arrayishWithoutPlaceholders(v) {
@@ -1560,6 +1617,27 @@
     return compactYearsKpi(String(Math.round(avg * 10) / 10));
   }
 
+  /** Mean `companyTenureYears` for visible executives (Operator Setup child rows). */
+  function averageExecutiveCompanyTenureYears(leaders) {
+    var nums = [];
+    (leaders || []).forEach(function (L) {
+      var raw =
+        L.companyTenureYears != null && L.companyTenureYears !== ""
+          ? L.companyTenureYears
+          : L.company_tenure_years;
+      if (raw == null || raw === "") return;
+      var n = typeof raw === "number" ? raw : parseFloat(String(raw).replace(/,/g, ""));
+      if (isNaN(n) || n <= 0 || n >= 80) return;
+      nums.push(n);
+    });
+    if (!nums.length) return "";
+    var avg =
+      nums.reduce(function (a, b) {
+        return a + b;
+      }, 0) / nums.length;
+    return compactYearsKpi(String(Math.round(avg * 10) / 10));
+  }
+
   function regionalCoverageKpi(ex, p) {
     var raw = pick(ex, p, "lead_narrative_regional", "");
     var lines = linesFromText(raw);
@@ -1597,16 +1675,29 @@
     var leadSections = global.OperatorLeadershipTeamSections;
     var hospValue = averageExecutiveHospitalityYears(leaders);
 
-    var tenureRaw = pick(ex, p, "lead_signal_tenure", "");
-    if (!tenureRaw && leadSections && leadSections.scalarSnapshotField) {
-      tenureRaw = leadSections.scalarSnapshotField(vm, "lead_signal_tenure");
-    }
+    var tenureRaw = pickOwnerFacing(ex, p, "lead_signal_tenure");
     var tenureValue = compactYearsKpi(tenureRaw) || compactYearsKpi(formatYearsDisplay(tenureRaw));
+    if (!tenureValue) tenureValue = averageExecutiveCompanyTenureYears(leaders);
+    if (!tenureValue && leadSections && leadSections.scalarSnapshotField) {
+      tenureValue = compactYearsKpi(leadSections.scalarSnapshotField(vm, "lead_signal_tenure"));
+    }
 
     var langUnique = collectExecutiveLanguagesFromField(leaders);
+    if (
+      leadSections &&
+      leadSections.languageSnapshot &&
+      (!langUnique.length || langUnique.length < 2)
+    ) {
+      var langSnap = leadSections.languageSnapshot(vm);
+      if (langSnap.names && langSnap.names.length) langUnique = langSnap.names;
+    }
     var langCount = langUnique.length ? String(langUnique.length) : "";
 
-    var crossBrand = nz(pick(ex, p, "lead_signal_crossbrand", ""));
+    var crossBrand = normalizeCrossBrandSignal(
+      pick(ex, p, "lead_signal_crossbrand", ""),
+      leaders,
+      vm
+    );
     var regional = regionalCoverageKpi(ex, p);
 
     return [
@@ -2391,7 +2482,7 @@
   function buildRecognitionSectionHtml(vm) {
     var industryRecognition =
       pickSetupField(vm, ["industryRecognition"], ["Industry Recognition"]) ||
-      pickSetupField(vm, ["lead_narrative_functional"], ["lead_narrative_functional"]);
+      pickOwnerFacing(vm.ex, vm.prefill, "lead_narrative_functional");
     var cards = [
       recognitionCard(
         "Certifications & Standards",
