@@ -4,6 +4,8 @@ import {
   decodeHtmlEntities,
   decodeHtmlEntitiesPreserveWhitespace,
 } from "../../lib/decode-html-entities.js";
+import { inferCategoryFromText } from "../../lib/market-alerts-category-infer.js";
+import { REGION_GEO_REGEX } from "../../lib/market-alerts-geo-keywords.js";
 
 /** @typedef {import("../market-alerts-news.js").fetchMarketAlertsRssItems} fetchMarketAlertsRssItems */
 
@@ -32,6 +34,7 @@ export const ALLOWED_CATEGORIES = [
 
 export const ALLOWED_REGION_GROUPS = [
   "Global",
+  "North America",
   "Europe",
   "Asia Pacific",
   "Caribbean",
@@ -41,22 +44,9 @@ export const ALLOWED_REGION_GROUPS = [
 
 export const ALLOWED_PRIORITIES = ["Low", "Medium", "High"];
 
-const CATEGORY_RULES = [
-  { category: "Deals", re: /\b(acquisition|merger|sold|sale of|deal\b|transaction|portfolio sale)\b/i },
-  { category: "Capital", re: /\b(funding|financ|investment|lender|loan|reit|bond|capital raise|refinanc)\b/i },
-  { category: "Brand", re: /\b(franchise|rebrand|brand launch|soft brand|flagged|mgallery|marriott|hilton|accor|hyatt|ihg|choice hotels)\b/i },
-  { category: "Supply", re: /\b(pipeline|construction|opening|opens\b|new hotel|rooms in construction|groundbreaking|development)\b/i },
-  { category: "Demand", re: /\b(revpar|occupancy|adr|demand|booking|traveler|performance|arrivals)\b/i },
-  { category: "Loyalty", re: /\b(loyalty|rewards|bonvoy|points program|frequent guest)\b/i },
-  { category: "Risk", re: /\b(lawsuit|regulat|strike|downturn|bankrupt|sanction|risk\b|recall)\b/i },
-];
-
-const REGION_RULES = [
-  { region: "Europe", re: /\b(europe|european|uk\b|united kingdom|germany|france|spain|italy|amsterdam)\b/i },
-  { region: "Asia Pacific", re: /\b(asia|pacific|china|india|japan|australia|vietnam|singapore|korea|beijing|mykonos)\b/i },
-  { region: "Caribbean", re: /\b(caribbean|aruba|bahamas|jamaica|puerto rico|cancun|dominican)\b/i },
-  { region: "Latin America", re: /\b(latin america|cala\b|mexico|brazil|argentina|chile|colombia|peru|guatemala|panama)\b/i },
-];
+/** Reserve Global for explicitly worldwide / multi-region industry coverage. */
+const GLOBAL_SIGNAL_RE =
+  /\b(global (?:hotel|hospitality|travel|tourism|market|trend|outlook|industry|revpar|demand|supply|pipeline|shift|survey|report|study|index|workforce)|world(?:'s|wide)|world-wide|around the world|across (?:the )?(?:world|regions|markets)|all regions|multi-?region|pan-?regional|cross-?border|international (?:hotel|hospitality|chain|group)|industry-?wide|world hotel|hotel industry(?: as a whole)?|regions besides|every region|no single market|world's boutique|world's hotel)\b/i;
 
 /** SHA-256 of canonical source URL (matches existing MarketAlerts rows). */
 export function rssItemDedupeId(item) {
@@ -68,19 +58,57 @@ export function rssItemDedupeId(item) {
 
 export function inferCategory(item) {
   const text = `${item.title || ""} ${item.summary || ""}`.trim();
-  for (const { category, re } of CATEGORY_RULES) {
-    if (re.test(text)) return category;
-  }
-  if ((item.source || "").includes("Openings")) return "Supply";
-  return "Demand";
+  return inferCategoryFromText(text, item.source || item.sourceName || "");
 }
 
 export function inferRegionGroup(item) {
+  const source = (item.source || item.sourceName || "").trim();
+  if (/\b(usa\s*&\s*canada|north america)\b/i.test(source)) {
+    return "North America";
+  }
+
   const text = `${item.title || ""} ${item.summary || ""} ${item.link || ""}`.trim();
-  for (const { region, re } of REGION_RULES) {
+  for (const { region, re } of REGION_GEO_REGEX) {
     if (re.test(text)) return region;
   }
+  if (GLOBAL_SIGNAL_RE.test(text)) return "Global";
+
+  if (/\b(middle east|africa|mena)\b/i.test(source)) {
+    return "Other";
+  }
+  if (/\basia\s*pacific\b/i.test(source)) {
+    return "Asia Pacific";
+  }
+
   return "Global";
+}
+
+/** Infer category from Airtable MarketAlerts field shape (for backfill scripts). */
+export function inferCategoryFromFields(fields) {
+  const text = `${fields[MAP_ALERT.title] || ""} ${fields[MAP_ALERT.summary] || ""}`.trim();
+  return inferCategoryFromText(text, fields[MAP_ALERT.sourceName] || "");
+}
+
+/** Infer region from Airtable MarketAlerts field shape (for backfill scripts). */
+export function inferRegionGroupFromFields(fields) {
+  return inferRegionGroup({
+    title: fields[MAP_ALERT.title],
+    summary: fields[MAP_ALERT.summary],
+    link: fields[MAP_ALERT.sourceUrl],
+    source: fields[MAP_ALERT.sourceName],
+  });
+}
+
+/** Full classification patch (region + category) for backfill. */
+export function inferClassificationPatch(fields) {
+  const patch = {};
+  const region = inferRegionGroupFromFields(fields);
+  const category = inferCategoryFromFields(fields);
+  const currentRegion = fields[MAP_ALERT.regionGroup] || "Global";
+  const currentCategory = fields[MAP_ALERT.category] || "Demand";
+  if (region !== currentRegion) patch[MAP_ALERT.regionGroup] = region;
+  if (category !== currentCategory) patch[MAP_ALERT.category] = category;
+  return { patch, region, category, currentRegion, currentCategory };
 }
 
 export function parsePublishedAtIso(pubDate) {
@@ -97,6 +125,18 @@ export function sanitizeMarketAlertText(text, { preserveWhitespace = false } = {
   return preserveWhitespace
     ? decodeHtmlEntitiesPreserveWhitespace(raw)
     : decodeHtmlEntities(raw);
+}
+
+export function patchMarketAlertTextFields(fields) {
+  const patch = {};
+  for (const key of [MAP_ALERT.title, MAP_ALERT.summary, MAP_ALERT.sourceName]) {
+    const val = fields[key];
+    if (typeof val !== "string" || !val) continue;
+    const preserveWhitespace = key === MAP_ALERT.summary;
+    const cleaned = sanitizeMarketAlertText(val, { preserveWhitespace });
+    if (cleaned !== val) patch[key] = cleaned;
+  }
+  return patch;
 }
 
 export function mapRssItemToAirtableFields(item) {
