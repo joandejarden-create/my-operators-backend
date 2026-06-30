@@ -26,6 +26,7 @@ const ALLOWED_EVENTS = new Set([
   "audience_tab",
   "faq_open",
   "engagement_milestone",
+  "insights_article_click",
 ]);
 
 const SESSION_RATE_LIMIT = 120;
@@ -105,6 +106,8 @@ export default async function marketingLandingEvents(req, res) {
       utmSource: sanitizeString(body.utmSource, 64),
       utmMedium: sanitizeString(body.utmMedium, 64),
       utmCampaign: sanitizeString(body.utmCampaign, 64),
+      surface: sanitizeString(body.surface, 24),
+      language: sanitizeString(body.language, 16),
       geoCountry: null,
       geoCountryName: null,
       geoRegion: null,

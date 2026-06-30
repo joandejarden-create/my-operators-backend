@@ -167,6 +167,7 @@
       embed: p.get("embed") === "1",
       device: deviceClass(),
       landingVersion: landingVersion(),
+      surface: "landing",
       path: (global.location.pathname || "") + (global.location.search || ""),
       referrer: (global.document && global.document.referrer) || "",
       utmSource: p.get("utm_source") || null,

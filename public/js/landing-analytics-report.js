@@ -107,6 +107,28 @@
     return null;
   }
 
+  function selectedDays() {
+    return $("laDays").value || "7";
+  }
+
+  function syncDaysToUrl(days) {
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.set("days", String(days));
+      window.history.replaceState(null, "", url.toString());
+    } catch (_e) {}
+  }
+
+  function applyDaysFromUrl() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var days = params.get("days");
+      if (!days || !$("laDays")) return;
+      var option = $("laDays").querySelector('option[value="' + days + '"]');
+      if (option) $("laDays").value = days;
+    } catch (_e2) {}
+  }
+
   async function apiFetch(path) {
     var headers = { "Content-Type": "application/json" };
     var reportKey = reportKeyFromPage();
@@ -125,7 +147,10 @@
       }
     }
 
-    var res = await fetch(fetchPath, { headers: headers });
+    var res = await fetch(fetchPath, {
+      headers: headers,
+      cache: "no-store",
+    });
     var data = await res.json().catch(function () {
       return {};
     });
@@ -184,7 +209,12 @@
       {
         label: "Visitors",
         value: sessions,
-        sub: (totals.embedSessions || 0) + " From Homepage Embed",
+        sub:
+          (totals.embedSessions || 0) +
+          " From Homepage Embed" +
+          (totals.insightsSessions
+            ? " · " + totals.insightsSessions + " On /insights"
+            : ""),
         accent: "primary",
       },
       {
@@ -483,8 +513,8 @@
     );
   }
 
-  function renderAudienceOverview(audience) {
-    var el = $("laAudienceOverview");
+  function renderAudienceOverview(audience, elId) {
+    var el = $(elId || "laAudienceOverview");
     if (!el) return;
     if (!audience || !audience.days || !audience.days.length) {
       el.innerHTML =
@@ -509,8 +539,8 @@
     html += "</div>";
 
     var w = 400;
-    var h = 120;
-    var pad = { l: 8, r: 8, t: 12, b: 28 };
+    var h = 148;
+    var pad = { l: 12, r: 12, t: 22, b: 30 };
     var innerW = w - pad.l - pad.r;
     var innerH = h - pad.t - pad.b;
     var days = audience.days;
@@ -519,7 +549,13 @@
         pad.l +
         (days.length === 1 ? innerW / 2 : (i / (days.length - 1)) * innerW);
       var y = pad.t + innerH - (row.sessions / maxSessions) * innerH;
-      return { x: x, y: y, label: row.label, sessions: row.sessions };
+      return {
+        x: x,
+        y: y,
+        label: row.label,
+        sessions: row.sessions,
+        duration: row.medianDurationSeconds,
+      };
     });
     var polyline = points
       .map(function (p) {
@@ -538,39 +574,60 @@
       polyline +
       '"/>';
     points.forEach(function (p) {
+      var tip =
+        esc(p.label) +
+        ": " +
+        esc(p.sessions) +
+        " sessions" +
+        (p.duration != null ? ", median " + esc(fmtDuration(p.duration)) : "");
       html +=
         '<circle cx="' +
         p.x +
         '" cy="' +
         p.y +
         '" r="4" fill="#5b8cff"><title>' +
-        esc(p.label) +
-        ": " +
+        tip +
+        "</title></circle>";
+      html +=
+        '<text x="' +
+        p.x +
+        '" y="' +
+        Math.max(12, p.y - 9) +
+        '" text-anchor="middle" class="line-chart__value">' +
         esc(p.sessions) +
-        " sessions</title></circle>";
-    });
-    points.forEach(function (p, i) {
-      if (
-        i === 0 ||
-        i === days.length - 1 ||
-        (days.length > 2 && i === Math.floor(days.length / 2))
-      ) {
-        html +=
-          '<text x="' +
-          p.x +
-          '" y="' +
-          (h - 6) +
-          '" text-anchor="middle" class="line-chart__label">' +
-          esc(p.label) +
-          "</text>";
-      }
+        "</text>";
+      html +=
+        '<text x="' +
+        p.x +
+        '" y="' +
+        (h - 8) +
+        '" text-anchor="middle" class="line-chart__label">' +
+        esc(p.label) +
+        "</text>";
     });
     html += "</svg>";
+
+    html += '<table class="dash-table line-chart__table" aria-label="Sessions by day data table">';
+    html += "<thead><tr><th>Day</th><th>Sessions</th><th>Median Session</th></tr></thead><tbody>";
+    html += days
+      .map(function (row) {
+        return (
+          "<tr><td>" +
+          esc(row.label) +
+          "</td><td>" +
+          esc(row.sessions) +
+          "</td><td>" +
+          esc(fmtDuration(row.medianDurationSeconds)) +
+          "</td></tr>"
+        );
+      })
+      .join("");
+    html += "</tbody></table>";
     el.innerHTML = html;
   }
 
-  function renderAcquisitionReport(acquisition) {
-    var el = $("laAcquisition");
+  function renderAcquisitionReport(acquisition, elId) {
+    var el = $(elId || "laAcquisition");
     if (!el) return;
     if (!acquisition || !acquisition.days || !acquisition.days.length) {
       el.innerHTML =
@@ -631,8 +688,8 @@
     el.innerHTML = html;
   }
 
-  function renderPopularPages(rows) {
-    var el = $("laPopularPages");
+  function renderPopularPages(rows, elId) {
+    var el = $(elId || "laPopularPages");
     if (!el) return;
     if (!rows || !rows.length) {
       el.innerHTML = '<p class="empty">No page views yet.</p>';
@@ -654,8 +711,8 @@
       "</tbody></table>";
   }
 
-  function renderSessionsByCountry(rows) {
-    var el = $("laSessionsByCountry");
+  function renderSessionsByCountry(rows, elId) {
+    var el = $(elId || "laSessionsByCountry");
     if (!el) return;
     if (!rows || !rows.length) {
       el.innerHTML =
@@ -688,8 +745,8 @@
       "</div>";
   }
 
-  function renderSessionsByDevice(rows) {
-    var el = $("laSessionsByDevice");
+  function renderSessionsByDevice(rows, elId) {
+    var el = $(elId || "laSessionsByDevice");
     if (!el) return;
     if (!rows || !rows.length) {
       el.innerHTML = '<p class="empty">No device data yet.</p>';
@@ -734,6 +791,108 @@
       .join("");
     html += "</div></div>";
     el.innerHTML = html;
+  }
+
+  function renderInsightsArticles(rows) {
+    var el = $("laInsightsArticles");
+    if (!el) return;
+    if (!rows || !rows.length) {
+      el.innerHTML = '<p class="empty">No article clicks yet.</p>';
+      return;
+    }
+    el.innerHTML =
+      '<table class="dash-table"><thead><tr><th>Article</th><th>Clicks</th></tr></thead><tbody>' +
+      rows
+        .map(function (row) {
+          var lang = row.languageLabel
+            ? ' <span class="raw-key">' + esc(row.languageLabel) + "</span>"
+            : "";
+          return (
+            "<tr><td class=\"dash-table__page\">" +
+            esc(row.label) +
+            lang +
+            "</td><td>" +
+            esc(row.count) +
+            "</td></tr>"
+          );
+        })
+        .join("") +
+      "</tbody></table>";
+  }
+
+  function renderInsightsHub(hub) {
+    var section = $("laInsightsHubSection");
+    if (!section) return;
+    if (!hub || !hub.hasData) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+
+    var kpis = $("laInsightsKpis");
+    if (kpis) {
+      var cards = [
+        {
+          label: "Insights Sessions",
+          value: hub.totals.sessions,
+          sub: hub.totals.pageviews + " Pageviews",
+          accent: "primary",
+        },
+        {
+          label: "Article Clicks",
+          value: hub.totals.articleClicks,
+          sub: "Card clicks to read",
+          accent: "teal",
+        },
+        {
+          label: "CTA Clicks",
+          value: hub.totals.ctaClicks,
+          sub: "Request Early Access / signup",
+          accent: "violet",
+        },
+      ];
+      kpis.innerHTML = cards
+        .map(function (c) {
+          return (
+            '<div class="kpi kpi--' +
+            esc(c.accent) +
+            '"><div class="kpi__label">' +
+            esc(c.label) +
+            '</div><div class="kpi__value">' +
+            esc(c.value) +
+            '</div><div class="kpi__sub">' +
+            esc(c.sub) +
+            "</div></div>"
+          );
+        })
+        .join("");
+    }
+
+    var dash = hub.dashboard || {};
+    renderAudienceOverview(dash.audience, "laInsightsAudience");
+    renderAcquisitionReport(dash.acquisition, "laInsightsAcquisition");
+    renderInsightsArticles(hub.articleClicks);
+    renderSessionsByCountry(dash.sessionsByCountry, "laInsightsCountries");
+    renderSessionsByDevice(dash.sessionsByDevice, "laInsightsDevices");
+    renderBarList(
+      "laInsightsLanguages",
+      (hub.languages || []).map(function (row) {
+        return { key: row.key, label: row.label, count: row.count };
+      }),
+      "No language data yet — detected from article titles and lang attributes."
+    );
+    renderBarList(
+      "laInsightsCtas",
+      (hub.ctaLocations || []).map(function (row) {
+        return { key: row.key, label: row.label, count: row.count };
+      }),
+      "No CTA clicks on /insights yet."
+    );
+    renderBarList(
+      "laInsightsScroll",
+      hub.scrollDepths || [],
+      "No scroll milestones yet."
+    );
   }
 
   function renderDashboard(dashboard) {
@@ -822,7 +981,7 @@
         esc(data.changeVsPriorDay) +
         "</span>";
     }
-    if (data.weekOverWeekChange != null) {
+    if (data.weekOverWeekChange != null && (data.windowDays == null || data.windowDays >= 14)) {
       var wowClass =
         data.weekOverWeekChange > 0
           ? "daily-trend--up"
@@ -1082,12 +1241,14 @@
     });
     $("laSessionTimeline").innerHTML = '<p class="empty">Loading Session…</p>';
     try {
-      var days = $("laDays").value || "7";
+      var days = selectedDays();
       var data = await apiFetch(
         "/api/marketing/landing-events/session?sessionId=" +
           encodeURIComponent(sessionId) +
           "&days=" +
-          encodeURIComponent(days)
+          encodeURIComponent(days) +
+          "&_=" +
+          Date.now()
       );
       renderSessionTimeline(data);
     } catch (err) {
@@ -1097,7 +1258,7 @@
   }
 
   function downloadExport(format) {
-    var days = $("laDays").value || "7";
+    var days = selectedDays();
     var url =
       appendReportKey(
         "/api/marketing/landing-events/export?days=" +
@@ -1110,11 +1271,24 @@
 
   function formatStorageBanner(storage, totals, window) {
     var parts = [];
+    if (window && window.label) {
+      parts.push(window.label);
+    } else if (window && window.days) {
+      parts.push(
+        window.days === 1 ? "Last 24 Hours" : "Last " + window.days + " Days"
+      );
+    }
     parts.push(
-      (totals && totals.sessions ? totals.sessions : 0) + " Sessions"
+      (totals && totals.sessions ? totals.sessions : 0) + " Landing Sessions"
     );
+    if (totals && totals.insightsSessions) {
+      parts.push(totals.insightsSessions + " Insights Sessions");
+    }
     if (totals && totals.locatedSessions != null) {
       parts.push(totals.locatedSessions + " With Location");
+    }
+    if (window && window.eventCount != null) {
+      parts.push(window.eventCount + " Events in Window");
     }
     parts.push(fmtRange(window));
     if (storage) {
@@ -1232,16 +1406,21 @@
   }
 
   async function loadReport() {
-    var days = $("laDays").value || "7";
-    setBanner("Loading Report…", "info");
+    var days = selectedDays();
+    syncDaysToUrl(days);
+    setBanner("Loading " + (days === "1" ? "last 24 hours" : "last " + days + " days") + "…", "info");
     $("laReport").hidden = true;
     try {
       var data = await apiFetch(
-        "/api/marketing/landing-events/report?days=" + encodeURIComponent(days)
+        "/api/marketing/landing-events/report?days=" +
+          encodeURIComponent(days) +
+          "&_=" +
+          Date.now()
       );
       renderInsights(data.insights);
       renderHeroKpis(data.totals || {}, data.funnel);
       renderDashboard(data.dashboard);
+      renderInsightsHub(data.insightsHub);
       renderBenchmarks(data.benchmarks);
       renderDailyUniqueUsers(data.dailyUniqueUsers);
       renderFunnel(data.funnel);
@@ -1341,6 +1520,7 @@
     );
   }
 
+  applyDaysFromUrl();
   $("laRefresh").addEventListener("click", loadReport);
   $("laDays").addEventListener("change", loadReport);
   if ($("laExportEvents")) {

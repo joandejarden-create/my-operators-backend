@@ -1,9 +1,12 @@
 import { buildLandingEventsReport } from "../lib/marketing-landing-events-read.js";
+import {
+  buildReportWindow,
+  loadOptionsForWindow,
+} from "../lib/marketing-landing-events-window.js";
 
-function parseDays(value) {
-  const n = Number(value);
-  if (!Number.isFinite(n) || n <= 0) return 7;
-  return Math.min(Math.floor(n), 90);
+function setReportNoStore(res) {
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
 }
 
 function requireLandingAnalyticsAdmin(req, res, next) {
@@ -35,9 +38,9 @@ export async function getMarketingLandingEventsReport(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const days = parseDays(req.query?.days);
-    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
-    const report = buildLandingEventsReport({ since });
+    setReportNoStore(res);
+    const window = buildReportWindow(req.query?.days);
+    const report = buildLandingEventsReport(loadOptionsForWindow(window), window);
     return res.status(200).json(report);
   } catch (err) {
     console.error("Error in marketing-landing-events-report:", err);

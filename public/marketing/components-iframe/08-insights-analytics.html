@@ -1,0 +1,12 @@
+<!--
+  Webflow: Insights page analytics
+  1. Site-wide footer (or /insights page only): set Railway API base before this snippet.
+  2. Paste into Page Settings → Custom Code → Before </body> on /insights,
+     or load from site footer when pathname is /insights.
+
+  Replace YOUR-RAILWAY-HOST with production/staging Railway URL.
+-->
+<script>
+  window.DEALALITY_API_BASE = window.DEALALITY_API_BASE || "https://YOUR-RAILWAY-HOST";
+</script>
+<script src="https://YOUR-RAILWAY-HOST/js/dealality-insights-analytics.js?v=20260622g" defer></script>

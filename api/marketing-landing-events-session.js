@@ -1,9 +1,12 @@
 import { loadLandingEvents, getSessionTimeline } from "../lib/marketing-landing-events-read.js";
+import {
+  buildReportWindow,
+  loadOptionsForWindow,
+} from "../lib/marketing-landing-events-window.js";
 
-function parseDays(value) {
-  const n = Number(value);
-  if (!Number.isFinite(n) || n <= 0) return 7;
-  return Math.min(Math.floor(n), 90);
+function setReportNoStore(res) {
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
 }
 
 /**
@@ -24,9 +27,9 @@ export async function getMarketingLandingEventsSession(req, res) {
       });
     }
 
-    const days = parseDays(req.query?.days);
-    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
-    const events = loadLandingEvents({ since });
+    setReportNoStore(res);
+    const window = buildReportWindow(req.query?.days);
+    const events = loadLandingEvents(loadOptionsForWindow(window));
     const timeline = getSessionTimeline(events, sessionId);
 
     if (!timeline.length) {
