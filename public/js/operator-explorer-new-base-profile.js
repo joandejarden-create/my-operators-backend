@@ -484,9 +484,26 @@
           escapeHtml(String(opId)) +
           '">Save</button>'
         : '<button type="button" class="btn oe-hero-save-btn" disabled title="Operator record unavailable">Save</button>';
+    var exportPdfBtn = "";
+    if (opId && String(opId).indexOf("rec") === 0 && document.documentElement) {
+      var isEmbed = document.documentElement.classList.contains("embed-mode");
+      var isExport = document.documentElement.classList.contains("oe-export-pdf");
+      if (!isEmbed && !isExport) {
+        var dealId = "";
+        try {
+          dealId = new URLSearchParams(window.location.search || "").get("dealId") || "";
+        } catch (_) {}
+        exportPdfBtn =
+          '<a class="btn oe-export-pdf-link" href="/operator-explorer-export.html?id=' +
+          encodeURIComponent(String(opId)) +
+          (dealId ? "&dealId=" + encodeURIComponent(dealId) : "") +
+          '" target="_blank" rel="noopener">Export PDF</a>';
+      }
+    }
     return (
       '<div class="btn-row">' +
       saveBtn +
+      exportPdfBtn +
       '<button type="button" class="btn btn--primary" disabled title="Coming soon">Request Introduction</button>' +
       "</div>" +
       (chipHtml

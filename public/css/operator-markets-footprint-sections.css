@@ -1,0 +1,73 @@
+/**
+ * Markets & Footprint — Local / Regional Expertise + Market Fit Signals
+ */
+
+.oe-markets-section {
+  margin-bottom: 12px;
+}
+
+.oe-markets-expertise-grid {
+  align-items: stretch;
+}
+
+.oe-markets-expertise-card {
+  min-height: 0;
+}
+
+.oe-markets-expertise-card h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--text, #f0f6ff);
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 600;
+}
+
+.oe-markets-expertise-card p {
+  margin: 0;
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.oe-markets-fit-grid {
+  align-items: stretch;
+}
+
+.oe-markets-fit-card {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+}
+
+.oe-markets-fit-card h3 {
+  margin: 0 0 8px;
+  color: var(--muted, #aeb9e1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.oe-markets-fit-card p {
+  margin: 0;
+  flex: 1;
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+@media (max-width: 960px) {
+  .oe-markets-fit-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .oe-markets-expertise-grid,
+  .oe-markets-fit-grid {
+    grid-template-columns: 1fr;
+  }
+}

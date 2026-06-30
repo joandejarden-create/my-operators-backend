@@ -3,7 +3,8 @@
  * Explorer JSON payload, Key Leadership sync from executive repeater.
  * Loaded after the intake form on consolidated setup pages.
  */
-(function () {
+(function (global) {
+  global = global || (typeof window !== "undefined" ? window : {});
   function contractDiagEnabled() {
     try {
       if (window && (window.__OPERATOR_SETUP_CONTRACT_DIAGNOSTICS === true || window.__OPERATOR_SETUP_CONTRACT_DIAGNOSTICS === "1")) {
@@ -81,15 +82,56 @@
 
   function injectExecutiveProfileFields(rowsEl) {
     var mapApi = global.OperatorLeadershipMemberMap;
-    if (!mapApi || !mapApi.buildExecProfileFieldsHtml || !rowsEl) return;
+    if (!mapApi || !mapApi.buildExecProfileFieldsHtml || !rowsEl) return false;
+    var injected = 0;
     rowsEl.querySelectorAll(".repeater-row").forEach(function (row, idx) {
       if (row.querySelector("[data-exec-profile-detail]")) return;
-      var headshot = row.querySelector(".exec-headshot-section");
-      if (!headshot) return;
+      var insertBefore = row.querySelector(".exec-headshot-section");
+      if (!insertBefore) return;
       var wrap = document.createElement("div");
       wrap.innerHTML = mapApi.buildExecProfileFieldsHtml(idx + 1);
       var block = wrap.firstElementChild;
-      if (block) row.insertBefore(block, headshot);
+      if (block) {
+        row.insertBefore(block, insertBefore);
+        injected += 1;
+      }
+    });
+    return injected > 0;
+  }
+
+  /** Re-run profile-field injection (safe to call after prefill or dynamic row changes). */
+  function refreshExecutiveProfileFields() {
+    var rowsEl = document.getElementById("repeater-executives");
+    if (!rowsEl) return false;
+    var injected = injectExecutiveProfileFields(rowsEl);
+    var form = document.getElementById("operatorIntakeForm");
+    if (form) syncExecutiveMultiselectOptionsFromMap(form);
+    return injected;
+  }
+
+  var EXEC_PROFILE_MULTI_SUFFIX_TO_OPTION_KEY = {
+    languages: "languages",
+    market_experience: "marketExperience",
+    core_expertise: "coreExpertise",
+    relevant_asset_types: "relevantAssetTypes",
+  };
+
+  /** Keep executive multiselect `<option>` lists aligned with `LEADERSHIP_MEMBER_SELECT_OPTIONS` (Airtable schema). */
+  function syncExecutiveMultiselectOptionsFromMap(form) {
+    if (!form) return;
+    var mapApi = global.OperatorLeadershipMemberMap;
+    if (!mapApi || !mapApi.LEADERSHIP_MEMBER_SELECT_OPTIONS || !mapApi.optionsHtml) return;
+    Object.keys(EXEC_PROFILE_MULTI_SUFFIX_TO_OPTION_KEY).forEach(function (suffix) {
+      var optionKey = EXEC_PROFILE_MULTI_SUFFIX_TO_OPTION_KEY[suffix];
+      form.querySelectorAll('select.exec-profile-multiselect[name$="_' + suffix + '"]').forEach(function (sel) {
+        var selected = Array.from(sel.selectedOptions || []).map(function (o) {
+          return o.value;
+        });
+        sel.innerHTML = mapApi.optionsHtml(optionKey, selected);
+        Array.prototype.forEach.call(sel.options, function (opt) {
+          opt.selected = selected.indexOf(opt.value) !== -1;
+        });
+      });
     });
   }
 
@@ -103,6 +145,9 @@
     Array.prototype.forEach.call(el.options, function (opt) {
       opt.selected = !!sel[opt.value];
     });
+    if (form && form.dataset.suppressRequiredCount !== "1") {
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    }
   }
 
   function bindExecutiveRepeater(form) {
@@ -140,16 +185,47 @@
     return max;
   }
 
-  function ensureExecutiveRowCount(form, needed) {
+  function countExecutiveRepeaterRows(rowsEl) {
+    return rowsEl ? rowsEl.querySelectorAll(".repeater-row").length : 0;
+  }
+
+  /** Expand/shrink executive rows without infinite addBtn.click() loops. */
+  function setExecutiveRepeaterRowCount(form, targetCount) {
     var rowsEl = document.getElementById("repeater-executives");
-    var addBtn = form.querySelector('[data-repeater-add="executives"]');
-    if (!rowsEl || !addBtn) return;
+    var addBtn = form && form.querySelector('[data-repeater-add="executives"]');
+    if (!rowsEl || !addBtn) return countExecutiveRepeaterRows(rowsEl);
     var rep = rowsEl.closest && rowsEl.closest("[data-repeater]");
     var maxAllowed = parseInt((rep && rep.getAttribute("data-repeater-max")) || "24", 10) || 24;
-    var target = Math.min(Math.max(needed, 1), maxAllowed);
-    while (rowsEl.querySelectorAll(".repeater-row").length < target) {
-      addBtn.click();
+    var minRows = parseInt((rep && rep.getAttribute("data-repeater-min")) || "1", 10) || 1;
+    var needed = Math.min(Math.max(targetCount, minRows), maxAllowed);
+    var guard = 0;
+    while (countExecutiveRepeaterRows(rowsEl) > needed && guard++ < 32) {
+      if (countExecutiveRepeaterRows(rowsEl) <= minRows) break;
+      var list = rowsEl.querySelectorAll(".repeater-row");
+      list[list.length - 1].remove();
+      reindexExecutiveRows(rowsEl);
     }
+    guard = 0;
+    while (countExecutiveRepeaterRows(rowsEl) < needed && guard++ < 32) {
+      var before = countExecutiveRepeaterRows(rowsEl);
+      addBtn.click();
+      var after = countExecutiveRepeaterRows(rowsEl);
+      if (after <= before) {
+        console.warn(
+          "[operator-setup] executive repeater add stalled at",
+          after,
+          "needed",
+          needed,
+          "— check data-repeater-add binding"
+        );
+        break;
+      }
+    }
+    return countExecutiveRepeaterRows(rowsEl);
+  }
+
+  function ensureExecutiveRowCount(form, needed) {
+    setExecutiveRepeaterRowCount(form, needed);
   }
 
   /**
@@ -165,22 +241,20 @@
     var maxAllowed = parseInt((rep && rep.getAttribute("data-repeater-max")) || "24", 10) || 24;
     var minRows = parseInt((rep && rep.getAttribute("data-repeater-min")) || "1", 10) || 1;
     var needed = Math.min(Math.max(team.length, minRows), maxAllowed);
-    while (rowsEl.querySelectorAll(".repeater-row").length > needed) {
-      if (rowsEl.querySelectorAll(".repeater-row").length <= minRows) break;
-      var list = rowsEl.querySelectorAll(".repeater-row");
-      list[list.length - 1].remove();
-      reindexExecutiveRows(rowsEl);
-    }
-    while (rowsEl.querySelectorAll(".repeater-row").length < needed) {
-      addBtn.click();
-    }
+    var actualRows = setExecutiveRepeaterRowCount(form, needed);
     function nz(v) {
       return v != null && String(v).trim() !== "" ? String(v).trim() : "";
     }
-    team.slice(0, needed).forEach(function (row, idx) {
+    team.slice(0, actualRows).forEach(function (row, idx) {
       var n = idx + 1;
+      var domRow = rowsEl.querySelectorAll(".repeater-row")[idx];
       function set(suffix, val) {
-        var el = form.querySelector('[name="exec_' + n + "_" + suffix + '"]');
+        var el = domRow
+          ? domRow.querySelector('[name="exec_' + n + "_" + suffix + '"]')
+          : form.querySelector('[name="exec_' + n + "_" + suffix + '"]');
+        if (!el && domRow) {
+          el = domRow.querySelector('[name$="_' + suffix + '"]');
+        }
         if (el) el.value = val == null ? "" : String(val);
       }
       set("name", row.name);
@@ -199,11 +273,23 @@
       setExecutiveMultiSelect(form, n, "market_experience", row.marketExperience);
       setExecutiveMultiSelect(form, n, "core_expertise", row.coreExpertise);
       setExecutiveMultiSelect(form, n, "relevant_asset_types", row.relevantAssetTypes);
-      ["summary", "bio"].forEach(function (suf) {
-        var el = form.querySelector('[name="exec_' + n + "_" + suf + '"]');
-        if (el) el.dispatchEvent(new Event("input", { bubbles: true }));
-      });
+      if (domRow && form.dataset.suppressRequiredCount !== "1") {
+        domRow.querySelectorAll("select.exec-profile-multiselect[multiple]").forEach(function (sel) {
+          sel.dispatchEvent(new Event("change", { bubbles: true }));
+        });
+      }
+      if (form.dataset.suppressRequiredCount !== "1") {
+        ["summary", "bio"].forEach(function (suf) {
+          var el = form.querySelector('[name="exec_' + n + "_" + suf + '"]');
+          if (el) el.dispatchEvent(new Event("input", { bubbles: true }));
+        });
+      }
     });
+    try {
+      refreshExecutiveProfileFields();
+    } catch (err) {
+      console.warn("[operator-setup] refreshExecutiveProfileFields after leadership prefill failed:", err);
+    }
     syncKeyLeadershipFromExecutives(form);
   }
 
@@ -327,6 +413,10 @@
     }
     /** Single-select: do not clear on null/empty — Explorer JSON often includes `cap_*: ""` placeholders; column prefill runs after and would otherwise be wiped. */
     if (tag === "SELECT" && !el.multiple && (rawVal == null || rawVal === "")) {
+      return;
+    }
+    /** Executive repeater text/textarea: same rule — leadershipTeam prefill runs after mirror JSON. */
+    if (/^exec_\d+_/.test(name) && (rawVal == null || rawVal === "")) {
       return;
     }
     if (rawVal == null || typeof rawVal === "undefined") {
@@ -457,12 +547,14 @@
     reconcileBfQuantAfterPrefill(form, obj);
 
     attachStoryCharCounters(form);
-    form.querySelectorAll("textarea.explorer-story-field, textarea[maxlength]").forEach(function (ta) {
-      ta.dispatchEvent(new Event("input", { bubbles: true }));
-    });
-    form.querySelectorAll("[name^='overview_'], [name^='bf_'], [name^='ov_'], [name^='mkt_'], [name^='brand_']").forEach(function (el) {
-      if (el.dispatchEvent) el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
+    if (form.dataset.suppressRequiredCount !== "1") {
+      form.querySelectorAll("textarea.explorer-story-field, textarea[maxlength]").forEach(function (ta) {
+        ta.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      form.querySelectorAll("[name^='overview_'], [name^='bf_'], [name^='ov_'], [name^='mkt_'], [name^='brand_']").forEach(function (el) {
+        if (el.dispatchEvent) el.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    }
   }
 
   window.applyExplorerProfileJsonPrefill = applyExplorerProfileJsonPrefill;
@@ -544,6 +636,7 @@
   function init(form) {
     if (!form || form.id !== "operatorIntakeForm") return;
     bindExecutiveRepeater(form);
+    syncExecutiveMultiselectOptionsFromMap(form);
     attachStoryCharCounters(form);
     updateSoftBrandVisibility(form);
     bindMarketDepthVisibility(form);
@@ -564,9 +657,26 @@
   }
 
   window.applyLeadershipTeamPrefill = applyLeadershipTeamPrefill;
+  window.refreshExecutiveProfileFields = refreshExecutiveProfileFields;
+  window.syncExecutiveMultiselectOptionsFromMap = syncExecutiveMultiselectOptionsFromMap;
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function bootOperatorSetupExplorerBehavior() {
     var form = document.getElementById("operatorIntakeForm");
+    if (!form) return;
     init(form);
+    refreshExecutiveProfileFields();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootOperatorSetupExplorerBehavior);
+  } else {
+    bootOperatorSetupExplorerBehavior();
+  }
+  window.addEventListener("load", function () {
+    try {
+      refreshExecutiveProfileFields();
+    } catch (err) {
+      console.warn("[operator-setup] refreshExecutiveProfileFields on load failed:", err);
+    }
   });
-})();
+})(typeof window !== "undefined" ? window : this);

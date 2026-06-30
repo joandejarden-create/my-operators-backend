@@ -1,0 +1,299 @@
+/**
+ * Engagement & Reporting — subsection cards and tables (dark Explorer / DNA shell).
+ */
+
+.oe-eng-section {
+  margin-bottom: 12px;
+}
+
+.oe-eng-section--value,
+.oe-eng-section--cadence,
+.oe-eng-section--controls,
+.oe-eng-section--reports,
+.oe-eng-section--tools,
+.oe-eng-section--lifecycle {
+  padding: 14px 16px 16px;
+  border-radius: 12px;
+  border: 0.6px solid var(--border, rgba(108, 114, 255, 0.22));
+}
+
+.oe-eng-section--value {
+  background: linear-gradient(
+    165deg,
+    rgba(244, 114, 182, 0.1) 0%,
+    rgba(255, 255, 255, 0.02) 55%
+  );
+  border-color: rgba(244, 114, 182, 0.32);
+}
+
+.oe-eng-section--cadence {
+  background: linear-gradient(
+    165deg,
+    rgba(108, 114, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 55%
+  );
+  border-color: rgba(108, 114, 255, 0.3);
+}
+
+.oe-eng-section--controls {
+  background: linear-gradient(
+    165deg,
+    rgba(74, 222, 128, 0.09) 0%,
+    rgba(255, 255, 255, 0.02) 55%
+  );
+  border-color: rgba(74, 222, 128, 0.28);
+}
+
+.oe-eng-section--reports {
+  background: linear-gradient(
+    165deg,
+    rgba(167, 139, 250, 0.1) 0%,
+    rgba(255, 255, 255, 0.02) 55%
+  );
+  border-color: rgba(167, 139, 250, 0.32);
+}
+
+.oe-eng-section--tools {
+  background: linear-gradient(
+    165deg,
+    rgba(251, 113, 133, 0.09) 0%,
+    rgba(255, 255, 255, 0.02) 55%
+  );
+  border-color: rgba(251, 113, 133, 0.28);
+}
+
+.oe-eng-section--lifecycle {
+  background: linear-gradient(
+    165deg,
+    rgba(56, 189, 248, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 55%
+  );
+  border-color: rgba(56, 189, 248, 0.28);
+}
+
+.oe-eng-value-grid,
+.oe-eng-controls-grid,
+.oe-eng-reports-grid,
+.oe-eng-tools-grid {
+  align-items: stretch;
+}
+
+.oe-eng-value-card,
+.oe-eng-controls-card,
+.oe-eng-reports-card,
+.oe-eng-tools-card {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  min-height: 0;
+}
+
+.oe-eng-controls-card .oe-eng-card__body h3,
+.oe-eng-reports-card .oe-eng-card__body h3,
+.oe-eng-tools-card .oe-eng-card__body h3,
+.oe-eng-value-card .oe-eng-card__body h3,
+.oe-eng-card__body h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text, #f0f6ff);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.oe-eng-card__body p {
+  margin: 0;
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* Heart — strategic value */
+.oe-eng-value-card {
+  border-top: 3px solid rgba(244, 114, 182, 0.85);
+  background: rgba(244, 114, 182, 0.06);
+}
+
+.oe-eng-value-card__icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+.oe-eng-value-card__icon::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  width: 12px;
+  height: 11px;
+  background: rgba(244, 114, 182, 0.35);
+  border: 0.6px solid rgba(244, 114, 182, 0.6);
+  border-radius: 3px 3px 8px 8px;
+  transform: rotate(-45deg);
+  transform-origin: center;
+}
+
+/* Check — controls */
+.oe-eng-controls-card {
+  border-left: 3px solid rgba(74, 222, 128, 0.75);
+  background: rgba(74, 222, 128, 0.06);
+}
+
+.oe-eng-controls-card__icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.2);
+  border: 0.6px solid rgba(74, 222, 128, 0.5);
+  position: relative;
+  display: inline-block;
+}
+
+.oe-eng-controls-card__icon::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 5px;
+  width: 8px;
+  height: 6px;
+  border: 2px solid #86efac;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+}
+
+/* Document — reports */
+.oe-eng-reports-card {
+  border-top: 3px solid rgba(167, 139, 250, 0.85);
+  background: rgba(167, 139, 250, 0.06);
+}
+
+.oe-eng-reports-card__icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 2px;
+  background: rgba(167, 139, 250, 0.2);
+  border: 0.6px solid rgba(167, 139, 250, 0.5);
+  position: relative;
+  display: inline-block;
+}
+
+.oe-eng-reports-card__icon::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 10px;
+  height: 1px;
+  background: #c4b5fd;
+  box-shadow: 0 4px 0 #c4b5fd, 0 8px 0 #c4b5fd;
+}
+
+/* Briefcase — tools */
+.oe-eng-tools-card {
+  border-left: 3px solid rgba(251, 113, 133, 0.7);
+  background: rgba(251, 113, 133, 0.05);
+}
+
+.oe-eng-tools-card__icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 18px;
+  margin-top: 4px;
+  border-radius: 3px;
+  background: rgba(251, 113, 133, 0.22);
+  border: 0.6px solid rgba(251, 113, 133, 0.5);
+  position: relative;
+  display: inline-block;
+}
+
+.oe-eng-tools-card__icon::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: -4px;
+  width: 14px;
+  height: 6px;
+  border-radius: 3px 3px 0 0;
+  border: 0.6px solid rgba(251, 113, 133, 0.55);
+  border-bottom: none;
+  background: rgba(251, 113, 133, 0.15);
+}
+
+/* Tables */
+.oe-eng-table-wrap {
+  overflow-x: auto;
+  border: 0.6px solid var(--border, rgba(108, 114, 255, 0.25));
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.oe-eng-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.oe-eng-table th,
+.oe-eng-table td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 0.6px solid var(--border, rgba(108, 114, 255, 0.2));
+}
+
+.oe-eng-table thead th {
+  color: var(--muted, #aeb9e1);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.oe-eng-table tbody th {
+  color: var(--text, #f0f6ff);
+  font-weight: 600;
+  white-space: nowrap;
+  width: 110px;
+}
+
+.oe-eng-table--lifecycle tbody th {
+  width: 200px;
+}
+
+.oe-eng-table tbody td {
+  color: #dbe6f8;
+  line-height: 1.45;
+}
+
+.oe-eng-table tbody tr:last-child th,
+.oe-eng-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 960px) {
+  .oe-eng-value-grid,
+  .oe-eng-controls-grid,
+  .oe-eng-reports-grid,
+  .oe-eng-tools-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .oe-eng-value-grid,
+  .oe-eng-controls-grid,
+  .oe-eng-reports-grid,
+  .oe-eng-tools-grid {
+    grid-template-columns: 1fr;
+  }
+}

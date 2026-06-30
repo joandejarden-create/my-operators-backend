@@ -1,0 +1,146 @@
+/**
+ * Three-Layer Market Experience — dark Explorer / DNA shell (no light-green page wrapper).
+ */
+
+.oe-market-experience-section {
+  margin-bottom: 12px;
+}
+
+.oe-market-experience-section__head {
+  margin-bottom: 14px;
+}
+
+.oe-market-experience-section__title {
+  margin: 0 0 6px;
+  color: var(--text, #f0f6ff);
+}
+
+.oe-market-experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.oe-market-layer-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 14px 14px 12px;
+  border-radius: 10px;
+  border: 0.6px solid var(--border, rgba(108, 114, 255, 0.25));
+  background: rgba(255, 255, 255, 0.03);
+  border-top-width: 3px;
+}
+
+.oe-market-layer-card--current {
+  border-top-color: rgba(80, 200, 180, 0.75);
+}
+
+.oe-market-layer-card--team,
+.oe-market-layer-card--slate {
+  border-top-color: rgba(120, 150, 200, 0.55);
+}
+
+.oe-market-layer-card--target,
+.oe-market-layer-card--amber {
+  border-top-color: rgba(220, 170, 80, 0.7);
+}
+
+.oe-market-layer-card__title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text, #f0f6ff);
+  line-height: 1.3;
+}
+
+.oe-market-layer-card__subtitle {
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted, #aeb9e1);
+}
+
+.oe-market-layer-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+  min-height: 28px;
+}
+
+.oe-market-layer-card__chips .oe-lead-chip {
+  display: inline-flex;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #dbe6f8;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0.6px solid rgba(174, 185, 225, 0.35);
+  border-radius: 999px;
+}
+
+.oe-market-layer-card__empty {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--muted, #7e89ac);
+  font-style: italic;
+}
+
+.oe-market-layer-card__checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: auto;
+}
+
+.oe-market-layer-card__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 8px;
+}
+
+.oe-market-layer-card__check:last-child {
+  margin-bottom: 0;
+}
+
+/* Same check as Leadership cadence / owner cards (oe-lead-cadence-card__icon) */
+.oe-market-layer-card__check .oe-lead-cadence-card__icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: rgba(108, 114, 255, 0.18);
+  border: 0.6px solid rgba(108, 114, 255, 0.45);
+  position: relative;
+}
+
+.oe-market-layer-card__check .oe-lead-cadence-card__icon::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 5px;
+  width: 8px;
+  height: 6px;
+  border: 2px solid #8fc3ff;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+}
+
+.oe-market-layer-card__check-label {
+  flex: 1;
+  min-width: 0;
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+@media (max-width: 960px) {
+  .oe-market-experience-grid {
+    grid-template-columns: 1fr;
+  }
+}

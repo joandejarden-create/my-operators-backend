@@ -12,6 +12,32 @@ import { applyOperatorAlignmentPrefillAliases } from "../../lib/operator-alignme
 import { pickExplorerHeroLabelsFromMasterFields } from "../../lib/operator-explorer-hero-labels.js";
 import { mapAirtableRowToCaseStudyDetail } from "./operator-case-study-airtable-map.js";
 import { mapLeadershipMemberFieldsFromAirtable } from "./operator-leadership-member-map.js";
+import {
+    LEADERSHIP_PLATFORM_TABLE,
+    mapLeadershipPlatformRowsForDetail,
+    applyLeadershipPlatformToLegacyJsonPrefill,
+} from "./operator-leadership-platform-map.js";
+import {
+    INFRASTRUCTURE_PLATFORM_TABLE,
+    mapInfrastructurePlatformRowsForDetail,
+    applyInfrastructurePlatformToLegacyPrefill,
+} from "./operator-infrastructure-platform-map.js";
+import {
+    ENGAGEMENT_REPORTING_TABLE,
+    mapEngagementReportingRowsForDetail,
+    applyEngagementReportingToLegacyPrefill,
+} from "./operator-engagement-reporting-map.js";
+import {
+    OPERATING_PLATFORM_TABLE,
+    mapOperatingPlatformRowsForDetail,
+    applyOperatingPlatformToLegacyPrefill,
+} from "./operator-operating-platform-map.js";
+import {
+    BRAND_RELATIONSHIPS_TABLE,
+    mapBrandRelationshipsRowsForDetail,
+    applyBrandRelationshipsToLegacyPrefill,
+} from "./operator-brand-relationships-map.js";
+import { applyTeamExperienceMarketsFromLeadJson } from "./operator-leadership-explorer-map.js";
 
 export const NEW_BASE_MASTER_TABLE = "Operator Setup - Master";
 export const NEW_BASE_PROFILE_TABLE = "Operator Setup - Profile & Positioning";
@@ -19,6 +45,11 @@ export const NEW_BASE_PLATFORM_TABLE = "Operator Setup - Platform & Markets";
 export const NEW_BASE_COMMERCIAL_TABLE = "Operator Setup - Commercial Fit & Terms";
 export const NEW_BASE_GOVERNANCE_TABLE = "Operator Setup - Governance, Delivery & Diligence";
 export const NEW_BASE_LEADERSHIP_TABLE = "Operator Setup - Leadership Team Members";
+export const NEW_BASE_LEADERSHIP_PLATFORM_TABLE = LEADERSHIP_PLATFORM_TABLE;
+export const NEW_BASE_INFRASTRUCTURE_PLATFORM_TABLE = INFRASTRUCTURE_PLATFORM_TABLE;
+export const NEW_BASE_ENGAGEMENT_REPORTING_TABLE = ENGAGEMENT_REPORTING_TABLE;
+export const NEW_BASE_OPERATING_PLATFORM_TABLE = OPERATING_PLATFORM_TABLE;
+export const NEW_BASE_BRAND_RELATIONSHIPS_TABLE = BRAND_RELATIONSHIPS_TABLE;
 export const NEW_BASE_CASE_STUDIES_TABLE = "Operator Setup - Case Studies";
 export const NEW_BASE_DILIGENCE_TABLE = "Operator Setup - Diligence QA";
 export const NEW_BASE_EXPLORER_MATERIALS_TABLE = "Operator Setup - Explorer Materials";
@@ -60,7 +91,7 @@ export async function airtableFetchJson(url, options = {}) {
     return { ok: r.ok, status: r.status, json: j };
 }
 
-export async function fetchAllRecordsRest(tableName) {
+export async function fetchAllRecordsRest(tableName, options = {}) {
     const baseId = process.env.AIRTABLE_BASE_ID;
     const apiKey = process.env.AIRTABLE_API_KEY;
     if (!baseId || !apiKey) {
@@ -68,10 +99,12 @@ export async function fetchAllRecordsRest(tableName) {
         err.statusCode = 503;
         throw err;
     }
+    const filterByFormula = options.filterByFormula ? String(options.filterByFormula) : "";
     const allRecords = [];
     let offset = null;
     do {
         let url = `https://api.airtable.com/v0/${baseId}/${enc(tableName)}?pageSize=100`;
+        if (filterByFormula) url += "&filterByFormula=" + enc(filterByFormula);
         if (offset) url += "&offset=" + enc(offset);
         const { ok, json } = await airtableFetchJson(url);
         if (!ok || json.error) {
@@ -83,6 +116,15 @@ export async function fetchAllRecordsRest(tableName) {
         offset = json.offset || null;
     } while (offset);
     return allRecords;
+}
+
+/** Escape single quotes for Airtable filterByFormula string literals. */
+function escFormulaString(value) {
+    return String(value || "").replace(/'/g, "\\'");
+}
+
+export async function fetchBrandBasicsRecordsRest() {
+    return fetchAllRecordsRest(BRAND_BASICS_TABLE).catch(() => []);
 }
 
 export async function findRecordByIdRest(tableName, recordId) {
@@ -531,6 +573,7 @@ export function buildPrefillObjectFromNewBaseRows(master, profile, platform, com
         const logo = mergedRaw.companyLogo || mergedRaw["Company Logo"];
         if (Array.isArray(logo) && logo.length) prefill.companyLogo = logo;
     }
+    applyTeamExperienceMarketsFromLeadJson(prefill);
     return prefill;
 }
 
@@ -556,6 +599,10 @@ export async function fetchRecordsLinkedToMaster(tableName, masterId) {
     const mid = String(masterId || "").trim();
     if (!mid) return [];
     try {
+        const formula = `{Operator} = '${escFormulaString(mid)}'`;
+        const filtered = await fetchAllRecordsRest(tableName, { filterByFormula: formula });
+        if (filtered.length) return filtered;
+        // Fallback when formula/link field naming differs — full scan + in-memory filter.
         const all = await fetchAllRecordsRest(tableName);
         return rowsLinkedToMaster(all, mid);
     } catch (e) {
@@ -569,13 +616,31 @@ export async function loadNewBaseOperatorBundle(masterId) {
     const master = await findRecordByIdRest(NEW_BASE_MASTER_TABLE, masterId);
     if (!master) return null;
 
-    const [profRows, platRows, commRows, govRows, leadership, cases, diligence, explorerMaterials] =
-        await Promise.all([
+    const [
+        profRows,
+        platRows,
+        commRows,
+        govRows,
+        leadership,
+        leadershipPlatform,
+        infrastructurePlatform,
+        engagementReporting,
+        operatingPlatform,
+        brandRelationships,
+        cases,
+        diligence,
+        explorerMaterials,
+    ] = await Promise.all([
         fetchRecordsLinkedToMaster(NEW_BASE_PROFILE_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_PLATFORM_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_COMMERCIAL_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_GOVERNANCE_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_LEADERSHIP_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_LEADERSHIP_PLATFORM_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_INFRASTRUCTURE_PLATFORM_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_ENGAGEMENT_REPORTING_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_OPERATING_PLATFORM_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_BRAND_RELATIONSHIPS_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_CASE_STUDIES_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_DILIGENCE_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_EXPLORER_MATERIALS_TABLE, master.id).catch(() => []),
@@ -593,11 +658,44 @@ export async function loadNewBaseOperatorBundle(masterId) {
         commercial,
         governance,
         leadership,
+        leadershipPlatform,
+        infrastructurePlatform,
+        engagementReporting,
+        operatingPlatform,
+        brandRelationships,
         cases,
         diligence,
         explorerMaterials,
     };
 }
+
+export function mapNewBaseLeadershipPlatformForDetail(rows) {
+    return mapLeadershipPlatformRowsForDetail(rows || []);
+}
+
+export function mapNewBaseInfrastructurePlatformForDetail(rows) {
+    return mapInfrastructurePlatformRowsForDetail(rows || []);
+}
+
+export function mapNewBaseEngagementReportingForDetail(rows) {
+    return mapEngagementReportingRowsForDetail(rows || []);
+}
+
+export function mapNewBaseOperatingPlatformForDetail(rows) {
+    return mapOperatingPlatformRowsForDetail(rows || []);
+}
+
+export function mapNewBaseBrandRelationshipsForDetail(rows) {
+    return mapBrandRelationshipsRowsForDetail(rows || []);
+}
+
+export {
+    applyLeadershipPlatformToLegacyJsonPrefill,
+    applyInfrastructurePlatformToLegacyPrefill,
+    applyEngagementReportingToLegacyPrefill,
+    applyOperatingPlatformToLegacyPrefill,
+    applyBrandRelationshipsToLegacyPrefill,
+};
 
 export function logOperatorReadPath(scope, data) {
     console.log(

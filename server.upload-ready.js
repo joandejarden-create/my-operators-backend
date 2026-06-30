@@ -45,8 +45,21 @@ import { getMarketAlertsNews } from "./api/market-alerts-news.js";
 import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
 import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } from "./api/operators-by-brand-region.js";
-import { getTravelInfrastructure } from "./api/travel-infrastructure.js";
+import { getTravelInfrastructure, getRadarMapTravelInfrastructurePoints, postTravelInfrastructureImportPreview, postTravelInfrastructureImportCommit } from "./api/travel-infrastructure.js";
+import { getDemandAnchors, getRadarMapDemandAnchorsPoints, postDemandAnchorsImportPreview, postDemandAnchorsImportCommit } from "./api/demand-anchors.js";
+import { getRadarBuildoutCountries, getRadarBuildoutCountry } from "./api/radar-buildout.js";
 import { getDealalityScout, getDealalityScoutFilters } from "./api/dealality-scout.js";
+import { getScoutMarketCoverage } from "./api/scout-market-coverage.js";
+import { getScoutOpportunitySignals } from "./api/scout-opportunity-signals.js";
+import {
+  postScoutOpportunitySignalSave,
+  getScoutOpportunitySignalsSaved,
+  patchScoutOpportunitySignal,
+} from "./api/scout-opportunity-signals-watchlist.js";
+import { getScoutMarketMap } from "./api/scout-market-map.js";
+import { getScoutDemandOverlays } from "./api/scout-demand-overlays.js";
+import { getScoutMarketInsights } from "./api/scout-market-insights.js";
+import { getScoutInsightReview } from "./api/scout-insight-review.js";
 import { getBrandReviewDeals, updateDealStatus, getDealDetails, bulkUpdateDeals, getBrandReviewStats, getMatchedBrands } from "./api/brand-review.js";
 import { analyzeBrandFit, getDealBrandFit, getAllDealsForAnalysis } from "./api/brand-fit-analyzer.js";
 import { getClauses, getClauseById, getClauseVariables, getClauseIds, createClause } from "./api/clause-library.js";
@@ -72,6 +85,7 @@ import {
 import submitThirdPartyOperator from "./api/third-party-operator-intake.js";
 import listThirdPartyOperators from "./api/third-party-operators-list.js";
 import getThirdPartyOperatorDetail from "./api/third-party-operator-detail.js";
+import getOperatorCensusFootprint from "./api/operator-census-footprint.js";
 import getThirdPartyOperatorMappingReport from "./api/third-party-operator-mapping-report.js";
 import getThirdPartyOperatorPrefillQa from "./api/third-party-operator-prefill-qa.js";
 import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js";
@@ -90,6 +104,11 @@ import {
   createOperatorExplorerFavorite,
   deleteOperatorExplorerFavorite,
 } from "./api/operator-explorer-favorites.js";
+import {
+  getCapitalExplorerFavorites,
+  createCapitalExplorerFavorite,
+  deleteCapitalExplorerFavorite,
+} from "./api/capital-explorer-favorites.js";
 import {
   createCompanyProfile,
   updateCompanyProfile,
@@ -415,6 +434,7 @@ app.post("/api/third-party-operators/submit", handleThirdPartyOperatorIntake);
 app.get("/api/intake/third-party-operator/mapping-report", getThirdPartyOperatorMappingReport);
 app.get("/api/intake/third-party-operator/prefill-qa", getThirdPartyOperatorPrefillQa);
 // Operator list for My 3rd Party Ops. dashboard (multiple paths for proxies / older clients)
+app.get("/api/intake/third-party-operators/:recordId/census-footprint", getOperatorCensusFootprint);
 app.get("/api/intake/third-party-operators/:recordId", getThirdPartyOperatorDetail);
 app.get("/api/intake/third-party-operators", listThirdPartyOperators);
 app.get("/api/third-party-operators/list", listThirdPartyOperators);
@@ -721,6 +741,18 @@ app.get("/operator-alignment-snapshot.html", (req, res) => {
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.join(__dirname, "public", "operator-alignment-snapshot.html"));
 });
+app.get("/owner-diagnostic-sample", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/owner-diagnostic-sample.html" + q);
+});
+app.get("/owner-diagnostic-sample/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/owner-diagnostic-sample.html" + q);
+});
+app.get("/owner-diagnostic-sample.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "owner-diagnostic-sample.html"));
+});
 
 // CSP that explicitly sets connect-src so fetch/XHR aren't blocked (e.g. form or API calls)
 const SIGNUP_VERIFY_CSP =
@@ -1015,9 +1047,33 @@ app.get("/api/operators-by-brand-region/filters", getOperatorsByBrandRegionFilte
 
 // Travel Infrastructure API endpoints
 app.get("/api/travel-infrastructure", getTravelInfrastructure);
+app.get("/api/radar-map-points/travel-infrastructure", getRadarMapTravelInfrastructurePoints);
+
+app.get("/api/demand-anchors", getDemandAnchors);
+app.get("/api/radar-map-points/demand-anchors", getRadarMapDemandAnchorsPoints);
+app.post("/api/radar-map-points/demand-anchors/import-preview", postDemandAnchorsImportPreview);
+app.post("/api/radar-map-points/demand-anchors/import-commit", postDemandAnchorsImportCommit);
+
+// CALA Radar Buildout
+app.get("/api/radar-buildout/countries", getRadarBuildoutCountries);
+app.get("/api/radar-buildout/countries/:country", getRadarBuildoutCountry);
+
+app.post("/api/radar-map-points/travel-infrastructure/import-preview", postTravelInfrastructureImportPreview);
+app.post("/api/radar-map-points/travel-infrastructure/import-commit", postTravelInfrastructureImportCommit);
 
 app.get("/api/dealality-scout", getDealalityScout);
 app.get("/api/dealality-scout/filters", getDealalityScoutFilters);
+
+// Scout Phase 1–3 (census read + opportunity signals + watchlist)
+app.get("/api/scout/market-coverage", getScoutMarketCoverage);
+app.get("/api/scout/market-map", getScoutMarketMap);
+app.get("/api/scout/demand-overlays", getScoutDemandOverlays);
+app.get("/api/scout/market-insights", getScoutMarketInsights);
+app.get("/api/scout/insight-review", getScoutInsightReview);
+app.post("/api/scout/opportunity-signals/save", postScoutOpportunitySignalSave);
+app.get("/api/scout/opportunity-signals/saved", getScoutOpportunitySignalsSaved);
+app.patch("/api/scout/opportunity-signals/:signalId", patchScoutOpportunitySignal);
+app.get("/api/scout/opportunity-signals", getScoutOpportunitySignals);
 
 // Brand Review API endpoints
 app.get("/api/brand-review/deals", getBrandReviewDeals);
@@ -1092,6 +1148,11 @@ app.get("/api/operator-explorer/favorites", getOperatorExplorerFavorites);
 app.post("/api/operator-explorer/favorites", createOperatorExplorerFavorite);
 app.delete("/api/operator-explorer/favorites", deleteOperatorExplorerFavorite);
 app.delete("/api/operator-explorer/favorites/:favoriteId", deleteOperatorExplorerFavorite);
+
+app.get("/api/capital-explorer/favorites", getCapitalExplorerFavorites);
+app.post("/api/capital-explorer/favorites", createCapitalExplorerFavorite);
+app.delete("/api/capital-explorer/favorites", deleteCapitalExplorerFavorite);
+app.delete("/api/capital-explorer/favorites/:favoriteId", deleteCapitalExplorerFavorite);
 
 // Partner Directory config endpoint (for local development)
 app.get("/api/user-management", listUserManagementUsers);
@@ -1194,6 +1255,26 @@ app.get("/operator-explorer-gold-mock", (req, res) => {
 });
 app.get("/operator-explorer-gold-mock/", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-explorer-gold-mock.html'));
+});
+app.get("/operator-explorer-share", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-share.html" + q);
+});
+app.get("/operator-explorer-share/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-share.html" + q);
+});
+app.get("/operator-explorer-share.html", (req, res) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.sendFile(path.join(__dirname, "public", "operator-explorer-share.html"));
+});
+app.get("/operator-explorer-preview", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-share.html" + q);
+});
+app.get("/operator-explorer-preview/", (req, res) => {
+    const q = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(302, "/operator-explorer-share.html" + q);
 });
 
 // Legacy intake URL → Operator Setup (new two) — preserve ?recordId=… and &embed=… for edit prefill

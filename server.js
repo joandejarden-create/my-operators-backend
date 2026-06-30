@@ -42,6 +42,8 @@ import {
   dismissAlert,
 } from "./api/market-alerts.js";
 import { getMarketAlertsNews } from "./api/market-alerts-news.js";
+import { cronMarketAlertsRssSync } from "./api/run-market-alerts-rss-sync.js";
+import { startMarketAlertsRssScheduler } from "./api/market-alerts-rss-scheduler.js";
 import { analyzeDeal } from "./api/deal-intelligence.js";
 import { getBrandPresence, getBrandPresenceHotelById, getBrandStatistics, getWhiteSpaceOpportunities, exportBrandPresenceData, getLocationTypes, getParentCompanies, getBrands, getChainScales } from "./api/brand-presence.js";
 import { getLargestOperatorsByBrandRegion, getOperatorsByBrandRegionFilters } from "./api/operators-by-brand-region.js";
@@ -1277,6 +1279,8 @@ app.post("/api/market-alerts/:id/read", markAlertRead);
 app.post("/api/market-alerts/:id/save", saveAlert);
 app.post("/api/market-alerts/:id/dismiss", dismissAlert);
 app.get("/api/market-alerts/news", getMarketAlertsNews);
+app.get("/api/cron/market-alerts-rss-sync", cronMarketAlertsRssSync);
+app.post("/api/cron/market-alerts-rss-sync", cronMarketAlertsRssSync);
 
 // Deal Intelligence API endpoints
 app.post("/api/deal-intelligence/analyze", analyzeDeal);
@@ -1749,4 +1753,5 @@ app.listen(PORT, () => {
   console.log("✅ Operator Alignment Snapshot API (OAS):");
   console.log("   GET /api/operator-alignment-snapshot/:dealId/profile");
   console.log("   GET /api/operator-alignment-snapshot/:dealId/companies");
+  startMarketAlertsRssScheduler();
 });

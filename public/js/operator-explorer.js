@@ -26,10 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const sortSelect = document.getElementById("sortSelect");
   const loadingState = document.getElementById("loadingState");
   const operatorsTabCount = document.getElementById("operatorsTabCount");
+  const favoritesTabCount = document.getElementById("favoritesTabCount");
+  const listTabsNav = document.getElementById("operatorExplorerListTabs");
   const filterCountBadge = document.getElementById("filterCountBadge");
 
   let allOperators = [];
   let filteredOperators = [];
+  let activeListTab = "operators";
+  let goldMockPopupToken = "";
+  let goldMockPopupTimeout = null;
   /** Legend-only chain scale filter (normalized, e.g. "luxury", "upper upscale"). */
   let selectedChainScaleNorm = "";
 
@@ -83,6 +88,16 @@ document.addEventListener("DOMContentLoaded", function () {
     return {
       id: row.id,
       operator_name: companyName,
+      isOwnerOperator: !!row.isOwnerOperator,
+      companyType: row.companyType || "",
+      normalizedCompanyType: row.normalizedCompanyType || "",
+      workspaceAccess: Array.isArray(row.workspaceAccess) ? row.workspaceAccess : [],
+      operatorExplorerEligible: row.operatorExplorerEligible === true,
+      thirdPartyManagementAvailability: row.thirdPartyManagementAvailability || "",
+      thirdPartyManagementAvailabilityStatus: row.thirdPartyManagementAvailabilityStatus || "",
+      reviewBeforeOutreach: row.reviewBeforeOutreach === true,
+      eligibilitySource: row.eligibilitySource || "",
+      companyDisplayBadges: Array.isArray(row.companyDisplayBadges) ? row.companyDisplayBadges : [],
       logo_url: row.logo || row.logo_url || "",
       website: row.website || row.Website || "",
       overview_short: row.companyDescription || row.overview_short || "",
@@ -131,10 +146,22 @@ document.addEventListener("DOMContentLoaded", function () {
       populateExperienceTypeFilter(
         [...new Set(allOperators.flatMap(function (o) { return o.operating_situations || []; }))].sort()
       );
-      operatorsTabCount.textContent = String(allOperators.length);
+      updateTabCounts();
       updateChainScaleQuickFilterStates();
-      filterOperators();
-      showLoading(false);
+      var favReady =
+        window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.ready
+          ? window.OperatorExplorerFavorites.ready()
+          : Promise.resolve();
+      favReady
+        .then(function () {
+          updateTabCounts();
+          filterOperators();
+          showLoading(false);
+        })
+        .catch(function () {
+          filterOperators();
+          showLoading(false);
+        });
     } catch (error) {
       console.error("Error fetching operators:", error);
       showLoading(false);
@@ -238,6 +265,52 @@ document.addEventListener("DOMContentLoaded", function () {
       .replace(/\/$/, "");
   }
 
+  function operatorTypeLabel(op) {
+    var uiLabels = window.DEALALITY_UI_LABELS;
+    if (uiLabels && typeof uiLabels.formatOperatorExplorerTypeLabel === "function") {
+      return uiLabels.formatOperatorExplorerTypeLabel(op);
+    }
+    if (op.isOwnerOperator || op.normalizedCompanyType === "OWNER_OPERATOR") {
+      return "Hotel Owner - Operator";
+    }
+    return "3rd Party Operator";
+  }
+
+  function buildOperatorBadgesHtml(op) {
+    var uiLabels = window.DEALALITY_UI_LABELS;
+    var badges =
+      uiLabels && typeof uiLabels.buildOperatorExplorerCardBadges === "function"
+        ? uiLabels.buildOperatorExplorerCardBadges(op)
+        : [];
+    if (!badges.length) {
+      if (op.isOwnerOperator) badges.push("Hotel Owner - Operator");
+      var status = String(op.thirdPartyManagementAvailabilityStatus || "").trim();
+      if (status && status !== "Unknown / Legacy") {
+        badges.push("Third-Party Management: " + status);
+      } else if (String(op.thirdPartyManagementAvailability || "").toLowerCase() === "yes") {
+        badges.push("Third-Party Management: Yes");
+      }
+      if (op.reviewBeforeOutreach) badges.push("Review Availability Before Outreach");
+    }
+    if (!badges.length) return "";
+    var tooltip =
+      uiLabels && typeof uiLabels.getOperatorExplorerCardBadgesTooltip === "function"
+        ? uiLabels.getOperatorExplorerCardBadgesTooltip()
+        : "Owner-Operator means this company owns or controls hotel assets and also operates hotels. Availability for third-party management may vary by market and deal type.";
+    return (
+      '<div class="operator-card__badges" title="' +
+      escapeHtml(tooltip) +
+      '">' +
+      badges
+        .slice(0, 3)
+        .map(function (b) {
+          return '<span class="operator-card__badge">' + escapeHtml(b) + "</span>";
+        })
+        .join("") +
+      "</div>"
+    );
+  }
+
   function createOperatorCard(op) {
     const card = document.createElement("div");
     const chainScales = (op.chain_scales || [])
@@ -255,7 +328,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const summaryRaw = op.overview_short || op.overview_long || "Learn more about this operator.";
     const summary = summaryRaw.length > 160 ? summaryRaw.substring(0, 160) + "..." : summaryRaw;
     const initial = (op.operator_name || "O").charAt(0).toUpperCase();
-    const typeLabel = "3rd Party Operator";
+    const typeLabel = operatorTypeLabel(op);
+    const badgesHtml = buildOperatorBadgesHtml(op);
     const regionText = (op.geography || []).slice(0, 2).join(", ").toUpperCase();
     const stripeBackground = getChainScaleStripeBackground(chainScales);
     const websiteUrl = normalizeWebsiteUrl(op.website);
@@ -275,7 +349,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     logoHtml += "</div>";
 
+    const favStarHtml = op.id
+      ? '<button type="button" class="favorite-star" data-oe-operator-id="' +
+        escapeHtml(op.id) +
+        '" aria-label="Add to favorites" aria-pressed="false" title="Save to favorites">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>'
+      : "";
+
     card.innerHTML =
+      favStarHtml +
       '<div class="brand-card__scale-stripe" style="background:' +
       stripeBackground +
       ';"></div>' +
@@ -288,6 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
       '<div class="brand-card__type">' +
       escapeHtml(typeLabel) +
       "</div>" +
+      badgesHtml +
       '<div class="brand-card__meta">' +
       escapeHtml(regionText) +
       "</div>" +
@@ -311,7 +394,41 @@ document.addEventListener("DOMContentLoaded", function () {
       e.stopPropagation();
       openGoldMockPopup(op.id);
     });
+    if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.wireCardStars) {
+      window.OperatorExplorerFavorites.wireCardStars(card);
+    }
     return card;
+  }
+
+  function favoriteIdsSet() {
+    const ids = window.OperatorExplorerFavorites ? window.OperatorExplorerFavorites.load() : [];
+    const set = {};
+    ids.forEach(function (id) {
+      set[id] = true;
+    });
+    return set;
+  }
+
+  function updateTabCounts() {
+    if (operatorsTabCount) operatorsTabCount.textContent = String(allOperators.length);
+    if (favoritesTabCount) {
+      const favCount = window.OperatorExplorerFavorites
+        ? window.OperatorExplorerFavorites.load().length
+        : 0;
+      favoritesTabCount.textContent = String(favCount);
+    }
+  }
+
+  function setActiveListTab(tab) {
+    activeListTab = tab === "favorites" ? "favorites" : "operators";
+    if (listTabsNav) {
+      listTabsNav.querySelectorAll(".section-nav-item[data-tab]").forEach(function (btn) {
+        const isActive = btn.getAttribute("data-tab") === activeListTab;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+    }
+    filterOperators();
   }
 
   function sortOperators() {
@@ -332,11 +449,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderOperators() {
     resultsList.innerHTML = "";
+    const poolTotal =
+      activeListTab === "favorites"
+        ? window.OperatorExplorerFavorites
+          ? window.OperatorExplorerFavorites.load().length
+          : 0
+        : allOperators.length;
     if (filteredOperators.length === 0) {
       resultsList.classList.add("hidden");
       emptyState.classList.remove("hidden");
+      if (activeListTab === "favorites") {
+        emptyState.innerHTML =
+          poolTotal === 0
+            ? "<h3>No favorites yet</h3><p>Click the star on an operator card or <strong>Save</strong> on its profile to add it here.</p>"
+            : "<h3>No operators found</h3><p>No saved operators match these filters. Clear filters or try a different search term.</p>";
+      } else {
+        emptyState.innerHTML =
+          "<h3>No operators found</h3><p>No operators match these filters. Clear filters or try a different search term.</p>";
+      }
       resultsCount.innerHTML =
-        "Showing <strong>0</strong> of <strong>" + allOperators.length + "</strong> operators";
+        "Showing <strong>0</strong> of <strong>" +
+        poolTotal +
+        "</strong> " +
+        (activeListTab === "favorites" ? "favorites" : "operators");
       return;
     }
     resultsList.classList.remove("hidden");
@@ -344,12 +479,16 @@ document.addEventListener("DOMContentLoaded", function () {
     filteredOperators.forEach(function (op) {
       resultsList.appendChild(createOperatorCard(op));
     });
+    if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.wireCardStars) {
+      window.OperatorExplorerFavorites.wireCardStars(resultsList);
+    }
     resultsCount.innerHTML =
       "Showing <strong>" +
       filteredOperators.length +
       "</strong> of <strong>" +
-      allOperators.length +
-      "</strong> operators";
+      poolTotal +
+      "</strong> " +
+      (activeListTab === "favorites" ? "favorites" : "operators");
   }
 
   function getActiveFilterCount() {
@@ -408,8 +547,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const assetType = document.getElementById("assetTypeFilter").value;
     const brandedIndependent = document.getElementById("brandedIndependentFilter").value;
     const experienceType = document.getElementById("experienceTypeFilter").value;
+    const favSet = activeListTab === "favorites" ? favoriteIdsSet() : null;
 
     filteredOperators = allOperators.filter(function (op) {
+      if (favSet && !favSet[op.id]) return false;
       const searchable = [
         op.operator_name,
         (op.geography || []).join(" "),
@@ -487,75 +628,58 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeGoldMockPopup() {
     var popup = document.getElementById("goldMockPopup");
     var frame = document.getElementById("goldMockPopupFrame");
-    var popupLoading = document.getElementById("goldMockPopupLoading");
-    if (popup && document.activeElement && popup.contains(document.activeElement)) {
-      document.activeElement.blur();
-    }
+    var loading = document.getElementById("goldMockPopupLoading");
+    var loadingTitle = document.getElementById("goldMockPopupLoadingTitle");
     if (popup) {
       popup.style.display = "none";
       popup.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
     }
-    if (popupLoading) popupLoading.style.display = "none";
+    if (goldMockPopupTimeout) {
+      clearTimeout(goldMockPopupTimeout);
+      goldMockPopupTimeout = null;
+    }
+    goldMockPopupToken = "";
+    if (loading) {
+      loading.hidden = true;
+      loading.classList.remove("is-error");
+    }
+    if (loadingTitle) loadingTitle.textContent = "Loading Operator Profile…";
     if (frame) {
-      frame.style.visibility = "hidden";
+      frame.classList.remove("is-ready");
       frame.src = "about:blank";
     }
-  }
-
-  function ensureGoldMockPopupLoading() {
-    var panel = document.querySelector("#goldMockPopup .gold-mock-popup-panel");
-    var frame = document.getElementById("goldMockPopupFrame");
-    if (!panel || !frame) return null;
-
-    var existing = document.getElementById("goldMockPopupLoading");
-    if (existing) return existing;
-
-    var loading = document.createElement("div");
-    loading.className = "gold-mock-popup-loading";
-    loading.id = "goldMockPopupLoading";
-    loading.setAttribute("aria-live", "polite");
-    loading.innerHTML =
-      '<div class="loading">' +
-      '  <div class="loading-content">' +
-      '    <div class="wave-container">' +
-      '      <div class="wave wave-1"></div>' +
-      '      <div class="wave wave-2"></div>' +
-      '      <div class="wave wave-3"></div>' +
-      '      <div class="wave-particles">' +
-      '        <div class="particle"></div>' +
-      '        <div class="particle"></div>' +
-      '        <div class="particle"></div>' +
-      '        <div class="particle"></div>' +
-      "      </div>" +
-      "    </div>" +
-      "    <div>" +
-      '      <div class="loading-text-main" id="goldMockPopupLoadingTitle">Loading Operator Profile…</div>' +
-      "    </div>" +
-      "  </div>" +
-      '  <div class="loading-progress"><div class="loading-progress-bar"></div></div>' +
-      "</div>";
-    panel.insertBefore(loading, frame);
-    return loading;
   }
 
   function openGoldMockPopup(id) {
     if (!id || String(id).indexOf("rec") !== 0) return;
     var popup = document.getElementById("goldMockPopup");
     var frame = document.getElementById("goldMockPopupFrame");
-    var popupLoading = ensureGoldMockPopupLoading();
+    var loading = document.getElementById("goldMockPopupLoading");
+    var loadingTitle = document.getElementById("goldMockPopupLoadingTitle");
     if (!popup || !frame) return;
-    if (popupLoading) popupLoading.style.display = "flex";
-    frame.style.visibility = "hidden";
-    var params = new URLSearchParams(global.location.search || "");
-    var dealId = params.get("dealId") || "";
-    var url =
-      __dealityApiUrl("/operator-explorer-gold-mock.html") +
-      "?id=" +
+
+    if (goldMockPopupTimeout) {
+      clearTimeout(goldMockPopupTimeout);
+      goldMockPopupTimeout = null;
+    }
+
+    goldMockPopupToken = Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+    frame.classList.remove("is-ready");
+    if (loading) {
+      loading.hidden = false;
+      loading.classList.remove("is-error");
+    }
+    if (loadingTitle) loadingTitle.textContent = "Loading Operator Profile…";
+    var dealIdParam = (new URLSearchParams(window.location.search || "")).get("dealId") || "";
+    var profileUrl =
+      "/operator-explorer-gold-mock.html?id=" +
       encodeURIComponent(id) +
-      "&embed=1";
-    if (dealId) url += "&dealId=" + encodeURIComponent(dealId);
-    frame.src = url;
+      "&embed=1&popupToken=" +
+      encodeURIComponent(goldMockPopupToken);
+    if (dealIdParam) profileUrl += "&dealId=" + encodeURIComponent(dealIdParam);
+    frame.src = profileUrl;
+
     popup.style.display = "flex";
     popup.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -567,19 +691,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("goldMockPopupClose").addEventListener("click", closeGoldMockPopup);
   document.getElementById("goldMockPopupOverlay").addEventListener("click", closeGoldMockPopup);
-  document.getElementById("goldMockPopupFrame").addEventListener("load", function () {
-    // Keep loader visible until inner page sends readiness message.
-  });
-  window.addEventListener("message", function (e) {
+  window.addEventListener("message", function (event) {
+    if (!event || event.origin !== window.location.origin) return;
+    var data = event.data || {};
+    if (data.type !== "operator-gold-mock-ready") return;
+    if (!goldMockPopupToken || data.popupToken !== goldMockPopupToken) return;
     var frame = document.getElementById("goldMockPopupFrame");
-    var popup = document.getElementById("goldMockPopup");
-    var popupLoading = document.getElementById("goldMockPopupLoading");
-    if (!frame || !popup || !popupLoading) return;
-    if (e.source !== frame.contentWindow) return;
-    if (!e.data || e.data.type !== "operator-gold-mock-ready") return;
-    if (popup.style.display !== "flex") return;
-    popupLoading.style.display = "none";
-    frame.style.visibility = "visible";
+    var loading = document.getElementById("goldMockPopupLoading");
+    var loadingTitle = document.getElementById("goldMockPopupLoadingTitle");
+    if (!frame) return;
+
+    if (goldMockPopupTimeout) {
+      clearTimeout(goldMockPopupTimeout);
+      goldMockPopupTimeout = null;
+    }
+
+    if (data.live === true) {
+      frame.classList.add("is-ready");
+      if (loading) loading.hidden = true;
+      return;
+    }
+
+    frame.classList.remove("is-ready");
+    if (loading) {
+      loading.hidden = false;
+      loading.classList.add("is-error");
+    }
+    if (loadingTitle) {
+      loadingTitle.textContent =
+        "Live profile unavailable. This operator did not return live profile data.";
+    }
   });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
@@ -603,6 +744,27 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!btn) return;
     applyChainScaleQuickFilter(btn.getAttribute("data-scale") || "all");
   });
+
+  if (listTabsNav) {
+    listTabsNav.addEventListener("click", function (e) {
+      const btn = e.target && e.target.closest && e.target.closest(".section-nav-item[data-tab]");
+      if (!btn || !listTabsNav.contains(btn)) return;
+      const tab = btn.getAttribute("data-tab");
+      if (tab === "operators" || tab === "favorites") setActiveListTab(tab);
+    });
+  }
+
+  window.addEventListener("operator-explorer-favorites-changed", function () {
+    updateTabCounts();
+    if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.wireCardStars && resultsList) {
+      window.OperatorExplorerFavorites.wireCardStars(resultsList);
+    }
+    if (activeListTab === "favorites") filterOperators();
+  });
+
+  if (window.OperatorExplorerFavorites && window.OperatorExplorerFavorites.ready) {
+    void window.OperatorExplorerFavorites.ready();
+  }
 
   fetchOperators();
 });

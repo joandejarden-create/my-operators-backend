@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function () {
+      if (window.location.search.indexOf("embed=1") !== -1 || window !== window.top) {
+        document.documentElement.classList.add("embed-mode");
+      }
+      if (/[?&](operatorId|recordId|id)=/.test(window.location.search || "")) {
+        document.documentElement.classList.add("gold-profile--loading");
+      }
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operator DNA Profile — Dealality</title>
+  <link rel="stylesheet" href="/css/operator-explorer-profile-shell.css?v=oe-card-title-sentence-case-20260617" />
+  <link rel="stylesheet" href="/css/operator-dna-profile.css?v=oe-dna-subsection-intro-20260601z" />
+  <link rel="stylesheet" href="/css/operator-dna-case-studies-be.css?v=oe-case-studies-expand-20260617" />
+  <link rel="stylesheet" href="/css/brand-explorer-atelier-oe-panels.css?v=oe-operator-materials-gallery-20260601e" />
+  <link rel="stylesheet" href="/css/operator-dna-dealality-insights.css?v=oe-profile-map-proper-case-20260530" />
+  <link rel="stylesheet" href="/css/operator-dna-materials.css?v=oe-operator-materials-gallery-20260601e" />
+  <link rel="stylesheet" href="/css/operator-leadership-team-sections.css?v=oe-leadership-headshot-cover-20260602" />
+  <link rel="stylesheet" href="/css/operator-market-experience-section.css?v=oe-markets-copy-20260601g" />
+  <link rel="stylesheet" href="/css/operator-markets-footprint-sections.css?v=oe-markets-subsections-20260601e" />
+  <link rel="stylesheet" href="/css/operator-infrastructure-sections.css?v=oe-infra-maturity-fullwidth-20260601u" />
+  <link rel="stylesheet" href="/css/operator-engagement-reporting-sections.css?v=oe-eng-sections-20260601a" />
+  <link rel="stylesheet" href="/css/operator-brand-relationships-sections.css?v=oe-brand-card-title-case-20260617" />
+  <link rel="stylesheet" href="/css/operator-best-fit-deal-profile-sections.css?v=oe-bf-overview-fit-20260601z" />
+  <link rel="stylesheet" href="/css/operator-operating-platform-sections.css?v=oe-op-pillars-items-20260602b" />
+</head>
+<body>
+  <div
+    class="be-case-modal-overlay"
+    id="odnaCaseStudyModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="odnaCsModalTitle"
+  >
+    <div class="be-case-modal">
+      <h3 class="be-case-modal__title" id="odnaCsModalTitle">Case study</h3>
+      <div class="be-case-modal__inner" id="odnaCsModalInner"></div>
+      <div class="be-case-modal__actions">
+        <button type="button" class="btn" id="odnaCsModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div id="alignmentContext" hidden></div>
+
+    <p id="odnaLoadError" class="gold-profile-load-error" hidden></p>
+
+    <header class="hero oe-presentation-hero">
+      <div class="oe-hero__title-row">
+        <div class="oe-hero__logo-wrap">
+          <img class="hero-logo" id="heroLogo" alt="" hidden />
+        </div>
+        <div class="oe-hero__title-block">
+          <h1 id="heroName">Operator DNA Profile</h1>
+          <div id="heroVerifiedLine" class="oe-hero__verified-line" hidden></div>
+        </div>
+        <div id="heroActions" class="oe-hero__actions"></div>
+      </div>
+      <div class="tag" style="display: none"></div>
+      <div class="statement" style="display: none"></div>
+      <div class="hero-meta" id="heroMeta"></div>
+    </header>
+
+    <nav class="tabs-section" id="tabs" aria-label="Operator profile sections"></nav>
+    <main id="panels"></main>
+  </div>
+
+  <script src="/js/operator-explorer-favorites.js?v=oe-dna-consolidated-20260531"></script>
+  <script src="/js/operator-explorer-new-base-profile.js?v=oe-dna-kpi-chain-scale-20260531d"></script>
+  <script src="/js/operator-leadership-member-map.js?v=oe-leadership-profile-20260601c"></script>
+  <script src="/js/operator-leadership-profile-detail.js?v=oe-leadership-asset-types-pass-through-20260602"></script>
+  <script src="/js/operator-leadership-team-sections.js?v=oe-leadership-profile-20260601c"></script>
+  <script src="/js/operator-market-experience-section.js?v=oe-arbor-markets-experiencia-20260617"></script>
+  <script src="/js/operator-markets-footprint-sections.js?v=oe-markets-copy-20260601h"></script>
+  <script src="/js/operator-explorer-card-title.js?v=oe-card-title-case-20260617"></script>
+  <script src="/js/operator-infrastructure-sections.js?v=oe-card-title-case-20260617"></script>
+  <script src="/js/operator-engagement-reporting-sections.js?v=oe-card-title-case-20260617"></script>
+  <script src="/js/operator-brand-relationships-sections.js?v=oe-card-title-case-20260617"></script>
+  <script src="/js/operator-best-fit-deal-profile-sections.js?v=oe-card-title-case-20260617"></script>
+  <script src="/js/operator-operating-platform-sections.js?v=oe-card-title-case-20260617"></script>
+  <script src="/js/operator-explorer-gold-mock-data.js?v=oe-case-studies-expand-20260617"></script>
+  <script src="/js/operator-dna-case-studies-be.js?v=oe-case-studies-expand-20260617"></script>
+  <script src="/js/operator-dna-profile-consolidate.js?v=oe-remove-dna-owner-intro-20260601i"></script>
+  <script src="/js/operator-dna-dealality-insights.js?v=oe-profile-map-proper-case-20260530"></script>
+  <script src="/js/operator-dna-materials.js?v=oe-materials-gallery-fix-20260617"></script>
+  <script src="/js/operator-dna-profile-mount.js?v=oe-operator-materials-tab-20260601c"></script>
+  <script src="/js/operator-dna-profile.js?v=oe-operator-materials-tab-20260601c"></script>
+</body>
+</html>

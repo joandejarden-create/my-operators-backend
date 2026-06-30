@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Operator Explorer — Preview</title>
+  <link rel="stylesheet" href="/css/operator-explorer-share-shell.css" />
+</head>
+<body>
+  <div class="oes-page">
+    <p class="oes-draft-banner" id="oesDraftBanner" hidden>
+      <strong>Working draft.</strong>
+      This Operator Explorer profile is shared for review. Content may include preliminary research and should be validated before broader use.
+    </p>
+    <div class="oes-panel" id="oesPanel">
+      <div class="oes-loading" id="oesLoading" role="status" aria-live="polite">
+        Loading Operator Profile…
+      </div>
+      <iframe
+        class="oes-frame"
+        id="oesFrame"
+        title="Operator Explorer profile"
+        src="about:blank"
+      ></iframe>
+    </div>
+  </div>
+  <script>
+  (function () {
+    "use strict";
+
+    /** Must match operator-explorer-gold-mock.html script ?v= on gold-mock-data.js */
+    var REQUIRED_BUILD = "oe-hero-brand-mix-compact-20260617";
+    var MIN_OPERATOR_SCRIPTS = 14;
+    var DEFAULT_OPERATOR_ID = "recWPKu5laVZxsvpn";
+
+    var params = new URLSearchParams(window.location.search || "");
+    var operatorId = (
+      params.get("id") ||
+      params.get("operatorId") ||
+      params.get("recordId") ||
+      DEFAULT_OPERATOR_ID
+    ).trim();
+    var dealId = (params.get("dealId") || "").trim();
+    var showDraftBanner =
+      params.get("draft") !== "0" && params.get("draft") !== "false";
+
+    var loading = document.getElementById("oesLoading");
+    var frame = document.getElementById("oesFrame");
+    var draftBanner = document.getElementById("oesDraftBanner");
+    var popupToken =
+      Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+
+    function showError(title, message) {
+      if (!loading) return;
+      loading.hidden = false;
+      loading.classList.add("is-error");
+      loading.innerHTML =
+        "<div><h2>" +
+        String(title || "Preview unavailable").replace(/</g, "&lt;") +
+        "</h2><p>" +
+        String(message || "").replace(/</g, "&lt;") +
+        "</p></div>";
+      if (frame) frame.style.display = "none";
+    }
+
+    function buildPlatformProfileUrl() {
+      var q = new URLSearchParams();
+      q.set("id", operatorId);
+      q.set("embed", "1");
+      q.set("popupToken", popupToken);
+      if (dealId) q.set("dealId", dealId);
+      return "/operator-explorer-gold-mock.html?" + q.toString();
+    }
+
+    async function assertPlatformBundleDeployed() {
+      var res = await fetch("/operator-explorer-gold-mock.html", { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error("Operator Explorer profile page is not available on this host.");
+      }
+      var html = await res.text();
+      var buildMatch = html.match(
+        /operator-explorer-gold-mock-data\.js\?v=([^"']+)/
+      );
+      var build = buildMatch ? buildMatch[1] : "";
+      var scriptCount = (html.match(/<script src="js\/operator-/g) || []).length;
+      if (build !== REQUIRED_BUILD || scriptCount < MIN_OPERATOR_SCRIPTS) {
+        throw new Error(
+          "This host is not running the current Operator Explorer build. " +
+            "Expected build <code>" +
+            REQUIRED_BUILD +
+            "</code> with " +
+            MIN_OPERATOR_SCRIPTS +
+            "+ profile scripts; found <code>" +
+            (build || "unknown") +
+            "</code> with " +
+            scriptCount +
+            ". Deploy the latest <code>public/</code> and API from your local project, then reopen this link."
+        );
+      }
+    }
+
+    function mountProfile() {
+      if (draftBanner && showDraftBanner) {
+        draftBanner.hidden = false;
+      }
+      if (!frame) return;
+      frame.src = buildPlatformProfileUrl();
+    }
+
+    window.addEventListener("message", function (event) {
+      if (!event || event.origin !== window.location.origin) return;
+      var data = event.data || {};
+      if (data.type !== "operator-gold-mock-ready") return;
+      if (data.popupToken !== popupToken) return;
+      if (!frame) return;
+
+      if (data.live === true) {
+        frame.classList.add("is-ready");
+        if (loading) loading.hidden = true;
+        return;
+      }
+
+      showError(
+        "Live profile unavailable",
+        "Hotel Equities profile data did not load. Confirm operator id " +
+          operatorId +
+          " exists in Operator Setup on this environment."
+      );
+    });
+
+    (async function init() {
+      if (!operatorId || operatorId.indexOf("rec") !== 0) {
+        showError(
+          "Invalid link",
+          "Add a valid operator record id, for example <code>?id=recWPKu5laVZxsvpn</code>."
+        );
+        return;
+      }
+
+      try {
+        await assertPlatformBundleDeployed();
+        mountProfile();
+      } catch (err) {
+        showError("Preview not ready", err && err.message ? err.message : String(err));
+      }
+    })();
+  })();
+  </script>
+</body>
+</html>

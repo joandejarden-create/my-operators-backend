@@ -7,6 +7,7 @@ import {
   normalizeOperatorSetupSelectPrefill,
 } from "./third-party-operator-select-prefill-normalize.js";
 import { NEW_BASE_GOVERNANCE_TABLE } from "./operator-setup-new-base-read.js";
+import { mapAirtableRowToCaseStudyDetail } from "./operator-case-study-airtable-map.js";
 
 export { formatListValue, parseMultiValue, safeParseJsonArray } from "./third-party-operator-value-utils.js";
 
@@ -221,20 +222,7 @@ export function buildThirdPartyOperatorPrefillFromContext(operatorRecord, ctx) {
 
   const caseStudies = caseStudyRecords
     .filter((r) => formatListValue((r.fields || {})["Operator Record ID"]) === recordId)
-    .map((r) => {
-      const row = r.fields || {};
-      return {
-        property_name: formatListValue(row["Property Name"]),
-        hotel_type: formatListValue(row["Hotel Type"]),
-        region: formatListValue(row["Region"]),
-        branded_independent: formatListValue(row["Branded / Independent"]),
-        situation: normalizeCaseStudySituationForForm(formatListValue(row["Situation"])),
-        services: formatListValue(row["Services"]),
-        outcome: formatListValue(row["Outcome"]),
-        owner_relevance: formatListValue(row["Owner Relevance"]),
-        image_url: formatListValue(row["Image URL"]),
-      };
-    });
+    .map((r) => mapAirtableRowToCaseStudyDetail(r.fields || {}));
 
   const ownerDiligenceQa = ownerQaRecords
     .filter((r) => formatListValue((r.fields || {})["Operator Record ID"]) === recordId)
