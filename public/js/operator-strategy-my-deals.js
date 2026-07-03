@@ -1,5 +1,6 @@
 /**
  * My Deals — Operator Strategy tab (cross-deal pipeline table).
+ * API calls use DealalityMemberstackAuth.fetchMyDealsApi (owner JWT required — Batch 1 security).
  */
 (function (global) {
   "use strict";
@@ -257,8 +258,11 @@
     submitOperatorOutreach(row, notes);
   }
 
-  /** Same score band colors as Matched Brands (`match-score-*`). */
+  /** Operator alignment badge class — bands from lib/operator-alignment-scoring-weight-config.js via DcOperatorMatchScoreUi. */
   function getAlignmentScoreClass(score) {
+    if (global.DcOperatorMatchScoreUi && typeof global.DcOperatorMatchScoreUi.getAlignmentScoreClass === "function") {
+      return global.DcOperatorMatchScoreUi.getAlignmentScoreClass(score);
+    }
     if (score == null || score === "") return "";
     var n = Number(score);
     if (!Number.isFinite(n)) return "";
@@ -305,6 +309,9 @@
   }
 
   function getBreakdownScoreClass(score) {
+    if (global.DcOperatorMatchScoreUi && typeof global.DcOperatorMatchScoreUi.getBreakdownScoreClass === "function") {
+      return global.DcOperatorMatchScoreUi.getBreakdownScoreClass(score);
+    }
     if (score == null || score === "") return "medium";
     var n = Number(score);
     if (!Number.isFinite(n)) return "medium";
@@ -325,6 +332,19 @@
     var op = operatorName ? String(operatorName).trim() : null;
     var opPhrase = op ? op + "'s" : "this operator's";
     var withOp = op ? " with " + op : "";
+    var ui = global.DcOperatorMatchScoreUi;
+    var factorStrongMin =
+      ui && typeof ui.getFactorStrongMin === "function" ? ui.getFactorStrongMin() : 80;
+    var factorWeakBelow =
+      ui && typeof ui.getFactorWeakBelow === "function" ? ui.getFactorWeakBelow() : 50;
+    var tier =
+      ui && typeof ui.getNarrativeTier === "function" ? ui.getNarrativeTier(score) : null;
+    if (!tier) {
+      if (score >= 80) tier = "strong";
+      else if (score >= 50) tier = "moderate";
+      else if (score >= 25) tier = "weak";
+      else tier = "poor";
+    }
     var strong = [];
     var weak = [];
     if (details && typeof details === "object") {
@@ -333,13 +353,13 @@
         var s = d && d.score != null && d.score !== "—" ? Number(d.score) : null;
         var lbl = d && d.label ? d.label : k;
         if (s == null || Number.isNaN(s)) return;
-        if (s >= 80) strong.push(lbl);
-        else if (s < 50) weak.push(lbl);
+        if (s >= factorStrongMin) strong.push(lbl);
+        else if (s < factorWeakBelow) weak.push(lbl);
       });
     }
     var strongStr = strong.length ? strong.slice(0, 3).join(", ") : null;
     var weakStr = weak.length ? weak.slice(0, 3).join(", ") : null;
-    if (score >= 80) {
+    if (tier === "strong") {
       var p =
         "With a score of " +
         score.toFixed(0) +
@@ -356,7 +376,7 @@
         "This is a promising fit signal for your review set; validate open items before any outreach or term discussions.";
       return p;
     }
-    if (score >= 50) {
+    if (tier === "moderate") {
       var p =
         "At " + score.toFixed(0) + ", you have moderate alignment signals" + withOp + ". ";
       if (strongStr) p += "Strengths include " + strongStr + ". ";
@@ -365,7 +385,7 @@
         "Proceed only after confirming geography, scale, structure, and commercial assumptions with the operator team.";
       return p;
     }
-    if (score >= 25) {
+    if (tier === "weak") {
       var p =
         "A score of " +
         score.toFixed(0) +

@@ -12,7 +12,13 @@
  * Form Status; Deal Status, Status.
  */
 
+import fs from "fs";
 import { mapBdrToContactedRow } from "./brand-deal-requests.js";
+import {
+  uploadFileBytesToAirtable,
+  contentTypeFromFilename,
+  MAX_AIRTABLE_ATTACHMENT_BYTES,
+} from "../lib/dealality/airtable-upload-attachment.js";
 import { INTAKE_DEALS_USER_LINK } from "./schemas/intake-deal-fields.js";
 import { getAllOutreachDealIds } from "./outreach-setup.js";
 import { computeMatchScoreForDealBrand, computeRecommendedBrand, computeTopAlternativeBrands, getBrandBasicsRecordId, resolvePreferredBrandToName } from "./match-score-server.js";
@@ -61,6 +67,12 @@ import {
   CONTACT_UPLOADS_FORM_FIELDS,
   CU_FORM_TO_AIRTABLE,
   CU_ATTACHMENT_FIELD,
+  CU_ATTACHMENT_FORM_KEY,
+  CU_ATTACHMENT_AIRTABLE_FIELDS,
+  aggregateCuAttachmentsFromFields,
+  normalizeCuAttachmentItem,
+  isAirtableHostedAttachmentUrl,
+  cuAttachmentFieldHasFilenames,
   LEASE_STRUCTURE_FORM_FIELDS,
   LS_FORM_TO_AIRTABLE,
   LS_AIRTABLE_TO_FORM,
@@ -79,6 +91,7 @@ import {
   scoreSystemsReportingFactor,
   buildFactorMeta,
 } from "../lib/operator-alignment-scoring-factors.js";
+import { OPERATOR_MATCH_WEIGHTS } from "../lib/operator-alignment-scoring-weight-config.js";
 
 function valueToStr(v) {
   if (v == null) return "";
@@ -740,14 +753,15 @@ async function fetchContactUploadsDataMap(baseId, apiKey, cuRecordIds) {
 function contactUploadsToFormFields(cuFields) {
   if (!cuFields || typeof cuFields !== "object") return {};
   const merge = {};
+  const aggregatedAttachments = aggregateCuAttachmentsFromFields(cuFields);
+  if (aggregatedAttachments.length) {
+    merge[CU_ATTACHMENT_FORM_KEY] = aggregatedAttachments;
+  }
   for (const formName of CONTACT_UPLOADS_FORM_FIELDS) {
-    const airtableKey = formName === "Upload Supporting Docs" ? CU_ATTACHMENT_FIELD : (CU_FORM_TO_AIRTABLE[formName] ?? formName);
+    if (formName === CU_ATTACHMENT_FORM_KEY) continue;
+    const airtableKey = CU_FORM_TO_AIRTABLE[formName] ?? formName;
     let val = cuFields[airtableKey];
     if (val === undefined) continue;
-    if (formName === "Upload Supporting Docs" && Array.isArray(val)) {
-      merge[formName] = val;
-      continue;
-    }
     const s = val == null ? "" : typeof val === "string" ? val.trim() : Array.isArray(val) ? (val.map((v) => (typeof v === "string" ? v : (v && v.name) || "").trim()).filter(Boolean).join(", ")) : String(val);
     merge[formName] = s;
   }
@@ -760,18 +774,14 @@ function formFieldsToContactUploadsPayload(fields) {
   for (const formName of CONTACT_UPLOADS_FORM_FIELDS) {
     const val = fields[formName];
     if (val === undefined) continue;
-    const airtableKey = formName === "Upload Supporting Docs" ? CU_ATTACHMENT_FIELD : (CU_FORM_TO_AIRTABLE[formName] ?? formName);
-    if (formName === "Upload Supporting Docs") {
+    if (formName === CU_ATTACHMENT_FORM_KEY) {
       if (Array.isArray(val) && val.length > 0) {
-        const items = val.map((v) => {
-          if (typeof v === "object" && v && v.url) return { url: v.url, filename: v.filename };
-          if (typeof v === "string" && v) return { url: v };
-          return null;
-        }).filter(Boolean);
+        const items = val.map((v) => normalizeCuAttachmentItem(v)).filter(Boolean);
         if (items.length) payload[CU_ATTACHMENT_FIELD] = items;
       }
       continue;
     }
+    const airtableKey = CU_FORM_TO_AIRTABLE[formName] ?? formName;
     const s = val == null ? "" : typeof val === "string" ? val.trim() : String(val);
     payload[airtableKey] = s;
   }
@@ -2762,19 +2772,6 @@ export async function getAlternativeBrands(req, res) {
   }
 }
 
-const OPERATOR_MATCH_WEIGHTS = {
-  geographyMarkets: 18,
-  chainScale: 8,
-  assetProjectStageFit: 14,
-  dealStructureAssignment: 12,
-  feeCommercial: 10,
-  serviceOfferings: 8,
-  systemsReporting: 6,
-  ownerRelations: 6,
-  brandPortfolioRelevance: 6,
-  negativeFitPenalty: 2,
-};
-
 function toStr(v) {
   if (v == null) return "";
   if (typeof v === "string") return v.trim();
@@ -4057,19 +4054,53 @@ export async function updateMyDealById(req, res) {
 
 // ---------------------------------------------------------------------------
 // Deal Setup attachment upload (Tab 13): POST /api/my-deals/:recordId/attachments
-// Multer runs in server.js; req.files and req.params.recordId are set. Storage: local disk; URLs served via GET route.
+// Multer runs in server.js; req.files and req.params.recordId are set. Bytes uploaded to Airtable content API.
 export const ALLOWED_ATTACHMENT_EXTENSIONS = [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".jpg", ".jpeg", ".png"];
-export const MAX_ATTACHMENT_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+export const MAX_ATTACHMENT_FILE_SIZE_BYTES = MAX_AIRTABLE_ATTACHMENT_BYTES; // 5 MB (Airtable content API limit)
+
+function unlinkDealAttachmentFile(filePath) {
+  if (!filePath) return;
+  try {
+    fs.unlinkSync(filePath);
+  } catch (e) {
+    if (process.env.NODE_ENV !== "test") {
+      console.warn("[uploadDealAttachments] Could not remove temp file:", filePath, e.message);
+    }
+  }
+}
+
+function logDealAttachmentUpload(stage, payload) {
+  const enabled =
+    process.env.DEAL_ATTACHMENT_UPLOAD_DEBUG === "1" ||
+    (process.env.NODE_ENV !== "production" && process.env.DEAL_ATTACHMENT_UPLOAD_DEBUG !== "0");
+  if (!enabled) return;
+  console.info("[uploadDealAttachments]", stage, payload);
+}
+
+function mapUploadedAttachmentsForApi(fieldAttachments, expectedFilenames) {
+  const norm = (s) => String(s || "").trim().toLowerCase();
+  const expected = new Set((expectedFilenames || []).map(norm));
+  return (Array.isArray(fieldAttachments) ? fieldAttachments : [])
+    .filter((a) => expected.has(norm(a?.filename ?? a?.name)))
+    .map((a) => normalizeCuAttachmentItem(a))
+    .filter(Boolean);
+}
 
 /**
  * POST /api/my-deals/:recordId/attachments – multipart upload for Deal Setup attachments.
- * Ensures Contact & Uploads link exists (create + patch deal if needed), stores files, appends to CU attachment field.
+ * Ensures Contact & Uploads link exists (create + patch deal if needed), uploads file bytes to Airtable.
  * Returns { success, dealId, cuRecordId, attachments } or { success: false, error }.
- * 413 if file too large; 400 if no files / invalid type; 404 if deal not found.
+ * 413 if file too large; 400 if no files / invalid type; 404 if deal not found; 502 if Airtable re-fetch empty.
  */
 export async function uploadDealAttachments(req, res) {
+  const uploadedPaths = [];
   try {
     const recordId = req.params.recordId;
+    logDealAttachmentUpload("request", {
+      dealId: recordId,
+      fileCount: Array.isArray(req.files) ? req.files.length : 0,
+      filenames: (req.files || []).map((f) => f.originalname || f.filename),
+    });
     if (!recordId || !recordId.startsWith("rec")) {
       return res.status(400).json({ success: false, error: "Valid deal record ID is required" });
     }
@@ -4082,6 +4113,16 @@ export async function uploadDealAttachments(req, res) {
     const files = Array.isArray(req.files) ? req.files : [];
     if (files.length === 0) {
       return res.status(400).json({ success: false, error: "No files selected or upload failed" });
+    }
+
+    for (const file of files) {
+      const size = file.size ?? (file.path && fs.existsSync(file.path) ? fs.statSync(file.path).size : 0);
+      if (size > MAX_AIRTABLE_ATTACHMENT_BYTES) {
+        return res.status(413).json({
+          success: false,
+          error: `File too large. Maximum size is ${Math.floor(MAX_AIRTABLE_ATTACHMENT_BYTES / (1024 * 1024))} MB per file (Airtable limit).`,
+        });
+      }
     }
 
     const full = await fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId);
@@ -4120,39 +4161,115 @@ export async function uploadDealAttachments(req, res) {
       }
     }
 
-    const baseUrl = (process.env.BASE_URL || process.env.PUBLIC_APP_URL || "").trim() || (req.protocol + "://" + req.get("host"));
-    const newItems = files.map((f) => ({
-      url: baseUrl + "/api/my-deals/" + encodeURIComponent(recordId) + "/attachments/" + encodeURIComponent(f.filename),
-      filename: (f.originalname || f.filename || "file").trim() || f.filename,
-    }));
-
-    const cuFields = await fetchContactUploadsRecord(baseId, apiKey, cuRecordId);
-    const existingRaw = (cuFields && cuFields[CU_ATTACHMENT_FIELD]) || [];
-    const existing = Array.isArray(existingRaw)
-      ? existingRaw.map((e) => ({
-          url: (typeof e === "object" && e && e.url) ? e.url : (typeof e === "string" ? e : ""),
-          filename: (typeof e === "object" && e && (e.filename ?? e.name)) ? String(e.filename ?? e.name) : "",
-        })).filter((e) => e.url)
-      : [];
-    const merged = [...existing, ...newItems];
-
-    await waitAirtableSerial();
-    const cuTable = encodeURIComponent(CONTACT_UPLOADS_TABLE);
-    const patchCuRes = await fetch(`https://api.airtable.com/v0/${baseId}/${cuTable}/${encodeURIComponent(cuRecordId)}`, {
-      method: "PATCH",
-      headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
-      body: JSON.stringify({ fields: { [CU_ATTACHMENT_FIELD]: merged }, typecast: true }),
+    logDealAttachmentUpload("cu-target", {
+      dealId: recordId,
+      cuRecordId,
+      attachmentField: CU_ATTACHMENT_FIELD,
     });
-    const patchCuData = await patchCuRes.json();
-    if (patchCuData.error) {
-      return res.status(400).json({ success: false, error: "Airtable write failed: " + (patchCuData.error.message || "Contact & Uploads update failed") });
+
+    const expectedFilenames = [];
+    for (const file of files) {
+      const filename = (file.originalname || file.filename || "file").trim() || file.filename;
+      expectedFilenames.push(filename);
+      if (!file.path || !fs.existsSync(file.path)) {
+        return res.status(500).json({ success: false, error: "Uploaded file missing from disk staging" });
+      }
+      uploadedPaths.push(file.path);
+      const buffer = fs.readFileSync(file.path);
+      const size = buffer.length;
+      logDealAttachmentUpload("airtable-upload-start", {
+        dealId: recordId,
+        cuRecordId,
+        attachmentField: CU_ATTACHMENT_FIELD,
+        filename,
+        size,
+      });
+      await waitAirtableSerial();
+      const uploadResult = await uploadFileBytesToAirtable({
+        baseId,
+        recordId: cuRecordId,
+        fieldName: CU_ATTACHMENT_FIELD,
+        buffer,
+        contentType: contentTypeFromFilename(filename),
+        filename,
+        apiKey,
+      });
+      logDealAttachmentUpload("airtable-upload-response", {
+        dealId: recordId,
+        cuRecordId,
+        filename,
+        responseAttachmentCount: Array.isArray(uploadResult) ? uploadResult.length : 0,
+      });
     }
+
+    const updatedCuFields = (await fetchContactUploadsRecord(baseId, apiKey, cuRecordId)) || {};
+    const fieldAttachments = updatedCuFields[CU_ATTACHMENT_FIELD] || [];
+    logDealAttachmentUpload("refetch", {
+      dealId: recordId,
+      cuRecordId,
+      attachmentField: CU_ATTACHMENT_FIELD,
+      fieldAttachmentCount: fieldAttachments.length,
+      filenames: fieldAttachments.map((a) => a?.filename ?? a?.name),
+    });
+
+    if (!cuAttachmentFieldHasFilenames(fieldAttachments, expectedFilenames)) {
+      return res.status(502).json({
+        success: false,
+        error: "Airtable did not persist one or more attachments after upload. Please try again.",
+        attachmentField: CU_ATTACHMENT_FIELD,
+        cuRecordId,
+        expectedFilenames,
+      });
+    }
+
+    const notHosted = expectedFilenames.filter((name) => {
+      const norm = name.trim().toLowerCase();
+      const match = fieldAttachments.find(
+        (a) => String(a?.filename ?? a?.name ?? "").trim().toLowerCase() === norm
+      );
+      return !match || !isAirtableHostedAttachmentUrl(match.url);
+    });
+    if (notHosted.length) {
+      return res.status(502).json({
+        success: false,
+        error: "Uploaded attachments are not Airtable-hosted. Local proxy URLs cannot be persisted.",
+        attachmentField: CU_ATTACHMENT_FIELD,
+        cuRecordId,
+        notHosted,
+      });
+    }
+
+    for (const filePath of uploadedPaths) {
+      unlinkDealAttachmentFile(filePath);
+    }
+
+    const uploadedAttachments = mapUploadedAttachmentsForApi(fieldAttachments, expectedFilenames);
+    if (!uploadedAttachments.length) {
+      return res.status(502).json({
+        success: false,
+        error: "Attachments were uploaded but could not be read back from Airtable.",
+        attachmentField: CU_ATTACHMENT_FIELD,
+        cuRecordId,
+        expectedFilenames,
+      });
+    }
+
+    const allAttachments = aggregateCuAttachmentsFromFields(updatedCuFields);
+    logDealAttachmentUpload("success", {
+      dealId: recordId,
+      cuRecordId,
+      attachmentField: CU_ATTACHMENT_FIELD,
+      uploadedAttachments,
+      allAttachmentCount: allAttachments.length,
+    });
 
     return res.json({
       success: true,
       dealId: recordId,
       cuRecordId,
-      attachments: merged,
+      uploadedAttachments,
+      attachments: allAttachments.length ? allAttachments : uploadedAttachments,
+      attachmentField: CU_ATTACHMENT_FIELD,
     });
   } catch (err) {
     console.error("Error in uploadDealAttachments:", err);

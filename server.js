@@ -203,6 +203,22 @@ import {
 import { getMe } from "./api/me.js";
 import { getAuthMe } from "./api/auth-me.js";
 import { getMemberstackPublicConfig } from "./api/auth-memberstack-config.js";
+import { getOwnerPilotProvisioningRunbookHandler } from "./api/support-owner-pilot-provisioning-runbook.js";
+import { getScoringWeightModelHandler } from "./api/support-scoring-weight-model.js";
+import {
+  getOperatorMatchScoringConfigHandler,
+  getOperatorMatchScoringConfigBrowserScript,
+} from "./api/operator-match-scoring-config.js";
+import {
+  dealalityChatgptAuth,
+  postCreateRecordsByTableId,
+  postGetRecordById,
+  postListDealalityTables,
+  postListRecordsByTableId,
+  postSummarizeRecordsByTableId,
+  postUpdateRecordByTableId,
+  postUpdateRecordsByTableId,
+} from "./api/dealality-airtable-chatgpt.js";
 import { memberstackAuth } from "./middleware/memberstackAuth.js";
 import { requireDealalityUser } from "./middleware/requireDealalityUser.js";
 import { requireMyDealsAccess } from "./middleware/requireMyDealsAccess.js";
@@ -231,6 +247,18 @@ import {
   PARTNER_SOURCE_MAX_UPLOAD_BYTES,
 } from "./lib/partner-intelligence/validate-source-payload.js";
 import { requireDealRecordAccess } from "./middleware/requireDealRecordAccess.js";
+import { mapBodyDealIdToRecordId } from "./middleware/mapBodyDealIdToRecordId.js";
+import { mapParamDealIdToRecordId } from "./middleware/mapParamDealIdToRecordId.js";
+import { requireAdminAccess } from "./middleware/requireAdminAccess.js";
+import { requireInternalRunbookAdmin } from "./middleware/requireInternalRunbookAdmin.js";
+import { requireTargetListRecordAccess } from "./middleware/requireTargetListRecordAccess.js";
+import { requireOwnerBdrRecordAccess } from "./middleware/requireOwnerBdrRecordAccess.js";
+import {
+  gateOwnerBdrActivity,
+  gateOwnerBdrDealMeta,
+  gateOwnerBdrDealIdsQuery,
+  gateOwnerBdrListAll,
+} from "./middleware/gateOwnerBdrRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -593,32 +621,34 @@ app.get(
 const myDealsAuth = [memberstackAuth, requireDealalityUser, requireMyDealsAccess];
 const partnerIntelligenceAuth = [memberstackAuth, requireDealalityUser, requirePartnerIntelligenceAccess];
 const myDealsDealAuth = [...myDealsAuth, requireDealRecordAccess];
+const adminAuth = [memberstackAuth, requireDealalityUser, requireAdminAccess];
+const internalRunbookAuth = [memberstackAuth, requireDealalityUser, requireInternalRunbookAdmin];
 const ownerOdrAuth = [...myDealsAuth, requireOwnerOdrCreateAccess];
 const ownerOdrDealAuth = [...myDealsDealAuth, requireOwnerOdrCreateAccess];
 app.get("/api/my-deals", ...myDealsAuth, getMyDeals);
 app.post("/api/my-deals", ...myDealsAuth, createDeal);
 app.post("/api/my-deals/initial-matched-support", ...myDealsAuth, postMyDealsInitialMatchedSupport);
 app.post("/api/my-deals/operator-requests/by-deals", ...ownerOdrAuth, listMyDealsOperatorRequestsByDeals);
-app.get("/api/my-deals/outreach-default", getOutreachDefault);
-app.patch("/api/my-deals/outreach-default", updateOutreachDefault);
-app.get("/api/my-deals/:recordId/outreach-setup", getOutreachSetup);
-app.patch("/api/my-deals/:recordId/outreach-setup", updateOutreachSetup);
-app.delete("/api/my-deals/:recordId/outreach-setup", deleteOutreachSetup);
-app.get("/api/franchise-application/:dealId", getFranchiseApplication);
-app.patch("/api/franchise-application/:dealId", updateFranchiseApplication);
+app.get("/api/my-deals/outreach-default", ...myDealsAuth, getOutreachDefault);
+app.patch("/api/my-deals/outreach-default", ...myDealsAuth, updateOutreachDefault);
+app.get("/api/my-deals/:recordId/outreach-setup", ...myDealsDealAuth, getOutreachSetup);
+app.patch("/api/my-deals/:recordId/outreach-setup", ...myDealsDealAuth, updateOutreachSetup);
+app.delete("/api/my-deals/:recordId/outreach-setup", ...myDealsDealAuth, deleteOutreachSetup);
+app.get("/api/franchise-application/:dealId", mapParamDealIdToRecordId, ...myDealsDealAuth, getFranchiseApplication);
+app.patch("/api/franchise-application/:dealId", mapParamDealIdToRecordId, ...myDealsDealAuth, updateFranchiseApplication);
 app.get("/api/my-deals/:recordId", ...myDealsDealAuth, getDealById);
-app.get("/api/my-deals/:recordId/alternative-brands", getAlternativeBrands);
-app.get("/api/my-deals/:recordId/match-score-breakdown", getMatchScoreBreakdown);
-app.get("/api/my-deals/:recordId/operator-match-score-breakdown", getOperatorMatchScoreBreakdown);
+app.get("/api/my-deals/:recordId/alternative-brands", ...myDealsDealAuth, getAlternativeBrands);
+app.get("/api/my-deals/:recordId/match-score-breakdown", ...myDealsDealAuth, getMatchScoreBreakdown);
+app.get("/api/my-deals/:recordId/operator-match-score-breakdown", ...myDealsDealAuth, getOperatorMatchScoreBreakdown);
 app.patch("/api/my-deals/:recordId", ...myDealsDealAuth, updateMyDealById);
-app.post("/api/my-deals/:recordId/add-recommended-brand", addRecommendedBrand);
-app.post("/api/my-deals/:recordId/refresh-brand-cache", refreshDealBrandCache);
+app.post("/api/my-deals/:recordId/add-recommended-brand", ...myDealsDealAuth, addRecommendedBrand);
+app.post("/api/my-deals/:recordId/refresh-brand-cache", ...myDealsDealAuth, refreshDealBrandCache);
 app.post("/api/my-deals/:recordId/operator-requests", ...ownerOdrDealAuth, createMyDealsOperatorRequest);
 // Deal Readiness Review (deterministic + optional Airtable save via env field names)
 app.get("/api/ai/deal-readiness-review/meta", getDealReadinessMeta);
-app.post("/api/ai/deal-readiness-review", postDealReadinessReview);
-app.post("/api/ai/deal-readiness-review/save", postDealReadinessSave);
-app.post("/api/ai/brand-alignment-snapshot", postBrandAlignmentSnapshot);
+app.post("/api/ai/deal-readiness-review", mapBodyDealIdToRecordId, ...myDealsDealAuth, postDealReadinessReview);
+app.post("/api/ai/deal-readiness-review/save", mapBodyDealIdToRecordId, ...myDealsDealAuth, postDealReadinessSave);
+app.post("/api/ai/brand-alignment-snapshot", mapBodyDealIdToRecordId, ...myDealsDealAuth, postBrandAlignmentSnapshot);
 app.get(
   "/api/deals/:dealId/operator-capability-snapshot",
   (req, _res, next) => {
@@ -628,7 +658,12 @@ app.get(
   ...myDealsDealAuth,
   getOperatorCapabilitySnapshot
 );
-app.post("/api/ai/operator-capability-snapshot", postOperatorCapabilitySnapshot);
+app.post(
+  "/api/ai/operator-capability-snapshot",
+  mapBodyDealIdToRecordId,
+  ...myDealsDealAuth,
+  postOperatorCapabilitySnapshot
+);
 const marketDemandDealAuth = (req, _res, next) => {
   req.params.recordId = req.params.dealId;
   next();
@@ -657,22 +692,26 @@ app.get(
   ...myDealsDealAuth,
   getOperatorAlignmentSnapshotCompanies
 );
-// Target List (brand shortlist) API
-app.get("/api/target-list/:dealId", getTargetList);
-app.post("/api/target-list", addToTargetList);
-app.post("/api/target-list/batch-delete", batchRemoveFromTargetList);
-app.post("/api/target-list/mark-deleted", markAsDeleted);
-app.post("/api/target-list/restore", restoreFromDeleted);
-app.patch("/api/target-list/:targetId", updateTarget);
-app.delete("/api/target-list/:targetId", removeFromTargetList);
-// Brand Deal Requests (Brand Development Dashboard)
-app.post("/api/brand-deal-requests", createBrandDealRequest);
-app.post("/api/brand-deal-requests/by-deals", listBrandDealRequestsByDealsPost);
-app.get("/api/brand-deal-requests/activity", getBrandDealActivityLog);
-app.get("/api/brand-deal-requests/deal-meta", getBrandDealMetaBatch);
+// Target List (brand shortlist) API — Batch 2A owner auth
+const mapTargetListDealParam = (req, _res, next) => {
+  req.params.recordId = req.params.dealId;
+  next();
+};
+app.get("/api/target-list/:dealId", mapTargetListDealParam, ...myDealsDealAuth, getTargetList);
+app.post("/api/target-list", mapBodyDealIdToRecordId, ...myDealsDealAuth, addToTargetList);
+app.post("/api/target-list/batch-delete", ...myDealsAuth, batchRemoveFromTargetList);
+app.post("/api/target-list/mark-deleted", mapBodyDealIdToRecordId, ...myDealsDealAuth, markAsDeleted);
+app.post("/api/target-list/restore", mapBodyDealIdToRecordId, ...myDealsDealAuth, restoreFromDeleted);
+app.patch("/api/target-list/:targetId", ...myDealsAuth, requireTargetListRecordAccess, updateTarget);
+app.delete("/api/target-list/:targetId", ...myDealsAuth, requireTargetListRecordAccess, removeFromTargetList);
+// Brand Deal Requests — Batch 2A owner-side flows (brand-side deferred)
+app.post("/api/brand-deal-requests", mapBodyDealIdToRecordId, ...myDealsDealAuth, createBrandDealRequest);
+app.post("/api/brand-deal-requests/by-deals", ...myDealsAuth, listBrandDealRequestsByDealsPost);
+app.get("/api/brand-deal-requests/activity", gateOwnerBdrActivity, getBrandDealActivityLog);
+app.get("/api/brand-deal-requests/deal-meta", gateOwnerBdrDealMeta, getBrandDealMetaBatch);
 // Dedicated path so Deal Room (Brand) never falls through to listForBrand (requires ?brand=) if dealRoom routing is missing or query is altered.
 app.get("/api/deal-room/brand-requests", listBrandDealRequestsForDealRoom);
-app.get("/api/brand-deal-requests", (req, res) => {
+app.get("/api/brand-deal-requests", gateOwnerBdrDealIdsQuery, gateOwnerBdrListAll, (req, res) => {
   if (req.query.dealIds) return listBrandDealRequestsByDeals(req, res);
   const dealRoom = req.query.dealRoom ?? req.query.deal_room;
   if (dealRoom === true || dealRoom === 1) return listBrandDealRequestsForDealRoom(req, res);
@@ -686,8 +725,14 @@ app.get("/api/brand-deal-requests", (req, res) => {
 app.get("/api/brand-deal-requests/:requestId", getBrandDealRequestById);
 app.get("/api/brand-deal-requests/:requestId/proposal-draft", getProposalDraft);
 app.post("/api/brand-deal-requests/:requestId/submit-proposal", submitProposal);
-app.patch("/api/brand-deal-requests/:requestId", updateBrandDealRequestStatus);
-app.post("/api/brand-deal-requests/bulk-update", bulkUpdateBrandDealRequestStatus);
+app.patch(
+  "/api/brand-deal-requests/:requestId",
+  memberstackAuth,
+  requireDealalityUser,
+  requireOwnerBdrRecordAccess,
+  updateBrandDealRequestStatus
+);
+app.post("/api/brand-deal-requests/bulk-update", ...myDealsAuth, bulkUpdateBrandDealRequestStatus);
 // Operator Deal Requests — Phase 2 scoped (see docs/operator-deal-requests-phase-2-scoping.md)
 const operatorDealsAuth = [memberstackAuth, requireDealalityUser, requireOperatorDealsAccess];
 app.post("/api/operator-deal-requests/bulk-update", ...operatorDealsAuth, bulkUpdateOperatorDealRequests);
@@ -724,11 +769,11 @@ app.post("/api/deal-room-documents", createDealRoomDocument);
 app.patch("/api/deal-room-documents/:id", updateDealRoomDocument);
 app.delete("/api/deal-room-documents/:id", deleteDealRoomDocument);
 // Deal Setup attachments: multipart upload (multer); then business logic in uploadDealAttachments
-app.post("/api/my-deals/:recordId/attachments", (req, res, next) => {
+app.post("/api/my-deals/:recordId/attachments", ...myDealsDealAuth, (req, res, next) => {
   dealAttachmentsUpload.array("files")(req, res, (err) => {
     if (err) {
       if (err.code === "LIMIT_FILE_SIZE") {
-        return res.status(413).json({ success: false, error: "File too large. Maximum size is 10 MB per file." });
+        return res.status(413).json({ success: false, error: "File too large. Maximum size is 5 MB per file (Airtable limit)." });
       }
       if (err.message && err.message.includes("File type not allowed")) {
         return res.status(400).json({ success: false, error: err.message });
@@ -739,7 +784,7 @@ app.post("/api/my-deals/:recordId/attachments", (req, res, next) => {
   });
 }, uploadDealAttachments);
 // Serve stored attachment files (path-traversal safe)
-app.get("/api/my-deals/:recordId/attachments/:filename", (req, res) => {
+app.get("/api/my-deals/:recordId/attachments/:filename", ...myDealsDealAuth, (req, res) => {
   const { recordId, filename } = req.params;
   if (!recordId || !filename || filename.includes("..") || recordId.includes("..")) {
     return res.status(400).send();
@@ -1476,12 +1521,26 @@ app.delete("/api/capital-explorer/favorites", deleteCapitalExplorerFavorite);
 app.delete("/api/capital-explorer/favorites/:favoriteId", deleteCapitalExplorerFavorite);
 
 // Partner Directory config endpoint (for local development)
-app.get("/api/user-management", listUserManagementUsers);
-app.get("/api/user-management/companies", listUserManagementCompanies);
-app.post("/api/user-management", createUserManagementUser);
-app.patch("/api/user-management/:recordId", updateUserManagementUser);
-app.delete("/api/user-management/:recordId", deleteUserManagementUser);
-app.post("/api/user-management/bulk-delete", bulkDeleteUsers);
+app.get("/api/user-management", ...adminAuth, listUserManagementUsers);
+app.get("/api/user-management/companies", ...adminAuth, listUserManagementCompanies);
+app.post("/api/user-management", ...adminAuth, createUserManagementUser);
+app.patch("/api/user-management/:recordId", ...adminAuth, updateUserManagementUser);
+app.delete("/api/user-management/:recordId", ...adminAuth, deleteUserManagementUser);
+app.post("/api/user-management/bulk-delete", ...adminAuth, bulkDeleteUsers);
+
+app.get(
+  "/api/support/owner-pilot-provisioning-runbook",
+  ...internalRunbookAuth,
+  getOwnerPilotProvisioningRunbookHandler
+);
+app.get(
+  "/api/support/scoring-weight-model",
+  ...internalRunbookAuth,
+  getScoringWeightModelHandler
+);
+
+app.get("/api/operator-match/scoring-config", getOperatorMatchScoringConfigHandler);
+app.get("/js/generated/operator-match-scoring-config.js", getOperatorMatchScoringConfigBrowserScript);
 
 // Partner Directory config endpoint (for local development)
 app.get("/api/partner-directory/config", (req, res) => {
@@ -1709,6 +1768,15 @@ app.post("/api/intake/brand", async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+// ChatGPT Custom GPT — Dealality GTM Airtable (flexible fields; no delete)
+app.post("/api/dealality-airtable/listDealalityTables", dealalityChatgptAuth, postListDealalityTables);
+app.post("/api/dealality-airtable/listRecordsByTableId", dealalityChatgptAuth, postListRecordsByTableId);
+app.post("/api/dealality-airtable/getRecordById", dealalityChatgptAuth, postGetRecordById);
+app.post("/api/dealality-airtable/createRecordsByTableId", dealalityChatgptAuth, postCreateRecordsByTableId);
+app.post("/api/dealality-airtable/updateRecordByTableId", dealalityChatgptAuth, postUpdateRecordByTableId);
+app.post("/api/dealality-airtable/updateRecordsByTableId", dealalityChatgptAuth, postUpdateRecordsByTableId);
+app.post("/api/dealality-airtable/summarizeRecordsByTableId", dealalityChatgptAuth, postSummarizeRecordsByTableId);
 
 // API 404 fallback – must be after ALL API routes so /api/outreach-hub/*, /api/my-deals, etc. are matched first
 app.use("/api", (req, res) => {

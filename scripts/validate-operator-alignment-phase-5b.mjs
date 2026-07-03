@@ -44,9 +44,12 @@ function tableFields(tables, name) {
 }
 
 async function main() {
-  const weightsSrc = fs.readFileSync(path.join(ROOT, "api/my-deals.js"), "utf8");
-  const wMatch = weightsSrc.match(/const OPERATOR_MATCH_WEIGHTS = \{([^}]+)\}/);
-  ok(wMatch, "OPERATOR_MATCH_WEIGHTS block present");
+  const weightsSrc = fs.readFileSync(path.join(ROOT, "lib/operator-alignment-scoring-weight-config.js"), "utf8");
+  const myDealsSrc = fs.readFileSync(path.join(ROOT, "api/my-deals.js"), "utf8");
+  const wMatch = weightsSrc.match(/export const OPERATOR_MATCH_WEIGHTS = \{([^}]+)\}/);
+  ok(wMatch, "OPERATOR_MATCH_WEIGHTS in lib/operator-alignment-scoring-weight-config.js");
+  ok(myDealsSrc.includes("operator-alignment-scoring-weight-config"), "my-deals imports scoring weight config");
+  ok(!myDealsSrc.match(/const OPERATOR_MATCH_WEIGHTS = \{/), "my-deals does not define OPERATOR_MATCH_WEIGHTS inline");
   const before = wMatch ? wMatch[0] : "";
   ok(!/geographyMarkets:\s*1[^0-9]/i.test(before) || before.includes("geographyMarkets: 18"), "geography weight unchanged (18)");
 
@@ -83,7 +86,10 @@ async function main() {
   ok(master.has("Data Confidence Level"), "Airtable Master has Data Confidence Level");
 
   ok(fs.existsSync(path.join(ROOT, "public/fixtures/operator-alignment-field-options.json")), "options fixture exists");
-  ok(fs.existsSync(path.join(ROOT, "docs/operator-alignment-sample-backfill-template.csv")), "operator backfill template exists");
+  ok(fs.existsSync(path.join(ROOT, "public/js/operator-match-score-ui.js")), "operator match score UI helper exists");
+  ok(fs.existsSync(path.join(ROOT, "api/operator-match-scoring-config.js")), "operator match scoring config API exists");
+  const uiUtils = fs.readFileSync(path.join(ROOT, "lib/operator-alignment-score-ui-utils.js"), "utf8");
+  ok(uiUtils.includes("OPERATOR_MATCH_SCORE_BANDS"), "UI utils import score bands from config");
 
   console.log(failed ? "\n" + failed + " failure(s)" : "\nAll Phase 5B checks passed.");
   process.exit(failed ? 1 : 0);

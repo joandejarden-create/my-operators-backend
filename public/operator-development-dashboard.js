@@ -134,6 +134,10 @@
   }
 
   function getScoreClass(score) {
+    if (window.DcOperatorMatchScoreUi && typeof window.DcOperatorMatchScoreUi.getAlignmentScoreClass === "function") {
+      var cls = window.DcOperatorMatchScoreUi.getAlignmentScoreClass(score);
+      return cls || "match-score-poor";
+    }
     var n = Number(score);
     if (Number.isNaN(n)) return "match-score-poor";
     if (n >= 80) return "match-score-high";
@@ -170,7 +174,15 @@
       out.push({ key: "miss", label: "Missing Info" });
     }
     if (isStalledRow(row)) out.push({ key: "overdue", label: "Overdue" });
-    if (score != null && score >= 80) out.push({ key: "fit", label: "High Fit" });
+    if (score != null) {
+      var isHighFit = false;
+      if (window.DcOperatorMatchScoreUi && typeof window.DcOperatorMatchScoreUi.isHighFitScore === "function") {
+        isHighFit = window.DcOperatorMatchScoreUi.isHighFitScore(score);
+      } else {
+        isHighFit = Number(score) >= 80;
+      }
+      if (isHighFit) out.push({ key: "fit", label: "High Fit" });
+    }
     if (st === "Revisit Later") out.push({ key: "revisit", label: "Revisit Later" });
     var seen = new Set();
     return out.filter(function (b) {
@@ -225,6 +237,28 @@
     enriched.lastActivityDisplay = formatLastActivityDisplay(enriched);
     enriched.followUpDisplay = formatFollowUpDisplay(enriched);
     return enriched;
+  }
+
+  function getOperatorCompanyLabel(row) {
+    if (row && row.operatingCompanyName) return String(row.operatingCompanyName).trim();
+    if (state.me && state.me.operatorCompanyName) return String(state.me.operatorCompanyName).trim();
+    if (state.me && state.me.companyName) return String(state.me.companyName).trim();
+    return "";
+  }
+
+  function getWorkspaceRowForModal(dealId, requestId) {
+    var row = null;
+    if (requestId) row = findRequestById(requestId);
+    if (!row && dealId) {
+      row = state.requests.find(function (r) {
+        return r.dealId === dealId;
+      });
+    }
+    return row ? enrichRow(row) : null;
+  }
+
+  function workspaceStripActionIds() {
+    return new Set(["open", "submitProposal"]);
   }
 
   function getEmptyStateHtml(tabId, hasAnyRequests, hasVisibleInTab) {
@@ -529,55 +563,83 @@
   }
 
   function renderWorkspaceCallToActionRow(row) {
+    var dealId = esc(row.dealId || "");
     var requestId = esc(row.id || "");
-    var st = String(row._requestStatus || "").trim();
+    var companyAttr = esc(getOperatorCompanyLabel(row));
+    var inboxTitle = "Outreach Inbox";
+    if (!row.id) {
+      return '<div class="action-icons bdd-ws-cta-icons"><span class="bdd-pill-muted" style="padding:0;border:none;background:transparent;">—</span></div>';
+    }
+    var avail = getAvailableOperatorWorkspaceActions(row);
+    var canSubmitProposal = avail.some(function (a) {
+      return a.id === "submitProposal";
+    });
+
     var svgEye =
       '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
     var svgCal =
       '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
     var svgDoc =
-      '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
+      '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
     var svgMail =
       '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>';
     var svgMore =
       '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>';
-    var termsActive = row.workspaceBucket === "terms-proposal" || st === "Pre-LOI" || st === "Pre-LOI / Term Comparison";
+
     var parts = [];
     parts.push(
-      '<button type="button" class="action-icon" title="Opportunity workspace" aria-label="Opportunity workspace" data-odd-action="open" data-request-id="' +
+      '<button type="button" class="action-icon" title="Opportunity workspace" aria-label="Opportunity workspace" data-bdd-ws="open" data-deal-id="' +
+        dealId +
+        '" data-request-id="' +
         requestId +
         '">' +
         svgEye +
         "</button>"
     );
     parts.push(
-      '<button type="button" class="action-icon" title="Owner request" aria-label="Owner request" data-action="communications" data-request-id="' +
-        requestId +
+      '<button type="button" class="action-icon" title="' +
+        esc(inboxTitle) +
+        '" aria-label="Open Outreach Inbox" data-action="communications" data-deal-id="' +
+        dealId +
+        '" data-brand="' +
+        companyAttr +
         '">' +
         svgMail +
         "</button>"
     );
     parts.push(
-      '<button type="button" class="action-icon" title="Schedule follow-up" aria-label="Schedule follow-up" data-action="schedule" data-request-id="' +
+      '<button type="button" class="action-icon" title="Schedule follow-up" aria-label="Schedule follow-up" data-action="schedule" data-deal-id="' +
+        dealId +
+        '" data-request-id="' +
         requestId +
+        '" data-brand="' +
+        companyAttr +
         '">' +
         svgCal +
         "</button>"
     );
+    if (canSubmitProposal) {
+      parts.push(
+        '<button type="button" class="action-icon action-icon--proposal" title="Submit Proposal" aria-label="Submit Proposal" data-action="submit-proposal" data-request-id="' +
+          requestId +
+          '">' +
+          svgDoc +
+          "</button>"
+      );
+    } else {
+      parts.push(
+        '<button type="button" class="action-icon action-icon--proposal" disabled title="Submit Proposal not available for this request status" aria-label="Submit Proposal not available">' +
+          svgDoc +
+          "</button>"
+      );
+    }
     parts.push(
-      '<button type="button" class="action-icon action-icon--proposal" title="' +
-        (termsActive ? "Terms review notes" : "Terms review (available in Terms tab)") +
-        '" aria-label="Terms review notes" data-odd-action="prepareTerms" data-request-id="' +
+      '<button type="button" class="action-icon" title="More actions" aria-label="More actions" data-action="bdd-ws-more" data-deal-id="' +
+        dealId +
+        '" data-request-id="' +
         requestId +
-        '"' +
-        (termsActive ? "" : " disabled") +
-        ">" +
-        svgDoc +
-        "</button>"
-    );
-    parts.push(
-      '<button type="button" class="action-icon" title="More actions" aria-label="More actions" data-action="odd-ws-more" data-request-id="' +
-        requestId +
+        '" data-brand="' +
+        companyAttr +
         '">' +
         svgMore +
         "</button>"
@@ -918,6 +980,14 @@
     setHidden(group, false);
   }
 
+  /**
+   * Operator deal-request eligibility (Phase 3B): /api/me exposes
+   * dealality.canAccessOperatorWorkspace, operatorDealRequestEligible, reviewBeforeOutreach.
+   * Inbound request lists are scoped by operator company on ODR rows — not a separate
+   * eligible-operator picker yet. When adding owner-side operator outreach lists, reuse
+   * lib/company-workspace-access.js evaluateOperatorMarketplaceEligibility (same as Explorer).
+   * Related-party note: lib/dealality/operator-related-party-note.js
+   */
   async function loadMeContext() {
     var res = await authFetch("/api/me");
     if (res.status === 401) throw new Error("Sign in to view My Operator Deals.");
@@ -1100,62 +1170,108 @@
 
   function getAvailableOperatorWorkspaceActions(row) {
     var st = String(row._requestStatus || row.status || "").trim();
+    var dealId = row.dealId || "";
+    var requestId = row.id || "";
     var out = [];
-    var seen = new Set();
     function push(id, label) {
-      if (seen.has(id)) return;
-      seen.add(id);
-      out.push({ id: id, label: label });
+      if (!requestId && id !== "open") return;
+      if (!out.find(function (x) {
+        return x.id === id;
+      })) {
+        out.push({ id: id, label: label, dealId: dealId, requestId: requestId });
+      }
     }
 
-    push("open", "Opportunity workspace");
-    if (["Declined", "Archived", "Responded - Declined"].includes(st)) {
-      push("editNotes", "Notes & follow-up");
+    push("open", "Workspace");
+    if (["Declined", "Archived", "Responded - Declined"].includes(st)) return out;
+    if (st === "More Info Requested") {
+      push("requestInfo", "Request Info");
+      push("followUp", "Follow Up");
+      push("decline", "Decline");
+      return out;
+    }
+    if (st === "Revisit Later") {
+      push("followUp", "Follow Up");
+      push("interested", "Resume");
+      push("decline", "Decline");
       return out;
     }
     if (["New", "Sent / Awaiting Response"].includes(st) || !st) {
-      push("viewed", "Mark viewed");
-    }
-    if (!["Declined", "Archived", "Responded - Declined"].includes(st)) {
       push("interested", "Interested");
-      push("requestInfo", "Request info");
-      push("revisit", "Revisit later");
+      push("requestInfo", "Request Info");
       push("decline", "Decline");
+      return out;
     }
-    if (row.workspaceBucket === "terms-proposal" || st === "Pre-LOI" || st === "Pre-LOI / Term Comparison") {
-      push("prepareTerms", "Terms review notes");
+    if (st === "Operator Viewed" || st === "Viewed" || st === "Brand Viewed") {
+      push("interested", "Interested");
+      push("requestInfo", "Request Info");
+      push("decline", "Decline");
+      push("followUp", "Follow Up");
+      return out;
     }
-    push("editNotes", "Notes & follow-up");
-    push("ownerRequest", "Owner request");
+    if (["Accepted", "Responded - Accepted"].includes(st)) {
+      push("requestInfo", "Request Info");
+      push("prepareTerms", "Prepare Terms");
+      push("followUp", "Follow Up");
+      push("decline", "Decline");
+      return out;
+    }
+    if (row.workspaceBucket === "terms-proposal" || ["Pre-LOI", "Pre-LOI / Term Comparison"].includes(st)) {
+      push("prepareTerms", "Prepare Terms");
+      push("followUp", "Follow Up");
+      push("decline", "Decline");
+      return out;
+    }
+    if (row.workspaceBucket === "advanced") {
+      push("followUp", "Follow Up");
+      push("revisitLater", "Revisit");
+      push("decline", "Decline");
+      return out;
+    }
+    push("requestInfo", "Request Info");
+    push("followUp", "Follow Up");
+    push("decline", "Decline");
     return out;
   }
 
-  function showOddWorkspaceMoreMenu(anchorBtn) {
+  function showBddWorkspaceMoreMenu(anchorBtn) {
     closeOddMoreMenu();
     if (!anchorBtn) return;
+    var dealId = anchorBtn.getAttribute("data-deal-id");
     var requestId = anchorBtn.getAttribute("data-request-id");
-    var row = getEnrichedRowByRequestId(requestId);
+    var row = getWorkspaceRowForModal(dealId, requestId);
     if (!row || !requestId) return;
 
-    var stripIds = new Set(["open", "ownerRequest", "editNotes", "prepareTerms"]);
+    var strip = workspaceStripActionIds();
     var menu = document.createElement("div");
     menu.className = "bdd-ws-more-menu";
+    menu.style.cssText =
+      "position:fixed;z-index:10050;background:var(--secondary--color-1);border:1px solid var(--neutral--600);border-radius:10px;padding:6px;min-width:200px;box-shadow:0 8px 20px rgba(0,0,0,0.35);";
     var rect = anchorBtn.getBoundingClientRect();
-    menu.style.top = Math.min(window.innerHeight - 220, rect.bottom + 6) + "px";
-    menu.style.left = Math.min(window.innerWidth - 220, Math.max(8, rect.left - 160)) + "px";
+    menu.style.top = Math.min(window.innerHeight - 200, rect.bottom + 6) + "px";
+    menu.style.left = Math.min(window.innerWidth - 220, rect.left) + "px";
 
     getAvailableOperatorWorkspaceActions(row)
-      .filter(function (a) { return !stripIds.has(a.id); })
+      .filter(function (a) {
+        return !strip.has(a.id);
+      })
       .forEach(function (a) {
         var btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "bdd-ws-more-menu__item";
         btn.textContent = a.label;
+        btn.style.cssText =
+          "display:block;width:100%;text-align:left;background:transparent;border:none;color:var(--neutral--100);padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px;";
+        btn.addEventListener("mouseenter", function () {
+          btn.style.background = "rgba(255,255,255,0.08)";
+        });
+        btn.addEventListener("mouseleave", function () {
+          btn.style.background = "transparent";
+        });
         btn.addEventListener("click", function (e) {
           e.preventDefault();
           e.stopPropagation();
           closeOddMoreMenu();
-          executeOperatorWorkspaceAction(a.id, requestId);
+          executeOperatorWorkspaceAction(a.id, row);
         });
         menu.appendChild(btn);
       });
@@ -1173,92 +1289,403 @@
     }, 0);
   }
 
-  async function executeOperatorWorkspaceAction(action, requestId) {
-    if (!requestId) return;
-    if (action === "open") {
-      openOpportunityWorkspaceModal(requestId);
+  async function maybeMarkOperatorViewed(requestId, requestStatus) {
+    var validRequestId = requestId && String(requestId).trim().indexOf("rec") === 0;
+    var st = String(requestStatus || "").trim();
+    var should = (st === "New" || st === "Sent / Awaiting Response" || !st) && validRequestId;
+    if (!should) return;
+    await patchRequest(requestId, { status: "Operator Viewed" });
+  }
+
+  async function handleViewDeal(dealId, requestId, requestStatus) {
+    await maybeMarkOperatorViewed(requestId, requestStatus);
+    openOpportunityWorkspaceModal(dealId, requestId);
+  }
+
+  async function executeOperatorWorkspaceAction(action, row) {
+    var requestId = row.id;
+    var dealId = row.dealId;
+    if (!requestId && action !== "open") {
+      showOddToast("Missing request id for this row.", false);
       return;
     }
-    if (action === "ownerRequest") {
-      openOwnerRequestModal(requestId);
-      return;
-    }
-    if (action === "viewed") {
-      await patchRequest(requestId, { status: "Operator Viewed" });
-      showOddToast("Marked as viewed.", true);
-      return;
-    }
-    if (action === "interested") {
-      await patchRequest(requestId, { status: "Accepted" });
-      showOddToast("Marked interested.", true);
-      return;
-    }
-    if (action === "requestInfo") {
-      openRequestInfoModal(requestId);
-      return;
-    }
-    if (action === "decline") {
-      openDeclineModal(requestId);
-      return;
-    }
-    if (action === "revisit") {
-      await patchRequest(requestId, { status: "Revisit Later" });
-      showOddToast("Moved to revisit later.", true);
-      return;
-    }
-    if (action === "editNotes") {
-      openNotesModal(requestId);
-      return;
-    }
-    if (action === "prepareTerms") {
-      openNotesModal(requestId);
-      showOddToast("Add terms notes in the follow-up panel.", true);
-      return;
+    try {
+      if (action === "open") {
+        await handleViewDeal(dealId, requestId, row._requestStatus || "");
+        return;
+      }
+      if (action === "interested") {
+        await patchRequest(requestId, { status: "Accepted" });
+        showOddToast("Marked interested.", true);
+        return;
+      }
+      if (action === "requestInfo") {
+        openBddRequestInfoModal(requestId, dealId);
+        return;
+      }
+      if (action === "prepareTerms") {
+        await patchRequest(requestId, { status: "Pre-LOI" });
+        showOddToast("Moved to terms review.", true);
+        return;
+      }
+      if (action === "followUp") {
+        scheduleFollowUp(dealId, requestId, getOperatorCompanyLabel(row));
+        return;
+      }
+      if (action === "submitProposal") {
+        openSubmitProposalModal(requestId);
+        return;
+      }
+      if (action === "decline") {
+        openBddDeclineWorkspaceModal(requestId, dealId);
+        return;
+      }
+      if (action === "revisitLater") {
+        openBddRevisitLaterModal(dealId, requestId);
+        return;
+      }
+    } catch (err) {
+      showOddToast(err.message || "Action failed", false);
     }
   }
 
-  function openOwnerRequestModal(requestId) {
-    var row = getEnrichedRowByRequestId(requestId);
-    if (!row) return;
-    var notes = String(row.ownerNotes || "").trim();
-    openModal({
-      title: "Owner request",
-      saveLabel: "Close",
-      bodyHtml:
-        "<p><strong>Owner company:</strong> " + esc(row._ownerCompany || "—") + "</p>" +
-        "<p><strong>Opportunity:</strong> " + esc(row.propertyName || "—") + "</p>" +
-        (notes
-          ? "<p style=\"margin-top:12px;white-space:pre-wrap;\">" + esc(notes) + "</p>"
-          : "<p style=\"margin-top:12px;color:var(--neutral--500);\">No owner message on file for this request.</p>"),
-      onSave: function () {
-        closeModal();
-        return Promise.resolve();
-      },
-    });
-  }
+  function openOpportunityWorkspaceModal(dealId, requestId) {
+    var row = getWorkspaceRowForModal(dealId, requestId);
+    if (!row || !dealId) return;
+    var modal = document.getElementById("dealDetailsModal");
+    var content = document.getElementById("dealDetailsContent");
+    var subtitle = document.getElementById("dealDetailsModalSubtitle");
+    if (!modal || !content) return;
 
-  function openOpportunityWorkspaceModal(requestId) {
-    var row = getEnrichedRowByRequestId(requestId);
-    if (!row) return;
     var score = effectiveAlignmentScore(row);
     var scoreStr = score != null ? score.toFixed(1) : "—";
-    openModal({
-      title: "Opportunity workspace",
-      saveLabel: "Close",
-      bodyHtml:
-        "<p><strong>" + esc(row.propertyName || "Operating opportunity") + "</strong></p>" +
-        "<p style=\"color:var(--neutral--400);font-size:13px;margin-top:4px;\">" +
-        esc([row._ownerCompany, row.country, row.rooms != null ? row.rooms + " keys" : ""].filter(Boolean).join(" · ") || "—") +
-        "</p>" +
-        "<p style=\"margin-top:14px;\"><strong>Stage:</strong> " + esc(row.stageLabel || "—") +
-        " · <strong>Status:</strong> " + esc(displayStatusLabel(row._requestStatus)) + "</p>" +
-        "<p><strong>Alignment:</strong> " + esc(scoreStr) + " · " + esc(row.alignmentBand || "—") + "</p>" +
-        "<p><strong>Next step:</strong> " + esc(row._nextStep || "—") + "</p>" +
-        "<p style=\"margin-top:12px;font-size:13px;color:var(--neutral--500);\">Use row actions or the More menu to record review steps — each update is logged to activity.</p>",
-      onSave: function () {
-        closeModal();
-        return Promise.resolve();
-      },
+    var company = getOperatorCompanyLabel(row);
+    var summaryLink = "/deal-brief-snapshot.html?dealId=" + encodeURIComponent(dealId) + "&from=odd";
+
+    if (subtitle) {
+      subtitle.textContent = [row.propertyName, row._ownerCompany, row.country].filter(Boolean).join(" · ");
+      subtitle.removeAttribute("hidden");
+    }
+
+    content.innerHTML =
+      '<div class="bdd-ds-modal-body">' +
+      '<div class="bdd-ow-card bdd-ow-section">' +
+      "<h3 class=\"bdd-ow-section__title\">Opportunity summary</h3>" +
+      "<p style=\"margin:0 0 8px;font-size:15px;color:var(--neutral--100);\"><strong>" +
+      esc(row.propertyName || "Operating opportunity") +
+      "</strong></p>" +
+      "<p style=\"margin:0 0 12px;font-size:13px;color:var(--neutral--400);\">" +
+      esc([row._ownerCompany, row.country, row.rooms != null ? row.rooms + " keys" : ""].filter(Boolean).join(" · ") || "—") +
+      "</p>" +
+      "<ul class=\"bdd-ow-rel-list\">" +
+      "<li><span class=\"bdd-ow-kv-label\">Stage</span> " + esc(row.stageLabel || "—") + "</li>" +
+      "<li><span class=\"bdd-ow-kv-label\">Status</span> " + esc(displayStatusLabel(row._requestStatus)) + "</li>" +
+      "<li><span class=\"bdd-ow-kv-label\">Alignment</span> " + esc(scoreStr) + " · " + esc(row.alignmentBand || "—") + "</li>" +
+      (company ? "<li><span class=\"bdd-ow-kv-label\">Operating company</span> " + esc(company) + "</li>" : "") +
+      "<li><span class=\"bdd-ow-kv-label\">Next step</span> " + esc(row._nextStep || "—") + "</li>" +
+      "<li><span class=\"bdd-ow-kv-label\">Last activity</span> " + esc(row.lastActivityDisplay || "—") + "</li>" +
+      "<li><span class=\"bdd-ow-kv-label\">Follow-up</span> " + esc(row.followUpDisplay || "—") + "</li>" +
+      "</ul>" +
+      '<p style="margin:14px 0 0;"><a href="' +
+      esc(summaryLink) +
+      '" target="_blank" rel="noopener" style="color:var(--accent--primary-1);">Open deal brief snapshot</a></p>' +
+      "</div>" +
+      '<div class="bdd-ow-card bdd-ow-section">' +
+      "<h3 class=\"bdd-ow-section__title\">Owner context</h3>" +
+      (String(row.ownerNotes || "").trim()
+        ? "<p style=\"margin:0;white-space:pre-wrap;color:var(--neutral--400);\">" + esc(String(row.ownerNotes).trim()) + "</p>"
+        : "<p class=\"bdd-ow-muted\" style=\"margin:0;\">No owner message on file for this request.</p>") +
+      "</div>" +
+      '<p class="bdd-ws-actions-hint" style="margin:16px 0 0;font-size:12px;color:var(--neutral--500);">Use row icons or More actions to record review steps — each update is logged to activity.</p>' +
+      "</div>";
+
+    modal.classList.add("active");
+  }
+
+  function scheduleFollowUp(dealId, requestId, companyLabel) {
+    var modal = document.getElementById("bddScheduleModal");
+    var label = document.getElementById("bddScheduleModalLabel");
+    var headerInput = document.getElementById("bddScheduleHeaderInput");
+    var dateInput = document.getElementById("bddScheduleDateInput");
+    var notesInput = document.getElementById("bddScheduleNotesInput");
+    var notesInternal = document.getElementById("bddScheduleInternalNotesInput");
+    if (!modal || !label || !dateInput) return;
+    var shortId = dealId ? String(dealId).slice(-6) : "";
+    label.textContent =
+      "Schedule a follow-up for " + (companyLabel || "this operator") + (shortId ? " (deal " + shortId + ")." : ".");
+    modal.dataset.pendingRequestId = requestId || "";
+    modal.dataset.pendingDealId = dealId || "";
+    var pair = findRequestById(requestId);
+    if (headerInput) headerInput.value = pair && pair.nextFollowupHeader ? String(pair.nextFollowupHeader).trim() : "";
+    dateInput.value = pair && pair.nextFollowupDate ? String(pair.nextFollowupDate).slice(0, 10) : "";
+    if (notesInput) notesInput.value = pair && pair.nextFollowupNotes ? String(pair.nextFollowupNotes).trim() : "";
+    if (notesInternal) notesInternal.value = "";
+    modal.classList.add("active");
+  }
+
+  function closeBddScheduleModal() {
+    var modal = document.getElementById("bddScheduleModal");
+    if (modal) modal.classList.remove("active");
+  }
+
+  async function saveOddSchedule() {
+    var modal = document.getElementById("bddScheduleModal");
+    var dateInput = document.getElementById("bddScheduleDateInput");
+    var headerInput = document.getElementById("bddScheduleHeaderInput");
+    var notesInput = document.getElementById("bddScheduleNotesInput");
+    var notesInternal = document.getElementById("bddScheduleInternalNotesInput");
+    var requestId = modal && modal.dataset.pendingRequestId;
+    var dateVal = dateInput && dateInput.value;
+    var headerVal = headerInput ? headerInput.value.trim() : "";
+    var notesVal = notesInput ? notesInput.value.trim() : "";
+    var internalVal = notesInternal ? notesInternal.value.trim() : "";
+    if (!requestId || !dateVal) {
+      closeBddScheduleModal();
+      return;
+    }
+    var payload = {
+      nextFollowupDate: dateVal,
+      nextFollowupHeader: headerVal,
+      nextFollowupNotes: notesVal,
+      scheduledBy: "operator",
+    };
+    if (internalVal) payload.appendOperatorInternalNotes = internalVal;
+    var ok = await patchRequest(requestId, payload);
+    if (ok) {
+      closeBddScheduleModal();
+      showOddToast("Follow-up scheduled.", true);
+    }
+  }
+
+  function openOutreachInboxModal(dealId, companyLabel) {
+    var id = (dealId || "").trim();
+    if (!id) {
+      showOddToast("Missing deal id for inbox.", false);
+      return;
+    }
+    var modal = document.getElementById("bddOutreachInboxModal");
+    var iframe = document.getElementById("bddOutreachInboxIframe");
+    if (!modal || !iframe) return;
+    var base = window.location.origin || "";
+    var params = new URLSearchParams();
+    params.set("embed", "1");
+    params.set("dealId", id);
+    var c = (companyLabel || "").trim();
+    if (c) params.set("brand", c);
+    iframe.src = base + "/outreach-inbox?" + params.toString();
+    modal.classList.add("active");
+  }
+
+  function closeOutreachInboxModal() {
+    var modal = document.getElementById("bddOutreachInboxModal");
+    var iframe = document.getElementById("bddOutreachInboxIframe");
+    if (modal) modal.classList.remove("active");
+    if (iframe) iframe.src = "about:blank";
+  }
+
+  function openSubmitProposalModal(requestId) {
+    showOddToast("Operator proposal submission is not available yet.", false);
+    void requestId;
+  }
+
+  function openBddRequestInfoModal(requestId, dealId) {
+    var modal = document.getElementById("bddRequestInfoModal");
+    var ta = document.getElementById("bddRequestInfoTextarea");
+    if (!modal || !ta || !requestId) return;
+    modal.dataset.pendingRequestId = requestId;
+    modal.dataset.pendingDealId = dealId || "";
+    ta.value = "Please confirm room count, ownership structure, and current project timeline.";
+    var ti = document.getElementById("bddRequestInfoInternalTextarea");
+    if (ti) ti.value = "";
+    modal.classList.add("active");
+  }
+
+  function closeBddRequestInfoModal() {
+    document.getElementById("bddRequestInfoModal")?.classList.remove("active");
+  }
+
+  async function saveBddRequestInfo() {
+    var modal = document.getElementById("bddRequestInfoModal");
+    var requestId = modal && modal.dataset.pendingRequestId;
+    var ta = document.getElementById("bddRequestInfoTextarea");
+    var ti = document.getElementById("bddRequestInfoInternalTextarea");
+    if (!requestId || !ta) return;
+    var addition = String(ta.value || "").trim();
+    var internalRaw = ti ? String(ti.value || "").trim() : "";
+    if (!addition) {
+      showOddToast("Enter what you are requesting from the owner.", false);
+      return;
+    }
+    var row = findRequestById(requestId);
+    var existing = row && row.responseNotes ? String(row.responseNotes) : "";
+    var merged = existing ? existing + "\n\nInformation requested: " + addition : "Information requested: " + addition;
+    var payload = { status: "More Info Requested", responseNotes: merged };
+    if (internalRaw) payload.appendOperatorInternalNotes = internalRaw;
+    var ok = await patchRequest(requestId, payload);
+    if (ok) {
+      closeBddRequestInfoModal();
+      showOddToast("Information request sent.", true);
+    }
+  }
+
+  var ODD_DECLINE_REASON_LABELS = {
+    operating_fit: "Operating model / service fit",
+    scale_positioning: "Scale or positioning mismatch",
+    geography_market: "Geography or market coverage",
+    deal_structure: "Deal structure (fees, key money, terms)",
+    timing: "Timing or project pace",
+    capacity_pipeline: "Internal capacity / pipeline",
+    strategic_pause: "Strategic pause or allocation",
+    other: "Other",
+  };
+
+  function syncOddDeclineReasonUi() {
+    var preset = document.getElementById("bddDeclineReasonPreset");
+    var wrap = document.getElementById("bddDeclineReasonOtherWrap");
+    if (!preset || !wrap) return;
+    wrap.style.display = preset.value === "other" ? "block" : "none";
+  }
+
+  function openBddDeclineWorkspaceModal(requestId, dealId) {
+    var modal = document.getElementById("bddDeclineWorkspaceModal");
+    if (!modal || !requestId) return;
+    modal.dataset.pendingRequestId = requestId;
+    modal.dataset.pendingDealId = dealId || "";
+    var preset = document.getElementById("bddDeclineReasonPreset");
+    var other = document.getElementById("bddDeclineReasonOtherInput");
+    var extN = document.getElementById("bddDeclineExternalNotesInput");
+    var intN = document.getElementById("bddDeclineInternalNotesInput");
+    if (preset) preset.value = "";
+    if (other) other.value = "";
+    if (extN) extN.value = "";
+    if (intN) intN.value = "";
+    syncOddDeclineReasonUi();
+    modal.classList.add("active");
+  }
+
+  function closeBddDeclineWorkspaceModal() {
+    document.getElementById("bddDeclineWorkspaceModal")?.classList.remove("active");
+  }
+
+  async function saveBddDeclineWorkspace() {
+    var modal = document.getElementById("bddDeclineWorkspaceModal");
+    var requestId = modal && modal.dataset.pendingRequestId;
+    var presetEl = document.getElementById("bddDeclineReasonPreset");
+    var externalNotesEl = document.getElementById("bddDeclineExternalNotesInput");
+    var internalNotesEl = document.getElementById("bddDeclineInternalNotesInput");
+    var otherEl = document.getElementById("bddDeclineReasonOtherInput");
+    if (!requestId || !presetEl) return;
+    var preset = presetEl.value || "";
+    if (!preset) {
+      showOddToast("Choose a decline reason.", false);
+      return;
+    }
+    var reasonLabel = ODD_DECLINE_REASON_LABELS[preset] || preset;
+    if (preset === "other") {
+      var otherText = otherEl ? String(otherEl.value || "").trim() : "";
+      if (!otherText) {
+        showOddToast("Describe the decline reason.", false);
+        return;
+      }
+      reasonLabel = otherText;
+    }
+    var external = externalNotesEl ? String(externalNotesEl.value || "").trim() : "";
+    var internal = internalNotesEl ? String(internalNotesEl.value || "").trim() : "";
+    var responseNotes = "Declined: " + reasonLabel + (external ? "\n\n" + external : "");
+    var payload = { status: "Declined", responseNotes: responseNotes };
+    if (internal) payload.appendOperatorInternalNotes = internal;
+    var ok = await patchRequest(requestId, payload);
+    if (ok) {
+      closeBddDeclineWorkspaceModal();
+      closeDealDetailsModal();
+      showOddToast("Opportunity declined.", true);
+    }
+  }
+
+  function openBddRevisitLaterModal(dealId, requestId) {
+    var modal = document.getElementById("bddRevisitLaterModal");
+    var dateInput = document.getElementById("bddRevisitDateInput");
+    var notesInput = document.getElementById("bddRevisitNotesInput");
+    var notesInternal = document.getElementById("bddRevisitInternalNotesInput");
+    if (!modal || !dateInput) return;
+    modal.dataset.pendingRequestId = requestId || "";
+    modal.dataset.pendingDealId = dealId || "";
+    dateInput.value = "";
+    if (notesInput) notesInput.value = "";
+    if (notesInternal) notesInternal.value = "";
+    modal.classList.add("active");
+  }
+
+  function closeBddRevisitLaterModal() {
+    document.getElementById("bddRevisitLaterModal")?.classList.remove("active");
+  }
+
+  async function saveBddRevisitLater() {
+    var modal = document.getElementById("bddRevisitLaterModal");
+    var requestId = modal && modal.dataset.pendingRequestId;
+    var dateInput = document.getElementById("bddRevisitDateInput");
+    var notesInput = document.getElementById("bddRevisitNotesInput");
+    var notesInternal = document.getElementById("bddRevisitInternalNotesInput");
+    var dateVal = dateInput && dateInput.value;
+    if (!requestId || !dateVal) {
+      showOddToast("Choose a revisit date.", false);
+      return;
+    }
+    var payload = {
+      status: "Revisit Later",
+      nextFollowupDate: dateVal,
+      nextFollowupNotes: notesInput ? String(notesInput.value || "").trim() : "",
+      scheduledBy: "operator",
+    };
+    var internalVal = notesInternal ? String(notesInternal.value || "").trim() : "";
+    if (internalVal) payload.appendOperatorInternalNotes = internalVal;
+    var ok = await patchRequest(requestId, payload);
+    if (ok) {
+      closeBddRevisitLaterModal();
+      showOddToast("Moved to revisit later.", true);
+    }
+  }
+
+  function wireWorkspaceModals() {
+    if (document._oddWorkspaceModalsWired) return;
+    document._oddWorkspaceModalsWired = true;
+
+    document.getElementById("bddScheduleModal")?.addEventListener("click", function (e) {
+      if (e.target.id === "bddScheduleModal") closeBddScheduleModal();
+    });
+    document.getElementById("bddScheduleModalClose")?.addEventListener("click", closeBddScheduleModal);
+    document.getElementById("bddScheduleCancelBtn")?.addEventListener("click", closeBddScheduleModal);
+    document.getElementById("bddScheduleSaveBtn")?.addEventListener("click", saveOddSchedule);
+
+    document.getElementById("bddOutreachInboxModal")?.addEventListener("click", function (e) {
+      if (e.target.id === "bddOutreachInboxModal") closeOutreachInboxModal();
+    });
+    document.getElementById("bddOutreachInboxModalClose")?.addEventListener("click", closeOutreachInboxModal);
+
+    document.getElementById("bddRequestInfoModal")?.addEventListener("click", function (e) {
+      if (e.target.id === "bddRequestInfoModal") closeBddRequestInfoModal();
+    });
+    document.getElementById("bddRequestInfoModalClose")?.addEventListener("click", closeBddRequestInfoModal);
+    document.getElementById("bddRequestInfoCancelBtn")?.addEventListener("click", closeBddRequestInfoModal);
+    document.getElementById("bddRequestInfoSaveBtn")?.addEventListener("click", saveBddRequestInfo);
+
+    document.getElementById("bddDeclineWorkspaceModal")?.addEventListener("click", function (e) {
+      if (e.target.id === "bddDeclineWorkspaceModal") closeBddDeclineWorkspaceModal();
+    });
+    document.getElementById("bddDeclineWorkspaceModalClose")?.addEventListener("click", closeBddDeclineWorkspaceModal);
+    document.getElementById("bddDeclineWorkspaceCancelBtn")?.addEventListener("click", closeBddDeclineWorkspaceModal);
+    document.getElementById("bddDeclineWorkspaceSaveBtn")?.addEventListener("click", saveBddDeclineWorkspace);
+    document.getElementById("bddDeclineReasonPreset")?.addEventListener("change", syncOddDeclineReasonUi);
+
+    document.getElementById("bddRevisitLaterModal")?.addEventListener("click", function (e) {
+      if (e.target.id === "bddRevisitLaterModal") closeBddRevisitLaterModal();
+    });
+    document.getElementById("bddRevisitLaterModalClose")?.addEventListener("click", closeBddRevisitLaterModal);
+    document.getElementById("bddRevisitLaterCancelBtn")?.addEventListener("click", closeBddRevisitLaterModal);
+    document.getElementById("bddRevisitLaterSaveBtn")?.addEventListener("click", saveBddRevisitLater);
+
+    document.getElementById("dealDetailsModal")?.addEventListener("click", function (e) {
+      if (e.target.id === "dealDetailsModal") closeDealDetailsModal();
     });
   }
 
@@ -1353,61 +1780,6 @@
     }
   }
 
-  function openRequestInfoModal(requestId) {
-    openModal({
-      title: "Request more info",
-      bodyHtml:
-        '<label>Message for the owner<textarea id="oddModalResponseNotes" placeholder="What review considerations or data gaps should the owner clarify?"></textarea></label>',
-      onSave: async function () {
-        var notes = ($("oddModalResponseNotes") && $("oddModalResponseNotes").value) || "";
-        var ok = await patchRequest(requestId, {
-          status: "More Info Requested",
-          responseNotes: notes.trim(),
-        });
-        if (ok) closeModal();
-      },
-    });
-  }
-
-  function openDeclineModal(requestId) {
-    openModal({
-      title: "Decline opportunity",
-      bodyHtml:
-        '<label>Notes (optional)<textarea id="oddModalDeclineNotes" placeholder="Brief reason for your team records"></textarea></label>',
-      onSave: async function () {
-        var notes = ($("oddModalDeclineNotes") && $("oddModalDeclineNotes").value) || "";
-        var ok = await patchRequest(requestId, {
-          status: "Declined",
-          responseNotes: notes.trim(),
-        });
-        if (ok) closeModal();
-      },
-    });
-  }
-
-  function openNotesModal(requestId) {
-    var row = findRequestById(requestId);
-    if (!row) return;
-    openModal({
-      title: "Notes & follow-up",
-      bodyHtml:
-        '<label>Internal notes<textarea id="oddModalInternalNotes">' + esc(row.operatorInternalNotes || "") + "</textarea></label>" +
-        '<label>Follow-up date<input type="date" id="oddModalFollowupDate" value="' + esc((row.nextFollowupDate || "").slice(0, 10)) + '"></label>' +
-        '<label>Follow-up header<input type="text" id="oddModalFollowupHeader" value="' + esc(row.nextFollowupHeader || "") + '"></label>' +
-        '<label>Follow-up notes<textarea id="oddModalFollowupNotes">' + esc(row.nextFollowupNotes || "") + "</textarea></label>",
-      onSave: async function () {
-        var ok = await patchRequest(requestId, {
-          operatorInternalNotes: ($("oddModalInternalNotes") && $("oddModalInternalNotes").value) || "",
-          nextFollowupDate: ($("oddModalFollowupDate") && $("oddModalFollowupDate").value) || null,
-          nextFollowupHeader: ($("oddModalFollowupHeader") && $("oddModalFollowupHeader").value) || "",
-          nextFollowupNotes: ($("oddModalFollowupNotes") && $("oddModalFollowupNotes").value) || "",
-          scheduledBy: "operator",
-        });
-        if (ok) closeModal();
-      },
-    });
-  }
-
   function openAlignmentDetailsModal(requestId) {
     var row = findRequestById(requestId);
     if (!row) return;
@@ -1463,11 +1835,23 @@
     document.addEventListener("click", function (e) {
       if (!$("dealsTable") || !e.target.closest("#dealsTable")) return;
 
-      var moreBtn = e.target.closest('[data-action="odd-ws-more"]');
+      var moreBtn = e.target.closest('[data-action="bdd-ws-more"]');
       if (moreBtn) {
         e.preventDefault();
         e.stopPropagation();
-        showOddWorkspaceMoreMenu(moreBtn);
+        showBddWorkspaceMoreMenu(moreBtn);
+        return;
+      }
+
+      var wsBtn = e.target.closest("[data-bdd-ws]");
+      if (wsBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var wsAction = wsBtn.getAttribute("data-bdd-ws");
+        var dealId = wsBtn.getAttribute("data-deal-id");
+        var requestId = wsBtn.getAttribute("data-request-id");
+        var row = getWorkspaceRowForModal(dealId, requestId);
+        if (wsAction && row) executeOperatorWorkspaceAction(wsAction, row);
         return;
       }
 
@@ -1475,8 +1859,10 @@
       if (scheduleBtn && !scheduleBtn.disabled) {
         e.preventDefault();
         e.stopPropagation();
-        var schedId = scheduleBtn.getAttribute("data-request-id");
-        if (schedId) openNotesModal(schedId);
+        var schedDealId = scheduleBtn.getAttribute("data-deal-id");
+        var schedRequestId = scheduleBtn.getAttribute("data-request-id");
+        var schedBrand = scheduleBtn.getAttribute("data-brand") || "";
+        if (schedDealId && schedRequestId) scheduleFollowUp(schedDealId, schedRequestId, schedBrand);
         return;
       }
 
@@ -1484,8 +1870,24 @@
       if (commBtn && !commBtn.disabled) {
         e.preventDefault();
         e.stopPropagation();
-        var commId = commBtn.getAttribute("data-request-id");
-        if (commId) openOwnerRequestModal(commId);
+        var commDealId = (commBtn.getAttribute("data-deal-id") || "").trim();
+        var commBrand = (commBtn.getAttribute("data-brand") || "").trim();
+        try {
+          commBrand = decodeURIComponent(commBrand);
+        } catch (_) {
+          /* keep raw */
+        }
+        if (commDealId) openOutreachInboxModal(commDealId, commBrand);
+        else showOddToast("Missing deal id for inbox.", false);
+        return;
+      }
+
+      var submitProposalBtn = e.target.closest('.action-icon[data-action="submit-proposal"]');
+      if (submitProposalBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var proposalId = submitProposalBtn.getAttribute("data-request-id");
+        if (proposalId) openSubmitProposalModal(proposalId);
         return;
       }
 
@@ -1505,7 +1907,8 @@
       var action = btn.getAttribute("data-odd-action");
       var requestId = btn.getAttribute("data-request-id");
       if (!action || !requestId) return;
-      executeOperatorWorkspaceAction(action, requestId);
+      var decisionRow = getEnrichedRowByRequestId(requestId);
+      if (decisionRow) executeOperatorWorkspaceAction(action, decisionRow);
     });
   }
 
@@ -1566,6 +1969,7 @@
     wireTabNav();
     wireFilters();
     wireModal();
+    wireWorkspaceModals();
     wireTableActions();
     restoreTabFromHash();
     state.loading = true;
@@ -1586,3 +1990,12 @@
     init();
   }
 })();
+
+function closeDealDetailsModal() {
+  document.getElementById("dealDetailsModal")?.classList.remove("active");
+  var sub = document.getElementById("dealDetailsModalSubtitle");
+  if (sub) {
+    sub.textContent = "";
+    sub.setAttribute("hidden", "hidden");
+  }
+}

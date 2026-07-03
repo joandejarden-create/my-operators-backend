@@ -209,6 +209,178 @@
         </div>
     </div>
 
+    <!-- Opportunity Workspace (matches My Brand Deals) -->
+    <div class="modal-overlay" id="dealDetailsModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 920px;">
+            <div class="modal-header">
+                <div class="bdd-ow-modal-header__text">
+                    <h2>Opportunity Workspace</h2>
+                    <p id="dealDetailsModalSubtitle" class="bdd-ow-modal-subtitle" hidden></p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeDealDetailsModal()" aria-label="Close">&times;</button>
+            </div>
+            <div id="dealDetailsContent"></div>
+        </div>
+    </div>
+
+    <!-- Request more information -->
+    <div class="modal-overlay" id="bddRequestInfoModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 520px;">
+            <div class="modal-header">
+                <h2>Request More Information</h2>
+                <button type="button" class="modal-close" id="bddRequestInfoModalClose">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body">
+                <p class="bdd-ds-hint bdd-ds-hint--lg">Owner-facing text is appended to <strong>Response Notes</strong>. Team-only notes append to <strong>Operator Internal Notes</strong>.</p>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRequestInfoTextarea">What do you need from the owner? (external)</label>
+                    <textarea id="bddRequestInfoTextarea" rows="4" class="filter-input" placeholder="Visible to the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRequestInfoInternalTextarea">Team notes (internal, optional)</label>
+                    <textarea id="bddRequestInfoInternalTextarea" rows="3" class="filter-input" placeholder="Not shared with the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-modal-footer">
+                    <button type="button" id="bddRequestInfoCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
+                    <button type="button" id="bddRequestInfoSaveBtn" class="bdd-ds-btn bdd-ds-btn--solid-accent">Send request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decline with reason -->
+    <div class="modal-overlay" id="bddDeclineWorkspaceModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 520px;">
+            <div class="modal-header">
+                <h2>Decline Opportunity</h2>
+                <button type="button" class="modal-close" id="bddDeclineWorkspaceModalClose">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body">
+                <p class="bdd-ds-hint bdd-ds-hint--lg">Declining updates the Operator Deal Request and logs activity in Dealality.</p>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddDeclineReasonPreset">Decline reason (required)</label>
+                    <select id="bddDeclineReasonPreset" class="filter-input">
+                        <option value="">Choose a reason…</option>
+                        <option value="operating_fit">Operating model / service fit</option>
+                        <option value="scale_positioning">Scale or positioning mismatch</option>
+                        <option value="geography_market">Geography or market coverage</option>
+                        <option value="deal_structure">Deal structure (fees, key money, terms)</option>
+                        <option value="timing">Timing or project pace</option>
+                        <option value="capacity_pipeline">Internal capacity / pipeline</option>
+                        <option value="strategic_pause">Strategic pause or allocation</option>
+                        <option value="other">Other (specify below)</option>
+                    </select>
+                </div>
+                <div id="bddDeclineReasonOtherWrap" class="bdd-ds-field" style="display: none;">
+                    <label class="bdd-ds-field-label bdd-ds-field-label--sm" for="bddDeclineReasonOtherInput">Describe the reason</label>
+                    <input type="text" id="bddDeclineReasonOtherInput" class="filter-input" placeholder="Short explanation for your team and the activity log" maxlength="500">
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddDeclineExternalNotesInput">Message to owner (external, optional)</label>
+                    <textarea id="bddDeclineExternalNotesInput" rows="2" class="filter-input" placeholder="Optional context for the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddDeclineInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddDeclineInternalNotesInput" rows="3" class="filter-input" placeholder="Not shared with the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-modal-footer">
+                    <button type="button" id="bddDeclineWorkspaceCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
+                    <button type="button" id="bddDeclineWorkspaceSaveBtn" class="bdd-ds-btn bdd-ds-btn--danger">Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revisit later -->
+    <div class="modal-overlay" id="bddRevisitLaterModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 480px;">
+            <div class="modal-header">
+                <h2>Revisit Later</h2>
+                <button type="button" class="modal-close" id="bddRevisitLaterModalClose">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body">
+                <p class="bdd-ds-hint bdd-ds-hint--lg">Sets status to Revisit Later, schedules a follow-up on your chosen date, and logs both in the activity timeline.</p>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRevisitDateInput">Revisit / Follow-Up Date</label>
+                    <input type="date" id="bddRevisitDateInput" class="filter-input">
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRevisitNotesInput">Follow-up notes for the owner (external)</label>
+                    <textarea id="bddRevisitNotesInput" rows="2" class="filter-input" placeholder="Visible in Outreach / follow-up context…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRevisitInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddRevisitInternalNotesInput" rows="2" class="filter-input" placeholder="Not shared with the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-modal-footer">
+                    <button type="button" id="bddRevisitLaterCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
+                    <button type="button" id="bddRevisitLaterSaveBtn" class="bdd-ds-btn bdd-ds-btn--solid-accent">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule / Calendar Modal -->
+    <div class="modal-overlay" id="bddScheduleModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 480px;">
+            <div class="modal-header">
+                <h2>Schedule / Calendar</h2>
+                <button type="button" class="modal-close" id="bddScheduleModalClose">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body">
+                <p id="bddScheduleModalLabel" class="bdd-ds-hint bdd-ds-hint--lg" style="margin-bottom: 4px;">Schedule a follow-up for this deal–operator pair.</p>
+                <p class="bdd-ds-hint">The owner contact can see this meeting request in Outreach Hub.</p>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleHeaderInput">Header</label>
+                    <input type="text" id="bddScheduleHeaderInput" class="filter-input" placeholder="e.g. Follow-up call, Site visit">
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleDateInput">Follow-Up Date</label>
+                    <input type="date" id="bddScheduleDateInput" class="filter-input">
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleNotesInput">Follow-up notes (external)</label>
+                    <p class="bdd-ds-hint" style="margin-top: -4px;">The owner can see these in Outreach Hub.</p>
+                    <textarea id="bddScheduleNotesInput" rows="2" class="filter-input" placeholder="Visible to the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddScheduleInternalNotesInput" rows="2" class="filter-input" placeholder="Not shared with the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-modal-footer">
+                    <button type="button" id="bddScheduleCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
+                    <button type="button" id="bddScheduleSaveBtn" class="bdd-ds-btn bdd-ds-btn--solid-accent">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Proposal (disabled in operator workspace until proposal flow ships) -->
+    <div class="modal-overlay" id="bddSubmitProposalModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: min(100%, 960px); width: 100%;">
+            <div class="modal-header">
+                <h2 id="bddSubmitProposalModalTitle">Submit Proposal</h2>
+                <button type="button" class="modal-close" id="bddSubmitProposalModalClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body bdd-submit-proposal-frame">
+                <iframe id="bddSubmitProposalIframe" title="Submit Proposal"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outreach Hub Inbox -->
+    <div class="modal-overlay" id="bddOutreachInboxModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: min(100%, 960px); width: 100%;">
+            <div class="modal-header">
+                <h2 id="bddOutreachInboxModalTitle">Outreach Inbox</h2>
+                <button type="button" class="modal-close" id="bddOutreachInboxModalClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body bdd-submit-proposal-frame">
+                <iframe id="bddOutreachInboxIframe" title="Outreach Inbox"></iframe>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import * as Pipeline from '/lib/deal-workspace-pipeline.js';
         import { updateWorkspaceInsights } from '/js/deal-workspace-insights.js';
@@ -216,6 +388,8 @@
         window.DealWorkspaceInsights = { update: updateWorkspaceInsights };
     </script>
     <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/generated/operator-match-scoring-config.js"></script>
+    <script src="/js/operator-match-score-ui.js"></script>
     <script src="/operator-development-dashboard.js" defer></script>
     <script src="/embed-chrome.js" defer></script>
 </body>

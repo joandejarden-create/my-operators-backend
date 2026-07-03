@@ -2783,7 +2783,9 @@
     <script src="/js/brand-alignment-snapshot.js"></script>
     <script src="/js/operator-capability-snapshot.js"></script>
     <script src="/js/operator-alignment-snapshot.js?v=oas-cover-265"></script>
-    <script src="/js/operator-strategy-my-deals.js?v=os-score-breakdown-20260529"></script>
+    <script src="/js/generated/operator-match-scoring-config.js"></script>
+    <script src="/js/operator-match-score-ui.js"></script>
+    <script src="/js/operator-strategy-my-deals.js?v=os-score-breakdown-20260703"></script>
     <script src="/js/deal-brief-v2.js"></script>
     <script src="/js/deal-brief-render-html.js"></script>
     <script src="/js/deal-brief-snapshot.js"></script>
@@ -3053,6 +3055,15 @@
                     return;
                 }
                 window.location.href = url;
+            }
+
+            /** Authenticated fetch for owner deal API routes (Batch 2A security). */
+            function myDealsAuthFetch(url, options) {
+                var auth = window.DealalityMemberstackAuth;
+                if (auth && typeof auth.fetchMyDealsApi === 'function') {
+                    return auth.fetchMyDealsApi(url, options || {});
+                }
+                return fetch(url, options || {});
             }
 
             function openBrandShortlistTab(dealId) {
@@ -4212,7 +4223,7 @@
                         if (statusEl) statusEl.textContent = 'Saving Review to Deal Record…';
                         var score = lastResponse.dealReadinessScore;
                         var stage = lastResponse.readinessStage;
-                        fetch('/api/ai/deal-readiness-review/save', {
+                        myDealsAuthFetch('/api/ai/deal-readiness-review/save', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -4273,7 +4284,7 @@
                     if (loadingEl) loadingEl.style.display = 'flex';
                     contentEl.innerHTML = '';
                     contentEl.classList.remove('is-visible');
-                    fetch('/api/ai/deal-readiness-review', {
+                    myDealsAuthFetch('/api/ai/deal-readiness-review', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ dealId: dealId }),
@@ -5189,7 +5200,7 @@
                     return;
                 }
                 try {
-                    var res = await fetch(apiBase + '/api/brand-deal-requests/by-deals', {
+                    var res = await myDealsAuthFetch(apiBase + '/api/brand-deal-requests/by-deals', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ dealIds: ids })
@@ -5762,9 +5773,6 @@
                     });
                     menu.appendChild(btn);
                 }
-                addItem('Recommended Fit List', function() {
-                    if (dealId) openBrandShortlistTab(dealId);
-                });
                 addItem(rowDeleted ? 'Restore' : 'Delete', function() {
                     handleDealInfoVisualDelete(row);
                 });
@@ -6240,7 +6248,7 @@
                 if (!requestId || !dateVal) { closeContactedScheduleModal(); return; }
                 try {
                     var body = { nextFollowupDate: dateVal, nextFollowupHeader: headerVal, nextFollowupNotes: notesVal };
-                    var res = await fetch(window.location.origin + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+                    var res = await myDealsAuthFetch(window.location.origin + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(body)
@@ -6271,7 +6279,7 @@
                 modal.style.display = 'block';
                 var apiUrl = window.location.origin + '/api/brand-deal-requests/activity?brand=' + encodeURIComponent(brand || '');
                 if (dealId) apiUrl += '&dealId=' + encodeURIComponent(dealId);
-                fetch(apiUrl)
+                myDealsAuthFetch(apiUrl)
                     .then(function(r) { return r.json(); })
                     .then(function(d) {
                         if (!d.success || !d.entries || d.entries.length === 0) {
@@ -6323,7 +6331,7 @@
                 var ownerNotes = ownerNotesEl ? ownerNotesEl.value.trim() : '';
                 if (!requestId) { closeContactedNotesModal(); return; }
                 try {
-                    var res = await fetch(window.location.origin + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+                    var res = await myDealsAuthFetch(window.location.origin + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ ownerNotes: ownerNotes })
@@ -6370,7 +6378,7 @@
                     var payload = { status: newStatus, initiatedBy: 'owner' };
                     if (reasonCode) payload.reasonCode = reasonCode;
                     if (reasonCode === 'other' && reasonDetail) payload.reasonDetail = reasonDetail;
-                    var res = await fetch(window.location.origin + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
+                    var res = await myDealsAuthFetch(window.location.origin + '/api/brand-deal-requests/' + encodeURIComponent(requestId), {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
@@ -6549,7 +6557,7 @@
                     if (dealId && brandName) {
                         try {
                             var apiBase = window.location.origin;
-                            var res = await fetch(apiBase + '/api/brand-deal-requests', {
+                            var res = await myDealsAuthFetch(apiBase + '/api/brand-deal-requests', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
@@ -6824,7 +6832,7 @@
                     if (updates.length === 0) { showMyDealsToast('No valid rows to update', false); return; }
                     (async function() {
                         try {
-                            var res = await fetch(window.location.origin + '/api/brand-deal-requests/bulk-update', {
+                            var res = await myDealsAuthFetch(window.location.origin + '/api/brand-deal-requests/bulk-update', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
@@ -8280,7 +8288,7 @@
                 for (var i = 0; i < allDeals.length; i++) {
                     var dealId = allDeals[i].id;
                     try {
-                        var res = await fetch(apiBase + '/api/target-list/' + dealId);
+                        var res = await myDealsAuthFetch(apiBase + '/api/target-list/' + dealId);
                         if (res.ok) {
                             var data = await res.json();
                             targetListCache[dealId] = data.targets || [];
@@ -8331,7 +8339,7 @@
                     document.querySelector('.target-list-empty').style.display = 'none';
                     
                     var apiBase = window.location.origin;
-                    var res = await fetch(apiBase + '/api/target-list/' + dealId);
+                    var res = await myDealsAuthFetch(apiBase + '/api/target-list/' + dealId);
                     if (!res.ok) throw new Error('Failed to load shortlist');
                     var data = await res.json();
                     
@@ -8476,7 +8484,7 @@
                 
                 try {
                     var apiBase = window.location.origin;
-                    var res = await fetch(apiBase + '/api/target-list/' + targetId, {
+                    var res = await myDealsAuthFetch(apiBase + '/api/target-list/' + targetId, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ notes: notes })
@@ -8500,7 +8508,7 @@
                 try {
                     console.log('[Remove from Target List] Removing target:', targetId, 'for deal:', dealId);
                     var apiBase = window.location.origin;
-                    var res = await fetch(apiBase + '/api/target-list/' + targetId, {
+                    var res = await myDealsAuthFetch(apiBase + '/api/target-list/' + targetId, {
                         method: 'DELETE'
                     });
                     
@@ -8513,7 +8521,7 @@
                         // Reload the cache for the specific deal
                         if (dealId) {
                             console.log('[Remove from Target List] Reloading cache for deal:', dealId);
-                            var cacheRes = await fetch(apiBase + '/api/target-list/' + dealId);
+                            var cacheRes = await myDealsAuthFetch(apiBase + '/api/target-list/' + dealId);
                             if (cacheRes.ok) {
                                 var cacheData = await cacheRes.json();
                                 targetListCache[dealId] = cacheData.targets || [];
@@ -8540,7 +8548,7 @@
                 try {
                     console.log('[Batch Remove] Removing', targetIds.length, 'targets for deal:', dealId);
                     var apiBase = window.location.origin;
-                    var res = await fetch(apiBase + '/api/target-list/batch-delete', {
+                    var res = await myDealsAuthFetch(apiBase + '/api/target-list/batch-delete', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ targetIds: targetIds })
@@ -8553,7 +8561,7 @@
                     
                     // Reload the cache for the specific deal
                     console.log('[Batch Remove] Reloading cache for deal:', dealId);
-                    var cacheRes = await fetch(apiBase + '/api/target-list/' + dealId);
+                    var cacheRes = await myDealsAuthFetch(apiBase + '/api/target-list/' + dealId);
                     if (cacheRes.ok) {
                         var cacheData = await cacheRes.json();
                         targetListCache[dealId] = cacheData.targets || [];
@@ -8578,7 +8586,7 @@
                 try {
                     console.log('[Add to Target List] Adding:', { dealId, brandName, matchScore });
                     var apiBase = window.location.origin;
-                    var res = await fetch(apiBase + '/api/target-list', {
+                    var res = await myDealsAuthFetch(apiBase + '/api/target-list', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -8627,7 +8635,7 @@
                             if (matchScore != null) deal.matchScoresNewByBrand[brandName] = matchScore;
                         }
                         // Refetch target list for this deal only (fast)
-                        var cacheRes = await fetch(apiBase + '/api/target-list/' + dealId);
+                        var cacheRes = await myDealsAuthFetch(apiBase + '/api/target-list/' + dealId);
                         if (cacheRes.ok) {
                             var cacheData = await cacheRes.json();
                             targetListCache[dealId] = cacheData.targets || [];
@@ -8644,7 +8652,7 @@
                     } else {
                         var errMsg = (prefData && prefData.error) ? prefData.error : 'Could not add to Preferred Brands (deal may need Strategic Intent).';
                         showMyDealsToast('Added to Shortlist tab. ' + errMsg, false);
-                        var cacheRes = await fetch(apiBase + '/api/target-list/' + dealId);
+                        var cacheRes = await myDealsAuthFetch(apiBase + '/api/target-list/' + dealId);
                         if (cacheRes.ok) {
                             var cacheData = await cacheRes.json();
                             targetListCache[dealId] = cacheData.targets || [];
@@ -8710,7 +8718,7 @@
                 if (!dealId) return;
                 var apiBase = window.location.origin;
                 try {
-                    var res = await fetch(apiBase + '/api/target-list/' + dealId);
+                    var res = await myDealsAuthFetch(apiBase + '/api/target-list/' + dealId);
                     if (res.ok) {
                         var data = await res.json();
                         targetListCache[dealId] = data.targets || [];
@@ -8790,7 +8798,7 @@
                 try {
                     console.log('[Mark as Deleted] Marking brand as deleted:', { dealId, brandName, notes, reasonCode, reasonDetail });
                     var apiBase = window.location.origin;
-                    var res = await fetch(apiBase + '/api/target-list/mark-deleted', {
+                    var res = await myDealsAuthFetch(apiBase + '/api/target-list/mark-deleted', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -8826,7 +8834,7 @@
             async function restoreBrandFromDeletedList(dealId, brandName) {
                 try {
                     var apiBase = window.location.origin;
-                    var res = await fetch(apiBase + '/api/target-list/restore', {
+                    var res = await myDealsAuthFetch(apiBase + '/api/target-list/restore', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ dealId: dealId, brandName: brandName })

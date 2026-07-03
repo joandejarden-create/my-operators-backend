@@ -9,6 +9,7 @@ import {
   MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS,
   MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS,
 } from "./schemas/deal-setup-fields.js";
+import { BRAND_MATCH_NEW_WEIGHTS } from "../lib/brand-match-scoring-weight-config.js";
 
 const BRAND_BASICS_TABLE = "Brand Setup - Brand Basics";
 const PROJECT_FIT_TABLE = "Brand Setup - Project Fit";
@@ -48,8 +49,8 @@ const WEIGHTS = {
   PROJ1: 9, PROJ2: 6, PROJ3: 3, AGMT1: 8, ESG1: 4
 };
 
-/** Match Score New: factor weights (%). Sum = 100 when all factors added. */
-const NEW_WEIGHTS = { chainScaleProximity: 10, serviceModelAlignment: 5, preferredBrand: 8, projectTypeCompatibility: 10, buildingTypeCompatibility: 5, projectStageCompatibility: 5, brandStandardsCompatibility: 10, agreementsTypeCompatibility: 10, roomRangeFitCompatibility: 10, keyMoneyWillingnessCompatibility: 12, incentivesMatchCompatibility: 5, feesToleranceCompatibility: 10 };
+/** Match Score New: factor weights (%). Sum = 100 — source: lib/brand-match-scoring-weight-config.js */
+const NEW_WEIGHTS = BRAND_MATCH_NEW_WEIGHTS;
 
 /** Get value from location (Airtable key or normalized key from my-deals). */
 function loc(locationData, airtableKey, normalizedKey) {
