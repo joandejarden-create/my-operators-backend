@@ -148,8 +148,89 @@ export const STRATEGIC_INTENT_LINK_FIELD = "Strategic Intent - Operational - Key
 
 export const CONTACT_UPLOADS_LINK_FIELD = "Contact & Uploads";
 export const CU_DEAL_LINK_FIELD = process.env.AIRTABLE_CU_DEAL_LINK_FIELD || "Deal_ID";
-/** Airtable column name for attachment field on Contact & Uploads (Deal Setup Tab 13). */
-export const CU_ATTACHMENT_FIELD = process.env.AIRTABLE_CU_ATTACHMENT_FIELD || "Upload Supporting Docs";
+
+/** Form key for Tab 13 generic supporting-doc upload UI (not an Airtable column). */
+export const CU_ATTACHMENT_FORM_KEY = "Upload Supporting Docs";
+
+/**
+ * Contact & Uploads attachment columns in Airtable (exact names from base schema).
+ * Generic pilot uploads write to CU_ATTACHMENT_FIELD; reads aggregate every column below.
+ *
+ * Live Deal Capture base (2026-06): single bucket "Pro Forma or Financials".
+ * Override full list: AIRTABLE_CU_ATTACHMENT_FIELDS=Pro Forma or Financials,Other Field
+ */
+const DEFAULT_CU_ATTACHMENT_AIRTABLE_FIELDS = ["Pro Forma or Financials"];
+
+export const CU_ATTACHMENT_AIRTABLE_FIELDS = (() => {
+  const env = process.env.AIRTABLE_CU_ATTACHMENT_FIELDS;
+  if (env && String(env).trim()) {
+    return String(env)
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
+  return DEFAULT_CU_ATTACHMENT_AIRTABLE_FIELDS.slice();
+})();
+
+/**
+ * Airtable column for generic Tab 13 uploads when the UI does not classify by document type.
+ * Override with AIRTABLE_CU_ATTACHMENT_FIELD if your base uses a different default bucket.
+ */
+export const CU_ATTACHMENT_FIELD =
+  process.env.AIRTABLE_CU_ATTACHMENT_FIELD || "Pro Forma or Financials";
+
+/** True when URL is hosted by Airtable (persists in attachment fields). */
+export function isAirtableHostedAttachmentUrl(url) {
+  return /airtableusercontent\.com/i.test(String(url || ""));
+}
+
+/** Normalize one attachment entry from Airtable or API payload. */
+export function normalizeCuAttachmentItem(raw) {
+  if (!raw) return null;
+  if (typeof raw === "object" && raw.url) {
+    return {
+      id: raw.id,
+      url: String(raw.url).trim(),
+      filename: String(raw.filename ?? raw.name ?? "").trim(),
+      size: raw.size,
+      type: raw.type,
+      thumbnails: raw.thumbnails,
+    };
+  }
+  if (typeof raw === "string" && raw.trim()) {
+    return { url: raw.trim(), filename: "" };
+  }
+  return null;
+}
+
+/** Check that every expected filename exists on a CU attachment field array. */
+export function cuAttachmentFieldHasFilenames(fieldAttachments, expectedFilenames) {
+  const norm = (s) => String(s || "").trim().toLowerCase();
+  const inField = new Set(
+    (Array.isArray(fieldAttachments) ? fieldAttachments : []).map((a) =>
+      norm(a?.filename ?? a?.name)
+    )
+  );
+  return (expectedFilenames || []).every((name) => inField.has(norm(name)));
+}
+
+/** Merge all CU attachment columns into one list for the Tab 13 UI. */
+export function aggregateCuAttachmentsFromFields(cuFields) {
+  if (!cuFields || typeof cuFields !== "object") return [];
+  const out = [];
+  const seen = new Set();
+  for (const fieldName of CU_ATTACHMENT_AIRTABLE_FIELDS) {
+    const raw = cuFields[fieldName];
+    if (!Array.isArray(raw)) continue;
+    for (const item of raw) {
+      const norm = normalizeCuAttachmentItem(item);
+      if (!norm || !norm.url || seen.has(norm.url)) continue;
+      seen.add(norm.url);
+      out.push(norm);
+    }
+  }
+  return out;
+}
 
 export const LEASE_STRUCTURE_LINK_FIELD = process.env.AIRTABLE_DEALS_LINK_FIELD_LEASE_STRUCTURE || "Lease Structure";
 export const LS_DEAL_LINK_FIELD = process.env.AIRTABLE_LEASE_STRUCTURE_DEAL_LINK_FIELD || "Deal_ID";
@@ -553,7 +634,7 @@ export const CONTACT_UPLOADS_FORM_FIELDS = [
   "What makes this opportunity stand out to a brand or operator?",
   "Additional Notes or Unique Project Aspects",
   "Anything else you'd like to add?",
-  "Upload Supporting Docs",
+  CU_ATTACHMENT_FORM_KEY,
 ];
 
 export const CU_FORM_TO_AIRTABLE = {
