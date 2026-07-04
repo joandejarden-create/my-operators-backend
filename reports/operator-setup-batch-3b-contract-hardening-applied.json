@@ -1,0 +1,113 @@
+{
+  "report": "operator-setup-batch-3b-contract-hardening-applied",
+  "generatedAt": "2026-06-02",
+  "scope": "smallest-safe-batch-3b-diagnostics-tests-docs-only",
+  "filesChanged": [
+    "public/js/operator-explorer-new-base-profile.js",
+    "lib/operator-alignment-prefill-map.js",
+    "api/lib/operator-setup-new-base-read.js",
+    "public/js/operator-setup-explorer-behavior.js",
+    "scripts/validate-operator-setup-batch-3b-contracts.mjs",
+    "reports/operator-setup-batch-3b-contract-validation-output.json"
+  ],
+  "diagnosticsAdded": [
+    {
+      "area": "Explorer key resolution",
+      "file": "public/js/operator-explorer-new-base-profile.js",
+      "details": [
+        "pickField/pickList now emit gated debug provenance for canonical vs fallback usage",
+        "payload includes concept, canonicalKey, keyUsed, sourceUsed, fallbackUsed, unresolved"
+      ]
+    },
+    {
+      "area": "Alignment alias resolver",
+      "file": "lib/operator-alignment-prefill-map.js",
+      "details": [
+        "applyOperatorAlignmentPrefillAliases emits gated debug provenance for canonical/alias/unresolved paths"
+      ]
+    },
+    {
+      "area": "Leadership mapper provenance",
+      "file": "api/lib/operator-setup-new-base-read.js",
+      "details": [
+        "mapNewBaseLeadershipForDetail emits gated mapping provenance for role/summary/bio/headshot"
+      ]
+    },
+    {
+      "area": "explorerProfileJson mirror masking",
+      "file": "public/js/operator-setup-explorer-behavior.js",
+      "details": [
+        "mirror_prefill_applied diagnostic for mirror values populating empty structured controls",
+        "mirror_write_contract diagnostic for structured vs mirror key coverage counts"
+      ]
+    }
+  ],
+  "testsAdded": [
+    {
+      "file": "scripts/validate-operator-setup-batch-3b-contracts.mjs",
+      "covers": [
+        "companyName/company_name/Company Name key family",
+        "serviceModelsSupported key family",
+        "chainScalesSupported key family",
+        "activeCountries/activeMarkets/regions/specificMarkets key families",
+        "alignment alias resolution behavior",
+        "leadership child mapping shape",
+        "explorerProfileJson mirror masking diagnostics presence"
+      ]
+    }
+  ],
+  "canonicalKeyFamiliesCovered": [
+    "companyName/company_name/Company Name",
+    "serviceModelsSupported aliases",
+    "chainScalesSupported aliases",
+    "activeCountries/activeMarkets/regions/specificMarkets aliases",
+    "leadership role/summary/bio/headshot mapping",
+    "explorerProfileJson mirror diagnostics",
+    "alignment alias resolver provenance"
+  ],
+  "confirmations": {
+    "noUserFacingBehaviorChanged": true,
+    "noScoringChange": true,
+    "noFallbackOrderChange": true,
+    "noSchemaChange": true,
+    "noCapabilitySnapshotLogicChange": true,
+    "noAlignmentSnapshotUserOutputChange": true
+  },
+  "diagnosticsEnablement": {
+    "browser": [
+      "window.__OPERATOR_SETUP_CONTRACT_DIAGNOSTICS = true",
+      "or localStorage.setItem('operator_setup_contract_diagnostics', '1')"
+    ],
+    "server": [
+      "OPERATOR_SETUP_CONTRACT_DIAGNOSTICS=1"
+    ],
+    "logMarker": "[operator_setup_contract_diag]"
+  },
+  "testCommandsRun": [
+    "node --check public/js/operator-explorer-new-base-profile.js",
+    "node --check lib/operator-alignment-prefill-map.js",
+    "node --check api/lib/operator-setup-new-base-read.js",
+    "node --check public/js/operator-setup-explorer-behavior.js",
+    "node --check scripts/validate-operator-setup-batch-3b-contracts.mjs",
+    "node scripts/validate-operator-setup-batch-3b-contracts.mjs"
+  ],
+  "testResults": {
+    "syntaxChecks": "pass",
+    "contractValidation": "pass",
+    "validationOutputFile": "reports/operator-setup-batch-3b-contract-validation-output.json",
+    "validationOk": true,
+    "validationChecksPassed": 9
+  },
+  "testsNotRun": [
+    {
+      "name": "browser e2e UI regression suite",
+      "reason": "this slice is diagnostics/test-only and non-user-facing; script-level contract tests executed instead"
+    }
+  ],
+  "remainingRisks": [
+    "Diagnostics can generate high log volume if enabled broadly.",
+    "No centralized alerting/aggregation has been added for provenance diagnostics yet.",
+    "Canonical enforcement is not part of this slice; aliases remain active by design."
+  ],
+  "recommendedCommitMessage": "batch 3b: add non-user-facing key provenance diagnostics and contract tests"
+}

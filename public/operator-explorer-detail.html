@@ -1376,7 +1376,7 @@
                 <h2>Dealality</h2>
                 <nav>
                     <a href="/app">🏠 Home</a>
-                    <a href="brand-library.html">🏨 Brand Explorer</a>
+                    <a href="brand-library.html">🏨 Browse brands</a>
                     <a href="operator-explorer.html" class="active">🏭 Operator Explorer</a>
                     <a href="brand-library-compare.html">⚖️ Compare Brands</a>
                     <a href="partner-directory.html">👥 Partner Directory</a>
@@ -1406,8 +1406,7 @@
                             </div>
                         </div>
                         <div>
-                            <div class="loading-text-main">Loading operator...</div>
-                            <div class="loading-text-time">Estimated time: 5–20 seconds</div>
+                            <div class="loading-text-main">Loading Operator…</div>
                         </div>
                     </div>
                     <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -2358,7 +2357,7 @@
                             brandedIndependent: cs.branded_independent || '',
                             situation: cs.situation || cs.services || '',
                             shortCaption: cs.owner_relevance || cs.outcome || cs.situation || 'Representative assignment pulled from case data.',
-                            imageUrl: ''
+                            imageUrl: extractImageUrl(cs.image_url || cs.imageUrl || cs.heroImageUrl || cs.image || cs.heroImage)
                         };
                     });
                 }
@@ -3089,7 +3088,7 @@
                         situation: cleanText(c.situation || c.assignmentType) || 'Operational Assignment',
                         result: cleanText(c.outcome || c.outcomeSummary) || 'Outcome demonstrates execution capability',
                         why: cleanText(c.owner_relevance || c.ownerRelevance) || 'Provides validation for owner screening and diligence.',
-                        image: extractImageUrl(c.imageUrl || c.heroImageUrl || c.image || c.heroImage)
+                        image: extractImageUrl(c.image_url || c.imageUrl || c.heroImageUrl || c.image || c.heroImage)
                     };
                 }));
                 while (proofCards.length < 3) {
@@ -3451,5 +3450,7 @@
             }
         });
     </script>
+
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

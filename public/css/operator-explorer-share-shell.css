@@ -1,0 +1,128 @@
+/**
+ * Public share shell — same iframe profile as Operator Explorer popup in the platform.
+ */
+
+:root {
+  --neutral--800: #080f25;
+  --neutral--700: #212c4d;
+  --neutral--600: #37446b;
+  --neutral--100: #ffffff;
+  --secondary--color-1: #101935;
+  --accent--primary-1: #6c72ff;
+  --muted: #aeb9e1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--neutral--800);
+  color: var(--neutral--100);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.oes-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.oes-draft-banner {
+  width: min(96vw, 1400px);
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 0.6px solid rgba(108, 114, 255, 0.45);
+  background: rgba(108, 114, 255, 0.12);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.oes-draft-banner strong {
+  color: #dfe4ff;
+}
+
+.oes-panel {
+  position: relative;
+  width: min(96vw, 1400px);
+  height: min(92vh, 900px);
+  max-height: 92vh;
+  background: var(--secondary--color-1);
+  border: 0.6px solid var(--neutral--600);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.oes-frame {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+  background: var(--neutral--800);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.oes-frame.is-ready {
+  opacity: 1;
+}
+
+.oes-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(8, 15, 37, 0.94), rgba(16, 25, 53, 0.96));
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.oes-loading[hidden] {
+  display: none !important;
+}
+
+.oes-loading.is-error {
+  padding: 24px;
+  text-align: center;
+}
+
+.oes-loading.is-error h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: var(--neutral--100);
+}
+
+.oes-loading.is-error p {
+  margin: 0;
+  max-width: 42rem;
+  line-height: 1.5;
+}
+
+.oes-loading.is-error code {
+  color: #c9d0ff;
+}
+
+@media (max-width: 720px) {
+  .oes-page {
+    padding: 8px;
+  }
+
+  .oes-panel {
+    width: 100%;
+    height: calc(100vh - 16px);
+    max-height: none;
+    border-radius: 8px;
+  }
+}

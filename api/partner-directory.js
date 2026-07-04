@@ -1,7 +1,23 @@
 import Airtable from "airtable";
 
+import { stripLeadingWwwFromWebsiteUrl } from "./lib/strip-www-from-website-url.js";
+import { companyTypeFromProfileFields } from "../lib/company-type-normalize.js";
+import {
+  COMPANY_ROLE_AIRTABLE_FIELD,
+  companyRoleFromEcosystemField,
+} from "../lib/company-role-normalize.js";
+import {
+  PLATFORM_USERS_TABLE_ID,
+  PUF,
+  contactVisibilityFromFields,
+  isContactVisibleInPartnerDirectory,
+} from "../lib/airtable/platform-users-table.js";
+
 // Set PARTNER_DIRECTORY_DEBUG=true in .env to enable verbose logs (e.g. for debugging Airtable field mapping).
 const DEBUG = process.env.PARTNER_DIRECTORY_DEBUG === 'true';
+
+/** Individuals tab reads platform Users table (consolidated from legacy User Management). */
+const PLATFORM_USERS_TABLE = PLATFORM_USERS_TABLE_ID;
 
 // Lazy initialization of Airtable base
 function getBase() {
@@ -29,11 +45,544 @@ function generateDefaultDescription(companyName, userType) {
   return `${company} is a ${typeText}.`;
 }
 
+/** Normalize to Partner Directory filter buckets (owners / brands / mgmt). */
+function normalizePartnerDirectoryType(type) {
+  if (!type) return "";
+  const upperType = String(type).trim().toUpperCase();
+
+  if (
+    upperType === "HOTEL OWNERS" ||
+    upperType === "HOTEL OWNER" ||
+    upperType === "OWNER" ||
+    upperType === "OWNERS"
+  ) {
+    return "HOTEL OWNERS";
+  }
+  if (
+    upperType === "HOTEL BRANDS (FRANCHISE)" ||
+    upperType === "HOTEL BRAND" ||
+    upperType === "HOTEL BRANDS" ||
+    upperType === "BRAND" ||
+    upperType === "BRANDS" ||
+    upperType === "FRANCHISE"
+  ) {
+    return "HOTEL BRANDS (FRANCHISE)";
+  }
+  if (
+    upperType === "HOTEL MGMT. COMPANY" ||
+    upperType === "HOTEL MGMT COMPANY" ||
+    upperType === "HOTEL MANAGEMENT COMPANY" ||
+    upperType === "MGMT" ||
+    upperType === "MANAGEMENT" ||
+    upperType === "OPERATOR" ||
+    upperType === "3RD PARTY OPERATOR"
+  ) {
+    return "HOTEL MGMT. COMPANY";
+  }
+  if (upperType.includes("BRAND") || upperType.includes("FRANCHISE")) {
+    return "HOTEL BRANDS (FRANCHISE)";
+  }
+  if (
+    upperType.includes("MGMT") ||
+    upperType.includes("MANAGEMENT") ||
+    upperType.includes("OPERATOR")
+  ) {
+    return "HOTEL MGMT. COMPANY";
+  }
+  if (upperType.includes("OWNER")) {
+    return "HOTEL OWNERS";
+  }
+  return "";
+}
+
+function isKnownPartnerDirectoryType(normalized) {
+  return (
+    normalized === "HOTEL OWNERS" ||
+    normalized === "HOTEL BRANDS (FRANCHISE)" ||
+    normalized === "HOTEL MGMT. COMPANY"
+  );
+}
+
+/** User row type, else linked company's Company Type / User Type (not Platform Role job title). */
+function resolveDirectoryPartnerType(personType, company) {
+  const fromPerson = normalizePartnerDirectoryType(personType);
+  if (isKnownPartnerDirectoryType(fromPerson)) return fromPerson;
+  if (company) {
+    const fromCompany = normalizePartnerDirectoryType(
+      company.userType || company.companyType || ""
+    );
+    if (isKnownPartnerDirectoryType(fromCompany)) return fromCompany;
+  }
+  return "";
+}
+
+function isRecordId(value) {
+  return typeof value === "string" && /^rec[a-zA-Z0-9]{5,}$/.test(value.trim());
+}
+
+function extractRecordIdsFromValue(value, out) {
+  if (value == null) return;
+  if (Array.isArray(value)) {
+    value.forEach((item) => extractRecordIdsFromValue(item, out));
+    return;
+  }
+  if (typeof value === "string") {
+    if (isRecordId(value)) out.push(value.trim());
+    return;
+  }
+  if (typeof value === "object") {
+    if (isRecordId(value.id)) out.push(String(value.id).trim());
+    if (isRecordId(value.recordId)) out.push(String(value.recordId).trim());
+  }
+}
+
+function uniqueStrings(values) {
+  return [...new Set((values || []).filter(Boolean).map((v) => String(v).trim()).filter(Boolean))];
+}
+
+function parseAttachmentUrl(value) {
+  if (!value) return null;
+  if (Array.isArray(value) && value[0]) {
+    if (typeof value[0] === "string") return value[0];
+    if (value[0] && typeof value[0] === "object" && value[0].url) return String(value[0].url);
+  }
+  if (typeof value === "string") return value;
+  if (typeof value === "object" && value.url) return String(value.url);
+  return null;
+}
+
+function buildCompanyEnrichment(fields, recordCreatedTime) {
+  const safeFields = fields && typeof fields === "object" ? { ...fields } : {};
+  if (!safeFields["Created Date"] && recordCreatedTime) {
+    safeFields["Created Date"] = recordCreatedTime;
+  }
+
+  const brandRecordIds = [];
+  const userManagementRecordIds = [];
+  const services = [];
+  const primaryServices = [];
+  const brands = [];
+
+  Object.entries(safeFields).forEach(([key, value]) => {
+    const lower = String(key || "").toLowerCase();
+
+    // Linked brand references (record IDs and direct string brand names).
+    if (lower.includes("brand")) {
+      extractRecordIdsFromValue(value, brandRecordIds);
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          if (typeof item === "string" && !isRecordId(item)) brands.push(item);
+          else if (item && typeof item === "object") {
+            const name = item.name || item.label || item.title || item.fields?.["Brand Name"] || item.fields?.name;
+            if (name) brands.push(String(name));
+          }
+        });
+      } else if (typeof value === "string" && !isRecordId(value)) {
+        value.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => brands.push(x));
+      }
+    }
+
+    // Linked team members (Users table — prefer Team Members over legacy User Management).
+    if (
+      lower === "team members" ||
+      lower.includes("team members") ||
+      lower.includes("user management") ||
+      lower.includes("user_management") ||
+      lower.includes("company users") ||
+      (lower.includes("team") && (lower.includes("member") || lower.includes("users")))
+    ) {
+      extractRecordIdsFromValue(value, userManagementRecordIds);
+    }
+
+    // Service checkboxes and service list fields.
+    if (lower.includes("service")) {
+      if (typeof value === "boolean" && value) {
+        const cleaned = String(key)
+          .replace(/\s*[\[(]?\s*primary\s*[\])]?/gi, "")
+          .replace(/\s*services?\s*/gi, "")
+          .trim();
+        const serviceName = cleaned || String(key).trim();
+        services.push(serviceName);
+        if (/primary/i.test(key)) primaryServices.push(serviceName);
+      } else if (typeof value === "string" && value.trim()) {
+        value.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => services.push(x));
+        if (/primary/i.test(key)) {
+          value.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => primaryServices.push(x));
+        }
+      } else if (Array.isArray(value)) {
+        value
+          .map((x) => (typeof x === "string" ? x.trim() : ""))
+          .filter(Boolean)
+          .forEach((x) => services.push(x));
+        if (/primary/i.test(key)) {
+          value
+            .map((x) => (typeof x === "string" ? x.trim() : ""))
+            .filter(Boolean)
+            .forEach((x) => primaryServices.push(x));
+        }
+      }
+    }
+  });
+
+  return {
+    rawFields: safeFields,
+    brandRecordIds: uniqueStrings(brandRecordIds),
+    userManagementRecordIds: uniqueStrings(userManagementRecordIds),
+    services: uniqueStrings(services),
+    primaryServices: uniqueStrings(primaryServices),
+    brands: uniqueStrings(brands)
+  };
+}
+
+function parseLinkedCompanyInfo(fields) {
+  const candidates = [
+    fields["Company Profile"],
+    fields["Company Name"],
+    fields["Company/Organization"],
+    fields["Company"],
+    fields["Organization"],
+    fields["Company Record ID"],
+    fields["Linked Company"]
+  ];
+
+  let companyName = "";
+  let companyRecordId = "";
+
+  const visit = (value) => {
+    if (value == null) return;
+    if (Array.isArray(value)) {
+      value.forEach(visit);
+      return;
+    }
+    if (typeof value === "string") {
+      const v = value.trim();
+      if (!v) return;
+      if (isRecordId(v)) {
+        if (!companyRecordId) companyRecordId = v;
+      } else if (!companyName) {
+        companyName = v;
+      }
+      return;
+    }
+    if (typeof value === "object") {
+      if (isRecordId(value.id) && !companyRecordId) companyRecordId = String(value.id).trim();
+      const nestedName =
+        value.fields?.["Company Name"] ||
+        value.fields?.["Name"] ||
+        value.name ||
+        value.label ||
+        value.title ||
+        "";
+      if (nestedName && !companyName) companyName = String(nestedName).trim();
+    }
+  };
+
+  candidates.forEach(visit);
+  return { companyName, companyRecordId };
+}
+
+async function buildBrandNameMap(base) {
+  const map = new Map();
+  const brandRecords = [];
+  await new Promise((resolve, reject) => {
+    base(F.brands.table)
+      .select({})
+      .eachPage(
+        (pageRecords, fetchNextPage) => {
+          brandRecords.push(...pageRecords);
+          fetchNextPage();
+        },
+        (err) => (err ? reject(err) : resolve())
+      );
+  });
+  brandRecords.forEach((record) => {
+    const fields = record.fields || {};
+    const name = fields[F.brands.name] || fields["Brand Name"] || fields["Name"] || "";
+    if (record.id && name) map.set(record.id, String(name).trim());
+  });
+  return map;
+}
+
+function attachResolvedBrandNames(records, brandNameMap) {
+  if (!Array.isArray(records) || !brandNameMap) return records || [];
+  return records.map((record) => {
+    const existing = Array.isArray(record.brands) ? record.brands.filter(Boolean) : [];
+    const resolved = (record.brandRecordIds || [])
+      .map((id) => brandNameMap.get(id))
+      .filter(Boolean);
+    const merged = uniqueStrings([...existing, ...resolved]);
+    return { ...record, brands: merged };
+  });
+}
+
+/** User rows rarely have brand links; inherit from linked Company Profile. */
+function mergeLinkedCompanyIntoIndividuals(individuals, companies) {
+  if (!Array.isArray(individuals) || !Array.isArray(companies)) return individuals || [];
+
+  const companyById = new Map();
+  const companyByName = new Map();
+  companies.forEach((company) => {
+    if (company?.id) companyById.set(company.id, company);
+    const name = (company?.name || "").trim().toLowerCase();
+    if (name && !companyByName.has(name)) companyByName.set(name, company);
+  });
+
+  return individuals.map((individual) => {
+    let company = null;
+    const recordId = (individual.companyRecordId || "").trim();
+    if (recordId) company = companyById.get(recordId) || null;
+    if (!company) {
+      const name = (individual.companyName || "").trim().toLowerCase();
+      if (name) company = companyByName.get(name) || null;
+    }
+    if (!company) return individual;
+
+    const personBrands = Array.isArray(individual.brands) ? individual.brands : [];
+    const companyBrands = Array.isArray(company.brands) ? company.brands : [];
+    const mergedBrands = uniqueStrings([...personBrands, ...companyBrands]);
+
+    const personRegions = Array.isArray(individual.regions) ? individual.regions.filter(Boolean) : [];
+    const companyRegions = Array.isArray(company.regions) ? company.regions.filter(Boolean) : [];
+
+    // Stats stay on the person row only — do not roll up company deal/brand counts for cards.
+
+    const companyName =
+      (individual.companyName || "").trim() || (company.name || "").trim();
+
+    const personCoverage = Array.isArray(individual.coverageTerritories)
+      ? individual.coverageTerritories.filter(Boolean)
+      : [];
+    const personLanguages = Array.isArray(individual.languages)
+      ? individual.languages.filter(Boolean)
+      : [];
+
+    const directoryUserType = resolveDirectoryPartnerType(individual.userType, company);
+    const personDirectoryType = normalizePartnerDirectoryType(individual.userType);
+
+    return {
+      ...individual,
+      companyName,
+      userType: directoryUserType,
+      userTypeViaCompany:
+        !isKnownPartnerDirectoryType(personDirectoryType) &&
+        isKnownPartnerDirectoryType(directoryUserType),
+      brands: mergedBrands,
+      brandRecordIds: uniqueStrings([
+        ...(individual.brandRecordIds || []),
+        ...(company.brandRecordIds || [])
+      ]),
+      regions: personRegions,
+      companyRegions,
+      coverageTerritories: personCoverage,
+      languages: personLanguages,
+      brandsViaCompany: personBrands.length === 0 && companyBrands.length > 0,
+      regionsViaCompany: personRegions.length === 0 && companyRegions.length > 0
+    };
+  });
+}
+
+const USER_REGION_CHECKBOX_FIELDS = [
+  "Region - America",
+  "Region - Caribbean & Latin America",
+  "Region - Europe",
+  "Region - Middle East & Africa",
+  "Region - Asia Pacific",
+];
+
+const USER_REGION_CHECKBOX_TO_CODE = {
+  "Region - America": "AMERICAS",
+  "Region - Caribbean & Latin America": "CALA",
+  "Region - Europe": "EUROPE",
+  "Region - Middle East & Africa": "MEA",
+  "Region - Asia Pacific": "AP",
+};
+
+const ALL_USER_REGION_CODES = new Set(["AMERICAS", "CALA", "EUROPE", "MEA", "AP"]);
+
+function normalizeRegionToken(value) {
+  const u = (typeof value === "string" ? value : String(value || "")).trim().replace(/\s+/g, " ").toUpperCase();
+  if (!u) return null;
+  if (u.indexOf("GLOBAL") >= 0) return "GLOBAL";
+  if (u.indexOf("CARIBBEAN") >= 0 || u.indexOf("LATIN") >= 0 || u === "CALA") return "CALA";
+  if (u.indexOf("EUROPE") >= 0 || u === "EU") return "EUROPE";
+  if ((u.indexOf("MIDDLE") >= 0 && u.indexOf("EAST") >= 0) || u.indexOf("MEA") >= 0) return "MEA";
+  if ((u.indexOf("ASIA") >= 0 && u.indexOf("PACIFIC") >= 0) || u === "AP") return "AP";
+  if (u.indexOf("AMERICAS") >= 0 || (u.indexOf("AMERICA") >= 0 && u.indexOf("LATIN") < 0 && u.indexOf("CARIBBEAN") < 0)) {
+    return "AMERICAS";
+  }
+  return null;
+}
+
+function isRegionCheckboxChecked(value) {
+  return value === true || value === 1 || value === "true" || value === "1";
+}
+
+/** Regions for individuals: User Management checkbox columns only (not company rollup lookups). */
+function parseRegionsFromUserFields(fields) {
+  const safeFields = fields && typeof fields === "object" ? fields : {};
+  const codes = new Set();
+
+  for (const fieldName of USER_REGION_CHECKBOX_FIELDS) {
+    if (isRegionCheckboxChecked(safeFields[fieldName])) {
+      const code = USER_REGION_CHECKBOX_TO_CODE[fieldName];
+      if (code) codes.add(code);
+    }
+  }
+
+  // Only use Region/Regions multi-select when no checkboxes are set (legacy data entry).
+  if (codes.size === 0) {
+    const regionField = safeFields["Region"] || safeFields["Regions"] || safeFields["REGION"] || "";
+    if (regionField) {
+      const items = Array.isArray(regionField)
+        ? regionField
+        : String(regionField).split(",").map((x) => x.trim()).filter(Boolean);
+      items.forEach((item) => {
+        const code = normalizeRegionToken(item);
+        if (code && code !== "GLOBAL") codes.add(code);
+      });
+    }
+  }
+
+  if (codes.size >= 5 && [...ALL_USER_REGION_CODES].every((r) => codes.has(r))) {
+    return ["GLOBAL"];
+  }
+  return [...codes];
+}
+
+function parseCoverageTerritoriesFromFields(fields) {
+  const safeFields = fields && typeof fields === "object" ? fields : {};
+  const raw =
+    safeFields["Coverage Territories"] ??
+    safeFields["Coverage territories"] ??
+    safeFields["COVERAGE TERRITORIES"] ??
+    "";
+  if (raw == null || raw === "") return [];
+
+  const territories = [];
+  const pushValue = (value) => {
+    if (value == null) return;
+    if (Array.isArray(value)) {
+      value.forEach(pushValue);
+      return;
+    }
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (!trimmed || isRecordId(trimmed)) return;
+      // Keep full text (e.g. "Mexico, Central America, & Caribbean") as one territory.
+      territories.push(trimmed);
+      return;
+    }
+    if (typeof value === "object") {
+      const name =
+        value.name ||
+        value.label ||
+        value.title ||
+        value.fields?.Name ||
+        value.fields?.["Coverage Territories"] ||
+        "";
+      if (name) territories.push(String(name).trim());
+    }
+  };
+
+  pushValue(raw);
+  return uniqueStrings(territories);
+}
+
+function extractLanguagesFromFields(fields) {
+  const safeFields = fields && typeof fields === "object" ? fields : {};
+  const languages = [];
+  const pushLanguageValue = (value) => {
+    if (value == null) return;
+    if (Array.isArray(value)) {
+      value.forEach(pushLanguageValue);
+      return;
+    }
+    if (typeof value === "string" && value.trim()) {
+      value
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean)
+        .forEach((x) => languages.push(x));
+      return;
+    }
+    if (typeof value === "object" && value.name) {
+      languages.push(String(value.name).trim());
+    }
+  };
+
+  const explicit =
+    safeFields["Languages"] ??
+    safeFields["Language"] ??
+    safeFields["languages"] ??
+    null;
+  if (explicit != null && explicit !== "") {
+    pushLanguageValue(explicit);
+    return uniqueStrings(languages);
+  }
+
+  Object.entries(safeFields).forEach(([key, value]) => {
+    if (!/language/i.test(String(key || ""))) return;
+    if (Array.isArray(value)) {
+      value.forEach((item) => {
+        if (typeof item === "string" && item.trim()) languages.push(item.trim());
+        else if (item && typeof item === "object" && item.name) languages.push(String(item.name).trim());
+      });
+    } else if (typeof value === "string" && value.trim()) {
+      value.split(",").map((x) => x.trim()).filter(Boolean).forEach((x) => languages.push(x));
+    }
+  });
+  return uniqueStrings(languages);
+}
+
+function coerceFiniteNumber(raw) {
+  if (raw == null || raw === "") return null;
+  if (typeof raw === "number" && Number.isFinite(raw)) return raw;
+  const s = String(raw).trim().replace(/,/g, "");
+  if (!s) return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+
+/** Match Airtable column labels even if spacing/casing differs slightly from our literals. */
+function getFieldRawInsensitive(fields, preferredNames) {
+  const safe = fields && typeof fields === "object" ? fields : {};
+  for (const name of preferredNames) {
+    if (Object.prototype.hasOwnProperty.call(safe, name)) {
+      const v = safe[name];
+      if (v !== undefined) return v;
+    }
+  }
+  const lowerByKey = new Map();
+  for (const k of Object.keys(safe)) {
+    lowerByKey.set(k.trim().toLowerCase(), safe[k]);
+  }
+  for (const name of preferredNames) {
+    const key = String(name).trim().toLowerCase();
+    if (lowerByKey.has(key)) return lowerByKey.get(key);
+  }
+  return undefined;
+}
+
+function parseNumericField(fields, names) {
+  for (const name of names) {
+    const raw = getFieldRawInsensitive(fields, [name]);
+    const num = coerceFiniteNumber(raw);
+    if (num !== null) return num;
+  }
+  return 0;
+}
+
+function readPersonStatFromFields(fields, airtableColumnName) {
+  const raw = getFieldRawInsensitive(fields, [airtableColumnName]);
+  const num = coerceFiniteNumber(raw);
+  return num !== null ? num : 0;
+}
+
 // Field mappings for Airtable tables
 const F = {
   // Users table for individuals
   users: {
-    table: "tbl6shiyz2wdUqE5F", // Users table ID
+    table: PLATFORM_USERS_TABLE_ID,
     firstName: "fldG5nbAijQkUVSzr", // First Name
     lastName: "fldV0g50iRB8J46Hh", // Last Name
     email: "fldBl7IXEscwkMhnZ", // Email
@@ -58,7 +607,9 @@ const F = {
     closedDeals: "Closed Deals",
     brandCount: "Brand Count", // or "# of Brand" or "Number of Brands"
     submittedBids: "Submitted Bids",
-    logo: "Logo" // or "Company Logo"
+    logo: "Logo", // or "Company Logo"
+    /** Partner Directory Company Role filter ↔ Airtable single-select */
+    companyRoleInEcosystem: COMPANY_ROLE_AIRTABLE_FIELD,
   },
   // Brand Setup - Brand Basics for hotel brands (franchise) - as backup
   brands: {
@@ -110,7 +661,7 @@ export async function getPartners(req, res) {
           const table = base(tableIdentifier);
           table
             .select({
-              maxRecords: 100 // Airtable pagination limit per page
+              // Fetch complete dataset via pagination (no hard cap)
             })
             .eachPage(
               (pageRecords, fetchNextPage) => {
@@ -202,8 +753,10 @@ export async function getPartners(req, res) {
             
             // Get location from "Company HQ Country" column in Airtable
             const location = fields["Company HQ Country"] || '';
-            // Get "Company Website" directly from Airtable - simple and direct
-            const website = fields["Company Website"] ? String(fields["Company Website"]).trim() : '';
+            // Get "Company Website" directly from Airtable — normalize www for display/links only
+            const website = fields["Company Website"]
+              ? stripLeadingWwwFromWebsiteUrl(String(fields["Company Website"]).trim())
+              : '';
             // Prioritize "Company Overview" field from Airtable - try multiple variations
             // Check all possible field name variations
             let companyOverview = '';
@@ -255,47 +808,8 @@ export async function getPartners(req, res) {
             const submittedBids = fields[F.companyProfile.submittedBids] || fields["Submitted Bids"];
             const logo = fields[F.companyProfile.logo] || fields["Logo"] || fields["Company Logo"];
 
-            // Determine user type - normalize Company Type to expected format
-            let normalizedUserType = "HOTEL OWNERS"; // Default
-            try {
-              if (companyType && typeof companyType === 'string' && companyType.trim()) {
-                // Normalize Company Type to expected format
-                const upperType = companyType.toUpperCase().trim();
-                if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperType.includes('OWNER')) {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else {
-                  // If it doesn't match any pattern, use as-is (uppercase)
-                  normalizedUserType = upperType;
-                }
-              } else if (userType && typeof userType === 'string' && userType.trim()) {
-                // Fallback to User Type and normalize
-                const upperUserType = userType.toUpperCase().trim();
-                // Handle exact matches first (check these before pattern matching)
-                if (upperUserType === "HOTEL OWNERS" || upperUserType === "HOTEL OWNER" || upperUserType === "OWNER" || upperUserType === "OWNERS") {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else if (upperUserType === "HOTEL BRANDS (FRANCHISE)" || upperUserType === "HOTEL BRAND" || upperUserType === "HOTEL BRANDS" || upperUserType === "BRAND" || upperUserType === "BRANDS" || upperUserType === "FRANCHISE") {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperUserType === "HOTEL MGMT. COMPANY" || upperUserType === "HOTEL MGMT COMPANY" || upperUserType === "HOTEL MANAGEMENT COMPANY" || upperUserType === "MGMT" || upperUserType === "MANAGEMENT" || upperUserType === "OPERATOR") {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperUserType.includes('BRAND') || upperUserType.includes('FRANCHISE')) {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperUserType.includes('MGMT') || upperUserType.includes('MANAGEMENT') || upperUserType.includes('OPERATOR')) {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperUserType.includes('OWNER')) {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else {
-                  normalizedUserType = upperUserType;
-                }
-              } else {
-                // use default normalizedUserType
-              }
-            } catch (userTypeError) {
-              // use default normalizedUserType
-            }
+            // Company Type → directory filter key (User Type column is usually empty)
+            const normalizedUserType = companyTypeFromProfileFields(fields);
 
             // Get logo - use first letter of company name as default
             // Only use logo URL if it's a valid image URL, otherwise use initials
@@ -315,12 +829,23 @@ export async function getPartners(req, res) {
               // keep logoDisplay as initial
             }
 
+            const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
+            const companyRole = companyRoleFromEcosystemField(fields);
+            const operatingModel =
+              fields["Operating Model"] != null ? String(fields["Operating Model"]).trim() : "";
+            const thirdPartyManagementAvailability =
+              fields["Third-Party Management Availability"] != null
+                ? String(fields["Third-Party Management Availability"]).trim()
+                : "";
             return {
               id: record.id || '',
               companyId: companyId || '', // Company ID field (like Term ID in Financial Term Library)
               name: companyName || '',
               userType: normalizedUserType,
               companyType: companyType || '', // Include original Company Type from Airtable for reference
+              companyRole,
+              operatingModel,
+              thirdPartyManagementAvailability,
               location: location || '', // No fallback - use exactly what's in Airtable
               website: website || '', // No fallback - use exactly what's in Airtable
               description: description || '', // Only use Company Overview - no fallback
@@ -329,7 +854,14 @@ export async function getPartners(req, res) {
               closedDeals: closedDeals ? Number(closedDeals) : 0,
               brandCount: brandCount ? Number(brandCount) : 0,
               submittedBids: submittedBids ? Number(submittedBids) : 0,
-              logo: logoDisplay
+              logo: logoDisplay,
+              _createdTime: record.createdTime || null,
+              rawFields: enrichment.rawFields,
+              brandRecordIds: enrichment.brandRecordIds,
+              userManagementRecordIds: enrichment.userManagementRecordIds,
+              services: enrichment.services,
+              primaryServices: enrichment.primaryServices,
+              brands: enrichment.brands
             };
           } catch (recordError) {
             console.error('Error processing record:', recordError);
@@ -350,7 +882,7 @@ export async function getPartners(req, res) {
         await new Promise((resolve, reject) => {
           base("Company Profile")
             .select({
-              maxRecords: 100
+              // Fetch complete dataset via pagination (no hard cap)
             })
             .eachPage(
               (pageRecords, fetchNextPage) => {
@@ -413,8 +945,10 @@ export async function getPartners(req, res) {
               const userType = companyType || fields["User Type"] || fields["userType"] || '';
               // Get location from "Company HQ Country" column in Airtable
               const location = fields["Company HQ Country"] || '';
-              // Get "Company Website" directly from Airtable - simple and direct
-              const website = fields["Company Website"] ? String(fields["Company Website"]).trim() : '';
+              // Get "Company Website" directly from Airtable — normalize www for display/links only
+              const website = fields["Company Website"]
+                ? stripLeadingWwwFromWebsiteUrl(String(fields["Company Website"]).trim())
+                : '';
               // Prioritize "Company Overview" field from Airtable - try multiple variations
               let companyOverview = '';
               const fieldKeysForOverviewFallback = Object.keys(fields);
@@ -471,41 +1005,7 @@ export async function getPartners(req, res) {
               const brandCount = fields["Brand Count"] || fields["# of Brand"];
               const submittedBids = fields["Submitted Bids"];
 
-              // Normalize Company Type to expected format
-              let normalizedUserType = "HOTEL OWNERS"; // Default
-              if (companyType && typeof companyType === 'string' && companyType.trim()) {
-                // Normalize Company Type to expected format
-                const upperType = companyType.toUpperCase().trim();
-                if (upperType.includes('BRAND') || upperType.includes('FRANCHISE')) {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperType.includes('MGMT') || upperType.includes('MANAGEMENT') || upperType.includes('OPERATOR')) {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperType.includes('OWNER')) {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else {
-                  // If it doesn't match any pattern, use as-is (uppercase)
-                  normalizedUserType = upperType;
-                }
-              } else if (userType && typeof userType === 'string' && userType.trim()) {
-                // Fallback to User Type and normalize
-                const upperUserType = userType.toUpperCase().trim();
-                // Handle exact matches first (check these before pattern matching)
-                if (upperUserType === "HOTEL OWNERS" || upperUserType === "HOTEL OWNER" || upperUserType === "OWNER" || upperUserType === "OWNERS") {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else if (upperUserType === "HOTEL BRANDS (FRANCHISE)" || upperUserType === "HOTEL BRAND" || upperUserType === "HOTEL BRANDS" || upperUserType === "BRAND" || upperUserType === "BRANDS" || upperUserType === "FRANCHISE") {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperUserType === "HOTEL MGMT. COMPANY" || upperUserType === "HOTEL MGMT COMPANY" || upperUserType === "HOTEL MANAGEMENT COMPANY" || upperUserType === "MGMT" || upperUserType === "MANAGEMENT" || upperUserType === "OPERATOR") {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperUserType.includes('BRAND') || upperUserType.includes('FRANCHISE')) {
-                  normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-                } else if (upperUserType.includes('MGMT') || upperUserType.includes('MANAGEMENT')) {
-                  normalizedUserType = "HOTEL MGMT. COMPANY";
-                } else if (upperUserType.includes('OWNER')) {
-                  normalizedUserType = "HOTEL OWNERS";
-                } else {
-                  normalizedUserType = upperUserType;
-                }
-              }
+              const normalizedUserType = companyTypeFromProfileFields(fields);
 
               // Get logo - use first letter of company name as default only if no logo in Airtable
               let logoDisplay = '';
@@ -521,12 +1021,23 @@ export async function getPartners(req, res) {
               // Get Company ID field (like Term ID in Financial Term Library)
               const companyId = fields[F.companyProfile.companyId] || fields["Company ID"] || '';
               
+              const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
+              const companyRole = companyRoleFromEcosystemField(fields);
+              const operatingModel =
+                fields["Operating Model"] != null ? String(fields["Operating Model"]).trim() : "";
+              const thirdPartyManagementAvailability =
+                fields["Third-Party Management Availability"] != null
+                  ? String(fields["Third-Party Management Availability"]).trim()
+                  : "";
               return {
                 id: record.id || '',
                 companyId: companyId || '', // Company ID field (like Term ID in Financial Term Library)
                 name: companyName || '',
                 userType: normalizedUserType,
                 companyType: companyType || '', // Include original Company Type from Airtable for reference
+                companyRole,
+                operatingModel,
+                thirdPartyManagementAvailability,
                 location: location || '', // No fallback - use exactly what's in Airtable
                 website: website || '', // No fallback - use exactly what's in Airtable
                 description: description || '', // Only use Company Overview - no fallback
@@ -535,7 +1046,14 @@ export async function getPartners(req, res) {
                 closedDeals: closedDeals ? Number(closedDeals) : 0,
                 brandCount: brandCount ? Number(brandCount) : 0,
                 submittedBids: submittedBids ? Number(submittedBids) : 0,
-                logo: logoDisplay
+                logo: logoDisplay,
+                _createdTime: record.createdTime || null,
+                rawFields: enrichment.rawFields,
+                brandRecordIds: enrichment.brandRecordIds,
+                userManagementRecordIds: enrichment.userManagementRecordIds,
+                services: enrichment.services,
+                primaryServices: enrichment.primaryServices,
+                brands: enrichment.brands
               };
             });
           
@@ -549,13 +1067,13 @@ export async function getPartners(req, res) {
     // SKIP Users table for companies - all company data should come from Company Profile table only
     // This ensures we only use data from the Company Profile table as requested
 
-    // Fetch individuals from Users table
+    // Fetch individuals from Users table (platform users).
     let userRecords = [];
     try {
       await new Promise((resolve, reject) => {
-        base(F.users.table)
+        base(PLATFORM_USERS_TABLE)
           .select({
-            maxRecords: 100 // Airtable pagination limit per page
+            // Fetch complete dataset via pagination (no hard cap)
           })
           .eachPage(
             (pageRecords, fetchNextPage) => {
@@ -584,11 +1102,24 @@ export async function getPartners(req, res) {
           const fields = record.fields;
           const firstName = fields[F.users.firstName] || fields["First Name"] || '';
           const lastName = fields[F.users.lastName] || fields["Last Name"] || '';
-          return firstName || lastName; // Include if we have at least one name
+          if (!firstName && !lastName) return false;
+          const visibility = contactVisibilityFromFields(fields);
+          return isContactVisibleInPartnerDirectory(visibility);
         })
         .map(record => formatUserRecord(record));
     } catch (userError) {
+      console.error('Error fetching user management records:', userError);
       individuals = [];
+    }
+
+    // Resolve linked brand record IDs to brand names so modal brand lists can render.
+    try {
+      const brandNameMap = await buildBrandNameMap(base);
+      companies = attachResolvedBrandNames(companies, brandNameMap);
+      individuals = attachResolvedBrandNames(individuals, brandNameMap);
+      individuals = mergeLinkedCompanyIntoIndividuals(individuals, companies);
+    } catch (brandResolveError) {
+      console.error("Error resolving linked brand names:", brandResolveError);
     }
 
     // Always return data, even if empty
@@ -629,45 +1160,128 @@ export async function getPartners(req, res) {
 // Format user record from Airtable
 function formatUserRecord(record) {
   const fields = record.fields;
+  const companyInfo = parseLinkedCompanyInfo(fields);
   // Try both field IDs and field names for compatibility
   const firstName = fields[F.users.firstName] || fields["First Name"] || "";
   const lastName = fields[F.users.lastName] || fields["Last Name"] || "";
-  const company = fields[F.users.company] || fields["Company/Organization"] || "";
-  const country = fields[F.users.country] || fields["Country"] || "";
-  const userType = fields[F.users.userType] || fields["User Type"] || "";
-  
-  // Determine location from country
-  const location = country ? `${country}` : "";
-  
-  // Determine regions from user type and country (simplified mapping)
-  let regions = [];
-  if (country) {
-    if (country.includes("United States") || country.includes("Canada")) {
-      regions = ["AMERICAS"];
-    } else if (country.includes("Mexico") || country.includes("Brazil") || country.includes("Argentina")) {
-      regions = ["CALA"];
-    } else if (country.includes("United Kingdom") || country.includes("France") || country.includes("Germany") || country.includes("Spain") || country.includes("Italy")) {
-      regions = ["EUROPE"];
-    } else {
-      regions = ["GLOBAL"];
+  const company = companyInfo.companyName || fields[F.users.company] || fields["Company/Organization"] || fields["Company Name"] || "";
+  const country =
+    fields["Based (Country)"] ||
+    fields[F.users.country] ||
+    fields["Country"] ||
+    "";
+  const userType =
+    fields[F.users.userType] ||
+    fields["User Type"] ||
+    "";
+  const platformRole =
+    fields["Platform Role"] ||
+    fields[F.users.userType] ||
+    "";
+  const email =
+    fields[F.users.email] ||
+    fields["Email"] ||
+    fields["Company Email"] ||
+    "";
+  const phone =
+    fields[F.users.phone] ||
+    fields["Phone Number"] ||
+    fields["Phone"] ||
+    "";
+  const website = stripLeadingWwwFromWebsiteUrl(
+    String(fields["Website"] || fields["Company Website"] || fields["Personal Website"] || "").trim()
+  );
+  const companyRecordId = companyInfo.companyRecordId;
+
+  const profilePicture = parseAttachmentUrl(
+    fields[F.users.profile] ||
+      fields["Profile"] ||
+      fields["Profile Picture"] ||
+      fields["Headshot"] ||
+      fields["Photo"]
+  );
+
+  const location = country ? String(country).trim() : "";
+  const regions = parseRegionsFromUserFields(fields);
+  const coverageTerritories = parseCoverageTerritoriesFromFields(fields);
+  const languages = extractLanguagesFromFields(fields);
+  const enrichment = buildCompanyEnrichment(fields, record.createdTime);
+  const explicitBrandsField =
+    fields["Brands Supported"] ||
+    fields["Brands You Operate / Support"] ||
+    fields["Brands"] ||
+    fields["Brand Name"] ||
+    null;
+  if (explicitBrandsField) {
+    if (Array.isArray(explicitBrandsField)) {
+      explicitBrandsField.forEach((item) => {
+        if (typeof item === "string" && !isRecordId(item)) enrichment.brands.push(item);
+        else if (item && typeof item === "object") {
+          extractRecordIdsFromValue(item, enrichment.brandRecordIds);
+          const name =
+            item.fields?.["Brand Name"] ||
+            item.fields?.Name ||
+            item.name ||
+            "";
+          if (name) enrichment.brands.push(String(name));
+        }
+      });
+    } else if (typeof explicitBrandsField === "string" && !isRecordId(explicitBrandsField)) {
+      explicitBrandsField
+        .split(",")
+        .map((x) => x.trim())
+        .filter(Boolean)
+        .forEach((x) => enrichment.brands.push(x));
     }
+    enrichment.brands = uniqueStrings(enrichment.brands);
+  }
+  const closedDeals = readPersonStatFromFields(fields, PUF.closedDeals);
+  const brandCount = readPersonStatFromFields(fields, PUF.uniqueBrandsDeals);
+  const submittedBids = readPersonStatFromFields(fields, PUF.submittedBids);
+
+  const rawFields = { ...fields };
+  if (!rawFields["Created Date"] && record.createdTime) {
+    rawFields["Created Date"] = record.createdTime;
   }
 
   return {
     id: record.id,
-    firstName: firstName,
-    lastName: lastName,
-    companyTitle: "", // Not in Users table - would need to add
-    companyName: company,
-    phoneNumber: fields[F.users.phone] || fields["Phone Number"] || fields["Phone"] || "",
-    companyEmail: fields[F.users.email] || "",
-    platformRole: userType || "",
-    regions: regions,
-    contactVisibility: "Show Contact", // Default
-    location: location,
-    closedDeals: 0, // Would need to calculate from linked deals
-    brandCount: 0, // Would need to calculate
-    submittedBids: 0 // Would need to calculate
+    firstName: firstName || "",
+    lastName: lastName || "",
+    companyTitle: fields["Title"] || fields["Company Title"] || "",
+    companyName: company || "",
+    companyRecordId: isRecordId(companyRecordId) ? companyRecordId : "",
+    phoneNumber: phone || "",
+    email: email || "",
+    companyEmail: email || "",
+    userType: userType || "",
+    platformRole: platformRole || "",
+    regions,
+    coverageTerritories,
+    languages,
+    contactVisibility: contactVisibilityFromFields(fields),
+    location: location || "",
+    website: website || "",
+    closedDeals,
+    brandCount,
+    submittedBids,
+    profilePicture: profilePicture || null,
+    responsivenessCombinedBadge:
+      fields["responsiveness_combined_badge"] ||
+      fields["Responsiveness Combined Badge"] ||
+      "",
+    responsivenessTimeCategory:
+      fields["responsiveness_response_time_category"] ||
+      fields["Responsiveness Response Time Category"] ||
+      "",
+    responsivenessFrequencyCategory:
+      fields["responsiveness_frequency_category"] ||
+      fields["Responsiveness Frequency Category"] ||
+      "",
+    _createdTime: record.createdTime || null,
+    rawFields,
+    brandRecordIds: enrichment.brandRecordIds,
+    brands: enrichment.brands
   };
 }
 
@@ -809,7 +1423,9 @@ export async function getCompanyById(req, res) {
     const companyType = fields[F.companyProfile.companyType] || fields["Company Type"] || '';
     const userType = fields[F.companyProfile.userType] || fields["User Type"] || '';
     const location = fields["Company HQ Country"] || '';
-    const website = fields["Company Website"] ? String(fields["Company Website"]).trim() : '';
+    const website = fields["Company Website"]
+      ? stripLeadingWwwFromWebsiteUrl(String(fields["Company Website"]).trim())
+      : '';
     const companyOverview = fields["Company Overview"] || '';
     
     // Get regions from checkbox fields
@@ -852,25 +1468,17 @@ export async function getCompanyById(req, res) {
       logoDisplay = { type: 'image', url: logo };
     }
     
-    // Normalize user type
-    let normalizedUserType = companyType || userType || '';
-    if (normalizedUserType) {
-      const upperType = String(normalizedUserType).trim().toUpperCase();
-      if (upperType === "HOTEL OWNERS" || upperType === "HOTEL OWNER" || upperType === "OWNER" || upperType === "OWNERS") {
-        normalizedUserType = "HOTEL OWNERS";
-      } else if (upperType === "HOTEL BRANDS (FRANCHISE)" || upperType === "HOTEL BRAND" || upperType === "HOTEL BRANDS" || upperType === "BRAND" || upperType === "BRANDS" || upperType === "FRANCHISE") {
-        normalizedUserType = "HOTEL BRANDS (FRANCHISE)";
-      } else if (upperType === "HOTEL MGMT. COMPANY" || upperType === "HOTEL MGMT COMPANY" || upperType === "HOTEL MANAGEMENT COMPANY" || upperType === "MGMT" || upperType === "MANAGEMENT" || upperType === "OPERATOR") {
-        normalizedUserType = "HOTEL MGMT. COMPANY";
-      }
-    }
+    const normalizedUserType = companyTypeFromProfileFields(fields);
 
+    const enrichment = buildCompanyEnrichment(fields, record.createdTime || null);
+    const companyRole = companyRoleFromEcosystemField(fields);
     const company = {
       id: record.id || '',
       companyId: companyId || '',
       name: companyName || '',
       userType: normalizedUserType,
       companyType: companyType || '',
+      companyRole,
       location: location || '',
       website: website || '',
       description: companyOverview || '',
@@ -879,7 +1487,14 @@ export async function getCompanyById(req, res) {
       closedDeals: closedDeals ? Number(closedDeals) : 0,
       brandCount: brandCount ? Number(brandCount) : 0,
       submittedBids: submittedBids ? Number(submittedBids) : 0,
-      logo: logoDisplay
+      logo: logoDisplay,
+      _createdTime: record.createdTime || null,
+      rawFields: enrichment.rawFields,
+      brandRecordIds: enrichment.brandRecordIds,
+      userManagementRecordIds: enrichment.userManagementRecordIds,
+      services: enrichment.services,
+      primaryServices: enrichment.primaryServices,
+      brands: enrichment.brands
     };
 
     res.json(company);

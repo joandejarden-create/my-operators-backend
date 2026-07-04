@@ -20,12 +20,9 @@
             <span>Inbox</span>
           </div>
           <div class="outreach-hub-title-container">
-            <div class="deal-capture-logo">
-              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-            </div>
             <h1>Inbox</h1>
           </div>
-          <p>Threads that need your attention. Select a thread to read the conversation.</p>
+          <p>Read threads, update status, draft outbound messages, and log sends—same data as Outreach Plans and Plan Board.</p>
         </div>
 
         <div class="inbox-layout">
@@ -40,16 +37,22 @@
                 <span id="inbox-count" class="inbox-count">—</span>
               </div>
             </div>
-            <div id="inbox-loading" class="oh-loading" style="padding: 20px; display: none;">Loading threads…</div>
+            <div id="inbox-loading" class="oh-loading" style="padding: 20px; display: none;">Loading Threads…</div>
             <div id="inbox-empty" class="oh-muted" style="padding: 20px; display: none;">No threads match. Open Plans to view all.</div>
             <div id="inbox-thread-list-scroll" class="inbox-thread-list-scroll" style="display: none;"></div>
           </div>
           <div class="inbox-reading-pane">
             <div id="inbox-reading-empty" class="inbox-reading-pane-empty">
               <div class="inbox-empty-state">
-                <span class="inbox-empty-icon" aria-hidden="true">✉</span>
+                <span class="inbox-empty-icon" aria-hidden="true">
+                  <!-- Same envelope stroke as platform mail actions (e.g. BDD row) — avoids ✉ emoji/font variance in iframe vs full page -->
+                  <svg class="inbox-empty-icon-svg" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <path d="M22 6l-10 7L2 6"/>
+                  </svg>
+                </span>
                 <p class="inbox-empty-title">Select a conversation</p>
-                <p class="inbox-empty-text">Choose a thread from the list to read messages.</p>
+                <p class="inbox-empty-text">Choose a thread from the list to read messages, triage status, and compose replies.</p>
               </div>
             </div>
             <div id="inbox-reading-content" style="display: none;">
@@ -57,8 +60,75 @@
                 <h2 id="inbox-reading-title" class="inbox-reading-title">—</h2>
                 <div id="inbox-reading-subtitle" class="inbox-reading-subtitle"></div>
               </div>
-              <div id="inbox-msg-loading" class="oh-loading" style="padding: 20px; display: none;">Loading messages…</div>
-              <div id="inbox-reading-messages" class="inbox-reading-messages"></div>
+              <div id="inbox-reading-context" class="inbox-reading-context">
+                <div id="inbox-attention-hint" class="inbox-attention-hint"></div>
+                <div id="inbox-context-links" class="inbox-context-links"></div>
+              </div>
+              <div class="inbox-triage-bar">
+                <div class="form-group">
+                  <label class="form-label" for="inbox-thread-status">Thread status</label>
+                  <select id="inbox-thread-status" class="form-select">
+                    <option value="Draft">Draft</option>
+                    <option value="Active">Active</option>
+                    <option value="Waiting on Reply">Waiting on Reply</option>
+                    <option value="Waiting on Us">Waiting on Us</option>
+                    <option value="Meeting Scheduled">Meeting Scheduled</option>
+                    <option value="Negotiating">Negotiating</option>
+                    <option value="Parked">Parked</option>
+                    <option value="Closed">Closed</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="inbox-thread-stage">Counterparty stage</label>
+                  <select id="inbox-thread-stage" class="form-select">
+                    <option value="">—</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Engaged">Engaged</option>
+                    <option value="Meeting">Meeting</option>
+                    <option value="Active Negotiation">Active Negotiation</option>
+                    <option value="LOI">LOI</option>
+                    <option value="Parked">Parked</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="inbox-thread-next-action">Next step</label>
+                  <input type="text" id="inbox-thread-next-action" class="form-input" placeholder="e.g. Send NDA" autocomplete="off">
+                </div>
+                <button type="button" class="btn btn-primary" id="inbox-save-thread-btn">Save thread</button>
+              </div>
+              <div class="inbox-reading-messages-shell">
+                <div id="inbox-msg-loading" class="oh-loading inbox-msg-loading-bar" style="display: none;">Loading Messages…</div>
+                <div id="inbox-reading-messages" class="inbox-reading-messages"></div>
+              </div>
+              <div class="inbox-compose">
+                <h3>Reply &amp; outbound</h3>
+                <p id="inbox-feedback" class="oh-muted" role="status" aria-live="polite"></p>
+                <div class="inbox-compose-grid">
+                  <div class="inbox-compose-row">
+                    <div class="form-group inbox-compose-template-wrap">
+                      <label class="form-label" for="inbox-compose-template">Template (optional)</label>
+                      <select id="inbox-compose-template" class="form-select">
+                        <option value="">— Select template —</option>
+                      </select>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="inbox-apply-template-btn">Apply template</button>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="inbox-compose-subject">Subject</label>
+                    <input type="text" id="inbox-compose-subject" class="form-input" placeholder="Subject line" autocomplete="off">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="inbox-compose-body">Body</label>
+                    <textarea id="inbox-compose-body" class="form-input" placeholder="Write your message. Use Apply template to merge tokens, then edit before saving."></textarea>
+                  </div>
+                </div>
+                <div class="inbox-compose-actions">
+                  <button type="button" class="btn btn-secondary" id="inbox-save-draft-btn">Save draft</button>
+                  <button type="button" class="btn btn-secondary" id="inbox-copy-compose-btn">Copy to clipboard</button>
+                  <button type="button" class="btn btn-primary" id="inbox-mark-sent-btn">Mark logged as sent</button>
+                </div>
+                <p class="oh-muted" style="margin: 10px 0 0; font-size: 12px;">Saves to the Messages table in Airtable (same as Plan Board). Send email from your mail client, then mark logged as sent.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -69,23 +139,38 @@
   <script>
 (function() {
   var API = '/api/outreach-hub';
+  var MY_DEALS = '/api/my-deals';
   var threads = [];
   var selectedThreadId = null;
+  var selectedThread = null;
   var filter = 'attention';
-  var allMessagesCache = null;
-
-  function messageBelongsToThread(msg, threadId) {
-    var f = msg.fields || {};
-    var link = f.Thread || f.Threads || [];
-    if (!Array.isArray(link)) link = link ? [link] : [];
-    return link.some(function(x) {
-      var id = typeof x === 'string' ? x : (x && x.id);
-      return id === threadId;
-    });
-  }
+  var inboxComposingId = null;
+  var dealNameById = {};
+  var contactNameById = {};
+  var SAMPLE_TOKENS = {
+    '{{DealName}}': 'Your deal',
+    '{{ContactFirstName}}': '',
+    '{{ContactLastName}}': '',
+    '{{LocationCity}}': '',
+    '{{LocationCountry}}': '',
+    '{{Keys}}': '',
+    '{{AssetType}}': '',
+    '{{TargetOpening}}': '',
+    '{{DealStage}}': ''
+  };
 
   function qs(s) { return document.querySelector(s); }
   function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
+
+  function showReadingPane(on) {
+    var el = qs('#inbox-reading-content');
+    if (!el) return;
+    el.style.display = on ? 'flex' : 'none';
+  }
+
+  function encodeThreadMessageFormula(threadId) {
+    return encodeURIComponent("FIND('" + threadId + "', ARRAYJOIN({Thread}))");
+  }
 
   function needsAttention(t) {
     var f = t.fields || {};
@@ -93,6 +178,20 @@
     var stage = (f.counterparty_stage || '').toLowerCase();
     return status === 'waiting on reply' || status === 'meeting scheduled' || status === 'waiting on us' ||
            stage === 'engaged' || stage === 'meeting' || stage === 'active negotiation';
+  }
+
+  function attentionHint(f) {
+    var status = (f.thread_status || '').trim();
+    var stage = (f.counterparty_stage || '').trim();
+    var s = status.toLowerCase();
+    if (s === 'waiting on reply') return 'They owe a reply—follow up or adjust status when you hear back.';
+    if (s === 'waiting on us') return 'You owe the next move—draft below and log when sent.';
+    if (s === 'meeting scheduled') return 'Meeting on the books—confirm details or capture outcomes.';
+    if ((stage || '').toLowerCase() === 'engaged') return 'Counterparty is engaged—keep momentum with a clear next step.';
+    if ((stage || '').toLowerCase() === 'meeting') return 'In meeting stage—document decisions and next actions.';
+    if ((stage || '').toLowerCase() === 'active negotiation') return 'Active negotiation—align internally before sending terms.';
+    if (needsAttention({ fields: f })) return 'On your radar—update status or log outreach below.';
+    return 'No urgent rule matched—still review periodically.';
   }
 
   function getThreadDisplayName(t) {
@@ -129,6 +228,107 @@
     var parts = name.trim().split(/\s+/);
     if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     return name.slice(0, 2).toUpperCase();
+  }
+
+  function escapeHtml(s) {
+    if (s == null) return '';
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function setFeedback(msg, kind) {
+    var el = qs('#inbox-feedback');
+    if (!el) return;
+    el.textContent = msg || '';
+    el.classList.remove('inbox-feedback--ok', 'inbox-feedback--err');
+    if (kind === 'ok') el.classList.add('inbox-feedback--ok');
+    else if (kind === 'err') el.classList.add('inbox-feedback--err');
+  }
+
+  function mergeTokens(text, tokens) {
+    if (!text) return '';
+    var out = text;
+    Object.keys(tokens).forEach(function(k) { out = out.split(k).join(tokens[k] != null ? String(tokens[k]) : ''); });
+    return out;
+  }
+
+  function getTokensForSelectedThread() {
+    var tokens = Object.assign({}, SAMPLE_TOKENS);
+    if (!selectedThread || !selectedThread.fields) return tokens;
+    var f = selectedThread.fields;
+    var dealId = f.Deal && f.Deal[0] ? f.Deal[0] : null;
+    var contactId = f.primary_contact_id && f.primary_contact_id[0] ? f.primary_contact_id[0] : null;
+    if (dealId && dealNameById[dealId]) tokens['{{DealName}}'] = dealNameById[dealId];
+    if (contactId && contactNameById[contactId]) {
+      var cn = contactNameById[contactId];
+      if (cn.first) tokens['{{ContactFirstName}}'] = cn.first;
+      if (cn.last) tokens['{{ContactLastName}}'] = cn.last;
+    }
+    tokens['{{DealName}}'] = tokens['{{DealName}}'] || getThreadDisplayName(selectedThread);
+    return tokens;
+  }
+
+  function prefetchDealAndContact() {
+    if (!selectedThread || !selectedThread.fields) return;
+    var f = selectedThread.fields;
+    var dealId = f.Deal && f.Deal[0] ? f.Deal[0] : null;
+    var contactId = f.primary_contact_id && f.primary_contact_id[0] ? f.primary_contact_id[0] : null;
+    if (dealId && /^rec/.test(dealId) && !dealNameById[dealId]) {
+      fetch(MY_DEALS + '/' + encodeURIComponent(dealId))
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (d.success) {
+            var name = (d.normalized && d.normalized.projectName) ||
+              (d.deal && d.deal.fields && (d.deal.fields['Project Name'] || d.deal.fields.projectName));
+            if (name) dealNameById[dealId] = name;
+            renderContextLinks();
+          }
+        })
+        .catch(function() {});
+    }
+    if (contactId && /^rec/.test(contactId) && !contactNameById[contactId]) {
+      fetch(API + '/contacts/' + encodeURIComponent(contactId))
+        .then(function(r) { return r.json(); })
+        .then(function(c) {
+          if (c.success && c.record && c.record.fields) {
+            var cf = c.record.fields;
+            contactNameById[contactId] = {
+              first: cf.first_name || '',
+              last: cf.last_name || ''
+            };
+          }
+        })
+        .catch(function() {});
+    }
+  }
+
+  function renderContextLinks() {
+    var wrap = qs('#inbox-context-links');
+    if (!wrap || !selectedThread || !selectedThread.fields) return;
+    var f = selectedThread.fields;
+    var dealId = f.Deal && f.Deal[0] ? f.Deal[0] : '';
+    var planId = f.Plan && f.Plan[0] ? f.Plan[0] : '';
+    var parts = [];
+    if (dealId && /^rec/.test(dealId)) {
+      var dealLabel = dealNameById[dealId] ? escapeHtml(dealNameById[dealId]) : 'Open deal summary';
+      parts.push('<a href="/deal-brief-snapshot.html?dealId=' + encodeURIComponent(dealId) + '" target="_blank" rel="noopener">' + dealLabel + '</a>');
+    }
+    if (planId && /^rec/.test(planId)) {
+      parts.push('<a href="/outreach-plans#thread=' + encodeURIComponent(selectedThread.id) + '" target="_blank" rel="noopener">Open in Outreach Plans</a>');
+    }
+    wrap.innerHTML = parts.length ? parts.join('') : '<span class="oh-muted">No deal/plan links on this thread.</span>';
+  }
+
+  function syncTriageFieldsFromThread() {
+    if (!selectedThread || !selectedThread.fields) return;
+    var f = selectedThread.fields;
+    var st = qs('#inbox-thread-status');
+    var sg = qs('#inbox-thread-stage');
+    var nx = qs('#inbox-thread-next-action');
+    if (st) st.value = f.thread_status || 'Draft';
+    if (sg) sg.value = f.counterparty_stage || '';
+    if (nx) nx.value = f.next_action || '';
   }
 
   function renderThreadList() {
@@ -175,28 +375,39 @@
     });
   }
 
-  function escapeHtml(s) {
-    if (s == null) return '';
-    var div = document.createElement('div');
-    div.textContent = s;
-    return div.innerHTML;
+  function clearComposer() {
+    inboxComposingId = null;
+    var sub = qs('#inbox-compose-subject');
+    var body = qs('#inbox-compose-body');
+    var tpl = qs('#inbox-compose-template');
+    if (sub) sub.value = '';
+    if (body) body.value = '';
+    if (tpl) tpl.value = '';
+    setFeedback('', null);
   }
 
   function selectThread(threadId) {
     selectedThreadId = threadId;
+    selectedThread = threads.find(function(x) { return x.id === threadId; }) || null;
     renderThreadList();
     show(qs('#inbox-reading-empty'), false);
-    show(qs('#inbox-reading-content'), true);
-    var t = threads.find(function(x) { return x.id === threadId; });
-    if (!t) return;
-    var f = t.fields || {};
-    qs('#inbox-reading-title').textContent = getThreadDisplayName(t);
+    showReadingPane(true);
+    if (!selectedThread) return;
+    var f = selectedThread.fields || {};
+    qs('#inbox-reading-title').textContent = getThreadDisplayName(selectedThread);
     var badges = [];
     if (f.thread_status) badges.push('<span class="badge">' + escapeHtml(f.thread_status) + '</span>');
     if (f.counterparty_stage) badges.push('<span class="badge">' + escapeHtml(f.counterparty_stage) + '</span>');
     if (f.next_action) badges.push('<span class="badge">' + escapeHtml(f.next_action) + '</span>');
     qs('#inbox-reading-subtitle').innerHTML = badges.length ? badges.join(' ') : '—';
+    var hintEl = qs('#inbox-attention-hint');
+    if (hintEl) hintEl.textContent = attentionHint(f);
+    renderContextLinks();
+    prefetchDealAndContact();
+    syncTriageFieldsFromThread();
+    clearComposer();
     loadMessages(threadId);
+    loadTemplatesForCompose();
   }
 
   function renderMessagesFromRecords(records) {
@@ -206,31 +417,32 @@
     records.sort(function(a, b) {
       var af = a.fields || {};
       var bf = b.fields || {};
-      var ta = new Date(af.sent_at || af['Created time'] || 0).getTime();
-      var tb = new Date(bf.sent_at || bf['Created time'] || 0).getTime();
+      var ta = new Date(af.sent_at || af.logged_sent_at || af['Created time'] || 0).getTime();
+      var tb = new Date(bf.sent_at || bf.logged_sent_at || bf['Created time'] || 0).getTime();
       return ta - tb;
     });
     if (records.length === 0) {
       var thread = threads.find(function(t) { return t.id === selectedThreadId; });
       var preview = thread && thread.fields && (thread.fields.last_message_preview || '').trim();
       if (preview) {
-        wrap.innerHTML = '<p class="oh-muted" style="padding: 12px 0;">No message records in the Messages table for this thread. Latest preview from thread:</p>' +
-          '<div class="inbox-msg inbound"><div class="inbox-msg-header"><span class="inbox-msg-from">Preview</span><span class="inbox-msg-direction-tag">From thread</span></div><div class="inbox-msg-body">' + escapeHtml(preview) + '</div></div>';
+        wrap.innerHTML = '<p class="oh-muted" style="padding: 12px 0;">No message rows linked to this thread in Airtable yet. Thread preview:</p>' +
+          '<div class="inbox-msg inbound"><div class="inbox-msg-header-row"><span class="inbox-msg-from">Thread preview</span></div><div class="inbox-msg-body">' + escapeHtml(preview) + '</div></div>';
       } else {
-        wrap.innerHTML = '<p class="oh-muted" style="padding: 20px;">No messages in this thread yet.</p>';
+        wrap.innerHTML = '<p class="oh-muted" style="padding: 20px;">No messages in this thread yet. Compose below to create a draft.</p>';
       }
       return;
     }
     records.forEach(function(m) {
-      var f = m.fields || {};
-      var dir = (f.direction || '').toLowerCase();
+      var mf = m.fields || {};
+      var dir = (mf.direction || '').toLowerCase();
       var isInbound = dir === 'inbound';
-      var fromVal = isInbound ? (f.recipient_contact_id ? 'Contact' : 'Them') : 'You';
-      var toVal = isInbound ? 'You' : (f.recipient_contact_id ? 'Contact' : 'Them');
-      var dateVal = f.sent_at || f.logged_sent_at || f['Created time'] || '—';
+      var fromVal = isInbound ? (mf.recipient_contact_id ? 'Contact' : 'Them') : 'You';
+      var toVal = isInbound ? 'You' : (mf.recipient_contact_id ? 'Contact' : 'Them');
+      var dateVal = mf.sent_at || mf.logged_sent_at || mf['Created time'] || '—';
       var dateStr = typeof dateVal === 'string' && dateVal.length > 10 ? formatTime(dateVal) : (dateVal || '—');
-      var subject = (f.subject || '').trim() ? f.subject : '';
-      var body = (f.body_merged_preview || f.body_raw_template || '').trim() || 'No content';
+      var subject = (mf.subject || '').trim() ? mf.subject : '';
+      var body = (mf.body_merged_preview || mf.body_raw_template || '').trim() || 'No content';
+      var status = (mf.status || '').trim();
       var dirClass = isInbound ? 'inbound' : 'outbound';
       var card = document.createElement('div');
       card.className = 'inbox-msg ' + dirClass;
@@ -242,6 +454,7 @@
         '<div class="inbox-msg-header-row">' +
           '<span class="inbox-msg-label">To:</span> <span class="inbox-msg-to">' + escapeHtml(toVal) + '</span>' +
         '</div>' +
+        (status ? '<div class="inbox-msg-header-row"><span class="inbox-msg-label">Status:</span> ' + escapeHtml(status) + '</div>' : '') +
         (subject ? '<div class="inbox-msg-subject-row"><span class="inbox-msg-label">Subject:</span> ' + escapeHtml(subject) + '</div>' : '') +
         '<div class="inbox-msg-body">' + escapeHtml(body) + '</div>';
       wrap.appendChild(card);
@@ -252,26 +465,240 @@
     var wrap = qs('#inbox-reading-messages');
     show(qs('#inbox-msg-loading'), true);
     wrap.innerHTML = '';
-
-    function done(records) {
-      var forThread = (records || []).filter(function(m) { return messageBelongsToThread(m, threadId); });
-      renderMessagesFromRecords(forThread);
-    }
-
-    if (allMessagesCache) {
-      done(allMessagesCache);
-      return;
-    }
-    fetch(API + '/messages?pageSize=200')
+    var formula = encodeThreadMessageFormula(threadId);
+    fetch(API + '/messages?pageSize=100&filterByFormula=' + formula)
       .then(function(r) { return r.json(); })
       .then(function(d) {
-        if (d.success && d.records) allMessagesCache = d.records;
-        done(allMessagesCache || []);
+        var recs = (d.success && d.records) ? d.records : [];
+        renderMessagesFromRecords(recs);
       })
       .catch(function() {
         show(qs('#inbox-msg-loading'), false);
         wrap.innerHTML = '<p class="oh-error" style="padding: 20px;">Could not load messages.</p>';
       });
+  }
+
+  function loadTemplatesForCompose() {
+    fetch(API + '/templates?pageSize=100')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var sel = qs('#inbox-compose-template');
+        if (!sel) return;
+        sel.innerHTML = '<option value="">— Select template —</option>';
+        (d.records || []).forEach(function(rec) {
+          var opt = document.createElement('option');
+          opt.value = rec.id;
+          opt.textContent = (rec.fields && rec.fields.template_name) || rec.id;
+          sel.appendChild(opt);
+        });
+      })
+      .catch(function() {});
+  }
+
+  function saveThreadToServer() {
+    if (!selectedThreadId) return;
+    var st = qs('#inbox-thread-status');
+    var sg = qs('#inbox-thread-stage');
+    var nx = qs('#inbox-thread-next-action');
+    var payload = {
+      fields: {
+        thread_status: st ? st.value : undefined,
+        counterparty_stage: sg && sg.value ? sg.value : undefined,
+        next_action: nx && nx.value.trim() ? nx.value.trim() : undefined
+      }
+    };
+    fetch(API + '/threads/' + encodeURIComponent(selectedThreadId), {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (!d.success) {
+          setFeedback(d.error || 'Could not save thread', 'err');
+          return;
+        }
+        if (selectedThread && selectedThread.fields) {
+          selectedThread.fields.thread_status = payload.fields.thread_status;
+          selectedThread.fields.counterparty_stage = payload.fields.counterparty_stage;
+          selectedThread.fields.next_action = payload.fields.next_action;
+        }
+        var idx = threads.findIndex(function(t) { return t.id === selectedThreadId; });
+        if (idx >= 0 && threads[idx].fields) {
+          threads[idx].fields.thread_status = payload.fields.thread_status;
+          threads[idx].fields.counterparty_stage = payload.fields.counterparty_stage;
+          threads[idx].fields.next_action = payload.fields.next_action;
+        }
+        renderThreadList();
+        selectThread(selectedThreadId);
+        setFeedback('Thread saved.', 'ok');
+      })
+      .catch(function(e) {
+        setFeedback(e.message || 'Save failed', 'err');
+      });
+  }
+
+  function applyTemplate() {
+    var templateId = qs('#inbox-compose-template') && qs('#inbox-compose-template').value;
+    if (!templateId || !selectedThreadId || !selectedThread) {
+      setFeedback('Select a template and thread.', 'err');
+      return;
+    }
+    fetch(API + '/templates/' + encodeURIComponent(templateId))
+      .then(function(r) { return r.json(); })
+      .then(function(tRes) {
+        if (!tRes.success || !tRes.record) {
+          setFeedback(tRes.error || 'Template not found', 'err');
+          return;
+        }
+        var tf = tRes.record.fields || {};
+        var tokens = getTokensForSelectedThread();
+        var subject = mergeTokens(tf.subject_template || '', tokens);
+        var body = mergeTokens(tf.body_template || '', tokens);
+        qs('#inbox-compose-subject').value = subject;
+        qs('#inbox-compose-body').value = body;
+        setFeedback('Template merged into subject and body—edit before saving.', 'ok');
+      })
+      .catch(function(e) {
+        setFeedback(e.message || 'Could not load template', 'err');
+      });
+  }
+
+  function buildMessageFields(mode) {
+    var ctx = selectedThread && selectedThread.fields;
+    if (!ctx || !selectedThreadId) return null;
+    var subEl = qs('#inbox-compose-subject');
+    var bodyEl = qs('#inbox-compose-body');
+    var subject = (subEl && subEl.value.trim()) || 'Outbound message';
+    var body = (bodyEl && bodyEl.value.trim()) || '';
+    if (!body.trim()) {
+      setFeedback('Add a message body first.', 'err');
+      return null;
+    }
+    var planId = ctx.Plan && ctx.Plan[0] ? ctx.Plan[0] : '';
+    var dealId = ctx.Deal && ctx.Deal[0] ? ctx.Deal[0] : '';
+    var planTargetId = ctx['Plan Target'] && ctx['Plan Target'][0] ? ctx['Plan Target'][0] : '';
+    var fields = {
+      message_label: mode === 'logged' ? 'Inbox — logged sent' : 'Inbox draft',
+      Thread: [selectedThreadId],
+      subject: subject,
+      body_merged_preview: body,
+      body_raw_template: body,
+      message_type: 'Email',
+      channel: 'Email',
+      direction: 'Outbound'
+    };
+    if (planId) fields.Plan = [planId];
+    if (dealId) fields.Deal = [dealId];
+    if (planTargetId) fields['Plan Target'] = [planTargetId];
+    if (ctx.primary_contact_id && ctx.primary_contact_id[0]) {
+      fields.recipient_contact_id = [ctx.primary_contact_id[0]];
+    }
+    if (mode === 'draft') {
+      fields.status = 'Draft';
+    } else {
+      fields.status = 'Logged as Sent';
+      fields.manual_send_confirmed = true;
+      fields.logged_sent_at = new Date().toISOString();
+    }
+    return fields;
+  }
+
+  function saveDraftMessage() {
+    if (!selectedThreadId) return;
+    var fields = buildMessageFields('draft');
+    if (!fields) return;
+    var url = API + '/messages';
+    var method = 'POST';
+    if (inboxComposingId) {
+      url += '/' + encodeURIComponent(inboxComposingId);
+      method = 'PATCH';
+    }
+    fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(method === 'POST' ? { fields: fields } : { fields: fields })
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (!d.success || !d.record) {
+          setFeedback(d.error || 'Could not save draft', 'err');
+          return;
+        }
+        inboxComposingId = d.record.id;
+        setFeedback('Draft saved. Send from your mail client, then “Mark logged as sent”.', 'ok');
+        loadMessages(selectedThreadId);
+      })
+      .catch(function(e) {
+        setFeedback(e.message || 'Save failed', 'err');
+      });
+  }
+
+  function markLoggedSent() {
+    if (!selectedThreadId) return;
+    if (inboxComposingId) {
+      fetch(API + '/messages/' + encodeURIComponent(inboxComposingId), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: {
+            status: 'Logged as Sent',
+            manual_send_confirmed: true,
+            logged_sent_at: new Date().toISOString()
+          }
+        })
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          if (!d.success) {
+            setFeedback(d.error || 'Update failed', 'err');
+            return;
+          }
+          inboxComposingId = null;
+          clearComposer();
+          setFeedback('Marked as logged sent.', 'ok');
+          loadMessages(selectedThreadId);
+        })
+        .catch(function(e) {
+          setFeedback(e.message || 'Update failed', 'err');
+        });
+      return;
+    }
+    var fields = buildMessageFields('logged');
+    if (!fields) return;
+    fetch(API + '/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: fields })
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (!d.success) {
+          setFeedback(d.error || 'Could not log message', 'err');
+          return;
+        }
+        clearComposer();
+        setFeedback('Logged as sent (new message row).', 'ok');
+        loadMessages(selectedThreadId);
+      })
+      .catch(function(e) {
+        setFeedback(e.message || 'Save failed', 'err');
+      });
+  }
+
+  function copyComposeToClipboard() {
+    var sub = qs('#inbox-compose-subject') && qs('#inbox-compose-subject').value.trim();
+    var body = qs('#inbox-compose-body') && qs('#inbox-compose-body').value.trim();
+    var text = (sub ? 'Subject: ' + sub + '\n\n' : '') + body;
+    if (!text.trim()) {
+      setFeedback('Nothing to copy.', 'err');
+      return;
+    }
+    navigator.clipboard.writeText(text).then(function() {
+      setFeedback('Copied to clipboard.', 'ok');
+    }).catch(function() {
+      setFeedback('Clipboard not available in this context.', 'err');
+    });
   }
 
   function getUrlParams() {
@@ -328,10 +755,10 @@
           selectThread(hash[1]);
         } else if (threads.length > 0 && !hash) {
           if (dealId && brand) {
-            var brandLower = brand.toLowerCase();
+            var brandLower2 = brand.toLowerCase();
             var match = threads.find(function(t) {
               var name = ((t.fields || {}).thread_name || '').toLowerCase();
-              return name.indexOf(brandLower) >= 0;
+              return name.indexOf(brandLower2) >= 0;
             });
             selectThread((match || threads[0]).id);
           } else {
@@ -352,9 +779,15 @@
   if (qs('#inbox-search')) {
     qs('#inbox-search').addEventListener('input', function() { renderThreadList(); });
   }
+  qs('#inbox-save-thread-btn').addEventListener('click', saveThreadToServer);
+  qs('#inbox-apply-template-btn').addEventListener('click', applyTemplate);
+  qs('#inbox-save-draft-btn').addEventListener('click', saveDraftMessage);
+  qs('#inbox-mark-sent-btn').addEventListener('click', markLoggedSent);
+  qs('#inbox-copy-compose-btn').addEventListener('click', copyComposeToClipboard);
 
   loadThreads();
 })();
   </script>
+  <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

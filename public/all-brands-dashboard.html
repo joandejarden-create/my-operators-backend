@@ -46,8 +46,6 @@
         .dashboard-header h1 { color: var(--neutral--100); margin: 0 0 8px 0; font-size: 2rem; font-weight: 700; }
         .dashboard-header p { color: var(--neutral--400); font-size: 0.875rem; }
         .dashboard-title-container { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .deal-capture-logo { height: 32px; }
-        .deal-capture-logo img { height: 100%; max-width: 120px; object-fit: contain; }
         /* Match clause library: no white background anywhere */
         .my-brands-page .filters-section {
             background: var(--neutral--800);
@@ -235,7 +233,7 @@
                     <a href="clause-library.html">📚 Legal Library</a>
                     <a href="/my-brands" class="active">🏷️ My Brands</a>
                     <a href="/brand-development-dashboard">🎯 Brand Development</a>
-                    <a href="brand-library.html">📚 Brand Library</a>
+                    <a href="brand-library.html">📚 Browse brands</a>
                     <a href="partner-directory.html">👥 Partner Directory</a>
                     <a href="#">📋 Platform Resources</a>
                     <a href="#">📊 Reports</a>
@@ -248,9 +246,6 @@
             <div class="dashboard-container">
                 <div class="dashboard-header">
                     <div class="dashboard-title-container">
-                        <div class="deal-capture-logo">
-                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-                        </div>
                         <h1>My Brands</h1>
                     </div>
                     <p>Browse and manage your brand portfolio in one place. Filter by parent company, chain scale, brand model, or status, then use View/Edit to open the full Brand Setup form for any brand.</p>
@@ -312,7 +307,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="loading-text-main">Loading brands...</div>
+                                    <div class="loading-text-main">Loading Brands…</div>
                                     <div class="loading-text-time">Please wait</div>
                                 </div>
                             </div>
@@ -646,5 +641,7 @@
             loadBrands();
         })();
     </script>
+
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

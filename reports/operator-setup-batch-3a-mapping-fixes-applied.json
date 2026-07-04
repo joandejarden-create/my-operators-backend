@@ -1,0 +1,148 @@
+{
+  "report": "operator-setup-batch-3a-mapping-fixes-applied",
+  "generatedAt": "2026-06-02",
+  "scope": "Batch 3A only",
+  "filesChanged": [
+    "api/third-party-operator-intake.js",
+    "api/lib/operator-setup-new-base-build-sheet-rows.json",
+    "api/lib/operator-setup-new-base-read.js",
+    "public/third-party-operator-setup-new-two.html",
+    "scripts/validate-operator-setup-batch-3a.mjs"
+  ],
+  "exactFieldsFixed": {
+    "canonicalLogo": [
+      "companyLogo"
+    ],
+    "narrativeMappings": [
+      "companyTagline",
+      "missionStatement",
+      "companyHistory",
+      "differentiators",
+      "managementPhilosophy"
+    ],
+    "uiInputAdded": [
+      "brand_conversion_project_count"
+    ]
+  },
+  "airtableTablesFieldsUsed": [
+    {
+      "table": "Operator Setup - Profile & Positioning",
+      "field": "companyLogo"
+    },
+    {
+      "table": "Operator Setup - Profile & Positioning",
+      "field": "companyTagline"
+    },
+    {
+      "table": "Operator Setup - Profile & Positioning",
+      "field": "missionStatement"
+    },
+    {
+      "table": "Operator Setup - Profile & Positioning",
+      "field": "companyHistory"
+    },
+    {
+      "table": "Operator Setup - Profile & Positioning",
+      "field": "differentiators"
+    },
+    {
+      "table": "Operator Setup - Profile & Positioning",
+      "field": "managementPhilosophy"
+    },
+    {
+      "table": "Operator Setup - Profile & Positioning",
+      "field": "brand_conversion_project_count"
+    }
+  ],
+  "uiKeys": [
+    "companyLogo",
+    "companyTagline",
+    "missionStatement",
+    "companyHistory",
+    "differentiators",
+    "managementPhilosophy",
+    "brand_conversion_project_count"
+  ],
+  "payloadKeys": [
+    "companyLogo",
+    "companyTagline",
+    "missionStatement",
+    "companyHistory",
+    "differentiators",
+    "managementPhilosophy",
+    "brand_conversion_project_count"
+  ],
+  "apiWriteMappingsChanged": [
+    {
+      "file": "api/third-party-operator-intake.js",
+      "change": "Mirror multipart companyLogo upload into canonical body before writeOperatorSetupToNewBase()."
+    },
+    {
+      "file": "api/lib/operator-setup-new-base-build-sheet-rows.json",
+      "change": "Added canonical mapping rows for 5 narrative fields plus companyLogo."
+    }
+  ],
+  "readbackKeysConfirmed": {
+    "prefill": [
+      "companyTagline",
+      "missionStatement",
+      "companyHistory",
+      "differentiators",
+      "managementPhilosophy",
+      "companyLogo"
+    ],
+    "detailFields": [
+      "brand_conversion_project_count",
+      "Company History",
+      "Differentiators",
+      "Management Philosophy"
+    ],
+    "readCompatibilityFallbacksKept": [
+      "companyLogo || Company Logo"
+    ]
+  },
+  "downstreamPagesAffected": [
+    "My Operator intake/save",
+    "Operator detail API",
+    "Operator Explorer detail",
+    "Operator list logo readback consumers"
+  ],
+  "testsRun": [
+    {
+      "name": "ReadLints modified files",
+      "result": "pass"
+    },
+    {
+      "name": "node --check modified JS files",
+      "result": "pass"
+    },
+    {
+      "name": "Fresh-runtime focused API validation",
+      "command": "node scripts/validate-operator-setup-batch-3a.mjs",
+      "result": "pass",
+      "outputFile": "reports/operator-setup-batch-3a-validation-output.json"
+    }
+  ],
+  "testResults": {
+    "saveMultipartLogoNarratives": "pass",
+    "saveCanonicalLogoPayload": "pass",
+    "detailReadPathNewBase": "pass",
+    "narrativeRoundtripPrefill": "pass",
+    "brandConversionProjectCountReadback": "pass",
+    "logoReadbackPrefill": "pass",
+    "savedRecordExplorerVisibilityNoMock": "pass",
+    "savedRecordListLogoReadback": "pass"
+  },
+  "testsNotRun": [
+    {
+      "name": "Browser UI automation for visual placement of new brand_conversion_project_count control",
+      "reason": "Batch 3A scope validated through runtime API contract checks."
+    }
+  ],
+  "remainingRisks": [
+    "Multipart upload logo persistence depends on Airtable fetching a publicly reachable asset URL.",
+    "Stale local server processes can mask newly deployed code unless restarted.",
+    "Batch 3B mapping issues remain intentionally out of scope."
+  ],
+  "recommendedCommitMessage": "batch 3a: add canonical logo and narrative mappings with focused runtime validation"
+}

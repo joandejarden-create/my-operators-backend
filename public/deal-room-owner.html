@@ -140,12 +140,114 @@
     .btn-action:hover { border-color: rgba(108, 114, 255, 0.7); }
     ul.file-list { list-style: none; padding-left: 0; margin: 0; }
     ul.file-list li { margin: 6px 0; }
+
+    .gate-strip {
+      font-size: 12px;
+      color: var(--neutral--500);
+      line-height: 1.5;
+      padding: 10px 12px;
+      background: rgba(8, 15, 37, 0.45);
+      border: 1px solid rgba(55, 68, 107, 0.7);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .gate-strip strong { color: var(--neutral--100); }
+    .explorer-wrap {
+      display: flex;
+      min-height: 380px;
+      border: 1px solid rgba(55, 68, 107, 0.9);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(8, 15, 37, 0.25);
+    }
+    .explorer-tree {
+      width: 240px;
+      flex-shrink: 0;
+      background: rgba(16, 25, 53, 0.55);
+      border-right: 1px solid rgba(55, 68, 107, 0.85);
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .explorer-project {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--neutral--100);
+      padding: 6px 8px 10px;
+      border-bottom: 1px solid rgba(55, 68, 107, 0.6);
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+    .folder-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      font-size: 13px;
+      color: var(--neutral--400);
+      user-select: none;
+    }
+    .folder-row:hover { background: rgba(108, 114, 255, 0.08); border-color: rgba(55, 68, 107, 0.5); }
+    .folder-row.selected {
+      background: rgba(108, 114, 255, 0.2);
+      border-color: rgba(108, 114, 255, 0.45);
+      color: var(--neutral--100);
+    }
+    .folder-row.drag-over {
+      outline: 2px dashed var(--accent--primary-1);
+      outline-offset: 2px;
+      background: rgba(108, 114, 255, 0.12);
+    }
+    .folder-icon { font-size: 16px; line-height: 1.2; flex-shrink: 0; }
+    .folder-meta { flex: 1; min-width: 0; }
+    .folder-label { font-weight: 700; color: inherit; }
+    .folder-hint { font-size: 11px; color: var(--neutral--500); margin-top: 2px; line-height: 1.35; }
+    .explorer-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .file-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      align-items: flex-end;
+      padding: 12px;
+      border-bottom: 1px solid rgba(55, 68, 107, 0.7);
+      background: rgba(16, 25, 53, 0.25);
+    }
+    .file-toolbar .field { min-width: 140px; }
+    .file-toolbar label { display: block; margin-bottom: 4px; }
+    .file-surface {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      min-height: 200px;
+    }
+    .file-surface.drag-over {
+      background: rgba(108, 114, 255, 0.06);
+      outline: 2px dashed rgba(108, 114, 255, 0.35);
+      outline-offset: -6px;
+    }
+    .doc-row[draggable="true"] { cursor: grab; }
+    .doc-row[draggable="true"]:active { cursor: grabbing; }
+    .doc-actions { white-space: nowrap; }
+    .link-danger {
+      background: none;
+      border: none;
+      color: var(--system--red-400);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: underline;
+      padding: 0 4px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Deal Room (Owner)</h1>
-    <p class="subtitle">Pick a deal from the list (or use `dealId`) to manage NDA status/actions and create/upload Deal Room documents.</p>
+    <h1>Deal Room</h1>
+    <p class="subtitle">Owner view: pick a deal, then use Owner / Brand / Operator / Shared folders like File Explorer. Drag files onto a folder to upload; drag rows between folders to move.</p>
 
     <div id="dealRoomOwnerBanner" class="banner info" role="status" aria-live="polite"></div>
 
@@ -154,9 +256,9 @@
         <div class="grow">
           <label for="drOwnerDealSelect">Deals</label>
           <select id="drOwnerDealSelect">
-            <option value="">Loading deals...</option>
+            <option value="">Loading Deals…</option>
           </select>
-          <div class="small" style="margin-top:6px;">Select a deal name, then click Load.</div>
+          <div class="small" style="margin-top:6px;">Changing the deal in the list loads it automatically. Use Load if you only edited the Deal ID field.</div>
         </div>
       </div>
       <div class="row">
@@ -171,7 +273,7 @@
       </div>
     </div>
 
-    <div id="ownerContent" style="display:none;">
+    <div id="ownerContent">
       <div class="panel">
         <h2 style="color: var(--neutral--100); margin: 0 0 10px 0; font-size: 16px;">Deal Room Settings</h2>
         <div class="row">
@@ -213,7 +315,6 @@
                 <th>NDA Status</th>
                 <th>Deal Room Access</th>
                 <th>NDA Signed File</th>
-                <th>Proposal</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -242,70 +343,126 @@
       </div>
 
       <div class="panel">
-        <h2 style="color: var(--neutral--100); margin: 0 0 10px 0; font-size: 16px;">Deal Room Documents</h2>
-        <div class="table-wrap">
-          <table class="deals-table">
-            <thead>
-              <tr>
-                <th>Document</th>
-                <th>Category</th>
-                <th>Confidentiality</th>
-                <th>File</th>
-              </tr>
-            </thead>
-            <tbody id="drOwnerDocsTableBody"></tbody>
-          </table>
-        </div>
-        <div id="drOwnerDocsEmpty" class="small" style="margin-top: 12px; display:none;">No documents yet.</div>
+        <h2 style="color: var(--neutral--100); margin: 0 0 8px 0; font-size: 16px;">Deal Room Documents</h2>
+        <p class="small" style="margin: 0 0 12px 0;">Explorer-style folders for this deal. Drag files from your computer onto a folder (or the file list) to upload. Drag a document row onto another folder to move it.</p>
 
-        <div style="height: 14px;"></div>
-        <div class="row" style="align-items:flex-end;">
-          <div style="flex: 1; min-width: 230px;">
-            <label for="drOwnerDocName">Document Name</label>
-            <input id="drOwnerDocName" type="text" placeholder="e.g. Financial Summary">
-          </div>
-          <div style="min-width: 190px;">
-            <label for="drOwnerDocCategory">Category</label>
-            <select id="drOwnerDocCategory">
-              <option value="">Select</option>
-              <option value="Financials">Financials</option>
-              <option value="Plans">Plans</option>
-              <option value="Photos">Photos</option>
-              <option value="PIP">PIP</option>
-              <option value="Legal">Legal</option>
-              <option value="Market">Market</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div style="min-width: 200px;">
-            <label for="drOwnerDocConf">Confidentiality</label>
-            <select id="drOwnerDocConf">
-              <option value="">Select</option>
-              <option value="Public Teaser">Public Teaser</option>
-              <option value="NDA Only">NDA Only</option>
-            </select>
-          </div>
+        <div class="gate-strip" role="note">
+          <strong>Stage gates (brand view):</strong>
+          Shared + Brand folders only — Owner and Operator folders are never shown to brands.
+          <strong>Public Teaser</strong> files are visible to the brand immediately.
+          <strong>NDA Only</strong> files unlock when NDA is <em>Signed - Owner Confirmed</em> and <em>Deal Room Access</em> is <em>Granted</em>.
+          (Operator experience can mirror this when operator access is wired.)
         </div>
 
-        <div style="height: 10px;"></div>
-        <div class="row" style="align-items:flex-end;">
-          <div style="flex: 1; min-width: 260px;">
-            <label for="drOwnerDocUrl">Public URL</label>
-            <input id="drOwnerDocUrl" type="url" placeholder="https://example.com/doc.pdf">
-          </div>
-          <div style="min-width: 220px;">
-            <label for="drOwnerDocFilename">Filename</label>
-            <input id="drOwnerDocFilename" type="text" placeholder="document.pdf" value="document.pdf">
-          </div>
-          <div style="min-width: 180px;">
-            <button id="drOwnerCreateDocBtn" class="primary" style="width:100%;">Create Document</button>
+        <div class="explorer-wrap">
+          <div class="explorer-tree" id="drExplorerTree" aria-label="Party folders"></div>
+          <div class="explorer-main">
+            <div class="file-toolbar">
+              <div class="field" style="min-width:160px;">
+                <label class="small" for="drExplorerConf">Default confidentiality for new uploads</label>
+                <select id="drExplorerConf">
+                  <option value="NDA Only">NDA Only</option>
+                  <option value="Public Teaser">Public Teaser</option>
+                </select>
+              </div>
+              <div class="field" style="min-width:160px;">
+                <label class="small" for="drExplorerCategory">Default category</label>
+                <select id="drExplorerCategory">
+                  <option value="Other">Other</option>
+                  <option value="Financials">Financials</option>
+                  <option value="Plans">Plans</option>
+                  <option value="Photos">Photos</option>
+                  <option value="PIP">PIP</option>
+                  <option value="Legal">Legal</option>
+                  <option value="Market">Market</option>
+                </select>
+              </div>
+              <div class="small" style="flex:1; min-width:200px; padding-bottom:2px;">
+                Selected folder: <span id="drExplorerSelectedLabel" style="font-weight:800;color:var(--neutral--100);">—</span>
+              </div>
+            </div>
+            <div class="file-surface" id="drExplorerFileSurface" tabindex="0">
+              <div class="table-wrap">
+                <table class="deals-table" style="margin:0;">
+                  <thead>
+                    <tr>
+                      <th>Document</th>
+                      <th>Folder</th>
+                      <th>Category</th>
+                      <th>Confidentiality</th>
+                      <th>File</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="drExplorerFileBody"></tbody>
+                </table>
+              </div>
+              <div id="drExplorerFilesEmpty" class="small" style="margin-top: 14px; display:none;">No files in this folder. Drag documents here or onto a folder in the tree.</div>
+            </div>
           </div>
         </div>
-        <div id="drOwnerCreateDocStatus" class="small" style="margin-top: 10px;" aria-live="polite"></div>
+
+        <details style="margin-top:14px; padding:12px; background: rgba(16, 25, 53, 0.35); border-radius: 10px; border: 1px solid rgba(55, 68, 107, 0.9);">
+          <summary style="cursor:pointer; color: var(--neutral--100); font-weight: 800;">Add document from public URL</summary>
+          <div style="margin-top:12px;">
+            <div class="row" style="align-items:flex-end;">
+              <div style="flex: 1; min-width: 230px;">
+                <label for="drOwnerDocName">Document Name</label>
+                <input id="drOwnerDocName" type="text" placeholder="e.g. Financial Summary">
+              </div>
+              <div style="min-width: 190px;">
+                <label for="drOwnerDocCategory">Category</label>
+                <select id="drOwnerDocCategory">
+                  <option value="">Select</option>
+                  <option value="Financials">Financials</option>
+                  <option value="Plans">Plans</option>
+                  <option value="Photos">Photos</option>
+                  <option value="PIP">PIP</option>
+                  <option value="Legal">Legal</option>
+                  <option value="Market">Market</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div style="min-width: 200px;">
+                <label for="drOwnerDocConf">Confidentiality</label>
+                <select id="drOwnerDocConf">
+                  <option value="">Select</option>
+                  <option value="Public Teaser">Public Teaser</option>
+                  <option value="NDA Only">NDA Only</option>
+                </select>
+              </div>
+              <div style="min-width: 180px;">
+                <label for="drOwnerDocPartyFolder">Party folder</label>
+                <select id="drOwnerDocPartyFolder">
+                  <option value="Shared">Shared</option>
+                  <option value="Owner">Owner</option>
+                  <option value="Brand">Brand</option>
+                  <option value="Operator">Operator</option>
+                </select>
+              </div>
+            </div>
+            <div style="height: 10px;"></div>
+            <div class="row" style="align-items:flex-end;">
+              <div style="flex: 1; min-width: 260px;">
+                <label for="drOwnerDocUrl">Public URL</label>
+                <input id="drOwnerDocUrl" type="url" placeholder="https://example.com/doc.pdf">
+              </div>
+              <div style="min-width: 220px;">
+                <label for="drOwnerDocFilename">Filename</label>
+                <input id="drOwnerDocFilename" type="text" placeholder="document.pdf" value="document.pdf">
+              </div>
+              <div style="min-width: 180px;">
+                <button id="drOwnerCreateDocBtn" class="primary" style="width:100%;">Create Document</button>
+              </div>
+            </div>
+            <div id="drOwnerCreateDocStatus" class="small" style="margin-top: 10px;" aria-live="polite"></div>
+          </div>
+        </details>
       </div>
     </div>
   </div>
 
+  <script src="/js/dealality-memberstack-auth.js"></script>
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search || "");
@@ -316,7 +473,6 @@
       var selectedBdrId = null;
 
       var banner = document.getElementById("dealRoomOwnerBanner");
-      var ownerContent = document.getElementById("ownerContent");
 
       var dealIdInput = document.getElementById("drOwnerDealIdInput");
       var dealSelect = document.getElementById("drOwnerDealSelect");
@@ -338,15 +494,31 @@
       var signedFilename = document.getElementById("drOwnerSignedFilename");
       var attachSignedStatus = document.getElementById("drOwnerAttachSignedStatus");
 
-      var docsTableBody = document.getElementById("drOwnerDocsTableBody");
-      var docsEmpty = document.getElementById("drOwnerDocsEmpty");
+      var explorerTree = document.getElementById("drExplorerTree");
+      var explorerFileBody = document.getElementById("drExplorerFileBody");
+      var explorerFilesEmpty = document.getElementById("drExplorerFilesEmpty");
+      var explorerFileSurface = document.getElementById("drExplorerFileSurface");
+      var explorerSelectedLabel = document.getElementById("drExplorerSelectedLabel");
+      var explorerConf = document.getElementById("drExplorerConf");
+      var explorerCategory = document.getElementById("drExplorerCategory");
       var docName = document.getElementById("drOwnerDocName");
       var docCategory = document.getElementById("drOwnerDocCategory");
       var docConf = document.getElementById("drOwnerDocConf");
+      var docPartyFolder = document.getElementById("drOwnerDocPartyFolder");
       var docUrl = document.getElementById("drOwnerDocUrl");
       var docFilename = document.getElementById("drOwnerDocFilename");
       var createDocBtn = document.getElementById("drOwnerCreateDocBtn");
       var createDocStatus = document.getElementById("drOwnerCreateDocStatus");
+
+      var FOLDER_DEFS = [
+        { key: "Owner", label: "Owner", icon: "\uD83D\uDD12", hint: "Internal — not visible to brand or operator." },
+        { key: "Brand", label: "Brand", icon: "\uD83C\uDFE2", hint: "For the brand; teaser vs NDA gate still applies." },
+        { key: "Operator", label: "Operator", icon: "\u2699\uFE0F", hint: "For operator diligence (owner-only until operator portal ships)." },
+        { key: "Shared", label: "Shared", icon: "\uD83D\uDD17", hint: "Collaboration area; teaser vs NDA gate applies." }
+      ];
+      var selectedExplorerFolder = "Shared";
+      var explorerDocs = [];
+      var explorerDealTitle = "";
 
       function setBanner(type, msg) {
         if (!banner) return;
@@ -360,10 +532,6 @@
         banner.textContent = msg;
       }
 
-      function setOwnerContentLoaded(loaded) {
-        ownerContent.style.display = loaded ? "block" : "none";
-      }
-
       function setSelectedBdr(id) {
         selectedBdrId = id || null;
         if (attachSignedStatus) attachSignedStatus.textContent = selectedBdrId ? "Selected." : "";
@@ -372,6 +540,259 @@
       function safeText(v) {
         if (v === undefined || v === null) return "";
         return String(v);
+      }
+
+      function normalizePartyFolderKey(v) {
+        var s = safeText(v).trim();
+        if (!s) return "Shared";
+        var ok = ["Owner", "Brand", "Operator", "Shared"];
+        return ok.indexOf(s) !== -1 ? s : "Shared";
+      }
+
+      function getFolderDef(key) {
+        var k = normalizePartyFolderKey(key);
+        for (var i = 0; i < FOLDER_DEFS.length; i++) {
+          if (FOLDER_DEFS[i].key === k) return FOLDER_DEFS[i];
+        }
+        return FOLDER_DEFS[3];
+      }
+
+      function renderExplorerTree() {
+        if (!explorerTree) return;
+        explorerTree.innerHTML = "";
+        var proj = document.createElement("div");
+        proj.className = "explorer-project";
+        proj.textContent = explorerDealTitle || "Project";
+        explorerTree.appendChild(proj);
+        FOLDER_DEFS.forEach(function (fd) {
+          var row = document.createElement("div");
+          row.className = "folder-row" + (selectedExplorerFolder === fd.key ? " selected" : "");
+          row.setAttribute("data-folder-key", fd.key);
+          row.setAttribute("role", "button");
+          row.setAttribute("tabindex", "0");
+          row.innerHTML =
+            '<span class="folder-icon" aria-hidden="true">' + fd.icon + '</span>' +
+            '<div class="folder-meta"><div class="folder-label">' + fd.label + '</div>' +
+            '<div class="folder-hint">' + fd.hint + '</div></div>';
+          row.addEventListener("click", function () {
+            selectedExplorerFolder = fd.key;
+            renderExplorerTree();
+            renderExplorerFiles();
+          });
+          row.addEventListener("keydown", function (ev) {
+            if (ev.key === "Enter" || ev.key === " ") {
+              ev.preventDefault();
+              selectedExplorerFolder = fd.key;
+              renderExplorerTree();
+              renderExplorerFiles();
+            }
+          });
+          bindFolderDropTarget(row, fd.key);
+          explorerTree.appendChild(row);
+        });
+        if (explorerSelectedLabel) {
+          var def = getFolderDef(selectedExplorerFolder);
+          explorerSelectedLabel.textContent = def.label;
+        }
+      }
+
+      function renderExplorerFiles() {
+        if (!explorerFileBody) return;
+        explorerFileBody.innerHTML = "";
+        var folder = normalizePartyFolderKey(selectedExplorerFolder);
+        var list = explorerDocs.filter(function (d) {
+          return normalizePartyFolderKey(d.partyFolder) === folder;
+        });
+        if (explorerFilesEmpty) explorerFilesEmpty.style.display = list.length ? "none" : "block";
+
+        list.forEach(function (d) {
+          var tr = document.createElement("tr");
+          tr.className = "doc-row";
+          tr.setAttribute("draggable", "true");
+          tr.setAttribute("data-doc-id", d.id);
+          var fileArr = d.file || [];
+          var file = fileArr && fileArr[0] ? fileArr[0] : null;
+          var docFileLink = file ? renderFileLink(file) : "—";
+          var pf = normalizePartyFolderKey(d.partyFolder);
+          tr.innerHTML =
+            '<td>' + safeText(d.documentName || "—") + '</td>' +
+            '<td>' + safeText(pf) + '</td>' +
+            '<td>' + safeText(d.category || "—") + '</td>' +
+            '<td>' + safeText(d.confidentiality || "—") + '</td>' +
+            '<td>' + docFileLink + '</td>' +
+            '<td class="doc-actions"><button type="button" class="link-danger" data-doc-delete="' + safeText(d.id) + '">Remove</button></td>';
+          tr.addEventListener("dragstart", function (e) {
+            e.dataTransfer.setData("application/x-deal-room-doc-id", d.id);
+            e.dataTransfer.effectAllowed = "move";
+          });
+          explorerFileBody.appendChild(tr);
+        });
+
+        explorerFileBody.querySelectorAll("button[data-doc-delete]").forEach(function (btn) {
+          btn.addEventListener("click", function (ev) {
+            ev.preventDefault();
+            var id = btn.getAttribute("data-doc-delete");
+            if (!id || !window.confirm("Remove this document from the deal room?")) return;
+            fetch("/api/deal-room-documents/" + encodeURIComponent(id), { method: "DELETE" })
+              .then(function (r) { return r.json(); })
+              .then(function (res) {
+                if (res.success) loadDealRoom();
+                else setBanner("error", res.error || "Delete failed");
+              })
+              .catch(function (err) {
+                setBanner("error", err && err.message ? err.message : "Delete failed");
+              });
+          });
+        });
+      }
+
+      function bindFolderDropTarget(el, folderKey) {
+        if (!el) return;
+        el.addEventListener("dragenter", function (e) {
+          e.preventDefault();
+          el.classList.add("drag-over");
+        });
+        el.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+        });
+        el.addEventListener("dragleave", function () {
+          el.classList.remove("drag-over");
+        });
+        el.addEventListener("drop", function (e) {
+          e.preventDefault();
+          el.classList.remove("drag-over");
+          var internalId = e.dataTransfer.getData("application/x-deal-room-doc-id");
+          if (internalId) {
+            moveDocumentToFolder(internalId, folderKey);
+            return;
+          }
+          if (e.dataTransfer.files && e.dataTransfer.files.length) {
+            uploadFilesToFolder(folderKey, e.dataTransfer.files);
+          }
+        });
+      }
+
+      function bindFileSurfaceDrop() {
+        if (!explorerFileSurface) return;
+        explorerFileSurface.addEventListener("dragenter", function (e) {
+          e.preventDefault();
+          explorerFileSurface.classList.add("drag-over");
+        });
+        explorerFileSurface.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = e.dataTransfer.types.indexOf("Files") !== -1 ? "copy" : "move";
+        });
+        explorerFileSurface.addEventListener("dragleave", function (e) {
+          if (e.target === explorerFileSurface) explorerFileSurface.classList.remove("drag-over");
+        });
+        explorerFileSurface.addEventListener("drop", function (e) {
+          e.preventDefault();
+          explorerFileSurface.classList.remove("drag-over");
+          var internalId = e.dataTransfer.getData("application/x-deal-room-doc-id");
+          if (internalId) {
+            moveDocumentToFolder(internalId, selectedExplorerFolder);
+            return;
+          }
+          if (e.dataTransfer.files && e.dataTransfer.files.length) {
+            uploadFilesToFolder(selectedExplorerFolder, e.dataTransfer.files);
+          }
+        });
+      }
+
+      function moveDocumentToFolder(docId, folderKey) {
+        var fk = normalizePartyFolderKey(folderKey);
+        setBanner("info", "Moving document…");
+        fetch("/api/deal-room-documents/" + encodeURIComponent(docId), {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ partyFolder: fk })
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (res) {
+            if (res.success) {
+              loadDealRoom();
+              setBanner("success", "Moved to " + fk + ".");
+            } else {
+              setBanner("error", res.error || "Move failed");
+            }
+          })
+          .catch(function (err) {
+            setBanner("error", err && err.message ? err.message : "Move failed");
+          });
+      }
+
+      function showNoProjectShell() {
+        explorerDealTitle = "Select a deal";
+        explorerDocs = [];
+        if (bdrTableBody) bdrTableBody.innerHTML = "";
+        if (bdrEmpty) bdrEmpty.style.display = "block";
+        selectedBdrId = null;
+        if (ndaTemplateFilesUl) ndaTemplateFilesUl.innerHTML = "";
+        if (ndaTemplateEmpty) ndaTemplateEmpty.style.display = "block";
+        if (dealRoomEnabledToggle) dealRoomEnabledToggle.checked = false;
+        if (dealRoomEnabledText) dealRoomEnabledText.textContent = "—";
+        renderExplorerTree();
+        renderExplorerFiles();
+      }
+
+      function syncDealIdToUrl() {
+        if (!dealId || !dealId.startsWith("rec")) return;
+        try {
+          var u = new URL(window.location.href);
+          u.searchParams.set("dealId", dealId);
+          window.history.replaceState({}, "", u.toString());
+        } catch (e) {}
+      }
+
+      function uploadFilesToFolder(folderKey, fileList) {
+        if (!dealId) {
+          setBanner("info", "Select a deal before uploading files.");
+          return;
+        }
+        var fk = normalizePartyFolderKey(folderKey);
+        var conf = explorerConf && explorerConf.value ? explorerConf.value : "NDA Only";
+        var cat = explorerCategory && explorerCategory.value ? explorerCategory.value : "Other";
+        var files = Array.prototype.slice.call(fileList || []);
+        if (!files.length) return;
+
+        setBanner("info", "Uploading " + files.length + " file(s)…");
+        (async function () {
+          try {
+            for (var i = 0; i < files.length; i++) {
+              var file = files[i];
+              var fd = new FormData();
+              fd.append("file", file);
+              var upRes = await fetch("/api/deal-room-documents/upload/" + encodeURIComponent(dealId), {
+                method: "POST",
+                body: fd
+              }).then(function (r) { return r.json(); });
+              if (!upRes.success) throw new Error(upRes.error || "Upload failed");
+
+              var baseName = file.name.replace(/\.[^/.]+$/, "") || file.name;
+              var createBody = {
+                dealId: dealId,
+                documentName: baseName,
+                partyFolder: fk,
+                confidentiality: conf,
+                category: cat,
+                file: [{ url: upRes.file.url, filename: upRes.file.filename }],
+                uploadedBy: "Owner"
+              };
+              var cr = await fetch("/api/deal-room-documents", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(createBody)
+              }).then(function (r) { return r.json(); });
+              if (!cr.success) throw new Error(cr.error || "Create document failed");
+            }
+            await loadDealRoom();
+            setBanner("success", "Upload complete.");
+            setTimeout(function () { setBanner("", ""); }, 2000);
+          } catch (err) {
+            setBanner("error", err && err.message ? err.message : "Upload failed");
+          }
+        })();
       }
 
       function dealLabel(d) {
@@ -388,9 +809,9 @@
 
       async function loadDealOptions() {
         if (!dealSelect) return;
-        dealSelect.innerHTML = '<option value="">Loading deals...</option>';
+        dealSelect.innerHTML = '<option value="">Loading Deals…</option>';
         try {
-          var res = await fetch("/api/my-deals").then(function (r) { return r.json(); });
+          var res = await window.DealalityMemberstackAuth.fetchMyDealsList("/api/my-deals").then(function (r) { return r.json(); });
           var deals = Array.isArray(res && res.deals) ? res.deals.slice() : [];
           deals.sort(function (a, b) {
             return dealLabel(a).localeCompare(dealLabel(b));
@@ -398,6 +819,7 @@
 
           if (!deals.length) {
             dealSelect.innerHTML = '<option value="">No deals found</option>';
+            showNoProjectShell();
             return;
           }
 
@@ -411,14 +833,25 @@
 
           if (dealId) {
             dealSelect.value = dealId;
+            if (dealSelect.value !== dealId && dealIdInput) {
+              dealIdInput.value = dealId;
+            }
           } else {
             dealSelect.selectedIndex = 1;
-            dealId = dealSelect.value || "";
+            dealId = (dealSelect.value || "").trim();
             if (dealIdInput) dealIdInput.value = dealId;
+          }
+          if (dealId && dealId.startsWith("rec")) {
+            try { localStorage.setItem("dealRoomOwnerLastDealId", dealId); } catch (e) {}
+            syncDealIdToUrl();
+            loadDealRoom();
+          } else {
+            showNoProjectShell();
           }
         } catch (err) {
           dealSelect.innerHTML = '<option value="">Failed to load deals</option>';
           setBanner("error", "Could not load deals list. You can still paste a dealId manually.");
+          showNoProjectShell();
         }
       }
 
@@ -430,7 +863,8 @@
 
       async function loadDealRoom() {
         if (!dealId || !dealId.startsWith("rec")) {
-          setBanner("error", "Enter a valid `dealId` (Airtable record like recXXXX).");
+          setBanner("info", "Choose a deal from the list or paste a valid Deal ID (rec…).");
+          showNoProjectShell();
           return;
         }
 
@@ -443,6 +877,12 @@
           ]);
 
           var fields = (dealRes.deal && dealRes.deal.fields) ? dealRes.deal.fields : {};
+          var norm = dealRes.normalized || {};
+          explorerDealTitle = (norm.projectName && norm.projectName !== "—") ? norm.projectName : (fields["Project Name"] || fields["Property Name"] || fields["Name"] || dealId);
+          if (dealSelect && dealSelect.value === dealId) {
+            var opt = dealSelect.options[dealSelect.selectedIndex];
+            if (opt && opt.textContent && opt.textContent.trim()) explorerDealTitle = opt.textContent.trim();
+          }
 
           // Deal-level settings
           var drEnabled = !!fields["Deal Room Enabled"];
@@ -504,16 +944,11 @@
               var signedFiles = b.ndaSignedFile || [];
               var signed = signedFiles && signedFiles[0] ? signedFiles[0] : null;
               var signedLink = signed ? renderFileLink(signed) : "—";
-              var proposalStatus = (b.proposal && b.proposal.proposalStatus) ? b.proposal.proposalStatus : "";
-              var proposalLink = '<a class="btn-link" href="/brand-deal-request.html?requestId=' + encodeURIComponent(b.id) + '" target="_blank" rel="noopener">Submit Proposal</a>';
-              if (proposalStatus === "Submitted") proposalLink = '<span class="small" style="font-weight:800;color: var(--system--green-300);">Submitted</span>';
-
               tr.innerHTML =
                 '<td>' + safeText(b.brandName || "—") + '</td>' +
                 '<td>' + safeText(b.ndaStatus || "") + '</td>' +
                 '<td>' + safeText(b.dealRoomAccess || "") + '</td>' +
                 '<td>' + signedLink + '</td>' +
-                '<td>' + proposalLink + '</td>' +
                 '<td>' +
                   '<button type="button" class="btn-action" data-action="sendNda" data-bdr-id="' + safeText(b.id) + '">Send NDA</button>' +
                   '<button type="button" class="btn-action" data-action="markSigned" data-bdr-id="' + safeText(b.id) + '">Mark Signed</button>' +
@@ -529,29 +964,14 @@
             setSelectedBdr(null);
           }
 
-          // docs table
-          var docs = docsRes.documents || [];
-          docsTableBody.innerHTML = "";
-          docsEmpty.style.display = docs.length ? "none" : "block";
-          docs.forEach(function (d) {
-            var tr = document.createElement("tr");
-            var fileArr = d.file || [];
-            var file = fileArr && fileArr[0] ? fileArr[0] : null;
-            var docFileLink = file ? renderFileLink(file) : "—";
-            tr.innerHTML = '<td>' + safeText(d.documentName || "—") + '</td>' +
-              '<td>' + safeText(d.category || "—") + '</td>' +
-              '<td>' + safeText(d.confidentiality || "—") + '</td>' +
-              '<td>' + docFileLink + '</td>';
-            docsTableBody.appendChild(tr);
-          });
+          explorerDocs = docsRes.documents || [];
+          renderExplorerTree();
+          renderExplorerFiles();
 
-          setOwnerContentLoaded(true);
-          setBanner("success", "Loaded Deal Room data.");
+          setBanner("success", "Loaded Deal Room.");
           setTimeout(function () { setBanner("", ""); }, 1500);
         } catch (err) {
-          setOwnerContentLoaded(false);
           setBanner("error", "Failed to load: " + (err && err.message ? err.message : "unknown error"));
-          throw err;
         }
       }
 
@@ -674,6 +1094,7 @@
         if (!url) { createDocStatus.textContent = "Enter public URL."; setBanner("error", "Enter public URL."); return; }
 
         createDocStatus.textContent = "Creating…";
+        var pf = docPartyFolder && docPartyFolder.value ? docPartyFolder.value : "Shared";
         fetch("/api/deal-room-documents", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -682,6 +1103,7 @@
             documentName: name,
             category: cat || undefined,
             confidentiality: conf || undefined,
+            partyFolder: pf,
             file: [{ url: url, filename: fn }],
             uploadedBy: "Owner"
           })
@@ -716,32 +1138,30 @@
         if (dealIdInput) dealIdInput.value = dealId;
         if (dealSelect && dealSelect.value !== dealId) dealSelect.value = dealId;
         try { localStorage.setItem("dealRoomOwnerLastDealId", dealId); } catch (e) {}
-        // Keep dealId in URL for easy reload
-        try {
-          var u = new URL(window.location.href);
-          u.searchParams.set("dealId", dealId);
-          window.history.replaceState({}, "", u.toString());
-        } catch (e) {}
+        syncDealIdToUrl();
         loadDealRoom();
       });
 
       if (dealSelect) {
         dealSelect.addEventListener("change", function () {
           var nextId = (dealSelect.value || "").trim();
-          if (!nextId) return;
           dealId = nextId;
           if (dealIdInput) dealIdInput.value = nextId;
+          if (!nextId) {
+            showNoProjectShell();
+            setBanner("info", "Select a deal to load folders and files.");
+            return;
+          }
+          try { localStorage.setItem("dealRoomOwnerLastDealId", dealId); } catch (e) {}
+          syncDealIdToUrl();
+          loadDealRoom();
         });
       }
 
-      // init
+      bindFileSurfaceDrop();
+
+      // init — loadDealOptions selects a default deal (when none in URL) and calls loadDealRoom()
       loadDealOptions();
-      if (dealId) {
-        if (dealIdInput) dealIdInput.value = dealId;
-        if (dealSelect) dealSelect.value = dealId;
-        try { localStorage.setItem("dealRoomOwnerLastDealId", dealId); } catch (e) {}
-        loadDealRoom();
-      }
     })();
   </script>
 </body>

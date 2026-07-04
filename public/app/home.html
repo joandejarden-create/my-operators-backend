@@ -1,6 +1,8 @@
 <!--
   Dealality Command Center – Redesigned per dashboard principles
   ROUTE: /app/home | URL: http://localhost:3000/app/home.html
+  Webflow iframe (content only, same pattern as My Deals):
+    https://<railway-host>/app/home.html?embed=1&appShell=1
   Layout: Hero → Work → Context → Tools. Charts, funnel, asymmetric grid.
 -->
 <!DOCTYPE html>
@@ -9,7 +11,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Command Center – Dealality</title>
-  <link rel="stylesheet" href="/app/dashboard.css">
+  <link rel="stylesheet" href="/app/dashboard.css?v=market-intel-clamp">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="dc-dashboard-page" id="dc-dashboard-page">
@@ -187,15 +189,23 @@
 
   <script>
     (function () {
+      var page = document.getElementById('dc-dashboard-page');
+      if (!page) return;
       var params = new URLSearchParams(window.location.search);
-      if (params.get('embed') === '1') {
-        document.getElementById('dc-dashboard-page').classList.add('embed-mode');
+      var inIframe = false;
+      try {
+        inIframe = window.self !== window.top;
+      } catch (_e) {
+        inIframe = true;
+      }
+      if (params.get('embed') === '1' || params.get('appShell') === '1' || inIframe) {
+        page.classList.add('embed-mode');
       }
     })();
   </script>
   <script src="/dealality-webflow-nav.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="/app/dashboard-adapter.js"></script>
-  <script src="/app/dashboard.js"></script>
+  <script src="/app/dashboard.js?v=toolbox-two-line"></script>
 </body>
 </html>

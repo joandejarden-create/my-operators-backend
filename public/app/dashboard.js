@@ -20,6 +20,23 @@
     userPaused: false
   };
 
+  function apiBaseUrl() {
+    var base = '';
+    try {
+      base = (window.DEALALITY_API_BASE || '').trim();
+      if (!base && window.parent && window.parent !== window) {
+        base = String(window.parent.DEALALITY_API_BASE || '').trim();
+      }
+    } catch (_) {}
+    return base.replace(/\/$/, '');
+  }
+
+  function apiFetch(path, options) {
+    var base = apiBaseUrl();
+    var url = path.charAt(0) === '/' ? path : '/' + path;
+    return fetch((base ? base : '') + url, options);
+  }
+
   function escapeHtml(s) {
     if (s == null) return '';
     var d = document.createElement('div');
@@ -66,7 +83,20 @@
     return !!s && s !== '#';
   }
 
+  function isEmbedPresentation() {
+    if (/(?:\?|&)embed=1(?:&|$)/.test(window.location.search)) return true;
+    if (/(?:\?|&)appShell=1(?:&|$)/.test(window.location.search)) return true;
+    try {
+      return window.self !== window.top;
+    } catch (_iframeErr) {
+      return true;
+    }
+  }
+
   function isInternalQaMode() {
+    if (isEmbedPresentation() && !/(?:\?|&)showSampleBanner=1(?:&|$)/.test(window.location.search)) {
+      return false;
+    }
     try {
       if (/localhost|127\.0\.0\.1/i.test(window.location.hostname)) return true;
       if (/(?:\?|&)devNav=1(?:&|$)/.test(window.location.search)) return true;
@@ -113,6 +143,13 @@
     return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
   }
 
+  function decodeHtmlEntities(s) {
+    if (s == null || s === '') return '';
+    var el = document.createElement('textarea');
+    el.innerHTML = String(s);
+    return el.value;
+  }
+
   function mapMarketAlertsToIntel(items) {
     if (!Array.isArray(items)) return [];
     return items.map(function (row) {
@@ -138,18 +175,99 @@
     }).filter(function (x) { return !!x.title; });
   }
 
-  function fetchMarketIntelFromAlerts() {
-    return fetch('/api/market-alerts?timeWindow=7d&limit=20')
+  function mapNewsRssToIntel(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map(function (item) {
+      var title = decodeHtmlEntities(item.title || '');
+      var summary = decodeHtmlEntities(item.summary || '');
+      var source = item.source || 'Market News';
+      var link = item.link || '/market-alerts';
+      var pubDate = item.pubDate || null;
+      return {
+        id: link || title,
+        type: source,
+        tag: source,
+        title: title,
+        headline: title,
+        subtitle: summary,
+        why: summary,
+        time: timeAgoFromDate(pubDate),
+        timeAgo: timeAgoFromDate(pubDate),
+        href: link,
+        ctaHref: link
+      };
+    }).filter(function (x) { return !!x.title; });
+  }
+
+  function isSampleMarketIntelItem(item) {
+    var title = String((item && (item.title || item.headline)) || '').trim();
+    var blurb = String((item && (item.subtitle || item.why)) || '');
+    return /^sample:/i.test(title) || /illustrative.*layout preview/i.test(blurb);
+  }
+
+  function stripSampleMarketIntel(items) {
+    if (!Array.isArray(items)) return [];
+    return items.filter(function (item) { return !isSampleMarketIntelItem(item); });
+  }
+
+  function fetchMarketIntelFromNews() {
+    return apiFetch('/api/market-alerts/news?limit=20')
+      .then(function (res) {
+        if (!res.ok) throw new Error('news unavailable');
+        return res.json();
+      })
+      .then(function (json) {
+        if (!json || json.success === false) return [];
+        return mapNewsRssToIntel(json.items || []);
+      });
+  }
+
+  function fetchMarketAlertsIntel(timeWindow) {
+    var qs = '/api/market-alerts?timeWindow=' + encodeURIComponent(timeWindow || '7d') + '&limit=20';
+    return apiFetch(qs)
       .then(function (res) {
         if (!res.ok) throw new Error('alerts unavailable');
         return res.json();
       })
       .then(function (json) {
         return mapMarketAlertsToIntel((json && json.items) || []);
+      });
+  }
+
+  function fetchMarketIntelFromAlerts() {
+    return fetchMarketAlertsIntel('7d')
+      .then(function (intel) {
+        if (intel.length) return intel;
+        return fetchMarketAlertsIntel('30d');
+      })
+      .then(function (intel) {
+        if (intel.length) return intel;
+        return fetchMarketAlertsIntel('all');
+      })
+      .then(function (intel) {
+        if (intel.length) return intel;
+        return fetchMarketIntelFromNews();
+      })
+      .then(function (intel) {
+        return Array.isArray(intel) ? intel : [];
       })
       .catch(function () {
-        return null;
+        return fetchMarketIntelFromNews().catch(function () {
+          return [];
+        });
       });
+  }
+
+  function applyLiveMarketIntel(vm, liveIntel) {
+    if (!vm) return vm;
+    var base = stripSampleMarketIntel(vm.marketIntel || vm.marketIntelligence || []);
+    vm.marketIntel = base;
+    vm.marketIntelligence = base;
+    if (liveIntel && liveIntel.length) {
+      vm.marketIntel = liveIntel;
+      vm.marketIntelligence = liveIntel;
+    }
+    return vm;
   }
 
   function fetchRecentDealActivity() {
@@ -675,7 +793,10 @@
         '<span class="dc-activity-feed__time">' + escapeHtml(i.timeAgo || i.time || '') + '</span>' +
         '<div class="dc-activity-feed__event">' + escapeHtml(toTitleCase(i.title || i.headline)) + '</div>' +
         (tag ? '<span class="dc-activity-feed__tag">' + escapeHtml(String(tag).charAt(0).toUpperCase() + String(tag).slice(1)) + '</span>' : '') +
-        ((i.subtitle || i.why) ? '<div class="dc-activity-feed__deal">' + escapeHtml(i.subtitle || i.why) + '</div>' : '') +
+        ((i.subtitle || i.why) ? (function () {
+          var summary = String(i.subtitle || i.why);
+          return '<div class="dc-activity-feed__deal" title="' + escapeAttr(summary) + '">' + escapeHtml(summary) + '</div>';
+        })() : '') +
         linkEnd + '</div></li>';
     }).join('') + '</ul>';
     el.innerHTML = html;
@@ -901,6 +1022,16 @@
     scale: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16h6"/><path d="M19 13v6"/><path d="M12 15V3"/><path d="M9 6l3-3 3 3"/><path d="M12 15a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>'
   };
 
+  function toolboxLabelMarkup(link) {
+    if (link && link.labelHtml) return link.labelHtml;
+    var label = link && link.label ? String(link.label).trim() : '';
+    var space = label.indexOf(' ');
+    if (space > 0) {
+      return escapeHtml(label.slice(0, space)) + '<br>' + escapeHtml(label.slice(space + 1).trim());
+    }
+    return escapeHtml(label);
+  }
+
   function renderToolbox(vm) {
     var links = vm && vm.toolboxLinks;
     var el = document.getElementById('dc-toolbox');
@@ -919,7 +1050,7 @@
         : '/app#' + (href.charAt(0) === '/' ? href : ('/' + href));
       return '<a href="' + escapeAttr(shellHref) + '" class="dc-toolbox-item" target="_top">' +
         '<span class="dc-toolbox-item__icon dc-toolbox-item__icon--svg" aria-hidden="true">' + iconSvg + '</span>' +
-        '<span>' + (t.labelHtml || escapeHtml(t.label)) + '</span>' +
+        '<span class="dc-toolbox-item__label">' + toolboxLabelMarkup(t) + '</span>' +
         '<span class="dc-toolbox-item__status dc-toolbox-item__status--' + statusClass + '">' + escapeHtml(t.status) + '</span>' +
         '</a>';
     }).filter(Boolean).join('') + '</div>';
@@ -949,7 +1080,7 @@
 
   function applyVm(vm) {
     if (!vm) return;
-    setPreviewTagsVisible(vm.contentMode === 'sample');
+    setPreviewTagsVisible(vm.contentMode === 'sample' && !isEmbedPresentation());
     renderHeader(vm);
     renderTrendChart(vm);
     renderMapOverlay(vm);
@@ -977,7 +1108,7 @@
   function fetchAndRender(role) {
     var roleParam = role || getStoredRole();
     Promise.all([
-      fetch('/api/dashboard/home?role=' + encodeURIComponent(roleParam)).then(function (res) { return res.json(); }),
+      apiFetch('/api/dashboard/home?role=' + encodeURIComponent(roleParam)).then(function (res) { return res.json(); }),
       fetchMarketIntelFromAlerts(),
       fetchRecentDealActivity()
     ])
@@ -986,10 +1117,7 @@
         var liveIntel = results[1];
         var liveRecent = results[2];
         if (json && json.success !== false) {
-          if (liveIntel && liveIntel.length) {
-            json.marketIntel = liveIntel;
-            json.marketIntelligence = liveIntel;
-          }
+          applyLiveMarketIntel(json, liveIntel);
           if (liveRecent && liveRecent.length) {
             json.recentActivity = liveRecent;
           }
@@ -1009,10 +1137,7 @@
           Promise.all([fetchMarketIntelFromAlerts(), fetchRecentDealActivity()]).then(function (liveData) {
             var liveIntel = liveData[0];
             var liveRecent = liveData[1];
-            if (liveIntel && liveIntel.length) {
-              fallback.marketIntel = liveIntel;
-              fallback.marketIntelligence = liveIntel;
-            }
+            applyLiveMarketIntel(fallback, liveIntel);
             if (liveRecent && liveRecent.length) {
               fallback.recentActivity = liveRecent;
             }

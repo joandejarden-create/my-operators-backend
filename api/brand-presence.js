@@ -1,14 +1,27 @@
 import Airtable from "airtable";
+import { buildHiltonAmenitiesDisplay } from "../lib/hilton-amenity-display.js";
 
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY_READONLY || process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID_ALT || process.env.AIRTABLE_BASE_ID);
+const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
+const base = (AIRTABLE_KEY && AIRTABLE_BASE)
+  ? new Airtable({ apiKey: AIRTABLE_KEY }).base(AIRTABLE_BASE)
+  : null;
+
+function ensureBrandPresenceConfig(res) {
+  if (base) return true;
+  res.status(500).json({ error: "Missing Airtable API key or base id for brand presence" });
+  return false;
+}
 
 // In-memory cache for performance optimization
 const cache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
+/** Bump when API response shape or fetched fields change (invalidates stale cache). */
+const CACHE_SCHEMA_VERSION = 7;
 
 // Cache helper functions
 function getCacheKey(query) {
-  return `brand-presence-${JSON.stringify(query)}`;
+  return `brand-presence-v${CACHE_SCHEMA_VERSION}-${JSON.stringify(query)}`;
 }
 
 function getFromCache(key) {
@@ -66,15 +79,197 @@ const F = {
     projectPhase: "project_phase",
     propertyType: "Chain Scale", // Using Chain Scale as property type
     operationType: "Operation Type",
-    managementCompany: "Management Company"
+    managementCompany: "Management Company",
+    website: "Website",
+    telephone: "Telephone",
+    address1: "Address 1",
+    address2: "Address 2",
+    market: "Market",
+    submarket: "Submarket",
+    openDate: "Open Date",
+    projectedOpenDate: "projected_open_date",
+    starRating: "Star Rating",
+    amenities: "Amenities",
+    hotelDescription: process.env.AIRTABLE_CENSUS_DESCRIPTION_FIELD || "Hotel Description",
+    hotelHeadline: process.env.AIRTABLE_CENSUS_HOTEL_HEADLINE_FIELD || "Hotel Headline",
+    occupancyRate: "Occupancy Rate",
+    adr: "ADR",
+    revpar: "RevPAR",
+    state: "State",
+    postalCode: "Postal Code",
+    floors: "Floors",
+    totalMeetingSpace: "Total Meeting Space",
+    dataConfidence: "Data Confidence",
+    censusPropertyType: "Property Type",
+    hotelServiceModel: "Hotel Service Model",
+    allSuites: "All Suites (Y/N)",
+    boutique: "Boutique (Y/N)",
+    casino: "Casino (Y/N)",
+    conference: "Conference (Y/N)",
+    convention: "Convention (Y/N)",
+    golf: "Golf (Y/N)",
+    resort: "Resort (Y/N)",
+    restaurant: "Restaurant (Y/N)",
+    ski: "Ski (Y/N)",
+    spa: "Spa (Y/N)"
   }
 };
 
+/** Fields required for map markers and filters — keep bulk load lean. */
+const MAP_HOTEL_FIELDS = [
+  F.hotels.name,
+  F.hotels.brand,
+  F.hotels.parentCompany,
+  F.hotels.status,
+  F.hotels.lat,
+  F.hotels.lng,
+  F.hotels.city,
+  F.hotels.country,
+  F.hotels.region,
+  F.hotels.locationType,
+  F.hotels.rooms,
+  F.hotels.strNumber,
+  F.hotels.chainScale,
+  F.hotels.projectPhase,
+  F.hotels.propertyType,
+  F.hotels.operationType,
+  F.hotels.managementCompany,
+  F.hotels.market,
+  F.hotels.submarket,
+  F.hotels.censusPropertyType,
+  F.hotels.hotelServiceModel,
+];
+
+function readTextField(fields, key) {
+  const raw = fields[key];
+  if (raw == null || raw === "") return null;
+  if (typeof raw === "string") return raw.trim() || null;
+  if (Array.isArray(raw)) {
+    const joined = raw
+      .map((item) => (typeof item === "string" ? item.trim() : item?.name || ""))
+      .filter(Boolean)
+      .join("; ");
+    return joined || null;
+  }
+  if (typeof raw === "object" && raw.name) return String(raw.name).trim() || null;
+  return String(raw).trim() || null;
+}
+
+function readNumberField(fields, key) {
+  const raw = fields[key];
+  if (raw == null || raw === "") return null;
+  const num = Number(raw);
+  return Number.isFinite(num) ? num : null;
+}
+
+function readYnFlag(fields, key) {
+  const raw = readTextField(fields, key);
+  if (!raw) return false;
+  const normalized = raw.toLowerCase();
+  return normalized === "y" || normalized === "yes" || normalized === "true" || normalized === "1";
+}
+
+function readDateField(fields, key) {
+  const raw = fields[key];
+  if (!raw) return null;
+  return String(raw).slice(0, 10);
+}
+
+function formatHotelRecord(hotel) {
+  const fields = hotel.fields || {};
+  const lat = parseFloat(fields[F.hotels.lat]);
+  const lng = parseFloat(fields[F.hotels.lng]);
+  const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
+
+  const amenityFlags = {
+    allSuites: readYnFlag(fields, F.hotels.allSuites),
+    boutique: readYnFlag(fields, F.hotels.boutique),
+    casino: readYnFlag(fields, F.hotels.casino),
+    conference: readYnFlag(fields, F.hotels.conference),
+    convention: readYnFlag(fields, F.hotels.convention),
+    golf: readYnFlag(fields, F.hotels.golf),
+    resort: readYnFlag(fields, F.hotels.resort),
+    restaurant: readYnFlag(fields, F.hotels.restaurant),
+    ski: readYnFlag(fields, F.hotels.ski),
+    spa: readYnFlag(fields, F.hotels.spa)
+  };
+
+  return {
+    id: hotel.id,
+    name: readTextField(fields, F.hotels.name) || "Unknown Hotel",
+    brand: readTextField(fields, F.hotels.brand) || "Unknown Brand",
+    parentCompany: readTextField(fields, F.hotels.parentCompany) || "Unknown",
+    status: readTextField(fields, F.hotels.status) || "unknown",
+    lat: hasCoords ? lat : 0,
+    lng: hasCoords ? lng : 0,
+    city: readTextField(fields, F.hotels.city) || "Unknown City",
+    country: readTextField(fields, F.hotels.country) || "Unknown Country",
+    region: readTextField(fields, F.hotels.region) || "Unknown Region",
+    locationType: readTextField(fields, F.hotels.locationType) || null,
+    rooms: parseInt(fields[F.hotels.rooms], 10) || 0,
+    strNumber: fields[F.hotels.strNumber] ?? null,
+    chainScale: readTextField(fields, F.hotels.chainScale),
+    projectPhase: readTextField(fields, F.hotels.projectPhase),
+    propertyType: readTextField(fields, F.hotels.propertyType),
+    operationType: readTextField(fields, F.hotels.operationType),
+    managementCompany: readTextField(fields, F.hotels.managementCompany),
+    website: readTextField(fields, F.hotels.website),
+    telephone: readTextField(fields, F.hotels.telephone),
+    address1: readTextField(fields, F.hotels.address1),
+    address2: readTextField(fields, F.hotels.address2),
+    market: readTextField(fields, F.hotels.market),
+    submarket: readTextField(fields, F.hotels.submarket),
+    openDate: readDateField(fields, F.hotels.openDate),
+    projectedOpenDate: readDateField(fields, F.hotels.projectedOpenDate),
+    starRating: readNumberField(fields, F.hotels.starRating),
+    amenities: readTextField(fields, F.hotels.amenities),
+    hotelDescription: readTextField(fields, F.hotels.hotelDescription),
+    hotelHeadline: readTextField(fields, F.hotels.hotelHeadline),
+    occupancyRate: readNumberField(fields, F.hotels.occupancyRate),
+    adr: readNumberField(fields, F.hotels.adr),
+    revpar: readNumberField(fields, F.hotels.revpar),
+    state: readTextField(fields, F.hotels.state),
+    postalCode: readTextField(fields, F.hotels.postalCode),
+    floors: readNumberField(fields, F.hotels.floors),
+    totalMeetingSpace: readNumberField(fields, F.hotels.totalMeetingSpace),
+    dataConfidence: readTextField(fields, F.hotels.dataConfidence),
+    censusPropertyType: readTextField(fields, F.hotels.censusPropertyType),
+    hotelServiceModel: readTextField(fields, F.hotels.hotelServiceModel),
+    amenityFlags
+  };
+}
+
+// Single hotel detail — fresh read for detail panel (amenities, website, phone, etc.)
+export async function getBrandPresenceHotelById(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
+  try {
+    const recordId = String(req.params.recordId || "").trim();
+    if (!recordId || !recordId.startsWith("rec")) {
+      return res.status(400).json({ success: false, error: "Valid Airtable record id required" });
+    }
+
+    const hotel = await base(F.hotels.table).find(recordId);
+    const formatted = formatHotelRecord(hotel);
+    formatted.amenitiesDisplay = buildHiltonAmenitiesDisplay(formatted);
+
+    res.json({ success: true, hotel: formatted });
+  } catch (error) {
+    const status = error?.statusCode === 404 ? 404 : 500;
+    console.error("Error getting brand presence hotel detail:", error);
+    res.status(status).json({
+      success: false,
+      error: status === 404 ? "Hotel record not found" : "Internal Server Error",
+      details: error.message
+    });
+  }
+}
+
 // Get brand presence data
 export async function getBrandPresence(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const requestedLimit = parseInt(req.query.limit, 10);
-    const limit = Math.min(Math.max(requestedLimit || 50000, 1), 100000);
+    const limit = Number.isFinite(requestedLimit) && requestedLimit > 0 ? requestedLimit : null;
     const { brand, status, region, search, page = 0 } = req.query;
     
     // Check cache first
@@ -117,68 +312,47 @@ export async function getBrandPresence(req, res) {
       filterFormula = `AND(${conditions.join(', ')})`;
     }
     
-    // Fetch hotels data - load all fields upfront for complete caching
+    // Bulk map load — lean field set; detail panel fetches full record per hotel on click
     const selectOptions = {
-      fields: [
-        F.hotels.name,
-        F.hotels.brand,
-        F.hotels.parentCompany,
-        F.hotels.status,
-        F.hotels.lat,
-        F.hotels.lng,
-        F.hotels.city,
-        F.hotels.country,
-        F.hotels.region,
-        F.hotels.locationType,
-        F.hotels.rooms,
-        F.hotels.strNumber,
-        F.hotels.chainScale,
-        F.hotels.projectPhase,
-        F.hotels.propertyType,
-        F.hotels.operationType,
-        F.hotels.managementCompany
-      ],
-      maxRecords: limit,
+      fields: MAP_HOTEL_FIELDS,
       pageSize: 100, // Airtable's optimal page size
       sort: [{ field: F.hotels.name, direction: 'asc' }]
     };
+    if (limit) {
+      selectOptions.maxRecords = limit;
+    }
     
     // Only add filterByFormula if we have a valid filter
     if (filterFormula && filterFormula.trim() !== '') {
       selectOptions.filterByFormula = filterFormula;
     }
-    
-    const hotels = await base(F.hotels.table)
-      .select(selectOptions)
-      .all();
+
+    let hotels;
+    try {
+      hotels = await base(F.hotels.table).select(selectOptions).all();
+    } catch (selectErr) {
+      const msg = String(selectErr?.message || selectErr || "");
+      if (
+        selectErr?.error === "UNKNOWN_FIELD_NAME" ||
+        /Unknown field name/i.test(msg)
+      ) {
+        selectOptions.fields = MAP_HOTEL_FIELDS.filter(
+          (field) => field !== F.hotels.market && field !== F.hotels.submarket
+        );
+        hotels = await base(F.hotels.table).select(selectOptions).all();
+      } else {
+        throw selectErr;
+      }
+    }
     
     // Format response; track valid coordinates for diagnostics
     let skippedNoCoordinates = 0;
-    const formattedHotels = hotels.map(hotel => {
-      const lat = parseFloat(hotel.fields[F.hotels.lat]);
-      const lng = parseFloat(hotel.fields[F.hotels.lng]);
-      const hasCoords = Number.isFinite(lat) && Number.isFinite(lng) && (lat !== 0 || lng !== 0);
+    const formattedHotels = hotels.map((hotel) => {
+      const formatted = formatHotelRecord(hotel);
+      const hasCoords = Number.isFinite(formatted.lat) && Number.isFinite(formatted.lng)
+        && (formatted.lat !== 0 || formatted.lng !== 0);
       if (!hasCoords) skippedNoCoordinates++;
-      return {
-      id: hotel.id,
-      name: hotel.fields[F.hotels.name] || 'Unknown Hotel',
-      brand: hotel.fields[F.hotels.brand] || 'Unknown Brand',
-      parentCompany: hotel.fields[F.hotels.parentCompany] || 'Unknown',
-      status: hotel.fields[F.hotels.status] || 'unknown',
-      lat: hasCoords ? lat : 0,
-      lng: hasCoords ? lng : 0,
-      city: hotel.fields[F.hotels.city] || 'Unknown City',
-      country: hotel.fields[F.hotels.country] || 'Unknown Country',
-      region: hotel.fields[F.hotels.region] || 'Unknown Region',
-      locationType: hotel.fields[F.hotels.locationType] || 'Unknown',
-      rooms: parseInt(hotel.fields[F.hotels.rooms]) || 0,
-      strNumber: hotel.fields[F.hotels.strNumber] || null,
-      chainScale: hotel.fields[F.hotels.chainScale] || null,
-      projectPhase: hotel.fields[F.hotels.projectPhase] || null,
-      propertyType: hotel.fields[F.hotels.propertyType] || null,
-      operationType: hotel.fields[F.hotels.operationType] || null,
-      managementCompany: hotel.fields[F.hotels.managementCompany] || null
-    };
+      return formatted;
     });
     
     // Calculate statistics
@@ -195,7 +369,7 @@ export async function getBrandPresence(req, res) {
       totalCount: formattedHotels.length,
       totalWithCoordinates: formattedHotels.length - skippedNoCoordinates,
       skippedNoCoordinates,
-      hasMore: hotels.length === limit,
+      hasMore: !!limit && hotels.length === limit,
       page: parseInt(page, 10),
       limit,
       cached: false
@@ -218,6 +392,7 @@ export async function getBrandPresence(req, res) {
 
 // Get brand statistics
 export async function getBrandStatistics(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const { region } = req.query;
     
@@ -441,11 +616,11 @@ function generateInsights(hotels) {
 
 // Get unique location types from Airtable
 export async function getLocationTypes(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const hotels = await base(F.hotels.table)
       .select({
-        fields: [F.hotels.locationType],
-        maxRecords: 20000
+        fields: [F.hotels.locationType]
       })
       .all();
     
@@ -469,11 +644,11 @@ export async function getLocationTypes(req, res) {
 
 // Get unique parent companies from Airtable
 export async function getParentCompanies(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const hotels = await base(F.hotels.table)
       .select({
-        fields: [F.hotels.parentCompany],
-        maxRecords: 20000
+        fields: [F.hotels.parentCompany]
       })
       .all();
     
@@ -497,11 +672,11 @@ export async function getParentCompanies(req, res) {
 
 // Get unique brands from Airtable
 export async function getBrands(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const hotels = await base(F.hotels.table)
       .select({
-        fields: [F.hotels.brand],
-        maxRecords: 20000
+        fields: [F.hotels.brand]
       })
       .all();
     
@@ -525,11 +700,11 @@ export async function getBrands(req, res) {
 
 // Get chain scales (property types) from Airtable
 export async function getChainScales(req, res) {
+  if (!ensureBrandPresenceConfig(res)) return;
   try {
     const hotels = await base(F.hotels.table)
       .select({
-        fields: [F.hotels.propertyType],
-        maxRecords: 20000
+        fields: [F.hotels.propertyType]
       })
       .all();
     

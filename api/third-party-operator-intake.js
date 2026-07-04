@@ -35,6 +35,8 @@ import { normalizeOwnerPortalForForm } from "./lib/third-party-operator-select-p
  * Optional: `LOG_AIRTABLE_FIELD_DROPS=1` or `LOG_OPERATOR_SETUP_WRITE_ROUTING=1` — Basics schema omissions.
  * `DEBUG_OPERATOR_SETUP_WRITE=1` — structured `[WRITE PLAN]` key list.
  * `OPERATOR_SETUP_MIRROR_SPLITS_TO_BASICS=0` — disable mirroring split-primary values back onto Basics (breaks legacy consumers; default on).
+ * `OPERATOR_SETUP_WRITE_MODE=canonical|diagnostic-shadow|legacy-maintenance` — deterministic intake write mode.
+ * Production safety: non-canonical modes are blocked unless `OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD=1`.
  *
  * Same Airtable base as Brand Setup / Brand Library / My Brands (`AIRTABLE_BASE_ID` + `AIRTABLE_API_KEY`).
  * The "Third Party Operators" table lives in that base; no separate base env is used.
@@ -60,6 +62,67 @@ const OPERATOR_BASICS_LINK_FIELD = "Operator (Basics Link)";
 function envFlag(name) {
     const v = String(process.env[name] || "").trim().toLowerCase();
     return v === "1" || v === "true" || v === "yes" || v === "on";
+}
+
+function buildUploadedLogoAttachment(req, correlationId) {
+    if (!req || !req.file || !req.file.filename) return null;
+    const baseUrl =
+        process.env.PUBLIC_URL ||
+        (req.protocol && req.get && `${req.protocol}://${req.get("host")}`) ||
+        "http://localhost:3000";
+    const logoUrl = `${String(baseUrl).replace(/\/$/, "")}/uploads/${req.file.filename}`;
+    if (String(logoUrl).includes("localhost")) {
+        logOperatorIntake(
+            "logo_localhost_warn",
+            correlationId,
+            {
+                message:
+                    "Logo URL is localhost — Airtable cannot fetch it from the internet. Set PUBLIC_URL for a public base URL.",
+            },
+            "warn"
+        );
+    }
+    return [{ url: logoUrl, filename: req.file.originalname || req.file.filename }];
+}
+
+function isProductionRuntime() {
+    const nodeEnv = String(process.env.NODE_ENV || "").trim().toLowerCase();
+    return nodeEnv === "production" || nodeEnv === "prod";
+}
+
+function resolveOperatorSetupWriteMode() {
+    const explicitRaw = String(process.env.OPERATOR_SETUP_WRITE_MODE || "").trim().toLowerCase();
+    const explicitMode = explicitRaw.replace(/_/g, "-");
+    const allowedModes = new Set(["canonical", "diagnostic-shadow", "legacy-maintenance"]);
+    let mode = "canonical";
+    let source = "default";
+
+    if (allowedModes.has(explicitMode)) {
+        mode = explicitMode;
+        source = "explicit";
+    } else {
+        const useNewBaseWriter = envFlag("OPERATOR_SETUP_USE_NEW_BASE_WRITER");
+        const shadowWriteNewBase = envFlag("OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE");
+        if (useNewBaseWriter) {
+            mode = "canonical";
+            source = "legacy_flags";
+        } else if (shadowWriteNewBase) {
+            mode = "diagnostic-shadow";
+            source = "legacy_flags";
+        } else {
+            mode = "legacy-maintenance";
+            source = "legacy_flags";
+        }
+    }
+
+    if (isProductionRuntime() && mode !== "canonical" && !envFlag("OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD")) {
+        return {
+            mode: "canonical",
+            source: "prod_safety_override",
+        };
+    }
+
+    return { mode, source };
 }
 
 /** Structured intake logs; `cid` is omitted when correlationId is missing (e.g. early errors). */
@@ -446,10 +509,18 @@ export default async function submitThirdPartyOperator(req, res) {
 
         correlationId = randomUUID();
         await mergeExistingBasicsIntoBodyForUpdate(req, correlationId);
+        const uploadedLogoAttachment = buildUploadedLogoAttachment(req, correlationId);
+        if (uploadedLogoAttachment && req.body && !req.body.companyLogo) {
+            // Canonical new-base writer consumes body values directly; mirror multipart upload there.
+            req.body.companyLogo = uploadedLogoAttachment;
+        }
 
-        const useNewBaseWriter = envFlag("OPERATOR_SETUP_USE_NEW_BASE_WRITER");
-        const shadowWriteNewBase = envFlag("OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE");
-        const failOpenNewBase = envFlag("OPERATOR_SETUP_NEW_BASE_FAIL_OPEN");
+        const writeModeInfo = resolveOperatorSetupWriteMode();
+        const writeMode = writeModeInfo.mode;
+        const writeModeSource = writeModeInfo.source;
+        const useNewBaseWriter = writeMode === "canonical";
+        const shadowWriteNewBase = writeMode === "diagnostic-shadow";
+        const failOpenNewBase = writeMode !== "canonical" && envFlag("OPERATOR_SETUP_NEW_BASE_FAIL_OPEN");
 
         // Legacy path: recordId must exist on Basics. New-base primary path: recordId is Operator Setup - Master — ignore missing Basics row.
         if (req.body && req.body.recordId && req.body._mergeBasicsRecordMissing && !useNewBaseWriter) {
@@ -478,6 +549,13 @@ export default async function submitThirdPartyOperator(req, res) {
                 useNewBaseWriter,
                 shadowWriteNewBase,
                 failOpenNewBase,
+                writeMode,
+                writeModeSource,
+                legacyFlagSnapshot: {
+                    OPERATOR_SETUP_USE_NEW_BASE_WRITER: envFlag("OPERATOR_SETUP_USE_NEW_BASE_WRITER"),
+                    OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE: envFlag("OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE"),
+                    OPERATOR_SETUP_NEW_BASE_FAIL_OPEN: envFlag("OPERATOR_SETUP_NEW_BASE_FAIL_OPEN"),
+                },
                 draftMode,
             }
         );
@@ -497,6 +575,7 @@ export default async function submitThirdPartyOperator(req, res) {
                         : "Operator information submitted successfully",
                     recordId: newWrite.recordId,
                     warning: newWrite.warning || null,
+                    writeMode,
                     fields: {
                         companyName: req.body?.companyName || "",
                         email: req.body?.contactEmail || "",
@@ -515,6 +594,7 @@ export default async function submitThirdPartyOperator(req, res) {
                 if (!failOpenNewBase) {
                     return res.status(500).json({
                         error: "New-base writer failed",
+                        writeMode,
                         message: newWriteError?.message || "Failed to write to new Operator Setup base",
                         details: newWriteError?.details || undefined,
                     });
@@ -1374,24 +1454,8 @@ export default async function submitThirdPartyOperator(req, res) {
             'Ideal Projects Additional Notes': idealProjectsAdditionalNotes ? String(idealProjectsAdditionalNotes).trim() : '',
         };
 
-        if (req.file && req.file.filename) {
-            const baseUrl =
-                process.env.PUBLIC_URL ||
-                (req.protocol && req.get && `${req.protocol}://${req.get('host')}`) ||
-                'http://localhost:3000';
-            const logoUrl = `${String(baseUrl).replace(/\/$/, '')}/uploads/${req.file.filename}`;
-            fields['Company Logo'] = [{ url: logoUrl, filename: req.file.originalname || req.file.filename }];
-            if (String(logoUrl).includes('localhost')) {
-                logOperatorIntake(
-                    "logo_localhost_warn",
-                    correlationId,
-                    {
-                        message:
-                            "Logo URL is localhost — Airtable cannot fetch it from the internet. Set PUBLIC_URL for a public base URL.",
-                    },
-                    "warn"
-                );
-            }
+        if (uploadedLogoAttachment) {
+            fields["Company Logo"] = uploadedLogoAttachment;
         }
 
         // Add submitted timestamp if provided
@@ -1547,9 +1611,11 @@ export default async function submitThirdPartyOperator(req, res) {
                 "Region": item.region ? String(item.region).trim() : "",
                 "Branded / Independent": item.branded_independent ? String(item.branded_independent).trim() : "",
                 "Situation": item.situation ? String(item.situation).trim() : "",
-                "Services": item.services ? String(item.services).trim() : "",
-                "Outcome": item.outcome ? String(item.outcome).trim() : "",
+                Challenge: item.challenge ? String(item.challenge).trim() : "",
+                Services: item.services ? String(item.services).trim() : "",
+                Outcome: item.outcome ? String(item.outcome).trim() : "",
                 "Owner Relevance": item.owner_relevance ? String(item.owner_relevance).trim() : "",
+                "Data Status": item.data_status ? String(item.data_status).trim() : "",
                 "Image URL": item.image_url ? String(item.image_url).trim() : "",
             }))
             .filter((row) =>
@@ -1722,6 +1788,7 @@ export default async function submitThirdPartyOperator(req, res) {
             message: isUpdate ? 'Operator information updated successfully' : 'Operator information submitted successfully',
             recordId: record.id,
             warning: [childWriteWarning, shadowWarning].filter(Boolean).join("; ") || null,
+            writeMode,
             fields: {
                 companyName: fields['Company Name'],
                 email: compactFields['Primary Contact Email'] ?? fields['Contact Email']

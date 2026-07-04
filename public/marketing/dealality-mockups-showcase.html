@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dealality Platform Mockups — Marketing Preview</title>
+  <link rel="stylesheet" href="/marketing/dealality-mockups.css">
+</head>
+<body class="mkt-showcase">
+  <div class="mkt-showcase__inner">
+    <p class="mkt-showcase__label">Dealality Marketing</p>
+    <h1>Platform-faithful product mockups</h1>
+    <p class="mkt-showcase__lead">These snapshots use the same CSS classes and layout patterns as the live app — My Deals KPI strips, Brand/Operator Explorer cards, Deal Room explorer, and Deal Setup workflow nav. Copy any block from <code>public/marketing/components/</code> into Webflow embeds.</p>
+
+    <div class="mkt-showcase__grid">
+      <div class="mkt-showcase__item mkt-showcase__item--full">
+        <p class="mkt-showcase__label">01 · Hero Product Dashboard (My Deals workspace)</p>
+        <!--#include virtual="components/01-hero-dashboard.html" -->
+        <div id="mkt-01"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var files = [
+        '01-hero-dashboard.html',
+        '02-brand-explorer.html',
+        '03-operator-explorer.html',
+        '04-market-intelligence.html',
+        '05-term-comparison.html',
+        '06-deal-room.html',
+        '07-loi-checklist.html'
+      ];
+      var labels = [
+        '01 · Hero Product Dashboard (My Deals workspace)',
+        '02 · Brand Explorer Preview',
+        '03 · Operator Explorer Preview',
+        '04 · Market Intelligence Preview',
+        '05 · Side-by-Side Term Comparison',
+        '06 · NDA-Gated Deal Room',
+        '07 · LOI Handoff Checklist'
+      ];
+      var grid = document.querySelector('.mkt-showcase__grid');
+      grid.innerHTML = '';
+      files.forEach(function (file, i) {
+        var wrap = document.createElement('div');
+        wrap.className = 'mkt-showcase__item' + (i === 0 || i >= 4 ? ' mkt-showcase__item--full' : '');
+        wrap.innerHTML = '<p class="mkt-showcase__label">' + labels[i] + '</p><div class="mkt-embed" data-src="/marketing/components/' + file + '">Loading…</div>';
+        grid.appendChild(wrap);
+      });
+      document.querySelectorAll('.mkt-embed').forEach(function (el) {
+        fetch(el.getAttribute('data-src'))
+          .then(function (r) { return r.text(); })
+          .then(function (html) { el.innerHTML = html; })
+          .catch(function () { el.textContent = 'Failed to load component.'; });
+      });
+    })();
+  </script>
+</body>
+</html>

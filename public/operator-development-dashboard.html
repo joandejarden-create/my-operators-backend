@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Operator Deals - Dealality</title>
+    <link rel="stylesheet" href="/css/deal-workspace-shell.css">
+    <link rel="stylesheet" href="/css/deal-workspace-insights.css">
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="dashboard-main-section">
+            <div class="dashboard-container">
+                <div class="dashboard-header" style="grid-template-columns: 1fr minmax(260px, 360px);">
+                    <div class="dashboard-header-left">
+                        <div class="dashboard-title-container">
+                            <h1>My Operator Deals</h1>
+                        </div>
+                        <p>Operating opportunities in one workspace: review alignment signals, track review considerations, clarify questions with owners, and advance confidentiality steps — with Dealality capturing the activity trail as your team works.</p>
+                    </div>
+                    <aside class="bdd-product-note" aria-label="About this workspace">
+                        <strong>Work the opportunity once. Dealality captures the activity trail.</strong>
+                        This is a decision-support workspace for hotel operating companies. Alignment scores and bands highlight fit signals and data gaps — they do not select an operator on the owner&apos;s behalf.
+                    </aside>
+                </div>
+
+                <div id="oddPhaseBanner" class="bdd-setup-banner" role="status" hidden>
+                    <span class="bdd-setup-banner__label">Setup</span>
+                    <span id="oddPhaseBannerText"></span>
+                </div>
+                <div id="oddErrorState" class="bdd-inline-error" role="alert" hidden></div>
+
+                <div class="bdd-kpi-nav-stack">
+                    <div class="bdd-insights-dashboard" aria-label="Operating deal flow and pipeline by stage">
+                        <div class="bdd-insights-dashboard__scroller">
+                            <div class="bdd-insights-dashboard__band">
+                                <header class="bdd-insights-dashboard__header">
+                                    <div class="bdd-insights-dashboard__h-left">
+                                        <span class="bdd-step-label" id="workspaceInsightsFlowTitle">My Deal Flow</span>
+                                    </div>
+                                    <div class="bdd-insights-dashboard__h-spacer" aria-hidden="true"></div>
+                                    <div class="bdd-insights-dashboard__h-right">
+                                        <span class="bdd-step-label" id="workspaceInsightsPipelineTitle">Operating pipeline by stage</span>
+                                    </div>
+                                </header>
+                                <div class="bdd-insights-dashboard__row">
+                                    <div class="bdd-insights-kpis" id="oddKpiInsights" aria-busy="true"></div>
+                                    <div class="bdd-insights-sep" aria-hidden="true"></div>
+                                    <div class="bdd-insights-pipeline-wrap">
+                                        <div class="bdd-insights-pipeline" id="oddKpiPipeline" aria-busy="true"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="workspaceKpiStuckPopover" popover="auto" class="bdd-kpi-stuck-popover">
+                        <h3 class="bdd-kpi-stuck-popover__title">Stuck / At Risk</h3>
+                        <p class="bdd-kpi-stuck-popover__body">Includes rows where the follow-up date is in the past, or there has been no activity for 14 days or more.</p>
+                        <button type="button" class="bdd-kpi-stuck-popover__close" popovertarget="workspaceKpiStuckPopover" popovertargetaction="hide">Close</button>
+                    </div>
+
+                    <nav class="bdd-section-nav" aria-label="Operator deal pipeline stages">
+                        <button type="button" class="section-nav-item active" data-tab="odd-new">
+                            <div class="section-nav-icon" title="New opportunities"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+                            <span class="section-nav-label">New<br>opportunities</span>
+                            <span class="tab-count" id="tabCountOddNew">0</span>
+                        </button>
+                        <button type="button" class="section-nav-item" data-tab="odd-active-review">
+                            <div class="section-nav-icon" title="Active operator review"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                            <span class="section-nav-label">Active<br>operator review</span>
+                            <span class="tab-count" id="tabCountOddActiveReview">0</span>
+                        </button>
+                        <button type="button" class="section-nav-item" data-tab="odd-awaiting-info">
+                            <div class="section-nav-icon" title="Awaiting owner information"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                            <span class="section-nav-label">Awaiting<br>owner info</span>
+                            <span class="tab-count" id="tabCountOddAwaitingInfo">0</span>
+                        </button>
+                        <button type="button" class="section-nav-item" data-tab="odd-nda-room">
+                            <div class="section-nav-icon" title="NDA and shared workspace"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                            <span class="section-nav-label">NDA &amp;<br>shared workspace</span>
+                            <span class="tab-count" id="tabCountOddNda">0</span>
+                        </button>
+                        <button type="button" class="section-nav-item" data-tab="odd-terms-proposal">
+                            <div class="section-nav-icon" title="Terms review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                            <span class="section-nav-label">Terms<br>review</span>
+                            <span class="tab-count" id="tabCountOddTerms">0</span>
+                        </button>
+                        <button type="button" class="section-nav-item" data-tab="odd-advanced">
+                            <div class="section-nav-icon" title="Finalist and advanced"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+                            <span class="section-nav-label">Finalist &amp;<br>advanced</span>
+                            <span class="tab-count" id="tabCountOddAdvanced">0</span>
+                        </button>
+                        <button type="button" class="section-nav-item" data-tab="odd-archived">
+                            <div class="section-nav-icon" title="Declined and archived"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8v13H3V8M1 3h22v5H1z"/><path d="M10 12h4"/></svg></div>
+                            <span class="section-nav-label">Declined<br>&amp; archived</span>
+                            <span class="tab-count" id="tabCountOddArchived">0</span>
+                        </button>
+                        <button type="button" class="section-nav-item" data-tab="odd-deal-log">
+                            <div class="section-nav-icon" title="Deal Activity Log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                            <span class="section-nav-label">Deal<br>Activity Log</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <div id="sectionOddWorkspace" class="bdd-tab-panel active" aria-label="Operator deal workspace">
+                    <div class="filters-section" aria-label="Filters">
+                        <div class="filter-group" id="oddCompanyFilterGroup" hidden>
+                            <label class="filter-label" for="oddCompanyFilter">Operating company</label>
+                            <select class="filter-select" id="oddCompanyFilter">
+                                <option value="">All linked companies</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label" for="oddStatusFilter">Status</label>
+                            <select class="filter-select" id="oddStatusFilter">
+                                <option value="">All Statuses</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label" for="oddAlignmentFilter">Alignment signal</label>
+                            <select class="filter-select" id="oddAlignmentFilter">
+                                <option value="">All signals</option>
+                                <option value="strong">Strong</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="conditional">Conditional</option>
+                                <option value="limited">Limited</option>
+                                <option value="insufficient">Insufficient</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label" for="oddProjectFilter">Property type</label>
+                            <select class="filter-select" id="oddProjectFilter" disabled title="Coming in a later pass">
+                                <option value="">All Types</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label" for="oddCountryFilter">Country</label>
+                            <select class="filter-select" id="oddCountryFilter" disabled title="Coming in a later pass">
+                                <option value="">All Countries</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <button type="button" class="btn-clear" id="oddResetViewBtn">Reset View</button>
+                        </div>
+                    </div>
+
+                    <div class="bdd-results-row">
+                        <div id="oddResultsCount" class="bdd-results-count"></div>
+                    </div>
+
+                    <div class="deals-table-container" id="oddTableContainer">
+                        <div class="loading-deals" id="oddTableLoading">
+                            <div class="loading">
+                                <div class="loading-content">
+                                    <div class="wave-container">
+                                        <div class="wave wave-1"></div>
+                                        <div class="wave wave-2"></div>
+                                        <div class="wave wave-3"></div>
+                                        <div class="wave-particles">
+                                            <div class="particle"></div>
+                                            <div class="particle"></div>
+                                            <div class="particle"></div>
+                                            <div class="particle"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="loading-text-main">Loading operating opportunities…</div>
+                                    </div>
+                                </div>
+                                <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                            </div>
+                        </div>
+                        <div class="empty-state" id="oddWorkspaceEmpty" style="display: none;"></div>
+                        <table class="deals-table bdd-workspace-main-table" id="dealsTable" style="display: none;" aria-label="Operator deal requests">
+                            <colgroup id="dealsTableColgroup"></colgroup>
+                            <thead id="bddWorkspaceThead"></thead>
+                            <tbody id="dealsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="sectionOddDealLog" class="bdd-tab-panel" aria-label="Deal Activity Log">
+                    <div class="deal-log-container" id="oddActivityPanel">
+                        <h3 style="color: var(--neutral--100); margin: 0; padding: 20px 20px 12px; font-size: 16px;">Deal Activity Log</h3>
+                        <p style="color: var(--neutral--500); font-size: 13px; margin: 0 20px 16px; font-weight: 400;">Owner outreach, operator review steps, status changes, follow-ups, and notes for your operating company scope.</p>
+                        <div id="oddActivityEmpty" class="bdd-activity-empty">
+                            Activity from owner outreach and your team&apos;s review steps will appear here once connected.
+                        </div>
+                        <div id="oddActivityContent" hidden></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="oddModalBackdrop" class="modal-overlay" hidden>
+        <div class="modal-content modal-content--deal-setup" role="dialog" aria-modal="true" aria-labelledby="oddModalTitle" style="max-width: 520px; padding: 0;">
+            <header class="modal-header" style="padding: 18px 20px; border-bottom: 1px solid var(--neutral--600); display: flex; justify-content: space-between; align-items: center;">
+                <h2 id="oddModalTitle" style="margin: 0; font-size: 18px; color: var(--neutral--100);">Notes</h2>
+                <button type="button" id="oddModalCloseBtn" aria-label="Close" style="background: none; border: none; color: var(--neutral--400); font-size: 24px; cursor: pointer;">&times;</button>
+            </header>
+            <div id="oddModalBody" style="padding: 20px;"></div>
+            <footer style="padding: 16px 20px; border-top: 1px solid var(--neutral--600); display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="bdd-decision-btn bdd-decision-btn--secondary" id="oddModalCancelBtn">Cancel</button>
+                <button type="button" class="bdd-decision-btn bdd-decision-btn--primary" id="oddModalSaveBtn">Save</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Opportunity Workspace (matches My Brand Deals) -->
+    <div class="modal-overlay" id="dealDetailsModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 920px;">
+            <div class="modal-header">
+                <div class="bdd-ow-modal-header__text">
+                    <h2>Opportunity Workspace</h2>
+                    <p id="dealDetailsModalSubtitle" class="bdd-ow-modal-subtitle" hidden></p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeDealDetailsModal()" aria-label="Close">&times;</button>
+            </div>
+            <div id="dealDetailsContent"></div>
+        </div>
+    </div>
+
+    <!-- Request more information -->
+    <div class="modal-overlay" id="bddRequestInfoModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 520px;">
+            <div class="modal-header">
+                <h2>Request More Information</h2>
+                <button type="button" class="modal-close" id="bddRequestInfoModalClose">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body">
+                <p class="bdd-ds-hint bdd-ds-hint--lg">Owner-facing text is appended to <strong>Response Notes</strong>. Team-only notes append to <strong>Operator Internal Notes</strong>.</p>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRequestInfoTextarea">What do you need from the owner? (external)</label>
+                    <textarea id="bddRequestInfoTextarea" rows="4" class="filter-input" placeholder="Visible to the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRequestInfoInternalTextarea">Team notes (internal, optional)</label>
+                    <textarea id="bddRequestInfoInternalTextarea" rows="3" class="filter-input" placeholder="Not shared with the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-modal-footer">
+                    <button type="button" id="bddRequestInfoCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
+                    <button type="button" id="bddRequestInfoSaveBtn" class="bdd-ds-btn bdd-ds-btn--solid-accent">Send request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decline with reason -->
+    <div class="modal-overlay" id="bddDeclineWorkspaceModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 520px;">
+            <div class="modal-header">
+                <h2>Decline Opportunity</h2>
+                <button type="button" class="modal-close" id="bddDeclineWorkspaceModalClose">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body">
+                <p class="bdd-ds-hint bdd-ds-hint--lg">Declining updates the Operator Deal Request and logs activity in Dealality.</p>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddDeclineReasonPreset">Decline reason (required)</label>
+                    <select id="bddDeclineReasonPreset" class="filter-input">
+                        <option value="">Choose a reason…</option>
+                        <option value="operating_fit">Operating model / service fit</option>
+                        <option value="scale_positioning">Scale or positioning mismatch</option>
+                        <option value="geography_market">Geography or market coverage</option>
+                        <option value="deal_structure">Deal structure (fees, key money, terms)</option>
+                        <option value="timing">Timing or project pace</option>
+                        <option value="capacity_pipeline">Internal capacity / pipeline</option>
+                        <option value="strategic_pause">Strategic pause or allocation</option>
+                        <option value="other">Other (specify below)</option>
+                    </select>
+                </div>
+                <div id="bddDeclineReasonOtherWrap" class="bdd-ds-field" style="display: none;">
+                    <label class="bdd-ds-field-label bdd-ds-field-label--sm" for="bddDeclineReasonOtherInput">Describe the reason</label>
+                    <input type="text" id="bddDeclineReasonOtherInput" class="filter-input" placeholder="Short explanation for your team and the activity log" maxlength="500">
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddDeclineExternalNotesInput">Message to owner (external, optional)</label>
+                    <textarea id="bddDeclineExternalNotesInput" rows="2" class="filter-input" placeholder="Optional context for the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddDeclineInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddDeclineInternalNotesInput" rows="3" class="filter-input" placeholder="Not shared with the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-modal-footer">
+                    <button type="button" id="bddDeclineWorkspaceCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
+                    <button type="button" id="bddDeclineWorkspaceSaveBtn" class="bdd-ds-btn bdd-ds-btn--danger">Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revisit later -->
+    <div class="modal-overlay" id="bddRevisitLaterModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 480px;">
+            <div class="modal-header">
+                <h2>Revisit Later</h2>
+                <button type="button" class="modal-close" id="bddRevisitLaterModalClose">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body">
+                <p class="bdd-ds-hint bdd-ds-hint--lg">Sets status to Revisit Later, schedules a follow-up on your chosen date, and logs both in the activity timeline.</p>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRevisitDateInput">Revisit / Follow-Up Date</label>
+                    <input type="date" id="bddRevisitDateInput" class="filter-input">
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRevisitNotesInput">Follow-up notes for the owner (external)</label>
+                    <textarea id="bddRevisitNotesInput" rows="2" class="filter-input" placeholder="Visible in Outreach / follow-up context…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddRevisitInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddRevisitInternalNotesInput" rows="2" class="filter-input" placeholder="Not shared with the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-modal-footer">
+                    <button type="button" id="bddRevisitLaterCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
+                    <button type="button" id="bddRevisitLaterSaveBtn" class="bdd-ds-btn bdd-ds-btn--solid-accent">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule / Calendar Modal -->
+    <div class="modal-overlay" id="bddScheduleModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: 480px;">
+            <div class="modal-header">
+                <h2>Schedule / Calendar</h2>
+                <button type="button" class="modal-close" id="bddScheduleModalClose">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body">
+                <p id="bddScheduleModalLabel" class="bdd-ds-hint bdd-ds-hint--lg" style="margin-bottom: 4px;">Schedule a follow-up for this deal–operator pair.</p>
+                <p class="bdd-ds-hint">The owner contact can see this meeting request in Outreach Hub.</p>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleHeaderInput">Header</label>
+                    <input type="text" id="bddScheduleHeaderInput" class="filter-input" placeholder="e.g. Follow-up call, Site visit">
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleDateInput">Follow-Up Date</label>
+                    <input type="date" id="bddScheduleDateInput" class="filter-input">
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleNotesInput">Follow-up notes (external)</label>
+                    <p class="bdd-ds-hint" style="margin-top: -4px;">The owner can see these in Outreach Hub.</p>
+                    <textarea id="bddScheduleNotesInput" rows="2" class="filter-input" placeholder="Visible to the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-field">
+                    <label class="bdd-ds-field-label" for="bddScheduleInternalNotesInput">Team notes (internal, optional)</label>
+                    <textarea id="bddScheduleInternalNotesInput" rows="2" class="filter-input" placeholder="Not shared with the owner…"></textarea>
+                </div>
+                <div class="bdd-ds-modal-footer">
+                    <button type="button" id="bddScheduleCancelBtn" class="bdd-ds-btn bdd-ds-btn--secondary">Cancel</button>
+                    <button type="button" id="bddScheduleSaveBtn" class="bdd-ds-btn bdd-ds-btn--solid-accent">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Proposal (disabled in operator workspace until proposal flow ships) -->
+    <div class="modal-overlay" id="bddSubmitProposalModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: min(100%, 960px); width: 100%;">
+            <div class="modal-header">
+                <h2 id="bddSubmitProposalModalTitle">Submit Proposal</h2>
+                <button type="button" class="modal-close" id="bddSubmitProposalModalClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body bdd-submit-proposal-frame">
+                <iframe id="bddSubmitProposalIframe" title="Submit Proposal"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outreach Hub Inbox -->
+    <div class="modal-overlay" id="bddOutreachInboxModal">
+        <div class="modal-content modal-content--deal-setup" style="max-width: min(100%, 960px); width: 100%;">
+            <div class="modal-header">
+                <h2 id="bddOutreachInboxModalTitle">Outreach Inbox</h2>
+                <button type="button" class="modal-close" id="bddOutreachInboxModalClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="bdd-ds-modal-body bdd-submit-proposal-frame">
+                <iframe id="bddOutreachInboxIframe" title="Outreach Inbox"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as Pipeline from '/lib/deal-workspace-pipeline.js';
+        import { updateWorkspaceInsights } from '/js/deal-workspace-insights.js';
+        window.DealWorkspacePipeline = Pipeline;
+        window.DealWorkspaceInsights = { update: updateWorkspaceInsights };
+    </script>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/generated/operator-match-scoring-config.js"></script>
+    <script src="/js/operator-match-score-ui.js"></script>
+    <script src="/operator-development-dashboard.js" defer></script>
+    <script src="/embed-chrome.js" defer></script>
+</body>
+</html>

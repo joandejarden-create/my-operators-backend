@@ -148,6 +148,60 @@
         .embed-mode .deal-compare-container { max-width: 100% !important; }
         .embed-mode #brandSelectorSection { display: none !important; }
 
+        /* Embedded in My Deals iframe: one vertical scroll (not body + table-wrapper). */
+        .embed-mode.is-nested-embed,
+        .embed-mode.is-nested-embed body {
+            height: 100%;
+            overflow: hidden;
+        }
+        .embed-mode.is-nested-embed .page-wrapper,
+        .embed-mode.is-nested-embed .dashboard-main-section {
+            height: 100%;
+            min-height: 0;
+            width: 100%;
+            max-width: 100%;
+        }
+        .embed-mode.is-nested-embed .deal-compare-container {
+            height: 100%;
+            min-height: 0;
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .embed-mode.is-nested-embed .comparison-section {
+            flex: 1;
+            min-height: 0;
+            width: 100%;
+            max-width: 100%;
+            display: block;
+            overflow-y: auto;
+            margin-top: 0;
+        }
+        .embed-mode.is-nested-embed #comparisonContent {
+            flex: none;
+            min-height: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: visible;
+        }
+        .embed-mode.is-nested-embed .table-wrapper {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: visible;
+            max-height: none;
+        }
+        .embed-mode.is-nested-embed .back-to-top {
+            bottom: 56px;
+        }
+        .embed-mode.is-nested-embed body.has-platform-embed-chrome-footer {
+            padding-bottom: 0;
+        }
+
         .dashboard-main-section {
             flex: 1;
             margin-left: 300px;
@@ -931,7 +985,7 @@
             .back-to-top { right: 16px; bottom: 16px; width: 40px; height: 40px; font-size: 18px; }
         }
     </style>
-    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');if(window!==window.top){document.documentElement.classList.add('is-nested-embed');}}})();</script>
 </head>
 <body>
     <div class="page-wrapper">
@@ -2103,7 +2157,7 @@
                 comparisonContentEl.style.display = 'block';
                 emptyStateEl.style.display = 'none';
                 comparisonTheadEl.innerHTML = '';
-                comparisonTbodyEl.innerHTML = '<tr><td colspan="20" style="padding:40px;text-align:center;vertical-align:middle;"><div class="loading-deals"><div class="loading"><div class="loading-content"><div class="wave-container"><div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div><div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div></div><div><div class="loading-text-main">Loading comparison data…</div></div></div><div class="loading-progress"><div class="loading-progress-bar"></div></div></div></div></td></tr>';
+                comparisonTbodyEl.innerHTML = '<tr><td colspan="20" style="padding:40px;text-align:center;vertical-align:middle;"><div class="loading-deals"><div class="loading"><div class="loading-content"><div class="wave-container"><div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div><div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div></div><div><div class="loading-text-main">Loading Comparison Data…</div></div></div><div class="loading-progress"><div class="loading-progress-bar"></div></div></div></div></td></tr>';
                 return fetch('/api/deal-compare/proposals?dealId=' + encodeURIComponent(dealIdFromUrl))
                     .then(function (r) { return r.json(); })
                     .then(function (data) {

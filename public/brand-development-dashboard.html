@@ -46,6 +46,8 @@
             --bdd-kpi-footer-size: 9px;
             /* Same wrapper size for every KPI card (flow + pipeline) */
             --bdd-kpi-card-height: 132px;
+            --bdd-kpi-footer-slot-height: 2.5rem;
+            --bdd-kpi-footer-badge-height: 2.35rem;
         }
 
         * {
@@ -752,11 +754,12 @@
             min-height: var(--bdd-kpi-card-height);
             max-height: var(--bdd-kpi-card-height);
             display: grid;
-            /* Title, value, footer — no 1fr row (avoids a tall empty band above the footer) */
-            grid-template-rows: auto minmax(0, 2.35rem) auto;
+            /* Title, value, fixed footer band — badges align on one row across cards */
+            grid-template-rows: auto minmax(0, 1fr) var(--bdd-kpi-footer-slot-height, 2.5rem);
             row-gap: 2px;
             align-content: start;
             position: relative;
+            overflow: hidden;
         }
         .bdd-kpi-metric-card--action {
             border-color: rgba(20, 202, 116, 0.55);
@@ -812,20 +815,33 @@
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            align-self: stretch;
-            min-height: 0;
-            padding-top: 2px;
+            align-self: end;
+            width: 100%;
+            min-width: 0;
+            height: var(--bdd-kpi-footer-slot-height);
+            min-height: var(--bdd-kpi-footer-slot-height);
+            max-height: var(--bdd-kpi-footer-slot-height);
+            padding: 0 2px;
+            box-sizing: border-box;
         }
         .bdd-kpi-metric-card__footer .bdd-insight-card__badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: var(--bdd-kpi-footer-badge-height);
+            max-height: var(--bdd-kpi-footer-badge-height);
             align-self: flex-end;
             max-width: 100%;
+            width: 100%;
+            box-sizing: border-box;
             text-align: center;
-            justify-content: center;
-            flex-wrap: wrap;
             font-size: var(--bdd-kpi-footer-size);
-            padding: 3px 6px;
-            line-height: 1.25;
+            padding: 2px 4px;
+            line-height: 1.15;
             white-space: normal;
+            overflow: hidden;
+            overflow-wrap: anywhere;
+            word-break: break-word;
             border-radius: 4px;
         }
         .bdd-kpi-metric-card__footer--meta {
@@ -835,21 +851,22 @@
             line-height: 1.25;
             text-align: center;
             width: 100%;
-            min-height: 0;
+            min-width: 0;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: flex-end;
             gap: 2px;
         }
         .bdd-kpi-pipeline-meta-stack {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: flex-end;
             gap: 1px;
             width: 100%;
-            max-height: 3.4em;
+            max-height: var(--bdd-kpi-footer-badge-height);
             overflow: hidden;
         }
         .bdd-kpi-pipeline-meta-line {
@@ -3601,8 +3618,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="loading-text-main">Loading deals...</div>
-                                    <div class="loading-text-time">Estimated time: 10–30 seconds</div>
+                                    <div class="loading-text-main">Loading Deals…</div>
                                 </div>
                             </div>
                             <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -3633,7 +3649,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="loading-text-main">Loading activity log...</div>
+                                    <div class="loading-text-main">Loading Activity Log…</div>
                                     <div class="loading-text-time">Please wait</div>
                                 </div>
                             </div>
@@ -4000,6 +4016,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/dealality-memberstack-auth.js"></script>
+    <script type="module">
+        import * as Pipeline from '/lib/deal-workspace-pipeline.js';
+        import { updateWorkspaceInsights } from '/js/deal-workspace-insights.js';
+        window.DealWorkspacePipeline = Pipeline;
+        window.DealWorkspaceInsights = { update: updateWorkspaceInsights };
+    </script>
     <script src="brand-development-dashboard.js"></script>
 
     <script src="/embed-chrome.js" defer></script>

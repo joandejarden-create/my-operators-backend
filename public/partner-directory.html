@@ -35,6 +35,7 @@
           --system--blue-100: #eaf4ff;
           --system--blue-300: #1d88fe;
           --system--blue-200: #8fc3ff;
+          --scrollbar-size: 6px;
         }
 
         * {
@@ -45,6 +46,8 @@
 
         html {
             scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
         }
 
         body {
@@ -57,6 +60,44 @@
             line-height: 1.5em;
             min-height: 100vh;
             scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+
+        /* Global scrollbar — match app.css / other hub pages.
+           Include html, body: Chrome often ignores *::-webkit-scrollbar on the viewport scroller. */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar,
+        .sidebar-wrapper::-webkit-scrollbar,
+        *::-webkit-scrollbar {
+            width: var(--scrollbar-size);
+            height: var(--scrollbar-size);
+        }
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track,
+        .sidebar-wrapper::-webkit-scrollbar-track,
+        *::-webkit-scrollbar-track {
+            background: #080f25;
+            border-left: 1px solid rgba(87, 195, 255, 0.35);
+        }
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb,
+        .sidebar-wrapper::-webkit-scrollbar-thumb,
+        *::-webkit-scrollbar-thumb {
+            background: #37446b;
+            border-radius: 0;
+        }
+        html::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover,
+        .sidebar-wrapper::-webkit-scrollbar-thumb:hover,
+        *::-webkit-scrollbar-thumb:hover {
+            background: #7e89ac;
+        }
+        html::-webkit-scrollbar-corner,
+        body::-webkit-scrollbar-corner,
+        .sidebar-wrapper::-webkit-scrollbar-corner,
+        *::-webkit-scrollbar-corner {
+            background: #080f25;
         }
 
         /* ----- LAYOUT (main content position/width) - keep in sync for future changes -----
@@ -177,18 +218,7 @@
             margin-bottom: 8px;
         }
 
-        .partner-directory__header .deal-capture-logo {
-            height: 32px;
-            display: flex;
-            align-items: center;
-        }
 
-        .partner-directory__header .deal-capture-logo img {
-            height: 100%;
-            width: auto;
-            max-width: 120px;
-            object-fit: contain;
-        }
 
         .partner-directory__header h1 {
             font-size: 2rem;
@@ -308,47 +338,120 @@
             color: #6c72ff;
         }
 
-        /* Filters Section - Wraps to multiple rows when needed; no scrollbar */
+        /* Filters Section — Brand Explorer single-row layout */
         .filters-section {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
             background: var(--neutral--800);
             border: 0.6px solid var(--neutral--600);
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px 15px;
             margin-bottom: 20px;
             display: flex;
             align-items: flex-end;
-            gap: 16px;
-            flex-wrap: wrap;
+            gap: 10px;
+            flex-wrap: nowrap;
             overflow: hidden;
         }
 
-        /* On wide screens, keep filters in a single row */
-        @media (min-width: 1400px) {
+        @media (max-width: 1200px) {
             .filters-section {
-                flex-wrap: nowrap;
+                flex-wrap: wrap;
             }
         }
-        
+
         .filters-section-left {
+            display: none;
+        }
+
+        .filters-section-middle {
             display: flex;
             align-items: flex-end;
             gap: 8px;
-            flex-shrink: 0;
+            flex: 1;
+            min-width: 0;
+            flex-shrink: 1;
         }
-        
+
         .filters-section-right {
             display: flex;
             align-items: flex-end;
             gap: 8px;
-            flex-shrink: 0;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             margin-left: auto;
             min-width: 0;
+            flex-shrink: 0;
         }
 
         .filter-group-search {
-            min-width: 120px;
-            max-width: 220px;
+            min-width: 160px;
+            max-width: 200px;
+            width: 100%;
+        }
+
+        .filters-section-right .filter-group:has(.filter-select) {
+            max-width: 118px;
+        }
+
+        .filters-section-right .filter-group.filter-group--third-party:has(.filter-select) {
+            min-width: 252px;
+            max-width: 280px;
+            flex-shrink: 0;
+        }
+
+        .filters-section-right .filter-group--third-party .filter-label {
+            white-space: nowrap;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        .filters-section-right .filter-group--brands {
+            max-width: 130px;
+        }
+
+        .filter-group-reset {
+            overflow: visible !important;
+            max-width: none !important;
+        }
+
+        .btn-clear {
+            padding: 8px 16px;
+            background: var(--secondary--color-5);
+            border: 1px solid var(--secondary--color-5);
+            color: var(--neutral--100);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+            width: auto;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .btn-clear:hover {
+            background: var(--system--orange-400);
+            border-color: var(--system--orange-400);
+            transform: translateY(-1px);
+        }
+
+        .filter-group--company-role-sr {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         .filter-search-input {
@@ -409,21 +512,7 @@
             min-width: 140px;
         }
 
-        .filter-spacer {
-            width: 24px;
-            flex-shrink: 0;
-        }
-
-        .filters-section-middle {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            flex: 0 1 360px; /* keep search + sort from pushing into right-side filters */
-            min-width: 0;
-            justify-content: flex-start;
-        }
-
-        /* Filter buttons – Today's Deal Pulse segmented style (Owner/Brand/Operator) */
+        /* Filter buttons – legacy (hidden) */
         .filter-buttons-group {
             display: flex;
             gap: 0;
@@ -467,6 +556,95 @@
             color: #fff;
         }
 
+        /* Legacy segmented type buttons — replaced by user-type legend bar */
+        .filter-buttons-group {
+            display: none !important;
+        }
+
+        .filter-group--user-type-sr {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .user-type-legend-bar {
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .user-type-legend-bar.hidden {
+            display: none;
+        }
+
+        .user-type-legend {
+            background: var(--neutral--800);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 8px;
+            padding: 8px 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .user-type-legend > span:first-child {
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+
+        .user-type-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-family: inherit;
+            cursor: pointer;
+            background: transparent;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .user-type-legend-item:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .user-type-legend-item.active {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            border-color: var(--accent--primary-1);
+        }
+
+        .user-type-legend-item.no-records {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .user-type-legend-swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .user-type-legend-label {
+            color: inherit;
+            font-size: 12px;
+        }
+
         .filter-group {
             display: flex;
             flex-direction: column;
@@ -489,6 +667,104 @@
         .filters-section-right .filter-group:last-child {
             max-width: none;
             min-width: 120px;
+        }
+
+        /* Results toolbar — below filter wrapper (Companies / Individuals / Favorites) */
+        .results-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px 16px;
+        }
+
+        .results-toolbar .results-count {
+            color: var(--neutral--400);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .results-toolbar .results-count strong {
+            color: var(--neutral--100);
+            font-weight: 600;
+        }
+
+        .results-toolbar .results-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .results-toolbar .sort-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .results-toolbar .sort-label {
+            color: var(--neutral--400);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .results-toolbar .sort-select {
+            background: var(--secondary--color-1);
+            border: 0.6px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            min-width: 150px;
+            max-width: min(220px, 28vw);
+        }
+
+        .results-toolbar .sort-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .results-toolbar .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: var(--secondary--color-4);
+            border: 0.6px solid var(--neutral--600);
+            border-radius: 6px;
+            padding: 4px;
+        }
+
+        .results-toolbar .view-toggle-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--neutral--400);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .results-toolbar .view-toggle-btn:hover {
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+        }
+
+        .results-toolbar .view-toggle-btn.active {
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+        }
+
+        .results-grid.results-grid--list {
+            grid-template-columns: 1fr !important;
         }
 
         #responsivenessFiltersWrapper {
@@ -542,12 +818,12 @@
             opacity: 0;
             position: absolute;
             z-index: 999999;
-            background: #101935;
+            background: var(--secondary--color-1);
             color: #ffffff;
             text-align: left;
             border-radius: 8px;
             padding: 12px 14px;
-            border: 1px solid #343b4e;
+            border: 1px solid var(--neutral--600);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
             width: 320px;
             max-width: calc(100vw - 40px);
@@ -761,12 +1037,25 @@
             z-index: 10;
         }
 
-        /* Results Grid */
+        /* Results Grid — individual cards fill row height so footer + metrics align across columns */
+        .results-grid--individuals > .individual-card {
+            height: 100%;
+            min-height: 0;
+        }
+
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
+        }
+
+        /* Companies / Individuals tabs: cap at 4 columns on wide screens (avoids 5+ narrow tiles) */
+        @media (min-width: 1400px) {
+            .results-grid.results-grid--companies,
+            .results-grid.results-grid--individuals {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
         }
 
         /* Company Card - fully rendered so scroll feels instant */
@@ -815,6 +1104,33 @@
         .company-card.company-type-mgmt:hover {
             border-left-color: #14ca74;
             border-color: #14ca74;
+        }
+
+        .company-card.company-type-advisor {
+            border-left-color: #a855f7;
+        }
+
+        .company-card.company-type-advisor:hover {
+            border-left-color: #c084fc;
+            border-color: #c084fc;
+        }
+
+        .company-card.company-type-other {
+            border-left-color: #94a3b8;
+        }
+
+        .company-card.company-type-other:hover {
+            border-left-color: #cbd5e1;
+            border-color: #cbd5e1;
+        }
+
+        .company-card.company-type-owner-operator {
+            border-left-color: #57b4e9;
+        }
+
+        .company-card.company-type-owner-operator:hover {
+            border-left-color: #57b4e9;
+            border-color: #57b4e9;
         }
 
         .company-card__header {
@@ -1011,8 +1327,8 @@
 
         .company-card__footer {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 12px;
             padding-top: 16px;
             border-top: 1px solid var(--neutral--600);
             margin-top: auto;
@@ -1033,6 +1349,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            margin-left: auto;
+            flex-shrink: 0;
             padding: 8px 20px;
             background: var(--accent--primary-1);
             color: var(--neutral--100);
@@ -1064,7 +1382,8 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            contain: layout paint;
+            /* layout only — paint containment clipped footers when row-height stretched grid cells */
+            contain: layout;
             will-change: transform;
         }
 
@@ -1103,21 +1422,49 @@
             border-color: #14ca74;
         }
 
+        .individual-card.individual-type-advisor {
+            border-left-color: #a855f7;
+        }
+
+        .individual-card.individual-type-advisor:hover {
+            border-left-color: #c084fc;
+            border-color: #c084fc;
+        }
+
+        .individual-card.individual-type-other {
+            border-left-color: #94a3b8;
+        }
+
+        .individual-card.individual-type-other:hover {
+            border-left-color: #cbd5e1;
+            border-color: #cbd5e1;
+        }
+
+        .individual-card.individual-type-owner-operator {
+            border-left-color: #57b4e9;
+        }
+
+        .individual-card.individual-type-owner-operator:hover {
+            border-left-color: #57b4e9;
+            border-color: #57b4e9;
+        }
+
         .individual-card__header {
             display: flex;
             align-items: flex-start;
-            justify-content: space-between;
             gap: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            width: 100%;
         }
 
         .individual-card__profile-section {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 16px;
             flex: 1;
             min-width: 0;
+            width: 100%;
         }
 
         .individual-card__avatar-wrapper {
@@ -1163,8 +1510,7 @@
         .individual-card__info {
             flex: 1;
             min-width: 0;
-            text-align: center;
-            width: 100%;
+            text-align: left;
         }
 
         .individual-card__name {
@@ -1172,17 +1518,20 @@
             font-weight: 700;
             color: var(--neutral--100);
             margin-bottom: 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1.05;
+            line-height: 1.25;
+        }
+
+        .individual-card__name-text {
+            display: block;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            hyphens: auto;
         }
 
         .individual-card__first-name,
         .individual-card__last-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            word-break: break-word;
+            overflow-wrap: anywhere;
             max-width: 100%;
         }
 
@@ -1200,25 +1549,199 @@
             font-size: 12px;
             color: var(--neutral--400);
             margin-top: 6px;
+            line-height: 1.35;
+            max-width: 100%;
+            white-space: normal;
+        }
+
+        .individual-card__company {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neutral--400);
+            text-align: left;
+            margin: 4px 0 6px;
+            line-height: 1.35;
+            max-width: 100%;
+            white-space: normal;
+        }
+
+        .individual-card__header-stats {
+            display: none;
+        }
+
+        .individual-card__tail {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .individual-card__metrics {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            gap: 8px 12px;
+            width: 100%;
+            margin: 14px 0 0;
+            padding: 10px 44px 12px;
+            box-sizing: border-box;
+            border-top: 1px solid var(--neutral--600);
+            border-bottom: none;
+        }
+
+        .individual-card__metric {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            min-width: 0;
+            flex: 0 1 auto;
+        }
+
+        .individual-card__metric .stat-icon {
+            flex-shrink: 0;
+            margin-top: 0;
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            min-height: 16px;
+            font-size: 13px;
+            opacity: 0.75;
+        }
+
+        .individual-card__metric-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
+        }
+
+        .individual-card__metric-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--neutral--300);
+            line-height: 1.2;
+        }
+
+        .individual-card__metric-label {
+            font-size: 9px;
+            line-height: 1.2;
+            color: var(--neutral--500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        /* Individual modal header: metrics + demo footnote */
+        #individualModal .company-modal-header-top {
+            overflow: visible;
+            align-items: flex-start;
+        }
+
+        #individualModal .individual-modal-header-stats-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            flex-shrink: 0;
+            max-width: min(420px, 52%);
+            align-self: flex-start;
+            min-width: 0;
+        }
+
+        #individualModal .individual-modal-header-metrics.individual-card__metrics {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 4px 0 0;
+            border-top: none;
+            width: 100%;
+            max-width: none;
+            flex-shrink: 0;
+            justify-content: space-evenly;
+            gap: 12px 16px;
+            align-self: stretch;
+        }
+
+        @media (max-width: 720px) {
+            #individualModal .company-modal-header-top {
+                flex-wrap: wrap;
+            }
+
+            #individualModal .individual-modal-header-stats-wrap {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            #individualModal .individual-modal-header-metrics.individual-card__metrics {
+                max-width: 100%;
+                width: 100%;
+                padding-top: 14px;
+                margin-top: 8px;
+                border-top: 1px solid var(--neutral--600);
+            }
+
+        }
+
+        .individual-card__meta-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+
+        /* Always label on one row, value below — same rhythm on every card */
+        .individual-card__meta-field {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .individual-card__meta-label {
+            font-weight: 700;
+            color: var(--neutral--100);
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
             line-height: 1.3;
+        }
+
+        .individual-card__meta-value {
+            width: 100%;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            color: var(--neutral--200);
+            word-break: break-word;
+        }
+
+        .individual-card__meta-value--muted {
+            color: var(--neutral--500);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* Languages: one line — "LANGUAGES: Spanish, French" */
+        .individual-card__languages-inline {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.4;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .individual-card__company {
-            font-size: 13px;
-            color: var(--neutral--100);
+        .individual-card__languages-inline .individual-card__meta-label {
+            margin-right: 0.35em;
         }
 
-        .individual-card__header-stats {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 6px;
-            flex-shrink: 0;
-            align-self: flex-start;
-            padding-right: 34px; /* Make room for star icon while giving center more width */
+        .individual-card__languages-inline .individual-card__meta-value {
+            display: inline;
+            width: auto;
+            min-height: 0;
+            font-weight: 400;
         }
 
         .individual-card__stat-icons {
@@ -1254,18 +1777,11 @@
             color: var(--neutral--500);
         }
 
-        .individual-card__regions {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--neutral--100);
-            text-transform: uppercase;
-        }
-
         .individual-card__body {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 0;
         }
 
         .individual-card__footer-info {
@@ -1302,36 +1818,76 @@
 
         .individual-card__footer {
             display: flex;
-            justify-content: space-between;
+            flex-direction: row;
             align-items: center;
-            padding-top: 16px;
+            justify-content: flex-end;
+            flex-wrap: nowrap;
+            gap: 10px;
+            padding-top: 12px;
             border-top: 1px solid var(--neutral--600);
-            margin-top: auto;
+            margin-top: 0;
+            min-height: 44px;
         }
 
         .individual-card__connect-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 20px;
-            background: var(--accent--primary-1);
+            padding: 8px 20px;
+            background: var(--secondary--color-4);
             color: var(--neutral--100);
+            border: 1px solid var(--neutral--500);
             border-radius: 6px;
             font-weight: 500;
             font-size: 14px;
-            border: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .individual-card__connect-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
-            background: var(--secondary--color-2);
+            border-color: var(--secondary--color-3);
+            background: rgba(87, 195, 255, 0.12);
+            box-shadow: 0 4px 12px rgba(87, 195, 255, 0.15);
         }
 
         .individual-card__connect-btn svg {
             flex-shrink: 0;
+        }
+
+        .individual-card__footer-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .individual-modal-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .individual-modal-avatar-initials {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--neutral--700);
+            color: var(--neutral--100);
+            font-size: 24px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .individual-modal-company-link {
+            margin-top: 8px;
         }
 
         /* Loading State - Wave Animation */
@@ -1552,6 +2108,18 @@
             display: none !important;
         }
 
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         /* Company Detail Modal */
         .company-modal {
             position: fixed;
@@ -1661,6 +2229,34 @@
             display: flex;
             align-items: center;
             gap: 16px;
+        }
+
+        /* Individual modal: vertical stack — name, job title, company */
+        #individualModal .company-modal-header-name-section.individual-modal-header-name-stack {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        #individualModal .individual-modal-header-name-stack > h2 {
+            margin: 0 0 14px;
+            padding: 0;
+        }
+
+        #individualModal .individual-modal-header-job-title {
+            font-size: 14px;
+            color: var(--neutral--400);
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        #individualModal .individual-modal-header-company {
+            font-size: 14px;
+            color: var(--neutral--300);
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.35;
         }
 
         .company-modal-logo {
@@ -1825,6 +2421,101 @@
             font-size: 14px;
             color: var(--neutral--400);
             line-height: 1.7;
+        }
+
+        .company-modal-additional-meta .company-modal-meta-item {
+            margin-bottom: 14px;
+        }
+
+        .company-modal-additional-meta .company-modal-meta-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .company-modal-meta-label {
+            font-weight: 600;
+            color: var(--neutral--100);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .company-modal-meta-value {
+            color: var(--neutral--400);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .company-modal-tag-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .company-modal-tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.35;
+            color: var(--neutral--200);
+            background: rgba(96, 165, 250, 0.12);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+        }
+
+        .company-modal-meta-empty {
+            color: var(--neutral--500);
+        }
+
+        /* Individual modal: bold caps labels, normal body text */
+        .company-modal-inline-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--neutral--100);
+            font-size: 13px;
+        }
+
+        .company-modal-section--individual-tight {
+            margin-bottom: 12px;
+        }
+
+        .company-modal-coverage-block .company-modal-inline-label {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .company-modal-coverage-body {
+            font-weight: 400;
+            color: var(--neutral--300);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .company-modal-languages-inline {
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+        }
+
+        .company-modal-languages-inline .company-modal-inline-label {
+            margin-right: 0.35em;
+        }
+
+        .company-modal-lang-values {
+            font-weight: 400;
+            color: var(--neutral--300);
+        }
+
+        .company-modal-lang-empty {
+            font-weight: 400;
+            color: var(--neutral--500);
+            font-style: italic;
         }
 
         .company-modal-industries-list {
@@ -2219,6 +2910,61 @@
             position: relative;
         }
 
+        /* Connect coming soon — in-page (no browser alert / iframe origin prefix) */
+        .partner-directory-notice:not([hidden]) {
+            position: fixed;
+            inset: 0;
+            z-index: 10050;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .partner-directory-notice__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .partner-directory-notice__panel {
+            position: relative;
+            z-index: 1;
+            background: var(--neutral--800);
+            border: 1px solid var(--neutral--600);
+            border-radius: 12px;
+            padding: 24px 28px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .partner-directory-notice__message {
+            margin: 0 0 20px;
+            color: var(--neutral--100);
+            font-size: 15px;
+            line-height: 1.45;
+        }
+
+        .partner-directory-notice__ok {
+            min-width: 88px;
+            padding: 8px 24px;
+            background: var(--accent--primary-1);
+            color: var(--neutral--100);
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .partner-directory-notice__ok:hover {
+            background: var(--secondary--color-2);
+            transform: translateY(-1px);
+        }
+
         /* Category Selector Modal */
         .category-selector-modal {
             position: fixed;
@@ -2608,6 +3354,18 @@
             display: none !important;
         }
 
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
     </style>
 </head>
 <body>
@@ -2646,9 +3404,6 @@
                 <!-- Header Section -->
                 <div class="partner-directory__header">
                     <div class="partner-directory-title-container">
-                        <div class="deal-capture-logo">
-                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-                        </div>
                         <h1>Partner Directory</h1>
                     </div>
                     <p class="page-desc">Discover and connect with hotel companies, brands, and key decision-makers. Browse by type and region, filter by responsiveness, and save favorites for quick access.</p>
@@ -2679,36 +3434,10 @@
 
                 <!-- Filters Section -->
                 <div class="filters-section" id="filtersSection" style="display: none;">
-                    <div class="filters-section-left">
-                        <div class="sort-icon" id="sortIcon" title="Sort">⇅</div>
-                        <div class="filter-buttons-group">
-                            <button class="filter-button" data-type="HOTEL MGMT. COMPANY" id="filterMgmt">
-                                3RD PARTY<br>OPERATOR
-                            </button>
-                            <button class="filter-button" data-type="HOTEL BRANDS (FRANCHISE)" id="filterBrands">
-                                HOTEL BRANDS<br>(FRANCHISE)
-                            </button>
-                            <button class="filter-button" data-type="HOTEL OWNERS" id="filterOwners">
-                                HOTEL<br>OWNERS
-                            </button>
-                        </div>
-                        <div class="filter-spacer"></div>
-                    </div>
                     <div class="filters-section-middle">
                         <div class="filter-group filter-group-search">
-                            <label class="filter-label">Search</label>
-                            <input type="text" class="filter-search-input" id="searchInput" placeholder="Search by company name...">
-                        </div>
-                        <div class="filter-group">
-                            <label class="filter-label">Sort Types</label>
-                            <select class="filter-select sort-select" id="sortSelect">
-                                <option value="name-asc">Name (A-Z)</option>
-                                <option value="name-desc">Name (Z-A)</option>
-                                <option value="deals-desc">Most Deals</option>
-                                <option value="deals-asc">Least Deals</option>
-                                <option value="brands-desc">Most Brands</option>
-                                <option value="brands-asc">Least Brands</option>
-                            </select>
+                            <label class="filter-label" for="searchInput">Search</label>
+                            <input type="text" class="filter-search-input" id="searchInput" placeholder="Search by company or contact name...">
                         </div>
                     </div>
                     <div class="filters-section-right">
@@ -2724,25 +3453,59 @@
                                 <option value="Partners">Partners</option>
                             </select>
                         </div>
-                        <div class="filter-group">
-                            <label class="filter-label">User Type</label>
-                            <select class="filter-select" id="userTypeFilter">
+                        <div class="filter-group filter-group--user-type-sr" title="Company Profile → Company Type">
+                            <label class="filter-label visually-hidden" for="userTypeFilter">User Type</label>
+                            <select
+                                class="filter-select"
+                                id="userTypeFilter"
+                                data-airtable-table="Company Profile"
+                                data-airtable-field="Company Type"
+                                aria-describedby="userTypeFilterHint"
+                            >
                                 <option value="">All Types</option>
-                                <option value="HOTEL MGMT. COMPANY">3rd Party Operator</option>
-                                <option value="HOTEL BRANDS (FRANCHISE)">Hotel Brands (Franchise)</option>
-                                <option value="HOTEL OWNERS">Hotel Owners</option>
                             </select>
+                            <span class="visually-hidden" id="userTypeFilterHint">Filters by the Company Profile field &quot;Company Type&quot;.</span>
+                        </div>
+                        <div class="filter-group filter-group--company-role-sr" title="Company Profile → Company's role in the hotel ecosystem">
+                            <label class="filter-label visually-hidden" for="companyRoleFilter">Company Role</label>
+                            <select
+                                class="filter-select"
+                                id="companyRoleFilter"
+                                name="companyRoleFilter"
+                                data-airtable-table="Company Profile"
+                                data-airtable-field="Company's role in the hotel ecosystem"
+                                aria-describedby="companyRoleFilterHint"
+                            >
+                                <option value="">All Roles</option>
+                            </select>
+                            <span class="visually-hidden" id="companyRoleFilterHint">Filters by company role in the hotel ecosystem.</span>
                         </div>
                         <div class="filter-group">
-                            <label class="filter-label">Region</label>
-                            <select class="filter-select" id="regionFilter">
+                            <label class="filter-label" for="operatingModelFilter">Operating Model</label>
+                            <select class="filter-select" id="operatingModelFilter" aria-label="Operating Model">
+                                <option value="">All Models</option>
+                            </select>
+                        </div>
+                        <div class="filter-group filter-group--third-party">
+                            <label class="filter-label" for="thirdPartyMgmtFilter">Third-Party Mgmt. Availability</label>
+                            <select
+                                class="filter-select"
+                                id="thirdPartyMgmtFilter"
+                                aria-label="Third-Party Mgmt. Availability"
+                            >
+                                <option value="">All Availability</option>
+                            </select>
+                        </div>
+                        <div class="filter-group filter-group--brands">
+                            <label class="filter-label" for="brandsFilter">Brands</label>
+                            <select class="filter-select" id="brandsFilter" aria-label="Brands">
+                                <option value="">All Brands</option>
+                            </select>
+                        </div>
+                        <div class="filter-group filter-group--region">
+                            <label class="filter-label" for="regionFilter">Region</label>
+                            <select class="filter-select" id="regionFilter" aria-label="Region">
                                 <option value="">All Regions</option>
-                                <option value="GLOBAL">Global</option>
-                                <option value="AMERICAS">Americas</option>
-                                <option value="CALA">CALA</option>
-                                <option value="EUROPE">Europe</option>
-                                <option value="MEA">MEA</option>
-                                <option value="AP">AP</option>
                             </select>
                         </div>
                         <div id="responsivenessFiltersWrapper" aria-hidden="true" style="visibility: hidden;">
@@ -2810,13 +3573,7 @@
                                     </div>
                                 </label>
                                 <select class="filter-select" id="responsivenessSpeedFilter">
-                                    <option value="">All speeds</option>
-                                    <option value="Lightning Fast">Lightning Fast</option>
-                                    <option value="Very Fast">Very Fast</option>
-                                    <option value="Responsive">Responsive</option>
-                                    <option value="Slow">Slow</option>
-                                    <option value="Stalled">Stalled</option>
-                                    <option value="Unresponsive">Unresponsive</option>
+                                    <option value="">All Speeds</option>
                                 </select>
                             </div>
                             <div class="filter-group filter-group--responsiveness">
@@ -2859,18 +3616,46 @@
                                     </div>
                                 </label>
                                 <select class="filter-select" id="responsivenessFrequencyFilter">
-                                    <option value="">All frequencies</option>
-                                    <option value="Frequently">Frequently</option>
-                                    <option value="Occasionally">Occasionally</option>
-                                    <option value="Rarely">Rarely</option>
+                                    <option value="">All Frequencies</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="filter-group">
-                            <a href="#" class="filter-reset-btn" id="resetFiltersBtn">
+                        <div class="filter-group filter-group-reset">
+                            <label class="filter-label">&nbsp;</label>
+                            <button type="button" class="btn-clear" id="resetFiltersBtn">
                                 Reset View
                                 <span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span>
-                            </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Type quick filter (chain-scale style; colors match card borders) -->
+                <div class="user-type-legend-bar hidden" id="userTypeLegendBar" aria-hidden="true">
+                    <div class="user-type-legend" id="userTypeLegend" role="group" aria-label="Filter by user type">
+                        <span>User Type</span>
+                        <button type="button" class="user-type-legend-item active" data-type="all" id="userTypeLegendAll">All</button>
+                    </div>
+                </div>
+
+                <div class="results-toolbar hidden" id="resultsToolbar" aria-live="polite">
+                    <div class="results-count" id="resultsCount">Showing <strong>0</strong> of <strong>0</strong> partners</div>
+                    <div class="results-controls">
+                        <div class="sort-control">
+                            <span class="sort-label">Sort:</span>
+                            <button type="button" class="sort-icon" id="sortIcon" title="Toggle sort direction" aria-label="Toggle sort direction">⇅</button>
+                            <select class="filter-select sort-select" id="sortSelect" aria-label="Sort results">
+                                <option value="name-asc">Name (A-Z)</option>
+                                <option value="name-desc">Name (Z-A)</option>
+                                <option value="deals-desc">Most Deals</option>
+                                <option value="deals-asc">Least Deals</option>
+                                <option value="brands-desc">Most Brands</option>
+                                <option value="brands-asc">Least Brands</option>
+                            </select>
+                        </div>
+                        <div class="view-toggle" role="group" aria-label="Results view">
+                            <button type="button" class="view-toggle-btn active" data-view="grid" id="gridViewBtn" title="Grid view" aria-pressed="true"><span aria-hidden="true">⊞</span></button>
+                            <button type="button" class="view-toggle-btn" data-view="list" id="listViewBtn" title="List view" aria-pressed="false"><span aria-hidden="true">☰</span></button>
                         </div>
                     </div>
                 </div>
@@ -2891,7 +3676,6 @@
                         </div>
                         <div class="loading-text">
                             <div class="loading-text-main">Processing...</div>
-                            <div class="loading-text-time">Estimated time: 2-3 seconds</div>
                         </div>
                     </div>
                     <div class="loading-progress">
@@ -2932,14 +3716,8 @@
                         <div class="filters-section-right">
                             <div class="filter-group">
                                 <label class="filter-label">Region</label>
-                                <select class="filter-select" id="insightsRegion">
+                                <select class="filter-select" id="insightsRegion" aria-label="Region">
                                     <option value="all">All Regions</option>
-                                    <option value="GLOBAL">Global</option>
-                                    <option value="AMERICAS">Americas</option>
-                                    <option value="CALA">CALA</option>
-                                    <option value="EUROPE">Europe</option>
-                                    <option value="MEA">MEA</option>
-                                    <option value="AP">Asia Pacific</option>
                                 </select>
                             </div>
                             <div class="filter-group">
@@ -2952,11 +3730,8 @@
                             </div>
                             <div class="filter-group">
                                 <label class="filter-label">Type</label>
-                                <select class="filter-select" id="insightsType">
+                                <select class="filter-select" id="insightsType" data-airtable-field="Company Type">
                                     <option value="all">All Types</option>
-                                    <option value="HOTEL MGMT. COMPANY">3rd Party Operator</option>
-                                    <option value="HOTEL BRANDS (FRANCHISE)">Hotel Brands (Franchise)</option>
-                                    <option value="HOTEL OWNERS">Hotel Owners</option>
                                 </select>
                             </div>
                             <div class="filter-group">
@@ -3048,11 +3823,30 @@
         </div>
     </div>
 
+    <!-- Connect — in-page notice (avoids iframe browser alert prefix) -->
+    <div class="partner-directory-notice" id="connectComingSoonNotice" hidden role="dialog" aria-modal="true" aria-labelledby="connectComingSoonMessage">
+        <div class="partner-directory-notice__backdrop" id="connectComingSoonBackdrop"></div>
+        <div class="partner-directory-notice__panel">
+            <p class="partner-directory-notice__message" id="connectComingSoonMessage">Connect functionality coming soon!</p>
+            <button type="button" class="partner-directory-notice__ok" id="connectComingSoonOk">OK</button>
+        </div>
+    </div>
+
+    <!-- Individual Profile Modal -->
+    <div class="company-modal" id="individualModal" style="display: none;">
+        <div class="company-modal-overlay" id="individualModalOverlay"></div>
+        <div class="company-modal-content">
+            <button type="button" class="company-modal-close" id="individualModalClose" aria-label="Close profile">&times;</button>
+            <div class="company-modal-header" id="individualModalHeader"></div>
+            <div class="company-modal-body" id="individualModalBody"></div>
+        </div>
+    </div>
+
     <!-- Company Detail Modal -->
     <div class="company-modal" id="companyModal" style="display: none;">
         <div class="company-modal-overlay" id="companyModalOverlay"></div>
         <div class="company-modal-content">
-            <button class="company-modal-close" id="companyModalClose">&times;</button>
+            <button type="button" class="company-modal-close" id="companyModalClose" aria-label="Close company profile">&times;</button>
             <div class="company-modal-header" id="companyModalHeader">
                 <!-- Header content will be inserted here -->
             </div>
@@ -3066,6 +3860,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Tooltip container for responsiveness filter info (radar-style) -->
     <div id="partnerDirectoryTooltipContainer" style="position: fixed; top: 20px; left: 20px; z-index: 999999; pointer-events: none;"></div>
+    <script src="/js/company-type-options.js"></script>
+    <script src="/js/company-role-options.js"></script>
+    <script src="/js/partner-directory-filter-options.js"></script>
     <script src="partner-directory.js"></script>
+
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confidential Deal Readiness Report — Sample Output</title>
+    <meta name="description" content="Illustrative confidential deal readiness report sample for Dealality partner pilot discussion. Fictional project only.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/css/snapshot-page-shell.css">
+    <link rel="stylesheet" href="/css/owner-diagnostic-sample.css">
+</head>
+<body>
+    <div class="snapshot-page bas-page ods-report-page" id="odsPage">
+        <div id="odsPageRoot" role="main"></div>
+    </div>
+    <script src="/js/owner-diagnostic-copy.js"></script>
+    <script src="/js/owner-diagnostic-sample.js"></script>
+    <script>
+    (function () {
+        var params = new URLSearchParams(window.location.search || "");
+        var chromeless = params.get("embed") === "1" || params.get("embed") === "true";
+        var autoPrint = params.get("print") === "1";
+        var page = document.getElementById("odsPage");
+        var root = document.getElementById("odsPageRoot");
+
+        if (page) {
+            page.classList.add("bas-page--full", "snapshot-page--full");
+            if (chromeless) page.classList.add("bas-page--chromeless");
+        }
+
+        if (!root || !window.OwnerDiagnosticSample) {
+            if (root) {
+                root.innerHTML = '<div class="bas-page-error">Diagnostic renderer failed to load.</div>';
+            }
+            return;
+        }
+
+        window.OwnerDiagnosticSample.render(root, {
+            fullPage: true,
+            autoPrint: autoPrint,
+            backHref: "/",
+            backLabel: "\u2190 Dealality",
+        });
+    })();
+    </script>
+</body>
+</html>

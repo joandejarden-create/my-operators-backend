@@ -20,9 +20,6 @@
             <span>Plan Wizard</span>
           </div>
           <div class="outreach-hub-title-container">
-            <div class="deal-capture-logo">
-              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-            </div>
             <h1>Plan Wizard</h1>
           </div>
           <p>Create an outreach plan: pick a deal, review effective setup, choose sequence and template pack, then add targets (companies and contacts). Optionally create a thread per target.</p>
@@ -89,6 +86,7 @@
     </div>
   </div>
 
+  <script src="/js/dealality-memberstack-auth.js"></script>
   <script>
 (function() {
   const API = '/api/outreach-hub';
@@ -134,9 +132,9 @@
   // Step 1: Load deals from My Deals API (same Airtable base / Deals table)
   function loadDeals() {
     const sel = qs('#deal-select');
-    sel.innerHTML = '<option value="">Loading deals…</option>';
+    sel.innerHTML = '<option value="">Loading Deals…</option>';
     showErr('');
-    fetch(MY_DEALS)
+    window.DealalityMemberstackAuth.fetchMyDealsList(MY_DEALS)
       .then(function(r) {
         if (!r.ok) throw new Error(r.status === 500 ? 'Server error loading deals. Check Airtable (Deals table and API key).' : 'Failed to load deals (' + r.status + ').');
         return r.json();
@@ -414,5 +412,6 @@
   loadDeals();
 })();
   </script>
+  <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

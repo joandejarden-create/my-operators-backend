@@ -10,9 +10,8 @@
     "Markets & Footprint",
     "Owner Engagement & Reporting",
     "Infrastructure & Data",
-    "Risk, Compliance & ESG",
     "Leadership",
-    "Best Fit & Deal Profile",
+    "Project Fit & Deal Profile",
     "Proof & Track Record",
   ];
 
@@ -29,11 +28,9 @@
       '<svg viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 1 1 1 0 7H6"></path></svg>',
     "Infrastructure & Data":
       '<svg viewBox="0 0 24 24"><path d="M3 21h18"></path><path d="M6 21V7l6-4 6 4v14"></path><path d="M10 11h4"></path><path d="M10 15h4"></path></svg>',
-    "Risk, Compliance & ESG":
-      '<svg viewBox="0 0 24 24"><path d="M12 2l9 16H3z"></path><path d="M12 9v5"></path><circle cx="12" cy="17" r="1"></circle></svg>',
     Leadership:
       '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"></path></svg>',
-    "Best Fit & Deal Profile":
+    "Project Fit & Deal Profile":
       '<svg viewBox="0 0 24 24"><path d="M3 12l6 6 12-12"></path></svg>',
     "Proof & Track Record":
       '<svg viewBox="0 0 24 24"><path d="M4 19h16"></path><path d="M7 16V9"></path><path d="M12 16V5"></path><path d="M17 16v-4"></path></svg>',
@@ -47,9 +44,8 @@
     "Markets & Footprint": "Markets &<br>Footprint",
     "Owner Engagement & Reporting": "Engagement &<br>Reporting",
     "Infrastructure & Data": "Infrastructure<br>&amp; Data",
-    "Risk, Compliance & ESG": "Risk, Compliance<br>&amp; ESG",
     Leadership: "Leadership<br>&amp; Team",
-    "Best Fit & Deal Profile": "Best Fit &<br>Deal Profile",
+    "Project Fit & Deal Profile": "Project Fit &<br>Deal Profile",
     "Proof & Track Record": "Proof &<br>Track Record",
   };
 
@@ -57,6 +53,14 @@
     "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80";
   var PLACEHOLDER_LEADER =
     "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80";
+
+  function escapeAttr(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
 
   function escapeHtml(s) {
     if (s == null) return "";
@@ -69,6 +73,79 @@
 
   function nz(v) {
     return v != null && String(v).trim() !== "" ? String(v).trim() : "";
+  }
+
+  function isInternalFillPlaceholder(v) {
+    var t = nz(v);
+    if (!t) return false;
+    return (
+      /^Select deal types Arbor pursues in CALA/i.test(t) ||
+      /^Choose values that match the CALA deals you pursue/i.test(t) ||
+      /^\[Internal fill guidance/i.test(t) ||
+      /^Mirror CALA leadership/i.test(t) ||
+      /^mirror your top three leaders/i.test(t) ||
+      (/Leadership Team Members:/i.test(t) && t.length > 72)
+    );
+  }
+
+  function pickOwnerFacing(ex, p, key) {
+    var v = pick(ex, p, key);
+    return isInternalFillPlaceholder(v) ? "" : nz(v);
+  }
+
+  var CROSS_BRAND_SELECT_OPTIONS = [
+    "Very Strong",
+    "Strong",
+    "High",
+    "Moderate-High",
+    "Medium",
+    "Low",
+    "Emerging",
+  ];
+
+  var HOTEL_BRAND_TOKEN_RE =
+    /\b(marriott|hilton|hyatt|ihg|choice|accor|starwood|sheraton|westin|curio|aloft|hampton|holiday inn|hotel indigo|radisson|four seasons|kimpton|independent)\b/gi;
+
+  function normalizeCrossBrandSignal(raw, leaders, vm) {
+    var s = isInternalFillPlaceholder(raw) ? "" : nz(raw);
+    if (s) {
+      var match = CROSS_BRAND_SELECT_OPTIONS.find(function (opt) {
+        return opt.toLowerCase() === s.toLowerCase();
+      });
+      if (match) return match;
+      if (s.length <= 24) return s;
+    }
+    var brands = {};
+    (leaders || []).forEach(function (L) {
+      var text = [L.priorBackground, L.coreExpertise, L.relevantAssetTypes]
+        .map(nz)
+        .join(" ");
+      var m;
+      HOTEL_BRAND_TOKEN_RE.lastIndex = 0;
+      while ((m = HOTEL_BRAND_TOKEN_RE.exec(text)) !== null) {
+        brands[m[1].toLowerCase()] = true;
+      }
+    });
+    var brandCount = Object.keys(brands).length;
+    if (brandCount >= 4) return "Very Strong";
+    if (brandCount >= 3) return "High";
+    if (brandCount >= 2) return "Moderate-High";
+    var p = (vm && vm.prefill) || {};
+    var brandList = nz(p.brands || p.additionalBrands);
+    if (brandList) {
+      var parts = brandList.split(/[,;|]+/).filter(function (x) {
+        return nz(x);
+      });
+      if (parts.length >= 5) return "High";
+      if (parts.length >= 2) return "Moderate-High";
+    }
+    return "—";
+  }
+
+  function arrayishWithoutPlaceholders(v) {
+    return arrayish(v).filter(function (item) {
+      return !isInternalFillPlaceholder(item);
+    });
   }
 
   /** Same mapping as operator-explorer.html `getChainScaleColor`. */
@@ -164,6 +241,7 @@
       "tr_",
       "systems_",
       "exec_",
+      "op_",
     ];
     Object.keys(p).forEach(function (k) {
       if (k === "explorerProfileJson") return;
@@ -178,6 +256,9 @@
         if (p[k] != null && p[k] !== "") out[k] = p[k];
       }
     });
+    if (global.OperatorExplorerNewBaseProfile && global.OperatorExplorerNewBaseProfile.mergeNewBaseKeysIntoExplorer) {
+      return global.OperatorExplorerNewBaseProfile.mergeNewBaseKeysIntoExplorer(out, p);
+    }
     return out;
   }
 
@@ -632,12 +713,21 @@
       brandRows,
       "No brand-level footprint in profile."
     );
-    var brandNote =
-      brandMore > 0
-        ? '<p class="gold-footprint-table-note">+' +
-          brandMore +
-          " more brands in Operator Setup.</p>"
-        : "";
+    var brandNote = "";
+    if (brandMore > 0) {
+      brandNote =
+        '<p class="gold-footprint-table-note">+' +
+        brandMore +
+        " more brands in Operator Setup.</p>";
+    }
+    if (nz(p.footprintPortfolioSource) === "hotel_census") {
+      brandNote +=
+        '<p class="gold-footprint-table-note">Portfolio distribution from Hotel Census' +
+        (nz(p.footprintPortfolioManagementCompany)
+          ? " (" + escapeHtml(p.footprintPortfolioManagementCompany) + ")"
+          : "") +
+        ". Operator Setup values used only when census has no matching properties.</p>";
+    }
     return (
       '<div class="gold-footprint-subsection gold-footprint-distribution">' +
       '<div class="gold-footprint-distribution-head">' +
@@ -853,6 +943,41 @@
     return nz(v) && nz(v) !== "—";
   }
 
+  /** Hero "Brand Mix" must be a short label (e.g. 62% branded), not a narrative paragraph. */
+  function heroBrandMixValue(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    if (/^not measured\s*\/\s*n\/a$/i.test(s) || /^n\/a$/i.test(s)) return "Not Measured / N/A";
+    if (s.length > 48 || /\)\s*\.|—/.test(s) || (s.indexOf(".") >= 0 && s.split(/\s+/).length > 8)) {
+      return "";
+    }
+    return s;
+  }
+
+  /** Resort, Lifestyle, etc. — for hero "Asset Focus" card */
+  function assetFocusHeroValue(p, fields) {
+    var parts = [];
+    var seen = {};
+    function addSource(val) {
+      arrayish(val).forEach(function (t) {
+        var k = String(t).toLowerCase();
+        if (!k || seen[k]) return;
+        seen[k] = true;
+        parts.push(String(t).trim());
+      });
+    }
+    addSource(p.propertyTypes);
+    addSource(p.bestFitAssetTypes);
+    addSource(p.bf_selected_asset_types);
+    addSource(p.idealBuildingTypes);
+    addSource(fields["Property Types"]);
+    if (!parts.length) {
+      var raw = formatMulti(p.propertyTypes) || formatMulti(fields["Property Types"]) || "";
+      return meaningfulMetaValue(raw) ? raw : "";
+    }
+    return parts.join(", ");
+  }
+
   function caseStudyHasContent(cs) {
     if (!cs) return false;
     if (nz(cs.property_name)) return true;
@@ -861,11 +986,230 @@
     return false;
   }
 
-  function proofFromCaseStudy(cs) {
+  function caseStudyIsStructuredCase(cs) {
+    return !!(nz(cs && cs.property_name) && (nz(cs.outcome) || nz(cs.services)));
+  }
+
+  /** True when Setup case study should use Before / Operator Action / After layout. */
+  function caseStudyUsesNarrativeLayout(cs) {
+    if (!caseStudyHasContent(cs)) return false;
+    if (nz(cs.before) || nz(cs.operator_action) || nz(cs.after)) return true;
+    return caseStudyIsStructuredCase(cs);
+  }
+
+  function formatCaseStudyMeta(cs) {
+    return [nz(cs.region), nz(cs.hotel_type), nz(cs.branded_independent)]
+      .filter(Boolean)
+      .map(function (part) {
+        return String(part).toUpperCase();
+      })
+      .join(" · ");
+  }
+
+  /**
+   * When operators enter one Outcome block, split action vs. results sentences for B/A/A columns.
+   */
+  function splitCaseStudyOutcomeNarrative(outcome) {
+    var text = nz(outcome);
+    if (!text) return { before: "", action: "", after: "" };
+
+    var paras = text
+      .split(/\n\s*\n/)
+      .map(function (p) {
+        return p.trim();
+      })
+      .filter(Boolean);
+    if (paras.length >= 3) {
+      return { before: paras[0], action: paras[1], after: paras.slice(2).join(" ") };
+    }
+    if (paras.length === 2) {
+      return { before: "", action: paras[0], after: paras[1] };
+    }
+
+    var sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
+    sentences = sentences
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+
+    var metricRe =
+      /\d+\s*%|\d+\s*(?:bps|basis\s+points?)|\+\s*\d|\$\d|grew\s+\d|improved\s+\d|rose\s+\d|expanded\s+\d|increased\s+\d|lift\s+of\s+\d/i;
+    var actionParts = [];
+    var afterParts = [];
+
+    sentences.forEach(function (s) {
+      if (
+        metricRe.test(s) ||
+        /margin|revpar|gop|occupancy|satisfaction|profit dollars|revenue grew|repeat-stay/i.test(s)
+      ) {
+        afterParts.push(s);
+      } else {
+        actionParts.push(s);
+      }
+    });
+
+    return {
+      before: "",
+      action: actionParts.join(" "),
+      after: afterParts.join(" ") || text,
+    };
+  }
+
+  /**
+   * Maps Operator Setup case study fields to owner-facing narrative columns.
+   * Explicit before/operator_action/after keys supported when present on the record.
+   */
+  function deriveCaseStudyNarrative(cs) {
+    cs = cs || {};
+    var before =
+      nz(cs.before) || nz(cs.before_state) || nz(cs.challenge) || "";
+    var action =
+      nz(cs.operator_action) || nz(cs.operatorAction) || nz(cs.services) || "";
+    var after = nz(cs.after) || nz(cs.after_state) || "";
+    var outcome = nz(cs.outcome);
+    var situation = nz(cs.situation);
+    var split = outcome
+      ? splitCaseStudyOutcomeNarrative(outcome)
+      : { before: "", action: "", after: "" };
+
+    if (!action && split.action) action = split.action;
+    if (!after) after = split.after || outcome;
+
+    if (!before && situation) {
+      before =
+        "At engagement start, the asset was in a " +
+        situation.toLowerCase() +
+        " phase—fragmented performance signals and limited owner visibility into priorities.";
+    }
+
+    return {
+      before: before,
+      action: action,
+      after: after,
+      relevance: nz(cs.owner_relevance),
+    };
+  }
+
+  /** Owner-facing five-part case study (Challenge → Data Status). */
+  function deriveCaseStudyDataStatus(cs) {
+    var explicit = nz(cs.data_status) || nz(cs.dataStatus) || nz(cs.proof_status);
+    if (explicit) return explicit;
+    var hasOutcome = nz(cs.outcome);
+    var hasAction = nz(cs.services) || nz(cs.operator_action);
+    var hasWhy = nz(cs.owner_relevance);
+    if (hasOutcome && hasAction && hasWhy) return "Operator-provided proof in setup.";
+    if (hasOutcome || hasAction) return "Partial detail in operator setup.";
+    return "Representative case format — confirm with operator before reliance.";
+  }
+
+  function formatRichChallengeFromContext(cs) {
+    cs = cs || {};
+    var prop = nz(cs.property_name) || "the property";
+    var region = nz(cs.region) || "the market";
+    var type = nz(cs.hotel_type) || "hotel";
+    var sit = nz(cs.situation);
+    if (!sit) return "";
+    var sitKey = sit.toLowerCase();
+
+    if (sitKey.indexOf("stabiliz") !== -1) {
+      return (
+        "When we began at " +
+        prop +
+        " in " +
+        region +
+        ", the " +
+        type.toLowerCase() +
+        " asset was nominally stabilized but underperforming on mix and margin. Group and transient demand were misaligned, secondary revenue was under-captured, and the owner lacked a reliable weekly view of revenue actions and profit levers."
+      );
+    }
+    if (sitKey.indexOf("reposition") !== -1 || sitKey.indexOf("conversion") !== -1) {
+      return (
+        prop +
+        " in " +
+        region +
+        " required renewal of aging systems and public areas without sacrificing peak demand. The owner needed capex and operations sequencing that protected guest safety, cash flow, and lender confidence—not cosmetic reopen dates."
+      );
+    }
+    if (sitKey.indexOf("turnaround") !== -1 || sitKey.indexOf("transition") !== -1) {
+      return (
+        prop +
+        " faced a turnaround in " +
+        region +
+        ": inconsistent execution, weak outlet economics, and limited owner visibility into which dayparts and service moments were eroding guest satisfaction and margin despite a strong location."
+      );
+    }
+    if (sitKey.indexOf("pre-opening") !== -1) {
+      return (
+        "Before opening, " +
+        prop +
+        " in " +
+        region +
+        " needed a disciplined pre-opening plan—staffing, systems, and commercial ramp—so the " +
+        type.toLowerCase() +
+        " asset did not open into fragmented reporting and unclear owner priorities."
+      );
+    }
+    return (
+      "At engagement start, " +
+      prop +
+      " in " +
+      region +
+      " was in a " +
+      sitKey +
+      " phase with fragmented performance signals and limited owner visibility into operating priorities."
+    );
+  }
+
+  function formatSituationAsChallenge(situation) {
+    return formatRichChallengeFromContext({ situation: situation });
+  }
+
+  function deriveCaseStudyFivePart(cs) {
+    cs = cs || {};
+    var n = deriveCaseStudyNarrative(cs);
+    var challenge = nz(cs.challenge) || nz(cs.before) || nz(cs.before_state) || "";
+    if (!challenge && nz(cs.situation)) {
+      challenge = formatRichChallengeFromContext(cs);
+    }
+    if (!challenge && n.before && !/^At engagement start/i.test(n.before)) {
+      challenge = n.before;
+    }
+    var operatorAction =
+      nz(cs.services) || nz(cs.operator_action) || nz(cs.operatorAction) || n.action;
+    var outcome = nz(cs.outcome) || n.after;
+    var whyItMatters = nz(cs.owner_relevance) || n.relevance;
+    return {
+      challenge: challenge,
+      operatorAction: operatorAction,
+      outcome: outcome,
+      whyItMatters: whyItMatters,
+      dataStatus: nz(cs.data_status) || nz(cs.dataStatus) || deriveCaseStudyDataStatus(cs),
+    };
+  }
+
+  function proofFromCaseStudy(cs, gridOpts) {
+    gridOpts = gridOpts || {};
     if (!caseStudyHasContent(cs)) return null;
     var img = nz(cs.image_url);
     var title = nz(cs.property_name) || nz(cs.hotel_type) || "Case study";
-    var meta = [nz(cs.region), nz(cs.hotel_type)].filter(Boolean).join(" · ");
+    var meta = formatCaseStudyMeta(cs) || nz(cs.situation);
+    if (gridOpts.useCaseStudyFivePart) {
+      return {
+        img: img,
+        title: title,
+        meta: meta,
+        fivePart: deriveCaseStudyFivePart(cs),
+      };
+    }
+    if (caseStudyUsesNarrativeLayout(cs)) {
+      return {
+        img: img,
+        title: title,
+        meta: meta,
+        narrative: deriveCaseStudyNarrative(cs),
+      };
+    }
     var lines = [nz(cs.outcome), nz(cs.owner_relevance)].filter(Boolean);
     if (!lines.length) lines = [nz(cs.services), nz(cs.situation)].filter(Boolean);
     return { img: img, title: title, meta: meta, lines: lines };
@@ -883,22 +1227,1153 @@
       })
       .filter(Boolean);
     if (!cells.length) return "";
-    return '<div class="kpi-grid-4">' + cells.join("") + "</div>";
+    var count = cells.length;
+    return (
+      '<div class="oe-tab-snapshot-kpis ' +
+      snapshotKpiRowWrapperClass(count) +
+      '" style="grid-template-columns:' +
+      snapshotKpiGridInlineStyle(count) +
+      '">' +
+      cells.join("") +
+      "</div>"
+    );
   }
 
-  function decisionStripFiltered(items) {
+  var OPERATOR_QUICK_FACT_LABELS = [
+    "Year Founded",
+    "Company Website",
+    "Team Members",
+    "Avg. Hotel Size",
+    "Management Style",
+    "Typical Agreement",
+    "Data Status",
+  ];
+
+  function looksLikeFourDigitYear(v) {
+    return /^(19|20)\d{2}$/.test(nz(v));
+  }
+
+  function resolveYearFounded(vm) {
+    var p = vm.prefill || {};
+    var f = vm.fields || {};
+    var ex = vm.ex || {};
+    var candidates = [
+      pick(ex, p, "yearEstablished", ""),
+      nz(p.yearEstablished),
+      nz(f["Year Established"]),
+      nz(p.yearsInBusiness),
+      nz(f["Years in Business"]),
+    ];
+    var i;
+    for (i = 0; i < candidates.length; i++) {
+      if (looksLikeFourDigitYear(candidates[i])) return candidates[i];
+    }
+    for (i = 0; i < candidates.length; i++) {
+      var v = nz(candidates[i]);
+      if (v) {
+        var m = v.match(/(19|20)\d{2}/);
+        if (m) return m[0];
+      }
+    }
+    return "";
+  }
+
+  function resolveCompanyWebsite(vm) {
+    var p = vm.prefill || {};
+    var f = vm.fields || {};
+    var ex = vm.ex || {};
+    return (
+      nz(p.website) ||
+      pick(ex, p, "website", "") ||
+      nz(f["Website"]) ||
+      ""
+    );
+  }
+
+  function normalizeWebsiteHref(raw) {
+    var u = nz(raw);
+    if (!u) return "";
+    if (!/^https?:\/\//i.test(u)) return "https://" + u;
+    return u;
+  }
+
+  function websiteDisplayText(raw) {
+    var u = nz(raw);
+    if (!u) return "";
+    return u.replace(/^https?:\/\//i, "").replace(/\/+$/, "");
+  }
+
+  function kpiCompanyWebsite(label, rawUrl) {
+    var href = normalizeWebsiteHref(rawUrl);
+    var display = websiteDisplayText(rawUrl);
+    if (!href || !display) {
+      return kpi(label, "");
+    }
+    return (
+      '<div class="kpi"><div class="label">' +
+      escapeHtml(label) +
+      '</div><div class="value"><a class="oe-quick-fact-website" href="' +
+      escapeAttr(href) +
+      '" target="_blank" rel="noopener noreferrer">' +
+      escapeHtml(display) +
+      "</a></div></div>"
+    );
+  }
+
+  function resolveTeamMembers(vm) {
+    var p = vm.prefill || {};
+    var f = vm.fields || {};
+    var te = numOrEmpty(p.totalEmployees);
+    if (te != null) {
+      if (te >= 200) return formatInt(te) + "+";
+      return formatInt(te);
+    }
+    return nz(p.companySize) || nz(f["Company Size"]) || "";
+  }
+
+  function resolveAvgHotelSize(vm) {
+    var p = vm.prefill || {};
+    var hotels = numOrEmpty(p.totalProperties);
+    var rooms = numOrEmpty(p.totalRooms);
+    if (hotels != null && hotels > 0 && rooms != null && rooms > 0) {
+      return formatInt(Math.round(rooms / hotels)) + " rooms";
+    }
+    var min = numOrEmpty(p.minPropertySize);
+    var max = numOrEmpty(p.maxPropertySize);
+    if (min != null && max != null) return formatInt(min) + "–" + formatInt(max) + " rooms";
+    if (min != null) return formatInt(min) + "+ rooms";
+    if (max != null) return "Up to " + formatInt(max) + " rooms";
+    return "";
+  }
+
+  function resolveManagementStyle(vm) {
+    var p = vm.prefill || {};
+    var f = vm.fields || {};
+    var ex = vm.ex || {};
+    var primary =
+      nz(p.primaryServiceModel) ||
+      pick(ex, p, "primaryServiceModel", "") ||
+      "";
+    if (primary) return primary;
+    var models = arrayish(p.serviceModelsSupported);
+    if (!models.length) {
+      models = arrayish(f["Service Models Supported"]);
+    }
+    return models.slice(0, 2).join(" · ");
+  }
+
+  function resolveTypicalAgreement(vm) {
+    var p = vm.prefill || {};
+    var f = vm.fields || {};
+    var ex = vm.ex || {};
+    var direct =
+      nz(p.typicalAgreement) ||
+      pick(ex, p, "typicalAgreement", "") ||
+      nz(f["Typical Agreement"]) ||
+      "";
+    if (direct && !isInternalFillPlaceholder(direct)) return direct;
+    var structures = arrayishWithoutPlaceholders(p.managementStructuresSupported);
+    if (!structures.length) {
+      structures = arrayishWithoutPlaceholders(f["Management Structures Supported"]);
+    }
+    return structures.slice(0, 2).join(" · ");
+  }
+
+  function formatDataStatusLabel(raw) {
+    var v = nz(raw);
+    if (!v) return "";
+    var lower = v.toLowerCase();
+    if (lower === "inferred") return "Operator profile draft";
+    if (lower.indexOf("operator-provided") !== -1 || lower.indexOf("operator provided") !== -1) {
+      return "Operator verified";
+    }
+    return v;
+  }
+
+  function resolveDataStatus(vm) {
+    var p = vm.prefill || {};
+    var f = vm.fields || {};
+    var ex = vm.ex || {};
+    var conf =
+      nz(p.dataConfidenceLevel) ||
+      pick(ex, p, "dataConfidenceLevel", "") ||
+      nz(f["Data Confidence Level"]) ||
+      "";
+    if (conf) return formatDataStatusLabel(conf);
+    var status = nz(p.submission_status) || nz(f["submission_status"]) || "";
+    if (status) return formatDataStatusLabel(status);
+    return "";
+  }
+
+  function buildOperatorQuickFacts(vm) {
+    vm = vm || {};
+    return [
+      ["Year Founded", resolveYearFounded(vm)],
+      ["Company Website", resolveCompanyWebsite(vm)],
+      ["Team Members", resolveTeamMembers(vm)],
+      ["Avg. Hotel Size", resolveAvgHotelSize(vm)],
+      ["Management Style", resolveManagementStyle(vm)],
+      ["Typical Agreement", resolveTypicalAgreement(vm)],
+      ["Data Status", resolveDataStatus(vm)],
+    ];
+  }
+
+  function operatorQuickFactsSectionHtml(vm) {
+    var pairs = buildOperatorQuickFacts(vm);
+    var cells = pairs
+      .map(function (pair) {
+        if (pair[0] === "Company Website") {
+          return kpiCompanyWebsite(pair[0], pair[1]);
+        }
+        return kpi(pair[0], pair[1]);
+      })
+      .join("");
+    var qCount = pairs.length;
+    return (
+      '<section class="section oe-operator-quick-facts-section">' +
+      '<h2 class="section-title">Operator Quick Facts</h2>' +
+      '<div class="oe-operator-quick-facts-kpis oe-tab-snapshot-kpis ' +
+      snapshotKpiRowWrapperClass(qCount) +
+      '" style="grid-template-columns:' +
+      snapshotKpiGridInlineStyle(qCount) +
+      '">' +
+      cells +
+      "</div></section>"
+    );
+  }
+
+  function decisionStripFiltered(items, opts) {
+    opts = opts || {};
+    var sectionTitle = nz(opts.sectionTitle) || "Decision Signals";
     var pairs = (items || []).filter(function (pair) {
       return meaningfulSignal(pair[1]);
     });
     if (!pairs.length) return "";
     return (
-      '<section class="section"><h2 class="section-title">Decision Signals</h2><div class="kpi-grid-4">' +
+      '<section class="section"><h2 class="section-title">' +
+      escapeHtml(sectionTitle) +
+      '</h2><div class="kpi-grid-4">' +
       pairs
         .map(function (pair) {
           return kpi(pair[0], pair[1]);
         })
         .join("") +
       "</div></section>"
+    );
+  }
+
+  function uniqueStrings(arr) {
+    var seen = {};
+    return (arr || []).filter(function (x) {
+      var k = String(x).toLowerCase().trim();
+      if (!k || seen[k]) return false;
+      seen[k] = true;
+      return true;
+    });
+  }
+
+  function leadersForSnapshot(vm) {
+    return (vm.leadership || []).filter(function (L) {
+      if (!nz(L.name)) return false;
+      if (L.displayOnExplorer === false) return false;
+      return true;
+    });
+  }
+
+  function parseYearsFromText(text) {
+    var years = [];
+    var re = /(\d+(?:\.\d+)?)\s*\+?\s*years?/gi;
+    var m;
+    var s = String(text || "");
+    while ((m = re.exec(s)) !== null) {
+      var n = parseFloat(m[1]);
+      if (!isNaN(n) && n > 0 && n < 80) years.push(n);
+    }
+    return years;
+  }
+
+  function formatYearsDisplay(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    if (/yrs?\.?$/i.test(s)) return s;
+    if (/\d/.test(s) && !/year/i.test(s)) return s + " yrs";
+    return s.replace(/\s*years?/i, " yrs");
+  }
+
+  /** Compact KPI value (e.g. "8.4 yrs") — avoids wrapping on messy Setup strings. */
+  function compactYearsKpi(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    var m = s.match(/(\d+(?:\.\d+)?)\s*\+?/);
+    if (m) {
+      var n = parseFloat(m[1]);
+      if (!isNaN(n) && n >= 0 && n < 80) {
+        var rounded = Math.round(n * 10) / 10;
+        var display = Number.isInteger(rounded) ? String(rounded) : String(rounded);
+        return display + " yrs";
+      }
+    }
+    if (/^\s*\d+(\.\d+)?\s*yrs?\.?\s*$/i.test(s)) return s.replace(/\s*years?/i, " yrs");
+    return "";
+  }
+
+  /** First percentage in a signal string (e.g. "30% gateway…" → "30%"). */
+  function compactPercentKpi(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    var m = s.match(/(\d+(?:\.\d+)?)\s*%/);
+    return m ? m[1] + "%" : "";
+  }
+
+  /** Urban / resort style mix → "46% / 31%". */
+  function compactMixKpi(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    var matches = s.match(/(\d+(?:\.\d+)?)\s*%/g);
+    if (!matches || !matches.length) return "";
+    if (matches.length >= 2) {
+      return matches[0].replace(/\s/g, "") + " / " + matches[1].replace(/\s/g, "");
+    }
+    return matches[0].replace(/\s/g, "");
+  }
+
+  /** Short display for gateway / qualitative signals. */
+  function compactGatewayKpi(raw) {
+    var pct = compactPercentKpi(raw);
+    if (pct) return pct;
+    var s = nz(raw);
+    if (!s) return "";
+    if (s.length <= 14) return s;
+    var words = s.split(/\s+/).slice(0, 2);
+    return words.join(" ");
+  }
+
+  function marketKpiNote(shortDefault, raw, compactDisplay) {
+    var full = nz(raw);
+    if (full && compactDisplay && full !== compactDisplay) return full;
+    return shortDefault;
+  }
+
+  function looksLikeLanguageName(s) {
+    var t = nz(s);
+    if (!t || t.length > 36) return false;
+    if (/hub|regional|across|cala|market|portfolio|owner-facing/i.test(t)) return false;
+    return true;
+  }
+
+  function collectLeadershipLanguages(leaders) {
+    var langs = [];
+    (leaders || []).forEach(function (L) {
+      arrayish(L.languages).forEach(function (lang) {
+        langs.push(lang);
+      });
+      var fluency = nz(L.languageFluencyLevel);
+      if (fluency) {
+        fluency.split(/[,;|/]+/).forEach(function (part) {
+          var t = part.trim();
+          if (t) langs.push(t);
+        });
+      }
+    });
+    return uniqueStrings(langs);
+  }
+
+  /** Unique `languages` multiselect values from visible executives only. */
+  function collectExecutiveLanguagesFromField(leaders) {
+    var langs = [];
+    (leaders || []).forEach(function (L) {
+      arrayish(L.languages).forEach(function (lang) {
+        var t = nz(lang);
+        if (t) langs.push(t);
+      });
+    });
+    return uniqueStrings(langs.filter(looksLikeLanguageName));
+  }
+
+  function parseExecutiveHospitalityYears(L) {
+    if (!L) return null;
+    var raw =
+      L.hospitalityExperienceYears != null && L.hospitalityExperienceYears !== ""
+        ? L.hospitalityExperienceYears
+        : L.hospitality_experience_years;
+    if (raw == null || raw === "") return null;
+    var n = typeof raw === "number" ? raw : parseFloat(String(raw).replace(/,/g, ""));
+    if (isNaN(n) || n <= 0 || n >= 80) return null;
+    return n;
+  }
+
+  /** Mean `hospitalityExperienceYears` for visible executives (Operator Setup child rows). */
+  function averageExecutiveHospitalityYears(leaders) {
+    var nums = [];
+    (leaders || []).forEach(function (L) {
+      var n = parseExecutiveHospitalityYears(L);
+      if (n != null) nums.push(n);
+    });
+    if (!nums.length) return "";
+    var avg =
+      nums.reduce(function (a, b) {
+        return a + b;
+      }, 0) / nums.length;
+    return compactYearsKpi(String(Math.round(avg * 10) / 10));
+  }
+
+  /** Mean `companyTenureYears` for visible executives (Operator Setup child rows). */
+  function averageExecutiveCompanyTenureYears(leaders) {
+    var nums = [];
+    (leaders || []).forEach(function (L) {
+      var raw =
+        L.companyTenureYears != null && L.companyTenureYears !== ""
+          ? L.companyTenureYears
+          : L.company_tenure_years;
+      if (raw == null || raw === "") return;
+      var n = typeof raw === "number" ? raw : parseFloat(String(raw).replace(/,/g, ""));
+      if (isNaN(n) || n <= 0 || n >= 80) return;
+      nums.push(n);
+    });
+    if (!nums.length) return "";
+    var avg =
+      nums.reduce(function (a, b) {
+        return a + b;
+      }, 0) / nums.length;
+    return compactYearsKpi(String(Math.round(avg * 10) / 10));
+  }
+
+  function regionalCoverageKpi(ex, p) {
+    var raw = pick(ex, p, "lead_narrative_regional", "");
+    var lines = linesFromText(raw);
+    if (!lines.length) {
+      return { value: "—", note: "Regional leadership coverage" };
+    }
+    if (lines.length === 1) {
+      var one = lines[0];
+      var hubMatch = one.match(/^(\d+)\s+(.+)$/);
+      if (hubMatch) {
+        return { value: hubMatch[1], note: hubMatch[2].replace(/\.\s*$/, "") };
+      }
+      if (one.length <= 28) {
+        return { value: one, note: "CALA and priority markets" };
+      }
+      return { value: "—", note: one };
+    }
+    return {
+      value: String(lines.length),
+      note: lines.slice(0, 5).join(", "),
+    };
+  }
+
+  /**
+   * Owner-facing leadership snapshot KPIs (top row — six cards, one line).
+   * @param {object} vm
+   * @returns {{ label: string, value: string, note: string }[]}
+   */
+  function deriveLeadershipSnapshotMetrics(vm) {
+    var p = (vm && vm.prefill) || {};
+    var ex = (vm && vm.ex) || {};
+    var leaders = leadersForSnapshot(vm);
+    var execCount = leaders.length;
+
+    var leadSections = global.OperatorLeadershipTeamSections;
+    var hospValue = averageExecutiveHospitalityYears(leaders);
+
+    var tenureRaw = pickOwnerFacing(ex, p, "lead_signal_tenure");
+    var tenureValue = compactYearsKpi(tenureRaw) || compactYearsKpi(formatYearsDisplay(tenureRaw));
+    if (!tenureValue) tenureValue = averageExecutiveCompanyTenureYears(leaders);
+    if (!tenureValue && leadSections && leadSections.scalarSnapshotField) {
+      tenureValue = compactYearsKpi(leadSections.scalarSnapshotField(vm, "lead_signal_tenure"));
+    }
+
+    var langUnique = collectExecutiveLanguagesFromField(leaders);
+    if (
+      leadSections &&
+      leadSections.languageSnapshot &&
+      (!langUnique.length || langUnique.length < 2)
+    ) {
+      var langSnap = leadSections.languageSnapshot(vm);
+      if (langSnap.names && langSnap.names.length) langUnique = langSnap.names;
+    }
+    var langCount = langUnique.length ? String(langUnique.length) : "";
+
+    var crossBrand = normalizeCrossBrandSignal(
+      pick(ex, p, "lead_signal_crossbrand", ""),
+      leaders,
+      vm
+    );
+    var regional = regionalCoverageKpi(ex, p);
+
+    return [
+      {
+        label: "Executive Leaders",
+        value: execCount ? String(execCount) : "—",
+        note: "Owner-facing leadership bench",
+      },
+      {
+        label: "Avg. Hospitality Experience",
+        value: hospValue || "—",
+        note: "Across senior team",
+      },
+      {
+        label: "Avg. Company Tenure",
+        value: tenureValue || "—",
+        note: "Leadership continuity",
+      },
+      {
+        label: "Languages Covered",
+        value: langCount || "—",
+        note: langUnique.length
+          ? langUnique.slice(0, 8).join(", ")
+          : "Languages represented on the leadership team",
+      },
+      {
+        label: "Cross-Brand Experience",
+        value: crossBrand || "—",
+        note: "Multi-brand leadership depth",
+      },
+      {
+        label: "Regional Coverage",
+        value: regional.value || "—",
+        note: regional.note || "Regional leadership coverage",
+      },
+    ];
+  }
+
+  function buildKpiLabelHtml(m) {
+    if (m.labelLines && m.labelLines.length) {
+      return m.labelLines.map(escapeHtml).join("<br>");
+    }
+    return escapeHtml(m.label);
+  }
+
+  function buildLeadershipSnapshotMetricCard(m) {
+    return (
+      '<div class="card oe-value-kpi">' +
+      '<div class="oe-value-kpi__value">' +
+      escapeHtml(m.value) +
+      '</div><h3 class="oe-value-kpi__label">' +
+      buildKpiLabelHtml(m) +
+      "</h3><p>" +
+      escapeHtml(m.note) +
+      "</p></div>"
+    );
+  }
+
+  /**
+   * Leadership tab wrapper — same value-first KPI row as other Explorer tabs.
+   * @param {object} vm
+   */
+  function buildLeadershipSnapshotSection(vm) {
+    var metrics = deriveLeadershipSnapshotMetrics(vm);
+    var intro =
+      '<p class="gold-mock-tab-empty odna-subsection-intro">Owner-facing view of the people and organizational depth behind the operator.</p>';
+    if (!metrics.length) {
+      return (
+        '<section class="section oe-leadership-snapshot-section">' +
+        '<h2 class="section-title">Leadership Snapshot</h2>' +
+        intro +
+        '<p class="gold-mock-tab-empty">Leadership snapshot metrics not yet available from Operator Setup.</p></section>'
+      );
+    }
+    return buildValueKpiSnapshotSection({
+      title: "Leadership Snapshot",
+      intro: intro,
+      metrics: metrics,
+      sectionClass: "oe-leadership-snapshot-section",
+      kpiClass: "oe-leadership-snapshot-kpis",
+    });
+  }
+
+  function deriveMarketsFootprintSnapshotMetrics(vm, m, ex, p) {
+    m = m || marketsDerivedMetrics(vm);
+    ex = ex || (vm && vm.ex) || {};
+    p = p || (vm && vm.prefill) || {};
+    var yearsRaw = nz(pick(ex, p, "mkt_signal_years", ""));
+    var gatewayRaw = nz(pick(ex, p, "mkt_signal_gateway", ""));
+    var mixRaw = nz(pick(ex, p, "mkt_signal_mix", ""));
+    var yearsVal = compactYearsKpi(yearsRaw);
+    var gatewayVal = compactGatewayKpi(gatewayRaw);
+    var mixVal = compactMixKpi(mixRaw);
+    var coverageVal = nz(m.coverage);
+    if (coverageVal.length > 16) {
+      coverageVal = coverageVal.split(/\s+/).slice(0, 2).join(" ");
+    }
+    var metrics = [
+      {
+        label: "Regions",
+        value: nz(m.regions),
+        note: nz(m.regionNames) || "Active operating regions",
+      },
+      {
+        label: m.countriesIsMarketsFallback ? "Markets Operated" : "Countries",
+        value: nz(m.countries),
+        note: m.countriesIsMarketsFallback
+          ? "From markets operated count in Operator Setup"
+          : nz(m.countryNames) || "Countries with operating presence",
+      },
+      {
+        label: "Cities / Markets",
+        value: nz(m.cities),
+        note: nz(m.cityNames) || "Cities in footprint list",
+      },
+      {
+        label: "Coverage Model",
+        value: coverageVal,
+        note: marketKpiNote(
+          "Regional management and coverage model",
+          nz(p.regionalManagementTeams) || nz(p.primaryServiceModel),
+          coverageVal
+        ),
+      },
+      {
+        label: "Years in Core Markets",
+        value: yearsVal,
+        note: marketKpiNote("Average tenure in primary markets", yearsRaw, yearsVal),
+      },
+      {
+        label: "Gateway Concentration",
+        value: gatewayVal,
+        note: marketKpiNote("Gateway vs secondary market mix", gatewayRaw, gatewayVal),
+      },
+      {
+        label: "Urban / Resort Mix",
+        value: mixVal,
+        note: marketKpiNote("Urban versus resort portfolio balance", mixRaw, mixVal),
+      },
+    ];
+    return metrics.filter(function (row) {
+      return meaningfulSignal(row.value);
+    });
+  }
+
+  /** Inline grid-template-columns for tab snapshot KPI rows (always one row). */
+  function snapshotKpiGridInlineStyle(count) {
+    var n = Math.max(1, Number(count) || 1);
+    var colMin = n >= 7 ? "120px" : n >= 6 ? "128px" : "";
+    return colMin
+      ? "repeat(" + n + ",minmax(" + colMin + ",1fr))"
+      : "repeat(" + n + ",minmax(0,1fr))";
+  }
+
+  function snapshotKpiRowWrapperClass(count) {
+    var n = Math.max(1, Number(count) || 1);
+    return (
+      "oe-snapshot-kpi-row oe-snapshot-kpi-row--count-" +
+      n +
+      " oe-tab-snapshot-kpis--single-row"
+    );
+  }
+
+  function compactSignalDisplay(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    var pct = compactPercentKpi(s);
+    if (pct) return pct;
+    var timeMatch = s.match(/<\s*(\d+(?:\.\d+)?)\s*(min|mins|minutes|hr|hrs|hours)/i);
+    if (timeMatch) {
+      var unit = timeMatch[2].toLowerCase();
+      if (unit.indexOf("min") === 0) return "<" + timeMatch[1] + " min";
+      return "<" + timeMatch[1] + " hr";
+    }
+    if (s.length <= 18) return s;
+    return compactGatewayKpi(s) || s.slice(0, 18);
+  }
+
+  /**
+   * Value-first KPI row — always one horizontal row per tab (equal columns).
+   * @param {{ title: string, intro: string, metrics: Array<{label:string,value:string,note:string,labelLines?:string[]}>, sectionClass?: string, kpiClass?: string }} opts
+   */
+  function buildValueKpiSnapshotSection(opts) {
+    opts = opts || {};
+    var metrics = (opts.metrics || []).filter(function (row) {
+      return meaningfulSignal(row && row.value);
+    });
+    if (!metrics.length) return "";
+    var count = metrics.length;
+    var sectionClass = opts.sectionClass || "oe-tab-snapshot-section";
+    var kpiClass = opts.kpiClass || "oe-tab-snapshot-kpis";
+    var metricsHtml =
+      '<div class="' +
+      kpiClass +
+      " oe-tab-snapshot-kpis " +
+      snapshotKpiRowWrapperClass(count) +
+      '" style="grid-template-columns:' +
+      snapshotKpiGridInlineStyle(count) +
+      '">' +
+      metrics.map(buildLeadershipSnapshotMetricCard).join("") +
+      "</div>";
+    return (
+      '<section class="section ' +
+      sectionClass +
+      '">' +
+      '<h2 class="section-title">' +
+      escapeHtml(opts.title || "Snapshot") +
+      "</h2>" +
+      (opts.intro || "") +
+      metricsHtml +
+      "</section>"
+    );
+  }
+
+  /**
+   * Markets tab — footprint KPIs + decision signals in one value-first row (Leadership Snapshot pattern).
+   */
+  function buildMarketsFootprintSnapshotSection(vm, m, ex, p) {
+    var metrics = deriveMarketsFootprintSnapshotMetrics(vm, m, ex, p);
+    var intro =
+      '<p class="gold-mock-tab-empty odna-subsection-intro">A concise view of geographic reach, operating depth, and market signals to use when you are evaluating this operator.</p>';
+    if (!metrics.length) {
+      return (
+        '<section class="section oe-markets-snapshot-section">' +
+        '<h2 class="section-title">Markets &amp; Footprint</h2>' +
+        intro +
+        '<p class="gold-mock-tab-empty">Markets snapshot metrics not yet available from Operator Setup.</p></section>'
+      );
+    }
+    return buildValueKpiSnapshotSection({
+      title: "Markets & Footprint",
+      intro: intro,
+      metrics: metrics,
+      sectionClass: "oe-markets-snapshot-section",
+      kpiClass: "oe-markets-snapshot-kpis",
+    });
+  }
+
+  function deriveInfrastructureDecisionSignalsMetrics(ex, p) {
+    ex = ex || {};
+    p = p || {};
+    function row(labelLines, raw, defaultNote) {
+      var display = compactSignalDisplay(raw) || nz(raw);
+      if (!meaningfulSignal(display)) return null;
+      var lines = Array.isArray(labelLines) ? labelLines : [labelLines];
+      return {
+        label: lines.join(" "),
+        labelLines: lines,
+        value: display,
+        note: defaultNote,
+      };
+    }
+    return [
+      row(
+        ["Platform", "Uptime"],
+        pick(ex, p, "infra_signal_uptime", ""),
+        "Platform availability and SLA posture"
+      ),
+      row(
+        ["Incident", "Response"],
+        pick(ex, p, "infra_signal_incident", ""),
+        "Critical incident response window"
+      ),
+      row(
+        ["Portfolio", "Adoption"],
+        pick(ex, p, "infra_signal_adoption", ""),
+        "System adoption across the portfolio"
+      ),
+      row(
+        ["Data Refresh", "Cadence"],
+        pick(ex, p, "infra_signal_refresh", ""),
+        "How often owner-facing data is refreshed"
+      ),
+      row(
+        ["Audit", "Consistency"],
+        pick(ex, p, "risk_signal_audit", ""),
+        "Audit pass rate and consistency"
+      ),
+      row(
+        ["BCP Test", "Frequency"],
+        pick(ex, p, "risk_signal_bcp", ""),
+        "Business continuity testing cadence"
+      ),
+      row(
+        ["Control Closure", "Rate"],
+        pick(ex, p, "risk_signal_control", ""),
+        "Internal control closure within cycle"
+      ),
+      row(
+        ["Insurance", "Adequacy"],
+        pick(ex, p, "risk_signal_insurance", ""),
+        "Insurance adequacy review rhythm"
+      ),
+    ].filter(Boolean);
+  }
+
+  /**
+   * Infrastructure tab — platform, data, and controls snapshot (top KPI row).
+   */
+  function buildInfrastructureSnapshotSection(ex, p) {
+    var intro =
+      '<p class="gold-mock-tab-empty odna-subsection-intro">Platform reliability, data discipline, and control posture to use when you are evaluating this operator.</p>';
+    return buildValueKpiSnapshotSection({
+      title: "Infrastructure & Data",
+      intro: intro,
+      metrics: deriveInfrastructureDecisionSignalsMetrics(ex, p),
+      sectionClass: "oe-infra-snapshot-section",
+      kpiClass: "oe-infra-snapshot-kpis",
+    });
+  }
+
+  function compactEngagementKpi(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    var pct = compactPercentKpi(s);
+    if (pct) return pct;
+    if (/^\d+(\.\d+)?$/.test(s)) return s;
+    return compactSignalDisplay(s);
+  }
+
+  function compactReportingLevelKpi(raw) {
+    var s = nz(raw).toLowerCase();
+    if (!s) return "";
+    if (s.indexOf("institutional") >= 0) return "Institutional";
+    if (s.indexOf("lender") >= 0 || s.indexOf("investor") >= 0) return "Lender-grade";
+    if (s.indexOf("monthly") >= 0) return "Monthly review";
+    if (s.indexOf("basic") >= 0) return "Basic";
+    if (s.indexOf("custom") >= 0) return "Custom";
+    if (s.indexOf("structured") >= 0) return "Structured";
+    if (s.indexOf("advanced") >= 0) return "Advanced";
+    return compactCapabilityLevelKpi(raw) || compactEngagementKpi(raw);
+  }
+
+  function compactOwnerPortalKpi(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    if (/^(yes|y|true|available|included)/i.test(s)) return "Yes";
+    if (/^(no|n|false|none|not available)/i.test(s)) return "No";
+    var first = s.split(/\s*\/\s*/)[0].trim();
+    if (first.length <= 18) return compactEngagementKpi(first);
+    return compactSignalDisplay(first) || compactEngagementKpi(first.slice(0, 18));
+  }
+
+  function reportingOutputsSnapshotValue(ex, p) {
+    var rt = (p && p.reportTypes) || (ex && ex.reportTypes);
+    if (Array.isArray(rt) && rt.length) return String(rt.length);
+    var n = nz(pick(ex, p, "infra_kpi_reporting", ""));
+    if (n && /^\d+/.test(n)) return n;
+    return "";
+  }
+
+  /**
+   * Engagement & Reporting tab — owner communication and reporting snapshot (top KPI row).
+   */
+  function deriveEngagementSnapshotMetrics(ex, p) {
+    ex = ex || {};
+    p = p || {};
+    function row(labelLines, raw, defaultNote, compactFn) {
+      var display = compactFn ? compactFn(raw) : compactEngagementKpi(raw);
+      if (!meaningfulSignal(display)) return null;
+      var lines = Array.isArray(labelLines) ? labelLines : [labelLines];
+      return {
+        label: lines.join(" "),
+        labelLines: lines,
+        value: display,
+        note: defaultNote,
+      };
+    }
+    var touchpoints = nz(pick(ex, p, "ov_q_touchpoints", ""));
+    var touchDisplay = touchpoints;
+    if (touchpoints && /^\d+(\.\d+)?$/.test(touchpoints)) {
+      touchDisplay = touchpoints.indexOf(".") >= 0 ? touchpoints : touchpoints;
+    }
+    return [
+      row(
+        ["Owner Reporting", "Level"],
+        pick(ex, p, "ownerReportingLevel", ""),
+        "Depth and structure of owner reporting packages",
+        compactReportingLevelKpi
+      ),
+      row(
+        ["Financial", "Reporting"],
+        pick(ex, p, "reportingFrequency", "") || pick(ex, p, "ownerReportingCadence", ""),
+        "How often financial and operating reports are delivered"
+      ),
+      row(
+        ["Owner", "Response"],
+        pick(ex, p, "ownerResponseTime", ""),
+        "Typical response window for owner inquiries"
+      ),
+      row(
+        ["Review", "Touchpoints"],
+        touchDisplay,
+        "Scheduled owner reviews per quarter"
+      ),
+      row(
+        ["Reporting", "Outputs"],
+        reportingOutputsSnapshotValue(ex, p),
+        "Report types or systems in the owner cadence"
+      ),
+      row(
+        ["Owner", "Portal"],
+        pick(ex, p, "ownerPortalFeatures", "") ||
+          pick(ex, p, "ownerPortal", "") ||
+          pick(ex, p, "owner_portal", ""),
+        "Owner portal, dashboard, or secure owner access",
+        compactOwnerPortalKpi
+      ),
+      row(
+        ["Collaboration", "Model"],
+        pick(ex, p, "operatingCollaborationMode", "") || pick(ex, p, "ownerInvolvement", ""),
+        "How the operator partners with ownership day to day"
+      ),
+    ].filter(Boolean);
+  }
+
+  function buildEngagementSnapshotSection(ex, p) {
+    var intro =
+      '<p class="gold-mock-tab-empty odna-subsection-intro">Quick signals for how often you will hear from this operator, what you are likely to receive, and how quickly they respond—use these when you compare operators for your asset.</p>';
+    return buildValueKpiSnapshotSection({
+      title: "Engagement & Reporting",
+      intro: intro,
+      metrics: deriveEngagementSnapshotMetrics(ex, p),
+      sectionClass: "oe-eng-snapshot-section",
+      kpiClass: "oe-eng-snapshot-kpis",
+    });
+  }
+
+  function pickSetupField(ex, p, fields, keys, airtableNames) {
+    var i;
+    var keyList = Array.isArray(keys) ? keys : keys ? [keys] : [];
+    var nameList = Array.isArray(airtableNames)
+      ? airtableNames
+      : airtableNames
+        ? [airtableNames]
+        : [];
+    for (i = 0; i < keyList.length; i++) {
+      var v = pick(ex, p, keyList[i], "");
+      if (nz(v)) return v;
+    }
+    for (i = 0; i < nameList.length; i++) {
+      if (fields && nz(fields[nameList[i]])) return fields[nameList[i]];
+    }
+    for (i = 0; i < keyList.length; i++) {
+      if (fields && nz(fields[keyList[i]])) return fields[keyList[i]];
+    }
+    return "";
+  }
+
+  function compactCapabilityLevelKpi(raw) {
+    var s = nz(raw);
+    if (!s) return "";
+    if (/not\s*measured|n\/a|none\s*documented|^unknown$/i.test(s)) return "";
+    if (/excellent|institutional/i.test(s)) return "Excellent";
+    if (/very\s*strong/i.test(s)) return "Very Strong";
+    if (/^strong$/i.test(s)) return "Strong";
+    if (/^moderate$/i.test(s)) return "Moderate";
+    if (/^limited$/i.test(s)) return "Limited";
+    if (/^standard$/i.test(s)) return "Standard";
+    if (/^advanced$/i.test(s)) return "Advanced";
+    if (/^proven$/i.test(s)) return "Proven";
+    if (/^developing$/i.test(s)) return "Developing";
+    if (/^basic$/i.test(s)) return "Basic";
+    if (/advanced\s*centralized/i.test(s)) return "Advanced";
+    if (/centralized\s*support/i.test(s)) return "Centralized";
+    if (/property[-\s]level/i.test(s)) return "Property-level";
+    if (/third[-\s]party/i.test(s)) return "Partner-led";
+    if (/lifestyle\s*\/\s*experiential/i.test(s)) return "Experiential F&B";
+    if (/significant\s*f&b/i.test(s)) return "Significant F&B";
+    if (/moderate\s*f&b/i.test(s)) return "Moderate F&B";
+    if (/limited\s*f&b/i.test(s)) return "Limited F&B";
+    if (/rooms[-\s]only/i.test(s)) return "Rooms-only";
+    if (/lender|investor[-\s]grade/i.test(s)) return "Institutional";
+    if (/monthly\s*operating/i.test(s)) return "Monthly review";
+    if (/basic\s*owner/i.test(s)) return "Basic";
+    if (/custom\s*\/\s*project/i.test(s)) return "Custom";
+    if (/structured/i.test(s)) return "Structured";
+    if (/owner[-\s]aligned\s*partnership/i.test(s)) return "Owner-Aligned";
+    if (/hybrid\s*platform/i.test(s)) return "Hybrid";
+    if (/resort\s*and\s*lifestyle/i.test(s)) return "Resort/Lifestyle";
+    if (/full[-\s]service\s*institutional/i.test(s)) return "Full-Service";
+    if (/conversion\s*and\s*transition/i.test(s)) return "Conversion";
+    if (/regional\s*hub/i.test(s)) return "Regional Hub";
+    return compactSignalDisplay(s) || compactEngagementKpi(s);
+  }
+
+  function operatingSnapshotKpiValue(operatingPlatform, rowKey) {
+    var list =
+      operatingPlatform && Array.isArray(operatingPlatform.snapshotKpis)
+        ? operatingPlatform.snapshotKpis
+        : [];
+    var i;
+    for (i = 0; i < list.length; i++) {
+      if (list[i] && list[i].rowKey === rowKey && nz(list[i].value)) return list[i].value;
+    }
+    return "";
+  }
+
+  function displayOperatingPlatformKpi(raw, compactFn) {
+    if (!nz(raw)) return "—";
+    var display = compactFn ? compactFn(raw) : compactCapabilityLevelKpi(raw);
+    if (!nz(display) || !meaningfulSignal(display)) {
+      display = compactSignalDisplay(raw) || nz(raw);
+    }
+    if (!nz(display)) return "—";
+    if (display.length > 24) {
+      display = compactSignalDisplay(display) || display.slice(0, 24);
+    }
+    return display;
+  }
+
+  /**
+   * Operating Platform tab — five pillar strength signals (value-first KPI row).
+   * Always emits five tiles (value "—" when Setup has no data).
+   */
+  function deriveOperatingPlatformSnapshotMetrics(ex, p, fields, operatingPlatform) {
+    ex = ex || {};
+    p = p || {};
+    fields = fields || {};
+    operatingPlatform = operatingPlatform || p.operatingPlatform || null;
+    function row(labelLines, raw, defaultNote, compactFn) {
+      var lines = Array.isArray(labelLines) ? labelLines : [labelLines];
+      return {
+        label: lines.join(" "),
+        labelLines: lines,
+        value: displayOperatingPlatformKpi(raw, compactFn),
+        note: defaultNote,
+      };
+    }
+    var reporting =
+      pickSetupField(ex, p, fields, ["ownerReportingLevel"], [
+        "Owner Reporting Level",
+        "owner_reporting_level",
+      ]) || pick(ex, p, "cap_kpi_reporting", "");
+    var preOpening =
+      pickSetupField(ex, p, fields, ["preOpeningSupportCapability"], [
+        "Pre-Opening Support Capability",
+        "pre_opening_support_capability",
+      ]) || pick(ex, p, "cap_kpi_transition", "");
+    var commercial =
+      operatingSnapshotKpiValue(operatingPlatform, "revenue_management_capability") ||
+      pickSetupField(ex, p, fields, ["revenueManagementCapability"], [
+        "Revenue Management Capability",
+        "revenue_management_capability",
+      ]) ||
+      pick(ex, p, "cap_kpi_operating_model", "");
+    var conversion =
+      operatingSnapshotKpiValue(operatingPlatform, "conversion_reflag") ||
+      pickSetupField(ex, p, fields, ["conversionReflagExperience"], [
+        "Conversion / Reflag Experience",
+        "conversion_reflag_experience",
+      ]) ||
+      pick(ex, p, "conversionReflagExperience", "");
+    var fbResort =
+      operatingSnapshotKpiValue(operatingPlatform, "fb_capability") ||
+      pickSetupField(ex, p, fields, ["fbCapabilityLevel", "fBCapabilityLevel"], [
+        "F&B Capability Level",
+        "f_b_capability_level",
+        "fb_capability_level",
+      ]) ||
+      pick(ex, p, "cap_kpi_execution_strength", "");
+
+    return [
+      row(
+        ["Commercial", "Engine"],
+        commercial,
+        "Revenue, pricing, distribution, and commercial execution strength",
+        compactCapabilityLevelKpi
+      ),
+      row(
+        ["Owner", "Reporting"],
+        reporting ||
+          operatingSnapshotKpiValue(operatingPlatform, "owner_reporting_level"),
+        "Depth and structure of owner reporting and governance",
+        compactReportingLevelKpi
+      ),
+      row(
+        ["Pre-Opening", "Support"],
+        preOpening ||
+          operatingSnapshotKpiValue(operatingPlatform, "pre_opening_support"),
+        "New-build, takeover, and transition readiness",
+        compactCapabilityLevelKpi
+      ),
+      row(
+        ["Conversion", "Capability"],
+        conversion,
+        "Reflag, PIP, repositioning, and turnaround experience",
+        compactCapabilityLevelKpi
+      ),
+      row(
+        ["F&B &", "Resort"],
+        fbResort,
+        "Resort, lifestyle, and food & beverage operating depth",
+        compactCapabilityLevelKpi
+      ),
+    ];
+  }
+
+  function buildOperatingPlatformSnapshotSection(ex, p, fields, operatingPlatform) {
+    var intro =
+      '<p class="gold-mock-tab-empty odna-subsection-intro">Quick signals on day-to-day operating strength—from commercial execution and owner reporting through transitions and resort programming—use these when you compare operators for your asset.</p>';
+    var metrics = deriveOperatingPlatformSnapshotMetrics(ex, p, fields, operatingPlatform);
+    var count = metrics.length;
+    var metricsHtml =
+      '<div class="oe-op-snapshot-kpis oe-tab-snapshot-kpis ' +
+      snapshotKpiRowWrapperClass(count) +
+      '" style="grid-template-columns:' +
+      snapshotKpiGridInlineStyle(count) +
+      '">' +
+      metrics.map(buildLeadershipSnapshotMetricCard).join("") +
+      "</div>";
+    return (
+      '<section class="section oe-op-snapshot-section">' +
+      '<h2 class="section-title">Operating Platform</h2>' +
+      intro +
+      metricsHtml +
+      "</section>"
+    );
+  }
+
+  function buildBrandSnapshotSection(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var B = root.OperatorBrandRelationshipsSections;
+    var metrics =
+      B && typeof B.deriveSnapshotMetrics === "function" ? B.deriveSnapshotMetrics(vm) : [];
+    var scopeNotice =
+      B && typeof B.buildScopeNoticeHtml === "function" ? B.buildScopeNoticeHtml(vm) : "";
+    var intro =
+      scopeNotice +
+      '<p class="gold-mock-tab-empty odna-subsection-intro">Quick signals on brand depth, portfolio mix, and conversion experience—use these when you compare operators for your asset.</p>';
+    return buildValueKpiSnapshotSection({
+      title: "Brand & Relationship Snapshot",
+      intro: intro,
+      metrics: metrics,
+      sectionClass: "oe-brand-snapshot-section",
+      kpiClass: "oe-brand-snapshot-kpis",
+    });
+  }
+
+  function buildBestFitSnapshotSection(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var B = root.OperatorBestFitDealProfileSections;
+    var metrics =
+      B && typeof B.deriveSnapshotMetrics === "function" ? B.deriveSnapshotMetrics(vm) : [];
+    var intro =
+      '<p class="gold-mock-tab-empty odna-subsection-intro">Quick signals on the kinds of projects and deals this operator is built to support—helpful context when you compare operators for your asset.</p>';
+    return buildValueKpiSnapshotSection({
+      title: "Project Fit Snapshot",
+      intro: intro,
+      metrics: metrics,
+      sectionClass: "oe-bf-snapshot-section",
+      kpiClass: "oe-bf-snapshot-kpis",
+    });
+  }
+
+  function buildProofDecisionSignalsSection(vm, sectionTitle) {
+    var ex = (vm && vm.ex) || {};
+    var p = (vm && vm.prefill) || {};
+    return decisionStripFiltered(
+      [
+        ["RevPAR lift range", pick(ex, p, "tr_signal_revpar", "")],
+        ["Occupancy recovery window", pick(ex, p, "tr_signal_occ", "")],
+        ["ADR stabilization", pick(ex, p, "tr_signal_adr", "")],
+        ["Case repeatability", pick(ex, p, "tr_signal_repeat", "")],
+      ],
+      { sectionTitle: sectionTitle || "Track Record Signals" }
     );
   }
 
@@ -932,6 +2407,120 @@
     return card(title, b);
   }
 
+  function normalizeSetupFieldKey(key) {
+    return String(key || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "");
+  }
+
+  function formatSetupFieldValue(val) {
+    if (val == null || val === "") return "";
+    if (Array.isArray(val)) {
+      return val
+        .map(function (x) {
+          return nz(x);
+        })
+        .filter(Boolean)
+        .join("\n");
+    }
+    return nz(val);
+  }
+
+  /** Resolve a Setup / Master field from explorer JSON, prefill, or Airtable fields (fuzzy key match). */
+  function pickSetupField(vm, prefillKeys, airtableNames) {
+    var p = (vm && vm.prefill) || {};
+    var f = (vm && vm.fields) || {};
+    var ex = (vm && vm.ex) || {};
+    var i;
+    var want = {};
+    var keys = prefillKeys || [];
+    for (i = 0; i < keys.length; i++) {
+      want[normalizeSetupFieldKey(keys[i])] = true;
+      var fromEx = pick(ex, p, keys[i], "");
+      if (fromEx) return formatSetupFieldValue(fromEx);
+    }
+    var names = airtableNames || [];
+    for (i = 0; i < names.length; i++) {
+      want[normalizeSetupFieldKey(names[i])] = true;
+      var fromField = formatSetupFieldValue(f[names[i]]);
+      if (fromField) return fromField;
+    }
+    var bags = [p, f, ex];
+    for (var b = 0; b < bags.length; b++) {
+      var bag = bags[b] || {};
+      for (var key in bag) {
+        if (!Object.prototype.hasOwnProperty.call(bag, key)) continue;
+        if (!want[normalizeSetupFieldKey(key)]) continue;
+        var formatted = formatSetupFieldValue(bag[key]);
+        if (formatted) return formatted;
+      }
+    }
+    return "";
+  }
+
+  function recognitionCard(title, body) {
+    return card(title, nz(body) || "—");
+  }
+
+  function pickRecognitionNotableAchievements(vm) {
+    var p = (vm && vm.prefill) || {};
+    var ex = (vm && vm.ex) || {};
+    var direct = pickSetupField(vm, ["notableAchievements", "achievements"], ["Notable Achievements"]);
+    if (nz(direct)) return direct;
+    var signals = [
+      pick(ex, p, "overview_signal_1_value", ""),
+      pick(ex, p, "overview_signal_2_value", ""),
+      pick(ex, p, "overview_signal_3_value", ""),
+    ].filter(function (s) {
+      return nz(s);
+    });
+    if (signals.length) return signals.join("\n");
+    return "";
+  }
+
+  /** Overview — always three cards: certifications, industry recognition, notable achievements. */
+  function buildRecognitionSectionHtml(vm) {
+    var industryRecognition =
+      pickSetupField(vm, ["industryRecognition"], ["Industry Recognition"]) ||
+      pickOwnerFacing(vm.ex, vm.prefill, "lead_narrative_functional");
+    var cards = [
+      recognitionCard(
+        "Certifications & Standards",
+        pickSetupField(vm, ["certifications"], ["Certifications", "Certifications Held"])
+      ),
+      recognitionCard("Industry Recognition", industryRecognition),
+      recognitionCard("Notable Achievements", pickRecognitionNotableAchievements(vm)),
+    ];
+    return (
+      '<section class="section oe-recognition-section">' +
+      '<h2 class="section-title">Recognition</h2>' +
+      '<div class="oe-recognition-grid ' +
+      snapshotKpiRowWrapperClass(3) +
+      '" style="grid-template-columns:' +
+      snapshotKpiGridInlineStyle(3) +
+      '">' +
+      cards.join("") +
+      "</div></section>"
+    );
+  }
+
+  /** Company Story & Positioning: one card with labeled blocks (history, differentiators, philosophy, mission). */
+  function profileDepthConsolidatedCard(prefill, vm) {
+    var blocks = [];
+    function addBlock(title, body) {
+      var b = nz(body);
+      if (!b) return;
+      blocks.push("<h3>" + escapeHtml(title) + "</h3><p>" + escapeHtml(b) + "</p>");
+    }
+    addBlock("Company History", prefill.companyHistory);
+    addBlock("Key Differentiators", prefill.differentiators);
+    addBlock("Management Philosophy", prefill.managementPhilosophy);
+    var ms = nz(prefill.missionStatement);
+    if (ms && ms !== nz(vm && vm.statement)) addBlock("Mission Statement", ms);
+    if (!blocks.length) return "";
+    return '<div class="card oe-profile-depth-consolidated">' + blocks.join("") + "</div>";
+  }
+
   function tabEmptyHint() {
     return (
       '<section class="section"><p class="gold-mock-tab-empty">' +
@@ -946,9 +2535,48 @@
     return html;
   }
 
+  /**
+   * Client-side fallback when detail API has censusFootprint but prefill was not merged (stale server).
+   */
+  function applyCensusFootprintFromDetailPayload(detailPayload, prefill, fields) {
+    if (!prefill || nz(prefill.footprintPortfolioSource) === "hotel_census") return;
+    var cf = detailPayload && detailPayload.censusFootprint;
+    if (!cf || !cf.ok || !(cf.totals && cf.totals.totalHotels > 0)) return;
+
+    if (cf.brandsPortfolioDetail && cf.brandsPortfolioDetail.length) {
+      prefill.brandsPortfolioDetail = cf.brandsPortfolioDetail;
+      if (fields) {
+        try {
+          fields["Brands Portfolio Detail"] = JSON.stringify(cf.brandsPortfolioDetail);
+        } catch (e) {
+          fields["Brands Portfolio Detail"] = "";
+        }
+      }
+    }
+    Object.keys(cf.geoFields || {}).forEach(function (k) {
+      prefill[k] = cf.geoFields[k];
+    });
+    Object.keys(cf.chainScaleFields || {}).forEach(function (k) {
+      prefill[k] = cf.chainScaleFields[k];
+    });
+    if (cf.totals) {
+      prefill.geo_total_existing_hotels = String(cf.totals.totalExistingHotels || "");
+      prefill.geo_total_existing_rooms = String(cf.totals.totalExistingRooms || "");
+      prefill.geo_total_pipeline_hotels = String(cf.totals.totalPipelineHotels || "");
+      prefill.geo_total_pipeline_rooms = String(cf.totals.totalPipelineRooms || "");
+      prefill.totalProperties = String(cf.totals.totalHotels || "");
+      prefill.totalRooms = String(
+        (Number(cf.totals.totalExistingRooms) || 0) + (Number(cf.totals.totalPipelineRooms) || 0)
+      );
+    }
+    prefill.footprintPortfolioSource = "hotel_census";
+    prefill.footprintPortfolioManagementCompany = nz(cf.managementCompany);
+  }
+
   function buildViewModel(detailPayload, listRow) {
     var prefill = (detailPayload && detailPayload.prefill) || {};
     var fields = (detailPayload && detailPayload.fields) || {};
+    applyCensusFootprintFromDetailPayload(detailPayload, prefill, fields);
     var ex = mergeExplorerPrefill(prefill);
     var caseStudies = Array.isArray(detailPayload.caseStudiesDetail)
       ? detailPayload.caseStudiesDetail
@@ -965,6 +2593,60 @@
       : Array.isArray(prefill.ownerDiligenceQa)
         ? prefill.ownerDiligenceQa
         : [];
+
+    var operatorExplorerMaterials =
+      detailPayload &&
+      detailPayload.operatorExplorerMaterials &&
+      typeof detailPayload.operatorExplorerMaterials === "object"
+        ? detailPayload.operatorExplorerMaterials
+        : { version: 1, blocks: [] };
+
+    var leadershipPlatform =
+      detailPayload &&
+      detailPayload.leadershipPlatform &&
+      typeof detailPayload.leadershipPlatform === "object"
+        ? detailPayload.leadershipPlatform
+        : prefill.leadershipPlatform && typeof prefill.leadershipPlatform === "object"
+          ? prefill.leadershipPlatform
+          : null;
+
+    var infrastructurePlatform =
+      detailPayload &&
+      detailPayload.infrastructurePlatform &&
+      typeof detailPayload.infrastructurePlatform === "object"
+        ? detailPayload.infrastructurePlatform
+        : prefill.infrastructurePlatform && typeof prefill.infrastructurePlatform === "object"
+          ? prefill.infrastructurePlatform
+          : null;
+
+    var engagementReporting =
+      detailPayload &&
+      (detailPayload.engagementReporting || detailPayload.engagementPlatform) &&
+      typeof (detailPayload.engagementReporting || detailPayload.engagementPlatform) === "object"
+        ? detailPayload.engagementReporting || detailPayload.engagementPlatform
+        : prefill.engagementReporting && typeof prefill.engagementReporting === "object"
+          ? prefill.engagementReporting
+          : prefill.engagementPlatform && typeof prefill.engagementPlatform === "object"
+            ? prefill.engagementPlatform
+            : null;
+
+    var operatingPlatform =
+      detailPayload &&
+      detailPayload.operatingPlatform &&
+      typeof detailPayload.operatingPlatform === "object"
+        ? detailPayload.operatingPlatform
+        : prefill.operatingPlatform && typeof prefill.operatingPlatform === "object"
+          ? prefill.operatingPlatform
+          : null;
+
+    var brandRelationships =
+      detailPayload &&
+      detailPayload.brandRelationships &&
+      typeof detailPayload.brandRelationships === "object"
+        ? detailPayload.brandRelationships
+        : prefill.brandRelationships && typeof prefill.brandRelationships === "object"
+          ? prefill.brandRelationships
+          : null;
 
     var companyName =
       nz(fields["Company Name"]) ||
@@ -1003,9 +2685,9 @@
       (Array.isArray(prefill.brands) ? String(prefill.brands.length) : "");
 
     var brandedMix =
-      nz(fields["Branded vs Independent Mix"]) ||
-      nz(prefill.brandedVsIndependentMix) ||
-      "";
+      heroBrandMixValue(
+        nz(fields["Branded vs Independent Mix"]) || nz(prefill.brandedVsIndependentMix) || ""
+      );
 
     var heroMeta = [];
     if (meaningfulMetaValue(hq)) heroMeta.push(["Headquarters", hq]);
@@ -1014,7 +2696,9 @@
     if (meaningfulMetaValue(hotelsStr)) heroMeta.push(["Hotels Managed", hotelsStr]);
     var roomsStr = formatInt(totalRooms);
     if (meaningfulMetaValue(roomsStr)) heroMeta.push(["Rooms Managed", roomsStr]);
-    if (meaningfulMetaValue(brandCount)) heroMeta.push(["Brands Supported", brandCount]);
+    var assetFocusStr = assetFocusHeroValue(prefill, fields);
+    if (meaningfulMetaValue(assetFocusStr)) heroMeta.push(["Asset Focus", assetFocusStr]);
+    if (meaningfulMetaValue(brandCount)) heroMeta.push(["Brand Relationships", brandCount]);
     if (meaningfulMetaValue(brandedMix)) heroMeta.push(["Brand Mix", brandedMix]);
 
     return {
@@ -1032,6 +2716,21 @@
       brandProfiles: brandProfiles,
       listRow: listRow || {},
       ownerDiligenceQa: ownerDiligenceQa,
+      operatorExplorerMaterials: operatorExplorerMaterials,
+      leadershipPlatform: leadershipPlatform,
+      infrastructurePlatform: infrastructurePlatform,
+      engagementReporting: engagementReporting,
+      engagementPlatform: engagementReporting,
+      operatingPlatform: operatingPlatform,
+      brandRelationships: brandRelationships,
+      explorerHeroVerification:
+        nz(detailPayload.explorerHeroVerification) ||
+        nz(prefill.explorerHeroVerification) ||
+        nz(listRow && listRow.explorerHeroVerification),
+      explorerHeroDataSource:
+        nz(detailPayload.explorerHeroDataSource) ||
+        nz(prefill.explorerHeroDataSource) ||
+        nz(listRow && listRow.explorerHeroDataSource),
     };
   }
 
@@ -1079,7 +2778,9 @@
       escapeHtml(src) +
       '" alt="' +
       escapeHtml(title) +
-      '"><div class="proof-body"><div class="proof-title">' +
+      '"' +
+      exportPdfImgAttrs() +
+      '><div class="proof-body"><div class="proof-title">' +
       escapeHtml(title) +
       '</div><div class="proof-meta">' +
       escapeHtml(meta) +
@@ -1093,19 +2794,392 @@
     );
   }
 
-  function proofGridFromCases(cases) {
-    return (cases || [])
-      .slice(0, 3)
-      .map(proofFromCaseStudy)
-      .filter(Boolean)
-      .map(function (p) {
-        return proofCard(p.img, p.title, p.meta, p.lines.length ? p.lines : []);
+  function caseStudyNarrativeColumn(heading, body) {
+    if (!nz(body)) return "";
+    return (
+      '<div class="case-study-narrative__col">' +
+      "<h4>" +
+      escapeHtml(heading) +
+      "</h4><p>" +
+      escapeHtml(body) +
+      "</p></div>"
+    );
+  }
+
+  var CASE_STUDY_FIVE_PART_HEADINGS = [
+    ["Challenge", "challenge"],
+    ["Operator Action", "operatorAction"],
+    ["Outcome", "outcome"],
+    ["Why It Matters", "whyItMatters"],
+    ["Data Status", "dataStatus"],
+  ];
+
+  function proofCardFivePart(img, title, meta, fivePart) {
+    var src = img || PLACEHOLDER_PROOF;
+    fivePart = fivePart || {};
+    var cols = CASE_STUDY_FIVE_PART_HEADINGS.map(function (pair) {
+      var body = nz(fivePart[pair[1]]);
+      return caseStudyNarrativeColumn(pair[0], body || "\u2014");
+    }).join("");
+    return (
+      '<article class="proof-card proof-card--narrative proof-card--five-part"><img src="' +
+      escapeHtml(src) +
+      '" alt="' +
+      escapeHtml(title) +
+      '"' +
+      exportPdfImgAttrs() +
+      '><div class="proof-body"><div class="proof-title">' +
+      escapeHtml(title) +
+      '</div><div class="proof-meta">' +
+      escapeHtml(meta) +
+      '</div><div class="case-study-narrative case-study-narrative--cols-5">' +
+      cols +
+      "</div></div></article>"
+    );
+  }
+
+  function proofCardNarrative(img, title, meta, narrative) {
+    var src = img || PLACEHOLDER_PROOF;
+    narrative = narrative || {};
+    var colDefs = [
+      ["Before", narrative.before],
+      ["Operator Action", narrative.action],
+      ["After", narrative.after],
+    ].filter(function (pair) {
+      return nz(pair[1]);
+    });
+    if (!colDefs.length) return proofCard(img, title, meta, [narrative.after, narrative.action].filter(Boolean));
+    var colCount = Math.min(3, Math.max(colDefs.length, 1));
+    var cols = colDefs
+      .map(function (pair) {
+        return caseStudyNarrativeColumn(pair[0], pair[1]);
       })
       .join("");
+    var relevance = nz(narrative.relevance)
+      ? '<p class="case-study-relevance">' + escapeHtml(narrative.relevance) + "</p>"
+      : "";
+    return (
+      '<article class="proof-card proof-card--narrative"><img src="' +
+      escapeHtml(src) +
+      '" alt="' +
+      escapeHtml(title) +
+      '"' +
+      exportPdfImgAttrs() +
+      '><div class="proof-body"><div class="proof-title">' +
+      escapeHtml(title) +
+      '</div><div class="proof-meta">' +
+      escapeHtml(meta) +
+      '</div><div class="case-study-narrative case-study-narrative--cols-' +
+      colCount +
+      '">' +
+      cols +
+      "</div>" +
+      relevance +
+      "</div></article>"
+    );
+  }
+
+  function truncateCaseStudyText(text, max) {
+    var t = nz(text);
+    if (!t || t.length <= max) return t;
+    return t.slice(0, max - 1) + "\u2026";
+  }
+
+  function caseStudyBeChips(cs) {
+    var seen = {};
+    var out = [];
+    [cs.hotel_type, cs.region, cs.situation, cs.branded_independent].forEach(function (p) {
+      var t = nz(p);
+      if (!t) return;
+      var key = t.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      out.push(t);
+    });
+    return out;
+  }
+
+  function buildCaseStudyBePayload(cs) {
+    var fp = deriveCaseStudyFivePart(cs);
+    var title = nz(cs.property_name) || nz(cs.hotel_type) || "Case study";
+    var loc = nz(cs.region);
+    var situation = nz(cs.situation);
+    var subtitle = loc
+      ? loc + (situation ? " \u00b7 " + situation : "")
+      : situation || "Case study";
+    var chips = caseStudyBeChips(cs);
+    return {
+      title: title,
+      subtitle: subtitle,
+      challenge: nz(fp.challenge) || "\u2014",
+      operatorAction: nz(fp.operatorAction) || "\u2014",
+      outcome: nz(fp.outcome) || "\u2014",
+      whyItMatters: nz(fp.whyItMatters) || "\u2014",
+      dataStatus: nz(fp.dataStatus) || "\u2014",
+      tags: chips,
+      externalUrl: "",
+    };
+  }
+
+  function buildCaseStudyBeCard(cs, index, payload) {
+    if (!payload) return "";
+    var title = payload.title;
+    var loc = nz(cs.region);
+    var imgUrl = nz(cs.image_url);
+    var badge = nz(cs.situation) || "Case Study";
+    var metaLine = nz(cs.hotel_type) || "\u2014";
+    var scenario = payload.tags.length
+      ? payload.tags
+          .slice(0, 3)
+          .map(function (t) {
+            return String(t).toUpperCase();
+          })
+          .join(" / ")
+      : "";
+    var teaser = truncateCaseStudyText(
+      payload.challenge !== "\u2014" ? payload.challenge : payload.operatorAction,
+      220
+    );
+    var tagsHtml = payload.tags.length
+      ? payload.tags
+          .map(function (t) {
+            return '<span class="tag-chip">' + escapeHtml(String(t).toUpperCase()) + "</span>";
+          })
+          .join("")
+      : '<span class="tag-chip">&nbsp;</span>';
+
+    var topInner = "";
+    if (imgUrl && /^https?:\/\//i.test(imgUrl)) {
+      topInner =
+        '<img src="' +
+        escapeHtml(imgUrl) +
+        '" alt="' +
+        escapeHtml(title) +
+        '"' +
+        (isExportPdfMode()
+          ? ' loading="eager" decoding="sync" referrerpolicy="no-referrer"'
+          : ' loading="lazy"') +
+        " />";
+    }
+
+    return (
+      '<article class="property-example-card">' +
+      '<div class="property-example-card__top">' +
+      topInner +
+      '<span class="property-example-card__badge">' +
+      escapeHtml(badge) +
+      "</span>" +
+      '<div class="property-example-card__titles">' +
+      "<h4>" +
+      escapeHtml(title) +
+      "</h4><span>" +
+      escapeHtml(loc || "\u2014") +
+      "</span></div></div>" +
+      '<div class="property-example-card__mid">' +
+      '<div class="property-example-card__meta">' +
+      escapeHtml(metaLine) +
+      "</div>" +
+      (scenario
+        ? '<div class="property-example-card__scenario">' + escapeHtml(scenario) + "</div>"
+        : "") +
+      "<p>" +
+      escapeHtml(teaser) +
+      "</p></div>" +
+      '<div class="property-example-card__bottom">' +
+      '<div class="property-example-card__tags">' +
+      tagsHtml +
+      "</div>" +
+      '<button type="button" class="btn" data-odna-case-study="' +
+      index +
+      '">View Property</button></div></article>'
+    );
+  }
+
+  var CASE_STUDY_INITIAL_VISIBLE = 3;
+
+  function caseStudiesExpanderButtonHtml(total, initial) {
+    initial = initial || CASE_STUDY_INITIAL_VISIBLE;
+    if (!total || total <= initial) return "";
+    return (
+      '<div class="odna-case-studies-be__actions">' +
+      '<button type="button" class="btn odna-case-studies-expand" data-odna-case-studies-expand ' +
+      'aria-expanded="false" data-odna-case-studies-initial="' +
+      initial +
+      '">' +
+      escapeHtml("View all " + total + " case studies") +
+      "</button></div>"
+    );
+  }
+
+  function markCaseStudyCardCollapsed(cardHtml, index, initial) {
+    if (!cardHtml || index < initial) return cardHtml;
+    return cardHtml.replace(
+      '<article class="property-example-card"',
+      '<article class="property-example-card property-example-card--collapsed"'
+    );
+  }
+
+  function markProofCardCollapsed(cardHtml, index, initial) {
+    if (!cardHtml || index < initial) return cardHtml;
+    return cardHtml.replace('<article class="proof-card', '<article class="proof-card proof-card--collapsed');
+  }
+
+  /** Brand Explorer property-example-card grid (Operator DNA profile). */
+  function buildBrandExplorerCaseStudiesGridHtml(cases) {
+    var list = (cases || []).filter(caseStudyHasContent);
+    if (!list.length) return "";
+
+    var initial = CASE_STUDY_INITIAL_VISIBLE;
+    var payloads = [];
+    var sourceCases = [];
+    var cards = list
+      .map(function (cs, index) {
+        var payload = buildCaseStudyBePayload(cs);
+        if (!payload) return "";
+        var payloadIdx = payloads.length;
+        payloads.push(payload);
+        sourceCases.push(cs);
+        return markCaseStudyCardCollapsed(
+          buildCaseStudyBeCard(cs, payloadIdx, payload),
+          index,
+          initial
+        );
+      })
+      .filter(Boolean)
+      .join("");
+
+    if (!cards) return "";
+
+    global._odnaCaseStudyPayloads = payloads;
+    global._odnaCaseStudySourceCases = sourceCases;
+
+    return (
+      '<div class="be-atelier-oe odna-case-studies-be" data-odna-case-study-total="' +
+      list.length +
+      '">' +
+      '<div class="property-example-grid">' +
+      cards +
+      "</div>" +
+      caseStudiesExpanderButtonHtml(list.length, initial) +
+      "</div>"
+    );
+  }
+
+  function proofGridFromCasesFivePart(cases) {
+    var initial = CASE_STUDY_INITIAL_VISIBLE;
+    var list = (cases || [])
+      .map(function (cs) {
+        return proofFromCaseStudy(cs, { useCaseStudyFivePart: true });
+      })
+      .filter(Boolean);
+    if (!list.length) return "";
+    var html = list
+      .map(function (p, index) {
+        return markProofCardCollapsed(
+          proofCardFivePart(p.img, p.title, p.meta, p.fivePart),
+          index,
+          initial
+        );
+      })
+      .join("");
+    return (
+      '<div class="odna-proof-studies-expander" data-odna-case-study-total="' +
+      list.length +
+      '">' +
+      '<div class="proof-grid proof-grid--case-studies proof-grid--case-studies-five-part">' +
+      html +
+      "</div>" +
+      caseStudiesExpanderButtonHtml(list.length, initial) +
+      "</div>"
+    );
+  }
+
+  function resolveCaseStudiesGridHtml(proof, panelOpts) {
+    panelOpts = panelOpts || {};
+    var preferBrandExplorerCards =
+      panelOpts.useBrandExplorerCaseStudies === true ||
+      panelOpts.ownerFacingProofKpis === true;
+
+    if (panelOpts.useCaseStudyFivePart) {
+      return proofGridFromCasesFivePart(proof);
+    }
+    if (preferBrandExplorerCards) {
+      var beHtml = buildBrandExplorerCaseStudiesGridHtml(proof);
+      if (beHtml) return beHtml;
+      if (
+        global.OperatorDnaCaseStudiesBe &&
+        global.OperatorDnaCaseStudiesBe.buildCaseStudiesExplorerGridHtml
+      ) {
+        var extHtml = global.OperatorDnaCaseStudiesBe.buildCaseStudiesExplorerGridHtml(proof);
+        if (extHtml) return extHtml;
+      }
+      if (typeof console !== "undefined" && console.warn) {
+        console.warn(
+          "[gold-mock] property-example case studies empty; using compact cards (not narrative columns)"
+        );
+      }
+      return proofGridFromCases(proof, {
+        caseStudiesSection: true,
+        omitNarrativeLayout: true,
+      });
+    }
+    return proofGridFromCases(proof, { caseStudiesSection: true });
+  }
+
+  function proofGridFromCases(cases, gridOpts) {
+    gridOpts = gridOpts || {};
+    var initial = CASE_STUDY_INITIAL_VISIBLE;
+    var list = (cases || [])
+      .map(function (cs) {
+        var p = proofFromCaseStudy(cs);
+        if (!p || !gridOpts.omitNarrativeLayout || !p.narrative) return p;
+        var n = p.narrative;
+        var lines = [nz(n.before), nz(n.action), nz(n.after), nz(n.relevance)].filter(Boolean);
+        return { img: p.img, title: p.title, meta: p.meta, lines: lines.length ? lines : [nz(cs.outcome)] };
+      })
+      .filter(Boolean);
+    if (!list.length) return "";
+    var useNarrative =
+      !gridOpts.omitNarrativeLayout &&
+      list.some(function (p) {
+        return p.narrative;
+      });
+    var html = list
+      .map(function (p, index) {
+        var card;
+        if (p.narrative) {
+          card = proofCardNarrative(p.img, p.title, p.meta, p.narrative);
+        } else {
+          card = proofCard(p.img, p.title, p.meta, p.lines || []);
+        }
+        return markProofCardCollapsed(card, index, initial);
+      })
+      .join("");
+    var gridClass = "proof-grid";
+    if (useNarrative) {
+      gridClass += gridOpts.caseStudiesSection
+        ? " proof-grid--case-studies"
+        : " proof-grid--case-narrative";
+    }
+    if (list.length <= initial) {
+      return '<div class="' + gridClass + '">' + html + "</div>";
+    }
+    return (
+      '<div class="odna-proof-studies-expander" data-odna-case-study-total="' +
+      list.length +
+      '">' +
+      '<div class="' +
+      gridClass +
+      '">' +
+      html +
+      "</div>" +
+      caseStudiesExpanderButtonHtml(list.length, initial) +
+      "</div>"
+    );
   }
 
   /** Card body uses `summary` (exec_*_summary); image hover uses `bioHover` (exec_*_bio). */
-  function leaderCard(img, name, titleLine, summary, roleLine, bioHover) {
+  function leaderCard(img, name, titleLine, summary, roleLine, bioHover, leader) {
     var summaryText = nz(summary);
     var bioText = nz(bioHover);
     var src = img || PLACEHOLDER_LEADER;
@@ -1114,12 +3188,26 @@
         escapeHtml(bioText) +
         "</div>"
       : "";
+    var profileApi =
+      (typeof global !== "undefined" && global.OperatorLeadershipProfileDetail) ||
+      (typeof window !== "undefined" && window.OperatorLeadershipProfileDetail);
+    var profileDetail =
+      profileApi && profileApi.buildLeaderProfileDetailHtml
+        ? profileApi.buildLeaderProfileDetailHtml(leader || {})
+        : "";
+    var summaryHtml = summaryText
+      ? '<div class="leader-summary">' + escapeHtml(summaryText) + "</div>"
+      : "";
     return (
-      '<article class="leader-card"><div class="leader-image-wrap"><img src="' +
+      '<article class="leader-card' +
+      (profileDetail ? " leader-card--with-profile" : "") +
+      '"><div class="leader-image-wrap"><img src="' +
       escapeHtml(src) +
       '" alt="' +
       escapeHtml(name) +
-      '">' +
+      '"' +
+      exportPdfImgAttrs() +
+      ">" +
       overlayHtml +
       '</div><div class="leader-body"><div class="leader-name">' +
       escapeHtml(name) +
@@ -1127,29 +3215,167 @@
       escapeHtml(titleLine) +
       " · " +
       escapeHtml(roleLine) +
-      '</div><div class="leader-summary">' +
-      escapeHtml(summaryText) +
-      "</div></div></article>"
+      "</div>" +
+      summaryHtml +
+      profileDetail +
+      "</div></article>"
+    );
+  }
+
+  function leaderCardFromLeader(L) {
+    return leaderCard(
+      L && L.headshotUrl,
+      nz(L && L.name),
+      nz(L && L.title) || "—",
+      nz(L && L.summary) || "",
+      nz(L && L.function) || "—",
+      nz(L && L.bio) || "",
+      L || {}
     );
   }
 
   function marketsDerivedMetrics(vm) {
     var p = vm.prefill || {};
-    var regions = arrayish(p.regions || p.regionsSupported || p.priorityMarkets);
-    var cities = linesFromText(p.specificMarkets || "");
-    var countries = arrayish(p.priorityCountries || p.countriesServed);
-    var r = regions.length ? String(regions.length) : "";
-    var c = countries.length ? String(countries.length) : "";
-    var ct = cities.length ? String(cities.length) : "";
+    var ex = (vm && vm.ex) || {};
+    var regionList = uniqueStrings(
+      []
+        .concat(arrayish(p.regions || p.regionsSupported))
+        .concat(arrayish(ex.regions))
+    );
+    var countryList = uniqueStrings(
+      []
+        .concat(arrayish(p.activeCountries))
+        .concat(arrayish(ex.activeCountries))
+        .concat(arrayish(p.priorityCountries))
+        .concat(arrayish(p.countriesServed))
+    );
+    var cityList = uniqueStrings(
+      []
+        .concat(linesFromText(p.specificMarkets || ""))
+        .concat(arrayish(p.activeMarkets))
+        .concat(arrayish(ex.activeMarkets))
+    );
+    var marketsOperated = nz(p.numberOfMarkets) || nz(ex.numberOfMarkets);
+    var countriesIsMarketsFallback = false;
+    var countriesDisplay = "";
+    if (countryList.length) {
+      countriesDisplay = String(countryList.length);
+    } else if (marketsOperated) {
+      countriesDisplay = marketsOperated;
+      countriesIsMarketsFallback = true;
+    }
     return {
-      regions: r,
-      countries: c,
-      cities: ct,
+      regions: regionList.length ? String(regionList.length) : "",
+      regionNames: regionList.slice(0, 6).join(", "),
+      countries: countriesDisplay,
+      countriesIsMarketsFallback: countriesIsMarketsFallback,
+      countryNames: countryList.slice(0, 6).join(", "),
+      cities: cityList.length ? String(cityList.length) : "",
+      cityNames: cityList.slice(0, 6).join(", "),
       coverage: nz(p.regionalManagementTeams) || nz(p.primaryServiceModel) || "",
     };
   }
 
-  function buildPanels(vm) {
+  function marketExperienceThreeLayerHtml(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var M = root.OperatorMarketExperienceSection;
+    if (!M || typeof M.buildThreeLayerSectionHtml !== "function") return "";
+    return M.buildThreeLayerSectionHtml(vm) || "";
+  }
+
+  function marketsFootprintSubsectionsHtml(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var S = root.OperatorMarketsFootprintSections;
+    if (!S || typeof S.buildAllSectionsHtml !== "function") return "";
+    return S.buildAllSectionsHtml(vm) || "";
+  }
+
+  function infrastructureDetailSectionsHtml(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var I = root.OperatorInfrastructureSections;
+    if (!I || typeof I.buildAllSectionsHtml !== "function") return "";
+    return I.buildAllSectionsHtml(vm) || "";
+  }
+
+  function engagementReportingSectionsHtml(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var E = root.OperatorEngagementReportingSections;
+    if (!E || typeof E.buildAllSectionsHtml !== "function") return "";
+    return E.buildAllSectionsHtml(vm) || "";
+  }
+
+  function brandRelationshipsSectionsHtml(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var B = root.OperatorBrandRelationshipsSections;
+    if (!B || typeof B.buildAllSectionsHtml !== "function") return "";
+    return B.buildAllSectionsHtml(vm) || "";
+  }
+
+  function bestFitDealProfileSectionsHtml(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var B = root.OperatorBestFitDealProfileSections;
+    if (!B || typeof B.buildAllSectionsHtml !== "function") return "";
+    return B.buildAllSectionsHtml(vm) || "";
+  }
+
+  function operatingPlatformSectionsHtml(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var O = root.OperatorOperatingPlatformSections;
+    if (!O || typeof O.buildAllSectionsHtml !== "function") return "";
+    return O.buildAllSectionsHtml(vm) || "";
+  }
+
+  function bestFitOwnerProjectProfileOverviewHtml(vm) {
+    var root =
+      typeof globalThis !== "undefined"
+        ? globalThis
+        : typeof window !== "undefined"
+          ? window
+          : {};
+    var B = root.OperatorBestFitDealProfileSections;
+    if (!B || typeof B.buildOverviewBestFitOwnerProjectSection !== "function") {
+      return "";
+    }
+    return B.buildOverviewBestFitOwnerProjectSection(vm) || "";
+  }
+
+  function buildPanels(vm, panelOpts) {
+    panelOpts = panelOpts || {};
     var ex = vm.ex;
     var p = vm.prefill;
     var proof = (vm.caseStudies || []).filter(caseStudyHasContent);
@@ -1160,38 +3386,13 @@
     var m = marketsDerivedMetrics(vm);
 
     var leadersOverview = leadersNamed.slice(0, 3);
-    var leadersAll = leadersNamed.slice(0, 6);
+    var leadersAll = leadersNamed;
 
-    var proofGridHtml = proofGridFromCases(proof);
+    var caseStudiesGridHtml = resolveCaseStudiesGridHtml(proof, panelOpts);
 
     function heroSummarySection() {
-      var pairs = [];
-      var hm = vm.heroMeta || [];
-      for (var i = 0; i < hm.length; i++) {
-        if (hm[i] && meaningfulMetaValue(hm[i][1])) pairs.push([hm[i][0], hm[i][1]]);
-      }
-      if (pairs.length >= 4) {
-        return (
-          '<section class="section"><h2 class="section-title">Operator Summary</h2>' +
-          kpiGridFromPairs(pairs.slice(0, 4)) +
-          "</section>"
-        );
-      }
-      if (pairs.length) {
-        return (
-          '<section class="section"><h2 class="section-title">Operator Summary</h2>' +
-          kpiGridFromPairs(pairs) +
-          "</section>"
-        );
-      }
-      return "";
+      return operatorQuickFactsSectionHtml(vm);
     }
-
-    var overviewDecision = [
-      ["Repeat-owner / relationship signal", pick(ex, p, "overview_signal_1_value", "")],
-      ["Average contract duration", pick(ex, p, "overview_signal_2_value", "")],
-      ["Typical stabilization window", pick(ex, p, "overview_signal_3_value", "")],
-    ];
 
     var bestAt =
       insightCard(
@@ -1224,58 +3425,20 @@
     var leadershipSnap =
       leadersOverview
         .map(function (L) {
-          return leaderCard(
-            L.headshotUrl,
-            nz(L.name),
-            nz(L.title) || "—",
-            nz(L.summary) || "",
-            nz(L.function) || "—",
-            nz(L.bio) || ""
-          );
+          return leaderCardFromLeader(L);
         })
         .join("") || "";
 
-    var profileDepthCards =
-      titledCard("Company History", p.companyHistory) +
-      titledCard("Key Differentiators", p.differentiators) +
-      titledCard("Management Philosophy", p.managementPhilosophy) +
-      (function () {
-        var ms = nz(p.missionStatement);
-        if (!ms || ms === nz(vm.statement)) return "";
-        return titledCard("Mission Statement", ms);
-      })();
-
-    var profileClustersBasics =
-      clusterContent("Property Types", arrayish(p.propertyTypes)) +
-      clusterContent("Chain Scales Supported", arrayish(p.chainScalesSupported || p.chainScale)) +
-      clusterContentWide("Brands Supported", arrayish(p.brands));
-
-    var profileRecognition =
-      titledCard("Certifications & Standards", p.certifications) +
-      titledCard("Industry Recognition", p.industryRecognition) +
-      titledCard("Notable Achievements", p.achievements);
+    var profileDepthHtml = profileDepthConsolidatedCard(p, vm);
+    var recognitionSectionHtml = buildRecognitionSectionHtml(vm);
+    var bestFitOwnerOverviewHtml = bestFitOwnerProjectProfileOverviewHtml(vm);
 
     var ProfilePositioning =
       heroSummarySection() +
-      (nz(vm.statement)
-        ? '<section class="section"><h2 class="section-title">Company Background</h2>' +
-          card("Positioning", vm.statement) +
+      (profileDepthHtml
+        ? '<section class="section"><h2 class="section-title">Company Story &amp; Positioning</h2>' +
+          profileDepthHtml +
           "</section>"
-        : "") +
-      (profileDepthCards
-        ? '<section class="section"><h2 class="section-title">Profile Depth</h2><div class="grid-2">' +
-          profileDepthCards +
-          "</div></section>"
-        : "") +
-      (profileClustersBasics
-        ? '<section class="section"><h2 class="section-title">Property & Portfolio Profile</h2><div class="quant-grid">' +
-          profileClustersBasics +
-          "</div></section>"
-        : "") +
-      (profileRecognition
-        ? '<section class="section"><h2 class="section-title">Recognition</h2><div class="grid-2">' +
-          profileRecognition +
-          "</div></section>"
         : "") +
       (bestAt
         ? '<section class="section"><h2 class="section-title">What They Are Best At</h2><div class="grid-3">' +
@@ -1287,159 +3450,37 @@
           whyOwners +
           "</div></section>"
         : "") +
+      bestFitOwnerOverviewHtml +
       (leadershipSnap
-        ? '<section class="section"><h2 class="section-title">Leadership Snapshot</h2><div class="proof-grid">' +
+        ? '<section class="section"><h2 class="section-title">Leadership Snapshot</h2><div class="proof-grid proof-grid--leadership-aligned">' +
           leadershipSnap +
           "</div></section>"
         : "") +
-      decisionStripFiltered(overviewDecision);
+      recognitionSectionHtml;
 
-    var capKpis = kpiGridFromPairs([
-      ["Operating Model", pick(ex, p, "cap_kpi_operating_model", "")],
-      ["Execution Strength", pick(ex, p, "cap_kpi_execution_strength", "")],
-      ["Transition Capability", pick(ex, p, "cap_kpi_transition", "")],
-      ["Reporting Strength", pick(ex, p, "cap_kpi_reporting", "")],
-    ]);
+    var operatingPlatformSnapshotHtml = buildOperatingPlatformSnapshotSection(
+      ex,
+      p,
+      vm.fields || {},
+      vm.operatingPlatform
+    );
 
-    var capProfileRow =
-      clusterContent(
-        "Operational Execution",
-        linesFromText(pick(ex, p, "cap_profile_operational", "")).slice(0, 8)
-      ) +
-      clusterContent(
-        "Commercial Engine",
-        linesFromText(pick(ex, p, "cap_profile_commercial", "")).slice(0, 8)
-      ) +
-      clusterContent(
-        "Transition Capability",
-        linesFromText(pick(ex, p, "cap_profile_transition", "")).slice(0, 8)
-      );
+    var operatingPlatformPillarsHtml = operatingPlatformSectionsHtml(vm);
 
-    var capAssetCards =
-      titledCard("Asset Positioning", pick(ex, p, "cap_card_asset_positioning", "")) +
-      titledCard("Service Differentiation", pick(ex, p, "cap_card_service_diff", "")) +
-      titledCard("Execution Reliability", pick(ex, p, "cap_card_execution_rel", "")) +
-      titledCard("Governance & Reporting", pick(ex, p, "cap_card_governance", ""));
-
-    var capDeep =
-      clusterContent(
-        "Revenue Systems",
-        linesFromText(pick(ex, p, "cap_deep_revenue_systems", "")).slice(0, 8)
-      ) +
-      clusterContent(
-        "Execution Infrastructure",
-        linesFromText(pick(ex, p, "cap_deep_execution_infra", "")).slice(0, 8)
-      );
-
-    var OperatingPlatform =
-      (capKpis
-        ? '<section class="section"><h2 class="section-title">Operating Platform</h2>' + capKpis + "</section>"
-        : "") +
-      (capProfileRow
-        ? '<section class="section"><h2 class="section-title">Hotel Operating Profile</h2><div class="cap-profile-3-2"><div class="row-3">' +
-          capProfileRow +
-          "</div></div></section>"
-        : "") +
-      (capAssetCards
-        ? '<section class="section"><h2 class="section-title">Asset Support Capabilities</h2><div class="grid-2">' +
-          capAssetCards +
-          "</div></section>"
-        : "") +
-      (capDeep
-        ? '<section class="section"><h2 class="section-title">Capability Deep Dive</h2><div class="grid-2">' +
-          capDeep +
-          "</div></section>"
-        : "") +
-      (proofGridHtml
-        ? '<section class="section"><h2 class="section-title">Sample Properties</h2><div class="proof-grid">' +
-          proofGridHtml +
-          "</div></section>"
-        : "") +
-      decisionStripFiltered([
-        ["Budget accuracy", pick(ex, p, "cap_signal_budget", "")],
-        ["Time to first performance lift", pick(ex, p, "cap_signal_lift", "")],
-        ["Transitions on schedule", pick(ex, p, "cap_signal_trans", "")],
-      ]);
-
-    var brandKpi1 = nz(p.numberOfBrands) || (arrayish(p.brands).length ? String(arrayish(p.brands).length) : "");
-    var brandKpi2 = nz(vm.brandMixDisplay) || "";
-
-    var brandKpiHtml = kpiGridFromPairs([
-      ["Brands Supported", brandKpi1],
-      ["Brand Mix", brandKpi2],
-      ["Franchise alignment", pick(ex, p, "brand_signal_franchise_align", "")],
-      ["Soft-brand retention", pick(ex, p, "brand_signal_soft_retention", "")],
-    ]);
-
-    var brandModules =
-      clusterContent(
-        "Compliance + Commercial Balance",
-        linesFromText(pick(ex, p, "brand_narrative_compliance", ""))
-      ) +
-      clusterContent(
-        "Brand Relationship Model",
-        linesFromText(pick(ex, p, "brand_narrative_relationship", ""))
-      );
-
-    var brandUnitsShareTile = brandPortfolioUnitsShareTileHtml(p);
+    var OperatingPlatform = operatingPlatformSnapshotHtml + operatingPlatformPillarsHtml;
 
     var BrandRelationships =
-      (brandKpiHtml
-        ? '<section class="section"><h2 class="section-title">Brand & Relationships</h2>' + brandKpiHtml + "</section>"
-        : "") +
-      (brandUnitsShareTile
-        ? '<section class="section"><h2 class="section-title">Portfolio by Brand</h2><div class="quant-grid">' +
-          brandUnitsShareTile +
-          "</div></section>"
-        : "") +
-      (brandModules
-        ? '<section class="section"><h2 class="section-title">Brand Operating Modules</h2><div class="grid-2">' +
-          brandModules +
-          "</div></section>"
-        : "") +
-      decisionStripFiltered([
-        ["Brand audit pass rate", pick(ex, p, "brand_signal_audit", "")],
-        ["Reflag readiness lead time", pick(ex, p, "brand_signal_reflag", "")],
-        ["Franchise alignment", pick(ex, p, "brand_signal_franchise_align", "")],
-        ["Soft-brand retention", pick(ex, p, "brand_signal_soft_retention", "")],
-      ]);
+      buildBrandSnapshotSection(vm) + brandRelationshipsSectionsHtml(vm);
 
-    var coreMarketsList =
-      linesFromText(p.specificMarkets || "").slice(0, 10).length
-        ? linesFromText(p.specificMarkets || "").slice(0, 10)
-        : arrayish(p.priorityMarkets).slice(0, 10);
-
-    var marketsKpiHtml = kpiGridFromPairs([
-      ["Regions (count)", m.regions],
-      ["Countries (count)", m.countries],
-      ["Cities (markets list)", m.cities],
-      ["Coverage / depth", m.coverage],
-    ]);
-
-    var footprintInner =
-      clusterContent("Core Markets / Cities", coreMarketsList) +
-      clusterContent(
-        "Market Depth Narrative",
-        linesFromText(pick(ex, p, "mkt_narrative_depth", "")).slice(0, 8)
-      );
+    var marketsSnapshotHtml = buildMarketsFootprintSnapshotSection(vm, m, ex, p);
 
     var footprintMetricsHtml = footprintMetricsSection(p);
 
     var MarketsFootprint =
-      (marketsKpiHtml
-        ? '<section class="section"><h2 class="section-title">Markets & Footprint</h2>' + marketsKpiHtml + "</section>"
-        : "") +
-      (footprintMetricsHtml || "") +
-      (footprintInner
-        ? '<section class="section"><h2 class="section-title">Market Footprint</h2><div class="grid-2">' +
-          footprintInner +
-          "</div></section>"
-        : "") +
-      decisionStripFiltered([
-        ["Avg. years in core markets", pick(ex, p, "mkt_signal_years", "")],
-        ["Gateway concentration", pick(ex, p, "mkt_signal_gateway", "")],
-        ["Urban / resort mix", pick(ex, p, "mkt_signal_mix", "")],
-      ]);
+      marketsSnapshotHtml +
+      marketExperienceThreeLayerHtml(vm) +
+      marketsFootprintSubsectionsHtml(vm) +
+      (footprintMetricsHtml || "");
 
     var portfolioScaleLine = (function () {
       var h = formatInt(pick(ex, p, "totalProperties", p.totalProperties));
@@ -1449,282 +3490,48 @@
       return meaningfulMetaValue(h) ? h + " hotels" : r + " rooms";
     })();
 
-    var ovKpiHtml = kpiGridFromPairs([
-      ["Communication style", nz(p.communicationStyle)],
-      ["Owner involvement", nz(p.ownerInvolvement)],
-      ["Operating collaboration", nz(p.operatingCollaborationMode)],
-      ["Reporting frequency", nz(p.reportingFrequency)],
-      ["Primary service model", nz(p.primaryServiceModel)],
-      ["Owner reporting cadence", nz(p.ownerReportingCadence)],
-      ["Portfolio scale", portfolioScaleLine],
-      ["Markets operated", nz(p.numberOfMarkets)],
-    ]);
-
-    var ovCadence =
-      titledCard("Report Types", formatMulti(p.reportTypes)) +
-      titledCard("Budget Process", p.budgetProcess) +
-      titledCard("CapEx planning", p.capexPlanning) +
-      titledCard("Performance Reviews", p.performanceReviews) +
-      titledCard("Owner Response Time", p.ownerResponseTime) +
-      titledCard("Concern Resolution Time", p.concernResolutionTime) +
-      titledCard("Decision-making", p.decisionMaking) +
-      titledCard("Dispute Resolution", p.disputeResolution) +
-      titledCard("Owner Portal", p.ownerPortalFeatures) +
-      titledCard("Owner Advisory Board", p.ownerAdvisoryBoard) +
-      titledCard("Owner Education", p.ownerEducation);
-
-    var ovNarrative = titledCard("Owner Engagement Narrative", p.ownerEngagementNarrative);
-
-    var ovInsights =
-      titledCard("Discipline & Controls", pick(ex, p, "ov_card_discipline", "")) +
-      titledCard("Commercial Engine", pick(ex, p, "ov_card_commercial", "")) +
-      titledCard("Insight to Action", pick(ex, p, "ov_card_communication", "")) +
-      titledCard("Flexibility & Tradeoffs", pick(ex, p, "ov_card_flexibility", "")) +
-      titledCard("Continuity & Escalation", pick(ex, p, "ov_card_risk", ""));
-
-    var ovExperience =
-      clusterContent("Interaction Rhythm", linesFromText(pick(ex, p, "ov_cluster_interaction", ""))) +
-      clusterContent("Deliverables", linesFromText(pick(ex, p, "ov_cluster_deliverables", "")));
-
     var OwnerEngagement =
-      (ovKpiHtml
-        ? '<section class="section"><h2 class="section-title">Engagement &amp; Reporting Snapshot</h2>' +
-          ovKpiHtml +
-          "</section>"
-        : "") +
-      (ovCadence
-        ? '<section class="section"><h2 class="section-title">Cadence, Controls &amp; Tools</h2><div class="grid-2">' +
-          ovCadence +
-          "</div></section>"
-        : "") +
-      (ovNarrative
-        ? '<section class="section"><h2 class="section-title">Engagement Narrative</h2><div class="grid-2">' +
-          ovNarrative +
-          "</div></section>"
-        : "") +
-      (ovInsights
-        ? '<section class="section"><h2 class="section-title">Strategic Owner Value</h2><div class="grid-3">' +
-          ovInsights +
-          "</div></section>"
-        : "") +
-      (ovExperience
-        ? '<section class="section"><h2 class="section-title">Interaction &amp; Deliverables (Explorer)</h2><div class="grid-2">' +
-          ovExperience +
-          "</div></section>"
-        : "") +
-      decisionStripFiltered([
-        ["Review touchpoints / quarter", pick(ex, p, "ov_q_touchpoints", "")],
-        ["Owner response window", nz(p.ownerResponseTime)],
-        ["Concern resolution", nz(p.concernResolutionTime)],
-      ]);
+      buildEngagementSnapshotSection(ex, p) + engagementReportingSectionsHtml(vm);
 
-    var infraKpiHtml = kpiGridFromPairs([
-      ["Reporting systems", pick(ex, p, "infra_kpi_reporting", "")],
-      ["Revenue systems", pick(ex, p, "infra_kpi_revenue", "")],
-      ["Execution platform", pick(ex, p, "infra_kpi_exec", "")],
-      ["Owner tools", pick(ex, p, "infra_kpi_tools", "")],
-    ]);
-
-    var infraReporting =
-      clusterContent(
-        "Asset Management & Reporting",
-        linesFromText(pick(ex, p, "infra_asset_management_reporting", ""))
-      ) +
-      clusterContent("Systems & Technology", linesFromText(pick(ex, p, "infra_systems_technology", "")));
-
-    var infraInventory = clusterContent(
-      "Additional Systems / Integrations",
-      linesFromText(pick(ex, p, "systems_inventory_lines", ""))
-    );
-
-    var serviceOfferingsBlock = serviceOfferingsSectionHtml(p);
     var InfrastructureData =
-      (serviceOfferingsBlock || "") +
-      (infraKpiHtml
-        ? '<section class="section"><h2 class="section-title">Infrastructure &amp; Data</h2>' + infraKpiHtml + "</section>"
-        : "") +
-      (infraReporting
-        ? '<section class="section"><h2 class="section-title">Reporting &amp; Technology</h2><div class="grid-2">' +
-          infraReporting +
-          "</div></section>"
-        : "") +
-      (infraInventory
-        ? '<section class="section"><h2 class="section-title">Systems Inventory</h2>' + infraInventory + "</section>"
-        : "") +
-      decisionStripFiltered([
-        ["Platform uptime", pick(ex, p, "infra_signal_uptime", "")],
-        ["Critical incident response", pick(ex, p, "infra_signal_incident", "")],
-        ["Portfolio adoption", pick(ex, p, "infra_signal_adoption", "")],
-        ["Data refresh cadence", pick(ex, p, "infra_signal_refresh", "")],
-      ]);
-
-    var esgLines = []
-      .concat(linesFromText(nz(p.sustainabilityPrograms)))
-      .concat(linesFromText(nz(p.esgReporting)))
-      .concat(linesFromText(nz(p.esgExpectations)))
-      .filter(Boolean);
-    if (!esgLines.length && nz(p.carbonFootprintTracking)) {
-      esgLines.push(nz(p.carbonFootprintTracking));
-    }
-
-    var riskPrograms = clusterContent(
-      "Programs & Narrative",
-      linesFromText(pick(ex, p, "risk_programs_narrative", ""))
-    );
-
-    var RiskComplianceEsg =
-      (riskPrograms
-        ? '<section class="section"><h2 class="section-title">Risk, Compliance &amp; ESG</h2>' + riskPrograms + "</section>"
-        : "") +
-      (esgLines.length
-        ? '<section class="section"><h2 class="section-title">ESG &amp; Sustainability</h2>' +
-          cluster("From Operator Setup (Preferences)", esgLines.slice(0, 12)) +
-          "</section>"
-        : "") +
-      decisionStripFiltered([
-        ["Audit consistency", pick(ex, p, "risk_signal_audit", "")],
-        ["BCP test frequency", pick(ex, p, "risk_signal_bcp", "")],
-        ["Control closure rate", pick(ex, p, "risk_signal_control", "")],
-        ["Insurance adequacy review", pick(ex, p, "risk_signal_insurance", "")],
-      ]);
-
-    var leadKpiHtml = kpiGridFromPairs([
-      [
-        "Team size (displayed)",
-        leadersAll.length ? String(leadersAll.length) : "",
-      ],
-      ["Avg. tenure signal", pick(ex, p, "lead_signal_tenure", "")],
-      ["Cross-brand experience", pick(ex, p, "lead_signal_crossbrand", "")],
-      ["Regional leadership density", pick(ex, p, "lead_signal_density", "")],
-    ]);
+      buildInfrastructureSnapshotSection(ex, p) + infrastructureDetailSectionsHtml(vm);
 
     var leadProfiles =
       leadersAll
         .map(function (L) {
-          return leaderCard(
-            L.headshotUrl,
-            nz(L.name),
-            nz(L.title) || "—",
-            nz(L.summary) || "",
-            nz(L.function) || "—",
-            nz(L.bio) || ""
-          );
+          return leaderCardFromLeader(L);
         })
         .join("") || "";
 
-    var benchInner =
-      clusterContent("Leadership Model", linesFromText(pick(ex, p, "lead_narrative_model", ""))) +
-      clusterContent("Platform Resilience", linesFromText(pick(ex, p, "lead_narrative_resilience", ""))) +
-      clusterContent("Industry Recognition", linesFromText(pick(ex, p, "lead_narrative_functional", ""))) +
-      clusterContent("Regional Coverage", linesFromText(pick(ex, p, "lead_narrative_regional", "")));
+    var leadProfileGridAttrs =
+      global.OperatorLeadershipProfileDetail &&
+      global.OperatorLeadershipProfileDetail.leadershipProfileGridAttrs
+        ? global.OperatorLeadershipProfileDetail.leadershipProfileGridAttrs(
+            leadersAll.length
+          )
+        : 'class="oe-leader-profile-grid oe-leader-profile-grid--aligned" style="--oe-leader-profile-cols:2"';
+
+    var leadershipTeamSections =
+      global.OperatorLeadershipTeamSections &&
+      global.OperatorLeadershipTeamSections.buildLeadershipTeamSectionsHtml
+        ? global.OperatorLeadershipTeamSections.buildLeadershipTeamSectionsHtml(vm)
+        : "";
 
     var Leadership =
-      (leadKpiHtml
-        ? '<section class="section"><h2 class="section-title">Leadership</h2>' + leadKpiHtml + "</section>"
-        : "") +
+      buildLeadershipSnapshotSection(vm) +
       (leadProfiles
-        ? '<section class="section"><h2 class="section-title">Leadership Profiles</h2><div class="proof-grid">' +
+        ? '<section class="section oe-leadership-profiles-section"><h2 class="section-title">Leadership Profiles</h2>' +
+          '<p class="gold-mock-tab-empty odna-subsection-intro">Structured experience, markets, and expertise from Operator Setup profile fields (or inferred from bios when fields are empty).</p>' +
+          "<div " +
+          leadProfileGridAttrs +
+          ">" +
           leadProfiles +
           "</div></section>"
         : "") +
-      (benchInner
-        ? '<section class="section"><h2 class="section-title">Bench Strength</h2><div class="grid-2">' +
-          benchInner +
-          "</div></section>"
-        : "") +
-      decisionStripFiltered([
-        ["Avg. leadership tenure", pick(ex, p, "lead_signal_tenure", "")],
-        ["Cross-brand experience", pick(ex, p, "lead_signal_crossbrand", "")],
-        ["Succession coverage", pick(ex, p, "lead_signal_succession", "")],
-        ["Regional density", pick(ex, p, "lead_signal_density", "")],
-      ]);
-
-    var bfQuant = function (v) {
-      var s = nz(v);
-      if (!s || s === "0") return "";
-      return s;
-    };
-
-    /** Count + bullet list of selected labels (prefill arrays) for Fit Quantifiers */
-    function kpiQuant(label, countKey, itemsSource) {
-      var c = bfQuant(pick(ex, p, countKey, ""));
-      var list = arrayish(itemsSource);
-      if (!c && !list.length) return "";
-      var numShown = c || (list.length ? String(list.length) : "—");
-      var detailHtml = list.length
-        ? '<ul class="kpi-item-list">' +
-          list
-            .map(function (x) {
-              return "<li>" + escapeHtml(nz(x)) + "</li>";
-            })
-            .join("") +
-          "</ul>"
-        : "";
-      return (
-        '<div class="kpi kpi--quant">' +
-        '<div class="label">' +
-        escapeHtml(label) +
-        '</div><div class="value">' +
-        escapeHtml(numShown) +
-        "</div>" +
-        detailHtml +
-        "</div>"
-      );
-    }
-
-    var bfCommercialHtml = kpiGridFromPairs([
-      ["Fee approach (category)", feeCategoryOnly(p.feeStructure)],
-      ["Typical agreement length", nz(p.avgContractTerm)],
-      ["Property size range", propertySizeRange(p.minPropertySize, p.maxPropertySize)],
-      ["Portfolio scale (directional)", nz(p.portfolioValue)],
-      ["Revenue scale (directional)", nz(p.annualRevenueManaged)],
-    ]);
-
-    var bfKpiHtmlInner = [
-      kpiQuant("Asset Types (Quant)", "bf_q_assets", p.bf_selected_asset_types),
-      kpiQuant("Situation Types (Quant)", "bf_q_situations", p.bf_selected_situation_types),
-      kpiQuant("Deal Structures (Quant)", "bf_q_deals", p.bf_selected_deal_structures),
-      kpiQuant("Leadership Functions (Quant)", "lead_kpi_functions", p.lead_functions_selected),
-    ]
-      .filter(Boolean)
-      .join("");
-
-    var bfKpiHtml = bfKpiHtmlInner ? '<div class="kpi-grid-4">' + bfKpiHtmlInner + "</div>" : "";
-
-    var idealAssets = arrayish(p.bestFitAssetTypes || p.idealBuildingTypes);
-    var idealGeos = arrayish(p.bestFitGeographies || p.priorityMarkets);
-    var ownerLevels = arrayish(p.ownerInvolvementLevel);
-
-    var fitClusters =
-      clusterContent("Operating Situations", linesFromText(pick(ex, p, "bf_operating_situations", ""))) +
-      clusterContent("Not Ideal For", linesFromText(pick(ex, p, "bf_not_ideal_for", ""))) +
-      clusterContent("Markets to Avoid", arrayish(p.marketsToAvoid)) +
-      (idealAssets.length
-        ? cluster("Ideal Asset Types", idealAssets)
-        : "") +
-      (idealGeos.length ? cluster("Ideal Geographies", idealGeos) : "") +
-      (ownerLevels.length ? cluster("Acceptable Owner Involvement", ownerLevels) : "");
+      leadershipTeamSections;
 
     var BestFitDealProfile =
-      (bfCommercialHtml
-        ? '<section class="section"><h2 class="section-title">Commercial Fit Signals</h2>' +
-          bfCommercialHtml +
-          "</section>"
-        : "") +
-      (bfKpiHtml
-        ? '<section class="section"><h2 class="section-title">Fit Quantifiers</h2>' + bfKpiHtml + "</section>"
-        : "") +
-      (fitClusters
-        ? '<section class="section"><h2 class="section-title">Fit Clusters</h2><div class="grid-2">' +
-          fitClusters +
-          "</div></section>"
-        : "") +
-      decisionStripFiltered([
-        ["Best-fit deal size", pick(ex, p, "bf_signal_dealsize", "")],
-        ["Transition intensity fit", pick(ex, p, "bf_signal_transition", "")],
-        ["Owner governance fit", pick(ex, p, "bf_signal_governance", "")],
-        ["Capital plan complexity", pick(ex, p, "bf_signal_capital", "")],
-      ]);
+      buildBestFitSnapshotSection(vm) + bestFitDealProfileSectionsHtml(vm);
 
     function lenderRefSignal(v) {
       var s = nz(v).toLowerCase();
@@ -1748,8 +3555,6 @@
         .map(function (pair) {
           var q = nz(pair.q);
           var a = nz(pair.a);
-          if (q.length > 240) q = q.slice(0, 237) + "…";
-          if (a.length > 320) a = a.slice(0, 317) + "…";
           if (!q && !a) return "";
           var qHtml = q
             ? '<div class="diligence-q"><span class="diligence-q-label" aria-hidden="true">Q</span><span class="diligence-q-text">' +
@@ -1802,48 +3607,77 @@
     var trHotels = formatInt(pick(ex, p, "totalProperties", p.totalProperties));
     var trYears = nz(p.yearsInBusiness);
 
-    var proofCredibilityKpis = kpiGridFromPairs([
-      ["Owner references", ownerRefDisplay()],
-      ["Lender references", lenderRefSignal(p.lenderReferences)],
-      ["Renewal / retention signal", nz(p.renewalRate) || nz(p.ownerRetention)],
-    ]);
+    function buildTrackRecordKpiSection(proofList, kpiOpts) {
+      kpiOpts = kpiOpts || {};
+      var ownerFacing = !!kpiOpts.ownerFacingProofKpis;
+      var pairs = ownerFacing
+        ? [
+            ["Properties managed", trHotels],
+            ["Operating markets", nz(p.numberOfMarkets)],
+            ["Years in business", trYears],
+            ["Owner references", ownerRefDisplay()],
+            ["Lender references", lenderRefSignal(p.lenderReferences)],
+          ]
+        : [
+            ["Properties", trHotels],
+            ["Markets operated", nz(p.numberOfMarkets)],
+            ["Years in business", trYears],
+            ["Case Studies on profile", proofList.length ? String(proofList.length) : ""],
+            ["Owner references", ownerRefDisplay()],
+            ["Lender references", lenderRefSignal(p.lenderReferences)],
+          ];
+      if (ownerFacing && kpiOpts.includeCaseStudyCountKpi) {
+        pairs.splice(3, 0, [
+          "Case studies",
+          proofList.length ? String(proofList.length) : "",
+        ]);
+      }
+      var metrics = pairs
+        .map(function (pair) {
+          return {
+            label: pair[0],
+            value: nz(pair[1]),
+            note: "",
+          };
+        })
+        .filter(function (row) {
+          return meaningfulSignal(row.value);
+        });
+      if (!metrics.length) return "";
 
-    var proofLenderCard = titledCard("Major Lender Relationships", p.majorLenders);
+      var count = metrics.length;
+      var metricsHtml =
+        '<div class="oe-tab-snapshot-kpis oe-snapshot-kpi-row oe-tab-snapshot-kpis--single-row" style="grid-template-columns:' +
+        snapshotKpiGridInlineStyle(count) +
+        '">' +
+        metrics.map(buildLeadershipSnapshotMetricCard).join("") +
+        "</div>";
 
-    var trHeader =
-      kpiGridFromPairs([
-        ["Properties", trHotels],
-        ["Markets operated", nz(p.numberOfMarkets)],
-        ["Years in business", trYears],
-        ["Case Studies on profile", proof.length ? String(proof.length) : ""],
-      ]);
+      if (ownerFacing && kpiOpts.omitProofTrackRecordKpiSectionTitle) {
+        return '<section class="section odna-track-record-kpis">' + metricsHtml + "</section>";
+      }
+      return buildValueKpiSnapshotSection({
+        title: "Proof & Track Record",
+        intro: "",
+        metrics: metrics,
+        sectionClass: "oe-proof-track-record-section",
+        kpiClass: "oe-proof-track-record-kpis",
+      });
+    }
+
+    var trHeader = buildTrackRecordKpiSection(proof, panelOpts);
 
     var ProofTrackRecord =
-      (trHeader
-        ? '<section class="section"><h2 class="section-title">Proof &amp; Track Record</h2>' + trHeader + "</section>"
-        : "") +
-      (proofCredibilityKpis
-        ? '<section class="section"><h2 class="section-title">Credibility &amp; References</h2>' +
-          proofCredibilityKpis +
+      (trHeader || "") +
+      (caseStudiesGridHtml
+        ? '<section class="section"><h2 class="section-title">Case Studies</h2>' +
+          caseStudiesGridHtml +
           "</section>"
         : "") +
-      (proofLenderCard
-        ? '<section class="section"><h2 class="section-title">Lender Context</h2><div class="grid-2">' +
-          proofLenderCard +
-          "</div></section>"
-        : "") +
-      (proofGridHtml
-        ? '<section class="section"><h2 class="section-title">Case Studies</h2><div class="proof-grid">' +
-          proofGridHtml +
-          "</div></section>"
-        : "") +
       diligenceLightSection(vm.ownerDiligenceQa || []) +
-      decisionStripFiltered([
-        ["RevPAR lift range", pick(ex, p, "tr_signal_revpar", "")],
-        ["Occupancy recovery window", pick(ex, p, "tr_signal_occ", "")],
-        ["ADR stabilization", pick(ex, p, "tr_signal_adr", "")],
-        ["Case repeatability", pick(ex, p, "tr_signal_repeat", "")],
-      ]);
+      (panelOpts.omitProofDecisionSignals
+        ? ""
+        : buildProofDecisionSignalsSection(vm, "Decision Signals"));
 
     return {
       "Profile & Positioning": ensureTabBody(ProfilePositioning),
@@ -1852,26 +3686,33 @@
       "Markets & Footprint": ensureTabBody(MarketsFootprint),
       "Owner Engagement & Reporting": ensureTabBody(OwnerEngagement),
       "Infrastructure & Data": ensureTabBody(InfrastructureData),
-      "Risk, Compliance & ESG": ensureTabBody(RiskComplianceEsg),
       Leadership: ensureTabBody(Leadership),
-      "Best Fit & Deal Profile": ensureTabBody(BestFitDealProfile),
+      "Project Fit & Deal Profile": ensureTabBody(BestFitDealProfile),
       "Proof & Track Record": ensureTabBody(ProofTrackRecord),
     };
   }
 
   async function fetchOperatorBundle(recordId) {
-    var listRes = await fetch("/api/third-party-operators?activeOnly=1");
-    var listData = listRes.ok ? await listRes.json().catch(function () { return {}; }) : {};
-    var rows = Array.isArray(listData.operators) ? listData.operators : [];
     var idLower = String(recordId || "").toLowerCase();
+    var listPromise = fetch("/api/third-party-operators?activeOnly=1")
+      .then(function (listRes) {
+        return listRes.ok ? listRes.json().catch(function () { return {}; }) : {};
+      })
+      .catch(function () {
+        return {};
+      });
+    var detailPromise = fetch(
+      "/api/intake/third-party-operators/" + encodeURIComponent(recordId)
+    );
+
+    var listData = await listPromise;
+    var rows = Array.isArray(listData.operators) ? listData.operators : [];
     var listRow =
       rows.find(function (r) {
         return String((r && r.id) || "").toLowerCase() === idLower;
       }) || null;
 
-    var detailRes = await fetch(
-      "/api/intake/third-party-operators/" + encodeURIComponent(recordId)
-    );
+    var detailRes = await detailPromise;
     if (!detailRes.ok) {
       var err = await detailRes.json().catch(function () { return ({}); });
       throw new Error((err && err.error) || "Failed to load operator detail");
@@ -1880,10 +3721,234 @@
     if (!detailData || !detailData.success || !detailData.operator) {
       throw new Error("Invalid detail response");
     }
-    return { detail: detailData.operator, listRow: listRow };
+    var operator = detailData.operator;
+    // Always reconcile from census endpoint when available so share/staging hosts match
+    // local Explorer even if the detail API build predates server-side census merge.
+    try {
+      var cfRes = await fetch(
+        "/api/intake/third-party-operators/" +
+          encodeURIComponent(recordId) +
+          "/census-footprint"
+      );
+      if (cfRes.ok) {
+        var cfData = await cfRes.json().catch(function () { return {}; });
+        if (cfData && cfData.censusFootprint && cfData.censusFootprint.ok) {
+          operator.censusFootprint = cfData.censusFootprint;
+        }
+      }
+    } catch (cfErr) {
+      console.warn("[gold-mock] census-footprint reconcile failed", cfErr);
+    }
+    return { detail: operator, listRow: listRow };
+  }
+
+  function heroMetaCardHtml(label, value) {
+    var isAssetFocus = label === "Asset Focus";
+    var valueClass = "value" + (isAssetFocus ? " meta-card__value--clamp-2" : "");
+    var titleAttr =
+      isAssetFocus && nz(value) ? ' title="' + escapeAttr(value) + '" aria-label="' + escapeAttr(value) + '"' : "";
+    return (
+      '<div class="meta-card' +
+      (isAssetFocus ? " meta-card--asset-focus" : "") +
+      '"><div class="label">' +
+      escapeHtml(label) +
+      '</div><div class="' +
+      valueClass +
+      '"' +
+      titleAttr +
+      ">" +
+      escapeHtml(value) +
+      "</div></div>"
+    );
+  }
+
+  function tabLabelPlain(html) {
+    return String(html || "")
+      .replace(/<br\s*\/?>/gi, " ")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function isExportPdfMode() {
+    return !!(
+      global.document &&
+      global.document.documentElement &&
+      global.document.documentElement.classList.contains("oe-export-pdf")
+    );
+  }
+
+  function exportPdfImgAttrs() {
+    return isExportPdfMode()
+      ? ' loading="eager" decoding="sync" referrerpolicy="no-referrer"'
+      : "";
+  }
+
+  /** PDF export shows every tab at once — prime lazy/off-screen images before print. */
+  function primeExportImages(scopeEl) {
+    if (!isExportPdfMode() || !global.document) return;
+    var root = scopeEl || global.document.body;
+    if (!root || !root.querySelectorAll) return;
+    var imgs = root.querySelectorAll("img[src]");
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      try {
+        img.loading = "eager";
+        img.removeAttribute("loading");
+        img.decoding = "sync";
+      } catch (_) {}
+      try {
+        img.scrollIntoView({ block: "nearest", inline: "nearest" });
+      } catch (_) {}
+      if (!img.complete || img.naturalWidth === 0) {
+        try {
+          var src = img.getAttribute("src");
+          if (src) {
+            img.src = src;
+            if (typeof img.load === "function") img.load();
+          }
+        } catch (_) {}
+      }
+    }
+  }
+
+  function waitForExportImages(scopeEl, maxMs) {
+    if (!isExportPdfMode()) return Promise.resolve();
+    var root = scopeEl || global.document.body;
+    if (!root || !root.querySelectorAll) return Promise.resolve();
+    primeExportImages(root);
+    var imgs = root.querySelectorAll("img[src]");
+    var pending = [];
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      if (img.complete && img.naturalWidth > 0) {
+        if (typeof img.decode === "function") {
+          pending.push(
+            img.decode().catch(function () {
+              return undefined;
+            })
+          );
+        }
+        continue;
+      }
+      pending.push(
+        new Promise(function (resolve) {
+          function finish() {
+            resolve();
+          }
+          img.addEventListener("load", finish, { once: true });
+          img.addEventListener("error", finish, { once: true });
+          if (typeof img.decode === "function") {
+            img.decode().then(finish).catch(finish);
+          }
+        })
+      );
+    }
+    var allDone = pending.length ? Promise.all(pending) : Promise.resolve();
+    var cap = typeof maxMs === "number" && maxMs > 0 ? maxMs : 28000;
+    var timeout = new Promise(function (r) {
+      global.setTimeout(r, cap);
+    });
+    return Promise.race([allDone, timeout]);
+  }
+
+  function waitForExportImagesWithRetry(scopeEl) {
+    return waitForExportImages(scopeEl, 28000).then(function () {
+      primeExportImages(scopeEl);
+      return waitForExportImages(scopeEl, 12000);
+    }).then(function () {
+      return new Promise(function (resolve) {
+        global.setTimeout(resolve, 350);
+      });
+    });
+  }
+
+  function prepareAllPanelsForExport() {
+    if (!isExportPdfMode() || !global.document) return;
+    var tabsEl = global.document.getElementById("tabs");
+    if (tabsEl) tabsEl.setAttribute("hidden", "hidden");
+
+    var labelByPanel = {};
+    TABS.forEach(function (t) {
+      labelByPanel[t] = tabLabelPlain(TAB_LABEL_HTML[t] || t);
+    });
+    global.document.querySelectorAll(".section-nav-item").forEach(function (btn) {
+      var tab = btn.getAttribute("data-tab");
+      if (!tab || labelByPanel[tab]) return;
+      var labelEl = btn.querySelector(".section-nav-label");
+      labelByPanel[tab] = tabLabelPlain(labelEl ? labelEl.innerHTML : tab);
+    });
+
+    global.document.querySelectorAll(".tab-panel").forEach(function (panel) {
+      panel.classList.add("active");
+      panel.style.display = "block";
+      panel.style.visibility = "visible";
+      var panelName = panel.getAttribute("data-panel") || "";
+      var titleText = labelByPanel[panelName] || panelName;
+      if (!panel.querySelector(".oe-export-section-title")) {
+        var heading = global.document.createElement("h2");
+        heading.className = "oe-export-section-title";
+        heading.textContent = titleText;
+        panel.insertBefore(heading, panel.firstChild);
+      }
+    });
+
+    var alignEl = global.document.getElementById("alignmentContext");
+    if (alignEl && String(alignEl.innerHTML || "").trim()) {
+      alignEl.hidden = false;
+      if (!alignEl.querySelector(".oe-export-section-title")) {
+        var alignHeading = global.document.createElement("h2");
+        alignHeading.className = "oe-export-section-title";
+        alignHeading.textContent = "Alignment Context";
+        alignEl.insertBefore(alignHeading, alignEl.firstChild);
+      }
+    }
+    primeExportImages(global.document.body);
+  }
+
+  var exportReadyPromise = null;
+
+  function notifyExportReady() {
+    if (!isExportPdfMode()) return exportReadyPromise || Promise.resolve();
+    if (exportReadyPromise) return exportReadyPromise;
+    exportReadyPromise = waitForExportImagesWithRetry(global.document.body).then(function () {
+      try {
+        global.dispatchEvent(new CustomEvent("operator-explorer-export-ready"));
+      } catch (_) {}
+      try {
+        if (global.parent && global.parent !== global) {
+          global.parent.postMessage({ type: "operator-explorer-export-ready" }, "*");
+        }
+      } catch (_) {}
+      var p = new URLSearchParams(global.location.search || "");
+      if (p.get("print") === "1" || p.get("print") === "true") {
+        global.setTimeout(function () {
+          try {
+            global.print();
+          } catch (_) {}
+        }, 400);
+      }
+    });
+    return exportReadyPromise;
+  }
+
+  function finalizeExportIfNeeded() {
+    if (!isExportPdfMode()) return;
+    prepareAllPanelsForExport();
+    global.requestAnimationFrame(function () {
+      global.requestAnimationFrame(function () {
+        notifyExportReady();
+      });
+    });
   }
 
   function mount(vm, panels) {
+    document.documentElement.classList.remove("gold-profile--loading");
     var nameEl = document.getElementById("heroName");
     var logoEl = document.getElementById("heroLogo");
     var tagEl = document.querySelector(".hero .tag");
@@ -1896,9 +3961,19 @@
     if (logoEl) {
       if (vm.logoUrl) {
         logoEl.src = vm.logoUrl;
+        logoEl.removeAttribute("hidden");
         logoEl.style.display = "block";
+        if (isExportPdfMode()) {
+          try {
+            logoEl.loading = "eager";
+            logoEl.decoding = "sync";
+            logoEl.removeAttribute("loading");
+          } catch (_) {}
+        }
+        if (vm.companyName) logoEl.alt = vm.companyName + " logo";
       } else {
         logoEl.style.display = "none";
+        logoEl.setAttribute("hidden", "");
       }
     }
     if (tagEl) {
@@ -1920,19 +3995,18 @@
     if (metaEl) {
       var hm = vm.heroMeta || [];
       if (hm.length) {
+        metaEl.className =
+          "hero-meta oe-hero-meta-single-row oe-hero-meta-single-row--count-" + hm.length;
         metaEl.style.display = "grid";
+        metaEl.style.gridTemplateColumns = snapshotKpiGridInlineStyle(hm.length);
         metaEl.innerHTML = hm
           .map(function (pair) {
-            return (
-              '<div class="meta-card"><div class="label">' +
-              escapeHtml(pair[0]) +
-              '</div><div class="value">' +
-              escapeHtml(pair[1]) +
-              "</div></div>"
-            );
+            return heroMetaCardHtml(pair[0], pair[1]);
           })
           .join("");
       } else {
+        metaEl.className = "hero-meta";
+        metaEl.style.gridTemplateColumns = "";
         metaEl.innerHTML = "";
         metaEl.style.display = "none";
       }
@@ -1978,6 +4052,22 @@
         });
       });
     }
+    if (global.OperatorExplorerNewBaseProfile) {
+      global.OperatorExplorerNewBaseProfile.mountProfileChrome(vm);
+    }
+    var DnaMount = global.OperatorDnaProfileMount;
+    if (DnaMount && DnaMount.mountDnaExtensionTabs) {
+      DnaMount.mountDnaExtensionTabs(vm);
+    }
+    var CaseStudiesBe = global.OperatorDnaCaseStudiesBe;
+    if (CaseStudiesBe) {
+      if (typeof CaseStudiesBe.attachCaseStudyPayloadsToDom === "function") {
+        CaseStudiesBe.attachCaseStudyPayloadsToDom();
+      }
+      if (typeof CaseStudiesBe.wireCaseStudyModal === "function") {
+        CaseStudiesBe.wireCaseStudyModal();
+      }
+    }
   }
 
   async function bootstrap(options) {
@@ -2010,9 +4100,27 @@
           document.documentElement.style.removeProperty("--hero-stripe-bg");
         }
         var vm = buildViewModel(bundle.detail, bundle.listRow);
-        var panels = buildPanels(vm);
+        var panels = buildPanels(vm, {
+          useBrandExplorerCaseStudies: true,
+          ownerFacingProofKpis: true,
+          omitProofDecisionSignals: true,
+        });
         mount(vm, panels);
-        return { mode: "live", recordId: id, vm: vm };
+        var dealId = params.get("dealId") || "";
+        if (dealId && global.OperatorExplorerNewBaseProfile) {
+          var profileId =
+            (bundle.detail &&
+              (bundle.detail.operatorId ||
+                (bundle.detail.prefill && bundle.detail.prefill.operatorId))) ||
+            "";
+          await global.OperatorExplorerNewBaseProfile.mountAlignmentContext(
+            dealId,
+            id,
+            profileId || id
+          );
+        }
+        finalizeExportIfNeeded();
+        return { mode: "live", recordId: id, vm: vm, dealId: dealId };
       } catch (e) {
         console.warn("[gold-mock] Live load failed, falling back to demo", e);
         if (typeof options.onDemoFallback === "function") options.onDemoFallback(e);
@@ -2032,8 +4140,29 @@
     buildPanels: buildPanels,
     bootstrap: bootstrap,
     mount: mount,
+    isExportPdfMode: isExportPdfMode,
+    exportPdfImgAttrs: exportPdfImgAttrs,
+    primeExportImages: primeExportImages,
+    prepareAllPanelsForExport: prepareAllPanelsForExport,
+    finalizeExportIfNeeded: finalizeExportIfNeeded,
     applyHeroStripeFromHex: applyHeroStripeFromHex,
     applyHeroStripeFromChainScales: applyHeroStripeFromChainScales,
     chainScaleStripeBackgroundFromScales: chainScaleStripeBackgroundFromScales,
+    chainScaleLabelToColor: chainScaleLabelToColor,
+    buildProofDecisionSignalsSection: buildProofDecisionSignalsSection,
+    buildValueKpiSnapshotSection: buildValueKpiSnapshotSection,
+    buildLeadershipSnapshotSection: buildLeadershipSnapshotSection,
+    deriveLeadershipSnapshotMetrics: deriveLeadershipSnapshotMetrics,
+    caseStudyHasContent: caseStudyHasContent,
+    CASE_STUDY_INITIAL_VISIBLE: CASE_STUDY_INITIAL_VISIBLE,
+    caseStudiesExpanderButtonHtml: caseStudiesExpanderButtonHtml,
+    markCaseStudyCardCollapsed: markCaseStudyCardCollapsed,
+    deriveCaseStudyNarrative: deriveCaseStudyNarrative,
+    deriveCaseStudyFivePart: deriveCaseStudyFivePart,
+    buildBrandExplorerCaseStudiesGridHtml: buildBrandExplorerCaseStudiesGridHtml,
+    buildCaseStudyBePayload: buildCaseStudyBePayload,
+    buildOperatorQuickFacts: buildOperatorQuickFacts,
+    operatorQuickFactsSectionHtml: operatorQuickFactsSectionHtml,
+    OPERATOR_QUICK_FACT_LABELS: OPERATOR_QUICK_FACT_LABELS,
   };
 })(typeof window !== "undefined" ? window : this);

@@ -13,8 +13,8 @@ const FAVORITES_FIELDS = {
     userId: "User_ID", // Linked record to Users table
     partnerType: "Partner Type", // Single select: "Company" or "Individual"
     companyProfile: "Company Profile", // Linked record to Company Profile table
-    individualProfile: "Individual Profile", // Linked record to User Management table
-    userProfile: "User Profile", // Linked record to Users table (for Users table individuals)
+    individualProfile: "Individual Profile", // Legacy link (User Management); prefer userProfile after migration
+    userProfile: "User Profile", // Linked record to Users table (platform individuals)
     category: "Category", // Single select: "Hot Leads", "Follow Up", "Important", "Research", "Competitors", "Partners"
     notes: "Notes", // Long text
     favoritedDate: "Favorited Date", // Date with time

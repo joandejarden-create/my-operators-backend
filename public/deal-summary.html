@@ -54,6 +54,86 @@
         }
         .brochure-print-btn:hover { background: #5a5fe8; }
 
+        /* Embedded in My Deals snapshot modal (same toolbar rhythm as readiness / alignment) */
+        html.brief-embed-mode .brochure-no-print {
+            margin-bottom: 12px;
+            padding: 0;
+            background: transparent;
+            border-bottom: none;
+            justify-content: space-between;
+            gap: 10px 14px;
+            flex-wrap: wrap;
+        }
+        html.brief-embed-mode #brochureBackLink { display: none !important; }
+        html.brief-embed-mode .brochure-no-print-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+        html.brief-embed-mode .brochure-embed-print-tip {
+            flex: 1 1 12rem;
+            min-width: 0;
+            font-size: 0.72rem;
+            color: #7e89ac;
+            max-width: 22rem;
+            line-height: 1.4;
+        }
+        html.brief-embed-mode .brochure-embed-fullpage-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            background: transparent;
+            color: #d1dbf9;
+            border: 1px solid #3d4f7c;
+        }
+        html.brief-embed-mode .brochure-embed-fullpage-btn:hover {
+            background: rgba(61, 79, 124, 0.35);
+        }
+        /* Embed / modal: never use 100vh inside iframes (creates empty navy gap below the book) */
+        html.brief-embed-mode body.brochure-root {
+            min-height: 0;
+            height: auto;
+            margin: 0;
+            overflow: hidden;
+        }
+        html.brief-embed-mode .brochure-viewport {
+            height: min(72vh, calc(100vw * 11 / 8.5));
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
+            background: #101935;
+        }
+        html.brief-embed-mode.brief-embed-in-modal .brochure-viewport {
+            height: min(72vh, calc(100vw * 11 / 8.5));
+        }
+        /* Page 2: stretch white detail band so letter page is not half empty navy */
+        html.brief-embed-mode.brief-embed-in-modal .brochure-page.brochure-content-page {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+        html.brief-embed-mode.brief-embed-in-modal .brochure-highlights {
+            flex: 0 0 auto;
+        }
+        html.brief-embed-mode.brief-embed-in-modal .brochure-detail-strip {
+            flex: 1 1 auto;
+        }
+        html.brief-embed-mode.brief-embed-in-modal .brochure-two-cols-wrap {
+            flex: 0 0 auto;
+        }
+        html.brief-embed-mode .brochure-standalone-print-tip {
+            display: none !important;
+        }
+
         .brochure-page {
             max-width: 100%;
             margin: 0 auto;
@@ -419,63 +499,6 @@
         .brochure-card-body .card-label { font-size: 0.8rem; color: #b7c4e6; font-weight: 600; }
         .brochure-card-body#cardOpportunity .card-line { white-space: normal; }
 
-        .brochure-owner-status {
-            background: rgba(16, 25, 53, 0.92);
-            border: 1px solid var(--neutral--600);
-            border-radius: 10px;
-            padding: 0.85rem 1rem;
-            margin: 0 1.5rem 0.75rem;
-        }
-        .brochure-owner-status-title {
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--secondary--color-5);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .brochure-owner-status-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.5rem 0.75rem;
-        }
-        @media (max-width: 800px) {
-            .brochure-owner-status-grid { grid-template-columns: 1fr 1fr; }
-        }
-        .brochure-owner-status-item label {
-            display: block;
-            font-size: 0.58rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--neutral--500);
-            margin-bottom: 0.15rem;
-        }
-        .brochure-owner-status-item span {
-            font-size: 0.78rem;
-            color: var(--neutral--100);
-            font-weight: 600;
-            line-height: 1.25;
-        }
-        .brochure-validation-block {
-            margin-top: 0.65rem;
-            padding-top: 0.55rem;
-            border-top: 1px solid var(--neutral--600);
-        }
-        .brochure-validation-block h4 {
-            font-size: 0.58rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--neutral--400);
-            margin: 0 0 0.35rem;
-            font-weight: 700;
-        }
-        .brochure-validation-list {
-            margin: 0;
-            padding-left: 1.1rem;
-            font-size: 0.72rem;
-            color: var(--neutral--300);
-            line-height: 1.35;
-        }
         .brochure-recipient-cta-btn {
             display: inline-block;
             margin-top: 0.35rem;
@@ -487,7 +510,6 @@
             font-weight: 600;
             text-decoration: none;
         }
-        body.brief-mode-recipient .brochure-owner-status { display: none !important; }
         body.brief-mode-owner .brochure-recipient-only { display: none !important; }
 
         .brochure-detail-strip {
@@ -739,9 +761,11 @@
 <body class="brochure-root">
     <div class="brochure-no-print">
         <a href="/my-deals.html" id="brochureBackLink">← Back to My Deals</a>
-        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+        <span class="brochure-embed-print-tip" id="briefEmbedPrintTip" hidden>Turn off <strong>Headers and footers</strong> and enable <strong>Background graphics</strong> in the print dialog.</span>
+        <div class="brochure-no-print-actions">
+            <a href="#" class="brochure-embed-fullpage-btn" id="briefOpenFullPage" target="_blank" rel="noopener" hidden>Open full page</a>
             <button type="button" class="brochure-print-btn" id="printPdfBtn">Print / Save as PDF</button>
-            <span style="font-size: 0.75rem; color: var(--neutral--500); max-width: 320px;">Tip: In the print dialog, turn off <strong>Headers and footers</strong> (to remove date, title, URL) and turn on <strong>Background graphics</strong> so colors match the page.</span>
+            <span class="brochure-standalone-print-tip" style="font-size: 0.75rem; color: var(--neutral--500); max-width: 320px;">Tip: In the print dialog, turn off <strong>Headers and footers</strong> (to remove date, title, URL) and turn on <strong>Background graphics</strong> so colors match the page.</span>
         </div>
     </div>
 
@@ -843,7 +867,7 @@
         </div>
     </div>
 
-    <div id="brochureLoading" class="brochure-loading">Loading deal…</div>
+    <div id="brochureLoading" class="brochure-loading">Loading Deal Brief…</div>
     <div id="brochureError" class="brochure-error" style="display: none;"></div>
 
     <script src="/js/dealality-memberstack-auth.js"></script>
@@ -853,6 +877,32 @@
             function getParam(name) {
                 var p = new URLSearchParams(window.location.search);
                 return p.get(name) || '';
+            }
+            var dealIdStandalone = (getParam('id') || getParam('dealId') || '').trim();
+            var isBriefEmbed = getParam('embed') === '1' || getParam('embed') === 'true' || window.self !== window.top;
+            if (!isBriefEmbed && dealIdStandalone.indexOf('rec') === 0) {
+                var dest = '/deal-brief-snapshot.html?dealId=' + encodeURIComponent(dealIdStandalone);
+                var fromParam = getParam('from');
+                if (fromParam) dest += '&from=' + encodeURIComponent(fromParam);
+                if (getParam('print') === '1') dest += '&print=1';
+                window.location.replace(dest);
+                return;
+            }
+            if (isBriefEmbed) {
+                document.documentElement.classList.add('brief-embed-mode');
+                if (getParam('modal') === '1' || getParam('modal') === 'true') {
+                    document.documentElement.classList.add('brief-embed-in-modal');
+                }
+                var embedTip = document.getElementById('briefEmbedPrintTip');
+                var standaloneTip = document.querySelector('.brochure-standalone-print-tip');
+                if (embedTip) embedTip.hidden = false;
+                if (standaloneTip) standaloneTip.style.display = 'none';
+                var dealIdForLink = getParam('id');
+                var fullPageLink = document.getElementById('briefOpenFullPage');
+                if (fullPageLink && dealIdForLink && String(dealIdForLink).indexOf('rec') === 0) {
+                    fullPageLink.href = '/deal-brief-snapshot.html?dealId=' + encodeURIComponent(dealIdForLink);
+                    fullPageLink.hidden = false;
+                }
             }
             if (getParam('blur') === '1' || getParam('blur') === 'true') {
                 document.body.classList.add('blur-contact');
@@ -1051,41 +1101,6 @@
                 if (ctaEl) ctaEl.textContent = contact.cta;
                 var propCta = document.getElementById('briefProposalCta');
                 if (propCta) propCta.hidden = !contact.showProposalCta;
-                var ownerPanel = document.getElementById('briefOwnerStatus');
-                if (ownerPanel) ownerPanel.hidden = !ownerDraft;
-                var statusCard = document.getElementById('briefStatusCard');
-                if (statusCard) statusCard.hidden = true;
-            }
-            function renderOwnerReadinessPanel(readiness) {
-                var V2 = window.DealBriefV2;
-                if (!V2 || !readiness) return;
-                var stage = readiness.readinessStage || '—';
-                var score = readiness.dealReadinessScore;
-                var mapped = V2.mapBriefStatusFromStage(stage);
-                document.getElementById('briefReadinessScore').textContent =
-                  score != null && score !== '' ? score + ' / 100' : '—';
-                document.getElementById('briefReadinessStage').textContent = stage;
-                document.getElementById('briefStatusLabel').textContent = mapped.briefStatus;
-                document.getElementById('briefExternalSharing').textContent = mapped.externalSharing;
-                var cardBrief = document.getElementById('cardBriefStatus');
-                if (cardBrief) {
-                  cardBrief.innerHTML =
-                    '<div class="card-line"><span class="card-label">Brief:</span> ' + escapeHtml(mapped.briefStatus) + '</div>' +
-                    '<div class="card-line"><span class="card-label">Sharing:</span> ' + escapeHtml(mapped.externalSharing) + '</div>' +
-                    '<div class="card-line"><span class="card-label">Review:</span> ' + escapeHtml(mapped.reviewStatusLabel) + '</div>';
-                }
-                var items = V2.buildValidationItems(readiness);
-                var block = document.getElementById('briefValidationBlock');
-                var list = document.getElementById('briefValidationList');
-                if (block && list) {
-                  if (items.length) {
-                    block.hidden = false;
-                    list.innerHTML = items.map(function (l) { return '<li>' + escapeHtml(l) + '</li>'; }).join('');
-                  } else {
-                    block.hidden = true;
-                    list.innerHTML = '';
-                  }
-                }
             }
             function render(fields, normalized, ctx) {
                 ctx = ctx || { mode: (window.DealBriefV2 && DealBriefV2.MODES.OWNER_DRAFT) };
@@ -1146,7 +1161,6 @@
                 document.getElementById('hlDealType').textContent = projectType;
                 document.getElementById('hlBids').textContent = dealBidDisplay;
 
-                if (ownerDraft && ctx.readiness) renderOwnerReadinessPanel(ctx.readiness);
                 var execSummaryInCard = getField(fields, ['Company Executive Summary']);
                 if (!execSummaryInCard) {
                   execSummaryInCard = ownerDraft ? buildOwnerOpportunitySummary() : buildRecipientOpportunitySummary();
@@ -1414,20 +1428,8 @@
                     var briefCtx = {
                       mode: window.DealBriefV2
                         ? DealBriefV2.resolveBriefMode(params)
-                        : 'ownerDraft',
-                      readiness: null
+                        : 'ownerDraft'
                     };
-                    if (briefCtx.mode === (DealBriefV2 && DealBriefV2.MODES.OWNER_DRAFT)) {
-                      try {
-                        var rr = await auth.fetchMyDealsApi('/api/ai/deal-readiness-review', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ dealId: dealId })
-                        });
-                        var rd = await rr.json();
-                        if (rd && rd.success) briefCtx.readiness = rd;
-                      } catch (readinessErr) { /* optional */ }
-                    }
                     render(fields, data.normalized || {}, briefCtx);
                 } catch (err) {
                     document.getElementById('brochureLoading').style.display = 'none';

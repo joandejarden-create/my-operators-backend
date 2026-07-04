@@ -5,6 +5,7 @@
  */
 
 import Airtable from "airtable";
+import { BRAND_STATUS_ACTIVE_FORMULA } from "../lib/brand-status-active.js";
 
 function getBase() {
   if (!process.env.AIRTABLE_API_KEY || !process.env.AIRTABLE_BASE_ID) {
@@ -80,7 +81,7 @@ async function findLinkedRecordByBrand(base, tableName, brandRecordId, brandName
 async function findBrandByKey(base, brandKey) {
   const brands = await base(TABLES.brandBasics)
     .select({
-      filterByFormula: "OR(FIND('Active', {Brand Status}) > 0, FIND('Live', {Brand Status}) > 0)",
+      filterByFormula: BRAND_STATUS_ACTIVE_FORMULA,
       maxRecords: 500,
     })
     .all();
@@ -362,7 +363,7 @@ export async function listBrands(req, res) {
     const base = getBase();
     const brands = await base(TABLES.brandBasics)
       .select({
-        filterByFormula: "OR(FIND('Active', {Brand Status}) > 0, FIND('Live', {Brand Status}) > 0)",
+        filterByFormula: BRAND_STATUS_ACTIVE_FORMULA,
         maxRecords: 500,
       })
       .all();

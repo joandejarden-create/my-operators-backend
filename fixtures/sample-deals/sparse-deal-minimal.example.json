@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "isSample": true,
+    "sampleId": "sparse-deal-minimal-001",
+    "sampleTier": "qa",
+    "readinessStage": "Discovery",
+    "createdFor": "Brand Alignment sparse-input / low-signal demo"
+  },
+  "disclaimer": "Sample deal for product demonstration only. Reference property is a public comp for factual context only; it is not offered for sale and is not participating in Dealality.",
+  "referenceProperty": {
+    "displayLabel": "Public reference comp — suburban limited-service hotel (illustrative)",
+    "fields": {
+      "Country": "United States",
+      "Hotel Chain Scale": "Midscale",
+      "Hotel Type": "Suburban",
+      "Total Number of Rooms/Keys": "98"
+    }
+  },
+  "fictionalDeal": {
+    "projectName": "Ridgeline Suburban Inn (Sample)",
+    "fields": {
+      "Project Name": "Ridgeline Suburban Inn (Sample)",
+      "Property Name": "Ridgeline Suburban Inn (Sample)",
+      "Project Type": "Conversion / Reflag",
+      "Stage of Development": "",
+      "Who should receive bids for this project?": "Hotel Brands Only (Franchise/License)",
+      "Preferred Brands (up to 4)": ""
+    }
+  },
+  "targetListRows": [
+    {
+      "brandName": "Comfort Inn",
+      "parentCompany": "Choice Hotels",
+      "whyInReviewSet": "Sparse pipeline placeholder for UI testing",
+      "sourceType": "fictional_sample_assumption"
+    }
+  ],
+  "intentionalGaps": [
+    { "field": "Stage of Development", "reason": "Sparse deal — readiness Discovery" },
+    { "field": "Preferred Brands (up to 4)", "reason": "No owner preference captured" },
+    { "field": "PIP / CapEx Status", "reason": "Missing capex" },
+    { "field": "Soft vs Hard Brand Preference", "reason": "Missing strategic intent" }
+  ],
+  "fieldSources": {
+    "Project Name": { "sourceType": "fictional_sample_assumption", "layer": "fictional_deal" },
+    "Total Number of Rooms/Keys": { "sourceType": "public_reference", "layer": "reference_property" }
+  }
+}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dealality Scout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="/dealality-scout.css">
+</head>
+<body>
+  <div id="systemStatus" class="system-status" style="display:none;" aria-live="polite">
+    <div class="status-content">
+      <div class="status-spinner">
+        <div class="wave-container">
+          <div class="wave wave-1"></div>
+          <div class="wave wave-2"></div>
+          <div class="wave wave-3"></div>
+          <div class="wave-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+          </div>
+        </div>
+      </div>
+      <div class="status-text">
+        <div>Processing...</div>
+        <div class="status-time">Estimated time: 2-3 seconds</div>
+      </div>
+    </div>
+    <div class="status-progress">
+      <div class="status-progress-bar"></div>
+    </div>
+  </div>
+  <div class="scout-shell radar-skin">
+    <header class="scout-header">
+      <div>
+        <div class="title-row">
+          <h1 class="mapping-title">Dealality Radar</h1>
+        </div>
+        <p class="mapping-subtitle">A dynamic mapping platform that visualizes where hotel brands operate today, where they&apos;re growing, and where untapped opportunities exist &mdash; helping owners and brands align on the best development strategy.</p>
+      </div>
+    </header>
+
+    <section class="radar-controls">
+      <div class="controls-top-row">
+        <div class="mode-pills">
+          <button class="mode-pill active" type="button">Radar</button>
+          <button class="mode-pill" type="button">Ranked List</button>
+        </div>
+        <div class="control-field search-field">
+          <label for="searchInput">Search Location</label>
+          <input id="searchInput" placeholder="Search city, country, or property">
+        </div>
+        <div class="control-field"><label for="parentCompanyFilter">Parent Company</label><select id="parentCompanyFilter"></select></div>
+        <div class="control-field"><label for="brandFilter">Brand Filter</label><select id="brandFilter"></select></div>
+        <div class="control-field"><label for="reviewStatusFilter">Status Filter</label><select id="reviewStatusFilter"></select></div>
+        <div class="control-field"><label for="chainScaleFilter">Chain Scale</label><select id="chainScaleFilter"></select></div>
+        <div class="control-field"><label for="countryFilter">Region</label><select id="countryFilter"></select></div>
+        <button type="button" class="btn-clear reset-view-btn" id="resetFiltersBtn">
+          <span class="filter-icon-circle" aria-hidden="true">⟳</span>
+          <span>Reset View</span>
+          <span class="filter-count-badge" id="filterCountBadge" style="display:none;">0</span>
+        </button>
+      </div>
+      <div class="controls-advanced-row">
+        <div class="control-field compact"><label for="marketFilter">Market</label><select id="marketFilter"></select></div>
+        <div class="control-field compact"><label for="submarketFilter">Location Type</label><select id="submarketFilter"></select></div>
+        <div class="control-field compact"><label for="serviceModelFilter">Service Model</label><select id="serviceModelFilter"></select></div>
+        <div class="control-field compact"><label for="opportunityTypeFilter">Opportunity Type</label><select id="opportunityTypeFilter"></select></div>
+        <div class="control-field compact"><label for="confidenceLevelFilter">Confidence</label><select id="confidenceLevelFilter"></select></div>
+        <div class="control-field compact"><label for="relationshipPathStatusFilter">Relationship Path</label><select id="relationshipPathStatusFilter"></select></div>
+      </div>
+      <section class="tab-toggle-strip">
+        <section class="radar-toggles-section inline-toggles">
+          <div class="overlay-controls">
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleShowHotels" checked>
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Show Hotels</span>
+            </label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleChainScaleView">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Chain Scale View</span>
+            </label>
+            <label class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">City Aggregation</span>
+            </label>
+            <label class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">White Space</span>
+            </label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleBrandPenetration">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Brand Penetration</span>
+            </label>
+            <label class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Pipeline Pressure</span>
+            </label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleTravelInfrastructure">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Travel Infrastructure</span>
+            </label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleLayerSourceReview">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Source Review</span>
+            </label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleLayerOutcomesLearning">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Outcomes / Learning</span>
+            </label>
+          </div>
+        </section>
+        <nav class="tabs tabs-as-toggles overlay-controls" id="tabNav">
+          <label class="toggle-switch"><input type="checkbox" id="toggleLayerOpportunityMarkets"><span class="toggle-slider"></span><span class="toggle-label">Opportunity Markets</span></label>
+          <label class="toggle-switch"><input type="checkbox" id="toggleLayerTargetAssets"><span class="toggle-slider"></span><span class="toggle-label">Target Assets</span></label>
+          <label class="toggle-switch"><input type="checkbox" id="toggleLayerBrandWhiteSpace"><span class="toggle-slider"></span><span class="toggle-label">Brand White Space</span></label>
+          <label class="toggle-switch"><input type="checkbox" id="toggleLayerDemandCenters"><span class="toggle-slider"></span><span class="toggle-label">Demand Centers</span></label>
+          <label class="toggle-switch"><input type="checkbox" id="toggleLayerDistressTransition"><span class="toggle-slider"></span><span class="toggle-label">Distress & Transition Signals</span></label>
+          <label class="toggle-switch"><input type="checkbox" id="toggleLayerRelationshipPaths"><span class="toggle-slider"></span><span class="toggle-label">Relationship Paths</span></label>
+          <label class="toggle-switch"><input type="checkbox" id="toggleLayerWatchlist"><span class="toggle-slider"></span><span class="toggle-label">Watchlist</span></label>
+        </nav>
+      </section>
+    </section>
+
+    <section class="radar-map-wrap">
+      <div class="radar-map" id="scoutMap"></div>
+      <aside class="radar-legend">
+        <div id="legendHotelsGroup">
+          <h4>HOTEL STATUS</h4>
+          <div class="legend-item"><span class="dot blue"></span>Open Hotels</div>
+          <div class="legend-item"><span class="dot amber"></span>Pipeline</div>
+          <div class="legend-item"><span class="dot purple"></span>Candidate / LOI</div>
+        </div>
+        <div id="legendChainScaleGroup" style="display:none;">
+          <h4>CHAIN SCALE</h4>
+          <div class="legend-item"><span class="dot blue"></span>Luxury / Upper Upscale</div>
+          <div class="legend-item"><span class="dot mint"></span>Upscale / Upper Midscale</div>
+          <div class="legend-item"><span class="dot amber"></span>Midscale / Economy</div>
+          <div class="legend-item"><span class="dot purple"></span>Independent</div>
+        </div>
+        <div id="legendSignalsGroup" style="display:none;">
+          <h4>SIGNALS</h4>
+          <div class="legend-item"><span class="dot red"></span>Signal Pins</div>
+        </div>
+        <div id="legendBrandPenetrationGroup" style="display:none;">
+          <h4>BRAND PENETRATION</h4>
+          <div class="legend-item"><span class="dot red"></span>High Penetration</div>
+          <div class="legend-item"><span class="dot lime"></span>Medium Penetration</div>
+          <div class="legend-item"><span class="dot mint"></span>Low Penetration</div>
+        </div>
+        <div id="legendInfrastructureGroup">
+          <h4>TRAVEL INFRASTRUCTURE</h4>
+          <div class="legend-item"><span class="diamond magenta"></span>Airports</div>
+          <div class="legend-item"><span class="diamond pink"></span>Cruise Ports</div>
+          <div class="legend-item"><span class="diamond teal"></span>Convention Centers</div>
+        </div>
+        <div id="legendDemandCentersGroup" style="display:none;">
+          <h4>DEMAND CENTERS</h4>
+          <div class="legend-item"><span class="diamond teal"></span>Demand Center Pins</div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card"><div class="kpi-label">Opportunity Markets</div><div class="kpi-value" id="kpiOpportunityMarkets">-</div></article>
+      <article class="kpi-card"><div class="kpi-label">Priority Targets</div><div class="kpi-value" id="kpiPriorityTargets">-</div></article>
+      <article class="kpi-card"><div class="kpi-label">White-Space Signals</div><div class="kpi-value" id="kpiWhiteSpaceSignals">-</div></article>
+      <article class="kpi-card"><div class="kpi-label">Needs Validation</div><div class="kpi-value" id="kpiNeedsValidation">-</div></article>
+      <article class="kpi-card"><div class="kpi-label">Relationship Paths Found</div><div class="kpi-value" id="kpiRelationshipPathsFound">-</div></article>
+    </section>
+
+    <main id="contentArea">
+      <div class="loading">Loading Scout data...</div>
+    </main>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="/dealality-scout.js"></script>
+</body>
+</html>

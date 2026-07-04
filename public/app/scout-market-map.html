@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scout Market Map — Dealality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="/css/scout-market-map.css">
+  <link rel="stylesheet" href="/css/dealality-map-legend.css">
+</head>
+<body>
+  <div class="scout-map-shell" id="scoutMarketMapApp">
+    <header class="scout-map-header">
+      <h1 class="mapping-title">Scout Market Map</h1>
+      <p class="mapping-subtitle">Explore hotel supply, independent clusters, pipeline activity, and Scout opportunity signals by STR market and submarket.</p>
+    </header>
+
+    <div id="scoutMapError" class="scout-map-error" style="display:none;" role="alert"></div>
+
+    <section class="scout-map-filters" aria-label="Scout map filters">
+      <label>Country<select id="scoutMapCountry"></select></label>
+      <label>Market<select id="scoutMapMarket"></select></label>
+      <label>Submarket<select id="scoutMapSubmarket"></select></label>
+      <label>Parent Company<select id="scoutMapParentCompany"></select></label>
+      <label>Brand<select id="scoutMapBrand"></select></label>
+      <label>Chain Scale<select id="scoutMapChainScale"></select></label>
+      <label>Status<select id="scoutMapStatus">
+        <option value="">All</option>
+        <option value="Open">Open</option>
+        <option value="Pipeline">Pipeline</option>
+      </select></label>
+      <label>Signal Type<select id="scoutMapSignalType"></select></label>
+      <label>Review Status<select id="scoutMapReviewStatus"></select></label>
+      <label>Min Priority<input type="number" id="scoutMapMinPriority" min="0" max="100" placeholder="0"></label>
+      <label>Overlay Category<select id="scoutMapOverlayCategory"></select></label>
+      <div class="scout-map-filter-actions">
+        <button type="button" class="scout-map-btn primary" id="scoutMapApplyBtn">Apply</button>
+        <button type="button" class="scout-map-btn" id="scoutMapResetBtn">Reset</button>
+      </div>
+    </section>
+
+    <section class="scout-map-overlays" aria-label="Map layer toggles">
+      <label class="scout-map-overlay-toggle"><input type="checkbox" id="scoutMapShowHotels" checked> Show Hotels</label>
+      <label class="scout-map-overlay-toggle"><input type="checkbox" id="scoutMapShowSignals" checked> Show Generated Signals</label>
+      <label class="scout-map-overlay-toggle"><input type="checkbox" id="scoutMapShowSaved" checked> Show Saved Signals</label>
+      <label class="scout-map-overlay-toggle"><input type="checkbox" id="scoutMapShowTravelInfra" checked> Show Travel Infrastructure</label>
+      <label class="scout-map-overlay-toggle" id="scoutMapDemandAnchorsToggleWrap"><input type="checkbox" id="scoutMapShowDemandAnchors" checked> Show Demand Anchors</label>
+    </section>
+
+    <section class="scout-map-kpis" id="scoutMapKpis" aria-live="polite"></section>
+
+    <nav class="scout-map-tabs" id="scoutMapTabs" aria-label="Scout map views">
+      <button type="button" class="scout-map-tab active" data-view="supply">Supply View</button>
+      <button type="button" class="scout-map-tab" data-view="whitespace">White Space View</button>
+      <button type="button" class="scout-map-tab" data-view="conversion">Conversion View</button>
+      <button type="button" class="scout-map-tab" data-view="pipeline">Pipeline View</button>
+      <button type="button" class="scout-map-tab" data-view="watchlist">Watchlist View</button>
+      <button type="button" class="scout-map-tab" data-view="insights">Insight View</button>
+    </nav>
+
+    <section class="scout-map-insight-toolbar" id="scoutMapInsightToolbar" hidden aria-label="Insight review filters">
+      <div class="scout-map-insight-summary" id="scoutMapInsightSummary" aria-live="polite"></div>
+      <div class="scout-map-insight-filters">
+        <label>Insight Quality<select id="scoutMapInsightQuality">
+          <option value="">All</option>
+          <option value="Strong">Strong</option>
+          <option value="Directional">Directional</option>
+          <option value="Weak">Weak</option>
+        </select></label>
+        <label>Priority<select id="scoutMapInsightPriority">
+          <option value="">All</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select></label>
+        <label>Confidence<select id="scoutMapInsightConfidence">
+          <option value="">All</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select></label>
+        <label>Insight Type<select id="scoutMapInsightType">
+          <option value="">All types</option>
+        </select></label>
+      </div>
+    </section>
+
+    <div class="scout-map-layout">
+      <div class="scout-map-map-wrap">
+        <div id="scoutMarketMap" role="application" aria-label="Scout market map"></div>
+        <div id="scoutMapLegendMount" aria-label="Map legend"></div>
+      </div>
+      <aside class="scout-map-panel">
+        <h3 id="scoutMapPanelTitle">Supply results</h3>
+        <div class="scout-map-results" id="scoutMapResults">
+          <div class="scout-map-empty">Loading map data…</div>
+        </div>
+        <div class="scout-map-ranked" id="scoutMapRankedPanel" hidden>
+          <h4>Ranked Opportunities</h4>
+          <div id="scoutMapRankedList"></div>
+        </div>
+        <div class="scout-map-no-coords" id="scoutMapNoCoordsPanel" hidden>
+          <h4>Demand Drivers Without Coordinates</h4>
+          <div id="scoutMapNoCoordsList"></div>
+        </div>
+        <div class="scout-map-status" id="scoutMapLoadStatus">Read-only · Hotel Census + Scout signals</div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="/js/dealality-map-legend.js"></script>
+  <script src="/js/scout-market-map.js"></script>
+</body>
+</html>

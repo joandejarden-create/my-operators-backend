@@ -402,12 +402,12 @@ export function buildHomeDashboardViewModel(opts = {}) {
     toolboxLinks: [
       { id: 'my-deals', label: 'My Deals', labelHtml: 'My<br>Deals', iconKey: 'briefcase', href: '/my-deals', status: 'Live' },
       { id: 'outreach', label: 'Outreach Plans', labelHtml: 'Outreach<br>Plans', iconKey: 'mail', href: '/outreach', status: 'Live' },
-      { id: 'partner-directory', label: 'Partner Directory', iconKey: 'users', href: '/partner-directory', status: 'Live' },
-      { id: 'market-intel', label: 'Fee Estimator', iconKey: 'trending-up', href: '/franchise-fee-estimator', status: 'Live' },
-      { id: 'financial-term', label: 'Term Library', iconKey: 'file-text', href: '/financial-term-library', status: 'Live' },
-      { id: 'legal-clause', label: 'Clause Library', iconKey: 'file', href: '/clause-library', status: 'Live' },
-      { id: 'message-center', label: 'Message Center', iconKey: 'message', href: '/outreach/inbox', status: 'Beta' },
-      { id: 'deal-compare', label: 'Deal Compare', iconKey: 'scale', href: '/deal-compare', status: 'Beta' }
+      { id: 'partner-directory', label: 'Partner Directory', labelHtml: 'Partner<br>Directory', iconKey: 'users', href: '/partner-directory', status: 'Live' },
+      { id: 'market-intel', label: 'Fee Estimator', labelHtml: 'Fee<br>Estimator', iconKey: 'trending-up', href: '/franchise-fee-estimator', status: 'Live' },
+      { id: 'financial-term', label: 'Term Library', labelHtml: 'Term<br>Library', iconKey: 'file-text', href: '/financial-term-library', status: 'Live' },
+      { id: 'legal-clause', label: 'Clause Library', labelHtml: 'Clause<br>Library', iconKey: 'file', href: '/clause-library', status: 'Live' },
+      { id: 'message-center', label: 'Message Center', labelHtml: 'Message<br>Center', iconKey: 'message', href: '/outreach/inbox', status: 'Beta' },
+      { id: 'deal-compare', label: 'Deal Compare', labelHtml: 'Deal<br>Compare', iconKey: 'scale', href: '/deal-compare', status: 'Beta' }
     ]
   };
 }

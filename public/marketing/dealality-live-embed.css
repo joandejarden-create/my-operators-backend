@@ -1,0 +1,110 @@
+/**
+ * Live app iframe frames for Webflow marketing embeds.
+ */
+
+.dl-iframe {
+  --dl-iframe-radius: 10px;
+  --dl-iframe-border: rgba(55, 68, 107, 0.9);
+  --dl-iframe-bg: #080f25;
+  --dl-iframe-min-h: 420px;
+  --dl-iframe-max-h: 720px;
+  width: 100%;
+  margin: 0;
+}
+
+.dl-iframe__frame {
+  position: relative;
+  width: 100%;
+  min-height: var(--dl-iframe-min-h);
+  max-height: var(--dl-iframe-max-h);
+  border: 0.6px solid var(--dl-iframe-border);
+  border-radius: var(--dl-iframe-radius);
+  overflow: hidden;
+  background: var(--dl-iframe-bg);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.dl-iframe__frame iframe {
+  display: block;
+  width: 100%;
+  height: var(--dl-iframe-max-h);
+  min-height: var(--dl-iframe-min-h);
+  border: 0;
+  background: var(--dl-iframe-bg);
+}
+
+.dl-iframe__caption {
+  margin-top: 8px;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 11px;
+  color: rgba(174, 185, 225, 0.65);
+  line-height: 1.45;
+}
+
+.dl-iframe--tall {
+  --dl-iframe-min-h: 520px;
+  --dl-iframe-max-h: 820px;
+}
+
+.dl-iframe--wide {
+  --dl-iframe-max-h: 640px;
+}
+
+.dl-live-showcase {
+  background: #080f25;
+  color: #aeb9e1;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  padding: 40px 24px 72px;
+}
+
+.dl-live-showcase__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.dl-live-showcase h1 {
+  color: #fff;
+  font-size: clamp(22px, 3vw, 32px);
+  margin: 0 0 8px;
+}
+
+.dl-live-showcase__lead {
+  max-width: 680px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.dl-live-showcase__meta {
+  font-size: 12px;
+  color: #7e89ac;
+  margin-bottom: 32px;
+}
+
+.dl-live-showcase__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.dl-live-showcase__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7e89ac;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 640px) {
+  .dl-iframe {
+    --dl-iframe-min-h: 360px;
+    --dl-iframe-max-h: 560px;
+  }
+
+  .dl-iframe--tall {
+    --dl-iframe-min-h: 420px;
+    --dl-iframe-max-h: 620px;
+  }
+}

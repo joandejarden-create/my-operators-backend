@@ -45,6 +45,9 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 20px;
             margin: 0 -30px 40px -30px;
+            /* Above sticky .section-nav (z-index 100) so "Back to My Deals" stays clickable when scrolled */
+            position: relative;
+            z-index: 200;
         }
         .back-to-my-deals { margin-bottom: 16px; }
         .back-to-my-deals a {
@@ -53,8 +56,6 @@
         }
         .back-to-my-deals a:hover { color: var(--secondary--color-2); text-decoration: underline; }
         .intake-title-container { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .deal-capture-logo { height: 32px; display: flex; align-items: center; flex-shrink: 0; }
-        .deal-capture-logo img { height: 100%; width: auto; max-width: 120px; object-fit: contain; }
         .intake-header h1 { color: #ffffff; margin: 0; font-size: 2rem; font-weight: 700; line-height: 1.2em; }
         .intake-header p { color: #ffffff; font-size: 0.75rem; font-weight: 300; line-height: 1.3; max-width: 650px; margin: 0; margin-top: 5px; }
         @media (max-width: 768px) {
@@ -523,12 +524,9 @@
             <div class="intake-container">
                 <div class="intake-header">
                     <div class="back-to-my-deals">
-                        <a href="/my-deals">← Back to My Deals</a>
+                        <a href="/my-deals.html" id="dealSetupBackToMyDealsLink">← Back to My Deals</a>
                     </div>
                     <div class="intake-title-container">
-                        <div class="deal-capture-logo">
-                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-                        </div>
                         <h1 id="dealPageTitle">Deal</h1>
                     </div>
                     <p>View and edit your deal. Changes are saved to the main deal record.</p>
@@ -543,8 +541,8 @@
                             <div class="wave wave-3"></div>
                         </div>
                         <div>
-                            <div class="loading-text-main" id="dealSetupLoadingTextMain">Loading deal…</div>
-                            <div class="loading-text-time" id="dealSetupLoadingTextTime">Estimated time: 1–2 seconds</div>
+                            <div class="loading-text-main" id="dealSetupLoadingTextMain">Loading Deal…</div>
+                            <div class="loading-text-time" id="dealSetupLoadingTextTime" hidden></div>
                         </div>
                     </div>
                     <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -609,11 +607,16 @@
                                     <input type="text" class="form-input" name="Project Name" placeholder="e.g. Downtown Hotel (leave blank to use Property Name)">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Project Type <span class="required">*</span><span class="help-text">New Build or Conversion / Reflag.</span></label>
-                                    <select class="form-select" name="Project Type">
+                                    <label class="form-label">Project Type <span class="required">*</span><span class="help-text">Ground-up, conversion, renovation, or operating-hotel context.</span></label>
+                                    <select class="form-select" name="Project Type" id="projectTypeSelect">
                                         <option value="">Select One…</option>
                                         <option value="New Build">New Build</option>
                                         <option value="Conversion / Reflag">Conversion / Reflag</option>
+                                        <option value="Renovation / Repositioning">Renovation / Repositioning</option>
+                                        <option value="Existing Operating Hotel">Existing Operating Hotel</option>
+                                        <option value="Adaptive Reuse">Adaptive Reuse</option>
+                                        <option value="Mixed-Use Hospitality Project">Mixed-Use Hospitality Project</option>
+                                        <option value="Other / To Be Confirmed">Other / To Be Confirmed</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -625,6 +628,21 @@
                                         <option value="Fully Entitled">Fully Entitled</option>
                                         <option value="Under Construction">Under Construction</option>
                                         <option value="Stabilized Operating Asset">Stabilized Operating Asset</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Opening / Transition Phase <span class="required">*</span><span class="help-text">Where the asset sits in opening, renovation, or rebranding (if applicable).</span></label>
+                                    <select class="form-select" name="Opening / Transition Phase">
+                                        <option value="">Select One…</option>
+                                        <option value="N/A (stabilized operating)">N/A (stabilized operating)</option>
+                                        <option value="Planning / entitlement">Planning / entitlement</option>
+                                        <option value="Pre-construction">Pre-construction</option>
+                                        <option value="Construction">Construction</option>
+                                        <option value="Pre-opening ramp">Pre-opening ramp</option>
+                                        <option value="Soft opening">Soft opening</option>
+                                        <option value="Reopening after renovation">Reopening after renovation</option>
+                                        <option value="Rebranding in place">Rebranding in place</option>
+                                        <option value="Needs Review">Needs Review</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -678,6 +696,21 @@
                                         <option value="">Select One…</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Current Operating Model <span class="required">*</span><span class="help-text">How the hotel operates today (canonical for operator capability review).</span></label>
+                                    <select class="form-select" name="Current Operating Model">
+                                        <option value="">Select One…</option>
+                                        <option value="Owner-operated (unbranded)">Owner-operated (unbranded)</option>
+                                        <option value="Owner-operated (branded/franchised)">Owner-operated (branded/franchised)</option>
+                                        <option value="Third-party managed (branded)">Third-party managed (branded)</option>
+                                        <option value="Third-party managed (independent/collection)">Third-party managed (independent/collection)</option>
+                                        <option value="Brand-managed">Brand-managed</option>
+                                        <option value="Lease/operator lease structure">Lease/operator lease structure</option>
+                                        <option value="Mixed/transitioning">Mixed/transitioning</option>
+                                        <option value="Needs Review">Needs Review</option>
+                                        <option value="Unknown">Unknown</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -941,6 +974,19 @@
                                         <option value="Yemen">Yemen</option>
                                         <option value="Zambia">Zambia</option>
                                         <option value="Zimbabwe">Zimbabwe</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Primary Market Region <span class="required">*</span><span class="help-text">Primary region for operator capability and market context (e.g. CALA).</span></label>
+                                    <select class="form-select" name="Primary Market Region">
+                                        <option value="">Select One…</option>
+                                        <option value="North America">North America</option>
+                                        <option value="CALA">CALA</option>
+                                        <option value="Europe">Europe</option>
+                                        <option value="MEA">MEA</option>
+                                        <option value="APAC">APAC</option>
+                                        <option value="Multi-region">Multi-region</option>
+                                        <option value="Needs Review">Needs Review</option>
                                     </select>
                                 </div>
                                 <h3 class="project-fit-subheader full-width" style="margin-top: 24px;">Hotel Classification</h3>
@@ -1708,7 +1754,7 @@
                                         <label class="form-label">Preferred Brands (up to 4) <span class="required">*</span><span class="help-text">Select up to four preferred brands. <span class="selection-count"></span></span></label>
                                         <input type="text" class="form-input" id="preferredBrandsSearch" placeholder="Search brands…" autocomplete="off" style="margin-bottom: 8px;">
                                         <select class="form-select" id="preferredBrandsSelect" name="Preferred Brands (up to 4)" multiple size="8" style="min-width: 260px;" data-max-selections="4">
-                                            <option value="">Loading brands…</option>
+                                            <option value="">Loading Brands…</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1790,6 +1836,20 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label class="form-label">Preferred Future Operating Model <span class="required">*</span><span class="help-text">Target operating model after this deal (canonical).</span></label>
+                                    <select class="form-select" name="Preferred Future Operating Model">
+                                        <option value="">Select One…</option>
+                                        <option value="Owner-operated">Owner-operated</option>
+                                        <option value="Third-party management only">Third-party management only</option>
+                                        <option value="Franchise/license only (owner or third-party operator)">Franchise/license only (owner or third-party operator)</option>
+                                        <option value="Brand + third-party management">Brand + third-party management</option>
+                                        <option value="Brand-managed">Brand-managed</option>
+                                        <option value="Lease structure">Lease structure</option>
+                                        <option value="Undecided / exploring">Undecided / exploring</option>
+                                        <option value="Needs Review">Needs Review</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label class="form-label">Open to Outside Capital or Partnerships?<span class="help-text">Yes if you would consider JV or outside capital.</span></label>
                                     <select class="form-select" name="Open to Outside Capital or Partnerships?">
                                         <option value="">Select One…</option>
@@ -1811,6 +1871,55 @@
                             <div id="thirdPartyOperatorBlock" class="third-party-operator-block">
                             <h3 class="project-fit-subheader">Third-Party Operator Preferences</h3>
                             <p class="subsection-description">If you want to receive bids from third-party management companies (in addition to or instead of hotel brands), tell us your preferences below. This helps match you with operators who fit your project.</p>
+                            <div id="operatorCapabilityP0Block" class="ocs-p0-block">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label ocs-required-when-visible">Operator Strategy Status <span class="required">*</span><span class="help-text">Where you are in operator planning (not a recommendation).</span></label>
+                                    <select class="form-select" name="Operator Strategy Status">
+                                        <option value="">Select One…</option>
+                                        <option value="Not seeking operator input">Not seeking operator input</option>
+                                        <option value="Exploring capabilities only">Exploring capabilities only</option>
+                                        <option value="Building shortlist for advisor review">Building shortlist for advisor review</option>
+                                        <option value="Ready for structured operator review">Ready for structured operator review</option>
+                                        <option value="Already in discussions">Already in discussions</option>
+                                        <option value="Needs Review">Needs Review</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label ocs-required-when-visible">Operator Capability Priorities <span class="required">*</span><span class="help-text">Capability areas that may matter for this deal. Select all that apply. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Operator Capability Priorities" multiple size="8" style="min-width: 280px;">
+                                        <option value="Full hotel management">Full hotel management</option>
+                                        <option value="Pre-opening / opening support">Pre-opening / opening support</option>
+                                        <option value="Conversion & PIP execution">Conversion & PIP execution</option>
+                                        <option value="Revenue management & distribution">Revenue management & distribution</option>
+                                        <option value="Accounting & owner reporting">Accounting & owner reporting</option>
+                                        <option value="Procurement & cost control">Procurement & cost control</option>
+                                        <option value="F&B / culinary operations">F&amp;B / culinary operations</option>
+                                        <option value="Sales & marketing">Sales &amp; marketing</option>
+                                        <option value="HR & training">HR &amp; training</option>
+                                        <option value="Technology & systems">Technology &amp; systems</option>
+                                        <option value="Design / renovation PM">Design / renovation PM</option>
+                                        <option value="Asset management / capex planning">Asset management / capex planning</option>
+                                        <option value="Local market / CALA execution">Local market / CALA execution</option>
+                                        <option value="Lifestyle / experience programming">Lifestyle / experience programming</option>
+                                        <option value="Crisis / business continuity">Crisis / business continuity</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label ocs-required-when-visible">Owner Reporting Package<span class="help-text">Reporting and oversight you expect from an operator. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Owner Reporting Package" multiple size="6" style="min-width: 260px;">
+                                        <option value="Weekly financial">Weekly financial</option>
+                                        <option value="Monthly P&amp;L">Monthly P&amp;L</option>
+                                        <option value="Monthly operating metrics">Monthly operating metrics</option>
+                                        <option value="Quarterly board pack">Quarterly board pack</option>
+                                        <option value="Annual budget / forecast">Annual budget / forecast</option>
+                                        <option value="Owner portal access">Owner portal access</option>
+                                        <option value="On-demand / ad hoc">On-demand / ad hoc</option>
+                                        <option value="Third-party audit support">Third-party audit support</option>
+                                    </select>
+                                </div>
+                            </div>
+                            </div>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label">Minimum Operator Experience (Years)<span class="help-text">Minimum years of management experience required.</span></label>
@@ -1871,8 +1980,19 @@
                                         <option value="Varies by Property">Varies by Property</option>
                                     </select>
                                 </div>
+                                <div id="operatorReportingP0Block" class="ocs-p0-block form-group">
+                                    <label class="form-label ocs-required-when-visible" data-ocs-field="Owner Reporting Frequency">Owner Reporting Frequency <span class="required">*</span><span class="help-text">Canonical reporting cadence expected from an operator.</span></label>
+                                    <select class="form-select" name="Owner Reporting Frequency">
+                                        <option value="">Select One…</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Bi-weekly">Bi-weekly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Quarterly">Quarterly</option>
+                                        <option value="Ad hoc">Ad hoc</option>
+                                    </select>
+                                </div>
                                 <div class="form-group full-width">
-                                    <label class="form-label">Preferred Reporting Frequency<span class="help-text">How often you want operational/financial reports from operator.</span></label>
+                                    <label class="form-label">Preferred Reporting Frequency<span class="help-text">Legacy field — also used for migration. Prefer Owner Reporting Frequency above when operator is in scope.</span></label>
                                     <select class="form-select" name="Preferred Reporting Frequency">
                                         <option value="">Select One…</option>
                                         <option value="Weekly">Weekly</option>
@@ -2465,7 +2585,7 @@
                                 <p class="form-section-subtitle" style="margin:0 0 12px 0;">Contacted brands for this deal.</p>
                                 <div id="drBdrTableWrap" style="overflow-x:auto;">
                                     <table class="deals-table" id="drBdrTable" style="width:100%;min-width:600px;">
-                                        <thead><tr><th>Brand Name</th><th>NDA Status</th><th>Deal Room Access</th><th>NDA Signed File</th><th>Proposal</th><th>Actions</th></tr></thead>
+                                        <thead><tr><th>Brand Name</th><th>NDA Status</th><th>Deal Room Access</th><th>NDA Signed File</th><th>Actions</th></tr></thead>
                                         <tbody id="drBdrTableBody"></tbody>
                                     </table>
                                 </div>
@@ -2522,6 +2642,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/operator-capability-intake.js?v=20260522-file-multiple"></script>
+    <script src="/dealality-webflow-nav.js"></script>
     <script>
 (function () {
     var form = document.getElementById("dealForm");
@@ -2606,8 +2728,17 @@
     function setLoadingOverlayText(main, time) {
         var mainEl = document.getElementById("dealSetupLoadingTextMain");
         var timeEl = document.getElementById("dealSetupLoadingTextTime");
-        if (mainEl) mainEl.textContent = main || "Loading deal…";
-        if (timeEl) timeEl.textContent = time || "Estimated time: 1–2 seconds";
+        if (mainEl) mainEl.textContent = main || "Loading Deal…";
+        if (timeEl) {
+            var t = (time || "").trim();
+            if (!t || /^Estimated\s+time\s*:/i.test(t)) {
+                timeEl.textContent = "";
+                timeEl.hidden = true;
+            } else {
+                timeEl.textContent = t;
+                timeEl.hidden = false;
+            }
+        }
     }
     function showDealSavedToast() {
         var toast = document.getElementById("dealSavedToast");
@@ -2768,6 +2899,9 @@
         block.classList.toggle("hidden", !visible);
         block.classList.remove("hidden-operator-block");
         if (!visible) clearInputsInBlock(block);
+        if (window.OperatorCapabilityIntake && typeof window.OperatorCapabilityIntake.updateVisibility === "function") {
+            window.OperatorCapabilityIntake.updateVisibility(form);
+        }
     }
 
     function isLeaseStructureVisible() {
@@ -3016,7 +3150,11 @@
             if (el.type === "number") el.value = strVal === "" ? "" : Number(val);
             else el.value = strVal;
         });
-        syncVisibilityAndUIAfterRebind();
+        try {
+            syncVisibilityAndUIAfterRebind();
+        } catch (syncErr) {
+            console.error("[deal-setup] syncVisibilityAndUIAfterRebind failed:", syncErr);
+        }
     }
 
     /** Run after applyFieldsToForm so conditional blocks and completion stay in sync. */
@@ -3151,6 +3289,9 @@
                 var fields = (data.deal.fields || {});
                 brandsForPreferredPromise.then(function () {
                     applyFieldsToForm(fields, { mergeMode: false });
+                    if (window.OperatorCapabilityIntake && typeof window.OperatorCapabilityIntake.ensureProjectTypeSelectLegacyOption === "function") {
+                        window.OperatorCapabilityIntake.ensureProjectTypeSelectLegacyOption(form);
+                    }
                     var name = fields["Property Name"] || fields["Project Name"] || fields["Name"] || "Deal";
                     pageTitle.textContent = name;
                     showForm(true);
@@ -3221,7 +3362,7 @@
             .then(function(r) { return r.json(); })
             .then(function(dealRes) {
                 showLoading(false);
-                setLoadingOverlayText("Loading deal…", "Estimated time: 1–2 seconds");
+                setLoadingOverlayText("Loading Deal…", "");
                 if (btn) { btn.classList.remove("loading"); btn.disabled = false; }
                 if (dealRes && dealRes.success) {
                     showError("");
@@ -3233,7 +3374,7 @@
             })
             .catch(function (err) {
                 showLoading(false);
-                setLoadingOverlayText("Loading deal…", "Estimated time: 1–2 seconds");
+                setLoadingOverlayText("Loading Deal…", "");
                 if (btn) { btn.classList.remove("loading"); btn.disabled = false; }
                 showError("Save failed: " + (err.message || "Network error"));
             });
@@ -3340,10 +3481,7 @@
                 var access = b.dealRoomAccess || "";
                 var signedFiles = b.ndaSignedFile || [];
                 var signedLink = signedFiles.length && signedFiles[0] && signedFiles[0].url ? ("<a href=\"" + signedFiles[0].url + "\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--accent--primary-1)\">" + (signedFiles[0].filename || "file") + "</a>") : "—";
-                var proposalStatus = (b.proposal && b.proposal.proposalStatus) ? b.proposal.proposalStatus : "";
-                var proposalLink = "<a href=\"/brand-deal-request.html?requestId=" + encodeURIComponent(b.id) + "\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--accent--primary-1);\" onclick=\"event.stopPropagation();\">Submit Proposal</a>";
-                if (proposalStatus === "Submitted") proposalLink = "<span style=\"color:var(--system--green-300);\">Submitted</span>";
-                tr.innerHTML = "<td>" + (b.brandName || "—") + "</td><td>" + ndaStatus + "</td><td>" + access + "</td><td>" + signedLink + "</td><td>" + proposalLink + "</td><td><button type=\"button\" class=\"btn btn-secondary\" data-action=\"sendNda\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Send NDA</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"markSigned\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Mark Signed</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"grantAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Grant</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"revokeAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Revoke</button></td>";
+                tr.innerHTML = "<td>" + (b.brandName || "—") + "</td><td>" + ndaStatus + "</td><td>" + access + "</td><td>" + signedLink + "</td><td><button type=\"button\" class=\"btn btn-secondary\" data-action=\"sendNda\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Send NDA</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"markSigned\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Mark Signed</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"grantAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Grant</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"revokeAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Revoke</button></td>";
                 tbody.appendChild(tr);
             });
             updateDrAttachSummaryText(!!selectedId);
@@ -3680,6 +3818,11 @@
     var whoBidsEl = form.querySelector('[name="Who should receive bids for this project?"]');
     if (whoBidsEl) whoBidsEl.addEventListener("change", updateThirdPartyOperatorBlockVisibility);
 
+    var preferredFutureEl = form.querySelector('[name="Preferred Future Operating Model"]');
+    if (preferredFutureEl) preferredFutureEl.addEventListener("change", updateThirdPartyOperatorBlockVisibility);
+    var preferredDealStructEl = form.querySelector('[name="Preferred Deal Structure"]');
+    if (preferredDealStructEl) preferredDealStructEl.addEventListener("change", updateThirdPartyOperatorBlockVisibility);
+
     var fbOutletsEl = form.querySelector('[name="F&B Outlets?"]');
     if (fbOutletsEl) fbOutletsEl.addEventListener("change", updateFbOutletsBlockVisibility);
 
@@ -3738,6 +3881,60 @@
 
     updateRequiredCounts();
 
+    (function initBackToMyDealsNav() {
+        var el = document.getElementById("dealSetupBackToMyDealsLink");
+        if (!el) return;
+        function isHubIframeForMyDeals() {
+            if (window.top === window.self) return false;
+            if (/(?:^|[?&])appShell=1(?:&|$)/.test(window.location.search || "")) return true;
+            try {
+                if (window.parent !== window && window.parent.document && window.parent.document.getElementById("frameContainer")) {
+                    return true;
+                }
+            } catch (e0) {}
+            try {
+                return /^\/app(?:\.html)?(?:\/|$)/i.test(window.parent.location.pathname || "");
+            } catch (e1) {
+                return false;
+            }
+        }
+        if (isHubIframeForMyDeals()) {
+            try {
+                el.setAttribute("href", (window.top.location.origin || "") + "/app#/my-deals");
+            } catch (eH) {
+                el.setAttribute("href", "/app#/my-deals");
+            }
+            el.setAttribute("target", "_top");
+        } else if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
+            el.setAttribute("href", window.DealalityWebflowNav.getMyDealsTopLevelHref());
+        }
+        el.addEventListener(
+            "click",
+            function (e) {
+                if (!isHubIframeForMyDeals()) {
+                    if (!window.DealalityWebflowNav || typeof window.DealalityWebflowNav.navigateToMyDealsList !== "function") return;
+                    e.preventDefault();
+                    window.DealalityWebflowNav.navigateToMyDealsList({});
+                    return;
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                try {
+                    if (window.top !== window && typeof window.top.dealalityAppShellNavigate === "function") {
+                        window.top.dealalityAppShellNavigate("/my-deals");
+                        return;
+                    }
+                } catch (eNav) {}
+                var dest = "/app#/my-deals";
+                try {
+                    dest = (window.top.location.origin || "") + "/app#/my-deals";
+                } catch (e2) {}
+                window.top.location.href = dest;
+            },
+            true
+        );
+    })();
+
     form.addEventListener("submit", function (e) {
         e.preventDefault();
         doSave();
@@ -3746,5 +3943,6 @@
     loadDeal();
 })();
     </script>
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

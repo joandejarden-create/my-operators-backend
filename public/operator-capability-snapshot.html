@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Capability Snapshot - Dealality</title>
+    <link rel="stylesheet" href="/css/brand-alignment-snapshot.css">
+    <link rel="stylesheet" href="/css/operator-capability-snapshot.css">
+    <link rel="stylesheet" href="/css/snapshot-page-shell.css">
+</head>
+<body>
+    <div class="snapshot-page bas-page ocs-page" id="ocsPage">
+        <div class="bas-page-loading" id="ocsPageLoading" role="status" aria-live="polite">
+            <div class="loading">
+                <div class="loading-content">
+                    <div class="wave-container">
+                        <div class="wave wave-1"></div>
+                        <div class="wave wave-2"></div>
+                        <div class="wave wave-3"></div>
+                        <div class="wave-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="loading-text-main">Building Operator Capability Snapshot…</div>
+                    </div>
+                </div>
+                <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+            </div>
+        </div>
+        <div id="ocsPageRoot" hidden></div>
+    </div>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/operator-capability-snapshot.js"></script>
+    <script>
+    (function () {
+        var params = new URLSearchParams(window.location.search || "");
+        var dealId = (params.get("dealId") || "").trim();
+        var chromeless =
+            params.get("embed") === "1" ||
+            params.get("embed") === "true" ||
+            window !== window.top;
+        var page = document.getElementById("ocsPage");
+        var loading = document.getElementById("ocsPageLoading");
+        var root = document.getElementById("ocsPageRoot");
+
+        if (page) {
+            page.classList.add("bas-page--full", "snapshot-page--full");
+            if (chromeless) page.classList.add("bas-page--chromeless");
+        }
+
+        function showError(msg) {
+            if (loading) loading.style.display = "none";
+            if (root) {
+                root.hidden = false;
+                root.innerHTML = '<div class="bas-page-error">' + String(msg || "Request failed").replace(/</g, "&lt;") + "</div>";
+            }
+        }
+
+        if (!dealId || dealId.indexOf("rec") !== 0) {
+            showError("A valid dealId query parameter is required (e.g. ?dealId=rec…).");
+            return;
+        }
+
+        var fetchFn = window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.fetchMyDealsApi
+            ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+            : function (url, opts) { return fetch(url, opts); };
+
+        fetchFn("/api/deals/" + encodeURIComponent(dealId) + "/operator-capability-snapshot", { method: "GET" })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (!data.success) {
+                    showError(data.error || "Could not load operator capability snapshot.");
+                    return;
+                }
+                if (loading) loading.style.display = "none";
+                if (!root || !window.OperatorCapabilitySnapshot) {
+                    showError("Snapshot renderer failed to load.");
+                    return;
+                }
+                root.hidden = false;
+                window.OperatorCapabilitySnapshot.render(root, data, {
+                    embed: chromeless,
+                    fullPage: true,
+                    dealId: dealId,
+                    backHref: chromeless ? "" : "/my-deals.html",
+                    generatedAt: data.generatedAt || new Date().toISOString(),
+                });
+                document.title = (data.dealName || "Deal") + " — Operator Capability Snapshot";
+            })
+            .catch(function (err) {
+                showError(err.message || "Network error");
+            });
+    })();
+    </script>
+</body>
+</html>

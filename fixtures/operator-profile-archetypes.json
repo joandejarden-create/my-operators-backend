@@ -1,0 +1,231 @@
+{
+  "version": "operator-profile-archetypes-v1",
+  "featureName": "Operator Alignment Snapshot",
+  "mode": "profile",
+  "archetypes": [
+    {
+      "key": "regional_cala_full_service",
+      "displayLabel": "Regional CALA Full-Service Operator",
+      "shortLabel": "Regional CALA Full-Service",
+      "description": "Operator profiles oriented to full-service or upper-upscale hotel management with stated CALA or Mexico/Caribbean market depth.",
+      "bestUseCase": "May be relevant when the deal is in CALA and the owner is reviewing regional execution depth for full-service or resort-leaning assets.",
+      "legacyProfileOptions": ["Regional"],
+      "requiredDealSignals": ["country_or_market_provided", "cala_market"],
+      "positiveDealSignals": [
+        "preferred_profile_regional",
+        "preferred_future_third_party",
+        "operator_in_scope",
+        "full_service_or_upper_scale",
+        "preopening_or_reopening_phase",
+        "operator_strategy_exploring_or_ready"
+      ],
+      "negativeOrConditionalDealSignals": [
+        "preferred_future_owner_operated_only",
+        "select_service_only_scale"
+      ],
+      "alignmentSignals": [
+        "Potential alignment when the recorded market is in CALA and the deal contemplates third-party or brand-plus-operator execution.",
+        "May be relevant if pre-opening, conversion, or repositioning increases the need for regional operating infrastructure.",
+        "Alignment signal strengthens when the owner has indicated a regional operator profile preference."
+      ],
+      "reviewConsiderations": [
+        "Confirm whether required market coverage is gateway cities only or includes secondary resorts.",
+        "Review bilingual reporting, labor, and F&B complexity against stated operator capability priorities.",
+        "Validate owner expectations for centralized vs. property-level decision rights."
+      ],
+      "questionsToClarify": [
+        "Which countries and sub-markets must have active operations versus pipeline-only presence?",
+        "Is the owner seeking full hotel management or a narrower commercial platform?",
+        "How does the owner define full-service scope for this asset (F&B, groups, resort amenities)?"
+      ],
+      "dataGaps": [
+        "Deal intake does not include a dedicated CALA operator category separate from generic Regional.",
+        "Operator-side country lists are not normalized in the current setup schema for profile-level matching."
+      ],
+      "suggestedWorkflowActions": [
+        "Suggested workflow action: confirm country and Primary Market Region before comparing regional CALA operator profiles.",
+        "Suggested workflow action: align on full-service scope and reporting package before outreach."
+      ],
+      "defaultAlignmentBand": "Conditional Alignment Signals",
+      "sortPriority": 10
+    },
+    {
+      "key": "international_third_party_market_presence",
+      "displayLabel": "International Third-Party Manager with Market Presence",
+      "shortLabel": "International Third-Party",
+      "description": "Operator profiles with multi-market or international third-party management positioning and stated portfolio scale.",
+      "bestUseCase": "May be relevant when the owner is open to internationally affiliated third-party management with defined market presence requirements.",
+      "legacyProfileOptions": ["International", "National"],
+      "requiredDealSignals": ["country_or_market_provided", "operator_in_scope"],
+      "positiveDealSignals": [
+        "preferred_profile_international",
+        "preferred_profile_regional",
+        "preferred_future_third_party",
+        "operator_strategy_exploring_or_ready",
+        "brand_path_active"
+      ],
+      "negativeOrConditionalDealSignals": [
+        "preferred_future_owner_operated_only",
+        "operator_strategy_closed"
+      ],
+      "alignmentSignals": [
+        "Potential alignment when third-party management or brand-plus-operator paths are under review.",
+        "May be relevant if the owner selected an international or national operator profile preference.",
+        "Alignment signal may apply across non-US markets when execution scale and brand portfolio breadth matter."
+      ],
+      "reviewConsiderations": [
+        "Distinguish global brand affiliation from local third-party execution capability.",
+        "Review whether the deal requires existing market operations versus expansion appetite only.",
+        "Compare owner reporting frequency with operator governance narratives."
+      ],
+      "questionsToClarify": [
+        "Which markets must have stabilized operations versus development pipeline only?",
+        "Is the owner prioritizing brand portfolio breadth or local GM-led execution?",
+        "What deal structure (management, franchise, lease) is actually under consideration?"
+      ],
+      "dataGaps": [
+        "International on the deal form does not confirm CALA or country-specific operator depth.",
+        "Profile-level matching does not yet evaluate named operator companies."
+      ],
+      "suggestedWorkflowActions": [
+        "Suggested workflow action: document required markets and deal structure before shortlisting international operator profiles.",
+        "Suggested workflow action: validate reporting and commercial platform expectations in writing."
+      ],
+      "defaultAlignmentBand": "Moderate Alignment Signals",
+      "sortPriority": 20
+    },
+    {
+      "key": "lifestyle_boutique_operator",
+      "displayLabel": "Lifestyle / Boutique Operator",
+      "shortLabel": "Lifestyle / Boutique",
+      "description": "Operator profiles emphasizing lifestyle positioning, design-forward assets, boutique scale, or independent collection experience.",
+      "bestUseCase": "May be relevant for lifestyle-positioned, boutique-scale, or design-forward hospitality assets under third-party or hybrid paths.",
+      "legacyProfileOptions": ["Independent / Boutique"],
+      "requiredDealSignals": ["country_or_market_provided", "project_type_known"],
+      "positiveDealSignals": [
+        "preferred_profile_independent_boutique",
+        "lifestyle_positioning",
+        "conversion_or_reflag",
+        "preferred_future_third_party",
+        "operator_in_scope"
+      ],
+      "negativeOrConditionalDealSignals": [
+        "select_service_only_scale",
+        "preferred_future_brand_managed_only"
+      ],
+      "alignmentSignals": [
+        "Potential alignment when chain scale, hotel type, or project type signals lifestyle or boutique positioning.",
+        "May be relevant if conversion or reflag pathways require experience-led operating models.",
+        "Alignment signal applies when the owner selected Independent / Boutique operator profile preference."
+      ],
+      "reviewConsiderations": [
+        "Clarify independent collection path versus soft-brand or hard-brand affiliation.",
+        "Review F&B and experience programming intensity against operator lifestyle credentials.",
+        "Validate room count and staffing model for boutique economics."
+      ],
+      "questionsToClarify": [
+        "Is the owner pursuing a collection, soft brand, or unbranded lifestyle path?",
+        "What guest experience and design standards must the owner confirm before outreach?",
+        "How much owner involvement is expected in brand and experience decisions?"
+      ],
+      "dataGaps": [
+        "No dedicated lifestyle boolean on deal intake; inference relies on chain scale, hotel type, and project type.",
+        "Operator lifestyle experience is not uniformly structured in setup records."
+      ],
+      "suggestedWorkflowActions": [
+        "Suggested workflow action: confirm positioning (lifestyle vs. select-service) before lifestyle operator profile review.",
+        "Suggested workflow action: capture F&B and programming scope in deal notes."
+      ],
+      "defaultAlignmentBand": "Conditional Alignment Signals",
+      "sortPriority": 30
+    },
+    {
+      "key": "owner_operated_commercial_support",
+      "displayLabel": "Owner-Operated with Upgraded Commercial Support",
+      "shortLabel": "Owner-Operated + Commercial Support",
+      "description": "Profiles where the owner retains operating control while seeking selective commercial, revenue, or reporting support—not full hotel management.",
+      "bestUseCase": "May be relevant when the owner expects to remain operator-of-record with targeted commercial or revenue support only.",
+      "legacyProfileOptions": ["No Preference"],
+      "requiredDealSignals": ["preferred_future_owner_operated_path"],
+      "positiveDealSignals": [
+        "services_partial_not_full_management",
+        "commercial_support_priority",
+        "preferred_future_owner_operated",
+        "revenue_management_priority"
+      ],
+      "negativeOrConditionalDealSignals": [
+        "preferred_future_third_party_only",
+        "operator_capability_full_management_only"
+      ],
+      "alignmentSignals": [
+        "Potential alignment when preferred future operating model is owner-operated or franchise/license without full management.",
+        "May be relevant if services required exclude full management but include revenue, sales, or accounting support.",
+        "Alignment signal strengthens when commercial or yield priorities are elevated on the deal."
+      ],
+      "reviewConsiderations": [
+        "Define scope boundaries to avoid gradual expansion into full management.",
+        "Review reporting cadence and owner approval rights for commercial decisions.",
+        "Validate incentive alignment when the owner retains P&L accountability."
+      ],
+      "questionsToClarify": [
+        "Which functions must remain owner-controlled versus delegated?",
+        "Is any third-party management still under consideration alongside commercial support?",
+        "What reporting package does the owner require from a commercial partner?"
+      ],
+      "dataGaps": [
+        "No explicit owner retains operating control field; inferred from operating models and services.",
+        "Operator profiles rarely declare partial-service scope in structured multis."
+      ],
+      "suggestedWorkflowActions": [
+        "Suggested workflow action: list required services explicitly and exclude full management if that is the owner intent.",
+        "Suggested workflow action: align commercial support scope with contract structure before outreach."
+      ],
+      "defaultAlignmentBand": "Conditional Alignment Signals",
+      "sortPriority": 40
+    },
+    {
+      "key": "brand_managed_structure",
+      "displayLabel": "Brand-Managed Structure",
+      "shortLabel": "Brand-Managed",
+      "description": "Profiles aligned with brand-led operating standards, franchised or brand-managed structures, and defined brand compliance pathways.",
+      "bestUseCase": "May be relevant when the deal path assumes brand-led standards with a defined operator-of-record or brand-managed structure.",
+      "legacyProfileOptions": ["No Preference"],
+      "requiredDealSignals": ["brand_path_active"],
+      "positiveDealSignals": [
+        "preferred_future_brand_managed",
+        "brand_affiliation_under_review",
+        "conversion_or_reflag",
+        "operator_in_scope"
+      ],
+      "negativeOrConditionalDealSignals": [
+        "preferred_future_owner_operated_only",
+        "operator_strategy_closed"
+      ],
+      "alignmentSignals": [
+        "Potential alignment when preferred future operating model includes brand-managed or brand-plus-third-party paths.",
+        "May be relevant if the hotel is branded, considering brands, or conversion/reflag is in scope.",
+        "Alignment signal ties to brand portfolio and compliance themes—not a specific operator company in this phase."
+      ],
+      "reviewConsiderations": [
+        "Clarify division of responsibilities between brand, owner, and operator-of-record.",
+        "Review PIP, brand standards, and conversion timeline assumptions.",
+        "Validate bid audience includes brands and operators as intended."
+      ],
+      "questionsToClarify": [
+        "Is the owner pursuing franchise, management, or brand-managed agreement structure?",
+        "Which brand standards and PIP obligations are already modeled?",
+        "Who will be operator-of-record under the brand-managed structure?"
+      ],
+      "dataGaps": [
+        "Brand-managed path can overlap franchise-only paths on intake forms.",
+        "Profile-level output does not score brand-operator pairing."
+      ],
+      "suggestedWorkflowActions": [
+        "Suggested workflow action: confirm brand-managed vs. third-party-only intent before operator profile review.",
+        "Suggested workflow action: validate PIP and standards assumptions with owner records."
+      ],
+      "defaultAlignmentBand": "Conditional Alignment Signals",
+      "sortPriority": 50
+    }
+  ]
+}

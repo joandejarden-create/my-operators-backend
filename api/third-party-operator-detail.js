@@ -10,14 +10,36 @@ import {
 import { getThirdPartyOperatorBasicsTableName } from "./lib/third-party-operator-env.js";
 import {
   loadNewBaseOperatorBundle,
+  fetchBrandBasicsRecordsRest,
   buildBasicsShapedFieldsFromNewBase,
   buildPrefillObjectFromNewBaseRows,
   mapNewBaseLeadershipForDetail,
   mapNewBaseCaseStudiesForDetail,
   mapNewBaseDiligenceForDetail,
+  mapNewBaseLeadershipPlatformForDetail,
+  applyLeadershipPlatformToLegacyJsonPrefill,
+  mapNewBaseInfrastructurePlatformForDetail,
+  applyInfrastructurePlatformToLegacyPrefill,
+  mapNewBaseEngagementReportingForDetail,
+  applyEngagementReportingToLegacyPrefill,
+  mapNewBaseOperatingPlatformForDetail,
+  applyOperatingPlatformToLegacyPrefill,
+  mapNewBaseBrandRelationshipsForDetail,
+  applyBrandRelationshipsToLegacyPrefill,
   logOperatorReadPath,
 } from "./lib/operator-setup-new-base-read.js";
+import { applyTeamExperienceMarketsFromLeadJson } from "./lib/operator-leadership-explorer-map.js";
 import { normalizeOperatorSetupSelectPrefill } from "./lib/third-party-operator-select-prefill-normalize.js";
+import { pickExplorerHeroLabelsFromMasterFields } from "../lib/operator-explorer-hero-labels.js";
+import { normalizeOperatorExplorerPresentationRecords } from "./lib/operator-materials-explorer-presentation-map.js";
+import { applyLeadershipTeamToExecPrefill } from "./lib/operator-leadership-member-map.js";
+import {
+  buildOperatorCensusFootprint,
+  applyCensusFootprintToOperatorDetail,
+} from "../lib/hotel-census/build-operator-census-footprint.js";
+import { buildEngagementReportingPayloadFromIntakeBody } from "./lib/operator-engagement-reporting-map.js";
+import { buildOperatingPlatformPayloadFromIntakeBody } from "./lib/operator-operating-platform-map.js";
+import { buildBrandRelationshipsPayloadFromIntakeBody } from "./lib/operator-brand-relationships-map.js";
 
 const airtableBase = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 
@@ -89,17 +111,52 @@ export default async function getThirdPartyOperatorDetail(req, res) {
     const recordId = String((req.params && req.params.recordId) || "").trim();
     if (!recordId) return res.status(400).json({ success: false, error: "Missing recordId" });
 
-    const [bundle, ctx] = await Promise.all([
+    const [bundle, brandBasicsRecords] = await Promise.all([
       loadNewBaseOperatorBundle(recordId),
-      fetchThirdPartyOperatorPrefillContext(),
+      fetchBrandBasicsRecordsRest(),
     ]);
 
     if (bundle && bundle.master) {
-      const { master, profile, platform, commercial, governance, leadership, cases, diligence } = bundle;
-      const brandNameById = brandNameByIdFromCtx(ctx);
+      const {
+        master,
+        profile,
+        platform,
+        commercial,
+        governance,
+        leadership,
+        leadershipPlatform,
+        infrastructurePlatform,
+        engagementReporting,
+        operatingPlatform,
+        brandRelationships,
+        cases,
+        diligence,
+        explorerMaterials,
+      } = bundle;
+      const brandNameById = brandNameByIdFromCtx({ brandBasicsRecords });
       const prefill = buildPrefillObjectFromNewBaseRows(master, profile, platform, commercial, governance);
+      const leadershipPlatformDetail = mapNewBaseLeadershipPlatformForDetail(leadershipPlatform);
+      applyLeadershipPlatformToLegacyJsonPrefill(prefill, leadershipPlatformDetail);
+      applyTeamExperienceMarketsFromLeadJson(prefill);
+      const infrastructurePlatformDetail = mapNewBaseInfrastructurePlatformForDetail(infrastructurePlatform);
+      applyInfrastructurePlatformToLegacyPrefill(prefill, infrastructurePlatformDetail);
+      let engagementReportingDetail = mapNewBaseEngagementReportingForDetail(engagementReporting);
+      if (!(engagementReporting && engagementReporting.length)) {
+        engagementReportingDetail = buildEngagementReportingPayloadFromIntakeBody(prefill);
+      }
+      applyEngagementReportingToLegacyPrefill(prefill, engagementReportingDetail);
+      let operatingPlatformDetail = mapNewBaseOperatingPlatformForDetail(operatingPlatform);
+      if (!(operatingPlatform && operatingPlatform.length)) {
+        operatingPlatformDetail = buildOperatingPlatformPayloadFromIntakeBody(prefill);
+      }
+      applyOperatingPlatformToLegacyPrefill(prefill, operatingPlatformDetail);
+      let brandRelationshipsDetail = mapNewBaseBrandRelationshipsForDetail(brandRelationships);
+      if (!(brandRelationships && brandRelationships.length)) {
+        brandRelationshipsDetail = buildBrandRelationshipsPayloadFromIntakeBody(prefill);
+      }
+      applyBrandRelationshipsToLegacyPrefill(prefill, brandRelationshipsDetail);
       resolvePrefillBrandsToNames(prefill, brandNameById);
-      const brandProfiles = buildBrandProfilesFromPrefill(prefill, ctx.brandBasicsRecords);
+      const brandProfiles = buildBrandProfilesFromPrefill(prefill, brandBasicsRecords);
       const fields = buildBasicsShapedFieldsFromNewBase({
         master,
         profile,
@@ -110,11 +167,51 @@ export default async function getThirdPartyOperatorDetail(req, res) {
       const caseStudiesDetail = mapNewBaseCaseStudiesForDetail(cases);
       const ownerDiligenceQa = mapNewBaseDiligenceForDetail(diligence);
       const leadershipTeam = mapNewBaseLeadershipForDetail(leadership);
+      applyLeadershipTeamToExecPrefill(prefill, leadershipTeam);
+
+      let footprintPortfolioSource = "operator_setup";
+      let censusFootprint = null;
+      try {
+        censusFootprint = await buildOperatorCensusFootprint({
+          masterId: master.id,
+          prefill,
+        });
+        const applied = applyCensusFootprintToOperatorDetail(
+          { prefill, fields },
+          censusFootprint
+        );
+        if (applied.applied) footprintPortfolioSource = applied.source;
+        if (process.env.NODE_ENV !== "production" && censusFootprint.managementCompany) {
+          logOperatorReadPath("operator_census_footprint", {
+            masterId: master.id,
+            managementCompany: censusFootprint.managementCompany,
+            censusRecordCount: censusFootprint.censusRecordCount,
+            applied: applied.applied,
+            totalHotels: censusFootprint.totals?.totalHotels ?? 0,
+            brandRows: censusFootprint.brandsPortfolioDetail?.length ?? 0,
+          });
+        }
+      } catch (censusFootprintErr) {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn(
+            "[third-party-operator-detail] census footprint skipped:",
+            censusFootprintErr?.message || censusFootprintErr
+          );
+        }
+      }
+
+      const operatorExplorerMaterials = normalizeOperatorExplorerPresentationRecords(explorerMaterials);
 
       /** Same shape as legacy Basics prefill — client `loadRecordPrefillIfAny` only reads these from `prefill`, not from sibling `operator` keys. */
       prefill.caseStudiesDetail = caseStudiesDetail;
       prefill.ownerDiligenceQa = ownerDiligenceQa;
       normalizeOperatorSetupSelectPrefill(prefill);
+      const heroLabels = pickExplorerHeroLabelsFromMasterFields(master.fields);
+
+      const { applyPartnerIntelligenceOperatorOverlay } = await import(
+        "../lib/partner-intelligence/publish-overlay.js"
+      );
+      const overlay = await applyPartnerIntelligenceOperatorOverlay(prefill, master.id);
 
       logOperatorReadPath("third_party_operator_detail", {
         read_path: "new_base",
@@ -124,6 +221,11 @@ export default async function getThirdPartyOperatorDetail(req, res) {
 
       return res.json({
         success: true,
+        meta: {
+          readPath: "new_base",
+          footprintPortfolioSource,
+          partnerIntelligenceOverlay: overlay.applied > 0 ? overlay : undefined,
+        },
         operator: {
           id: master.id,
           fields,
@@ -132,6 +234,16 @@ export default async function getThirdPartyOperatorDetail(req, res) {
           brandProfiles: Array.isArray(brandProfiles) ? brandProfiles : [],
           representativeProperties: [],
           leadershipTeam,
+          leadershipPlatform: leadershipPlatformDetail,
+          infrastructurePlatform: infrastructurePlatformDetail,
+          engagementReporting: engagementReportingDetail,
+          engagementPlatform: engagementReportingDetail,
+          operatingPlatform: operatingPlatformDetail,
+          brandRelationships: brandRelationshipsDetail,
+          operatorExplorerMaterials,
+          explorerHeroVerification: heroLabels.explorerHeroVerification,
+          explorerHeroDataSource: heroLabels.explorerHeroDataSource,
+          censusFootprint,
           prefill,
         },
       });
@@ -166,6 +278,7 @@ export default async function getThirdPartyOperatorDetail(req, res) {
       recordId,
     });
 
+    const ctx = await fetchThirdPartyOperatorPrefillContext();
     const { prefill, caseStudies, ownerDiligenceQa, brandProfiles } = buildThirdPartyOperatorPrefillFromContext(operator, ctx);
     normalizeOperatorSetupSelectPrefill(prefill);
     const f = operator.fields || {};
@@ -222,8 +335,11 @@ export default async function getThirdPartyOperatorDetail(req, res) {
       })
       .sort((a, b) => Number(a.displayOrder || 9999) - Number(b.displayOrder || 9999));
 
+    applyLeadershipTeamToExecPrefill(prefill, leadershipTeam);
+
     return res.json({
       success: true,
+      meta: { readPath: "legacy" },
       operator: {
         id: operator.id,
         fields: f,

@@ -1,0 +1,91 @@
+{
+  "report": "operator-setup-batch-3c-servicemodels-fix-applied",
+  "generatedAt": "2026-06-02",
+  "scope": "batch_3c_serviceModelsSupported_only",
+  "filesChanged": [
+    "api/lib/operator-setup-new-base-writer.js",
+    "api/lib/operator-setup-new-base-read.js",
+    "scripts/validate-operator-setup-batch-3c-servicemodels.mjs",
+    "reports/operator-setup-batch-3c-servicemodels-validation-output.json"
+  ],
+  "mappingContractChanged": {
+    "writePath": "Canonical serviceModelsSupported is populated from primaryServiceModel when canonical value is missing.",
+    "readPath": "prefill.serviceModelsSupported is explicitly populated from canonical fields, with primaryServiceModel fallback only when canonical is absent."
+  },
+  "airtable": {
+    "table": "Operator Setup - Profile & Positioning",
+    "canonicalField": "Service Models Supported",
+    "compatibilityFieldRetained": "primaryServiceModel"
+  },
+  "keys": {
+    "uiKeyCanonical": "serviceModelsSupported",
+    "uiKeyCompatibilityRetained": "primaryServiceModel",
+    "payloadKeyCanonical": "serviceModelsSupported",
+    "payloadKeyCompatibilityRetained": "primaryServiceModel"
+  },
+  "apiWriteMappingChanged": {
+    "file": "api/lib/operator-setup-new-base-writer.js",
+    "function": "buildNewBaseTablePayloads",
+    "change": "serviceModelsSupported form mapping now coalesces from primaryServiceModel if canonical list is absent."
+  },
+  "readbackDetailConfirmed": {
+    "endpoint": "/api/intake/third-party-operators/:recordId",
+    "key": "operator.prefill.serviceModelsSupported",
+    "readPath": "new_base",
+    "confirmed": true
+  },
+  "explorerCanonicalResolutionConfirmed": {
+    "endpoint": "/api/operator-explorer/operator?operatorId=...",
+    "canonicalKeyPresent": true,
+    "confirmed": true
+  },
+  "primaryServiceModelFallbackRemains": true,
+  "fallbackOrder": {
+    "changed": false,
+    "orderConfirmed": [
+      "serviceModelsSupported",
+      "Service Models Supported",
+      "primaryServiceModel"
+    ]
+  },
+  "displayedValueChanged": false,
+  "scoringChanged": false,
+  "testsRun": [
+    "serviceModels_save_canonical_mode",
+    "serviceModels_reload_prefill_present",
+    "serviceModels_detail_readback_present",
+    "serviceModels_update_canonical_mode",
+    "serviceModels_post_update_prefill_present",
+    "serviceModels_explorer_payload_has_canonical",
+    "serviceModels_output_parity",
+    "serviceModels_fallback_order_unchanged",
+    "scoring_stability_no_change"
+  ],
+  "testResults": {
+    "ok": true,
+    "validationOutputPath": "reports/operator-setup-batch-3c-servicemodels-validation-output.json",
+    "createdRecordId": "recjGbr8A5RkDcLN9",
+    "scoringCheckNote": "deal not found; runtime scoring check skipped, scoring modules unchanged"
+  },
+  "testsNotRun": [
+    {
+      "test": "runtime scoring comparison for known deal/operator pair",
+      "reason": "No accessible deal context in this validation runtime."
+    }
+  ],
+  "remainingRisks": [
+    "Sparse records may continue to rely on fallback until canonical field is populated.",
+    "Scoring parity should be rechecked in staging with a known valid deal/operator cohort."
+  ],
+  "recommendedCommitMessage": "batch 3c: close canonical serviceModelsSupported contract gap with focused validation",
+  "outOfScopeConfirmedNotImplemented": [
+    "managementStructuresSupported changes",
+    "sparse-profile missing-data fixes",
+    "explorerProfileJson mirror behavior changes",
+    "OAS behavior changes",
+    "select/multi-select normalization",
+    "schema changes",
+    "scoring formula/weights/threshold/recommendation changes",
+    "fallback removal or alias removal"
+  ]
+}

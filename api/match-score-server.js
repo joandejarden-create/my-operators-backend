@@ -4,6 +4,13 @@
  * Accepts locationData in either Airtable field names or normalized keys (from my-deals fetchLocationRecord).
  */
 
+import {
+  MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS,
+  MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS,
+  MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS,
+} from "./schemas/deal-setup-fields.js";
+import { BRAND_MATCH_NEW_WEIGHTS } from "../lib/brand-match-scoring-weight-config.js";
+
 const BRAND_BASICS_TABLE = "Brand Setup - Brand Basics";
 const PROJECT_FIT_TABLE = "Brand Setup - Project Fit";
 /** Project Fit table field for numeric ID lookup when Brand Basics links by number (e.g. 18, 19, 20) instead of recXXX. */
@@ -29,7 +36,7 @@ const BF = {
   brandDealTerms: { minInitialTermQty: "Quantity - Typical Minimum Initial Term", minInitialTermQtyAlt: "Min Initial Term (Quantity)", performanceTestRequirement: "Performance Test Requirement", conversionMax: "Conversion - Typical max time allowed for completion" },
   brandOperationalSupport: { incentiveTypes: INCENTIVE_TYPES_FIELD, willingToNegotiate: "Willing to Negotiate Incentives", willingToNegotiateAlt: "Willing to Negotiate Incentives?" },
   locationDeal: { country: "Country", hotelChainScale: "Hotel Chain Scale", hotelServiceModel: "Hotel Service Model", totalRoomsKeys: "Total Number of Rooms/Keys", projectType: "Project Type", buildingType: "Building Type", stageOfDevelopment: "Stage of Development", preferredDealStructure: "Preferred Deal Structure", sustainability: "Sustainability" },
-  marketPerformance: { ownershipStructure: "Ownership Structure", royaltyFeeExpectations: "Royalty Fee Expectations", marketingFeeExpectations: "Marketing Fee Expectations", loyaltyFeeExpectations: "Loyalty Fee Expectations", capitalStatus: "Capital Status", fundingStatus: "Funding Status", targetInitialTerm: "Target Initial Term", performanceTestRequired: "Performance Test Required", conversionTimeline: "Conversion Timeline", preferredDealStructure: "Preferred Deal Structure" },
+  marketPerformance: { ownershipStructure: "Ownership Structure", royaltyFeeExpectations: MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS, marketingFeeExpectations: MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS, loyaltyFeeExpectations: MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS, capitalStatus: "Capital Status", fundingStatus: "Funding Status", targetInitialTerm: "Target Initial Term", performanceTestRequired: "Performance Test Required", conversionTimeline: "Conversion Timeline", preferredDealStructure: "Preferred Deal Structure" },
   strategicIntent: { preferredBrands: "Preferred Brands", softVsHardPreference: "Soft vs Hard Brand Preference", mustHavesFromBrand: "Must-Haves From Brand/Operator", incentiveTypesInterestedIn: "Incentive Types Interested In", top3DealBreakers: "Top 3 Deal Breakers" },
   contactUploads: { filterOutNoKeyMoney: "Would You Like to Filter Out Brands Without Key Money?", filterOutNoKeyMoneyAlt: "Would you like to filter out brands without key money?" },
   projectFit: { idealMin: "Min - Ideal Project Size", idealMax: "Max - Ideal Project Size", roomCountMin: "Min - Room Count", roomCountMax: "Max - Room Count" }
@@ -42,8 +49,8 @@ const WEIGHTS = {
   PROJ1: 9, PROJ2: 6, PROJ3: 3, AGMT1: 8, ESG1: 4
 };
 
-/** Match Score New: factor weights (%). Sum = 100 when all factors added. */
-const NEW_WEIGHTS = { chainScaleProximity: 10, serviceModelAlignment: 5, preferredBrand: 8, projectTypeCompatibility: 10, buildingTypeCompatibility: 5, projectStageCompatibility: 5, brandStandardsCompatibility: 10, agreementsTypeCompatibility: 10, roomRangeFitCompatibility: 10, keyMoneyWillingnessCompatibility: 12, incentivesMatchCompatibility: 5, feesToleranceCompatibility: 10 };
+/** Match Score New: factor weights (%). Sum = 100 — source: lib/brand-match-scoring-weight-config.js */
+const NEW_WEIGHTS = BRAND_MATCH_NEW_WEIGHTS;
 
 /** Get value from location (Airtable key or normalized key from my-deals). */
 function loc(locationData, airtableKey, normalizedKey) {

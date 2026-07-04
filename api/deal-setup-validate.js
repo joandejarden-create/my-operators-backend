@@ -5,13 +5,7 @@
  * - Returns validation result, sanitized payload, and (dev-only) field mapping used.
  */
 
-import {
-  LOCATION_FORM_FIELDS,
-  MARKET_PERFORMANCE_FIELD_NAMES,
-  STRATEGIC_INTENT_FORM_FIELDS,
-  CONTACT_UPLOADS_FORM_FIELDS,
-  LEASE_STRUCTURE_FORM_FIELDS,
-} from "./schemas/deal-setup-fields.js";
+import { classifyDealSetupFormField } from "./schemas/deal-setup-fields.js";
 
 const DEV = process.env.NODE_ENV !== "production" || process.env.DEBUG_DEAL_SETUP === "true";
 
@@ -55,12 +49,7 @@ export function validateDealSetupPayload(fields) {
     if (val === "" || val == null) continue;
 
     if (DEV && fieldMappingUsed) {
-      if (LOCATION_FORM_FIELDS.includes(key)) fieldMappingUsed[key] = "Location & Property";
-      else if (MARKET_PERFORMANCE_FIELD_NAMES.has(key)) fieldMappingUsed[key] = "Market - Performance";
-      else if (STRATEGIC_INTENT_FORM_FIELDS.includes(key)) fieldMappingUsed[key] = "Strategic Intent";
-      else if (CONTACT_UPLOADS_FORM_FIELDS.includes(key)) fieldMappingUsed[key] = "Contact & Uploads";
-      else if (LEASE_STRUCTURE_FORM_FIELDS.includes(key)) fieldMappingUsed[key] = "Lease Structure";
-      else fieldMappingUsed[key] = "Deals";
+      fieldMappingUsed[key] = classifyDealSetupFormField(key);
     }
 
     if (key === "Current Franchise/Management Contract End Date" && typeof val === "string") {

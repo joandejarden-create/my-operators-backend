@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en" data-brand-explorer-gold-defer="1" data-brand-explorer-unified-tabs="1">
+<head>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}var p=new URLSearchParams(window.location.search||'');if(p.get('exportPdf')==='1'||p.get('exportPdf')==='true'){document.documentElement.classList.add('be-export-pdf');if(p.get('spacious')!=='1'&&p.get('spacious')!=='true'){document.documentElement.classList.add('be-export-pdf--compact');}var l=document.createElement('link');l.rel='stylesheet';l.href='/css/brand-explorer-export-compact.css';document.head.appendChild(l);}})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Explorer — Dealality</title>
+    <link rel="stylesheet" href="/css/dealality-explorer-platform.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <!-- List / filters / cards: brand-explorer-atelier-list-parity.css -->
+    <link rel="stylesheet" href="/css/brand-explorer-atelier-list-parity.css?v=2">
+    <!-- Detail tabs + panels: operator gold surface (regenerate: node scripts/build-brand-explorer-gold-surface-css.cjs) -->
+    <link rel="stylesheet" href="/css/brand-explorer-gold-surface.css">
+    <link rel="stylesheet" href="/css/brand-explorer-atelier-oe-panels.css">
+    <style>
+        /* Tokens aligned with brand-education-atelier-north.html */
+        html[data-brand-explorer-unified-tabs="1"] {
+            color-scheme: dark;
+            --panel-soft: #0c132c;
+            --explorer-tab-border: rgba(255, 255, 255, 0.1);
+            --explorer-icon-ring: rgba(255, 255, 255, 0.12);
+            --explorer-statement-size: 0.8125rem;
+            --explorer-statement-color: #d7e4fa;
+            --explorer-statement-lh: 1.5;
+            --explorer-statement-fw: 400;
+            --hero-tag: #8fc3ff;
+            --muted2: #7e89ac;
+            --text: #ffffff;
+            --neutral--200: #d9e1fa;
+            --font: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            --serif: "Instrument Serif", Georgia, serif;
+            --radius: 10px;
+            --shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+            --body-dim: #dbe6f8;
+        }
+        html[data-brand-explorer-unified-tabs="1"] body {
+            font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+        .be-combined-wrap .dashboard-main-section { margin-left: 0 !important; }
+        /* Scope: no .page-wrapper sidebar — center explorer column */
+        .be-combined-wrap { max-width: 100%; margin: 0; padding: 0; }
+        /* Atelier list CSS caps right-column selects at 115px — too tight for long labels */
+        .be-combined-wrap .filters-section-right .filter-group:has(.filter-select) {
+            max-width: min(260px, 28vw);
+            min-width: 168px;
+            flex: 1 1 168px;
+        }
+        .be-combined-wrap .results-toolbar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .be-combined-wrap .results-toolbar .results-count {
+            margin-bottom: 0;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .be-combined-wrap .results-toolbar-sort {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+        .be-combined-wrap .results-toolbar-sort .sort-select {
+            min-width: 150px;
+            max-width: min(220px, 28vw);
+        }
+        .be-combined-wrap .be-brand-save-btn--saved {
+            border-color: var(--accent--primary-1, #6c72ff);
+            color: var(--accent--primary-1, #8fc3ff);
+            background: rgba(108, 114, 255, 0.12);
+        }
+        /* Card favorite star — partner-directory pattern */
+        .be-combined-wrap .brand-card .favorite-star {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            z-index: 10;
+            border: none;
+            padding: 0;
+        }
+        .be-combined-wrap .brand-card .favorite-star:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: scale(1.08);
+        }
+        .be-combined-wrap .brand-card .favorite-star svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: var(--neutral--500, #7e89ac);
+            stroke-width: 2;
+            transition: fill 0.2s ease, stroke 0.2s ease;
+        }
+        .be-combined-wrap .brand-card .favorite-star.favorited svg {
+            fill: var(--accent--primary-1, #6c72ff);
+            stroke: var(--accent--primary-1, #6c72ff);
+        }
+        .be-combined-toolbar-primary {
+            font-size: 13px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 0.6px solid #6c72ff;
+            background: #6c72ff;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .be-combined-toolbar-primary:hover {
+            filter: brightness(1.08);
+        }
+        #beCombinedDetailView {
+            padding: 24px 30px 40px;
+            max-width: 100%;
+            font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--neutral--100, #ffffff);
+        }
+        #beCombinedDetailView a:not(.btn):not(.section-nav-item) {
+            color: #8fc3ff;
+            text-decoration: none;
+        }
+        #beCombinedDetailView a:not(.btn):not(.section-nav-item):hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        #beCombinedDetailView .be-detail-top {
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px;
+        }
+        #beCombinedDetailView .breadcrumb { font-size: 12px; color: #7e89ac; margin-top: 8px; margin-bottom: 12px; }
+        #beCombinedDetailView .breadcrumb a { color: #aeb9e1; text-decoration: none; }
+        #beCombinedDetailView .breadcrumb a:hover { color: #fff; }
+        /* Brand profile load: same wave + progress bar as Atelier (brand-detail-popup-loading) */
+        #brandLoading.be-detail-loading {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+            margin-bottom: 16px;
+            padding: 32px 24px;
+            border-radius: 12px;
+            border: 0.6px solid rgba(255, 255, 255, 0.1);
+            background: rgba(5, 12, 34, 0.72);
+            backdrop-filter: blur(2px);
+        }
+        #brandLoading.be-detail-loading .loading {
+            position: static;
+            transform: none;
+            margin: 0;
+            z-index: auto;
+        }
+        #brandError {
+            display: none;
+            padding: 20px;
+            border: 0.6px solid #dc2b2b;
+            border-radius: 10px;
+            background: rgba(220, 43, 43, 0.08);
+            color: #ffb4b8;
+            margin-bottom: 16px;
+        }
+        #brandRoot { max-width: 1360px; margin: 0 auto; }
+        .hidden { display: none !important; }
+        .be-atelier-explorer { margin-top: 8px; max-width: 1360px; }
+        .be-atelier-tier-label {
+            font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7e89ac;
+            margin: 0 0 10px; font-weight: 600;
+        }
+        .be-combined-gold-divider {
+            margin: 28px 0 12px; border: 0; border-top: 0.6px solid #37446b;
+        }
+        .be-combined-gold-kicker {
+            margin: 0 0 14px; font-size: 12px; color: #7e89ac; letter-spacing: 0.04em;
+        }
+        .be-atelier-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+        .be-atelier-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--hero-tag, var(--accent--primary-1, #8fc3ff));
+            background: var(--accent-soft, rgba(108, 114, 255, 0.14));
+            border: 0.6px solid var(--accent-line, rgba(108, 114, 255, 0.45));
+            border-radius: 6px;
+        }
+        .be-atelier-metrics-row {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 22px;
+        }
+        .be-atelier-meta-card {
+            border: 0.6px solid var(--border, #37446b);
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: var(--panel, #101935);
+        }
+        .be-atelier-meta-label {
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--muted, #aeb9e1);
+            margin-bottom: 6px;
+            font-weight: 400;
+        }
+        .be-atelier-meta-value { font-size: 15px; font-weight: 600; color: var(--neutral--100, #ffffff); line-height: 1.35; }
+        .be-atelier-section { margin-bottom: 26px; }
+        .be-atelier-section--muted .be-atelier-placeholder { margin-top: 0; }
+        .be-atelier-section-title {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: var(--neutral--100, #ffffff);
+            margin: 0 0 12px;
+        }
+        .be-atelier-snapshot-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;
+        }
+        .be-atelier-cluster {
+            border: 0.6px solid var(--border, #37446b);
+            border-radius: 10px;
+            padding: 11px 14px;
+            background: var(--panel, #101935);
+        }
+        .be-atelier-cluster-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted, #aeb9e1);
+            margin: 0 0 10px;
+        }
+        .be-atelier-kv { margin: 0; }
+        .be-atelier-kv dt {
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--muted, #aeb9e1);
+            margin-top: 10px;
+            font-weight: 400;
+        }
+        .be-atelier-kv dt:first-child { margin-top: 0; }
+        .be-atelier-kv dd {
+            margin: 4px 0 0;
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            font-weight: var(--explorer-statement-fw, 400);
+            color: var(--explorer-statement-color, #d7e4fa);
+            line-height: var(--explorer-statement-lh, 1.5);
+        }
+        .be-atelier-position-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+        .be-atelier-position-card {
+            border: 0.6px solid var(--border, #37446b);
+            border-radius: 10px;
+            padding: 14px 16px;
+            background: var(--panel, #101935);
+        }
+        .be-atelier-position-card h3 {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted, #aeb9e1);
+            margin: 0 0 8px;
+        }
+        .be-atelier-position-card p {
+            margin: 0;
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            font-weight: var(--explorer-statement-fw, 400);
+            color: var(--explorer-statement-color, #d7e4fa);
+            line-height: var(--explorer-statement-lh, 1.5);
+        }
+        .be-atelier-bullets {
+            margin: 0;
+            padding-left: 1.15rem;
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            font-weight: var(--explorer-statement-fw, 400);
+            color: var(--explorer-statement-color, #d7e4fa);
+            line-height: var(--explorer-statement-lh, 1.5);
+        }
+        .be-atelier-pillar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+        .be-atelier-pillar-card {
+            border: 0.6px solid var(--border, #37446b);
+            border-radius: 10px;
+            padding: 12px;
+            background: var(--panel, #101935);
+        }
+        .be-atelier-pillar-card p {
+            margin: 0;
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            font-weight: var(--explorer-statement-fw, 400);
+            color: var(--explorer-statement-color, #d7e4fa);
+            line-height: var(--explorer-statement-lh, 1.5);
+        }
+        .be-atelier-placeholder {
+            color: var(--neutral--500, #7e89ac);
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            line-height: var(--explorer-statement-lh, 1.5);
+            margin: 0 0 10px;
+        }
+        .be-atelier-doc-hint { font-size: 12px; color: var(--neutral--500, #7e89ac); line-height: 1.45; margin: 12px 0 0; }
+        .be-atelier-doc-hint code { font-size: 11px; color: #7e89ac; }
+        @keyframes be-atelier-tab-fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .be-atelier-tab-panel {
+            display: none;
+            padding-top: 8px;
+            color: var(--explorer-statement-color, #d7e4fa);
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            line-height: var(--explorer-statement-lh, 1.5);
+            font-weight: var(--explorer-statement-fw, 400);
+            animation: be-atelier-tab-fadeIn 0.2s ease;
+        }
+        .be-atelier-tab-panel.active { display: block; }
+        .be-atelier-tab-panel .be-atelier-oe h3,
+        .be-atelier-tab-panel .be-atelier-oe .scenario-card h4,
+        .be-atelier-tab-panel .be-atelier-oe .case-study-card h4,
+        .be-atelier-tab-panel .be-atelier-oe .property-example-card__titles h4,
+        .be-atelier-tab-panel .be-atelier-oe .info-card strong {
+            color: var(--neutral--100, #ffffff);
+        }
+        .be-atelier-empty { color: var(--neutral--500, #7e89ac); font-style: normal; }
+        .be-airtable-path {
+            display: block;
+            margin-top: 6px;
+            font-size: 10px;
+            font-family: ui-monospace, Consolas, monospace;
+            color: #5c678a;
+            line-height: 1.35;
+            word-break: break-all;
+        }
+        .be-atelier-tab-empty-message {
+            margin: 0;
+            padding: 16px 0 8px;
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            color: var(--neutral--500, #7e89ac);
+            line-height: 1.5;
+            font-style: normal;
+        }
+        .be-atelier-chip--muted { opacity: 0.75; border-style: dashed; }
+        .be-atelier-long-block {
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            font-weight: var(--explorer-statement-fw, 400);
+            color: var(--explorer-statement-color, #d7e4fa);
+            line-height: var(--explorer-statement-lh, 1.5);
+        }
+        .be-atelier-mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            color: var(--explorer-statement-color, #d7e4fa);
+        }
+        .be-atelier-mini-table th,
+        .be-atelier-mini-table td {
+            border: 0.6px solid var(--border, #37446b);
+            padding: 8px 10px;
+            text-align: left;
+        }
+        .be-atelier-mini-table thead th {
+            background: var(--panel, #101935);
+            color: var(--muted, #aeb9e1);
+            font-weight: 600;
+        }
+        .be-atelier-material-logo { max-height: 72px; max-width: 220px; object-fit: contain; margin-top: 8px; }
+        html[data-brand-explorer-unified-tabs="1"] #brandTabs,
+        html[data-brand-explorer-unified-tabs="1"] #brandPanels,
+        html[data-brand-explorer-unified-tabs="1"] .be-combined-gold-divider,
+        html[data-brand-explorer-unified-tabs="1"] .be-combined-gold-kicker {
+            display: none !important;
+        }
+        .be-atelier-gold-embed {
+            padding-top: 4px;
+            color: var(--explorer-statement-color, #d7e4fa);
+            font-size: var(--explorer-statement-size, 0.8125rem);
+            line-height: var(--explorer-statement-lh, 1.5);
+        }
+        html[data-brand-explorer-unified-tabs="1"] .be-atelier-tier-label {
+            display: none !important;
+        }
+        .be-combined-popup-hero-mount {
+            flex-shrink: 0;
+            overflow: visible;
+            margin-bottom: 8px;
+        }
+        #beCombinedBrandDetailPopup .be-combined-presentation-hero.brand-hero {
+            margin-bottom: 10px;
+            padding: 18px 20px;
+        }
+        /* Atelier North–style presentation hero (live Brand Setup data) */
+        .be-combined-presentation-hero.brand-hero {
+            position: relative;
+            font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: rgba(108, 114, 255, 0.08);
+            border: 0.6px solid var(--border, #37446b);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            overflow: visible;
+            line-height: 1.4;
+        }
+        .be-combined-presentation-hero.brand-hero::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 12px 0 0 12px;
+            background: var(--hero-stripe-bg, var(--accent--primary-1, #6c72ff));
+            pointer-events: none;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__title-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: start;
+            gap: 12px 16px;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 900px) {
+            .be-combined-presentation-hero.brand-hero .brand-hero__title-row { grid-template-columns: 1fr; }
+            .be-combined-presentation-hero.brand-hero .brand-hero__actions { justify-self: start; width: 100%; }
+            .be-combined-presentation-hero.brand-hero .brand-hero__actions .btn-row { justify-content: flex-start; }
+            .be-combined-presentation-hero.brand-hero .brand-hero__actions .tag-chip-row { justify-content: flex-start; }
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__logo {
+            width: auto;
+            height: 38px;
+            max-width: 140px;
+            object-fit: contain;
+            display: block;
+            flex-shrink: 0;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__logo--initial {
+            width: 48px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #aeb9e1;
+            border: 0.6px solid #37446b;
+            border-radius: 8px;
+            background: rgba(16, 25, 53, 0.5);
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__name-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 14px;
+            margin: 0 0 6px 0;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__title-block h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--neutral--100, #ffffff);
+            line-height: 1.15;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__info-strip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border: 0.6px solid rgba(87, 195, 255, 0.45);
+            border-radius: 999px;
+            background: rgba(8, 15, 37, 0.92);
+            color: #9ecbff;
+            max-width: min(100%, 520px);
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1.35;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__info-strip-icon {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            color: #57c3ff;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__mock-warning {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border: 1px solid rgba(245, 158, 11, 0.65);
+            border-radius: 999px;
+            background: rgba(8, 15, 37, 0.92);
+            color: #f3d08a;
+            max-width: min(100%, 520px);
+            box-sizing: border-box;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__mock-warning-icon {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            color: #f59e0b;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__mock-warning-text {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            line-height: 1.35;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__mock-warning-text strong { font-weight: 700; }
+        html.be-export-pdf .be-export-pdf-caveat-mount {
+            display: block;
+            margin: 0 0 14px;
+        }
+        html.be-export-pdf .be-export-pdf-caveat-wrap {
+            padding: 10px 14px;
+            border: 2px solid #facc15;
+            border-radius: 8px;
+            background: rgba(8, 15, 37, 0.85);
+            box-sizing: border-box;
+        }
+        html.be-export-pdf .be-export-pdf-caveat-wrap__text {
+            margin: 0;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            line-height: 1.45;
+            color: #fde047;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__parent {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--muted, #aeb9e1);
+            margin: 0 0 6px;
+            line-height: 1.4;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__verified-line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px 10px;
+        }
+        .be-combined-presentation-hero.brand-hero .tag-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 8px 0 0;
+        }
+        .be-combined-presentation-hero.brand-hero .tag-chip,
+        #brandRoot .brand-hero .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--hero-tag, var(--accent--primary-1, #8fc3ff));
+            background: var(--accent-soft, rgba(108, 114, 255, 0.14));
+            border: 0.6px solid var(--accent-line, rgba(108, 114, 255, 0.45));
+            border-radius: 6px;
+        }
+        .be-combined-presentation-hero.brand-hero .badge-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent--primary-1, #6c72ff);
+        }
+        .be-combined-presentation-hero.brand-hero .badge-verified svg { width: 14px; height: 14px; }
+        .be-combined-presentation-hero.brand-hero .meta-muted { font-size: 0.75rem; color: var(--neutral--500, #7e89ac); margin-left: 0; }
+        .be-combined-presentation-hero.brand-hero .brand-hero__position {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #8fc3ff;
+            margin: 0 0 10px;
+            line-height: 1.4;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__summary {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #d7e4fa;
+            max-width: 1100px;
+            margin: 0;
+            line-height: 1.45;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-end;
+            justify-self: end;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__actions .tag-chip-row {
+            margin: 0;
+            justify-content: flex-end;
+            max-width: min(100%, 440px);
+        }
+        .be-combined-presentation-hero.brand-hero .btn-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+        .be-combined-presentation-hero.brand-hero .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 0.6px solid var(--border, #37446b);
+            background: var(--panel, #101935);
+            color: #fff;
+            font-family: inherit;
+            text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .be-combined-presentation-hero.brand-hero a.btn:hover { background: #212c4d; border-color: #7e89ac; }
+        .be-combined-presentation-hero.brand-hero .btn--primary {
+            background: #6c72ff;
+            color: #fff;
+            border-color: #6c72ff;
+        }
+        .be-combined-presentation-hero.brand-hero .btn--primary:hover:not(:disabled) { filter: brightness(1.08); }
+        .be-combined-presentation-hero.brand-hero .btn--primary:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        .be-combined-presentation-hero.brand-hero .brand-hero__meta {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 10px;
+        }
+        @media (max-width: 1100px) {
+            .be-combined-presentation-hero.brand-hero .brand-hero__meta { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 640px) {
+            .be-combined-presentation-hero.brand-hero .brand-hero__meta { grid-template-columns: 1fr; }
+        }
+        .be-combined-presentation-hero.brand-hero .meta-card {
+            background: var(--panel, #101935);
+            border: 0.6px solid var(--border, #37446b);
+            border-radius: 10px;
+            padding: 10px;
+            min-height: 72px;
+        }
+        .be-combined-presentation-hero.brand-hero .meta-card .label {
+            color: var(--muted, #aeb9e1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 11px;
+            margin: 0 0 6px 0;
+            font-weight: 400;
+        }
+        .be-combined-presentation-hero.brand-hero .meta-card .value {
+            min-height: 0;
+            color: var(--neutral--100, #ffffff);
+            word-break: break-word;
+        }
+        .be-combined-presentation-hero.brand-hero .meta-card .value .meta-card__value-clamp {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.38;
+        }
+        .be-combined-presentation-hero.brand-hero .meta-card .value .meta-card__value-clamp--empty {
+            display: block;
+            -webkit-line-clamp: unset;
+            overflow: visible;
+        }
+        /* Unified tab strip — parity with brand-education-atelier-north.html (.tab-system .tabs-section) */
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav],
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] {
+            position: relative;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+            justify-content: stretch;
+            gap: 0;
+            margin-bottom: 24px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            background-color: var(--neutral--800, #080f25);
+            border-bottom: 1px solid var(--explorer-tab-border, rgba(255, 255, 255, 0.1));
+            padding: 8px 0 10px;
+            margin-top: -1px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            isolation: isolate;
+            box-shadow: 0 10px 24px -8px rgba(8, 15, 37, 0.95);
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav]::before,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav]::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 100%;
+            height: 120vh;
+            background-color: var(--neutral--800, #080f25);
+            pointer-events: none;
+            z-index: -1;
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav]::-webkit-scrollbar,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav]::-webkit-scrollbar {
+            display: none;
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item {
+            flex: 1 1 0;
+            min-width: 0;
+            width: auto;
+            max-width: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 5px;
+            cursor: pointer;
+            color: var(--neutral--400, #aeb9e1);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 9px;
+            font-weight: 600;
+            border: none;
+            background: none;
+            font-family: inherit;
+            padding: 4px 2px 10px;
+            transition: color 0.2s;
+            position: relative;
+            box-sizing: border-box;
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-icon,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--explorer-icon-ring, rgba(255, 255, 255, 0.12));
+            color: var(--neutral--400, #aeb9e1);
+            background: transparent;
+            transition: border-color 0.2s, color 0.2s;
+            flex-shrink: 0;
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-icon svg,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item:hover,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item:hover {
+            color: var(--neutral--100, #ffffff);
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item:hover .section-nav-icon,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item:hover .section-nav-icon {
+            color: var(--neutral--100, #ffffff);
+            border-color: rgba(255, 255, 255, 0.28);
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active {
+            color: var(--accent--primary-1, #6c72ff);
+            background: transparent;
+            box-shadow: none;
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active::after,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active::after {
+            display: none;
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active .section-nav-icon,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item.active .section-nav-icon {
+            border-color: var(--accent--primary-1, #6c72ff);
+            border-width: 2px;
+            color: var(--accent--primary-1, #6c72ff);
+        }
+        #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-label,
+        #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-label {
+            text-align: center;
+            line-height: 1.25;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            margin: 0;
+            padding: 0 1px;
+            box-sizing: border-box;
+            white-space: normal;
+            display: block;
+            font-size: inherit;
+            font-weight: inherit;
+            letter-spacing: inherit;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            hyphens: auto;
+            max-height: none;
+            overflow: visible;
+        }
+        @media (min-width: 1280px) {
+            #beAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item,
+            #beCombinedPopupAtelierRoot[data-be-atelier-root] > nav.tabs-section[data-be-atelier-nav] .section-nav-item {
+                font-size: 10px;
+                letter-spacing: 0.05em;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+        }
+        /* Directory list: flex tab rail (atelier-list-parity) — not gold-surface 10-col grid */
+        #beCombinedListView .brand-explorer-container > nav.tabs-section {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 0;
+            width: auto;
+            max-width: 100%;
+            grid-template-columns: unset;
+            background-color: var(--neutral--800, #080f25);
+            border-bottom: 1px solid var(--explorer-tab-border, rgba(255, 255, 255, 0.1));
+            padding: 0 0 12px;
+            margin-bottom: 18px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        #beCombinedListView .brand-explorer-container > nav.tabs-section::-webkit-scrollbar {
+            display: none;
+        }
+        #beCombinedListView .brand-explorer-container > nav.tabs-section .section-nav-item {
+            min-width: 90px;
+            width: auto;
+            flex: 0 0 auto;
+            padding: 10px 12px;
+            gap: 4px;
+        }
+        #beCombinedListView .brand-explorer-container > nav.tabs-section .section-nav-label {
+            width: auto;
+            max-width: none;
+            white-space: nowrap;
+        }
+        #beCombinedListView .brand-explorer-container > nav.tabs-section .section-nav-icon {
+            border: 1px solid var(--explorer-icon-ring, rgba(255, 255, 255, 0.12));
+            color: var(--neutral--400, #aeb9e1);
+        }
+        #beCombinedListView .brand-explorer-container > nav.tabs-section .section-nav-item:hover .section-nav-icon {
+            border-color: rgba(255, 255, 255, 0.28);
+            color: var(--neutral--100, #ffffff);
+        }
+        #beCombinedListView .brand-explorer-container > nav.tabs-section .section-nav-item.active .section-nav-icon {
+            border-color: var(--accent--primary-1, #6c72ff);
+            border-width: 2px;
+            color: var(--accent--primary-1, #6c72ff);
+        }
+        /* Whole-page scroll (hero scrolls away); tabs stick flush to scroll top with opaque cover. */
+        .be-atelier-root--popup {
+            overflow: visible;
+            text-align: left;
+            width: 100%;
+        }
+        .be-combined-popup-fallback-inner {
+            width: 100%;
+            padding: 44px 24px 0 24px;
+            box-sizing: border-box;
+        }
+        /* Modal must sit above app shell / any explorer stacking contexts */
+        #beCombinedBrandDetailPopup {
+            position: fixed;
+            inset: 0;
+            z-index: 200000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .be-combined-brand-popup-fallback {
+            position: absolute;
+            inset: 0;
+            z-index: 9998;
+            display: none;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            gap: 0;
+            padding: 0 16px 20px 16px;
+            text-align: left;
+            font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--explorer-statement-color, #d7e4fa);
+            background: var(--neutral--800, #080f25);
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-gutter: stable;
+        }
+        .be-combined-brand-popup-fallback:not(.hidden) {
+            display: block;
+        }
+        .be-combined-brand-popup-fallback .be-combined-popup-atelier-error {
+            margin: 0;
+            text-align: center;
+            font-size: 13px;
+            color: #f5a623;
+        }
+        /* PDF export mode (?exportPdf=1) — all tabs visible, color-preserving print */
+        html.be-export-pdf body {
+            background: #080f25;
+        }
+        html.be-export-pdf #beCombinedListView {
+            display: none !important;
+        }
+        html.be-export-pdf #beCombinedDetailView,
+        html.be-export-pdf #beCombinedDetailView.hidden {
+            display: block !important;
+        }
+        html.be-export-pdf .be-detail-top,
+        html.be-export-pdf .breadcrumb,
+        html.be-export-pdf .be-combined-gold-divider,
+        html.be-export-pdf .be-combined-gold-kicker,
+        html.be-export-pdf #brandTabs,
+        html.be-export-pdf #brandPanels,
+        html.be-export-pdf .be-atelier-tier-label {
+            display: none !important;
+        }
+        html.be-export-pdf [data-be-atelier-nav][hidden] {
+            display: none !important;
+        }
+        html.be-export-pdf:not(.be-export-pdf--compact) .be-atelier-tab-panel {
+            display: block !important;
+            page-break-before: always;
+            break-before: page;
+            padding-top: 20px;
+        }
+        html.be-export-pdf:not(.be-export-pdf--compact) .be-atelier-tab-panel:first-of-type {
+            page-break-before: auto;
+            break-before: auto;
+        }
+        html.be-export-pdf.be-export-pdf--compact .be-atelier-tab-panel {
+            display: block !important;
+            padding-top: 12px;
+        }
+        html.be-export-pdf .be-export-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin: 0 0 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #6c72ff;
+        }
+        @media print {
+            html.be-export-pdf,
+            html.be-export-pdf body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            html.be-export-pdf #brandRoot,
+            html.be-export-pdf .be-atelier-tab-panel,
+            html.be-export-pdf .brand-hero,
+            html.be-export-pdf .scenario-card,
+            html.be-export-pdf .meta-card,
+            html.be-export-pdf .explorer-detail-card {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="be-combined-wrap">
+        <div id="beCombinedListView">
+            <div class="dashboard-main-section" style="margin-left:0">
+                <div class="brand-explorer-container">
+                    <div class="brand-explorer__header">
+                        <div class="brand-explorer-title-container">
+                            <h1>Brand Explorer</h1>
+                            <p>Brand Explorer helps owners and deal teams discover brands that fit a project, compare them on structured criteria, and review diligence-ready profiles—so you can shortlist with confidence and move to introduction.</p>
+                        </div>
+                    </div>
+
+                    <nav class="tabs-section" aria-label="Brand Explorer sections">
+                        <button type="button" class="section-nav-item active" data-tab="brands">
+                            <div class="section-nav-icon" title="Brands"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+                            <span class="section-nav-label">Brands</span>
+                            <span class="tab-count" id="brandsTabCount">0</span>
+                        </button>
+                        <button type="button" class="section-nav-item" data-tab="favorites">
+                            <div class="section-nav-icon" title="Favorites"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+                            <span class="section-nav-label">Favorites</span>
+                            <span class="tab-count" id="favoritesTabCount">0</span>
+                        </button>
+                    </nav>
+
+                    <div class="filters-section" id="filtersSection">
+                        <div class="filters-section-middle">
+                            <div class="filter-group filter-group-search">
+                                <label class="filter-label">Search</label>
+                                <input type="text" class="filter-search-input" id="searchInput" placeholder="Search by brand name, parent company...">
+                            </div>
+                        </div>
+                        <div class="filters-section-right">
+                            <div class="filter-group">
+                                <label class="filter-label">Parent Company</label>
+                                <select class="filter-select" id="parentCompanyFilter"><option value="">All Companies</option></select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Chain Scale</label>
+                                <select class="filter-select" id="chainScaleFilter"><option value="">All Scales</option></select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Brand Model</label>
+                                <select class="filter-select" id="brandModelFilter"><option value="">All</option></select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Hotel Service Model</label>
+                                <select class="filter-select" id="serviceModelFilter"><option value="">All Models</option></select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Brand Architecture</label>
+                                <select class="filter-select" id="architectureFilter"><option value="">All</option></select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Region Offered</label>
+                                <select class="filter-select" id="regionOfferedFilter"><option value="">All Regions</option></select>
+                            </div>
+                            <div class="filter-group filter-group-reset">
+                                <label class="filter-label">&nbsp;</label>
+                                <button type="button" class="btn-clear" id="resetFiltersBtn">Reset View<span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chain-scale-legend" id="chainScaleLegend">
+                        <span>Chain Scale</span>
+                        <button type="button" class="chain-scale-legend-item" data-scale="all" id="chainScaleQuickAll">All</button>
+                        <button type="button" class="chain-scale-legend-item" data-scale="luxury"><div class="chain-scale-legend-swatch" style="background:#d4af37;"></div><span class="chain-scale-legend-label">Luxury</span></button>
+                        <button type="button" class="chain-scale-legend-item" data-scale="upper upscale"><div class="chain-scale-legend-swatch" style="background:#9b59b6;"></div><span class="chain-scale-legend-label">Upper Upscale</span></button>
+                        <button type="button" class="chain-scale-legend-item" data-scale="upscale"><div class="chain-scale-legend-swatch" style="background:#3498db;"></div><span class="chain-scale-legend-label">Upscale</span></button>
+                        <button type="button" class="chain-scale-legend-item" data-scale="upper midscale"><div class="chain-scale-legend-swatch" style="background:#2ecc71;"></div><span class="chain-scale-legend-label">Upper Midscale</span></button>
+                        <button type="button" class="chain-scale-legend-item" data-scale="midscale"><div class="chain-scale-legend-swatch" style="background:#1abc9c;"></div><span class="chain-scale-legend-label">Midscale</span></button>
+                        <button type="button" class="chain-scale-legend-item" data-scale="economy"><div class="chain-scale-legend-swatch" style="background:#e67e22;"></div><span class="chain-scale-legend-label">Economy</span></button>
+                    </div>
+
+                    <div class="results-toolbar">
+                        <div class="results-count" id="resultsCount">Showing <strong>0</strong> of <strong>0</strong> brands</div>
+                        <div class="results-toolbar-sort">
+                            <button type="button" class="sort-icon" id="sortIconBtn" title="Toggle sort direction">⇅</button>
+                            <div class="filter-group filter-group-sort">
+                                <select class="filter-select sort-select" id="sortSelect" aria-label="Sort brands">
+                                    <option value="name-asc">Name (A-Z)</option>
+                                    <option value="name-desc">Name (Z-A)</option>
+                                    <option value="parent-asc">Parent Company (A-Z)</option>
+                                    <option value="parent-desc">Parent Company (Z-A)</option>
+                                    <option value="chainScale-asc">Chain Scale (Luxury → Economy)</option>
+                                    <option value="chainScale-desc">Chain Scale (Economy → Luxury)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="loading dealality-wave-loader hidden" id="loadingState" role="status" aria-live="polite">
+                        <div class="loading-content">
+                            <div class="wave-container">
+                                <div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div>
+                                <div class="wave-particles">
+                                    <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="loading-text-main">Loading Brands…</div>
+                            </div>
+                        </div>
+                        <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                    </div>
+
+                    <div class="results-grid hidden" id="resultsList"></div>
+                    <div class="empty-state hidden" id="emptyState">
+                        <h3>No brands found</h3>
+                        <p>No brands match these filters. Clear filters or try a different search term.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="beCombinedDetailView" class="hidden">
+            <div class="be-detail-top">
+                <button type="button" id="beCombinedBackBtn">← Back to directory</button>
+                <a id="beCombinedBrandSetupLink" href="/brand-setup" class="be-combined-toolbar-primary">Edit in Brand Setup</a>
+                <a id="beCombinedExportPdfLink" href="#" class="be-combined-toolbar-primary be-combined-export-pdf-link" hidden>Export PDF</a>
+                <a href="/brand-library-compare">Compare brands</a>
+            </div>
+            <div id="brandLoading" class="be-detail-loading" style="display:none" aria-live="polite">
+                <div class="loading dealality-wave-loader">
+                    <div class="loading-content">
+                        <div class="wave-container">
+                            <div class="wave wave-1"></div>
+                            <div class="wave wave-2"></div>
+                            <div class="wave wave-3"></div>
+                            <div class="wave-particles">
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="loading-text-main">Loading Brand Profile…</div>
+                            <div class="loading-text-time">Waiting for Live Brand Data…</div>
+                        </div>
+                    </div>
+                    <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                </div>
+            </div>
+            <div id="brandError">
+                <strong>Could not load brand.</strong>
+                <p id="brandErrorMessage" style="margin-top:8px"></p>
+            </div>
+            <div id="brandRoot" style="display:none">
+                <div id="beExportPdfCaveatMount" class="be-export-pdf-caveat-mount" hidden></div>
+                <div id="heroMount"></div>
+                <div class="breadcrumb">
+                    <a href="#" id="beCombinedBreadcrumbList">Brand Explorer</a>
+                    <span> › </span>
+                    <span id="breadcrumbBrandName">Brand</span>
+                </div>
+                <div id="beAtelierExplorer" class="be-atelier-explorer">
+                    <p class="be-atelier-tier-label">Brand explorer presentation</p>
+                    <div class="be-atelier-root" id="beAtelierRoot" data-be-atelier-root>
+                        <nav class="tabs-section" id="beAtelierTabs" data-be-atelier-nav aria-label="Brand explorer and Brand Setup tabs"></nav>
+                        <div id="beAtelierPanels" data-be-atelier-panels></div>
+                    </div>
+                </div>
+                <hr class="be-combined-gold-divider" />
+                <p class="be-combined-gold-kicker">Structured profile &amp; diligence (Brand Setup)</p>
+                <nav class="tabs-section" id="brandTabs" aria-label="Brand Setup sections"></nav>
+                <div id="brandPanels"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="brand-detail-popup" id="beCombinedBrandDetailPopup" style="display: none;" aria-hidden="true">
+        <div class="brand-detail-popup-overlay" id="beCombinedBrandDetailPopupOverlay"></div>
+        <div class="brand-detail-popup-panel" role="dialog" aria-modal="true" aria-label="Brand profile">
+            <button type="button" class="brand-detail-popup-close" id="beCombinedBrandDetailPopupClose" aria-label="Close">&times;</button>
+            <div class="brand-detail-popup-loading" id="beCombinedBrandDetailPopupLoading" aria-live="polite">
+                <div class="loading dealality-wave-loader dealality-wave-loader--fixed">
+                    <div class="loading-content">
+                        <div class="wave-container">
+                            <div class="wave wave-1"></div>
+                            <div class="wave wave-2"></div>
+                            <div class="wave wave-3"></div>
+                            <div class="wave-particles">
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="loading-text-main">Loading Brand…</div>
+                        </div>
+                    </div>
+                    <div class="loading-progress"><div class="loading-progress-bar"></div></div>
+                </div>
+            </div>
+            <iframe class="brand-detail-popup-frame" id="beCombinedBrandDetailPopupFrame" title="Brand profile" src="about:blank"></iframe>
+            <div id="beCombinedBrandPopupFallback" class="be-combined-brand-popup-fallback hidden" aria-hidden="true">
+                <div class="be-combined-popup-fallback-inner">
+                    <div id="beCombinedPopupHeroMount" class="be-combined-popup-hero-mount"></div>
+                    <p id="beCombinedPopupAtelierError" class="be-combined-popup-atelier-error hidden" role="alert"></p>
+                    <div class="be-atelier-root be-atelier-root--popup" id="beCombinedPopupAtelierRoot" data-be-atelier-root hidden>
+                        <nav class="tabs-section" id="beCombinedPopupAtelierTabs" data-be-atelier-nav aria-label="Brand explorer and Brand Setup tabs"></nav>
+                        <div id="beCombinedPopupAtelierPanels" data-be-atelier-panels></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case study summary (Brand Materials) — same IA as brand-education-voco; opened by View Summary -->
+    <div
+        class="be-case-modal-overlay"
+        id="beCaseStudyModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="beCsModalTitle"
+    >
+        <div class="be-case-modal">
+            <h3 class="be-case-modal__title" id="beCsModalTitle">Case summary</h3>
+            <div class="be-case-modal__inner" id="beCsModalInner"></div>
+            <div class="be-case-modal__actions">
+                <button type="button" class="btn" id="beCsModalClose">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/brand-explorer-favorites.js" defer></script>
+    <script src="/js/brand-explorer-brand-fetch.js" defer></script>
+    <script src="/js/brand-explorer-gold-detail.js" defer></script>
+    <script src="/js/brand-explorer-census-metrics.js"></script>
+    <script src="/js/external-owner-copy.js" defer></script>
+    <script src="/js/brand-explorer-atelier-from-api.js" defer></script>
+    <script defer>
+(function () {
+    'use strict';
+
+    var CHAIN_SCALE_ORDER = ['Luxury', 'Upper Upscale', 'Upscale', 'Upper Midscale', 'Midscale', 'Economy'];
+
+    var listView = document.getElementById('beCombinedListView');
+    var detailView = document.getElementById('beCombinedDetailView');
+    var brandSetupLink = document.getElementById('beCombinedBrandSetupLink');
+    var exportPdfLink = document.getElementById('beCombinedExportPdfLink');
+    var backBtn = document.getElementById('beCombinedBackBtn');
+    var breadcrumbList = document.getElementById('beCombinedBreadcrumbList');
+    var resultsList = document.getElementById('resultsList');
+    var emptyState = document.getElementById('emptyState');
+    var resultsCount = document.getElementById('resultsCount');
+    var loadingState = document.getElementById('loadingState');
+    var brandsTabCount = document.getElementById('brandsTabCount');
+    var favoritesTabCount = document.getElementById('favoritesTabCount');
+    var listTabsNav = document.querySelector('#beCombinedListView .brand-explorer-container > nav.tabs-section');
+    var activeListTab = 'brands';
+    var sortSelect = document.getElementById('sortSelect');
+    var resetBtn = document.getElementById('resetFiltersBtn');
+
+    var brandEducationPopup = document.getElementById('beCombinedBrandDetailPopup');
+    var brandEducationLoading = document.getElementById('beCombinedBrandDetailPopupLoading');
+    var brandEducationFrame = document.getElementById('beCombinedBrandDetailPopupFrame');
+    var educationLoadGen = 0;
+    var educationReadyTimer = null;
+
+    /** Demo card education URLs; name match for live directory rows. */
+    var EDUCATION_HTML_BY_MOCK_ID = {
+        'atelier-north-mock': '/brand-education-atelier-north.html',
+        'velvet-crown-mock': '/brand-education-velvet-crown.html',
+        'summit-house-mock': '/brand-education-summit-house.html',
+        'voco-ihg-mock': '/brand-education-voco.html'
+    };
+
+    function clearEducationReadyTimer() {
+        if (educationReadyTimer) {
+            clearTimeout(educationReadyTimer);
+            educationReadyTimer = null;
+        }
+    }
+
+    function withEmbedParam(htmlPath) {
+        var p = String(htmlPath || '');
+        var sep = p.indexOf('?') >= 0 ? '&' : '?';
+        return p + sep + 'embed=1';
+    }
+
+    function resolveStaticEducationPath(brandId, brandName) {
+        if (brandId && EDUCATION_HTML_BY_MOCK_ID[brandId]) {
+            return EDUCATION_HTML_BY_MOCK_ID[brandId];
+        }
+        var n = String(brandName || '').toLowerCase().trim();
+        if (n === 'atelier north') return '/brand-education-atelier-north.html';
+        if (n === 'velvet crown') return '/brand-education-velvet-crown.html';
+        if (n === 'summit house') return '/brand-education-summit-house.html';
+        if (n === 'voco' || n.indexOf('voco ') === 0) return '/brand-education-voco.html';
+        return '';
+    }
+
+    function closeBrandEducationPopup() {
+        clearEducationReadyTimer();
+        var fb = document.getElementById('beCombinedBrandPopupFallback');
+        if (fb) {
+            fb.classList.add('hidden');
+            fb.setAttribute('aria-hidden', 'true');
+        }
+        clearPopupAtelierMount();
+        if (brandEducationPopup) {
+            brandEducationPopup.style.display = 'none';
+            brandEducationPopup.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+        if (brandEducationLoading) brandEducationLoading.style.display = 'none';
+        if (brandEducationFrame) {
+            brandEducationFrame.style.visibility = 'hidden';
+            brandEducationFrame.style.display = '';
+            brandEducationFrame.src = 'about:blank';
+        }
+    }
+
+    function onBrandEducationFrameReady() {
+        clearEducationReadyTimer();
+        if (brandEducationLoading) brandEducationLoading.style.display = 'none';
+        if (brandEducationFrame) brandEducationFrame.style.visibility = 'visible';
+    }
+
+    function clearPopupAtelierMount() {
+        var heroSlot = document.getElementById('beCombinedPopupHeroMount');
+        if (heroSlot) heroSlot.innerHTML = '';
+        var root = document.getElementById('beCombinedPopupAtelierRoot');
+        var err = document.getElementById('beCombinedPopupAtelierError');
+        if (err) {
+            err.classList.add('hidden');
+            err.textContent = '';
+        }
+        if (root) {
+            root.hidden = true;
+            var nav = root.querySelector('[data-be-atelier-nav]');
+            var panels = root.querySelector('[data-be-atelier-panels]');
+            if (nav) {
+                nav.innerHTML = '';
+                nav._beAtelierWired = false;
+            }
+            if (panels) {
+                panels.innerHTML = '';
+                panels._beCaseStudyPayloads = [];
+            }
+        }
+    }
+
+    async function openBrandEducationPopupForBrand(brandId, nameHint) {
+        if (!brandEducationPopup || !brandEducationFrame || !brandEducationLoading) return;
+        var fallback = document.getElementById('beCombinedBrandPopupFallback');
+        var myGen = ++educationLoadGen;
+        clearEducationReadyTimer();
+        clearPopupAtelierMount();
+        var name = nameHint != null && String(nameHint).trim() !== '' ? String(nameHint).trim() : '';
+        var fromList = allBrands.filter(function (x) { return x.id === brandId; })[0];
+        if (!name && fromList && fromList.name) {
+            name = fromList.name;
+        } else if (!name) {
+            try {
+                var fetchBrand =
+                    window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.fetchBrandDetail;
+                var data = fetchBrand
+                    ? await fetchBrand(brandId)
+                    : await fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(brandId)).then(function (r) {
+                          return r.ok ? r.json() : null;
+                      });
+                if (data && data.success && data.brand && data.brand.name) name = data.brand.name;
+            } catch (e) {
+                /* ignore */
+            }
+        }
+        if (myGen !== educationLoadGen) return;
+        var path = resolveStaticEducationPath(brandId, name);
+
+        brandEducationPopup.style.display = 'flex';
+        brandEducationPopup.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+
+        if (!path) {
+            if (brandEducationFrame) {
+                brandEducationFrame.style.visibility = 'hidden';
+                brandEducationFrame.style.display = 'none';
+                brandEducationFrame.src = 'about:blank';
+            }
+            if (fallback) {
+                fallback.classList.remove('hidden');
+                fallback.setAttribute('aria-hidden', 'false');
+            }
+            var errEl = document.getElementById('beCombinedPopupAtelierError');
+            var popRoot = document.getElementById('beCombinedPopupAtelierRoot');
+            if (errEl) {
+                errEl.classList.add('hidden');
+                errEl.textContent = '';
+            }
+            if (popRoot) popRoot.hidden = true;
+            if (brandEducationLoading) brandEducationLoading.style.display = 'flex';
+            try {
+                var fetchBrandB =
+                    window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.fetchBrandDetail;
+                var dataB = await (fetchBrandB
+                    ? fetchBrandB(brandId)
+                    : fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(brandId)).then(function (r) {
+                          if (!r.ok) throw new Error('Failed to load brand');
+                          return r.json();
+                      }));
+                if (myGen !== educationLoadGen) return;
+                if (brandEducationLoading) brandEducationLoading.style.display = 'none';
+                if (dataB && dataB.success && dataB.brand && window.BrandExplorerAtelierFromApi) {
+                    window.BrandExplorerAtelierFromApi.mountIntoRoot(popRoot, dataB.brand);
+                    var heroSlot = document.getElementById('beCombinedPopupHeroMount');
+                    if (heroSlot && window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.renderPresentationHero) {
+                        heroSlot.innerHTML = window.BrandExplorerGoldDetail.renderPresentationHero(dataB.brand, {
+                            heroId: 'brandHeroPopup'
+                        });
+                        if (window.BrandExplorerGoldDetail.applyChainScaleTheme) {
+                            window.BrandExplorerGoldDetail.applyChainScaleTheme(dataB.brand, popRoot);
+                        } else if (window.BrandExplorerGoldDetail.applyHeroStripe) {
+                            window.BrandExplorerGoldDetail.applyHeroStripe(dataB.brand);
+                        }
+                        if (window.BrandExplorerGoldDetail.wirePresentationMetaValueTooltips) {
+                            window.BrandExplorerGoldDetail.wirePresentationMetaValueTooltips(heroSlot);
+                        }
+                        if (window.BrandExplorerFavorites) {
+                            window.BrandExplorerFavorites.wireSaveButtons(heroSlot);
+                        }
+                    }
+                    if (popRoot) popRoot.hidden = false;
+                } else {
+                    if (errEl) {
+                        errEl.textContent =
+                            (dataB && dataB.error) ||
+                            'Could not load brand data for this explorer view.';
+                        errEl.classList.remove('hidden');
+                    }
+                }
+            } catch (e) {
+                if (myGen !== educationLoadGen) return;
+                if (brandEducationLoading) brandEducationLoading.style.display = 'none';
+                if (errEl) {
+                    errEl.textContent =
+                        'Could not load brand data. Close this window and try again.';
+                    errEl.classList.remove('hidden');
+                }
+            }
+            return;
+        }
+
+        if (fallback) {
+            fallback.classList.add('hidden');
+            fallback.setAttribute('aria-hidden', 'true');
+        }
+        clearPopupAtelierMount();
+        brandEducationFrame.style.display = '';
+        brandEducationLoading.style.display = 'flex';
+        brandEducationFrame.style.visibility = 'hidden';
+        brandEducationFrame.src = 'about:blank';
+        brandEducationFrame.src = withEmbedParam(path);
+        educationReadyTimer = setTimeout(function () {
+            if (myGen !== educationLoadGen) return;
+            onBrandEducationFrameReady();
+        }, 15000);
+    }
+
+    var allBrands = [];
+    var filteredBrands = [];
+    function escapeHtml(text) {
+        if (!text) return '';
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function isExportPdfMode() {
+        var p = new URLSearchParams(window.location.search || '');
+        return p.get('exportPdf') === '1' || p.get('exportPdf') === 'true';
+    }
+
+    function getQueryBrandId() {
+        var p = new URLSearchParams(window.location.search || '');
+        return p.get('id') || p.get('brandId') || p.get('brand') || p.get('name') || '';
+    }
+
+    function exportPdfPageUrl(brandId) {
+        if (!brandId) return '/brand-explorer-export.html';
+        return '/brand-explorer-export.html?' + new URLSearchParams({ id: brandId }).toString();
+    }
+
+    function sortedUniqueField(brands, key) {
+        var m = {};
+        (brands || []).forEach(function (b) {
+            var v = b && b[key];
+            if (Array.isArray(v)) {
+                v.forEach(function (item) {
+                    if (item) m[String(item)] = item;
+                });
+            } else if (v) {
+                m[String(v)] = v;
+            }
+        });
+        return Object.keys(m)
+            .sort()
+            .map(function (k) {
+                return m[k];
+            });
+    }
+
+    function brandMatchesRegionOffered(brand, selected) {
+        if (!selected) return true;
+        var regions = brand && brand.regionOffered;
+        if (!regions || !regions.length) return false;
+        if (Array.isArray(regions)) {
+            return regions.some(function (r) {
+                return String(r) === selected;
+            });
+        }
+        return String(regions) === selected;
+    }
+
+    function showListLoading(show) {
+        if (!loadingState) return;
+        loadingState.classList.toggle('hidden', !show);
+        resultsList.classList.toggle('hidden', show);
+        if (show) emptyState.classList.add('hidden');
+    }
+
+    function showListUi() {
+        if (exportPdfLink) exportPdfLink.hidden = true;
+        if (window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.clearChainScaleTheme) {
+            window.BrandExplorerGoldDetail.clearChainScaleTheme();
+        }
+        listView.classList.remove('hidden');
+        detailView.classList.add('hidden');
+        closeBrandEducationPopup();
+        educationLoadGen++;
+        document.title = 'Brand Explorer — Dealality';
+        if (!allBrands.length) {
+            fetchBrands();
+        }
+    }
+
+    function showDetailUi(brandId, addHistory, skipEducationPopup) {
+        listView.classList.add('hidden');
+        detailView.classList.remove('hidden');
+        if (brandSetupLink && brandId) {
+            brandSetupLink.href = '/brand-setup?id=' + encodeURIComponent(brandId);
+        }
+        if (exportPdfLink && brandId) {
+            exportPdfLink.href = exportPdfPageUrl(brandId);
+            exportPdfLink.hidden = false;
+        }
+        if (addHistory) {
+            var path = window.location.pathname || '/brand-explorer-combined';
+            history.pushState({ beCombined: 'detail' }, '', path + '?id=' + encodeURIComponent(brandId));
+        }
+        var loadFn = window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.load;
+        if (typeof loadFn === 'function') {
+            loadFn(brandId);
+        } else {
+            console.error('BrandExplorerGoldDetail.load not available');
+        }
+        if (!skipEducationPopup) {
+            void openBrandEducationPopupForBrand(brandId);
+        }
+    }
+
+    function applyRouteFromUrl() {
+        var id = getQueryBrandId();
+        if (id) {
+            showDetailUi(id, false);
+        } else {
+            showListUi();
+        }
+    }
+
+    backBtn.addEventListener('click', function () {
+        if (history.length > 1) {
+            history.back();
+        } else {
+            history.replaceState({}, '', window.location.pathname);
+            showListUi();
+        }
+    });
+    if (breadcrumbList) {
+        breadcrumbList.addEventListener('click', function (e) {
+            e.preventDefault();
+            history.replaceState({}, '', window.location.pathname);
+            showListUi();
+        });
+    }
+    window.addEventListener('popstate', applyRouteFromUrl);
+
+    function normChain(s) {
+        return String(s || '')
+            .toLowerCase()
+            .replace(/\s*chain\s*$/i, '')
+            .trim();
+    }
+
+    function chainScaleRank(scale) {
+        var n = normChain(scale);
+        for (var i = 0; i < CHAIN_SCALE_ORDER.length; i++) {
+            if (normChain(CHAIN_SCALE_ORDER[i]) === n) return i;
+        }
+        return 999;
+    }
+
+    function getChainScaleClass(chainScale) {
+        if (!chainScale) return '';
+        var scale = String(chainScale).toLowerCase();
+        if (scale.indexOf('luxury') !== -1) return 'chain-scale-luxury';
+        if (scale.indexOf('upper upscale') !== -1) return 'chain-scale-upper-upscale';
+        if (scale.indexOf('upscale') !== -1 && scale.indexOf('upper') === -1) return 'chain-scale-upscale';
+        if (scale.indexOf('upper midscale') !== -1) return 'chain-scale-upper-midscale';
+        if (scale.indexOf('midscale') !== -1) return 'chain-scale-midscale';
+        if (scale.indexOf('economy') !== -1) return 'chain-scale-economy';
+        return '';
+    }
+
+    function getChainScaleColor(chainScale) {
+        if (!chainScale) return null;
+        var sc = String(chainScale).toLowerCase();
+        if (sc.indexOf('luxury') !== -1) return '#d4af37';
+        if (sc.indexOf('upper upscale') !== -1) return '#9b59b6';
+        if (sc.indexOf('upscale') !== -1 && sc.indexOf('upper') === -1) return '#3498db';
+        if (sc.indexOf('upper midscale') !== -1) return '#2ecc71';
+        if (sc.indexOf('midscale') !== -1) return '#1abc9c';
+        if (sc.indexOf('economy') !== -1) return '#e67e22';
+        return null;
+    }
+
+    function getChainScaleStripeBackground(chainScale) {
+        var color = getChainScaleColor(chainScale);
+        return color || 'var(--accent--primary-1)';
+    }
+
+    function normalizeWebsiteUrl(url) {
+        if (!url) return '';
+        var raw = String(url).trim();
+        if (!raw) return '';
+        if (/^https?:\/\//i.test(raw)) return raw;
+        return 'https://' + raw;
+    }
+
+    function websiteLabel(url) {
+        if (!url) return '';
+        return String(url).replace(/^https?:\/\//i, '').replace(/\/$/, '');
+    }
+
+    function createBrandCard(brand) {
+        var card = document.createElement('div');
+        var chainScaleClass = getChainScaleClass(brand.chainScale);
+        card.className = 'brand-card ' + (chainScaleClass || '');
+        card.style.borderLeftColor = 'transparent';
+        var stripeBg = getChainScaleStripeBackground(brand.chainScale);
+
+        var summary = brand.positioning || brand.tagline || 'Learn more about this brand.';
+        var truncatedSummary = summary.length > 160 ? summary.substring(0, 160) + '...' : summary;
+        var initial = (brand.name || 'B').charAt(0).toUpperCase();
+        var typeLabel = [brand.chainScale ? String(brand.chainScale).replace(' Chain', '') : '', brand.serviceModel].filter(Boolean).join(' · ') || 'Hotel Brand';
+        var websiteRaw = brand.website || brand.brandWebsite || brand.brand_website || brand.Website || '';
+        var websiteUrl = normalizeWebsiteUrl(websiteRaw);
+        var websiteText = websiteLabel(websiteUrl);
+
+        var chipsHtml = '';
+        var chipParts = [];
+        if (brand.brandModel) chipParts.push(brand.brandModel);
+        if (brand.architecture) chipParts.push(brand.architecture);
+        if (chipParts.length) {
+            chipsHtml =
+                '<div class="brand-card__chips">' +
+                chipParts
+                    .map(function (c) {
+                        return '<span class="brand-card__chip" title="' + escapeHtml(c) + '">' + escapeHtml(c) + '</span>';
+                    })
+                    .join('') +
+                '</div>';
+        }
+
+        var logoHtml = '<div class="brand-card__logo">';
+        if (brand.logo && typeof brand.logo === 'string' && (brand.logo.indexOf('http') === 0 || brand.logo.indexOf('data:') === 0)) {
+            logoHtml +=
+                '<img src="' +
+                escapeHtml(brand.logo) +
+                '" alt="' +
+                escapeHtml(brand.name) +
+                '" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'; var s=this.nextElementSibling; if(s) s.style.display=\'flex\';" onload="this.classList.add(\'loaded\');">';
+            logoHtml += '<span class="brand-card__logo-initial">' + escapeHtml(initial) + '</span>';
+        } else {
+            logoHtml += '<span class="brand-card__logo-initial">' + escapeHtml(initial) + '</span>';
+        }
+        logoHtml += '</div>';
+
+        var favStarHtml = brand.id
+            ? '<button type="button" class="favorite-star" data-be-brand-id="' +
+              escapeHtml(brand.id) +
+              '" aria-label="Add to favorites" aria-pressed="false" title="Save to favorites">' +
+              '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>'
+            : '';
+
+        card.innerHTML =
+            favStarHtml +
+            '<div class="brand-card__scale-stripe" style="background:' + stripeBg + ';"></div>' +
+            '<div class="brand-card__header">' +
+            logoHtml +
+            '<div class="brand-card__info">' +
+            '<div class="brand-card__name">' +
+            escapeHtml(brand.name) +
+            '</div>' +
+            '<div class="brand-card__type">' +
+            escapeHtml(typeLabel) +
+            '</div>' +
+            '<div class="brand-card__meta">' +
+            (brand.parentCompany ? escapeHtml(brand.parentCompany) : '') +
+            '</div>' +
+            chipsHtml +
+            '</div></div>' +
+            '<div class="brand-card__description">' +
+            escapeHtml(truncatedSummary) +
+            '</div>' +
+            '<div class="brand-card__footer">' +
+            (websiteUrl
+                ? '<a href="' +
+                  escapeHtml(websiteUrl) +
+                  '" class="brand-card__website" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">' +
+                  escapeHtml(websiteText) +
+                  '</a>'
+                : '<span></span>') +
+            '<button type="button" class="brand-card__more-btn" data-brand-id="' +
+            escapeHtml(brand.id) +
+            '">View Brand</button>' +
+            '</div>';
+
+        function open() {
+            void openBrandEducationPopupForBrand(brand.id, brand.name);
+        }
+        card.addEventListener('click', open);
+        var moreBtn = card.querySelector('.brand-card__more-btn');
+        if (moreBtn) {
+            moreBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                open();
+            });
+        }
+        if (window.BrandExplorerFavorites && window.BrandExplorerFavorites.wireCardStars) {
+            window.BrandExplorerFavorites.wireCardStars(card);
+        }
+        return card;
+    }
+
+    function sortBrands() {
+        var val = (sortSelect && sortSelect.value) || 'name-asc';
+        var lastDash = val.lastIndexOf('-');
+        var field = lastDash > 0 ? val.slice(0, lastDash) : 'name';
+        var dir = lastDash > 0 ? val.slice(lastDash + 1) : 'asc';
+
+        filteredBrands.sort(function (a, b) {
+            if (field === 'chainScale') {
+                var ra = chainScaleRank(a.chainScale);
+                var rb = chainScaleRank(b.chainScale);
+                if (ra !== rb) return dir === 'asc' ? ra - rb : rb - ra;
+                return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' });
+            }
+            var aVal;
+            var bVal;
+            if (field === 'parent') {
+                aVal = (a.parentCompany || '').toLowerCase();
+                bVal = (b.parentCompany || '').toLowerCase();
+            } else {
+                aVal = (a.name || '').toLowerCase();
+                bVal = (b.name || '').toLowerCase();
+            }
+            if (aVal < bVal) return dir === 'asc' ? -1 : 1;
+            if (aVal > bVal) return dir === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }
+
+    function favoriteIdsSet() {
+        var ids = window.BrandExplorerFavorites ? window.BrandExplorerFavorites.load() : [];
+        var set = {};
+        ids.forEach(function (id) {
+            set[id] = true;
+        });
+        return set;
+    }
+
+    function renderBrands() {
+        resultsList.innerHTML = '';
+        var poolTotal =
+            activeListTab === 'favorites'
+                ? (window.BrandExplorerFavorites ? window.BrandExplorerFavorites.load().length : 0)
+                : allBrands.length;
+        if (filteredBrands.length === 0) {
+            resultsList.classList.add('hidden');
+            if (activeListTab === 'favorites') {
+                emptyState.innerHTML =
+                    poolTotal === 0
+                        ? '<h3>No favorites yet</h3><p>Open a brand and click <strong>Save</strong> on its profile to add it here.</p>'
+                        : '<h3>No records found</h3><p>No saved brands match these filters. Clear filters or try a different option.</p>';
+            } else {
+                emptyState.innerHTML =
+                    '<h3>No records found</h3><p>No brands match these filters. Clear filters or try a different option.</p>';
+            }
+            emptyState.classList.remove('hidden');
+            emptyState.style.display = '';
+            resultsCount.innerHTML =
+                'Showing <strong>0</strong> of <strong>' + poolTotal + '</strong> ' +
+                (activeListTab === 'favorites' ? 'favorites' : 'brands');
+            return;
+        }
+        emptyState.classList.add('hidden');
+        resultsList.classList.remove('hidden');
+        filteredBrands.forEach(function (b) {
+            resultsList.appendChild(createBrandCard(b));
+        });
+        if (window.BrandExplorerFavorites && window.BrandExplorerFavorites.wireCardStars) {
+            window.BrandExplorerFavorites.wireCardStars(resultsList);
+        }
+        resultsCount.innerHTML =
+            'Showing <strong>' + filteredBrands.length + '</strong> of <strong>' + poolTotal + '</strong> ' +
+            (activeListTab === 'favorites' ? 'favorites' : 'brands');
+    }
+
+    function getActiveFilterCount() {
+        var search = document.getElementById('searchInput');
+        var parent = document.getElementById('parentCompanyFilter');
+        var chain = document.getElementById('chainScaleFilter');
+        var brandModel = document.getElementById('brandModelFilter');
+        var service = document.getElementById('serviceModelFilter');
+        var arch = document.getElementById('architectureFilter');
+        var region = document.getElementById('regionOfferedFilter');
+        var n = 0;
+        if (search && search.value.trim()) n++;
+        if (parent && parent.value) n++;
+        if (chain && chain.value) n++;
+        if (brandModel && brandModel.value) n++;
+        if (service && service.value) n++;
+        if (arch && arch.value) n++;
+        if (region && region.value) n++;
+        return n;
+    }
+
+    function updateFilterCountBadge() {
+        var badge = document.getElementById('filterCountBadge');
+        if (!badge) return;
+        var count = getActiveFilterCount();
+        if (count > 0) {
+            badge.textContent = count;
+            badge.style.display = 'inline-flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    function updateTabCounts() {
+        if (brandsTabCount) brandsTabCount.textContent = String(allBrands.length);
+        if (favoritesTabCount) {
+            var favCount = window.BrandExplorerFavorites ? window.BrandExplorerFavorites.load().length : 0;
+            favoritesTabCount.textContent = String(favCount);
+        }
+    }
+
+    function setActiveListTab(tab) {
+        var next = tab === 'favorites' ? 'favorites' : 'brands';
+        activeListTab = next;
+        if (listTabsNav) {
+            listTabsNav.querySelectorAll('.section-nav-item[data-tab]').forEach(function (btn) {
+                var isActive = btn.getAttribute('data-tab') === next;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+        }
+        filterBrands();
+    }
+
+    function isExplorerBrandActive(brand) {
+        var s = String((brand && brand.status) || '').trim().toLowerCase();
+        return s === 'active' || s === 'live';
+    }
+
+    function filterBrands() {
+        var searchText = ((document.getElementById('searchInput') || {}).value || '').toLowerCase().trim();
+        var parentCompany = (document.getElementById('parentCompanyFilter') || {}).value || '';
+        var chainScale = (document.getElementById('chainScaleFilter') || {}).value || '';
+        var brandModel = (document.getElementById('brandModelFilter') || {}).value || '';
+        var serviceModel = (document.getElementById('serviceModelFilter') || {}).value || '';
+        var architecture = (document.getElementById('architectureFilter') || {}).value || '';
+        var regionOffered = (document.getElementById('regionOfferedFilter') || {}).value || '';
+        var favSet = activeListTab === 'favorites' ? favoriteIdsSet() : null;
+
+        filteredBrands = allBrands.filter(function (brand) {
+            if (!isExplorerBrandActive(brand)) return false;
+            if (favSet && !favSet[brand.id]) return false;
+            var okSearch =
+                !searchText ||
+                (brand.name && brand.name.toLowerCase().indexOf(searchText) !== -1) ||
+                (brand.parentCompany && brand.parentCompany.toLowerCase().indexOf(searchText) !== -1) ||
+                (brand.positioning && String(brand.positioning).toLowerCase().indexOf(searchText) !== -1) ||
+                (brand.tagline && String(brand.tagline).toLowerCase().indexOf(searchText) !== -1);
+            var okParent = !parentCompany || brand.parentCompany === parentCompany;
+            var okChain = !chainScale || brand.chainScale === chainScale;
+            var okModel = !brandModel || brand.brandModel === brandModel;
+            var okService = !serviceModel || brand.serviceModel === serviceModel;
+            var okArch = !architecture || brand.architecture === architecture;
+            var okRegion = brandMatchesRegionOffered(brand, regionOffered);
+            return okSearch && okParent && okChain && okModel && okService && okArch && okRegion;
+        });
+        sortBrands();
+        renderBrands();
+        updateFilterCountBadge();
+        updateLegendActive();
+    }
+
+    function updateLegendActive() {
+        var sel = document.getElementById('chainScaleFilter');
+        var legend = document.getElementById('chainScaleLegend');
+        if (!sel || !legend) return;
+        var value = (sel.value || '').toLowerCase().replace(/\s*chain\s*$/i, '').trim();
+        legend.querySelectorAll('.chain-scale-legend-item').forEach(function (btn) {
+            var scale = (btn.getAttribute('data-scale') || '').toLowerCase();
+            var active = (scale === 'all' && !value) || (scale && value && value === scale);
+            btn.classList.toggle('active', !!active);
+        });
+    }
+
+    function updateLegendDisabled() {
+        var sel = document.getElementById('chainScaleFilter');
+        var legend = document.getElementById('chainScaleLegend');
+        if (!sel || !legend) return;
+        legend.querySelectorAll('.chain-scale-legend-item[data-scale]').forEach(function (btn) {
+            var scale = btn.getAttribute('data-scale');
+            if (scale === 'all') {
+                btn.classList.remove('no-records');
+                return;
+            }
+            var dropdownValue = null;
+            for (var i = 0; i < sel.options.length; i++) {
+                var opt = sel.options[i];
+                if (!opt.value) continue;
+                var optNorm = opt.value.toLowerCase().replace(/\s*chain\s*$/i, '').trim();
+                if (optNorm === scale) {
+                    dropdownValue = opt.value;
+                    break;
+                }
+            }
+            var count = dropdownValue ? allBrands.filter(function (b) { return b.chainScale === dropdownValue; }).length : 0;
+            btn.classList.toggle('no-records', count === 0);
+        });
+    }
+
+    function applyChainScaleQuickFilter(scale) {
+        var btn = document.querySelector('.chain-scale-legend-item[data-scale="' + scale + '"]');
+        if (btn && btn.classList.contains('no-records')) return;
+        var select = document.getElementById('chainScaleFilter');
+        if (!select) return;
+        if (scale === 'all' || !scale) select.value = '';
+        else {
+            for (var i = 0; i < select.options.length; i++) {
+                var opt = select.options[i];
+                if (!opt.value) continue;
+                var optNorm = opt.value.toLowerCase().replace(/\s*chain\s*$/i, '').trim();
+                if (optNorm === scale) {
+                    select.value = opt.value;
+                    break;
+                }
+            }
+        }
+        filterBrands();
+    }
+
+    function populateSelect(selectId, options, emptyLabel, optionTextFn) {
+        var sel = document.getElementById(selectId);
+        if (!sel) return;
+        var cur = sel.value;
+        sel.innerHTML = '<option value="">' + emptyLabel + '</option>';
+        (options || []).forEach(function (opt) {
+            var o = document.createElement('option');
+            o.value = opt;
+            o.textContent = optionTextFn ? optionTextFn(opt) : opt;
+            sel.appendChild(o);
+        });
+        if (cur && [].some.call(sel.options, function (x) { return x.value === cur; })) sel.value = cur;
+    }
+
+    function populateChainScaleFilterFromList(list) {
+        var sel = document.getElementById('chainScaleFilter');
+        if (!sel) return;
+        var cur = sel.value;
+        var byNorm = new Map();
+        (list || []).forEach(function (scale) {
+            var key = normChain(scale);
+            if (!key) return;
+            if (!byNorm.has(key)) byNorm.set(key, scale);
+        });
+        var remaining = [];
+        CHAIN_SCALE_ORDER.forEach(function (tier) {
+            var key = normChain(tier);
+            if (byNorm.has(key)) remaining.push(byNorm.get(key));
+        });
+        byNorm.forEach(function (original, key) {
+            var already = CHAIN_SCALE_ORDER.some(function (tier) {
+                return normChain(tier) === key;
+            });
+            if (!already) remaining.push(original);
+        });
+        sel.innerHTML = '<option value="">All Scales</option>';
+        remaining.forEach(function (scale) {
+            var o = document.createElement('option');
+            o.value = scale;
+            o.textContent = String(scale).replace(/\s*Chain\s*$/i, '');
+            sel.appendChild(o);
+        });
+        if (cur && [].some.call(sel.options, function (x) { return x.value === cur; })) sel.value = cur;
+    }
+
+    function clearFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('parentCompanyFilter').value = '';
+        document.getElementById('chainScaleFilter').value = '';
+        document.getElementById('brandModelFilter').value = '';
+        document.getElementById('serviceModelFilter').value = '';
+        document.getElementById('architectureFilter').value = '';
+        document.getElementById('regionOfferedFilter').value = '';
+        if (sortSelect) sortSelect.value = 'name-asc';
+        filterBrands();
+    }
+
+    function toggleSortDirection() {
+        var current = sortSelect.value;
+        var toggleMap = {
+            'name-asc': 'name-desc',
+            'name-desc': 'name-asc',
+            'parent-asc': 'parent-desc',
+            'parent-desc': 'parent-asc',
+            'chainScale-asc': 'chainScale-desc',
+            'chainScale-desc': 'chainScale-asc'
+        };
+        sortSelect.value = toggleMap[current] || 'name-asc';
+        sortBrands();
+        renderBrands();
+    }
+
+    async function fetchBrands() {
+        try {
+            showListLoading(true);
+            var favReady =
+                window.BrandExplorerFavorites && window.BrandExplorerFavorites.ready
+                    ? window.BrandExplorerFavorites.ready()
+                    : Promise.resolve();
+            var brandsUrl = '/api/brand-library/brands';
+            try {
+                if (new URLSearchParams(window.location.search).get('fresh') === '1') {
+                    brandsUrl += (brandsUrl.indexOf('?') >= 0 ? '&' : '?') + 'refresh=1';
+                }
+            } catch (_) {}
+            var brandsRes = await fetch(brandsUrl);
+            await favReady;
+            if (!brandsRes.ok) throw new Error('Failed to fetch brands');
+            var data = await brandsRes.json();
+            allBrands = data.brands || [];
+            window.getBrandExplorerListBrands = function () {
+                return allBrands.slice();
+            };
+            try {
+                window.dispatchEvent(
+                    new CustomEvent('brand-explorer-list-loaded', { detail: { brands: allBrands.slice() } })
+                );
+            } catch (_) {}
+            filteredBrands = allBrands.slice();
+            var fo = data.filterOptions || {};
+
+            var parents =
+                fo.parentCompanies && fo.parentCompanies.length
+                    ? fo.parentCompanies.slice().sort()
+                    : sortedUniqueField(allBrands, 'parentCompany');
+            var chains = fo.chainScales && fo.chainScales.length ? fo.chainScales : sortedUniqueField(allBrands, 'chainScale');
+            var models =
+                fo.brandModels && fo.brandModels.length
+                    ? fo.brandModels.slice().sort()
+                    : sortedUniqueField(allBrands, 'brandModel');
+            var services =
+                fo.serviceModels && fo.serviceModels.length
+                    ? fo.serviceModels.slice().sort()
+                    : sortedUniqueField(allBrands, 'serviceModel');
+            var archs =
+                fo.architectures && fo.architectures.length
+                    ? fo.architectures.slice().sort()
+                    : sortedUniqueField(allBrands, 'architecture');
+            var regions =
+                fo.regionsOffered && fo.regionsOffered.length
+                    ? fo.regionsOffered.slice().sort()
+                    : sortedUniqueField(allBrands, 'regionOffered');
+
+            populateSelect('parentCompanyFilter', parents, 'All Companies');
+            populateChainScaleFilterFromList(chains);
+            populateSelect('brandModelFilter', models, 'All');
+            populateSelect('serviceModelFilter', services, 'All Models');
+            populateSelect('architectureFilter', archs, 'All');
+            populateSelect('regionOfferedFilter', regions, 'All Regions');
+
+            updateLegendDisabled();
+            updateTabCounts();
+            sortBrands();
+            filterBrands();
+        } catch (err) {
+            console.error(err);
+            emptyState.innerHTML =
+                '<h3>Error loading brands</h3><p>' + escapeHtml(err.message || String(err)) + '</p>';
+            emptyState.classList.remove('hidden');
+            resultsList.classList.add('hidden');
+        } finally {
+            showListLoading(false);
+        }
+    }
+
+    var searchInputEl = document.getElementById('searchInput');
+    if (searchInputEl) {
+        searchInputEl.addEventListener('input', function () {
+            var self = this;
+            clearTimeout(self._t);
+            self._t = setTimeout(filterBrands, 300);
+        });
+    }
+    ['parentCompanyFilter', 'chainScaleFilter', 'brandModelFilter', 'serviceModelFilter', 'architectureFilter', 'regionOfferedFilter'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('change', filterBrands);
+    });
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function () {
+            sortBrands();
+            renderBrands();
+        });
+    }
+    var sortIconBtn = document.getElementById('sortIconBtn');
+    if (sortIconBtn) {
+        sortIconBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            toggleSortDirection();
+        });
+    }
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            clearFilters();
+        });
+    }
+    document.getElementById('chainScaleLegend').addEventListener('click', function (e) {
+        var btn = e.target.closest('.chain-scale-legend-item');
+        if (!btn) return;
+        applyChainScaleQuickFilter(btn.getAttribute('data-scale') || 'all');
+    });
+
+    if (listTabsNav) {
+        listTabsNav.addEventListener('click', function (e) {
+            var btn = e.target.closest('.section-nav-item[data-tab]');
+            if (!btn || !listTabsNav.contains(btn)) return;
+            var tab = btn.getAttribute('data-tab');
+            if (tab === 'brands' || tab === 'favorites') setActiveListTab(tab);
+        });
+    }
+
+    window.addEventListener('brand-explorer-favorites-changed', function () {
+        updateTabCounts();
+        if (window.BrandExplorerFavorites && window.BrandExplorerFavorites.wireCardStars && resultsList) {
+            window.BrandExplorerFavorites.wireCardStars(resultsList);
+        }
+        if (activeListTab === 'favorites') filterBrands();
+    });
+
+    window.addEventListener('message', function (e) {
+        if (!brandEducationFrame || e.source !== brandEducationFrame.contentWindow) return;
+        if (!e.data || e.data.type !== 'brand-education-ready') return;
+        if (!brandEducationPopup || brandEducationPopup.style.display !== 'flex') return;
+        onBrandEducationFrameReady();
+    });
+
+    var brandPopupClose = document.getElementById('beCombinedBrandDetailPopupClose');
+    var brandPopupOverlay = document.getElementById('beCombinedBrandDetailPopupOverlay');
+    if (brandPopupClose) brandPopupClose.addEventListener('click', closeBrandEducationPopup);
+    if (brandPopupOverlay) brandPopupOverlay.addEventListener('click', closeBrandEducationPopup);
+    document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        var p = document.getElementById('beCombinedBrandDetailPopup');
+        if (p && p.style.display === 'flex') closeBrandEducationPopup();
+    });
+
+    async function boot() {
+        if (window.BrandExplorerFavorites && window.BrandExplorerFavorites.ready) {
+            void window.BrandExplorerFavorites.ready();
+        }
+        var initialId = getQueryBrandId();
+        if (isExportPdfMode()) {
+            if (initialId) {
+                try {
+                    if (window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.ensureBrandList) {
+                        await window.BrandExplorerBrandFetch.ensureBrandList();
+                    }
+                } catch (e) {
+                    console.warn('[brand-explorer-combined] brand list prefetch failed', e);
+                }
+                showDetailUi(initialId, false, true);
+            } else {
+                var errBox = document.getElementById('brandError');
+                if (errBox) errBox.style.display = 'block';
+                var miss = document.getElementById('brandErrorMessage');
+                if (miss) {
+                    miss.textContent =
+                        'Add a brand id or name to the URL (e.g. ?id=Radisson%20(Choice) or ?brandId=rec…).';
+                }
+            }
+            return;
+        }
+        if (initialId) {
+            try {
+                if (window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.ensureBrandList) {
+                    await window.BrandExplorerBrandFetch.ensureBrandList();
+                }
+            } catch (e) {
+                console.warn('[brand-explorer-combined] brand list prefetch failed', e);
+            }
+            showDetailUi(initialId, false);
+        } else {
+            showListUi();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            void boot();
+        });
+    } else {
+        void boot();
+    }
+})();
+    </script>
+</body>
+</html>

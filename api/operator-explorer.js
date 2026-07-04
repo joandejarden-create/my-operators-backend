@@ -7,6 +7,16 @@
 import listThirdPartyOperators from "./third-party-operators-list.js";
 import getThirdPartyOperatorDetail from "./third-party-operator-detail.js";
 
+function envFlag(name) {
+  const raw = String(process.env[name] || "").trim().toLowerCase();
+  return raw === "1" || raw === "true" || raw === "yes" || raw === "on";
+}
+
+function isProductionRuntime() {
+  const nodeEnv = String(process.env.NODE_ENV || "").trim().toLowerCase();
+  return nodeEnv === "production" || nodeEnv === "prod";
+}
+
 // Mock operator data – used only for GET /api/operator-explorer/operator fallback
 const MOCK_OPERATORS = [
   {
@@ -210,11 +220,36 @@ export async function getOperatorById(req, res) {
       return res.status(400).json({ success: false, error: "Operator ID required" });
     }
 
-    /** Real Operator Setup rows use Airtable record ids — delegate to intake detail (same as My Operators / Gold Mock). */
-    if (/^rec[a-zA-Z0-9]{14,}$/.test(id)) {
+    const isRecId = /^rec[a-zA-Z0-9]{14,}$/.test(id);
+    if (isRecId) {
       const detailReq = { ...req, params: { ...(req.params || {}), recordId: id } };
       return getThirdPartyOperatorDetail(detailReq, res);
     }
+
+    const diagnosticMockRequested =
+      String(req.query?.diagnosticMock || "").trim() === "1" ||
+      String(req.headers?.["x-operator-explorer-diagnostic-mock"] || "").trim() === "1";
+    const allowDiagnosticMocks =
+      !isProductionRuntime() &&
+      diagnosticMockRequested &&
+      envFlag("OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS");
+
+    if (!allowDiagnosticMocks) {
+      return res.status(404).json({
+        success: false,
+        error: "Operator not found",
+        code: "INVALID_OPERATOR_ID_FORMAT",
+        hint: "Owner-facing Operator Explorer profiles require an Operator Setup record id (rec...).",
+      });
+    }
+
+    console.warn(
+      JSON.stringify({
+        scope: "operator_explorer_detail",
+        event: "diagnostic_mock_path_used",
+        operatorId: id,
+      })
+    );
 
     const operator = MOCK_OPERATORS.find(
       (o) => o.id === id || o.operator_name?.toLowerCase() === String(id).toLowerCase()
@@ -257,7 +292,11 @@ export async function getOperatorById(req, res) {
       gap_flags: [],
     };
 
-    res.json({ success: true, operator: detail });
+    res.json({
+      success: true,
+      operator: detail,
+      meta: { sampleOperatorProfile: true, demoData: true, diagnosticMock: true },
+    });
   } catch (err) {
     console.error("Operator Explorer detail error:", err);
     res.status(500).json({ success: false, error: err.message });

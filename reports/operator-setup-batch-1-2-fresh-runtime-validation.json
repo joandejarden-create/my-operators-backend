@@ -1,0 +1,208 @@
+{
+  "report": "operator-setup-batch-1-2-fresh-runtime-validation",
+  "generatedAt": "2026-06-02",
+  "scope": "Batch 1 + Batch 2 fresh-runtime HTTP/API validation",
+  "serverStartCommands": [
+    "$env:PORT='8091'; $env:NODE_ENV='production'; $env:OPERATOR_SETUP_WRITE_MODE='canonical'; $env:OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD='0'; $env:OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS='1'; $env:OPERATOR_SETUP_USE_NEW_BASE_WRITER='0'; $env:OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE='1'; $env:OPERATOR_SETUP_NEW_BASE_FAIL_OPEN='1'; npm start",
+    "$env:PORT='8093'; $env:NODE_ENV='development'; $env:OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS='1'; $env:OPERATOR_SETUP_WRITE_MODE='canonical'; $env:OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD='0'; npm start",
+    "$env:PORT='8094'; $env:NODE_ENV='development'; $env:OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS='0'; $env:OPERATOR_SETUP_WRITE_MODE='canonical'; npm start"
+  ],
+  "runtimeConfigurations": [
+    {
+      "name": "prod_primary",
+      "port": 8091,
+      "NODE_ENV": "production",
+      "OPERATOR_SETUP_WRITE_MODE": "canonical",
+      "OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD": "0",
+      "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "1",
+      "OPERATOR_SETUP_USE_NEW_BASE_WRITER": "0",
+      "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE": "1",
+      "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN": "1"
+    },
+    {
+      "name": "dev_diag_on",
+      "port": 8093,
+      "NODE_ENV": "development",
+      "OPERATOR_SETUP_WRITE_MODE": "canonical",
+      "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "1"
+    },
+    {
+      "name": "dev_diag_off",
+      "port": 8094,
+      "NODE_ENV": "development",
+      "OPERATOR_SETUP_WRITE_MODE": "canonical",
+      "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "0"
+    }
+  ],
+  "testRecordsUsed": {
+    "existingLiveRecordId": "recTUjuDxL96yWcQA",
+    "createdRecordId": "recyHakOliyjuJGKT"
+  },
+  "tests": [
+    {
+      "id": "A1",
+      "request": "GET /api/operator-explorer/operator?operatorId=recTUjuDxL96yWcQA (8091)",
+      "expected": "200 live operator detail with no mock metadata",
+      "actual": {
+        "status": 200,
+        "meta": {
+          "readPath": "new_base"
+        },
+        "hasDemoData": false
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":200,\"meta\":{\"readPath\":\"new_base\"},\"hasDemoData\":false}"
+    },
+    {
+      "id": "A2",
+      "request": "GET /api/operator-explorer/operator?operatorId=op-1 (8091)",
+      "expected": "controlled 404 with INVALID_OPERATOR_ID_FORMAT",
+      "actual": {
+        "status": 404,
+        "code": "INVALID_OPERATOR_ID_FORMAT",
+        "error": "Operator not found"
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":404,\"code\":\"INVALID_OPERATOR_ID_FORMAT\",\"error\":\"Operator not found\"}"
+    },
+    {
+      "id": "A3",
+      "request": "GET /api/operator-explorer/operator?operatorId=op-1&diagnosticMock=1 + diagnostic header (8091)",
+      "expected": "production blocks diagnostic mock",
+      "actual": {
+        "status": 404,
+        "code": "INVALID_OPERATOR_ID_FORMAT"
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":404,\"code\":\"INVALID_OPERATOR_ID_FORMAT\"}"
+    },
+    {
+      "id": "A4",
+      "request": "GET /api/operator-explorer/operator?operatorId=op-1 (8093, dev gate on, no signal)",
+      "expected": "blocked (missing explicit diagnostic signal)",
+      "actual": {
+        "status": 404,
+        "code": "INVALID_OPERATOR_ID_FORMAT"
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":404,\"code\":\"INVALID_OPERATOR_ID_FORMAT\"}"
+    },
+    {
+      "id": "A5",
+      "request": "GET /api/operator-explorer/operator?operatorId=op-1&diagnosticMock=1 + header (8093, dev gate on)",
+      "expected": "returns diagnostic mock",
+      "actual": {
+        "status": 200,
+        "meta": {
+          "diagnosticMock": true,
+          "demoData": true
+        },
+        "operatorId": "op-1"
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":200,\"diagMock\":true,\"demoData\":true,\"operatorId\":\"op-1\"}"
+    },
+    {
+      "id": "A6",
+      "request": "GET /api/operator-explorer/operator?operatorId=op-1&diagnosticMock=1 + header (8094, dev gate off)",
+      "expected": "blocked because diagnostic env gate is off",
+      "actual": {
+        "status": 404,
+        "code": "INVALID_OPERATOR_ID_FORMAT"
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":404,\"code\":\"INVALID_OPERATOR_ID_FORMAT\"}"
+    },
+    {
+      "id": "B1",
+      "request": "GET /api/intake/third-party-operators/recyHakOliyjuJGKT (8091)",
+      "expected": "detail includes meta.readPath and loads from new_base",
+      "actual": {
+        "status": 200,
+        "readPath": "new_base"
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":200,\"readPath\":\"new_base\"}"
+    },
+    {
+      "id": "B2",
+      "request": "Legacy fallback sample",
+      "expected": "meta.readPath=legacy if a known legacy-only record is tested",
+      "actual": "Not executed: no known legacy-only record ID provided in this validation run",
+      "pass": null,
+      "evidenceSnippet": "No deterministic legacy record candidate available."
+    },
+    {
+      "id": "C1",
+      "request": "POST /api/intake/third-party-operator with representative payload (8091)",
+      "expected": "canonical write succeeds and returns writeMode=canonical",
+      "actual": {
+        "status": 201,
+        "success": true,
+        "recordId": "recyHakOliyjuJGKT",
+        "writeMode": "canonical"
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":201,\"recordId\":\"recyHakOliyjuJGKT\",\"writeMode\":\"canonical\"}"
+    },
+    {
+      "id": "C2",
+      "request": "Inspect runtime logs for canonical write call",
+      "expected": "no legacy/shadow/fail-open writes in canonical mode",
+      "actual": {
+        "writerFlags": {
+          "useNewBaseWriter": true,
+          "shadowWriteNewBase": false,
+          "failOpenNewBase": false,
+          "writeMode": "canonical"
+        },
+        "newBaseWriterEventsObserved": true,
+        "shadowWriteEventsObserved": false
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"useNewBaseWriter\":true,\"shadowWriteNewBase\":false,\"failOpenNewBase\":false,\"writeMode\":\"canonical\"}"
+    },
+    {
+      "id": "C3",
+      "request": "POST /api/intake/third-party-operator missing companyName (8091)",
+      "expected": "induced new-base failure fails closed",
+      "actual": {
+        "status": 500,
+        "error": "New-base writer failed",
+        "message": "companyName is required for Master write",
+        "writeMode": "canonical"
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":500,\"error\":\"New-base writer failed\",\"message\":\"companyName is required for Master write\",\"writeMode\":\"canonical\"}"
+    },
+    {
+      "id": "D1",
+      "request": "GET /api/operator-explorer/operator?operatorId=recyHakOliyjuJGKT (8091)",
+      "expected": "saved operator is visible through explorer live detail",
+      "actual": {
+        "status": 200,
+        "readPath": "new_base",
+        "hasDemoData": false
+      },
+      "pass": true,
+      "evidenceSnippet": "{\"status\":200,\"readPath\":\"new_base\",\"hasDemoData\":false}"
+    }
+  ],
+  "blockersOrFailures": [
+    "Legacy fallback runtime sample not captured because no known legacy-only record ID was available in the test set."
+  ],
+  "freshRuntimeCodeConfirmation": [
+    "non-rec responses include code INVALID_OPERATOR_ID_FORMAT",
+    "hint text reflects updated owner-facing rec-id contract",
+    "detail responses include meta.readPath",
+    "intake responses include writeMode=canonical"
+  ],
+  "readyToCommitDeploy": {
+    "ready": true,
+    "note": "Batch 1+2 behavior is validated in fresh runtime for all requested canonical and diagnostic gate checks except explicit legacy read-path sample."
+  },
+  "requiredFollowUpBeforeBatch3": [
+    "Run one additional request with a known legacy-only operator record to explicitly capture meta.readPath=legacy."
+  ],
+  "recommendedCommitMessageIfValidationPasses": "validate fresh-runtime behavior for operator source-of-truth hardening and canonical intake writes"
+}

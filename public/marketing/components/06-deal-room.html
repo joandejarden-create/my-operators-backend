@@ -1,0 +1,88 @@
+<!--
+  COMPONENT 06 — NDA-Gated Deal Room
+  Matches deal-room-owner.html layout (folder tree + document table)
+-->
+<div class="mkt-snapshot mkt-snapshot--wide">
+  <div class="mkt-snapshot__inner">
+    <header class="operator-explorer__header">
+      <h1>Deal Room</h1>
+      <p>NDA-gated document access · owner-controlled permissions · confidential materials only after NDA execution.</p>
+    </header>
+
+    <div class="panel">
+      <h2>Brand Deal Requests</h2>
+      <table class="mkt-deals-table">
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>NDA Status</th>
+            <th>Deal Room Access</th>
+            <th>Last Activity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Brand A Development</td>
+            <td><span class="mkt-status-pill">Signed · Owner confirmed</span></td>
+            <td>Granted · Full deal room</td>
+            <td>2 hours ago</td>
+          </tr>
+          <tr>
+            <td>Brand B Development</td>
+            <td>Pending signature</td>
+            <td>Not granted</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Deal Room Documents</h2>
+      <div class="gate-strip" role="note">
+        <strong>NDA Only</strong> files unlock when NDA is signed and deal room access is granted.
+        Owner and operator folders are permission-controlled.
+      </div>
+
+      <div class="explorer-wrap">
+        <div class="explorer-tree" aria-label="Party folders">
+          <div class="explorer-project">140-Key Urban Conversion</div>
+          <div class="folder-row"><div class="folder-meta"><div class="folder-label">Owner</div><div class="folder-hint">Private working files</div></div></div>
+          <div class="folder-row selected"><div class="folder-meta"><div class="folder-label">Shared</div><div class="folder-hint">NDA-gated · 4 files</div></div></div>
+          <div class="folder-row"><div class="folder-meta"><div class="folder-label">Brand</div><div class="folder-hint">Brand A · granted</div></div></div>
+          <div class="folder-row"><div class="folder-meta"><div class="folder-label">Operator</div><div class="folder-hint">Not invited</div></div></div>
+        </div>
+        <div class="explorer-main">
+          <div class="file-toolbar">
+            <div class="small">Selected folder: <strong style="color:#fff">Shared</strong></div>
+            <div class="small" style="margin-left:auto">Permission: View &amp; download · no forward</div>
+          </div>
+          <div class="file-surface">
+            <table class="mkt-deals-table">
+              <thead>
+                <tr>
+                  <th>Document</th>
+                  <th>Category</th>
+                  <th>Confidentiality</th>
+                  <th>Activity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>PIP scope — confidential</td><td>PIP</td><td>NDA Only</td><td>Viewed 2h ago</td></tr>
+                <tr><td>Pro forma (5-year)</td><td>Financials</td><td>NDA Only</td><td>Viewed today</td></tr>
+                <tr><td>Technical conversion brief</td><td>Plans</td><td>NDA Only</td><td>New</td></tr>
+                <tr><td>Site assessment summary</td><td>Market</td><td>NDA Only</td><td>Jun 3</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <ul class="mkt-activity-list">
+        <li><span>2h ago</span>Brand A Development viewed PIP scope</li>
+        <li><span>Today</span>Owner uploaded revised pro forma</li>
+        <li><span>Jun 3</span>NDA executed · deal room opened</li>
+      </ul>
+    </div>
+  </div>
+</div>

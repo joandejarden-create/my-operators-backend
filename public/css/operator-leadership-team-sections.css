@@ -1,0 +1,520 @@
+/**
+ * Leadership & Team — Explorer subsections (dark shell)
+ */
+
+.oe-lead-section {
+  margin-bottom: 12px;
+}
+
+.oe-lead-org-card {
+  min-height: 0;
+  padding: 12px 14px;
+}
+
+.oe-lead-org-card h3 {
+  margin-bottom: 8px;
+}
+
+.oe-lead-org-card > p {
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0 0 10px;
+}
+
+.oe-lead-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.oe-lead-chip {
+  display: inline-flex;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8fc3ff;
+  background: rgba(108, 114, 255, 0.14);
+  border: 0.6px solid rgba(108, 114, 255, 0.45);
+  border-radius: 6px;
+  line-height: 1.2;
+}
+
+.oe-lead-table-wrap {
+  margin-top: 4px;
+}
+
+/* Leadership tables — ALL CAPS headers (platform .card h3 style); col 1 left, cols 2+ right */
+.gold-footprint-table.oe-lead-data-table thead th {
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  font-weight: 600;
+  text-align: right;
+}
+
+.gold-footprint-table.oe-lead-data-table thead th:first-child {
+  text-align: left;
+}
+
+.oe-lead-data-table.gold-footprint-table tbody td {
+  text-align: right;
+}
+
+.oe-lead-data-table.gold-footprint-table tbody th[scope="row"] {
+  text-align: left;
+}
+
+.oe-lead-data-table tbody th[scope="row"] {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.oe-lead-data-table tbody td {
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+  vertical-align: top;
+}
+
+.oe-lead-lang-table tbody th[scope="row"] {
+  min-width: 88px;
+}
+
+.oe-lead-proficiency {
+  color: #8fc3ff;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.oe-lead-depth {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background: rgba(108, 114, 255, 0.14);
+  color: #8fc3ff;
+  border: 0.6px solid rgba(108, 114, 255, 0.45);
+}
+
+.oe-lead-depth--very-strong {
+  background: rgba(108, 114, 255, 0.22);
+  color: #aeb9e1;
+  border-color: rgba(108, 114, 255, 0.55);
+}
+
+.oe-lead-depth--emerging,
+.oe-lead-depth--moderate {
+  background: rgba(174, 185, 225, 0.12);
+  color: var(--muted);
+}
+
+.oe-lead-lang-gov-grid {
+  align-items: stretch;
+}
+
+.oe-lead-lang-gov-grid > .section {
+  min-width: 0;
+}
+
+.oe-lead-cadence-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.oe-lead-cadence-card {
+  min-height: 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+}
+
+.oe-lead-cadence-card__icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: rgba(108, 114, 255, 0.18);
+  border: 0.6px solid rgba(108, 114, 255, 0.45);
+  position: relative;
+}
+
+.oe-lead-cadence-card__icon::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 5px;
+  width: 8px;
+  height: 6px;
+  border: 2px solid #8fc3ff;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+}
+
+.oe-lead-cadence-card h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--text);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.oe-lead-cadence-card p {
+  margin: 0;
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.oe-lead-owner-card {
+  min-height: 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+}
+
+/* Card labels — match platform .card h3 (ALL CAPS muted) */
+.oe-lead-owner-card h3 {
+  margin: 0 0 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.oe-lead-owner-card__value {
+  margin: 0 0 6px;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.oe-lead-owner-card > div > p:last-child {
+  margin: 0;
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* Leadership profile cards — structured detail under summary */
+.leader-card--with-profile .leader-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/**
+ * Row-aligned leadership grids — Credentials / Languages / … sit on the same
+ * horizontal line across cards (CSS subgrid; 9 shared rows per card band).
+ */
+.proof-grid--leadership-aligned > .leader-card.leader-card--with-profile,
+.oe-leader-profile-grid--aligned > .leader-card.leader-card--with-profile {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 9;
+  min-height: 0;
+}
+
+.proof-grid--leadership-aligned > .leader-card.leader-card--with-profile .leader-image-wrap,
+.oe-leader-profile-grid--aligned > .leader-card.leader-card--with-profile .leader-image-wrap {
+  grid-row: 1;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-height: 280px;
+  overflow: hidden;
+  background: rgba(6, 12, 28, 0.85);
+}
+
+.proof-grid--leadership-aligned > .leader-card.leader-card--with-profile .leader-image-wrap img,
+.oe-leader-profile-grid--aligned > .leader-card.leader-card--with-profile .leader-image-wrap img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  display: block;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.proof-grid--leadership-aligned > .leader-card.leader-card--with-profile .leader-body,
+.oe-leader-profile-grid--aligned > .leader-card.leader-card--with-profile .leader-body {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: 2 / -1;
+  grid-column: 1;
+  min-height: 0;
+  flex: none;
+}
+
+.proof-grid--leadership-aligned .leader-card--with-profile .leader-name,
+.oe-leader-profile-grid--aligned .leader-card--with-profile .leader-name {
+  grid-row: 1;
+  margin-bottom: 4px;
+}
+
+.proof-grid--leadership-aligned .leader-card--with-profile .leader-meta,
+.oe-leader-profile-grid--aligned .leader-card--with-profile .leader-meta {
+  grid-row: 2;
+  margin-bottom: 8px;
+}
+
+.proof-grid--leadership-aligned .leader-card--with-profile .leader-summary,
+.oe-leader-profile-grid--aligned .leader-card--with-profile .leader-summary {
+  grid-row: 3;
+  align-self: stretch;
+  margin-bottom: 0;
+}
+
+.proof-grid--leadership-aligned .leader-card--with-profile .leader-profile-detail,
+.oe-leader-profile-grid--aligned .leader-card--with-profile .leader-profile-detail {
+  grid-row: 4 / -1;
+  display: grid;
+  grid-template-rows: subgrid;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.proof-grid--leadership-aligned .leader-profile-detail__facts,
+.oe-leader-profile-grid--aligned .leader-profile-detail__facts {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: 1 / -1;
+}
+
+.proof-grid--leadership-aligned .leader-profile-fact,
+.oe-leader-profile-grid--aligned .leader-profile-fact {
+  align-self: start;
+}
+
+.proof-grid--leadership-aligned .leader-profile-fact:first-child,
+.oe-leader-profile-grid--aligned .leader-profile-fact:first-child {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 0.6px solid var(--border);
+}
+
+.leader-profile-fact__empty {
+  color: rgba(174, 185, 225, 0.55);
+}
+
+@supports not (grid-template-rows: subgrid) {
+  .proof-grid--leadership-aligned .leader-card--with-profile .leader-summary,
+  .oe-leader-profile-grid--aligned .leader-card--with-profile .leader-summary {
+    min-height: 5.5rem;
+  }
+}
+
+.leader-card.leader-card--with-profile {
+  overflow: visible;
+  min-height: 0;
+}
+
+.oe-leadership-profiles-section {
+  margin-bottom: 12px;
+}
+
+/* Leadership Profiles — dynamic columns via --oe-leader-profile-cols (max 4) */
+.oe-leadership-profiles-section .oe-leader-profile-grid,
+.oe-leader-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--oe-leader-profile-cols, 2),
+    minmax(0, 1fr)
+  );
+  gap: 14px;
+  align-items: start;
+  width: 100%;
+}
+
+.oe-leader-profile-grid .leader-card,
+.oe-leadership-profiles-section .oe-leader-profile-grid > .leader-card {
+  min-height: 0;
+  height: auto;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Portrait headshots — fill frame (no letterboxing) */
+.oe-leader-profile-grid .leader-card.leader-card--with-profile .leader-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-height: 320px;
+  overflow: hidden;
+  background: rgba(6, 12, 28, 0.85);
+}
+
+.oe-leader-profile-grid .leader-card.leader-card--with-profile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.oe-leader-profile-grid .leader-card.leader-card--with-profile {
+  min-height: 0;
+}
+
+.leader-profile-detail {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 0.6px solid var(--border);
+}
+
+/* Compact scan layout: label column + value (inline tags or one line text) */
+.leader-profile-detail--compact .leader-profile-detail__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.leader-profile-fact {
+  display: grid;
+  grid-template-columns: 5.75rem minmax(0, 1fr);
+  gap: 8px 10px;
+  align-items: baseline;
+  padding: 5px 0;
+  border-bottom: 0.6px solid rgba(108, 114, 255, 0.12);
+}
+
+.leader-profile-fact:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.leader-profile-fact:first-child {
+  padding-top: 2px;
+}
+
+.leader-profile-fact__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.leader-profile-fact__value {
+  color: #dbe6f8;
+  font-size: 12px;
+  line-height: 1.4;
+  min-width: 0;
+}
+
+.leader-profile-fact__tags {
+  display: inline;
+  line-height: 1.45;
+}
+
+.oe-lead-tag {
+  display: inline;
+  font-size: 12px;
+  font-weight: 500;
+  color: #b8d4f8;
+  white-space: nowrap;
+}
+
+.oe-lead-tag:not(:last-child)::after {
+  content: " · ";
+  color: rgba(143, 195, 255, 0.45);
+  font-weight: 400;
+  white-space: normal;
+}
+
+/* Legacy pill rows (tables / setup form) */
+.leader-profile-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+}
+
+.leader-profile-detail__block--full {
+  grid-column: 1 / -1;
+}
+
+.leader-profile-detail__label {
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.leader-profile-detail__body p {
+  margin: 0;
+  color: #dbe6f8;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.leader-profile-detail .oe-lead-chip-row {
+  gap: 5px;
+}
+
+/* Operator Setup — executive profile detail fields */
+.exec-profile-detail {
+  margin: 12px 0;
+  padding: 12px 0 0;
+  border-top: 1px dashed rgba(108, 114, 255, 0.35);
+}
+
+.exec-profile-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.exec-profile-detail__full {
+  grid-column: 1 / -1;
+}
+
+.exec-profile-multiselect {
+  min-height: 88px;
+}
+
+@media (max-width: 960px) {
+  .oe-lead-lang-gov-grid.grid-2,
+  .oe-lead-org-grid.grid-3,
+  .oe-lead-owner-grid.grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .leader-profile-detail__grid,
+  .exec-profile-detail__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .leader-profile-fact {
+    grid-template-columns: 1fr;
+    gap: 2px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .oe-leadership-profiles-section .oe-leader-profile-grid,
+  .oe-leader-profile-grid {
+    grid-template-columns: 1fr;
+  }
+}

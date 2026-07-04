@@ -1,0 +1,156 @@
+<!-- Paste into Webflow Embed below navbar (site home /). -->
+<style>
+  html, body {
+    scrollbar-width: thin !important;
+    scrollbar-color: #6c72ff #080f25 !important;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 8px !important;
+  }
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track {
+    background: #080f25 !important;
+    border-left: 1px solid rgba(87, 195, 255, 0.35) !important;
+  }
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb {
+    background: #6c72ff !important;
+    border-radius: 0 !important;
+  }
+  html::-webkit-scrollbar-thumb:hover,
+  body::-webkit-scrollbar-thumb:hover {
+    background: #8b90ff !important;
+  }
+  html, body.overflow-hidden.h-100-vh,
+  body.overflow-hidden.h-100-vh {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+  .loading-bar-wrapper {
+    display: none !important;
+  }
+  .navbar-2.w-nav {
+    height: 66px !important;
+    min-height: 66px !important;
+    max-height: 66px !important;
+    box-sizing: border-box !important;
+  }
+  .navbar-2 .navbar_content {
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    padding-right: 16px !important;
+    box-sizing: border-box !important;
+  }
+  .navbar-2 .navbar_logo,
+  .navbar-2 img.navbar_logo {
+    height: 50px !important;
+    max-height: 50px !important;
+    width: auto !important;
+  }
+  .navbar-2 .nav_links,
+  .navbar-2 a.nav_links,
+  .navbar-2 .nav_link,
+  .navbar-2 a.nav_link,
+  .navbar-2 .w-nav-link,
+  .navbar-2 .w-nav-link.w--current {
+    padding: 0.35rem 0.5rem !important;
+    line-height: 1.2 !important;
+    border: 0 !important;
+    font-weight: 400 !important;
+  }
+  .navbar-2 .nav-compact,
+  .navbar-2 a.nav-compact {
+    padding: 0.4rem 0.85rem !important;
+    line-height: 1.2 !important;
+    font-weight: 400 !important;
+  }
+  .dl-landing-embed-full {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #080f25 !important;
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  .dl-landing-embed-wrap {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #080f25 !important;
+    line-height: 0 !important;
+    overflow: visible !important;
+  }
+  #dealality-landing-embed,
+  .dl-landing-embed-iframe {
+    display: block !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    min-height: 0;
+    height: 1200px;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #080f25 !important;
+    overflow: hidden !important;
+  }
+  .w-embed.dl-landing-embed-full {
+    width: 100% !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+</style>
+<div class="dl-landing-embed-wrap">
+  <iframe
+    id="dealality-landing-embed"
+    class="dl-landing-embed-iframe"
+    src="https://my-operators-backend-staging.up.railway.app/marketing/dealality-landing-v9.html?embed=1"
+    title="Dealality — hotel brand and operator selection"
+    scrolling="no"
+    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+    allowfullscreen
+    webkitallowfullscreen
+    style="display:block;width:100%;min-height:0;height:1200px;border:0;background:#080f25;overflow:hidden"
+  ></iframe>
+</div>
+<script>
+(function () {
+  var STYLE_ID = "dl-landing-shell-scrollbar";
+  if (!document.getElementById(STYLE_ID)) {
+    var style = document.createElement("style");
+    style.id = STYLE_ID;
+    style.textContent =
+      "html,body{scrollbar-width:thin!important;scrollbar-color:#6c72ff #080f25!important}" +
+      "html::-webkit-scrollbar,body::-webkit-scrollbar{width:8px!important}" +
+      "html::-webkit-scrollbar-track,body::-webkit-scrollbar-track{background:#080f25!important;border-left:1px solid rgba(87,195,255,.35)!important}" +
+      "html::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb{background:#6c72ff!important}" +
+      "html::-webkit-scrollbar-thumb:hover,body::-webkit-scrollbar-thumb:hover{background:#8b90ff!important}";
+    (document.head || document.documentElement).appendChild(style);
+  }
+  var EMBED_TOP_PADDING_PX = 102;
+  function applyNavOffset() {
+    var wrap = document.querySelector(".dl-landing-embed-wrap");
+    if (wrap) {
+      wrap.style.paddingTop = EMBED_TOP_PADDING_PX + "px";
+      wrap.style.minHeight = "0";
+    }
+    document.body.classList.remove("overflow-hidden", "h-100-vh");
+  }
+  applyNavOffset();
+  document.addEventListener("DOMContentLoaded", applyNavOffset);
+  window.addEventListener("load", applyNavOffset);
+  window.addEventListener("resize", applyNavOffset);
+})();
+</script>
+<script src="https://my-operators-backend-staging.up.railway.app/marketing/dealality-landing-webflow-parent.js"></script>

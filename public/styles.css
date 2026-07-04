@@ -15,6 +15,10 @@
     box-sizing: border-box;
 }
 
+:root {
+    --scrollbar-size: 6px;
+}
+
 /* Main containers – full width */
 .main-container,
 .dashboard-container,
@@ -46,8 +50,8 @@ html {
     scrollbar-color: #37446b #080f25;
 }
 *::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: var(--scrollbar-size);
+    height: var(--scrollbar-size);
 }
 *::-webkit-scrollbar-track {
     background: #080f25;
@@ -2603,6 +2607,28 @@ html {
     font-size: 1rem;
 }
 
+/* Wave loaders: hide subline when empty (duration estimates removed platform-wide) */
+.loading-text-time:empty,
+.status-time:empty {
+    display: none !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+}
+
+/* Loading / status animation copy — title case per word (Loading Brand… not Loading brand…) */
+.loading-text-main,
+.loading-text-time:not(:empty),
+.loading-text,
+.oh-loading,
+.loading-wave-text,
+.bee-loading,
+.um-loading,
+.system-status .status-text > div:first-child,
+.ranked-list-loading > span,
+.loading:not(:has(.loading-content)):not(:has(.wave-container)):not(:has(.loading-text-main)) {
+    text-transform: capitalize;
+}
+
 /* Notifications */
 .notification {
     position: fixed;
@@ -3380,7 +3406,7 @@ html {
     scrollbar-width: thin;
     scrollbar-color: #37446b #080f25;
 }
-.modal-content-scrollable::-webkit-scrollbar { width: 6px; }
+.modal-content-scrollable::-webkit-scrollbar { width: var(--scrollbar-size); }
 .modal-content-scrollable::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
 .modal-content-scrollable::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
 .modal-content-scrollable::-webkit-scrollbar-thumb:hover { background: #7e89ac; }

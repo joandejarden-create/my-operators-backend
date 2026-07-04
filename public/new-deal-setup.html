@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Deal - Dealality Platform</title>
+    <title>Add New Deal - Dealality Platform</title>
+    <link rel="stylesheet" href="/css/deal-readiness-snapshot.css">
     <style>
         /* CSS Variables – match Brand Setup */
         :root {
@@ -36,6 +37,48 @@
             -webkit-text-size-adjust: 100%;
             box-sizing: border-box;
         }
+        /* Match platform blue scrollbar styling used on other pages. */
+        html, body {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
+        *::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
+        *::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
+        *::-webkit-scrollbar-corner { background: #080f25; }
+        /* Keep browser autofill aligned with dark input theme (prevent white prefill background). */
+        input, textarea, select { color-scheme: dark; }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        textarea:-webkit-autofill:active,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus,
+        select:-webkit-autofill:active,
+        input:autofill,
+        textarea:autofill,
+        select:autofill {
+            -webkit-text-fill-color: var(--neutral--100) !important;
+            box-shadow: 0 0 0 1000px var(--secondary--color-1) inset !important;
+            -webkit-box-shadow: 0 0 0 1000px var(--secondary--color-1) inset !important;
+            caret-color: var(--neutral--100) !important;
+            border-color: var(--neutral--600) !important;
+            transition: background-color 9999s ease-in-out 0s;
+        }
+        input:-moz-autofill,
+        textarea:-moz-autofill,
+        select:-moz-autofill {
+            box-shadow: 0 0 0 1000px var(--secondary--color-1) inset !important;
+            -moz-text-fill-color: var(--neutral--100) !important;
+            caret-color: var(--neutral--100) !important;
+        }
         .page-wrapper { min-height: 100vh; display: flex; }
         .dashboard-main-section { flex: 1; margin-left: 0; min-width: 0; overflow-x: hidden; }
         .intake-container { max-width: 100%; min-width: 0; margin: 0 auto; padding: 30px; }
@@ -45,10 +88,16 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 20px;
             margin: 0 -30px 40px -30px;
+            position: relative;
+            z-index: 200;
         }
+        .back-to-my-deals { margin-bottom: 16px; }
+        .back-to-my-deals a {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--accent--primary-1); text-decoration: none; font-size: 14px; font-weight: 500;
+        }
+        .back-to-my-deals a:hover { color: var(--secondary--color-2); text-decoration: underline; }
         .intake-title-container { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .deal-capture-logo { height: 32px; display: flex; align-items: center; flex-shrink: 0; }
-        .deal-capture-logo img { height: 100%; width: auto; max-width: 120px; object-fit: contain; }
         .intake-header h1 { color: #ffffff; margin: 0; font-size: 2rem; font-weight: 700; line-height: 1.2em; }
         .intake-header p { color: #ffffff; font-size: 0.75rem; font-weight: 300; line-height: 1.3; max-width: 650px; margin: 0; margin-top: 5px; }
         @media (max-width: 768px) {
@@ -172,6 +221,27 @@
         .form-sections-wrap { max-width: 920px; padding-top: 8px; }
         .form-section { display: none; min-width: 0; margin-bottom: 40px; }
         .form-section.active { display: block; }
+        /* My Deals readiness: single-field deep-link (?focus=) — brief flash */
+        .form-section .deal-setup-field-highlight {
+            outline: 2px solid var(--accent--primary-1);
+            outline-offset: 6px;
+            border-radius: 10px;
+            transition: outline-color 0.25s ease;
+        }
+        /* Readiness “highlight all gaps” — same purple ring as .form-input:focus / .form-select:focus */
+        .form-section .deal-setup-readiness-gap {
+            outline: 2px solid var(--accent--primary-1);
+            outline-offset: 6px;
+            border-radius: 10px;
+            box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
+        }
+        .section-nav-item.section-has-readiness-gaps .section-nav-icon {
+            box-shadow:
+                0 0 0 2px var(--accent--primary-1),
+                0 0 0 4px rgba(108, 114, 255, 0.2),
+                0 0 14px rgba(108, 114, 255, 0.35);
+            border-radius: 10px;
+        }
         .form-section-title {
             color: var(--neutral--100);
             font-size: 1.375rem;
@@ -228,6 +298,83 @@
             font-weight: 500;
             margin-bottom: 4px;
         }
+        .quick-start-success {
+            margin-top: 12px;
+            border: 1px solid rgba(20, 202, 116, 0.5);
+            background: rgba(20, 202, 116, 0.1);
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: var(--neutral--100);
+        }
+        .quick-start-success h3 {
+            margin: 0 0 8px 0;
+            color: var(--system--green-300);
+            font-size: 15px;
+        }
+        .quick-start-success p {
+            margin: 0 0 6px 0;
+            color: var(--neutral--300);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .quick-start-success ul {
+            margin: 6px 0 8px 20px;
+            color: var(--neutral--300);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .quick-start-success-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .quick-start-summary-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 10, 28, 0.72);
+            backdrop-filter: blur(2px);
+            z-index: 12000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .quick-start-summary-modal-card {
+            width: min(900px, 96vw);
+            max-height: 90vh;
+            border: 1px solid var(--neutral--600);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--secondary--color-1);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.45);
+        }
+        .quick-start-summary-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--neutral--600);
+            color: var(--neutral--100);
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .quick-start-summary-close {
+            background: transparent;
+            color: var(--neutral--300);
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+            padding: 2px 6px;
+        }
+        .quick-start-summary-iframe {
+            width: 100%;
+            height: min(460px, 74vh);
+            border: 0;
+            display: block;
+            background: transparent;
+        }
         .section-nav-item.completed .section-nav-icon { border-color: var(--system--green-300); color: var(--system--green-300); }
         @media (max-width: 768px) {
             .section-nav { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
@@ -246,6 +393,7 @@
             max-width: 100%;
         }
         .label-spacing { margin-top: 6px; }
+        .brand-operator-label-spacing { margin-top: 14px; }
         .economics-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(260px, 1fr));
@@ -339,7 +487,28 @@
             border-color: var(--accent--primary-1);
             box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
         }
-        .form-input::placeholder { color: var(--neutral--500); }
+        .form-input::placeholder,
+        .form-textarea::placeholder,
+        .form-input::-webkit-input-placeholder,
+        .form-textarea::-webkit-input-placeholder {
+            color: #7e89ac !important;
+            -webkit-text-fill-color: #7e89ac !important;
+            opacity: 1 !important;
+        }
+        .intake-container input::placeholder,
+        .intake-container textarea::placeholder,
+        .intake-container input::-webkit-input-placeholder,
+        .intake-container textarea::-webkit-input-placeholder {
+            color: #7e89ac !important;
+            -webkit-text-fill-color: #7e89ac !important;
+            opacity: 1 !important;
+        }
+        #preferredBrandsSearch::placeholder,
+        #preferredBrandsSearch::-webkit-input-placeholder {
+            color: #7e89ac !important;
+            -webkit-text-fill-color: #7e89ac !important;
+            opacity: 1 !important;
+        }
         .estimated-time-chip {
             display: inline-flex;
             align-items: center;
@@ -358,8 +527,9 @@
         }
         /* Date inputs: make calendar icon visible on dark background (match brand setup) */
         .form-input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            opacity: 0.85;
+            /* Blue tone aligned to example/placeholder input text color. */
+            filter: brightness(0) saturate(100%) invert(62%) sepia(19%) saturate(351%) hue-rotate(188deg) brightness(95%) contrast(90%);
+            opacity: 0.95;
             cursor: pointer;
         }
         .form-select option { background: var(--secondary--color-1); color: var(--neutral--100); }
@@ -417,6 +587,7 @@
         .btn.loading { opacity: 0.7; cursor: not-allowed; }
 
         .hidden { display: none !important; }
+        .quick-hidden { display: none !important; }
         .flex-inline { display: inline-flex !important; }
         .slider-value { margin-left: 8px; font-weight: 600; color: var(--secondary--color-5); font-size: 0.875rem; }
         input[type="range"].form-input { padding: 0; height: 8px; accent-color: var(--accent--primary-1); }
@@ -525,6 +696,108 @@
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
         }
+
+        /* Deal Readiness Review */
+        .deal-readiness-header-actions { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .deal-readiness-run-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 10px 18px; border-radius: 8px; border: 1px solid var(--secondary--color-2);
+            background: rgba(108, 114, 255, 0.15); color: var(--neutral--100);
+            font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s, border-color 0.15s;
+        }
+        .deal-readiness-run-btn:hover:not(:disabled) {
+            background: rgba(108, 114, 255, 0.28); border-color: var(--accent--primary-1);
+        }
+        .deal-readiness-run-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+        .deal-readiness-modal-overlay {
+            display: none; position: fixed; inset: 0; z-index: 10000;
+            background: rgba(8, 15, 37, 0.82); align-items: center; justify-content: center; padding: 24px;
+        }
+        .deal-readiness-modal-overlay.open { display: flex; }
+        .deal-readiness-modal {
+            width: 100%; max-width: 720px; max-height: min(88vh, 900px); overflow: hidden;
+            display: flex; flex-direction: column;
+            background: var(--neutral--700); border: 1px solid var(--neutral--600); border-radius: 12px;
+            box-shadow: 0 20px 48px rgba(0,0,0,0.45);
+        }
+        .deal-readiness-modal-header {
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+            padding: 18px 20px; border-bottom: 1px solid var(--neutral--600);
+        }
+        .deal-readiness-modal-header h2 { margin: 0; font-size: 1.15rem; color: var(--neutral--100); font-weight: 700; }
+        .deal-readiness-modal-header .sub { margin: 6px 0 0 0; font-size: 12px; color: var(--neutral--500); font-weight: 500; }
+        .deal-readiness-modal-close {
+            background: none; border: none; color: var(--neutral--400); font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 8px;
+        }
+        .deal-readiness-modal-close:hover { color: var(--neutral--100); }
+        .deal-readiness-modal-body {
+            padding: 16px 20px 20px;
+            overflow: hidden;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        #dealReadinessContent:not(.hidden) {
+            display: block;
+        }
+        .deal-readiness-score-pill {
+            display: inline-flex; align-items: baseline; gap: 8px; margin-bottom: 12px;
+            padding: 8px 12px; border-radius: 8px; background: rgba(20, 202, 116, 0.12); border: 1px solid rgba(20, 202, 116, 0.35);
+        }
+        .deal-readiness-score-pill .score { font-size: 1.5rem; font-weight: 800; color: var(--system--green-300); }
+        .deal-readiness-score-pill .stage { font-size: 12px; font-weight: 600; color: var(--neutral--300); text-transform: uppercase; letter-spacing: 0.04em; }
+        .deal-readiness-section h3 { margin: 16px 0 8px; font-size: 13px; font-weight: 700; color: var(--neutral--100); text-transform: uppercase; letter-spacing: 0.06em; }
+        .deal-readiness-section p, .deal-readiness-section li { font-size: 13px; color: var(--neutral--400); line-height: 1.55; }
+        .deal-readiness-list { margin: 0; padding-left: 18px; }
+        .deal-readiness-list.warn li::marker { color: var(--system--orange-400); }
+        .deal-readiness-list.block li::marker { color: var(--system--300); }
+        .deal-readiness-footer { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--neutral--600); }
+        .deal-readiness-save-status { font-size: 12px; color: var(--neutral--400); margin: 0; min-height: 1.25em; line-height: 1.4; }
+        .deal-readiness-loading { text-align: center; padding: 32px 16px; color: var(--neutral--500); font-size: 13px; }
+        .deal-readiness-error { padding: 12px 14px; border-radius: 8px; background: rgba(255, 90, 101, 0.12); border: 1px solid rgba(255, 90, 101, 0.35); color: #ffb4b8; font-size: 13px; }
+        .deal-readiness-header-badge {
+            display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;
+            padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 600;
+            background: rgba(253, 181, 42, 0.12); border: 1px solid rgba(253, 181, 42, 0.45); color: var(--secondary--color-5);
+            max-width: 100%;
+        }
+        .deal-readiness-header-badge.saved { border-color: rgba(20, 202, 116, 0.5); background: rgba(20, 202, 116, 0.12); color: var(--system--green-300); }
+        .deal-readiness-header-badge.hidden { display: none !important; }
+        .deal-readiness-modal-badges {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+        }
+        .deal-readiness-badge-chip {
+            display: inline-flex; align-items: center; padding: 6px 10px; border-radius: 8px; font-size: 11px; font-weight: 600;
+            background: rgba(108, 114, 255, 0.15); border: 1px solid var(--neutral--600); color: var(--neutral--100);
+        }
+        .deal-readiness-badge-chip.muted { color: var(--neutral--400); font-weight: 500; }
+        .deal-readiness-section-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-top: 8px;
+        }
+        .deal-readiness-section-card {
+            padding: 10px 12px; border-radius: 8px; border: 1px solid var(--neutral--600); background: rgba(8, 15, 37, 0.35);
+        }
+        .deal-readiness-section-card .pct { font-size: 1.1rem; font-weight: 800; color: var(--accent--primary-1); }
+        .deal-readiness-section-card .lbl { font-size: 10px; color: var(--neutral--500); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; line-height: 1.3; }
+        .deal-readiness-blocking-callout {
+            padding: 12px 14px; border-radius: 8px; margin-bottom: 12px;
+            border: 1px solid rgba(255, 90, 101, 0.45); background: rgba(255, 90, 101, 0.08);
+        }
+        .deal-readiness-blocking-callout h3 { margin: 0 0 8px; font-size: 12px; color: #ffb4b8; text-transform: uppercase; letter-spacing: 0.06em; }
+        .deal-readiness-improve-list { margin: 0; padding: 0; list-style: none; }
+        .deal-readiness-improve-item {
+            padding: 10px 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid var(--neutral--600);
+            background: rgba(16, 25, 53, 0.5); font-size: 12px; color: var(--neutral--400); line-height: 1.45;
+        }
+        .deal-readiness-sev { display: inline-block; margin-right: 8px; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+        .deal-readiness-sev.high { background: rgba(255, 90, 101, 0.2); color: #ffb4b8; }
+        .deal-readiness-sev.medium { background: rgba(213, 105, 27, 0.2); color: var(--system--orange-400); }
+        .deal-readiness-sev.low { background: rgba(126, 137, 172, 0.2); color: var(--neutral--400); }
+        .deal-readiness-ai-note {
+            margin-top: 16px;
+            padding: 10px 12px; border-radius: 8px; border: 1px dashed var(--neutral--600); color: var(--neutral--500); font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -532,13 +805,13 @@
         <div class="dashboard-main-section">
             <div class="intake-container">
                 <div class="intake-header">
+                    <div class="back-to-my-deals hidden" id="backToMyDealsRow">
+                        <a href="/my-deals.html" id="backToMyDealsLink">← Back to My Deals</a>
+                    </div>
                     <div class="intake-title-container">
-                        <div class="deal-capture-logo">
-                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-                        </div>
                         <h1 id="dealPageTitle">Deal</h1>
                     </div>
-                    <p id="dealSetupSubtitle">Create a new deal using this guided intake. Changes are saved to a Deal record you can return to from My Deals.</p>
+                    <p id="dealSetupSubtitle">Add a new deal using this guided intake. Changes are saved to a Deal record you can return to from My Deals.</p>
                 </div>
 
                 <div class="deal-setup-error hidden" id="dealSetupError"></div>
@@ -550,8 +823,8 @@
                             <div class="wave wave-3"></div>
                         </div>
                         <div>
-                            <div class="loading-text-main" id="dealSetupLoadingTextMain">Loading deal…</div>
-                            <div class="loading-text-time" id="dealSetupLoadingTextTime">Estimated time: 1–2 seconds</div>
+                            <div class="loading-text-main" id="dealSetupLoadingTextMain">Loading Deal…</div>
+                            <div class="loading-text-time" id="dealSetupLoadingTextTime" hidden></div>
                         </div>
                     </div>
                     <div class="loading-progress"><div class="loading-progress-bar"></div></div>
@@ -579,9 +852,25 @@
                     </div>
                 </div>
 
+                <div class="deal-readiness-modal-overlay" id="dealReadinessModal" aria-hidden="true" role="dialog" aria-labelledby="dealReadinessModalTitle">
+                    <div class="deal-readiness-modal">
+                        <div class="deal-readiness-modal-header">
+                            <div>
+                                <h2 id="dealReadinessModalTitle">Deal Readiness Snapshot</h2>
+                                <p class="sub">Readiness signals from saved Deal Setup fields. Draft output for owner/advisor validation.</p>
+                            </div>
+                            <button type="button" class="deal-readiness-modal-close" id="dealReadinessModalClose" aria-label="Close">×</button>
+                        </div>
+                        <div class="deal-readiness-modal-body" id="dealReadinessModalBody">
+                            <div class="deal-readiness-loading" id="dealReadinessLoading">Analyzing Deal Readiness…</div>
+                            <div id="dealReadinessContent" class="hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="deal-setup-form hidden" id="dealSetupForm">
                     <div class="section-nav" id="sectionNav">
-                        <div class="section-nav-item active" data-section="0"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></div><span class="section-nav-label">Create<br>New Deal</span></div>
+                        <div class="section-nav-item active" data-section="0"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg></div><span class="section-nav-label">Add<br>New Deal</span></div>
                         <div class="section-nav-item" data-section="1"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/><path d="M9 12h6"/><path d="M9 16h6"/><path d="M9 8h6"/></svg></div><span class="section-nav-label">Project<br>Overview</span></div>
                         <div class="section-nav-item" data-section="2"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 6.5 1-4.8 4.6 1.1 6.4L12 17.5l-5.8 3 1.1-6.4L2.5 10 9 8.5 12 2z"/></svg></div><span class="section-nav-label">Brand & Op.<br>Status</span></div>
                         <div class="section-nav-item" data-section="3"><div class="section-nav-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><span class="section-nav-label">Location & Site<br>Details</span></div>
@@ -638,6 +927,11 @@
                                 <li>Nothing is shared with brands until you choose to engage them through Dealality.</li>
                                 <li>A member of our team will contact you within 1–3 business days to review your deal and recommended next steps.</li>
                             </ul>
+                            <div style="margin:0 0 24px 0;padding:12px 14px;background:var(--secondary--color-1);border:1px solid var(--neutral--600);border-radius:10px;">
+                                <p style="margin:0 0 8px 0;font-weight:600;font-size:14px;color:var(--neutral--100);">Choose how to begin</p>
+                                <p style="margin:0 0 6px 0;color:var(--neutral--400);font-size:13px;line-height:1.6;"><strong style="color:var(--neutral--200);">Quick Intake:</strong> Submit the core fields now (including matching priorities and contact info), then complete the remaining sections later.</p>
+                                <p style="margin:0;color:var(--neutral--400);font-size:13px;line-height:1.6;"><strong style="color:var(--neutral--200);">Full Intake:</strong> Complete the full deal intake in one session and submit when everything is finalized.</p>
+                            </div>
                         </div>
                         <!-- 1. Project Overview -->
                         <div class="form-section" data-section="1">
@@ -654,11 +948,16 @@
                                     <input type="text" class="form-input" name="Project Name" placeholder="e.g. Downtown Hotel (leave blank to use Property Name)">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Project Type <span class="required">*</span><span class="help-text">New Build or Conversion / Reflag.</span></label>
-                                    <select class="form-select" name="Project Type">
+                                    <label class="form-label">Project Type <span class="required">*</span><span class="help-text">Ground-up, conversion, renovation, or operating-hotel context.</span></label>
+                                    <select class="form-select" name="Project Type" id="projectTypeSelect">
                                         <option value="">Select One…</option>
                                         <option value="New Build">New Build</option>
                                         <option value="Conversion / Reflag">Conversion / Reflag</option>
+                                        <option value="Renovation / Repositioning">Renovation / Repositioning</option>
+                                        <option value="Existing Operating Hotel">Existing Operating Hotel</option>
+                                        <option value="Adaptive Reuse">Adaptive Reuse</option>
+                                        <option value="Mixed-Use Hospitality Project">Mixed-Use Hospitality Project</option>
+                                        <option value="Other / To Be Confirmed">Other / To Be Confirmed</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -670,6 +969,21 @@
                                         <option value="Fully Entitled">Fully Entitled</option>
                                         <option value="Under Construction">Under Construction</option>
                                         <option value="Stabilized Operating Asset">Stabilized Operating Asset</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Opening / Transition Phase <span class="required">*</span><span class="help-text">Where the asset sits in opening, renovation, or rebranding (if applicable).</span></label>
+                                    <select class="form-select" name="Opening / Transition Phase">
+                                        <option value="">Select One…</option>
+                                        <option value="N/A (stabilized operating)">N/A (stabilized operating)</option>
+                                        <option value="Planning / entitlement">Planning / entitlement</option>
+                                        <option value="Pre-construction">Pre-construction</option>
+                                        <option value="Construction">Construction</option>
+                                        <option value="Pre-opening ramp">Pre-opening ramp</option>
+                                        <option value="Soft opening">Soft opening</option>
+                                        <option value="Reopening after renovation">Reopening after renovation</option>
+                                        <option value="Rebranding in place">Rebranding in place</option>
+                                        <option value="Needs Review">Needs Review</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -709,6 +1023,10 @@
                                         <option value="No">No</option>
                                     </select>
                                 </div>
+                                <div id="franchiseHistoryDescriptionBlock" class="form-group full-width hidden">
+                                    <label class="form-label">Has there ever been a franchise description<span class="help-text">If yes, add context about prior/current franchise or branded management affiliation.</span></label>
+                                    <textarea class="form-textarea" name="Has there ever been a franchise description" placeholder="Add details..." rows="2"></textarea>
+                                </div>
                                 <div class="form-group">
                                     <label class="form-label">Is the hotel currently branded? <span class="required">*</span><span class="help-text">Yes if operating under a brand flag today.</span></label>
                                     <select class="form-select" name="Is the hotel currently branded?">
@@ -726,6 +1044,24 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label class="form-label">Current Operating Model <span class="required">*</span><span class="help-text">How the hotel operates today (canonical for operator capability review).</span></label>
+                                    <select class="form-select" name="Current Operating Model">
+                                        <option value="">Select One…</option>
+                                        <option value="Owner-operated (unbranded)">Owner-operated (unbranded)</option>
+                                        <option value="Owner-operated (branded/franchised)">Owner-operated (branded/franchised)</option>
+                                        <option value="Third-party managed (branded)">Third-party managed (branded)</option>
+                                        <option value="Third-party managed (independent/collection)">Third-party managed (independent/collection)</option>
+                                        <option value="Brand-managed">Brand-managed</option>
+                                        <option value="Lease/operator lease structure">Lease/operator lease structure</option>
+                                        <option value="Mixed/transitioning">Mixed/transitioning</option>
+                                        <option value="Needs Review">Needs Review</option>
+                                        <option value="Unknown">Unknown</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="oasBrandAgreementInject" class="oas-inject-block"></div>
+                            <div class="form-grid">
+                                <div class="form-group">
                                     <label class="form-label">Are you open to considering other brands with favorable terms? <span class="required">*</span><span class="help-text">Yes if you would consider emerging or lesser-known brands.</span></label>
                                     <select class="form-select" name="Are you open to considering other brands with favorable terms?">
                                         <option value="">Select One…</option>
@@ -734,7 +1070,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Have you worked with any of your preferred brands/operators before? <span class="required">*</span><span class="help-text">Yes if you have prior experience with preferred brands or operators.</span></label>
+                                    <label class="form-label">Worked with preferred brands/operators before? <span class="required">*</span><span class="help-text">Yes if you have prior experience with preferred brands or operators.</span></label>
                                     <select class="form-select" name="Have you worked with any of your preferred brands/operators before?" id="workedWithPreferredSelect">
                                         <option value="">Select One…</option>
                                         <option value="Yes">Yes</option>
@@ -743,15 +1079,15 @@
                                 </div>
                                 <div id="workedWithPreferredDetails" class="conditional-block hidden">
                                     <div class="form-group full-width">
-                                        <label class="form-label">Parent Company Name<span class="help-text">Parent or ownership company if the hotel is currently branded.</span></label>
+                                        <label class="form-label">Parent Company Name<span class="help-text">Preferred parent or ownership company tied to brands/operators you have worked with.</span></label>
                                         <input type="text" class="form-input" name="Parent Company Name" placeholder="e.g. Marriott International, Independent ownership">
                                     </div>
                                     <div class="form-group full-width">
-                                        <label class="form-label">Current Brand Affiliation<span class="help-text">Current brand flag if the hotel is currently branded (e.g. Marriott, Courtyard, Independent legacy flag).</span></label>
+                                        <label class="form-label brand-operator-label-spacing">Brand Affiliation<span class="help-text">Preferred/current brand affiliation description (e.g. Marriott, Courtyard, Independent legacy flag).</span></label>
                                         <input type="text" class="form-input" name="Current Brand Affiliation" placeholder="e.g. Marriott, Courtyard by Marriott, Independent (legacy flag)">
                                     </div>
                                     <div class="form-group full-width">
-                                        <label class="form-label">Operator Name<span class="help-text">Current or preferred third-party operator name if applicable.</span></label>
+                                        <label class="form-label brand-operator-label-spacing">Operator Name<span class="help-text">Current or preferred third-party operator name if applicable.</span></label>
                                         <input type="text" class="form-input" name="Operator Name Current" placeholder="If applicable">
                                     </div>
                                 </div>
@@ -988,6 +1324,19 @@
                                         <option value="Zimbabwe">Zimbabwe</option>
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label class="form-label">Primary Market Region <span class="required">*</span><span class="help-text">Primary region for operator capability and market context (e.g. CALA).</span></label>
+                                    <select class="form-select" name="Primary Market Region">
+                                        <option value="">Select One…</option>
+                                        <option value="North America">North America</option>
+                                        <option value="CALA">CALA</option>
+                                        <option value="Europe">Europe</option>
+                                        <option value="MEA">MEA</option>
+                                        <option value="APAC">APAC</option>
+                                        <option value="Multi-region">Multi-region</option>
+                                        <option value="Needs Review">Needs Review</option>
+                                    </select>
+                                </div>
                                 <h3 class="project-fit-subheader full-width" style="margin-top: 24px;">Hotel Classification</h3>
                                 <div class="form-group">
                                     <label class="form-label">Hotel Chain Scale <span class="required">*</span><span class="help-text">Market segment tier (e.g. Luxury, Upscale, Midscale).</span></label>
@@ -1185,6 +1534,43 @@
                                     <div id="accessToTransitOtherBlock" class="hidden" style="margin-top:12px;">
                                         <input type="text" class="form-input" name="Access to Transit or Highway Other Text" placeholder="Describe other access" id="accessToTransitOtherInput">
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Micro-Location Type<span class="help-text">Fine-grain location context for market-fit scoring.</span></label>
+                                    <select class="form-select" name="Micro-Location Type">
+                                        <option value="">Select One...</option>
+                                        <option value="CBD / Financial District">CBD / Financial District</option>
+                                        <option value="Airport Corridor">Airport Corridor</option>
+                                        <option value="Convention / Event District">Convention / Event District</option>
+                                        <option value="Urban Leisure / Lifestyle Node">Urban Leisure / Lifestyle Node</option>
+                                        <option value="Resort / Destination">Resort / Destination</option>
+                                        <option value="Suburban / Secondary Node">Suburban / Secondary Node</option>
+                                        <option value="Highway / Transit Gateway">Highway / Transit Gateway</option>
+                                        <option value="Mixed-Use Master Development">Mixed-Use Master Development</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label">Demand Mix Targets<span class="help-text">Target demand mix to support market-fit comparisons. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Demand Mix Targets" multiple size="6" style="min-width: 260px;">
+                                        <option value="Corporate Transient">Corporate Transient</option>
+                                        <option value="Leisure FIT">Leisure FIT</option>
+                                        <option value="Group / MICE">Group / MICE</option>
+                                        <option value="Extended Stay">Extended Stay</option>
+                                        <option value="Contract Crew / Government">Contract Crew / Government</option>
+                                        <option value="Social / Weddings">Social / Weddings</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label">Operational Complexity Profile<span class="help-text">Asset complexity signals used for operator-fit context. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Operational Complexity Profile" multiple size="6" style="min-width: 260px;">
+                                        <option value="High F&B Complexity">High F&B Complexity</option>
+                                        <option value="Meaningful Group / Events Mix">Meaningful Group / Events Mix</option>
+                                        <option value="Mixed-Use / Shared Components">Mixed-Use / Shared Components</option>
+                                        <option value="Union / Labor Sensitive">Union / Labor Sensitive</option>
+                                        <option value="Multiple Revenue Centers">Multiple Revenue Centers</option>
+                                        <option value="Lifestyle Programming Intensity">Lifestyle Programming Intensity</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -1532,7 +1918,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Preferred Deal Structure <span class="required">*</span><span class="help-text">Franchise, management, hybrid, or other.</span></label>
+                                    <label class="form-label">Preferred Deal Structure <span class="required">*</span><span class="help-text">Brand/franchise economics path (legacy). Use Brand agreement structure and Preferred management structure for operator alignment.</span></label>
                                     <select class="form-select" name="Preferred Deal Structure">
                                         <option value="">Select One…</option>
                                         <option value="Franchise Only">Franchise Only</option>
@@ -1586,6 +1972,137 @@
                                         <option value="$10M – $20M">$10M – $20M</option>
                                         <option value="$20M+">$20M+</option>
                                         <option value="Not Applicable / New build">Not Applicable / New build</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width multi-select-with-count">
+                                    <label class="form-label">Is the property encumbered<span class="help-text">Select all existing encumbrances that apply. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Is the property encumbered" multiple size="6" style="min-width: 280px;">
+                                        <option value="Brand Agreement">Brand Agreement</option>
+                                        <option value="Management Agreement">Management Agreement</option>
+                                        <option value="Ground Lease">Ground Lease</option>
+                                        <option value="Loan / Mortgage Lien">Loan / Mortgage Lien</option>
+                                        <option value="Legal Dispute / Title Issue">Legal Dispute / Title Issue</option>
+                                        <option value="Restrictive Covenant">Restrictive Covenant</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label class="form-label">Property Encumbered Description<span class="help-text">Additional details about encumbrances, if any.</span></label>
+                                    <input type="text" class="form-input" name="Property Encumbered Description" placeholder="Describe encumbrances">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Royalty Fee Expectations<span class="help-text">Expected royalty fee range.</span></label>
+                                    <select class="form-select" name="Royalty Fee Expectations">
+                                        <option value="">Select One…</option>
+                                        <option value="Under 3%">Under 3%</option>
+                                        <option value="3% - 4%">3% - 4%</option>
+                                        <option value="4% - 5%">4% - 5%</option>
+                                        <option value="5% - 6%">5% - 6%</option>
+                                        <option value="Over 6%">Over 6%</option>
+                                        <option value="Undetermined">Undetermined</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Marketing Fee Expectations<span class="help-text">Expected marketing fee range.</span></label>
+                                    <select class="form-select" name="Marketing Fee Expectations">
+                                        <option value="">Select One…</option>
+                                        <option value="Under 3%">Under 3%</option>
+                                        <option value="3% - 4%">3% - 4%</option>
+                                        <option value="4% - 5%">4% - 5%</option>
+                                        <option value="5% - 6%">5% - 6%</option>
+                                        <option value="Over 6%">Over 6%</option>
+                                        <option value="Undetermined">Undetermined</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Loyalty Fee Expectations<span class="help-text">Expected loyalty fee range.</span></label>
+                                    <select class="form-select" name="Loyalty Fee Expectations">
+                                        <option value="">Select One…</option>
+                                        <option value="Under 3%">Under 3%</option>
+                                        <option value="3% - 4%">3% - 4%</option>
+                                        <option value="4% - 5%">4% - 5%</option>
+                                        <option value="5% - 6%">5% - 6%</option>
+                                        <option value="Over 6%">Over 6%</option>
+                                        <option value="Undetermined">Undetermined</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Estimated Dev. Cost per Key (Room)<span class="help-text">Estimated development cost per room/key.</span></label>
+                                    <select class="form-select" name="Estimated Dev. Cost per Key (Room)">
+                                        <option value="">Select One…</option>
+                                        <option value="Under $75K">Under $75K</option>
+                                        <option value="$75K – $125K">$75K – $125K</option>
+                                        <option value="$125K – $200K">$125K – $200K</option>
+                                        <option value="$200K – $300K">$200K – $300K</option>
+                                        <option value="$300K – $500K">$300K – $500K</option>
+                                        <option value="Over $500K">Over $500K</option>
+                                        <option value="Not yet determined">Not yet determined</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">PIP / CapEx Status Amount<span class="help-text">Amount associated with PIP/CapEx status, if known.</span></label>
+                                    <input type="text" class="form-input" name="PIP / CapEx Status Amount" placeholder="e.g. $2.5M">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">PIP Cap Ex Status Timeline<span class="help-text">Timeline for PIP/CapEx execution.</span></label>
+                                    <input type="text" class="form-input" name="PIP Cap Ex Status Timeline" placeholder="e.g. Q3 2026 completion">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Is Financing Secured?<span class="help-text">Current financing status for this project.</span></label>
+                                    <select class="form-select" name="Is Financing Secured?">
+                                        <option value="">Select One…</option>
+                                        <option value="Fully Secured">Fully Secured</option>
+                                        <option value="Partially Secured">Partially Secured</option>
+                                        <option value="Seeking Financing">Seeking Financing</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Comfort Level with Upfront Investment<span class="help-text">How comfortable are you with upfront investment requirements.</span></label>
+                                    <select class="form-select" name="Comfort Level with Upfront Investment">
+                                        <option value="">Select One…</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Moderate">Moderate</option>
+                                        <option value="High">High</option>
+                                        <option value="Undecided">Undecided</option>
+                                        <option value="None/Not Applicable">None/Not Applicable</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Fee Tolerance Level<span class="help-text">Owner fee tolerance for brand/operator economics.</span></label>
+                                    <select class="form-select" name="Fee Tolerance Level">
+                                        <option value="">Select One...</option>
+                                        <option value="Low - Fee Sensitive">Low - Fee Sensitive</option>
+                                        <option value="Moderate - Balanced">Moderate - Balanced</option>
+                                        <option value="High - Value Over Cost">High - Value Over Cost</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Incentive Requirement Level<span class="help-text">How important key money/TI or equivalent support is.</span></label>
+                                    <select class="form-select" name="Incentive Requirement Level">
+                                        <option value="">Select One...</option>
+                                        <option value="Required">Required</option>
+                                        <option value="Preferred">Preferred</option>
+                                        <option value="Nice to Have">Nice to Have</option>
+                                        <option value="Not Important">Not Important</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Primary Incentive Type<span class="help-text">Most relevant incentive for this opportunity.</span></label>
+                                    <select class="form-select" name="Primary Incentive Type">
+                                        <option value="">Select One...</option>
+                                        <option value="Key Money">Key Money</option>
+                                        <option value="TI / CapEx Contribution">TI / CapEx Contribution</option>
+                                        <option value="Fee Relief Period">Fee Relief Period</option>
+                                        <option value="Marketing / Launch Support">Marketing / Launch Support</option>
+                                        <option value="Flexibility on Standards / PIP">Flexibility on Standards / PIP</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CapEx Tolerance Band<span class="help-text">Owner tolerance for standards-driven CapEx intensity.</span></label>
+                                    <select class="form-select" name="CapEx Tolerance Band">
+                                        <option value="">Select One...</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Moderate">Moderate</option>
+                                        <option value="High">High</option>
                                     </select>
                                 </div>
                             </div>
@@ -1753,7 +2270,7 @@
                                         <label class="form-label">Preferred Brands (up to 4) <span class="required">*</span><span class="help-text">Select up to four preferred brands. <span class="selection-count"></span></span></label>
                                         <input type="text" class="form-input" id="preferredBrandsSearch" placeholder="Search brands…" autocomplete="off" style="margin-bottom: 8px;">
                                         <select class="form-select" id="preferredBrandsSelect" name="Preferred Brands (up to 4)" multiple size="8" style="min-width: 260px;" data-max-selections="4">
-                                            <option value="">Loading brands…</option>
+                                            <option value="">Loading Brands…</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1812,6 +2329,59 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="form-label">Strategy Type<span class="help-text">Primary owner strategy for this cycle.</span></label>
+                                    <select class="form-select" name="Strategy Type">
+                                        <option value="">Select One...</option>
+                                        <option value="Stabilize and Hold">Stabilize and Hold</option>
+                                        <option value="Value-Add and Exit">Value-Add and Exit</option>
+                                        <option value="Yield / Cash Flow Optimization">Yield / Cash Flow Optimization</option>
+                                        <option value="Repositioning for Premium">Repositioning for Premium</option>
+                                        <option value="Rapid Market Entry">Rapid Market Entry</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Brand Role Intent<span class="help-text">How the brand should function in the business plan.</span></label>
+                                    <select class="form-select" name="Brand Role Intent">
+                                        <option value="">Select One...</option>
+                                        <option value="Distribution and Loyalty Engine">Distribution and Loyalty Engine</option>
+                                        <option value="Positioning and Pricing Power">Positioning and Pricing Power</option>
+                                        <option value="Institutional Credibility">Institutional Credibility</option>
+                                        <option value="Light-Touch Affiliation">Light-Touch Affiliation</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Decision Horizon<span class="help-text">Expected speed of decision for shortlist and contracting.</span></label>
+                                    <select class="form-select" name="Decision Horizon">
+                                        <option value="">Select One...</option>
+                                        <option value="0-3 months">0-3 months</option>
+                                        <option value="3-6 months">3-6 months</option>
+                                        <option value="6-12 months">6-12 months</option>
+                                        <option value="12+ months">12+ months</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label">Owner Control Priorities<span class="help-text">Areas where owner control is most important. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Owner Control Priorities" multiple size="6" style="min-width: 260px;">
+                                        <option value="Budget Approval Rights">Budget Approval Rights</option>
+                                        <option value="Hiring / GM Approval Rights">Hiring / GM Approval Rights</option>
+                                        <option value="Procurement Control">Procurement Control</option>
+                                        <option value="F&B Concept Control">F&B Concept Control</option>
+                                        <option value="CapEx Approval Rights">CapEx Approval Rights</option>
+                                        <option value="Brand Standards Flexibility">Brand Standards Flexibility</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label">Contract Flexibility Priorities<span class="help-text">Terms that matter most in brand/operator negotiation. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Contract Flexibility Priorities" multiple size="6" style="min-width: 260px;">
+                                        <option value="Shorter Initial Term">Shorter Initial Term</option>
+                                        <option value="Performance Termination Rights">Performance Termination Rights</option>
+                                        <option value="Transfer / Assignment Flexibility">Transfer / Assignment Flexibility</option>
+                                        <option value="Fee Step-Down / Ramp">Fee Step-Down / Ramp</option>
+                                        <option value="PIP Flexibility">PIP Flexibility</option>
+                                        <option value="Exit Optionality">Exit Optionality</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label class="form-label">IRR / Yield Goals <span class="required">*</span><span class="help-text">Target IRR or yield range for the investment.</span></label>
                                     <select class="form-select" name="IRR/Yield Goals">
                                         <option value="">Select One…</option>
@@ -1832,6 +2402,20 @@
                                         <option value="Third-party Managed">Third-party Managed</option>
                                         <option value="Brand-Managed">Brand-Managed</option>
                                         <option value="Undecided">Undecided</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Preferred Future Operating Model <span class="required">*</span><span class="help-text">Target operating model after this deal (canonical).</span></label>
+                                    <select class="form-select" name="Preferred Future Operating Model">
+                                        <option value="">Select One…</option>
+                                        <option value="Owner-operated">Owner-operated</option>
+                                        <option value="Third-party management only">Third-party management only</option>
+                                        <option value="Franchise/license only (owner or third-party operator)">Franchise/license only (owner or third-party operator)</option>
+                                        <option value="Brand + third-party management">Brand + third-party management</option>
+                                        <option value="Brand-managed">Brand-managed</option>
+                                        <option value="Lease structure">Lease structure</option>
+                                        <option value="Undecided / exploring">Undecided / exploring</option>
+                                        <option value="Needs Review">Needs Review</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -1856,6 +2440,56 @@
                             <div id="thirdPartyOperatorBlock" class="third-party-operator-block">
                             <h3 class="project-fit-subheader">Third-Party Operator Preferences</h3>
                             <p class="subsection-description">If you want to receive bids from third-party management companies (in addition to or instead of hotel brands), tell us your preferences below. This helps match you with operators who fit your project.</p>
+                            <div id="operatorCapabilityP0Block" class="ocs-p0-block">
+                            <div id="oasOperatorStrategyInject" class="oas-inject-block"></div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label ocs-required-when-visible">Operator Strategy Status <span class="required">*</span><span class="help-text">Where you are in operator planning (not a recommendation).</span></label>
+                                    <select class="form-select" name="Operator Strategy Status">
+                                        <option value="">Select One…</option>
+                                        <option value="Not seeking operator input">Not seeking operator input</option>
+                                        <option value="Exploring capabilities only">Exploring capabilities only</option>
+                                        <option value="Building shortlist for advisor review">Building shortlist for advisor review</option>
+                                        <option value="Ready for structured operator review">Ready for structured operator review</option>
+                                        <option value="Already in discussions">Already in discussions</option>
+                                        <option value="Needs Review">Needs Review</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label ocs-required-when-visible">Operator Capability Priorities <span class="required">*</span><span class="help-text">Capability areas that may matter for this deal. Select all that apply. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Operator Capability Priorities" multiple size="8" style="min-width: 280px;">
+                                        <option value="Full hotel management">Full hotel management</option>
+                                        <option value="Pre-opening / opening support">Pre-opening / opening support</option>
+                                        <option value="Conversion & PIP execution">Conversion & PIP execution</option>
+                                        <option value="Revenue management & distribution">Revenue management & distribution</option>
+                                        <option value="Accounting & owner reporting">Accounting & owner reporting</option>
+                                        <option value="Procurement & cost control">Procurement & cost control</option>
+                                        <option value="F&B / culinary operations">F&amp;B / culinary operations</option>
+                                        <option value="Sales & marketing">Sales &amp; marketing</option>
+                                        <option value="HR & training">HR &amp; training</option>
+                                        <option value="Technology & systems">Technology &amp; systems</option>
+                                        <option value="Design / renovation PM">Design / renovation PM</option>
+                                        <option value="Asset management / capex planning">Asset management / capex planning</option>
+                                        <option value="Local market / CALA execution">Local market / CALA execution</option>
+                                        <option value="Lifestyle / experience programming">Lifestyle / experience programming</option>
+                                        <option value="Crisis / business continuity">Crisis / business continuity</option>
+                                    </select>
+                                </div>
+                                <div class="form-group multi-select-with-count">
+                                    <label class="form-label ocs-required-when-visible">Owner Reporting Package<span class="help-text">Reporting and oversight you expect from an operator. <span class="selection-count"></span></span></label>
+                                    <select class="form-select" name="Owner Reporting Package" multiple size="6" style="min-width: 260px;">
+                                        <option value="Weekly financial">Weekly financial</option>
+                                        <option value="Monthly P&amp;L">Monthly P&amp;L</option>
+                                        <option value="Monthly operating metrics">Monthly operating metrics</option>
+                                        <option value="Quarterly board pack">Quarterly board pack</option>
+                                        <option value="Annual budget / forecast">Annual budget / forecast</option>
+                                        <option value="Owner portal access">Owner portal access</option>
+                                        <option value="On-demand / ad hoc">On-demand / ad hoc</option>
+                                        <option value="Third-party audit support">Third-party audit support</option>
+                                    </select>
+                                </div>
+                            </div>
+                            </div>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label">Minimum Operator Experience (Years)<span class="help-text">Minimum years of management experience required.</span></label>
@@ -1905,6 +2539,7 @@
                             <h2 class="form-section-title">Operational Expectations</h2>
                             <p class="form-section-subtitle">Level of involvement and operational priorities.</p>
                             <p class="required-note"><span class="required">*</span> Marked fields are Required <span class="required-count"></span></p>
+                            <div id="oasOperationsCommercialInject" class="oas-inject-block"></div>
                             <div class="form-grid">
                                 <div class="form-group full-width">
                                     <label class="form-label">Level of Involvement in Day-to-Day Ops <span class="required">*</span><span class="help-text">Hands-on, oversight, or passive involvement.</span></label>
@@ -1916,8 +2551,19 @@
                                         <option value="Varies by Property">Varies by Property</option>
                                     </select>
                                 </div>
+                                <div id="operatorReportingP0Block" class="ocs-p0-block form-group">
+                                    <label class="form-label ocs-required-when-visible" data-ocs-field="Owner Reporting Frequency">Owner Reporting Frequency <span class="required">*</span><span class="help-text">Canonical reporting cadence expected from an operator.</span></label>
+                                    <select class="form-select" name="Owner Reporting Frequency">
+                                        <option value="">Select One…</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Bi-weekly">Bi-weekly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Quarterly">Quarterly</option>
+                                        <option value="Ad hoc">Ad hoc</option>
+                                    </select>
+                                </div>
                                 <div class="form-group full-width">
-                                    <label class="form-label">Preferred Reporting Frequency<span class="help-text">How often you want operational/financial reports from operator.</span></label>
+                                    <label class="form-label">Preferred Reporting Frequency<span class="help-text">Legacy field — also used for migration. Prefer Owner Reporting Frequency above when operator is in scope.</span></label>
                                     <select class="form-select" name="Preferred Reporting Frequency">
                                         <option value="">Select One…</option>
                                         <option value="Weekly">Weekly</option>
@@ -2449,7 +3095,7 @@
                                     <input type="text" class="form-input" name="Best Time or Method to Reach" placeholder="e.g. Mornings ET; email preferred">
                                 </div>
                                 <div class="form-group full-width">
-                                    <p class="form-section-subtitle" style="margin-top:8px;">If you list someone who is not yet registered in DealCapture™, we'll send them a notification to create an account so they can receive relevant deal updates and partner outreach.</p>
+                                    <p class="form-section-subtitle" style="margin-top:8px;">If you list someone who is not yet registered in Dealality, we'll send them a notification to create an account so they can receive relevant deal updates and partner outreach.</p>
                                     <p class="form-section-subtitle">The contact listed here will be visible to vetted brand and operator partners and will serve as the primary point of communication for this deal. Please ensure accuracy.</p>
                                 </div>
                             </div>
@@ -2510,7 +3156,7 @@
                                 <p class="form-section-subtitle" style="margin:0 0 12px 0;">Contacted brands for this deal.</p>
                                 <div id="drBdrTableWrap" style="overflow-x:auto;">
                                     <table class="deals-table" id="drBdrTable" style="width:100%;min-width:600px;">
-                                        <thead><tr><th>Brand Name</th><th>NDA Status</th><th>Deal Room Access</th><th>NDA Signed File</th><th>Proposal</th><th>Actions</th></tr></thead>
+                                        <thead><tr><th>Brand Name</th><th>NDA Status</th><th>Deal Room Access</th><th>NDA Signed File</th><th>Actions</th></tr></thead>
                                         <tbody id="drBdrTableBody"></tbody>
                                     </table>
                                 </div>
@@ -2553,27 +3199,53 @@
                         <div class="form-actions">
                             <div class="form-actions-right">
                                 <button type="button" class="btn btn-warning" id="resetBtn">Reset Form</button>
-                                <button type="button" class="btn btn-secondary" id="saveSectionBtn">Save all progress</button>
+                                <button type="button" class="btn btn-secondary" id="saveSectionBtn">Save Progress</button>
                                 <button type="button" class="btn btn-secondary" id="coverCancelBtn">Cancel</button>
-                                <button type="button" class="btn btn-primary" id="coverCreateBtn">Create Draft Deal &amp; Start</button>
+                                <button type="button" class="btn btn-primary" id="coverCreateQuickBtn">Start Quick Intake</button>
+                                <button type="button" class="btn btn-secondary" id="coverCreateFullBtn">Start Full Intake</button>
                                 <button type="button" class="btn btn-secondary hidden" id="prevBtn">Previous Section</button>
                                 <button type="button" class="btn btn-primary flex-inline" id="nextBtn">Next Section</button>
-                                <button type="button" class="btn btn-primary hidden" id="submitBtn">Submit Information</button>
+                                <button type="button" class="btn btn-primary hidden" id="submitBtn">Submit Full Intake</button>
                             </div>
                         </div>
+                        <div id="quickStartSuccessCard" class="quick-start-success hidden" role="status" aria-live="polite"></div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <div id="quickStartSummaryModal" class="quick-start-summary-modal hidden" role="dialog" aria-modal="true" aria-label="Quick Start summary">
+        <div class="quick-start-summary-modal-card">
+            <div class="quick-start-summary-modal-header">
+                <span>Quick Start Summary</span>
+                <button type="button" class="quick-start-summary-close" id="quickStartSummaryCloseBtn" aria-label="Close summary">×</button>
+            </div>
+            <iframe id="quickStartSummaryIframe" class="quick-start-summary-iframe" title="Quick Start summary"></iframe>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/operator-capability-intake.js?v=20260522-file-multiple"></script>
+    <script src="/js/oas-inject-form-fields.js?v=oas-5b-20260525"></script>
+    <script src="/dealality-webflow-nav.js"></script>
+    <script src="/js/dealality-memberstack-auth.js"></script>
+    <script src="/js/deal-readiness-snapshot.js"></script>
     <script>
 (function () {
     var form = document.getElementById("dealForm");
     var sectionNav = document.getElementById("sectionNav");
     var formSections = document.querySelectorAll(".form-section");
     var navItems = document.querySelectorAll(".section-nav-item");
+    /** Numeric/text value + unit pairs that must stay in sync. */
+    var UNIT_FIELD_PAIRS = [
+        { value: "Total Site Size", unit: "Total Site Size Unit", label: "Total Site Size" },
+        { value: "Max height Allowed By Zoning", unit: "Max height Unit", label: "Max Height Allowed By Zoning" },
+        { value: "Ceiling Heights", unit: "Ceiling Heights Unit", label: "Ceiling Heights" },
+        { value: "Column Spacing", unit: "Column Spacing Unit", label: "Column Spacing" },
+        { value: "Total F&B Outlet Size", unit: "Total F&B Outlet Size Unit", label: "Total F&B Outlet Size" },
+        { value: "Meeting Space", unit: "Meeting Space Unit", label: "Meeting Space" },
+        { value: "Spa / Gym Square Footage", unit: "Spa / Gym Square Footage Unit", label: "Spa / Gym Square Footage" }
+    ];
     /** Required fields by section. Section 0 = Cover (no required fields). Section 8 (Lease) skipped when Lease hidden. */
     window.REQUIRED_DEAL_SETUP_FIELDS_BY_SECTION = window.REQUIRED_DEAL_SETUP_FIELDS_BY_SECTION || { 0: [], 1: ["Property Name", "Project Type", "Stage of Development"], 2: ["Has there ever been a franchise, branded management, affiliation or similar agreement pertaining to the proposed hotel or site?", "Is the hotel currently branded?", "Is the hotel currently managed by a third-party operator?", "Are you open to considering other brands with favorable terms?", "Have you worked with any of your preferred brands/operators before?"], 3: ["Full Address", "City & State", "Country", "Hotel Chain Scale", "Hotel Type", "Hotel Submarket & Location", "Hotel Service Model", "Ownership/Brand History or Track Record", "Zoned for Hotel Development", "Site/Development Restrictions?", "Total Site Size", "Total Site Size Unit", "Max height Allowed By Zoning", "Max height Unit", "Current Form of Site Control", "Ownership Type", "Zoning Status", "Parking Ratio", "Access to Transit or Highway"], 4: ["Total Number of Rooms/Keys", "Number of Standard Rooms", "Number of Suites", "Building Type", "Number of Stories"], 5: ["F&B Outlets?", "Meeting Space", "Number of Meeting Rooms", "Condo Residences?", "Hotel Rental Program?", "Parking Amenities?", "Additional Amenities"], 6: ["Primary Demand Drivers", "Estimated or Actual RevPAR", "Regulatory or Permitting Issues?", "Regulatory or Permitting Issues Description", "Key Competitors", "Group vs Transient Mix"], 7: ["Total Project Cost Range", "PIP Budget Range (if conversion)", "Equity vs Debt Split", "Ownership Structure", "Preferred Deal Structure", "PIP / CapEx Status"], 8: ["Lease Type"], 9: ["Soft vs Hard Brand Preference", "Preferred Brands (up to 4)", "IRR/Yield Goals", "Open to Outside Capital or Partnerships?", "Plan to Self-Manage or Hire Third Party?", "Preferred Chain Scales", "Open to Soft Brand First Then Reflag?", "Target Guest Segment", "Brand Flexibility vs Prestige", "Planned Hold Period", "Primary Goal for the Hotel", "Who should receive bids for this project?", "Minimum Operator Experience (years)", "Preferred Third-Party Operators (names)", "Preferred Third-Party Operator Profile", "Services Required From Operator", "Other Operator Criteria or Notes", "Level of Involvement in Day-to-Day Ops"], 10: ["Top Priorities for Project", "Top Concerns for this Project", "Top 3 Success Metrics", "Top 3 Deal Breakers", "Must-haves From Brand or Operator", "Decision Timeline for Brand/Operator"], 11: [], 12: ["Would you like to filter out brands without key money?", "Would you like to meet consultants?", "Legal Support Needed?", "Financial Model Available?", "Proposal Deadline", "Would you like to receive regular updates?", "Working with Broker/Advisor?", "Other Projects Nearing Contract Expiration?"], 13: ["Main Contact Name", "Entity or Company Name", "Company HQ Location", "Email Address"], 14: [], 15: [] };
     var loadingEl = document.getElementById("dealSetupLoading");
@@ -2585,9 +3257,142 @@
     var prevBtn = document.getElementById("prevBtn");
     var nextBtn = document.getElementById("nextBtn");
     var submitBtn = document.getElementById("submitBtn");
+    var coverCreateQuickBtn = document.getElementById("coverCreateQuickBtn");
+    var coverCreateFullBtn = document.getElementById("coverCreateFullBtn");
+    var quickStartSuccessCard = document.getElementById("quickStartSuccessCard");
+    var quickStartSummaryModal = document.getElementById("quickStartSummaryModal");
+    var quickStartSummaryIframe = document.getElementById("quickStartSummaryIframe");
+    var quickStartSummaryCloseBtn = document.getElementById("quickStartSummaryCloseBtn");
+    var MODE_QUICK = "quick";
+    var MODE_FULL = "full";
+    var intakePathMode = MODE_QUICK;
+    var formStatusWriteDisabled = false;
+    var QUICK_REQUIRED_FIELDS = [
+        "Property Name",
+        "Project Type",
+        "Stage of Development",
+        "Full Address",
+        "Hotel Type",
+        "Total Number of Rooms/Keys",
+        "Preferred Deal Structure",
+        "Soft vs Hard Brand Preference",
+        "Preferred Chain Scales",
+        "Preferred Brands (up to 4)",
+        "Main Contact Name",
+        "Company HQ Location",
+        "Entity or Company Name",
+        "Email Address"
+    ];
+    var QUICK_RECOMMENDED_FIELDS = [
+        "Hotel Chain Scale",
+        "Who should receive bids for this project?"
+    ];
+    var QUICK_PROJECT_OVERVIEW_VISIBLE_FIELDS = [
+        "Project Name",
+        "Expected Opening or Rebranding Date",
+        "Property STR Number (if applicable)"
+    ];
+    var QUICK_OPERATOR_VISIBLE_FIELDS = [
+        "Minimum Operator Experience (years)",
+        "Preferred Third-Party Operators (names)",
+        "Preferred Third-Party Operator Profile",
+        "Services Required From Operator",
+        "Other Operator Criteria or Notes",
+        "Level of Involvement in Day-to-Day Ops"
+    ];
+    var QUICK_CONTACT_VISIBLE_FIELDS = [
+        "Contact Source",
+        "Main Contact Title"
+    ];
+    var QUICK_VISIBLE_SECTION_INDEXES = [0, 1, 3, 4, 7, 9, 13];
+    var QUICK_VISIBLE_FIELDS = QUICK_REQUIRED_FIELDS
+        .concat(QUICK_RECOMMENDED_FIELDS)
+        .concat(QUICK_PROJECT_OVERVIEW_VISIBLE_FIELDS)
+        .concat(QUICK_OPERATOR_VISIBLE_FIELDS)
+        .concat(QUICK_CONTACT_VISIBLE_FIELDS);
     var dealId = null;
+    var lastDealReadinessResponse = null;
+    var dealReadinessMeta = null;
+    var lastDealFieldsForReadinessBadge = null;
+    var applyDealReadinessBadgeFromLoadedDeal = function (_fields) {};
+    /** Set by setupDealReadinessReviewUi — used for ?openReadiness=1 deep link. */
+    var dealSetupTriggerReadinessReview = null;
+
+    fetch("/api/ai/deal-readiness-review/meta")
+        .then(function (r) { return r.json(); })
+        .then(function (m) {
+            if (m && m.success && m.dealFields) dealReadinessMeta = m.dealFields;
+            try {
+                if (lastDealFieldsForReadinessBadge) applyDealReadinessBadgeFromLoadedDeal(lastDealFieldsForReadinessBadge);
+            } catch (eMeta) {}
+        })
+        .catch(function () { dealReadinessMeta = null; });
+
+    function updateDealReadinessButton() {}
     var currentSection = 0;
     var totalSections = formSections.length;
+    /** Form `name` values to outline when opening from My Deals readiness (sessionStorage + ?highlightReadinessGaps=1). */
+    var readinessGapFieldSet = null;
+
+    function applyReadinessGapHighlights() {
+        if (!form) return;
+        document.querySelectorAll(".deal-setup-readiness-gap").forEach(function (el) {
+            el.classList.remove("deal-setup-readiness-gap");
+        });
+        document.querySelectorAll(".section-nav-item.section-has-readiness-gaps").forEach(function (el) {
+            el.classList.remove("section-has-readiness-gaps");
+        });
+        if (!readinessGapFieldSet || readinessGapFieldSet.size === 0) return;
+        function normalizeFieldKey(v) {
+            return String(v || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+        }
+        function queryInputsByFieldName(scopeEl, fieldName) {
+            function escAttr(s) {
+                return String(s).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+            }
+            var exact = scopeEl.querySelectorAll('[name="' + escAttr(fieldName) + '"]');
+            if (exact && exact.length) return exact;
+            var targetNorm = normalizeFieldKey(fieldName);
+            if (!targetNorm) return [];
+            var all = scopeEl.querySelectorAll("[name]");
+            var out = [];
+            for (var ii = 0; ii < all.length; ii++) {
+                var nm = all[ii].getAttribute("name");
+                if (normalizeFieldKey(nm) === targetNorm) out.push(all[ii]);
+            }
+            return out;
+        }
+
+        formSections.forEach(function (sec) {
+            var ds = sec.getAttribute("data-section");
+            if (ds == null) return;
+            var navItem = sectionNav.querySelector('.section-nav-item[data-section="' + ds + '"]');
+            var secHas = false;
+            readinessGapFieldSet.forEach(function (fieldName) {
+                var inputs = queryInputsByFieldName(sec, fieldName);
+                if (!inputs.length) return;
+                for (var ii = 0; ii < inputs.length; ii++) {
+                    var inp = inputs[ii];
+                    var grp = inp.closest(".form-group");
+                    if (grp && grp.classList.contains("quick-hidden")) continue;
+                    secHas = true;
+                    break;
+                }
+            });
+            if (navItem) navItem.classList.toggle("section-has-readiness-gaps", secHas);
+        });
+
+        var activeSec = form.querySelector(".form-section.active");
+        if (!activeSec) return;
+        readinessGapFieldSet.forEach(function (fieldName) {
+            Array.from(queryInputsByFieldName(activeSec, fieldName)).forEach(function (inp) {
+                var grp = inp.closest(".form-group");
+                if (grp && grp.classList.contains("quick-hidden")) return;
+                var wrap = inp.closest(".form-group") || inp.closest(".multi-select-with-count");
+                if (wrap) wrap.classList.add("deal-setup-readiness-gap");
+            });
+        });
+    }
 
     var preferredBrandsSelect = form.querySelector('[name="Preferred Brands (up to 4)"]');
     // Preferred Brands options are always loaded from Brand Setup - Brand Basics (Airtable).
@@ -2645,6 +3450,19 @@
         var m = new URLSearchParams(window.location.search);
         return m.get(name) || "";
     }
+    var isEditView = getParam("edit") === "1";
+    var isAppShellEmbed = /(?:^|[?&])appShell=1(?:&|$)/.test(window.location.search || "");
+    function applyEditModeChrome() {
+        var backRow = document.getElementById("backToMyDealsRow");
+        var subtitle = document.getElementById("dealSetupSubtitle");
+        if (isEditView) {
+            if (subtitle) subtitle.textContent = "View and edit your deal. Changes are saved to the main deal record.";
+        }
+        /* Hub iframe (/?appShell=1): always show back so users can exit to My Deals without relying on parent DOM probes. */
+        if (isEditView || isAppShellEmbed) {
+            if (backRow) backRow.classList.remove("hidden");
+        }
+    }
 
     function showLoading(show) {
         loadingEl.classList.toggle("show", !!show);
@@ -2652,8 +3470,17 @@
     function setLoadingOverlayText(main, time) {
         var mainEl = document.getElementById("dealSetupLoadingTextMain");
         var timeEl = document.getElementById("dealSetupLoadingTextTime");
-        if (mainEl) mainEl.textContent = main || "Loading deal…";
-        if (timeEl) timeEl.textContent = time || "Estimated time: 1–2 seconds";
+        if (mainEl) mainEl.textContent = main || "Loading Deal…";
+        if (timeEl) {
+            var t = (time || "").trim();
+            if (!t || /^Estimated\s+time\s*:/i.test(t)) {
+                timeEl.textContent = "";
+                timeEl.hidden = true;
+            } else {
+                timeEl.textContent = t;
+                timeEl.hidden = false;
+            }
+        }
     }
     function showDealSavedToast() {
         var toast = document.getElementById("dealSavedToast");
@@ -2683,13 +3510,157 @@
         errorEl.classList.toggle("hidden", !msg);
     }
 
+    function setIntakePathMode(mode) {
+        intakePathMode = mode === MODE_FULL ? MODE_FULL : MODE_QUICK;
+        applyIntakeModeVisibility();
+        if (submitBtn) submitBtn.textContent = intakePathMode === MODE_QUICK ? "Finish Quick Start" : "Submit Full Intake";
+        if (getActiveSectionIndices().indexOf(currentSection) === -1) {
+            switchSection(currentSection);
+        } else {
+            updateSectionProgressText();
+            updateActionButtons();
+            updateSectionCompletionIndicators();
+        }
+    }
+
+    function hideQuickStartSuccessCard() {
+        if (quickStartSummaryModal) quickStartSummaryModal.classList.add("hidden");
+        if (quickStartSummaryIframe) quickStartSummaryIframe.srcdoc = "";
+        if (quickStartSuccessCard) quickStartSuccessCard.classList.add("hidden");
+    }
+
+    function escapeHtml(text) {
+        return String(text == null ? "" : text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    function renderQuickStartSummaryIframe(primaryText, progressText, nextItems) {
+        if (!quickStartSummaryIframe || !quickStartSummaryModal) return false;
+        var lis = (nextItems || []).map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; }).join("");
+        var srcdoc = ""
+            + "<!DOCTYPE html><html><head><meta charset='utf-8'>"
+            + "<meta name='viewport' content='width=device-width,initial-scale=1'>"
+            + "<style>"
+            + "body{margin:0;padding:14px;font-family:Inter,Segoe UI,Arial,sans-serif;background:#101935;color:#d9e1fa;}"
+            + ".card{border:1px solid #1f6f4a;background:rgba(20,202,116,0.10);border-radius:12px;padding:14px;}"
+            + "h3{margin:0 0 8px 0;color:#14ca74;font-size:17px;}"
+            + "p{margin:0 0 8px 0;font-size:13px;line-height:1.45;}"
+            + "ul{margin:6px 0 0 18px;padding:0;font-size:13px;line-height:1.45;}"
+            + ".actions{display:flex;gap:10px;margin-top:12px;}"
+            + "button{border:0;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;}"
+            + ".secondary{background:#343b4f;color:#fff;}"
+            + ".primary{background:#6c72ff;color:#fff;}"
+            + "</style></head><body>"
+            + "<div class='card'>"
+            + "<h3>Quick Start completed</h3>"
+            + "<p>" + escapeHtml(primaryText) + "</p>"
+            + "<p>" + escapeHtml(progressText) + "</p>"
+            + "<p style='margin-top:10px;'>Top next sections to complete:</p>"
+            + "<ul>" + lis + "</ul>"
+            + "<div class='actions'>"
+            + "<button class='secondary' onclick=\"parent.postMessage({type:'quickStartSummaryAction',action:'returnLater'}, '*')\">Return Later</button>"
+            + "<button class='primary' onclick=\"parent.postMessage({type:'quickStartSummaryAction',action:'continueNow'}, '*')\">Continue Now</button>"
+            + "</div></div></body></html>";
+        quickStartSummaryIframe.srcdoc = srcdoc;
+        quickStartSummaryModal.classList.remove("hidden");
+        return true;
+    }
+
+    function getSectionTitleForIndex(idx) {
+        var sec = formSections[idx];
+        if (!sec) return "Section " + String(idx);
+        var h2 = sec.querySelector(".form-section-title");
+        return (h2 && h2.textContent ? h2.textContent.trim() : ("Section " + String(idx)));
+    }
+
+    function getActiveSectionIndices() {
+        var idxs = [];
+        for (var i = 0; i < formSections.length; i++) {
+            if (isEditView && i === 0) continue;
+            if (intakePathMode === MODE_QUICK && QUICK_VISIBLE_SECTION_INDEXES.indexOf(i) === -1) continue;
+            if (i === 8 && !isLeaseStructureVisible()) continue;
+            idxs.push(i);
+        }
+        return idxs;
+    }
+
+    function applyIntakeModeVisibility() {
+        var activeIdxs = getActiveSectionIndices();
+        formSections.forEach(function (sec, idx) {
+            var visibleSection = activeIdxs.indexOf(idx) !== -1;
+            sec.classList.toggle("hidden", !visibleSection);
+            if (intakePathMode === MODE_QUICK && visibleSection && idx !== 0) {
+                sec.querySelectorAll(".form-group").forEach(function (grp) {
+                    var input = grp.querySelector("[name]");
+                    if (!input) return;
+                    var key = input.getAttribute("name");
+                    var keep = QUICK_VISIBLE_FIELDS.indexOf(key) !== -1;
+                    grp.classList.toggle("quick-hidden", !keep);
+                });
+            } else {
+                sec.querySelectorAll(".form-group.quick-hidden").forEach(function (grp) { grp.classList.remove("quick-hidden"); });
+            }
+            updateSectionSubheaderVisibility(sec, intakePathMode === MODE_QUICK);
+        });
+        navItems.forEach(function (item, idx) {
+            var visible = activeIdxs.indexOf(idx) !== -1;
+            item.classList.toggle("hidden", !visible);
+            if (!visible) {
+                item.classList.remove("active");
+                item.classList.remove("completed");
+            }
+        });
+    }
+
+    function updateSectionSubheaderVisibility(sectionEl, quickModeOnly) {
+        if (!sectionEl) return;
+        var grid = sectionEl.querySelector(".form-grid");
+        if (!grid) return;
+        var children = Array.from(grid.children || []);
+        var headers = children.filter(function (el) { return el && el.tagName === "H3"; });
+        if (!headers.length) return;
+        if (!quickModeOnly) {
+            headers.forEach(function (h) { h.classList.remove("hidden"); });
+            return;
+        }
+        for (var i = 0; i < headers.length; i++) {
+            var header = headers[i];
+            var nextHeader = (i + 1 < headers.length) ? headers[i + 1] : null;
+            var cursor = header.nextElementSibling;
+            var hasVisibleGroup = false;
+            while (cursor && cursor !== nextHeader) {
+                if (cursor.classList &&
+                    cursor.classList.contains("form-group") &&
+                    !cursor.classList.contains("hidden") &&
+                    !cursor.classList.contains("quick-hidden")) {
+                    hasVisibleGroup = true;
+                    break;
+                }
+                cursor = cursor.nextElementSibling;
+            }
+            header.classList.toggle("hidden", !hasVisibleGroup);
+        }
+    }
+
     function switchSection(index) {
+        var activeIdxs = getActiveSectionIndices();
+        if (!activeIdxs.length) return;
         index = Math.max(0, Math.min(index, formSections.length - 1));
         if (index > 0 && !dealId) {
             showError("Create draft deal first.");
             return;
         }
-        if (index === 8 && !isLeaseStructureVisible()) index = 9;
+        if (activeIdxs.indexOf(index) === -1) {
+            var fallback = activeIdxs[0];
+            for (var ai = 0; ai < activeIdxs.length; ai++) {
+                if (activeIdxs[ai] >= index) { fallback = activeIdxs[ai]; break; }
+            }
+            index = fallback;
+        }
         currentSection = index;
         formSections.forEach(function (sec, i) {
             sec.classList.toggle("active", i === index);
@@ -2697,9 +3668,11 @@
         navItems.forEach(function (item, i) {
             item.classList.remove("active");
             item.classList.remove("completed");
+            if (activeIdxs.indexOf(i) === -1) return;
             if (i === index) item.classList.add("active");
-            else if (i < index) item.classList.add("completed");
         });
+        // Completion state must always reflect actual required-field status, not tab order.
+        updateSectionCompletionIndicators();
         updateSectionProgressText();
         updateActionButtons();
         if (index === 10 && typeof updateImportanceRadarChart === "function") {
@@ -2715,6 +3688,7 @@
             loadDealRoom();
         }
         if (dealId) try { localStorage.setItem("dealSetupLastSection_" + dealId, String(index)); } catch (e) {}
+        applyReadinessGapHighlights();
     }
 
     function getRequiredInSection(sectionEl, sectionIndex) {
@@ -2730,6 +3704,7 @@
         var names = [];
         if (!sectionEl) return names;
         sectionEl.querySelectorAll(".form-group").forEach(function (grp) {
+            if (grp.classList.contains("quick-hidden")) return;
             if (!grp.querySelector(".form-label .required")) return;
             var input = grp.querySelector("[name]");
             if (input && input.getAttribute("name")) {
@@ -2737,6 +3712,46 @@
             }
         });
         return names;
+    }
+
+    function getNameInSection(sectionEl, name) {
+        if (!sectionEl || !name) return null;
+        return sectionEl.querySelector('[name="' + name.replace(/"/g, '\\"') + '"]');
+    }
+
+    /** Unit rule:
+     *  - Required questions with a unit pair must have both value and unit.
+     *  - Optional questions with a unit pair require both only when either side is filled.
+     */
+    function getUnitPairViolationsInSection(sectionEl, requiredNames, values) {
+        var errors = [];
+        if (!sectionEl) return errors;
+        UNIT_FIELD_PAIRS.forEach(function (pair) {
+            var valueEl = getNameInSection(sectionEl, pair.value);
+            var unitEl = getNameInSection(sectionEl, pair.unit);
+            if (!valueEl || !unitEl) return;
+            var hasValue = isValueFilled(values[pair.value]);
+            var hasUnit = isValueFilled(values[pair.unit]);
+            var requiredPair = requiredNames.indexOf(pair.value) !== -1 || requiredNames.indexOf(pair.unit) !== -1;
+            if (requiredPair) {
+                if (!hasValue || !hasUnit) {
+                    errors.push({
+                        label: pair.label || pair.value,
+                        missingField: hasValue ? pair.unit : pair.value,
+                        required: true
+                    });
+                }
+                return;
+            }
+            if (hasValue !== hasUnit) {
+                errors.push({
+                    label: pair.label || pair.value,
+                    missingField: hasValue ? pair.unit : pair.value,
+                    required: false
+                });
+            }
+        });
+        return errors;
     }
 
     function isValueFilled(val) {
@@ -2780,18 +3795,25 @@
             var v = values[required[i]];
             if (v == null || (typeof v === "string" && v.trim() === "")) return false;
         }
+        if (getUnitPairViolationsInSection(sec, required, values).length > 0) return false;
         return true;
     }
 
     function updateSectionCompletionIndicators() {
         navItems.forEach(function (item, i) {
+            if (i === 0) {
+                // Cover is “done” once a draft exists and the user has moved into later sections (same as other tabs).
+                item.classList.toggle("completed", !isEditView && !!dealId && currentSection > 0);
+                return;
+            }
             item.classList.toggle("completed", isSectionComplete(i));
         });
         updateRequiredCounts();
     }
 
     function validateCurrentSection() {
-        var required = getRequiredInSection(formSections[currentSection], currentSection);
+        var sectionEl = formSections[currentSection];
+        var required = getRequiredInSection(sectionEl, currentSection);
         var values = getFieldValues();
         for (var i = 0; i < required.length; i++) {
             var v = values[required[i]];
@@ -2802,8 +3824,134 @@
                 return false;
             }
         }
+        var unitErrors = getUnitPairViolationsInSection(sectionEl, required, values);
+        if (unitErrors.length > 0) {
+            var first = unitErrors[0];
+            var missingEl = form.querySelector('[name="' + first.missingField.replace(/"/g, '\\"') + '"]');
+            if (missingEl) { missingEl.focus(); if (missingEl.scrollIntoView) missingEl.scrollIntoView({ behavior: "smooth", block: "center" }); }
+            if (first.required) showError('Please provide both value and unit for "' + first.label + '".');
+            else showError('If you enter "' + first.label + '", please also complete its unit.');
+            return false;
+        }
         showError("");
         return true;
+    }
+
+    function validateFieldSet(fieldNames, errorPrefix) {
+        var values = getFieldValues();
+        for (var i = 0; i < fieldNames.length; i++) {
+            var key = fieldNames[i];
+            var v = values[key];
+            if (v == null || (typeof v === "string" && v.trim() === "")) {
+                var el = form.querySelector('[name="' + key.replace(/"/g, '\\"') + '"]');
+                if (el) {
+                    if (el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "center" });
+                    if (el.focus) el.focus();
+                }
+                showError((errorPrefix || "Please complete required fields.") + " Missing: " + key + ".");
+                return false;
+            }
+        }
+        showError("");
+        return true;
+    }
+
+    function validateFullIntakeCompletion() {
+        for (var i = 1; i < formSections.length; i++) {
+            if (i === 8 && !isLeaseStructureVisible()) continue;
+            var req = getRequiredInSection(formSections[i], i);
+            if (!req.length) continue;
+            var values = getFieldValues();
+            for (var j = 0; j < req.length; j++) {
+                var key = req[j];
+                var v = values[key];
+                if (v == null || (typeof v === "string" && v.trim() === "")) {
+                    switchSection(i);
+                    return validateCurrentSection();
+                }
+            }
+        }
+        return true;
+    }
+
+    function buildSectionCompletionSummary() {
+        var values = getFieldValues();
+        var requiredBySection = window.REQUIRED_DEAL_SETUP_FIELDS_BY_SECTION || {};
+        var completed = 0;
+        var total = 0;
+        var next = [];
+        for (var i = 1; i < formSections.length; i++) {
+            if (i === 8 && !isLeaseStructureVisible()) continue;
+            var req = requiredBySection[i] || [];
+            if (!req.length) continue;
+            total += 1;
+            var done = true;
+            for (var j = 0; j < req.length; j++) {
+                var v = values[req[j]];
+                if (v == null || (typeof v === "string" && v.trim() === "")) { done = false; break; }
+            }
+            if (done) completed += 1;
+            else if (next.length < 3) next.push(getSectionTitleForIndex(i));
+        }
+        return { completed: completed, total: total, nextSections: next };
+    }
+
+    function findFirstIncompleteSectionIndex() {
+        var values = getFieldValues();
+        for (var i = 1; i < formSections.length; i++) {
+            if (i === 8 && !isLeaseStructureVisible()) continue;
+            var req = getRequiredInSection(formSections[i], i);
+            if (!req.length) continue;
+            var done = true;
+            for (var j = 0; j < req.length; j++) {
+                var v = values[req[j]];
+                if (v == null || (typeof v === "string" && v.trim() === "")) {
+                    done = false;
+                    break;
+                }
+            }
+            if (!done) return i;
+        }
+        return null;
+    }
+
+    function continueFromQuickStartToFullIntake() {
+        hideQuickStartSuccessCard();
+        setIntakePathMode(MODE_FULL);
+        var nextIdx = findFirstIncompleteSectionIndex();
+        if (nextIdx != null) {
+            switchSection(nextIdx);
+            return;
+        }
+        if (currentSection === 0) switchSection(1);
+        else switchSection(currentSection);
+    }
+
+    function showQuickStartCompletionState() {
+        if (!quickStartSummaryModal && !quickStartSuccessCard) return;
+        var summary = buildSectionCompletionSummary();
+        var recommendedMissing = [];
+        var values = getFieldValues();
+        for (var i = 0; i < QUICK_RECOMMENDED_FIELDS.length; i++) {
+            var key = QUICK_RECOMMENDED_FIELDS[i];
+            var val = values[key];
+            if (val == null || (typeof val === "string" && val.trim() === "")) {
+                recommendedMissing.push(key);
+            }
+        }
+        var nextItems = [];
+        summary.nextSections.forEach(function (name) { nextItems.push(name); });
+        recommendedMissing.forEach(function (name) {
+            if (summary.nextSections.indexOf(name) !== -1) return;
+            nextItems.push(name + " (recommended next)");
+        });
+        if (!nextItems.length) nextItems.push("Review and move to matching when ready.");
+        var primaryText = "Deal created and saved. Status: Draft.";
+        var progressText = "Section progress: " + String(summary.completed) + " of " + String(summary.total) + " sections completed.";
+        if (!renderQuickStartSummaryIframe(primaryText, progressText, nextItems) && quickStartSuccessCard) {
+            quickStartSuccessCard.classList.remove("hidden");
+            if (quickStartSuccessCard.scrollIntoView) quickStartSuccessCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
     }
 
     function updateThirdPartyOperatorBlockVisibility() {
@@ -2819,6 +3967,9 @@
         block.classList.toggle("hidden", !visible);
         block.classList.remove("hidden-operator-block");
         if (!visible) clearInputsInBlock(block);
+        if (window.OperatorCapabilityIntake && typeof window.OperatorCapabilityIntake.updateVisibility === "function") {
+            window.OperatorCapabilityIntake.updateVisibility(form);
+        }
     }
 
     function isLeaseStructureVisible() {
@@ -2828,12 +3979,13 @@
     }
 
     function getVisibleStepCount() {
-        return isLeaseStructureVisible() ? 16 : 15;
+        return getActiveSectionIndices().length;
     }
 
     function getVisibleStepNumber(sectionIndex) {
-        if (isLeaseStructureVisible()) return sectionIndex + 1;
-        return sectionIndex <= 7 ? sectionIndex + 1 : sectionIndex;
+        var idxs = getActiveSectionIndices();
+        var pos = idxs.indexOf(sectionIndex);
+        return pos >= 0 ? (pos + 1) : 1;
     }
 
     function updateSectionProgressText() {
@@ -2846,7 +3998,8 @@
         document.querySelectorAll(".lease-structure-nav, .lease-structure-section").forEach(function (el) {
             el.classList.toggle("hidden", !visible);
         });
-        if (!visible && currentSection === 8) switchSection(9);
+        applyIntakeModeVisibility();
+        if (getActiveSectionIndices().indexOf(currentSection) === -1) switchSection(currentSection);
         updateSectionProgressText();
     }
 
@@ -2875,6 +4028,15 @@
     function updateWorkedWithPreferredVisibility() {
         var block = document.getElementById("workedWithPreferredDetails");
         var sel = form.querySelector('[name="Have you worked with any of your preferred brands/operators before?"]');
+        if (!block || !sel) return;
+        var visible = (sel.value || "").trim() === "Yes";
+        block.classList.toggle("hidden", !visible);
+        if (!visible) clearInputsInBlock(block);
+    }
+
+    function updateFranchiseHistoryDescriptionVisibility() {
+        var block = document.getElementById("franchiseHistoryDescriptionBlock");
+        var sel = form.querySelector('[name="Has there ever been a franchise, branded management, affiliation or similar agreement pertaining to the proposed hotel or site?"]');
         if (!block || !sel) return;
         var visible = (sel.value || "").trim() === "Yes";
         block.classList.toggle("hidden", !visible);
@@ -2974,9 +4136,12 @@
     }
 
     function updateActionButtons() {
+        var activeIdxs = getActiveSectionIndices();
+        var lastActive = activeIdxs.length ? activeIdxs[activeIdxs.length - 1] : (totalSections - 1);
         var onCover = (currentSection === 0);
         if (coverCancelBtn) coverCancelBtn.classList.toggle("hidden", !onCover);
-        if (coverCreateBtn) coverCreateBtn.classList.toggle("hidden", !onCover);
+        if (coverCreateQuickBtn) coverCreateQuickBtn.classList.toggle("hidden", !onCover);
+        if (coverCreateFullBtn) coverCreateFullBtn.classList.toggle("hidden", !onCover);
         if (resetBtn) resetBtn.classList.toggle("hidden", onCover);
         if (saveSectionBtn) saveSectionBtn.classList.toggle("hidden", onCover);
         if (prevBtn) {
@@ -2994,7 +4159,17 @@
                 nextBtn.classList.remove("flex-inline");
                 submitBtn.classList.add("hidden");
                 submitBtn.classList.remove("flex-inline");
-            } else if (currentSection === totalSections - 1) {
+            } else if (intakePathMode === MODE_QUICK) {
+                if (currentSection === lastActive) {
+                    nextBtn.classList.add("hidden");
+                    nextBtn.classList.remove("flex-inline");
+                } else {
+                    nextBtn.classList.remove("hidden");
+                    nextBtn.classList.add("flex-inline");
+                }
+                submitBtn.classList.remove("hidden");
+                submitBtn.classList.add("flex-inline");
+            } else if (currentSection === lastActive) {
                 nextBtn.classList.add("hidden");
                 nextBtn.classList.remove("flex-inline");
                 submitBtn.classList.remove("hidden");
@@ -3077,17 +4252,22 @@
             if (el.type === "number") el.value = strVal === "" ? "" : Number(val);
             else el.value = strVal;
         });
-        syncVisibilityAndUIAfterRebind();
+        try {
+            syncVisibilityAndUIAfterRebind();
+        } catch (syncErr) {
+            console.error("[deal-setup] syncVisibilityAndUIAfterRebind failed:", syncErr);
+        }
     }
 
     /** Run after applyFieldsToForm so conditional blocks and completion stay in sync. */
     function syncVisibilityAndUIAfterRebind() {
+        applyIntakeModeVisibility();
         form.querySelectorAll(".multi-select-with-count select[multiple]").forEach(function (sel) { updateMultiSelectUI(sel); });
-        updateSectionCompletionIndicators();
         updateThirdPartyOperatorBlockVisibility();
         updateLeaseStructureVisibility();
         updateFbOutletsBlockVisibility();
         updateWorkedWithPreferredVisibility();
+        updateFranchiseHistoryDescriptionVisibility();
         updateWorkingWithBrokerAdvisorVisibility();
         updateCriticalDeadlinesDescriptionVisibility();
         updateSiteRestrictionsDescribeVisibility();
@@ -3098,6 +4278,9 @@
         updatePrimaryGoalOtherVisibility();
         updateTargetGuestSegmentOtherVisibility();
         updateAccessToTransitOtherVisibility();
+        updateSectionCompletionIndicators();
+        updateActionButtons();
+        updateSectionProgressText();
         if (typeof updateImportanceRadarChart === "function") updateImportanceRadarChart();
     }
 
@@ -3139,6 +4322,40 @@
         return fields;
     }
 
+    function val_ui_isPresentFieldValue(v) {
+        if (v === undefined || v === null) return false;
+        if (typeof v === "number") return !Number.isNaN(v);
+        if (typeof v === "boolean") return true;
+        if (typeof v === "string") return v.trim().length > 0;
+        if (Array.isArray(v)) return v.length > 0;
+        return true;
+    }
+
+    /** Remove readiness gap styling for fields that now have values (sync sessionStorage when possible). */
+    function pruneFilledReadinessGapFields() {
+        if (!readinessGapFieldSet || readinessGapFieldSet.size === 0) return;
+        var fv = getFieldValues();
+        var removed = false;
+        readinessGapFieldSet.forEach(function (fieldName) {
+            if (val_ui_isPresentFieldValue(fv[fieldName])) {
+                readinessGapFieldSet.delete(fieldName);
+                removed = true;
+            }
+        });
+        if (!removed) return;
+        try {
+            if (dealId && readinessGapFieldSet.size === 0) {
+                sessionStorage.removeItem("dealReadinessHighlight_" + dealId);
+            } else if (dealId && readinessGapFieldSet.size > 0) {
+                sessionStorage.setItem(
+                    "dealReadinessHighlight_" + dealId,
+                    JSON.stringify({ fields: Array.from(readinessGapFieldSet), ts: Date.now() })
+                );
+            }
+        } catch (eSs) {}
+        applyReadinessGapHighlights();
+    }
+
     function updateMultiSelectUI(selectEl) {
         if (!selectEl || !selectEl.multiple) return;
         var count = 0;
@@ -3171,10 +4388,19 @@
     function loadDeal() {
         dealId = getParam("dealId") || getParam("id");
         if (!dealId || !dealId.startsWith("rec")) {
+            if (isEditView) {
+                showLoading(false);
+                showForm(false);
+                showError("No valid deal ID in URL. Open this page from My Deals (edit icon).");
+                if (pageTitle) pageTitle.textContent = "Deal";
+                return;
+            }
+            setIntakePathMode(MODE_QUICK);
+            hideQuickStartSuccessCard();
             showLoading(false);
             showForm(true);
             showError("");
-            if (pageTitle) pageTitle.textContent = "Create New Deal";
+            if (pageTitle) pageTitle.textContent = "Add New Deal";
             switchSection(0);
             return;
         }
@@ -3183,7 +4409,7 @@
         showError("");
         if (pageTitle) pageTitle.textContent = "Loading…";
         var apiUrl = "/api/my-deals/" + encodeURIComponent(dealId);
-        fetch(apiUrl)
+        window.DealalityMemberstackAuth.fetchMyDealsApi(apiUrl)
             .then(function (r) {
                 var ct = (r.headers.get("content-type") || "").toLowerCase();
                 return r.text().then(function (text) {
@@ -3211,14 +4437,33 @@
                     return;
                 }
                 var fields = (data.deal.fields || {});
-                brandsForPreferredPromise.then(function () {
-                    applyFieldsToForm(fields, { mergeMode: false });
+                var formStatus = String(fields["Form Status"] || "").toLowerCase();
+                if (formStatus.indexOf("quick start") !== -1) setIntakePathMode(MODE_QUICK);
+                else setIntakePathMode(MODE_FULL);
+                hideQuickStartSuccessCard();
+                    brandsForPreferredPromise.then(function () {
+                    try {
+                        applyFieldsToForm(fields, { mergeMode: false });
+                    } catch (applyErr) {
+                        console.error("[deal-setup] applyFieldsToForm failed:", applyErr);
+                    }
+                    if (window.OperatorCapabilityIntake && typeof window.OperatorCapabilityIntake.ensureProjectTypeSelectLegacyOption === "function") {
+                        try {
+                            window.OperatorCapabilityIntake.ensureProjectTypeSelectLegacyOption(form);
+                        } catch (legacyErr) {
+                            console.error("[deal-setup] ensureProjectTypeSelectLegacyOption failed:", legacyErr);
+                        }
+                    }
+                    lastDealFieldsForReadinessBadge = fields;
+                    try { applyDealReadinessBadgeFromLoadedDeal(fields); } catch (eBr) {}
                     var name = fields["Property Name"] || fields["Project Name"] || fields["Name"] || "Deal";
                     pageTitle.textContent = name;
                     showForm(true);
+                    updateDealReadinessButton();
                     updateActionButtons();
                     updateLeaseStructureVisibility();
                     updateFbOutletsBlockVisibility();
+        updateFranchiseHistoryDescriptionVisibility();
         updateSiteRestrictionsDescribeVisibility();
         updateRegulatoryPermittingDescribeVisibility();
         updateOwnershipTypeOtherVisibility();
@@ -3229,16 +4474,111 @@
         updateAccessToTransitOtherVisibility();
                     updateSectionProgressText();
                     setTimeout(function () { updateSectionCompletionIndicators(); }, 0);
-        var saved = null;
-                    try { saved = localStorage.getItem("dealSetupLastSection_" + dealId); } catch (e) {}
-                    if (saved !== null) {
-                        var idx = parseInt(saved, 10);
-                        if (!isNaN(idx)) {
-                            idx = Math.max(0, Math.min(idx, totalSections - 1));
-                            if (idx === 8 && !isLeaseStructureVisible()) idx = 9;
-                            switchSection(idx);
+                    try {
+                        var prHl = new URLSearchParams(window.location.search || "");
+                        if (prHl.get("highlightReadinessGaps") === "1" && dealId) {
+                            try {
+                                var rawHl = sessionStorage.getItem("dealReadinessHighlight_" + dealId);
+                                if (rawHl) {
+                                    var parsedHl = JSON.parse(rawHl);
+                                    var arrHl = parsedHl && parsedHl.fields && Array.isArray(parsedHl.fields) ? parsedHl.fields : [];
+                                    readinessGapFieldSet = new Set(arrHl.filter(function (x) { return x && String(x).trim(); }));
+                                }
+                            } catch (eHl) {
+                                readinessGapFieldSet = null;
+                            }
+                            prHl.delete("highlightReadinessGaps");
+                            history.replaceState({}, "", window.location.pathname + (prHl.toString() ? "?" + prHl.toString() : ""));
+                        }
+                    } catch (eHq) {}
+                    try {
+                        pruneFilledReadinessGapFields();
+                    } catch (ePrune) {}
+                    var saved = null;
+                    var sectionFromUrl = null;
+                    try {
+                        var prSec = new URLSearchParams(window.location.search || "");
+                        var secRaw = prSec.get("section");
+                        if (secRaw != null && secRaw !== "") {
+                            var sParse = parseInt(secRaw, 10);
+                            if (!isNaN(sParse)) sectionFromUrl = sParse;
+                        }
+                    } catch (eSec) {}
+                    if (sectionFromUrl !== null) {
+                        var idxU = Math.max(0, Math.min(sectionFromUrl, totalSections - 1));
+                        if (isEditView && idxU === 0) idxU = 1;
+                        if (idxU === 8 && !isLeaseStructureVisible()) idxU = 9;
+                        switchSection(idxU);
+                        try {
+                            localStorage.setItem("dealSetupLastSection_" + dealId, String(idxU));
+                        } catch (eLs0) {}
+                        try {
+                            var prRmSec = new URLSearchParams(window.location.search || "");
+                            prRmSec.delete("section");
+                            history.replaceState({}, "", window.location.pathname + (prRmSec.toString() ? "?" + prRmSec.toString() : ""));
+                        } catch (eRmS) {}
+                    } else {
+                        try {
+                            saved = localStorage.getItem("dealSetupLastSection_" + dealId);
+                        } catch (e) {}
+                        if (saved !== null) {
+                            var idx = parseInt(saved, 10);
+                            if (!isNaN(idx)) {
+                                idx = Math.max(0, Math.min(idx, totalSections - 1));
+                                if (isEditView && idx === 0) idx = 1;
+                                if (idx === 8 && !isLeaseStructureVisible()) idx = 9;
+                                switchSection(idx);
+                            }
                         }
                     }
+                    (function applyDealSetupFocusFromQuery() {
+                        try {
+                            var prFoc = new URLSearchParams(window.location.search || "");
+                            var rawFocus = prFoc.get("focus");
+                            if (!rawFocus) return;
+                            var focusName = decodeURIComponent(rawFocus);
+                            setTimeout(function () {
+                                if (readinessGapFieldSet && readinessGapFieldSet.size > 0) return;
+                                var target = null;
+                                var nodes = form.querySelectorAll("[name]");
+                                for (var i = 0; i < nodes.length; i++) {
+                                    if (nodes[i].getAttribute("name") === focusName) {
+                                        target = nodes[i];
+                                        break;
+                                    }
+                                }
+                                if (target) {
+                                    var wrap = target.closest(".form-group") || target.closest(".multi-select-with-count") || target.parentElement;
+                                    if (wrap) wrap.classList.add("deal-setup-field-highlight");
+                                    else target.classList.add("deal-setup-field-highlight");
+                                    (wrap || target).scrollIntoView({ behavior: "smooth", block: "center" });
+                                    try {
+                                        if (typeof target.focus === "function" && target.type !== "hidden" && target.type !== "file") {
+                                            target.focus({ preventScroll: true });
+                                        }
+                                    } catch (eFc) {}
+                                    setTimeout(function () {
+                                        if (wrap) wrap.classList.remove("deal-setup-field-highlight");
+                                        else target.classList.remove("deal-setup-field-highlight");
+                                    }, 5500);
+                                }
+                                try {
+                                    prFoc.delete("focus");
+                                    history.replaceState({}, "", window.location.pathname + (prFoc.toString() ? "?" + prFoc.toString() : ""));
+                                } catch (eRf) {}
+                            }, 280);
+                        } catch (eApplyF) {}
+                    })();
+                    try {
+                        var pr = new URLSearchParams(window.location.search || "");
+                        if (pr.get("openReadiness") === "1") {
+                            pr.delete("openReadiness");
+                            history.replaceState({}, "", window.location.pathname + (pr.toString() ? "?" + pr.toString() : ""));
+                            setTimeout(function () {
+                                if (typeof dealSetupTriggerReadinessReview === "function" && dealId) dealSetupTriggerReadinessReview();
+                            }, 350);
+                        }
+                    } catch (eRead) {}
                 });
             })
             .catch(function (err) {
@@ -3261,12 +4601,19 @@
         }
     });
 
-    function doSave(triggerBtn) {
+    function doSave(triggerBtn, opts) {
+        opts = opts || {};
         if (!dealId) return;
         var fields = getFieldValues();
         var dealPayload = {};
+        var quickVisibleSet = null;
+        if (intakePathMode === MODE_QUICK) {
+            quickVisibleSet = {};
+            QUICK_VISIBLE_FIELDS.forEach(function (name) { quickVisibleSet[name] = true; });
+        }
         /* Send all non-empty form fields (every tab) so the server has full state and returns the full merged deal; then applyFieldsToForm(record.fields, { mergeMode: true }) keeps all inputs from resetting. */
         Object.keys(fields).forEach(function (k) {
+            if (quickVisibleSet && !quickVisibleSet[k]) return;
             if (fields[k] == null || fields[k] === "") return;
             var el = form.querySelector('[name="' + k.replace(/"/g, '\\"') + '"]');
             if (el && el.type === "file") return;
@@ -3281,30 +4628,177 @@
         showError("");
         setLoadingOverlayText("Saving…", "Please wait");
         showLoading(true);
-        fetch("/api/my-deals/" + encodeURIComponent(dealId), {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fields: dealPayload })
-        })
-            .then(function(r) { return r.json(); })
-            .then(function(dealRes) {
-                showLoading(false);
-                setLoadingOverlayText("Loading deal…", "Estimated time: 1–2 seconds");
-                if (btn) { btn.classList.remove("loading"); btn.disabled = false; }
-                if (dealRes && dealRes.success) {
-                    showError("");
-                    if (dealRes.record && dealRes.record.fields) applyFieldsToForm(dealRes.record.fields, { mergeMode: true });
-                    showDealSavedToast();
-                } else {
-                    showError(dealRes && dealRes.error ? dealRes.error : "Save failed.");
-                }
+        var reqBody = { fields: dealPayload };
+        if (!formStatusWriteDisabled && typeof opts.formStatus === "string" && opts.formStatus.trim()) reqBody.formStatus = opts.formStatus.trim();
+        // Always enforce skeleton linked rows on save so full-intake path matches quick-intake behavior.
+        reqBody.ensureLinkedRows = true;
+        /** Retries must keep ensureLinkedRows / formStatus or Quick Intake never creates skeleton linked rows after unknown-field stripping. */
+        function augmentPatchBody(fieldsObj) {
+            var b = { fields: fieldsObj };
+            if (reqBody.ensureLinkedRows === true) b.ensureLinkedRows = true;
+            if (!formStatusWriteDisabled && typeof reqBody.formStatus === "string" && reqBody.formStatus.trim()) {
+                b.formStatus = reqBody.formStatus.trim();
+            }
+            return b;
+        }
+        function finalizeSaveUi() {
+            showLoading(false);
+            setLoadingOverlayText("Loading Deal…", "");
+            if (btn) { btn.classList.remove("loading"); btn.disabled = false; }
+        }
+        function isUnknownFormStatusError(dealRes) {
+            var msg = dealRes && dealRes.error ? String(dealRes.error) : "";
+            return /unknown field name:\s*"form status"/i.test(msg);
+        }
+        function getUnknownFieldNameFromError(dealRes) {
+            var msg = dealRes && dealRes.error ? String(dealRes.error) : "";
+            var match = msg.match(/unknown field name:\s*"([^"]+)"/i);
+            return match && match[1] ? match[1] : "";
+        }
+        function patchDeal(body, allowFormStatusRetry, unknownFieldRetryCount) {
+            unknownFieldRetryCount = Number(unknownFieldRetryCount || 0);
+            return window.DealalityMemberstackAuth.fetchMyDealsApi("/api/my-deals/" + encodeURIComponent(dealId), {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
             })
-            .catch(function (err) {
-                showLoading(false);
-                setLoadingOverlayText("Loading deal…", "Estimated time: 1–2 seconds");
-                if (btn) { btn.classList.remove("loading"); btn.disabled = false; }
-                showError("Save failed: " + (err.message || "Network error"));
-            });
+                .then(function (r) { return r.json(); })
+                .then(function (dealRes) {
+                    if (dealRes && dealRes.success) {
+                        finalizeSaveUi();
+                        showError("");
+                        if (dealRes.record && dealRes.record.fields) applyFieldsToForm(dealRes.record.fields, { mergeMode: true });
+                        try {
+                            pruneFilledReadinessGapFields();
+                        } catch (ePruneSave) {}
+                        showDealSavedToast();
+                        if (typeof opts.onSuccess === "function") opts.onSuccess(dealRes);
+                        return;
+                    }
+                    if (allowFormStatusRetry && body.formStatus && isUnknownFormStatusError(dealRes)) {
+                        formStatusWriteDisabled = true;
+                        return patchDeal(augmentPatchBody(body.fields), false, unknownFieldRetryCount);
+                    }
+                    var unknownField = getUnknownFieldNameFromError(dealRes);
+                    if (unknownField && body.fields && Object.prototype.hasOwnProperty.call(body.fields, unknownField) && unknownFieldRetryCount < 8) {
+                        var nextFields = Object.assign({}, body.fields);
+                        delete nextFields[unknownField];
+                        return patchDeal(augmentPatchBody(nextFields), allowFormStatusRetry, unknownFieldRetryCount + 1);
+                    }
+                    finalizeSaveUi();
+                    showError(dealRes && dealRes.error ? dealRes.error : "Save failed.");
+                })
+                .catch(function (err) {
+                    finalizeSaveUi();
+                    showError("Save failed: " + (err.message || "Network error"));
+                });
+        }
+        patchDeal(reqBody, true, 0);
+    }
+
+    function resetAddNewDealUiStateBeforeExit() {
+        // Reset this iframe state before leaving so returning to Add New Deal
+        // starts at cover and does not keep the summary modal visible.
+        hideQuickStartSuccessCard();
+        showError("");
+        /* Do not switch to Quick Start tab visibility when leaving edit mode — that runs
+           before navigate() and collapses the nav to the 6-tab quick set without leaving the page. */
+        if (!isEditView) {
+            setIntakePathMode(MODE_QUICK);
+            switchSection(0);
+
+            if (dealId) {
+                try { localStorage.removeItem("dealSetupLastSection_" + dealId); } catch (e) {}
+            }
+            try {
+                var cleanUrl = new URL(window.location.href);
+                cleanUrl.searchParams.delete("dealId");
+                cleanUrl.searchParams.delete("id");
+                history.replaceState({}, "", cleanUrl.toString());
+            } catch (e) {}
+        }
+    }
+
+    function navigateToMyDeals() {
+        if (isAppShellEmbed && window.top !== window) {
+            resetAddNewDealUiStateBeforeExit();
+            try {
+                if (typeof window.top.dealalityAppShellNavigate === "function") {
+                    window.top.dealalityAppShellNavigate("/my-deals");
+                    return;
+                }
+            } catch (eNav) {}
+            var shellNdHref = "/app#/my-deals";
+            try {
+                shellNdHref = (window.top.location.origin || "") + "/app#/my-deals";
+            } catch (e2) {}
+            window.top.location.href = shellNdHref;
+            return;
+        }
+        try {
+            if (window.parent && window.parent !== window) {
+                var ppNd = "";
+                try {
+                    ppNd = window.parent.location.pathname || "";
+                } catch (e0) {
+                    ppNd = "";
+                }
+                var shellNdPath = /^\/app(?:\.html)?(?:\/|$)/i.test(ppNd);
+                var shellNdDom = false;
+                try {
+                    shellNdDom = !!(window.parent.document && window.parent.document.getElementById("frameContainer"));
+                } catch (e1) {}
+                if (shellNdPath || shellNdDom) {
+                    resetAddNewDealUiStateBeforeExit();
+                    try {
+                        if (typeof window.top.dealalityAppShellNavigate === "function") {
+                            window.top.dealalityAppShellNavigate("/my-deals");
+                            return;
+                        }
+                    } catch (eNav2) {}
+                    var shellNdHref2 = "/app#/my-deals";
+                    try {
+                        shellNdHref2 = (window.top.location.origin || "") + "/app#/my-deals";
+                    } catch (e2b) {}
+                    window.top.location.href = shellNdHref2;
+                    return;
+                }
+            }
+        } catch (eShellNd) {}
+        if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.navigateToMyDealsList === "function") {
+            window.DealalityWebflowNav.navigateToMyDealsList({ beforeNavigate: resetAddNewDealUiStateBeforeExit });
+            return;
+        }
+        resetAddNewDealUiStateBeforeExit();
+        if (window.parent && window.parent !== window) {
+            try {
+                window.parent.postMessage({ type: "dealality-navigate", path: "/my-deals" }, window.location.origin);
+                return;
+            } catch (e) {}
+        }
+        var inAppShell = window.location.pathname === "/app" || window.location.pathname === "/app/" ||
+            /^\/app(?:\.html)?(?:\/|$)/i.test(window.location.pathname || "");
+        if (inAppShell || (window.location.hash || "").indexOf("#/") === 0) {
+            window.location.href = "/app#/my-deals";
+            return;
+        }
+        window.location.href = "/my-deals.html";
+    }
+
+    function continueNowViaMyDealsEdit() {
+        var continueDealId = dealId;
+        resetAddNewDealUiStateBeforeExit();
+        if (continueDealId && String(continueDealId).indexOf("rec") === 0 && window.parent && window.parent !== window) {
+            try {
+                window.parent.postMessage({ type: "dealality-open-deal-edit", dealId: String(continueDealId) }, window.location.origin);
+                return;
+            } catch (e) {}
+        }
+        if (continueDealId && String(continueDealId).indexOf("rec") === 0) {
+            window.location.href = "/new-deal-setup.html?id=" + encodeURIComponent(continueDealId) + "&edit=1";
+            return;
+        }
+        navigateToMyDeals();
     }
 
     if (resetBtn) resetBtn.addEventListener("click", function () {
@@ -3312,19 +4806,22 @@
     });
 
     var coverCancelBtn = document.getElementById("coverCancelBtn");
-    var coverCreateBtn = document.getElementById("coverCreateBtn");
     if (coverCancelBtn) coverCancelBtn.addEventListener("click", function () {
-        window.location.href = "/my-deals";
+        navigateToMyDeals();
     });
-    function createDraftAndStart() {
+    function createDraftAndStart(mode, triggerBtn) {
+        setIntakePathMode(mode);
+        hideQuickStartSuccessCard();
         var now = new Date();
         var iso = now.toISOString().slice(0, 10);
         var dealName = "New Deal (Draft - " + iso + ")";
         showError("");
-        if (coverCreateBtn) { coverCreateBtn.disabled = true; coverCreateBtn.classList.add("loading"); }
+        if (coverCreateQuickBtn) coverCreateQuickBtn.disabled = true;
+        if (coverCreateFullBtn) coverCreateFullBtn.disabled = true;
+        if (triggerBtn) triggerBtn.classList.add("loading");
         showLoading(true);
         setLoadingOverlayText("Creating draft deal…", "");
-        fetch("/api/my-deals", {
+        window.DealalityMemberstackAuth.fetchMyDealsApi("/api/my-deals", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ dealName: dealName })
@@ -3332,12 +4829,15 @@
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 showLoading(false);
-                if (coverCreateBtn) { coverCreateBtn.disabled = false; coverCreateBtn.classList.remove("loading"); }
+                if (coverCreateQuickBtn) coverCreateQuickBtn.disabled = false;
+                if (coverCreateFullBtn) coverCreateFullBtn.disabled = false;
+                if (triggerBtn) triggerBtn.classList.remove("loading");
                 if (!data.success || !data.recordId) {
                     showError(data.error || "Failed to create deal.");
                     return;
                 }
                 dealId = data.recordId;
+                updateDealReadinessButton();
                 var url = new URL(window.location.href);
                 url.searchParams.set("dealId", dealId);
                 history.pushState({}, "", url.toString());
@@ -3348,6 +4848,7 @@
                     updateActionButtons();
                     updateLeaseStructureVisibility();
                     updateFbOutletsBlockVisibility();
+                    updateFranchiseHistoryDescriptionVisibility();
                     updateSiteRestrictionsDescribeVisibility();
                     updateRegulatoryPermittingDescribeVisibility();
                     updateOwnershipTypeOtherVisibility();
@@ -3363,27 +4864,64 @@
             })
             .catch(function (err) {
                 showLoading(false);
-                if (coverCreateBtn) { coverCreateBtn.disabled = false; coverCreateBtn.classList.remove("loading"); }
+                if (coverCreateQuickBtn) coverCreateQuickBtn.disabled = false;
+                if (coverCreateFullBtn) coverCreateFullBtn.disabled = false;
+                if (triggerBtn) triggerBtn.classList.remove("loading");
                 showError("Failed to create deal: " + (err.message || "Network error"));
             });
     }
-    if (coverCreateBtn) coverCreateBtn.addEventListener("click", createDraftAndStart);
+    if (coverCreateQuickBtn) coverCreateQuickBtn.addEventListener("click", function () { createDraftAndStart(MODE_QUICK, coverCreateQuickBtn); });
+    if (coverCreateFullBtn) coverCreateFullBtn.addEventListener("click", function () { createDraftAndStart(MODE_FULL, coverCreateFullBtn); });
+    if (quickStartSummaryCloseBtn) quickStartSummaryCloseBtn.addEventListener("click", navigateToMyDeals);
+    window.addEventListener("message", function (event) {
+        var data = event && event.data ? event.data : null;
+        if (!data || data.type !== "quickStartSummaryAction") return;
+        if (data.action === "returnLater") {
+            navigateToMyDeals();
+            return;
+        }
+        if (data.action === "continueNow") {
+            continueNowViaMyDealsEdit();
+        }
+    });
 
     if (saveSectionBtn) saveSectionBtn.addEventListener("click", function () { doSave(saveSectionBtn); });
+    function getAdjacentActiveSection(currentIdx, direction) {
+        var active = getActiveSectionIndices();
+        var pos = active.indexOf(currentIdx);
+        if (pos === -1) return currentIdx;
+        var nextPos = pos + (direction > 0 ? 1 : -1);
+        if (nextPos < 0 || nextPos >= active.length) return currentIdx;
+        return active[nextPos];
+    }
+
     if (prevBtn) prevBtn.addEventListener("click", function () {
         if (currentSection <= 0) return;
-        var prev = currentSection - 1;
-        if (prev === 8 && !isLeaseStructureVisible()) prev = 7;
+        var prev = getAdjacentActiveSection(currentSection, -1);
         switchSection(prev);
     });
     if (nextBtn) nextBtn.addEventListener("click", function () {
-        if (currentSection >= totalSections - 1) return;
+        var next = getAdjacentActiveSection(currentSection, 1);
+        if (next === currentSection) return;
         if (!validateCurrentSection()) return;
-        var next = currentSection + 1;
-        if (next === 8 && !isLeaseStructureVisible()) next = 9;
         switchSection(next);
     });
-    if (submitBtn) submitBtn.addEventListener("click", function () { doSave(submitBtn); });
+    if (submitBtn) submitBtn.addEventListener("click", function () {
+        hideQuickStartSuccessCard();
+        if (intakePathMode === MODE_QUICK) {
+            if (!validateFieldSet(QUICK_REQUIRED_FIELDS, "Quick Start requires these fields.")) return;
+            doSave(submitBtn, {
+                formStatus: "Quick Start Complete - Incomplete",
+                ensureLinkedRows: true,
+                onSuccess: function () {
+                    showQuickStartCompletionState();
+                }
+            });
+            return;
+        }
+        if (!validateFullIntakeCompletion()) return;
+        doSave(submitBtn, { formStatus: "Submitted - Full Intake" });
+    });
 
     var drSelectedBdrId = null;
     function showDrStatus(type, message) {
@@ -3413,7 +4951,7 @@
         if (!dealId || !dealId.startsWith("rec")) return;
         showDrStatus("", "");
         Promise.all([
-            fetch("/api/my-deals/" + encodeURIComponent(dealId)).then(function(r) { return r.json(); }),
+            window.DealalityMemberstackAuth.fetchMyDealsApi("/api/my-deals/" + encodeURIComponent(dealId)).then(function(r) { return r.json(); }),
             fetch("/api/brand-deal-requests?dealIds=" + encodeURIComponent(dealId)).then(function(r) { return r.json(); }),
             fetch("/api/deal-room-documents?dealId=" + encodeURIComponent(dealId)).then(function(r) { return r.json(); })
         ]).then(function(results) {
@@ -3467,10 +5005,7 @@
                 var access = b.dealRoomAccess || "";
                 var signedFiles = b.ndaSignedFile || [];
                 var signedLink = signedFiles.length && signedFiles[0] && signedFiles[0].url ? ("<a href=\"" + signedFiles[0].url + "\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--accent--primary-1)\">" + (signedFiles[0].filename || "file") + "</a>") : "—";
-                var proposalStatus = (b.proposal && b.proposal.proposalStatus) ? b.proposal.proposalStatus : "";
-                var proposalLink = "<a href=\"/brand-deal-request.html?requestId=" + encodeURIComponent(b.id) + "\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--accent--primary-1);\" onclick=\"event.stopPropagation();\">Submit Proposal</a>";
-                if (proposalStatus === "Submitted") proposalLink = "<span style=\"color:var(--system--green-300);\">Submitted</span>";
-                tr.innerHTML = "<td>" + (b.brandName || "—") + "</td><td>" + ndaStatus + "</td><td>" + access + "</td><td>" + signedLink + "</td><td>" + proposalLink + "</td><td><button type=\"button\" class=\"btn btn-secondary\" data-action=\"sendNda\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Send NDA</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"markSigned\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Mark Signed</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"grantAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Grant</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"revokeAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Revoke</button></td>";
+                tr.innerHTML = "<td>" + (b.brandName || "—") + "</td><td>" + ndaStatus + "</td><td>" + access + "</td><td>" + signedLink + "</td><td><button type=\"button\" class=\"btn btn-secondary\" data-action=\"sendNda\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Send NDA</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"markSigned\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Mark Signed</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"grantAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Grant</button><button type=\"button\" class=\"btn btn-secondary\" data-action=\"revokeAccess\" data-bdr-id=\"" + b.id + "\" style=\"margin:2px;font-size:11px;padding:4px 8px;\">Revoke</button></td>";
                 tbody.appendChild(tr);
             });
             updateDrAttachSummaryText(!!selectedId);
@@ -3600,7 +5135,7 @@
                 uploadBtn.disabled = true;
                 var formData = new FormData();
                 for (var i = 0; i < files.length; i++) formData.append("files", files[i]);
-                fetch("/api/my-deals/" + encodeURIComponent(dealId) + "/attachments", {
+                window.DealalityMemberstackAuth.fetchMyDealsApi("/api/my-deals/" + encodeURIComponent(dealId) + "/attachments", {
                     method: "POST",
                     body: formData
                 })
@@ -3807,11 +5342,19 @@
     var whoBidsEl = form.querySelector('[name="Who should receive bids for this project?"]');
     if (whoBidsEl) whoBidsEl.addEventListener("change", updateThirdPartyOperatorBlockVisibility);
 
+    var preferredFutureEl = form.querySelector('[name="Preferred Future Operating Model"]');
+    if (preferredFutureEl) preferredFutureEl.addEventListener("change", updateThirdPartyOperatorBlockVisibility);
+    var preferredDealStructEl = form.querySelector('[name="Preferred Deal Structure"]');
+    if (preferredDealStructEl) preferredDealStructEl.addEventListener("change", updateThirdPartyOperatorBlockVisibility);
+
     var fbOutletsEl = form.querySelector('[name="F&B Outlets?"]');
     if (fbOutletsEl) fbOutletsEl.addEventListener("change", updateFbOutletsBlockVisibility);
 
     var workedWithPreferredEl = form.querySelector('[name="Have you worked with any of your preferred brands/operators before?"]');
     if (workedWithPreferredEl) workedWithPreferredEl.addEventListener("change", updateWorkedWithPreferredVisibility);
+
+    var franchiseHistoryEl = form.querySelector('[name="Has there ever been a franchise, branded management, affiliation or similar agreement pertaining to the proposed hotel or site?"]');
+    if (franchiseHistoryEl) franchiseHistoryEl.addEventListener("change", updateFranchiseHistoryDescriptionVisibility);
 
     var workingWithBrokerAdvisorEl = document.getElementById("workingWithBrokerAdvisorSelect") || form.querySelector('[name="Working with Broker/Advisor?"]');
     if (workingWithBrokerAdvisorEl) workingWithBrokerAdvisorEl.addEventListener("change", updateWorkingWithBrokerAdvisorVisibility);
@@ -3840,6 +5383,7 @@
     updateLeaseStructureVisibility();
     updateFbOutletsBlockVisibility();
     updateWorkedWithPreferredVisibility();
+    updateFranchiseHistoryDescriptionVisibility();
     updateWorkingWithBrokerAdvisorVisibility();
     updateCriticalDeadlinesDescriptionVisibility();
     updateSiteRestrictionsDescribeVisibility();
@@ -3860,8 +5404,18 @@
     var accessToTransitSelectEl = document.getElementById("accessToTransitSelect");
     if (accessToTransitSelectEl) accessToTransitSelectEl.addEventListener("change", updateAccessToTransitOtherVisibility);
 
-    form.addEventListener("input", function () { updateSectionCompletionIndicators(); });
-    form.addEventListener("change", function () { updateSectionCompletionIndicators(); });
+    form.addEventListener("input", function () {
+        updateSectionCompletionIndicators();
+        try {
+            pruneFilledReadinessGapFields();
+        } catch (ePg) {}
+    });
+    form.addEventListener("change", function () {
+        updateSectionCompletionIndicators();
+        try {
+            pruneFilledReadinessGapFields();
+        } catch (ePg2) {}
+    });
 
     updateRequiredCounts();
 
@@ -3870,8 +5424,256 @@
         doSave();
     });
 
+    // Runtime guard: enforce bright placeholder blue even if shell-injected CSS is stale/cached.
+    (function enforcePlaceholderColorRuntime() {
+        var style = document.getElementById("dealality-placeholder-runtime");
+        if (style) return;
+        style = document.createElement("style");
+        style.id = "dealality-placeholder-runtime";
+        style.textContent =
+            ".intake-container input::placeholder, .intake-container textarea::placeholder, " +
+            ".intake-container input::-webkit-input-placeholder, .intake-container textarea::-webkit-input-placeholder {" +
+                "color:#7e89ac !important;" +
+                "-webkit-text-fill-color:#7e89ac !important;" +
+                "opacity:1 !important;" +
+            "}";
+        (document.head || document.documentElement).appendChild(style);
+    })();
+
+    (function setupDealReadinessReviewUi() {
+        var modal = document.getElementById("dealReadinessModal");
+        var loadingEl = document.getElementById("dealReadinessLoading");
+        var contentEl = document.getElementById("dealReadinessContent");
+        var closeBtn = document.getElementById("dealReadinessModalClose");
+        if (!modal) return;
+
+        function esc(t) {
+            return String(t == null ? "" : t).replace(/</g, "&lt;");
+        }
+
+        function setHeaderRunBadge(data, savedFlag) {
+            var badge = document.getElementById("dealReadinessHeaderBadge");
+            if (!badge) return;
+            if (!data) {
+                badge.classList.add("hidden");
+                return;
+            }
+            var sc = data.dealReadinessScore;
+            var st = data.readinessStage;
+            var wf = data.workflowRecommendation && data.workflowRecommendation.label;
+            var parts = "Readiness: " + sc + "/100 · " + st;
+            if (wf) parts += " · " + wf;
+            if (savedFlag) {
+                parts += " · Saved";
+                badge.classList.add("saved");
+            } else {
+                badge.classList.remove("saved");
+            }
+            badge.textContent = parts;
+            badge.classList.remove("hidden");
+        }
+
+        applyDealReadinessBadgeFromLoadedDeal = function (fields) {
+            var badge = document.getElementById("dealReadinessHeaderBadge");
+            if (!badge || !fields || !dealReadinessMeta) return;
+            var sk = dealReadinessMeta.score;
+            var tk = dealReadinessMeta.stage;
+            if (!sk && !tk) return;
+            var sc = sk ? fields[sk] : null;
+            var st = tk ? fields[tk] : null;
+            if ((sc == null || sc === "") && (st == null || st === "")) return;
+            badge.textContent = "Readiness: " + (sc != null && sc !== "" ? sc : "—") + "/100 · " +
+                (st != null && st !== "" ? st : "—") + " (saved)";
+            badge.classList.remove("hidden");
+            badge.classList.add("saved");
+        };
+
+        function openModal() {
+            modal.classList.add("open");
+            modal.setAttribute("aria-hidden", "false");
+        }
+        function closeModal() {
+            modal.classList.remove("open");
+            modal.setAttribute("aria-hidden", "true");
+        }
+        function escBlock(e) {
+            if (e.key === "Escape") closeModal();
+        }
+
+        function renderReadiness(data) {
+            if (!contentEl) return;
+            if (!window.DealReadinessSnapshot || typeof window.DealReadinessSnapshot.render !== "function") {
+                contentEl.innerHTML = '<div class="deal-readiness-error">Snapshot renderer failed to load.</div>';
+                contentEl.classList.remove("hidden");
+                if (loadingEl) loadingEl.classList.add("hidden");
+                return;
+            }
+            var fullPageHref = dealId
+                ? "/deal-readiness-snapshot.html?dealId=" + encodeURIComponent(dealId)
+                : "";
+            window.DealReadinessSnapshot.render(contentEl, data, {
+                embed: true,
+                dealId: dealId,
+                fullPageHref: fullPageHref,
+                footerHtml: '<p class="deal-readiness-save-status" id="dealReadinessSaveStatus" aria-live="polite"></p>',
+                generatedAt: data.savedAt || new Date().toISOString(),
+            });
+            contentEl.classList.remove("hidden");
+            if (loadingEl) loadingEl.classList.add("hidden");
+
+            (function autoSaveReadinessReviewToAirtable() {
+                if (!dealId || !lastDealReadinessResponse) return;
+                var statusEl = document.getElementById("dealReadinessSaveStatus");
+                if (statusEl) statusEl.textContent = "Saving Review to Deal Record…";
+                fetch("/api/ai/deal-readiness-review/save", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        dealId: dealId,
+                        review: {
+                            dealReadinessScore: lastDealReadinessResponse.dealReadinessScore,
+                            readinessStage: lastDealReadinessResponse.readinessStage,
+                            missingInformation: lastDealReadinessResponse.missingInformation,
+                            weakInformation: lastDealReadinessResponse.weakInformation,
+                            blockingIssues: lastDealReadinessResponse.blockingIssues,
+                            sectionScores: lastDealReadinessResponse.sectionScores,
+                            ai: lastDealReadinessResponse.ai,
+                            workflowRecommendation: lastDealReadinessResponse.workflowRecommendation,
+                            scoreImprovementPlan: lastDealReadinessResponse.scoreImprovementPlan,
+                            humanReadableSummary: lastDealReadinessResponse.humanReadableSummary,
+                        },
+                    }),
+                })
+                    .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, body: j }; }); })
+                    .then(function (pack) {
+                        var res = pack.body;
+                        if (!res.success) {
+                            if (statusEl) {
+                                if (res.code === "SAVE_NOT_CONFIGURED" || pack.status === 501 ||
+                                        (res.error && /not configured/i.test(res.error))) {
+                                    statusEl.textContent = "Review Complete. Saving to Airtable Is Not Configured Yet.";
+                                } else {
+                                    statusEl.textContent = res.error || "Could Not Save Review.";
+                                }
+                            }
+                            setHeaderRunBadge(lastDealReadinessResponse, false);
+                            return;
+                        }
+                        if (statusEl) statusEl.textContent = "Saved to Deal Record.";
+                        setHeaderRunBadge(lastDealReadinessResponse, true);
+                    })
+                    .catch(function (err) {
+                        if (statusEl) statusEl.textContent = err.message || "Save Failed.";
+                        setHeaderRunBadge(lastDealReadinessResponse, false);
+                    });
+            })();
+        }
+
+        function runDealReadinessReviewFromSetup() {
+            if (!dealId) return;
+            openModal();
+            if (loadingEl) loadingEl.classList.remove("hidden");
+            if (contentEl) {
+                contentEl.innerHTML = "";
+                contentEl.classList.add("hidden");
+            }
+            fetch("/api/ai/deal-readiness-review", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ dealId: dealId }),
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (!data.success) {
+                        if (loadingEl) loadingEl.classList.add("hidden");
+                        if (contentEl) {
+                            contentEl.classList.remove("hidden");
+                            contentEl.innerHTML = '<div class="deal-readiness-error">' +
+                                String(data.error || "Request failed").replace(/</g, "&lt;") + "</div>";
+                        }
+                        return;
+                    }
+                    lastDealReadinessResponse = data;
+                    renderReadiness(data);
+                    setHeaderRunBadge(data, false);
+                })
+                .catch(function (err) {
+                    if (loadingEl) loadingEl.classList.add("hidden");
+                    if (contentEl) {
+                        contentEl.classList.remove("hidden");
+                        contentEl.innerHTML = '<div class="deal-readiness-error">' +
+                            String(err.message || "Network error").replace(/</g, "&lt;") + "</div>";
+                    }
+                });
+        }
+
+        if (closeBtn) closeBtn.addEventListener("click", closeModal);
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener("keydown", escBlock);
+        dealSetupTriggerReadinessReview = runDealReadinessReviewFromSetup;
+    })();
+
+    updateDealReadinessButton();
+    (function initBackToMyDealsLink() {
+        var backA = document.getElementById("backToMyDealsLink");
+        if (!backA) return;
+        function isHubIframeForMyDeals() {
+            if (window.top === window.self) return false;
+            if (/(?:^|[?&])appShell=1(?:&|$)/.test(window.location.search || "")) return true;
+            try {
+                if (window.parent !== window && window.parent.document && window.parent.document.getElementById("frameContainer")) {
+                    return true;
+                }
+            } catch (e0) {}
+            try {
+                return /^\/app(?:\.html)?(?:\/|$)/i.test(window.parent.location.pathname || "");
+            } catch (e1) {
+                return false;
+            }
+        }
+        if (isHubIframeForMyDeals()) {
+            try {
+                backA.setAttribute("href", (window.top.location.origin || "") + "/app#/my-deals");
+            } catch (eH) {
+                backA.setAttribute("href", "/app#/my-deals");
+            }
+            backA.setAttribute("target", "_top");
+        } else if (window.DealalityWebflowNav && typeof window.DealalityWebflowNav.getMyDealsTopLevelHref === "function") {
+            backA.setAttribute("href", window.DealalityWebflowNav.getMyDealsTopLevelHref());
+        }
+        /* Capture phase runs before other listeners; forces top navigation in app hub iframe. */
+        backA.addEventListener(
+            "click",
+            function (e) {
+                if (!isHubIframeForMyDeals()) {
+                    if (!window.DealalityWebflowNav || typeof window.DealalityWebflowNav.navigateToMyDealsList !== "function") return;
+                    e.preventDefault();
+                    window.DealalityWebflowNav.navigateToMyDealsList({ beforeNavigate: resetAddNewDealUiStateBeforeExit });
+                    return;
+                }
+                e.preventDefault();
+                e.stopPropagation();
+                try {
+                    if (window.top !== window && typeof window.top.dealalityAppShellNavigate === "function") {
+                        window.top.dealalityAppShellNavigate("/my-deals");
+                        return;
+                    }
+                } catch (eNav) {}
+                var dest = "/app#/my-deals";
+                try {
+                    dest = (window.top.location.origin || "") + "/app#/my-deals";
+                } catch (e2) {}
+                window.top.location.href = dest;
+            },
+            true
+        );
+    })();
+    applyEditModeChrome();
     loadDeal();
 })();
     </script>
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

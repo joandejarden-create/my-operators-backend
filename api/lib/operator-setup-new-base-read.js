@@ -8,6 +8,36 @@ import { airtableBasicsFieldsToPrefill } from "./third-party-operator-basics-to-
 import { applyNewTwoPrefillFromSplitTables } from "./third-party-operator-new-two-fields.js";
 import { applyOperatorServiceGranularPrefill } from "./operator-setup-service-granular-fields.js";
 import { normalizeCaseStudySituationForForm } from "./third-party-operator-select-prefill-normalize.js";
+import { applyOperatorAlignmentPrefillAliases } from "../../lib/operator-alignment-prefill-map.js";
+import { pickExplorerHeroLabelsFromMasterFields } from "../../lib/operator-explorer-hero-labels.js";
+import { mapAirtableRowToCaseStudyDetail } from "./operator-case-study-airtable-map.js";
+import { mapLeadershipMemberFieldsFromAirtable } from "./operator-leadership-member-map.js";
+import {
+    LEADERSHIP_PLATFORM_TABLE,
+    mapLeadershipPlatformRowsForDetail,
+    applyLeadershipPlatformToLegacyJsonPrefill,
+} from "./operator-leadership-platform-map.js";
+import {
+    INFRASTRUCTURE_PLATFORM_TABLE,
+    mapInfrastructurePlatformRowsForDetail,
+    applyInfrastructurePlatformToLegacyPrefill,
+} from "./operator-infrastructure-platform-map.js";
+import {
+    ENGAGEMENT_REPORTING_TABLE,
+    mapEngagementReportingRowsForDetail,
+    applyEngagementReportingToLegacyPrefill,
+} from "./operator-engagement-reporting-map.js";
+import {
+    OPERATING_PLATFORM_TABLE,
+    mapOperatingPlatformRowsForDetail,
+    applyOperatingPlatformToLegacyPrefill,
+} from "./operator-operating-platform-map.js";
+import {
+    BRAND_RELATIONSHIPS_TABLE,
+    mapBrandRelationshipsRowsForDetail,
+    applyBrandRelationshipsToLegacyPrefill,
+} from "./operator-brand-relationships-map.js";
+import { applyTeamExperienceMarketsFromLeadJson } from "./operator-leadership-explorer-map.js";
 
 export const NEW_BASE_MASTER_TABLE = "Operator Setup - Master";
 export const NEW_BASE_PROFILE_TABLE = "Operator Setup - Profile & Positioning";
@@ -15,13 +45,40 @@ export const NEW_BASE_PLATFORM_TABLE = "Operator Setup - Platform & Markets";
 export const NEW_BASE_COMMERCIAL_TABLE = "Operator Setup - Commercial Fit & Terms";
 export const NEW_BASE_GOVERNANCE_TABLE = "Operator Setup - Governance, Delivery & Diligence";
 export const NEW_BASE_LEADERSHIP_TABLE = "Operator Setup - Leadership Team Members";
+export const NEW_BASE_LEADERSHIP_PLATFORM_TABLE = LEADERSHIP_PLATFORM_TABLE;
+export const NEW_BASE_INFRASTRUCTURE_PLATFORM_TABLE = INFRASTRUCTURE_PLATFORM_TABLE;
+export const NEW_BASE_ENGAGEMENT_REPORTING_TABLE = ENGAGEMENT_REPORTING_TABLE;
+export const NEW_BASE_OPERATING_PLATFORM_TABLE = OPERATING_PLATFORM_TABLE;
+export const NEW_BASE_BRAND_RELATIONSHIPS_TABLE = BRAND_RELATIONSHIPS_TABLE;
 export const NEW_BASE_CASE_STUDIES_TABLE = "Operator Setup - Case Studies";
 export const NEW_BASE_DILIGENCE_TABLE = "Operator Setup - Diligence QA";
+export const NEW_BASE_EXPLORER_MATERIALS_TABLE = "Operator Setup - Explorer Materials";
 
 const BRAND_BASICS_TABLE = process.env.AIRTABLE_BRAND_SETUP_BASICS_TABLE || "Brand Setup - Brand Basics";
 
 function enc(t) {
     return encodeURIComponent(t);
+}
+
+function contractDiagEnabled() {
+    try {
+        const env = String(process.env.OPERATOR_SETUP_CONTRACT_DIAGNOSTICS || "").trim().toLowerCase();
+        return env === "1" || env === "true" || env === "yes" || env === "on";
+    } catch {
+        return false;
+    }
+}
+
+function emitContractDiag(payload) {
+    if (!contractDiagEnabled()) return;
+    try {
+        console.debug(
+            "[operator_setup_contract_diag]",
+            JSON.stringify({ scope: "new_base_read_mapper", ...(payload || {}) })
+        );
+    } catch {
+        // no-op
+    }
 }
 
 export async function airtableFetchJson(url, options = {}) {
@@ -34,7 +91,7 @@ export async function airtableFetchJson(url, options = {}) {
     return { ok: r.ok, status: r.status, json: j };
 }
 
-export async function fetchAllRecordsRest(tableName) {
+export async function fetchAllRecordsRest(tableName, options = {}) {
     const baseId = process.env.AIRTABLE_BASE_ID;
     const apiKey = process.env.AIRTABLE_API_KEY;
     if (!baseId || !apiKey) {
@@ -42,10 +99,12 @@ export async function fetchAllRecordsRest(tableName) {
         err.statusCode = 503;
         throw err;
     }
+    const filterByFormula = options.filterByFormula ? String(options.filterByFormula) : "";
     const allRecords = [];
     let offset = null;
     do {
         let url = `https://api.airtable.com/v0/${baseId}/${enc(tableName)}?pageSize=100`;
+        if (filterByFormula) url += "&filterByFormula=" + enc(filterByFormula);
         if (offset) url += "&offset=" + enc(offset);
         const { ok, json } = await airtableFetchJson(url);
         if (!ok || json.error) {
@@ -57,6 +116,15 @@ export async function fetchAllRecordsRest(tableName) {
         offset = json.offset || null;
     } while (offset);
     return allRecords;
+}
+
+/** Escape single quotes for Airtable filterByFormula string literals. */
+function escFormulaString(value) {
+    return String(value || "").replace(/'/g, "\\'");
+}
+
+export async function fetchBrandBasicsRecordsRest() {
+    return fetchAllRecordsRest(BRAND_BASICS_TABLE).catch(() => []);
 }
 
 export async function findRecordByIdRest(tableName, recordId) {
@@ -165,19 +233,9 @@ export function buildNewBaseListRow({
     const numberFromProfile = pf.numberOfBrands != null && String(pf.numberOfBrands).trim() !== "" ? String(pf.numberOfBrands) : "";
     const brandCountFallback = Array.isArray(pf.brands) ? pf.brands.length : 0;
 
-    const caseStudies = (caseStudyRows || []).map((r) => {
-        const row = r.fields || {};
-        return {
-            property_name: formatListValue(row.property_name),
-            hotel_type: formatListValue(row.hotel_type),
-            region: formatListValue(row.region),
-            branded_independent: formatListValue(row.branded_independent),
-            situation: normalizeCaseStudySituationForForm(formatListValue(row.situation)),
-            services: formatListValue(row.services),
-            outcome: formatListValue(row.outcome),
-            owner_relevance: formatListValue(row.owner_relevance),
-        };
-    });
+    const caseStudies = (caseStudyRows || []).map((r) =>
+        mapAirtableRowToCaseStudyDetail(r.fields || {})
+    );
 
     const ownerDiligenceQa = (diligenceRows || []).map((r) => {
         const row = r.fields || {};
@@ -189,7 +247,7 @@ export function buildNewBaseListRow({
     });
 
     const logoUrl = (() => {
-        const att = pf.companyLogo;
+        const att = pf.companyLogo || pf["Company Logo"];
         if (!Array.isArray(att) || att.length === 0) return "";
         const first = att[0];
         if (first && typeof first.url === "string") return first.url;
@@ -197,6 +255,7 @@ export function buildNewBaseListRow({
     })();
 
     const dealStatus = formatListValue(mf.submission_status) || "";
+    const heroLabels = pickExplorerHeroLabelsFromMasterFields(mf);
 
     return {
         id: master.id,
@@ -226,6 +285,8 @@ export function buildNewBaseListRow({
         ownerDiligenceQa,
         _readPath: "new_base",
         _recordIdKind: "master",
+        explorerHeroVerification: heroLabels.explorerHeroVerification,
+        explorerHeroDataSource: heroLabels.explorerHeroDataSource,
     };
 }
 
@@ -247,6 +308,26 @@ export function mapNewBaseLeadershipForDetail(rows) {
                 : "";
         const summary = formatListValue(rf.summary);
         const bio = formatListValue(rf.bio);
+        const profile = mapLeadershipMemberFieldsFromAirtable(rf);
+        const langList = profile.languages || [];
+        // Canonical-first contract: role/summary/bio/headshot come from Airtable child-row columns.
+        // Compatibility detail keys (function/shortBio/experienceSummary/headshotUrl) are derived aliases.
+        emitContractDiag({
+            concept: "leadership_child_mapping",
+            leadershipRecordId: r.id,
+            canonicalFieldMap: {
+                role: "function",
+                summary: ["summary", "shortBio", "experienceSummary"],
+                bio: "bio",
+                headshot: "headshotUrl",
+            },
+            sourcePresence: {
+                role: !!formatListValue(rf.role),
+                summary: !!summary,
+                bio: !!bio,
+                headshot: !!headshotUrl,
+            },
+        });
         return {
             id: r.id,
             operatorRecordId: "",
@@ -258,33 +339,27 @@ export function mapNewBaseLeadershipForDetail(rows) {
             summary,
             bio,
             shortBio: summary || bio,
-            languages: "",
-            languageFluencyLevel: "",
+            languages: langList,
+            languageFluencyLevel: langList.join(", "),
             tenureInRole: "",
             experienceSummary: summary,
             calaExperienceSummary: "",
             displayOrder: formatListValue(rf.display_order),
             displayOnExplorer: true,
             headshotUrl,
+            hospitalityExperienceYears: profile.hospitalityExperienceYears,
+            companyTenureYears: profile.companyTenureYears,
+            priorBackground: profile.priorBackground,
+            marketExperience: profile.marketExperience,
+            coreExpertise: profile.coreExpertise,
+            relevantAssetTypes: profile.relevantAssetTypes,
+            experienceLine: profile.experienceLine,
         };
     });
 }
 
 export function mapNewBaseCaseStudiesForDetail(rows) {
-    return (rows || []).map((r) => {
-        const row = r.fields || {};
-        return {
-            property_name: formatListValue(row.property_name),
-            hotel_type: formatListValue(row.hotel_type),
-            region: formatListValue(row.region),
-            branded_independent: formatListValue(row.branded_independent),
-            situation: normalizeCaseStudySituationForForm(formatListValue(row.situation)),
-            services: formatListValue(row.services),
-            outcome: formatListValue(row.outcome),
-            owner_relevance: formatListValue(row.owner_relevance),
-            image_url: formatListValue(row.image_url),
-        };
-    });
+    return (rows || []).map((r) => mapAirtableRowToCaseStudyDetail(r.fields || {}));
 }
 
 export function mapNewBaseDiligenceForDetail(rows) {
@@ -316,6 +391,9 @@ export function buildBasicsShapedFieldsFromNewBase({ master, profile, platform, 
         "Company Description": formatListValue(pf.companyDescription),
         "Company Tagline": formatListValue(pf.companyTagline),
         "Mission Statement": formatListValue(pf.missionStatement),
+        "Company History": formatListValue(pf.companyHistory),
+        Differentiators: formatListValue(pf.differentiators),
+        "Management Philosophy": formatListValue(pf.managementPhilosophy),
         "Primary Service Model": formatListValue(pf.primaryServiceModel),
         "Company Size": formatListValue(pf.companySize),
         "Years in Business": pf.yearsInBusiness,
@@ -323,6 +401,7 @@ export function buildBasicsShapedFieldsFromNewBase({ master, profile, platform, 
         "Brands Managed": pf.brands,
         "Number of Brands Supported": pf.numberOfBrands,
         "Chain Scales You Support": pf.chainScalesSupported,
+        brand_conversion_project_count: pf.brand_conversion_project_count,
         "Chain Scale": plf.chainScale,
         "Total Properties Managed": plf.totalProperties,
         "Total Rooms Managed": plf.totalRooms,
@@ -400,6 +479,17 @@ function normalizeDirectPrefillCell(k, v) {
     return formatListValue(v);
 }
 
+function normalizeServiceModelList(raw) {
+    if (raw == null || raw === "") return [];
+    if (Array.isArray(raw)) return raw.map((x) => formatListValue(x)).filter(Boolean);
+    const s = formatListValue(raw);
+    if (!s) return [];
+    return s
+        .split(/\s*,\s*/)
+        .map((x) => x.trim())
+        .filter(Boolean);
+}
+
 /**
  * Merge Master + one-to-one rows into form-shaped `prefill` (same keys as legacy Basics detail).
  * Raw Airtable titles ("Company Name") and direct camelCase columns are both normalized.
@@ -412,6 +502,13 @@ export function buildPrefillObjectFromNewBaseRows(master, profile, platform, com
     }
 
     const prefill = airtableBasicsFieldsToPrefill(mergedRaw);
+    const heroLabels = pickExplorerHeroLabelsFromMasterFields(master && master.fields);
+    if (heroLabels.explorerHeroVerification) {
+        prefill.explorerHeroVerification = heroLabels.explorerHeroVerification;
+    }
+    if (heroLabels.explorerHeroDataSource) {
+        prefill.explorerHeroDataSource = heroLabels.explorerHeroDataSource;
+    }
 
     applyNewTwoPrefillFromSplitTables(prefill, {
         f: mergedRaw,
@@ -453,10 +550,30 @@ export function buildPrefillObjectFromNewBaseRows(master, profile, platform, com
     /** Per-option checkbox columns + aggregate multis on Governance (legacy path always ran this). */
     applyOperatorServiceGranularPrefill(mergeServiceAggregateAliases(mergedRaw), prefill);
 
+    applyOperatorAlignmentPrefillAliases(mergedRaw, prefill);
+
+    // Batch 3C canonical contract: serviceModelsSupported must be available as canonical prefill key.
+    const canonicalServiceModels = normalizeServiceModelList(
+        mergedRaw.serviceModelsSupported || mergedRaw["Service Models Supported"]
+    );
+    if (canonicalServiceModels.length) {
+        prefill.serviceModelsSupported = canonicalServiceModels;
+    } else {
+        const primaryFallback = formatListValue(mergedRaw.primaryServiceModel);
+        if (primaryFallback && (!Array.isArray(prefill.serviceModelsSupported) || prefill.serviceModelsSupported.length === 0)) {
+            prefill.serviceModelsSupported = [primaryFallback];
+        }
+    }
+
     const cn = mergedRaw.company_name != null ? String(mergedRaw.company_name).trim() : "";
     if (cn && (prefill.companyName == null || String(prefill.companyName).trim() === "")) {
         prefill.companyName = cn;
     }
+    if (!Array.isArray(prefill.companyLogo) || prefill.companyLogo.length === 0) {
+        const logo = mergedRaw.companyLogo || mergedRaw["Company Logo"];
+        if (Array.isArray(logo) && logo.length) prefill.companyLogo = logo;
+    }
+    applyTeamExperienceMarketsFromLeadJson(prefill);
     return prefill;
 }
 
@@ -482,6 +599,10 @@ export async function fetchRecordsLinkedToMaster(tableName, masterId) {
     const mid = String(masterId || "").trim();
     if (!mid) return [];
     try {
+        const formula = `{Operator} = '${escFormulaString(mid)}'`;
+        const filtered = await fetchAllRecordsRest(tableName, { filterByFormula: formula });
+        if (filtered.length) return filtered;
+        // Fallback when formula/link field naming differs — full scan + in-memory filter.
         const all = await fetchAllRecordsRest(tableName);
         return rowsLinkedToMaster(all, mid);
     } catch (e) {
@@ -495,14 +616,34 @@ export async function loadNewBaseOperatorBundle(masterId) {
     const master = await findRecordByIdRest(NEW_BASE_MASTER_TABLE, masterId);
     if (!master) return null;
 
-    const [profRows, platRows, commRows, govRows, leadership, cases, diligence] = await Promise.all([
+    const [
+        profRows,
+        platRows,
+        commRows,
+        govRows,
+        leadership,
+        leadershipPlatform,
+        infrastructurePlatform,
+        engagementReporting,
+        operatingPlatform,
+        brandRelationships,
+        cases,
+        diligence,
+        explorerMaterials,
+    ] = await Promise.all([
         fetchRecordsLinkedToMaster(NEW_BASE_PROFILE_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_PLATFORM_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_COMMERCIAL_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_GOVERNANCE_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_LEADERSHIP_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_LEADERSHIP_PLATFORM_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_INFRASTRUCTURE_PLATFORM_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_ENGAGEMENT_REPORTING_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_OPERATING_PLATFORM_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_BRAND_RELATIONSHIPS_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_CASE_STUDIES_TABLE, master.id).catch(() => []),
         fetchRecordsLinkedToMaster(NEW_BASE_DILIGENCE_TABLE, master.id).catch(() => []),
+        fetchRecordsLinkedToMaster(NEW_BASE_EXPLORER_MATERIALS_TABLE, master.id).catch(() => []),
     ]);
 
     const profile = profRows[0] || null;
@@ -517,10 +658,44 @@ export async function loadNewBaseOperatorBundle(masterId) {
         commercial,
         governance,
         leadership,
+        leadershipPlatform,
+        infrastructurePlatform,
+        engagementReporting,
+        operatingPlatform,
+        brandRelationships,
         cases,
         diligence,
+        explorerMaterials,
     };
 }
+
+export function mapNewBaseLeadershipPlatformForDetail(rows) {
+    return mapLeadershipPlatformRowsForDetail(rows || []);
+}
+
+export function mapNewBaseInfrastructurePlatformForDetail(rows) {
+    return mapInfrastructurePlatformRowsForDetail(rows || []);
+}
+
+export function mapNewBaseEngagementReportingForDetail(rows) {
+    return mapEngagementReportingRowsForDetail(rows || []);
+}
+
+export function mapNewBaseOperatingPlatformForDetail(rows) {
+    return mapOperatingPlatformRowsForDetail(rows || []);
+}
+
+export function mapNewBaseBrandRelationshipsForDetail(rows) {
+    return mapBrandRelationshipsRowsForDetail(rows || []);
+}
+
+export {
+    applyLeadershipPlatformToLegacyJsonPrefill,
+    applyInfrastructurePlatformToLegacyPrefill,
+    applyEngagementReportingToLegacyPrefill,
+    applyOperatingPlatformToLegacyPrefill,
+    applyBrandRelationshipsToLegacyPrefill,
+};
 
 export function logOperatorReadPath(scope, data) {
     console.log(

@@ -1,0 +1,503 @@
+/* Operator Capability Snapshot â€” document-style (reuses snapshot shell patterns) */
+
+.operator-capability-snapshot {
+  --ocs-paper: #ffffff;
+  --ocs-ink: #101935;
+  --ocs-ink-muted: #4a5568;
+  --ocs-border: #d9e1fa;
+  --ocs-accent: #2d6a4f;
+  --ocs-accent-soft: rgba(45, 106, 79, 0.1);
+  --ocs-font: "Mona Sans", "Inter", system-ui, sans-serif;
+  font-family: var(--ocs-font);
+  color: var(--ocs-ink);
+  line-height: 1.5;
+}
+
+.operator-capability-snapshot .ocs-section {
+  margin-bottom: 28px;
+}
+
+.operator-capability-snapshot .ocs-h2 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ocs-ink);
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--ocs-border);
+}
+
+.operator-capability-snapshot .ocs-lead {
+  font-size: 15px;
+  color: var(--ocs-ink-muted);
+  margin: 0 0 16px;
+}
+
+.operator-capability-snapshot .ocs-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px 20px;
+}
+
+.operator-capability-snapshot .ocs-kv dt {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ocs-ink-muted);
+  margin: 0 0 4px;
+}
+
+.operator-capability-snapshot .ocs-kv dd {
+  margin: 0;
+  font-size: 14px;
+}
+
+.operator-capability-snapshot .ocs-cap-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.operator-capability-snapshot .ocs-cap-item {
+  padding: 12px 14px;
+  border: 1px solid var(--ocs-border);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: var(--ocs-paper);
+}
+
+.operator-capability-snapshot .ocs-cap-item strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.operator-capability-snapshot .ocs-cap-meta {
+  font-size: 12px;
+  color: var(--ocs-ink-muted);
+}
+
+.operator-capability-snapshot .ocs-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--ocs-accent-soft);
+  color: var(--ocs-accent);
+  margin-left: 8px;
+}
+
+.operator-capability-snapshot .ocs-clarifications li {
+  margin-bottom: 8px;
+}
+
+.operator-capability-snapshot .ocs-disclaimer {
+  font-size: 12px;
+  color: var(--ocs-ink-muted);
+  border-top: 1px solid var(--ocs-border);
+  padding-top: 16px;
+  margin-top: 24px;
+}
+
+.operator-capability-snapshot .ocs-cover-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.operator-capability-snapshot .ocs-cover-doc-type {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ocs-accent);
+}
+
+.operator-capability-snapshot .ocs-banner {
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  border: 1px solid var(--ocs-border);
+}
+
+.operator-capability-snapshot .ocs-banner__label {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--ocs-ink);
+}
+
+.operator-capability-snapshot .ocs-banner__status {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+  color: var(--ocs-ink-muted);
+}
+
+.operator-capability-snapshot .ocs-banner__context,
+.operator-capability-snapshot .ocs-banner__draft-note {
+  font-size: 14px;
+  margin: 0 0 6px;
+  color: var(--ocs-ink-muted);
+}
+
+.operator-capability-snapshot .ocs-banner__manual {
+  font-size: 13px;
+  font-weight: 700;
+  color: #9a3412;
+  margin: 8px 0 0;
+}
+
+.operator-capability-snapshot .ocs-banner--allowed {
+  background: rgba(45, 106, 79, 0.08);
+  border-color: rgba(45, 106, 79, 0.35);
+}
+
+.operator-capability-snapshot .ocs-banner--limited {
+  background: rgba(180, 120, 20, 0.1);
+  border-color: rgba(180, 120, 20, 0.35);
+}
+
+.operator-capability-snapshot .ocs-banner--blocked {
+  background: rgba(120, 40, 40, 0.08);
+  border-color: rgba(120, 40, 40, 0.3);
+}
+
+.operator-capability-snapshot .ocs-banner--manual-review.ocs-banner--limited {
+  border-left: 4px solid #9a3412;
+}
+
+.operator-capability-snapshot .ocs-clarification-banner {
+  background: rgba(180, 120, 20, 0.06);
+  border: 1px solid rgba(180, 120, 20, 0.25);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.operator-capability-snapshot .ocs-h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 12px 0 8px;
+}
+
+.operator-capability-snapshot .ocs-confidence {
+  font-size: 13px;
+}
+
+.operator-capability-snapshot .ocs-rules {
+  font-size: 12px;
+  color: var(--ocs-ink-muted);
+}
+
+.operator-capability-snapshot .ocs-prose p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--ocs-ink);
+  line-height: 1.55;
+}
+
+.operator-capability-snapshot .ocs-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.operator-capability-snapshot .ocs-pathway-label {
+  font-weight: 600;
+  color: var(--ocs-ink-muted);
+}
+
+.operator-capability-snapshot .ocs-pathway-body,
+.operator-capability-snapshot .ocs-pathway-question {
+  font-size: 13px;
+  color: var(--ocs-ink);
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+.operator-capability-snapshot .ocs-cap-item--enriched {
+  padding: 14px 16px;
+}
+
+.operator-capability-snapshot .ocs-cap-source {
+  font-size: 12px;
+  color: var(--ocs-ink-muted);
+  margin: 8px 0 0;
+}
+
+.operator-capability-snapshot .ocs-page-inner {
+  padding: 28px 32px 32px;
+  box-sizing: border-box;
+  color: var(--ocs-ink);
+}
+
+.operator-capability-snapshot .ocs-page-block {
+  margin-bottom: 4px;
+}
+
+.operator-capability-snapshot .ocs-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.operator-capability-snapshot .ocs-section ul li {
+  color: var(--ocs-ink);
+  margin-bottom: 8px;
+}
+
+/* My Deals modal — same chrome as Brand Alignment / Readiness (dark top band, white panel) */
+
+#myDealsOperatorCapabilityContent {
+  display: none;
+}
+
+#myDealsOperatorCapabilityContent.is-visible {
+  display: block;
+}
+
+#myDealsOperatorCapabilityModal .my-deals-readiness-modal {
+  max-width: 1120px;
+  width: min(96vw, 1120px);
+}
+
+.my-deals-readiness-modal-body .operator-capability-snapshot,
+#myDealsOperatorCapabilityModal .operator-capability-snapshot {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.my-deals-readiness-modal-body .operator-capability-snapshot.bas--embed,
+#myDealsOperatorCapabilityModal .operator-capability-snapshot.bas--embed {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.my-deals-readiness-modal-body .operator-capability-snapshot .bas-book-shell,
+#myDealsOperatorCapabilityModal .operator-capability-snapshot .bas-book-shell,
+.my-deals-readiness-modal-body .operator-capability-snapshot .bas-book-document,
+#myDealsOperatorCapabilityModal .operator-capability-snapshot .bas-book-document,
+.my-deals-readiness-modal-body .operator-capability-snapshot .bas-book-viewport,
+#myDealsOperatorCapabilityModal .operator-capability-snapshot .bas-book-viewport {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Content pages: dark header band + white body (inherits .bas-content-page / .bas-brief-* from brand-alignment-snapshot.css) */
+.operator-capability-snapshot .bas-brief-panel .ocs-grid-2 {
+  margin-bottom: 0.5rem;
+}
+
+.operator-capability-snapshot .bas-brief-panel .ocs-kv dt {
+  color: #4a5568;
+}
+
+.operator-capability-snapshot .bas-brief-panel .ocs-kv dd {
+  color: #101935;
+}
+
+.operator-capability-snapshot .bas-brief-panel .ocs-cap-item {
+  background: #f4f6fc;
+  border-color: #d9e1fa;
+}
+
+.operator-capability-snapshot .bas-brief-panel .ocs-pathway-body,
+.operator-capability-snapshot .bas-brief-panel .ocs-pathway-question,
+.operator-capability-snapshot .bas-brief-panel .ocs-cap-source {
+  color: #343b4f;
+}
+
+.operator-capability-snapshot .bas-brief-panel .ocs-rules {
+  color: #4a5568;
+}
+
+
+.ocs-p0-block.hidden,
+#operatorCapabilityP0Block.hidden,
+#operatorReportingP0Block.hidden {
+  display: none !important;
+}
+
+.form-label .required.ocs-required-suppressed {
+  display: none !important;
+}
+
+/* Compact document typography (screen + print baseline) */
+.operator-capability-snapshot .bas-page-content .bas-section-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.35rem;
+}
+
+.operator-capability-snapshot .bas-page-content .bas-summary,
+.operator-capability-snapshot .bas-page-content .bas-detail-list li,
+.operator-capability-snapshot .bas-page-content .bas-muted {
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.operator-capability-snapshot .bas-page-content .bas-brief-lead {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.operator-capability-snapshot .ocs-cap-item,
+.operator-capability-snapshot .ocs-cap-item--enriched {
+  padding: 8px 10px;
+  margin-bottom: 6px;
+}
+
+.operator-capability-snapshot .ocs-pathway-body,
+.operator-capability-snapshot .ocs-pathway-question,
+.operator-capability-snapshot .bas-page-content .bas-summary,
+.operator-capability-snapshot .bas-page-content .bas-detail-list li {
+  hyphens: manual;
+  -webkit-hyphens: manual;
+}
+
+.operator-capability-snapshot .ocs-signals-line {
+  font-size: 0.74rem;
+  margin: 0 0 0.5rem;
+  line-height: 1.4;
+}
+
+.operator-capability-snapshot .ocs-guidance-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 8px 14px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.operator-capability-snapshot .ocs-guidance-item {
+  padding: 8px 10px;
+  border: 1px solid var(--ocs-border);
+  border-radius: 6px;
+  background: #f4f6fc;
+}
+
+.operator-capability-snapshot .ocs-guidance-item strong {
+  display: block;
+  font-size: 0.78rem;
+  margin-bottom: 2px;
+}
+
+.operator-capability-snapshot .ocs-guidance-item span {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--ocs-ink-muted);
+  line-height: 1.4;
+  hyphens: none;
+  -webkit-hyphens: none;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.operator-capability-snapshot .ocs-footer-disclaimer {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--ocs-border);
+}
+
+.operator-capability-snapshot .ocs-footer-disclaimer p {
+  font-size: 0.68rem;
+  color: var(--ocs-ink-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+@media print {
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-brief-highlights {
+    padding: 0.4rem 0.85rem 0.35rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-brief-panel {
+    padding: 0.42rem 0.85rem 0.52rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-section--brief {
+    margin-bottom: 0.42rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-section-title {
+    font-size: 0.64rem !important;
+    margin-bottom: 0.28rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-summary,
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-detail-list li {
+    font-size: 0.66rem !important;
+    line-height: 1.42 !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-section--flow {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-cap-item,
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-pathway-item {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    padding: 7px 9px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-guidance-grid {
+    gap: 7px 12px !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-guidance-item {
+    padding: 7px 9px !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-reporting-diligence {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-footer-disclaimer {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    margin-top: 0.5rem !important;
+    padding-top: 0.35rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-footer-disclaimer p {
+    font-size: 0.56rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-brief-kicker {
+    font-size: 0.58rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-brief-card-title {
+    font-size: 0.52rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .bas-page-content .bas-brief-card-body {
+    font-size: 0.62rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-signals-line {
+    font-size: 0.56rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-guidance-grid {
+    grid-template-columns: repeat(2, minmax(200px, 1fr)) !important;
+  }
+
+  .operator-capability-snapshot.brand-alignment-snapshot .ocs-guidance-item span {
+    hyphens: none !important;
+  }
+}

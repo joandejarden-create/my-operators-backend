@@ -17,6 +17,7 @@
     --sidebar-width: 260px;
     --sidebar-width-collapsed: 72px;
     --search-bg: var(--neutral--700);
+    --scrollbar-size: 6px;
 }
 
 * {
@@ -42,7 +43,7 @@ body {
 }
 
 /* Global scrollbar - Partner Directory popup style */
-*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar { width: var(--scrollbar-size); height: var(--scrollbar-size); }
 *::-webkit-scrollbar-track { background: #080f25; border-left: 1px solid rgba(87, 195, 255, 0.35); }
 *::-webkit-scrollbar-thumb { background: #37446b; border-radius: 0; }
 *::-webkit-scrollbar-thumb:hover { background: #7e89ac; }
@@ -106,6 +107,10 @@ body {
 
 .sidebar.collapsed .nav-dropdown,
 .sidebar.collapsed .account-dropdown {
+    display: none;
+}
+
+.sidebar.collapsed .dev-workspace-wrap {
     display: none;
 }
 
@@ -208,11 +213,17 @@ body {
 .sidebar-nav {
     flex: 1;
     overflow-y: auto;
-    padding: 0.5rem 0;
+    padding: 0.25rem 0 0.75rem;
+}
+
+.nav-section-divider {
+    height: 1px;
+    background: var(--sidebar-border);
+    margin: 0.65rem 1rem;
 }
 
 .nav-group {
-    margin-bottom: 0;
+    margin-bottom: 0.15rem;
 }
 
 .nav-item {
@@ -253,9 +264,22 @@ body {
     color: inherit;
 }
 
+.nav-item .nav-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    margin: 0 auto;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 .nav-item .nav-label {
     flex: 1;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.2;
 }
 
 .nav-item .nav-arrow {
@@ -294,7 +318,7 @@ body {
 }
 
 .nav-item-child {
-    padding-left: 2.75rem !important;
+    padding-left: 2.4rem !important;
     font-size: 0.85rem;
     font-weight: 400;
 }
@@ -307,11 +331,94 @@ body {
     display: none;
 }
 
+.sidebar.collapsed .nav-section-divider {
+    margin: 0.55rem 0.45rem;
+}
+
 /* Sidebar footer – user & account dropdown */
 .sidebar-footer {
     position: relative;
     padding: 1rem;
     border-top: 1px solid var(--sidebar-border);
+}
+
+.dev-workspace-wrap {
+    margin: 0.5rem 1rem 0.4rem;
+    padding: 0.65rem 0.7rem;
+    border: 1px solid var(--sidebar-border);
+    border-radius: 8px;
+    background: rgba(55, 68, 107, 0.35);
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.dev-workspace-label {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--sidebar-text-muted);
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.02em;
+}
+
+.dev-workspace-select {
+    width: 100%;
+    border: 1px solid var(--sidebar-border);
+    border-radius: 6px;
+    background: #0b1431;
+    color: var(--sidebar-text);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.45rem;
+    outline: none;
+}
+
+.dev-workspace-select:focus {
+    border-color: var(--sidebar-active);
+}
+
+.dev-workspace-wrap[data-workspace="owner"] {
+    border-color: rgba(108, 114, 255, 0.8);
+    background: rgba(108, 114, 255, 0.16);
+}
+
+.dev-workspace-wrap[data-workspace="brand"] {
+    border-color: rgba(20, 202, 116, 0.78);
+    background: rgba(20, 202, 116, 0.12);
+}
+
+.dev-workspace-wrap[data-workspace="operator"] {
+    border-color: rgba(87, 195, 255, 0.78);
+    background: rgba(87, 195, 255, 0.12);
+}
+
+.dev-workspace-wrap[data-workspace="admin"] {
+    border-color: rgba(253, 181, 42, 0.8);
+    background: rgba(253, 181, 42, 0.13);
+}
+
+.dev-workspace-wrap[data-workspace="all"] {
+    border-color: rgba(255, 90, 101, 0.82);
+    background: rgba(255, 90, 101, 0.15);
+}
+
+.dev-workspace-preview-btn {
+    display: inline-flex;
+    width: 100%;
+    margin-top: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--sidebar-active);
+    border-radius: 6px;
+    background: rgba(108, 114, 255, 0.16);
+    color: #dfe3ff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.42rem 0.5rem;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.dev-workspace-preview-btn:hover {
+    background: rgba(108, 114, 255, 0.28);
+    border-color: #7a80ff;
 }
 
 .user-block {
@@ -468,13 +575,67 @@ body {
     width: 100%;
     height: 100vh;
     background: var(--neutral--800);
+    display: flex;
+    flex-direction: column;
+}
+
+.shell-topbar {
+    height: 60px;
+    min-height: 60px;
+    border-bottom: 1px solid var(--sidebar-border);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #0d1838;
+}
+
+.shell-topbar-title-group {
+    min-width: 0;
+}
+
+.shell-topbar-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.shell-topbar-subtitle {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--sidebar-text-muted);
+}
+
+.shell-mobile-nav-toggle {
+    display: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    border: 1px solid var(--sidebar-border);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
 }
 
 .frame-container {
     position: relative;
+    flex: 1;
+    min-height: 0;
     width: 100%;
     max-width: 100%;
-    height: 100%;
+}
+
+.app-shell-footer {
+    flex-shrink: 0;
+    padding: 10px 16px 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--sidebar-text-muted);
+    border-top: 1px solid var(--sidebar-border);
+    background: var(--neutral--800);
 }
 
 .frame-container .app-frame {
@@ -490,4 +651,138 @@ body {
 
 .frame-container .app-frame.active {
     display: block;
+}
+
+.app-shell-auth-gate {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    background: var(--neutral--800);
+    min-height: 0;
+}
+
+.app-shell-auth-gate[hidden] {
+    display: none !important;
+}
+
+.app-shell-auth-gate-card {
+    max-width: 420px;
+    width: 100%;
+    padding: 28px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--sidebar-border);
+    background: var(--neutral--700);
+    text-align: center;
+}
+
+.app-shell-auth-gate-card h2 {
+    color: var(--neutral--100);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+.app-shell-auth-gate-card p {
+    color: var(--neutral--400);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 16px;
+}
+
+.app-shell-auth-gate-status {
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0 0 14px !important;
+    color: var(--neutral--400);
+}
+
+.app-shell-auth-gate-status.is-error {
+    color: #ffb4b8;
+}
+
+.app-shell-auth-gate-hint {
+    font-size: 12px !important;
+    color: var(--sidebar-text-muted) !important;
+    margin-top: 14px !important;
+    margin-bottom: 0 !important;
+}
+
+.app-shell-auth-gate-hint code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 11px;
+    color: var(--neutral--400);
+}
+
+.app-shell-auth-gate-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.app-shell-auth-btn {
+    border: 1px solid var(--sidebar-border);
+    background: var(--neutral--600);
+    color: var(--neutral--100);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.app-shell-auth-btn:hover {
+    background: var(--sidebar-bg-hover);
+}
+
+.app-shell-auth-btn.primary {
+    border-color: var(--accent--primary-1);
+    background: var(--accent--primary-1);
+    color: #fff;
+}
+
+.app-shell-auth-btn.primary:hover {
+    filter: brightness(1.08);
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+        transition: left 0.2s ease, width 0.2s ease, min-width 0.2s ease;
+    }
+
+    .sidebar.mobile-open {
+        left: 0;
+    }
+
+    .shell-mobile-nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .main-content {
+        width: 100%;
+    }
+}
+
+/* Parent site embed (e.g. Webflow /hotel-owner/dashboard): hide shell chrome */
+html.app-chromeless-embed .sidebar,
+html.app-chromeless-embed .app-shell-footer {
+    display: none !important;
+}
+
+html.app-chromeless-embed .app-layout {
+    display: block;
+}
+
+html.app-chromeless-embed .main-content {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
 }

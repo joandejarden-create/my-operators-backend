@@ -1,0 +1,99 @@
+/* Operator Setup — Brand & Relationships structured repeaters */
+.brand-relationships-setup {
+  margin-top: 1rem;
+}
+
+.br-section-block {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+.br-section-block h4 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.br-section-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.br-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.br-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 0.75rem;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+.br-row.br-row--table {
+  grid-template-columns: 1fr 0.65fr 1fr 1fr;
+}
+
+.br-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.br-field--span2 {
+  grid-column: 1 / -1;
+}
+
+.br-field label {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.br-row-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.br-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.br-derived-panel {
+  margin: 0.75rem 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(120, 180, 255, 0.25);
+  background: rgba(40, 80, 140, 0.12);
+  font-size: 0.85rem;
+}
+
+.br-derived-panel strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.br-derived-panel ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.br-derived-panel.is-hidden {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .br-row.br-row--table {
+    grid-template-columns: 1fr 1fr;
+  }
+}

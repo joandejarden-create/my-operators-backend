@@ -2,6 +2,8 @@
  * Minimal Brand Library API for My Brands page only.
  * Use with server-my-brands.js to reduce memory usage.
  */
+import { BRAND_STATUS_ACTIVE_FORMULA, isBrandStatusActive } from "../lib/brand-status-active.js";
+
 const TABLE = "Brand Setup - Brand Basics";
 const F = {
   name: "Brand Name",
@@ -43,7 +45,7 @@ export async function getBrandLibraryBrands(req, res) {
 
     const tableName = encodeURIComponent(TABLE);
     const useFilter = !allStatuses;
-    const formula = encodeURIComponent("FIND('Active', {Brand Status}) > 0");
+    const formula = encodeURIComponent(BRAND_STATUS_ACTIVE_FORMULA);
 
     let allRecords = [];
     let offset = null;
@@ -74,22 +76,26 @@ export async function getBrandLibraryBrands(req, res) {
         brandModel: valueToStr(fields[F.brandModel]),
         serviceModel: valueToStr(fields[F.serviceModel]),
         architecture: archVal,
-        status: (fields[F.status] || "").toString().trim(),
+        status: valueToStr(fields[F.status]),
         positioning: (fields[F.positioning] || "").toString().trim(),
         tagline: (fields[F.tagline] || "").toString().trim(),
       };
     });
 
-    const parentCompanies = [...new Set(brandList.map((b) => (b.parentCompany || "").trim()).filter(Boolean))].sort();
-    const chainScales = [...new Set(brandList.map((b) => (b.chainScale || "").trim()).filter(Boolean))].sort();
-    const brandModels = [...new Set(brandList.map((b) => (b.brandModel || "").trim()).filter(Boolean))].sort();
-    const serviceModels = [...new Set(brandList.map((b) => (b.serviceModel || "").trim()).filter(Boolean))].sort();
-    const architectures = [...new Set(brandList.map((b) => (b.architecture || "").trim()).filter(Boolean))].sort();
+    const visibleBrands = allStatuses
+      ? brandList
+      : brandList.filter((b) => isBrandStatusActive(b.status));
+
+    const parentCompanies = [...new Set(visibleBrands.map((b) => (b.parentCompany || "").trim()).filter(Boolean))].sort();
+    const chainScales = [...new Set(visibleBrands.map((b) => (b.chainScale || "").trim()).filter(Boolean))].sort();
+    const brandModels = [...new Set(visibleBrands.map((b) => (b.brandModel || "").trim()).filter(Boolean))].sort();
+    const serviceModels = [...new Set(visibleBrands.map((b) => (b.serviceModel || "").trim()).filter(Boolean))].sort();
+    const architectures = [...new Set(visibleBrands.map((b) => (b.architecture || "").trim()).filter(Boolean))].sort();
 
     res.json({
       success: true,
-      brands: brandList,
-      totalCount: brandList.length,
+      brands: visibleBrands,
+      totalCount: visibleBrands.length,
       filterOptions: { parentCompanies, chainScales, brandModels, serviceModels, architectures },
     });
   } catch (error) {

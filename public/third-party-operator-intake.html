@@ -2029,7 +2029,7 @@
         <div class="dashboard-main-section">
             <div class="intake-container">
                 <nav class="intake-breadcrumb" aria-label="Breadcrumb">
-                    <a href="/app#/my-third-party-operators" id="intakeBreadcrumbBackLink">My 3rd Party Ops. Companies</a>
+                    <a href="/app#/my-operators" id="intakeBreadcrumbBackLink">My 3rd Party Ops. Companies</a>
                     <span class="breadcrumb-separator" aria-hidden="true">&gt;</span>
                     <span id="intakeBreadcrumbCurrent">Operator setup</span>
                 </nav>
@@ -2235,7 +2235,7 @@
                                     <div class="multi-select-with-search" id="brandsContainer">
                                         <input type="text" class="form-input brands-managed-search" id="brandsManagedSearch" placeholder="Search brands…" autocomplete="off" aria-label="Search brands">
                                         <select class="form-select" id="brandsManagedSelect" name="brands" multiple required size="10">
-                                            <option value="" disabled selected>Loading brands…</option>
+                                            <option value="" disabled selected>Loading Brands…</option>
                                         </select>
                                     </div>
                                 </div>
@@ -5179,11 +5179,26 @@
             (function bindIntakeBreadcrumbBack() {
                 const link = document.getElementById('intakeBreadcrumbBackLink');
                 if (!link) return;
-                const listPath = '/my-third-party-operators';
-                const listHash = '#/my-third-party-operators';
+                const hotelOwnerListPath = '/hotel-owner/my-third-party-operators-new';
+                const listHash = '#/my-operators';
+                const appShellListPath = '/my-operators';
+                function isHotelOwnerPath() {
+                    if (/^\/hotel-owner(\/|$)/i.test(window.location.pathname || '')) return true;
+                    try {
+                        if (window.self !== window.top && window.parent && window.parent !== window) {
+                            return /^\/hotel-owner(\/|$)/i.test(window.parent.location.pathname || '');
+                        }
+                    } catch (_e) {}
+                    return false;
+                }
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
+                    const ho = isHotelOwnerPath();
                     if (window.self !== window.top) {
+                        if (ho) {
+                            window.location.assign(hotelOwnerListPath);
+                            return;
+                        }
                         var hashOk = false;
                         try {
                             window.parent.location.hash = listHash;
@@ -5197,9 +5212,13 @@
                         }
                         if (!hashOk) {
                             try {
-                                window.parent.postMessage({ type: 'dealality-navigate', path: listPath }, window.location.origin);
+                                window.parent.postMessage({ type: 'dealality-navigate', path: appShellListPath }, window.location.origin);
                             } catch (err3) { /* ignore */ }
                         }
+                        return;
+                    }
+                    if (ho) {
+                        window.location.assign(hotelOwnerListPath);
                         return;
                     }
                     window.location.assign('/app' + listHash);
@@ -6228,7 +6247,7 @@
                     select.innerHTML = '';
                     const loadingOpt = document.createElement('option');
                     loadingOpt.value = '';
-                    loadingOpt.textContent = 'Loading brands from Airtable…';
+                    loadingOpt.textContent = 'Loading Brands From Airtable…';
                     loadingOpt.disabled = true;
                     loadingOpt.selected = true;
                     select.appendChild(loadingOpt);
@@ -7497,5 +7516,7 @@
         });
     </script>
 
+
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

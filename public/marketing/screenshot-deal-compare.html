@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capture — Deal Compare</title>
+  <link rel="stylesheet" href="/marketing/dealality-mockups.css">
+</head>
+<body class="mkt-capture">
+  <div id="capture-root" data-src="/marketing/components/05-term-comparison.html">Loading…</div>
+  <script>
+    fetch(document.getElementById('capture-root').getAttribute('data-src'))
+      .then(function (r) { return r.text(); })
+      .then(function (html) { document.getElementById('capture-root').innerHTML = html; });
+  </script>
+</body>
+</html>

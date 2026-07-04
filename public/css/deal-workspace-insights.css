@@ -1,0 +1,240 @@
+/* Shared My Deal Flow + pipeline strip (brand + owner workspaces) */
+:root {
+  --bdd-kpi-cell: 82px;
+  --bdd-kpi-gap: 5px;
+  --bdd-kpi-group-gap: 8px;
+  --bdd-kpi-flow-cols: 5;
+  --bdd-kpi-section-title-size: 13px;
+  --bdd-kpi-card-title-size: 10px;
+  --bdd-kpi-value-size: clamp(1.2rem, 2.1vw, 1.55rem);
+  --bdd-kpi-footer-size: 9px;
+  --bdd-kpi-card-height: 132px;
+  /* Fixed footer band so badges align on one row across all cards */
+  --bdd-kpi-footer-slot-height: 2.5rem;
+  --bdd-kpi-footer-badge-height: 2.35rem;
+}
+
+.bdd-insights-dashboard {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 12px;
+  min-width: 0;
+}
+.bdd-insights-dashboard__scroller {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  padding-bottom: 4px;
+}
+.bdd-insights-dashboard__band { width: max-content; }
+.bdd-insights-dashboard__header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  width: max-content;
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+.bdd-insights-dashboard__h-left {
+  flex: 0 0 auto;
+  width: calc(var(--bdd-kpi-flow-cols) * var(--bdd-kpi-cell) + (var(--bdd-kpi-flow-cols) - 1) * var(--bdd-kpi-gap));
+}
+.bdd-insights-dashboard__h-right {
+  flex: 0 0 auto;
+  width: calc(6 * var(--bdd-kpi-cell) + 5 * var(--bdd-kpi-gap));
+  text-align: right;
+}
+.bdd-insights-dashboard__h-spacer {
+  flex: 0 0 auto;
+  width: calc(2 * var(--bdd-kpi-group-gap) + 1px);
+}
+.bdd-step-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--neutral--500, #7e89ac);
+}
+.bdd-insights-dashboard__header .bdd-step-label {
+  font-size: var(--bdd-kpi-section-title-size);
+  color: var(--neutral--200, #e2e8f0);
+}
+.bdd-insights-dashboard__row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: var(--bdd-kpi-group-gap);
+  width: max-content;
+}
+.bdd-insights-sep {
+  width: 1px;
+  min-width: 1px;
+  align-self: stretch;
+  min-height: 4.5rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+.bdd-kpi-strip--cards {
+  display: grid;
+  grid-template-columns: repeat(6, var(--bdd-kpi-cell));
+  gap: var(--bdd-kpi-gap);
+  width: max-content;
+}
+.bdd-insights-kpis .bdd-kpi-strip--cards {
+  grid-template-columns: repeat(var(--bdd-kpi-flow-cols), var(--bdd-kpi-cell));
+}
+.bdd-kpi-metric-card {
+  background: var(--secondary--color-1, #101935);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 5px 4px 6px;
+  height: var(--bdd-kpi-card-height);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) var(--bdd-kpi-footer-slot-height);
+  row-gap: 2px;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.bdd-kpi-metric-card--action {
+  border-color: rgba(20, 202, 116, 0.55);
+}
+.bdd-kpi-metric-card__label-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 2.15em;
+}
+.bdd-kpi-metric-card__label {
+  font-size: var(--bdd-kpi-card-title-size);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--neutral--400, #aeb9e1);
+  text-align: center;
+  line-height: 1.25;
+}
+.bdd-kpi-metric-card__value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--bdd-kpi-value-size);
+  font-weight: 700;
+  color: var(--neutral--100, #fff);
+  font-variant-numeric: tabular-nums;
+}
+.bdd-kpi-metric-card__footer {
+  grid-row: 3;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  align-self: end;
+  width: 100%;
+  min-width: 0;
+  height: var(--bdd-kpi-footer-slot-height);
+  min-height: var(--bdd-kpi-footer-slot-height);
+  max-height: var(--bdd-kpi-footer-slot-height);
+  padding: 0 2px;
+  box-sizing: border-box;
+}
+.bdd-kpi-metric-card__footer--meta {
+  font-size: var(--bdd-kpi-footer-size);
+  font-weight: 600;
+  color: var(--neutral--400, #aeb9e1);
+  line-height: 1.2;
+  text-align: center;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}
+.bdd-kpi-pipeline-meta-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1px;
+  width: 100%;
+  max-width: 100%;
+  max-height: var(--bdd-kpi-footer-badge-height);
+  overflow: hidden;
+}
+.bdd-kpi-pipeline-meta-line {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.2;
+  font-size: var(--bdd-kpi-footer-size);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.bdd-kpi-metric-card__footer .bdd-insight-card__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--bdd-kpi-footer-badge-height);
+  max-height: var(--bdd-kpi-footer-badge-height);
+  font-size: var(--bdd-kpi-footer-size);
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: 0.6px solid rgba(126, 137, 172, 0.35);
+  background: rgba(126, 137, 172, 0.12);
+  color: var(--neutral--500, #7e89ac);
+  white-space: normal;
+  line-height: 1.15;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: center;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.bdd-insight-card__badge.positive {
+  border-color: rgba(20, 202, 116, 0.5);
+  background: rgba(20, 202, 116, 0.12);
+  color: var(--system--green-400, #11845b);
+}
+.bdd-insight-card__badge.negative {
+  border-color: rgba(197, 48, 48, 0.5);
+  background: rgba(197, 48, 48, 0.12);
+  color: var(--system--red-400, #c53030);
+}
+.bdd-kpi-pipeline-meta-line.bdd-pipeline-meta-warn { color: var(--system--orange-400, #d5691b); }
+.bdd-kpi-why-btn {
+  width: 17px;
+  height: 17px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(126, 137, 172, 0.25);
+  color: var(--neutral--400, #aeb9e1);
+  font-size: 10px;
+  cursor: help;
+}
+.bdd-kpi-stuck-popover {
+  max-width: min(92vw, 340px);
+  padding: 16px 18px;
+  border: 1px solid var(--neutral--600, #37446b);
+  border-radius: 10px;
+  background: var(--secondary--color-1, #101935);
+  color: var(--neutral--300, #cbd5e1);
+}
+
+.my-deals-insights-wrap {
+  margin: 0 0 20px 0;
+  width: 100%;
+  max-width: 100%;
+}
+.my-deals-insights-wrap[hidden] { display: none !important; }
+/* Keep strip above section tabs visually separated from tab panels */
+.my-deals-insights-wrap + .my-deals-section-nav {
+  margin-top: 4px;
+}

@@ -1,0 +1,211 @@
+{
+  "report": "operator-setup-batch-1-2-pr-plan",
+  "generatedAt": "2026-06-02",
+  "scope": {
+    "batches": [
+      "Batch 1 — Owner-facing source-of-truth hardening",
+      "Batch 2 — Intake write-path stabilization"
+    ],
+    "constraints": [
+      "Do not implement in this step",
+      "Do not change Airtable schema",
+      "Do not rename/delete fields",
+      "Do not change scoring logic",
+      "Do not normalize select/multi-select options yet"
+    ]
+  },
+  "proposedChanges": [
+    {
+      "id": "B1-1",
+      "batch": "Batch 1",
+      "filePath": "api/operator-explorer.js",
+      "currentBehavior": "getOperatorById allows non-rec IDs and can return MOCK_OPERATORS payloads.",
+      "proposedBehavior": "Owner-facing detail enforces rec-id-only Airtable-backed lookup; no mock payload for owner views.",
+      "affectedFunctionOrBlock": "getOperatorById mock/fallback branches and detail payload builder",
+      "riskLevel": "medium",
+      "impact": {
+        "myOperator": "none_direct",
+        "operatorExplorer": "high_positive_deterministic_source",
+        "operatorCapabilitySnapshot": "none_direct",
+        "operatorAlignmentSnapshot": "none_direct",
+        "operatorAlignmentScoreBreakdown": "none_direct"
+      },
+      "testRequired": [
+        "GET /api/operator-explorer/operator?operatorId=rec... returns live detail",
+        "GET with non-rec id returns explicit 404/validation error",
+        "UI renders empty/error state, not fallback profile"
+      ],
+      "rollbackPlan": "Revert commit restoring previous mock fallback behavior temporarily."
+    },
+    {
+      "id": "B1-2",
+      "batch": "Batch 1",
+      "filePath": "api/operator-explorer.js",
+      "currentBehavior": "Mock enablement can be controlled by OPERATOR_EXPLORER_ALLOW_MOCKS alone.",
+      "proposedBehavior": "Any fallback behavior retained only under explicit dev/diagnostic gating and blocked in go-live mode.",
+      "affectedFunctionOrBlock": "allowMocks flag evaluation in getOperatorById",
+      "riskLevel": "medium",
+      "impact": {
+        "myOperator": "none",
+        "operatorExplorer": "high_positive_prevents_stale_data",
+        "operatorCapabilitySnapshot": "none",
+        "operatorAlignmentSnapshot": "none",
+        "operatorAlignmentScoreBreakdown": "none"
+      },
+      "testRequired": [
+        "Production-mode config cannot return mocks",
+        "Dev diagnostic mode can use fallback intentionally"
+      ],
+      "rollbackPlan": "Temporarily restore prior gating logic behind environment override."
+    },
+    {
+      "id": "B1-3",
+      "batch": "Batch 1",
+      "filePath": "api/third-party-operator-detail.js",
+      "currentBehavior": "New-base read is primary; legacy read fallback still exists.",
+      "proposedBehavior": "Keep behavior for now; enforce observable read-path telemetry for migration safety.",
+      "affectedFunctionOrBlock": "bundle master branch vs legacy fallback branch",
+      "riskLevel": "low",
+      "impact": {
+        "myOperator": "none",
+        "operatorExplorer": "medium_positive_debuggability",
+        "operatorCapabilitySnapshot": "indirect_positive",
+        "operatorAlignmentSnapshot": "indirect_positive",
+        "operatorAlignmentScoreBreakdown": "indirect_positive"
+      },
+      "testRequired": [
+        "Known records emit read_path=new_base",
+        "Fallback cases emit read_path=legacy and are traceable"
+      ],
+      "rollbackPlan": "Revert telemetry-only changes."
+    },
+    {
+      "id": "B2-1",
+      "batch": "Batch 2",
+      "filePath": "api/third-party-operator-intake.js",
+      "currentBehavior": "Write behavior depends on multiple flags with ambiguous combinations.",
+      "proposedBehavior": "Canonical go-live write path is writeOperatorSetupToNewBase(); legacy/shadow disabled unless diagnostic mode.",
+      "affectedFunctionOrBlock": "submitThirdPartyOperator writer flag parse and new-base vs legacy write branches",
+      "riskLevel": "high",
+      "impact": {
+        "myOperator": "high_positive_save_determinism",
+        "operatorExplorer": "high_positive_data_consistency",
+        "operatorCapabilitySnapshot": "medium_positive",
+        "operatorAlignmentSnapshot": "medium_positive",
+        "operatorAlignmentScoreBreakdown": "medium_positive_less_drift"
+      },
+      "testRequired": [
+        "Create and update save paths persist in new-base tables",
+        "No unintended legacy writes in go-live mode",
+        "Saved records load via detail canonical read"
+      ],
+      "rollbackPlan": "Revert commit and restore previous flag-driven write behavior."
+    },
+    {
+      "id": "B2-2",
+      "batch": "Batch 2",
+      "filePath": "api/third-party-operator-intake.js",
+      "currentBehavior": "fail-open can continue to legacy path if new-base write fails.",
+      "proposedBehavior": "Go-live mode fails closed on new-base write errors with explicit response; fail-open reserved for diagnostics only.",
+      "affectedFunctionOrBlock": "new_writer_failed_primary catch / failOpenNewBase decision",
+      "riskLevel": "medium",
+      "impact": {
+        "myOperator": "medium_explicit_error_visibility",
+        "operatorExplorer": "positive_consistency",
+        "operatorCapabilitySnapshot": "positive_consistency",
+        "operatorAlignmentSnapshot": "positive_consistency",
+        "operatorAlignmentScoreBreakdown": "positive_consistency"
+      },
+      "testRequired": [
+        "Inject new-base write failure and verify explicit API error",
+        "Verify no legacy write in canonical go-live mode"
+      ],
+      "rollbackPlan": "Temporarily enable fail-open in controlled non-prod mode."
+    },
+    {
+      "id": "B2-3",
+      "batch": "Batch 2",
+      "filePath": "api/third-party-operator-intake.js",
+      "currentBehavior": "Independent boolean flags create operational ambiguity.",
+      "proposedBehavior": "Use explicit write mode policy (canonical/diagnostic-shadow/legacy-maintenance) for safer operations.",
+      "affectedFunctionOrBlock": "top-level mode derivation and branch selection in submitThirdPartyOperator",
+      "riskLevel": "medium",
+      "impact": {
+        "myOperator": "positive_operational_clarity",
+        "operatorExplorer": "indirect_positive",
+        "operatorCapabilitySnapshot": "indirect_positive",
+        "operatorAlignmentSnapshot": "indirect_positive",
+        "operatorAlignmentScoreBreakdown": "indirect_positive"
+      },
+      "testRequired": [
+        "Mode matrix tests for each explicit mode",
+        "Go-live mode deterministic behavior verification"
+      ],
+      "rollbackPlan": "Map mode back to existing booleans and revert parser."
+    }
+  ],
+  "preChangeVerificationChecklist": [
+    "Validate current explorer non-rec mock fallback behavior in staging",
+    "Validate intake can currently run mixed write paths with flag combinations",
+    "Validate writeOperatorSetupToNewBase create/update success with representative payloads",
+    "Validate loadNewBaseOperatorBundle returns complete bundle for saved operator IDs",
+    "Capture baseline env flag values and sample records",
+    "Confirm UI has owner-facing empty/error state handling for missing operators"
+  ],
+  "environmentAndFlagsToConfirm": {
+    "currentFlags": [
+      "OPERATOR_SETUP_USE_NEW_BASE_WRITER",
+      "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE",
+      "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN",
+      "OPERATOR_EXPLORER_ALLOW_MOCKS"
+    ],
+    "goLiveTarget": {
+      "OPERATOR_EXPLORER_ALLOW_MOCKS": "0",
+      "OPERATOR_SETUP_USE_NEW_BASE_WRITER": "1",
+      "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE": "0",
+      "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN": "0"
+    },
+    "diagnosticTarget": {
+      "requiresNodeEnvNonProduction": true,
+      "allowsMockFallbackOnlyWhenExplicitlyEnabled": true,
+      "allowsShadowWritesOnlyWhenExplicitlyEnabled": true
+    }
+  },
+  "expectedBehaviorAfterBatch1And2": {
+    "goLive": [
+      "Operator Explorer owner-facing detail resolves from Airtable rec IDs only",
+      "No owner-facing mock/fixture/hardcoded fallback data is returned",
+      "Intake writes use canonical new-base writer only",
+      "New-base write failures return explicit errors (no accidental fail-open drift)"
+    ],
+    "devDiagnostic": [
+      "Fallback/mock behavior available only under explicit diagnostic dev gates",
+      "Optional shadow writes remain diagnostic-only and clearly labeled",
+      "Read/write path telemetry is visible for troubleshooting"
+    ]
+  },
+  "currentMockOrFallbackExposurePoints": [
+    {
+      "filePath": "api/operator-explorer.js",
+      "reason": "MOCK_OPERATORS fallback for non-rec IDs"
+    },
+    {
+      "filePath": "api/third-party-operator-detail.js",
+      "reason": "legacy detail fallback when new-base bundle not found"
+    }
+  ],
+  "currentDualWriteOrDriftExposurePoints": [
+    {
+      "filePath": "api/third-party-operator-intake.js",
+      "reason": "flag combinations allow canonical + fail-open + shadow behavior"
+    }
+  ],
+  "recommendedCommitMessage": "harden operator source-of-truth paths for go-live",
+  "doNotTouchYet": [
+    "Airtable schema updates (add/rename/delete fields)",
+    "Field renames/deletions in existing tables",
+    "Alignment score/scoring methodology",
+    "Select/multi-select normalization rollout",
+    "Legacy code removal unless proven unreachable and documented safe"
+  ]
+}

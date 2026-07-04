@@ -1,0 +1,173 @@
+/**
+ * Replace footprint.openings with brand-verified CALA property cards (census + curated fixtures).
+ * Attaches property hero images from choicehotels.com pages when --skip-images is not set.
+ *
+ *   node scripts/apply-choice-cala-footprint-openings-batch.mjs --dry-run
+ *   node scripts/apply-choice-cala-footprint-openings-batch.mjs --brand "Ascend Hotel Collection"
+ *   node scripts/apply-choice-cala-footprint-openings-batch.mjs --skip-images
+ */
+import fs from "fs";
+import os from "os";
+import path from "path";
+import { spawnSync } from "child_process";
+import { fileURLToPath } from "url";
+import "../load-env.js";
+import Airtable from "airtable";
+import { buildCalaFootprintOpeningRows } from "./lib/choice-cala-footprint-opening-rows.mjs";
+import { extractPropertyUrlFromBody } from "./lib/choice-hotel-page-image.mjs";
+import { resolveFootprintOpeningImageUrl } from "./lib/choice-footprint-opening-image-map.mjs";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(__dirname, "..");
+const APPLY = path.join(ROOT, "scripts", "apply-brand-explorer-presentation-fixture.mjs");
+const BASICS = "Brand Setup - Brand Basics";
+const TABLE = "Brand Setup - Brand Explorer Presentation";
+
+function parseArgs(argv) {
+  const args = argv.slice(2);
+  const i = args.indexOf("--brand");
+  return {
+    dryRun: args.includes("--dry-run"),
+    brandFilter: i >= 0 ? String(args[i + 1] || "").trim() : "",
+    skipImages: args.includes("--skip-images"),
+  };
+}
+
+async function listChiBrands(base) {
+  const rows = await base(BASICS).select({ maxRecords: 500 }).all();
+  return rows
+    .filter((r) => String(r.get("Parent Company") || "").includes("Choice Hotels International"))
+    .map((r) => String(r.get("Brand Name") || "").trim())
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b));
+}
+
+async function selectPresentationForBrand(base, brandName) {
+  const esc = brandName.replace(/"/g, '\\"');
+  const merged = [];
+  const seen = new Set();
+  for (const formula of [`{Brand Name} = "${esc}"`, `{Brand} = "${esc}"`]) {
+    try {
+      const rows = await base(TABLE).select({ filterByFormula: formula, maxRecords: 500 }).all();
+      for (const r of rows) {
+        if (!seen.has(r.id)) {
+          seen.add(r.id);
+          merged.push(r);
+        }
+      }
+    } catch {
+      /* optional */
+    }
+  }
+  return merged;
+}
+
+async function clearFootprintOpenings(base, brandName, dryRun) {
+  const existing = await selectPresentationForBrand(base, brandName);
+  const toDrop = existing.filter((r) => String(r.get("Slot Key") || "").trim() === "footprint.openings");
+  if (!toDrop.length) return 0;
+  console.log(`  Clearing ${toDrop.length} footprint.openings row(s) (no verified CALA properties).`);
+  if (!dryRun) {
+    for (let i = 0; i < toDrop.length; i += 10) {
+      await base(TABLE).destroy(toDrop.slice(i, i + 10).map((r) => r.id));
+    }
+  }
+  return toDrop.length;
+}
+
+function attachMappedImagesToOpeningRows(rows) {
+  for (const row of rows) {
+    const pageUrl = extractPropertyUrlFromBody(row.body);
+    if (!pageUrl) continue;
+    const imageUrl = resolveFootprintOpeningImageUrl(pageUrl);
+    if (imageUrl) row.imageUrl = imageUrl;
+  }
+  return rows;
+}
+
+async function main() {
+  const { dryRun, brandFilter, skipImages } = parseArgs(process.argv);
+  const key = process.env.AIRTABLE_API_KEY;
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  if (!key || !baseId) throw new Error("Set AIRTABLE_API_KEY and AIRTABLE_BASE_ID");
+
+  const base = new Airtable({ apiKey: key }).base(baseId);
+  let brands = await listChiBrands(base);
+  if (brandFilter) {
+    brands = brands.filter((b) => b === brandFilter);
+    if (!brands.length) throw new Error(`No CHI Brand Basics row named "${brandFilter}"`);
+  }
+
+  console.log(
+    `${dryRun ? "[dry-run] " : ""}Replacing footprint.openings for ${brands.length} CHI brand(s)…` +
+      (skipImages ? " (images skipped)" : " (hoteldam map when available)")
+  );
+
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "dc-cala-openings-"));
+  let failed = 0;
+  let cleared = 0;
+
+  try {
+    for (const brandName of brands) {
+      console.log(`\n=== ${brandName} ===`);
+      let rows = buildCalaFootprintOpeningRows(brandName);
+      if (!rows.length) {
+        cleared += await clearFootprintOpenings(base, brandName, dryRun);
+        continue;
+      }
+
+      if (!skipImages) {
+        rows = attachMappedImagesToOpeningRows(rows);
+        const withImg = rows.filter((r) => r.imageUrl).length;
+        console.log(`  Images mapped: ${withImg}/${rows.length} (run attach-choice-footprint-opening-images for upload)`);
+      }
+
+      const fixturePath = path.join(tmpDir, `${brandName.replace(/[^\w.-]+/g, "_")}.json`);
+      fs.writeFileSync(
+        fixturePath,
+        JSON.stringify(
+          {
+            targetBrandBasicsName: brandName,
+            instructions: "Generated by apply-choice-cala-footprint-openings-batch.mjs",
+            rows,
+          },
+          null,
+          2
+        ),
+        "utf8"
+      );
+
+      const args = [
+        APPLY,
+        "--brand-name",
+        brandName,
+        "--fixture",
+        fixturePath,
+        "--replace-slot-prefix",
+        "footprint.openings",
+      ];
+      if (dryRun) args.push("--dry-run");
+
+      const res = spawnSync(process.execPath, args, {
+        cwd: ROOT,
+        stdio: "inherit",
+        env: process.env,
+      });
+      if (res.status !== 0) failed += 1;
+    }
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+
+  console.log(`\nCleared openings for ${cleared} brand(s) with no verified CALA properties.`);
+  if (failed) {
+    console.error(`${failed} brand(s) failed.`);
+    process.exit(1);
+  }
+  console.log("Done.");
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

@@ -1,27 +1,30 @@
 /**
- * User Management API – CRUD for User Management Airtable table.
- * Table: User Management (tblQEpYKf2aYNKKjw)
- * Used by Company Settings > Admin > User Management page.
- * Supports: add/remove teammates, roles (viewer/editor/admin), access by deal/document type, contact visibility.
- *
- * Airtable requests: this module uses the Airtable SDK, which calls
- *   https://api.airtable.com/v0/${CONFIG.AIRTABLE_BASE_ID}/${USER_MANAGEMENT_TABLE_ID}/...
- * Credentials must be set via environment variables (never commit API keys).
+ * Company user admin API — CRUD on the Airtable **Users** table (platform users).
+ * Used by Company Settings > User Management page.
+ * Legacy User Management table (tblQEpYKf2aYNKKjw) is migrated via scripts/migrate-user-management-to-users.mjs.
  */
 
 import Airtable from "airtable";
+import {
+  PLATFORM_USERS_TABLE_ID,
+  PLATFORM_USERS_COMPANY_TABLE_ID,
+  PUF,
+  REGION_CODE_TO_CHECKBOX_FIELDS,
+  companyFilterFormula,
+  companyProfileIdFromFields,
+  emailFromUserFields,
+  profilePhotoUrlFromFields,
+} from "../lib/airtable/platform-users-table.js";
 
-// CONFIG: Airtable credentials – loaded from env; backend calls https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/...
 const CONFIG = {
   AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY || "",
   AIRTABLE_BASE_ID: process.env.AIRTABLE_BASE_ID || "",
-  USER_MANAGEMENT_TABLE_ID: "tblQEpYKf2aYNKKjw",
-  USER_MANAGEMENT_COMPANY_TABLE_ID: process.env.USER_MANAGEMENT_COMPANY_TABLE_ID || "tblItyfH6MlOnMKZ9",
-  CACHE_TTL: 5 * 60 * 1000, // 5 minutes
+  PLATFORM_USERS_TABLE_ID,
+  PLATFORM_USERS_COMPANY_TABLE_ID,
   MAX_RECORDS: 50000,
 };
 
-const USER_MANAGEMENT_TABLE_ID = CONFIG.USER_MANAGEMENT_TABLE_ID;
+const PLATFORM_USERS_TABLE = CONFIG.PLATFORM_USERS_TABLE_ID;
 
 function getBase() {
   if (!CONFIG.AIRTABLE_API_KEY || !CONFIG.AIRTABLE_BASE_ID) {
@@ -30,22 +33,8 @@ function getBase() {
   return new Airtable({ apiKey: CONFIG.AIRTABLE_API_KEY }).base(CONFIG.AIRTABLE_BASE_ID);
 }
 
-// Airtable field names – must match User Management table exactly (run: node scripts/get-user-management-schema.js)
-const F = {
-  firstName: "First Name",
-  lastName: "Last Name",
-  companyTitle: "Company Title",
-  phoneNumber: "Phone Number",
-  companyEmail: "Company Email",
-  companyProfile: "Company", // linked record field name in Airtable
-  platformRole: "Platform Role",
-  contactVisibility: "Contact Visibility",
-  dealAccess: "Deal Access",
-  documentAccess: "Document Access",
-  country: "Based (Country)",
-};
+const F = PUF;
 
-// All five Region checkbox columns in Airtable (each is a Checkbox field; same config for all five)
 const REGION_FIELD_NAMES = [
   "Region - America",
   "Region - Caribbean & Latin America",
@@ -53,15 +42,6 @@ const REGION_FIELD_NAMES = [
   "Region - Middle East & Africa",
   "Region - Asia Pacific",
 ];
-
-// Map our region codes to the Airtable checkbox column name (1:1)
-const REGION_CODE_TO_CHECKBOX_FIELDS = {
-  AMERICAS: ["Region - America"],
-  CALA: ["Region - Caribbean & Latin America"],
-  EUROPE: ["Region - Europe"],
-  MEA: ["Region - Middle East & Africa"],
-  AP: ["Region - Asia Pacific"],
-};
 
 // Map Airtable region values to Partner Directory codes (same as front-end)
 function toRegionCode(r) {
@@ -90,31 +70,16 @@ function normalizeRegionFocus(rawList) {
   return [...codes];
 }
 
-/** First attachment URL from common User Management profile / headshot field names. */
-function profilePhotoUrlFromFields(fields) {
-  if (!fields || typeof fields !== "object") return "";
-  const candidates = ["Profile", "Profile Picture", "Headshot", "Photo", "Avatar"];
-  for (const name of candidates) {
-    const v = fields[name];
-    if (Array.isArray(v) && v.length > 0 && v[0] && typeof v[0].url === "string") {
-      return v[0].url.trim();
-    }
-    if (typeof v === "string" && v.startsWith("http")) return v.trim();
-  }
-  return "";
+function optionalNumberFromBody(value) {
+  if (value === undefined || value === null || value === "") return null;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
 }
 
 function formatRecord(record) {
   const fields = record.fields || {};
-  const companyProfile = fields[F.companyProfile];
-  let companyProfileId = null;
-  if (Array.isArray(companyProfile) && companyProfile.length > 0) {
-    companyProfileId = typeof companyProfile[0] === "string" ? companyProfile[0] : companyProfile[0]?.id;
-  } else if (typeof companyProfile === "string" && companyProfile.startsWith("rec")) {
-    companyProfileId = companyProfile;
-  }
-
-  const companyEmail = fields[F.companyEmail] || "";
+  const companyProfileId = companyProfileIdFromFields(fields);
+  const companyEmail = emailFromUserFields(fields);
   const platformRole = fields[F.platformRole] || "";
 
   let regionFocusRaw = [];
@@ -151,6 +116,9 @@ function formatRecord(record) {
       return (typeof v === "string" ? v : "") || "";
     })(),
     country: fields[F.country] || "",
+    closedDeals: optionalNumberFromBody(fields[F.closedDeals]) ?? 0,
+    uniqueBrandsDeals: optionalNumberFromBody(fields[F.uniqueBrandsDeals]) ?? 0,
+    submittedBids: optionalNumberFromBody(fields[F.submittedBids]) ?? 0,
   };
 }
 
@@ -161,10 +129,13 @@ function buildFieldsFromBody(body) {
   if (body.companyTitle != null) fields[F.companyTitle] = String(body.companyTitle).trim();
   if (body.phoneNumber != null) fields[F.phoneNumber] = String(body.phoneNumber).trim();
   if (body.companyEmail != null) {
-    fields[F.companyEmail] = String(body.companyEmail).trim();
+    const em = String(body.companyEmail).trim();
+    fields[F.email] = em;
+    fields[F.companyEmail] = em;
   }
   if (body.companyProfileId != null) {
-    fields[F.companyProfile] = body.companyProfileId === "" ? [] : [body.companyProfileId];
+    const link = body.companyProfileId === "" ? [] : [body.companyProfileId];
+    fields[F.companyProfile] = link;
   }
   if (body.platformRole != null) fields[F.platformRole] = String(body.platformRole).trim();
   if (body.contactVisibility != null) {
@@ -177,6 +148,13 @@ function buildFieldsFromBody(body) {
     fields[F.documentAccess] = String(body.documentAccess).trim();
   }
   if (body.country != null) fields[F.country] = String(body.country).trim();
+
+  const closedDealsNum = optionalNumberFromBody(body.closedDeals);
+  if (closedDealsNum !== null) fields[F.closedDeals] = closedDealsNum;
+  const uniqueBrandsDealsNum = optionalNumberFromBody(body.uniqueBrandsDeals);
+  if (uniqueBrandsDealsNum !== null) fields[F.uniqueBrandsDeals] = uniqueBrandsDealsNum;
+  const submittedBidsNum = optionalNumberFromBody(body.submittedBids);
+  if (submittedBidsNum !== null) fields[F.submittedBids] = submittedBidsNum;
 
   // Map Region Focus to Airtable checkbox columns (same as edit form checkmarks in Airtable)
   if (body.regionFocus != null) {
@@ -210,14 +188,14 @@ export async function listUsers(req, res) {
     const limitRaw = parseInt(String(req.query.limit || ""), 10);
     const maxRecords =
       Number.isFinite(limitRaw) && limitRaw > 0 ? Math.min(limitRaw, 200) : undefined;
-    const table = base(USER_MANAGEMENT_TABLE_ID);
+    const table = base(PLATFORM_USERS_TABLE);
     const records = [];
 
     await new Promise((resolve, reject) => {
       const options = { pageSize: 100 };
       if (maxRecords) options.maxRecords = maxRecords;
       if (companyProfileId) {
-        options.filterByFormula = `FIND('${companyProfileId}', {Company} & '') > 0`;
+        options.filterByFormula = companyFilterFormula(companyProfileId);
       }
       table
         .select(options)
@@ -259,7 +237,7 @@ export async function createUser(req, res) {
     if (!fields[F.platformRole]) fields[F.platformRole] = "Company Admin";
     if (!fields[F.contactVisibility]) fields[F.contactVisibility] = "Show Contact";
 
-    const record = await base(USER_MANAGEMENT_TABLE_ID).create(fields, { typecast: true });
+    const record = await base(PLATFORM_USERS_TABLE).create(fields, { typecast: true });
     res.status(201).json({ user: formatRecord(record), message: "User created successfully" });
   } catch (error) {
     console.error("User Management create error:", error);
@@ -293,7 +271,7 @@ export async function updateUser(req, res) {
     // Same pattern as brand-library PATCH (Status column): update with no options — no typecast.
     let record;
     try {
-      record = await base(USER_MANAGEMENT_TABLE_ID).update(recordId, fields);
+      record = await base(PLATFORM_USERS_TABLE).update(recordId, fields);
     } catch (firstError) {
       // If update fails with a field error and we sent region checkboxes, retry without them.
       const isFieldError =
@@ -306,7 +284,7 @@ export async function updateUser(req, res) {
         );
         if (Object.keys(fieldsWithoutRegion).length > 0) {
           try {
-            record = await base(USER_MANAGEMENT_TABLE_ID).update(recordId, fieldsWithoutRegion);
+            record = await base(PLATFORM_USERS_TABLE).update(recordId, fieldsWithoutRegion);
             return res.json({ user: formatRecord(record), message: "User updated successfully" });
           } catch (retryErr) {
             // Fall through to return first error
@@ -355,7 +333,7 @@ export async function deleteUser(req, res) {
     const recordId = req.params.recordId;
     if (!recordId) return res.status(400).json({ error: "Record ID is required" });
 
-    await base(USER_MANAGEMENT_TABLE_ID).destroy(recordId);
+    await base(PLATFORM_USERS_TABLE).destroy(recordId);
     res.json({ id: recordId, message: "User removed successfully" });
   } catch (error) {
     const msg =
@@ -385,7 +363,7 @@ export async function bulkDeleteUsers(req, res) {
     const ids = recordIds.filter((id) => id && String(id).startsWith("rec"));
     if (ids.length === 0) return res.status(400).json({ error: "No valid record IDs" });
 
-    await base(USER_MANAGEMENT_TABLE_ID).destroy(ids);
+    await base(PLATFORM_USERS_TABLE).destroy(ids);
     res.json({ deleted: ids.length, message: "Users removed successfully" });
   } catch (error) {
     console.error("User Management bulk delete error:", error);
@@ -399,7 +377,7 @@ export async function listCompanies(req, res) {
   if (!base) {
     return res.status(200).json({ companies: [] });
   }
-  const COMPANY_PROFILE_TABLE_ID = CONFIG.USER_MANAGEMENT_COMPANY_TABLE_ID;
+  const COMPANY_PROFILE_TABLE_ID = CONFIG.PLATFORM_USERS_COMPANY_TABLE_ID;
   try {
     const records = [];
     await new Promise((resolve, reject) => {

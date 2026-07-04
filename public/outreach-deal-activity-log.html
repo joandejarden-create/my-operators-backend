@@ -215,9 +215,6 @@
       <div class="outreach-hub-container">
         <div class="dashboard-header">
           <div class="outreach-hub-title-container">
-            <div class="deal-capture-logo">
-              <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-            </div>
             <h1>Deal Activity Log</h1>
           </div>
           <p>Review all recent activities associated with your deals in one place. Filter by deal or search terms, then use Reset View to quickly return to the full activity list.</p>
@@ -274,7 +271,7 @@
                 </tr>
               </thead>
               <tbody id="activityTableBody">
-                <tr class="activity-empty-row"><td colspan="5">Loading activity...</td></tr>
+                <tr class="activity-empty-row"><td colspan="5">Loading Activity…</td></tr>
               </tbody>
             </table>
           </div>
@@ -438,8 +435,8 @@
       }
 
       function fetchActivity() {
-        metaEl.innerHTML = 'Loading activity...';
-        tableBody.innerHTML = '<tr class="activity-empty-row"><td colspan="5">Loading activity...</td></tr>';
+        metaEl.innerHTML = 'Loading Activity…';
+        tableBody.innerHTML = '<tr class="activity-empty-row"><td colspan="5">Loading Activity…</td></tr>';
         fetch('/api/outreach/deal-activity-log?limit=200')
           .then(function (res) { return res.json(); })
           .then(function (json) {
@@ -474,5 +471,7 @@
       fetchActivity();
     })();
   </script>
+
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

@@ -12,8 +12,26 @@
  * Form Status; Deal Status, Status.
  */
 
+import fs from "fs";
+import { mapBdrToContactedRow } from "./brand-deal-requests.js";
+import {
+  uploadFileBytesToAirtable,
+  contentTypeFromFilename,
+  MAX_AIRTABLE_ATTACHMENT_BYTES,
+} from "../lib/dealality/airtable-upload-attachment.js";
+import { INTAKE_DEALS_USER_LINK } from "./schemas/intake-deal-fields.js";
 import { getAllOutreachDealIds } from "./outreach-setup.js";
 import { computeMatchScoreForDealBrand, computeRecommendedBrand, computeTopAlternativeBrands, getBrandBasicsRecordId, resolvePreferredBrandToName } from "./match-score-server.js";
+import { lookupMatchScoreNewByBrand } from "../lib/match-score-brand-lookup.js";
+import {
+  buildScoresIndexFromCacheRow,
+  cacheNeedsRefresh,
+  getBreakdownFromCacheIndex,
+  getScoreFromCacheIndex,
+  matchScoresMapFromCacheRow,
+  preferredScoreFromCache,
+  roundMatchScoreNew,
+} from "../lib/deal-brand-cache-snapshot.js";
 import {
   DEALS_TABLE,
   DEALS_STATUS_FIELD,
@@ -25,12 +43,16 @@ import {
   LOCATION_PROPERTY_ID_FIELD,
   LOCATION_FORM_TO_AIRTABLE,
   LOCATION_FORM_FIELDS,
+  LOCATION_MULTI_SELECT_FORM_KEYS,
   MARKET_PERFORMANCE_TABLE,
   MARKET_PERFORMANCE_LINK_FIELD,
   MP_DEAL_LINK_FIELD,
   MARKET_PERFORMANCE_FIELD_NAMES,
   MP_FORM_TO_TABLE,
   MP_TABLE_TO_FORM,
+  MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS,
+  MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS,
+  MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS,
   STRATEGIC_INTENT_LINK_FIELD,
   STRATEGIC_INTENT_TABLE,
   CONTACT_UPLOADS_LINK_FIELD,
@@ -45,13 +67,31 @@ import {
   CONTACT_UPLOADS_FORM_FIELDS,
   CU_FORM_TO_AIRTABLE,
   CU_ATTACHMENT_FIELD,
+  CU_ATTACHMENT_FORM_KEY,
+  CU_ATTACHMENT_AIRTABLE_FIELDS,
+  aggregateCuAttachmentsFromFields,
+  normalizeCuAttachmentItem,
+  isAirtableHostedAttachmentUrl,
+  cuAttachmentFieldHasFilenames,
   LEASE_STRUCTURE_FORM_FIELDS,
   LS_FORM_TO_AIRTABLE,
   LS_AIRTABLE_TO_FORM,
+  extractDealReadinessListFields,
 } from "./schemas/deal-setup-fields.js";
 import { validateDealSetupPayload } from "./deal-setup-validate.js";
 import { fetchTargetsForDeal } from "./target-list.js";
 import { loadNewBaseOperatorBundle, buildPrefillObjectFromNewBaseRows, loadBrandNameByIdMap } from "./lib/operator-setup-new-base-read.js";
+import { filterDealsRecordsForUser } from "../lib/dealality/filter-my-deals.js";
+import { normalizeOperatorAlignmentDealInputs } from "../lib/operator-alignment-deal-normalize.js";
+import {
+  scoreDealStructureFactor,
+  scoreServiceOfferingsFactor,
+  scoreGeographyFactor,
+  scoreAssetStageFactor,
+  scoreSystemsReportingFactor,
+  buildFactorMeta,
+} from "../lib/operator-alignment-scoring-factors.js";
+import { OPERATOR_MATCH_WEIGHTS } from "../lib/operator-alignment-scoring-weight-config.js";
 
 function valueToStr(v) {
   if (v == null) return "";
@@ -86,7 +126,11 @@ const DEAL_STATUS_FALLBACK = [
 /** When true, every Airtable request used by getMyDeals is serialized with AIRTABLE_SERIAL_INTERVAL_MS to guarantee reliable load (no rate-limit blanks). */
 let getMyDealsSerializing = false;
 let lastAirtableRequestAt = 0;
-const AIRTABLE_SERIAL_INTERVAL_MS = 1200;
+/** Space between serial Airtable calls during one getMyDeals. Lower = faster; too low can cause 429 (raise via MY_DEALS_AIRTABLE_SERIAL_INTERVAL_MS, e.g. 1200). */
+const AIRTABLE_SERIAL_INTERVAL_MS = Math.max(
+  0,
+  parseInt(process.env.MY_DEALS_AIRTABLE_SERIAL_INTERVAL_MS || "500", 10) || 500
+);
 
 async function waitAirtableSerial() {
   if (!getMyDealsSerializing) return;
@@ -380,18 +424,12 @@ async function fetchInitialMatchedSupportState(baseId, apiKey, deals) {
 
   const contactedPairs = bdrRecords
     .map((r) => {
-      const f = r.fields || {};
-      const dealArr = Array.isArray(f.Deal) ? f.Deal : [];
-      const dealId = dealArr.find((id) => dealSet.has(id));
+      const dealId = (() => {
+        const dealArr = Array.isArray(r.fields?.Deal) ? r.fields.Deal : [];
+        return dealArr.find((id) => dealSet.has(id));
+      })();
       if (!dealId) return null;
-      const proposalStatus = valueToStr(f["Proposal Status"]) || "";
-      return {
-        id: r.id,
-        dealId,
-        brandName: valueToStr(f["Brand Name"]) || "",
-        status: valueToStr(f["Status"]) || "New",
-        proposal: proposalStatus ? { proposalStatus } : undefined,
-      };
+      return mapBdrToContactedRow(r);
     })
     .filter(Boolean);
 
@@ -422,6 +460,73 @@ async function fetchInitialMatchedSupportState(baseId, apiKey, deals) {
     targetListByDeal,
     tabCounts: { contacted: contactedPairs.length, dealCompare: dealCompareCount },
   };
+}
+
+/** Resolve deal IDs the caller may see (auth-scoped). */
+async function resolveAllowedDealIdsForMatchedSupport(baseId, apiKey, dealIds, dealalityUser) {
+  const ids = [...new Set((dealIds || []).map((id) => String(id).trim()).filter((id) => id.startsWith("rec")))];
+  if (ids.length === 0) return [];
+  if (!dealalityUser || dealalityUser.isAdmin) return ids;
+
+  const { map } = await fetchAirtableRecordsByIdsBatched({
+    baseId,
+    apiKey,
+    tableName: DEALS_TABLE,
+    recordIds: ids,
+    chunkSize: getBatchChunkSize("DEALS_AUTH"),
+    delayMs: getBatchDelayMs("DEALS_AUTH"),
+    stats: { linkedIds: ids.length, fetched: 0, missing: 0, chunks: 0 },
+    phaseName: "dealsAuth",
+  });
+  const records = [...map.values()].map((row) => ({ id: row.id, fields: row.fields || {} }));
+  return filterDealsRecordsForUser(records, dealalityUser).map((rec) => rec.id);
+}
+
+/**
+ * POST /api/my-deals/initial-matched-support
+ * Body: { dealIds: string[] } — contacted brands, target lists, and tab counts for My Deals (deferred from ?view=initial).
+ */
+export async function postMyDealsInitialMatchedSupport(req, res) {
+  const t0 = Date.now();
+  try {
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    const apiKey = process.env.AIRTABLE_API_KEY;
+    if (!baseId || !apiKey) {
+      return res.status(500).json({
+        success: false,
+        error: "Airtable API credentials not configured (AIRTABLE_BASE_ID, AIRTABLE_API_KEY).",
+      });
+    }
+
+    const rawIds = req.body && req.body.dealIds;
+    const requestedIds = Array.isArray(rawIds)
+      ? rawIds
+      : typeof rawIds === "string"
+        ? rawIds.split(",")
+        : [];
+    const allowedIds = await resolveAllowedDealIdsForMatchedSupport(
+      baseId,
+      apiKey,
+      requestedIds,
+      req.dealalityUser
+    );
+    const deals = allowedIds.map((id) => ({ id }));
+    const initialMatchedSupport = await fetchInitialMatchedSupportState(baseId, apiKey, deals);
+    if (shouldLogMyDealsSummary()) {
+      console.log("postMyDealsInitialMatchedSupport: ok", {
+        requested: requestedIds.length,
+        allowed: allowedIds.length,
+        contacted: initialMatchedSupport.contactedPairs.length,
+        elapsedMs: Date.now() - t0,
+      });
+    }
+    return res.json({ success: true, initialMatchedSupport });
+  } catch (err) {
+    const errMsg = (err && err.message) ? String(err.message) : "Internal Server Error";
+    console.error("postMyDealsInitialMatchedSupport:", errMsg);
+    if (err && err.stack) console.error(err.stack);
+    return res.status(500).json({ success: false, error: errMsg });
+  }
 }
 
 /** Convert Strategic Intent Airtable record to form field names and values (arrays → comma-sep for multi-select). */
@@ -648,14 +753,15 @@ async function fetchContactUploadsDataMap(baseId, apiKey, cuRecordIds) {
 function contactUploadsToFormFields(cuFields) {
   if (!cuFields || typeof cuFields !== "object") return {};
   const merge = {};
+  const aggregatedAttachments = aggregateCuAttachmentsFromFields(cuFields);
+  if (aggregatedAttachments.length) {
+    merge[CU_ATTACHMENT_FORM_KEY] = aggregatedAttachments;
+  }
   for (const formName of CONTACT_UPLOADS_FORM_FIELDS) {
-    const airtableKey = formName === "Upload Supporting Docs" ? CU_ATTACHMENT_FIELD : (CU_FORM_TO_AIRTABLE[formName] ?? formName);
+    if (formName === CU_ATTACHMENT_FORM_KEY) continue;
+    const airtableKey = CU_FORM_TO_AIRTABLE[formName] ?? formName;
     let val = cuFields[airtableKey];
     if (val === undefined) continue;
-    if (formName === "Upload Supporting Docs" && Array.isArray(val)) {
-      merge[formName] = val;
-      continue;
-    }
     const s = val == null ? "" : typeof val === "string" ? val.trim() : Array.isArray(val) ? (val.map((v) => (typeof v === "string" ? v : (v && v.name) || "").trim()).filter(Boolean).join(", ")) : String(val);
     merge[formName] = s;
   }
@@ -668,18 +774,14 @@ function formFieldsToContactUploadsPayload(fields) {
   for (const formName of CONTACT_UPLOADS_FORM_FIELDS) {
     const val = fields[formName];
     if (val === undefined) continue;
-    const airtableKey = formName === "Upload Supporting Docs" ? CU_ATTACHMENT_FIELD : (CU_FORM_TO_AIRTABLE[formName] ?? formName);
-    if (formName === "Upload Supporting Docs") {
+    if (formName === CU_ATTACHMENT_FORM_KEY) {
       if (Array.isArray(val) && val.length > 0) {
-        const items = val.map((v) => {
-          if (typeof v === "object" && v && v.url) return { url: v.url, filename: v.filename };
-          if (typeof v === "string" && v) return { url: v };
-          return null;
-        }).filter(Boolean);
+        const items = val.map((v) => normalizeCuAttachmentItem(v)).filter(Boolean);
         if (items.length) payload[CU_ATTACHMENT_FIELD] = items;
       }
       continue;
     }
+    const airtableKey = CU_FORM_TO_AIRTABLE[formName] ?? formName;
     const s = val == null ? "" : typeof val === "string" ? val.trim() : String(val);
     payload[airtableKey] = s;
   }
@@ -755,20 +857,25 @@ function collectLinkedMarketPerformanceIds(records) {
 const MY_DEALS_MP_FETCH_DELAY_MS = Math.max(0, parseInt(process.env.MY_DEALS_MP_FETCH_DELAY_MS || "1000", 10) || 1000);
 const MY_DEALS_MP_CONCURRENCY = Math.min(3, Math.max(1, parseInt(process.env.MY_DEALS_MP_CONCURRENCY || "1", 10) || 1));
 
-/** Configurable My Deals pacing (env-backed; current behavior is default). */
-const MY_DEALS_COLD_START_DELAY_MS = parseInt(process.env.MY_DEALS_COLD_START_DELAY_MS || "2000", 10) || 2000;
-const MY_DEALS_MIN_GAP_MS = parseInt(process.env.MY_DEALS_MIN_GAP_MS || "5000", 10) || 5000;
+/** Configurable My Deals pacing (env-backed). Defaults tuned for faster first paint / refresh; increase if you see Airtable blanks after deploy. */
+const MY_DEALS_COLD_START_DELAY_MS = parseInt(process.env.MY_DEALS_COLD_START_DELAY_MS || "500", 10) || 500;
+const MY_DEALS_MIN_GAP_MS = parseInt(process.env.MY_DEALS_MIN_GAP_MS || "1500", 10) || 1500;
 const MY_DEALS_PHASE_GAP_MS = parseInt(process.env.MY_DEALS_PHASE_GAP_MS || "100", 10) || 100;
 // Performance: keep retry-rebuild optional and off by default so one blank field does not block response.
 const MY_DEALS_ENABLE_RETRY_REBUILD = /^(1|true|on|yes)$/i.test(String(process.env.MY_DEALS_ENABLE_RETRY_REBUILD || "0"));
+
+/** When true (default), BDR + Target List hydration runs via POST /api/my-deals/initial-matched-support after first paint. Set 0 to restore inline bundle on GET ?view=initial. */
+const MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT = !/^(0|false|off|no)$/i.test(
+  String(process.env.MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT ?? "1")
+);
 
 /** Phase 5: Full linked-table batching. Default ON for fast mode; set to 0/false/off/no to disable. */
 const MY_DEALS_USE_BATCHED_LINKED_FETCHES = !/^(0|false|off|no)$/i.test(String(process.env.MY_DEALS_USE_BATCHED_LINKED_FETCHES ?? "1"));
 
 /** Phase 6: Parallel batched linked fetches (SI/Location/CU). Default ON; set to 0/false/off/no to disable. Only applies when batched is also on. */
 const MY_DEALS_USE_PARALLEL_BATCHED_LINKED_FETCHES = !/^(0|false|off|no)$/i.test(String(process.env.MY_DEALS_USE_PARALLEL_BATCHED_LINKED_FETCHES ?? "1"));
-const MY_DEALS_BATCH_FETCH_CHUNK_SIZE = Math.min(15, Math.max(1, parseInt(process.env.MY_DEALS_BATCH_FETCH_CHUNK_SIZE || "10", 10) || 10));
-const MY_DEALS_BATCH_FETCH_DELAY_MS = Math.max(0, parseInt(process.env.MY_DEALS_BATCH_FETCH_DELAY_MS || "100", 10) || 100);
+const MY_DEALS_BATCH_FETCH_CHUNK_SIZE = Math.min(15, Math.max(1, parseInt(process.env.MY_DEALS_BATCH_FETCH_CHUNK_SIZE || "12", 10) || 12));
+const MY_DEALS_BATCH_FETCH_DELAY_MS = Math.max(0, parseInt(process.env.MY_DEALS_BATCH_FETCH_DELAY_MS || "50", 10) || 50);
 function getBatchChunkSize(phaseName) {
   const override = process.env[`MY_DEALS_${phaseName}_BATCH_FETCH_CHUNK_SIZE`];
   if (override != null && override !== "") {
@@ -976,9 +1083,6 @@ async function fetchPreferredDealStructureMap(baseId, apiKey, mpRecordIds) {
   return preferredDealStructureMapFromMpDataMap(map);
 }
 
-/** Location form keys that are multi-select (array) in Airtable. */
-const LOCATION_MULTI_SELECT_FORM_KEYS = new Set(["Ownership Type", "Access to Transit or Highway", "F&B Program Type"]);
-
 /** Convert raw Location Airtable fields to form-keyed object (M3). Used by fetchLocationRecord and batched Location phase. */
 function locationFieldsToFormFields(f) {
   if (!f || typeof f !== "object") return null;
@@ -1068,14 +1172,16 @@ function formatCityCountry(city, country) {
   return parts.length ? parts.join(", ") : "";
 }
 
-/** Required field names in deal-setup form (reference only; Data Comp. % uses the form’s UI-required fields only, computed client-side). */
-const REQUIRED_DEAL_SETUP_FIELDS = [
+/** Required field names in deal-setup form (same set as Deal Setup UI; used for Deal Readiness scoring server-side). */
+export const REQUIRED_DEAL_SETUP_FIELDS = [
   "Property Name",
   "Project Type",
   "Stage of Development",
+  "Opening / Transition Phase",
   "Has there ever been a franchise, branded management, affiliation or similar agreeement pertaining to the proposed hotel or site?",
   "Is the hotel currently branded?",
   "Is the hotel currently managed by a third-party operator?",
+  "Current Operating Model",
   "Are you open to lesser-known or emerging brands with favorable terms?",
   "Have you worked with any of your preferred brands/operators before?",
   "Full Address",
@@ -1085,6 +1191,7 @@ const REQUIRED_DEAL_SETUP_FIELDS = [
   "Hotel Type",
   "Hotel Submarket & Location",
   "Hotel Service Model",
+  "Primary Market Region",
   "Ownership/Brand History or Track Record",
   "Zoned for Hotel Development",
   "Site/Development Restrictions?",
@@ -1128,6 +1235,8 @@ const REQUIRED_DEAL_SETUP_FIELDS = [
   "IRR/Yield Goals",
   "Open to Outside Capital or Partnerships?",
   "Plan to Self-Manage or Hire Third Party?",
+  "Preferred Future Operating Model",
+  "Operator Strategy Status",
   "Preferred Chain Scales",
   "Open to Soft Brand First Then Reflag?",
   "Target Guest Segment",
@@ -1139,6 +1248,8 @@ const REQUIRED_DEAL_SETUP_FIELDS = [
   "Preferred Third-Party Operators (names)",
   "Preferred Third-Party Operator Profile",
   "Services Required From Operator",
+  "Operator Capability Priorities",
+  "Owner Reporting Frequency",
   "Other Operator Criteria or Notes",
   "Level of Involvement in Day-to-Day Ops",
   "Top Priorities for Project",
@@ -1162,7 +1273,7 @@ const REQUIRED_DEAL_SETUP_FIELDS = [
 ];
 
 /** Return true if the field value is considered "filled" for completion. */
-function isFieldFilled(val) {
+export function isFieldFilled(val) {
   if (val == null) return false;
   if (typeof val === "number" && !Number.isNaN(val)) return true;
   if (typeof val === "string") return val.trim() !== "";
@@ -1314,6 +1425,11 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
     if (mpLinkedId) dealType = mpMap.get(mpLinkedId) || "";
   }
   const hasOutreachSetup = outreachDealIds ? outreachDealIds.has(rec.id) : false;
+  const siRecordIdForForm = getLinkedStrategicIntentId(f);
+  const strategicIntentForm =
+    siRecordIdForForm && siDataMap && typeof siDataMap.get === "function"
+      ? strategicIntentToFormFields(siDataMap.get(siRecordIdForForm) || {})
+      : {};
   let preferredBrandsChosen = "";
   if (siPreferredBrandsMap) {
     const siId = getLinkedStrategicIntentId(f);
@@ -1348,11 +1464,18 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
   const brandsList = brandsListRaw.length > MAX_PREFERRED_BRANDS ? brandsListRaw.slice(0, MAX_PREFERRED_BRANDS) : brandsListRaw;
   const preferredBrandsChosenCapped = brandsList.length > 0 ? brandsList.join(", ") : "";
   const cache = dealBrandCacheMap ? dealBrandCacheMap.get(rec.id) : null;
-  const useCache = cache && (cache.preferredBrandsChosen || cache.matchScoresNewByBrand) && (cache.preferredScore != null || (cache.matchScoresNewByBrand && Object.keys(cache.matchScoresNewByBrand).length > 0));
-  if (useCache && brandsList.length > 0) {
-    const cachedScores = cache.matchScoresNewByBrand || {};
-    const firstKey = brandsList[0] && String(brandsList[0]).trim();
-    const firstScore = cachedScores[firstKey] != null ? toOneDecimal(cachedScores[firstKey]) : (cache.preferredScore != null ? toOneDecimal(cache.preferredScore) : undefined);
+  const cachedScoresPeek = cache ? matchScoresMapFromCacheRow(cache) : {};
+  const hasCachedScores =
+    Object.values(cachedScoresPeek).some((s) => s != null && s !== "") ||
+    (cache != null && cache.preferredScore != null);
+  const useCache = cache && brandsList.length > 0 && hasCachedScores;
+  if (useCache) {
+    const cachedScores = matchScoresMapFromCacheRow(cache);
+    const matchBreakdownNewDetailsByBrand = cache.breakdownNewDetailsByBrand || {};
+    const firstBrand = brandsList[0] && String(brandsList[0]).trim();
+    const firstScore =
+      lookupMatchScoreNewByBrand(cachedScores, firstBrand) ??
+      (cache.preferredScore != null ? toOneDecimal(cache.preferredScore) : undefined);
     return {
       id: rec.id,
       projectName: projectName || "—",
@@ -1367,14 +1490,21 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       dealType: dealType || "—",
       dealStatus: dealStatus || "—",
       hasOutreachSetup,
+      strategicIntentForm,
       preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
       matchScore: firstScore,
-      matchScoresByBrand: Object.fromEntries(brandsList.map((b) => [String(b).trim(), cachedScores[String(b).trim()] != null ? toOneDecimal(cachedScores[String(b).trim()]) : undefined])),
+      matchScoresByBrand: Object.fromEntries(
+        brandsList.map((b) => {
+          const key = String(b).trim();
+          const s = lookupMatchScoreNewByBrand(cachedScores, key);
+          return [key, s != null ? toOneDecimal(s) : undefined];
+        })
+      ),
       matchScoreNew: firstScore,
       matchScoresNewByBrand: cachedScores,
       matchBreakdownByBrand: {},
       matchBreakdownDetailsByBrand: {},
-      matchBreakdownNewDetailsByBrand: cache.breakdownNewDetailsByBrand || {},
+      matchBreakdownNewDetailsByBrand,
       matchKeyMoneyGateReasonByBrand: {},
     };
   }
@@ -1418,6 +1548,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       dealType: dealType || "—",
       dealStatus: dealStatus || "—",
       hasOutreachSetup,
+      strategicIntentForm,
       preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
       matchScore: firstBrandScore,
       matchScoresByBrand,
@@ -1461,6 +1592,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
         dealType: dealType || "—",
         dealStatus: dealStatus || "—",
         hasOutreachSetup,
+        strategicIntentForm,
         preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
         matchScore,
         matchScoresByBrand,
@@ -1490,6 +1622,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
       dealType: dealType || "—",
         dealStatus: dealStatus || "—",
         hasOutreachSetup,
+        strategicIntentForm,
         preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
         matchScore: matchScoresByBrand[String(brandsList[0]).trim()],
       matchScoresByBrand,
@@ -1512,6 +1645,7 @@ async function recordToDeal(rec, locationMap = null, mpMap = null, outreachDealI
     dealType: dealType || "—",
     dealStatus: dealStatus || "—",
     hasOutreachSetup,
+    strategicIntentForm,
     preferredBrandsChosen: preferredBrandsChosenCapped || undefined,
     matchScore,
     matchScoreNew: undefined,
@@ -1612,12 +1746,14 @@ export async function getMyDeals(req, res) {
   const view = String((req.query && req.query.view) || "").trim().toLowerCase();
   const coreView = view === "core";
   const initialView = view === "initial";
-  // TEMP MARKER: remove after runtime path verification.
-  console.log("[RUNTIME-MARKER][my-deals][2026-03-26-v2]", {
-    requestId,
-    view: coreView ? "core" : (initialView ? "initial" : "full"),
-    retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
-  });
+  if (shouldLogMyDealsSummary()) {
+    console.log("getMyDeals: request", {
+      requestId,
+      view: coreView ? "core" : (initialView ? "initial" : "full"),
+      retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
+      deferInitialMatchedSupport: MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT,
+    });
+  }
   let tLast = t0;
   let tNow = t0;
   const timingSummary = {
@@ -1629,6 +1765,7 @@ export async function getMyDeals(req, res) {
       minGapMs: MY_DEALS_MIN_GAP_MS,
       phaseGapMs: MY_DEALS_PHASE_GAP_MS,
       retryRebuildEnabled: MY_DEALS_ENABLE_RETRY_REBUILD,
+      deferInitialMatchedSupport: MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT,
       view: coreView ? "core" : (initialView ? "initial" : "full"),
       mpFetchDelayMs: MY_DEALS_MP_FETCH_DELAY_MS,
       mpConcurrency: MY_DEALS_MP_CONCURRENCY,
@@ -1637,6 +1774,7 @@ export async function getMyDeals(req, res) {
       cuFetchDelayMs: MY_DEALS_CU_FETCH_DELAY_MS,
       ...(MY_DEALS_USE_BATCHED_LINKED_FETCHES && { useBatchedLinkedFetches: true, batchFetchChunkSize: MY_DEALS_BATCH_FETCH_CHUNK_SIZE, batchFetchDelayMs: MY_DEALS_BATCH_FETCH_DELAY_MS }),
       ...(MY_DEALS_USE_BATCHED_LINKED_FETCHES && MY_DEALS_USE_PARALLEL_BATCHED_LINKED_FETCHES && { useParallelBatchedLinkedFetches: true }),
+      airtableSerialIntervalMs: AIRTABLE_SERIAL_INTERVAL_MS,
     },
     waits: { coldStartMs: undefined, minGapMs: undefined },
     counts: { dealsFetched: 0, returnedDeals: 0, blankDealTypeBeforeRetry: undefined, blankDealTypeAfterRetry: undefined, stubCount: 0 },
@@ -1691,6 +1829,19 @@ export async function getMyDeals(req, res) {
       const tDealsEnd = Date.now();
       timingSummary.phasesMs.dealsFetch = tDealsEnd - tLast;
       timingSummary.counts.dealsFetched = allRecords.length;
+      if (req.dealalityUser) {
+        const beforeAuth = allRecords.length;
+        allRecords = filterDealsRecordsForUser(allRecords, req.dealalityUser);
+        timingSummary.counts.dealsAfterAuthFilter = allRecords.length;
+        if (shouldLogMyDealsSummary()) {
+          console.log("getMyDeals: auth scope applied", {
+            requestId,
+            role: req.dealalityUser.role,
+            before: beforeAuth,
+            after: allRecords.length,
+          });
+        }
+      }
       tLast = tDealsEnd;
       if (shouldLogMyDealsSummary()) console.log("getMyDeals: deals fetched", { requestId, count: allRecords.length, elapsed: tDealsEnd - t0 });
     } catch (e) {
@@ -1898,25 +2049,42 @@ export async function getMyDeals(req, res) {
         if (shouldLogMyDealsSummary()) console.log("getMyDeals: phase cu done", { requestId, elapsed: tNow - t0, linkedIds: cuIds.length, fetched: cuDataMap.size });
         await new Promise((r) => setTimeout(r, MY_DEALS_PHASE_GAP_MS));
       }
-      outreachDealIds = await getAllOutreachDealIds(baseId, apiKey, { beforeRequest: () => waitAirtableSerial() });
+      const tOutreachCache = Date.now();
+      const outreachPromise = (async () => {
+        const t = Date.now();
+        const r = await getAllOutreachDealIds(baseId, apiKey, { beforeRequest: () => waitAirtableSerial() });
+        return { r, ms: Date.now() - t };
+      })();
+      const cachePromise = (async () => {
+        const t = Date.now();
+        try {
+          const r = await fetchDealBrandCacheMap(baseId, apiKey);
+          return { r, ms: Date.now() - t };
+        } catch (_cacheErr) {
+          return { r: new Map(), ms: Date.now() - t };
+        }
+      })();
+      const [outreachTimed, cacheTimed] = await Promise.all([outreachPromise, cachePromise]);
+      outreachDealIds = outreachTimed.r;
+      dealBrandCacheMap = cacheTimed.r instanceof Map ? cacheTimed.r : new Map();
       tNow = Date.now();
-      timingSummary.phasesMs.outreach = tNow - tLast;
+      timingSummary.phasesMs.outreach = outreachTimed.ms;
+      timingSummary.phasesMs.cache = cacheTimed.ms;
+      timingSummary.phasesMs.outreachCacheParallelWallMs = tNow - tOutreachCache;
       const outreachSize = outreachDealIds && typeof outreachDealIds.size === "number" ? outreachDealIds.size : (Array.isArray(outreachDealIds) ? outreachDealIds.length : 0);
       timingSummary.countsByPhase.outreach = { linkedIds: allRecords.length, fetched: outreachSize, missing: undefined };
-      tLast = tNow;
-      if (shouldLogMyDealsSummary()) console.log("getMyDeals: phase outreach done", { requestId, elapsed: tNow - t0, dealsWithOutreach: outreachSize });
-      await new Promise((r) => setTimeout(r, MY_DEALS_PHASE_GAP_MS));
-      try {
-        dealBrandCacheMap = await fetchDealBrandCacheMap(baseId, apiKey);
-      } catch (cacheErr) {
-        dealBrandCacheMap = new Map();
-      }
-      tNow = Date.now();
-      timingSummary.phasesMs.cache = tNow - tLast;
       const cacheSize = dealBrandCacheMap ? dealBrandCacheMap.size : 0;
       timingSummary.countsByPhase.cache = { linkedIds: allRecords.length, fetched: cacheSize, missing: allRecords.length - cacheSize };
       tLast = tNow;
-      if (shouldLogMyDealsSummary()) console.log("getMyDeals: phase cache done", { requestId, elapsed: tNow - t0, dealsWithCache: cacheSize });
+      if (shouldLogMyDealsSummary()) {
+        console.log("getMyDeals: phase outreach+cache (parallel)", {
+          requestId,
+          elapsed: tNow - t0,
+          dealsWithOutreach: outreachSize,
+          dealsWithCache: cacheSize,
+          wallMs: timingSummary.phasesMs.outreachCacheParallelWallMs,
+        });
+      }
     } catch (e) {
       const raw = (e && e.message) ? e.message : String(e);
       const msg = /fetch failed|failed to fetch|ECONNREFUSED|ENOTFOUND|ETIMEDOUT|network/i.test(raw)
@@ -1955,7 +2123,7 @@ export async function getMyDeals(req, res) {
         const scoreBaseId = initialView ? null : baseId;
         const scoreApiKey = initialView ? null : apiKey;
         const scoreMpDataMap = initialView ? null : mpDataMap;
-        const scoreSiDataMap = initialView ? null : siDataMap;
+        const scoreSiDataMap = siDataMap;
         const d = await recordToDeal(
           rec,
           locationMap,
@@ -1969,6 +2137,7 @@ export async function getMyDeals(req, res) {
           cuDataMap,
           dealBrandCacheMap
         );
+        Object.assign(d, extractDealReadinessListFields(rec.fields));
         deals.push(d);
       } catch (dealErr) {
         const name = (rec.fields && (rec.fields["Project Name"] || rec.fields["Property Name"] || rec.fields["Name"])) || rec.id;
@@ -1988,11 +2157,13 @@ export async function getMyDeals(req, res) {
           dealType: "—",
           dealStatus: "—",
           hasOutreachSetup: false,
+          strategicIntentForm: {},
           matchScore: undefined,
           matchScoreNew: undefined,
           matchScoresByBrand: {},
           matchScoresNewByBrand: {},
           matchBreakdownNewDetailsByBrand: {},
+          ...extractDealReadinessListFields(rec.fields),
         });
       }
     }
@@ -2045,6 +2216,7 @@ export async function getMyDeals(req, res) {
       for (const rec of allRecords) {
         try {
           const d = await recordToDeal(rec, locationMap, mpMap, outreachDealIds, siPreferredBrandsMap, mpDataMap, siDataMap, baseId, apiKey, cuDataMap, dealBrandCacheMap);
+          Object.assign(d, extractDealReadinessListFields(rec.fields));
           deals.push(d);
         } catch (dealErr) {
           const name = (rec.fields && (rec.fields["Project Name"] || rec.fields["Property Name"] || rec.fields["Name"])) || rec.id;
@@ -2063,11 +2235,13 @@ export async function getMyDeals(req, res) {
             dealType: "—",
             dealStatus: "—",
             hasOutreachSetup: false,
+            strategicIntentForm: {},
             matchScore: undefined,
             matchScoreNew: undefined,
             matchScoresByBrand: {},
             matchScoresNewByBrand: {},
             matchBreakdownNewDetailsByBrand: {},
+            ...extractDealReadinessListFields(rec.fields),
           });
         }
       }
@@ -2085,14 +2259,8 @@ export async function getMyDeals(req, res) {
       });
     }
 
-    /* Disabled: background cache refresh hammers Airtable and causes rate limits; subsequent loads (or refreshes) then get empty Deal Type, Preferred Brands, Match Score. Use npm run refresh-all-deal-brand-cache or per-deal refresh instead. */
-    /* startBackgroundFullCacheRefresh(baseId, apiKey, allRecords.map((r) => r.id)); */
+    startBackgroundStaleCacheRefresh(baseId, apiKey, deals, dealBrandCacheMap);
 
-    let dealStatuses = [];
-    try {
-      const choices = await getDealStatusChoiceNames(baseId, apiKey);
-      if (Array.isArray(choices) && choices.length > 0) dealStatuses = [...choices].sort();
-    } catch (_) { /* use empty */ }
     const projectTypes = [
       ...new Set(deals.map((d) => d.projectType).filter((s) => s && s !== "—")),
     ].sort();
@@ -2128,12 +2296,21 @@ export async function getMyDeals(req, res) {
     };
     if (shouldLogMyDealsSummary()) console.log("getMyDeals: MP diagnostics", { requestId, ...timingSummary.mpDiagnostics });
 
+    const tFinalParallel = Date.now();
+    let dealStatuses = [];
     let initialMatchedSupport = null;
-    if (initialView) {
-      const tInitialSupport = Date.now();
-      initialMatchedSupport = await fetchInitialMatchedSupportState(baseId, apiKey, deals);
-      timingSummary.phasesMs.initialMatchedSupport = Date.now() - tInitialSupport;
-    }
+    const [choices, initialSupport] = await Promise.all([
+      getDealStatusChoiceNames(baseId, apiKey).catch(() => []),
+      initialView && !MY_DEALS_DEFER_INITIAL_MATCHED_SUPPORT
+        ? fetchInitialMatchedSupportState(baseId, apiKey, deals).catch((err) => {
+            console.warn("getMyDeals: initialMatchedSupport fetch failed", err && err.message ? err.message : err);
+            return null;
+          })
+        : Promise.resolve(null),
+    ]);
+    if (Array.isArray(choices) && choices.length > 0) dealStatuses = [...choices].sort();
+    if (initialView && initialSupport) initialMatchedSupport = initialSupport;
+    timingSummary.phasesMs.finalParallelMeta = Date.now() - tFinalParallel;
 
     timingSummary.counts.returnedDeals = deals.length;
     if (timingSummary.counts.blankDealTypeAfterRetry === undefined) timingSummary.counts.blankDealTypeAfterRetry = timingSummary.counts.blankDealTypeBeforeRetry;
@@ -2198,6 +2375,19 @@ export async function createDeal(req, res) {
       "Property Name": dealName,
       [DEALS_STATUS_FIELD]: "Draft",
     };
+
+    const dealalityUser = req.dealalityUser;
+    if (dealalityUser?.userRecordId) {
+      dealFields[INTAKE_DEALS_USER_LINK] = [dealalityUser.userRecordId];
+    }
+    const companyField =
+      process.env.AIRTABLE_DEALS_COMPANY_LINK_FIELD || "Company Profile";
+    const ownerCompanyId =
+      dealalityUser?.companyId ||
+      (Array.isArray(dealalityUser?.companyIds) && dealalityUser.companyIds[0]);
+    if (ownerCompanyId) {
+      dealFields[companyField] = [ownerCompanyId];
+    }
 
     await waitAirtableSerial();
     const dealsTable = encodeURIComponent(DEALS_TABLE);
@@ -2474,6 +2664,9 @@ export async function addRecommendedBrand(req, res) {
     const displayHint = savedAsIds
       ? "To show brand names in Airtable: Table \"Brand Setup - Brand Basics\" → Customize table → set Primary field to \"Brand Name\"."
       : null;
+    refreshDealBrandCacheForRecordId(baseId, apiKey, recordId).catch((e) => {
+      console.warn("[Deal Brand Cache] Refresh after add-recommended-brand failed:", e.message);
+    });
     res.json({
       success: true,
       brand: recommended.brand,
@@ -2530,54 +2723,54 @@ export async function getAlternativeBrands(req, res) {
       fetchDealBrandCacheMap(baseId, apiKey),
     ]);
 
-    const cache = dealBrandCacheMap.get(recordId);
-    if (cache && cache.topAlternatives && cache.topAlternatives.length > 0) {
-      const preferredBrand = cache.preferredBrandsChosen ? cache.preferredBrandsChosen.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean)[0] : null;
-      
-      // Get preferred brand breakdown from breakdownNewDetailsByBrand (not from topAlternatives)
-      let preferredBreakdown = {};
-      if (preferredBrand && cache.breakdownNewDetailsByBrand && cache.breakdownNewDetailsByBrand[preferredBrand]) {
-        preferredBreakdown = cache.breakdownNewDetailsByBrand[preferredBrand];
-      }
-      
-      return res.json({
-        preferredBrand: preferredBrand || null,
-        preferredScore: cache.preferredScore != null ? cache.preferredScore : null,
-        preferredBreakdown: preferredBreakdown,
-        alternatives: cache.topAlternatives.map((a) => (typeof a === "object" && a && a.brand != null ? { brand: a.brand, score: a.score, breakdownNewDetails: a.breakdownNewDetails || {} } : { brand: String(a), score: null, breakdownNewDetails: {} })),
-      });
-    }
-
     const siDataMap = new Map([[siLinkedId, siData || {}]]);
     const resolvedMap = await preferredBrandsMapFromSiDataMapResolved(baseId, apiKey, siDataMap);
     const preferredStr = resolvedMap.get(siLinkedId) || "";
     const preferredBrandsSet = preferredStr ? preferredStr.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean) : [];
 
-    const result = await computeTopAlternativeBrands(f, locationData, mpData, siData, preferredBrandsSet, baseId, apiKey, limit);
-    res.json({
-      preferredBrand: result.preferredBrand,
-      preferredScore: result.preferredScore,
-      preferredBreakdown: result.preferredBreakdown || {},
-      alternatives: result.alternatives.map((a) => ({ brand: a.brand, score: a.score, breakdownNewDetails: a.breakdownNewDetails })),
+    let targetBrandNames = [];
+    try {
+      const targets = await fetchTargetsForDeal(recordId);
+      targetBrandNames = (targets || [])
+        .filter((t) => String(t.status || "").trim().toLowerCase() !== "deleted")
+        .map((t) => String(t.brandName || "").trim())
+        .filter(Boolean);
+    } catch (_) {
+      /* target list optional */
+    }
+
+    const requiredBrandNames = [...new Set([...preferredBrandsSet, ...targetBrandNames])];
+    const cache = await ensureDealBrandCacheFresh(baseId, apiKey, recordId, { requiredBrandNames });
+
+    const preferredBrand = preferredBrandsSet[0] || null;
+    const scoreIndex = buildScoresIndexFromCacheRow(cache);
+    const preferredScore = preferredScoreFromCache(cache, preferredBrand);
+    const preferredBreakdown = preferredBrand ? getBreakdownFromCacheIndex(scoreIndex, preferredBrand) : {};
+
+    const altSource = cache?.topAlternatives && cache.topAlternatives.length > 0 ? cache.topAlternatives : [];
+    const alternatives = altSource.slice(0, limit).map((a) => {
+      const brand = typeof a === "object" && a && a.brand != null ? String(a.brand).trim() : String(a).trim();
+      return {
+        brand,
+        score: getScoreFromCacheIndex(scoreIndex, brand) ?? (a.score != null ? roundMatchScoreNew(a.score) : null),
+        breakdownNewDetails:
+          getBreakdownFromCacheIndex(scoreIndex, brand) ||
+          (typeof a === "object" && a?.breakdownNewDetails) ||
+          {},
+      };
+    });
+
+    return res.json({
+      preferredBrand,
+      preferredScore,
+      preferredBreakdown,
+      alternatives,
     });
   } catch (err) {
     console.error("Error in getAlternativeBrands:", err);
     res.status(500).json({ success: false, error: err.message || "Internal Server Error" });
   }
 }
-
-const OPERATOR_MATCH_WEIGHTS = {
-  geographyMarkets: 18,
-  chainScale: 8,
-  assetProjectStageFit: 14,
-  dealStructureAssignment: 12,
-  feeCommercial: 10,
-  serviceOfferings: 8,
-  systemsReporting: 6,
-  ownerRelations: 6,
-  brandPortfolioRelevance: 6,
-  negativeFitPenalty: 2,
-};
 
 function toStr(v) {
   if (v == null) return "";
@@ -2678,23 +2871,29 @@ function includesAnyToken(text, tokens) {
   return (tokens || []).some((tk) => tk && t.includes(String(tk).toLowerCase()));
 }
 
-function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, operatorPrefill, brandNameById = null) {
-  const dealCountry = toStr(locValue(locationData, "Country", "country") || dealFields?.Country || dealFields?.country);
-  const dealScale = toStr(locValue(locationData, "Hotel Chain Scale", "hotelChainScale") || dealFields?.["Hotel Chain Scale"]);
-  const dealProjectType = toStr(dealFields?.["Project Type"]);
-  const dealBuildingType = toStr(locValue(locationData, "Building Type", "buildingType") || dealFields?.["Building Type"]);
-  const dealStage = toStr(dealFields?.["Stage of Development"] || locValue(locationData, "Stage of Development", "stageOfDevelopment"));
-  const dealStructure = toStr((mpData || {})["Preferred Deal Structure"]);
-  const dealPreferredBrands = toList((siData || {})["Preferred Brands"]);
-  const dealBreakers = toList((siData || {})["Top 3 Deal Breakers"]);
-  const dealMustHaves = toList((siData || {})["Must-Haves From Brand/Operator"] || (siData || {})["Must-Haves From Brand or Operator"]);
-  const dealRoy = toStr((mpData || {})["Royalty Fee Expectations"]);
-  const dealMktFee = toStr((mpData || {})["Marketing Fee Expectations"]);
-  const dealLoyaltyFee = toStr((mpData || {})["Loyalty Fee Expectations"]);
+export function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, operatorPrefill, brandNameById = null) {
+  const deal = normalizeOperatorAlignmentDealInputs(dealFields, locationData, mpData, siData);
+  const dealRoy = toStr((mpData || {})[MP_AIRTABLE_ROYALTY_FEE_EXPECTATIONS]) || deal.dealRoy;
+  const dealMktFee = toStr((mpData || {})[MP_AIRTABLE_MARKETING_FEE_EXPECTATIONS]) || deal.dealMktFee;
+  const dealLoyaltyFee = toStr((mpData || {})[MP_AIRTABLE_LOYALTY_FEE_EXPECTATIONS]) || deal.dealLoyaltyFee;
+  const dealStructureLegacy = deal.legacyDealStructure;
 
   const op = operatorPrefill || {};
-  const opMarkets = toList(firstPresent(op, ["specificMarkets", "market_fit", "topMarkets", "regionsSupported", "bestFitGeographies"]));
-  const opScale = toList(firstPresent(op, ["chainScale", "chainScalesYouSupport", "chain_scales"]));
+  const opCountries = toList(firstPresent(op, ["activeCountries"]));
+  const opActiveMarkets = toList(firstPresent(op, ["activeMarkets"]));
+  const opMarkets = [
+    ...new Set(
+      [...opActiveMarkets, ...toList(firstPresent(op, [
+        "specificMarkets",
+        "market_fit",
+        "topMarkets",
+        "regionsSupported",
+        "bestFitGeographies",
+      ]))].map((x) => String(x || "").trim()).filter(Boolean)
+    ),
+  ];
+  const opPresenceTypes = toList(firstPresent(op, ["marketPresenceType"]));
+  const opScale = toList(firstPresent(op, ["chainScale", "chainScalesYouSupport", "chainScalesSupported", "chain_scales"]));
   const opProject = (() => {
     const base = toList(firstPresent(op, [
       "bestFitAssetTypes",
@@ -2704,17 +2903,30 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
       "propertyTypes",
       "projectTypes",
       "assetType",
+      "serviceModelsSupported",
     ]));
     const extra = collectValuesByKeyToken(op, ["asset", "property type", "project type", "tower", "podium", "resort", "urban"], 10);
     return [...new Set([...base, ...extra].map((x) => String(x || "").trim()).filter(Boolean))];
   })();
   const opStages = (() => {
-    const base = toList(firstPresent(op, ["operatingSituations", "projectStages", "operating_situations", "stageOfDevelopment"]));
+    const base = toList(firstPresent(op, [
+      "operatingSituations",
+      "projectStages",
+      "operating_situations",
+      "stageOfDevelopment",
+      "newBuildOpeningExperience",
+    ]));
     const extra = collectValuesByKeyToken(op, ["stage", "construction", "pre-opening", "opening", "conversion", "transition", "stabilized"], 10);
     return [...new Set([...base, ...extra].map((x) => String(x || "").trim()).filter(Boolean))];
   })();
   const opStructures = (() => {
-    const base = toList(firstPresent(op, ["bestFitDealStructures", "typicalAssignmentTypes", "serviceModels", "service_models"]));
+    const base = toList(firstPresent(op, [
+      "managementStructuresSupported",
+      "bestFitDealStructures",
+      "typicalAssignmentTypes",
+      "serviceModels",
+      "service_models",
+    ]));
     const extra = collectValuesByKeyToken(op, ["structure", "assignment", "franchise", "management", "lease", "contract"], 8);
     return [...new Set([...base, ...extra].map((x) => String(x || "").trim()).filter(Boolean))];
   })();
@@ -2723,11 +2935,11 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     brandNameById
   );
   const opServices = collectPresentList(op, [
+    "offeredServices",
     "primaryServices",
     "additionalServices",
     "primary_services",
     "additional_services",
-    // New Two / granular service arrays
     "revenueManagementServices",
     "salesMarketingSupport",
     "accountingReporting",
@@ -2736,11 +2948,12 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     "technologyServices",
     "designRenovationSupport",
     "developmentServices",
-    // Narrative fallback used on some records
     "serviceDifferentiators",
   ]);
   const opSystems = toList(firstPresent(op, ["technologySystems", "systemsStack", "primaryPMS", "reportTypesProvided"]));
   const opReporting = toStr(firstPresent(op, ["ownerReportingCadence", "reportingFrequency", "ownerCommunicationStyle"]));
+  const opReportingLevel = toStr(firstPresent(op, ["ownerReportingLevel"]));
+  const opGovernance = toStr(firstPresent(op, ["governanceCadence"]));
   const opOwnerRel = toStr(firstPresent(op, ["ownerCommunicationStyle", "operatingCollaborationMode", "typicalResponseTimeForOwnerInquiries", "ownerReferencesAvailable"]));
   const opLessIdeal = toStr(firstPresent(op, ["lessIdealSituations", "less_proven_areas"]));
   const opFee = (() => {
@@ -2757,32 +2970,59 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     return inferred.join(", ");
   })();
 
+  const opExtras = {
+    preOpeningSupportCapability: firstPresent(op, ["preOpeningSupportCapability"]),
+    newBuildOpeningExperience: firstPresent(op, ["newBuildOpeningExperience"]),
+    revenueManagementCapability: firstPresent(op, ["revenueManagementCapability"]),
+    serviceModelsSupported: firstPresent(op, ["serviceModelsSupported"]),
+    offeredServices: opServices,
+  };
+
+  const geoMeta = buildFactorMeta(
+    scoreGeographyFactor(deal, opMarkets, opCountries, opPresenceTypes),
+    "Countries: " +
+      (opCountries.join(", ") || "—") +
+      "; Markets: " +
+      (opActiveMarkets.length ? opActiveMarkets.join(", ") : opMarkets.join(", ") || "—")
+  );
+  const structureMeta = buildFactorMeta(
+    scoreDealStructureFactor(deal, opStructures),
+    "Accepted structures: " + (opStructures.join(", ") || "—")
+  );
+  const serviceMeta = buildFactorMeta(
+    scoreServiceOfferingsFactor(deal, opServices, opExtras),
+    "Services/capabilities: " + (opServices.join(", ") || "—")
+  );
+  const stageMeta = buildFactorMeta(
+    scoreAssetStageFactor(deal, opProject, opStages, opExtras),
+    "Best-fit assets: " + (opProject.join(", ") || "—") + "; Stages: " + (opStages.join(", ") || "—")
+  );
+  const reportingMeta = buildFactorMeta(
+    scoreSystemsReportingFactor(deal, opSystems, opReporting, opReportingLevel, opGovernance),
+    "Systems/reporting: " + ([opSystems.join(", "), opReportingLevel || opReporting, opGovernance].filter(Boolean).join("; ") || "—")
+  );
+
   const factors = {
     geographyMarkets: {
       label: "Geography & Markets",
       weight: OPERATOR_MATCH_WEIGHTS.geographyMarkets,
-      dealValue: "Country: " + (dealCountry || "—"),
-      operatorValue: "Supported markets: " + (opMarkets.join(", ") || "—"),
-      note: "Compares deal market/country with operator's supported regions and markets.",
-      score: (() => {
-        if (!dealCountry && opMarkets.length === 0) return null;
-        if (!dealCountry) return 60;
-        if (opMarkets.length === 0) return 35;
-        const direct = opMarkets.some((m) => String(m).toLowerCase().includes(dealCountry.toLowerCase()));
-        return direct ? 100 : 35;
-      })(),
+      ...geoMeta,
     },
     chainScale: {
       label: "Chain Scale",
       weight: OPERATOR_MATCH_WEIGHTS.chainScale,
-      dealValue: "Hotel Chain Scale: " + (dealScale || "—"),
+      dealValue: "Hotel Chain Scale: " + (deal.dealScale || "—"),
       operatorValue: "Supported chain scales: " + (opScale.join(", ") || "—"),
       note: "Checks whether the operator works in the same chain-scale band.",
+      fieldSource: deal.dealScale ? "location" : "none",
+      missingDataClass: null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
-        if (!dealScale) return null;
-        if (opScale.length === 0) return 45;
-        const same = opScale.some((s) => String(s).toLowerCase() === dealScale.toLowerCase());
-        const partial = opScale.some((s) => String(s).toLowerCase().includes(dealScale.toLowerCase()) || dealScale.toLowerCase().includes(String(s).toLowerCase()));
+        if (!deal.dealScale) return null;
+        if (opScale.length === 0) return null;
+        const same = opScale.some((s) => String(s).toLowerCase() === deal.dealScale.toLowerCase());
+        const partial = opScale.some((s) => String(s).toLowerCase().includes(deal.dealScale.toLowerCase()) || deal.dealScale.toLowerCase().includes(String(s).toLowerCase()));
         if (same) return 100;
         if (partial) return 65;
         return 25;
@@ -2791,80 +3031,56 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     assetProjectStageFit: {
       label: "Asset / Project / Stage Fit",
       weight: OPERATOR_MATCH_WEIGHTS.assetProjectStageFit,
-      dealValue: "Project Type: " + (dealProjectType || "—") + "; Building Type: " + (dealBuildingType || "—") + "; Stage: " + (dealStage || "—"),
-      operatorValue: "Best-fit assets: " + (opProject.join(", ") || "—") + "; Operating situations: " + (opStages.join(", ") || "—"),
-      note: "Evaluates whether the operator's target assets and delivery stage match this deal.",
-      score: (() => {
-        const projectScore = overlapScore([dealProjectType, dealBuildingType].filter(Boolean), opProject, 30);
-        const stageScore = overlapScore([dealStage].filter(Boolean), opStages, 35);
-        if (projectScore == null && stageScore == null) return null;
-        if (projectScore == null) return stageScore;
-        if (stageScore == null) return projectScore;
-        return Math.round(((projectScore * 0.7) + (stageScore * 0.3)) * 10) / 10;
-      })(),
+      ...stageMeta,
     },
     dealStructureAssignment: {
       label: "Deal Structure / Assignment",
       weight: OPERATOR_MATCH_WEIGHTS.dealStructureAssignment,
-      dealValue: "Preferred Deal Structure: " + (dealStructure || "—"),
-      operatorValue: "Accepted structures: " + (opStructures.join(", ") || "—"),
-      note: "Compares preferred deal structure with the operator's assignment and structure profile.",
-      score: (() => {
-        if (!dealStructure) return null;
-        if (opStructures.length === 0) return 45;
-        const lower = dealStructure.toLowerCase();
-        const exact = opStructures.some((s) => String(s).toLowerCase() === lower);
-        const partial = opStructures.some((s) => String(s).toLowerCase().includes(lower) || lower.includes(String(s).toLowerCase()));
-        if (exact) return 100;
-        if (partial) return 65;
-        return 20;
-      })(),
+      ...structureMeta,
     },
     feeCommercial: {
       label: "Fee / Commercial",
       weight: OPERATOR_MATCH_WEIGHTS.feeCommercial,
-      dealValue: "Fee expectations: " + ([dealRoy && ("Royalty " + dealRoy), dealMktFee && ("Marketing " + dealMktFee), dealLoyaltyFee && ("Loyalty " + dealLoyaltyFee), dealStructure && ("Preferred Structure " + dealStructure)].filter(Boolean).join("; ") || "—"),
+      dealValue:
+        "Fee expectations: " +
+        ([dealRoy && ("Royalty " + dealRoy), dealMktFee && ("Marketing " + dealMktFee), dealLoyaltyFee && ("Loyalty " + dealLoyaltyFee), dealStructureLegacy && ("Legacy structure " + dealStructureLegacy)].filter(Boolean).join("; ") || "—"),
       operatorValue: "Commercial terms: " + (opFee || "—"),
       note: "Uses available fee expectations and operator commercial positioning.",
+      fieldSource: "legacy_mp",
+      missingDataClass: null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
         const dealHas = Boolean(dealRoy || dealMktFee || dealLoyaltyFee);
         if (!dealHas && !opFee) return null;
-        if (!dealHas || !opFee) return 55;
+        if (!dealHas || !opFee) return null;
         return 75;
       })(),
     },
     serviceOfferings: {
       label: "Service Offerings",
       weight: OPERATOR_MATCH_WEIGHTS.serviceOfferings,
-      dealValue: "Must-haves from operator: " + (dealMustHaves.join(", ") || "—"),
-      operatorValue: "Primary/additional services: " + (opServices.join(", ") || "—"),
-      note: "Compares owner must-haves against operator service depth.",
-      score: (() => {
-        if (dealMustHaves.length === 0 && opServices.length === 0) return null;
-        if (dealMustHaves.length === 0) return 75;
-        return overlapScore(dealMustHaves, opServices, 30);
-      })(),
+      ...serviceMeta,
     },
     systemsReporting: {
       label: "Systems & Reporting",
       weight: OPERATOR_MATCH_WEIGHTS.systemsReporting,
-      dealValue: "Reporting preference: " + (toStr((siData || {})["Owner Reporting Cadence"] || "") || "—"),
-      operatorValue: "Systems/reporting: " + ([opSystems.join(", "), opReporting].filter(Boolean).join("; ") || "—"),
-      note: "Checks whether the operator has systems and reporting cadence signals for owner oversight.",
-      score: (() => {
-        if (opSystems.length === 0 && !opReporting) return 40;
-        if (opSystems.length > 0 && opReporting) return 90;
-        return 70;
-      })(),
+      ...reportingMeta,
     },
     ownerRelations: {
       label: "Owner Relations",
       weight: OPERATOR_MATCH_WEIGHTS.ownerRelations,
-      dealValue: "Owner priority: responsive communication and collaboration",
+      dealValue:
+        (deal.ownerControlPreference ? "Owner control: " + deal.ownerControlPreference + "; " : "") +
+        "Owner priority: responsive communication and collaboration",
       operatorValue: opOwnerRel || "—",
       note: "Uses owner-relations signals such as response style, collaboration mode, and references.",
+      fieldSource: deal.ownerControlPreference ? "structured" : "default",
+      missingDataClass: !opOwnerRel ? "needs_validation" : null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
-        if (!opOwnerRel) return 45;
+        if (!opOwnerRel) return null;
         if (includesAnyToken(opOwnerRel, ["weekly", "monthly", "collaborat", "owner ref", "advisory"])) return 90;
         return 70;
       })(),
@@ -2872,24 +3088,33 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     brandPortfolioRelevance: {
       label: "Brand / Portfolio Relevance",
       weight: OPERATOR_MATCH_WEIGHTS.brandPortfolioRelevance,
-      dealValue: "Preferred brands: " + (dealPreferredBrands.join(", ") || "—"),
+      dealValue: "Preferred brands: " + (deal.dealPreferredBrands.join(", ") || "—"),
       operatorValue: "Brands managed: " + (opBrands.join(", ") || "—"),
       note: "Measures overlap between owner preferred brands and operator's active brand portfolio.",
+      fieldSource: deal.dealPreferredBrands.length ? "structured_si" : "none",
+      missingDataClass: null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
-        if (dealPreferredBrands.length === 0 && opBrands.length === 0) return null;
-        if (dealPreferredBrands.length === 0) return 70;
-        return overlapScore(dealPreferredBrands, opBrands, 25);
+        if (deal.dealPreferredBrands.length === 0 && opBrands.length === 0) return null;
+        if (deal.dealPreferredBrands.length === 0) return null;
+        if (opBrands.length === 0) return null;
+        return overlapScore(deal.dealPreferredBrands, opBrands, 25);
       })(),
     },
     negativeFitPenalty: {
       label: "Negative-Fit Penalty",
       weight: OPERATOR_MATCH_WEIGHTS.negativeFitPenalty,
-      dealValue: "Top deal breakers: " + (dealBreakers.join(", ") || "—"),
+      dealValue: "Top deal breakers: " + (deal.dealBreakers.join(", ") || "—"),
       operatorValue: "Less ideal situations: " + (opLessIdeal || "—"),
       note: "Applies a small penalty when deal breakers overlap with operator less-ideal situations.",
+      fieldSource: "structured_si",
+      missingDataClass: null,
+      rationale: null,
+      includedInDenominator: true,
       score: (() => {
-        if (dealBreakers.length === 0 || !opLessIdeal) return 100;
-        const hasConflict = dealBreakers.some((b) => b && opLessIdeal.toLowerCase().includes(b.toLowerCase()));
+        if (deal.dealBreakers.length === 0 || !opLessIdeal) return 100;
+        const hasConflict = deal.dealBreakers.some((b) => b && opLessIdeal.toLowerCase().includes(b.toLowerCase()));
         return hasConflict ? 20 : 100;
       })(),
     },
@@ -2898,8 +3123,10 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
   let weighted = 0;
   let totalW = 0;
   for (const f of Object.values(factors)) {
-    totalW += f.weight;
-    if (f.score != null && !Number.isNaN(Number(f.score))) weighted += (Number(f.score) * f.weight);
+    if (f.score != null && !Number.isNaN(Number(f.score))) {
+      totalW += f.weight;
+      weighted += Number(f.score) * f.weight;
+    }
   }
   const finalScore = totalW > 0 ? Math.round((weighted / totalW) * 10) / 10 : 0;
 
@@ -2908,13 +3135,21 @@ function scoreOperatorMatchForDeal(dealFields, locationData, mpData, siData, ope
     breakdownDetails[k] = {
       label: f.label,
       weight: f.weight,
-      brandValue: f.operatorValue,
+      brandValue: f.operatorValue || f.brandValue,
       dealValue: f.dealValue,
       note: f.note,
       score: f.score == null ? "—" : Math.round(Number(f.score) * 10) / 10,
+      fieldSource: f.fieldSource || null,
+      missingDataClass: f.missingDataClass || null,
+      rationale: f.rationale || null,
+      includedInDenominator: f.includedInDenominator !== false && f.score != null,
     };
   }
-  return { score: Math.min(100, Math.max(0, finalScore)), breakdownDetails };
+  return {
+    score: Math.min(100, Math.max(0, finalScore)),
+    breakdownDetails,
+    dealInputsNormalized: deal,
+  };
 }
 
 /**
@@ -2994,6 +3229,67 @@ export async function getOperatorMatchScoreBreakdown(req, res) {
  * Returns scoreNew and breakdownNewDetails (12 factors, same as My Deals) for a deal + brand.
  * Used by Brand Development Dashboard to show the same Match Score Breakdown as My Deals.
  */
+/**
+ * Load deal + linked Location / MP / SI for server-side match scoring (Brand Alignment Snapshot, breakdown API).
+ * @returns {Promise<{ dealFields: object, locationData: object|null, mpData: object|null, siData: object|null, preferredBrandNames: string[], siLinkedId: string|null }|null>}
+ */
+export async function fetchDealScoringContext(baseId, apiKey, recordId) {
+  const getRes = await fetch(`https://api.airtable.com/v0/${baseId}/${encodeURIComponent(DEALS_TABLE)}/${encodeURIComponent(recordId)}`, {
+    headers: { Authorization: "Bearer " + apiKey },
+  });
+  const dealData = await getRes.json();
+  if (dealData.error || !dealData.fields) return null;
+
+  const f = { ...(dealData.fields || {}) };
+  const linkedLocId = getLinkedLocationId(f);
+  const mpId = getLinkedMarketPerformanceId(f);
+  const siLinkedId = getLinkedStrategicIntentId(f);
+
+  const [locationData, mpData, siData] = await Promise.all([
+    linkedLocId ? fetchLocationRecord(baseId, apiKey, linkedLocId) : null,
+    mpId ? fetchMarketPerformanceRecord(baseId, apiKey, mpId) : null,
+    siLinkedId ? fetchStrategicIntentRecord(baseId, apiKey, siLinkedId) : null,
+  ]);
+
+  let preferredBrandNames = [];
+  if (siLinkedId) {
+    const resolvedMap = await fetchPreferredBrandsMap(baseId, apiKey, [siLinkedId]);
+    const preferredStr = resolvedMap.get(siLinkedId) || "";
+    preferredBrandNames = preferredStr
+      ? preferredStr.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean)
+      : [];
+  }
+
+  return {
+    dealFields: f,
+    locationData,
+    mpData,
+    siData,
+    preferredBrandNames,
+    siLinkedId: siLinkedId || null,
+  };
+}
+
+/** Deal Brand Cache row for one deal (from full-table fetch). */
+export async function fetchDealBrandCacheForDeal(baseId, apiKey, dealId) {
+  const map = await fetchDealBrandCacheMap(baseId, apiKey);
+  return map.get(dealId) || null;
+}
+
+/**
+ * Ensure Deal Brand Cache exists and includes scores for required brands.
+ * Only writer: refreshDealBrandCacheForRecordId. All UIs should read scores via cache helpers after this.
+ */
+export async function ensureDealBrandCacheFresh(baseId, apiKey, dealId, { requiredBrandNames = [] } = {}) {
+  let cache = await fetchDealBrandCacheForDeal(baseId, apiKey, dealId);
+  const required = [...new Set(requiredBrandNames.map((b) => String(b || "").trim()).filter(Boolean))];
+  if (cacheNeedsRefresh(cache, required)) {
+    await refreshDealBrandCacheForRecordId(baseId, apiKey, dealId);
+    cache = await fetchDealBrandCacheForDeal(baseId, apiKey, dealId);
+  }
+  return cache;
+}
+
 export async function getMatchScoreBreakdown(req, res) {
   try {
     const recordId = req.params.recordId;
@@ -3081,22 +3377,59 @@ export async function refreshDealBrandCacheForRecordId(baseId, apiKey, recordId)
   const preferredBrandsSet = preferredStr ? preferredStr.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean) : [];
   const preferredBrandsChosen = preferredBrandsSet.length > 0 ? preferredBrandsSet.join(", ") : "";
 
+  let targetBrandNames = [];
+  try {
+    const targets = await fetchTargetsForDeal(recordId);
+    targetBrandNames = (targets || [])
+      .filter((t) => String(t.status || "").trim().toLowerCase() !== "deleted")
+      .map((t) => String(t.brandName || "").trim())
+      .filter(Boolean);
+  } catch (_) {
+    /* target list optional */
+  }
+
+  const brandsToScore = [...new Set([...preferredBrandsSet, ...targetBrandNames])];
   const matchScoresNewByBrand = {};
   const breakdownNewDetailsByBrand = {};
   let preferredScore = null;
-  for (const brandName of preferredBrandsSet) {
-    const { scoreNew, breakdownNewDetails } = await computeMatchScoreForDealBrand(f, locationData, mpData, siData, brandName, baseId, apiKey);
-    const s = scoreNew != null && scoreNew !== "" ? Number(scoreNew) : null;
+  for (const brandName of brandsToScore) {
+    const { scoreNew, breakdownNewDetails } = await computeMatchScoreForDealBrand(
+      f,
+      locationData,
+      mpData,
+      siData,
+      brandName,
+      baseId,
+      apiKey
+    );
+    const s = scoreNew != null && scoreNew !== "" ? roundMatchScoreNew(scoreNew) : null;
     matchScoresNewByBrand[brandName] = s;
-    if (breakdownNewDetails && typeof breakdownNewDetails === "object") breakdownNewDetailsByBrand[brandName] = breakdownNewDetails;
-    if (preferredScore == null && s != null) preferredScore = s;
+    if (breakdownNewDetails && typeof breakdownNewDetails === "object") {
+      breakdownNewDetailsByBrand[brandName] = breakdownNewDetails;
+    }
+    if (preferredBrandsSet.includes(brandName) && preferredScore == null && s != null) {
+      preferredScore = s;
+    }
   }
   if (preferredScore == null && preferredBrandsSet[0]) {
-    preferredScore = matchScoresNewByBrand[preferredBrandsSet[0]];
+    preferredScore = matchScoresNewByBrand[preferredBrandsSet[0]] ?? null;
   }
 
   const topResult = await computeTopAlternativeBrands(f, locationData, mpData, siData, preferredBrandsSet, baseId, apiKey, 5);
-  const topAlternatives = (topResult.alternatives || []).map((a) => ({ brand: a.brand, score: a.score, breakdownNewDetails: a.breakdownNewDetails || {} }));
+  const topAlternatives = (topResult.alternatives || []).map((a) => ({
+    brand: a.brand,
+    score: a.score != null ? roundMatchScoreNew(a.score) : null,
+    breakdownNewDetails: a.breakdownNewDetails || {},
+  }));
+
+  for (const a of topAlternatives) {
+    const name = a.brand && String(a.brand).trim();
+    if (!name || a.score == null) continue;
+    if (matchScoresNewByBrand[name] == null) matchScoresNewByBrand[name] = a.score;
+    if (!breakdownNewDetailsByBrand[name] && a.breakdownNewDetails) {
+      breakdownNewDetailsByBrand[name] = a.breakdownNewDetails;
+    }
+  }
 
   const bestResult = await computeRecommendedBrand(f, locationData, mpData, siData, preferredBrandsSet, baseId, apiKey);
   const bestMatchBrand = bestResult && bestResult.brand ? bestResult.brand : null;
@@ -3171,6 +3504,45 @@ function startBackgroundFullCacheRefresh(baseId, apiKey, dealIds) {
 }
 
 /**
+ * Refresh only deals whose preferred brands lack scores in cache (e.g. newly added to Matched Brands).
+ * Lighter than full refresh; runs once per server process after first My Deals list load.
+ */
+function startBackgroundStaleCacheRefresh(baseId, apiKey, deals, dealBrandCacheMap) {
+  if (fullCacheRefreshStarted || !deals || deals.length === 0) return;
+  const staleIds = [];
+  for (const d of deals) {
+    const dealId = d && d.id;
+    if (!dealId) continue;
+    const raw = (d.preferredBrandsChosen || "").trim();
+    if (!raw || raw === "—") continue;
+    const brands = raw.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean);
+    if (!brands.length) continue;
+    const cacheRow = dealBrandCacheMap ? dealBrandCacheMap.get(dealId) : null;
+    if (cacheNeedsRefresh(cacheRow, brands)) staleIds.push(dealId);
+  }
+  if (!staleIds.length) return;
+  fullCacheRefreshStarted = true;
+  const ids = [...new Set(staleIds)];
+  const concurrency = 2;
+  const run = async () => {
+    for (let i = 0; i < ids.length; i += concurrency) {
+      const batch = ids.slice(i, i + concurrency);
+      await Promise.allSettled(
+        batch.map((recordId) =>
+          refreshDealBrandCacheForRecordId(baseId, apiKey, recordId).catch((e) => {
+            console.warn("[Deal Brand Cache] Stale refresh failed for", recordId, ":", e.message);
+          })
+        )
+      );
+    }
+    if (shouldLogMyDealsSummary()) {
+      console.log("[Deal Brand Cache] Background stale refresh completed for", ids.length, "deal(s). Reload My Deals to see updated scores.");
+    }
+  };
+  setImmediate(() => run());
+}
+
+/**
  * POST /api/my-deals/:recordId/refresh-brand-cache
  * Pre-compute preferred brands (resolved names), their match scores, and top 5 alternatives; write to Deal Brand Cache table. Speeds up list load and Alternative Brand Suggestions.
  */
@@ -3196,7 +3568,7 @@ export async function refreshDealBrandCache(req, res) {
 }
 
 /** Fetch a deal by id and merge in all linked records (Location, Market Performance, Strategic Intent, Contact & Uploads). Returns { deal, normalized } or null if not found. */
-async function fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId) {
+export async function fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId) {
   const tableIdOrName = encodeURIComponent(DEALS_TABLE);
   const url = `https://api.airtable.com/v0/${baseId}/${tableIdOrName}/${encodeURIComponent(recordId)}`;
   const getRes = await fetch(url, {
@@ -3371,8 +3743,13 @@ export async function updateMyDealById(req, res) {
     const hasLocationFields = LOCATION_FORM_FIELDS.some((f) => fields[f] !== undefined);
     if (hasLocationFields) {
       const locFields = {};
-      const numericLocationKeys = ["Total Number of Rooms/Keys", "Number of Standard Rooms", "Number of Suites", "# of Stories", "Number of Stories"];
-      const multiSelectLocationKeys = ["Ownership Type", "Access to Transit or Highway"];
+      const numericLocationKeys = [
+        "Total Number of Rooms/Keys",
+        "Number of Standard Rooms",
+        "Number of Suites",
+        "# of Stories",
+        "Number of Stories",
+      ];
       for (const formName of LOCATION_FORM_FIELDS) {
         const val = fields[formName];
         if (val === undefined || val === null) continue;
@@ -3382,7 +3759,7 @@ export async function updateMyDealById(req, res) {
           if (!Number.isNaN(num) && String(val).trim() !== "") locFields[airtableName] = num;
           continue;
         }
-        if (multiSelectLocationKeys.includes(formName)) {
+        if (LOCATION_MULTI_SELECT_FORM_KEYS.has(formName)) {
           const arr = Array.isArray(val) ? val.map((v) => String(v).trim()).filter(Boolean) : String(val).trim().split(/\s*,\s*/).filter(Boolean);
           if (arr.length) locFields[airtableName] = arr;
           continue;
@@ -3435,6 +3812,20 @@ export async function updateMyDealById(req, res) {
         val = val.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean);
       } else if (name === "Primary Demand Drivers" && Array.isArray(val)) {
         val = val.map((s) => (typeof s === "string" ? s : (s && s.name) || "").trim()).filter(Boolean);
+      } else if (name === "Is the property encumbered" && typeof val === "string" && val.trim() !== "") {
+        val = val.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean);
+      } else if (name === "Is the property encumbered" && Array.isArray(val)) {
+        val = val.map((s) => (typeof s === "string" ? s : (s && s.name) || "").trim()).filter(Boolean);
+      } else if (
+        (name === "Royalty Fee Expectations" || name === "Marketing Fee Expectations" || name === "Loyalty Fee Expectations") &&
+        typeof val === "string"
+      ) {
+        let s = val.trim();
+        if (s === "Undeterimed") s = "Undetermined";
+        s = s.replace(/\u2013/g, "-");
+        val = s;
+      } else if (typeof val === "string") {
+        val = val.replace(/\u2013/g, "-");
       }
       mpFieldsPayload[tableName] = val;
       delete fields[name];
@@ -3663,19 +4054,53 @@ export async function updateMyDealById(req, res) {
 
 // ---------------------------------------------------------------------------
 // Deal Setup attachment upload (Tab 13): POST /api/my-deals/:recordId/attachments
-// Multer runs in server.js; req.files and req.params.recordId are set. Storage: local disk; URLs served via GET route.
+// Multer runs in server.js; req.files and req.params.recordId are set. Bytes uploaded to Airtable content API.
 export const ALLOWED_ATTACHMENT_EXTENSIONS = [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".jpg", ".jpeg", ".png"];
-export const MAX_ATTACHMENT_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+export const MAX_ATTACHMENT_FILE_SIZE_BYTES = MAX_AIRTABLE_ATTACHMENT_BYTES; // 5 MB (Airtable content API limit)
+
+function unlinkDealAttachmentFile(filePath) {
+  if (!filePath) return;
+  try {
+    fs.unlinkSync(filePath);
+  } catch (e) {
+    if (process.env.NODE_ENV !== "test") {
+      console.warn("[uploadDealAttachments] Could not remove temp file:", filePath, e.message);
+    }
+  }
+}
+
+function logDealAttachmentUpload(stage, payload) {
+  const enabled =
+    process.env.DEAL_ATTACHMENT_UPLOAD_DEBUG === "1" ||
+    (process.env.NODE_ENV !== "production" && process.env.DEAL_ATTACHMENT_UPLOAD_DEBUG !== "0");
+  if (!enabled) return;
+  console.info("[uploadDealAttachments]", stage, payload);
+}
+
+function mapUploadedAttachmentsForApi(fieldAttachments, expectedFilenames) {
+  const norm = (s) => String(s || "").trim().toLowerCase();
+  const expected = new Set((expectedFilenames || []).map(norm));
+  return (Array.isArray(fieldAttachments) ? fieldAttachments : [])
+    .filter((a) => expected.has(norm(a?.filename ?? a?.name)))
+    .map((a) => normalizeCuAttachmentItem(a))
+    .filter(Boolean);
+}
 
 /**
  * POST /api/my-deals/:recordId/attachments – multipart upload for Deal Setup attachments.
- * Ensures Contact & Uploads link exists (create + patch deal if needed), stores files, appends to CU attachment field.
+ * Ensures Contact & Uploads link exists (create + patch deal if needed), uploads file bytes to Airtable.
  * Returns { success, dealId, cuRecordId, attachments } or { success: false, error }.
- * 413 if file too large; 400 if no files / invalid type; 404 if deal not found.
+ * 413 if file too large; 400 if no files / invalid type; 404 if deal not found; 502 if Airtable re-fetch empty.
  */
 export async function uploadDealAttachments(req, res) {
+  const uploadedPaths = [];
   try {
     const recordId = req.params.recordId;
+    logDealAttachmentUpload("request", {
+      dealId: recordId,
+      fileCount: Array.isArray(req.files) ? req.files.length : 0,
+      filenames: (req.files || []).map((f) => f.originalname || f.filename),
+    });
     if (!recordId || !recordId.startsWith("rec")) {
       return res.status(400).json({ success: false, error: "Valid deal record ID is required" });
     }
@@ -3688,6 +4113,16 @@ export async function uploadDealAttachments(req, res) {
     const files = Array.isArray(req.files) ? req.files : [];
     if (files.length === 0) {
       return res.status(400).json({ success: false, error: "No files selected or upload failed" });
+    }
+
+    for (const file of files) {
+      const size = file.size ?? (file.path && fs.existsSync(file.path) ? fs.statSync(file.path).size : 0);
+      if (size > MAX_AIRTABLE_ATTACHMENT_BYTES) {
+        return res.status(413).json({
+          success: false,
+          error: `File too large. Maximum size is ${Math.floor(MAX_AIRTABLE_ATTACHMENT_BYTES / (1024 * 1024))} MB per file (Airtable limit).`,
+        });
+      }
     }
 
     const full = await fetchDealWithMergedLinkedRecords(baseId, apiKey, recordId);
@@ -3726,39 +4161,115 @@ export async function uploadDealAttachments(req, res) {
       }
     }
 
-    const baseUrl = (process.env.BASE_URL || process.env.PUBLIC_APP_URL || "").trim() || (req.protocol + "://" + req.get("host"));
-    const newItems = files.map((f) => ({
-      url: baseUrl + "/api/my-deals/" + encodeURIComponent(recordId) + "/attachments/" + encodeURIComponent(f.filename),
-      filename: (f.originalname || f.filename || "file").trim() || f.filename,
-    }));
-
-    const cuFields = await fetchContactUploadsRecord(baseId, apiKey, cuRecordId);
-    const existingRaw = (cuFields && cuFields[CU_ATTACHMENT_FIELD]) || [];
-    const existing = Array.isArray(existingRaw)
-      ? existingRaw.map((e) => ({
-          url: (typeof e === "object" && e && e.url) ? e.url : (typeof e === "string" ? e : ""),
-          filename: (typeof e === "object" && e && (e.filename ?? e.name)) ? String(e.filename ?? e.name) : "",
-        })).filter((e) => e.url)
-      : [];
-    const merged = [...existing, ...newItems];
-
-    await waitAirtableSerial();
-    const cuTable = encodeURIComponent(CONTACT_UPLOADS_TABLE);
-    const patchCuRes = await fetch(`https://api.airtable.com/v0/${baseId}/${cuTable}/${encodeURIComponent(cuRecordId)}`, {
-      method: "PATCH",
-      headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
-      body: JSON.stringify({ fields: { [CU_ATTACHMENT_FIELD]: merged }, typecast: true }),
+    logDealAttachmentUpload("cu-target", {
+      dealId: recordId,
+      cuRecordId,
+      attachmentField: CU_ATTACHMENT_FIELD,
     });
-    const patchCuData = await patchCuRes.json();
-    if (patchCuData.error) {
-      return res.status(400).json({ success: false, error: "Airtable write failed: " + (patchCuData.error.message || "Contact & Uploads update failed") });
+
+    const expectedFilenames = [];
+    for (const file of files) {
+      const filename = (file.originalname || file.filename || "file").trim() || file.filename;
+      expectedFilenames.push(filename);
+      if (!file.path || !fs.existsSync(file.path)) {
+        return res.status(500).json({ success: false, error: "Uploaded file missing from disk staging" });
+      }
+      uploadedPaths.push(file.path);
+      const buffer = fs.readFileSync(file.path);
+      const size = buffer.length;
+      logDealAttachmentUpload("airtable-upload-start", {
+        dealId: recordId,
+        cuRecordId,
+        attachmentField: CU_ATTACHMENT_FIELD,
+        filename,
+        size,
+      });
+      await waitAirtableSerial();
+      const uploadResult = await uploadFileBytesToAirtable({
+        baseId,
+        recordId: cuRecordId,
+        fieldName: CU_ATTACHMENT_FIELD,
+        buffer,
+        contentType: contentTypeFromFilename(filename),
+        filename,
+        apiKey,
+      });
+      logDealAttachmentUpload("airtable-upload-response", {
+        dealId: recordId,
+        cuRecordId,
+        filename,
+        responseAttachmentCount: Array.isArray(uploadResult) ? uploadResult.length : 0,
+      });
     }
+
+    const updatedCuFields = (await fetchContactUploadsRecord(baseId, apiKey, cuRecordId)) || {};
+    const fieldAttachments = updatedCuFields[CU_ATTACHMENT_FIELD] || [];
+    logDealAttachmentUpload("refetch", {
+      dealId: recordId,
+      cuRecordId,
+      attachmentField: CU_ATTACHMENT_FIELD,
+      fieldAttachmentCount: fieldAttachments.length,
+      filenames: fieldAttachments.map((a) => a?.filename ?? a?.name),
+    });
+
+    if (!cuAttachmentFieldHasFilenames(fieldAttachments, expectedFilenames)) {
+      return res.status(502).json({
+        success: false,
+        error: "Airtable did not persist one or more attachments after upload. Please try again.",
+        attachmentField: CU_ATTACHMENT_FIELD,
+        cuRecordId,
+        expectedFilenames,
+      });
+    }
+
+    const notHosted = expectedFilenames.filter((name) => {
+      const norm = name.trim().toLowerCase();
+      const match = fieldAttachments.find(
+        (a) => String(a?.filename ?? a?.name ?? "").trim().toLowerCase() === norm
+      );
+      return !match || !isAirtableHostedAttachmentUrl(match.url);
+    });
+    if (notHosted.length) {
+      return res.status(502).json({
+        success: false,
+        error: "Uploaded attachments are not Airtable-hosted. Local proxy URLs cannot be persisted.",
+        attachmentField: CU_ATTACHMENT_FIELD,
+        cuRecordId,
+        notHosted,
+      });
+    }
+
+    for (const filePath of uploadedPaths) {
+      unlinkDealAttachmentFile(filePath);
+    }
+
+    const uploadedAttachments = mapUploadedAttachmentsForApi(fieldAttachments, expectedFilenames);
+    if (!uploadedAttachments.length) {
+      return res.status(502).json({
+        success: false,
+        error: "Attachments were uploaded but could not be read back from Airtable.",
+        attachmentField: CU_ATTACHMENT_FIELD,
+        cuRecordId,
+        expectedFilenames,
+      });
+    }
+
+    const allAttachments = aggregateCuAttachmentsFromFields(updatedCuFields);
+    logDealAttachmentUpload("success", {
+      dealId: recordId,
+      cuRecordId,
+      attachmentField: CU_ATTACHMENT_FIELD,
+      uploadedAttachments,
+      allAttachmentCount: allAttachments.length,
+    });
 
     return res.json({
       success: true,
       dealId: recordId,
       cuRecordId,
-      attachments: merged,
+      uploadedAttachments,
+      attachments: allAttachments.length ? allAttachments : uploadedAttachments,
+      attachmentField: CU_ATTACHMENT_FIELD,
     });
   } catch (err) {
     console.error("Error in uploadDealAttachments:", err);

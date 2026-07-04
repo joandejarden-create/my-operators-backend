@@ -1,0 +1,514 @@
+/**
+ * Compact Operator Explorer PDF export — dense layout, fewer pages.
+ * Active when html has oe-export-pdf oe-export-pdf--compact (default for ?exportPdf=1).
+ * Use ?spacious=1 on the export URL for one section per page (legacy layout).
+ */
+
+/* Base density — applies in iframe preview and print */
+html.oe-export-pdf.oe-export-pdf--compact,
+html.oe-export-pdf.oe-export-pdf--compact body {
+  font-size: 9px;
+  line-height: 1.28;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .page {
+  padding: 10px 12px;
+  max-width: none;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .oe-export-section-title {
+  font-size: 0.9rem !important;
+  margin: 8px 0 5px !important;
+  padding-bottom: 4px !important;
+  page-break-after: avoid;
+  break-after: avoid-page;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .tab-panel {
+  padding-top: 4px !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .tab-panel > .oe-export-section-title:first-child {
+  margin-top: 0 !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .hero {
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .hero h1 {
+  font-size: 16px;
+  line-height: 1.12;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .hero-logo,
+html.oe-export-pdf.oe-export-pdf--compact .oe-hero__logo-wrap img {
+  max-height: 36px;
+  max-width: 72px;
+  width: auto;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .oe-hero__title-row {
+  gap: 8px 10px;
+  margin-bottom: 4px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .oe-hero__verified-line,
+html.oe-export-pdf.oe-export-pdf--compact .oe-hero__verified-line .meta-muted,
+html.oe-export-pdf.oe-export-pdf--compact .tag,
+html.oe-export-pdf.oe-export-pdf--compact .statement {
+  font-size: 8px !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .hero-meta.oe-hero-meta-single-row {
+  gap: 4px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .hero-meta .meta-card,
+html.oe-export-pdf.oe-export-pdf--compact .meta-card,
+html.oe-export-pdf.oe-export-pdf--compact .kpi {
+  padding: 5px 6px;
+  min-height: 0 !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .meta-card .label,
+html.oe-export-pdf.oe-export-pdf--compact .kpi .label,
+html.oe-export-pdf.oe-export-pdf--compact .cluster h3,
+html.oe-export-pdf.oe-export-pdf--compact .card > h3 {
+  font-size: 7px;
+  margin-bottom: 2px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .meta-card .value,
+html.oe-export-pdf.oe-export-pdf--compact .kpi .value {
+  font-size: 10px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .section {
+  padding: 6px 8px;
+  margin-bottom: 5px;
+  page-break-inside: auto;
+  break-inside: auto;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .section-title {
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .odna-subsection-intro,
+html.oe-export-pdf.oe-export-pdf--compact .gold-mock-tab-empty {
+  font-size: 8px !important;
+  line-height: 1.3 !important;
+  margin: 0 0 5px !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .grid-2,
+html.oe-export-pdf.oe-export-pdf--compact .grid-3,
+html.oe-export-pdf.oe-export-pdf--compact .kpi-grid-4,
+html.oe-export-pdf.oe-export-pdf--compact .quant-grid,
+html.oe-export-pdf.oe-export-pdf--compact .proof-grid,
+html.oe-export-pdf.oe-export-pdf--compact .oe-recognition-grid,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid,
+html.oe-export-pdf.oe-export-pdf--compact .oe-snapshot-kpi-row,
+html.oe-export-pdf.oe-export-pdf--compact .cap-profile-3-2 .row-3,
+html.oe-export-pdf.oe-export-pdf--compact .cap-profile-3-2 .row-2 {
+  gap: 4px !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .cluster,
+html.oe-export-pdf.oe-export-pdf--compact .card {
+  padding: 5px 6px;
+  min-height: 0 !important;
+  border-radius: 6px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .cluster ul {
+  padding-left: 12px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .cluster li,
+html.oe-export-pdf.oe-export-pdf--compact .kpi-item-list,
+html.oe-export-pdf.oe-export-pdf--compact .kpi-item-list li {
+  font-size: 8px;
+  margin: 1px 0;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .card.oe-value-kpi,
+html.oe-export-pdf.oe-export-pdf--compact .oe-snapshot-kpi-row .card.oe-value-kpi,
+html.oe-export-pdf.oe-export-pdf--compact .oe-snapshot-kpi-row .kpi {
+  min-height: 0 !important;
+  padding: 5px 6px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .oe-value-kpi__value {
+  font-size: 14px !important;
+  line-height: 1.1;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .card.oe-value-kpi .oe-value-kpi__label {
+  font-size: 7px;
+  margin-top: 4px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .card.oe-value-kpi > p {
+  font-size: 8px;
+  margin-top: 3px;
+  line-height: 1.3;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-card,
+html.oe-export-pdf.oe-export-pdf--compact .leader-card {
+  min-height: 0 !important;
+  border-radius: 6px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-card img {
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
+  width: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/**
+ * Leadership cards use CSS subgrid in-app; subgrid collapses in print/PDF and the
+ * card body overlaps the headshot. Force a simple vertical stack + full portrait.
+ */
+html.oe-export-pdf.oe-export-pdf--compact .proof-grid.proof-grid--leadership-aligned,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid.oe-leader-profile-grid--aligned,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid {
+  display: grid !important;
+  grid-template-rows: none !important;
+  align-items: start;
+  gap: 6px !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-grid--leadership-aligned > .leader-card,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid--aligned > .leader-card,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid > .leader-card {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-rows: unset !important;
+  grid-template-columns: unset !important;
+  grid-row: auto !important;
+  grid-column: auto !important;
+  overflow: visible !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-grid--leadership-aligned .leader-image-wrap,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid--aligned .leader-image-wrap,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid .leader-card .leader-image-wrap {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 4 / 5 !important;
+  max-height: 155px !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  grid-row: unset !important;
+  margin: 0 !important;
+  background: rgba(6, 12, 28, 0.85) !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-grid--leadership-aligned .leader-image-wrap img,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid--aligned .leader-image-wrap img,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid .leader-card .leader-image-wrap img,
+html.oe-export-pdf.oe-export-pdf--compact .leader-card.leader-card--with-profile .leader-image-wrap img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-grid--leadership-aligned .leader-body,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid--aligned .leader-body,
+html.oe-export-pdf.oe-export-pdf--compact .oe-leader-profile-grid .leader-card .leader-body {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 0 1 auto !important;
+  grid-template-rows: unset !important;
+  grid-row: unset !important;
+  position: static !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .leader-card--with-profile .leader-name,
+html.oe-export-pdf.oe-export-pdf--compact .leader-card--with-profile .leader-meta,
+html.oe-export-pdf.oe-export-pdf--compact .leader-card--with-profile .leader-summary,
+html.oe-export-pdf.oe-export-pdf--compact .leader-card--with-profile .leader-profile-detail {
+  display: block !important;
+  grid-row: unset !important;
+  position: static !important;
+  min-height: 0 !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .leader-profile-detail {
+  margin-top: 4px !important;
+  padding-top: 4px !important;
+  border-top: 0.6px solid var(--border, #37446b);
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .leader-profile-detail__facts,
+html.oe-export-pdf.oe-export-pdf--compact .leader-profile-detail--compact .leader-profile-detail__facts {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-rows: unset !important;
+  grid-row: unset !important;
+  gap: 0 !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .leader-profile-fact {
+  display: grid !important;
+  grid-template-columns: 4.25rem minmax(0, 1fr) !important;
+  grid-row: unset !important;
+  align-items: start !important;
+  gap: 2px 6px !important;
+  padding: 3px 0 !important;
+  border-bottom: 0.6px solid rgba(108, 114, 255, 0.12);
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .leader-profile-fact__label,
+html.oe-export-pdf.oe-export-pdf--compact .leader-profile-fact__value,
+html.oe-export-pdf.oe-export-pdf--compact .leader-profile-fact__tags,
+html.oe-export-pdf.oe-export-pdf--compact .oe-lead-tag {
+  font-size: 7px !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+}
+
+/* Simple leader cards without profile detail block */
+html.oe-export-pdf.oe-export-pdf--compact .leader-card:not(.leader-card--with-profile) img {
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
+  width: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .property-example-card__top {
+  height: 100px !important;
+  min-height: 100px !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .property-example-card__top img {
+  height: 100% !important;
+  min-height: 100px !important;
+  max-height: none !important;
+  width: 100%;
+  object-fit: cover;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .leader-bio-overlay {
+  display: none !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-body,
+html.oe-export-pdf.oe-export-pdf--compact .leader-body {
+  padding: 5px 6px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-title,
+html.oe-export-pdf.oe-export-pdf--compact .leader-name {
+  font-size: 9px;
+  margin-bottom: 2px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-meta,
+html.oe-export-pdf.oe-export-pdf--compact .leader-meta {
+  font-size: 7px;
+  margin-bottom: 3px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .proof-line,
+html.oe-export-pdf.oe-export-pdf--compact .leader-summary {
+  font-size: 8px;
+  margin-bottom: 2px;
+  line-height: 1.28;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .gold-footprint-table {
+  font-size: 8px;
+  min-width: 0;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .gold-footprint-table th,
+html.oe-export-pdf.oe-export-pdf--compact .gold-footprint-table td {
+  padding: 3px 5px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .gold-footprint-table-title,
+html.oe-export-pdf.oe-export-pdf--compact .gold-footprint-table-note,
+html.oe-export-pdf.oe-export-pdf--compact .gold-footprint-view-hint {
+  font-size: 8px;
+  margin-bottom: 4px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .brand-share-table {
+  font-size: 8px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact #alignmentContext {
+  margin-bottom: 8px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .oe-alignment-context-title,
+html.oe-export-pdf.oe-export-pdf--compact .oe-alignment-context-block,
+html.oe-export-pdf.oe-export-pdf--compact .oe-alignment-context-block p,
+html.oe-export-pdf.oe-export-pdf--compact .oe-alignment-context-block ul {
+  font-size: 8px;
+}
+
+/* Brand Explorer shared panels (materials gallery, case studies) */
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe {
+  --oe-card-h: 100px;
+  --explorer-card-media-height: 100px;
+  --property-example-media-height: 100px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .oe-section {
+  padding: 6px 8px;
+  margin-bottom: 5px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .oe-section-title {
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .gallery-grid {
+  gap: 4px !important;
+}
+
+/* Gallery cards keep aspect-ratio in-app; cap the whole card in export (not just the img). */
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .gallery-card,
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .gallery-card--has-image {
+  aspect-ratio: auto !important;
+  height: 88px !important;
+  max-height: 88px !important;
+  min-height: 0 !important;
+  display: block !important;
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .gallery-card--has-image img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  border-radius: 6px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .gallery-card--has-image .gallery-card__cap {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  padding: 4px 6px !important;
+  margin: 0 !important;
+  font-size: 7px !important;
+  line-height: 1.2 !important;
+  z-index: 2;
+  background: linear-gradient(180deg, transparent 0%, rgba(8, 15, 37, 0.9) 50%) !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .case-study-card__thumb img {
+  max-height: 88px !important;
+  height: 88px !important;
+  min-height: 88px !important;
+  width: 100%;
+  object-fit: cover;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .case-study-card__body,
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .case-study-card h4 {
+  font-size: 8px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .case-study-grid {
+  gap: 4px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .case-study-narrative,
+html.oe-export-pdf.oe-export-pdf--compact .case-study-relevance {
+  font-size: 8px;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .btn,
+html.oe-export-pdf.oe-export-pdf--compact button.btn,
+html.oe-export-pdf.oe-export-pdf--compact .oe-operator-save-btn,
+html.oe-export-pdf.oe-export-pdf--compact .oe-hero-save-btn,
+html.oe-export-pdf.oe-export-pdf--compact .be-case-modal-overlay,
+html.oe-export-pdf.oe-export-pdf--compact .oe-hero-chip-row {
+  display: none !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--compact .oe-hero__actions .btn-row {
+  display: none !important;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 5mm;
+  }
+
+  html.oe-export-pdf.oe-export-pdf--compact,
+  html.oe-export-pdf.oe-export-pdf--compact body {
+    font-size: 8.5px;
+    line-height: 1.25;
+  }
+
+  html.oe-export-pdf.oe-export-pdf--compact .page {
+    padding: 0;
+  }
+
+  html.oe-export-pdf.oe-export-pdf--compact .tab-panel {
+    page-break-before: auto !important;
+    break-before: auto !important;
+  }
+
+  html.oe-export-pdf.oe-export-pdf--compact .hero,
+  html.oe-export-pdf.oe-export-pdf--compact .section,
+  html.oe-export-pdf.oe-export-pdf--compact .tab-panel,
+  html.oe-export-pdf.oe-export-pdf--compact .kpi,
+  html.oe-export-pdf.oe-export-pdf--compact .card,
+  html.oe-export-pdf.oe-export-pdf--compact .cluster,
+  html.oe-export-pdf.oe-export-pdf--compact .oe-value-kpi,
+  html.oe-export-pdf.oe-export-pdf--compact .proof-card,
+  html.oe-export-pdf.oe-export-pdf--compact .leader-card,
+  html.oe-export-pdf.oe-export-pdf--compact #alignmentContext,
+  html.oe-export-pdf.oe-export-pdf--compact .be-atelier-oe .oe-section {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Small cards only — allow large sections to split across pages */
+  html.oe-export-pdf.oe-export-pdf--compact .kpi,
+  html.oe-export-pdf.oe-export-pdf--compact .meta-card {
+    page-break-inside: avoid;
+    break-inside: avoid-page;
+  }
+}

@@ -8,6 +8,11 @@
  */
 
 import Airtable from "airtable";
+import {
+  DEALS_STATUS_FIELD,
+  MARKET_PERFORMANCE_LINK_FIELD,
+  MARKET_PERFORMANCE_TABLE,
+} from "./schemas/deal-setup-fields.js";
 
 const BDR_TABLE = process.env.AIRTABLE_TABLE_BRAND_DEAL_REQUESTS || "Brand Deal Requests";
 const ACTIVITY_LOG_TABLE = process.env.AIRTABLE_TABLE_DEAL_ACTIVITY_LOG || "Deal Activity Log";
@@ -20,11 +25,184 @@ const SUBMISSIONS_TABLE = process.env.AIRTABLE_TABLE_PROPOSAL_SUBMISSIONS || "Pr
 const NDA_STATUS_OPTIONS = ["Not Required", "Not Sent", "Sent", "Signed - Owner Confirmed", "Declined", "Expired"];
 const DEAL_ROOM_ACCESS_OPTIONS = ["Blocked", "Granted", "Revoked"];
 
+/**
+ * Airtable — Brand Deal Requests (Long text). Create if missing:
+ * - Next Follow-up Notes (Internal) — team-only; append from modals / internal follow-up context
+ * - Next Follow-up Notes (External) — owner/contact-visible follow-up text (Outreach uses this)
+ * Legacy "Next Follow-up Notes" is written in parallel for backward compatibility.
+ * Legacy "Brand Internal Notes" is read as fallback only (migrated bases).
+ */
+const AT_NEXT_FOLLOWUP_NOTES_INTERNAL = "Next Follow-up Notes (Internal)";
+const AT_BRAND_INTERNAL_NOTES_LEGACY = "Brand Internal Notes";
+const AT_NEXT_FOLLOWUP_NOTES_EXTERNAL = "Next Follow-up Notes (External)";
+const AT_NEXT_FOLLOWUP_NOTES_LEGACY = "Next Follow-up Notes";
+
+function mergeBrandInternalBlock(existing, addition) {
+  const old = String(existing || "").trim();
+  const add = String(addition || "").trim();
+  if (!add) return old;
+  const stamp = `[${new Date().toISOString().slice(0, 19).replace("T", " ")}Z] `;
+  const block = stamp + add;
+  return old ? `${old}\n\n${block}` : block;
+}
+
+/** Persist external follow-up notes to new + legacy Airtable fields. */
+function applyNextFollowupExternalToFields(fields, nextFollowupNotes) {
+  if (nextFollowupNotes === undefined) return;
+  const v = String(nextFollowupNotes || "").trim() || null;
+  fields[AT_NEXT_FOLLOWUP_NOTES_EXTERNAL] = v;
+  fields[AT_NEXT_FOLLOWUP_NOTES_LEGACY] = v;
+}
+
+async function resolveBrandInternalNotesFields(base, requestId, brandInternalNotes, appendBrandInternalNotes) {
+  const out = {};
+  if (brandInternalNotes !== undefined) {
+    out[AT_NEXT_FOLLOWUP_NOTES_INTERNAL] = String(brandInternalNotes || "").trim() || null;
+    return out;
+  }
+  if (appendBrandInternalNotes !== undefined) {
+    const [bdrRec] = await base(BDR_TABLE).select({ filterByFormula: `RECORD_ID() = '${requestId}'`, maxRecords: 1 }).firstPage();
+    const f = bdrRec && bdrRec.fields ? bdrRec.fields : {};
+    const existing =
+      (f[AT_NEXT_FOLLOWUP_NOTES_INTERNAL] || f[AT_BRAND_INTERNAL_NOTES_LEGACY] || "").toString();
+    const merged = mergeBrandInternalBlock(existing, appendBrandInternalNotes);
+    out[AT_NEXT_FOLLOWUP_NOTES_INTERNAL] = merged || null;
+    return out;
+  }
+  return out;
+}
+
+/** When Deal Activity Log → Action is a restricted single-select, try these after the primary label. */
+const ACTIVITY_ACTION_SELECT_FALLBACKS = {
+  opportunityReviewed: ["Brand Viewed", "Viewed", "Notes updated", "Request Sent"],
+};
+
 function getAirtableBase() {
   const apiKey = process.env.AIRTABLE_API_KEY;
   const baseId = process.env.AIRTABLE_BASE_ID;
   if (!apiKey || !baseId) throw new Error("AIRTABLE_API_KEY or AIRTABLE_BASE_ID not configured");
   return new Airtable({ apiKey }).base(baseId);
+}
+
+/** Linked-record cells may be `"rec…"` or `{ id: "rec…" }` (Airtable.js / API shape). */
+function dealLinkToRecordId(raw) {
+  if (raw == null) return null;
+  if (typeof raw === "string") {
+    const s = raw.trim();
+    return s.startsWith("rec") ? s : null;
+  }
+  if (typeof raw === "object" && raw !== null && raw.id != null) {
+    const s = String(raw.id).trim();
+    return s.startsWith("rec") ? s : null;
+  }
+  return null;
+}
+
+/** First linked Deals record id from Brand Deal Request `Deal` field. */
+function firstLinkedDealIdFromBdrFields(fields) {
+  const deal = fields && fields.Deal;
+  if (deal == null) return null;
+  const first = Array.isArray(deal) ? deal[0] : deal;
+  return dealLinkToRecordId(first);
+}
+
+/** Aligns with api/my-deals.js list rows + public/deal-room-owner.html dealLabel(). */
+function dealMetaValueToStr(v) {
+  if (v == null) return "";
+  if (typeof v === "string") return v.trim();
+  if (typeof v === "number" && !Number.isNaN(v)) return String(v);
+  if (typeof v === "object" && v !== null && typeof v.name === "string") return v.name.trim();
+  if (Array.isArray(v) && v[0]) return dealMetaValueToStr(v[0]);
+  return "";
+}
+
+function pickDealField(f, keys) {
+  for (let i = 0; i < keys.length; i++) {
+    const v = dealMetaValueToStr(f[keys[i]]);
+    if (v) return v;
+  }
+  return "";
+}
+
+/** Same idea as api/my-deals.js formatCityCountry (Deals rollups / city fields). */
+function formatCityCountry(city, country) {
+  const c = String(city || "").trim();
+  const co = String(country || "").trim();
+  if (c && co) return `${c}, ${co}`;
+  return c || co || "";
+}
+
+/** Location/submarket line from Deals only (no extra Location table fetch). */
+function extractDealLocationLine(f) {
+  const fromPick = pickDealField(f, [
+    "Project Location (Core)",
+    "Project Location",
+    "Hotel Location",
+    "Location",
+    "Hotel Submarket & Location",
+  ]);
+  if (fromPick) return fromPick;
+  return formatCityCountry(
+    pickDealField(f, ["City & State", "City", "City & State (from Location & Property)"]),
+    pickDealField(f, ["Country", "Country (from Location & Property)"]),
+  );
+}
+
+/** Owner-style first segment: "Amsterdam Airport – Hotel Renovation Project" when both exist. */
+function combineLocationAndProjectTitle(locationLine, projectNameRaw) {
+  const loc = String(locationLine || "").trim();
+  const proj = String(projectNameRaw || "").trim();
+  if (!loc && !proj) return "";
+  if (!loc) return proj;
+  if (!proj) return loc;
+  const pl = proj.toLowerCase();
+  const ll = loc.toLowerCase();
+  if (pl.includes(ll) || ll.includes(pl)) return proj;
+  return `${loc} – ${proj}`;
+}
+
+/** Same link shape as api/my-deals.js getLinkedMarketPerformanceId (Deals → MP record). */
+function getLinkedMarketPerformanceId(fields) {
+  if (!fields) return null;
+  const raw = fields[MARKET_PERFORMANCE_LINK_FIELD];
+  if (!Array.isArray(raw) || raw.length === 0) return null;
+  const id = typeof raw[0] === "string" ? raw[0] : raw[0]?.id;
+  return id && typeof id === "string" && id.startsWith("rec") ? id : null;
+}
+
+/**
+ * Deal type + label: match api/my-deals.js recordToDeal (Preferred Deal Structure on deal,
+ * then linked MP record), then recordToCoreDeal fallbacks — not "Deal Type (Core)" first.
+ * Display uses the same segments as public/deal-room-owner.html dealLabel() with "—" defaults
+ * like recordToCoreDeal rows.
+ */
+function extractDealPickerRow(fields, preferredDealStructureFromMp) {
+  const f = fields || {};
+  const mpFallback = dealMetaValueToStr(preferredDealStructureFromMp);
+  let dealType =
+    dealMetaValueToStr(f["Preferred Deal Structure"]) ||
+    dealMetaValueToStr(f["Preferred Deal Structure (from Market - Performance - Deal & Capital Structure)"]) ||
+    "";
+  if (!dealType && mpFallback) dealType = mpFallback;
+  if (!dealType) {
+    dealType = pickDealField(f, ["Deal Type (Core)", "Deal Type", "Deal Structure"]);
+  }
+
+  const projectNameRaw = pickDealField(f, ["Project Name", "Property Name", "Name"]);
+  const dealStatusRaw = pickDealField(f, [DEALS_STATUS_FIELD, "Deal Status", "Status"]);
+  const locationLine = extractDealLocationLine(f);
+  const primaryName = combineLocationAndProjectTitle(locationLine, projectNameRaw) || projectNameRaw || "—";
+
+  const projectName = primaryName;
+  const dealStatus = dealStatusRaw || "—";
+  const dealTypeOut = dealType || "—";
+
+  const parts = [];
+  if (projectName && projectName !== "—") parts.push(projectName);
+  if (dealTypeOut && dealTypeOut !== "—") parts.push(dealTypeOut);
+  if (dealStatus && dealStatus !== "—") parts.push(`[${dealStatus}]`);
+  const title = parts.join(" - ");
+  return { projectName, dealType: dealTypeOut, dealStatus, title };
 }
 
 /**
@@ -89,6 +267,39 @@ export async function createRequest(req, res) {
 }
 
 /**
+ * GET /api/deal-room/brand-requests?brand=OptionalBrandName&limit=300 (preferred)
+ * or GET /api/brand-deal-requests?dealRoom=1&brand=…&limit=300
+ * Rows where Deal Room Access = Granted (bounded). Used by Deal Room (Brand) so we never scan the full BDR table
+ * (which can hang the UI when using ?all=1 + listAll eachPage).
+ */
+export async function listForDealRoom(req, res) {
+  const brandRaw = req.query.brand != null ? String(req.query.brand).trim() : "";
+  const limitRaw = parseInt(String(req.query.limit || "300"), 10);
+  const maxRecords = Number.isFinite(limitRaw) ? Math.min(500, Math.max(1, limitRaw)) : 300;
+
+  try {
+    const base = getAirtableBase();
+    let formula = `{Deal Room Access} = 'Granted'`;
+    if (brandRaw) {
+      formula = `AND(${formula}, {Brand Name} = '${escapeFormula(brandRaw)}')`;
+    }
+    const records = await base(BDR_TABLE)
+      .select({
+        filterByFormula: formula,
+        sort: [{ field: "Request Sent At", direction: "desc" }],
+        maxRecords,
+      })
+      .all();
+
+    const requests = records.map((r) => mapBdrToResponse(r));
+    res.json({ success: true, requests, dealRoomFilter: "Granted", maxRecords });
+  } catch (err) {
+    console.error("[brand-deal-requests] listForDealRoom error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+/**
  * GET /api/brand-deal-requests?all=1
  * List ALL brand deal requests (no brand filter). For Brand Development Dashboard when showing all contacted projects.
  */
@@ -135,7 +346,7 @@ export async function listForBrand(req, res) {
     let formula = `{Brand Name} = '${escapeFormula(brand)}'`;
     if (status) {
       const statusVal = String(status).trim();
-      if (["New", "Viewed", "Brand Viewed", "Accepted", "Declined", "Archived"].includes(statusVal)) {
+      if (["New", "Viewed", "Brand Viewed", "Accepted", "Declined", "Archived", "More Info Requested", "Revisit Later"].includes(statusVal)) {
         formula += ` AND {Status} = '${statusVal}'`;
       }
     }
@@ -154,6 +365,33 @@ export async function listForBrand(req, res) {
     console.error("[brand-deal-requests] list error:", err.message);
     res.status(500).json({ success: false, error: err.message });
   }
+}
+
+/**
+ * Full contacted-row shape for My Deals + workspace KPIs (parity with listForDeals).
+ * @param {import("airtable").Record} record
+ */
+export function mapBdrToContactedRow(record) {
+  const base = mapBdrToResponse(record);
+  const f = record.fields || {};
+  const requestSentAt = f["Request Sent At"] || "";
+  const responseDate = f["Response Date"] || "";
+  const lastUpdated = f["Last Updated"] || "";
+  const dates = [requestSentAt, responseDate, lastUpdated]
+    .filter(Boolean)
+    .map((d) => new Date(d).getTime());
+  const lastActivity =
+    dates.length > 0 ? new Date(Math.max(...dates)).toISOString() : requestSentAt || null;
+  const status = f["Status"] || "New";
+  const stage = f["Stage"] || getStageFromStatus(status);
+  const proposalStatus = f["Proposal Status"] ? String(f["Proposal Status"]).trim() : "";
+  return {
+    ...base,
+    stage,
+    lastActivity,
+    responseDate: responseDate || null,
+    proposalStatus: proposalStatus || (base.proposal && base.proposal.proposalStatus) || "",
+  };
 }
 
 /**
@@ -187,29 +425,11 @@ export async function listForDeals(req, res) {
       .all();
 
     const filtered = records.filter((r) => {
-      const dealIdsArr = r.fields.Deal;
-      const dealId = Array.isArray(dealIdsArr) && dealIdsArr[0] ? dealIdsArr[0] : dealIdsArr;
+      const dealId = firstLinkedDealIdFromBdrFields(r.fields);
       return dealId && idSet.has(dealId);
     });
 
-    const contacted = filtered.map((r) => {
-      const base = mapBdrToResponse(r);
-      const dealIdsArr = r.fields.Deal;
-      const dealId = Array.isArray(dealIdsArr) && dealIdsArr[0] ? dealIdsArr[0] : null;
-      const requestSentAt = r.fields["Request Sent At"] || "";
-      const responseDate = r.fields["Response Date"] || "";
-      const lastUpdated = r.fields["Last Updated"] || "";
-      const dates = [requestSentAt, responseDate, lastUpdated].filter(Boolean).map((d) => new Date(d).getTime());
-      const lastActivity = dates.length > 0 ? new Date(Math.max(...dates)).toISOString() : requestSentAt || null;
-      const status = r.fields["Status"] || "New";
-      const stage = r.fields["Stage"] || getStageFromStatus(status);
-      return {
-        ...base,
-        stage,
-        lastActivity,
-        responseDate: responseDate || null,
-      };
-    });
+    const contacted = filtered.map((r) => mapBdrToContactedRow(r));
 
     res.json({ success: true, contacted });
   } catch (err) {
@@ -232,6 +452,71 @@ export async function listForDealsPost(req, res) {
   }
   req.query = { dealIds: trimmed.join(",") };
   return listForDeals(req, res);
+}
+
+/**
+ * GET /api/brand-deal-requests/deal-meta?ids=rec1,rec2,rec3
+ * Lightweight project titles for Deal Room (brand) picker — reads Deals table.
+ */
+export async function getDealMetaBatch(req, res) {
+  const raw = req.query.ids ?? req.query.dealIds ?? "";
+  const ids = String(raw)
+    .split(",")
+    .map((s) => s.trim())
+    .filter((id) => id.startsWith("rec"));
+  if (ids.length === 0) {
+    return res.json({ success: true, deals: [] });
+  }
+
+  try {
+    const base = getAirtableBase();
+    const results = new Map();
+    const chunkSize = 40;
+    const allDealRecs = [];
+    for (let i = 0; i < ids.length; i += chunkSize) {
+      const chunk = ids.slice(i, i + chunkSize);
+      const formula = `OR(${chunk.map((id) => `RECORD_ID()='${escapeFormula(id)}'`).join(",")})`;
+      const recs = await base(DEALS_TABLE).select({ filterByFormula: formula }).all();
+      recs.forEach((r) => allDealRecs.push(r));
+    }
+
+    const mpIds = [
+      ...new Set(
+        allDealRecs.map((r) => getLinkedMarketPerformanceId(r.fields)).filter(Boolean),
+      ),
+    ];
+    const mpPreferredById = new Map();
+    for (let j = 0; j < mpIds.length; j += chunkSize) {
+      const mpChunk = mpIds.slice(j, j + chunkSize);
+      const mpFormula = `OR(${mpChunk.map((id) => `RECORD_ID()='${escapeFormula(id)}'`).join(",")})`;
+      const mpRecs = await base(MARKET_PERFORMANCE_TABLE).select({ filterByFormula: mpFormula }).all();
+      mpRecs.forEach((mp) => {
+        const v = dealMetaValueToStr((mp.fields || {})["Preferred Deal Structure"]);
+        if (v) mpPreferredById.set(mp.id, v);
+      });
+    }
+
+    allDealRecs.forEach((r) => {
+      const mpId = getLinkedMarketPerformanceId(r.fields);
+      const fromMp = mpId ? mpPreferredById.get(mpId) : "";
+      const row = extractDealPickerRow(r.fields, fromMp);
+      results.set(r.id, {
+        title: row.title || r.id,
+        projectName: row.projectName,
+        dealType: row.dealType,
+        dealStatus: row.dealStatus,
+      });
+    });
+    const deals = ids.map((id) => {
+      const m = results.get(id);
+      if (!m) return { dealId: id, title: id, projectName: "", dealType: "", dealStatus: "" };
+      return { dealId: id, ...m };
+    });
+    res.json({ success: true, deals });
+  } catch (err) {
+    console.error("[brand-deal-requests] deal-meta error:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
 }
 
 /**
@@ -508,9 +793,8 @@ function hasAnyProposalData(fields) {
 }
 
 /** Map BDR record to API response including NDA/Deal Room and proposal fields */
-function mapBdrToResponse(r) {
-  const dealIds = r.fields.Deal;
-  const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+export function mapBdrToResponse(r) {
+  const dealId = firstLinkedDealIdFromBdrFields(r.fields);
   const base = {
     id: r.id,
     dealId,
@@ -523,9 +807,11 @@ function mapBdrToResponse(r) {
     createdAt: r.fields["Created At"] || "",
     lastUpdated: r.fields["Last Updated"] || "",
     ownerNotes: r.fields["Owner Notes"] || "",
+    brandInternalNotes:
+      r.fields[AT_NEXT_FOLLOWUP_NOTES_INTERNAL] || r.fields[AT_BRAND_INTERNAL_NOTES_LEGACY] || "",
     nextFollowupDate: r.fields["Next Follow-up Date"] || null,
     nextFollowupHeader: r.fields["Next Follow-up Header"] || "",
-    nextFollowupNotes: r.fields["Next Follow-up Notes"] || "",
+    nextFollowupNotes: r.fields[AT_NEXT_FOLLOWUP_NOTES_EXTERNAL] || r.fields[AT_NEXT_FOLLOWUP_NOTES_LEGACY] || "",
     ndaRequired: r.fields["NDA Required?"] ?? null,
     ndaStatus: r.fields["NDA Status"] || "",
     ndaSentAt: r.fields["NDA Sent At"] || "",
@@ -539,6 +825,19 @@ function mapBdrToResponse(r) {
   };
   const proposal = mapProposalFromFields(r.fields);
   if (Object.keys(proposal).length > 0) base.proposal = proposal;
+  // Optional CRM sync readiness fields (ignored if columns missing in Airtable)
+  const crmId = r.fields["External CRM ID"];
+  if (crmId != null && String(crmId).trim()) base.externalCrmId = String(crmId).trim();
+  const crmSync = r.fields["CRM Sync Status"];
+  if (crmSync != null && String(crmSync).trim()) base.crmSyncStatus = String(crmSync).trim();
+  const crmSyncAt = r.fields["Last CRM Sync At"];
+  if (crmSyncAt != null && String(crmSyncAt).trim()) base.lastCrmSyncAt = String(crmSyncAt).trim();
+  const crmOwner = r.fields["CRM Owner"];
+  if (crmOwner != null && String(crmOwner).trim()) base.crmOwner = String(crmOwner).trim();
+  const crmStage = r.fields["CRM Stage"];
+  if (crmStage != null && String(crmStage).trim()) base.crmStage = String(crmStage).trim();
+  const crmNotes = r.fields["CRM Notes"];
+  if (crmNotes != null && String(crmNotes).trim()) base.crmNotes = String(crmNotes).trim();
   return base;
 }
 
@@ -556,8 +855,7 @@ async function handleNdaAction(req, res, requestId, action) {
     if (!bdrRec) {
       return res.status(404).json({ success: false, error: "Brand Deal Request not found" });
     }
-    const dealIds = bdrRec.fields.Deal;
-    const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+    const dealId = firstLinkedDealIdFromBdrFields(bdrRec.fields);
     const brandName = bdrRec.fields["Brand Name"] || "";
 
     const now = new Date().toISOString();
@@ -637,8 +935,7 @@ async function handleSaveProposalDraft(req, res, requestId) {
       fields["Proposal Status"] = "Draft";
     }
     const [rec] = await base(BDR_TABLE).update([{ id: requestId, fields }]);
-    const dealIds = rec.fields.Deal;
-    const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+    const dealId = firstLinkedDealIdFromBdrFields(rec.fields);
     const brandName = rec.fields["Brand Name"] || "";
     const logMessage = proposalStatus === "Submitted" ? "Proposal updated after submission" : "Proposal draft saved";
     await logActivity(base, dealId, brandName, "Proposal Updated", logMessage, "", "", "Brand");
@@ -696,14 +993,19 @@ export async function updateStatus(req, res) {
   const status = body.status;
   const responseNotes = body.responseNotes;
   const ownerNotes = body.ownerNotes ?? body.owner_notes;
+  const brandInternalNotes = body.brandInternalNotes ?? body.brand_internal_notes;
+  const appendBrandInternalNotes = body.appendBrandInternalNotes ?? body.append_brand_internal_notes;
   const nextFollowupDate = body.nextFollowupDate ?? body.next_followup_date;
   const nextFollowupHeader = body.nextFollowupHeader ?? body.next_followup_header ?? "";
-  const nextFollowupNotes = body.nextFollowupNotes ?? body.next_followup_notes ?? "";
+  const nextFollowupNotes =
+    body.nextFollowupNotes !== undefined ? body.nextFollowupNotes : body.next_followup_notes !== undefined ? body.next_followup_notes : undefined;
   const scheduledBy = body.scheduledBy ?? body.scheduled_by ?? "owner";
+  const hasBrandInternal = brandInternalNotes !== undefined || appendBrandInternalNotes !== undefined;
 
   const pipelineStatuses = [
     "New", "Viewed", "Brand Viewed", "Sent / Awaiting Response",
     "Accepted", "Declined", "Archived", "Responded - Accepted", "Responded - Declined",
+    "More Info Requested", "Revisit Later",
     "Pre-LOI", "Pre-LOI / Term Comparison", "Finalist", "Deal Room Active",
     "Feasibility", "Feasibility In Progress", "LOI Signed", "LOI Signed / Platform Exit"
   ];
@@ -712,44 +1014,59 @@ export async function updateStatus(req, res) {
   const hasOwnerNotes = ownerNotes !== undefined;
   const hasResponseNotes = responseNotes !== undefined;
   const hasNextFollowup = nextFollowupDate !== undefined;
-  const notesOrFollowupOnly = (hasOwnerNotes || hasResponseNotes || hasNextFollowup) && !hasValidStatus && !statusStr;
+  const hasFollowupNotesOnly = nextFollowupNotes !== undefined;
+  const notesOrFollowupOnly =
+    (hasOwnerNotes || hasResponseNotes || hasNextFollowup || hasFollowupNotesOnly || hasBrandInternal) &&
+    !hasValidStatus &&
+    !statusStr;
 
   if (notesOrFollowupOnly) {
     try {
       const base = getAirtableBase();
       const now = new Date().toISOString();
       const fields = { "Last Updated": now, ...buildNdaFields(body) };
+      Object.assign(fields, await resolveBrandInternalNotesFields(base, requestId, brandInternalNotes, appendBrandInternalNotes));
       if (hasOwnerNotes) fields["Owner Notes"] = String(ownerNotes || "").trim();
       if (hasResponseNotes) fields["Response Notes"] = String(responseNotes || "").trim();
       if (hasNextFollowup) {
         fields["Next Follow-up Date"] = String(nextFollowupDate || "").trim() || null;
         if (nextFollowupHeader !== undefined) fields["Next Follow-up Header"] = String(nextFollowupHeader || "").trim() || null;
-        if (nextFollowupNotes !== undefined) fields["Next Follow-up Notes"] = String(nextFollowupNotes || "").trim() || null;
       }
+      if (nextFollowupNotes !== undefined) applyNextFollowupExternalToFields(fields, nextFollowupNotes);
 
       const [rec] = await base(BDR_TABLE).update([{ id: requestId, fields }]);
-      const dealIds = rec.fields.Deal;
       const brandName = rec.fields["Brand Name"] || "";
-      const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+      const dealId = firstLinkedDealIdFromBdrFields(rec.fields);
 
+      const followUpStakeholder = String(scheduledBy || "owner").toLowerCase() === "brand" ? "Brand" : "Owner";
       if (hasOwnerNotes) {
         await logActivity(base, dealId, brandName, "Notes updated", "Owner notes updated", "", "", "Owner");
-      } else if (hasNextFollowup) {
+      } else if (hasNextFollowup || hasFollowupNotesOnly) {
         const label = nextFollowupHeader ? `${nextFollowupHeader} – ` : "";
-        await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", "Owner");
-        await createFollowUpNotificationForOutreachHub(base, dealId, brandName, {
-          nextFollowupDate,
-          nextFollowupHeader,
-          nextFollowupNotes,
-        }, scheduledBy);
+        await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", followUpStakeholder);
+        if (hasNextFollowup) {
+          await createFollowUpNotificationForOutreachHub(base, dealId, brandName, {
+            nextFollowupDate,
+            nextFollowupHeader,
+            nextFollowupNotes,
+          }, scheduledBy);
+        }
+      } else if (hasResponseNotes) {
+        const customAction = typeof body.brandCrmAction === "string" && body.brandCrmAction.trim() ? body.brandCrmAction.trim().slice(0, 120) : "Information requested";
+        const customDetails =
+          typeof body.brandCrmDetails === "string" && body.brandCrmDetails.trim()
+            ? body.brandCrmDetails.trim().slice(0, 2000)
+            : String(responseNotes || "").trim().slice(0, 2000);
+        await logActivity(base, dealId, brandName, customAction, customDetails || "Response notes updated", "", "", "Brand");
       }
 
       return res.json({ success: true });
     } catch (err) {
       console.error("[brand-deal-requests] update (notes/followup) error:", err.message);
       let msg = err.message || "Update failed";
-      if (/Unknown field|does not exist/i.test(msg) && (hasOwnerNotes || hasNextFollowup)) {
-        msg = "Owner Notes and Next Follow-up Date fields may be missing in Airtable. Run: npm run add-brand-deal-requests-fields";
+      if (/Unknown field|does not exist/i.test(msg) && (hasOwnerNotes || hasNextFollowup || hasBrandInternal)) {
+        msg =
+          "Required Brand Deal Requests fields may be missing in Airtable. Add Long text: Next Follow-up Notes (Internal); Next Follow-up Notes (External). See api/brand-deal-requests.js AT_* constants.";
       }
       return res.status(500).json({ success: false, error: msg });
     }
@@ -758,12 +1075,13 @@ export async function updateStatus(req, res) {
   const ndaFields = buildNdaFields(body);
   const hasNdaFields = Object.keys(ndaFields).length > 0;
 
-  if (!hasValidStatus && !hasOwnerNotes && !hasResponseNotes && !hasNextFollowup && !hasNdaFields) {
+  if (!hasValidStatus && !hasOwnerNotes && !hasResponseNotes && !hasNextFollowup && !hasBrandInternal && !hasNdaFields) {
     const bodyKeys = Object.keys(body || {});
     console.warn("[brand-deal-requests] PATCH 400: request did not match any handler. requestId=", requestId, "body keys:", bodyKeys, "action=", action);
     return res.status(400).json({
       success: false,
-      error: "provide at least one of: status, responseNotes, ownerNotes, nextFollowupDate (with optional nextFollowupHeader, nextFollowupNotes), or NDA/Deal Room fields. For proposal save, include action: 'saveProposalDraft' and proposal fields.",
+      error:
+        "provide at least one of: status, responseNotes, ownerNotes, brandInternalNotes, appendBrandInternalNotes, nextFollowupDate (with optional nextFollowupHeader, nextFollowupNotes), or NDA/Deal Room fields. For proposal save, include action: 'saveProposalDraft' and proposal fields.",
     });
   }
   if (statusStr && !hasValidStatus) {
@@ -774,6 +1092,7 @@ export async function updateStatus(req, res) {
     const base = getAirtableBase();
     const now = new Date().toISOString();
     const fields = { "Last Updated": now, ...buildNdaFields(body) };
+    Object.assign(fields, await resolveBrandInternalNotesFields(base, requestId, brandInternalNotes, appendBrandInternalNotes));
     if (hasValidStatus) {
       fields["Status"] = statusStr;
       if (["Accepted", "Declined", "Responded - Accepted", "Responded - Declined"].includes(statusStr)) {
@@ -785,27 +1104,46 @@ export async function updateStatus(req, res) {
     if (nextFollowupDate !== undefined) {
       fields["Next Follow-up Date"] = String(nextFollowupDate || "").trim() || null;
       if (nextFollowupHeader !== undefined) fields["Next Follow-up Header"] = String(nextFollowupHeader || "").trim() || null;
-      if (nextFollowupNotes !== undefined) fields["Next Follow-up Notes"] = String(nextFollowupNotes || "").trim() || null;
+      applyNextFollowupExternalToFields(fields, nextFollowupNotes);
+    } else if (nextFollowupNotes !== undefined) {
+      applyNextFollowupExternalToFields(fields, nextFollowupNotes);
     }
 
     const [rec] = await base(BDR_TABLE).update([{ id: requestId, fields }]);
-    const dealIds = rec.fields.Deal;
     const brandName = rec.fields["Brand Name"] || "";
-    const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+    const dealId = firstLinkedDealIdFromBdrFields(rec.fields);
 
+    const followUpStakeholderMain = String(scheduledBy || "owner").toLowerCase() === "brand" ? "Brand" : "Owner";
     if (hasValidStatus) {
-      const activityAction = (statusStr === "Viewed" || statusStr === "Brand Viewed") ? "Brand Viewed" : statusStr;
+      let activityAction = statusStr;
+      if (statusStr === "Viewed" || statusStr === "Brand Viewed") activityAction = "Opportunity reviewed";
+      else if (statusStr === "Accepted") activityAction = "Marked interested";
+      else if (statusStr === "Pre-LOI" || statusStr === "Pre-LOI / Term Comparison") activityAction = "Terms preparation started";
+      else if (statusStr === "Declined" || statusStr === "Responded - Declined") activityAction = "Declined";
+      else if (statusStr === "More Info Requested") activityAction = "Information requested";
+      else if (statusStr === "Revisit Later") activityAction = "Revisit later";
       const activityDetails = statusStr === "Accepted"
-        ? (responseNotes || "The brand accepted the Project Opportunity")
+        ? (responseNotes || "Brand marked interest in advancing this opportunity.")
         : (statusStr === "Declined"
-          ? (responseNotes || "The brand declined the Project Opportunity")
+          ? (responseNotes || "The brand declined the opportunity.")
           : (responseNotes || `Status updated to ${statusStr}`));
-      await logActivity(base, dealId, brandName, activityAction, activityDetails, "", "", "Brand");
+      const viewFallbacks =
+        statusStr === "Viewed" || statusStr === "Brand Viewed" ? ACTIVITY_ACTION_SELECT_FALLBACKS.opportunityReviewed : undefined;
+      await logActivity(base, dealId, brandName, activityAction, activityDetails, "", "", "Brand", viewFallbacks);
+      if (nextFollowupDate !== undefined) {
+        const label = nextFollowupHeader ? `${nextFollowupHeader} – ` : "";
+        await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", followUpStakeholderMain);
+        await createFollowUpNotificationForOutreachHub(base, dealId, brandName, {
+          nextFollowupDate,
+          nextFollowupHeader,
+          nextFollowupNotes,
+        }, scheduledBy);
+      }
     } else if (ownerNotes !== undefined) {
       await logActivity(base, dealId, brandName, "Notes updated", "Owner notes updated", "", "", "Owner");
     } else if (nextFollowupDate !== undefined) {
       const label = nextFollowupHeader ? `${nextFollowupHeader} – ` : "";
-      await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", "Owner");
+      await logActivity(base, dealId, brandName, "Follow-up scheduled", "Next follow-up: " + label + (nextFollowupDate || "—"), "", "", followUpStakeholderMain);
       await createFollowUpNotificationForOutreachHub(base, dealId, brandName, {
         nextFollowupDate,
         nextFollowupHeader,
@@ -817,8 +1155,9 @@ export async function updateStatus(req, res) {
   } catch (err) {
     console.error("[brand-deal-requests] update error:", err.message);
     let msg = err.message || "Update failed";
-    if (/Unknown field|does not exist/i.test(msg) && (ownerNotes !== undefined || nextFollowupDate !== undefined)) {
-      msg = "Add 'Owner Notes' and 'Next Follow-up Date' fields to Brand Deal Requests in Airtable. See CONTACTED-BRANDS-PIPELINE.md.";
+    if (/Unknown field|does not exist/i.test(msg) && (ownerNotes !== undefined || nextFollowupDate !== undefined || hasBrandInternal)) {
+      msg =
+        "Add required Brand Deal Requests fields in Airtable (Owner Notes, Next Follow-up Date, Next Follow-up Notes (Internal), Next Follow-up Notes (External)). See api/brand-deal-requests.js.";
     }
     if (hasValidStatus && (statusStr === "Viewed" || statusStr === "Brand Viewed") && (/select|invalid|option|permission/i.test(msg))) {
       msg += " Ensure 'Brand Viewed' exists in Brand Deal Requests → Status (add manually in Airtable if needed).";
@@ -840,6 +1179,7 @@ export async function bulkUpdateStatus(req, res) {
   const pipelineStatuses = [
     "New", "Viewed", "Brand Viewed", "Sent / Awaiting Response",
     "Accepted", "Declined", "Archived", "Responded - Accepted", "Responded - Declined",
+    "More Info Requested", "Revisit Later",
     "Pre-LOI", "Pre-LOI / Term Comparison", "Finalist", "Deal Room Active",
     "Feasibility", "Feasibility In Progress", "LOI Signed", "LOI Signed / Platform Exit"
   ];
@@ -867,12 +1207,19 @@ export async function bulkUpdateStatus(req, res) {
     const records = await base(BDR_TABLE).update(toUpdate);
     for (let i = 0; i < records.length; i++) {
       const rec = records[i];
-      const dealIds = rec.fields.Deal;
       const brandName = rec.fields["Brand Name"] || "";
-      const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+      const dealId = firstLinkedDealIdFromBdrFields(rec.fields);
       const statusStr = String(updates[i].status || "").trim();
-      const activityAction = (statusStr === "Viewed" || statusStr === "Brand Viewed") ? "Brand Viewed" : statusStr;
-      await logActivity(base, dealId, brandName, activityAction, `Bulk update to ${statusStr}`, "", "", "Owner");
+      let activityAction = statusStr;
+      if (statusStr === "Viewed" || statusStr === "Brand Viewed") activityAction = "Opportunity reviewed";
+      else if (statusStr === "Accepted") activityAction = "Marked interested";
+      else if (statusStr === "Pre-LOI" || statusStr === "Pre-LOI / Term Comparison") activityAction = "Terms preparation started";
+      else if (statusStr === "Declined" || statusStr === "Responded - Declined") activityAction = "Declined";
+      else if (statusStr === "More Info Requested") activityAction = "Information requested";
+      else if (statusStr === "Revisit Later") activityAction = "Revisit later";
+      const bulkViewFallbacks =
+        statusStr === "Viewed" || statusStr === "Brand Viewed" ? ACTIVITY_ACTION_SELECT_FALLBACKS.opportunityReviewed : undefined;
+      await logActivity(base, dealId, brandName, activityAction, `Bulk update to ${statusStr}`, "", "", "Owner", bulkViewFallbacks);
     }
 
     res.json({ success: true, updated: updates.length });
@@ -944,7 +1291,10 @@ export async function getActivityLog(req, res) {
             records = altRecords.filter((r) => {
               const rDeals = r.fields?.Deal;
               const rIds = Array.isArray(rDeals) ? rDeals : rDeals ? [rDeals] : [];
-              return rIds.some((rid) => idSet.has(rid));
+              return rIds.some((rid) => {
+                const id = dealLinkToRecordId(rid);
+                return id && idSet.has(id);
+              });
             });
           } else if (brand) {
             const brandNorm = String(brand).trim().toLowerCase();
@@ -960,8 +1310,7 @@ export async function getActivityLog(req, res) {
     }
 
     const entries = records.map((r) => {
-      const dealIds = r.fields.Deal;
-      const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+      const dealId = firstLinkedDealIdFromBdrFields(r.fields);
       const stakeholderRaw = String(r.fields["Stakeholder"] || "").trim();
       const stakeholder = stakeholderRaw || (
         String(r.fields["Action"] || "").toLowerCase().includes("brand") ||
@@ -1005,8 +1354,7 @@ export async function getProposalDraft(req, res) {
     const proposalStatus = fields["Proposal Status"] || "";
     const brandName = fields["Brand Name"] || "";
     let projectName = "";
-    const dealIds = fields.Deal;
-    const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+    const dealId = firstLinkedDealIdFromBdrFields(fields);
     if (dealId) {
       try {
         const dealRec = await base(DEALS_TABLE).find(dealId);
@@ -1430,8 +1778,7 @@ export async function submitProposal(req, res) {
     if (proposalStatus === "Submitted") {
       return res.status(400).json({ success: false, error: "Proposal already submitted" });
     }
-    const dealIds = bdrRec.fields.Deal;
-    const dealId = Array.isArray(dealIds) && dealIds[0] ? dealIds[0] : null;
+    const dealId = firstLinkedDealIdFromBdrFields(bdrRec.fields);
     const brandName = bdrRec.fields["Brand Name"] || "";
     const now = new Date().toISOString();
 
@@ -1564,6 +1911,7 @@ function inferStakeholder(brandName, action, details, explicitStakeholder) {
 
   if (
     a.includes("brand viewed") ||
+    a.includes("opportunity reviewed") ||
     a.includes("accepted") ||
     a.includes("declined") ||
     a.includes("proposal submitted") ||
@@ -1584,41 +1932,87 @@ function inferStakeholder(brandName, action, details, explicitStakeholder) {
   return "Owner";
 }
 
-export async function logDealActivity(base, dealId, brandName, action, details, subject, messageSummary, stakeholder) {
+function isActivitySelectOrPermissionError(msg) {
+  return /select option|UNKNOWN_MULTIPLE_CHOICE|Insufficient permissions|invalid.*choice|INVALID_MULTIPLE_CHOICE_OPTIONS/i.test(
+    String(msg || ""),
+  );
+}
+
+async function createActivityLogRow(base, logFields) {
+  try {
+    await base(ACTIVITY_LOG_TABLE).create([{ fields: logFields }]);
+  } catch (e) {
+    const msg = String(e?.message || "");
+    if (/Unknown field|does not exist/i.test(msg) && logFields.Stakeholder != null) {
+      const fallbackFields = { ...logFields };
+      delete fallbackFields.Stakeholder;
+      await base(ACTIVITY_LOG_TABLE).create([{ fields: fallbackFields }]);
+      return;
+    }
+    throw e;
+  }
+}
+
+/**
+ * @param {string[] | undefined} actionFallbacks — extra Action single-select labels to try if Airtable rejects the primary.
+ */
+export async function logDealActivity(
+  base,
+  dealId,
+  brandName,
+  action,
+  details,
+  subject,
+  messageSummary,
+  stakeholder,
+  actionFallbacks,
+) {
   if (!dealId || !brandName) return;
+  const extras = Array.isArray(actionFallbacks) ? actionFallbacks : [];
+  const chain = [];
+  const seen = new Set();
+  for (const raw of [String(action || "").trim(), ...extras.map((x) => String(x || "").trim())]) {
+    if (!raw || seen.has(raw)) continue;
+    seen.add(raw);
+    chain.push(raw);
+  }
+  if (!chain.length) return;
   try {
     const now = new Date().toISOString();
-    const stakeholderValue = inferStakeholder(brandName, action, details, stakeholder);
-    const logFields = {
-      Deal: [dealId],
-      "Brand Name": String(brandName).trim(),
-      Stakeholder: stakeholderValue,
-      Action: String(action || "").trim(),
-      Details: String(details || "").trim(),
-      "Created At": now,
-    };
-    if (subject != null && String(subject).trim()) logFields["Subject"] = String(subject).trim();
-    if (messageSummary != null && String(messageSummary).trim()) logFields["Message_Summary"] = String(messageSummary).trim();
-    try {
-      await base(ACTIVITY_LOG_TABLE).create([{ fields: logFields }]);
-    } catch (e) {
-      const msg = String(e?.message || "");
-      if (/Unknown field|does not exist/i.test(msg)) {
-        // Backward compatibility when Stakeholder field is not yet created in Airtable.
-        const fallbackFields = { ...logFields };
-        delete fallbackFields.Stakeholder;
-        await base(ACTIVITY_LOG_TABLE).create([{ fields: fallbackFields }]);
-      } else {
+    const baseDetails = String(details || "").trim();
+    const subj = subject != null && String(subject).trim() ? String(subject).trim() : "";
+    const msgSum = messageSummary != null && String(messageSummary).trim() ? String(messageSummary).trim() : "";
+
+    let lastErr = null;
+    for (const act of chain) {
+      const stakeholderValue = inferStakeholder(brandName, act, baseDetails, stakeholder);
+      const logFields = {
+        Deal: [dealId],
+        "Brand Name": String(brandName).trim(),
+        Stakeholder: stakeholderValue,
+        Action: act,
+        Details: baseDetails,
+        "Created At": now,
+      };
+      if (subj) logFields["Subject"] = subj;
+      if (msgSum) logFields["Message_Summary"] = msgSum;
+      try {
+        await createActivityLogRow(base, logFields);
+        return;
+      } catch (e) {
+        lastErr = e;
+        if (isActivitySelectOrPermissionError(String(e?.message || ""))) continue;
         throw e;
       }
     }
+    console.warn("[brand-deal-requests] logActivity failed (exhausted Action fallbacks):", lastErr?.message || lastErr);
   } catch (e) {
     console.warn("[brand-deal-requests] logActivity failed:", e.message);
   }
 }
 
-async function logActivity(base, dealId, brandName, action, details, subject, messageSummary, stakeholder) {
-  return logDealActivity(base, dealId, brandName, action, details, subject, messageSummary, stakeholder);
+async function logActivity(base, dealId, brandName, action, details, subject, messageSummary, stakeholder, actionFallbacks) {
+  return logDealActivity(base, dealId, brandName, action, details, subject, messageSummary, stakeholder, actionFallbacks);
 }
 
 async function saveToCommunicationLog(base, dealId, brandName, subject, body, recipient, timestamp) {
@@ -1791,7 +2185,7 @@ function escapeFormula(s) {
 function getStageFromStatus(status) {
   const s = String(status || "").trim();
   if (["New", "Viewed", "Sent / Awaiting Response"].includes(s)) return "03 Owner Offer Request";
-  if (["Accepted", "Responded - Accepted"].includes(s)) return "04 Brand Response";
+  if (["Accepted", "Responded - Accepted", "More Info Requested", "Revisit Later"].includes(s)) return "04 Brand Response";
   if (["Declined", "Archived", "Responded - Declined"].includes(s)) return "04 Brand Response";
   if (["Pre-LOI", "Pre-LOI / Term Comparison"].includes(s)) return "05 Pre-LOI Term Comparison";
   if (s === "Finalist") return "06 Finalist Confirmation";

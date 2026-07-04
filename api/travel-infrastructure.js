@@ -1,135 +1,185 @@
-import Airtable from "airtable";
+/**
+ * Travel Infrastructure / Radar Map Points API.
+ *
+ * GET /api/travel-infrastructure
+ * GET /api/radar-map-points/travel-infrastructure
+ */
 
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY_READONLY }).base(process.env.AIRTABLE_BASE_ID_ALT);
+import {
+  fetchTravelInfrastructureRecords,
+  verifyTravelInfrastructureTable,
+} from "../lib/travel-infrastructure/airtable-travel-infrastructure-io.js";
+import {
+  groupTravelInfrastructureLayers,
+  calculateTravelInfrastructureStatistics,
+} from "../lib/travel-infrastructure/radar-map-layers.js";
+import { getTravelInfrastructureAirtableConfig } from "../lib/travel-infrastructure/travel-infrastructure-base.js";
+import { TRAVEL_INFRA_LAYER_FILTERS } from "../lib/travel-infrastructure/airtable-travel-infrastructure-fields.js";
+import {
+  previewTravelInfrastructureImport,
+  commitTravelInfrastructureImport,
+} from "../lib/travel-infrastructure/import-commit.js";
 
-// Field mappings for travel infrastructure data
-const F = {
-  infrastructure: {
-    table: "Travel Infrastructure data",
-    id: "id",
-    name: "Name",
-    type: "Type",
-    lat: "Latitude",
-    lng: "Longitude",
-    city: "City",
-    country: "Country",
-    region: "Region"
-  }
-};
-
-// Get travel infrastructure data
-export async function getTravelInfrastructure(req, res) {
-  try {
-    const { type, country, region } = req.query;
-    
-    // Build filter formula
-    let filterFormula = '';
-    const conditions = [];
-    
-    if (type) {
-      conditions.push(`{${F.infrastructure.type}} = '${type}'`);
-    }
-    
-    if (country) {
-      conditions.push(`{${F.infrastructure.country}} = '${country}'`);
-    }
-    
-    if (region) {
-      conditions.push(`{${F.infrastructure.region}} = '${region}'`);
-    }
-    
-    if (conditions.length > 0) {
-      filterFormula = `AND(${conditions.join(', ')})`;
-    }
-    
-    // Fetch infrastructure data
-    const selectOptions = {
-      fields: [
-        F.infrastructure.name,
-        F.infrastructure.type,
-        F.infrastructure.lat,
-        F.infrastructure.lng,
-        F.infrastructure.city,
-        F.infrastructure.country,
-        F.infrastructure.region
-      ],
-      maxRecords: 1000
-    };
-    
-    // Only add filterByFormula if we have a valid filter
-    if (filterFormula && filterFormula.trim() !== '') {
-      selectOptions.filterByFormula = filterFormula;
-    }
-    
-    const records = await base(F.infrastructure.table)
-      .select(selectOptions)
-      .all();
-    
-    // Format response
-    const formattedInfrastructure = records.map(record => ({
-      id: record.id,
-      name: record.fields[F.infrastructure.name] || 'Unknown',
-      type: record.fields[F.infrastructure.type] || 'Unknown',
-      lat: parseFloat(record.fields[F.infrastructure.lat]) || 0,
-      lng: parseFloat(record.fields[F.infrastructure.lng]) || 0,
-      city: record.fields[F.infrastructure.city] || 'Unknown City',
-      country: record.fields[F.infrastructure.country] || 'Unknown Country',
-      region: record.fields[F.infrastructure.region] || 'Unknown Region'
-    }));
-    
-    // Calculate statistics
-    const stats = calculateInfrastructureStatistics(formattedInfrastructure);
-    
-    res.json({
-      success: true,
-      infrastructure: formattedInfrastructure,
-      statistics: stats,
-      totalCount: formattedInfrastructure.length
-    });
-    
-  } catch (error) {
-    console.error("Error getting travel infrastructure data:", error);
-    res.status(500).json({ 
-      error: "Internal Server Error", 
-      details: error.message 
-    });
-  }
+function parseBool(v) {
+  return v === "1" || v === "true" || v === "yes";
 }
 
-// Calculate infrastructure statistics
-function calculateInfrastructureStatistics(infrastructure) {
-  const totalInfrastructure = infrastructure.length;
-  
-  // Count by type
-  const typeCounts = {};
-  infrastructure.forEach(item => {
-    const type = item.type || 'Unknown';
-    typeCounts[type] = (typeCounts[type] || 0) + 1;
-  });
-  
-  // Count by country
-  const countryCounts = {};
-  infrastructure.forEach(item => {
-    const country = item.country || 'Unknown';
-    countryCounts[country] = (countryCounts[country] || 0) + 1;
-  });
-  
-  // Count by region
-  const regionCounts = {};
-  infrastructure.forEach(item => {
-    const region = item.region || 'Unknown';
-    regionCounts[region] = (regionCounts[region] || 0) + 1;
-  });
-  
+function buildRadarResponse(result, query) {
+  const pointTypeFilter = query.pointTypeFilter || query.layerFilter || "";
+  const grouped = groupTravelInfrastructureLayers(result.points, pointTypeFilter);
+  const stats = calculateTravelInfrastructureStatistics(result.points);
+
   return {
-    totalInfrastructure,
-    typeCounts,
-    countryCounts,
-    regionCounts
+    success: true,
+    setupNeeded: false,
+    tableName: result.tableName,
+    infrastructure: result.infrastructure,
+    points: grouped.points,
+    layers: grouped.layers,
+    layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
+    statistics: stats,
+    totalCount: result.infrastructure.length,
   };
 }
 
+async function handleTravelInfrastructureRequest(req, res) {
+  const cfg = getTravelInfrastructureAirtableConfig();
+  if (!cfg) {
+    return res.status(500).json({
+      success: false,
+      setupNeeded: true,
+      error: "airtable_config_missing",
+      message: "Missing Airtable API key or Platform base id for travel infrastructure.",
+      infrastructure: [],
+      points: [],
+      layers: {},
+      layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
+      statistics: {
+        totalInfrastructure: 0,
+        typeCounts: {},
+        subtypeCounts: {},
+        countryCounts: {},
+        regionCounts: {},
+        mapIconCounts: {},
+      },
+      totalCount: 0,
+    });
+  }
 
+  const verified = await verifyTravelInfrastructureTable(cfg.baseId, cfg.apiKey);
+  if (!verified.ok) {
+    return res.status(200).json({
+      success: true,
+      setupNeeded: true,
+      message: "Travel Infrastructure Data table is not configured yet.",
+      infrastructure: [],
+      points: [],
+      layers: {},
+      layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
+      statistics: {
+        totalInfrastructure: 0,
+        typeCounts: {},
+        subtypeCounts: {},
+        countryCounts: {},
+        regionCounts: {},
+        mapIconCounts: {},
+      },
+      totalCount: 0,
+    });
+  }
 
+  try {
+    const query = {
+      type: req.query.type,
+      pointType: req.query.pointType,
+      country: req.query.country,
+      region: req.query.region,
+      pointTypeFilter: req.query.pointTypeFilter || req.query.layerFilter,
+      includeHidden: parseBool(req.query.includeHidden),
+    };
 
+    const result = await fetchTravelInfrastructureRecords(query);
+    if (result.error === "airtable_config_missing") {
+      return res.status(500).json({
+        success: false,
+        setupNeeded: true,
+        error: result.error,
+        message: "Missing Airtable configuration.",
+        infrastructure: [],
+        points: [],
+      });
+    }
+    if (result.error === "travel_infrastructure_table_missing") {
+      return res.status(200).json({
+        success: true,
+        setupNeeded: true,
+        message: "Travel Infrastructure Data table is not configured yet.",
+        tableName: result.tableName,
+        infrastructure: [],
+        points: [],
+        layers: {},
+        layerFilters: TRAVEL_INFRA_LAYER_FILTERS,
+        statistics: {
+          totalInfrastructure: 0,
+          typeCounts: {},
+          subtypeCounts: {},
+          countryCounts: {},
+          regionCounts: {},
+          mapIconCounts: {},
+        },
+        totalCount: 0,
+      });
+    }
 
+    return res.json(buildRadarResponse(result, query));
+  } catch (error) {
+    console.error("[travel-infrastructure] API error:", error);
+    return res.status(500).json({
+      success: false,
+      error: "server_error",
+      message: error.message || "Failed to load travel infrastructure.",
+      details: error.message,
+    });
+  }
+}
+
+/** @deprecated alias — same handler */
+export async function getTravelInfrastructure(req, res) {
+  return handleTravelInfrastructureRequest(req, res);
+}
+
+export async function getRadarMapTravelInfrastructurePoints(req, res) {
+  return handleTravelInfrastructureRequest(req, res);
+}
+
+export async function postTravelInfrastructureImportPreview(req, res) {
+  try {
+    const body = req.body && typeof req.body === "object" ? req.body : {};
+    const result = await previewTravelInfrastructureImport(body);
+    if (!result.ok) return res.status(400).json(result);
+    return res.json(result);
+  } catch (err) {
+    console.error("[travel-infrastructure] import-preview", err);
+    return res.status(500).json({ ok: false, error: "server_error", message: err.message });
+  }
+}
+
+export async function postTravelInfrastructureImportCommit(req, res) {
+  try {
+    const body = req.body && typeof req.body === "object" ? req.body : {};
+    const records = Array.isArray(body.records) ? body.records : [];
+    if (!records.length) {
+      return res.status(400).json({ ok: false, error: "validation_failed", message: "records required" });
+    }
+    const result = await commitTravelInfrastructureImport(records, {
+      skipDuplicates: body.skipDuplicates !== false,
+      market: body.market,
+      country: body.country,
+      region: body.region,
+    });
+    return res.status(result.ok ? 201 : 400).json(result);
+  } catch (err) {
+    console.error("[travel-infrastructure] import-commit", err);
+    return res.status(500).json({ ok: false, error: "server_error", message: err.message });
+  }
+}

@@ -1,0 +1,336 @@
+/**
+ * Operator DNA — Case Studies (Brand Explorer property-example-card parity)
+ */
+
+.be-atelier-oe.odna-case-studies-be .property-example-grid,
+.odna-case-studies-be .property-example-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.odna-case-studies-be:not(.is-case-studies-expanded) .property-example-card--collapsed,
+.odna-proof-studies-expander:not(.is-case-studies-expanded) .proof-card--collapsed {
+  display: none;
+}
+
+.odna-case-studies-be__actions {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.odna-case-studies-be__actions .btn.odna-case-studies-expand {
+  min-width: 220px;
+}
+
+@media (max-width: 1100px) {
+  .odna-case-studies-be .property-example-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.odna-case-studies-be .property-example-card {
+  background: var(--panel, #101935);
+  border: 0.6px solid var(--border, #37446b);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.be-atelier-oe.odna-case-studies-be .property-example-card__top,
+.odna-case-studies-be .property-example-card__top {
+  position: relative;
+  height: 220px;
+  min-height: 220px;
+  background: var(--panel, #212c4d);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  overflow: hidden;
+}
+
+.odna-case-studies-be .property-example-card__top img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.odna-case-studies-be .property-example-card__top::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(8, 15, 37, 0.78) 100%);
+  z-index: 0;
+}
+
+.odna-case-studies-be .property-example-card__badge,
+.odna-case-studies-be .property-example-card__titles {
+  position: relative;
+  z-index: 1;
+}
+
+.odna-case-studies-be .property-example-card__badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(16, 25, 53, 0.92);
+  border: 0.6px solid var(--border, #37446b);
+  color: #fff;
+}
+
+.odna-case-studies-be .property-example-card__titles h4 {
+  margin: 0 0 2px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.odna-case-studies-be .property-example-card__titles span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.odna-case-studies-be .property-example-card__mid {
+  padding: 14px 16px 12px;
+  flex: 1;
+}
+
+.odna-case-studies-be .property-example-card__meta {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.be-atelier-oe.odna-case-studies-be .property-example-card__scenario,
+.odna-case-studies-be .property-example-card__scenario {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--be-footprint-scenario-accent, #c4d600);
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.odna-case-studies-be .property-example-card__mid p {
+  margin: 0;
+  font-size: 13px;
+  color: #d7e4fa;
+  line-height: 1.55;
+}
+
+.odna-case-studies-be .property-example-card__bottom {
+  padding: 0 16px 16px;
+}
+
+.odna-case-studies-be .property-example-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.odna-case-studies-be .tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8fc3ff;
+  background: rgba(108, 114, 255, 0.1);
+  border: 0.6px solid rgba(108, 114, 255, 0.35);
+  border-radius: 6px;
+}
+
+.odna-case-studies-be .property-example-card .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 0.6px solid var(--border, #37446b);
+  background: var(--panel, #101935);
+  color: #fff;
+  font-family: inherit;
+}
+
+.odna-case-studies-be .property-example-card .btn:hover {
+  background: #212c4d;
+  border-color: #7e89ac;
+}
+
+/* Case study modal (Brand Explorer parity) */
+.be-case-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 15, 37, 0.75);
+  z-index: 210000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.be-case-modal-overlay--open {
+  display: flex;
+}
+
+#odnaCaseStudyModal .be-case-modal {
+  max-width: 560px;
+}
+
+.be-case-modal {
+  background: var(--panel, #101935);
+  border: 0.6px solid var(--border, #37446b);
+  border-radius: 12px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+}
+
+.be-case-modal__title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.odna-cs-modal__subtitle {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #9fb0d0;
+}
+
+.odna-cs-modal__narrative {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+#odnaCaseStudyModal .odna-cs-modal__narrative--five-part {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+  #odnaCaseStudyModal .odna-cs-modal__narrative--five-part {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .odna-cs-modal__narrative,
+  #odnaCaseStudyModal .odna-cs-modal__narrative--five-part {
+    grid-template-columns: 1fr;
+  }
+}
+
+.odna-cs-modal__narrative-col {
+  background: rgba(33, 44, 77, 0.45);
+  border: 0.6px solid var(--border, #37446b);
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-height: 0;
+}
+
+/* Modal detail blocks + tags — parity with brand-explorer-atelier-oe-panels.css */
+#odnaCaseStudyModal .be-case-detail-block {
+  margin-bottom: 14px;
+}
+
+#odnaCaseStudyModal .be-case-detail-block h4 {
+  margin: 0 0 6px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #7e89ac;
+  line-height: 1.3;
+}
+
+#odnaCaseStudyModal .be-case-detail-block p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #d7e4fa;
+  line-height: 1.55;
+}
+
+#odnaCaseStudyModal .be-case-modal__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+#odnaCaseStudyModal .be-case-modal__tags .tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  font-family: inherit;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #d4e157;
+  background: rgba(196, 214, 0, 0.12);
+  border: 0.6px solid rgba(196, 214, 0, 0.42);
+  border-radius: 6px;
+}
+
+#odnaCaseStudyModal .be-case-modal__tags-empty {
+  font-size: 0.8125rem;
+  color: #7e89ac;
+}
+
+.be-case-modal__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.be-case-modal .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 0.6px solid var(--border, #37446b);
+  background: var(--panel, #101935);
+  color: #fff;
+  font-family: inherit;
+}
+
+.be-case-modal .btn:hover {
+  background: #212c4d;
+  border-color: #7e89ac;
+}

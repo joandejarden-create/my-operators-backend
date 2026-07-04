@@ -82,7 +82,7 @@ class ProductionBrandDashboard {
             
             // New accessible tables
             brandFootprintTableId: 'tbl108u1oTAwC5XTT',      // Brand Setup - Brand Footprint table
-            userManagementTableId: 'tblQEpYKf2aYNKKjw',      // User Management table
+            userManagementTableId: 'tbl6shiyz2wdUqE5F',      // Platform users (Users table)
             feeStructureTableId: 'tblIzHQUgqrziKg10',        // Brand Setup - Fee Structure table
             brandStandardsTableId: 'tbl4MdXjldw56Kkrw',      // Brand Setup - Brand Standards table
             
@@ -3111,7 +3111,7 @@ Please tell me which field contains the amenities data.`);
         const startTime = performance.now();
         
         try {
-            this.showLoading(true, 'Loading deals...', '2-3 seconds');
+            this.showLoading(true, 'Loading Deals…');
             await this.showLoadingWave(true);
             
             console.log('🔄 Starting backend deal loading process...');
@@ -3146,10 +3146,7 @@ Please tell me which field contains the amenities data.`);
 
     async fetchDealsFromBackend() {
         const apiBase = this.getApiBaseUrl();
-        const response = await fetch(`${apiBase}/api/my-deals`, {
-            method: 'GET',
-            headers: { 'Accept': 'application/json' }
-        });
+        const response = await window.DealalityMemberstackAuth.fetchMyDealsList(`${apiBase}/api/my-deals`);
         if (!response.ok) {
             throw new Error(`Backend API error: ${response.status}`);
         }
@@ -6784,7 +6781,7 @@ Success rate: ${((successful/(successful+failed))*100).toFixed(1)}%`;
                 // Clear brand data cache when brand changes to get fresh data
                 console.log('🔄 Clearing brand data cache for fresh Airtable data...');
                 this.cache.brandData.clear();
-            this.showLoading(true, 'Loading deals for selected brand...', '1-2 seconds');
+            this.showLoading(true, 'Loading Deals for Selected Brand…');
             await this.loadDeals();
         });
         } else {
@@ -6857,7 +6854,7 @@ Success rate: ${((successful/(successful+failed))*100).toFixed(1)}%`;
         window.open(`mailto:${deal.ownerEmail}?subject=${subject}&body=${body}`);
     }
 
-    showLoading(show, message = 'Processing...', estimatedTime = '2-3 seconds') {
+    showLoading(show, message = 'Processing...', _estimatedTime = '') {
         const systemStatus = document.getElementById('systemStatus');
         if (systemStatus) {
             if (show) {
@@ -6866,7 +6863,10 @@ Success rate: ${((successful/(successful+failed))*100).toFixed(1)}%`;
                 const statusTime = systemStatus.querySelector('.status-time');
                 
                 if (statusText) statusText.textContent = message;
-                if (statusTime) statusTime.textContent = `Estimated time: ${estimatedTime}`;
+                if (statusTime) {
+                    statusTime.textContent = '';
+                    statusTime.hidden = true;
+                }
                 
                 // Show the system status
                 systemStatus.style.display = 'block';
@@ -6899,7 +6899,7 @@ Success rate: ${((successful/(successful+failed))*100).toFixed(1)}%`;
                                 </div>
                             </div>
                         </div>
-                        <div class="loading-wave-text">Loading deals...</div>
+                        <div class="loading-wave-text">Loading Deals…</div>
                     </div>
                 `;
             } else {

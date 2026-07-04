@@ -116,7 +116,7 @@
         <div class="main-content">
             <!-- Directory View -->
             <div id="viewDirectory" class="view-panel">
-                <div class="breadcrumb"><a href="/">Home</a><span>></span><a href="/brand-library">Deal Toolbox</a><span>></span><span>Brand Explorer</span></div>
+                <div class="breadcrumb"><a href="/">Home</a><span>></span><a href="/brand-library">Browse brands</a><span>></span><span>Brand Explorer</span></div>
                 <h1 class="page-title">Brand Directory</h1>
                 <div class="filters-row">
                     <div class="filter-group">
@@ -139,7 +139,7 @@
                     <button type="button" class="btn btn-primary" id="compareSelectedBtn">Compare Selected (0)</button>
                 </div>
                 <div class="results-count" id="resultsCount">Loading...</div>
-                <div class="loading" id="loadingState">Loading brands...</div>
+                <div class="loading" id="loadingState">Loading Brands…</div>
                 <div class="brands-grid hidden" id="brandsGrid"></div>
                 <div class="empty-state hidden" id="emptyState"><p>No brands match your filters.</p></div>
             </div>
@@ -180,6 +180,7 @@
         </div>
     </div>
 
+    <script src="/js/dealality-memberstack-auth.js"></script>
     <script>
 (function() {
     const escapeHtml = (s) => (s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -289,7 +290,7 @@
     async function openBrandDetail(brandKey) {
         showView('detail');
         const content = document.getElementById('detailContent');
-        content.innerHTML = '<div class="loading">Loading brand...</div>';
+        content.innerHTML = '<div class="loading">Loading Brand…</div>';
         try {
             const res = await fetch('/api/brand-explorer/brand/' + encodeURIComponent(brandKey));
             const data = await res.json();
@@ -372,7 +373,7 @@
             return;
         }
         const keys = Array.from(selectedForCompare).slice(0, 3);
-        content.innerHTML = '<div class="loading">Loading compare data...</div>';
+        content.innerHTML = '<div class="loading">Loading Compare Data…</div>';
         Promise.all(keys.map(k => fetch('/api/brand-explorer/brand/' + encodeURIComponent(k)).then(r => r.json())))
             .then(results => {
                 const compareData = results.filter(r => r.success).map(r => ({ key: r.brand_key, name: r.partner_page?.brand_name || r.brand_key, cf: r.compare_fields || {} }));
@@ -402,7 +403,7 @@
 
     async function loadDeals() {
         try {
-            const res = await fetch('/api/my-deals');
+            const res = await window.DealalityMemberstackAuth.fetchMyDealsList('/api/my-deals');
             const data = await res.json();
             deals = (data.deals || []).slice(0, 100);
             const sel = document.getElementById('fitDealSelect');
@@ -475,5 +476,7 @@
     fetchBrands();
 })();
     </script>
+
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

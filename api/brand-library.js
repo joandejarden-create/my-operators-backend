@@ -1,4 +1,24 @@
 import Airtable from "airtable";
+import { sanitizeExternalCopy } from "../lib/external-owner-copy.mjs";
+import {
+  BRAND_STATUS_ACTIVE_FORMULA,
+  isBrandStatusActive,
+} from "../lib/brand-status-active.js";
+import { resolvePortfolioLadderTier } from "../lib/brand-explorer-portfolio-ladder.mjs";
+import { portfolioLadderTierForAirtableBrandName } from "../scripts/lib/choice-chi-portfolio-context.mjs";
+
+/** Strip internal ETL/editor phrasing from string fields on nested brand payloads. */
+function sanitizeStringFieldsDeep(obj) {
+  if (obj == null) return obj;
+  if (typeof obj === "string") return sanitizeExternalCopy(obj);
+  if (Array.isArray(obj)) return obj.map((item) => sanitizeStringFieldsDeep(item));
+  if (typeof obj !== "object") return obj;
+  const out = { ...obj };
+  for (const [k, v] of Object.entries(out)) {
+    out[k] = sanitizeStringFieldsDeep(v);
+  }
+  return out;
+}
 
 // Lazy initialization - only connect when needed
 function getBase() {
@@ -6,6 +26,12 @@ function getBase() {
         throw new Error("Airtable API credentials not configured");
     }
     return new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
+}
+
+/** When true, GET /api/brand-library/brand attaches read-only brand.censusSummary from Hotel Census. */
+function isBrandExplorerCensusMetricsEnabled() {
+  const v = (process.env.BRAND_EXPLORER_CENSUS_METRICS || "").trim().toLowerCase();
+  return v === "1" || v === "true" || v === "yes";
 }
 
 // Field mappings for Brand Library
@@ -23,8 +49,10 @@ function getBase() {
 // | 5 Deal Terms           | Brand Setup - Deal Terms              | yes           | yes          |
 // | 6 Brand/OP Support     | Brand Setup - Operational Support     | yes           | yes          |
 // | 7 Legal Terms          | Brand Setup - Legal Terms             | yes           | yes          |
+// | Brand Explorer         | Brand Setup - Brand Explorer Presentation | yes (GET) | optional PATCH later |
 //
 // Preload: Brand Setup page pulls from these tables; FORM_TO_AIRTABLE_* and F.* define column ↔ form field mapping.
+// Inventory export (no Airtable call): npm run export-brand-setup-airtable-inventory → docs/generated/
 const F = {
   brandBasics: {
     table: "Brand Setup - Brand Basics",
@@ -48,7 +76,10 @@ const F = {
     sustainability: "Sustainability Positioning",
     status: "Brand Status",
     architecture: "Brand Architecture",
-    profileAnalysis: "Brand Profile Analysis"
+    regionOffered: "Region Offered",
+    profileAnalysis: "Brand Profile Analysis",
+    explorerHeroVerification: "Explorer Hero Verification",
+    explorerHeroDataSource: "Explorer Hero Data Source"
   },
   brandFootprint: {
     table: "Brand Setup - Brand Footprint",
@@ -82,6 +113,11 @@ const F = {
   },
   sustainabilityEsg: {
     table: "Brand Setup - Sustainability & ESG",
+    brandName: "Brand Name"
+  },
+  /** 1:n content blocks for Brand Explorer combined (slot_key → body). See docs/brand-explorer-presentation-slots.md */
+  brandExplorerPresentation: {
+    table: "Brand Setup - Brand Explorer Presentation",
     brandName: "Brand Name"
   }
 };
@@ -310,6 +346,186 @@ async function findLinkedRecordByBrand(base, tableName, brandRecordId, brandName
   return null;
 }
 
+/**
+ * All rows in a child table linked to a Brand Basics record (1:n).
+ * Used for Brand Explorer presentation blocks and similar collections.
+ */
+async function selectAllLinkedToBrandBasics(base, tableName, brandRecordId, brandName) {
+  if (!brandRecordId) return [];
+  const escapedId = String(brandRecordId).replace(/"/g, '\\"');
+  const escapedName = (brandName || '').replace(/"/g, '\\"');
+  const linkFieldNames = ['Brand', 'Brand_Basic_ID', 'Brand Setup - Brand Basics', 'Brand Basics'];
+
+  const merged = [];
+  const seen = new Set();
+  const pushAll = (records) => {
+    for (const rec of records) {
+      if (rec && !seen.has(rec.id)) {
+        seen.add(rec.id);
+        merged.push(rec);
+      }
+    }
+  };
+
+  // In filterByFormula, linked-record fields compare to the linked row's *primary field* text, not record ids.
+  // FIND(recId, ARRAYJOIN({Brand})) is therefore unreliable for "rows linked to this Basics id".
+  // Prefer Brand Name (set by apply-brand-explorer-presentation) and {Brand} = Basics name or id, then scan.
+  if (escapedName) {
+    try {
+      pushAll(await base(tableName).select({ filterByFormula: `{Brand Name} = "${escapedName}"`, maxRecords: 500 }).all());
+    } catch (_) {
+      /* optional column */
+    }
+    try {
+      pushAll(await base(tableName).select({ filterByFormula: `{Brand} = "${escapedName}"`, maxRecords: 500 }).all());
+    } catch (_) {
+      /* link field may not be named Brand */
+    }
+  }
+  try {
+    pushAll(await base(tableName).select({ filterByFormula: `{Brand} = "${escapedId}"`, maxRecords: 500 }).all());
+  } catch (_) {}
+
+  if (merged.length > 0) return merged;
+
+  for (const linkField of linkFieldNames) {
+    try {
+      const formula = `FIND("${escapedId}", ARRAYJOIN({${linkField}})) > 0`;
+      const records = await base(tableName).select({ filterByFormula: formula }).all();
+      if (records.length > 0) return records;
+    } catch (_) {
+      continue;
+    }
+  }
+
+  try {
+    const allRecords = await base(tableName).select({ maxRecords: 2000 }).all();
+    for (const rec of allRecords) {
+      const fields = rec.fields || {};
+      for (const key of Object.keys(fields)) {
+        const val = fields[key];
+        if (
+          Array.isArray(val) &&
+          val.length > 0 &&
+          typeof val[0] === 'string' &&
+          val[0].startsWith('rec') &&
+          val.includes(brandRecordId)
+        ) {
+          pushAll([rec]);
+          break;
+        }
+      }
+    }
+  } catch (_) {}
+
+  return merged;
+}
+
+/** First HTTPS URL from an Airtable attachments-style field (array of { url, ... }). */
+function firstAttachmentUrlFromFields(fields) {
+  if (!fields || typeof fields !== "object") return "";
+  const names = ["Image", "Images", "Scenario Image", "Attachments", "Photo", "Photos"];
+  const tryArray = (val) => {
+    if (typeof val === "string") {
+      const s = val.trim();
+      if (s.startsWith("http") || s.startsWith("//")) return s.startsWith("//") ? `https:${s}` : s;
+      return "";
+    }
+    if (!Array.isArray(val) || val.length === 0) return "";
+    for (const att of val) {
+      const u = getUrlFromAttachment(att);
+      if (u) return u;
+    }
+    return "";
+  };
+  for (const name of names) {
+    const u = tryArray(getFieldValue(fields, name));
+    if (u) return u;
+  }
+  for (const key of Object.keys(fields)) {
+    if (!/image|attachment|photo/i.test(key) || /logo|icon|favicon/i.test(key)) continue;
+    const u = tryArray(fields[key]);
+    if (u) return u;
+  }
+  return "";
+}
+
+/** Normalize Airtable rows → brand.brandExplorer.blocks for GET /api/brand-library/brand */
+function normalizeBrandExplorerPresentationRecords(records) {
+  const list = Array.isArray(records) ? records : [];
+  const blocks = [];
+  for (const rec of list) {
+    const f = rec.fields || {};
+    const activeRaw = getFieldValue(f, 'Active');
+    const inactive =
+      activeRaw === false ||
+      String(activeRaw).toLowerCase() === 'no' ||
+      String(activeRaw).toLowerCase() === 'false' ||
+      activeRaw === 0;
+    if (inactive) continue;
+    const slotKey = (getFieldValue(f, 'Slot Key') ?? getFieldValue(f, 'slot_key') ?? '').toString().trim();
+    if (!slotKey) continue;
+    const title = sanitizeExternalCopy((getFieldValue(f, 'Title') ?? '').toString().trim());
+    const body = sanitizeExternalCopy((getFieldValue(f, 'Body') ?? '').toString().trim());
+    const sortRaw = getFieldValue(f, 'Sort Order') ?? getFieldValue(f, 'sort_order');
+    let sort = 0;
+    if (typeof sortRaw === 'number' && !Number.isNaN(sortRaw)) sort = sortRaw;
+    else if (sortRaw != null && sortRaw !== '') sort = parseFloat(String(sortRaw).replace(/,/g, '')) || 0;
+    const imageUrl = firstAttachmentUrlFromFields(f);
+    const summaryUrlRaw = (
+      getFieldValue(f, "Summary URL") ??
+      getFieldValue(f, "View Summary URL") ??
+      getFieldValue(f, "Case summary URL") ??
+      ""
+    )
+      .toString()
+      .trim();
+    const summaryUrl =
+      /^https?:\/\//i.test(summaryUrlRaw) && !/\s/.test(summaryUrlRaw) ? summaryUrlRaw : "";
+    function csPickField(names) {
+      for (let i = 0; i < names.length; i++) {
+        const v = getFieldValue(f, names[i]);
+        if (v != null && String(v).trim() !== "") return String(v).trim();
+      }
+      return "";
+    }
+    const caseSummaryOverview = csPickField(["Case Summary Overview", "case_summary_overview"]);
+    const caseSummaryOwnerObjective = csPickField([
+      "Case Summary Owner Objective",
+      "case_summary_owner_objective",
+    ]);
+    const caseSummaryBrandRelevance = csPickField([
+      "Case Summary Brand Relevance",
+      "case_summary_brand_relevance",
+    ]);
+    const caseSummaryInterpretation = csPickField([
+      "Case Summary Interpretation",
+      "Case Summary Dealality Interpretation",
+      "case_summary_interpretation",
+    ]);
+    const caseSummaryTags = csPickField(["Case Summary Tags", "case_summary_tags"]);
+    blocks.push({
+      recordId: rec.id,
+      slotKey,
+      title,
+      body,
+      sort,
+      imageUrl,
+      summaryUrl,
+      caseSummaryOverview: sanitizeExternalCopy(caseSummaryOverview),
+      caseSummaryOwnerObjective: sanitizeExternalCopy(caseSummaryOwnerObjective),
+      caseSummaryBrandRelevance: sanitizeExternalCopy(caseSummaryBrandRelevance),
+      caseSummaryInterpretation: sanitizeExternalCopy(caseSummaryInterpretation),
+      caseSummaryTags: sanitizeExternalCopy(caseSummaryTags),
+    });
+  }
+  blocks.sort((a, b) => {
+    if (a.sort !== b.sort) return a.sort - b.sort;
+    return String(a.recordId).localeCompare(String(b.recordId));
+  });
+  return { version: 1, blocks };
+}
+
 // Normalize Airtable single-select / multi-select to display string
 function valueToStr(v) {
   if (v == null) return '';
@@ -327,6 +543,21 @@ function valueToStr(v) {
     return parts.join(', ');
   }
   return '';
+}
+
+function valuesToStrList(v) {
+  if (v == null) return [];
+  if (Array.isArray(v)) {
+    return v
+      .map((item) => {
+        if (typeof item === 'string') return item.trim();
+        if (item && typeof item === 'object' && typeof item.name === 'string') return item.name.trim();
+        return '';
+      })
+      .filter(Boolean);
+  }
+  const one = valueToStr(v);
+  return one ? [one] : [];
 }
 
 // Convert a record's fields to display-friendly key-value (skip Brand link, IDs)
@@ -355,18 +586,23 @@ const LOGO_FIELD_NAMES = [
 ];
 
 function getUrlFromAttachment(att) {
-  if (!att || typeof att !== 'object') return '';
+  if (!att || typeof att !== "object") return "";
   const url =
     att.url ||
     (att.thumbnails && att.thumbnails.large && att.thumbnails.large.url) ||
     (att.thumbnails && att.thumbnails.small && att.thumbnails.small.url);
-  if (url && typeof url === 'string' && url.startsWith('http')) return url;
+  if (url && typeof url === "string") {
+    const u = url.trim();
+    if (u.startsWith("http") || u.startsWith("//")) return u.startsWith("//") ? `https:${u}` : u;
+  }
   // Fallback: any string property that looks like an image URL
   for (const v of Object.values(att)) {
-    if (typeof v === 'string' && v.startsWith('http')) return v;
-    if (v && typeof v === 'object' && v.url && typeof v.url === 'string') return v.url;
+    if (typeof v === "string" && (v.startsWith("http") || v.startsWith("//"))) {
+      return v.startsWith("//") ? `https:${v.trim()}` : v.trim();
+    }
+    if (v && typeof v === "object" && v.url && typeof v.url === "string") return v.url;
   }
-  return '';
+  return "";
 }
 
 function extractLogoUrl(fields) {
@@ -480,10 +716,50 @@ export async function getOperationalSupportByBrandId(req, res) {
   }
 }
 
+const BRAND_LIST_CACHE_TTL_MS = Math.max(
+  5000,
+  parseInt(process.env.BRAND_LIBRARY_LIST_CACHE_TTL_MS || "120000", 10) || 120000
+);
+const BRAND_LIST_CACHE_DISABLED =
+  process.env.DISABLE_BRAND_LIBRARY_LIST_CACHE === "true" ||
+  process.env.DISABLE_BRAND_LIBRARY_LIST_CACHE === "1";
+/** @type {Map<string, { at: number, payload: object }>} */
+const brandListCache = new Map();
+/** @type {Map<string, Promise<object>>} */
+const brandListLoadPromise = new Map();
+
+export function clearBrandListCache() {
+  brandListCache.clear();
+  brandListLoadPromise.clear();
+}
+
 // Get all brands for the library listing (use REST API so we get exact field names e.g. Brand Architecture)
 export async function getBrandLibraryBrands(req, res) {
   try {
     const allStatuses = req.query?.allStatuses === '1' || req.query?.allStatuses === 'true';
+    const cacheKey = allStatuses ? "all" : "active";
+  const bypassCache =
+    req.query?.refresh === "1" ||
+    req.query?.refresh === "true" ||
+    req.headers["x-bypass-brand-list-cache"] === "1";
+
+  if (!bypassCache && !BRAND_LIST_CACHE_DISABLED) {
+    const hit = brandListCache.get(cacheKey);
+    if (hit && Date.now() - hit.at < BRAND_LIST_CACHE_TTL_MS) {
+      res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+      res.setHeader("X-Brand-List-Cache", "HIT");
+      return res.json(hit.payload);
+    }
+    const inFlight = brandListLoadPromise.get(cacheKey);
+    if (inFlight) {
+      const payload = await inFlight;
+      res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+      res.setHeader("X-Brand-List-Cache", "HIT-INFLIGHT");
+      return res.json(payload);
+    }
+  }
+
+  const loadPromise = (async () => {
     console.log('[Brand Library] API called: fetching brands...', allStatuses ? '(all statuses)' : '(Active only)');
     const baseId = process.env.AIRTABLE_BASE_ID;
     const apiKey = process.env.AIRTABLE_API_KEY;
@@ -491,7 +767,7 @@ export async function getBrandLibraryBrands(req, res) {
 
     const tableName = encodeURIComponent(F.brandBasics.table);
     const useFilter = !allStatuses;
-    const formula = encodeURIComponent("FIND('Active', {Brand Status}) > 0");
+    const formula = encodeURIComponent(BRAND_STATUS_ACTIVE_FORMULA);
 
     // Fetch all records from Airtable REST API (paginated)
     let allRecords = [];
@@ -523,18 +799,43 @@ export async function getBrandLibraryBrands(req, res) {
       return '';
     }
 
+    function valuesToStrList(v) {
+      if (v == null) return [];
+      if (Array.isArray(v)) {
+        return v
+          .map((item) => {
+            if (typeof item === 'string') return item.trim();
+            if (item && typeof item === 'object' && typeof item.name === 'string') return item.name.trim();
+            return '';
+          })
+          .filter(Boolean);
+      }
+      const one = valueToStr(v);
+      return one ? [one] : [];
+    }
+
     // Airtable omits empty fields from the response — so scan all records to find the architecture column name
     const allFieldNames = new Set();
     allRecords.forEach(rec => { Object.keys(rec.fields || {}).forEach(k => allFieldNames.add(k)); });
     const architectureFieldKey = [...allFieldNames].find(k => k.toLowerCase().includes('architecture')) || null;
+    const regionOfferedFieldKey =
+      [...allFieldNames].find((k) => k.toLowerCase() === 'region offered') ||
+      [...allFieldNames].find((k) => k.toLowerCase().includes('region offered')) ||
+      null;
     const firstFields = allRecords[0] && allRecords[0].fields ? allRecords[0].fields : {};
 
     const brandList = allRecords.map(rec => {
       const fields = rec.fields || {};
       const archVal = architectureFieldKey ? valueToStr(fields[architectureFieldKey]) : valueToStr(fields['Brand Architecture'] ?? fields[F.brandBasics.architecture]);
+      const regionRaw =
+        (regionOfferedFieldKey && fields[regionOfferedFieldKey]) ??
+        fields[F.brandBasics.regionOffered] ??
+        fields['Region Offered'];
+      const name = (fields[F.brandBasics.name] || '').toString().trim() || 'Unknown Brand';
+      const chiLadderTier = portfolioLadderTierForAirtableBrandName(name);
       return {
         id: rec.id,
-        name: (fields[F.brandBasics.name] || '').toString().trim() || 'Unknown Brand',
+        name,
         logo: extractLogoUrl(fields),
         website: (fields["Brand Website"] || fields["Website"] || '').toString().trim(),
         parentCompany: (fields[F.brandBasics.parentCompany] || '').toString().trim(),
@@ -542,49 +843,93 @@ export async function getBrandLibraryBrands(req, res) {
         brandModel: valueToStr(fields[F.brandBasics.brandModel]),
         serviceModel: valueToStr(fields[F.brandBasics.serviceModel]),
         architecture: archVal,
-        status: (fields[F.brandBasics.status] || '').toString().trim(),
+        regionOffered: valuesToStrList(regionRaw),
+        status: valueToStr(fields[F.brandBasics.status]),
         yearBrandLaunched: (fields[F.brandBasics.yearLaunched] || '').toString().trim(),
         positioning: (fields[F.brandBasics.positioning] || '').toString().trim(),
-        tagline: (fields[F.brandBasics.tagline] || '').toString().trim()
+        tagline: (fields[F.brandBasics.tagline] || '').toString().trim(),
+        ...(typeof chiLadderTier === 'number' ? { portfolioLadderTier: chiLadderTier } : {})
       };
     });
 
-    brandList.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' }));
+    const visibleBrands = allStatuses
+      ? brandList
+      : brandList.filter((b) => isBrandStatusActive(b.status));
+
+    visibleBrands.sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' }));
 
     const parentCompanies = [...new Set(brandList.map(b => (b.parentCompany || '').trim()).filter(Boolean))].sort();
     const chainScales = [...new Set(brandList.map(b => (b.chainScale || '').trim()).filter(Boolean))].sort();
     const brandModels = [...new Set(brandList.map(b => (b.brandModel || '').trim()).filter(Boolean))].sort();
     const serviceModels = [...new Set(brandList.map(b => (b.serviceModel || '').trim()).filter(Boolean))].sort();
     const architectures = [...new Set(brandList.map(b => (b.architecture || '').trim()).filter(Boolean))].sort();
+    const regionsOffered = [
+      ...new Set(
+        brandList.flatMap((b) =>
+          (Array.isArray(b.regionOffered) ? b.regionOffered : [])
+            .map((r) => String(r).trim())
+            .filter(Boolean)
+        )
+      ),
+    ].sort();
 
     const withArch = brandList.filter(b => (b.architecture || '').trim()).length;
     console.log('[Brand Library] Architecture field key:', architectureFieldKey, '| brands with architecture:', withArch, '/', brandList.length, '| options:', architectures);
+    const withRegion = brandList.filter((b) => Array.isArray(b.regionOffered) && b.regionOffered.length).length;
+    console.log('[Brand Library] Region Offered field key:', regionOfferedFieldKey, '| brands with region:', withRegion, '/', brandList.length, '| options:', regionsOffered);
 
     const filterOptions = {
       parentCompanies,
       chainScales,
       brandModels,
       serviceModels,
-      architectures
+      architectures,
+      regionsOffered
     };
 
     const payload = {
       success: true,
-      brands: brandList,
-      totalCount: brandList.length,
-      filterOptions
+      brands: visibleBrands,
+      totalCount: visibleBrands.length,
+      filterOptions,
+      statusFilter: allStatuses ? "all" : "active",
     };
     if (allRecords.length > 0) {
       payload._debug = { airtableColumnLabels: [...allFieldNames].sort() };
     }
-    res.json(payload);
+    if (!BRAND_LIST_CACHE_DISABLED) {
+      brandListCache.set(cacheKey, { at: Date.now(), payload });
+    }
+    return payload;
+  })();
 
+  if (!bypassCache && !BRAND_LIST_CACHE_DISABLED) {
+    brandListLoadPromise.set(cacheKey, loadPromise);
+  }
+  try {
+    const payload = await loadPromise;
+    res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+    res.setHeader("X-Brand-List-Cache", bypassCache ? "BYPASS" : "MISS");
+    res.json(payload);
   } catch (error) {
     console.error("Error fetching brands:", error);
-    res.status(500).json({ 
-      error: "Internal Server Error", 
-      details: error.message 
+    res.status(500).json({
+      error: "Internal Server Error",
+      details: error.message
     });
+  } finally {
+    if (!bypassCache && !BRAND_LIST_CACHE_DISABLED) {
+      brandListLoadPromise.delete(cacheKey);
+    }
+  }
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: "Internal Server Error",
+        details: error.message,
+      });
+    }
   }
 }
 
@@ -599,7 +944,7 @@ export async function getBrandsGroupedByParentCompany(req, res) {
           F.brandBasics.parentCompany,
           F.brandBasics.status
         ],
-        filterByFormula: "FIND('Active', {Brand Status}) > 0",
+        filterByFormula: BRAND_STATUS_ACTIVE_FORMULA,
         maxRecords: 500
       })
       .all();
@@ -651,6 +996,7 @@ export async function getBrandsGroupedByParentCompany(req, res) {
 // Get detailed brand information for a specific brand
 export async function getBrandLibraryBrandById(req, res) {
   try {
+    res.setHeader("Cache-Control", "no-store, max-age=0");
     const { brandId } = req.query;
     
     if (!brandId) {
@@ -907,6 +1253,14 @@ export async function getBrandLibraryBrandById(req, res) {
           };
         });
 
+        let totalPipelineHotels = 0;
+        let totalPipelineRooms = 0;
+        standardRegions.forEach((region) => {
+          const rd = regionalDistribution[region] || {};
+          totalPipelineHotels += rd.pipelineHotels || 0;
+          totalPipelineRooms += rd.pipelineRooms || 0;
+        });
+
         // Preload form values using same mapping as write: form field name → Airtable column
         const LOCATION_TYPE_FORM_NAMES = ['locationTypeUrban', 'locationTypeSuburban', 'locationTypeResort', 'locationTypeAirport', 'locationTypeSmallMetro', 'locationTypeInterstate'];
         const EXPERIENCE_PERCENT_FORM_NAMES = ['newBuildExperience', 'conversionExperience', 'turnaroundExperience', 'renovationExperience', 'typicalManagedPercent', 'typicalFranchisedPercent'];
@@ -944,6 +1298,8 @@ export async function getBrandLibraryBrandById(req, res) {
           totalConversionHotels,
           totalNewBuildRooms,
           totalConversionRooms,
+          totalPipelineHotels,
+          totalPipelineRooms,
           newBuildPercent: Math.round(newBuildPercent * 10) / 10,
           conversionPercent: Math.round(conversionPercent * 10) / 10,
           newBuildRoomsPercent: Math.round(newBuildRoomsPercent * 10) / 10,
@@ -959,6 +1315,18 @@ export async function getBrandLibraryBrandById(req, res) {
           locationDistribution,
           regionalDistribution
         };
+
+        // Atelier / legacy read `priorityCities`; Brand Setup + Airtable use `specificMarkets` only.
+        // Mirror so both exist on GET until a single name is chosen; canonical storage stays `Specific Markets/Cities`.
+        const sm = footprintData.formValues && footprintData.formValues.specificMarkets;
+        if (sm != null && String(sm).trim() !== "") {
+          const v = typeof sm === "string" ? sm.trim() : sm;
+          const pc = footprintData.formValues.priorityCities;
+          if (pc == null || (typeof pc === "string" && pc.trim() === "")) {
+            footprintData.formValues.priorityCities = v;
+          }
+          footprintData.priorityCities = footprintData.formValues.priorityCities || v;
+        }
       }
     } catch (error) {
       console.error("Error fetching brand footprint:", error);
@@ -1047,7 +1415,12 @@ export async function getBrandLibraryBrandById(req, res) {
           if ((formId.endsWith('Basis') || formId === 'typicalApplicationFeeBasis') && val) {
             val = normalizeFeeBasisValue(val);
           }
-          feeStructureData[formId] = val !== undefined && val !== null && val !== '' ? (typeof val === 'string' ? val.trim() : val) : '';
+          feeStructureData[formId] =
+            val !== undefined && val !== null && val !== ""
+              ? typeof val === "string"
+                ? sanitizeExternalCopy(val.trim())
+                : val
+              : "";
         }
       }
     } catch (error) {
@@ -1244,6 +1617,8 @@ export async function getBrandLibraryBrandById(req, res) {
       }
     }
     // Get Project Fit data (linked table). Build formValues so Brand Setup can prefill by form field name.
+    // Default JSON: brand.projectFit = { formValues } only (no duplicate flat Airtable keys on projectFit).
+    // Optional: ?projectFitExtras=1 or ?debug=projectFit merges fieldsToDisplayObject(raw) onto projectFit for auditing.
     let projectFitData = {};
     let projectFitRawForDebug = null;
     try {
@@ -1251,7 +1626,6 @@ export async function getBrandLibraryBrandById(req, res) {
       if (pfRec) {
         const raw = pfRec.fields || {};
         if (req.query && req.query.debug === "projectFit") projectFitRawForDebug = raw;
-        projectFitData = fieldsToDisplayObject(raw);
         const formValues = {};
         const isChecked = (v) => {
           if (v === true || v === 1) return true;
@@ -1377,7 +1751,19 @@ export async function getBrandLibraryBrandById(req, res) {
             formValues[formName] = typeof val === 'string' ? val.trim() : valueToStr(val) || '';
           }
         }
-        projectFitData.formValues = formValues;
+        projectFitData = { formValues };
+        const exposeProjectFitLoose =
+          req.query &&
+          (req.query.projectFitExtras === "1" ||
+            req.query.projectFitExtras === "true" ||
+            req.query.debug === "projectFit");
+        if (exposeProjectFitLoose) {
+          const loose = fieldsToDisplayObject(raw);
+          for (const [k, v] of Object.entries(loose)) {
+            if (Object.prototype.hasOwnProperty.call(projectFitData, k)) continue;
+            projectFitData[k] = v;
+          }
+        }
       }
     } catch (err) {
       console.error("Error fetching project fit:", err.message);
@@ -1482,6 +1868,20 @@ export async function getBrandLibraryBrandById(req, res) {
       loadWarnings.push("Sustainability & ESG");
     }
 
+    let brandExplorerPresentation = { version: 1, blocks: [] };
+    try {
+      const exRecs = await selectAllLinkedToBrandBasics(
+        base,
+        F.brandExplorerPresentation.table,
+        brandRecordId,
+        brandName
+      );
+      brandExplorerPresentation = normalizeBrandExplorerPresentationRecords(exRecs);
+    } catch (err) {
+      console.error("Error fetching Brand Explorer Presentation:", err.message);
+      loadWarnings.push("Brand Explorer Presentation");
+    }
+
     const logoUrl = extractLogoUrl(brandFields);
 
     // Build Basics from same mapping used for PATCH (FORM_TO_AIRTABLE_BASICS) so read and write stay in sync
@@ -1497,14 +1897,16 @@ export async function getBrandLibraryBrandById(req, res) {
       portfolioPerformance: portfolioPerformanceData,
       projectFit: projectFitData,
       operationalSupport: operationalSupportData,
-      legalTerms: legalTermsData
+      legalTerms: legalTermsData,
+      brandExplorer: brandExplorerPresentation
     };
     for (const [formKey, airtableKey] of Object.entries(FORM_TO_AIRTABLE_BASICS)) {
       const raw = brandFields[airtableKey];
-      if (formKey === 'targetGuestSegments') {
-        brandDetails[formKey] = Array.isArray(raw) ? raw.map((s) => valueToStr(s)).filter(Boolean) : [];
+      if (formKey === 'targetGuestSegments' || formKey === 'regionOffered') {
+        brandDetails[formKey] = valuesToStrList(raw);
       } else if (raw !== undefined && raw !== null && raw !== '') {
-        brandDetails[formKey] = typeof raw === 'string' ? raw.trim() : valueToStr(raw) || raw;
+        const v = typeof raw === 'string' ? raw.trim() : valueToStr(raw) || raw;
+        brandDetails[formKey] = typeof v === 'string' ? sanitizeExternalCopy(v) : v;
       } else {
         brandDetails[formKey] = '';
       }
@@ -1512,7 +1914,27 @@ export async function getBrandLibraryBrandById(req, res) {
     for (const [k, v] of Object.entries(sustainabilityEsgData)) {
       brandDetails[k] = v;
     }
+    brandDetails.portfolioLadderTier = resolvePortfolioLadderTier(brandDetails);
     if (loadWarnings.length > 0) brandDetails.loadWarnings = loadWarnings;
+
+    if (isBrandExplorerCensusMetricsEnabled()) {
+      try {
+        const { buildBrandCensusSummary } = await import(
+          "../lib/hotel-census/build-brand-census-summary.js"
+        );
+        brandDetails.censusSummary = await buildBrandCensusSummary(
+          brandName,
+          brandDetails.parentCompany || null
+        );
+      } catch (censusErr) {
+        console.error("Error building brand censusSummary:", censusErr.message);
+        brandDetails.censusSummary = {
+          available: false,
+          fallbackRecommended: true,
+          warnings: [`CENSUS_SUMMARY_ERROR: ${censusErr.message}`],
+        };
+      }
+    }
 
     if (req.query && req.query.debug === "projectFit") {
       brandDetails.projectFitDebug = {
@@ -1539,7 +1961,7 @@ export async function getBrandLibraryBrandById(req, res) {
 
     res.json({
       success: true,
-      brand: brandDetails
+      brand: sanitizeStringFieldsDeep(brandDetails),
     });
 
   } catch (error) {
@@ -1576,7 +1998,10 @@ const FORM_TO_AIRTABLE_BASICS = {
   sustainabilityPositioning: F.brandBasics.sustainability,
   brandWebsite: "Brand Website",
   brandStatus: F.brandBasics.status,
-  brandProfileAnalysis: F.brandBasics.profileAnalysis
+  brandProfileAnalysis: F.brandBasics.profileAnalysis,
+  regionOffered: F.brandBasics.regionOffered,
+  explorerHeroVerification: F.brandBasics.explorerHeroVerification,
+  explorerHeroDataSource: F.brandBasics.explorerHeroDataSource
 };
 
 // Brand Setup - Brand Footprint: form input name → Airtable column name. Same mapping for read (preload) and future write.
@@ -2046,6 +2471,7 @@ export async function updateBrandBasicsById(req, res) {
       return res.status(400).json({ success: false, error: "No fields to update" });
     }
     const updated = await base(F.brandBasics.table).update(recordId, fields);
+    clearBrandListCache();
     res.json({
       success: true,
       brand: {
@@ -2233,7 +2659,21 @@ export async function updateBrandFootprintByBrandId(req, res) {
     if (!recordId || !recordId.startsWith("rec")) {
       return res.status(400).json({ success: false, error: "Valid brand record ID is required" });
     }
-    const body = req.body && typeof req.body === "object" ? req.body : {};
+    const rawBody = req.body && typeof req.body === "object" ? req.body : {};
+    const body = { ...rawBody };
+    // Accept legacy/alternate key: same Airtable column as specificMarkets (keep both until cleanup).
+    const smEmpty =
+      body.specificMarkets === undefined ||
+      body.specificMarkets === null ||
+      (typeof body.specificMarkets === "string" && body.specificMarkets.trim() === "");
+    const pcVal = body.priorityCities;
+    const pcPresent =
+      pcVal !== undefined &&
+      pcVal !== null &&
+      (typeof pcVal !== "string" || pcVal.trim() !== "");
+    if (smEmpty && pcPresent) {
+      body.specificMarkets = typeof pcVal === "string" ? pcVal.trim() : pcVal;
+    }
     const base = getBase();
     const brandName = await getBrandNameFromBasics(base, recordId);
     const LOCATION_TYPE_FORM_NAMES = ["locationTypeUrban", "locationTypeSuburban", "locationTypeResort", "locationTypeAirport", "locationTypeSmallMetro", "locationTypeInterstate"];
@@ -2876,4 +3316,303 @@ function parsePercent(value) {
   if (typeof value === 'number') return value;
   const parsed = parseFloat(String(value).replace(/[^0-9.-]/g, ''));
   return isNaN(parsed) ? 0 : parsed;
+}
+
+/**
+ * Single source of truth for Brand Setup tab labels (align with comment block at top of this file).
+ * Used by buildBrandSetupAirtableMappingInventory() for CSV/JSON exports.
+ */
+const BRAND_SETUP_TAB_BY_TABLE = {
+  [F.brandBasics.table]: "0 · Brand Basics",
+  [F.sustainabilityEsg.table]: "0 · Sustainability & ESG",
+  [F.brandFootprint.table]: "1 · Brand Footprint",
+  [F.projectFit.table]: "2 · Project Fit",
+  [F.portfolioPerformance.table]: "3 · Portfolio & Performance",
+  [F.brandStandards.table]: "4 · Brand Standards",
+  [F.feeStructure.table]: "5 · Fee Structure",
+  [F.dealTerms.table]: "5 · Deal Terms",
+  [F.operationalSupport.table]: "6 · Operational Support",
+  [F.legalTerms.table]: "7 · Legal Terms",
+  [F.loyaltyCommercial.table]: "Loyalty & Commercial",
+  [F.brandExplorerPresentation.table]: "Brand Explorer · Presentation"
+};
+
+const PROJECT_FIT_CHECKBOX_COLUMN_GROUPS = [
+  { mappingSource: "PROJECT_FIT_ACCEPTABLE_PROJECT_TYPES_COLUMNS", formGroup: "idealProjectTypes", cols: PROJECT_FIT_ACCEPTABLE_PROJECT_TYPES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_ACCEPTABLE_BUILDING_TYPES_COLUMNS", formGroup: "idealBuildingTypes", cols: PROJECT_FIT_ACCEPTABLE_BUILDING_TYPES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_ACCEPTABLE_AGREEMENT_TYPES_COLUMNS", formGroup: "idealAgreementTypes", cols: PROJECT_FIT_ACCEPTABLE_AGREEMENT_TYPES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_ACCEPTABLE_PROJECT_STAGES_COLUMNS", formGroup: "projectStage", cols: PROJECT_FIT_ACCEPTABLE_PROJECT_STAGES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_PRIORITY_MARKETS_COLUMNS", formGroup: "priorityMarkets (checkbox legacy)", cols: PROJECT_FIT_PRIORITY_MARKETS_COLUMNS },
+  { mappingSource: "PROJECT_FIT_MARKETS_TO_AVOID_COLUMNS", formGroup: "marketsToAvoid (checkbox legacy)", cols: PROJECT_FIT_MARKETS_TO_AVOID_COLUMNS },
+  { mappingSource: "PROJECT_FIT_OWNER_INVOLVEMENT_COLUMNS", formGroup: "ownerInvolvementLevel", cols: PROJECT_FIT_OWNER_INVOLVEMENT_COLUMNS },
+  { mappingSource: "PROJECT_FIT_OWNER_NON_NEGOTIABLE_TYPES_COLUMNS", formGroup: "ownerNonNegotiableTypes", cols: PROJECT_FIT_OWNER_NON_NEGOTIABLE_TYPES_COLUMNS },
+  { mappingSource: "PROJECT_FIT_CAPITAL_STATUS_COLUMNS", formGroup: "capitalStatus", cols: PROJECT_FIT_CAPITAL_STATUS_COLUMNS },
+  { mappingSource: "PROJECT_FIT_BRAND_STATUS_COLUMNS", formGroup: "brandStatus", cols: PROJECT_FIT_BRAND_STATUS_COLUMNS }
+];
+
+/**
+ * Returns every Airtable column / form key claimed by Brand Library mappers (no Airtable network call).
+ * Use for diffing against your base schema and for filling the UI demand matrix (add brand JSON + consumer columns manually).
+ */
+export function buildBrandSetupAirtableMappingInventory() {
+  const generatedAt = new Date().toISOString();
+  const rows = [];
+  const tabFor = (table) => BRAND_SETUP_TAB_BY_TABLE[table] || "";
+
+  function addRow(partial) {
+    const t = partial.airtableTable;
+    rows.push({
+      airtableTable: t,
+      brandSetupTab: partial.brandSetupTab ?? tabFor(t),
+      mappingSource: partial.mappingSource,
+      mappingKind: partial.mappingKind,
+      apiFormKey: partial.apiFormKey ?? "",
+      airtableColumn: partial.airtableColumn ?? "",
+      notes: partial.notes ?? ""
+    });
+  }
+
+  for (const [apiFormKey, airtableKey] of Object.entries(FORM_TO_AIRTABLE_BASICS)) {
+    addRow({
+      airtableTable: F.brandBasics.table,
+      mappingSource: "FORM_TO_AIRTABLE_BASICS",
+      mappingKind: apiFormKey === "targetGuestSegments" ? "json_array" : "scalar",
+      apiFormKey,
+      airtableColumn: typeof airtableKey === "string" ? airtableKey : String(airtableKey)
+    });
+  }
+  addRow({
+    airtableTable: F.brandBasics.table,
+    mappingSource: "F.brandBasics",
+    mappingKind: "scalar",
+    apiFormKey: "(logo)",
+    airtableColumn: F.brandBasics.logo,
+    notes: "GET only; PATCH via logo upload if applicable"
+  });
+
+  for (const [apiFormKey, airtableCol] of Object.entries(SUSTAINABILITY_ESG_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.sustainabilityEsg.table,
+      mappingSource: "SUSTAINABILITY_ESG_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey,
+      airtableColumn: airtableCol
+    });
+  }
+
+  for (const { form, airtable } of FOOTPRINT_FORM_TO_AIRTABLE) {
+    addRow({
+      airtableTable: F.brandFootprint.table,
+      mappingSource: "FOOTPRINT_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey: form,
+      airtableColumn: airtable
+    });
+  }
+
+  for (const { form, airtable } of LOYALTY_COMMERCIAL_FORM_TO_AIRTABLE) {
+    addRow({
+      airtableTable: F.loyaltyCommercial.table,
+      mappingSource: "LOYALTY_COMMERCIAL_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey: form,
+      airtableColumn: airtable,
+      notes: "Some percent fields stored as 0–1 in Airtable on PATCH"
+    });
+  }
+
+  for (const [apiFormKey, cols] of Object.entries(FEE_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.feeStructure.table,
+      mappingSource: "FEE_FORM_TO_AIRTABLE",
+      mappingKind: Array.isArray(cols) && cols.length > 1 ? "alternates" : "scalar",
+      apiFormKey,
+      airtableColumn: Array.isArray(cols) ? cols.join(" | ") : String(cols)
+    });
+  }
+
+  for (const [apiFormKey, cols] of Object.entries(DEAL_TERMS_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.dealTerms.table,
+      mappingSource: "DEAL_TERMS_FORM_TO_AIRTABLE",
+      mappingKind: Array.isArray(cols) && cols.length > 1 ? "alternates" : "scalar",
+      apiFormKey,
+      airtableColumn: Array.isArray(cols) ? cols.join(" | ") : String(cols)
+    });
+  }
+
+  for (const [apiFormKey, cols] of Object.entries(PORTFOLIO_PERFORMANCE_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.portfolioPerformance.table,
+      mappingSource: "PORTFOLIO_PERFORMANCE_FORM_TO_AIRTABLE",
+      mappingKind: Array.isArray(cols) && cols.length > 1 ? "alternates" : "scalar",
+      apiFormKey,
+      airtableColumn: Array.isArray(cols) ? cols.join(" | ") : String(cols)
+    });
+  }
+  addRow({
+    airtableTable: F.portfolioPerformance.table,
+    mappingSource: "PORTFOLIO_PATCH",
+    mappingKind: "multi_select",
+    apiFormKey: "reportTypes",
+    airtableColumn: "Report Types Required",
+    notes: "Also see REPORT_TYPES_CHECKBOX_COLUMNS for checkbox-style columns"
+  });
+  for (const { airtableColumn, formValue } of REPORT_TYPES_CHECKBOX_COLUMNS) {
+    addRow({
+      airtableTable: F.portfolioPerformance.table,
+      mappingSource: "REPORT_TYPES_CHECKBOX_COLUMNS",
+      mappingKind: "portfolio_report_checkbox",
+      apiFormKey: `reportTypes:${formValue}`,
+      airtableColumn,
+      notes: "Boolean checkbox column paired with reportTypes"
+    });
+  }
+
+  for (const [apiFormKey, cols] of Object.entries(BRAND_STANDARDS_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.brandStandards.table,
+      mappingSource: "BRAND_STANDARDS_FORM_TO_AIRTABLE",
+      mappingKind: "amenity_alternates",
+      apiFormKey,
+      airtableColumn: Array.isArray(cols) ? cols.join(" | ") : String(cols),
+      notes: "GET uses additional Brand Standards columns; see brandStandardsData in getBrandLibraryBrandById"
+    });
+  }
+
+  for (const { form, airtable } of LEGAL_TERMS_FORM_TO_AIRTABLE) {
+    addRow({
+      airtableTable: F.legalTerms.table,
+      mappingSource: "LEGAL_TERMS_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey: form,
+      airtableColumn: airtable
+    });
+  }
+
+  for (const { form, airtable } of OPERATIONAL_SUPPORT_FORM_TO_AIRTABLE) {
+    addRow({
+      airtableTable: F.operationalSupport.table,
+      mappingSource: "OPERATIONAL_SUPPORT_FORM_TO_AIRTABLE",
+      mappingKind: "scalar",
+      apiFormKey: form,
+      airtableColumn: airtable
+    });
+  }
+  addRow({
+    airtableTable: F.operationalSupport.table,
+    mappingSource: "OPERATIONAL_SUPPORT_GET",
+    mappingKind: "multi_select",
+    apiFormKey: "typesOfIncentives",
+    airtableColumn: "Incentive Types",
+    notes: "Multi-select; options in OPERATIONAL_SUPPORT_INCENTIVE_TYPES_OPTIONS"
+  });
+  for (const { formKey, airtableCol } of OPERATIONAL_SUPPORT_SERVICE_MULTI_SELECT) {
+    addRow({
+      airtableTable: F.operationalSupport.table,
+      mappingSource: "OPERATIONAL_SUPPORT_SERVICE_MULTI_SELECT",
+      mappingKind: "multi_select",
+      apiFormKey: formKey,
+      airtableColumn: airtableCol
+    });
+  }
+  for (const [formKey, options] of Object.entries(OPERATIONAL_SUPPORT_SERVICE_COLUMNS)) {
+    for (const opt of options) {
+      addRow({
+        airtableTable: F.operationalSupport.table,
+        mappingSource: "OPERATIONAL_SUPPORT_SERVICE_COLUMNS",
+        mappingKind: "op_service_option",
+        apiFormKey: `${formKey}:${opt.formValue}`,
+        airtableColumn: opt.airtable,
+        notes: "Option label for multi-select value"
+      });
+    }
+  }
+
+  for (const [formName, airtableCol] of Object.entries(PROJECT_FIT_FORM_TO_AIRTABLE)) {
+    addRow({
+      airtableTable: F.projectFit.table,
+      mappingSource: "PROJECT_FIT_FORM_TO_AIRTABLE",
+      mappingKind: PROJECT_FIT_NUMERIC_FIELDS.has(formName) ? "numeric" : "scalar",
+      apiFormKey: formName,
+      airtableColumn: airtableCol
+    });
+  }
+  const multiSelectProjectFit = [
+    { formKey: "idealProjectTypes", airtableCol: "Acceptable Project Type" },
+    { formKey: "idealBuildingTypes", airtableCol: "Acceptable Building Types" },
+    { formKey: "idealAgreementTypes", airtableCol: "Acceptable Agreements Type" },
+    { formKey: "projectStage", airtableCol: "Acceptable Project Stages" },
+    { formKey: "ownerInvolvementLevel", airtableCol: "Acceptable Owner Involvement Levels" },
+    { formKey: "ownerNonNegotiableTypes", airtableCol: "Owner Non-Negotiables" },
+    { formKey: "capitalStatus", airtableCol: "Acceptable Capital Status at Engagement" },
+    { formKey: "brandStatus", airtableCol: "Brand Status Scenarios You Will Consider" },
+    { formKey: "feeExpectationVsMarket", airtableCol: "Acceptable Fee Expectations vs Market" },
+    { formKey: "exitHorizon", airtableCol: "Acceptable Exit Horizon" }
+  ];
+  for (const { formKey, airtableCol } of multiSelectProjectFit) {
+    addRow({
+      airtableTable: F.projectFit.table,
+      mappingSource: "updateProjectFitByBrandId.multiSelectProjectFit",
+      mappingKind: "multi_select",
+      apiFormKey: formKey,
+      airtableColumn: airtableCol
+    });
+  }
+  for (const g of PROJECT_FIT_CHECKBOX_COLUMN_GROUPS) {
+    for (const { airtableColumn, formValue } of g.cols) {
+      addRow({
+        airtableTable: F.projectFit.table,
+        mappingSource: g.mappingSource,
+        mappingKind: "project_fit_checkbox",
+        apiFormKey: `${g.formGroup}→${formValue}`,
+        airtableColumn,
+        notes: "Checkbox-style column; form aggregates into multi-select or checkboxes"
+      });
+    }
+  }
+
+  const explorerSchemaCols = [
+    { col: "Brand", notes: "Link to Brand Setup - Brand Basics (required)" },
+    { col: "Brand Name", notes: "Optional text match fallback" },
+    { col: "Slot Key", notes: "Stable id; see docs/brand-explorer-presentation-slots.md" },
+    { col: "Title", notes: "Optional" },
+    { col: "Body", notes: "Long text" },
+    {
+      col: "Case Summary Overview",
+      notes: "Optional long text for modal Property overview (else derived from Body)",
+    },
+    {
+      col: "Case Summary Owner Objective",
+      notes: "Optional long text for modal Owner objective (else Location · Asset from Body)",
+    },
+    {
+      col: "Case Summary Brand Relevance",
+      notes: "Optional long text for modal Brand relevance (else Why the brand was relevant from Body)",
+    },
+    {
+      col: "Case Summary Interpretation",
+      notes: "Optional long text for modal Dealality interpretation (else owner takeaway from Body)",
+    },
+    {
+      col: "Case Summary Tags",
+      notes: "Optional comma-separated tags for modal Related tags (else card chip list)",
+    },
+    { col: "Image", notes: "Optional multiple attachments; first file URL exposed as block.imageUrl (e.g. overview scenario cards)" },
+    { col: "Sort Order", notes: "Number" },
+    { col: "Active", notes: "Checkbox; false excludes row" }
+  ];
+  for (const { col, notes } of explorerSchemaCols) {
+    addRow({
+      airtableTable: F.brandExplorerPresentation.table,
+      brandSetupTab: "Brand Explorer · Presentation",
+      mappingSource: "brandExplorerPresentation_schema",
+      mappingKind: "explorer_block",
+      apiFormKey: "(row)",
+      airtableColumn: col,
+      notes
+    });
+  }
+
+  return { generatedAt, rowCount: rows.length, rows };
 }

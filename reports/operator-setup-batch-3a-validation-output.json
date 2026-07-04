@@ -1,0 +1,109 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "save_multipart_with_logo_and_narratives",
+      "expected": "201 + writeMode=canonical + recordId",
+      "actual": {
+        "status": 201,
+        "writeMode": "canonical",
+        "recordId": "recP78Z4fiObIhmCM"
+      },
+      "pass": true
+    },
+    {
+      "name": "save_canonical_logo_payload",
+      "expected": "201 + writeMode=canonical + recordId",
+      "actual": {
+        "status": 201,
+        "writeMode": "canonical",
+        "recordId": "rec7FFRWZztfjfoly"
+      },
+      "pass": true
+    },
+    {
+      "name": "detail_read_path_new_base",
+      "expected": "200 + meta.readPath=new_base",
+      "actual": {
+        "status": 200,
+        "readPath": "new_base"
+      },
+      "pass": true
+    },
+    {
+      "name": "prefill_narrative_roundtrip",
+      "expected": "prefill contains 5 narrative keys with saved values",
+      "actual": {
+        "companyTagline": "Owner outcomes through disciplined execution",
+        "missionStatement": "Deliver transparent, accountable operations for owners.",
+        "companyHistory": "Founded in 2014; expanded across multi-market conversions.",
+        "differentiators": "Structured operating cadence and owner governance.",
+        "managementPhilosophy": "Data-informed decisions with local market execution."
+      },
+      "pass": true
+    },
+    {
+      "name": "detail_fields_brand_conversion_project_count",
+      "expected": "detail fields include brand_conversion_project_count=12",
+      "actual": {
+        "value": "12"
+      },
+      "pass": true
+    },
+    {
+      "name": "detail_prefill_logo_present",
+      "expected": "prefill.companyLogo includes uploaded logo attachment",
+      "actual": {
+        "companyLogo": [
+          {
+            "id": "attQh4PgCC0hunp7n",
+            "width": 640,
+            "height": 360,
+            "url": "https://v5.airtableusercontent.com/v3/u/53/53/1780408800000/qM4AfEzFZVxUBRtsHz7pCA/owZpeyC5Pf7mZ1a474pTaIAZMWXfVmANw9UrDWdUlt-I9fvv1F9pkJyHcjzRgsBjHM2n7B-m1fqteBZkhpiusKSmXNOrlPWccv346R4VNM6hqdc0JPtTdXDeJuGX-aIB6lGJXwx6i4G3P9ZrrN-ZvkejClhdFW9itLg-2YtzObtRqUGFDXNw13AE6dWG_9mv/VIIUK3sf_KPoAyfJ1TJUesom1SEPEMjfDyNt9PSEnEk",
+            "filename": "batch3a-public-logo.png",
+            "size": 27268,
+            "type": "image/jpeg",
+            "thumbnails": {
+              "small": {
+                "url": "https://v5.airtableusercontent.com/v3/u/53/53/1780408800000/gnv-87bKOuz5bOPI-MSfug/f1IC3sL8E-CYX51usmfVEzamj0okldsFupafyUe1Tj96AWSCbA7LL60IT9njmmx0v_MfRZEZljMh1Zen5-Q6pvm2x9N7c-VxyySCmQNcnTwZRLhws6YDWKpdOwAXVxoriEbtD31FilusvXB1IDhiUw/rKn4xrDkYggZIKK5a9WH836GD_hvslu1FiZAwM_6oU0",
+                "width": 64,
+                "height": 36
+              },
+              "large": {
+                "url": "https://v5.airtableusercontent.com/v3/u/53/53/1780408800000/hNH5uDYpauBWP-RW1aEOkA/jgf4pIXnPGw3EmBK56a1EVTzSp70jYq9vfvG3PwN3bSdqkS1dQqMLFlTnxSqi0rPU7ygz6hVbpAg2RPzLHQcKRgyK5dZkUAhRbBbtowGj3s06-G10l1N9cTIA_2Of5LQFm_8rWcQ92VpBcw0Zj6Iaw/XqU3le5P698ZHlEx5QMOc87kCBJwyLk2_ke_hmaQcHA",
+                "width": 640,
+                "height": 360
+              },
+              "full": {
+                "url": "https://v5.airtableusercontent.com/v3/u/53/53/1780408800000/gUkvXkmsC7MdsZep9F-1Eg/p67vLNn1nlVEe_EzOxkUtqwBgDXNiguWchtW1KUXoRdfw_FYUsAkxfAFBAJCRLedDGlHnQ4jFAaNMPe8fcuqI58Wvp7abArAVYZ7ffVD2IB3TjI80iJEfpIoowWll7R66CpHsWCnyuEWLy463PfAeg/cb_qhFFiKu-QasWvB55l2YP-jgMTvTAaPiOGHaEkeEI",
+                "width": 640,
+                "height": 360
+              }
+            }
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "name": "explorer_detail_live_record",
+      "expected": "200 + readPath=new_base + no demoData",
+      "actual": {
+        "status": 200,
+        "readPath": "new_base",
+        "demoData": false
+      },
+      "pass": true
+    },
+    {
+      "name": "list_logo_readback",
+      "expected": "list row includes non-empty logo URL for saved operator",
+      "actual": {
+        "found": true,
+        "logo": "https://v5.airtableusercontent.com/v3/u/53/53/1780408800000/qM4AfEzFZVxUBRtsHz7pCA/owZpeyC5Pf7mZ1a474pTaIAZMWXfVmANw9UrDWdUlt-I9fvv1F9pkJyHcjzRgsBjHM2n7B-m1fqteBZkhpiusKSmXNOrlPWccv346R4VNM6hqdc0JPtTdXDeJuGX-aIB6lGJXwx6i4G3P9ZrrN-ZvkejClhdFW9itLg-2YtzObtRqUGFDXNw13AE6dWG_9mv/VIIUK3sf_KPoAyfJ1TJUesom1SEPEMjfDyNt9PSEnEk"
+      },
+      "pass": true
+    }
+  ],
+  "recordId": "rec7FFRWZztfjfoly"
+}

@@ -8,6 +8,9 @@
     <meta http-equiv="Expires" content="0">
     <title>Dealality Radar (with Ranked List) - Dealality</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/travel-infrastructure-radar-filters.css">
+    <link rel="stylesheet" href="/css/radar-filter-drawer.css?v=16">
+    <link rel="stylesheet" href="/css/hotel-detail-panel.css?v=36">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -107,7 +110,7 @@
 
         .controls-panel {
             display: grid;
-            grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+            grid-template-columns: auto minmax(180px, 1.2fr) repeat(5, minmax(0, 1fr)) auto auto;
             gap: 12px;
             align-items: end;
             background: var(--neutral--800);
@@ -848,6 +851,225 @@
             100% { transform: rotate(360deg); }
         }
 
+        .radar-white-space-popup {
+            min-width: 260px;
+            max-width: 300px;
+            max-height: 280px;
+            overflow-y: auto;
+            font-family: Inter, sans-serif;
+            font-size: 12px;
+            line-height: 1.35;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #ffffff;
+        }
+
+        .radar-white-space-popup::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .radar-white-space-popup::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+
+        .radar-white-space-popup::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .radar-white-space-popup::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .leaflet-popup.radar-white-space-popup-wrap .leaflet-popup-content-wrapper,
+        .leaflet-popup.radar-white-space-popup-wrap .leaflet-popup-content {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #ffffff;
+        }
+
+        .leaflet-popup.radar-white-space-popup-wrap .leaflet-popup-content-wrapper::-webkit-scrollbar,
+        .leaflet-popup.radar-white-space-popup-wrap .leaflet-popup-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .leaflet-popup.radar-white-space-popup-wrap .leaflet-popup-content-wrapper::-webkit-scrollbar-track,
+        .leaflet-popup.radar-white-space-popup-wrap .leaflet-popup-content::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+
+        .leaflet-popup.radar-white-space-popup-wrap .leaflet-popup-content-wrapper::-webkit-scrollbar-thumb,
+        .leaflet-popup.radar-white-space-popup-wrap .leaflet-popup-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .radar-territory-popup {
+            min-width: 260px;
+            max-width: 300px;
+            max-height: 280px;
+            overflow-y: auto;
+            font-family: Inter, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #334155;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #ffffff;
+        }
+
+        .radar-territory-popup::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .radar-territory-popup::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+
+        .radar-territory-popup::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .radar-territory-popup::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .radar-territory-popup__title {
+            margin: 0 0 4px;
+            color: #1e293b;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .radar-territory-popup__geo {
+            font-size: 10px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .radar-territory-popup__status {
+            background: #f8fafc;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 4px solid #ffeb3b;
+        }
+
+        .radar-territory-popup__status-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .radar-territory-popup__status-meta {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 3px;
+        }
+
+        .radar-territory-popup__facts,
+        .radar-territory-popup__list {
+            margin: 0 0 8px 16px;
+            padding: 0;
+            font-size: 11px;
+            color: #475569;
+        }
+
+        .radar-territory-popup__section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #334155;
+            margin: 0 0 4px;
+        }
+
+        .radar-territory-popup__more {
+            margin: 0 0 8px;
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .leaflet-popup.radar-territory-popup-wrap .leaflet-popup-content-wrapper,
+        .leaflet-popup.radar-territory-popup-wrap .leaflet-popup-content {
+            overflow: visible;
+            max-height: none;
+        }
+
+        .leaflet-popup.radar-territory-popup-wrap .leaflet-popup-content {
+            margin: 12px 14px;
+        }
+
+        .radar-territory-result-pin-icon {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .radar-territory-result-pin {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .radar-territory-result-tile {
+            min-width: 168px;
+            max-width: 196px;
+            padding: 8px 10px;
+            background: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid #6c72ff;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.28);
+            text-align: left;
+        }
+
+        .radar-territory-result-tile__status {
+            font-family: Inter, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: 0.01em;
+        }
+
+        .radar-territory-result-tile__summary {
+            margin-top: 3px;
+            font-family: Inter, sans-serif;
+            font-size: 10px;
+            line-height: 1.35;
+            color: #475569;
+        }
+
+        .radar-territory-result-tile__stem {
+            width: 2px;
+            height: 10px;
+            margin-top: 1px;
+        }
+
+        .radar-territory-result-tile__dot {
+            width: 10px;
+            height: 10px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+        }
+
+        .radar-territory-result-tile--open .radar-territory-result-tile__status {
+            color: #4CAF50;
+        }
+
+        .radar-territory-result-tile--review_same .radar-territory-result-tile__status {
+            color: #b45309;
+        }
+
+        .radar-territory-result-tile--review_adjacent .radar-territory-result-tile__status,
+        .radar-territory-result-tile--caution .radar-territory-result-tile__status {
+            color: #a16207;
+        }
+
+        .radar-territory-result-tile--conflict .radar-territory-result-tile__status {
+            color: #ef4444;
+        }
+
+        .radar-territory-result-tile--pending .radar-territory-result-tile__status {
+            color: #6c72ff;
+        }
+
         .map-legend {
             position: absolute;
             top: 20px;
@@ -1025,6 +1247,33 @@
             height: 12px;
             clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .legend-marker.radar-infra-pentagon {
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+
+        .legend-marker.radar-demand-diamond {
+            border-radius: 0;
+            width: 12px;
+            height: 12px;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+
+        .radar-legend-layer-mount .legend-item.is-selected span {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .radar-legend-layer-mount .legend-item:not(.is-selected) {
+            opacity: 0.55;
         }
 
         /* Different shapes for different overlays */
@@ -1231,12 +1480,12 @@
             opacity: 0;
             position: absolute !important;
             z-index: 999999 !important;
-            background: #101935;
+            background: var(--secondary--color-1);
             color: #ffffff;
             text-align: left;
             border-radius: 8px;
             padding: 12px 40px;
-            border: 1px solid #343b4e;
+            border: 1px solid var(--neutral--600);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
             width: 300px;
@@ -1265,7 +1514,7 @@
             position: absolute;
             top: 8px;
             right: 8px;
-            background: #343b4e;
+            background: var(--neutral--600);
             border: none;
             color: #ffffff;
             width: 20px;
@@ -1281,7 +1530,7 @@
         }
 
         .tooltip-close-btn:hover {
-            background: #475569;
+            background: var(--neutral--500);
         }
 
         /* Smart positioning - show on left if too far right */
@@ -1344,12 +1593,12 @@
                 grid-template-columns: 1fr 1fr 1fr 1fr;
                 gap: 8px;
             }
-        }
 
-        @media (max-width: 1000px) {
-            .controls-panel {
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 8px;
+            .control-group.radar-tabs-wrap,
+            .control-group.radar-search-wrap,
+            .control-group.filter-group-reset,
+            .control-group.radar-filters-btn-wrap {
+                grid-column: 1 / -1;
             }
         }
 
@@ -1372,18 +1621,7 @@
             margin-bottom: 8px;
         }
         
-        .deal-capture-logo {
-            height: 32px;
-            display: flex;
-            align-items: center;
-        }
         
-        .deal-capture-logo img {
-            height: 100%;
-            width: auto;
-            max-width: 120px;
-            object-fit: contain;
-        }
 
         /* Custom cluster styling for better visibility */
         .marker-cluster {
@@ -1702,9 +1940,6 @@
             <div class="header-top">
                 <div>
                     <div class="mapping-title-container">
-                        <div class="deal-capture-logo">
-                            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" loading="lazy">
-                        </div>
                         <h1 class="mapping-title">Dealality Radar</h1>
                     </div>
                     <p class="mapping-subtitle">A dynamic mapping platform that visualizes where hotel brands operate today, where they're growing, and where untapped opportunities exist — helping owners and brands align on the best development strategy.</p>
@@ -1766,7 +2001,7 @@
                                 </span>
                                 <div class="tooltip-content">
                                     <strong>Chain Scale View</strong><br>
-                                    Toggle between status colors (Open/Pipeline/Candidate) and chain scale colors (Luxury/Upscale/Midscale/Economy).<br><br>
+                                    Colors hotel markers by chain scale instead of status. Requires <strong>Show Hotels</strong> to be on — turning on Chain Scale View will enable Show Hotels automatically.<br><br>
                     <strong>Chain Scale Colors:</strong><br>
                     <span style="display: inline-block; width: 12px; height: 12px; background: #68B0AB; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Luxury: Ultra-premium properties<br>
                     <span style="display: inline-block; width: 12px; height: 12px; background: #FF785A; border-radius: 50%; margin-right: 6px; vertical-align: middle;"></span> Upper Upscale: High-end properties<br>
@@ -1789,8 +2024,9 @@
                                 </span>
                                 <div class="tooltip-content">
                                     <strong>City Aggregation</strong><br>
-                                    When enabled, shows one deterministic marker per city/country that summarizes total hotels, keys, status mix, and top brands. Markers stay visible at all zoom levels so you can click for the summary anytime; at higher zoom, individual hotel markers are also shown.<br><br>
-                                    <strong>Use case:</strong> Reduce map clutter and view city/country summaries at any zoom level.
+                                    Shows one summary marker per city with hotel count, keys, and status mix. Use the filter dropdown to focus by total hotels, total keys, open supply, or pipeline activity.<br><br>
+                                    <strong>Default filter:</strong> 3+ hotels (hides single-property cities).<br><br>
+                                    <strong>Use case:</strong> Reduce map clutter and view meaningful city clusters at any zoom level.
                                 </div>
                             </div>
                         </label>
@@ -1803,24 +2039,66 @@
                                     <svg width="14" height="14"><use href="#info-icon"></use></svg>
                                 </span>
                                 <div class="tooltip-content">
-                                    <strong>White Space (Context-Aware)</strong><br>
-                                    Identifies opportunity areas where the selected segment is under-represented versus the baseline within the current filters.<br><br>
-                                    <strong>Which mode you’re in:</strong><br>
-                                    - <strong>General White Space</strong>: no <em>Brand Filter</em> and no <em>Chain Scale</em> filter selected.<br>
-                                    - <strong>Brand White Space</strong>: <em>Brand Filter</em> is selected.<br>
-                                    - <strong>Chain Scale White Space</strong>: <em>Chain Scale</em> filter is selected.<br><br>
-                                    <strong>What the colors mean:</strong><br>
-                                    <span style="display: inline-block; width: 12px; height: 12px; background: #4CAF50; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); margin-right: 6px; vertical-align: middle;"></span> High Opportunity<br>
-                                    <span style="display: inline-block; width: 12px; height: 12px; background: #ffeb3b; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); margin-right: 6px; vertical-align: middle;"></span> Medium Opportunity<br>
-                                    <span style="display: inline-block; width: 12px; height: 12px; background: #f44336; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); margin-right: 6px; vertical-align: middle;"></span> Low Opportunity (saturated)<br><br>
-                                    <strong>Brand/Chain thresholds (used in those modes):</strong><br>
-                                    High: selected segment is 0 OR share &lt; 10%<br>
-                                    Medium: share between 10% and 25%<br>
-                                    Low: share &gt;= 25%<br><br>
-                                    <strong>Use case:</strong> Spot where you can find the biggest opportunity for new development.
+                                    <strong>White Space</strong><br>
+                                    Underrepresented vs peers in your filter scope. Only actionable submarkets get a hexagon — click for Key Facts.<br><br>
+                                    <strong>Focus:</strong> General, Brand, Chain Scale, or Parent Company (from your filters).<br><br>
+                                    <span style="display: inline-block; width: 10px; height: 10px; background: #4CAF50; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); margin-right: 4px; vertical-align: middle;"></span> <strong>Green</strong> — strong gap, validated<br>
+                                    <span style="display: inline-block; width: 10px; height: 10px; background: #ffeb3b; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); margin-right: 4px; vertical-align: middle;"></span> <strong>Yellow</strong> — gap exists, mixed readiness<br>
+                                    <strong>No icon</strong> — saturated, thin, or poor tier fit<br><br>
+                                    <strong>Scoring:</strong> country peers + maturity, depth, demand anchors, pipeline, and tier readiness (empty ≠ opportunity for Luxury+).
                                 </div>
                             </div>
                         </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="brandTerritoryToggle" onchange="toggleBrandTerritory()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Brand Territory</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>Brand Territory</strong><br>
+                                    Scan where your selected brand can expand vs where it is blocked. Requires a brand in the filter bar.<br><br>
+                                    <strong>Units:</strong> Submarket, Market, Country, or Radius (5 / 10 / 25 km from a pin).<br><br>
+                                    <span style="display: inline-block; width: 10px; height: 10px; background: #4CAF50; border-radius: 2px; margin-right: 4px; vertical-align: middle;"></span> <strong>Green</strong> — Open Territory<br>
+                                    <span style="display: inline-block; width: 10px; height: 10px; background: #f59e0b; border-radius: 2px; margin-right: 4px; vertical-align: middle;"></span> <strong>Amber</strong> — Review (Same Chain Scale)<br>
+                                    <span style="display: inline-block; width: 10px; height: 10px; background: #ffeb3b; border-radius: 2px; margin-right: 4px; vertical-align: middle;"></span> <strong>Yellow</strong> — Review (Adjacent Chain Scale)<br>
+                                    <strong>Portfolio Note</strong> — Sister brand at distant chain scale (stays Green)<br>
+                                    <strong>No Icon</strong> — Same-Brand Open or Pipeline (Conflict)<br><br>
+                                    <strong>Rule:</strong> Pipeline for the subject brand is always a conflict. Independent of the White Space layer.
+                                </div>
+                            </div>
+                        </label>
+                        <div id="territoryControlsWrap" class="radar-territory-controls">
+                            <label class="radar-layer-field-label" for="territoryParentCompanyFilter">Parent Company</label>
+                            <select id="territoryParentCompanyFilter" class="control-select radar-territory-parent-select">
+                                <option value="">All Parent Companies</option>
+                            </select>
+                            <label class="radar-layer-field-label" for="territoryBrandFilter">Subject Brand</label>
+                            <select id="territoryBrandFilter" class="control-select radar-territory-brand-select">
+                                <option value="">Select a Brand…</option>
+                            </select>
+                            <label class="radar-layer-field-label" for="territoryUnitSelect">Territory Unit</label>
+                            <select id="territoryUnitSelect" class="control-select radar-layer-select" data-layer-group="territoryUnit">
+                                <option value="country">Country — Portfolio / Regional</option>
+                                <option value="market">Market — City / Corridor</option>
+                                <option value="submarket">Submarket — Franchise-Style Market</option>
+                                <option value="radius">Radius — Site-Specific (Pin)</option>
+                            </select>
+                            <div id="territoryRadiusControls" class="radar-territory-radius-controls" style="display: none;">
+                                <label class="radar-layer-field-label" for="territoryRadiusSelect">Radius (Km / Mi)</label>
+                                <select id="territoryRadiusSelect" class="control-select radar-layer-select" data-layer-group="territoryRadiusKm">
+                                    <option value="10" selected>10 km / 6 mi</option>
+                                </select>
+                                <div class="radar-territory-pin-actions">
+                                    <button type="button" id="territoryDropPinBtn" class="radar-territory-pin-btn">Drop Pin on Map</button>
+                                    <button type="button" id="territoryClearPinBtn" class="radar-territory-pin-btn radar-territory-pin-btn--ghost">Clear Pin</button>
+                                </div>
+                                <p id="territoryPinHint" class="radar-layer-card__hint"></p>
+                            </div>
+                            <p id="territoryBrandRequiredHint" class="radar-layer-card__hint">Select a Parent Company and Subject Brand to scan territories.</p>
+                        </div>
                         <label class="toggle-switch">
                             <input type="checkbox" id="penetrationToggle" onchange="togglePenetrationHeatmap()">
                             <span class="toggle-slider"></span>
@@ -1831,7 +2109,7 @@
                                 </span>
                                 <div class="tooltip-content">
                                     <strong>Brand Penetration Analysis</strong><br>
-                                    Shows the percentage of branded vs independent hotels in each city.<br><br>
+                                    Shows the percentage of branded vs independent <strong>open</strong> hotels in each submarket (respects current map filters).<br><br>
                                     <strong>What it shows:</strong><br>
                                     <span style="display: inline-block; width: 12px; height: 12px; background: #ff6b6b; border-radius: 0; margin-right: 6px; vertical-align: middle;"></span> High Penetration: 70%+ branded hotels (saturated)<br>
                                     <span style="display: inline-block; width: 12px; height: 12px; background: #ffd93d; border-radius: 0; margin-right: 6px; vertical-align: middle;"></span> Medium Penetration: 40-70% branded hotels<br>
@@ -1850,7 +2128,7 @@
                                 </span>
                                 <div class="tooltip-content">
                                     <strong>Pipeline Pressure Indicator (Key-Weighted)</strong><br>
-                                    Shows pipeline pressure using <strong>key pressure</strong> (rooms-weighted). Classification is based on keys, not just units.<br><br>
+                                    Shows pipeline pressure by <strong>submarket</strong> using key pressure (rooms-weighted when room counts exist). Respects current map filters.<br><br>
                                     <strong>What it shows:</strong><br>
                                     <span style="display: inline-block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #ff4757; margin-right: 6px; vertical-align: middle;"></span> High Key Pressure: pipeline keys &gt;= open keys (oversupply risk)<br>
                                     <span style="display: inline-block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #ffa502; margin-right: 6px; vertical-align: middle;"></span> Medium Key Pressure: pipeline keys are 50%–99% of existing supply<br>
@@ -1881,6 +2159,28 @@
                                 </div>
                             </div>
                         </label>
+                        <div id="infrastructureFilterWrap" class="infra-filter-wrap">
+                            <div id="infrastructureFilterChips" class="infra-filter-chips" role="group" aria-label="Travel Infrastructure point type filters"></div>
+                            <p id="infrastructureEmptyState" class="infra-empty-state" style="display: none;">No travel infrastructure points found for this filter.</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="demandAnchorsToggle" onchange="toggleDemandAnchors()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-label">Demand Anchors</span>
+                            <div class="info-tooltip">
+                                <span class="info-icon">
+                                    <svg width="14" height="14"><use href="#info-icon"></use></svg>
+                                </span>
+                                <div class="tooltip-content">
+                                    <strong>Demand Anchors Layer</strong><br>
+                                    Hotel demand-generating locations — convention centers, medical campuses, universities, entertainment districts, and other anchors that explain why people travel to or stay in a market.
+                                </div>
+                            </div>
+                        </label>
+                        <div id="demandAnchorsFilterWrap" class="infra-filter-wrap">
+                            <div id="demandAnchorsFilterChips" class="infra-filter-chips" role="group" aria-label="Demand Anchors point type filters"></div>
+                            <p id="demandAnchorsEmptyState" class="infra-empty-state" style="display: none;">No demand anchor points found for this filter.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1904,29 +2204,27 @@
                         </button>
                     </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label">Search Location</label>
+                <div class="control-group radar-search-wrap">
+                    <label class="control-label" for="locationSearch">Search Location</label>
                     <input type="text" class="control-input" id="locationSearch" placeholder="Search city, country, or property...">
                 </div>
-                
+
                 <div class="control-group">
-                    <label class="control-label">Parent Company</label>
+                    <label class="control-label" for="parentCompanyFilter">Parent Company</label>
                     <select class="control-select" id="parentCompanyFilter">
                         <option value="">All Parent Companies</option>
-                        <!-- Dynamic options will be populated here -->
                     </select>
                 </div>
-                
+
                 <div class="control-group">
-                    <label class="control-label">Brand Filter</label>
+                    <label class="control-label" for="brandFilter">Brand Filter</label>
                     <select class="control-select" id="brandFilter">
                         <option value="">All Brands</option>
-                        <!-- Dynamic options will be populated here -->
                     </select>
                 </div>
-                
+
                 <div class="control-group">
-                    <label class="control-label">Status Filter</label>
+                    <label class="control-label" for="statusFilter">Status Filter</label>
                     <select class="control-select" id="statusFilter">
                         <option value="">All Status</option>
                         <option value="Open">Open Hotels</option>
@@ -1934,40 +2232,35 @@
                         <option value="Candidate">Candidate/LOI</option>
                     </select>
                 </div>
-                
+
                 <div class="control-group">
-                    <label class="control-label">Chain Scale</label>
+                    <label class="control-label" for="propertyTypeFilter">Chain Scale</label>
                     <select class="control-select" id="propertyTypeFilter">
                         <option value="">All Chain Scales</option>
                     </select>
                 </div>
-                
+
                 <div class="control-group">
-                    <label class="control-label">Region</label>
-                    <select class="control-select" id="regionFilter">
-                        <option value="">All Regions</option>
-                        <option value="Caribbean & Latin America">Caribbean & Latin America</option>
-                        <option value="North America">North America</option>
-                        <option value="Europe">Europe</option>
-                        <option value="Middle East & Africa">Middle East & Africa</option>
-                        <option value="Asia Pacific">Asia Pacific</option>
-                    </select>
-                </div>
-                
-                <div class="control-group">
-                    <label class="control-label">Location Type</label>
+                    <label class="control-label" for="locationTypeFilter">Location Type</label>
                     <select class="control-select" id="locationTypeFilter">
                         <option value="">All Location Types</option>
-                        <!-- Dynamic options will be populated here -->
                     </select>
                 </div>
-                
+
+                <div class="control-group radar-filters-btn-wrap">
+                    <label class="control-label" style="visibility:hidden;">Filters</label>
+                    <button type="button" class="btn-radar-filters" id="radarFilterOpenBtn" aria-haspopup="dialog" aria-controls="radarFilterDrawer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                        <span>More</span>
+                        <span class="filter-count-badge" id="radarFilterCountBadge" style="display: none;">0</span>
+                    </button>
+                </div>
+
                 <div class="control-group filter-group-reset">
-                    <button class="btn-clear" onclick="resetView()">Reset View<span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span></button>
+                    <label class="control-label" style="visibility:hidden;">Reset</label>
+                    <button type="button" class="btn-clear" id="radarResetViewBtn" onclick="resetView()">Reset View</button>
                 </div>
             </div>
-
-            <div id="radarTogglesMount" class="radar-toggles-section" aria-label="Radar overlays"></div>
         </header>
 
         <div class="main-content">
@@ -2028,15 +2321,30 @@
                     </div>
                     <div class="legend-item" id="whiteSpaceLegend" style="display: none !important;">
                         <div class="legend-marker white-space-high"></div>
-                        <span>High Opportunity</span>
+                        <span>Strong White Space</span>
                     </div>
                     <div class="legend-item" id="whiteSpaceLegend2" style="display: none !important;">
                         <div class="legend-marker white-space-medium"></div>
-                        <span>Medium Opportunity</span>
+                        <span>Some White Space</span>
                     </div>
                     <div class="legend-item" id="whiteSpaceLegend3" style="display: none !important;">
                         <div class="legend-marker white-space-low"></div>
-                        <span>Low Opportunity</span>
+                        <span>Well Represented</span>
+                    </div>
+                    <div class="legend-section" id="territorySection" style="display: none !important;">
+                        <strong>Brand Territory</strong>
+                    </div>
+                    <div class="legend-item" id="territoryLegendOpen" style="display: none !important;">
+                        <div class="legend-marker" style="background: #4CAF50; border-radius: 3px;"></div>
+                        <span>Open Territory</span>
+                    </div>
+                    <div class="legend-item" id="territoryLegendReviewSame" style="display: none !important;">
+                        <div class="legend-marker" style="background: #f59e0b; border-radius: 3px;"></div>
+                        <span>Review — Same Chain Scale</span>
+                    </div>
+                    <div class="legend-item" id="territoryLegendReviewAdjacent" style="display: none !important;">
+                        <div class="legend-marker" style="background: #ffeb3b; border-radius: 3px;"></div>
+                        <span>Review — Adjacent Chain Scale</span>
                     </div>
                     <div class="legend-section" id="penetrationSection" style="display: none !important;">
                         <strong>BRAND PENETRATION</strong>
@@ -2071,31 +2379,47 @@
                     <div class="legend-section" id="infrastructureSection" style="display: none !important;">
                         <strong>Travel Infrastructure</strong>
                     </div>
-                    <div class="legend-item" id="infrastructureLegend" style="display: none !important;">
-                        <div class="legend-marker infrastructure-airport"></div>
-                        <span>Airports</span>
+                    <div id="infrastructureLegendMount" class="radar-legend-layer-mount" style="display: none !important;"></div>
+                    <div class="legend-section" id="demandAnchorsSection" style="display: none !important;">
+                        <strong>Demand Anchors</strong>
                     </div>
-                    <div class="legend-item" id="infrastructureLegend2" style="display: none !important;">
-                        <div class="legend-marker infrastructure-cruise"></div>
-                        <span>Cruise Ports</span>
-                    </div>
-                    <div class="legend-item" id="infrastructureLegend3" style="display: none !important;">
-                        <div class="legend-marker infrastructure-convention"></div>
-                        <span>Convention Centers</span>
-                    </div>
+                    <div id="demandAnchorsLegendMount" class="radar-legend-layer-mount" style="display: none !important;"></div>
                 </div>
             </div>
 
             <div class="sidebar">
                 <div id="loadingMessage" class="loading-message" style="display: none;">
                     <div class="loading-spinner"></div>
-                    <div>Loading market signals…</div>
+                    <div>Loading Market Signals…</div>
                 </div>
                 
                 
-                <div id="whiteSpaceLoading" class="loading-message" style="display: none;">
-                    <div class="loading-spinner"></div>
-                    <div>Generating white space analysis...</div>
+                <div id="whiteSpaceLoading" class="ranked-list-loading" style="display: none;">
+                    <div class="rl-loading-wave">
+                        <div class="wave-container">
+                            <div class="wave wave-1"></div>
+                            <div class="wave wave-2"></div>
+                            <div class="wave wave-3"></div>
+                            <div class="wave-particles">
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                                <div class="particle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <span>Analyzing white space opportunities…</span>
+                </div>
+
+                <div id="territoryLoading" class="ranked-list-loading" style="display: none;">
+                    <div class="rl-loading-wave">
+                        <div class="wave-container">
+                            <div class="wave wave-1"></div>
+                            <div class="wave wave-2"></div>
+                            <div class="wave wave-3"></div>
+                        </div>
+                    </div>
+                    <span>Scanning brand territories…</span>
                 </div>
                 
                 <div class="sidebar-section">
@@ -2208,7 +2532,7 @@
                             <select id="rlRankBy" class="control-select" style="min-width:180px;"><option value="operator">Operator</option><option value="brand">Brand / Affiliation</option><option value="parent_company">Parent Company</option><option value="region">Region</option><option value="chain_scale">Chain Scale</option><option value="status">Status</option></select>
                         </div>
                     </div>
-                    <div id="rlLoading" class="ranked-list-loading rl-hidden"><div class="rl-loading-wave"><div class="wave-container"><div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div><div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div></div></div><span>Loading ranked list...</span></div>
+                    <div id="rlLoading" class="ranked-list-loading rl-hidden"><div class="rl-loading-wave"><div class="wave-container"><div class="wave wave-1"></div><div class="wave wave-2"></div><div class="wave wave-3"></div><div class="wave-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div></div></div><span>Loading Ranked List…</span></div>
                     <div id="rlTableWrap" class="ranked-table-wrap rl-hidden"><table class="ranked-table" id="rlTable"><thead id="rlTableHead"><tr><th class="rank-col">#</th><th>Name</th><th>Units</th><th>Keys</th></tr></thead><tbody id="rlTableBody"></tbody></table></div>
                     <div id="rlEmpty" class="ranked-list-empty rl-hidden"><p>No data. Adjust filters and try again.</p></div>
                 </div>
@@ -2219,7 +2543,140 @@
     <!-- Dedicated tooltip container outside map area -->
     <div id="tooltipContainer" style="position: fixed; top: 20px; left: 20px; z-index: 999999; pointer-events: none;"></div>
 
-    <script src="radar-page.js"></script>
-    <script src="brand-presence-mapping.js?v=196&t=1737210600&force=true&clean=true"></script>
+    <!-- Radar filter drawer -->
+    <div id="radarFilterDrawerOverlay" class="radar-filter-drawer-overlay" aria-hidden="true"></div>
+    <aside id="radarFilterDrawer" class="radar-filter-drawer" role="dialog" aria-label="Radar filters" aria-hidden="true">
+        <header class="radar-filter-drawer__header">
+            <h2 class="radar-filter-drawer__title">Filters</h2>
+            <button type="button" class="radar-filter-drawer__close" id="radarFilterDrawerClose" aria-label="Close filters">×</button>
+        </header>
+        <div class="radar-filter-drawer__body">
+            <section class="radar-filter-drawer__section">
+                <h3 class="radar-filter-drawer__section-title">Geography</h3>
+                <div class="radar-filter-drawer__grid">
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="regionFilter">Region</label>
+                        <select class="control-select" id="regionFilter">
+                            <option value="">All Regions</option>
+                            <option value="Caribbean & Latin America">Caribbean & Latin America</option>
+                            <option value="North America">North America</option>
+                            <option value="Europe">Europe</option>
+                            <option value="Middle East & Africa">Middle East & Africa</option>
+                            <option value="Asia Pacific">Asia Pacific</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="countryFilter">Country</label>
+                        <select class="control-select" id="countryFilter">
+                            <option value="">All Countries</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field radar-filter-drawer__field--full">
+                        <label class="radar-filter-drawer__label" for="marketFilter">Market</label>
+                        <select class="control-select" id="marketFilter">
+                            <option value="">All Markets</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field radar-filter-drawer__field--full">
+                        <label class="radar-filter-drawer__label" for="submarketFilter">Submarket</label>
+                        <select class="control-select" id="submarketFilter">
+                            <option value="">All Submarkets</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="radar-filter-drawer__section">
+                <h3 class="radar-filter-drawer__section-title">Property</h3>
+                <div class="radar-filter-drawer__grid">
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="parentCompanyFilterDrawer">Parent Company</label>
+                        <select class="control-select" id="parentCompanyFilterDrawer">
+                            <option value="">All Parent Companies</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="brandFilterDrawer">Brand</label>
+                        <select class="control-select" id="brandFilterDrawer">
+                            <option value="">All Brands</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="propertyTypeFilterDrawer">Chain Scale</label>
+                        <select class="control-select" id="propertyTypeFilterDrawer">
+                            <option value="">All Chain Scales</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="locationTypeFilterDrawer">Location Type</label>
+                        <select class="control-select" id="locationTypeFilterDrawer">
+                            <option value="">All Location Types</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="hotelTypeFilter">Property Type</label>
+                        <select class="control-select" id="hotelTypeFilter">
+                            <option value="">All Property Types</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="hotelServiceModelFilter">Hotel Service Model</label>
+                        <select class="control-select" id="hotelServiceModelFilter">
+                            <option value="">All Hotel Service Models</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="roomsMinFilter">Min Rooms</label>
+                        <input type="number" class="control-input" id="roomsMinFilter" min="0" step="1" inputmode="numeric" placeholder="Any">
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="roomsMaxFilter">Max Rooms</label>
+                        <input type="number" class="control-input" id="roomsMaxFilter" min="0" step="1" inputmode="numeric" placeholder="Any">
+                    </div>
+                </div>
+            </section>
+
+            <section class="radar-filter-drawer__section">
+                <h3 class="radar-filter-drawer__section-title">Hotel</h3>
+                <div class="radar-filter-drawer__grid">
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="managementCompanyFilter">Management Company</label>
+                        <select class="control-select" id="managementCompanyFilter">
+                            <option value="">All Management Companies</option>
+                        </select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="operationTypeFilter">Operation Type</label>
+                        <select class="control-select" id="operationTypeFilter">
+                            <option value="">All Operation Types</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="radar-filter-drawer__section radar-filter-drawer__toggles">
+                <h3 class="radar-filter-drawer__section-title">Map Layers</h3>
+                <p class="radar-filter-drawer__hint">Toggle visualization overlays on the map.</p>
+                <div id="radarFilterDrawerTogglesMount" class="radar-filter-drawer__toggles-mount" aria-label="Radar map layers"></div>
+            </section>
+        </div>
+        <footer class="radar-filter-drawer__footer">
+            <button type="button" class="btn-clear" id="radarFilterResetViewBtn">Reset View</button>
+            <button type="button" class="btn-primary" id="radarFilterDoneBtn">Done</button>
+        </footer>
+    </aside>
+
+    <script src="/js/travel-infrastructure-radar-layer.js?v=2"></script>
+    <script src="/js/demand-anchors-radar-layer.js"></script>
+    <script src="/js/hilton-amenity-icons.js?v=10"></script>
+    <script src="/js/radar-branded-penetration.js?v=2"></script>
+    <script src="/js/hotel-detail-panel.js?v=54"></script>
+    <script src="/js/radar-filter-drawer.js?v=12"></script>
+    <script src="/js/radar-layer-drawer.js?v=24"></script>
+    <script src="radar-page.js?v=2"></script>
+    <script src="/js/radar-white-space.js?v=14"></script>
+    <script src="/js/radar-territory.js?v=13"></script>
+    <script src="brand-presence-mapping.js?v=246&t=1737210600&force=true&clean=true"></script>
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

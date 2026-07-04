@@ -5,20 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Proposal - Dealality</title>
     <style>
-        :root { --neutral--800: #080f25; --neutral--400: #aeb9e1; --neutral--100: white; --accent--primary-1: #6c72ff; --neutral--700: #212c4d; --neutral--600: #37446b; --neutral--500: #7e89ac; --secondary--color-1: #101935; --system--green-300: #14ca74; }
+        :root {
+            --neutral--800: #080f25;
+            --neutral--400: #aeb9e1;
+            --neutral--100: white;
+            --accent--primary-1: #6c72ff;
+            --neutral--700: #212c4d;
+            --neutral--600: #37446b;
+            --neutral--500: #7e89ac;
+            --secondary--color-1: #101935;
+            --system--green-300: #14ca74;
+            /* Match new-deal-setup / My Deals form fields */
+            --bdr-field-bg: var(--secondary--color-1);
+            --bdr-field-border: rgba(255, 255, 255, 0.18);
+            --bdr-field-radius: 8px;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { background: var(--neutral--800); }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--neutral--800); color: var(--neutral--400); min-height: 100vh; padding: 24px; }
+        html {
+            background: var(--neutral--800);
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: #37446b #080f25;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track {
+            background: #080f25;
+            border-left: 1px solid rgba(87, 195, 255, 0.35);
+        }
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb {
+            background: #37446b;
+            border-radius: 0;
+        }
+        html::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover {
+            background: #7e89ac;
+        }
+        html::-webkit-scrollbar-corner,
+        body::-webkit-scrollbar-corner {
+            background: #080f25;
+        }
+        body { font-family: "Mona sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--neutral--800); color: var(--neutral--400); min-height: 100vh; padding: 24px; }
         html.embed, html.embed body { height: 100%; min-height: 100%; }
+        /* Same as My Deals / Add New Deal setup: dark fields, soft border, accent focus */
+        input, textarea, select { color-scheme: dark; font-family: inherit; }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        textarea:-webkit-autofill:active,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus,
+        select:-webkit-autofill:active {
+            -webkit-text-fill-color: var(--neutral--100) !important;
+            box-shadow: 0 0 0 1000px var(--secondary--color-1) inset !important;
+            -webkit-box-shadow: 0 0 0 1000px var(--secondary--color-1) inset !important;
+            caret-color: var(--neutral--100) !important;
+            border-color: var(--bdr-field-border) !important;
+            transition: background-color 9999s ease-in-out 0s;
+        }
+        .container input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
+        .container select,
+        .container textarea,
+        .incentive-detail {
+            background: var(--bdr-field-bg);
+            border: 1px solid var(--bdr-field-border);
+            border-radius: var(--bdr-field-radius);
+            color: var(--neutral--100);
+            padding: 10px 14px;
+            font-size: 0.875rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .container input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="reset"]):focus,
+        .container select:focus,
+        .container textarea:focus,
+        .incentive-detail:focus {
+            outline: none;
+            border-color: var(--accent--primary-1);
+            box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.2);
+        }
+        .container input::placeholder,
+        .container textarea::placeholder,
+        .container input::-webkit-input-placeholder,
+        .container textarea::-webkit-input-placeholder,
+        .incentive-detail::placeholder {
+            color: #7e89ac !important;
+            -webkit-text-fill-color: #7e89ac !important;
+            opacity: 1 !important;
+        }
+        .container select option { background: var(--secondary--color-1); color: var(--neutral--100); }
         .container { max-width: 900px; margin: 0 auto; }
         h1 { color: var(--neutral--100); margin-bottom: 8px; font-size: 1.5rem; }
         .subtitle { color: var(--neutral--500); font-size: 14px; margin-bottom: 24px; }
         .form-row { display: grid; grid-template-columns: 240px 1fr; gap: 12px 20px; align-items: center; margin-bottom: 16px; }
-        .form-row .form-label { color: var(--neutral--400); font-size: 13px; }
+        .form-row .form-label { color: var(--neutral--100); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.01em; }
         .form-row .form-controls { display: flex; gap: 12px; align-items: center; min-width: 0; }
         .form-row .form-controls input, .form-row .form-controls select, .form-row .form-controls textarea {
-            padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600);
-            border-radius: 6px; color: var(--neutral--100); font-size: 14px; flex: 1; min-width: 0; text-align: left;
+            flex: 1; min-width: 0; text-align: left;
         }
         .form-row .form-controls textarea { min-height: 60px; resize: vertical; }
         .form-row.form-row-textarea { align-items: start; }
@@ -41,22 +133,51 @@
             justify-content: flex-start;
             cursor: pointer;
         }
+        /* Same custom checkbox as My Brand Deals workspace table (.deals-table .cell-checkbox) */
         .incentive-check input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--accent--primary-1);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            margin: 0;
             flex-shrink: 0;
+            vertical-align: middle;
+            background: var(--secondary--color-1);
+            border: 1px solid var(--neutral--600);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .incentive-check input[type="checkbox"]:hover {
+            background: var(--neutral--700);
+            border-color: rgba(108, 114, 255, 0.4);
+        }
+        .incentive-check input[type="checkbox"]:focus-visible {
+            outline: 2px solid var(--accent--primary-1);
+            outline-offset: 2px;
+        }
+        .incentive-check input[type="checkbox"]:checked {
+            background: var(--accent--primary-1);
+            border-color: var(--accent--primary-1);
+        }
+        .incentive-check input[type="checkbox"]:checked::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 9px;
+            border: solid #ffffff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
         }
         .incentive-detail {
             width: 100%;
             min-height: 40px;
             resize: vertical;
-            padding: 8px 10px;
-            background: var(--secondary--color-1);
-            border: 1px solid var(--neutral--600);
-            border-radius: 6px;
-            color: var(--neutral--100);
-            font-size: 13px;
+            font-size: 0.875rem;
         }
         @media (max-width: 600px) {
             .incentives-grid {
@@ -65,25 +186,25 @@
         }
         .form-row-3col { display: grid; grid-template-columns: 240px 1fr 1fr; gap: 12px 20px; align-items: center; margin-bottom: 16px; }
         .form-row-term-renewal { display: grid; grid-template-columns: 240px 1fr; gap: 12px 20px; align-items: center; margin-bottom: 16px; }
-        .form-row-term-renewal .form-label { color: var(--neutral--400); font-size: 13px; }
+        .form-row-term-renewal .form-label { color: var(--neutral--100); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.01em; }
         .form-term-controls { display: grid; grid-template-columns: 140px 100px 140px 1fr; gap: 0 8px; align-items: center; min-width: 0; }
-        .form-term-controls input { width: 100%; padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; box-sizing: border-box; }
-        .form-term-controls select { width: 100px; padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; }
+        .form-term-controls input { width: 100%; box-sizing: border-box; }
+        .form-term-controls select { width: 100px; box-sizing: border-box; }
         .form-term-controls .duration-wrap { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
-        .form-row-3col .form-label { color: var(--neutral--400); font-size: 13px; }
-        .form-row-3col input, .form-row-3col select, .form-row-3col textarea { width: 100%; padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; }
+        .form-row-3col .form-label { color: var(--neutral--100); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.01em; }
+        .form-row-3col input, .form-row-3col select, .form-row-3col textarea { width: 100%; box-sizing: border-box; }
         .form-application-fee-subrow { margin-top: 12px; margin-bottom: 4px; padding-left: 0; margin-left: 0; }
         .form-application-fee-subrow-inner { display: grid; grid-template-columns: 240px 1fr 200px 1fr; gap: 12px 20px; align-items: center; }
-        .form-application-fee-subrow-inner .form-label { color: var(--neutral--400); font-size: 13px; }
-        .form-application-fee-subrow-inner input { padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; width: 100%; }
+        .form-application-fee-subrow-inner .form-label { color: var(--neutral--100); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.01em; }
+        .form-application-fee-subrow-inner input { width: 100%; box-sizing: border-box; }
         .form-row-3col #proposalReservationBasisOtherWrap { min-width: 0; }
         .form-row-3col textarea { min-height: 60px; resize: vertical; }
         .form-row-royalty-schedule { display: grid; grid-template-columns: 240px repeat(5, 1fr) minmax(100px, 1fr); gap: 12px 20px; align-items: end; margin-bottom: 16px; }
-        .form-row-royalty-schedule .form-label { color: var(--neutral--400); font-size: 13px; }
+        .form-row-royalty-schedule .form-label { color: var(--neutral--100); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.01em; }
         .form-row-royalty-schedule .year-cell { display: flex; flex-direction: column; gap: 4px; }
         .form-row-royalty-schedule .year-cell .small-label { font-size: 11px; color: var(--neutral--500); }
-        .form-row-royalty-schedule .year-cell input { width: 100%; padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; text-align: left; }
-        .form-row-royalty-schedule select { padding: 10px 12px; background: var(--secondary--color-1); border: 1px solid var(--neutral--600); border-radius: 6px; color: var(--neutral--100); font-size: 14px; text-align: left; }
+        .form-row-royalty-schedule .year-cell input { width: 100%; text-align: left; box-sizing: border-box; }
+        .form-row-royalty-schedule select { text-align: left; box-sizing: border-box; }
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
         .status-draft { background: rgba(253, 181, 42, 0.2); color: var(--system--green-300); }
         .status-submitted { background: rgba(20, 202, 116, 0.2); color: var(--system--green-300); }
@@ -569,7 +690,7 @@
             </div>
             <div id="formMessage"></div>
         </div>
-        <div id="loadingEl" style="color:var(--neutral--500);">Loading proposal...</div>
+        <div id="loadingEl" style="color:var(--neutral--500);">Loading Proposal…</div>
         <div id="errorEl" class="error" style="display:none;"></div>
     </div>
     <script>
@@ -1017,5 +1138,7 @@
     loadDraft();
 })();
     </script>
+
+    <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

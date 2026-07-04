@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webflow Embed Preview</title>
+    <style>
+        :root {
+            --bg: #080f25;
+            --panel: #101935;
+            --panel-border: #343b4f;
+            --text: #d9e1fa;
+            --muted: #aeb9e1;
+            --accent: #6c72ff;
+            --accent-strong: #7d83ff;
+            --input-bg: #212c4d;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .page {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            border-right: 1px solid var(--panel-border);
+            background: var(--panel);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .note {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            margin: 2px 0 6px;
+        }
+
+        .control,
+        .url-field {
+            width: 100%;
+            border: 1px solid var(--panel-border);
+            background: var(--input-bg);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .url-field {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .qa-panel {
+            margin-top: 6px;
+            padding-top: 12px;
+            border-top: 1px solid var(--panel-border);
+        }
+
+        .qa-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .qa-item {
+            display: grid;
+            grid-template-columns: 1fr 120px;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .qa-item-label {
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .qa-notes {
+            width: 100%;
+            min-height: 70px;
+            border: 1px solid var(--panel-border);
+            background: var(--input-bg);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 13px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        button {
+            border: 1px solid var(--panel-border);
+            background: var(--panel);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        button.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        button:hover {
+            border-color: var(--accent-strong);
+        }
+
+        .main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .status {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .frame-wrap {
+            flex: 1;
+            min-height: 620px;
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            background: #060b1c;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 14px;
+            overflow: auto;
+        }
+
+        .frame-shell {
+            width: 100%;
+            max-width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+            transition: width 0.2s ease;
+        }
+
+        iframe {
+            width: 100%;
+            height: min(85vh, 1000px);
+            border: 0;
+            background: #fff;
+            display: block;
+        }
+
+        @media (max-width: 980px) {
+            .page {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                border-right: 0;
+                border-bottom: 1px solid var(--panel-border);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <aside class="sidebar">
+            <h1 class="title">Webflow Embed Preview</h1>
+            <p class="note">This page previews direct Webflow embed URLs. It does not show the Dealality app shell.</p>
+
+            <div>
+                <div class="label">Page</div>
+                <select id="pageSelect" class="control" aria-label="Select embed page"></select>
+            </div>
+
+            <div>
+                <div class="label">Embed URL</div>
+                <input id="embedUrl" class="url-field" type="text" readonly aria-label="Embed URL">
+            </div>
+
+            <div class="btn-row">
+                <button id="copyBtn" type="button">Copy URL</button>
+                <button id="openBtn" type="button" class="primary">Open direct page</button>
+            </div>
+            <div class="btn-row">
+                <button id="exitBtn" type="button">Exit preview</button>
+            </div>
+
+            <section class="qa-panel" aria-label="Viewport QA checklist">
+                <div class="label">Viewport checklist</div>
+                <div class="qa-grid">
+                    <div class="qa-item">
+                        <span class="qa-item-label">Desktop (1440)</span>
+                        <select class="control qa-select" data-vp="1440" aria-label="Desktop QA status">
+                            <option value="todo">To review</option>
+                            <option value="pass">Pass</option>
+                            <option value="issue">Issue</option>
+                            <option value="na">N/A</option>
+                        </select>
+                    </div>
+                    <div class="qa-item">
+                        <span class="qa-item-label">Laptop (1200)</span>
+                        <select class="control qa-select" data-vp="1200" aria-label="Laptop QA status">
+                            <option value="todo">To review</option>
+                            <option value="pass">Pass</option>
+                            <option value="issue">Issue</option>
+                            <option value="na">N/A</option>
+                        </select>
+                    </div>
+                    <div class="qa-item">
+                        <span class="qa-item-label">Tablet (768)</span>
+                        <select class="control qa-select" data-vp="768" aria-label="Tablet QA status">
+                            <option value="todo">To review</option>
+                            <option value="pass">Pass</option>
+                            <option value="issue">Issue</option>
+                            <option value="na">N/A</option>
+                        </select>
+                    </div>
+                    <div class="qa-item">
+                        <span class="qa-item-label">Mobile (390)</span>
+                        <select class="control qa-select" data-vp="390" aria-label="Mobile QA status">
+                            <option value="todo">To review</option>
+                            <option value="pass">Pass</option>
+                            <option value="issue">Issue</option>
+                            <option value="na">N/A</option>
+                        </select>
+                    </div>
+                    <div class="qa-item">
+                        <span class="qa-item-label">Full width</span>
+                        <select class="control qa-select" data-vp="full" aria-label="Full width QA status">
+                            <option value="todo">To review</option>
+                            <option value="pass">Pass</option>
+                            <option value="issue">Issue</option>
+                            <option value="na">N/A</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:10px;">
+                    <div class="label">QA notes (per page)</div>
+                    <textarea id="qaNotes" class="qa-notes" placeholder="Add notes for the selected page..."></textarea>
+                </div>
+                <div class="btn-row">
+                    <button id="clearQaBtn" type="button">Clear page checklist</button>
+                </div>
+            </section>
+        </aside>
+
+        <main class="main">
+            <div class="toolbar">
+                <div>
+                    <div class="label">Viewport width</div>
+                    <select id="viewportSelect" class="control" aria-label="Select preview viewport width">
+                        <option value="full">Full width</option>
+                        <option value="1440">Desktop 1440</option>
+                        <option value="1200">Laptop 1200</option>
+                        <option value="768">Tablet 768</option>
+                        <option value="390">Mobile 390</option>
+                    </select>
+                </div>
+                <div class="status" id="statusText">Ready</div>
+            </div>
+
+            <div class="frame-wrap">
+                <div class="frame-shell" id="frameShell">
+                    <iframe id="previewFrame" title="Webflow embed preview"></iframe>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        (function () {
+            var pages = [
+                { label: "LOI Database Dashboard", url: "/loi-database-dashboard.html?embed=1" },
+                { label: "The Radar", url: "/deal-capture-radar-with-ranked-list.html?embed=1" },
+                { label: "Brand Explorer", url: "/brand-explorer-combined.html?embed=1" },
+                { label: "My Deals", url: "/my-deals.html?embed=1" },
+                { label: "New Deal Setup", url: "/new-deal-setup.html?embed=1" },
+                { label: "Deal Summary", url: "/deal-summary.html?embed=1" },
+                { label: "Deal Compare", url: "/deal-compare.html?embed=1" },
+                { label: "My Operators", url: "/my-third-party-operators-new.html?embed=1" },
+                { label: "My Brands", url: "/my-brands.html?embed=1" },
+                { label: "Partner Directory", url: "/partner-directory.html?embed=1" },
+                { label: "Clause Library", url: "/clause-library.html?embed=1" },
+                { label: "Financial Term Library", url: "/financial-term-library.html?embed=1" }
+            ];
+
+            var pageSelect = document.getElementById("pageSelect");
+            var viewportSelect = document.getElementById("viewportSelect");
+            var embedUrl = document.getElementById("embedUrl");
+            var frame = document.getElementById("previewFrame");
+            var frameShell = document.getElementById("frameShell");
+            var copyBtn = document.getElementById("copyBtn");
+            var openBtn = document.getElementById("openBtn");
+            var exitBtn = document.getElementById("exitBtn");
+            var qaNotes = document.getElementById("qaNotes");
+            var clearQaBtn = document.getElementById("clearQaBtn");
+            var qaSelects = Array.prototype.slice.call(document.querySelectorAll(".qa-select"));
+            var statusText = document.getElementById("statusText");
+            var QA_STORAGE_KEY = "WEBFLOW_PREVIEW_QA_V1";
+            var qaStore = loadQaStore();
+
+            function loadQaStore() {
+                try {
+                    var raw = window.localStorage.getItem(QA_STORAGE_KEY);
+                    return raw ? JSON.parse(raw) : {};
+                } catch (_e) {
+                    return {};
+                }
+            }
+
+            function saveQaStore() {
+                try {
+                    window.localStorage.setItem(QA_STORAGE_KEY, JSON.stringify(qaStore));
+                } catch (_e) {
+                    // ignore storage failure
+                }
+            }
+
+            function getCurrentPageKey() {
+                var selected = pages[Number(pageSelect.value) || 0];
+                return selected ? selected.label : "unknown";
+            }
+
+            function ensureQaPageEntry(pageKey) {
+                if (!qaStore[pageKey]) {
+                    qaStore[pageKey] = {
+                        viewport: {
+                            "1440": "todo",
+                            "1200": "todo",
+                            "768": "todo",
+                            "390": "todo",
+                            "full": "todo"
+                        },
+                        notes: ""
+                    };
+                }
+                return qaStore[pageKey];
+            }
+
+            function renderQaPanel() {
+                var pageKey = getCurrentPageKey();
+                var entry = ensureQaPageEntry(pageKey);
+                qaSelects.forEach(function (el) {
+                    var vp = el.getAttribute("data-vp");
+                    el.value = (entry.viewport && entry.viewport[vp]) || "todo";
+                });
+                qaNotes.value = entry.notes || "";
+            }
+
+            function persistQaPanel() {
+                var pageKey = getCurrentPageKey();
+                var entry = ensureQaPageEntry(pageKey);
+                qaSelects.forEach(function (el) {
+                    var vp = el.getAttribute("data-vp");
+                    if (!entry.viewport) entry.viewport = {};
+                    entry.viewport[vp] = el.value;
+                });
+                entry.notes = qaNotes.value || "";
+                saveQaStore();
+            }
+
+            function getAbsoluteUrl(path) {
+                return window.location.origin + path;
+            }
+
+            function setViewportWidth(value) {
+                if (value === "full") {
+                    frameShell.style.width = "100%";
+                    statusText.textContent = "Viewport: Full width";
+                    return;
+                }
+                frameShell.style.width = value + "px";
+                statusText.textContent = "Viewport: " + value + "px";
+            }
+
+            function renderPageOptions() {
+                var options = pages.map(function (page, idx) {
+                    return '<option value="' + idx + '">' + page.label + "</option>";
+                });
+                pageSelect.innerHTML = options.join("");
+            }
+
+            function loadSelectedPage() {
+                var selected = pages[Number(pageSelect.value) || 0];
+                var abs = getAbsoluteUrl(selected.url);
+                embedUrl.value = abs;
+                frame.src = abs;
+                statusText.textContent = "Loaded: " + selected.label;
+                renderQaPanel();
+            }
+
+            copyBtn.addEventListener("click", function () {
+                embedUrl.select();
+                embedUrl.setSelectionRange(0, 99999);
+                navigator.clipboard.writeText(embedUrl.value).then(function () {
+                    statusText.textContent = "Embed URL copied";
+                }).catch(function () {
+                    statusText.textContent = "Copy failed (clipboard blocked)";
+                });
+            });
+
+            openBtn.addEventListener("click", function () {
+                window.open(embedUrl.value, "_blank", "noopener,noreferrer");
+            });
+
+            exitBtn.addEventListener("click", function () {
+                window.location.href = "/app.html";
+            });
+
+            pageSelect.addEventListener("change", loadSelectedPage);
+            viewportSelect.addEventListener("change", function () {
+                setViewportWidth(viewportSelect.value);
+            });
+            qaSelects.forEach(function (el) {
+                el.addEventListener("change", persistQaPanel);
+            });
+            qaNotes.addEventListener("input", persistQaPanel);
+            clearQaBtn.addEventListener("click", function () {
+                var pageKey = getCurrentPageKey();
+                qaStore[pageKey] = {
+                    viewport: { "1440": "todo", "1200": "todo", "768": "todo", "390": "todo", "full": "todo" },
+                    notes: ""
+                };
+                saveQaStore();
+                renderQaPanel();
+                statusText.textContent = "Checklist reset: " + pageKey;
+            });
+
+            renderPageOptions();
+            setViewportWidth(viewportSelect.value);
+            loadSelectedPage();
+        })();
+    </script>
+
+    <script src="/embed-chrome.js" defer></script>
+</body>
+</html>

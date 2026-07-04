@@ -31,7 +31,15 @@ export const INTAKE_USERS_FIELD_MAP = {
 export const INTAKE_DEALS_TABLE = process.env.AIRTABLE_INTAKE_DEALS_TABLE || "tblbvSxjiIhXzW6XW";
 
 export const INTAKE_DEALS_NAME = process.env.AIRTABLE_INTAKE_DEALS_NAME_FIELD || "fldkKJzBOBoFCvbnx";
-export const INTAKE_DEALS_USER_LINK = process.env.AIRTABLE_INTAKE_DEALS_USER_LINK_FIELD || "fldALlSB9UsnLhgvI";
+/** Airtable field id (meta/schema). */
+export const INTAKE_DEALS_USER_LINK_FIELD_ID =
+  process.env.AIRTABLE_INTAKE_DEALS_USER_LINK_FIELD_ID || "fldALlSB9UsnLhgvI";
+/** Field name on deal records (Airtable API returns keys by name, not id). */
+export const INTAKE_DEALS_USER_LINK_NAME =
+  process.env.AIRTABLE_INTAKE_DEALS_USER_LINK_NAME || "User_ID";
+/** @deprecated Prefer INTAKE_DEALS_USER_LINK_NAME for reads/writes on deal.fields */
+export const INTAKE_DEALS_USER_LINK =
+  process.env.AIRTABLE_INTAKE_DEALS_USER_LINK_FIELD || INTAKE_DEALS_USER_LINK_NAME;
 export const INTAKE_DEALS_STATUS = process.env.AIRTABLE_INTAKE_DEALS_STATUS_FIELD || "fld4cvEAz0k3x8aaU";
 export const INTAKE_DEALS_STAGE = process.env.AIRTABLE_INTAKE_DEALS_STAGE_FIELD || "flde0PSEQUhA9Jl5a";
 

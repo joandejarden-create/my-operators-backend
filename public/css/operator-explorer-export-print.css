@@ -1,0 +1,204 @@
+/**
+ * Platform-faithful Operator Explorer PDF export (default for ?exportPdf=1).
+ * Same page width as operator-explorer-gold-mock (.page max-width 1360px). Optional ?compact=1.
+ */
+
+html.oe-export-pdf.oe-export-pdf--platform {
+  font-size: 16px;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform body {
+  background: #080f25;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .page {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .tabs-section {
+  display: none !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .btn,
+html.oe-export-pdf.oe-export-pdf--platform button.btn,
+html.oe-export-pdf.oe-export-pdf--platform .oe-operator-save-btn,
+html.oe-export-pdf.oe-export-pdf--platform .oe-hero-save-btn,
+html.oe-export-pdf.oe-export-pdf--platform .oe-export-pdf-link,
+html.oe-export-pdf.oe-export-pdf--platform .be-case-modal-overlay,
+html.oe-export-pdf.oe-export-pdf--platform .oe-hero-chip-row {
+  display: none !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .oe-hero__actions {
+  display: none !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .tab-panel {
+  display: block !important;
+  padding-top: 16px;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform:not(.oe-export-pdf--spacious) .tab-panel {
+  page-break-before: auto !important;
+  break-before: auto !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform.oe-export-pdf--spacious .tab-panel {
+  page-break-before: always;
+  break-before: page;
+  padding-top: 20px;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform.oe-export-pdf--spacious .tab-panel:first-of-type {
+  page-break-before: auto;
+  break-before: auto;
+}
+
+/**
+ * Leadership cards: subgrid fails in print — stack vertically but keep platform image size.
+ */
+html.oe-export-pdf.oe-export-pdf--platform .proof-grid.proof-grid--leadership-aligned,
+html.oe-export-pdf.oe-export-pdf--platform .oe-leader-profile-grid.oe-leader-profile-grid--aligned,
+html.oe-export-pdf.oe-export-pdf--platform .oe-leader-profile-grid {
+  display: grid !important;
+  grid-template-rows: none !important;
+  align-items: start;
+  gap: 14px;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .proof-grid--leadership-aligned > .leader-card,
+html.oe-export-pdf.oe-export-pdf--platform .oe-leader-profile-grid--aligned > .leader-card,
+html.oe-export-pdf.oe-export-pdf--platform .oe-leader-profile-grid > .leader-card {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-rows: unset !important;
+  grid-row: auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .leader-card.leader-card--with-profile .leader-image-wrap {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  aspect-ratio: 4 / 5 !important;
+  max-height: 280px !important;
+  overflow: hidden !important;
+  grid-row: unset !important;
+  background: rgba(6, 12, 28, 0.85);
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .leader-card.leader-card--with-profile .leader-image-wrap img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center 22% !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .leader-card.leader-card--with-profile .leader-body {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  grid-template-rows: unset !important;
+  grid-row: unset !important;
+  position: static !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .leader-card--with-profile .leader-name,
+html.oe-export-pdf.oe-export-pdf--platform .leader-card--with-profile .leader-meta,
+html.oe-export-pdf.oe-export-pdf--platform .leader-card--with-profile .leader-summary,
+html.oe-export-pdf.oe-export-pdf--platform .leader-card--with-profile .leader-profile-detail {
+  display: block !important;
+  grid-row: unset !important;
+  position: static !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .leader-profile-detail__facts {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-rows: unset !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .leader-profile-fact {
+  display: grid !important;
+  grid-template-columns: 5.75rem minmax(0, 1fr) !important;
+  grid-row: unset !important;
+  align-items: baseline !important;
+  gap: 8px 10px !important;
+  padding: 5px 0 !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .leader-bio-overlay {
+  display: none !important;
+}
+
+/* Gallery — keep platform 4:3 cards; image fills card */
+html.oe-export-pdf.oe-export-pdf--platform .be-atelier-oe .gallery-card,
+html.oe-export-pdf.oe-export-pdf--platform .be-atelier-oe .gallery-card--has-image {
+  aspect-ratio: 4 / 3 !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .be-atelier-oe .gallery-card--has-image img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  object-fit: cover !important;
+}
+
+/* Readable text when the browser scales 1360px layout onto A4 */
+html.oe-export-pdf.oe-export-pdf--platform .meta-card .value,
+html.oe-export-pdf.oe-export-pdf--platform .kpi .value,
+html.oe-export-pdf.oe-export-pdf--platform .leader-profile-fact__value,
+html.oe-export-pdf.oe-export-pdf--platform .leader-profile-fact__tags,
+html.oe-export-pdf.oe-export-pdf--platform .leader-summary {
+  hyphens: none;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .gold-footprint-table td,
+html.oe-export-pdf.oe-export-pdf--platform .gold-footprint-table th {
+  font-variant-numeric: lining-nums;
+}
+
+html.oe-export-pdf.oe-export-pdf--platform .odna-insights-goto-tab {
+  display: none !important;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  html.oe-export-pdf.oe-export-pdf--platform,
+  html.oe-export-pdf.oe-export-pdf--platform body,
+  html.oe-export-pdf.oe-export-pdf--platform .hero,
+  html.oe-export-pdf.oe-export-pdf--platform .tab-panel,
+  html.oe-export-pdf.oe-export-pdf--platform .section,
+  html.oe-export-pdf.oe-export-pdf--platform .leader-card,
+  html.oe-export-pdf.oe-export-pdf--platform .proof-card,
+  html.oe-export-pdf.oe-export-pdf--platform .gallery-card,
+  html.oe-export-pdf.oe-export-pdf--platform .be-atelier-oe .oe-section {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html.oe-export-pdf.oe-export-pdf--platform .page {
+    max-width: 100%;
+    padding: 0;
+  }
+}

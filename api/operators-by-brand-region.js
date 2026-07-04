@@ -6,7 +6,20 @@
 
 import Airtable from "airtable";
 
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY_READONLY }).base(process.env.AIRTABLE_BASE_ID_ALT);
+const AIRTABLE_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID_ALT;
+const base = (AIRTABLE_KEY && AIRTABLE_BASE)
+  ? new Airtable({ apiKey: AIRTABLE_KEY }).base(AIRTABLE_BASE)
+  : null;
+
+function ensureOperatorsByBrandRegionConfig(res) {
+  if (base) return true;
+  res.status(500).json({
+    success: false,
+    error: "Missing Airtable API key or base id for operators by brand region",
+  });
+  return false;
+}
 
 // In-memory cache for ranked list (same filter params = same response)
 const cache = new Map();
@@ -140,6 +153,7 @@ function matchesSearch(prop, searchStr) {
  * Query: search, parentCompany, brand, status, chainScale, region, locationType, operationType
  */
 export async function getLargestOperatorsByBrandRegion(req, res) {
+  if (!ensureOperatorsByBrandRegionConfig(res)) return;
   try {
     const {
       search: searchQuery,
@@ -457,6 +471,7 @@ function getFieldValues(rec, ...keys) {
  * Returns parent companies, brands (Affiliation), and location types for dropdowns.
  */
 export async function getOperatorsByBrandRegionFilters(req, res) {
+  if (!ensureOperatorsByBrandRegionConfig(res)) return;
   try {
     const records = await base(F.table)
       .select({ maxRecords: 20000, pageSize: 100 })
