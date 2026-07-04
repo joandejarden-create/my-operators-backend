@@ -100,6 +100,7 @@ import getThirdPartyOperatorMappingReport from "./api/third-party-operator-mappi
 import getThirdPartyOperatorPrefillQa from "./api/third-party-operator-prefill-qa.js";
 import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js";
 import signup from "./api/signup.js";
+import signupConfig from "./api/signup-config.js";
 import memberstackWebhook from "./api/memberstack-webhook.js";
 import { getPartners, createUser, updateUser } from "./api/partner-directory.js";
 import { getUserFavorites, createFavorite, deleteFavorite, updateFavorite } from "./api/partner-directory-favorites.js";
@@ -1313,6 +1314,7 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 app.post("/api/intake/deal", dealIntake);
 app.post("/api/intake/user", userIntake);
 app.post("/api/signup", signup);
+app.get("/api/signup/config", signupConfig);
 app.post("/api/webhooks/memberstack", memberstackWebhook);
 
 // Market Alerts API endpoints – live beta (Airtable-backed)
@@ -1683,6 +1685,16 @@ app.get("/third-party-operator-intake", (req, res) => {
     const i = req.originalUrl.indexOf("?");
     const qs = i >= 0 ? req.originalUrl.slice(i) : "";
     res.redirect(302, "/third-party-operator-setup-new-two.html" + qs);
+});
+
+app.get("/third-party-operator-setup-sandbox", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "third-party-operator-setup-sandbox.html"));
+});
+app.get("/third-party-operator-setup-sandbox/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "third-party-operator-setup-sandbox.html"));
+});
+app.get("/third-party-operator-setup-sandbox.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "third-party-operator-setup-sandbox.html"));
 });
 
 // Request information endpoint

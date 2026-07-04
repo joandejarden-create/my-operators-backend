@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}})();</script>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Capital Explorer Profile - Dealality</title>
+
+  <link rel="stylesheet" href="/css/operator-explorer-profile-shell.css?v=cpe-profile-oe-1" />
+
+  <link rel="stylesheet" href="/css/operator-leadership-team-sections.css?v=cpe-profile-oe-1" />
+
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css?v=cpe-profile-oe-1" />
+
+  <link rel="stylesheet" href="/css/capital-provider-explorer.css?v=cpe-wiring-1" />
+
+</head>
+
+<body>
+
+  <div class="page-wrapper cpe-profile-shell">
+
+    <div class="dashboard-main-section">
+
+      <div class="capital-provider-explorer-container cpe-profile-page">
+
+        <div class="page" id="cpeProfilePage">
+
+          <div class="breadcrumb cpe-profile-breadcrumb" style="margin-bottom: 16px;">
+
+            <a href="/app">Home</a>
+
+            <span class="breadcrumb-separator" style="color: var(--neutral--600); margin: 0 8px;">&gt;</span>
+
+            <a href="/capital-provider-explorer">Capital Provider Explorer</a>
+
+            <span class="breadcrumb-separator" style="color: var(--neutral--600); margin: 0 8px;">&gt;</span>
+
+            <span id="cpeBreadcrumbName" style="color: var(--neutral--400);">Profile</span>
+
+          </div>
+
+
+
+          <div class="loading dealality-wave-loader dealality-wave-loader--fixed" id="cpeProfileLoading" role="status" aria-live="polite">
+
+            <div class="loading-content">
+
+              <div class="wave-container">
+
+                <div class="wave wave-1"></div>
+
+                <div class="wave wave-2"></div>
+
+                <div class="wave wave-3"></div>
+
+              </div>
+
+              <div><div class="loading-text-main">Loading Capital Explorer profile…</div></div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="empty-state hidden" id="cpeProfileError">
+
+            <h3>Unable to load profile</h3>
+
+            <p id="cpeProfileErrorMessage"></p>
+
+            <a href="/capital-provider-explorer" class="brand-card__more-btn" style="margin-top: 16px; display: inline-flex;">Back to Directory</a>
+
+          </div>
+
+
+
+          <div id="cpeProfileContent" class="hidden">
+
+            <header class="hero oe-presentation-hero cpe-profile-hero" id="cpeProfileHero">
+
+              <div class="oe-hero__title-row">
+
+                <div class="oe-hero__logo-wrap">
+
+                  <img class="hero-logo" id="cpeProfileLogoImg" alt="" hidden />
+
+                  <div class="cpe-hero-logo-initial" id="cpeProfileLogoInitial">C</div>
+
+                </div>
+
+                <div class="oe-hero__title-block">
+
+                  <h1 id="cpeProfileName">Capital Provider</h1>
+
+                  <div id="cpeHeroVerifiedLine" class="oe-hero__verified-line" hidden></div>
+
+                  <p class="cpe-hero-tagline" id="cpeProfileTagline"></p>
+
+                  <div class="operator-card__badges" id="cpeProfileBadges"></div>
+
+                </div>
+
+                <div class="oe-hero__actions" id="cpeProfileActions">
+
+                  <div class="btn-row">
+
+                    <button type="button" class="btn cpe-save-btn" id="cpeSaveToList" data-cpe-provider-id="" data-cpe-provider-name="">Save to Financing List</button>
+
+                    <button type="button" class="btn btn--primary" id="cpePrepareProfile">Prepare Financing Profile</button>
+
+                  </div>
+
+                  <div class="oe-hero-chip-row" id="cpeHeroChips"></div>
+
+                </div>
+
+              </div>
+
+              <p class="statement" id="cpeProfileStatement"></p>
+
+              <div class="hero-meta oe-hero-meta-single-row" id="cpeProfileHeroMeta"></div>
+
+            </header>
+
+
+
+            <div class="cpe-disclaimer" role="note">
+
+              Capital provider information is for organizational and informational purposes only.
+
+              Financing availability, terms, and approval are determined solely by each capital provider.
+
+            </div>
+
+
+
+            <nav class="tabs-section" id="cpeProfileTabs" aria-label="Profile sections">
+
+              <button type="button" class="section-nav-item active" data-tab="profile"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L12 3l9 6.5"></path><path d="M5 10v10h14V10"></path></svg></div><span class="section-nav-label">Profile &amp; Positioning</span></button>
+
+              <button type="button" class="section-nav-item" data-tab="lending-focus"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 1 1 0 7H6"></path></svg></div><span class="section-nav-label">Lending Focus</span></button>
+
+              <button type="button" class="section-nav-item" data-tab="deal-criteria"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path></svg></div><span class="section-nav-label">Deal Criteria</span></button>
+
+              <button type="button" class="section-nav-item" data-tab="track-record"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 9h18"></path></svg></div><span class="section-nav-label">Track Record</span></button>
+
+              <button type="button" class="section-nav-item" data-tab="required-info"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M8 9h8"></path><path d="M8 13h5"></path></svg></div><span class="section-nav-label">Required Information</span></button>
+
+              <button type="button" class="section-nav-item" data-tab="process"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4"></path><path d="M12 18v4"></path><path d="M4.93 4.93l2.83 2.83"></path><path d="M16.24 16.24l2.83 2.83"></path><path d="M2 12h4"></path><path d="M18 12h4"></path></svg></div><span class="section-nav-label">Process</span></button>
+
+              <button type="button" class="section-nav-item" data-tab="contact"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"></path><path d="M4 7l8 6 8-6"></path></svg></div><span class="section-nav-label">Contact Pathway</span></button>
+
+              <button type="button" class="section-nav-item hidden" data-tab="internal-notes" id="cpeInternalNotesTab"><div class="section-nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M9 9h6"></path><path d="M9 13h6"></path></svg></div><span class="section-nav-label">Internal Notes</span></button>
+
+            </nav>
+
+
+
+            <main id="cpeProfilePanels">
+
+              <div class="tab-content active" id="tab-profile"></div>
+
+              <div class="tab-content" id="tab-lending-focus"></div>
+
+              <div class="tab-content" id="tab-deal-criteria"></div>
+
+              <div class="tab-content" id="tab-track-record"></div>
+
+              <div class="tab-content" id="tab-required-info"></div>
+
+              <div class="tab-content" id="tab-process"></div>
+
+              <div class="tab-content" id="tab-contact"></div>
+
+              <div class="tab-content" id="tab-internal-notes"></div>
+
+            </main>
+
+            <footer id="cpeProfileSourcesFooter" class="cpe-profile-sources-footer" hidden></footer>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <script src="/js/dealality-memberstack-auth.js"></script>
+
+  <script src="/js/capital-explorer-favorites.js?v=cpe-favorites-1"></script>
+  <script src="/js/capital-provider-explorer-detail.js?v=cpe-favorites-1"></script>
+
+  <script src="/embed-chrome.js" defer></script>
+
+</body>
+
+</html>
+

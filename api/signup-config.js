@@ -1,4 +1,5 @@
 import { getDealalityPublicHomeUrl } from "../lib/dealality-public-home-url.js";
+import { MEMBERSTACK_DOM_SCRIPT_URL } from "../lib/memberstack/client-config.js";
 import { memberstackSecretEnvironment } from "../lib/memberstack/environment.js";
 
 /**
@@ -10,7 +11,10 @@ export default function signupConfig(req, res) {
   }
 
   const appId = (process.env.MEMBERSTACK_APP_ID || "").trim();
-  const pendingPlanId = (process.env.MEMBERSTACK_SIGNUP_PENDING_PLAN_ID || "").trim();
+  const pendingPlanId =
+    process.env.MEMBERSTACK_ASSIGN_PLANS_ON_SIGNUP === "false"
+      ? ""
+      : (process.env.MEMBERSTACK_SIGNUP_PENDING_PLAN_ID || "").trim();
   const useDomSignup = process.env.SIGNUP_USE_DOM_SIGNUP !== "false";
   const adminApiEnvironment = memberstackSecretEnvironment(process.env.MEMBERSTACK_SECRET_KEY);
 
@@ -20,7 +24,7 @@ export default function signupConfig(req, res) {
     appId,
     pendingPlanId,
     useDomSignup: useDomSignup && Boolean(appId),
-    memberstackScript: "https://static.memberstack.com/scripts/v1/memberstack.js",
+    memberstackScript: MEMBERSTACK_DOM_SCRIPT_URL,
     /** sandbox = Test Mode in dashboard; live = Production */
     adminApiEnvironment,
     environmentChecklist:
