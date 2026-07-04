@@ -1633,18 +1633,7 @@ app.get("/operator-explorer-detail", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-explorer-detail.html'));
 });
 
-app.get("/capital-provider-explorer", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer.html"));
-});
-app.get("/capital-provider-explorer/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer.html"));
-});
-app.get("/capital-provider-explorer-detail", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer-detail.html"));
-});
-app.get("/capital-provider-explorer-detail/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer-detail.html"));
-});
+// Capital Explorer HTML — not shipped yet (API routes remain for backend work).
 
 app.get("/operator-dna-profile", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-dna-profile.html'));

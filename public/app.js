@@ -76,8 +76,7 @@
         // Legacy hash routes → combined Brand Explorer (replaces brand-library-atelier-north.html).
         '/brand-explorer': { file: '/brand-explorer-combined.html', title: 'Brand Explorer' },
         '/operator-explorer': { file: '/operator-explorer.html', title: 'Operator Explorer' },
-        '/capital-provider-explorer': { file: '/capital-provider-explorer.html', title: 'Capital Explorer' },
-        '/capital-provider-explorer-detail': { file: '/capital-provider-explorer-detail.html', title: 'Capital Explorer Profile' },
+        // Capital Explorer — UI not ready; routes removed from shell until pages ship.
         '/operator-explorer-mockup': { file: '/operator-explorer-gold-mock.html', title: 'Operator Explorer Mockup' },
         '/operator-dna-profile': { file: '/operator-dna-profile.html', title: 'Operator DNA Profile (Prototype)' },
         '/deal-room-owner': { file: '/deal-room-owner.html', title: 'Deal Room (Owner)' },
@@ -210,7 +209,6 @@
                     children: [
                         { label: 'Brand Explorer', route: '/brand-explorer-combined', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Operator Explorer', route: '/operator-explorer', roles: ['owner', 'brand', 'operator', 'admin'] },
-                        { label: 'Capital Explorer', route: '/capital-provider-explorer', roles: ['owner', 'admin'] },
                         { label: 'Clause Library', route: '/clause-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Financial Term Library', route: '/financial-term-library', roles: ['owner', 'brand', 'admin'] },
                         { label: 'Franchise Fee Estimator', route: '/franchise-fee-estimator', roles: ['owner', 'brand', 'admin'] },
@@ -293,8 +291,6 @@
         '/loi-database-dashboard.html': '/loi-database-dashboard',
         '/brand-explorer.html': '/brand-explorer-combined',
         '/operator-explorer.html': '/operator-explorer',
-        '/capital-provider-explorer.html': '/capital-provider-explorer',
-        '/capital-provider-explorer-detail.html': '/capital-provider-explorer-detail',
         '/operator-explorer-gold-mock.html': '/operator-explorer-mockup',
         '/operator-dna-profile.html': '/operator-dna-profile',
         '/deal-room-owner.html': '/deal-room-owner',

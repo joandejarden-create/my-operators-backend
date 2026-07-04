@@ -161,12 +161,6 @@ import { getProposalsForDeal } from "./api/deal-compare.js";
 import { listBrands as listBrandExplorerBrands, getBrand as getBrandExplorerBrand, fitToDeal as brandExplorerFitToDeal } from "./api/brand-explorer.js";
 import { listOperators, getOperatorById } from "./api/operator-explorer.js";
 import {
-  listCapitalProviders,
-  getCapitalProviderById,
-  handleCapitalProviderExplorer,
-} from "./api/capital-provider-explorer.js";
-import { optionalDealalityAuth } from "./middleware/optionalDealalityAuth.js";
-import {
   createMyDealsOperatorRequest,
   listMyDealsOperatorRequestsByDeals,
 } from "./api/my-deals-operator-requests.js";
@@ -1141,10 +1135,6 @@ app.post("/api/brand-explorer/fit-to-deal", brandExplorerFitToDeal);
 app.get("/api/operator-explorer/operators", listOperators);
 app.get("/api/operator-explorer/operator", getOperatorById);
 
-app.get("/api/capital-provider-explorer", optionalDealalityAuth, handleCapitalProviderExplorer);
-app.get("/api/capital-provider-explorer/providers", optionalDealalityAuth, listCapitalProviders);
-app.get("/api/capital-provider-explorer/provider", optionalDealalityAuth, getCapitalProviderById);
-
 // Brand Library API endpoints
 app.get("/api/brand-library/operational-support", getOperationalSupportByBrandId);
 app.get("/api/brand-library/brands", getBrandLibraryBrands);
@@ -1276,19 +1266,6 @@ app.get("/operator-explorer/", (req, res) => {
 
 app.get("/operator-explorer-detail", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'operator-explorer-detail.html'));
-});
-
-app.get("/capital-provider-explorer", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer.html"));
-});
-app.get("/capital-provider-explorer/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer.html"));
-});
-app.get("/capital-provider-explorer-detail", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer-detail.html"));
-});
-app.get("/capital-provider-explorer-detail/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "capital-provider-explorer-detail.html"));
 });
 
 app.get("/third-party-operator-setup-sandbox", (req, res) => {
