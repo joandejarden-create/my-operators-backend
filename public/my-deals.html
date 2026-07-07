@@ -3335,7 +3335,10 @@
                 modal.style.display = 'block';
                 var apiBase = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
                 try {
-                    var res = await fetch(apiBase + '/api/my-deals/' + encodeURIComponent(dealId) + '/alternative-brands?limit=5');
+                    var res = await myDealsAuthFetch('/api/my-deals/' + encodeURIComponent(dealId) + '/alternative-brands?limit=5&_ts=' + Date.now(), { cache: 'no-store' });
+                    if (!res.ok) {
+                        throw new Error('Alternative brands API failed (' + res.status + ')');
+                    }
                     var data = await res.json().catch(function() { return {}; });
                     var preferredBrand = data.preferredBrand || deal && deal.preferredBrandsChosen ? String(deal.preferredBrandsChosen).split(/\s*,\s*/)[0] : '—';
                     var preferredScore = data.preferredScore != null ? Number(data.preferredScore) : null;
@@ -3350,7 +3353,7 @@
                         (preferredScore != null ? ' (Score: ' + Number(preferredScore).toFixed(1) + '/100)' : '') + '</p></div>' +
                         '<div class="modal-section"><h4>Top Alternative Brands</h4>';
                     if (topAlternatives.length === 0) {
-                        html += '<p style="color: var(--neutral--400); padding: 20px;">No alternative brands in cache. Save the deal or run a cache refresh to populate alternatives.</p>';
+                        html += '<p style="color: var(--neutral--400); padding: 20px;">No alternative brands found with better match scores.</p>';
                     } else {
                         var preferredBrandsSet = (deal && deal.preferredBrandsChosen ? String(deal.preferredBrandsChosen).split(/\s*,\s*/).map(function(s) { return s.trim().toLowerCase(); }).filter(Boolean) : []);
                         html += '<div class="alternative-brands-list">';

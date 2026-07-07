@@ -2687,6 +2687,7 @@ export async function addRecommendedBrand(req, res) {
  */
 export async function getAlternativeBrands(req, res) {
   try {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     const recordId = req.params.recordId;
     if (!recordId || !recordId.startsWith("rec")) {
       return res.status(400).json({ success: false, error: "Valid deal ID is required" });
@@ -2748,7 +2749,7 @@ export async function getAlternativeBrands(req, res) {
     const preferredBreakdown = preferredBrand ? getBreakdownFromCacheIndex(scoreIndex, preferredBrand) : {};
 
     const altSource = cache?.topAlternatives && cache.topAlternatives.length > 0 ? cache.topAlternatives : [];
-    const alternatives = altSource.slice(0, limit).map((a) => {
+    let alternatives = altSource.slice(0, limit).map((a) => {
       const brand = typeof a === "object" && a && a.brand != null ? String(a.brand).trim() : String(a).trim();
       return {
         brand,
@@ -2760,10 +2761,40 @@ export async function getAlternativeBrands(req, res) {
       };
     });
 
+    let responsePreferredBrand = preferredBrand;
+    let responsePreferredScore = preferredScore;
+    let responsePreferredBreakdown = preferredBreakdown;
+
+    if (alternatives.length === 0) {
+      const result = await computeTopAlternativeBrands(
+        f,
+        locationData,
+        mpData,
+        siData,
+        preferredBrandsSet,
+        baseId,
+        apiKey,
+        limit
+      );
+      alternatives = (result.alternatives || []).map((a) => ({
+        brand: a.brand,
+        score: a.score != null ? roundMatchScoreNew(a.score) : null,
+        breakdownNewDetails: a.breakdownNewDetails || {},
+      }));
+      if (result.preferredBrand) responsePreferredBrand = result.preferredBrand;
+      if (result.preferredScore != null) responsePreferredScore = result.preferredScore;
+      if (result.preferredBreakdown && Object.keys(result.preferredBreakdown).length > 0) {
+        responsePreferredBreakdown = result.preferredBreakdown;
+      }
+      refreshDealBrandCacheForRecordId(baseId, apiKey, recordId).catch((e) => {
+        console.warn("[Deal Brand Cache] Refresh after alternative-brands compute failed:", e.message);
+      });
+    }
+
     return res.json({
-      preferredBrand,
-      preferredScore,
-      preferredBreakdown,
+      preferredBrand: responsePreferredBrand,
+      preferredScore: responsePreferredScore,
+      preferredBreakdown: responsePreferredBreakdown,
       alternatives,
     });
   } catch (err) {
@@ -3816,6 +3847,12 @@ export async function updateMyDealById(req, res) {
         val = val.split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean);
       } else if (name === "Is the property encumbered" && Array.isArray(val)) {
         val = val.map((s) => (typeof s === "string" ? s : (s && s.name) || "").trim()).filter(Boolean);
+      } else if (name === "Preferred Operator Management Structure") {
+        val = Array.isArray(val)
+          ? val.map((s) => (typeof s === "string" ? s : (s && s.name) || "").trim()).filter(Boolean)
+          : typeof val === "string" && String(val).trim()
+            ? String(val).split(/\s*,\s*/).map((s) => s.trim()).filter(Boolean)
+            : [];
       } else if (
         (name === "Royalty Fee Expectations" || name === "Marketing Fee Expectations" || name === "Loyalty Fee Expectations") &&
         typeof val === "string"
