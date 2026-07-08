@@ -40,7 +40,15 @@ export async function getMarketingLandingEventsReport(req, res) {
 
     setReportNoStore(res);
     const window = buildReportWindow(req.query?.days);
-    const report = buildLandingEventsReport(loadOptionsForWindow(window), window);
+    const excludeInternal =
+      String(req.query?.excludeInternal || "").trim() === "1";
+    const report = buildLandingEventsReport(
+      {
+        ...loadOptionsForWindow(window),
+        excludeInternal,
+      },
+      window
+    );
     return res.status(200).json(report);
   } catch (err) {
     console.error("Error in marketing-landing-events-report:", err);

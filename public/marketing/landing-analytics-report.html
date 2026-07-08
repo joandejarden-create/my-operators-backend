@@ -36,6 +36,20 @@
       margin-bottom: 16px;
     }
     .toolbar label { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .toolbar .toolbar-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    .toolbar .toolbar-toggle input {
+      accent-color: var(--accent);
+    }
     .toolbar select, .toolbar button {
       background: var(--surface); border: 1px solid var(--border); color: var(--text);
       border-radius: 10px; padding: 9px 14px; font-size: 13px;
@@ -343,6 +357,40 @@
     .device-row__meta { display: flex; align-items: center; gap: 8px; }
     .device-row__swatch { width: 10px; height: 10px; border-radius: 2px; }
     .device-row__pct { color: var(--muted); font-size: 12px; min-width: 42px; text-align: right; }
+    details.section-group {
+      margin: 0 0 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    details.section-group summary {
+      cursor: pointer;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid transparent;
+      list-style: none;
+    }
+    details.section-group[open] summary {
+      border-bottom-color: var(--border);
+      background: var(--surface-2);
+    }
+    .section-group__content {
+      padding: 16px;
+    }
+    .segment-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .segment-row:last-child { border-bottom: none; }
+    .segment-row__value { font-weight: 700; }
   </style>
 </head>
 <body>
@@ -366,6 +414,10 @@
         </select>
       </label>
       <button type="button" id="laRefresh">Refresh</button>
+      <label class="toolbar-toggle" title="Exclude your internal Barcelona traffic from charts and KPIs">
+        <input type="checkbox" id="laExcludeInternal" />
+        Exclude Internal Traffic (Barcelona)
+      </label>
       <button type="button" id="laExportEvents" class="secondary">Export Events CSV</button>
       <button type="button" id="laExportFunnel" class="secondary">Export Funnel CSV</button>
     </div>
@@ -401,6 +453,11 @@
       <section class="insights" id="laInsights" hidden></section>
 
       <section class="kpi-grid" id="laCards"></section>
+      <section class="panel">
+        <h2>Traffic Segments</h2>
+        <p class="panel-sub">Separate your own location from external audience signals.</p>
+        <div id="laTrafficSegments"></div>
+      </section>
 
       <div class="layout-main">
         <section class="panel">
@@ -483,6 +540,9 @@
         </div>
       </section>
 
+      <details class="section-group" open>
+        <summary>Conversion & Drop-Offs</summary>
+        <div class="section-group__content">
       <div class="layout-secondary">
         <section class="panel">
           <h2>Funnel Benchmarks</h2>
@@ -521,7 +581,12 @@
           <div id="laFaq"></div>
         </section>
       </div>
+        </div>
+      </details>
 
+      <details class="section-group">
+        <summary>Behavior & Audience Details</summary>
+        <div class="section-group__content">
       <div class="layout-secondary">
         <section class="panel">
           <h2>Return Visitors</h2>
@@ -584,15 +649,20 @@
           <div id="laUtm"></div>
         </section>
       </div>
+        </div>
+      </details>
 
-      <section class="panel">
+      <details class="section-group">
+        <summary>Session Replay & Technical Diagnostics</summary>
+        <div class="section-group__content">
+      <section class="panel" style="margin-bottom:18px;">
         <h2>Session Replay</h2>
         <p class="panel-sub">Click a session to see the full event timeline in order — scroll, sections, CTAs, and video.</p>
         <div class="session-strip" id="laSessionStrip"></div>
         <div class="timeline" id="laSessionTimeline"></div>
       </section>
 
-      <section class="panel">
+      <section class="panel" style="margin-bottom:18px;">
         <h2>Recent Activity</h2>
         <p class="panel-sub">Latest visitor actions — human-readable labels.</p>
         <div class="recent-wrap">
@@ -618,10 +688,12 @@
           </div>
         </div>
       </details>
+        </div>
+      </details>
     </div>
   </div>
 
   <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614e"></script>
-  <script src="/js/landing-analytics-report.js?v=20260622i"></script>
+  <script src="/js/landing-analytics-report.js?v=20260622j"></script>
 </body>
 </html>

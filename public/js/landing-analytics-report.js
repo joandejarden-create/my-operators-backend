@@ -111,21 +111,34 @@
     return $("laDays").value || "7";
   }
 
-  function syncDaysToUrl(days) {
+  function selectedExcludeInternal() {
+    return Boolean($("laExcludeInternal") && $("laExcludeInternal").checked);
+  }
+
+  function syncFiltersToUrl(days, excludeInternal) {
     try {
       var url = new URL(window.location.href);
       url.searchParams.set("days", String(days));
+      if (excludeInternal) {
+        url.searchParams.set("excludeInternal", "1");
+      } else {
+        url.searchParams.delete("excludeInternal");
+      }
       window.history.replaceState(null, "", url.toString());
     } catch (_e) {}
   }
 
-  function applyDaysFromUrl() {
+  function applyFiltersFromUrl() {
     try {
       var params = new URLSearchParams(window.location.search);
       var days = params.get("days");
-      if (!days || !$("laDays")) return;
-      var option = $("laDays").querySelector('option[value="' + days + '"]');
-      if (option) $("laDays").value = days;
+      if (days && $("laDays")) {
+        var option = $("laDays").querySelector('option[value="' + days + '"]');
+        if (option) $("laDays").value = days;
+      }
+      if ($("laExcludeInternal")) {
+        $("laExcludeInternal").checked = params.get("excludeInternal") === "1";
+      }
     } catch (_e2) {}
   }
 
@@ -194,6 +207,52 @@
         );
       })
       .join("");
+  }
+
+  function renderTrafficSegments(segments) {
+    var el = $("laTrafficSegments");
+    if (!el) return;
+    if (!segments) {
+      el.innerHTML = '<p class="empty">No segment data yet.</p>';
+      return;
+    }
+
+    var rows = [
+      {
+        label: "External Sessions",
+        value: segments.externalSessions || 0,
+      },
+      {
+        label: "Internal Sessions (" + (segments.internalLocationLabel || "Barcelona") + ")",
+        value: segments.internalSessions || 0,
+      },
+      {
+        label: "External Events",
+        value: segments.externalEvents || 0,
+      },
+      {
+        label: "Internal Events",
+        value: segments.internalEvents || 0,
+      },
+    ];
+
+    el.innerHTML =
+      rows
+        .map(function (row) {
+          return (
+            '<div class="segment-row"><span>' +
+            esc(row.label) +
+            '</span><span class="segment-row__value">' +
+            esc(row.value) +
+            "</span></div>"
+          );
+        })
+        .join("") +
+      '<p class="panel-sub" style="margin:10px 0 0;">' +
+      (segments.excludedInternal
+        ? "Internal traffic is excluded from charts and KPIs."
+        : "Toggle exclude to remove internal traffic from all charts and KPIs.") +
+      "</p>";
   }
 
   function renderHeroKpis(totals, funnel) {
@@ -1242,11 +1301,14 @@
     $("laSessionTimeline").innerHTML = '<p class="empty">Loading Session…</p>';
     try {
       var days = selectedDays();
+      var excludeInternal = selectedExcludeInternal();
       var data = await apiFetch(
         "/api/marketing/landing-events/session?sessionId=" +
           encodeURIComponent(sessionId) +
           "&days=" +
           encodeURIComponent(days) +
+          "&excludeInternal=" +
+          (excludeInternal ? "1" : "0") +
           "&_=" +
           Date.now()
       );
@@ -1259,10 +1321,13 @@
 
   function downloadExport(format) {
     var days = selectedDays();
+    var excludeInternal = selectedExcludeInternal();
     var url =
       appendReportKey(
         "/api/marketing/landing-events/export?days=" +
           encodeURIComponent(days) +
+          "&excludeInternal=" +
+          (excludeInternal ? "1" : "0") +
           "&format=" +
           encodeURIComponent(format)
       );
@@ -1407,18 +1472,22 @@
 
   async function loadReport() {
     var days = selectedDays();
-    syncDaysToUrl(days);
+    var excludeInternal = selectedExcludeInternal();
+    syncFiltersToUrl(days, excludeInternal);
     setBanner("Loading " + (days === "1" ? "last 24 hours" : "last " + days + " days") + "…", "info");
     $("laReport").hidden = true;
     try {
       var data = await apiFetch(
         "/api/marketing/landing-events/report?days=" +
           encodeURIComponent(days) +
+          "&excludeInternal=" +
+          (excludeInternal ? "1" : "0") +
           "&_=" +
           Date.now()
       );
       renderInsights(data.insights);
       renderHeroKpis(data.totals || {}, data.funnel);
+      renderTrafficSegments(data.trafficSegments);
       renderDashboard(data.dashboard);
       renderInsightsHub(data.insightsHub);
       renderBenchmarks(data.benchmarks);
@@ -1520,9 +1589,12 @@
     );
   }
 
-  applyDaysFromUrl();
+  applyFiltersFromUrl();
   $("laRefresh").addEventListener("click", loadReport);
   $("laDays").addEventListener("change", loadReport);
+  if ($("laExcludeInternal")) {
+    $("laExcludeInternal").addEventListener("change", loadReport);
+  }
   if ($("laExportEvents")) {
     $("laExportEvents").addEventListener("click", function () {
       downloadExport("events");
