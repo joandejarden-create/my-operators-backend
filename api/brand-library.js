@@ -212,6 +212,8 @@ const BRAND_EXPLORER_FILTER_OPTIONS_CATALOG = {
   mixedUseAllowed: ['Yes', 'No', 'Case-by-case'],
   softCollectionBrand: ['Yes', 'No'],
   brandedResidencesStatuses: ['Yes', 'No', 'Case-by-case', 'Not Confirmed'],
+  fbOutletsRequired: ['Yes', 'No', 'Preferred'],
+  meetingSpaceRequired: ['Yes', 'No', 'Preferred'],
   acceptableProjectTypes: PROJECT_FIT_ACCEPTABLE_PROJECT_TYPES_COLUMNS.map((c) => c.formValue),
   acceptableAgreementTypes: PROJECT_FIT_ACCEPTABLE_AGREEMENT_TYPES_COLUMNS.map((c) => c.formValue),
 };
@@ -910,6 +912,37 @@ async function loadProjectFitIndexForBrandList(apiKey, baseId) {
   return { byBrandId, byBrandName };
 }
 
+/** Index Brand Standards rows by linked Brand Basics record id (and Brand Name fallback). */
+async function loadBrandStandardsIndexForBrandList(apiKey, baseId) {
+  const tableName = encodeURIComponent(F.brandStandards.table);
+  const byBrandId = new Map();
+  const byBrandName = new Map();
+  let offset = null;
+  do {
+    let url = `https://api.airtable.com/v0/${baseId}/${tableName}?pageSize=100&fields%5B%5D=F%26B%20Outlets%20Required&fields%5B%5D=Meeting%20Space%20Required&fields%5B%5D=Brand%20Name&fields%5B%5D=Brand`;
+    if (offset) url += "&offset=" + encodeURIComponent(offset);
+    const pageRes = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
+    const pageData = await pageRes.json();
+    if (pageData.error) throw new Error(pageData.error.message || "Airtable Brand Standards error");
+    for (const rec of pageData.records || []) {
+      const std = rec.fields || {};
+      const payload = {
+        fbOutletsRequired: projectFitStr(std["F&B Outlets Required"]),
+        meetingSpaceRequired: projectFitStr(std["Meeting Space Required"]),
+      };
+      const brandLinks = std.Brand || std["Brand Setup - Brand Basics"] || std.Brand_Basic_ID || [];
+      const linkIds = Array.isArray(brandLinks) ? brandLinks : [];
+      for (const bid of linkIds) {
+        if (bid && !byBrandId.has(bid)) byBrandId.set(bid, payload);
+      }
+      const nm = (std["Brand Name"] || "").toString().trim();
+      if (nm && !byBrandName.has(nm)) byBrandName.set(nm, payload);
+    }
+    offset = pageData.offset || null;
+  } while (offset);
+  return { byBrandId, byBrandName };
+}
+
 function projectFitStr(v) {
   if (v == null || v === "") return "";
   if (typeof v === "string") return v.trim();
@@ -975,6 +1008,7 @@ export async function getBrandLibraryBrands(req, res) {
     } while (offset);
 
     const projectFitIndex = await loadProjectFitIndexForBrandList(apiKey, baseId);
+    const brandStandardsIndex = await loadBrandStandardsIndexForBrandList(apiKey, baseId);
 
     // Same normalizer for all select-style fields (string or choice object { id, name, color? })
     function valueToStr(v) {
@@ -1033,6 +1067,10 @@ export async function getBrandLibraryBrands(req, res) {
         projectFitIndex.byBrandId.get(rec.id) ||
         projectFitIndex.byBrandName.get(name) ||
         {};
+      const std =
+        brandStandardsIndex.byBrandId.get(rec.id) ||
+        brandStandardsIndex.byBrandName.get(name) ||
+        {};
       const basicsResidences = valueToStr(fields[F.brandBasics.brandedResidencesStatus]);
       const legacyResidences = projectFitStr(pf.brandedResidencesAllowed);
       const brandedResidencesStatus =
@@ -1056,6 +1094,8 @@ export async function getBrandLibraryBrands(req, res) {
         coBrandingAllowed: projectFitStr(pf.coBrandingAllowed),
         mixedUseAllowed: projectFitStr(pf.mixedUseAllowed),
         softCollectionBrand: projectFitStr(pf.softCollectionBrand),
+        fbOutletsRequired: projectFitStr(std.fbOutletsRequired),
+        meetingSpaceRequired: projectFitStr(std.meetingSpaceRequired),
         acceptableProjectTypes: Array.isArray(pf.acceptableProjectTypes) ? pf.acceptableProjectTypes : [],
         acceptableAgreementTypes: Array.isArray(pf.acceptableAgreementTypes) ? pf.acceptableAgreementTypes : [],
         yearBrandLaunched: (fields[F.brandBasics.yearLaunched] || '').toString().trim(),
@@ -1105,6 +1145,14 @@ export async function getBrandLibraryBrands(req, res) {
       BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.softCollectionBrand,
       [...new Set(brandList.map((b) => (b.softCollectionBrand || "").trim()).filter(Boolean))]
     );
+    const fbOutletsRequired = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.fbOutletsRequired,
+      [...new Set(brandList.map((b) => (b.fbOutletsRequired || "").trim()).filter(Boolean))]
+    );
+    const meetingSpaceRequired = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.meetingSpaceRequired,
+      [...new Set(brandList.map((b) => (b.meetingSpaceRequired || "").trim()).filter(Boolean))]
+    );
     const acceptableProjectTypes = mergeFilterOptionLists(
       BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.acceptableProjectTypes,
       [
@@ -1147,6 +1195,8 @@ export async function getBrandLibraryBrands(req, res) {
       coBrandingAllowed,
       mixedUseAllowed,
       softCollectionBrand,
+      fbOutletsRequired,
+      meetingSpaceRequired,
       acceptableProjectTypes,
       acceptableAgreementTypes,
     };

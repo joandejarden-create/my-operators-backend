@@ -1259,6 +1259,19 @@
                     </div>
                 </div>
             </section>
+            <section class="radar-filter-drawer__section">
+                <h3 class="radar-filter-drawer__section-title">Brand Standards</h3>
+                <div class="radar-filter-drawer__grid">
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="fbOutletsRequiredFilter">F&amp;B Outlets Required</label>
+                        <select class="control-select filter-select" id="fbOutletsRequiredFilter"><option value="">All</option></select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="meetingSpaceRequiredFilter">Meeting Space Required</label>
+                        <select class="control-select filter-select" id="meetingSpaceRequiredFilter"><option value="">All</option></select>
+                    </div>
+                </div>
+            </section>
         </div>
         <footer class="radar-filter-drawer__footer">
             <button type="button" class="btn-clear" id="brandExplorerFilterResetBtn">Reset View</button>
@@ -1304,6 +1317,9 @@
         'Brand + Third-Party Mgmt': 'Brand + Third-Party Mgmt. (Combined)',
         'Brand-Managed': 'Brand-Managed Only'
     };
+    /** Brand Standards F&B / Meeting filters — matches Airtable single-select options. */
+    var BRAND_STANDARDS_TRI_STATE_OPTIONS = ['Yes', 'Preferred', 'No'];
+    var listFilterOptions = {};
 
     var listView = document.getElementById('beCombinedListView');
     var detailView = document.getElementById('beCombinedDetailView');
@@ -1945,6 +1961,8 @@
         var residences = document.getElementById('brandedResidencesFilter');
         var coBrand = document.getElementById('coBrandingFilter');
         var mixedUse = document.getElementById('mixedUseFilter');
+        var fbOutletsRequired = document.getElementById('fbOutletsRequiredFilter');
+        var meetingSpaceRequired = document.getElementById('meetingSpaceRequiredFilter');
         var projectType = document.getElementById('acceptableProjectTypeFilter');
         var agreementType = document.getElementById('acceptableAgreementTypeFilter');
         var n = 0;
@@ -1959,6 +1977,8 @@
         if (residences && residences.value) n++;
         if (coBrand && coBrand.value) n++;
         if (mixedUse && mixedUse.value) n++;
+        if (fbOutletsRequired && fbOutletsRequired.value) n++;
+        if (meetingSpaceRequired && meetingSpaceRequired.value) n++;
         if (projectType && projectType.value) n++;
         if (agreementType && agreementType.value) n++;
         return n;
@@ -2072,6 +2092,7 @@
             if (/case-by-case/i.test(raw)) labels[key] = 'Case-by-case';
             else if (raw.toLowerCase() === 'yes') labels[key] = 'Yes';
             else if (raw.toLowerCase() === 'no') labels[key] = 'No';
+            else if (raw.toLowerCase() === 'preferred') labels[key] = 'Preferred';
             else labels[key] = raw;
         });
         return sortFilterOptionsCaseByCaseLast(
@@ -2079,6 +2100,46 @@
                 return labels[key];
             })
         );
+    }
+
+    function labelTriStateOption(raw) {
+        if (/case-by-case/i.test(raw)) return 'Case-by-case';
+        if (String(raw).toLowerCase() === 'yes') return 'Yes';
+        if (String(raw).toLowerCase() === 'no') return 'No';
+        if (String(raw).toLowerCase() === 'preferred') return 'Preferred';
+        return raw;
+    }
+
+    function mergeTriStateFilterOptions(catalogOptions, brandField) {
+        var labels = {};
+        (catalogOptions || []).forEach(function (raw) {
+            var key = normTriState(raw);
+            if (!key) return;
+            labels[key] = labelTriStateOption(raw);
+        });
+        drawerTriStateOptionsFromBrands(allBrands, brandField).forEach(function (raw) {
+            var key = normTriState(raw);
+            if (!key) return;
+            labels[key] = labelTriStateOption(raw);
+        });
+        var order = ['yes', 'preferred', 'no', 'case-by-case'];
+        return order
+            .filter(function (key) {
+                return labels[key];
+            })
+            .map(function (key) {
+                return labels[key];
+            })
+            .concat(
+                Object.keys(labels)
+                    .filter(function (key) {
+                        return order.indexOf(key) === -1;
+                    })
+                    .sort()
+                    .map(function (key) {
+                        return labels[key];
+                    })
+            );
     }
 
     function drawerScalarOptionsFromBrands(brands, field) {
@@ -2098,6 +2159,8 @@
         var brandedResidences = (document.getElementById('brandedResidencesFilter') || {}).value || '';
         var coBranding = (document.getElementById('coBrandingFilter') || {}).value || '';
         var mixedUse = (document.getElementById('mixedUseFilter') || {}).value || '';
+        var fbOutletsRequired = (document.getElementById('fbOutletsRequiredFilter') || {}).value || '';
+        var meetingSpaceRequired = (document.getElementById('meetingSpaceRequiredFilter') || {}).value || '';
         var acceptableProjectType = (document.getElementById('acceptableProjectTypeFilter') || {}).value || '';
         var acceptableAgreementType = (document.getElementById('acceptableAgreementTypeFilter') || {}).value || '';
         var favSet = activeListTab === 'favorites' ? favoriteIdsSet() : null;
@@ -2121,6 +2184,8 @@
             var okResidences = brandMatchesTriState(brand.brandedResidencesStatus, brandedResidences);
             var okCoBrand = brandMatchesTriState(brand.coBrandingAllowed, coBranding);
             var okMixedUse = brandMatchesTriState(brand.mixedUseAllowed, mixedUse);
+            var okFbOutlets = brandMatchesTriState(brand.fbOutletsRequired, fbOutletsRequired);
+            var okMeetingSpace = brandMatchesTriState(brand.meetingSpaceRequired, meetingSpaceRequired);
             var okProjectType = brandMatchesMultiList(
                 brand.acceptableProjectTypes,
                 acceptableProjectType,
@@ -2132,7 +2197,7 @@
                 BRAND_AGREEMENT_TYPE_FILTER_ALIASES
             );
             return okSearch && okParent && okChain && okModel && okService && okArch && okRegion &&
-                okDevStage && okResidences && okCoBrand && okMixedUse && okProjectType && okAgreementType;
+                okDevStage && okResidences && okCoBrand && okMixedUse && okFbOutlets && okMeetingSpace && okProjectType && okAgreementType;
         });
         sortBrands();
         renderBrands();
@@ -2258,6 +2323,10 @@
         if (coBrand) coBrand.value = '';
         var mixedUse = document.getElementById('mixedUseFilter');
         if (mixedUse) mixedUse.value = '';
+        var fbOutletsRequired = document.getElementById('fbOutletsRequiredFilter');
+        if (fbOutletsRequired) fbOutletsRequired.value = '';
+        var meetingSpaceRequired = document.getElementById('meetingSpaceRequiredFilter');
+        if (meetingSpaceRequired) meetingSpaceRequired.value = '';
         var projectType = document.getElementById('acceptableProjectTypeFilter');
         if (projectType) projectType.value = '';
         var agreementType = document.getElementById('acceptableAgreementTypeFilter');
@@ -2290,6 +2359,26 @@
         populateSelect(
             'mixedUseFilter',
             drawerTriStateOptionsFromBrands(allBrands, 'mixedUseAllowed'),
+            'All'
+        );
+        populateSelect(
+            'fbOutletsRequiredFilter',
+            mergeTriStateFilterOptions(
+                (listFilterOptions.fbOutletsRequired && listFilterOptions.fbOutletsRequired.length)
+                    ? listFilterOptions.fbOutletsRequired
+                    : BRAND_STANDARDS_TRI_STATE_OPTIONS,
+                'fbOutletsRequired'
+            ),
+            'All'
+        );
+        populateSelect(
+            'meetingSpaceRequiredFilter',
+            mergeTriStateFilterOptions(
+                (listFilterOptions.meetingSpaceRequired && listFilterOptions.meetingSpaceRequired.length)
+                    ? listFilterOptions.meetingSpaceRequired
+                    : BRAND_STANDARDS_TRI_STATE_OPTIONS,
+                'meetingSpaceRequired'
+            ),
             'All'
         );
         populateSelect(
@@ -2332,6 +2421,7 @@
             if (!brandsRes.ok) throw new Error('Failed to fetch brands');
             var data = await brandsRes.json();
             allBrands = data.brands || [];
+            listFilterOptions = data.filterOptions || {};
             window.getBrandExplorerListBrands = function () {
                 return allBrands.slice();
             };
@@ -2391,7 +2481,7 @@
             self._t = setTimeout(filterBrands, 300);
         });
     }
-    ['parentCompanyFilter', 'chainScaleFilter', 'brandModelFilter', 'serviceModelFilter', 'architectureFilter', 'regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter'].forEach(function (id) {
+    ['parentCompanyFilter', 'chainScaleFilter', 'brandModelFilter', 'serviceModelFilter', 'architectureFilter', 'regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter', 'fbOutletsRequiredFilter', 'meetingSpaceRequiredFilter'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) el.addEventListener('change', filterBrands);
     });
@@ -2409,7 +2499,7 @@
             resetBtnId: 'brandExplorerFilterResetBtn',
             drawerBadgeId: 'brandExplorerDrawerFilterBadge',
             mainBadgeId: 'filterCountBadge',
-            filterIds: ['regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter'],
+            filterIds: ['regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter', 'fbOutletsRequiredFilter', 'meetingSpaceRequiredFilter'],
             onFilterChange: filterBrands,
             onReset: clearFilters,
             countActiveFilters: getActiveFilterCount
