@@ -108,9 +108,9 @@
       return listCache.promise;
     }
 
-    var url = '/api/brand-library/brands';
-    if (options.refresh) {
-      url += (url.indexOf('?') >= 0 ? '&' : '?') + 'refresh=1';
+    var url = '/api/brand-library/brands?refresh=1';
+    if (options.refresh === false) {
+      url = '/api/brand-library/brands';
     }
 
     var promise = fetch(url, { cache: 'no-store' })

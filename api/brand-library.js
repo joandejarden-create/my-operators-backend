@@ -6,6 +6,13 @@ import {
 } from "../lib/brand-status-active.js";
 import { resolvePortfolioLadderTier } from "../lib/brand-explorer-portfolio-ladder.mjs";
 import { portfolioLadderTierForAirtableBrandName } from "../scripts/lib/choice-chi-portfolio-context.mjs";
+import { portfolioLadderTierForIhgBrandName } from "../lib/ihg-portfolio-ladder.mjs";
+import { normalizeProfileGovernance } from "../lib/profile-governance/normalize-profile-governance.js";
+import { buildResidencesApiShape } from "../lib/partner-intelligence/brand-residences-status-setup.js";
+import {
+  normalizeBrandExplorerAgreementTypes,
+  normalizeBrandExplorerProjectTypes,
+} from "../lib/brand-explorer/brand-explorer-list-filter-normalize.js";
 
 /** Strip internal ETL/editor phrasing from string fields on nested brand payloads. */
 function sanitizeStringFieldsDeep(obj) {
@@ -28,10 +35,11 @@ function getBase() {
     return new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID);
 }
 
-/** When true, GET /api/brand-library/brand attaches read-only brand.censusSummary from Hotel Census. */
+/** When true (default), GET /api/brand-library/brand attaches read-only brand.censusSummary from Hotel Census. Set BRAND_EXPLORER_CENSUS_METRICS=0 to disable. */
 function isBrandExplorerCensusMetricsEnabled() {
   const v = (process.env.BRAND_EXPLORER_CENSUS_METRICS || "").trim().toLowerCase();
-  return v === "1" || v === "true" || v === "yes";
+  if (v === "0" || v === "false" || v === "no") return false;
+  return true;
 }
 
 // Field mappings for Brand Library
@@ -79,7 +87,11 @@ const F = {
     regionOffered: "Region Offered",
     profileAnalysis: "Brand Profile Analysis",
     explorerHeroVerification: "Explorer Hero Verification",
-    explorerHeroDataSource: "Explorer Hero Data Source"
+    explorerHeroDataSource: "Explorer Hero Data Source",
+    brandedResidencesStatus: "Branded Residences Status",
+    brandedResidencesNotes: "Branded Residences Notes",
+    brandedResidencesSourceUrl: "Branded Residences Source URL",
+    brandedResidencesReviewStatus: "Branded Residences Review Status"
   },
   brandFootprint: {
     table: "Brand Setup - Brand Footprint",
@@ -192,6 +204,45 @@ const PROJECT_FIT_ACCEPTABLE_AGREEMENT_TYPES_COLUMNS = [
   { airtableColumn: 'Joint Venture - Acceptable Agreements Type', formValue: 'Joint Venture' },
   { airtableColumn: 'Brand + Third-Party - Acceptable Agreements Type', formValue: 'Brand + Third-Party Mgmt. (Combined)' }
 ];
+
+/** Canonical Explorer filter options — always show in UI even when few brands have values populated. */
+const BRAND_EXPLORER_FILTER_OPTIONS_CATALOG = {
+  brandDevelopmentStages: ['Startup', 'Growth', 'Mature', 'Relaunch'],
+  coBrandingAllowed: ['Yes', 'No', 'Case-by-case'],
+  mixedUseAllowed: ['Yes', 'No', 'Case-by-case'],
+  softCollectionBrand: ['Yes', 'No'],
+  brandedResidencesStatuses: ['Yes', 'No', 'Case-by-case', 'Not Confirmed'],
+  acceptableProjectTypes: PROJECT_FIT_ACCEPTABLE_PROJECT_TYPES_COLUMNS.map((c) => c.formValue),
+  acceptableAgreementTypes: PROJECT_FIT_ACCEPTABLE_AGREEMENT_TYPES_COLUMNS.map((c) => c.formValue),
+};
+
+function mergeFilterOptionLists(catalogList, observedList) {
+  const out = new Set();
+  (catalogList || []).forEach((v) => {
+    const s = String(v || '').trim();
+    if (s) out.add(s);
+  });
+  (observedList || []).forEach((v) => {
+    const s = String(v || '').trim();
+    if (s) out.add(s);
+  });
+  return [...out].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+}
+
+function projectFitCheckboxValues(pf, columns) {
+  const out = [];
+  for (const col of columns || []) {
+    const v = pf[col.airtableColumn];
+    if (v === true || v === 'Yes' || v === 'yes') out.push(col.formValue);
+  }
+  return out;
+}
+
+function projectFitMultiValues(pf, multiCol, checkboxColumns) {
+  const fromMulti = valuesToStrList(pf[multiCol]);
+  if (fromMulti.length) return fromMulti;
+  return projectFitCheckboxValues(pf, checkboxColumns);
+}
 
 // Markets Focus – Priority: full exact Airtable column names (use as given).
 const PROJECT_FIT_PRIORITY_MARKETS_COLUMNS = [
@@ -308,6 +359,62 @@ function getFieldValue(fields, exactColumnName) {
   return undefined;
 }
 
+/** Reverse link field names on Brand Setup - Brand Basics → child table record ids. */
+const BRAND_BASICS_CHILD_LINK_FIELDS = {
+  [F.brandFootprint.table]: ["Brand Setup - Brand Footprint"],
+  [F.loyaltyCommercial.table]: ["Brand Setup - Loyalty & Commercial"],
+  [F.feeStructure.table]: ["Brand Setup - Fee Structure"],
+  [F.brandStandards.table]: ["Brand Setup - Brand Standards"],
+  [F.dealTerms.table]: ["Brand Setup - Deal Terms"],
+  [F.portfolioPerformance.table]: ["Brand Setup - Portfolio & Performance"],
+  [F.projectFit.table]: ["Brand Setup - Project Fit"],
+  [F.operationalSupport.table]: ["Brand Setup - Operational Support", "Operational Support"],
+  [F.legalTerms.table]: ["Brand Setup - Legal Terms", "Legal Terms"],
+  [F.sustainabilityEsg.table]: ["Brand Setup - Sustainability & ESG"],
+};
+
+function firstLinkedRecordId(val) {
+  if (Array.isArray(val) && val.length > 0) {
+    const first = val[0];
+    if (typeof first === "string" && first.startsWith("rec")) return first;
+  }
+  if (typeof val === "string" && val.startsWith("rec")) return val;
+  return null;
+}
+
+async function findRecordViaBasicsLink(base, tableName, brandFields, linkFieldNames) {
+  const names = linkFieldNames || BRAND_BASICS_CHILD_LINK_FIELDS[tableName] || [];
+  for (const fieldName of names) {
+    const recId = firstLinkedRecordId(brandFields?.[fieldName]);
+    if (!recId) continue;
+    try {
+      const rec = await base(tableName).find(recId);
+      if (rec) {
+        console.log(`[Brand Library] ${tableName} found via Basics link "${fieldName}"`);
+        return rec;
+      }
+    } catch (err) {
+      console.warn(`[Brand Library] Basics link "${fieldName}" → ${tableName} failed:`, err.message);
+    }
+  }
+  return null;
+}
+
+/** Prefetch all 1:1 child tables for a brand in parallel (Basics reverse links, then formula lookup). */
+async function prefetchBrandLinkedRecords(base, brandFields, brandRecordId, brandName) {
+  const tableNames = Object.keys(BRAND_BASICS_CHILD_LINK_FIELDS);
+  const pairs = await Promise.all(
+    tableNames.map(async (tableName) => {
+      let rec = await findRecordViaBasicsLink(base, tableName, brandFields, BRAND_BASICS_CHILD_LINK_FIELDS[tableName]);
+      if (!rec) {
+        rec = await findLinkedRecordByBrand(base, tableName, brandRecordId, brandName);
+      }
+      return [tableName, rec];
+    })
+  );
+  return Object.fromEntries(pairs);
+}
+
 // Find one record in a "Brand Setup - ..." table linked to the given brand (by link field or Brand Name)
 async function findLinkedRecordByBrand(base, tableName, brandRecordId, brandName) {
   const escapedName = (brandName || '').replace(/"/g, '\\"');
@@ -330,17 +437,6 @@ async function findLinkedRecordByBrand(base, tableName, brandRecordId, brandName
     if (records.length > 0) {
       console.log(`${tableName} found via Brand Name`);
       return records[0];
-    }
-  }
-  const allRecords = await base(tableName).select({ maxRecords: 100 }).all();
-  for (const rec of allRecords) {
-    const fields = rec.fields || {};
-    for (const key of Object.keys(fields)) {
-      const val = fields[key];
-      if (Array.isArray(val) && val.length > 0 && typeof val[0] === 'string' && val[0].startsWith('rec') && val.includes(brandRecordId)) {
-        console.log(`${tableName} found via fallback (link field "${key}")`);
-        return rec;
-      }
     }
   }
   return null;
@@ -370,53 +466,50 @@ async function selectAllLinkedToBrandBasics(base, tableName, brandRecordId, bran
   // In filterByFormula, linked-record fields compare to the linked row's *primary field* text, not record ids.
   // FIND(recId, ARRAYJOIN({Brand})) is therefore unreliable for "rows linked to this Basics id".
   // Prefer Brand Name (set by apply-brand-explorer-presentation) and {Brand} = Basics name or id, then scan.
+  const formulaFetches = [];
   if (escapedName) {
-    try {
-      pushAll(await base(tableName).select({ filterByFormula: `{Brand Name} = "${escapedName}"`, maxRecords: 500 }).all());
-    } catch (_) {
-      /* optional column */
-    }
-    try {
-      pushAll(await base(tableName).select({ filterByFormula: `{Brand} = "${escapedName}"`, maxRecords: 500 }).all());
-    } catch (_) {
-      /* link field may not be named Brand */
-    }
+    formulaFetches.push(
+      base(tableName)
+        .select({ filterByFormula: `{Brand Name} = "${escapedName}"`, maxRecords: 500 })
+        .all()
+        .catch(() => [])
+    );
+    formulaFetches.push(
+      base(tableName)
+        .select({ filterByFormula: `{Brand} = "${escapedName}"`, maxRecords: 500 })
+        .all()
+        .catch(() => [])
+    );
   }
-  try {
-    pushAll(await base(tableName).select({ filterByFormula: `{Brand} = "${escapedId}"`, maxRecords: 500 }).all());
-  } catch (_) {}
+  formulaFetches.push(
+    base(tableName)
+      .select({ filterByFormula: `{Brand} = "${escapedId}"`, maxRecords: 500 })
+      .all()
+      .catch(() => [])
+  );
+  const formulaResults = await Promise.all(formulaFetches);
+  for (const records of formulaResults) {
+    pushAll(records);
+  }
 
   if (merged.length > 0) return merged;
 
-  for (const linkField of linkFieldNames) {
-    try {
-      const formula = `FIND("${escapedId}", ARRAYJOIN({${linkField}})) > 0`;
-      const records = await base(tableName).select({ filterByFormula: formula }).all();
-      if (records.length > 0) return records;
-    } catch (_) {
-      continue;
+  const linkFieldResults = await Promise.all(
+    linkFieldNames.map(async (linkField) => {
+      try {
+        const formula = `FIND("${escapedId}", ARRAYJOIN({${linkField}})) > 0`;
+        return await base(tableName).select({ filterByFormula: formula }).all();
+      } catch (_) {
+        return [];
+      }
+    })
+  );
+  for (const records of linkFieldResults) {
+    if (records.length > 0) {
+      pushAll(records);
+      return merged;
     }
   }
-
-  try {
-    const allRecords = await base(tableName).select({ maxRecords: 2000 }).all();
-    for (const rec of allRecords) {
-      const fields = rec.fields || {};
-      for (const key of Object.keys(fields)) {
-        const val = fields[key];
-        if (
-          Array.isArray(val) &&
-          val.length > 0 &&
-          typeof val[0] === 'string' &&
-          val[0].startsWith('rec') &&
-          val.includes(brandRecordId)
-        ) {
-          pushAll([rec]);
-          break;
-        }
-      }
-    }
-  } catch (_) {}
 
   return merged;
 }
@@ -524,6 +617,20 @@ function normalizeBrandExplorerPresentationRecords(records) {
     return String(a.recordId).localeCompare(String(b.recordId));
   });
   return { version: 1, blocks };
+}
+
+function mergedExplorerSlotBody(brandExplorerPresentation, slotKey) {
+  const blocks = Array.isArray(brandExplorerPresentation?.blocks) ? brandExplorerPresentation.blocks : [];
+  return blocks
+    .filter((block) => block && String(block.slotKey) === String(slotKey))
+    .map((block) => {
+      const title = sanitizeExternalCopy((block.title || "").toString().trim());
+      const body = sanitizeExternalCopy((block.body || "").toString().trim());
+      if (title && body) return `${title}: ${body}`;
+      return body || title;
+    })
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 // Normalize Airtable single-select / multi-select to display string
@@ -728,9 +835,93 @@ const brandListCache = new Map();
 /** @type {Map<string, Promise<object>>} */
 const brandListLoadPromise = new Map();
 
+const BRAND_DETAIL_CACHE_TTL_MS = Math.max(
+  5000,
+  parseInt(process.env.BRAND_LIBRARY_DETAIL_CACHE_TTL_MS || "300000", 10) || 300000
+);
+const BRAND_DETAIL_CACHE_DISABLED =
+  process.env.DISABLE_BRAND_LIBRARY_DETAIL_CACHE === "true" ||
+  process.env.DISABLE_BRAND_LIBRARY_DETAIL_CACHE === "1";
+/** @type {Map<string, { at: number, payload: object }>} */
+const brandDetailCache = new Map();
+/** @type {Map<string, Promise<object>>} */
+const brandDetailLoadPromise = new Map();
+
 export function clearBrandListCache() {
   brandListCache.clear();
   brandListLoadPromise.clear();
+}
+
+export function clearBrandDetailCache(brandId) {
+  if (brandId) {
+    const key = String(brandId).trim();
+    brandDetailCache.delete(key);
+    brandDetailLoadPromise.delete(key);
+    return;
+  }
+  brandDetailCache.clear();
+  brandDetailLoadPromise.clear();
+}
+
+/** Index Project Fit rows by linked Brand Basics record id (and Brand Name fallback). */
+async function loadProjectFitIndexForBrandList(apiKey, baseId) {
+  const tableName = encodeURIComponent(F.projectFit.table);
+  const byBrandId = new Map();
+  const byBrandName = new Map();
+  let offset = null;
+  do {
+    let url = `https://api.airtable.com/v0/${baseId}/${tableName}?pageSize=100`;
+    if (offset) url += "&offset=" + encodeURIComponent(offset);
+    const pageRes = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
+    const pageData = await pageRes.json();
+    if (pageData.error) throw new Error(pageData.error.message || "Airtable Project Fit error");
+    for (const rec of pageData.records || []) {
+      const pf = rec.fields || {};
+      const payload = {
+        brandedResidencesAllowed: pf["Branded Residences Allowed"],
+        coBrandingAllowed: pf["Co-Branding Allowed"],
+        mixedUseAllowed: pf["Mixed-Use Development Allowed"],
+        softCollectionBrand: pf["Soft/Collection Brand"],
+        acceptableProjectTypes: normalizeBrandExplorerProjectTypes(
+          projectFitMultiValues(
+            pf,
+            "Acceptable Project Type",
+            PROJECT_FIT_ACCEPTABLE_PROJECT_TYPES_COLUMNS
+          )
+        ),
+        acceptableAgreementTypes: normalizeBrandExplorerAgreementTypes(
+          projectFitMultiValues(
+            pf,
+            "Acceptable Agreements Type",
+            PROJECT_FIT_ACCEPTABLE_AGREEMENT_TYPES_COLUMNS
+          )
+        ),
+      };
+      const brandLinks = pf.Brand || pf["Brand Setup - Brand Basics"] || pf.Brand_Basic_ID || [];
+      const linkIds = Array.isArray(brandLinks) ? brandLinks : [];
+      for (const bid of linkIds) {
+        if (bid && !byBrandId.has(bid)) byBrandId.set(bid, payload);
+      }
+      const nm = (pf["Brand Name"] || "").toString().trim();
+      if (nm && !byBrandName.has(nm)) byBrandName.set(nm, payload);
+    }
+    offset = pageData.offset || null;
+  } while (offset);
+  return { byBrandId, byBrandName };
+}
+
+function projectFitStr(v) {
+  if (v == null || v === "") return "";
+  if (typeof v === "string") return v.trim();
+  if (typeof v === "object" && v !== null && typeof v.name === "string") return v.name.trim();
+  if (typeof v === "number" && Number.isFinite(v)) return String(v);
+  return "";
+}
+
+function projectFitNum(v) {
+  if (v == null || v === "") return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
 }
 
 // Get all brands for the library listing (use REST API so we get exact field names e.g. Brand Architecture)
@@ -783,6 +974,8 @@ export async function getBrandLibraryBrands(req, res) {
       offset = pageData.offset || null;
     } while (offset);
 
+    const projectFitIndex = await loadProjectFitIndexForBrandList(apiKey, baseId);
+
     // Same normalizer for all select-style fields (string or choice object { id, name, color? })
     function valueToStr(v) {
       if (v == null) return '';
@@ -833,6 +1026,19 @@ export async function getBrandLibraryBrands(req, res) {
         fields['Region Offered'];
       const name = (fields[F.brandBasics.name] || '').toString().trim() || 'Unknown Brand';
       const chiLadderTier = portfolioLadderTierForAirtableBrandName(name);
+      const ihgLadderTier = portfolioLadderTierForIhgBrandName(name);
+      const portfolioLadderTier =
+        typeof chiLadderTier === "number" ? chiLadderTier : ihgLadderTier;
+      const pf =
+        projectFitIndex.byBrandId.get(rec.id) ||
+        projectFitIndex.byBrandName.get(name) ||
+        {};
+      const basicsResidences = valueToStr(fields[F.brandBasics.brandedResidencesStatus]);
+      const legacyResidences = projectFitStr(pf.brandedResidencesAllowed);
+      const brandedResidencesStatus =
+        basicsResidences ||
+        legacyResidences ||
+        "Not Confirmed";
       return {
         id: rec.id,
         name,
@@ -845,10 +1051,17 @@ export async function getBrandLibraryBrands(req, res) {
         architecture: archVal,
         regionOffered: valuesToStrList(regionRaw),
         status: valueToStr(fields[F.brandBasics.status]),
+        brandDevelopmentStage: valueToStr(fields[F.brandBasics.developmentStage]),
+        brandedResidencesStatus,
+        coBrandingAllowed: projectFitStr(pf.coBrandingAllowed),
+        mixedUseAllowed: projectFitStr(pf.mixedUseAllowed),
+        softCollectionBrand: projectFitStr(pf.softCollectionBrand),
+        acceptableProjectTypes: Array.isArray(pf.acceptableProjectTypes) ? pf.acceptableProjectTypes : [],
+        acceptableAgreementTypes: Array.isArray(pf.acceptableAgreementTypes) ? pf.acceptableAgreementTypes : [],
         yearBrandLaunched: (fields[F.brandBasics.yearLaunched] || '').toString().trim(),
         positioning: (fields[F.brandBasics.positioning] || '').toString().trim(),
         tagline: (fields[F.brandBasics.tagline] || '').toString().trim(),
-        ...(typeof chiLadderTier === 'number' ? { portfolioLadderTier: chiLadderTier } : {})
+        ...(typeof portfolioLadderTier === "number" ? { portfolioLadderTier } : {}),
       };
     });
 
@@ -872,6 +1085,50 @@ export async function getBrandLibraryBrands(req, res) {
         )
       ),
     ].sort();
+    const brandDevelopmentStages = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.brandDevelopmentStages,
+      [...new Set(brandList.map((b) => (b.brandDevelopmentStage || "").trim()).filter(Boolean))]
+    );
+    const brandedResidencesStatuses = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.brandedResidencesStatuses,
+      [...new Set(brandList.map((b) => (b.brandedResidencesStatus || "").trim()).filter(Boolean))]
+    );
+    const coBrandingAllowed = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.coBrandingAllowed,
+      [...new Set(brandList.map((b) => (b.coBrandingAllowed || "").trim()).filter(Boolean))]
+    );
+    const mixedUseAllowed = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.mixedUseAllowed,
+      [...new Set(brandList.map((b) => (b.mixedUseAllowed || "").trim()).filter(Boolean))]
+    );
+    const softCollectionBrand = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.softCollectionBrand,
+      [...new Set(brandList.map((b) => (b.softCollectionBrand || "").trim()).filter(Boolean))]
+    );
+    const acceptableProjectTypes = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.acceptableProjectTypes,
+      [
+        ...new Set(
+          brandList.flatMap((b) =>
+            (Array.isArray(b.acceptableProjectTypes) ? b.acceptableProjectTypes : [])
+              .map((v) => String(v).trim())
+              .filter(Boolean)
+          )
+        ),
+      ]
+    );
+    const acceptableAgreementTypes = mergeFilterOptionLists(
+      BRAND_EXPLORER_FILTER_OPTIONS_CATALOG.acceptableAgreementTypes,
+      [
+        ...new Set(
+          brandList.flatMap((b) =>
+            (Array.isArray(b.acceptableAgreementTypes) ? b.acceptableAgreementTypes : [])
+              .map((v) => String(v).trim())
+              .filter(Boolean)
+          )
+        ),
+      ]
+    );
 
     const withArch = brandList.filter(b => (b.architecture || '').trim()).length;
     console.log('[Brand Library] Architecture field key:', architectureFieldKey, '| brands with architecture:', withArch, '/', brandList.length, '| options:', architectures);
@@ -884,7 +1141,14 @@ export async function getBrandLibraryBrands(req, res) {
       brandModels,
       serviceModels,
       architectures,
-      regionsOffered
+      regionsOffered,
+      brandDevelopmentStages,
+      brandedResidencesStatuses,
+      coBrandingAllowed,
+      mixedUseAllowed,
+      softCollectionBrand,
+      acceptableProjectTypes,
+      acceptableAgreementTypes,
     };
 
     const payload = {
@@ -996,23 +1260,43 @@ export async function getBrandsGroupedByParentCompany(req, res) {
 // Get detailed brand information for a specific brand
 export async function getBrandLibraryBrandById(req, res) {
   try {
-    res.setHeader("Cache-Control", "no-store, max-age=0");
     const { brandId } = req.query;
-    
+
     if (!brandId) {
       return res.status(400).json({ error: "Brand ID is required" });
     }
 
+    const decodedId = decodeURIComponent(String(brandId));
+    const bypassDetailCache =
+      req.query?.refresh === "1" ||
+      req.query?.refresh === "true" ||
+      req.headers["x-bypass-brand-detail-cache"] === "1";
+
+    if (!bypassDetailCache && !BRAND_DETAIL_CACHE_DISABLED) {
+      const hit = brandDetailCache.get(decodedId);
+      if (hit && Date.now() - hit.at < BRAND_DETAIL_CACHE_TTL_MS) {
+        res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+        res.setHeader("X-Brand-Detail-Cache", "HIT");
+        return res.json(hit.payload);
+      }
+      const inFlight = brandDetailLoadPromise.get(decodedId);
+      if (inFlight) {
+        const payload = await inFlight;
+        res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+        res.setHeader("X-Brand-Detail-Cache", "HIT-INFLIGHT");
+        return res.json(payload);
+      }
+    }
+
+    const loadPromise = (async () => {
     console.log(`Fetching brand with identifier: ${brandId}`);
 
     // Get brand basics
     const base = getBase();
     let brandRecord;
-    
-    // Decode the identifier first
-    const decodedId = decodeURIComponent(brandId);
+
     console.log(`Decoded identifier: ${decodedId}`);
-    
+
     // Check if it looks like a record ID (starts with 'rec')
     if (decodedId.startsWith('rec')) {
       try {
@@ -1023,24 +1307,25 @@ export async function getBrandLibraryBrandById(req, res) {
         // Fall through to name lookup
       }
     }
-    
+
     // If not found by ID, try by name
     if (!brandRecord) {
-      const brandName = decodedId;
-      console.log(`Searching for brand by name: "${brandName}"`);
+      const brandNameLookup = decodedId;
+      console.log(`Searching for brand by name: "${brandNameLookup}"`);
       const records = await base(F.brandBasics.table)
         .select({
-          filterByFormula: `{Brand Name} = "${brandName.replace(/"/g, '\\"')}"`,
+          filterByFormula: `{Brand Name} = "${brandNameLookup.replace(/"/g, '\\"')}"`,
           maxRecords: 1
         })
         .all();
-      
+
       if (records.length === 0) {
-        console.log(`Brand not found: ${brandName}`);
-        return res.status(404).json({ 
+        console.log(`Brand not found: ${brandNameLookup}`);
+        const notFound = {
           success: false,
-          error: `Brand not found: ${brandName}` 
-        });
+          error: `Brand not found: ${brandNameLookup}`
+        };
+        throw Object.assign(new Error(notFound.error), { statusCode: 404, payload: notFound });
       }
       brandRecord = records[0];
       console.log(`Found brand by name: ${brandRecord.fields[F.brandBasics.name]}`);
@@ -1051,59 +1336,36 @@ export async function getBrandLibraryBrandById(req, res) {
     const brandRecordId = brandRecord.id;
     const loadWarnings = [];
 
-    // Get brand footprint data (try link field with ARRAYJOIN, then Brand Name text)
+    const censusPromise = isBrandExplorerCensusMetricsEnabled()
+      ? import("../lib/hotel-census/build-brand-census-summary.js")
+          .then(({ buildBrandCensusSummary }) =>
+            buildBrandCensusSummary(brandName, brandFields[F.brandBasics.parentCompany] || null)
+          )
+          .catch((censusErr) => {
+            console.error("Error building brand censusSummary:", censusErr.message);
+            return {
+              available: false,
+              fallbackRecommended: true,
+              warnings: [`CENSUS_SUMMARY_ERROR: ${censusErr.message}`],
+            };
+          })
+      : Promise.resolve(null);
+
+    const [linkedRecords, exRecs] = await Promise.all([
+      prefetchBrandLinkedRecords(base, brandFields, brandRecordId, brandName),
+      selectAllLinkedToBrandBasics(
+        base,
+        F.brandExplorerPresentation.table,
+        brandRecordId,
+        brandName
+      ),
+    ]);
+
+    // Get brand footprint data from prefetched linked record
     let footprintData = {};
     try {
-      const escapedName = (brandName || '').replace(/"/g, '\\"');
-      // Link from Brand Setup - Brand Footprint back to Brand Setup - Brand Basics (field may be "Brand" or "Brand_Basic_ID")
-      const linkFieldNames = ['Brand', 'Brand_Basic_ID', 'Brand Setup - Brand Basics', 'Brand Basics'];
-      let footprintRecords = [];
-
-      for (const linkField of linkFieldNames) {
-        try {
-          // Linked record fields need ARRAYJOIN in formula to filter by record ID
-          const formula = `FIND("${brandRecordId}", ARRAYJOIN({${linkField}})) > 0`;
-          footprintRecords = await base(F.brandFootprint.table)
-            .select({ filterByFormula: formula, maxRecords: 1 })
-            .all();
-          if (footprintRecords.length > 0) {
-            console.log(`Footprint found via link field "${linkField}"`);
-            break;
-          }
-        } catch (_) {
-          // Field may not exist; try next
-          continue;
-        }
-      }
-
-      if (footprintRecords.length === 0 && escapedName) {
-        footprintRecords = await base(F.brandFootprint.table)
-          .select({
-            filterByFormula: `{Brand Name} = "${escapedName}"`,
-            maxRecords: 1
-          })
-          .all();
-        if (footprintRecords.length > 0) console.log('Footprint found via Brand Name');
-      }
-
-      // Fallback: fetch records and find by link field containing brand record ID (formula can fail on some bases)
-      if (footprintRecords.length === 0) {
-        const allFootprint = await base(F.brandFootprint.table).select({ maxRecords: 100 }).all();
-        for (const rec of allFootprint) {
-          const fields = rec.fields || {};
-          for (const key of Object.keys(fields)) {
-            const val = fields[key];
-            if (Array.isArray(val) && val.length > 0 && typeof val[0] === 'string' && val[0].startsWith('rec')) {
-              if (val.includes(brandRecordId)) {
-                footprintRecords = [rec];
-                console.log('Footprint found via fallback (link field "' + key + '")');
-                break;
-              }
-            }
-          }
-          if (footprintRecords.length > 0) break;
-        }
-      }
+      const footprintRec = linkedRecords[F.brandFootprint.table];
+      const footprintRecords = footprintRec ? [footprintRec] : [];
 
       if (footprintRecords.length > 0) {
         const footprint = footprintRecords[0].fields;
@@ -1340,7 +1602,7 @@ export async function getBrandLibraryBrandById(req, res) {
     }
     let loyaltyCommercialData = { formValues: { ...formValuesDefaults } };
     try {
-      const lcRec = await findLinkedRecordByBrand(base, F.loyaltyCommercial.table, brandRecordId, brandName);
+      const lcRec = linkedRecords[F.loyaltyCommercial.table];
       if (lcRec) {
         const lc = lcRec.fields;
         const LC_PERCENT = ['typicalLoyaltyRoomsPercent', 'typicalDirectBookingPercent', 'typicalOTAReliancePercent', 'otaCommissionPercent', 'crsUsagePercent', 'websiteAppConvRatesPercent'];
@@ -1381,15 +1643,7 @@ export async function getBrandLibraryBrandById(req, res) {
     let feeStructureData = {};
     let feeRecUsed = null;
     try {
-      let feeRec = null;
-      const fsLink = brandFields["Brand Setup - Fee Structure"];
-      if (Array.isArray(fsLink) && fsLink.length > 0 && typeof fsLink[0] === "string" && fsLink[0].startsWith("rec")) {
-        try {
-          feeRec = await base(F.feeStructure.table).find(fsLink[0]);
-          if (process.env.DEBUG_BRAND_LIBRARY === "1") console.log("[Brand Library] Fee Structure found via Brand Setup - Fee Structure link");
-        } catch (_) { /* link may point to deleted record */ }
-      }
-      if (!feeRec) feeRec = await findLinkedRecordByBrand(base, F.feeStructure.table, brandRecordId, brandName);
+      const feeRec = linkedRecords[F.feeStructure.table];
       feeRecUsed = feeRec;
       if (feeRec) {
         const fee = feeRec.fields;
@@ -1438,7 +1692,7 @@ export async function getBrandLibraryBrandById(req, res) {
     // Get brand standards data (Brand Setup page: amenity checkboxes Lobby, Bar, Fitness, Pool, Meeting/Event, Co-working, Grab & Go)
     let brandStandardsData = {};
     try {
-      const stdRec = await findLinkedRecordByBrand(base, F.brandStandards.table, brandRecordId, brandName);
+      const stdRec = linkedRecords[F.brandStandards.table];
       if (stdRec) {
         const s = stdRec.fields;
         const truthy = (v) => v !== undefined && v !== null && v !== '' && String(v).toLowerCase() !== 'no' && v !== false;
@@ -1523,7 +1777,7 @@ export async function getBrandLibraryBrandById(req, res) {
     // Get deal terms using same mapping as form (DEAL_TERMS_FORM_TO_AIRTABLE: form ID → Airtable columns)
     let dealTermsData = {};
     try {
-      const termsRec = await findLinkedRecordByBrand(base, F.dealTerms.table, brandRecordId, brandName);
+      const termsRec = linkedRecords[F.dealTerms.table];
       if (termsRec) {
         const t = termsRec.fields;
         const getFirst = (keys) => {
@@ -1549,7 +1803,7 @@ export async function getBrandLibraryBrandById(req, res) {
     // Get Portfolio & Performance data (Brand Setup - Portfolio & Performance)
     let portfolioPerformanceData = {};
     try {
-      const ppRec = await findLinkedRecordByBrand(base, F.portfolioPerformance.table, brandRecordId, brandName);
+      const ppRec = linkedRecords[F.portfolioPerformance.table];
       if (ppRec) {
         const pp = ppRec.fields;
         const getFirst = (keys) => {
@@ -1622,7 +1876,7 @@ export async function getBrandLibraryBrandById(req, res) {
     let projectFitData = {};
     let projectFitRawForDebug = null;
     try {
-      const pfRec = await findLinkedRecordByBrand(base, F.projectFit.table, brandRecordId, brandName);
+      const pfRec = linkedRecords[F.projectFit.table];
       if (pfRec) {
         const raw = pfRec.fields || {};
         if (req.query && req.query.debug === "projectFit") projectFitRawForDebug = raw;
@@ -1770,25 +2024,14 @@ export async function getBrandLibraryBrandById(req, res) {
       loadWarnings.push("Project Fit");
     }
 
-    // Get Operational Support data (via linked record from Brand Basics, or by Brand Name)
+    // Get Operational Support data from prefetched linked record
     let operationalSupportData = {};
     let opFields = null;
-    const opSupportLink = brandFields['Brand Setup - Operational Support'];
-    if (opSupportLink && Array.isArray(opSupportLink) && opSupportLink.length > 0) {
-      try {
-        const opRecord = await base(F.operationalSupport.table).find(opSupportLink[0]);
-        opFields = opRecord.fields;
-      } catch (err) {
-        console.error("Error fetching operational support:", err.message);
-      }
-    }
-    if (!opFields || Object.keys(opFields).length === 0) {
-      try {
-        const opRec = await findLinkedRecordByBrand(base, F.operationalSupport.table, brandRecordId, brandName);
-        if (opRec) opFields = opRec.fields;
-      } catch (_) {
-        loadWarnings.push("Operational Support");
-      }
+    try {
+      const opRec = linkedRecords[F.operationalSupport.table];
+      if (opRec) opFields = opRec.fields;
+    } catch (_) {
+      loadWarnings.push("Operational Support");
     }
     if (opFields) {
       const opKeys = Object.keys(opFields);
@@ -1819,25 +2062,14 @@ export async function getBrandLibraryBrandById(req, res) {
       }
     }
 
-    // Get Legal Terms data (via linked record from Brand Basics, or by Brand Name)
+    // Get Legal Terms data from prefetched linked record
     let legalTermsData = {};
     let legalFields = null;
-    const legalTermsLink = brandFields['Brand Setup - Legal Terms'];
-    if (legalTermsLink && Array.isArray(legalTermsLink) && legalTermsLink.length > 0) {
-      try {
-        const legalRecord = await base(F.legalTerms.table).find(legalTermsLink[0]);
-        legalFields = legalRecord.fields;
-      } catch (err) {
-        console.error("Error fetching legal terms:", err.message);
-      }
-    }
-    if (!legalFields || Object.keys(legalFields).length === 0) {
-      try {
-        const legalRec = await findLinkedRecordByBrand(base, F.legalTerms.table, brandRecordId, brandName);
-        if (legalRec) legalFields = legalRec.fields;
-      } catch (_) {
-        loadWarnings.push("Legal Terms");
-      }
+    try {
+      const legalRec = linkedRecords[F.legalTerms.table];
+      if (legalRec) legalFields = legalRec.fields;
+    } catch (_) {
+      loadWarnings.push("Legal Terms");
     }
     if (legalFields) {
       for (const { form, airtable } of LEGAL_TERMS_FORM_TO_AIRTABLE) {
@@ -1851,7 +2083,7 @@ export async function getBrandLibraryBrandById(req, res) {
     // Brand Setup - Sustainability & ESG (linked table; form fields in Brand Basics tab)
     let sustainabilityEsgData = {};
     try {
-      const esgRec = await findLinkedRecordByBrand(base, F.sustainabilityEsg.table, brandRecordId, brandName);
+      const esgRec = linkedRecords[F.sustainabilityEsg.table];
       if (esgRec && esgRec.fields) {
         const f = esgRec.fields;
         const getEsg = (col) => (getFieldValue(f, col) ?? '').toString().trim();
@@ -1870,12 +2102,6 @@ export async function getBrandLibraryBrandById(req, res) {
 
     let brandExplorerPresentation = { version: 1, blocks: [] };
     try {
-      const exRecs = await selectAllLinkedToBrandBasics(
-        base,
-        F.brandExplorerPresentation.table,
-        brandRecordId,
-        brandName
-      );
       brandExplorerPresentation = normalizeBrandExplorerPresentationRecords(exRecs);
     } catch (err) {
       console.error("Error fetching Brand Explorer Presentation:", err.message);
@@ -1914,26 +2140,40 @@ export async function getBrandLibraryBrandById(req, res) {
     for (const [k, v] of Object.entries(sustainabilityEsgData)) {
       brandDetails[k] = v;
     }
+    const profileAnalysisFromPresentation = mergedExplorerSlotBody(
+      brandExplorerPresentation,
+      "overview.typical_use_case"
+    );
+    const standardsIntroFromPresentation = mergedExplorerSlotBody(
+      brandExplorerPresentation,
+      "standards.intro"
+    );
+    const standardsQuestionsFromPresentation = mergedExplorerSlotBody(
+      brandExplorerPresentation,
+      "standards.questions"
+    );
+    if (profileAnalysisFromPresentation) {
+      brandDetails.brandProfileAnalysis = profileAnalysisFromPresentation;
+    }
+    if (standardsIntroFromPresentation) {
+      brandDetails.brandStandardsIntro = standardsIntroFromPresentation;
+    }
+    if (standardsQuestionsFromPresentation) {
+      brandDetails.questionsOwnersShouldAsk = standardsQuestionsFromPresentation;
+    }
     brandDetails.portfolioLadderTier = resolvePortfolioLadderTier(brandDetails);
+    brandDetails.residences = buildResidencesApiShape(brandFields);
     if (loadWarnings.length > 0) brandDetails.loadWarnings = loadWarnings;
 
-    if (isBrandExplorerCensusMetricsEnabled()) {
-      try {
-        const { buildBrandCensusSummary } = await import(
-          "../lib/hotel-census/build-brand-census-summary.js"
-        );
-        brandDetails.censusSummary = await buildBrandCensusSummary(
-          brandName,
-          brandDetails.parentCompany || null
-        );
-      } catch (censusErr) {
-        console.error("Error building brand censusSummary:", censusErr.message);
-        brandDetails.censusSummary = {
-          available: false,
-          fallbackRecommended: true,
-          warnings: [`CENSUS_SUMMARY_ERROR: ${censusErr.message}`],
-        };
-      }
+    brandDetails.governance = normalizeProfileGovernance(brandFields, {
+      entityType: "brand",
+      sourceTable: F.brandBasics.table,
+      fallbackFields: brandFields,
+    });
+
+    const censusSummary = await censusPromise;
+    if (censusSummary) {
+      brandDetails.censusSummary = censusSummary;
     }
 
     if (req.query && req.query.debug === "projectFit") {
@@ -1959,19 +2199,50 @@ export async function getBrandLibraryBrandById(req, res) {
       };
     }
 
-    res.json({
+    return {
       success: true,
       brand: sanitizeStringFieldsDeep(brandDetails),
-    });
+    };
+    })();
 
+    if (!bypassDetailCache && !BRAND_DETAIL_CACHE_DISABLED) {
+      brandDetailLoadPromise.set(decodedId, loadPromise);
+    }
+    try {
+      const payload = await loadPromise;
+      if (!bypassDetailCache && !BRAND_DETAIL_CACHE_DISABLED) {
+        brandDetailCache.set(decodedId, { at: Date.now(), payload });
+      }
+      res.setHeader("Cache-Control", "private, max-age=60, stale-while-revalidate=120");
+      res.setHeader("X-Brand-Detail-Cache", bypassDetailCache ? "BYPASS" : "MISS");
+      res.json(payload);
+    } catch (error) {
+      if (error?.statusCode === 404 && error?.payload) {
+        return res.status(404).json(error.payload);
+      }
+      console.error("Error fetching brand details:", error);
+      console.error("Error stack:", error.stack);
+      if (!res.headersSent) {
+        res.status(500).json({
+          success: false,
+          error: "Internal Server Error",
+          details: error.message,
+        });
+      }
+    } finally {
+      if (!bypassDetailCache && !BRAND_DETAIL_CACHE_DISABLED) {
+        brandDetailLoadPromise.delete(decodedId);
+      }
+    }
   } catch (error) {
     console.error("Error fetching brand details:", error);
-    console.error("Error stack:", error.stack);
-    res.status(500).json({ 
-      success: false,
-      error: "Internal Server Error", 
-      details: error.message 
-    });
+    if (!res.headersSent) {
+      res.status(500).json({
+        success: false,
+        error: "Internal Server Error",
+        details: error.message,
+      });
+    }
   }
 }
 
@@ -2472,6 +2743,7 @@ export async function updateBrandBasicsById(req, res) {
     }
     const updated = await base(F.brandBasics.table).update(recordId, fields);
     clearBrandListCache();
+    clearBrandDetailCache(recordId);
     res.json({
       success: true,
       brand: {

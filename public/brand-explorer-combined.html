@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
     <!-- List / filters / cards: brand-explorer-atelier-list-parity.css -->
     <link rel="stylesheet" href="/css/brand-explorer-atelier-list-parity.css?v=2">
+    <link rel="stylesheet" href="/css/radar-filter-drawer.css">
     <!-- Detail tabs + panels: operator gold surface (regenerate: node scripts/build-brand-explorer-gold-surface-css.cjs) -->
     <link rel="stylesheet" href="/css/brand-explorer-gold-surface.css">
     <link rel="stylesheet" href="/css/brand-explorer-atelier-oe-panels.css">
@@ -580,6 +581,17 @@
             color: var(--accent--primary-1, #6c72ff);
         }
         .be-combined-presentation-hero.brand-hero .badge-verified svg { width: 14px; height: 14px; }
+        .be-combined-presentation-hero.brand-hero .brand-hero__verified-line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px 10px;
+            margin-top: 6px;
+        }
+        .be-combined-presentation-hero.brand-hero .dc-governance-trust-subtitle {
+            font-size: 0.75rem;
+            color: var(--neutral--500, #7e89ac);
+        }
         .be-combined-presentation-hero.brand-hero .meta-muted { font-size: 0.75rem; color: var(--neutral--500, #7e89ac); margin-left: 0; }
         .be-combined-presentation-hero.brand-hero .brand-hero__position {
             font-size: 1rem;
@@ -1039,9 +1051,13 @@
                                 <label class="filter-label">Brand Architecture</label>
                                 <select class="filter-select" id="architectureFilter"><option value="">All</option></select>
                             </div>
-                            <div class="filter-group">
-                                <label class="filter-label">Region Offered</label>
-                                <select class="filter-select" id="regionOfferedFilter"><option value="">All Regions</option></select>
+                            <div class="filter-group filter-group-more">
+                                <label class="filter-label">&nbsp;</label>
+                                <button type="button" class="btn-radar-filters" id="brandExplorerFilterOpenBtn" aria-haspopup="dialog" aria-controls="brandExplorerFilterDrawer">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                                    <span>More</span>
+                                    <span class="filter-count-badge" id="brandExplorerDrawerFilterBadge" style="display: none;">0</span>
+                                </button>
                             </div>
                             <div class="filter-group filter-group-reset">
                                 <label class="filter-label">&nbsp;</label>
@@ -1197,6 +1213,63 @@
         </div>
     </div>
 
+    <!-- Brand Explorer filter drawer -->
+    <div id="brandExplorerFilterDrawerOverlay" class="radar-filter-drawer-overlay" aria-hidden="true"></div>
+    <aside id="brandExplorerFilterDrawer" class="radar-filter-drawer" role="dialog" aria-label="Brand filters" aria-hidden="true">
+        <header class="radar-filter-drawer__header">
+            <h2 class="radar-filter-drawer__title">Filters</h2>
+            <button type="button" class="radar-filter-drawer__close" id="brandExplorerFilterDrawerClose" aria-label="Close filters">×</button>
+        </header>
+        <div class="radar-filter-drawer__body">
+            <section class="radar-filter-drawer__section">
+                <h3 class="radar-filter-drawer__section-title">Brand Profile</h3>
+                <div class="radar-filter-drawer__grid">
+                    <div class="radar-filter-drawer__field radar-filter-drawer__field--full">
+                        <label class="radar-filter-drawer__label" for="regionOfferedFilter">Region Offered</label>
+                        <select class="control-select filter-select" id="regionOfferedFilter"><option value="">All Regions</option></select>
+                    </div>
+                </div>
+            </section>
+            <section class="radar-filter-drawer__section">
+                <h3 class="radar-filter-drawer__section-title">Project Fit &amp; Deal</h3>
+                <div class="radar-filter-drawer__grid">
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="brandDevelopmentStageFilter">Development Stage</label>
+                        <select class="control-select filter-select" id="brandDevelopmentStageFilter"><option value="">All Stages</option></select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="brandedResidencesFilter">Branded Residences</label>
+                        <select class="control-select filter-select" id="brandedResidencesFilter"><option value="">All</option></select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="acceptableProjectTypeFilter">Acceptable Project Type</label>
+                        <select class="control-select filter-select" id="acceptableProjectTypeFilter"><option value="">All Types</option></select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="acceptableAgreementTypeFilter">Acceptable Agreement Type</label>
+                        <select class="control-select filter-select" id="acceptableAgreementTypeFilter"><option value="">All Agreements</option></select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="coBrandingFilter">Co-Branding Allowed</label>
+                        <select class="control-select filter-select" id="coBrandingFilter"><option value="">All</option></select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="mixedUseFilter">Mixed-Use Allowed</label>
+                        <select class="control-select filter-select" id="mixedUseFilter"><option value="">All</option></select>
+                    </div>
+                    <div class="radar-filter-drawer__field">
+                        <label class="radar-filter-drawer__label" for="softCollectionFilter">Soft / Collection Brand</label>
+                        <select class="control-select filter-select" id="softCollectionFilter"><option value="">All</option></select>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer class="radar-filter-drawer__footer">
+            <button type="button" class="btn-clear" id="brandExplorerFilterResetBtn">Reset View</button>
+            <button type="button" class="btn-primary" id="brandExplorerFilterDoneBtn">Done</button>
+        </footer>
+    </aside>
+
     <!-- Case study summary (Brand Materials) — same IA as brand-education-voco; opened by View Summary -->
     <div
         class="be-case-modal-overlay"
@@ -1214,8 +1287,10 @@
         </div>
     </div>
 
+    <script src="/js/explorer-filter-drawer.js?v=2"></script>
     <script src="/js/brand-explorer-favorites.js" defer></script>
     <script src="/js/brand-explorer-brand-fetch.js" defer></script>
+    <script src="/js/profile-governance-trust-chip.js" defer></script>
     <script src="/js/brand-explorer-gold-detail.js" defer></script>
     <script src="/js/brand-explorer-census-metrics.js"></script>
     <script src="/js/external-owner-copy.js" defer></script>
@@ -1225,6 +1300,14 @@
     'use strict';
 
     var CHAIN_SCALE_ORDER = ['Luxury', 'Upper Upscale', 'Upscale', 'Upper Midscale', 'Midscale', 'Economy'];
+    var BRAND_PROJECT_TYPE_FILTER_ALIASES = {
+        Conversion: 'Conversion / Reflag',
+        'Repositioning / Rebrand': 'Renovation / Repositioning'
+    };
+    var BRAND_AGREEMENT_TYPE_FILTER_ALIASES = {
+        'Brand + Third-Party Mgmt': 'Brand + Third-Party Mgmt. (Combined)',
+        'Brand-Managed': 'Brand-Managed Only'
+    };
 
     var listView = document.getElementById('beCombinedListView');
     var detailView = document.getElementById('beCombinedDetailView');
@@ -1451,6 +1534,44 @@
 
     var allBrands = [];
     var filteredBrands = [];
+    var prefetchedBrandDetails = {};
+    var brandPrefetchScheduled = false;
+
+    function requestIdle(fn, timeoutMs) {
+        if (typeof window.requestIdleCallback === 'function') {
+            return window.requestIdleCallback(fn, { timeout: timeoutMs || 1200 });
+        }
+        return setTimeout(function () {
+            fn({ timeRemaining: function () { return 0; }, didTimeout: true });
+        }, 180);
+    }
+
+    function prefetchBrandDetail(brandId) {
+        var id = String(brandId || '').trim();
+        if (!id || prefetchedBrandDetails[id]) return;
+        prefetchedBrandDetails[id] = true;
+        var fetchBrand =
+            window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.fetchBrandDetail;
+        if (!fetchBrand) return;
+        fetchBrand(id).catch(function () {
+            // Allow retry on next hover/idle cycle.
+            prefetchedBrandDetails[id] = false;
+        });
+    }
+
+    function scheduleBrandDetailPrefetch() {
+        if (brandPrefetchScheduled) return;
+        brandPrefetchScheduled = true;
+        requestIdle(function () {
+            brandPrefetchScheduled = false;
+            // Warm likely-clicked cards first (top of current sorted/filtered list).
+            var topCandidates = (filteredBrands || []).slice(0, 8);
+            topCandidates.forEach(function (b) {
+                if (b && b.id) prefetchBrandDetail(b.id);
+            });
+        }, 1600);
+    }
+
     function escapeHtml(text) {
         if (!text) return '';
         var div = document.createElement('div');
@@ -1724,6 +1845,12 @@
         card.addEventListener('click', open);
         var moreBtn = card.querySelector('.brand-card__more-btn');
         if (moreBtn) {
+            moreBtn.addEventListener('mouseenter', function () {
+                prefetchBrandDetail(brand.id);
+            }, { passive: true });
+            moreBtn.addEventListener('focus', function () {
+                prefetchBrandDetail(brand.id);
+            });
             moreBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
                 open();
@@ -1807,6 +1934,7 @@
         resultsCount.innerHTML =
             'Showing <strong>' + filteredBrands.length + '</strong> of <strong>' + poolTotal + '</strong> ' +
             (activeListTab === 'favorites' ? 'favorites' : 'brands');
+        scheduleBrandDetailPrefetch();
     }
 
     function getActiveFilterCount() {
@@ -1817,6 +1945,13 @@
         var service = document.getElementById('serviceModelFilter');
         var arch = document.getElementById('architectureFilter');
         var region = document.getElementById('regionOfferedFilter');
+        var devStage = document.getElementById('brandDevelopmentStageFilter');
+        var residences = document.getElementById('brandedResidencesFilter');
+        var coBrand = document.getElementById('coBrandingFilter');
+        var mixedUse = document.getElementById('mixedUseFilter');
+        var softColl = document.getElementById('softCollectionFilter');
+        var projectType = document.getElementById('acceptableProjectTypeFilter');
+        var agreementType = document.getElementById('acceptableAgreementTypeFilter');
         var n = 0;
         if (search && search.value.trim()) n++;
         if (parent && parent.value) n++;
@@ -1825,18 +1960,29 @@
         if (service && service.value) n++;
         if (arch && arch.value) n++;
         if (region && region.value) n++;
+        if (devStage && devStage.value) n++;
+        if (residences && residences.value) n++;
+        if (coBrand && coBrand.value) n++;
+        if (mixedUse && mixedUse.value) n++;
+        if (softColl && softColl.value) n++;
+        if (projectType && projectType.value) n++;
+        if (agreementType && agreementType.value) n++;
         return n;
     }
 
     function updateFilterCountBadge() {
-        var badge = document.getElementById('filterCountBadge');
-        if (!badge) return;
         var count = getActiveFilterCount();
-        if (count > 0) {
-            badge.textContent = count;
-            badge.style.display = 'inline-flex';
-        } else {
-            badge.style.display = 'none';
+        var badge = document.getElementById('filterCountBadge');
+        if (badge) {
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        if (window.__brandExplorerFilterDrawer && window.__brandExplorerFilterDrawer.updateBadge) {
+            window.__brandExplorerFilterDrawer.updateBadge();
         }
     }
 
@@ -1866,6 +2012,86 @@
         return s === 'active' || s === 'live';
     }
 
+    function normTriState(value) {
+        var t = String(value || '').trim();
+        if (!t) return '';
+        if (/case-by-case/i.test(t)) return 'case-by-case';
+        return t.toLowerCase();
+    }
+
+    function brandMatchesTriState(brandValue, filterValue) {
+        if (!filterValue) return true;
+        return normTriState(brandValue) === normTriState(filterValue);
+    }
+
+    function canonicalDrawerMultiValue(value, aliasMap) {
+        var s = String(value || '').trim();
+        if (!s) return '';
+        return (aliasMap && aliasMap[s]) || s;
+    }
+
+    function normalizeDrawerMultiList(values, aliasMap) {
+        var seen = {};
+        (values || []).forEach(function (v) {
+            var canonical = canonicalDrawerMultiValue(v, aliasMap);
+            if (canonical) seen[canonical] = true;
+        });
+        return Object.keys(seen);
+    }
+
+    function brandMatchesMultiList(brandValues, filterValue, aliasMap) {
+        if (!filterValue) return true;
+        var list = normalizeDrawerMultiList(Array.isArray(brandValues) ? brandValues : [], aliasMap);
+        return list.indexOf(filterValue) !== -1;
+    }
+
+    function sortedUniqueMultiField(brands, field, aliasMap) {
+        var seen = {};
+        (brands || []).forEach(function (brand) {
+            normalizeDrawerMultiList(brand && brand[field], aliasMap).forEach(function (v) {
+                seen[v] = true;
+            });
+        });
+        return Object.keys(seen).sort();
+    }
+
+    function sortFilterOptionsCaseByCaseLast(options) {
+        var regular = [];
+        var caseByCase = [];
+        (options || []).forEach(function (opt) {
+            if (/^case-by-case$/i.test(String(opt || '').trim())) caseByCase.push('Case-by-case');
+            else regular.push(opt);
+        });
+        regular.sort(function (a, b) {
+            return String(a).localeCompare(String(b), undefined, { sensitivity: 'base' });
+        });
+        return regular.concat(caseByCase);
+    }
+
+    function drawerTriStateOptionsFromBrands(brands, field) {
+        var labels = {};
+        (brands || []).forEach(function (brand) {
+            var raw = String((brand && brand[field]) || '').trim();
+            if (!raw) return;
+            var key = normTriState(raw);
+            if (!key) return;
+            if (/case-by-case/i.test(raw)) labels[key] = 'Case-by-case';
+            else if (raw.toLowerCase() === 'yes') labels[key] = 'Yes';
+            else if (raw.toLowerCase() === 'no') labels[key] = 'No';
+            else labels[key] = raw;
+        });
+        return sortFilterOptionsCaseByCaseLast(
+            Object.keys(labels).map(function (key) {
+                return labels[key];
+            })
+        );
+    }
+
+    function drawerScalarOptionsFromBrands(brands, field) {
+        if (!brands || !brands.length) return [];
+        return sortedUniqueField(brands, field);
+    }
+
     function filterBrands() {
         var searchText = ((document.getElementById('searchInput') || {}).value || '').toLowerCase().trim();
         var parentCompany = (document.getElementById('parentCompanyFilter') || {}).value || '';
@@ -1874,6 +2100,13 @@
         var serviceModel = (document.getElementById('serviceModelFilter') || {}).value || '';
         var architecture = (document.getElementById('architectureFilter') || {}).value || '';
         var regionOffered = (document.getElementById('regionOfferedFilter') || {}).value || '';
+        var brandDevelopmentStage = (document.getElementById('brandDevelopmentStageFilter') || {}).value || '';
+        var brandedResidences = (document.getElementById('brandedResidencesFilter') || {}).value || '';
+        var coBranding = (document.getElementById('coBrandingFilter') || {}).value || '';
+        var mixedUse = (document.getElementById('mixedUseFilter') || {}).value || '';
+        var softCollection = (document.getElementById('softCollectionFilter') || {}).value || '';
+        var acceptableProjectType = (document.getElementById('acceptableProjectTypeFilter') || {}).value || '';
+        var acceptableAgreementType = (document.getElementById('acceptableAgreementTypeFilter') || {}).value || '';
         var favSet = activeListTab === 'favorites' ? favoriteIdsSet() : null;
 
         filteredBrands = allBrands.filter(function (brand) {
@@ -1891,7 +2124,23 @@
             var okService = !serviceModel || brand.serviceModel === serviceModel;
             var okArch = !architecture || brand.architecture === architecture;
             var okRegion = brandMatchesRegionOffered(brand, regionOffered);
-            return okSearch && okParent && okChain && okModel && okService && okArch && okRegion;
+            var okDevStage = !brandDevelopmentStage || brand.brandDevelopmentStage === brandDevelopmentStage;
+            var okResidences = brandMatchesTriState(brand.brandedResidencesStatus, brandedResidences);
+            var okCoBrand = brandMatchesTriState(brand.coBrandingAllowed, coBranding);
+            var okMixedUse = brandMatchesTriState(brand.mixedUseAllowed, mixedUse);
+            var okSoft = brandMatchesTriState(brand.softCollectionBrand, softCollection);
+            var okProjectType = brandMatchesMultiList(
+                brand.acceptableProjectTypes,
+                acceptableProjectType,
+                BRAND_PROJECT_TYPE_FILTER_ALIASES
+            );
+            var okAgreementType = brandMatchesMultiList(
+                brand.acceptableAgreementTypes,
+                acceptableAgreementType,
+                BRAND_AGREEMENT_TYPE_FILTER_ALIASES
+            );
+            return okSearch && okParent && okChain && okModel && okService && okArch && okRegion &&
+                okDevStage && okResidences && okCoBrand && okMixedUse && okSoft && okProjectType && okAgreementType;
         });
         sortBrands();
         renderBrands();
@@ -2009,8 +2258,65 @@
         document.getElementById('serviceModelFilter').value = '';
         document.getElementById('architectureFilter').value = '';
         document.getElementById('regionOfferedFilter').value = '';
+        var devStage = document.getElementById('brandDevelopmentStageFilter');
+        if (devStage) devStage.value = '';
+        var residences = document.getElementById('brandedResidencesFilter');
+        if (residences) residences.value = '';
+        var coBrand = document.getElementById('coBrandingFilter');
+        if (coBrand) coBrand.value = '';
+        var mixedUse = document.getElementById('mixedUseFilter');
+        if (mixedUse) mixedUse.value = '';
+        var softColl = document.getElementById('softCollectionFilter');
+        if (softColl) softColl.value = '';
+        var projectType = document.getElementById('acceptableProjectTypeFilter');
+        if (projectType) projectType.value = '';
+        var agreementType = document.getElementById('acceptableAgreementTypeFilter');
+        if (agreementType) agreementType.value = '';
         if (sortSelect) sortSelect.value = 'name-asc';
         filterBrands();
+    }
+
+    function populateDrawerFilterOptions() {
+        populateSelect(
+            'regionOfferedFilter',
+            drawerScalarOptionsFromBrands(allBrands, 'regionOffered'),
+            'All Regions'
+        );
+        populateSelect(
+            'brandDevelopmentStageFilter',
+            drawerScalarOptionsFromBrands(allBrands, 'brandDevelopmentStage'),
+            'All Stages'
+        );
+        populateSelect(
+            'brandedResidencesFilter',
+            drawerTriStateOptionsFromBrands(allBrands, 'brandedResidencesStatus'),
+            'All'
+        );
+        populateSelect(
+            'coBrandingFilter',
+            drawerTriStateOptionsFromBrands(allBrands, 'coBrandingAllowed'),
+            'All'
+        );
+        populateSelect(
+            'mixedUseFilter',
+            drawerTriStateOptionsFromBrands(allBrands, 'mixedUseAllowed'),
+            'All'
+        );
+        populateSelect(
+            'softCollectionFilter',
+            drawerTriStateOptionsFromBrands(allBrands, 'softCollectionBrand'),
+            'All'
+        );
+        populateSelect(
+            'acceptableProjectTypeFilter',
+            sortedUniqueMultiField(allBrands, 'acceptableProjectTypes', BRAND_PROJECT_TYPE_FILTER_ALIASES),
+            'All Types'
+        );
+        populateSelect(
+            'acceptableAgreementTypeFilter',
+            sortedUniqueMultiField(allBrands, 'acceptableAgreementTypes', BRAND_AGREEMENT_TYPE_FILTER_ALIASES),
+            'All Agreements'
+        );
     }
 
     function toggleSortDirection() {
@@ -2035,13 +2341,8 @@
                 window.BrandExplorerFavorites && window.BrandExplorerFavorites.ready
                     ? window.BrandExplorerFavorites.ready()
                     : Promise.resolve();
-            var brandsUrl = '/api/brand-library/brands';
-            try {
-                if (new URLSearchParams(window.location.search).get('fresh') === '1') {
-                    brandsUrl += (brandsUrl.indexOf('?') >= 0 ? '&' : '?') + 'refresh=1';
-                }
-            } catch (_) {}
-            var brandsRes = await fetch(brandsUrl);
+            var brandsUrl = '/api/brand-library/brands?refresh=1';
+            var brandsRes = await fetch(brandsUrl, { cache: 'no-store' });
             await favReady;
             if (!brandsRes.ok) throw new Error('Failed to fetch brands');
             var data = await brandsRes.json();
@@ -2074,17 +2375,13 @@
                 fo.architectures && fo.architectures.length
                     ? fo.architectures.slice().sort()
                     : sortedUniqueField(allBrands, 'architecture');
-            var regions =
-                fo.regionsOffered && fo.regionsOffered.length
-                    ? fo.regionsOffered.slice().sort()
-                    : sortedUniqueField(allBrands, 'regionOffered');
 
             populateSelect('parentCompanyFilter', parents, 'All Companies');
             populateChainScaleFilterFromList(chains);
             populateSelect('brandModelFilter', models, 'All');
             populateSelect('serviceModelFilter', services, 'All Models');
             populateSelect('architectureFilter', archs, 'All');
-            populateSelect('regionOfferedFilter', regions, 'All Regions');
+            populateDrawerFilterOptions();
 
             updateLegendDisabled();
             updateTabCounts();
@@ -2109,10 +2406,34 @@
             self._t = setTimeout(filterBrands, 300);
         });
     }
-    ['parentCompanyFilter', 'chainScaleFilter', 'brandModelFilter', 'serviceModelFilter', 'architectureFilter', 'regionOfferedFilter'].forEach(function (id) {
+    ['parentCompanyFilter', 'chainScaleFilter', 'brandModelFilter', 'serviceModelFilter', 'architectureFilter', 'regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter', 'softCollectionFilter'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) el.addEventListener('change', filterBrands);
     });
+
+    populateDrawerFilterOptions();
+
+    function initBrandExplorerFilterDrawer() {
+        if (window.__brandExplorerFilterDrawer || !window.ExplorerFilterDrawer) return;
+        window.__brandExplorerFilterDrawer = window.ExplorerFilterDrawer.init({
+            overlayId: 'brandExplorerFilterDrawerOverlay',
+            drawerId: 'brandExplorerFilterDrawer',
+            openBtnId: 'brandExplorerFilterOpenBtn',
+            closeBtnId: 'brandExplorerFilterDrawerClose',
+            doneBtnId: 'brandExplorerFilterDoneBtn',
+            resetBtnId: 'brandExplorerFilterResetBtn',
+            drawerBadgeId: 'brandExplorerDrawerFilterBadge',
+            mainBadgeId: 'filterCountBadge',
+            filterIds: ['regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter', 'softCollectionFilter'],
+            onFilterChange: filterBrands,
+            onReset: clearFilters,
+            countActiveFilters: getActiveFilterCount
+        });
+    }
+
+    initBrandExplorerFilterDrawer();
+    document.addEventListener('DOMContentLoaded', initBrandExplorerFilterDrawer);
+    window.addEventListener('load', initBrandExplorerFilterDrawer);
     if (sortSelect) {
         sortSelect.addEventListener('change', function () {
             sortBrands();
