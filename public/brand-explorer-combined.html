@@ -1257,10 +1257,6 @@
                         <label class="radar-filter-drawer__label" for="mixedUseFilter">Mixed-Use Allowed</label>
                         <select class="control-select filter-select" id="mixedUseFilter"><option value="">All</option></select>
                     </div>
-                    <div class="radar-filter-drawer__field">
-                        <label class="radar-filter-drawer__label" for="softCollectionFilter">Soft / Collection Brand</label>
-                        <select class="control-select filter-select" id="softCollectionFilter"><option value="">All</option></select>
-                    </div>
                 </div>
             </section>
         </div>
@@ -1949,7 +1945,6 @@
         var residences = document.getElementById('brandedResidencesFilter');
         var coBrand = document.getElementById('coBrandingFilter');
         var mixedUse = document.getElementById('mixedUseFilter');
-        var softColl = document.getElementById('softCollectionFilter');
         var projectType = document.getElementById('acceptableProjectTypeFilter');
         var agreementType = document.getElementById('acceptableAgreementTypeFilter');
         var n = 0;
@@ -1964,7 +1959,6 @@
         if (residences && residences.value) n++;
         if (coBrand && coBrand.value) n++;
         if (mixedUse && mixedUse.value) n++;
-        if (softColl && softColl.value) n++;
         if (projectType && projectType.value) n++;
         if (agreementType && agreementType.value) n++;
         return n;
@@ -2104,7 +2098,6 @@
         var brandedResidences = (document.getElementById('brandedResidencesFilter') || {}).value || '';
         var coBranding = (document.getElementById('coBrandingFilter') || {}).value || '';
         var mixedUse = (document.getElementById('mixedUseFilter') || {}).value || '';
-        var softCollection = (document.getElementById('softCollectionFilter') || {}).value || '';
         var acceptableProjectType = (document.getElementById('acceptableProjectTypeFilter') || {}).value || '';
         var acceptableAgreementType = (document.getElementById('acceptableAgreementTypeFilter') || {}).value || '';
         var favSet = activeListTab === 'favorites' ? favoriteIdsSet() : null;
@@ -2128,7 +2121,6 @@
             var okResidences = brandMatchesTriState(brand.brandedResidencesStatus, brandedResidences);
             var okCoBrand = brandMatchesTriState(brand.coBrandingAllowed, coBranding);
             var okMixedUse = brandMatchesTriState(brand.mixedUseAllowed, mixedUse);
-            var okSoft = brandMatchesTriState(brand.softCollectionBrand, softCollection);
             var okProjectType = brandMatchesMultiList(
                 brand.acceptableProjectTypes,
                 acceptableProjectType,
@@ -2140,7 +2132,7 @@
                 BRAND_AGREEMENT_TYPE_FILTER_ALIASES
             );
             return okSearch && okParent && okChain && okModel && okService && okArch && okRegion &&
-                okDevStage && okResidences && okCoBrand && okMixedUse && okSoft && okProjectType && okAgreementType;
+                okDevStage && okResidences && okCoBrand && okMixedUse && okProjectType && okAgreementType;
         });
         sortBrands();
         renderBrands();
@@ -2266,8 +2258,6 @@
         if (coBrand) coBrand.value = '';
         var mixedUse = document.getElementById('mixedUseFilter');
         if (mixedUse) mixedUse.value = '';
-        var softColl = document.getElementById('softCollectionFilter');
-        if (softColl) softColl.value = '';
         var projectType = document.getElementById('acceptableProjectTypeFilter');
         if (projectType) projectType.value = '';
         var agreementType = document.getElementById('acceptableAgreementTypeFilter');
@@ -2300,11 +2290,6 @@
         populateSelect(
             'mixedUseFilter',
             drawerTriStateOptionsFromBrands(allBrands, 'mixedUseAllowed'),
-            'All'
-        );
-        populateSelect(
-            'softCollectionFilter',
-            drawerTriStateOptionsFromBrands(allBrands, 'softCollectionBrand'),
             'All'
         );
         populateSelect(
@@ -2406,7 +2391,7 @@
             self._t = setTimeout(filterBrands, 300);
         });
     }
-    ['parentCompanyFilter', 'chainScaleFilter', 'brandModelFilter', 'serviceModelFilter', 'architectureFilter', 'regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter', 'softCollectionFilter'].forEach(function (id) {
+    ['parentCompanyFilter', 'chainScaleFilter', 'brandModelFilter', 'serviceModelFilter', 'architectureFilter', 'regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) el.addEventListener('change', filterBrands);
     });
@@ -2424,7 +2409,7 @@
             resetBtnId: 'brandExplorerFilterResetBtn',
             drawerBadgeId: 'brandExplorerDrawerFilterBadge',
             mainBadgeId: 'filterCountBadge',
-            filterIds: ['regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter', 'softCollectionFilter'],
+            filterIds: ['regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter'],
             onFilterChange: filterBrands,
             onReset: clearFilters,
             countActiveFilters: getActiveFilterCount
