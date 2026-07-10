@@ -75,8 +75,8 @@
   }
 
   var LIST_CACHE_TTL_MS = 5 * 60 * 1000;
-  /** @type {{ at: number, promise: Promise<any>, brands: object[]|null }} */
-  var listCache = { at: 0, promise: null, brands: null };
+  /** @type {{ at: number, promise: Promise<any>, brands: object[]|null, filterOptions: object|null }} */
+  var listCache = { at: 0, promise: null, brands: null, filterOptions: null };
 
   function isListFresh() {
     return listCache.brands && Date.now() - listCache.at < LIST_CACHE_TTL_MS;
@@ -123,6 +123,7 @@
       .then(function (data) {
         var brands = publishBrandList(data && data.brands ? data.brands : []);
         listCache.brands = brands;
+        listCache.filterOptions = (data && data.filterOptions) || {};
         listCache.at = Date.now();
         listCache.promise = promise;
         return brands;
@@ -139,9 +140,23 @@
     return promise;
   }
 
+  function getBrandListFilterOptions() {
+    return listCache.filterOptions ? Object.assign({}, listCache.filterOptions) : {};
+  }
+
+  function publishBrandListPayload(data) {
+    var brands = publishBrandList(data && data.brands ? data.brands : []);
+    listCache.brands = brands;
+    listCache.filterOptions = (data && data.filterOptions) || {};
+    listCache.at = Date.now();
+    return brands;
+  }
+
   window.BrandExplorerBrandFetch = {
     fetchBrandDetail: fetchBrandDetail,
     clearBrandDetailCache: clearBrandDetailCache,
-    ensureBrandList: ensureBrandList
+    ensureBrandList: ensureBrandList,
+    getBrandListFilterOptions: getBrandListFilterOptions,
+    publishBrandListPayload: publishBrandListPayload
   };
 })();

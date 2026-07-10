@@ -52,6 +52,7 @@
 
     function openDrawer() {
       if (!drawer || !overlay) return;
+      if (typeof config.onOpen === "function") config.onOpen();
       drawer.classList.add("is-open");
       overlay.classList.add("is-open");
       drawer.setAttribute("aria-hidden", "false");

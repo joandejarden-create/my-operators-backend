@@ -1296,7 +1296,7 @@
         </div>
     </div>
 
-    <script src="/js/explorer-filter-drawer.js?v=2"></script>
+    <script src="/js/explorer-filter-drawer.js?v=3"></script>
     <script src="/js/brand-explorer-favorites.js" defer></script>
     <script src="/js/brand-explorer-brand-fetch.js" defer></script>
     <script src="/js/profile-governance-trust-chip.js" defer></script>
@@ -1317,8 +1317,6 @@
         'Brand + Third-Party Mgmt': 'Brand + Third-Party Mgmt. (Combined)',
         'Brand-Managed': 'Brand-Managed Only'
     };
-    /** Brand Standards F&B / Meeting filters — matches Airtable single-select options. */
-    var BRAND_STANDARDS_TRI_STATE_OPTIONS = ['Yes', 'Preferred', 'No'];
     var listFilterOptions = {};
 
     var listView = document.getElementById('beCombinedListView');
@@ -2363,22 +2361,12 @@
         );
         populateSelect(
             'fbOutletsRequiredFilter',
-            mergeTriStateFilterOptions(
-                (listFilterOptions.fbOutletsRequired && listFilterOptions.fbOutletsRequired.length)
-                    ? listFilterOptions.fbOutletsRequired
-                    : BRAND_STANDARDS_TRI_STATE_OPTIONS,
-                'fbOutletsRequired'
-            ),
+            mergeTriStateFilterOptions(listFilterOptions.fbOutletsRequired, 'fbOutletsRequired'),
             'All'
         );
         populateSelect(
             'meetingSpaceRequiredFilter',
-            mergeTriStateFilterOptions(
-                (listFilterOptions.meetingSpaceRequired && listFilterOptions.meetingSpaceRequired.length)
-                    ? listFilterOptions.meetingSpaceRequired
-                    : BRAND_STANDARDS_TRI_STATE_OPTIONS,
-                'meetingSpaceRequired'
-            ),
+            mergeTriStateFilterOptions(listFilterOptions.meetingSpaceRequired, 'meetingSpaceRequired'),
             'All'
         );
         populateSelect(
@@ -2422,6 +2410,17 @@
             var data = await brandsRes.json();
             allBrands = data.brands || [];
             listFilterOptions = data.filterOptions || {};
+            if (window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.publishBrandListPayload) {
+                window.BrandExplorerBrandFetch.publishBrandListPayload(data);
+            }
+            var withStandards = allBrands.filter(function (b) {
+                return b && (b.fbOutletsRequired || b.meetingSpaceRequired);
+            }).length;
+            if (allBrands.length && withStandards === 0) {
+                console.warn(
+                    '[brand-explorer] Brand Standards filter fields missing from /api/brand-library/brands — deploy latest API or hard-refresh.'
+                );
+            }
             window.getBrandExplorerListBrands = function () {
                 return allBrands.slice();
             };
@@ -2500,6 +2499,7 @@
             drawerBadgeId: 'brandExplorerDrawerFilterBadge',
             mainBadgeId: 'filterCountBadge',
             filterIds: ['regionOfferedFilter', 'brandDevelopmentStageFilter', 'brandedResidencesFilter', 'acceptableProjectTypeFilter', 'acceptableAgreementTypeFilter', 'coBrandingFilter', 'mixedUseFilter', 'fbOutletsRequiredFilter', 'meetingSpaceRequiredFilter'],
+            onOpen: populateDrawerFilterOptions,
             onFilterChange: filterBrands,
             onReset: clearFilters,
             countActiveFilters: getActiveFilterCount
