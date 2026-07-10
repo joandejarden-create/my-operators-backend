@@ -8,7 +8,7 @@ import { resolvePortfolioLadderTier } from "../lib/brand-explorer-portfolio-ladd
 import { portfolioLadderTierForAirtableBrandName } from "../scripts/lib/choice-chi-portfolio-context.mjs";
 import { portfolioLadderTierForIhgBrandName } from "../lib/ihg-portfolio-ladder.mjs";
 import { normalizeProfileGovernance } from "../lib/profile-governance/normalize-profile-governance.js";
-import { buildResidencesApiShape } from "../lib/partner-intelligence/brand-residences-status-setup.js";
+import { buildResidencesApiShape } from "../lib/brand-explorer/brand-residences-api-shape.js";
 import {
   normalizeBrandExplorerAgreementTypes,
   normalizeBrandExplorerProjectTypes,
