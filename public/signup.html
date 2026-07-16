@@ -1,12 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Dealality - Sign Up</title>
+    <script>(function(){var e=document.documentElement;e.classList.add('dl-auth-landing-skin','signup-page-paint');e.style.backgroundColor='#080f25';})();</script>
+    <link rel="stylesheet" href="/css/signup-auth-critical.css">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/css/mvp-deal-capture.webflow.shared.36895bd16.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/css/mvp-deal-capture.webflow.shared.06799d5d1.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/signup-deality-theme.css">
     <style>
         /* Match new-deal-setup.html tokens */
         :root {
@@ -46,7 +49,18 @@
             background: var(--signup-neutral-800);
             color: var(--signup-neutral-400);
         }
-        /* Dashdark blob hero (behind signup content) */
+        /* Home-matching background (coming soon ss + overlay) */
+        body.signup-page .signup-page-bg {
+            z-index: -1;
+            pointer-events: none;
+            background-color: var(--signup-neutral-800);
+            position: fixed;
+            inset: 0;
+        }
+        body.signup-page .signup-page-bg .coming-soon-ss,
+        body.signup-page .signup-page-bg .coming-soon-overlay {
+            pointer-events: none;
+        }
         body.signup-page .dashboard-main-content.sales-page {
             position: relative;
             overflow: hidden;
@@ -62,18 +76,6 @@
         body.signup-page .signup-right {
             background: transparent !important;
             background-image: none !important;
-        }
-        body.signup-page .sales-home-hero-bg-image {
-            display: block !important;
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            max-width: none;
-            object-fit: cover;
-            object-position: 50% 50%;
-            z-index: 0;
-            pointer-events: none;
         }
         body.signup-page .signup-wrapper {
             position: relative;
@@ -124,7 +126,7 @@
             margin: 0 auto;
             object-fit: contain;
         }
-        /* Form layout — match new-deal-setup .form-grid row gap */
+        /* Form layout â€” match new-deal-setup .form-grid row gap */
         body.signup-page .signup-left .signup-form-stack {
             display: flex;
             flex-direction: column;
@@ -137,7 +139,7 @@
             gap: 8px;
             margin: 0;
         }
-        /* Inputs — same rules as new-deal-setup .form-input / .form-select / .form-textarea */
+        /* Inputs â€” same rules as new-deal-setup .form-input / .form-select / .form-textarea */
         body.signup-page .signup-left .form-input,
         body.signup-page .signup-left .form-select,
         body.signup-page .signup-left .form-textarea,
@@ -253,7 +255,7 @@
             font-family: inherit;
             font-size: 0.875rem;
         }
-        /* Submit — match new-deal-setup .btn-primary */
+        /* Submit â€” match new-deal-setup .btn-primary */
         body.signup-page .signup-left .btn-submit {
             padding: 8px 20px;
             min-height: 36px;
@@ -279,7 +281,7 @@
             opacity: 0.7;
             cursor: not-allowed;
         }
-        /* Terms checkbox — match My Deals / deal setup (.cell-checkbox) */
+        /* Terms checkbox â€” match My Deals / deal setup (.cell-checkbox) */
         body.signup-page .signup-left .submit-wrapper .w-checkbox,
         body.signup-page .signup-left .signup-terms-checkbox .w-checkbox {
             display: flex;
@@ -373,6 +375,12 @@
     </style>
 </head>
 <body class="signup-page">
+    <div class="signup-page-bg" aria-hidden="true">
+        <div class="coming-soon-ss">
+            <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/68108c2a063eeb5d1bd7b088_sales-home-bg-blob-small-dashdark-webflow-template.svg" loading="eager" alt="" class="coming-soon-img">
+        </div>
+        <div class="coming-soon-overlay"></div>
+    </div>
     <div class="page-wrapper">
         <div class="dashboard-main-section">
             <div class="dashboard-content">
@@ -437,7 +445,7 @@
                                             <div class="form-field-wrap mg-bottom-0 signup-terms-checkbox">
                                                 <label class="w-checkbox">
                                                     <input type="checkbox" name="Agree-with-Terms" id="Agree-with-Terms" data-name="Agree with Terms" required="" class="w-checkbox-input">
-                                                    <span class="w-form-label" for="Agree-with-Terms">I agree with the <a href="#" class="entry-link">Terms</a> & <a href="#" class="entry-link">Privacy Policy</a>.</span>
+                                                    <span class="w-form-label" for="Agree-with-Terms">I agree with the <a href="/terms" class="entry-link" target="_blank" rel="noopener noreferrer">Terms</a> &amp; <a href="/privacy" class="entry-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>
                                                 </label>
                                             </div>
                                             <input type="submit" data-wait="Please wait..." class="btn-submit" value="Submit">
@@ -446,7 +454,7 @@
                                     </form>
                                     <div class="w-form-done" tabindex="-1" role="region" aria-label="Signup Form success">
                                         <div>Thank you! Your submission has been received!</div>
-                                        <p style="margin-top: 1rem;"><a href="/" class="entry-link" style="color: var(--signup-accent);">← Back to Dealality</a></p>
+                                        <p style="margin-top: 1rem;"><a href="/" class="entry-link" style="color: var(--signup-accent);">â† Back to Dealality</a></p>
                                     </div>
                                     <div class="w-form-fail" tabindex="-1" role="region" aria-label="Signup Form failure">
                                         <div>Oops! Something went wrong while submitting the form.</div>
@@ -487,11 +495,10 @@
                             </div>
                         </div>
                     </div>
-                    <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/68108c2a063eeb5d1bd7b090_sales-home-bg-blob-large-dashdark-webflow-template.svg" loading="eager" alt="" aria-hidden="true" class="sales-home-hero-bg-image full-height">
                 </div>
                 <div class="dashboard-footer-wrapper">
                     <div class="container-default w-container">
-                        <div class="text-200 medium">2025 Copyright © Dealality</div>
+                        <div class="text-200 medium">2025 Copyright Â© Dealality</div>
                     </div>
                 </div>
             </div>
@@ -547,6 +554,15 @@
                 e.preventDefault();
                 if (emailInput.value) emailInput.value = standardizeEmail(emailInput.value);
 
+                var agreeEl = document.getElementById('Agree-with-Terms');
+                if (!agreeEl || !agreeEl.checked) {
+                    if (failEl) {
+                        failEl.querySelector('div').textContent = 'Please agree to the Terms of Service and Privacy Policy to continue.';
+                        failEl.classList.add('is-visible');
+                    }
+                    return;
+                }
+
                 var payload = {
                     firstName: getVal('First-Name'),
                     lastName: getVal('Last-Name'),
@@ -556,7 +572,10 @@
                     phone: getVal('Phone'),
                     companyType: getVal('Company-Type'),
                     reasonToJoin: getVal('Reason-to-Join-Platform'),
-                    howDidYouHear: getVal('How-Did-You-Hear')
+                    howDidYouHear: getVal('How-Did-You-Hear'),
+                    agreeWithTerms: true,
+                    termsVersion: '2026-07-16',
+                    termsAcceptedAt: new Date().toISOString()
                 };
 
                 if (submitBtn) { submitBtn.disabled = true; submitBtn.value = 'Please wait...'; }
@@ -591,103 +610,4 @@
         })();
     </script>
 </body>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
-</html>
 </html>

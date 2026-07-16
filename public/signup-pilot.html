@@ -76,7 +76,7 @@
                                             <div class="form-field-wrap mg-bottom-0 signup-terms-checkbox">
                                                 <label class="w-checkbox">
                                                     <input type="checkbox" name="Agree-with-Terms" id="Agree-with-Terms" data-name="Agree with Terms" required="" class="w-checkbox-input">
-                                                    <span class="w-form-label" for="Agree-with-Terms">I agree with the <a href="#" class="entry-link">Terms</a> & <a href="#" class="entry-link">Privacy Policy</a>.</span>
+                                                    <span class="w-form-label" for="Agree-with-Terms">I agree with the <a href="/terms" class="entry-link" target="_blank" rel="noopener noreferrer">Terms</a> &amp; <a href="/privacy" class="entry-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>
                                                 </label>
                                             </div>
                                             <input type="submit" data-wait="Please wait..." class="btn-submit" value="Submit">
@@ -187,6 +187,15 @@
                 e.preventDefault();
                 if (emailInput.value) emailInput.value = standardizeEmail(emailInput.value);
 
+                var agreeEl = document.getElementById('Agree-with-Terms');
+                if (!agreeEl || !agreeEl.checked) {
+                    if (failEl) {
+                        failEl.querySelector('div').textContent = 'Please agree to the Terms of Service and Privacy Policy to continue.';
+                        failEl.classList.add('is-visible');
+                    }
+                    return;
+                }
+
                 var payload = {
                     firstName: getVal('First-Name'),
                     lastName: getVal('Last-Name'),
@@ -196,7 +205,10 @@
                     phone: getVal('Phone'),
                     companyType: getVal('Company-Type'),
                     reasonToJoin: getVal('Reason-to-Join-Platform'),
-                    howDidYouHear: getVal('How-Did-You-Hear')
+                    howDidYouHear: getVal('How-Did-You-Hear'),
+                    agreeWithTerms: true,
+                    termsVersion: '2026-07-16',
+                    termsAcceptedAt: new Date().toISOString()
                 };
 
                 if (submitBtn) { submitBtn.disabled = true; submitBtn.value = 'Please wait...'; }

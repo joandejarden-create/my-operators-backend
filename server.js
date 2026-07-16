@@ -1,4 +1,4 @@
-// server.js
+﻿// server.js
 import "./load-env.js";
 
 // Fail fast if required Airtable env vars are missing (before importing Airtable-dependent routes)
@@ -101,6 +101,7 @@ import getThirdPartyOperatorPrefillQa from "./api/third-party-operator-prefill-q
 import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js";
 import signup from "./api/signup.js";
 import signupConfig from "./api/signup-config.js";
+import signupTermsAcceptance from "./api/signup-terms-acceptance.js";
 import memberstackWebhook from "./api/memberstack-webhook.js";
 import { getPartners, createUser, updateUser } from "./api/partner-directory.js";
 import { getUserFavorites, createFavorite, deleteFavorite, updateFavorite } from "./api/partner-directory-favorites.js";
@@ -1074,6 +1075,12 @@ app.get("/signup-temp.html", (req, res) => {
     res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
     res.sendFile(path.join(__dirname, 'public', 'signup-temp.html'));
 });
+app.get(["/terms", "/terms.html"], (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "terms.html"));
+});
+app.get(["/privacy", "/privacy.html"], (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "privacy.html"));
+});
 app.get("/verify", (req, res) => {
     res.setHeader("Content-Security-Policy", SIGNUP_VERIFY_CSP);
     res.setHeader("Cache-Control", "no-store");
@@ -1315,6 +1322,7 @@ app.post("/api/intake/deal", dealIntake);
 app.post("/api/intake/user", userIntake);
 app.post("/api/signup", signup);
 app.get("/api/signup/config", signupConfig);
+app.post("/api/signup-terms-acceptance", signupTermsAcceptance);
 app.post("/api/webhooks/memberstack", memberstackWebhook);
 
 // Market Alerts API endpoints – live beta (Airtable-backed)
