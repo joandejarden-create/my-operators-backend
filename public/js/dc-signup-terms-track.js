@@ -5,7 +5,7 @@
 (function (global) {
   "use strict";
 
-  var TERMS_VERSION = "2026-07-16";
+  var TERMS_VERSION = "2026-07-27";
   var FORM_ID = "wf-form-Signup-Form";
   var CHECKBOX_ID = "Agree-with-Terms";
 
