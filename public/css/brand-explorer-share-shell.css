@@ -1,0 +1,182 @@
+/**
+ * Public Brand Explorer share shell — Choice (and future) parent packs.
+ * Mirrors operator-explorer-share-shell.css patterns.
+ */
+
+:root {
+  --neutral--800: #080f25;
+  --neutral--700: #212c4d;
+  --neutral--600: #37446b;
+  --neutral--100: #ffffff;
+  --secondary--color-1: #101935;
+  --accent--primary-1: #6c72ff;
+  --muted: #aeb9e1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--neutral--800);
+  color: var(--neutral--100);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.bes-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.bes-draft-banner {
+  width: min(96vw, 1400px);
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 0.6px solid rgba(108, 114, 255, 0.45);
+  background: rgba(108, 114, 255, 0.12);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.bes-draft-banner strong {
+  color: #dfe4ff;
+}
+
+.bes-toolbar {
+  width: min(96vw, 1400px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.bes-toolbar__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--neutral--100);
+}
+
+.bes-toolbar__meta {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.bes-back {
+  appearance: none;
+  border: 0.6px solid var(--neutral--600);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--neutral--100);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.bes-back:hover {
+  border-color: var(--accent--primary-1);
+  color: #dfe4ff;
+}
+
+.bes-back[hidden] {
+  display: none !important;
+}
+
+.bes-panel {
+  position: relative;
+  width: min(96vw, 1400px);
+  height: min(92vh, 900px);
+  max-height: 92vh;
+  background: var(--secondary--color-1);
+  border: 0.6px solid var(--neutral--600);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.bes-panel.is-list {
+  height: min(94vh, 980px);
+}
+
+.bes-frame {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+  background: var(--neutral--800);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.bes-frame.is-ready {
+  opacity: 1;
+}
+
+.bes-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(8, 15, 37, 0.94), rgba(16, 25, 53, 0.96));
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.bes-loading[hidden] {
+  display: none !important;
+}
+
+.bes-loading.is-error {
+  padding: 24px;
+  text-align: center;
+}
+
+.bes-loading.is-error h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: var(--neutral--100);
+}
+
+.bes-loading.is-error p {
+  margin: 0;
+  max-width: 42rem;
+  line-height: 1.5;
+}
+
+.bes-loading.is-error code {
+  color: #c9d0ff;
+}
+
+@media (max-width: 720px) {
+  .bes-page {
+    padding: 8px;
+  }
+
+  .bes-panel,
+  .bes-panel.is-list {
+    width: 100%;
+    height: calc(100vh - 16px);
+    max-height: none;
+    border-radius: 8px;
+  }
+
+  .bes-toolbar {
+    width: 100%;
+  }
+}

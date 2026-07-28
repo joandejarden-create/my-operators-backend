@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-brand-explorer-gold-defer="1" data-brand-explorer-unified-tabs="1">
 <head>
-    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}var p=new URLSearchParams(window.location.search||'');if(p.get('exportPdf')==='1'||p.get('exportPdf')==='true'){document.documentElement.classList.add('be-export-pdf');if(p.get('spacious')!=='1'&&p.get('spacious')!=='true'){document.documentElement.classList.add('be-export-pdf--compact');}var l=document.createElement('link');l.rel='stylesheet';l.href='/css/brand-explorer-export-compact.css';document.head.appendChild(l);}})();</script>
+    <script>(function(){if(window.location.search.indexOf('embed=1')!==-1||window!==window.top){document.documentElement.classList.add('embed-mode');}var p=new URLSearchParams(window.location.search||'');if(p.get('share')==='1'||p.get('sharePack')){document.documentElement.classList.add('be-share-pack');}if(p.get('exportPdf')==='1'||p.get('exportPdf')==='true'){document.documentElement.classList.add('be-export-pdf');if(p.get('spacious')!=='1'&&p.get('spacious')!=='true'){document.documentElement.classList.add('be-export-pdf--compact');}var l=document.createElement('link');l.rel='stylesheet';l.href='/css/brand-explorer-export-compact.css';document.head.appendChild(l);}})();</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brand Explorer — Dealality</title>
@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
     <!-- List / filters / cards: brand-explorer-atelier-list-parity.css -->
-    <link rel="stylesheet" href="/css/brand-explorer-atelier-list-parity.css?v=2">
+    <link rel="stylesheet" href="/css/brand-explorer-atelier-list-parity.css?v=3">
     <link rel="stylesheet" href="/css/radar-filter-drawer.css">
     <!-- Detail tabs + panels: operator gold surface (regenerate: node scripts/build-brand-explorer-gold-surface-css.cjs) -->
     <link rel="stylesheet" href="/css/brand-explorer-gold-surface.css">
@@ -109,6 +109,15 @@
             stroke: var(--neutral--500, #7e89ac);
             stroke-width: 2;
             transition: fill 0.2s ease, stroke 0.2s ease;
+        }
+        /* Public share pack: hide favorites / account-only chrome */
+        html.be-share-pack .be-combined-wrap .brand-explorer-container > nav.tabs-section .section-nav-item[data-tab="favorites"],
+        html.be-share-pack .be-combined-wrap .brand-card .favorite-star {
+            display: none !important;
+        }
+        html.be-share-pack .be-combined-wrap #parentCompanyFilter:disabled {
+            opacity: 0.85;
+            cursor: not-allowed;
         }
         .be-combined-wrap .brand-card .favorite-star.favorited svg {
             fill: var(--accent--primary-1, #6c72ff);
@@ -1040,11 +1049,11 @@
                                 <select class="filter-select" id="chainScaleFilter"><option value="">All Scales</option></select>
                             </div>
                             <div class="filter-group">
-                                <label class="filter-label">Brand Model</label>
+                                <label class="filter-label">Affiliation Model</label>
                                 <select class="filter-select" id="brandModelFilter"><option value="">All</option></select>
                             </div>
                             <div class="filter-group">
-                                <label class="filter-label">Hotel Service Model</label>
+                                <label class="filter-label">Service / Operating Model</label>
                                 <select class="filter-select" id="serviceModelFilter"><option value="">All Models</option></select>
                             </div>
                             <div class="filter-group">
@@ -1318,6 +1327,28 @@
         'Brand-Managed': 'Brand-Managed Only'
     };
     var listFilterOptions = {};
+    var SHARE_PACK_PARENTS = {
+        choice: 'Choice Hotels International'
+    };
+
+    function getShareModeConfig() {
+        var p = new URLSearchParams(window.location.search || '');
+        var pack = String(p.get('sharePack') || '').trim().toLowerCase();
+        var parent =
+            String(p.get('parentCompany') || p.get('parent') || '').trim() ||
+            SHARE_PACK_PARENTS[pack] ||
+            '';
+        var enabled = p.get('share') === '1' || !!pack;
+        var popupToken = String(p.get('popupToken') || '').trim();
+        return {
+            enabled: enabled,
+            pack: pack,
+            parentCompany: parent,
+            popupToken: popupToken
+        };
+    }
+
+    var shareMode = getShareModeConfig();
 
     var listView = document.getElementById('beCombinedListView');
     var detailView = document.getElementById('beCombinedDetailView');
@@ -1368,10 +1399,12 @@
             return EDUCATION_HTML_BY_MOCK_ID[brandId];
         }
         var n = String(brandName || '').toLowerCase().trim();
+        // Demo-only names (no live Airtable Brand Explorer profiles).
+        // Do NOT name-match "voco" / "Voco Hotels" — live Wave 12 profile uses Atelier API.
+        // Intentional mock card remains via EDUCATION_HTML_BY_MOCK_ID['voco-ihg-mock'].
         if (n === 'atelier north') return '/brand-education-atelier-north.html';
         if (n === 'velvet crown') return '/brand-education-velvet-crown.html';
         if (n === 'summit house') return '/brand-education-summit-house.html';
-        if (n === 'voco' || n.indexOf('voco ') === 0) return '/brand-education-voco.html';
         return '';
     }
 
@@ -1582,6 +1615,78 @@
         }, 1600);
     }
 
+    function notifyShareParent(payload) {
+        if (!shareMode.enabled) return;
+        try {
+            if (!window.parent || window.parent === window) return;
+            var msg = Object.assign({}, payload || {});
+            if (shareMode.popupToken) msg.popupToken = shareMode.popupToken;
+            window.parent.postMessage(msg, window.location.origin);
+        } catch (err) {
+            console.warn('[brand-explorer-combined] share postMessage failed', err);
+        }
+    }
+
+    function applySharePackChrome() {
+        if (!shareMode.enabled) return;
+        if (listTabsNav) {
+            var favBtn = listTabsNav.querySelector('.section-nav-item[data-tab="favorites"]');
+            if (favBtn) favBtn.hidden = true;
+        }
+        var parentSel = document.getElementById('parentCompanyFilter');
+        if (parentSel && shareMode.parentCompany) {
+            parentSel.disabled = true;
+            parentSel.title = 'Locked for this shared brand pack';
+        }
+        var headerP = document.querySelector('.brand-explorer-title-container p');
+        if (headerP && shareMode.parentCompany) {
+            headerP.textContent =
+                'Shared preview of ' +
+                shareMode.parentCompany +
+                ' brands. Open any card to review the diligence-ready Brand Explorer profile.';
+        }
+    }
+
+    function applyLockedParentFilter() {
+        if (!shareMode.enabled || !shareMode.parentCompany) return false;
+        var parentSel = document.getElementById('parentCompanyFilter');
+        if (!parentSel) return false;
+        var target = shareMode.parentCompany;
+        var hasExact = [].some.call(parentSel.options, function (o) {
+            return o.value === target;
+        });
+        if (!hasExact) {
+            var targetNorm = target.toLowerCase();
+            var fuzzy = [].find.call(parentSel.options, function (o) {
+                return String(o.value || '').toLowerCase() === targetNorm;
+            });
+            if (fuzzy) target = fuzzy.value;
+            else {
+                var opt = document.createElement('option');
+                opt.value = shareMode.parentCompany;
+                opt.textContent = shareMode.parentCompany;
+                parentSel.appendChild(opt);
+                target = shareMode.parentCompany;
+            }
+        }
+        parentSel.value = target;
+        shareMode.parentCompany = target;
+        parentSel.disabled = true;
+        return true;
+    }
+
+    function openShareBrandProfile(brandId) {
+        var id = String(brandId || '').trim();
+        if (!id) return;
+        notifyShareParent({ type: 'brand-explorer-share-open', brandId: id });
+        if (!window.parent || window.parent === window) {
+            var q = new URLSearchParams();
+            q.set('id', id);
+            if (shareMode.pack) q.set('pack', shareMode.pack);
+            window.location.href = '/brand-explorer-share.html?' + q.toString();
+        }
+    }
+
     function escapeHtml(text) {
         if (!text) return '';
         var div = document.createElement('div');
@@ -1651,9 +1756,22 @@
         detailView.classList.add('hidden');
         closeBrandEducationPopup();
         educationLoadGen++;
-        document.title = 'Brand Explorer — Dealality';
+        document.title = shareMode.enabled && shareMode.parentCompany
+            ? 'Brand Explorer — ' + shareMode.parentCompany
+            : 'Brand Explorer — Dealality';
+        applySharePackChrome();
         if (!allBrands.length) {
             fetchBrands();
+        } else if (shareMode.enabled) {
+            applyLockedParentFilter();
+            filterBrands();
+            notifyShareParent({
+                type: 'brand-explorer-share-list-ready',
+                ok: true,
+                count: filteredBrands.length,
+                parentCompany: shareMode.parentCompany || '',
+                pack: shareMode.pack || ''
+            });
         }
     }
 
@@ -1780,20 +1898,18 @@
         var websiteUrl = normalizeWebsiteUrl(websiteRaw);
         var websiteText = websiteLabel(websiteUrl);
 
-        var chipsHtml = '';
         var chipParts = [];
         if (brand.brandModel) chipParts.push(brand.brandModel);
         if (brand.architecture) chipParts.push(brand.architecture);
-        if (chipParts.length) {
-            chipsHtml =
-                '<div class="brand-card__chips">' +
-                chipParts
-                    .map(function (c) {
-                        return '<span class="brand-card__chip" title="' + escapeHtml(c) + '">' + escapeHtml(c) + '</span>';
-                    })
-                    .join('') +
-                '</div>';
-        }
+        // Always render chips row so tiles without model/architecture chips keep the same height
+        var chipsHtml =
+            '<div class="brand-card__chips">' +
+            chipParts
+                .map(function (c) {
+                    return '<span class="brand-card__chip" title="' + escapeHtml(c) + '">' + escapeHtml(c) + '</span>';
+                })
+                .join('') +
+            '</div>';
 
         var logoHtml = '<div class="brand-card__logo">';
         if (brand.logo && typeof brand.logo === 'string' && (brand.logo.indexOf('http') === 0 || brand.logo.indexOf('data:') === 0)) {
@@ -1829,7 +1945,7 @@
             escapeHtml(typeLabel) +
             '</div>' +
             '<div class="brand-card__meta">' +
-            (brand.parentCompany ? escapeHtml(brand.parentCompany) : '') +
+            (brand.parentCompany ? escapeHtml(brand.parentCompany) : '\u00a0') +
             '</div>' +
             chipsHtml +
             '</div></div>' +
@@ -1850,6 +1966,10 @@
             '</div>';
 
         function open() {
+            if (shareMode.enabled) {
+                openShareBrandProfile(brand.id);
+                return;
+            }
             void openBrandEducationPopupForBrand(brand.id, brand.name);
         }
         card.addEventListener('click', open);
@@ -2307,7 +2427,8 @@
 
     function clearFilters() {
         document.getElementById('searchInput').value = '';
-        document.getElementById('parentCompanyFilter').value = '';
+        document.getElementById('parentCompanyFilter').value =
+            shareMode.enabled && shareMode.parentCompany ? shareMode.parentCompany : '';
         document.getElementById('chainScaleFilter').value = '';
         document.getElementById('brandModelFilter').value = '';
         document.getElementById('serviceModelFilter').value = '';
@@ -2330,6 +2451,9 @@
         var agreementType = document.getElementById('acceptableAgreementTypeFilter');
         if (agreementType) agreementType.value = '';
         if (sortSelect) sortSelect.value = 'name-asc';
+        if (shareMode.enabled && shareMode.parentCompany) {
+            applyLockedParentFilter();
+        }
         filterBrands();
     }
 
@@ -2457,16 +2581,35 @@
             populateSelect('architectureFilter', archs, 'All');
             populateDrawerFilterOptions();
 
+            applySharePackChrome();
+            applyLockedParentFilter();
+
             updateLegendDisabled();
             updateTabCounts();
             sortBrands();
             filterBrands();
+            if (shareMode.enabled) {
+                notifyShareParent({
+                    type: 'brand-explorer-share-list-ready',
+                    ok: true,
+                    count: filteredBrands.length,
+                    parentCompany: shareMode.parentCompany || '',
+                    pack: shareMode.pack || ''
+                });
+            }
         } catch (err) {
             console.error(err);
             emptyState.innerHTML =
                 '<h3>Error loading brands</h3><p>' + escapeHtml(err.message || String(err)) + '</p>';
             emptyState.classList.remove('hidden');
             resultsList.classList.add('hidden');
+            if (shareMode.enabled) {
+                notifyShareParent({
+                    type: 'brand-explorer-share-list-ready',
+                    ok: false,
+                    message: err && err.message ? err.message : String(err)
+                });
+            }
         } finally {
             showListLoading(false);
         }
