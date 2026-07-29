@@ -1,40 +1,28 @@
-# Harbour House product marketing assets
+# Dealality product marketing assets (live platform)
 
-Publication-ready stills and short product videos for the Dealality public website.
+Published stills and short videos captured from the **real Dealality product UI**.
 
-## Demo narrative
+Harbour House HTML mock scenes under `scenes/` are **superseded** and are not the published assets.
 
-**Harbour House Hotel** · Cartagena, Colombia · 118-key independent upscale hotel  
-Badge: **Illustrative Opportunity**  
-All brands, operators, contacts, proposals, and statuses are fictional.
+## Demo projects used (already in the platform)
 
-## Layout
+- **Alcove Gloria** — `deal-summary.html?id=demo`
+- **Sample Coastal Conversion Opportunity** — `owner-diagnostic-sample.html`
+- **Atelier North** — Brand Explorer demo profile
+- **Command Center** — `app/home.html` sample deal pulse
+- **Deal Compare** — existing real product screenshot (`screenshots/deal-compare.png`) because live Merida compare has no contacted brands without auth
 
-| Folder | Contents |
-|--------|----------|
-| `scenes/` | Capture HTML scenes + stage controller (not for public embed) |
-| `stills/` | PNG stills (full 1600×1000, wide 1600×800, feature 1200×900 @2x) |
-| `video/` | MP4 (H.264) + WebM (VP9) clips |
-| `posters/` | Poster PNG per clip |
-| `source/` | Internal GIF previews only (not primary web format) |
+CALA demo deal **Mérida Centro Select-Service** (`recqGVET08a8faagy`) is the marketing demo deal in Airtable. Full My Deals / Deal Setup / Deal Room data requires a signed-in `dealalitydemo@dealality.com` session.
 
 ## Regenerate
 
 ```bash
-# Serve public/ (product server cwd guard may block npm start in this environment)
-python3 -m http.server 8080 --directory public
-
-# Capture / re-capture
-node scripts/capture-harbour-house-product-assets.mjs --base=http://127.0.0.1:8080
-
-# Rebuild manifest + ASSET-REPORT from files on disk
-node scripts/rebuild-harbour-house-asset-manifest.mjs
+node scripts/capture-live-platform-product-assets.mjs
 ```
 
-## Implementation metadata
+Optional: `--base=https://my-operators-backend-staging.up.railway.app` `--only=02-strategic-paths,05-proposal-comparison`
 
-- `manifest.json` — full inventory, durations, sizes, final selection
-- `website-placement.json` — section, caption, alt, playback recommendations
-- `ASSET-REPORT.md` — human-readable capture report
+## Metadata
 
-Default video behaviour: muted, playsinline, loop, preload=metadata, poster, play near viewport, pause offscreen, poster-only for `prefers-reduced-motion`.
+- `ASSET-REPORT.md` — inventory and limitations
+- `manifest.json` / `website-placement.json` — captions, alt, playback recommendations
