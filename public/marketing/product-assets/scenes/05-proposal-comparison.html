@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harbour House — Proposal Comparison</title>
+  <link rel="stylesheet" href="/marketing/product-assets/scenes/product-assets-scenes.css" />
+</head>
+<body class="pa-capture" data-scene="05-proposal-comparison" data-stage="0">
+  <div class="pa-frame" id="capture-root">
+    <div class="pa-topline">
+      <div class="pa-brand-mark"><span class="pa-brand-mark__dot" aria-hidden="true"></span>Proposal Comparison</div>
+      <span class="pa-illus">Illustrative Opportunity</span>
+    </div>
+
+    <header class="pa-header">
+      <h1>Compare proposals on a shared basis</h1>
+      <p class="pa-sub">Harbour House Hotel · three illustrative responses · standardized terms</p>
+      <div class="pa-meta">
+        <span class="pa-chip pa-chip--accent">Soft brand · Operator · Capital</span>
+        <span class="pa-chip">Missing terms highlighted</span>
+      </div>
+    </header>
+
+    <div class="pa-compare-wrap pa-zoom-target" style="margin-top:18px">
+      <table class="pa-compare">
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Aurelia Collection</th>
+            <th>CostaVista Hospitality</th>
+            <th>Andes Capital Partners</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-reveal="1">
+            <td>Structure</td>
+            <td>Soft brand license</td>
+            <td>Management agreement</td>
+            <td>Preferred equity + governance</td>
+          </tr>
+          <tr data-reveal="1">
+            <td>Key fee / return</td>
+            <td class="pa-best">4.0% royalty equiv.</td>
+            <td>3.0% base + 10% incentive</td>
+            <td>12% pref. · sample</td>
+          </tr>
+          <tr data-reveal="2">
+            <td>PIP contribution</td>
+            <td class="pa-best">Standards guide · phased</td>
+            <td>Ops-led scope · owner funded</td>
+            <td>Co-fund up to 40%</td>
+          </tr>
+          <tr data-reveal="2">
+            <td>Term length</td>
+            <td>10 years + 2×5</td>
+            <td class="pa-best">7 years + 1×5</td>
+            <td>Hold 5–7 years</td>
+          </tr>
+          <tr data-reveal="3" class="pa-gap-row">
+            <td>Territory / exclusivity</td>
+            <td class="pa-best">Historic centre exclusive</td>
+            <td><span class="pa-status pa-status--miss">Not stated</span></td>
+            <td>N/A</td>
+          </tr>
+          <tr data-reveal="3" class="pa-gap-row">
+            <td>Exit / termination</td>
+            <td>Performance window</td>
+            <td><span class="pa-status pa-status--miss">Needs clarification</span></td>
+            <td>Buyout formula TBD</td>
+          </tr>
+          <tr data-reveal="4">
+            <td>Open questions</td>
+            <td>Marketing fund detail</td>
+            <td>F&amp;B staffing model</td>
+            <td>Board seat scope</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section class="pa-panel" style="margin-top:14px" data-fade data-on-stage="4">
+      <h3>Comparison insight</h3>
+      <p style="margin:0;color:#dbe6f8;font-size:13px;line-height:1.5">
+        Aurelia leads on brand economics and exclusivity clarity. CostaVista is strongest on term flexibility but missing exclusivity and exit language.
+        Andes Capital unlocks PIP funding — governance and buyout terms still unresolved.
+      </p>
+    </section>
+
+    <p class="pa-disclaimer">Illustrative commercial figures only. Not real proposals or market quotes.</p>
+    <div class="pa-stage-label" id="stage-label">Stage 0</div>
+  </div>
+  <script src="/marketing/product-assets/scenes/scene-controller.js"></script>
+  <script>
+    window.__paSceneHooks = {
+      applyStage: function (stage) {
+        document.querySelectorAll('tr[data-reveal]').forEach(function (tr) {
+          var need = Number(tr.getAttribute('data-reveal'));
+          tr.classList.toggle('is-revealed', stage >= need);
+          tr.classList.toggle('pa-row-focus', stage === need);
+          tr.classList.toggle('pa-row-gap', stage >= need && tr.classList.contains('pa-gap-row'));
+        });
+      }
+    };
+  </script>
+</body>
+</html>

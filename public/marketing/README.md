@@ -101,6 +101,18 @@ Each marketing section loads the actual Dealality page in a framed iframe. Deal 
 | `dealRoom` | `/deal-room-owner.html?embed=1&dealId={demoDealId}&marketingEmbed=1` |
 | `loiHandoff` | `/deal-setup.html?embed=1&id={demoDealId}&edit=1&marketingEmbed=1` |
 
+### Product asset library (Harbour House)
+
+Publication-ready stills and short website videos (fictional **Harbour House Hotel** opportunity):
+
+| Path | Purpose |
+|------|---------|
+| `product-assets/` | Stills, MP4/WebM clips, posters, placement metadata |
+| `product-assets/ASSET-REPORT.md` | Capture report + final selection |
+| `product-assets/website-placement.json` | Section, caption, alt, playback recommendations |
+
+Regenerate: `node scripts/capture-harbour-house-product-assets.mjs` (see `product-assets/README.md`).
+
 ### Files
 
 | File | Purpose |
