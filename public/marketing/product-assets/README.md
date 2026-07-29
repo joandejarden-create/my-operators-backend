@@ -1,28 +1,14 @@
-# Dealality product marketing assets (live platform)
+# Dealality product marketing assets
 
-Published stills and short videos captured from the **real Dealality product UI**.
+Requested surfaces captured from live product UI:
 
-Harbour House HTML mock scenes under `scenes/` are **superseded** and are not the published assets.
+- **Deal Readiness** — `/owner-diagnostic-sample.html?embed=1`
+- **Brand Match Screen** — `/marketing/screenshot-matched-brands.html`
+- **Dealality Radar** — `/deal-capture-radar-with-ranked-list.html?embed=1`
+- **Operator Explorer** — `/operator-explorer-gold-mock.html?embed=1`
+- **Brand Explorer** — `/brand-education-atelier-north.html?embed=1`
+- **Opportunity Review** — `/deal-summary.html?id=demo&embed=1`
+- **Clause Library** — `/clause-library.html?embed=1`
+- **Fee Calculator** — `/franchise-fee-estimator.html?embed=1`
 
-## Demo projects used (already in the platform)
-
-- **Alcove Gloria** — `deal-summary.html?id=demo`
-- **Sample Coastal Conversion Opportunity** — `owner-diagnostic-sample.html`
-- **Atelier North** — Brand Explorer demo profile
-- **Command Center** — `app/home.html` sample deal pulse
-- **Deal Compare** — existing real product screenshot (`screenshots/deal-compare.png`) because live Merida compare has no contacted brands without auth
-
-CALA demo deal **Mérida Centro Select-Service** (`recqGVET08a8faagy`) is the marketing demo deal in Airtable. Full My Deals / Deal Setup / Deal Room data requires a signed-in `dealalitydemo@dealality.com` session.
-
-## Regenerate
-
-```bash
-node scripts/capture-live-platform-product-assets.mjs
-```
-
-Optional: `--base=https://my-operators-backend-staging.up.railway.app` `--only=02-strategic-paths,05-proposal-comparison`
-
-## Metadata
-
-- `ASSET-REPORT.md` — inventory and limitations
-- `manifest.json` / `website-placement.json` — captions, alt, playback recommendations
+Regenerate: `node scripts/capture-requested-product-surfaces.mjs`
