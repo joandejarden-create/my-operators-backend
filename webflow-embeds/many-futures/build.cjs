@@ -42,7 +42,7 @@ function minifyMarkup(input) {
 }
 
 const CDN_BASE =
-  "https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@cursor/many-futures-phase-b-38e7/webflow-embeds/many-futures";
+  "https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@3beff4ef5c791055e19fc7d7efa613b446d53ca0/webflow-embeds/many-futures";
 
 const ASSET_REWRITES = [
   ["assets/hotel-final.jpg", `${CDN_BASE}/assets/hotel-final.jpg`],
