@@ -14,6 +14,26 @@
     return window.matchMedia("(max-width: 767px)").matches;
   };
 
+  function deferPanelImages(panel) {
+    if (!panel) return;
+    var imgs = panel.querySelectorAll("img.mf-feat-img[src]");
+    for (var i = 0; i < imgs.length; i++) {
+      if (!imgs[i].dataset.mfSrc) {
+        imgs[i].dataset.mfSrc = imgs[i].getAttribute("src");
+        imgs[i].removeAttribute("src");
+      }
+    }
+  }
+
+  function loadPanelImages(panel) {
+    if (!panel) return;
+    var imgs = panel.querySelectorAll("img.mf-feat-img[data-mf-src]");
+    for (var i = 0; i < imgs.length; i++) {
+      imgs[i].setAttribute("src", imgs[i].dataset.mfSrc);
+      delete imgs[i].dataset.mfSrc;
+    }
+  }
+
   function setActive(id, pin) {
     if (!id) return;
     if (pin) pinned = id;
@@ -25,13 +45,19 @@
       questions[i].setAttribute("aria-pressed", on ? "true" : "false");
     }
 
+    var activePanel = null;
     for (i = 0; i < panels.length; i++) {
       var match = panels[i].getAttribute("data-panel") === id;
       panels[i].classList.toggle("is-active", match);
-      if (match) panels[i].removeAttribute("hidden");
-      else panels[i].setAttribute("hidden", "");
+      if (match) {
+        activePanel = panels[i];
+        panels[i].removeAttribute("hidden");
+      } else {
+        panels[i].setAttribute("hidden", "");
+      }
     }
 
+    loadPanelImages(activePanel);
     placeMobilePanel(id);
     drawConnectors(id);
   }
@@ -170,6 +196,9 @@
   });
 
   pinned = "rebrand";
+  for (var p = 0; p < panels.length; p++) {
+    if (!panels[p].classList.contains("is-active")) deferPanelImages(panels[p]);
+  }
   setActive("rebrand", true);
   root.classList.add("mf-js-ready");
 

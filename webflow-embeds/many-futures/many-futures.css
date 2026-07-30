@@ -428,6 +428,520 @@
   display: none;
 }
 
+/* HTML mini-UI panels (replaces raster reconstructions) */
+#dealality-many-futures .mf-feat-visual--ui {
+  aspect-ratio: auto;
+  min-height: 12rem;
+  height: auto;
+  padding: 0.65rem;
+  display: flex;
+  align-items: stretch;
+}
+
+#dealality-many-futures .mf-feat--primary .mf-feat-visual--ui {
+  min-height: 14rem;
+  padding: 0.75rem;
+}
+
+#dealality-many-futures .mf-feat--support .mf-feat-visual--ui {
+  min-height: 12rem;
+}
+
+#dealality-many-futures .mf-ui {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-bg);
+  color: var(--mf-text);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+#dealality-many-futures .mf-ui-label {
+  margin: 0 0 0.55rem;
+  display: inline-block;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(70, 78, 120, 0.55);
+  background: rgba(12, 18, 40, 0.9);
+  color: var(--mf-muted-2);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+#dealality-many-futures .mf-ui-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--mf-text);
+}
+
+#dealality-many-futures .mf-ui-descriptor {
+  margin: 0 0 0.2rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mf-accent-soft);
+}
+
+#dealality-many-futures .mf-ui-subtitle {
+  margin: 0 0 0.65rem;
+  font-size: 0.75rem;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-note {
+  margin: 0 0 0.55rem;
+  font-size: 0.75rem;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-meta {
+  margin: 0 0 0.45rem;
+  font-size: 0.6875rem;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-footnote {
+  margin: 0.45rem 0 0;
+  font-size: 0.6875rem;
+  color: var(--mf-muted-2);
+}
+
+/* Chips */
+#dealality-many-futures .mf-ui-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.55rem;
+}
+
+#dealality-many-futures .mf-ui-chip {
+  display: inline-flex;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-chip--strong {
+  border-color: rgba(72, 168, 120, 0.45);
+  background: rgba(34, 90, 70, 0.35);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Operator matching table */
+#dealality-many-futures .mf-ui-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#dealality-many-futures .mf-ui-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.2rem;
+  font-size: 0.75rem;
+}
+
+#dealality-many-futures .mf-ui-table th {
+  padding: 0.35rem 0.45rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+  text-align: left;
+  background: var(--mf-panel-2);
+  border: 1px solid var(--mf-border);
+}
+
+#dealality-many-futures .mf-ui-table th:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+#dealality-many-futures .mf-ui-table th:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+#dealality-many-futures .mf-ui-table td {
+  padding: 0.45rem 0.45rem;
+  vertical-align: top;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+}
+
+#dealality-many-futures .mf-ui-table tbody tr td:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+#dealality-many-futures .mf-ui-table tbody tr td:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+#dealality-many-futures .mf-ui-cell-primary {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+#dealality-many-futures .mf-ui-cell-sub {
+  display: block;
+  margin-top: 0.12rem;
+  font-size: 0.625rem;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-score {
+  display: inline-flex;
+  min-width: 2.75rem;
+  padding: 0.22rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+}
+
+#dealality-many-futures .mf-ui-score--green {
+  background: rgb(72, 168, 120);
+}
+
+#dealality-many-futures .mf-ui-score--orange {
+  background: rgb(220, 140, 70);
+}
+
+#dealality-many-futures .mf-ui-score--red {
+  background: rgb(200, 90, 90);
+}
+
+/* Deal Readiness */
+#dealality-many-futures .mf-ui-readiness-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 0.65rem;
+  margin-bottom: 0.65rem;
+}
+
+#dealality-many-futures .mf-ui-score-ring {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+  min-height: 7.5rem;
+}
+
+#dealality-many-futures .mf-ui-ring-svg {
+  width: 5.5rem;
+  height: 5.5rem;
+  transform: rotate(-90deg);
+}
+
+#dealality-many-futures .mf-ui-ring-track {
+  fill: none;
+  stroke: var(--mf-panel-2);
+  stroke-width: 8;
+}
+
+#dealality-many-futures .mf-ui-ring-fill {
+  fill: none;
+  stroke: var(--mf-accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 301.6;
+  stroke-dashoffset: calc(301.6 - (301.6 * var(--mf-ring-pct, 0) / 100));
+}
+
+#dealality-many-futures .mf-ui-ring-value {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  line-height: 1.1;
+}
+
+#dealality-many-futures .mf-ui-ring-num {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+#dealality-many-futures .mf-ui-ring-of {
+  font-size: 0.6875rem;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-ring-label {
+  margin: 0.35rem 0 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-bars {
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+}
+
+#dealality-many-futures .mf-ui-bars-heading {
+  margin: 0 0 0.45rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-bar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) auto;
+  gap: 0.35rem 0.5rem;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+#dealality-many-futures .mf-ui-bar-row:last-child {
+  margin-bottom: 0;
+}
+
+#dealality-many-futures .mf-ui-bar-label {
+  font-size: 0.75rem;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-bar-track {
+  display: block;
+  height: 0.45rem;
+  border-radius: 4px;
+  background: var(--mf-panel-2);
+  overflow: hidden;
+}
+
+#dealality-many-futures .mf-ui-bar-fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--mf-bar-pct, 0) * 1%);
+  border-radius: 4px;
+  background: var(--mf-accent);
+}
+
+#dealality-many-futures .mf-ui-bar-val {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--mf-text);
+  min-width: 2rem;
+  text-align: right;
+}
+
+#dealality-many-futures .mf-ui-gaps {
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+}
+
+#dealality-many-futures .mf-ui-gaps-heading {
+  margin: 0 0 0.4rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(232, 196, 92);
+}
+
+#dealality-many-futures .mf-ui-gap-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#dealality-many-futures .mf-ui-gap-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.28rem;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+#dealality-many-futures .mf-ui-gap-list li:last-child {
+  margin-bottom: 0;
+}
+
+#dealality-many-futures .mf-ui-priority {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 0.15rem 0.4rem;
+  border-radius: 5px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+#dealality-many-futures .mf-ui-priority--high {
+  color: rgb(200, 90, 90);
+  border-color: rgba(200, 90, 90, 0.45);
+  background: rgba(200, 90, 90, 0.12);
+}
+
+#dealality-many-futures .mf-ui-priority--medium {
+  color: rgb(220, 140, 70);
+  border-color: rgba(220, 140, 70, 0.45);
+  background: rgba(220, 140, 70, 0.12);
+}
+
+/* Search placeholder */
+#dealality-many-futures .mf-ui-search {
+  margin-bottom: 0.45rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+  font-size: 0.75rem;
+  color: var(--mf-muted-2);
+}
+
+/* Library cards */
+#dealality-many-futures .mf-ui-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+#dealality-many-futures .mf-ui-cards--terms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+#dealality-many-futures .mf-ui-card {
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+}
+
+#dealality-many-futures .mf-ui-card-title {
+  margin: 0 0 0.2rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.3;
+  color: var(--mf-text);
+}
+
+#dealality-many-futures .mf-ui-card-meta {
+  margin: 0 0 0.25rem;
+  font-size: 0.625rem;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-card-summary {
+  margin: 0 0 0.35rem;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+#dealality-many-futures .mf-ui-badge {
+  display: inline-flex;
+  padding: 0.12rem 0.35rem;
+  border-radius: 5px;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+#dealality-many-futures .mf-ui-badge--green {
+  color: rgb(72, 168, 120);
+  border-color: rgba(72, 168, 120, 0.45);
+  background: rgba(72, 168, 120, 0.12);
+}
+
+#dealality-many-futures .mf-ui-badge--orange {
+  color: rgb(220, 140, 70);
+  border-color: rgba(220, 140, 70, 0.45);
+  background: rgba(220, 140, 70, 0.12);
+}
+
+#dealality-many-futures .mf-ui-badge--red {
+  color: rgb(200, 90, 90);
+  border-color: rgba(200, 90, 90, 0.45);
+  background: rgba(200, 90, 90, 0.12);
+}
+
+#dealality-many-futures .mf-ui-badge--accent {
+  color: var(--mf-accent-soft);
+  border-color: rgba(139, 144, 255, 0.35);
+  background: rgba(108, 114, 255, 0.1);
+}
+
+/* Submit Proposal form */
+#dealality-many-futures .mf-ui-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 0.65rem;
+}
+
+#dealality-many-futures .mf-ui-field-group {
+  grid-column: 1 / -1;
+}
+
+#dealality-many-futures .mf-ui-field-group-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mf-accent-soft);
+}
+
+#dealality-many-futures .mf-ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+#dealality-many-futures .mf-ui-field-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-field-value {
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+  font-size: 0.875rem;
+  color: var(--mf-text);
+}
+
 #dealality-many-futures .mf-feat-body {
   display: flex;
   flex-direction: column;
@@ -541,6 +1055,35 @@
 
   #dealality-many-futures .mf-feat-img--desk { display: none; }
   #dealality-many-futures .mf-feat-img--mob { display: block; }
+
+  #dealality-many-futures .mf-ui-hide-mobile {
+    display: none;
+  }
+
+  #dealality-many-futures .mf-ui-readiness-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-ui-cards--terms {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-ui-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-feat-visual--ui {
+    padding: 0.5rem;
+  }
+
+  #dealality-many-futures .mf-ui {
+    padding: 0.65rem 0.7rem;
+    font-size: 0.8125rem;
+  }
+
+  #dealality-many-futures .mf-ui-title {
+    font-size: 1rem;
+  }
 
   #dealality-many-futures .mf-feat-stack {
     grid-template-columns: 1fr;

@@ -527,6 +527,520 @@
   display: none;
 }
 
+/* HTML mini-UI panels (replaces raster reconstructions) */
+#dealality-many-futures .mf-feat-visual--ui {
+  aspect-ratio: auto;
+  min-height: 12rem;
+  height: auto;
+  padding: 0.65rem;
+  display: flex;
+  align-items: stretch;
+}
+
+#dealality-many-futures .mf-feat--primary .mf-feat-visual--ui {
+  min-height: 14rem;
+  padding: 0.75rem;
+}
+
+#dealality-many-futures .mf-feat--support .mf-feat-visual--ui {
+  min-height: 12rem;
+}
+
+#dealality-many-futures .mf-ui {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-bg);
+  color: var(--mf-text);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+#dealality-many-futures .mf-ui-label {
+  margin: 0 0 0.55rem;
+  display: inline-block;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(70, 78, 120, 0.55);
+  background: rgba(12, 18, 40, 0.9);
+  color: var(--mf-muted-2);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+#dealality-many-futures .mf-ui-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--mf-text);
+}
+
+#dealality-many-futures .mf-ui-descriptor {
+  margin: 0 0 0.2rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mf-accent-soft);
+}
+
+#dealality-many-futures .mf-ui-subtitle {
+  margin: 0 0 0.65rem;
+  font-size: 0.75rem;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-note {
+  margin: 0 0 0.55rem;
+  font-size: 0.75rem;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-meta {
+  margin: 0 0 0.45rem;
+  font-size: 0.6875rem;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-footnote {
+  margin: 0.45rem 0 0;
+  font-size: 0.6875rem;
+  color: var(--mf-muted-2);
+}
+
+/* Chips */
+#dealality-many-futures .mf-ui-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.55rem;
+}
+
+#dealality-many-futures .mf-ui-chip {
+  display: inline-flex;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-chip--strong {
+  border-color: rgba(72, 168, 120, 0.45);
+  background: rgba(34, 90, 70, 0.35);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Operator matching table */
+#dealality-many-futures .mf-ui-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#dealality-many-futures .mf-ui-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.2rem;
+  font-size: 0.75rem;
+}
+
+#dealality-many-futures .mf-ui-table th {
+  padding: 0.35rem 0.45rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+  text-align: left;
+  background: var(--mf-panel-2);
+  border: 1px solid var(--mf-border);
+}
+
+#dealality-many-futures .mf-ui-table th:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+#dealality-many-futures .mf-ui-table th:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+#dealality-many-futures .mf-ui-table td {
+  padding: 0.45rem 0.45rem;
+  vertical-align: top;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+}
+
+#dealality-many-futures .mf-ui-table tbody tr td:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+#dealality-many-futures .mf-ui-table tbody tr td:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+#dealality-many-futures .mf-ui-cell-primary {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+#dealality-many-futures .mf-ui-cell-sub {
+  display: block;
+  margin-top: 0.12rem;
+  font-size: 0.625rem;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-score {
+  display: inline-flex;
+  min-width: 2.75rem;
+  padding: 0.22rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+}
+
+#dealality-many-futures .mf-ui-score--green {
+  background: rgb(72, 168, 120);
+}
+
+#dealality-many-futures .mf-ui-score--orange {
+  background: rgb(220, 140, 70);
+}
+
+#dealality-many-futures .mf-ui-score--red {
+  background: rgb(200, 90, 90);
+}
+
+/* Deal Readiness */
+#dealality-many-futures .mf-ui-readiness-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 0.65rem;
+  margin-bottom: 0.65rem;
+}
+
+#dealality-many-futures .mf-ui-score-ring {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+  min-height: 7.5rem;
+}
+
+#dealality-many-futures .mf-ui-ring-svg {
+  width: 5.5rem;
+  height: 5.5rem;
+  transform: rotate(-90deg);
+}
+
+#dealality-many-futures .mf-ui-ring-track {
+  fill: none;
+  stroke: var(--mf-panel-2);
+  stroke-width: 8;
+}
+
+#dealality-many-futures .mf-ui-ring-fill {
+  fill: none;
+  stroke: var(--mf-accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 301.6;
+  stroke-dashoffset: calc(301.6 - (301.6 * var(--mf-ring-pct, 0) / 100));
+}
+
+#dealality-many-futures .mf-ui-ring-value {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  line-height: 1.1;
+}
+
+#dealality-many-futures .mf-ui-ring-num {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+#dealality-many-futures .mf-ui-ring-of {
+  font-size: 0.6875rem;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-ring-label {
+  margin: 0.35rem 0 0;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-bars {
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+}
+
+#dealality-many-futures .mf-ui-bars-heading {
+  margin: 0 0 0.45rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-bar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) auto;
+  gap: 0.35rem 0.5rem;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+#dealality-many-futures .mf-ui-bar-row:last-child {
+  margin-bottom: 0;
+}
+
+#dealality-many-futures .mf-ui-bar-label {
+  font-size: 0.75rem;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-bar-track {
+  display: block;
+  height: 0.45rem;
+  border-radius: 4px;
+  background: var(--mf-panel-2);
+  overflow: hidden;
+}
+
+#dealality-many-futures .mf-ui-bar-fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--mf-bar-pct, 0) * 1%);
+  border-radius: 4px;
+  background: var(--mf-accent);
+}
+
+#dealality-many-futures .mf-ui-bar-val {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--mf-text);
+  min-width: 2rem;
+  text-align: right;
+}
+
+#dealality-many-futures .mf-ui-gaps {
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+}
+
+#dealality-many-futures .mf-ui-gaps-heading {
+  margin: 0 0 0.4rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(232, 196, 92);
+}
+
+#dealality-many-futures .mf-ui-gap-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#dealality-many-futures .mf-ui-gap-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.28rem;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+#dealality-many-futures .mf-ui-gap-list li:last-child {
+  margin-bottom: 0;
+}
+
+#dealality-many-futures .mf-ui-priority {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 0.15rem 0.4rem;
+  border-radius: 5px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+#dealality-many-futures .mf-ui-priority--high {
+  color: rgb(200, 90, 90);
+  border-color: rgba(200, 90, 90, 0.45);
+  background: rgba(200, 90, 90, 0.12);
+}
+
+#dealality-many-futures .mf-ui-priority--medium {
+  color: rgb(220, 140, 70);
+  border-color: rgba(220, 140, 70, 0.45);
+  background: rgba(220, 140, 70, 0.12);
+}
+
+/* Search placeholder */
+#dealality-many-futures .mf-ui-search {
+  margin-bottom: 0.45rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+  font-size: 0.75rem;
+  color: var(--mf-muted-2);
+}
+
+/* Library cards */
+#dealality-many-futures .mf-ui-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+#dealality-many-futures .mf-ui-cards--terms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+#dealality-many-futures .mf-ui-card {
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+}
+
+#dealality-many-futures .mf-ui-card-title {
+  margin: 0 0 0.2rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.3;
+  color: var(--mf-text);
+}
+
+#dealality-many-futures .mf-ui-card-meta {
+  margin: 0 0 0.25rem;
+  font-size: 0.625rem;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-card-summary {
+  margin: 0 0 0.35rem;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-ui-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+#dealality-many-futures .mf-ui-badge {
+  display: inline-flex;
+  padding: 0.12rem 0.35rem;
+  border-radius: 5px;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+#dealality-many-futures .mf-ui-badge--green {
+  color: rgb(72, 168, 120);
+  border-color: rgba(72, 168, 120, 0.45);
+  background: rgba(72, 168, 120, 0.12);
+}
+
+#dealality-many-futures .mf-ui-badge--orange {
+  color: rgb(220, 140, 70);
+  border-color: rgba(220, 140, 70, 0.45);
+  background: rgba(220, 140, 70, 0.12);
+}
+
+#dealality-many-futures .mf-ui-badge--red {
+  color: rgb(200, 90, 90);
+  border-color: rgba(200, 90, 90, 0.45);
+  background: rgba(200, 90, 90, 0.12);
+}
+
+#dealality-many-futures .mf-ui-badge--accent {
+  color: var(--mf-accent-soft);
+  border-color: rgba(139, 144, 255, 0.35);
+  background: rgba(108, 114, 255, 0.1);
+}
+
+/* Submit Proposal form */
+#dealality-many-futures .mf-ui-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 0.65rem;
+}
+
+#dealality-many-futures .mf-ui-field-group {
+  grid-column: 1 / -1;
+}
+
+#dealality-many-futures .mf-ui-field-group-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mf-accent-soft);
+}
+
+#dealality-many-futures .mf-ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+#dealality-many-futures .mf-ui-field-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-ui-field-value {
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--mf-border);
+  background: var(--mf-panel);
+  font-size: 0.875rem;
+  color: var(--mf-text);
+}
+
 #dealality-many-futures .mf-feat-body {
   display: flex;
   flex-direction: column;
@@ -640,6 +1154,35 @@
 
   #dealality-many-futures .mf-feat-img--desk { display: none; }
   #dealality-many-futures .mf-feat-img--mob { display: block; }
+
+  #dealality-many-futures .mf-ui-hide-mobile {
+    display: none;
+  }
+
+  #dealality-many-futures .mf-ui-readiness-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-ui-cards--terms {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-ui-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-feat-visual--ui {
+    padding: 0.5rem;
+  }
+
+  #dealality-many-futures .mf-ui {
+    padding: 0.65rem 0.7rem;
+    font-size: 0.8125rem;
+  }
+
+  #dealality-many-futures .mf-ui-title {
+    font-size: 1rem;
+  }
 
   #dealality-many-futures .mf-feat-stack {
     grid-template-columns: 1fr;
@@ -877,9 +1420,80 @@
           </article>
           <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
-              <div class="mf-feat-visual">
-                <img src="assets/features/smart-matching-operators-desktop.png" alt="Smart Matching: Operator Match Score and fit signals from Operator Strategy" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
-                <img src="assets/features/smart-matching-operators-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
+              <div class="mf-feat-visual mf-feat-visual--ui">
+                <div class="mf-ui mf-ui--operator-matching" role="img" aria-label="Operator Strategy table with Operator Match Score and fit signals for demo operators">
+                  <p class="mf-ui-label">Interface simplified for presentation</p>
+                  <h5 class="mf-ui-title">Operator Strategy</h5>
+                  <p class="mf-ui-descriptor">Operator Match Score &amp; Fit Signals</p>
+                  <p class="mf-ui-note">Alignment scores highlight fit signals and data gaps—not approval or terms.</p>
+                  <div class="mf-ui-chips">
+                    <span class="mf-ui-chip mf-ui-chip--strong">Alignment Signal: Strong</span>
+                    <span class="mf-ui-chip">Showing operator-company rows</span>
+                  </div>
+                  <div class="mf-ui-table-wrap">
+                    <table class="mf-ui-table mf-ui-table--operators">
+                      <thead>
+                        <tr>
+                          <th>Operating Company</th>
+                          <th class="mf-ui-hide-mobile">Project Location</th>
+                          <th>Score</th>
+                          <th>Key Consideration</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <span class="mf-ui-cell-primary">Cenote Azul Operadores</span>
+                            <span class="mf-ui-cell-sub">Demo operator record</span>
+                          </td>
+                          <td class="mf-ui-hide-mobile">San Juan, Puerto Rico</td>
+                          <td><span class="mf-ui-score mf-ui-score--green">86.4</span></td>
+                          <td>
+                            <span class="mf-ui-cell-primary">Regional conversion experience</span>
+                            <span class="mf-ui-cell-sub">Strong alignment signals</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="mf-ui-cell-primary">Caribe Host Management</span>
+                            <span class="mf-ui-cell-sub">Demo operator record</span>
+                          </td>
+                          <td class="mf-ui-hide-mobile">San Juan, Puerto Rico</td>
+                          <td><span class="mf-ui-score mf-ui-score--orange">71.2</span></td>
+                          <td>
+                            <span class="mf-ui-cell-primary">Validate urban asset focus</span>
+                            <span class="mf-ui-cell-sub">Moderate alignment — review gaps</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="mf-ui-cell-primary">Atlántica Hospitality Ops</span>
+                            <span class="mf-ui-cell-sub">Demo operator record</span>
+                          </td>
+                          <td class="mf-ui-hide-mobile">San Juan, Puerto Rico</td>
+                          <td><span class="mf-ui-score mf-ui-score--orange">54.8</span></td>
+                          <td>
+                            <span class="mf-ui-cell-primary">Confirm owner reporting cadence</span>
+                            <span class="mf-ui-cell-sub">Moderate alignment — review gaps</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="mf-ui-cell-primary">Litoral Operating Group</span>
+                            <span class="mf-ui-cell-sub">Demo operator record</span>
+                          </td>
+                          <td class="mf-ui-hide-mobile">San Juan, Puerto Rico</td>
+                          <td><span class="mf-ui-score mf-ui-score--red">38.1</span></td>
+                          <td>
+                            <span class="mf-ui-cell-primary">Limited market overlap</span>
+                            <span class="mf-ui-cell-sub">Weak alignment — significant gaps</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="mf-ui-footnote">Overall Operator Alignment Score · 0–100 · nine scored factors</p>
+                </div>
               </div>
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Operator Match Score &amp; Fit Signals</p>
@@ -927,9 +1541,47 @@
           </article>
           <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
-              <div class="mf-feat-visual">
-                <img src="assets/features/deal-readiness-desktop.png" alt="Deal Readiness Snapshot" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
-                <img src="assets/features/deal-readiness-mobile.png" alt="" width="780" height="640" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
+              <div class="mf-feat-visual mf-feat-visual--ui">
+                <div class="mf-ui mf-ui--deal-readiness" role="img" aria-label="Deal Readiness Snapshot with readiness score, completeness bars, and information gaps">
+                  <p class="mf-ui-label">Interface simplified for presentation</p>
+                  <h5 class="mf-ui-title">Deal Readiness Snapshot</h5>
+                  <p class="mf-ui-subtitle">120-Key Upper-Upscale Hotel · San Juan, Puerto Rico · Shaping</p>
+                  <div class="mf-ui-readiness-grid">
+                    <div class="mf-ui-score-ring" aria-hidden="true">
+                      <svg viewBox="0 0 120 120" class="mf-ui-ring-svg">
+                        <circle cx="60" cy="60" r="48" class="mf-ui-ring-track"/>
+                        <circle cx="60" cy="60" r="48" class="mf-ui-ring-fill" style="--mf-ring-pct: 72"/>
+                      </svg>
+                      <div class="mf-ui-ring-value">
+                        <span class="mf-ui-ring-num">72</span>
+                        <span class="mf-ui-ring-of">/ 100</span>
+                      </div>
+                      <p class="mf-ui-ring-label">Final Readiness Score</p>
+                    </div>
+                    <div class="mf-ui-bars">
+                      <p class="mf-ui-bars-heading">Commercial inputs</p>
+                      <div class="mf-ui-bar-row">
+                        <span class="mf-ui-bar-label">Project Completeness</span>
+                        <span class="mf-ui-bar-track"><span class="mf-ui-bar-fill" style="--mf-bar-pct: 76"></span></span>
+                        <span class="mf-ui-bar-val">76%</span>
+                      </div>
+                      <div class="mf-ui-bar-row">
+                        <span class="mf-ui-bar-label">Commercial Inputs</span>
+                        <span class="mf-ui-bar-track"><span class="mf-ui-bar-fill" style="--mf-bar-pct: 92"></span></span>
+                        <span class="mf-ui-bar-val">92%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mf-ui-gaps">
+                    <p class="mf-ui-gaps-heading">Information gaps</p>
+                    <ul class="mf-ui-gap-list">
+                      <li><span class="mf-ui-priority mf-ui-priority--high">High</span> PIP / Capex clarity</li>
+                      <li><span class="mf-ui-priority mf-ui-priority--high">High</span> Preferred deal structure detail</li>
+                      <li><span class="mf-ui-priority mf-ui-priority--medium">Medium</span> Ownership / control documentation</li>
+                      <li><span class="mf-ui-priority mf-ui-priority--medium">Medium</span> Market performance benchmarks</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Preparation</p>
@@ -1027,9 +1679,46 @@
           </article>
           <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
-              <div class="mf-feat-visual">
-                <img src="assets/features/submit-proposal-desktop.png" alt="Submit Proposal: Brand Deal Request commercial terms form" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
-                <img src="assets/features/submit-proposal-mobile.png" alt="" width="780" height="668" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
+              <div class="mf-feat-visual mf-feat-visual--ui">
+                <div class="mf-ui mf-ui--submit-proposal" role="img" aria-label="Submit Proposal form with brand commercial term fields">
+                  <p class="mf-ui-label">Interface simplified for presentation</p>
+                  <h5 class="mf-ui-title">Submit Proposal</h5>
+                  <p class="mf-ui-descriptor">Brand Response Workflow</p>
+                  <p class="mf-ui-subtitle">Brand Deal Request · commercial terms response</p>
+                  <div class="mf-ui-form-grid">
+                    <div class="mf-ui-field">
+                      <span class="mf-ui-field-label">Agreement Type</span>
+                      <span class="mf-ui-field-value">Franchise</span>
+                    </div>
+                    <div class="mf-ui-field">
+                      <span class="mf-ui-field-label">Royalty %</span>
+                      <span class="mf-ui-field-value">5.0 · Rooms Revenue</span>
+                    </div>
+                    <div class="mf-ui-field-group">
+                      <p class="mf-ui-field-group-label">Term &amp; Renewal</p>
+                      <div class="mf-ui-field">
+                        <span class="mf-ui-field-label">Term Quantity / Length</span>
+                        <span class="mf-ui-field-value">1 × 20 Years</span>
+                      </div>
+                      <div class="mf-ui-field">
+                        <span class="mf-ui-field-label">Renewal Quantity / Length</span>
+                        <span class="mf-ui-field-value">2 × 5 Years</span>
+                      </div>
+                    </div>
+                    <div class="mf-ui-field">
+                      <span class="mf-ui-field-label">Marketing %</span>
+                      <span class="mf-ui-field-value">2.5 · Gross Revenue</span>
+                    </div>
+                    <div class="mf-ui-field">
+                      <span class="mf-ui-field-label">Initial Franchise Fee ($)</span>
+                      <span class="mf-ui-field-value">$75,000</span>
+                    </div>
+                    <div class="mf-ui-field">
+                      <span class="mf-ui-field-label">Key Money Amount ($)</span>
+                      <span class="mf-ui-field-value">$250,000</span>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Brand Response Workflow</p>
@@ -1064,9 +1753,47 @@
         </header>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
-            <div class="mf-feat-visual">
-              <img src="assets/features/deal-readiness-desktop.png" alt="Deal Readiness Snapshot" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
-              <img src="assets/features/deal-readiness-mobile.png" alt="" width="780" height="640" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
+            <div class="mf-feat-visual mf-feat-visual--ui">
+              <div class="mf-ui mf-ui--deal-readiness" role="img" aria-label="Deal Readiness Snapshot with readiness score, completeness bars, and information gaps">
+                <p class="mf-ui-label">Interface simplified for presentation</p>
+                <h5 class="mf-ui-title">Deal Readiness Snapshot</h5>
+                <p class="mf-ui-subtitle">120-Key Upper-Upscale Hotel · San Juan, Puerto Rico · Shaping</p>
+                <div class="mf-ui-readiness-grid">
+                  <div class="mf-ui-score-ring" aria-hidden="true">
+                    <svg viewBox="0 0 120 120" class="mf-ui-ring-svg">
+                      <circle cx="60" cy="60" r="48" class="mf-ui-ring-track"/>
+                      <circle cx="60" cy="60" r="48" class="mf-ui-ring-fill" style="--mf-ring-pct: 72"/>
+                    </svg>
+                    <div class="mf-ui-ring-value">
+                      <span class="mf-ui-ring-num">72</span>
+                      <span class="mf-ui-ring-of">/ 100</span>
+                    </div>
+                    <p class="mf-ui-ring-label">Final Readiness Score</p>
+                  </div>
+                  <div class="mf-ui-bars">
+                    <p class="mf-ui-bars-heading">Commercial inputs</p>
+                    <div class="mf-ui-bar-row">
+                      <span class="mf-ui-bar-label">Project Completeness</span>
+                      <span class="mf-ui-bar-track"><span class="mf-ui-bar-fill" style="--mf-bar-pct: 76"></span></span>
+                      <span class="mf-ui-bar-val">76%</span>
+                    </div>
+                    <div class="mf-ui-bar-row">
+                      <span class="mf-ui-bar-label">Commercial Inputs</span>
+                      <span class="mf-ui-bar-track"><span class="mf-ui-bar-fill" style="--mf-bar-pct: 92"></span></span>
+                      <span class="mf-ui-bar-val">92%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mf-ui-gaps">
+                  <p class="mf-ui-gaps-heading">Information gaps</p>
+                  <ul class="mf-ui-gap-list">
+                    <li><span class="mf-ui-priority mf-ui-priority--high">High</span> PIP / Capex clarity</li>
+                    <li><span class="mf-ui-priority mf-ui-priority--high">High</span> Preferred deal structure detail</li>
+                    <li><span class="mf-ui-priority mf-ui-priority--medium">Medium</span> Ownership / control documentation</li>
+                    <li><span class="mf-ui-priority mf-ui-priority--medium">Medium</span> Market performance benchmarks</li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Preparation</p>
@@ -1077,9 +1804,51 @@
           </article>
           <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
-              <div class="mf-feat-visual">
-                <img src="assets/features/clause-library-desktop.png" alt="Clause Library: searchable contractual provisions" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
-                <img src="assets/features/clause-library-mobile.png" alt="" width="780" height="610" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
+              <div class="mf-feat-visual mf-feat-visual--ui">
+                <div class="mf-ui mf-ui--clause-library" role="img" aria-label="Clause Library with search and representative clause cards">
+                  <p class="mf-ui-label">Interface simplified for presentation</p>
+                  <h5 class="mf-ui-title">Clause Library</h5>
+                  <div class="mf-ui-search" aria-hidden="true">Search clauses…</div>
+                  <p class="mf-ui-meta">Showing 4 of 186 clauses</p>
+                  <div class="mf-ui-cards mf-ui-cards--clause">
+                    <div class="mf-ui-card">
+                      <p class="mf-ui-card-title">Territorial Protection</p>
+                      <p class="mf-ui-card-meta">Franchise · Territorial Rights · Pre-Sign</p>
+                      <p class="mf-ui-card-summary">Defines the protected geographic area where the brand will not authorize competing properties.</p>
+                      <div class="mf-ui-badges">
+                        <span class="mf-ui-badge mf-ui-badge--orange">Medium Risk</span>
+                        <span class="mf-ui-badge mf-ui-badge--accent">Owner-friendly</span>
+                      </div>
+                    </div>
+                    <div class="mf-ui-card">
+                      <p class="mf-ui-card-title">Initial Term &amp; Renewal</p>
+                      <p class="mf-ui-card-meta">Franchise · Term &amp; Renewal · Pre-Sign</p>
+                      <p class="mf-ui-card-summary">Sets the initial franchise term length and available renewal option quantities and conditions.</p>
+                      <div class="mf-ui-badges">
+                        <span class="mf-ui-badge mf-ui-badge--green">Low Risk</span>
+                        <span class="mf-ui-badge mf-ui-badge--accent">Neutral</span>
+                      </div>
+                    </div>
+                    <div class="mf-ui-card">
+                      <p class="mf-ui-card-title">Royalty Fee Calculation Basis</p>
+                      <p class="mf-ui-card-meta">Franchise · Fees · Operations</p>
+                      <p class="mf-ui-card-summary">Specifies how ongoing royalty is calculated — typically a percent of rooms or gross revenue.</p>
+                      <div class="mf-ui-badges">
+                        <span class="mf-ui-badge mf-ui-badge--red">High Risk</span>
+                        <span class="mf-ui-badge mf-ui-badge--accent">Brand-friendly</span>
+                      </div>
+                    </div>
+                    <div class="mf-ui-card">
+                      <p class="mf-ui-card-title">PIP Scope</p>
+                      <p class="mf-ui-card-meta">Franchise · Property Improvement Plan · Pre-Opening</p>
+                      <p class="mf-ui-card-summary">Outlines required capital improvements, timing, and brand standards before opening or reflag.</p>
+                      <div class="mf-ui-badges">
+                        <span class="mf-ui-badge mf-ui-badge--red">High Risk</span>
+                        <span class="mf-ui-badge mf-ui-badge--accent">Neutral</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Contractual</p>
@@ -1089,9 +1858,51 @@
               </div>
             </article>
             <article class="mf-feat mf-feat--support">
-              <div class="mf-feat-visual">
-                <img src="assets/features/financial-term-library-desktop.png" alt="Financial Term Library" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
-                <img src="assets/features/financial-term-library-mobile.png" alt="" width="780" height="680" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
+              <div class="mf-feat-visual mf-feat-visual--ui">
+                <div class="mf-ui mf-ui--financial-terms" role="img" aria-label="Financial Term Library with representative fee and incentive term cards">
+                  <p class="mf-ui-label">Interface simplified for presentation</p>
+                  <h5 class="mf-ui-title">Financial Term Library</h5>
+                  <div class="mf-ui-search" aria-hidden="true">Search by name, category…</div>
+                  <p class="mf-ui-meta">Showing 4 of 142 terms</p>
+                  <div class="mf-ui-cards mf-ui-cards--terms">
+                    <div class="mf-ui-card">
+                      <p class="mf-ui-card-title">Royalty Fee</p>
+                      <p class="mf-ui-card-meta">Franchise · Fees · Operations</p>
+                      <p class="mf-ui-card-summary">Ongoing fee paid to the brand, typically as a percentage of rooms or gross revenue.</p>
+                      <div class="mf-ui-badges">
+                        <span class="mf-ui-badge mf-ui-badge--red">High Risk</span>
+                        <span class="mf-ui-badge mf-ui-badge--accent">Brand-friendly</span>
+                      </div>
+                    </div>
+                    <div class="mf-ui-card">
+                      <p class="mf-ui-card-title">Marketing / Program Fee</p>
+                      <p class="mf-ui-card-meta">Franchise · Fees · Operations</p>
+                      <p class="mf-ui-card-summary">Contribution to brand marketing, loyalty, and system programs — often a percent of revenue.</p>
+                      <div class="mf-ui-badges">
+                        <span class="mf-ui-badge mf-ui-badge--orange">Medium Risk</span>
+                        <span class="mf-ui-badge mf-ui-badge--accent">Neutral</span>
+                      </div>
+                    </div>
+                    <div class="mf-ui-card">
+                      <p class="mf-ui-card-title">Initial Franchise Fee</p>
+                      <p class="mf-ui-card-meta">Franchise · Fees · Pre-Sign</p>
+                      <p class="mf-ui-card-summary">One-time upfront fee payable upon signing or opening, sometimes structured per property.</p>
+                      <div class="mf-ui-badges">
+                        <span class="mf-ui-badge mf-ui-badge--orange">Medium Risk</span>
+                        <span class="mf-ui-badge mf-ui-badge--accent">Neutral</span>
+                      </div>
+                    </div>
+                    <div class="mf-ui-card">
+                      <p class="mf-ui-card-title">Key Money</p>
+                      <p class="mf-ui-card-meta">Franchise · Incentives · Pre-Sign</p>
+                      <p class="mf-ui-card-summary">Cash or other upfront contribution from brand to owner to support conversion or signing.</p>
+                      <div class="mf-ui-badges">
+                        <span class="mf-ui-badge mf-ui-badge--green">Low Risk</span>
+                        <span class="mf-ui-badge mf-ui-badge--accent">Owner-friendly</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Commercial terms</p>
@@ -1127,6 +1938,26 @@
     return window.matchMedia("(max-width: 767px)").matches;
   };
 
+  function deferPanelImages(panel) {
+    if (!panel) return;
+    var imgs = panel.querySelectorAll("img.mf-feat-img[src]");
+    for (var i = 0; i < imgs.length; i++) {
+      if (!imgs[i].dataset.mfSrc) {
+        imgs[i].dataset.mfSrc = imgs[i].getAttribute("src");
+        imgs[i].removeAttribute("src");
+      }
+    }
+  }
+
+  function loadPanelImages(panel) {
+    if (!panel) return;
+    var imgs = panel.querySelectorAll("img.mf-feat-img[data-mf-src]");
+    for (var i = 0; i < imgs.length; i++) {
+      imgs[i].setAttribute("src", imgs[i].dataset.mfSrc);
+      delete imgs[i].dataset.mfSrc;
+    }
+  }
+
   function setActive(id, pin) {
     if (!id) return;
     if (pin) pinned = id;
@@ -1138,13 +1969,19 @@
       questions[i].setAttribute("aria-pressed", on ? "true" : "false");
     }
 
+    var activePanel = null;
     for (i = 0; i < panels.length; i++) {
       var match = panels[i].getAttribute("data-panel") === id;
       panels[i].classList.toggle("is-active", match);
-      if (match) panels[i].removeAttribute("hidden");
-      else panels[i].setAttribute("hidden", "");
+      if (match) {
+        activePanel = panels[i];
+        panels[i].removeAttribute("hidden");
+      } else {
+        panels[i].setAttribute("hidden", "");
+      }
     }
 
+    loadPanelImages(activePanel);
     placeMobilePanel(id);
     drawConnectors(id);
   }
@@ -1283,6 +2120,9 @@
   });
 
   pinned = "rebrand";
+  for (var p = 0; p < panels.length; p++) {
+    if (!panels[p].classList.contains("is-active")) deferPanelImages(panels[p]);
+  }
   setActive("rebrand", true);
   root.classList.add("mf-js-ready");
 
