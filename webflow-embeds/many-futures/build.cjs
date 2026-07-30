@@ -51,6 +51,8 @@ const FEATURE_FILES = [
   "brand-explorer-mobile.png",
   "operator-explorer-desktop.png",
   "operator-explorer-mobile.png",
+  "operator-track-record-desktop.png",
+  "operator-track-record-mobile.png",
   "fee-estimator-desktop.png",
   "fee-estimator-mobile.png",
   "radar-desktop.png",
@@ -120,7 +122,9 @@ const preview = previewShell
 
 fs.writeFileSync(path.join(dir, "preview.html"), preview);
 
+const readableSource = `<style>\n${css}\n</style>\n${markup}\n<script>\n${js}\n</script>`;
 const inlineKb = embed.length / 1024;
+const readableKb = readableSource.length / 1024;
 const cssKb = cssOut.length / 1024;
 const jsKb = jsOut.length / 1024;
 const markupKb = markupOut.length / 1024;
@@ -128,15 +132,17 @@ const loaderKb = loader.length / 1024;
 
 console.log("Wrote", out);
 console.log("Wrote preview.html and cdn-loader.html");
-console.log("Inline embed characters:", embed.length);
-console.log("Inline embed KB:", inlineKb.toFixed(1));
+console.log("Readable production source characters:", readableSource.length);
+console.log("Readable production source KB:", readableKb.toFixed(1));
+console.log("Minified inline Embed characters:", embed.length);
+console.log("Minified inline Embed KB:", inlineKb.toFixed(1));
 console.log("  CSS KB:", cssKb.toFixed(1));
 console.log("  JS KB:", jsKb.toFixed(1));
 console.log("  Markup KB:", markupKb.toFixed(1));
-console.log("CDN loader KB:", loaderKb.toFixed(1));
+console.log("CDN loader KB (backup only):", loaderKb.toFixed(1));
 console.log(
-  "Recommendation:",
-  inlineKb > 45
-    ? "Use CDN loader (inline exceeds typical Webflow embed comfort zone)."
-    : "Inline embed is within a comfortable range; CDN still preferred for asset updates."
+  "Phase C default:",
+  inlineKb <= 45
+    ? "Use full minified inline Embed (under 45 KB headroom target; Webflow ~50 KB limit)."
+    : "Inline exceeds 45 KB headroom — minify further or seek approval before CDN loader."
 );

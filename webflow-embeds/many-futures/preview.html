@@ -142,8 +142,9 @@
 #dealality-many-futures .mf-layout {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.22fr) minmax(0, 0.26fr) minmax(0, 0.52fr);
-  gap: 1rem 1.15rem;
+  /* Workspace dominates; hotel establishes context without competing */
+  grid-template-columns: minmax(0, 0.18fr) minmax(0, 0.24fr) minmax(0, 0.58fr);
+  gap: 1rem 1.1rem;
   align-items: start;
 }
 
@@ -199,7 +200,7 @@
 
 #dealality-many-futures .mf-hotel-media {
   position: relative;
-  aspect-ratio: 4/3;
+  aspect-ratio: 5/4;
   background: #0a1228;
 }
 
@@ -251,9 +252,10 @@
 
 #dealality-many-futures .mf-hotel-title {
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 0.98rem;
+  font-weight: 650;
   line-height: 1.25;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 #dealality-many-futures .mf-meta {
@@ -453,9 +455,26 @@
 
 #dealality-many-futures .mf-features {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 0.85rem;
   align-items: stretch;
+}
+
+/* Two-panel workspace: primary + one substantial support (no empty third slot) */
+#dealality-many-futures .mf-features--duo {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+}
+
+#dealality-many-futures .mf-features--duo .mf-feat-stack {
+  display: contents;
+}
+
+#dealality-many-futures .mf-features--duo .mf-feat--support {
+  min-height: 100%;
+}
+
+#dealality-many-futures .mf-features--duo .mf-feat--support .mf-feat-visual {
+  aspect-ratio: 16/9;
 }
 
 #dealality-many-futures .mf-feat-stack {
@@ -477,14 +496,19 @@
 }
 
 #dealality-many-futures .mf-feat--primary {
-  border-color: rgba(108, 114, 255, 0.28);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  border-color: rgba(108, 114, 255, 0.34);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
 }
 
 #dealality-many-futures .mf-feat-visual {
   position: relative;
   background: #0a1228;
   aspect-ratio: 16/9;
+}
+
+#dealality-many-futures .mf-feat--primary .mf-feat-visual {
+  aspect-ratio: 16/10.2;
+  min-height: 12.5rem;
 }
 
 #dealality-many-futures .mf-feat--support .mf-feat-visual {
@@ -831,7 +855,7 @@
         <p class="mf-outcome"><strong>Owner outcome</strong> Explore a broader set of credible brand paths before familiarity or early momentum begins defining the decision.</p>
       </section>
 
-      <!-- Q2 Operators — Submit Proposal / operator proposal collection not live; Deal Readiness substituted -->
+      <!-- Q2 Operators — Operator Track Record is the Proof & Track Record view inside Operator Explorer -->
       <section class="mf-panel" data-panel="operators" aria-label="Which operators genuinely fit this hotel?" hidden>
         <header class="mf-decision">
           <p class="mf-decision-label">Decision to evaluate</p>
@@ -848,7 +872,7 @@
               <p class="mf-feat-cat">Operator intelligence</p>
               <h4 class="mf-feat-name">Operator Explorer</h4>
               <p class="mf-feat-purpose"><strong>Purpose</strong> Compare operator capabilities and partnership models.</p>
-              <p class="mf-feat-benefit"><strong>Benefit</strong> Review experience, operating structure, asset focus, team, regional presence, brand relationships, and track record.</p>
+              <p class="mf-feat-benefit"><strong>Benefit</strong> Review experience, operating structure, asset focus, team, regional presence, and brand relationships.</p>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -866,14 +890,14 @@
             </article>
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/deal-readiness-desktop.png" alt="Deal Readiness Snapshot: readiness signals and information gaps" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
-                <img src="assets/features/deal-readiness-mobile.png" alt="" width="780" height="640" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
+                <img src="assets/features/operator-track-record-desktop.png" alt="Operator Explorer Proof and Track Record: experience metrics and case studies" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/operator-track-record-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
-                <p class="mf-feat-cat">Preparation</p>
-                <h4 class="mf-feat-name">Deal Readiness</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Assess whether the opportunity is prepared for engagement.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Surface readiness signals and information gaps before inviting operators into the process.</p>
+                <p class="mf-feat-cat">Operator Explorer</p>
+                <h4 class="mf-feat-name">Operator Track Record</h4>
+                <p class="mf-feat-purpose"><strong>Purpose</strong> Review relevant experience and operating evidence.</p>
+                <p class="mf-feat-benefit"><strong>Benefit</strong> Assess hotel types, markets, brand relationships, references, and case studies from the Proof &amp; Track Record view.</p>
               </div>
             </article>
           </div>
@@ -931,7 +955,7 @@
         <p class="mf-outcome"><strong>Owner outcome</strong> Evaluate whether affiliation creates enough strategic and commercial value to justify its costs, requirements, and reduced flexibility.</p>
       </section>
 
-      <!-- Q4 Residences -->
+      <!-- Q4 Residences — Submit Proposal omitted: brand form has no residential/mixed-use fields -->
       <section class="mf-panel" data-panel="residences" aria-label="Could branded residences strengthen the project?" hidden>
         <header class="mf-decision">
           <p class="mf-decision-label">Decision to evaluate</p>
@@ -966,19 +990,19 @@
             </article>
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/submit-proposal-desktop.png" alt="Submit Proposal: brand commercial terms form" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
-                <img src="assets/features/submit-proposal-mobile.png" alt="" width="780" height="668" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
+                <img src="assets/features/radar-desktop.png" alt="Dealality Radar: market and location context" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/radar-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
-                <p class="mf-feat-cat">Brand Deal Request</p>
-                <h4 class="mf-feat-name">Submit Proposal</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Capture relevant project and partnership experience consistently.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Ask selected brands comparable questions about experience, requirements, economics, and proposed roles through the live brand proposal form.</p>
+                <p class="mf-feat-cat">Market context</p>
+                <h4 class="mf-feat-name">Dealality Radar</h4>
+                <p class="mf-feat-purpose"><strong>Purpose</strong> Understand market, location, and competitive context around the project.</p>
+                <p class="mf-feat-benefit"><strong>Benefit</strong> Review nearby supply, demand drivers, brand presence, and strategic positioning signals that inform whether a residential component merits deeper evaluation.</p>
               </div>
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><strong>Owner outcome</strong> Assess whether residences support the wider asset strategy before committing to a brand, operator, or development structure.</p>
+        <p class="mf-outcome"><strong>Owner outcome</strong> Understand whether a residential component merits deeper evaluation as part of the wider asset strategy.</p>
       </section>
 
       <!-- Q5 Proposals -->
@@ -1004,14 +1028,14 @@
           <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/submit-proposal-desktop.png" alt="Submit Proposal form" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/submit-proposal-desktop.png" alt="Submit Proposal: Brand Deal Request commercial terms form" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
                 <img src="assets/features/submit-proposal-mobile.png" alt="" width="780" height="668" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
-                <p class="mf-feat-cat">Brand Deal Request</p>
+                <p class="mf-feat-cat">Brand Response Workflow</p>
                 <h4 class="mf-feat-name">Submit Proposal</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Turn differently presented proposals into more consistent information.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Capture terms, commitments, requirements, supporting evidence, and missing information in a comparable structure.</p>
+                <p class="mf-feat-purpose"><strong>Purpose</strong> Capture brand proposal information through a structured Deal Request response.</p>
+                <p class="mf-feat-benefit"><strong>Benefit</strong> Bring proposal terms and supporting information into the Dealality process in a more consistent format.</p>
               </div>
             </article>
             <article class="mf-feat mf-feat--support">

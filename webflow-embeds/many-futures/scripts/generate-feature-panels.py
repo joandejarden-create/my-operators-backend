@@ -281,6 +281,23 @@ CROP_SPECS = {
             "height_fill": 0.90,
         },
     },
+    # Operator Track Record — Proof & Track Record tab inside Operator Explorer
+    "operator-track-record": {
+        "src": ("operator-track-record.png",),
+        "desktop": {
+            # Metrics + case studies under active Proof & Track Record tab
+            "crop": (0, 250, 1024, 670),
+            "focus": (8, 8, 1008, 400),
+            "size": DESKTOP,
+            "height_fill": 0.90,
+        },
+        "mobile": {
+            "crop": (0, 280, 1024, 670),
+            "focus": (6, 6, 1008, 360),
+            "size": (MOBILE_W, MOBILE_H),
+            "height_fill": 0.92,
+        },
+    },
     # Fee Estimator — results cards
     "fee-estimator": {
         "src": ("fee-estimator.png",),
@@ -705,8 +722,12 @@ def make_financial_term_library(desktop: bool) -> Image.Image:
 
 
 def make_submit_proposal(desktop: bool) -> Image.Image:
-    """Submit Proposal form — Agreement Type, Term & Renewal, Royalty %, Marketing %,
-    Initial Franchise Fee, Key Money (demo fictional numbers OK)."""
+    """Submit Proposal — verified Brand Deal Request fields only.
+
+    Confirmed live labels: Agreement Type, Term & Renewal (Term Quantity/Length,
+    Renewal Quantity/Length), Royalty %, Marketing %, Initial Franchise Fee ($),
+    Key Money Amount ($). Demo values are illustrative placeholders.
+    """
     if desktop:
         w, h = DESKTOP
         pad = 22
@@ -718,10 +739,12 @@ def make_submit_proposal(desktop: bool) -> Image.Image:
     y = draw_label(draw, pad, y)
 
     draw.text((pad, y), "Submit Proposal", font=font(24 if desktop else 26, True), fill=TEXT)
-    y += 28
+    y += 26
+    draw.text((pad, y), "BRAND RESPONSE WORKFLOW", font=font(12, True), fill=ACCENT_SOFT)
+    y += 20
     draw.text(
         (pad, y),
-        "Aeropuerto Cancún Select-Service Hotel · Franchise Only",
+        "Brand Deal Request · commercial terms response",
         font=font(13),
         fill=MUTED,
     )
@@ -734,7 +757,6 @@ def make_submit_proposal(desktop: bool) -> Image.Image:
         return fy + 16 + fh + 14
 
     if desktop:
-        # Two-column form
         col_w = (w - pad * 2 - 16) // 2
         left_x, right_x = pad, pad + col_w + 16
         ly = ry = y
@@ -742,23 +764,23 @@ def make_submit_proposal(desktop: bool) -> Image.Image:
         ly = field_row("Agreement Type", "Franchise", left_x, ly, col_w)
         draw.text((left_x, ly), "TERM & RENEWAL", font=font(12, True), fill=ACCENT_SOFT)
         ly += 22
-        ly = field_row("Initial Term", "1 × 20 Years", left_x, ly, col_w)
-        ly = field_row("Renewal Options", "2 × 5 Years", left_x, ly, col_w)
+        ly = field_row("Term Quantity / Length", "1 × 20 Years", left_x, ly, col_w)
+        ly = field_row("Renewal Quantity / Length", "2 × 5 Years", left_x, ly, col_w)
 
-        ry = field_row("Royalty %", "5.0% of Rooms Revenue", right_x, ry, col_w)
-        ry = field_row("Marketing %", "2.5% of Gross Revenue", right_x, ry, col_w)
-        ry = field_row("Initial Franchise Fee", "$75,000 — Per Property", right_x, ry, col_w)
-        ry = field_row("Key Money", "$250,000 — Staggered", right_x, ry, col_w)
+        ry = field_row("Royalty %", "5.0 · Rooms Revenue", right_x, ry, col_w)
+        ry = field_row("Marketing %", "2.5 · Gross Revenue", right_x, ry, col_w)
+        ry = field_row("Initial Franchise Fee ($)", "$75,000", right_x, ry, col_w)
+        ry = field_row("Key Money Amount ($)", "$250,000", right_x, ry, col_w)
     else:
         y = field_row("Agreement Type", "Franchise", pad, y, w - pad * 2)
         draw.text((pad, y), "TERM & RENEWAL", font=font(13, True), fill=ACCENT_SOFT)
         y += 24
-        y = field_row("Initial Term", "1 × 20 Years", pad, y, w - pad * 2)
-        y = field_row("Renewal Options", "2 × 5 Years", pad, y, w - pad * 2)
-        y = field_row("Royalty %", "5.0% of Rooms Revenue", pad, y, w - pad * 2)
-        y = field_row("Marketing %", "2.5% of Gross Revenue", pad, y, w - pad * 2)
-        y = field_row("Initial Franchise Fee", "$75,000 — Per Property", pad, y, w - pad * 2)
-        y = field_row("Key Money", "$250,000 — Staggered", pad, y, w - pad * 2)
+        y = field_row("Term Quantity / Length", "1 × 20 Years", pad, y, w - pad * 2)
+        y = field_row("Renewal Quantity / Length", "2 × 5 Years", pad, y, w - pad * 2)
+        y = field_row("Royalty %", "5.0 · Rooms Revenue", pad, y, w - pad * 2)
+        y = field_row("Marketing %", "2.5 · Gross Revenue", pad, y, w - pad * 2)
+        y = field_row("Initial Franchise Fee ($)", "$75,000", pad, y, w - pad * 2)
+        y = field_row("Key Money Amount ($)", "$250,000", pad, y, w - pad * 2)
 
     if not desktop:
         return finalize_mobile(img, min_h=520)

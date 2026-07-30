@@ -43,8 +43,9 @@
 #dealality-many-futures .mf-layout {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.22fr) minmax(0, 0.26fr) minmax(0, 0.52fr);
-  gap: 1rem 1.15rem;
+  /* Workspace dominates; hotel establishes context without competing */
+  grid-template-columns: minmax(0, 0.18fr) minmax(0, 0.24fr) minmax(0, 0.58fr);
+  gap: 1rem 1.1rem;
   align-items: start;
 }
 
@@ -100,7 +101,7 @@
 
 #dealality-many-futures .mf-hotel-media {
   position: relative;
-  aspect-ratio: 4/3;
+  aspect-ratio: 5/4;
   background: #0a1228;
 }
 
@@ -152,9 +153,10 @@
 
 #dealality-many-futures .mf-hotel-title {
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 0.98rem;
+  font-weight: 650;
   line-height: 1.25;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 #dealality-many-futures .mf-meta {
@@ -354,9 +356,26 @@
 
 #dealality-many-futures .mf-features {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 0.85rem;
   align-items: stretch;
+}
+
+/* Two-panel workspace: primary + one substantial support (no empty third slot) */
+#dealality-many-futures .mf-features--duo {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+}
+
+#dealality-many-futures .mf-features--duo .mf-feat-stack {
+  display: contents;
+}
+
+#dealality-many-futures .mf-features--duo .mf-feat--support {
+  min-height: 100%;
+}
+
+#dealality-many-futures .mf-features--duo .mf-feat--support .mf-feat-visual {
+  aspect-ratio: 16/9;
 }
 
 #dealality-many-futures .mf-feat-stack {
@@ -378,14 +397,19 @@
 }
 
 #dealality-many-futures .mf-feat--primary {
-  border-color: rgba(108, 114, 255, 0.28);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  border-color: rgba(108, 114, 255, 0.34);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
 }
 
 #dealality-many-futures .mf-feat-visual {
   position: relative;
   background: #0a1228;
   aspect-ratio: 16/9;
+}
+
+#dealality-many-futures .mf-feat--primary .mf-feat-visual {
+  aspect-ratio: 16/10.2;
+  min-height: 12.5rem;
 }
 
 #dealality-many-futures .mf-feat--support .mf-feat-visual {
