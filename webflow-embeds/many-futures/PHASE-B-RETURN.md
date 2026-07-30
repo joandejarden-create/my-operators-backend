@@ -2,7 +2,10 @@
 
 **Status:** Local prototype corrected for visual review. Webflow not modified. Not published.
 
-**See also:** [`PHASE-B-VISUAL-REVIEW.md`](./PHASE-B-VISUAL-REVIEW.md) — primary screenshots, contact sheets, size counts, hierarchy check.
+**See also:**
+- [`PHASE-B-FINAL-TRUTH-AUDIT.md`](./PHASE-B-FINAL-TRUTH-AUDIT.md) — final truth audit, reconstruction docs, hotel candidates
+- [`visual-review/`](./visual-review/) — reviewable screenshot package in-repo
+- [`PHASE-B-VISUAL-REVIEW.md`](./PHASE-B-VISUAL-REVIEW.md) — prior visual-review notes
 
 **Branch:** `cursor/many-futures-phase-b-38e7`  
 **Local preview:** `webflow-embeds/many-futures/preview.html`
