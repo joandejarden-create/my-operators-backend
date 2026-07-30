@@ -116,7 +116,8 @@
   --mf-muted: rgba(255, 255, 255, 0.62);
   --mf-muted-2: rgba(255, 255, 255, 0.45);
   --mf-radius: 16px;
-  --mf-max: 1120px;
+  /* ~10% wider interactive composition at desktop (intro stays site-native). */
+  --mf-max: 1232px;
   --mf-font: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
   --mf-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --mf-dur: 420ms;
@@ -166,11 +167,11 @@
 }
 
 #dealality-many-futures .mf-connectors path.is-active {
-  stroke: var(--mf-accent);
+  stroke: var(--mf-accent-soft);
   stroke-opacity: 1;
   stroke-dasharray: 1 0;
-  stroke-width: 2.25;
-  filter: drop-shadow(0 0 4px rgba(108, 114, 255, 0.35));
+  stroke-width: 2.75;
+  filter: drop-shadow(0 0 6px rgba(108, 114, 255, 0.5));
 }
 
 #dealality-many-futures .mf-connectors path.is-drawing {
@@ -191,8 +192,10 @@
 }
 
 #dealality-many-futures .mf-connectors .mf-node.is-active {
-  fill: var(--mf-accent);
-  stroke: var(--mf-accent-soft);
+  fill: var(--mf-accent-soft);
+  stroke: #cfd3ff;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 5px rgba(139, 144, 255, 0.55));
 }
 
 #dealality-many-futures .mf-hotel {
@@ -215,7 +218,7 @@
 
 #dealality-many-futures .mf-hotel-media {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4/3;
   overflow: hidden;
   background: #0a1228;
 }
@@ -529,14 +532,14 @@
 
 #dealality-many-futures .mf-screens {
   position: relative;
-  /* Shorter frame matches curated metric-focused crops (soft focus). */
-  aspect-ratio: 16 / 7.2;
+  /* Match framed desktop crops (~1280×520) so UI fills most of the frame. */
+  aspect-ratio: 16/6.5;
   background: #0a1228;
 }
 
 #dealality-many-futures .mf-screens--mobile {
-  /* Wide metric strips; keep preview short on mobile. */
-  aspect-ratio: 16 / 6.2;
+  /* Content-tight marketing cards (~780×560–700). */
+  aspect-ratio: 5/4;
 }
 
 #dealality-many-futures .mf-screen {
@@ -827,7 +830,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen" data-preview-id="rebrand">
-                <img data-mf-asset="rebrand-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecf433d91a90f75bfeb_mf-rebrand-mobile.png" alt="Curated Brand Explorer crop focusing on brand positioning" width="780" height="272" loading="lazy" decoding="async"/>
+                <img data-mf-asset="rebrand-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc33613510ee4c75caf80_mf-v3-rebrand-mobile.png" alt="Brand Explorer presentation: brand positioning and audience" width="780" height="620" loading="lazy" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -859,7 +862,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen is-active" data-preview-id="new-operator">
-                <img data-mf-asset="new-operator-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecfbcdb4eea68e0a716_mf-new-operator-mobile.png" alt="Curated Operator Explorer crop focusing on decision metrics" width="780" height="118" loading="eager" decoding="async"/>
+                <img data-mf-asset="new-operator-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc336fad2c4d6800459d6_mf-v3-new-operator-mobile.png" alt="Operator Explorer presentation: Cenote Azul Operadores identity and key operating metrics" width="780" height="620" loading="eager" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -891,7 +894,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen" data-preview-id="soft-brand">
-                <img data-mf-asset="soft-brand-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f145eaef921ad0f3c41_mf-soft-brand-mobile.png" alt="Curated Fee Estimator crop focusing on affiliation fee results" width="780" height="232" loading="lazy" decoding="async"/>
+                <img data-mf-asset="soft-brand-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc351625bda5699df9c25_mf-v3-soft-brand-mobile.png" alt="Curated Fee Estimator crop focusing on affiliation fee results" width="780" height="620" loading="lazy" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -923,7 +926,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen" data-preview-id="independent">
-                <img data-mf-asset="independent-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f149e762a2c93e35d15_mf-independent-mobile.png" alt="Curated Radar crop highlighting independent market share" width="510" height="290" loading="lazy" decoding="async"/>
+                <img data-mf-asset="independent-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc351a7054be2bdf7b4d4_mf-v3-independent-mobile.png" alt="Curated Radar crop highlighting independent market share" width="780" height="620" loading="lazy" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -955,7 +958,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen" data-preview-id="branded-residences">
-                <img data-mf-asset="branded-residences-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f150692bac596137240_mf-branded-residences-mobile.png" alt="Curated Opportunity Review crop focusing on deal brief summary" width="780" height="298" loading="lazy" decoding="async"/>
+                <img data-mf-asset="branded-residences-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc3528b323476364a4f35_mf-v3-branded-residences-mobile.png" alt="Curated Opportunity Review crop focusing on deal brief summary" width="780" height="620" loading="lazy" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -978,19 +981,19 @@
         </div>
         <div class="mf-screens mf-screens--desktop">
           <div class="mf-screen" data-preview-id="rebrand">
-            <img data-mf-asset="rebrand" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecf1bd127b9b4f752f2_mf-rebrand-desktop.png" alt="Curated Brand Explorer crop focusing on brand positioning" width="1280" height="600" loading="lazy" decoding="async"/>
+            <img data-mf-asset="rebrand" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc336fad2c4d6800459eb_mf-v3-rebrand-desktop.png" alt="Brand Explorer presentation: brand positioning and audience" width="1280" height="520" loading="lazy" decoding="async"/>
           </div>
           <div class="mf-screen is-active" data-preview-id="new-operator">
-            <img data-mf-asset="new-operator" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecfa88451795cb12191_mf-new-operator-desktop.png" alt="Curated Operator Explorer crop focusing on decision metrics" width="1280" height="294" loading="eager" decoding="async"/>
+            <img data-mf-asset="new-operator" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc336e234cfde45f7e884_mf-v3-new-operator-desktop.png" alt="Operator Explorer presentation: Cenote Azul Operadores identity and key operating metrics" width="1280" height="520" loading="eager" decoding="async"/>
           </div>
           <div class="mf-screen" data-preview-id="soft-brand">
-            <img data-mf-asset="soft-brand" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f148786858d5f89eceb_mf-soft-brand-desktop.png" alt="Curated Fee Estimator crop focusing on affiliation fee results" width="1280" height="600" loading="lazy" decoding="async"/>
+            <img data-mf-asset="soft-brand" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc336fad2c4d680045a06_mf-v3-soft-brand-desktop.png" alt="Curated Fee Estimator crop focusing on affiliation fee results" width="1280" height="520" loading="lazy" decoding="async"/>
           </div>
           <div class="mf-screen" data-preview-id="independent">
-            <img data-mf-asset="independent" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f145eaef921ad0f3c73_mf-independent-desktop.png" alt="Curated Radar crop highlighting independent market share" width="1280" height="600" loading="lazy" decoding="async"/>
+            <img data-mf-asset="independent" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc351625bda5699df9ccc_mf-v3-independent-desktop.png" alt="Curated Radar crop highlighting independent market share" width="1280" height="520" loading="lazy" decoding="async"/>
           </div>
           <div class="mf-screen" data-preview-id="branded-residences">
-            <img data-mf-asset="branded-residences" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f148786858d5f89ed1e_mf-branded-residences-desktop.png" alt="Curated Opportunity Review crop focusing on deal brief summary" width="1280" height="575" loading="lazy" decoding="async"/>
+            <img data-mf-asset="branded-residences" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bc351a7054be2bdf7b509_mf-v3-branded-residences-desktop.png" alt="Curated Opportunity Review crop focusing on deal brief summary" width="1280" height="520" loading="lazy" decoding="async"/>
           </div>
         </div>
         <div class="mf-preview-foot" data-desktop-foot>

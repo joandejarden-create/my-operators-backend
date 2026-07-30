@@ -11,7 +11,8 @@
   --mf-muted: rgba(255, 255, 255, 0.62);
   --mf-muted-2: rgba(255, 255, 255, 0.45);
   --mf-radius: 16px;
-  --mf-max: 1120px;
+  /* ~10% wider interactive composition at desktop (intro stays site-native). */
+  --mf-max: 1232px;
   --mf-font: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
   --mf-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --mf-dur: 420ms;
@@ -61,11 +62,11 @@
 }
 
 #dealality-many-futures .mf-connectors path.is-active {
-  stroke: var(--mf-accent);
+  stroke: var(--mf-accent-soft);
   stroke-opacity: 1;
   stroke-dasharray: 1 0;
-  stroke-width: 2.25;
-  filter: drop-shadow(0 0 4px rgba(108, 114, 255, 0.35));
+  stroke-width: 2.75;
+  filter: drop-shadow(0 0 6px rgba(108, 114, 255, 0.5));
 }
 
 #dealality-many-futures .mf-connectors path.is-drawing {
@@ -86,8 +87,10 @@
 }
 
 #dealality-many-futures .mf-connectors .mf-node.is-active {
-  fill: var(--mf-accent);
-  stroke: var(--mf-accent-soft);
+  fill: var(--mf-accent-soft);
+  stroke: #cfd3ff;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 5px rgba(139, 144, 255, 0.55));
 }
 
 #dealality-many-futures .mf-hotel {
@@ -110,7 +113,7 @@
 
 #dealality-many-futures .mf-hotel-media {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4/3;
   overflow: hidden;
   background: #0a1228;
 }
@@ -424,14 +427,14 @@
 
 #dealality-many-futures .mf-screens {
   position: relative;
-  /* Shorter frame matches curated metric-focused crops (soft focus). */
-  aspect-ratio: 16 / 7.2;
+  /* Match framed desktop crops (~1280×520) so UI fills most of the frame. */
+  aspect-ratio: 16/6.5;
   background: #0a1228;
 }
 
 #dealality-many-futures .mf-screens--mobile {
-  /* Wide metric strips; keep preview short on mobile. */
-  aspect-ratio: 16 / 6.2;
+  /* Content-tight marketing cards (~780×560–700). */
+  aspect-ratio: 5/4;
 }
 
 #dealality-many-futures .mf-screen {

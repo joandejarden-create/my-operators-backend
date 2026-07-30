@@ -39,19 +39,19 @@ function minifyMarkup(input) {
 }
 
 const CDN = "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a";
-/* Phase 3: curated crops + temporary hotel uploaded to Webflow CDN. */
+/* Pre-publish: v3 framed desktop crops + content-tight mobile presentations + temporary hotel. */
 const ASSETS = {
   "assets/hotel-temp.jpg": `${CDN}/6a6b9ecfbcdb4eea68e0a6f3_mf-hotel-temp.jpg`,
-  "assets/crops/rebrand-desktop.png": `${CDN}/6a6b9ecf1bd127b9b4f752f2_mf-rebrand-desktop.png`,
-  "assets/crops/rebrand-mobile.png": `${CDN}/6a6b9ecf433d91a90f75bfeb_mf-rebrand-mobile.png`,
-  "assets/crops/new-operator-desktop.png": `${CDN}/6a6b9ecfa88451795cb12191_mf-new-operator-desktop.png`,
-  "assets/crops/new-operator-mobile.png": `${CDN}/6a6b9ecfbcdb4eea68e0a716_mf-new-operator-mobile.png`,
-  "assets/crops/soft-brand-desktop.png": `${CDN}/6a6b9f148786858d5f89eceb_mf-soft-brand-desktop.png`,
-  "assets/crops/soft-brand-mobile.png": `${CDN}/6a6b9f145eaef921ad0f3c41_mf-soft-brand-mobile.png`,
-  "assets/crops/independent-desktop.png": `${CDN}/6a6b9f145eaef921ad0f3c73_mf-independent-desktop.png`,
-  "assets/crops/independent-mobile.png": `${CDN}/6a6b9f149e762a2c93e35d15_mf-independent-mobile.png`,
-  "assets/crops/branded-residences-desktop.png": `${CDN}/6a6b9f148786858d5f89ed1e_mf-branded-residences-desktop.png`,
-  "assets/crops/branded-residences-mobile.png": `${CDN}/6a6b9f150692bac596137240_mf-branded-residences-mobile.png`,
+  "assets/crops/rebrand-desktop.png": `${CDN}/6a6bc336fad2c4d6800459eb_mf-v3-rebrand-desktop.png`,
+  "assets/crops/rebrand-mobile.png": `${CDN}/6a6bc33613510ee4c75caf80_mf-v3-rebrand-mobile.png`,
+  "assets/crops/new-operator-desktop.png": `${CDN}/6a6bc336e234cfde45f7e884_mf-v3-new-operator-desktop.png`,
+  "assets/crops/new-operator-mobile.png": `${CDN}/6a6bc336fad2c4d6800459d6_mf-v3-new-operator-mobile.png`,
+  "assets/crops/soft-brand-desktop.png": `${CDN}/6a6bc336fad2c4d680045a06_mf-v3-soft-brand-desktop.png`,
+  "assets/crops/soft-brand-mobile.png": `${CDN}/6a6bc351625bda5699df9c25_mf-v3-soft-brand-mobile.png`,
+  "assets/crops/independent-desktop.png": `${CDN}/6a6bc351625bda5699df9ccc_mf-v3-independent-desktop.png`,
+  "assets/crops/independent-mobile.png": `${CDN}/6a6bc351a7054be2bdf7b4d4_mf-v3-independent-mobile.png`,
+  "assets/crops/branded-residences-desktop.png": `${CDN}/6a6bc351a7054be2bdf7b509_mf-v3-branded-residences-desktop.png`,
+  "assets/crops/branded-residences-mobile.png": `${CDN}/6a6bc3528b323476364a4f35_mf-v3-branded-residences-mobile.png`,
 };
 
 for (const [from, to] of Object.entries(ASSETS)) {
@@ -87,4 +87,4 @@ fs.writeFileSync(path.join(dir, "preview.html"), preview);
 console.log("Wrote", out);
 console.log("Production character count:", embed.length);
 console.log("Approx KB:", (embed.length / 1024).toFixed(1));
-console.log("CDN assets wired for Phase 3:", Object.keys(ASSETS).length);
+console.log("CDN assets wired for pre-publish:", Object.keys(ASSETS).length);
