@@ -48,11 +48,15 @@
       screen.classList.toggle("is-active", screen.getAttribute("data-preview-id") === id);
     }
 
-    var captions = root.querySelectorAll(".mf-preview--desktop [data-caption-for]");
-    for (i = 0; i < captions.length; i++) {
-      var cap = captions[i];
-      var showCap = cap.getAttribute("data-caption-for") === id;
-      cap.hidden = !showCap;
+    var activeBtn = root.querySelector('[data-future-id="' + id + '"]');
+    var deskFoot = root.querySelector("[data-desktop-foot]");
+    if (activeBtn && deskFoot) {
+      var titleEl = deskFoot.querySelector(".mf-foot-title");
+      var descEl = deskFoot.querySelector(".mf-foot-desc");
+      var capsEl = deskFoot.querySelector(".mf-foot-caps");
+      if (titleEl) titleEl.textContent = activeBtn.getAttribute("data-path-title") || "";
+      if (descEl) descEl.textContent = activeBtn.getAttribute("data-path-desc") || "";
+      if (capsEl) capsEl.textContent = activeBtn.getAttribute("data-path-caps") || "";
     }
 
     // Mobile: preview panels live inside each future group

@@ -1,49 +1,51 @@
 # Many Futures — local prototype
 
-Source of truth for the Dealality Old Home interactive section.
+Interactive “One Hotel. Many Futures.” section for Dealality Old Home (`/old-home`), above `#platform-features`.
 
-## Files
+## Phase status
 
-| File | Purpose |
-|------|---------|
-| `markup.html` | Semantic HTML fragment |
-| `many-futures.css` | Scoped CSS (`#dealality-many-futures` only) |
-| `many-futures.js` | Isolated interaction controller |
-| `preview.html` | Self-contained local preview (intro + embed) |
-| `index.html` | Dev harness that loads split files |
-| `build.cjs` | Combines into `../many-futures-section.html` |
-| `assets/` | Local images for preview |
-| `screenshots/` | Phase 2 breakpoint captures |
+| Phase | Status |
+|---|---|
+| 1 Audit | Complete |
+| 2 Local prototype | Complete |
+| **2.5 Refinement** | **Ready for review** — see `PHASE-2.5-REVIEW.md` |
+| 3 Webflow insert | Blocked until 2.5 approval |
+| 4 Publish QA | Not started |
 
-## Asset URL configuration points
-
-Replace these `data-mf-asset` image `src` values (in `markup.html`, then rebuild):
-
-| `data-mf-asset` | Current Phase 2 source | Production intent |
-|-----------------|------------------------|------------------|
-| `hotel` | `assets/hotel-temp.jpg` (temporary Unsplash) | Approved Webflow Asset URL |
-| `rebrand` | Brand Explorer CDN / local PNG | Existing CDN asset |
-| `new-operator` | Operator Explorer CDN / local PNG | Existing CDN asset |
-| `soft-brand` | Fee Estimator CDN / local PNG | Existing CDN asset |
-| `independent` | Radar CDN / local PNG | Existing CDN asset |
-| `branded-residences` | Opportunity Review CDN / local PNG | Existing CDN asset |
-
-Production CDN bases (already wired by `build.cjs` for product shots):
+## Source layout
 
 ```
-https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/
+webflow-embeds/many-futures/
+  markup.html          # Embed markup (readable)
+  many-futures.css     # Scoped CSS
+  many-futures.js      # Interaction
+  index.html           # Dev shell (fetch markup)
+  preview.html         # Inlined local preview
+  preview-eyebrow-b.html
+  build.cjs            # Minified production embed
+  PHASE-2.5-REVIEW.md  # Deliverables + audits
+  assets/              # Hotel temp + source screens + crops/
+  screenshots/         # Breakpoint captures
+  scripts/generate-crops.py
+webflow-embeds/many-futures-section.html  # Production embed (~33.5k chars)
 ```
 
-## Preview
+## Commands
 
 ```bash
-cd webflow-embeds/many-futures
-python3 -m http.server 8765
+# Local preview
+python3 -m http.server 8765 --bind 127.0.0.1
 # open http://127.0.0.1:8765/preview.html
-node build.cjs   # refreshes ../many-futures-section.html
+
+# Rebuild production embed
+node build.cjs
+
+# Regenerate curated crops
+python3 scripts/generate-crops.py
 ```
 
-## Notes
+## Asset notes
 
-- Do not insert into Webflow until Phase 3 approval.
-- Hotel image is temporary and must be approved/replaced before Phase 3.
+- Curated crops are presentation frames from real Dealality screens — not invented dashboards.
+- Hotel image is temporary and marked in UI; proposed final is `assets/hotel-proposed-final.jpg`.
+- Phase 3 must upload crops + approved hotel to Webflow CDN and update `build.cjs` asset map.

@@ -1,53 +1,92 @@
 #!/usr/bin/env node
 /**
  * Combines markup + CSS + JS into a single Webflow Code Embed snippet.
- * Local relative asset paths are rewritten to production CDN URLs.
+ * Production output is minified. Source files stay readable.
  */
 const fs = require("fs");
 const path = require("path");
 
 const dir = __dirname;
-const css = fs.readFileSync(path.join(dir, "many-futures.css"), "utf8");
-const js = fs.readFileSync(path.join(dir, "many-futures.js"), "utf8");
+let css = fs.readFileSync(path.join(dir, "many-futures.css"), "utf8");
+let js = fs.readFileSync(path.join(dir, "many-futures.js"), "utf8");
 let markup = fs.readFileSync(path.join(dir, "markup.html"), "utf8");
 
+function minifyCss(input) {
+  return input
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s*([{}:;,>~+])\s*/g, "$1")
+    .replace(/;}/g, "}")
+    .trim();
+}
+
+function minifyJs(input) {
+  return input
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/(^|[^:])\/\/.*$/gm, "$1")
+    .replace(/\s+/g, " ")
+    .replace(/\s*([{}();,:?=+\-*/<>!&|])\s*/g, "$1")
+    .replace(/;}/g, "}")
+    .trim();
+}
+
+function minifyMarkup(input) {
+  return input
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/>\s+</g, "><")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 const CDN = "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a";
+/* Phase 2.5: curated crops stay local until Phase 3 asset upload.
+   Hotel remains temporary local until approved. Full-screen CDN assets
+   are retained as fallback references only. */
 const ASSETS = {
-  "assets/hotel-temp.jpg":
-    /* Phase 2 temporary — replace before Phase 3 with approved Webflow Asset URL */
-    "assets/hotel-temp.jpg",
-  "assets/brand-explorer.png":
-    `${CDN}/6a6b68f279195823136433b7_dealality-old-home-feature-brand-explorer.v20260730l.png`,
-  "assets/operator-explorer.png":
-    `${CDN}/6a6b650591a1d82d913e3ea1_dealality-old-home-feature-operator-explorer.v20260730i.png`,
-  "assets/fee-estimator.png":
-    `${CDN}/6a6b368cc1507579a4d6b3b6_dealality-old-home-feature-fee-estimator.v20260730d.png`,
-  "assets/radar.png":
-    `${CDN}/6a6b368b0b3eb941d61d056d_dealality-old-home-feature-radar.v20260730d.png`,
-  "assets/opportunity-review.png":
-    `${CDN}/6a6b66e3b2a036492744c65a_dealality-old-home-feature-opportunity-review.v20260730k.png`,
+  "assets/hotel-temp.jpg": "assets/hotel-temp.jpg",
+  "assets/crops/rebrand-desktop.png": "assets/crops/rebrand-desktop.png",
+  "assets/crops/rebrand-mobile.png": "assets/crops/rebrand-mobile.png",
+  "assets/crops/new-operator-desktop.png": "assets/crops/new-operator-desktop.png",
+  "assets/crops/new-operator-mobile.png": "assets/crops/new-operator-mobile.png",
+  "assets/crops/soft-brand-desktop.png": "assets/crops/soft-brand-desktop.png",
+  "assets/crops/soft-brand-mobile.png": "assets/crops/soft-brand-mobile.png",
+  "assets/crops/independent-desktop.png": "assets/crops/independent-desktop.png",
+  "assets/crops/independent-mobile.png": "assets/crops/independent-mobile.png",
+  "assets/crops/branded-residences-desktop.png": "assets/crops/branded-residences-desktop.png",
+  "assets/crops/branded-residences-mobile.png": "assets/crops/branded-residences-mobile.png",
 };
 
 for (const [from, to] of Object.entries(ASSETS)) {
   markup = markup.split(from).join(to);
 }
 
-const embed = `<!-- Dealality Many Futures Embed
-  Source of truth: webflow-embeds/many-futures/
-  Combined: webflow-embeds/many-futures-section.html
-  Asset replace points: img[data-mf-asset="hotel|rebrand|new-operator|soft-brand|independent|branded-residences"]
--->
-<style>
-${css}
-</style>
-${markup}
-<script>
-${js}
-</script>
-`;
+const cssOut = minifyCss(css);
+const jsOut = minifyJs(js);
+const markupOut = minifyMarkup(markup);
+
+const embed = `<style>${cssOut}</style>${markupOut}<script>${jsOut}</script>`;
 
 const out = path.join(dir, "..", "many-futures-section.html");
 fs.writeFileSync(out, embed);
+
+const previewShell = fs.readFileSync(path.join(dir, "index.html"), "utf8");
+const preview = previewShell
+  .replace(
+    /<!-- MARKUP_START -->[\s\S]*?(?=<\/div>\s*<\/div>\s*<\/section>)/,
+    markup + "\n        "
+  )
+  .replace(
+    /<link rel="stylesheet" href="many-futures\.css" \/>/,
+    `<style>\n${css}\n</style>`
+  )
+  .replace(
+    /<script>[\s\S]*?fetch\("markup\.html"\)[\s\S]*?<\/script>/,
+    `<script>\n${js}\n</script>`
+  );
+
+fs.writeFileSync(path.join(dir, "preview.html"), preview);
+
 console.log("Wrote", out);
-console.log("Character count:", embed.length);
+console.log("Production character count:", embed.length);
 console.log("Approx KB:", (embed.length / 1024).toFixed(1));
+console.log("CDN note: curated crops remain local until Phase 3 upload. Ref:", CDN);
