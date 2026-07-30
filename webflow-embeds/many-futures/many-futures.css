@@ -1,7 +1,8 @@
-/* Many Futures — scoped to #dealality-many-futures only */
+/* Many Futures Phase B — scoped to #dealality-many-futures only */
 #dealality-many-futures {
   --mf-bg: #080f25;
   --mf-panel: #111b3a;
+  --mf-panel-2: #0d1630;
   --mf-border: rgba(255, 255, 255, 0.1);
   --mf-border-strong: rgba(108, 114, 255, 0.42);
   --mf-accent: #6c72ff;
@@ -10,8 +11,7 @@
   --mf-text: #ffffff;
   --mf-muted: rgba(255, 255, 255, 0.62);
   --mf-muted-2: rgba(255, 255, 255, 0.45);
-  --mf-radius: 16px;
-  /* ~10% wider interactive composition at desktop (intro stays site-native). */
+  --mf-radius: 14px;
   --mf-max: 1232px;
   --mf-font: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
   --mf-ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -32,13 +32,20 @@
   box-sizing: border-box;
 }
 
+#dealality-many-futures .mf-prompt {
+  margin: 0 0 1.25rem;
+  color: var(--mf-muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
 #dealality-many-futures .mf-layout {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.2fr) minmax(0, 0.25fr) minmax(0, 0.55fr);
-  gap: 1.1rem 1.25rem;
+  grid-template-columns: minmax(0, 0.22fr) minmax(0, 0.26fr) minmax(0, 0.52fr);
+  gap: 1rem 1.15rem;
   align-items: start;
-  min-height: 520px;
 }
 
 #dealality-many-futures .mf-connectors {
@@ -53,68 +60,47 @@
 
 #dealality-many-futures .mf-connectors path {
   fill: none;
-  stroke: rgba(174, 185, 225, 0.2);
-  stroke-width: 1.4;
-  stroke-dasharray: 4 6;
+  stroke: rgba(174, 185, 225, 0.08);
+  stroke-width: 1.2;
   stroke-linecap: round;
   transition: stroke var(--mf-dur) var(--mf-ease), stroke-opacity var(--mf-dur) var(--mf-ease),
-    stroke-dasharray var(--mf-dur) var(--mf-ease), stroke-width var(--mf-dur) var(--mf-ease);
+    stroke-width var(--mf-dur) var(--mf-ease);
 }
 
 #dealality-many-futures .mf-connectors path.is-active {
   stroke: var(--mf-accent-soft);
-  stroke-opacity: 1;
-  stroke-dasharray: 1 0;
-  stroke-width: 2.75;
-  filter: drop-shadow(0 0 6px rgba(108, 114, 255, 0.5));
-}
-
-#dealality-many-futures .mf-connectors path.is-drawing {
-  stroke-dasharray: 1;
-  animation: mf-draw var(--mf-dur) var(--mf-ease) both;
-}
-
-@keyframes mf-draw {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: 0; }
+  stroke-opacity: 0.85;
+  stroke-width: 2.25;
+  filter: drop-shadow(0 0 5px rgba(108, 114, 255, 0.4));
 }
 
 #dealality-many-futures .mf-connectors .mf-node {
   fill: var(--mf-panel);
-  stroke: rgba(174, 185, 225, 0.35);
-  stroke-width: 1.5;
-  transition: fill var(--mf-dur) var(--mf-ease), stroke var(--mf-dur) var(--mf-ease);
+  stroke: rgba(174, 185, 225, 0.28);
+  stroke-width: 1.4;
 }
 
 #dealality-many-futures .mf-connectors .mf-node.is-active {
   fill: var(--mf-accent-soft);
   stroke: #cfd3ff;
-  stroke-width: 2;
-  filter: drop-shadow(0 0 5px rgba(139, 144, 255, 0.55));
+  filter: drop-shadow(0 0 4px rgba(139, 144, 255, 0.5));
 }
 
+/* Hotel */
 #dealality-many-futures .mf-hotel {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--mf-radius);
   border: 1px solid var(--mf-border);
-  background: linear-gradient(180deg, rgba(17, 27, 58, 0.98), rgba(12, 20, 44, 0.99));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 36px rgba(0, 0, 0, 0.28);
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-#dealality-many-futures.mf-js-ready .mf-hotel {
-  animation: mf-fade-up 520ms var(--mf-ease) 60ms both;
+  border-radius: var(--mf-radius);
+  background: var(--mf-panel);
+  overflow: hidden;
 }
 
 #dealality-many-futures .mf-hotel-media {
   position: relative;
   aspect-ratio: 4/3;
-  overflow: hidden;
   background: #0a1228;
 }
 
@@ -146,8 +132,8 @@
 #dealality-many-futures .mf-hotel-body {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  padding: 1rem 1rem 1.15rem;
+  gap: 0.75rem;
+  padding: 0.95rem 1rem 1.1rem;
 }
 
 #dealality-many-futures .mf-illus-label {
@@ -160,484 +146,420 @@
   color: var(--mf-accent-soft);
   font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 #dealality-many-futures .mf-hotel-title {
   margin: 0;
-  color: var(--mf-text);
-  font-size: 1.02rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
 #dealality-many-futures .mf-meta {
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  margin: 0;
-  padding: 0;
+  gap: 0.45rem;
 }
 
 #dealality-many-futures .mf-meta-row {
   display: grid;
   grid-template-columns: 1.1rem 1fr;
-  gap: 0.55rem;
+  gap: 0.5rem;
   align-items: start;
 }
 
-#dealality-many-futures .mf-meta-row dt {
-  margin: 0;
-  width: 1.1rem;
-  height: 1.1rem;
+#dealality-many-futures .mf-meta-ico {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--mf-muted-2);
 }
 
 #dealality-many-futures .mf-meta-row dd {
   margin: 0;
+  font-size: 0.82rem;
   color: var(--mf-muted);
-  font-size: 0.78rem;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 #dealality-many-futures .mf-meta-row strong {
   display: block;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.8rem;
-  font-weight: 650;
-}
-
-#dealality-many-futures .mf-meta-ico {
-  display: block;
-  width: 1.1rem;
-  height: 1.1rem;
-  color: var(--mf-accent-soft);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 0.1rem;
 }
 
 #dealality-many-futures .mf-hotel-node {
   position: absolute;
-  top: 50%;
-  right: -6px;
-  z-index: 3;
-  width: 12px;
-  height: 12px;
-  margin-top: -6px;
+  right: -5px;
+  top: 42%;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  border: 2px solid var(--mf-accent-soft);
-  background: var(--mf-accent);
-  box-shadow: 0 0 0 4px rgba(108, 114, 255, 0.16);
+  background: var(--mf-accent-soft);
+  box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.2);
+  z-index: 3;
 }
 
-#dealality-many-futures .mf-futures {
+/* Questions — compact */
+#dealality-many-futures .mf-questions {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.45rem;
 }
 
-#dealality-many-futures .mf-future-group {
-  display: flex;
-  flex-direction: column;
-}
-
-#dealality-many-futures .mf-future {
+#dealality-many-futures .mf-q {
   position: relative;
   display: grid;
-  grid-template-columns: 1.75rem 1fr auto;
-  gap: 0.65rem;
-  align-items: start;
+  grid-template-columns: 1.6rem 1fr auto;
+  gap: 0.55rem;
+  align-items: center;
   width: 100%;
   margin: 0;
-  padding: 0.72rem 0.8rem;
-  border-radius: 14px;
+  padding: 0.7rem 0.75rem;
   border: 1px solid var(--mf-border);
-  background: rgba(17, 27, 58, 0.88);
+  border-radius: 12px;
+  background: var(--mf-panel-2);
   color: inherit;
+  font: inherit;
   text-align: left;
   cursor: pointer;
-  appearance: none;
-  font: inherit;
-  opacity: 0;
-  transform: translateY(8px) scale(1);
   transition: border-color var(--mf-dur) var(--mf-ease), background var(--mf-dur) var(--mf-ease),
-    transform var(--mf-dur) var(--mf-ease), box-shadow var(--mf-dur) var(--mf-ease),
-    opacity 360ms var(--mf-ease);
+    transform var(--mf-dur) var(--mf-ease), box-shadow var(--mf-dur) var(--mf-ease);
 }
 
-#dealality-many-futures.mf-js-ready .mf-future {
-  animation: mf-fade-up 480ms var(--mf-ease) both;
-}
-
-#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(1) .mf-future { animation-delay: 180ms; }
-#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(2) .mf-future { animation-delay: 240ms; }
-#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(3) .mf-future { animation-delay: 300ms; }
-#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(4) .mf-future { animation-delay: 360ms; }
-#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(5) .mf-future { animation-delay: 420ms; }
-
-#dealality-many-futures .mf-future:hover {
-  border-color: rgba(108, 114, 255, 0.28);
-  background: rgba(17, 27, 58, 0.98);
-}
-
-#dealality-many-futures .mf-future:focus { outline: none; }
-
-#dealality-many-futures .mf-future:focus-visible {
-  outline: 2px solid var(--mf-accent-soft);
-  outline-offset: 2px;
-}
-
-#dealality-many-futures .mf-future.is-active {
-  border-color: var(--mf-border-strong);
-  background: linear-gradient(180deg, rgba(32, 40, 86, 0.99), rgba(17, 27, 58, 0.98));
-  box-shadow: 0 0 0 1px rgba(108, 114, 255, 0.18), 0 12px 30px rgba(0, 0, 0, 0.26);
-  transform: scale(1.035);
-}
-
-#dealality-many-futures .mf-future-node {
-  position: absolute;
-  top: 50%;
-  left: -6px;
-  width: 10px;
-  height: 10px;
-  margin-top: -5px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(174, 185, 225, 0.35);
-  background: var(--mf-panel);
-  opacity: 0.9;
-}
-
-#dealality-many-futures .mf-future.is-active .mf-future-node {
-  border-color: var(--mf-accent-soft);
-  background: var(--mf-accent);
-}
-
-#dealality-many-futures .mf-future-ico {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(8, 15, 37, 0.55);
-  color: var(--mf-muted);
-  transition: color var(--mf-dur) var(--mf-ease), border-color var(--mf-dur) var(--mf-ease),
-    background var(--mf-dur) var(--mf-ease);
-}
-
-#dealality-many-futures .mf-future.is-active .mf-future-ico {
-  color: var(--mf-accent-soft);
+#dealality-many-futures .mf-q:hover,
+#dealality-many-futures .mf-q:focus-visible {
   border-color: rgba(108, 114, 255, 0.35);
-  background: var(--mf-accent-dim);
+  outline: none;
 }
 
-#dealality-many-futures .mf-future-ico svg {
-  display: block;
-  width: 15px;
-  height: 15px;
+#dealality-many-futures .mf-q:focus-visible {
+  box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.35);
 }
 
-#dealality-many-futures .mf-future-copy { min-width: 0; }
+#dealality-many-futures .mf-q.is-active {
+  border-color: var(--mf-border-strong);
+  background: linear-gradient(180deg, rgba(108, 114, 255, 0.12), rgba(17, 27, 58, 0.95));
+  box-shadow: 0 0 0 1px rgba(108, 114, 255, 0.15);
+  transform: translateX(4px);
+}
 
-#dealality-many-futures .mf-future-title {
-  display: block;
-  margin: 0 0 0.18rem;
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 0.92rem;
+#dealality-many-futures .mf-q-num {
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-#dealality-many-futures .mf-future-desc {
-  margin: 0;
+  letter-spacing: 0.06em;
   color: var(--mf-muted-2);
-  font-size: 0.74rem;
-  line-height: 1.4;
 }
 
-#dealality-many-futures .mf-future.is-active .mf-future-desc { color: var(--mf-muted); }
+#dealality-many-futures .mf-q.is-active .mf-q-num {
+  color: var(--mf-accent-soft);
+}
 
-#dealality-many-futures .mf-active-badge {
+#dealality-many-futures .mf-q-title {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+#dealality-many-futures .mf-q.is-active .mf-q-title {
+  color: #fff;
+}
+
+#dealality-many-futures .mf-q-badge {
   display: none;
-  align-self: start;
-  padding: 0.18rem 0.45rem;
+  padding: 0.18rem 0.42rem;
   border-radius: 999px;
-  background: rgba(108, 114, 255, 0.18);
+  background: rgba(108, 114, 255, 0.2);
   color: var(--mf-accent-soft);
   font-size: 0.58rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-#dealality-many-futures .mf-future.is-active .mf-active-badge { display: inline-flex; }
+#dealality-many-futures .mf-q.is-active .mf-q-badge {
+  display: inline-flex;
+}
 
-#dealality-many-futures .mf-preview {
+/* Workspace — product-led */
+#dealality-many-futures .mf-workspace {
   position: relative;
-  z-index: 3;
+  z-index: 2;
   min-width: 0;
+}
+
+#dealality-many-futures .mf-panel {
+  display: none;
+  flex-direction: column;
+  gap: 0.95rem;
   opacity: 0;
   transform: translateY(10px);
 }
 
-#dealality-many-futures.mf-js-ready .mf-preview {
-  animation: mf-fade-up 560ms var(--mf-ease) 520ms both;
-}
-
-#dealality-many-futures .mf-browser {
-  overflow: hidden;
-  border-radius: 18px;
-  border: 1px solid rgba(174, 185, 225, 0.28);
-  background: #10182f;
-  box-shadow:
-    0 0 0 1px rgba(108, 114, 255, 0.2),
-    0 28px 64px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-#dealality-many-futures .mf-chrome {
+#dealality-many-futures .mf-panel.is-active {
   display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.65rem 0.9rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(180deg, #182240, #121a32);
-}
-
-#dealality-many-futures .mf-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
-}
-
-#dealality-many-futures .mf-dot:nth-child(1) { background: #ff5f57; }
-#dealality-many-futures .mf-dot:nth-child(2) { background: #febc2e; }
-#dealality-many-futures .mf-dot:nth-child(3) { background: #28c840; }
-
-#dealality-many-futures .mf-chrome-label {
-  margin-left: 0.4rem;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-#dealality-many-futures .mf-screens {
-  position: relative;
-  /* Match framed desktop crops (~1280×520) so UI fills most of the frame. */
-  aspect-ratio: 16/6.5;
-  background: #0a1228;
-}
-
-#dealality-many-futures .mf-screens--mobile {
-  /* Content-tight marketing cards (~780×560–700). */
-  aspect-ratio: 5/4;
-}
-
-#dealality-many-futures .mf-screen {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0.985);
-  transition: opacity var(--mf-dur) var(--mf-ease), transform var(--mf-dur) var(--mf-ease),
-    visibility 0s linear var(--mf-dur);
-  pointer-events: none;
-}
-
-#dealality-many-futures .mf-screen.is-active {
   opacity: 1;
-  visibility: visible;
-  transform: scale(1);
-  transition-delay: 0s;
-  pointer-events: auto;
-  z-index: 1;
+  transform: translateY(0);
+  animation: mf-in var(--mf-dur) var(--mf-ease) both;
 }
 
-#dealality-many-futures .mf-screen img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  /* Contain so curated crops are never cropped/zoomed again. */
-  object-fit: contain;
-  object-position: center center;
-  background: #0a1228;
-}
-
-#dealality-many-futures .mf-preview-foot {
-  padding: 0.95rem 1rem 1.05rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(180deg, rgba(17, 27, 58, 0.98), rgba(12, 20, 44, 0.99));
-}
-
-#dealality-many-futures .mf-foot-label,
-#dealality-many-futures .mf-foot-support-label {
-  margin: 0 0 0.3rem;
-  color: var(--mf-accent-soft);
-  font-size: 0.62rem;
-  font-weight: 750;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-#dealality-many-futures .mf-foot-support-label {
-  margin-top: 0.7rem;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-foot-title {
-  margin: 0 0 0.35rem;
-  color: var(--mf-text);
-  font-size: 1.12rem;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-}
-
-#dealality-many-futures .mf-foot-desc {
-  margin: 0;
-  color: var(--mf-muted);
-  font-size: 0.88rem;
-  line-height: 1.5;
-}
-
-#dealality-many-futures .mf-foot-caps {
-  margin: 0;
-  color: var(--mf-accent-soft);
-  font-size: 0.78rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-#dealality-many-futures .mf-mobile-preview[hidden] {
+#dealality-many-futures .mf-panel[hidden] {
   display: none !important;
 }
 
-#dealality-many-futures .mf-mobile-preview {
-  display: none;
-}
-
-@keyframes mf-fade-up {
+@keyframes mf-in {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-#dealality-many-futures.mf-entered .mf-hotel,
-#dealality-many-futures.mf-entered .mf-future,
-#dealality-many-futures.mf-entered .mf-preview {
-  opacity: 1 !important;
-  transform: none !important;
-  animation: none !important;
+#dealality-many-futures .mf-decision {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--mf-border);
+  border-radius: var(--mf-radius);
+  background: rgba(13, 22, 48, 0.9);
+}
+
+#dealality-many-futures .mf-decision-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mf-accent-soft);
+}
+
+#dealality-many-futures .mf-decision-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+  font-weight: 720;
+  line-height: 1.25;
+}
+
+#dealality-many-futures .mf-decision-context {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-features {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+#dealality-many-futures .mf-feat-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+#dealality-many-futures .mf-feat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--mf-border);
+  border-radius: var(--mf-radius);
+  background: var(--mf-panel);
+  overflow: hidden;
+  transition: border-color var(--mf-dur) var(--mf-ease), transform var(--mf-dur) var(--mf-ease);
+}
+
+#dealality-many-futures .mf-feat--primary {
+  border-color: rgba(108, 114, 255, 0.28);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+#dealality-many-futures .mf-feat-visual {
+  position: relative;
+  background: #0a1228;
+  aspect-ratio: 16/9;
+}
+
+#dealality-many-futures .mf-feat--support .mf-feat-visual {
+  aspect-ratio: 16/8.5;
+}
+
+#dealality-many-futures .mf-feat-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+#dealality-many-futures .mf-feat-img--mob {
+  display: none;
+}
+
+#dealality-many-futures .mf-feat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem 0.85rem 0.9rem;
+}
+
+#dealality-many-futures .mf-feat--primary .mf-feat-body {
+  padding: 0.9rem 1rem 1.05rem;
+  gap: 0.4rem;
+}
+
+#dealality-many-futures .mf-feat-cat {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-feat-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 720;
+  line-height: 1.2;
+}
+
+#dealality-many-futures .mf-feat--support .mf-feat-name {
+  font-size: 0.95rem;
+}
+
+#dealality-many-futures .mf-feat-purpose,
+#dealality-many-futures .mf-feat-benefit {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-feat--primary .mf-feat-purpose,
+#dealality-many-futures .mf-feat--primary .mf-feat-benefit {
+  font-size: 0.86rem;
+}
+
+#dealality-many-futures .mf-feat-purpose strong,
+#dealality-many-futures .mf-feat-benefit strong {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 650;
+}
+
+#dealality-many-futures .mf-outcome {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: var(--mf-radius);
+  border: 1px solid rgba(108, 114, 255, 0.22);
+  background: rgba(108, 114, 255, 0.08);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+#dealality-many-futures .mf-outcome strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mf-accent-soft);
 }
 
 #dealality-many-futures:not(.mf-js-ready) .mf-connectors { display: none; }
 
-#dealality-many-futures:not(.mf-js-ready) .mf-hotel,
-#dealality-many-futures:not(.mf-js-ready) .mf-future,
-#dealality-many-futures:not(.mf-js-ready) .mf-preview {
-  opacity: 1;
-  transform: none;
-}
-
-#dealality-many-futures:not(.mf-js-ready) .mf-screen[data-preview-id="new-operator"] {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-}
-
 @media screen and (max-width: 991px) {
   #dealality-many-futures .mf-layout {
-    grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
     grid-template-areas:
-      "hotel futures"
-      "preview preview";
-    gap: 1rem;
-    min-height: 0;
+      "hotel questions"
+      "workspace workspace";
   }
 
   #dealality-many-futures .mf-hotel { grid-area: hotel; }
-  #dealality-many-futures .mf-futures { grid-area: futures; }
-  #dealality-many-futures .mf-preview { grid-area: preview; }
+  #dealality-many-futures .mf-questions { grid-area: questions; }
+  #dealality-many-futures .mf-workspace { grid-area: workspace; }
 
   #dealality-many-futures .mf-connectors,
-  #dealality-many-futures .mf-hotel-node,
-  #dealality-many-futures .mf-future-node {
+  #dealality-many-futures .mf-hotel-node {
     display: none;
   }
 
-  #dealality-many-futures .mf-future.is-active { transform: scale(1.015); }
+  #dealality-many-futures .mf-features {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-feat-stack {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #dealality-many-futures .mf-q.is-active {
+    transform: none;
+  }
 }
 
 @media screen and (max-width: 767px) {
   #dealality-many-futures .mf-layout {
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
+    gap: 0.85rem;
   }
 
-  #dealality-many-futures .mf-preview--desktop { display: none; }
+  #dealality-many-futures .mf-feat-img--desk { display: none; }
+  #dealality-many-futures .mf-feat-img--mob { display: block; }
 
-  #dealality-many-futures .mf-mobile-preview {
+  #dealality-many-futures .mf-feat-stack {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-questions {
+    gap: 0.4rem;
+  }
+
+  #dealality-many-futures .mf-workspace {
+    order: 3;
+  }
+
+  /* Accordion: workspace follows questions visually via JS move optional;
+     default stacks workspace after questions; mobile JS pins panel after active q */
+  #dealality-many-futures .mf-mobile-slot {
     display: block;
-    margin-top: 0.4rem;
   }
 
-  #dealality-many-futures .mf-future.is-active {
-    transform: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  #dealality-many-futures .mf-decision-title {
+    font-size: 1.08rem;
   }
 
-  #dealality-many-futures .mf-future-group:has(.mf-future.is-active) .mf-mobile-preview .mf-browser {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-top-color: rgba(108, 114, 255, 0.35);
+  #dealality-many-futures .mf-feat-name {
+    font-size: 1rem;
   }
 
-  #dealality-many-futures .mf-future-group:not(:has(.mf-future.is-active)) .mf-mobile-preview {
-    display: none;
+  #dealality-many-futures .mf-hotel-title {
+    font-size: 0.98rem;
   }
-
-  #dealality-many-futures .mf-hotel-body { padding: 0.85rem 0.9rem 1rem; gap: 0.7rem; }
-  #dealality-many-futures .mf-future { padding: 0.65rem 0.75rem; }
-  #dealality-many-futures .mf-preview-foot { padding: 0.8rem 0.85rem 0.9rem; }
-  #dealality-many-futures .mf-foot-title { font-size: 1.02rem; }
-  #dealality-many-futures .mf-foot-desc { font-size: 0.84rem; }
-  #dealality-many-futures .mf-hotel-title { font-size: 0.98rem; }
-  #dealality-many-futures .mf-screens--mobile .mf-screen img { object-position: center center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #dealality-many-futures .mf-hotel,
-  #dealality-many-futures .mf-future,
-  #dealality-many-futures .mf-preview,
-  #dealality-many-futures.mf-js-ready .mf-hotel,
-  #dealality-many-futures.mf-js-ready .mf-future,
-  #dealality-many-futures.mf-js-ready .mf-preview {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  #dealality-many-futures .mf-future,
-  #dealality-many-futures .mf-future.is-active,
-  #dealality-many-futures .mf-screen,
+  #dealality-many-futures .mf-q,
+  #dealality-many-futures .mf-panel,
+  #dealality-many-futures .mf-feat,
   #dealality-many-futures .mf-connectors path {
     transition: none !important;
-  }
-
-  #dealality-many-futures .mf-future.is-active,
-  #dealality-many-futures .mf-screen {
-    transform: none;
-  }
-
-  #dealality-many-futures .mf-connectors path.is-drawing {
     animation: none !important;
   }
 
-  #dealality-many-futures .mf-connectors path.is-active {
-    filter: none;
+  #dealality-many-futures .mf-q.is-active,
+  #dealality-many-futures .mf-panel.is-active {
+    transform: none !important;
   }
 }

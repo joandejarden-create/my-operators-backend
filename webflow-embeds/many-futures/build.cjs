@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
- * Combines markup + CSS + JS into a single Webflow Code Embed snippet.
- * Production output is minified. Source files stay readable.
+ * Combines markup + CSS + JS into a single Webflow Code Embed snippet,
+ * and a local preview.html for Phase B review.
+ *
+ * Phase B keeps feature PNGs as external assets (CDN or relative).
+ * Production Webflow update is deferred — this build estimates size only.
  */
 const fs = require("fs");
 const path = require("path");
@@ -38,53 +41,102 @@ function minifyMarkup(input) {
     .trim();
 }
 
-const CDN = "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a";
-/* Pre-publish: v3 framed desktop crops + content-tight mobile presentations + temporary hotel. */
-const ASSETS = {
-  "assets/hotel-temp.jpg": `${CDN}/6a6b9ecfbcdb4eea68e0a6f3_mf-hotel-temp.jpg`,
-  "assets/crops/rebrand-desktop.png": `${CDN}/6a6bc336fad2c4d6800459eb_mf-v3-rebrand-desktop.png`,
-  "assets/crops/rebrand-mobile.png": `${CDN}/6a6bc33613510ee4c75caf80_mf-v3-rebrand-mobile.png`,
-  "assets/crops/new-operator-desktop.png": `${CDN}/6a6bc336e234cfde45f7e884_mf-v3-new-operator-desktop.png`,
-  "assets/crops/new-operator-mobile.png": `${CDN}/6a6bc336fad2c4d6800459d6_mf-v3-new-operator-mobile.png`,
-  "assets/crops/soft-brand-desktop.png": `${CDN}/6a6bc336fad2c4d680045a06_mf-v3-soft-brand-desktop.png`,
-  "assets/crops/soft-brand-mobile.png": `${CDN}/6a6bc351625bda5699df9c25_mf-v3-soft-brand-mobile.png`,
-  "assets/crops/independent-desktop.png": `${CDN}/6a6bc351625bda5699df9ccc_mf-v3-independent-desktop.png`,
-  "assets/crops/independent-mobile.png": `${CDN}/6a6bc351a7054be2bdf7b4d4_mf-v3-independent-mobile.png`,
-  "assets/crops/branded-residences-desktop.png": `${CDN}/6a6bc351a7054be2bdf7b509_mf-v3-branded-residences-desktop.png`,
-  "assets/crops/branded-residences-mobile.png": `${CDN}/6a6bc3528b323476364a4f35_mf-v3-branded-residences-mobile.png`,
-};
+/* Phase B: keep relative asset paths in local preview.
+   Production CDN map is prepared but not uploaded in Phase B. */
+const CDN_BASE =
+  "https://cdn.jsdelivr.net/gh/OWNER/REPO@BRANCH/webflow-embeds/many-futures";
 
-for (const [from, to] of Object.entries(ASSETS)) {
-  markup = markup.split(from).join(to);
+const FEATURE_FILES = [
+  "brand-explorer-desktop.png",
+  "brand-explorer-mobile.png",
+  "operator-explorer-desktop.png",
+  "operator-explorer-mobile.png",
+  "fee-estimator-desktop.png",
+  "fee-estimator-mobile.png",
+  "radar-desktop.png",
+  "radar-mobile.png",
+  "opportunity-review-desktop.png",
+  "opportunity-review-mobile.png",
+  "deal-compare-desktop.png",
+  "deal-compare-mobile.png",
+  "smart-matching-desktop.png",
+  "smart-matching-mobile.png",
+  "deal-readiness-desktop.png",
+  "deal-readiness-mobile.png",
+  "clause-library-desktop.png",
+  "clause-library-mobile.png",
+  "financial-term-library-desktop.png",
+  "financial-term-library-mobile.png",
+  "submit-proposal-desktop.png",
+  "submit-proposal-mobile.png",
+];
+
+let prodMarkup = markup;
+prodMarkup = prodMarkup.split("assets/hotel-temp.jpg").join(`${CDN_BASE}/assets/hotel-temp.jpg`);
+for (const file of FEATURE_FILES) {
+  prodMarkup = prodMarkup
+    .split(`assets/features/${file}`)
+    .join(`${CDN_BASE}/assets/features/${file}`);
 }
 
 const cssOut = minifyCss(css);
 const jsOut = minifyJs(js);
-const markupOut = minifyMarkup(markup);
+const markupOut = minifyMarkup(prodMarkup);
 
 const embed = `<style>${cssOut}</style>${markupOut}<script>${jsOut}</script>`;
-
 const out = path.join(dir, "..", "many-futures-section.html");
 fs.writeFileSync(out, embed);
 
+/* Short Webflow loader alternative when embed exceeds ~45–50KB safe inline size */
+const loader = `<!-- Many Futures Phase B — CDN loader (Webflow HtmlEmbed) -->
+<link rel="stylesheet" href="${CDN_BASE}/many-futures.css" />
+<div id="mf-embed-host"></div>
+<script>
+(function(){
+  var host=document.getElementById("mf-embed-host");
+  if(!host) return;
+  fetch("${CDN_BASE}/markup.html").then(function(r){return r.text();}).then(function(html){
+    host.innerHTML=html;
+    var s=document.createElement("script");
+    s.src="${CDN_BASE}/many-futures.js";
+    document.body.appendChild(s);
+  });
+})();
+</script>
+`;
+fs.writeFileSync(path.join(dir, "cdn-loader.html"), loader);
+
 const previewShell = fs.readFileSync(path.join(dir, "index.html"), "utf8");
 const preview = previewShell
+  .replace("<!-- MANY_FUTURES_MARKUP -->", markup)
   .replace(
-    /<!-- MARKUP_START -->[\s\S]*?(?=<\/div>\s*<\/div>\s*<\/section>)/,
-    markup + "\n        "
-  )
-  .replace(
-    /<link rel="stylesheet" href="many-futures\.css" \/>/,
+    /<link rel="stylesheet" href="\.\/many-futures\.css" \/>/,
     `<style>\n${css}\n</style>`
   )
   .replace(
-    /<script>[\s\S]*?fetch\("markup\.html"\)[\s\S]*?<\/script>/,
+    /<script src="\.\/many-futures\.js"><\/script>/,
     `<script>\n${js}\n</script>`
   );
 
 fs.writeFileSync(path.join(dir, "preview.html"), preview);
 
+const inlineKb = embed.length / 1024;
+const cssKb = cssOut.length / 1024;
+const jsKb = jsOut.length / 1024;
+const markupKb = markupOut.length / 1024;
+const loaderKb = loader.length / 1024;
+
 console.log("Wrote", out);
-console.log("Production character count:", embed.length);
-console.log("Approx KB:", (embed.length / 1024).toFixed(1));
-console.log("CDN assets wired for pre-publish:", Object.keys(ASSETS).length);
+console.log("Wrote preview.html and cdn-loader.html");
+console.log("Inline embed characters:", embed.length);
+console.log("Inline embed KB:", inlineKb.toFixed(1));
+console.log("  CSS KB:", cssKb.toFixed(1));
+console.log("  JS KB:", jsKb.toFixed(1));
+console.log("  Markup KB:", markupKb.toFixed(1));
+console.log("CDN loader KB:", loaderKb.toFixed(1));
+console.log(
+  "Recommendation:",
+  inlineKb > 45
+    ? "Use CDN loader (inline exceeds typical Webflow embed comfort zone)."
+    : "Inline embed is within a comfortable range; CDN still preferred for asset updates."
+);
