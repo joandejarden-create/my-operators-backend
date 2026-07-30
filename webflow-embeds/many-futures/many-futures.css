@@ -1,0 +1,725 @@
+/* Many Futures — scoped to #dealality-many-futures only */
+#dealality-many-futures {
+  --mf-bg: #080f25;
+  --mf-panel: #111b3a;
+  --mf-panel-2: #0d1530;
+  --mf-border: rgba(255, 255, 255, 0.1);
+  --mf-border-strong: rgba(108, 114, 255, 0.35);
+  --mf-accent: #6c72ff;
+  --mf-accent-soft: #8b90ff;
+  --mf-accent-dim: rgba(108, 114, 255, 0.14);
+  --mf-text: #ffffff;
+  --mf-muted: rgba(255, 255, 255, 0.62);
+  --mf-muted-2: rgba(255, 255, 255, 0.45);
+  --mf-radius: 16px;
+  --mf-radius-sm: 12px;
+  --mf-max: 1120px;
+  --mf-font: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
+  --mf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --mf-dur: 420ms;
+
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  max-width: var(--mf-max);
+  margin: 0 auto;
+  color: var(--mf-text);
+  font-family: var(--mf-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+#dealality-many-futures *,
+#dealality-many-futures *::before,
+#dealality-many-futures *::after {
+  box-sizing: border-box;
+}
+
+#dealality-many-futures .mf-layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.2fr) minmax(0, 0.25fr) minmax(0, 0.55fr);
+  gap: 1.1rem 1.25rem;
+  align-items: start;
+  min-height: 520px;
+}
+
+#dealality-many-futures .mf-connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+
+#dealality-many-futures .mf-connectors path {
+  fill: none;
+  stroke: rgba(174, 185, 225, 0.22);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 6;
+  stroke-linecap: round;
+  transition: stroke var(--mf-dur) var(--mf-ease), stroke-opacity var(--mf-dur) var(--mf-ease),
+    stroke-dasharray var(--mf-dur) var(--mf-ease);
+}
+
+#dealality-many-futures .mf-connectors path.is-active {
+  stroke: var(--mf-accent);
+  stroke-opacity: 1;
+  stroke-dasharray: 1 0;
+  stroke-width: 2;
+}
+
+#dealality-many-futures .mf-connectors path.is-drawing {
+  stroke-dasharray: 1;
+  animation: mf-draw var(--mf-dur) var(--mf-ease) both;
+}
+
+@keyframes mf-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+#dealality-many-futures .mf-connectors .mf-node {
+  fill: var(--mf-panel);
+  stroke: rgba(174, 185, 225, 0.35);
+  stroke-width: 1.5;
+  transition: fill var(--mf-dur) var(--mf-ease), stroke var(--mf-dur) var(--mf-ease);
+}
+
+#dealality-many-futures .mf-connectors .mf-node.is-active {
+  fill: var(--mf-accent);
+  stroke: var(--mf-accent-soft);
+}
+
+/* Hotel opportunity */
+#dealality-many-futures .mf-hotel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--mf-radius);
+  border: 1px solid var(--mf-border);
+  background: linear-gradient(180deg, rgba(17, 27, 58, 0.98), rgba(12, 20, 44, 0.99));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 36px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+#dealality-many-futures.mf-js-ready .mf-hotel {
+  animation: mf-fade-up 520ms var(--mf-ease) 60ms both;
+}
+
+#dealality-many-futures .mf-hotel-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #0a1228;
+}
+
+#dealality-many-futures .mf-hotel-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+#dealality-many-futures .mf-hotel-temp {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 1;
+  display: inline-flex;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(8, 15, 37, 0.78);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+#dealality-many-futures .mf-hotel-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem 1rem 1.15rem;
+}
+
+#dealality-many-futures .mf-illus-label {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(108, 114, 255, 0.32);
+  background: rgba(108, 114, 255, 0.1);
+  color: var(--mf-accent-soft);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#dealality-many-futures .mf-hotel-title {
+  margin: 0;
+  color: var(--mf-text);
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+#dealality-many-futures .mf-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+}
+
+#dealality-many-futures .mf-meta-row {
+  display: grid;
+  grid-template-columns: 1.1rem 1fr;
+  gap: 0.55rem;
+  align-items: start;
+}
+
+#dealality-many-futures .mf-meta-row dt {
+  margin: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+#dealality-many-futures .mf-meta-row dd {
+  margin: 0;
+  color: var(--mf-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+#dealality-many-futures .mf-meta-row strong {
+  display: block;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+#dealality-many-futures .mf-meta-ico {
+  display: block;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--mf-accent-soft);
+}
+
+#dealality-many-futures .mf-hotel-node {
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  z-index: 3;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--mf-accent-soft);
+  background: var(--mf-accent);
+  box-shadow: 0 0 0 4px rgba(108, 114, 255, 0.16);
+}
+
+/* Futures */
+#dealality-many-futures .mf-futures {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+#dealality-many-futures .mf-future-group {
+  display: flex;
+  flex-direction: column;
+}
+
+#dealality-many-futures .mf-future {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.75rem 1fr auto;
+  gap: 0.65rem;
+  align-items: start;
+  width: 100%;
+  margin: 0;
+  padding: 0.72rem 0.8rem;
+  border-radius: 14px;
+  border: 1px solid var(--mf-border);
+  background: rgba(17, 27, 58, 0.88);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+  font: inherit;
+  opacity: 0;
+  transform: translateY(8px) scale(1);
+  transition: border-color var(--mf-dur) var(--mf-ease), background var(--mf-dur) var(--mf-ease),
+    transform var(--mf-dur) var(--mf-ease), box-shadow var(--mf-dur) var(--mf-ease),
+    opacity 360ms var(--mf-ease);
+}
+
+#dealality-many-futures.mf-js-ready .mf-future {
+  animation: mf-fade-up 480ms var(--mf-ease) both;
+}
+
+#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(1) .mf-future {
+  animation-delay: 180ms;
+}
+#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(2) .mf-future {
+  animation-delay: 240ms;
+}
+#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(3) .mf-future {
+  animation-delay: 300ms;
+}
+#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(4) .mf-future {
+  animation-delay: 360ms;
+}
+#dealality-many-futures.mf-js-ready .mf-future-group:nth-child(5) .mf-future {
+  animation-delay: 420ms;
+}
+
+#dealality-many-futures .mf-future:hover {
+  border-color: rgba(108, 114, 255, 0.28);
+  background: rgba(17, 27, 58, 0.98);
+}
+
+#dealality-many-futures .mf-future:focus {
+  outline: none;
+}
+
+#dealality-many-futures .mf-future:focus-visible {
+  outline: 2px solid var(--mf-accent-soft);
+  outline-offset: 2px;
+}
+
+#dealality-many-futures .mf-future.is-active {
+  border-color: var(--mf-border-strong);
+  background: linear-gradient(180deg, rgba(28, 36, 78, 0.98), rgba(17, 27, 58, 0.98));
+  box-shadow: 0 0 0 1px rgba(108, 114, 255, 0.12), 0 10px 28px rgba(0, 0, 0, 0.22);
+  transform: scale(1.03);
+}
+
+#dealality-many-futures .mf-future-node {
+  position: absolute;
+  top: 50%;
+  left: -6px;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(174, 185, 225, 0.35);
+  background: var(--mf-panel);
+  opacity: 0.9;
+}
+
+#dealality-many-futures .mf-future.is-active .mf-future-node {
+  border-color: var(--mf-accent-soft);
+  background: var(--mf-accent);
+}
+
+#dealality-many-futures .mf-future-ico {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 15, 37, 0.55);
+  color: var(--mf-muted);
+  transition: color var(--mf-dur) var(--mf-ease), border-color var(--mf-dur) var(--mf-ease),
+    background var(--mf-dur) var(--mf-ease);
+}
+
+#dealality-many-futures .mf-future.is-active .mf-future-ico {
+  color: var(--mf-accent-soft);
+  border-color: rgba(108, 114, 255, 0.35);
+  background: var(--mf-accent-dim);
+}
+
+#dealality-many-futures .mf-future-ico svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+#dealality-many-futures .mf-future-copy {
+  min-width: 0;
+}
+
+#dealality-many-futures .mf-future-title {
+  display: block;
+  margin: 0 0 0.18rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+#dealality-many-futures .mf-future-desc {
+  margin: 0;
+  color: var(--mf-muted-2);
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+#dealality-many-futures .mf-future.is-active .mf-future-desc {
+  color: var(--mf-muted);
+}
+
+#dealality-many-futures .mf-active-badge {
+  display: none;
+  align-self: start;
+  padding: 0.18rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(108, 114, 255, 0.18);
+  color: var(--mf-accent-soft);
+  font-size: 0.58rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+#dealality-many-futures .mf-future.is-active .mf-active-badge {
+  display: inline-flex;
+}
+
+/* Preview */
+#dealality-many-futures .mf-preview {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+#dealality-many-futures.mf-js-ready .mf-preview {
+  animation: mf-fade-up 560ms var(--mf-ease) 520ms both;
+}
+
+#dealality-many-futures .mf-browser {
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(174, 185, 225, 0.28);
+  background: #10182f;
+  box-shadow:
+    0 0 0 1px rgba(108, 114, 255, 0.18),
+    0 28px 64px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+#dealality-many-futures .mf-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, #182240, #121a32);
+}
+
+#dealality-many-futures .mf-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+#dealality-many-futures .mf-dot:nth-child(1) {
+  background: #ff5f57;
+}
+#dealality-many-futures .mf-dot:nth-child(2) {
+  background: #febc2e;
+}
+#dealality-many-futures .mf-dot:nth-child(3) {
+  background: #28c840;
+}
+
+#dealality-many-futures .mf-chrome-label {
+  margin-left: 0.4rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+#dealality-many-futures .mf-screens {
+  position: relative;
+  aspect-ratio: 16 / 10.2;
+  background: #e8ecf5;
+}
+
+#dealality-many-futures .mf-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.985);
+  transition: opacity var(--mf-dur) var(--mf-ease), transform var(--mf-dur) var(--mf-ease),
+    visibility 0s linear var(--mf-dur);
+  pointer-events: none;
+}
+
+#dealality-many-futures .mf-screen.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition-delay: 0s;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+#dealality-many-futures .mf-screen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+#dealality-many-futures .mf-caption {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem 1rem;
+  align-items: start;
+  padding: 1rem 0.15rem 0.15rem;
+}
+
+#dealality-many-futures .mf-caption[hidden],
+#dealality-many-futures .mf-mobile-preview[hidden] {
+  display: none !important;
+}
+
+#dealality-many-futures .mf-path-pill {
+  display: inline-flex;
+  margin-bottom: 0.45rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(108, 114, 255, 0.32);
+  background: rgba(108, 114, 255, 0.12);
+  color: var(--mf-accent-soft);
+  font-size: 0.64rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#dealality-many-futures .mf-caption-title {
+  margin: 0 0 0.35rem;
+  color: var(--mf-text);
+  font-size: 1.2rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+#dealality-many-futures .mf-caps {
+  margin: 0 0 0.55rem;
+  color: var(--mf-accent-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+#dealality-many-futures .mf-caption-body {
+  margin: 0;
+  max-width: 38rem;
+  color: var(--mf-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+#dealality-many-futures .mf-caption-deco {
+  align-self: center;
+  width: 48px;
+  height: 48px;
+  color: rgba(139, 144, 255, 0.28);
+}
+
+#dealality-many-futures .mf-caption-deco svg {
+  width: 100%;
+  height: 100%;
+}
+
+#dealality-many-futures .mf-mobile-preview {
+  display: none;
+}
+
+@keyframes mf-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#dealality-many-futures.mf-entered .mf-hotel,
+#dealality-many-futures.mf-entered .mf-future,
+#dealality-many-futures.mf-entered .mf-preview {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Progressive enhancement: without JS, show default New Operator screen */
+#dealality-many-futures:not(.mf-js-ready) .mf-connectors {
+  display: none;
+}
+
+#dealality-many-futures:not(.mf-js-ready) .mf-hotel,
+#dealality-many-futures:not(.mf-js-ready) .mf-future,
+#dealality-many-futures:not(.mf-js-ready) .mf-preview {
+  opacity: 1;
+  transform: none;
+}
+
+#dealality-many-futures:not(.mf-js-ready) .mf-screen[data-preview-id="new-operator"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+/* Tablet */
+@media screen and (max-width: 991px) {
+  #dealality-many-futures .mf-layout {
+    grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+    grid-template-areas:
+      "hotel futures"
+      "preview preview";
+    gap: 1rem;
+    min-height: 0;
+  }
+
+  #dealality-many-futures .mf-hotel {
+    grid-area: hotel;
+  }
+
+  #dealality-many-futures .mf-futures {
+    grid-area: futures;
+  }
+
+  #dealality-many-futures .mf-preview {
+    grid-area: preview;
+  }
+
+  #dealality-many-futures .mf-connectors,
+  #dealality-many-futures .mf-hotel-node,
+  #dealality-many-futures .mf-future-node {
+    display: none;
+  }
+
+  #dealality-many-futures .mf-future.is-active {
+    transform: scale(1.015);
+  }
+
+  #dealality-many-futures .mf-screens {
+    aspect-ratio: 16 / 10.5;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+  #dealality-many-futures .mf-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  #dealality-many-futures .mf-preview--desktop {
+    display: none;
+  }
+
+  #dealality-many-futures .mf-mobile-preview {
+    display: block;
+    margin-top: 0.55rem;
+  }
+
+  #dealality-many-futures .mf-future {
+    grid-template-columns: 1.75rem 1fr auto;
+  }
+
+  #dealality-many-futures .mf-future.is-active {
+    transform: none;
+  }
+
+  #dealality-many-futures .mf-future-group:not(:has(.mf-future.is-active)) .mf-mobile-preview {
+    display: none;
+  }
+
+  #dealality-many-futures .mf-mobile-preview[hidden] {
+    display: none !important;
+  }
+
+  #dealality-many-futures .mf-screens {
+    aspect-ratio: 16 / 11;
+  }
+
+  #dealality-many-futures .mf-screen img {
+    object-position: top center;
+  }
+
+  #dealality-many-futures .mf-caption {
+    grid-template-columns: 1fr;
+  }
+
+  #dealality-many-futures .mf-caption-deco {
+    display: none;
+  }
+
+  #dealality-many-futures .mf-caption-title {
+    font-size: 1.05rem;
+  }
+
+  #dealality-many-futures .mf-hotel-title {
+    font-size: 0.98rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dealality-many-futures .mf-hotel,
+  #dealality-many-futures .mf-future,
+  #dealality-many-futures .mf-preview,
+  #dealality-many-futures.mf-js-ready .mf-hotel,
+  #dealality-many-futures.mf-js-ready .mf-future,
+  #dealality-many-futures.mf-js-ready .mf-preview {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  #dealality-many-futures .mf-future,
+  #dealality-many-futures .mf-future.is-active,
+  #dealality-many-futures .mf-screen,
+  #dealality-many-futures .mf-connectors path {
+    transition: none !important;
+  }
+
+  #dealality-many-futures .mf-future.is-active {
+    transform: none;
+  }
+
+  #dealality-many-futures .mf-screen {
+    transform: none;
+  }
+
+  #dealality-many-futures .mf-connectors path.is-drawing {
+    animation: none !important;
+  }
+}
