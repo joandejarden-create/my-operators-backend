@@ -159,6 +159,7 @@ import { getOutreachDealActivityLog } from "./api/outreach-deal-activity-log.js"
 import { getDashboardHome } from "./api/dashboard-home.js";
 import { getMarketingDemoEmbeds } from "./api/marketing-demo-embeds.js";
 import marketingBetaNotify from "./api/marketing-beta-notify.js";
+import marketingDemoRequest from "./api/marketing-demo-request.js";
 import marketingLandingEvents from "./api/marketing-landing-events.js";
 import marketingLandingConfig from "./api/marketing-landing-config.js";
 import {
@@ -601,6 +602,7 @@ app.patch("/api/intake/third-party-operators/:recordId/status", updateThirdParty
 app.get("/api/marketing/demo-embeds", getMarketingDemoEmbeds);
 app.get("/api/marketing/landing-config", marketingLandingConfig);
 app.post("/api/marketing/beta-notify", marketingBetaNotify);
+app.post("/api/marketing/demo-request", marketingDemoRequest);
 app.post("/api/marketing/landing-events", marketingLandingEvents);
 app.get(
   "/api/marketing/landing-events/report",

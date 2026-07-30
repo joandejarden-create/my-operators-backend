@@ -92,6 +92,7 @@ import updateThirdPartyOperatorStatus from "./api/third-party-operator-status.js
 import signup from "./api/signup.js";
 import signupConfig from "./api/signup-config.js";
 import marketingBetaNotify from "./api/marketing-beta-notify.js";
+import marketingDemoRequest from "./api/marketing-demo-request.js";
 import memberstackWebhook from "./api/memberstack-webhook.js";
 import { getPartners, createUser, updateUser } from "./api/partner-directory.js";
 import { getUserFavorites, createFavorite, deleteFavorite, updateFavorite } from "./api/partner-directory-favorites.js";
@@ -1041,6 +1042,7 @@ app.post("/api/intake/user", userIntake);
 app.post("/api/signup", signup);
 app.get("/api/signup/config", signupConfig);
 app.post("/api/marketing/beta-notify", marketingBetaNotify);
+app.post("/api/marketing/demo-request", marketingDemoRequest);
 app.post("/api/webhooks/memberstack", memberstackWebhook);
 
 // Market Alerts API endpoints – live beta (Airtable-backed)
