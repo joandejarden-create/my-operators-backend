@@ -91,9 +91,10 @@ const markupOut = minifyMarkup(prodMarkup);
 /* Full single-file inline (may exceed Webflow ~50KB after HTML UIs) */
 const embedInline = `<style>${cssOut}</style>${markupOut}<script>${jsOut}</script>`;
 
-/* Phase C production embed: linked CSS + inline semantic HTML/JS.
-   Keeps initial DOM content available (a11y/SEO). Not the async CDN loader. */
-const embed = `<link rel="stylesheet" href="${CDN_BASE}/many-futures.css" />${markupOut}<script>${jsOut}</script>`;
+/* Phase C production embed: linked CSS/JS + inline semantic HTML.
+   Keeps initial DOM content available (a11y/SEO). Not the async CDN loader
+   that fetches markup. Full style+JS inline exceeds Webflow ~50KB limit. */
+const embed = `<link rel="stylesheet" href="${CDN_BASE}/many-futures.css" /><script src="${CDN_BASE}/many-futures.js" defer></script>${markupOut}`;
 
 const out = path.join(dir, "..", "many-futures-section.html");
 fs.writeFileSync(out, embed);
