@@ -129,14 +129,29 @@ Behavior:
 
 ## 13. Lighthouse / performance observations
 
-- Lighthouse CLI available (v12.8.2); full CI audit not run against live Webflow Preview (Designer snapshot API timed out; site not published).
-- Local parity observations:
-  - Explicit `width`/`height` on images + CSS `aspect-ratio` on visuals → limited CLS.
-  - `decoding="async"` on images.
-  - No base64 images in Embed.
-  - CSS/JS loaded from pinned CDN; HTML inline (no async markup fetch in production Embed).
-  - Default does **not** preload all six states.
-- Residual weight risk: PNG product crops are large; next optimization pass should prefer tighter crops / WebP **only after** visual comparison against PNG for UI text.
+Local `preview.html` Lighthouse (performance only, headless Chrome):
+
+| Audit | Score / value |
+|---|---|
+| Performance category | **0.81** |
+| Cumulative Layout Shift | **0.99** (≈ 0.041) |
+| Unsized images | Pass |
+| Offscreen images deferred | Pass |
+| Efficient image encoding | Pass |
+| Properly size images | **Fail** (tablet/desktop PNG sources larger than some display slots — expected headroom; not upscaling) |
+| Next-gen formats | **Fail** for product PNGs (intentional: UI text prefers PNG over lossy WebP) |
+| Total byte weight (default load) | ≈ **941 KB** network |
+| LCP | 0.28 (local preview shell; not production Webflow chrome) |
+
+JSON: `/opt/cursor/artifacts/many-futures/phase-c-quality/lighthouse.json`
+
+Other:
+
+- Explicit `width`/`height` + CSS `aspect-ratio` → low CLS.
+- `decoding="async"`; no base64 in Embed.
+- CSS/JS from pinned CDN; HTML inline (not async markup loader).
+- Default does **not** preload all six states.
+- Designer `element_snapshot_tool` timed out; site **not published**.
 
 ---
 
