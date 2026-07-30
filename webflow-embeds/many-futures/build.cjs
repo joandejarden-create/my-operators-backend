@@ -41,8 +41,10 @@ function minifyMarkup(input) {
     .trim();
 }
 
+/* Pin to commit that includes HTML UI CSS (ring/gaps/badges) + final assets. */
+const CDN_SHA = "d2aee9c5201f671fde32d4b3ee1e810d7d58c9f0";
 const CDN_BASE =
-  "https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@3beff4ef5c791055e19fc7d7efa613b446d53ca0/webflow-embeds/many-futures";
+  `https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@${CDN_SHA}/webflow-embeds/many-futures`;
 
 const ASSET_REWRITES = [
   ["assets/hotel-final.jpg", `${CDN_BASE}/assets/hotel-final.jpg`],
