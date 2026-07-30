@@ -138,7 +138,7 @@ console.log("Wrote many-futures-section-full-inline.html (backup)");
 console.log("Wrote preview.html and cdn-loader.html");
 console.log("Readable production source characters:", readableSource.length);
 console.log("Full style-inline Embed characters:", embedInline.length);
-console.log("Phase C Embed (linked CSS + inline HTML/JS) characters:", embed.length);
+console.log("Phase C Embed (linked CSS/JS + inline HTML) characters:", embed.length);
 console.log("Phase C Embed KB:", (embed.length / 1024).toFixed(1));
 console.log("  CSS file:", cssOut.length, "JS:", jsOut.length, "Markup:", markupOut.length);
 console.log(
