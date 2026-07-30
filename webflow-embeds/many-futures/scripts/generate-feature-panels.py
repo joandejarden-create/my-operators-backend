@@ -32,7 +32,9 @@ GREEN = (72, 168, 120)
 ORANGE = (220, 140, 70)
 RED = (200, 90, 90)
 
-DESKTOP = (960, 540)
+# Export near native source resolution — never invent pixels.
+# Primary CSS ~420px / tablet ~700px; 1024 native sources stay ≤1x upscale at 1x DPR.
+DESKTOP = (1024, 576)
 MOBILE_W = 780
 MOBILE_H = 520
 
@@ -117,13 +119,17 @@ def navy_frame(
     if pw < 4 or ph < 4:
         return canvas
 
-    scale = min(inner_w / pw, (inner_h * height_fill) / ph)
-    # Prefer filling most of the frame
-    if (pw * scale) / inner_w < 0.78:
-        scale = (inner_w * 0.92) / pw
+    # Never upscale beyond native source pixels (quality gate).
+    scale = min(1.0, inner_w / pw, (inner_h * height_fill) / ph)
+    # Prefer filling most of the frame without inventing resolution
+    if (pw * scale) / inner_w < 0.85 and pw <= inner_w:
+        scale = min(1.0, (inner_w * 0.96) / pw)
     nw = max(1, int(round(pw * scale)))
     nh = max(1, int(round(ph * scale)))
-    scaled = piece.resize((nw, nh), Image.Resampling.LANCZOS)
+    if (nw, nh) != (pw, ph):
+        scaled = piece.resize((nw, nh), Image.Resampling.LANCZOS)
+    else:
+        scaled = piece
 
     if nw > inner_w or nh > inner_h:
         left = max(0, (nw - inner_w) // 2)

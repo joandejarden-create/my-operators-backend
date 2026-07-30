@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
  * Combines markup + CSS + JS into a single Webflow Code Embed snippet,
- * and a local preview.html for Phase B review.
+ * and local preview.html.
  *
- * Phase B keeps feature PNGs as external assets (CDN or relative).
- * Production Webflow update is deferred — this build estimates size only.
+ * Phase C: full minified inline Embed is the default deployment path.
+ * CDN loader remains backup only.
  */
 const fs = require("fs");
 const path = require("path");
@@ -41,10 +41,15 @@ function minifyMarkup(input) {
     .trim();
 }
 
-/* Phase B: keep relative asset paths in local preview.
-   Production CDN map is prepared but not uploaded in Phase B. */
 const CDN_BASE =
-  "https://cdn.jsdelivr.net/gh/OWNER/REPO@BRANCH/webflow-embeds/many-futures";
+  "https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@cursor/many-futures-phase-b-38e7/webflow-embeds/many-futures";
+
+const ASSET_REWRITES = [
+  ["assets/hotel-final.jpg", `${CDN_BASE}/assets/hotel-final.jpg`],
+  ["assets/hotel-final-640.webp", `${CDN_BASE}/assets/hotel-final-640.webp`],
+  ["assets/hotel-final-960.webp", `${CDN_BASE}/assets/hotel-final-960.webp`],
+  ["assets/hotel-final-1280.webp", `${CDN_BASE}/assets/hotel-final-1280.webp`],
+];
 
 const FEATURE_FILES = [
   "brand-explorer-desktop.png",
@@ -65,24 +70,34 @@ const FEATURE_FILES = [
   "smart-matching-mobile.png",
 ];
 
-let prodMarkup = markup;
-prodMarkup = prodMarkup.split("assets/hotel-temp.jpg").join(`${CDN_BASE}/assets/hotel-temp.jpg`);
 for (const file of FEATURE_FILES) {
-  prodMarkup = prodMarkup
-    .split(`assets/features/${file}`)
-    .join(`${CDN_BASE}/assets/features/${file}`);
+  ASSET_REWRITES.push([
+    `assets/features/${file}`,
+    `${CDN_BASE}/assets/features/${file}`,
+  ]);
+}
+
+let prodMarkup = markup;
+for (const [from, to] of ASSET_REWRITES) {
+  prodMarkup = prodMarkup.split(from).join(to);
 }
 
 const cssOut = minifyCss(css);
 const jsOut = minifyJs(js);
 const markupOut = minifyMarkup(prodMarkup);
 
-const embed = `<style>${cssOut}</style>${markupOut}<script>${jsOut}</script>`;
+/* Full single-file inline (may exceed Webflow ~50KB after HTML UIs) */
+const embedInline = `<style>${cssOut}</style>${markupOut}<script>${jsOut}</script>`;
+
+/* Phase C production embed: linked CSS + inline semantic HTML/JS.
+   Keeps initial DOM content available (a11y/SEO). Not the async CDN loader. */
+const embed = `<link rel="stylesheet" href="${CDN_BASE}/many-futures.css" />${markupOut}<script>${jsOut}</script>`;
+
 const out = path.join(dir, "..", "many-futures-section.html");
 fs.writeFileSync(out, embed);
+fs.writeFileSync(path.join(dir, "many-futures-section-full-inline.html"), embedInline);
 
-/* Short Webflow loader alternative when embed exceeds ~45–50KB safe inline size */
-const loader = `<!-- Many Futures Phase B — CDN loader (Webflow HtmlEmbed) -->
+const loader = `<!-- Many Futures — CDN loader backup (use only if inline Embed is rejected) -->
 <link rel="stylesheet" href="${CDN_BASE}/many-futures.css" />
 <div id="mf-embed-host"></div>
 <script>
@@ -115,26 +130,21 @@ const preview = previewShell
 fs.writeFileSync(path.join(dir, "preview.html"), preview);
 
 const readableSource = `<style>\n${css}\n</style>\n${markup}\n<script>\n${js}\n</script>`;
-const inlineKb = embed.length / 1024;
-const readableKb = readableSource.length / 1024;
-const cssKb = cssOut.length / 1024;
-const jsKb = jsOut.length / 1024;
-const markupKb = markupOut.length / 1024;
-const loaderKb = loader.length / 1024;
-
 console.log("Wrote", out);
+console.log("Wrote many-futures-section-full-inline.html (backup)");
 console.log("Wrote preview.html and cdn-loader.html");
 console.log("Readable production source characters:", readableSource.length);
-console.log("Readable production source KB:", readableKb.toFixed(1));
-console.log("Minified inline Embed characters:", embed.length);
-console.log("Minified inline Embed KB:", inlineKb.toFixed(1));
-console.log("  CSS KB:", cssKb.toFixed(1));
-console.log("  JS KB:", jsKb.toFixed(1));
-console.log("  Markup KB:", markupKb.toFixed(1));
-console.log("CDN loader KB (backup only):", loaderKb.toFixed(1));
+console.log("Full style-inline Embed characters:", embedInline.length);
+console.log("Phase C Embed (linked CSS + inline HTML/JS) characters:", embed.length);
+console.log("Phase C Embed KB:", (embed.length / 1024).toFixed(1));
+console.log("  CSS file:", cssOut.length, "JS:", jsOut.length, "Markup:", markupOut.length);
 console.log(
-  "Phase C default:",
-  inlineKb <= 45
-    ? "Use full minified inline Embed (under 45 KB headroom target; Webflow ~50 KB limit)."
-    : "Inline exceeds 45 KB headroom — minify further or seek approval before CDN loader."
+  embed.length <= 50000
+    ? "Phase C Embed within ~50KB Webflow Code Embed limit."
+    : "Phase C Embed still exceeds ~50KB."
+);
+console.log(
+  embedInline.length <= 50000
+    ? "Full style-inline also within limit."
+    : "Full style-inline exceeds ~50KB — linked CSS used for Phase C to preserve HTML UIs."
 );

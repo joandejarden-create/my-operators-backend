@@ -1,14 +1,14 @@
-<!-- Many Futures Phase B — CDN loader (Webflow HtmlEmbed) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OWNER/REPO@BRANCH/webflow-embeds/many-futures/many-futures.css" />
+<!-- Many Futures — CDN loader backup (use only if inline Embed is rejected) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@cursor/many-futures-phase-b-38e7/webflow-embeds/many-futures/many-futures.css" />
 <div id="mf-embed-host"></div>
 <script>
 (function(){
   var host=document.getElementById("mf-embed-host");
   if(!host) return;
-  fetch("https://cdn.jsdelivr.net/gh/OWNER/REPO@BRANCH/webflow-embeds/many-futures/markup.html").then(function(r){return r.text();}).then(function(html){
+  fetch("https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@cursor/many-futures-phase-b-38e7/webflow-embeds/many-futures/markup.html").then(function(r){return r.text();}).then(function(html){
     host.innerHTML=html;
     var s=document.createElement("script");
-    s.src="https://cdn.jsdelivr.net/gh/OWNER/REPO@BRANCH/webflow-embeds/many-futures/many-futures.js";
+    s.src="https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@cursor/many-futures-phase-b-38e7/webflow-embeds/many-futures/many-futures.js";
     document.body.appendChild(s);
   });
 })();

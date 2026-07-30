@@ -528,706 +528,98 @@
 }
 
 /* HTML mini-UI panels (replaces raster reconstructions) */
-#dealality-many-futures .mf-feat-visual--ui {
-  aspect-ratio: auto;
-  min-height: 12rem;
-  height: auto;
-  padding: 0.65rem;
-  display: flex;
-  align-items: stretch;
-}
-
-#dealality-many-futures .mf-feat--primary .mf-feat-visual--ui {
-  min-height: 14rem;
-  padding: 0.75rem;
-}
-
-#dealality-many-futures .mf-feat--support .mf-feat-visual--ui {
-  min-height: 12rem;
-}
-
-#dealality-many-futures .mf-ui {
-  flex: 1;
-  min-width: 0;
-  padding: 0.75rem 0.85rem;
-  border-radius: 10px;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-bg);
-  color: var(--mf-text);
-  font-size: 0.8125rem;
-  line-height: 1.4;
-}
-
-#dealality-many-futures .mf-ui-label {
-  margin: 0 0 0.55rem;
-  display: inline-block;
-  padding: 0.22rem 0.55rem;
-  border-radius: 999px;
-  border: 1px solid rgba(70, 78, 120, 0.55);
-  background: rgba(12, 18, 40, 0.9);
-  color: var(--mf-muted-2);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-#dealality-many-futures .mf-ui-title {
-  margin: 0 0 0.25rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-  line-height: 1.25;
-  color: var(--mf-text);
-}
-
-#dealality-many-futures .mf-ui-descriptor {
-  margin: 0 0 0.2rem;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--mf-accent-soft);
-}
-
-#dealality-many-futures .mf-ui-subtitle {
-  margin: 0 0 0.65rem;
-  font-size: 0.75rem;
-  color: var(--mf-muted);
-}
-
-#dealality-many-futures .mf-ui-note {
-  margin: 0 0 0.55rem;
-  font-size: 0.75rem;
-  color: var(--mf-muted);
-}
-
-#dealality-many-futures .mf-ui-meta {
-  margin: 0 0 0.45rem;
-  font-size: 0.6875rem;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-ui-footnote {
-  margin: 0.45rem 0 0;
-  font-size: 0.6875rem;
-  color: var(--mf-muted-2);
-}
-
-/* Chips */
-#dealality-many-futures .mf-ui-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 0.55rem;
-}
-
-#dealality-many-futures .mf-ui-chip {
-  display: inline-flex;
-  padding: 0.28rem 0.55rem;
-  border-radius: 999px;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-panel);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--mf-muted);
-}
-
-#dealality-many-futures .mf-ui-chip--strong {
-  border-color: rgba(72, 168, 120, 0.45);
-  background: rgba(34, 90, 70, 0.35);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Operator matching table */
-#dealality-many-futures .mf-ui-table-wrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-#dealality-many-futures .mf-ui-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 0.2rem;
-  font-size: 0.75rem;
-}
-
-#dealality-many-futures .mf-ui-table th {
-  padding: 0.35rem 0.45rem;
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--mf-muted-2);
-  text-align: left;
-  background: var(--mf-panel-2);
-  border: 1px solid var(--mf-border);
-}
-
-#dealality-many-futures .mf-ui-table th:first-child {
-  border-radius: 6px 0 0 6px;
-}
-
-#dealality-many-futures .mf-ui-table th:last-child {
-  border-radius: 0 6px 6px 0;
-}
-
-#dealality-many-futures .mf-ui-table td {
-  padding: 0.45rem 0.45rem;
-  vertical-align: top;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-panel);
-}
-
-#dealality-many-futures .mf-ui-table tbody tr td:first-child {
-  border-radius: 6px 0 0 6px;
-}
-
-#dealality-many-futures .mf-ui-table tbody tr td:last-child {
-  border-radius: 0 6px 6px 0;
-}
-
-#dealality-many-futures .mf-ui-cell-primary {
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 650;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-#dealality-many-futures .mf-ui-cell-sub {
-  display: block;
-  margin-top: 0.12rem;
-  font-size: 0.625rem;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-ui-score {
-  display: inline-flex;
-  min-width: 2.75rem;
-  padding: 0.22rem 0.45rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-align: center;
-  color: #fff;
-}
-
-#dealality-many-futures .mf-ui-score--green {
-  background: rgb(72, 168, 120);
-}
-
-#dealality-many-futures .mf-ui-score--orange {
-  background: rgb(220, 140, 70);
-}
-
-#dealality-many-futures .mf-ui-score--red {
-  background: rgb(200, 90, 90);
-}
-
-/* Deal Readiness */
-#dealality-many-futures .mf-ui-readiness-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: 0.65rem;
-  margin-bottom: 0.65rem;
-}
-
-#dealality-many-futures .mf-ui-score-ring {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border-radius: 10px;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-panel);
-  min-height: 7.5rem;
-}
-
-#dealality-many-futures .mf-ui-ring-svg {
-  width: 5.5rem;
-  height: 5.5rem;
-  transform: rotate(-90deg);
-}
-
-#dealality-many-futures .mf-ui-ring-track {
-  fill: none;
-  stroke: var(--mf-panel-2);
-  stroke-width: 8;
-}
-
-#dealality-many-futures .mf-ui-ring-fill {
-  fill: none;
-  stroke: var(--mf-accent);
-  stroke-width: 8;
-  stroke-linecap: round;
-  stroke-dasharray: 301.6;
-  stroke-dashoffset: calc(301.6 - (301.6 * var(--mf-ring-pct, 0) / 100));
-}
-
-#dealality-many-futures .mf-ui-ring-value {
-  position: absolute;
-  top: 38%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  line-height: 1.1;
-}
-
-#dealality-many-futures .mf-ui-ring-num {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-#dealality-many-futures .mf-ui-ring-of {
-  font-size: 0.6875rem;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-ui-ring-label {
-  margin: 0.35rem 0 0;
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-ui-bars {
-  padding: 0.55rem 0.65rem;
-  border-radius: 10px;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-panel);
-}
-
-#dealality-many-futures .mf-ui-bars-heading {
-  margin: 0 0 0.45rem;
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-ui-bar-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) auto;
-  gap: 0.35rem 0.5rem;
-  align-items: center;
-  margin-bottom: 0.4rem;
-}
-
-#dealality-many-futures .mf-ui-bar-row:last-child {
-  margin-bottom: 0;
-}
-
-#dealality-many-futures .mf-ui-bar-label {
-  font-size: 0.75rem;
-  color: var(--mf-muted);
-}
-
-#dealality-many-futures .mf-ui-bar-track {
-  display: block;
-  height: 0.45rem;
-  border-radius: 4px;
-  background: var(--mf-panel-2);
-  overflow: hidden;
-}
-
-#dealality-many-futures .mf-ui-bar-fill {
-  display: block;
-  height: 100%;
-  width: calc(var(--mf-bar-pct, 0) * 1%);
-  border-radius: 4px;
-  background: var(--mf-accent);
-}
-
-#dealality-many-futures .mf-ui-bar-val {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--mf-text);
-  min-width: 2rem;
-  text-align: right;
-}
-
-#dealality-many-futures .mf-ui-gaps {
-  padding: 0.55rem 0.65rem;
-  border-radius: 10px;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-panel);
-}
-
-#dealality-many-futures .mf-ui-gaps-heading {
-  margin: 0 0 0.4rem;
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgb(232, 196, 92);
-}
-
-#dealality-many-futures .mf-ui-gap-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-#dealality-many-futures .mf-ui-gap-list li {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-bottom: 0.28rem;
-  font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-#dealality-many-futures .mf-ui-gap-list li:last-child {
-  margin-bottom: 0;
-}
-
-#dealality-many-futures .mf-ui-priority {
-  display: inline-flex;
-  flex-shrink: 0;
-  padding: 0.15rem 0.4rem;
-  border-radius: 5px;
-  font-size: 0.625rem;
-  font-weight: 700;
-  border: 1px solid transparent;
-}
-
-#dealality-many-futures .mf-ui-priority--high {
-  color: rgb(200, 90, 90);
-  border-color: rgba(200, 90, 90, 0.45);
-  background: rgba(200, 90, 90, 0.12);
-}
-
-#dealality-many-futures .mf-ui-priority--medium {
-  color: rgb(220, 140, 70);
-  border-color: rgba(220, 140, 70, 0.45);
-  background: rgba(220, 140, 70, 0.12);
-}
-
-/* Search placeholder */
-#dealality-many-futures .mf-ui-search {
-  margin-bottom: 0.45rem;
-  padding: 0.45rem 0.65rem;
-  border-radius: 8px;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-panel);
-  font-size: 0.75rem;
-  color: var(--mf-muted-2);
-}
-
-/* Library cards */
-#dealality-many-futures .mf-ui-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-#dealality-many-futures .mf-ui-cards--terms {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.4rem;
-}
-
-#dealality-many-futures .mf-ui-card {
-  padding: 0.5rem 0.6rem;
-  border-radius: 8px;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-panel);
-}
-
-#dealality-many-futures .mf-ui-card-title {
-  margin: 0 0 0.2rem;
-  font-size: 0.8125rem;
-  font-weight: 650;
-  line-height: 1.3;
-  color: var(--mf-text);
-}
-
-#dealality-many-futures .mf-ui-card-meta {
-  margin: 0 0 0.25rem;
-  font-size: 0.625rem;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-ui-card-summary {
-  margin: 0 0 0.35rem;
-  font-size: 0.6875rem;
-  line-height: 1.35;
-  color: var(--mf-muted);
-}
-
-#dealality-many-futures .mf-ui-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-}
-
-#dealality-many-futures .mf-ui-badge {
-  display: inline-flex;
-  padding: 0.12rem 0.35rem;
-  border-radius: 5px;
-  font-size: 0.5625rem;
-  font-weight: 700;
-  border: 1px solid transparent;
-}
-
-#dealality-many-futures .mf-ui-badge--green {
-  color: rgb(72, 168, 120);
-  border-color: rgba(72, 168, 120, 0.45);
-  background: rgba(72, 168, 120, 0.12);
-}
-
-#dealality-many-futures .mf-ui-badge--orange {
-  color: rgb(220, 140, 70);
-  border-color: rgba(220, 140, 70, 0.45);
-  background: rgba(220, 140, 70, 0.12);
-}
-
-#dealality-many-futures .mf-ui-badge--red {
-  color: rgb(200, 90, 90);
-  border-color: rgba(200, 90, 90, 0.45);
-  background: rgba(200, 90, 90, 0.12);
-}
-
-#dealality-many-futures .mf-ui-badge--accent {
-  color: var(--mf-accent-soft);
-  border-color: rgba(139, 144, 255, 0.35);
-  background: rgba(108, 114, 255, 0.1);
-}
-
-/* Submit Proposal form */
-#dealality-many-futures .mf-ui-form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.45rem 0.65rem;
-}
-
-#dealality-many-futures .mf-ui-field-group {
-  grid-column: 1 / -1;
-}
-
-#dealality-many-futures .mf-ui-field-group-label {
-  margin: 0 0 0.35rem;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--mf-accent-soft);
-}
-
-#dealality-many-futures .mf-ui-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-#dealality-many-futures .mf-ui-field-label {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-ui-field-value {
-  padding: 0.45rem 0.55rem;
-  border-radius: 8px;
-  border: 1px solid var(--mf-border);
-  background: var(--mf-panel);
-  font-size: 0.875rem;
-  color: var(--mf-text);
-}
-
-#dealality-many-futures .mf-feat-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.75rem 0.85rem 0.9rem;
-}
-
-#dealality-many-futures .mf-feat--primary .mf-feat-body {
-  padding: 0.9rem 1rem 1.05rem;
-  gap: 0.4rem;
-}
-
-#dealality-many-futures .mf-feat-cat {
-  margin: 0;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--mf-muted-2);
-}
-
-#dealality-many-futures .mf-feat-name {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 720;
-  line-height: 1.2;
-}
-
-#dealality-many-futures .mf-feat--support .mf-feat-name {
-  font-size: 0.95rem;
-}
-
-#dealality-many-futures .mf-feat-purpose,
-#dealality-many-futures .mf-feat-benefit {
-  margin: 0;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  color: var(--mf-muted);
-}
-
-#dealality-many-futures .mf-feat--primary .mf-feat-purpose,
-#dealality-many-futures .mf-feat--primary .mf-feat-benefit {
-  font-size: 0.86rem;
-}
-
-#dealality-many-futures .mf-feat-purpose strong,
-#dealality-many-futures .mf-feat-benefit strong {
-  color: rgba(255, 255, 255, 0.82);
-  font-weight: 650;
-}
-
-#dealality-many-futures .mf-outcome {
-  margin: 0;
-  padding: 0.85rem 1rem;
-  border-radius: var(--mf-radius);
-  border: 1px solid rgba(108, 114, 255, 0.22);
-  background: rgba(108, 114, 255, 0.08);
-  font-size: 0.9rem;
-  line-height: 1.45;
-  color: rgba(255, 255, 255, 0.82);
-}
-
-#dealality-many-futures .mf-outcome strong {
-  display: block;
-  margin-bottom: 0.25rem;
-  font-size: 0.65rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--mf-accent-soft);
-}
-
-#dealality-many-futures:not(.mf-js-ready) .mf-connectors { display: none; }
-
-@media screen and (max-width: 991px) {
-  #dealality-many-futures .mf-layout {
-    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
-    grid-template-areas:
-      "hotel questions"
-      "workspace workspace";
-  }
-
-  #dealality-many-futures .mf-hotel { grid-area: hotel; }
-  #dealality-many-futures .mf-questions { grid-area: questions; }
-  #dealality-many-futures .mf-workspace { grid-area: workspace; }
-
-  #dealality-many-futures .mf-connectors,
-  #dealality-many-futures .mf-hotel-node {
-    display: none;
-  }
-
-  #dealality-many-futures .mf-features {
-    grid-template-columns: 1fr;
-  }
-
-  #dealality-many-futures .mf-feat-stack {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  #dealality-many-futures .mf-q.is-active {
-    transform: none;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  #dealality-many-futures .mf-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-  }
-
-  #dealality-many-futures .mf-feat-img--desk { display: none; }
-  #dealality-many-futures .mf-feat-img--mob { display: block; }
-
-  #dealality-many-futures .mf-ui-hide-mobile {
-    display: none;
-  }
-
-  #dealality-many-futures .mf-ui-readiness-grid {
-    grid-template-columns: 1fr;
-  }
-
-  #dealality-many-futures .mf-ui-cards--terms {
-    grid-template-columns: 1fr;
-  }
-
-  #dealality-many-futures .mf-ui-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  #dealality-many-futures .mf-feat-visual--ui {
-    padding: 0.5rem;
-  }
-
-  #dealality-many-futures .mf-ui {
-    padding: 0.65rem 0.7rem;
-    font-size: 0.8125rem;
-  }
-
-  #dealality-many-futures .mf-ui-title {
-    font-size: 1rem;
-  }
-
-  #dealality-many-futures .mf-feat-stack {
-    grid-template-columns: 1fr;
-  }
-
-  #dealality-many-futures .mf-questions {
-    gap: 0.4rem;
-  }
-
-  #dealality-many-futures .mf-workspace {
-    order: 3;
-  }
-
-  /* Accordion: workspace follows questions visually via JS move optional;
-     default stacks workspace after questions; mobile JS pins panel after active q */
-  #dealality-many-futures .mf-mobile-slot {
-    display: block;
-  }
-
-  #dealality-many-futures .mf-decision-title {
-    font-size: 1.08rem;
-  }
-
-  #dealality-many-futures .mf-feat-name {
-    font-size: 1rem;
-  }
-
-  #dealality-many-futures .mf-hotel-title {
-    font-size: 0.98rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #dealality-many-futures .mf-q,
-  #dealality-many-futures .mf-panel,
-  #dealality-many-futures .mf-feat,
-  #dealality-many-futures .mf-connectors path {
-    transition: none !important;
-    animation: none !important;
-  }
 
-  #dealality-many-futures .mf-q.is-active,
-  #dealality-many-futures .mf-panel.is-active {
-    transform: none !important;
-  }
+#dealality-many-futures .mf-hotel-media img{object-position:center 35%}
+
+/* Feature HTML UIs — compact */
+#dealality-many-futures .mf-feat-visual--ui{aspect-ratio:auto;min-height:12rem;padding:.55rem;background:linear-gradient(180deg,#0c1430,#080f25)}
+#dealality-many-futures .mf-feat--primary .mf-feat-visual--ui{min-height:13.5rem}
+#dealality-many-futures .mf-feat--support .mf-feat-visual--ui{min-height:11rem}
+#dealality-many-futures .mf-ui{box-sizing:border-box;width:100%;padding:.7rem .75rem;border:1px solid var(--mf-border);border-radius:10px;background:rgba(17,27,58,.96);color:var(--mf-text);font-size:.8125rem;line-height:1.35}
+#dealality-many-futures .mf-ui-label{display:inline-flex;margin:0 0 .4rem;padding:.18rem .45rem;border:1px solid rgba(174,185,225,.22);border-radius:999px;background:rgba(8,15,37,.85);color:var(--mf-muted-2);font-size:.625rem;font-weight:700;letter-spacing:.04em}
+#dealality-many-futures .mf-ui-title{margin:0 0 .15rem;font-size:1.05rem;font-weight:720;line-height:1.2}
+#dealality-many-futures .mf-ui-descriptor{margin:0 0 .2rem;font-size:.6875rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mf-accent-soft)}
+#dealality-many-futures .mf-ui-subtitle,#dealality-many-futures .mf-ui-note{margin:0 0 .5rem;font-size:.75rem;color:var(--mf-muted)}
+#dealality-many-futures .mf-ui-meta,#dealality-many-futures .mf-ui-footnote{margin:.4rem 0 0;font-size:.6875rem;color:var(--mf-muted-2)}
+#dealality-many-futures .mf-ui-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem}
+#dealality-many-futures .mf-ui-chip{display:inline-flex;padding:.25rem .5rem;border-radius:999px;border:1px solid var(--mf-border);background:var(--mf-panel);color:var(--mf-muted);font-size:.6875rem;font-weight:650}
+#dealality-many-futures .mf-ui-chip--strong{background:rgba(72,168,120,.22);border-color:rgba(72,168,120,.45);color:#b8e6cd}
+#dealality-many-futures .mf-ui-table-wrap{width:100%;overflow-x:auto}
+#dealality-many-futures .mf-ui-table{width:100%;border-collapse:separate;border-spacing:0 .2rem;font-size:.75rem}
+#dealality-many-futures .mf-ui-table th{padding:.35rem .4rem;color:var(--mf-muted-2);font-size:.625rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:left;background:var(--mf-panel-2);border:1px solid var(--mf-border)}
+#dealality-many-futures .mf-ui-table th:first-child{border-radius:6px 0 0 6px}
+#dealality-many-futures .mf-ui-table th:last-child{border-radius:0 6px 6px 0}
+#dealality-many-futures .mf-ui-table td{padding:.4rem;vertical-align:top;border:1px solid var(--mf-border);background:var(--mf-panel)}
+#dealality-many-futures .mf-ui-table tbody tr td:first-child{border-radius:6px 0 0 6px}
+#dealality-many-futures .mf-ui-table tbody tr td:last-child{border-radius:0 6px 6px 0}
+#dealality-many-futures .mf-ui-cell-primary{display:block;font-size:.8125rem;font-weight:650;color:rgba(255,255,255,.92)}
+#dealality-many-futures .mf-ui-cell-sub{display:block;margin-top:.1rem;font-size:.625rem;color:var(--mf-muted-2)}
+#dealality-many-futures .mf-ui-score{display:inline-flex;min-width:2.75rem;padding:.2rem .45rem;border-radius:999px;font-size:.75rem;font-weight:700;color:#fff;justify-content:center}
+#dealality-many-futures .mf-ui-score--green{background:#48a878}
+#dealality-many-futures .mf-ui-score--orange{background:#dc8c46}
+#dealality-many-futures .mf-ui-score--red{background:#c85a5a}
+#dealality-many-futures .mf-ui-readiness-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:.65rem;margin-bottom:.65rem}
+#dealality-many-futures .mf-ui-score-ring{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:7.5rem;padding:.75rem;border:1px solid var(--mf-border);border-radius:12px;background:var(--mf-panel)}
+#dealality-many-futures .mf-ui-score-ring::before{content:"";width:5.5rem;height:5.5rem;border-radius:50%;border:6px solid rgba(108,114,255,.18);border-top-color:var(--mf-accent-soft);box-sizing:border-box}
+#dealality-many-futures .mf-ui-score-ring-value{position:absolute;top:50%;left:50%;transform:translate(-50%,-70%);font-size:1.35rem;font-weight:750}
+#dealality-many-futures .mf-ui-score-ring-label{position:absolute;bottom:.7rem;font-size:.625rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mf-muted-2)}
+#dealality-many-futures .mf-ui-bars{display:flex;flex-direction:column;gap:.55rem}
+#dealality-many-futures .mf-ui-bar-row{display:grid;gap:.25rem}
+#dealality-many-futures .mf-ui-bar-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--mf-muted)}
+#dealality-many-futures .mf-ui-bar-track{height:.45rem;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+#dealality-many-futures .mf-ui-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mf-accent),var(--mf-accent-soft))}
+#dealality-many-futures .mf-ui-gaps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.35rem}
+#dealality-many-futures .mf-ui-gaps li{padding:.4rem .55rem;border:1px solid var(--mf-border);border-radius:8px;background:var(--mf-panel);font-size:.75rem;color:var(--mf-muted)}
+#dealality-many-futures .mf-ui-search{margin:0 0 .55rem;padding:.45rem .6rem;border:1px solid var(--mf-border);border-radius:8px;background:var(--mf-panel);color:var(--mf-muted-2);font-size:.75rem}
+#dealality-many-futures .mf-ui-cards{display:flex;flex-direction:column;gap:.45rem}
+#dealality-many-futures .mf-ui-cards--terms{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+#dealality-many-futures .mf-ui-card{padding:.55rem .6rem;border:1px solid var(--mf-border);border-radius:10px;background:var(--mf-panel)}
+#dealality-many-futures .mf-ui-card-title{margin:0 0 .2rem;font-size:.8125rem;font-weight:700}
+#dealality-many-futures .mf-ui-card-meta{margin:0 0 .3rem;font-size:.625rem;color:var(--mf-muted-2)}
+#dealality-many-futures .mf-ui-card-body{margin:0 0 .35rem;font-size:.75rem;color:var(--mf-muted);line-height:1.35}
+#dealality-many-futures .mf-ui-badges{display:flex;flex-wrap:wrap;gap:.25rem}
+#dealality-many-futures .mf-ui-badge{display:inline-flex;padding:.15rem .4rem;border-radius:6px;border:1px solid var(--mf-border);font-size:.625rem;font-weight:700}
+#dealality-many-futures .mf-ui-badge--risk-low{color:#7dcea0;border-color:rgba(72,168,120,.4)}
+#dealality-many-futures .mf-ui-badge--risk-med{color:#e0b07a;border-color:rgba(220,140,70,.4)}
+#dealality-many-futures .mf-ui-badge--risk-high{color:#e09090;border-color:rgba(200,90,90,.4)}
+#dealality-many-futures .mf-ui-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem .65rem}
+#dealality-many-futures .mf-ui-field{display:flex;flex-direction:column;gap:.2rem}
+#dealality-many-futures .mf-ui-field-label{font-size:.625rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mf-muted-2)}
+#dealality-many-futures .mf-ui-field-value{padding:.45rem .55rem;border:1px solid var(--mf-border);border-radius:8px;background:var(--mf-panel);font-size:.8125rem;color:rgba(255,255,255,.9)}
+#dealality-many-futures .mf-ui-section{margin:.35rem 0 .25rem;font-size:.6875rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mf-accent-soft)}
+
+@media screen and (max-width:991px){
+#dealality-many-futures .mf-layout{grid-template-columns:minmax(0,.4fr) minmax(0,.6fr);grid-template-areas:"hotel questions" "workspace workspace"}
+#dealality-many-futures .mf-hotel{grid-area:hotel}
+#dealality-many-futures .mf-questions{grid-area:questions}
+#dealality-many-futures .mf-workspace{grid-area:workspace}
+#dealality-many-futures .mf-connectors,#dealality-many-futures .mf-hotel-node{display:none}
+#dealality-many-futures .mf-features{grid-template-columns:1fr}
+#dealality-many-futures .mf-feat-stack{display:grid;grid-template-columns:1fr 1fr}
+#dealality-many-futures .mf-q.is-active{transform:none}
+}
+@media screen and (max-width:767px){
+#dealality-many-futures .mf-layout{display:flex;flex-direction:column;gap:.85rem}
+#dealality-many-futures .mf-feat-img--desk{display:none}
+#dealality-many-futures .mf-feat-img--mob{display:block}
+#dealality-many-futures .mf-ui-hide-mobile{display:none}
+#dealality-many-futures .mf-ui-readiness-grid,#dealality-many-futures .mf-ui-cards--terms,#dealality-many-futures .mf-ui-form-grid{grid-template-columns:1fr}
+#dealality-many-futures .mf-feat-visual--ui{padding:.5rem}
+#dealality-many-futures .mf-ui{padding:.65rem .7rem;font-size:.8125rem}
+#dealality-many-futures .mf-ui-title{font-size:1rem}
+#dealality-many-futures .mf-feat-stack{grid-template-columns:1fr}
+#dealality-many-futures .mf-questions{gap:.4rem}
+#dealality-many-futures .mf-workspace{order:3}
+#dealality-many-futures .mf-mobile-slot{display:block}
+#dealality-many-futures .mf-decision-title{font-size:1.08rem}
+#dealality-many-futures .mf-feat-name{font-size:1rem}
+#dealality-many-futures .mf-hotel-title{font-size:.98rem}
+#dealality-many-futures .mf-hotel-media{aspect-ratio:4/5;object-position:center 30%}
+#dealality-many-futures .mf-hotel-media img{object-position:center 28%}
+}
+@media (prefers-reduced-motion:reduce){
+#dealality-many-futures .mf-q,#dealality-many-futures .mf-panel,#dealality-many-futures .mf-feat,#dealality-many-futures .mf-connectors path{transition:none!important;animation:none!important}
+#dealality-many-futures .mf-q.is-active,#dealality-many-futures .mf-panel.is-active{transform:none!important}
 }
 
 </style>
@@ -1270,16 +662,18 @@
 
     <article class="mf-hotel" aria-label="Illustrative hotel opportunity">
       <div class="mf-hotel-media">
-        <span class="mf-hotel-temp">Temporary image</span>
-        <img
-          data-mf-asset="hotel"
-          src="assets/hotel-temp.jpg"
-          alt="Temporary illustrative photo of a multi-story urban hotel exterior with balconies"
-          width="1200"
-          height="900"
-          loading="eager"
-          decoding="async"
-        />
+        <picture>
+          <source type="image/webp" srcset="assets/hotel-final-640.webp 640w, assets/hotel-final-960.webp 960w, assets/hotel-final-1280.webp 1280w" sizes="(max-width:767px) 92vw, (max-width:991px) 38vw, 220px" />
+          <img
+            data-mf-asset="hotel"
+            src="assets/hotel-final.jpg"
+            alt="Illustrative upper-upscale urban hotel facade with entrance canopy and lobby frontage"
+            width="1024"
+            height="1536"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
       </div>
       <div class="mf-hotel-body">
         <span class="mf-illus-label">Illustrative Opportunity</span>
@@ -1358,7 +752,7 @@
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual">
-              <img src="assets/features/brand-explorer-desktop.png" alt="Brand Explorer: brand positioning and owner-fit context" width="960" height="540" loading="eager" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+              <img src="assets/features/brand-explorer-desktop.png" alt="Brand Explorer: brand positioning and owner-fit context" width="1024" height="576" loading="eager" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
               <img src="assets/features/brand-explorer-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
             </div>
             <div class="mf-feat-body">
@@ -1371,7 +765,7 @@
           <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/smart-matching-desktop.png" alt="Smart Matching: Match Score and fit signals from existing Dealality matching" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/smart-matching-desktop.png" alt="Smart Matching: Match Score and fit signals from existing Dealality matching" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
                 <img src="assets/features/smart-matching-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
@@ -1383,7 +777,7 @@
             </article>
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/radar-desktop.png" alt="Dealality Radar: brand presence and market context" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/radar-desktop.png" alt="Dealality Radar: brand presence and market context" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
                 <img src="assets/features/radar-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
@@ -1408,7 +802,7 @@
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual">
-              <img src="assets/features/operator-explorer-desktop.png" alt="Operator Explorer: operator identity and operating metrics" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+              <img src="assets/features/operator-explorer-desktop.png" alt="Operator Explorer: operator identity and operating metrics" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
               <img src="assets/features/operator-explorer-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
             </div>
             <div class="mf-feat-body">
@@ -1477,19 +871,7 @@
                             <span class="mf-ui-cell-sub">Moderate alignment — review gaps</span>
                           </td>
                         </tr>
-                        <tr>
-                          <td>
-                            <span class="mf-ui-cell-primary">Litoral Operating Group</span>
-                            <span class="mf-ui-cell-sub">Demo operator record</span>
-                          </td>
-                          <td class="mf-ui-hide-mobile">San Juan, Puerto Rico</td>
-                          <td><span class="mf-ui-score mf-ui-score--red">38.1</span></td>
-                          <td>
-                            <span class="mf-ui-cell-primary">Limited market overlap</span>
-                            <span class="mf-ui-cell-sub">Weak alignment — significant gaps</span>
-                          </td>
-                        </tr>
-                      </tbody>
+</tbody>
                     </table>
                   </div>
                   <p class="mf-ui-footnote">Overall Operator Alignment Score · 0–100 · nine scored factors</p>
@@ -1504,7 +886,7 @@
             </article>
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/operator-track-record-desktop.png" alt="Operator Explorer Proof and Track Record view: experience metrics and case studies" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/operator-track-record-desktop.png" alt="Operator Explorer Proof and Track Record view: experience metrics and case studies" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
                 <img src="assets/features/operator-track-record-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
@@ -1529,7 +911,7 @@
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual">
-              <img src="assets/features/radar-desktop.png" alt="Dealality Radar: market and competitive context" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+              <img src="assets/features/radar-desktop.png" alt="Dealality Radar: market and competitive context" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
               <img src="assets/features/radar-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
             </div>
             <div class="mf-feat-body">
@@ -1592,7 +974,7 @@
             </article>
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
                 <img src="assets/features/fee-estimator-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
@@ -1617,7 +999,7 @@
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual">
-              <img src="assets/features/opportunity-review-desktop.png" alt="Opportunity Review via Deal Brief interface" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+              <img src="assets/features/opportunity-review-desktop.png" alt="Opportunity Review via Deal Brief interface" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
               <img src="assets/features/opportunity-review-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
             </div>
             <div class="mf-feat-body">
@@ -1630,7 +1012,7 @@
           <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/brand-explorer-desktop.png" alt="Brand Explorer" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/brand-explorer-desktop.png" alt="Brand Explorer" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
                 <img src="assets/features/brand-explorer-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
@@ -1642,7 +1024,7 @@
             </article>
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/radar-desktop.png" alt="Dealality Radar: market and location context" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/radar-desktop.png" alt="Dealality Radar: market and location context" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
                 <img src="assets/features/radar-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
@@ -1667,7 +1049,7 @@
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual">
-              <img src="assets/features/deal-compare-desktop.png" alt="Deal Compare: side-by-side commercial term comparison" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+              <img src="assets/features/deal-compare-desktop.png" alt="Deal Compare: side-by-side commercial term comparison" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
               <img src="assets/features/deal-compare-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
             </div>
             <div class="mf-feat-body">
@@ -1729,7 +1111,7 @@
             </article>
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
-                <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator" width="960" height="540" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
+                <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--desk"/>
                 <img src="assets/features/fee-estimator-mobile.png" alt="" width="780" height="520" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--mob" aria-hidden="true"/>
               </div>
               <div class="mf-feat-body">
