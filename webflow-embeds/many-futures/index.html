@@ -30,7 +30,7 @@
       margin: 0 auto 48px;
       text-align: center;
     }
-    /* Default / desktop eyebrow */
+    /* Approved eyebrow: Option B — BEFORE COMMITMENT (restrained badge). */
     .many-futures-eyebrow {
       display: inline-flex;
       margin: 0 0 1rem;
@@ -40,40 +40,6 @@
       background: rgba(108,114,255,.1);
       color: #8b90ff;
       font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-    }
-    /* Mobile Option A: compact two-line (default for comparison page A) */
-    .many-futures-eyebrow--a {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.12rem;
-      margin: 0 auto 0.85rem;
-      padding: 0.4rem 0.7rem;
-      max-width: 11.5rem;
-      border-radius: 10px;
-      border: 1px solid rgba(108,114,255,.28);
-      background: rgba(108,114,255,.1);
-      color: #8b90ff;
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      line-height: 1.25;
-      text-transform: uppercase;
-      text-align: center;
-    }
-    /* Mobile Option B: shortened single line */
-    .many-futures-eyebrow--b {
-      display: none;
-      margin: 0 auto 0.85rem;
-      padding: 0.32rem 0.7rem;
-      border-radius: 999px;
-      border: 1px solid rgba(108,114,255,.28);
-      background: rgba(108,114,255,.1);
-      color: #8b90ff;
-      font-size: 0.62rem;
       font-weight: 700;
       letter-spacing: 0.07em;
       text-transform: uppercase;
@@ -130,15 +96,10 @@
       .many-futures-intro { margin-bottom: 28px; }
       .many-futures-intro h2 { font-size: 1.55rem; margin-bottom: 12px; }
       .many-futures-intro p { font-size: 0.95rem; line-height: 1.55; }
-      /* Default prototype uses Option A on mobile */
-      .many-futures-eyebrow { display: none; }
-      .many-futures-eyebrow--a { display: inline-flex; }
-    }
-    body[data-eyebrow="b"] .many-futures-eyebrow--a { display: none !important; }
-    body[data-eyebrow="b"] .many-futures-eyebrow--b { display: inline-flex; }
-    @media (min-width: 768px) {
-      body[data-eyebrow="b"] .many-futures-eyebrow--b { display: none; }
-      body[data-eyebrow="b"] .many-futures-eyebrow { display: inline-flex; }
+      .many-futures-eyebrow {
+        font-size: 0.62rem;
+        padding: 0.32rem 0.7rem;
+      }
     }
   </style>
   <link rel="stylesheet" href="many-futures.css" />
@@ -147,12 +108,7 @@
   <section id="many-futures" class="many-futures-section">
     <div class="many-futures-container">
       <div class="many-futures-intro">
-        <p class="many-futures-eyebrow">Strategic clarity, before commitment</p>
-        <p class="many-futures-eyebrow--a" aria-label="Strategic clarity before commitment">
-          <span>Strategic clarity</span>
-          <span>Before commitment</span>
-        </p>
-        <p class="many-futures-eyebrow--b">Before commitment</p>
+        <p class="many-futures-eyebrow">Before commitment</p>
         <h2>One Hotel. Many Futures.</h2>
         <p>
           A hotel opportunity may support more than one credible path. Dealality helps

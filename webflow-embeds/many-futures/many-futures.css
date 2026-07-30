@@ -424,12 +424,14 @@
 
 #dealality-many-futures .mf-screens {
   position: relative;
-  aspect-ratio: 16 / 9.6;
+  /* Shorter frame matches curated metric-focused crops (soft focus). */
+  aspect-ratio: 16 / 7.2;
   background: #0a1228;
 }
 
 #dealality-many-futures .mf-screens--mobile {
-  aspect-ratio: 4 / 5;
+  /* Wide metric strips; keep preview short on mobile. */
+  aspect-ratio: 16 / 6.2;
 }
 
 #dealality-many-futures .mf-screen {
@@ -456,8 +458,10 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top left;
+  /* Contain so curated crops are never cropped/zoomed again. */
+  object-fit: contain;
+  object-position: center center;
+  background: #0a1228;
 }
 
 #dealality-many-futures .mf-preview-foot {
@@ -599,7 +603,7 @@
   #dealality-many-futures .mf-foot-title { font-size: 1.02rem; }
   #dealality-many-futures .mf-foot-desc { font-size: 0.84rem; }
   #dealality-many-futures .mf-hotel-title { font-size: 0.98rem; }
-  #dealality-many-futures .mf-screens--mobile .mf-screen img { object-position: top center; }
+  #dealality-many-futures .mf-screens--mobile .mf-screen img { object-position: center center; }
 }
 
 @media (prefers-reduced-motion: reduce) {

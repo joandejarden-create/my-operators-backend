@@ -30,7 +30,7 @@
       margin: 0 auto 48px;
       text-align: center;
     }
-    /* Default / desktop eyebrow */
+    /* Approved eyebrow: Option B — BEFORE COMMITMENT (restrained badge). */
     .many-futures-eyebrow {
       display: inline-flex;
       margin: 0 0 1rem;
@@ -40,40 +40,6 @@
       background: rgba(108,114,255,.1);
       color: #8b90ff;
       font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-    }
-    /* Mobile Option A: compact two-line (default for comparison page A) */
-    .many-futures-eyebrow--a {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.12rem;
-      margin: 0 auto 0.85rem;
-      padding: 0.4rem 0.7rem;
-      max-width: 11.5rem;
-      border-radius: 10px;
-      border: 1px solid rgba(108,114,255,.28);
-      background: rgba(108,114,255,.1);
-      color: #8b90ff;
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      line-height: 1.25;
-      text-transform: uppercase;
-      text-align: center;
-    }
-    /* Mobile Option B: shortened single line */
-    .many-futures-eyebrow--b {
-      display: none;
-      margin: 0 auto 0.85rem;
-      padding: 0.32rem 0.7rem;
-      border-radius: 999px;
-      border: 1px solid rgba(108,114,255,.28);
-      background: rgba(108,114,255,.1);
-      color: #8b90ff;
-      font-size: 0.62rem;
       font-weight: 700;
       letter-spacing: 0.07em;
       text-transform: uppercase;
@@ -130,15 +96,10 @@
       .many-futures-intro { margin-bottom: 28px; }
       .many-futures-intro h2 { font-size: 1.55rem; margin-bottom: 12px; }
       .many-futures-intro p { font-size: 0.95rem; line-height: 1.55; }
-      /* Default prototype uses Option A on mobile */
-      .many-futures-eyebrow { display: none; }
-      .many-futures-eyebrow--a { display: inline-flex; }
-    }
-    body[data-eyebrow="b"] .many-futures-eyebrow--a { display: none !important; }
-    body[data-eyebrow="b"] .many-futures-eyebrow--b { display: inline-flex; }
-    @media (min-width: 768px) {
-      body[data-eyebrow="b"] .many-futures-eyebrow--b { display: none; }
-      body[data-eyebrow="b"] .many-futures-eyebrow { display: inline-flex; }
+      .many-futures-eyebrow {
+        font-size: 0.62rem;
+        padding: 0.32rem 0.7rem;
+      }
     }
   </style>
   <style>
@@ -568,12 +529,14 @@
 
 #dealality-many-futures .mf-screens {
   position: relative;
-  aspect-ratio: 16 / 9.6;
+  /* Shorter frame matches curated metric-focused crops (soft focus). */
+  aspect-ratio: 16 / 7.2;
   background: #0a1228;
 }
 
 #dealality-many-futures .mf-screens--mobile {
-  aspect-ratio: 4 / 5;
+  /* Wide metric strips; keep preview short on mobile. */
+  aspect-ratio: 16 / 6.2;
 }
 
 #dealality-many-futures .mf-screen {
@@ -600,8 +563,10 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top left;
+  /* Contain so curated crops are never cropped/zoomed again. */
+  object-fit: contain;
+  object-position: center center;
+  background: #0a1228;
 }
 
 #dealality-many-futures .mf-preview-foot {
@@ -743,7 +708,7 @@
   #dealality-many-futures .mf-foot-title { font-size: 1.02rem; }
   #dealality-many-futures .mf-foot-desc { font-size: 0.84rem; }
   #dealality-many-futures .mf-hotel-title { font-size: 0.98rem; }
-  #dealality-many-futures .mf-screens--mobile .mf-screen img { object-position: top center; }
+  #dealality-many-futures .mf-screens--mobile .mf-screen img { object-position: center center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -785,12 +750,7 @@
   <section id="many-futures" class="many-futures-section">
     <div class="many-futures-container">
       <div class="many-futures-intro">
-        <p class="many-futures-eyebrow">Strategic clarity, before commitment</p>
-        <p class="many-futures-eyebrow--a" aria-label="Strategic clarity before commitment">
-          <span>Strategic clarity</span>
-          <span>Before commitment</span>
-        </p>
-        <p class="many-futures-eyebrow--b">Before commitment</p>
+        <p class="many-futures-eyebrow">Before commitment</p>
         <h2>One Hotel. Many Futures.</h2>
         <p>
           A hotel opportunity may support more than one credible path. Dealality helps
@@ -813,7 +773,7 @@
         <span class="mf-hotel-temp">Temporary image</span>
         <img
           data-mf-asset="hotel"
-          src="assets/hotel-temp.jpg"
+          src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecfbcdb4eea68e0a6f3_mf-hotel-temp.jpg"
           alt="Temporary illustrative photo of a multi-story urban hotel exterior with balconies"
           width="1200"
           height="900"
@@ -867,7 +827,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen" data-preview-id="rebrand">
-                <img data-mf-asset="rebrand-mobile" src="assets/crops/rebrand-mobile.png" alt="Curated Brand Explorer crop focusing on brand positioning" width="780" height="1000" loading="lazy" decoding="async"/>
+                <img data-mf-asset="rebrand-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecf433d91a90f75bfeb_mf-rebrand-mobile.png" alt="Curated Brand Explorer crop focusing on brand positioning" width="780" height="272" loading="lazy" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -899,7 +859,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen is-active" data-preview-id="new-operator">
-                <img data-mf-asset="new-operator-mobile" src="assets/crops/new-operator-mobile.png" alt="Curated Operator Explorer crop focusing on decision metrics" width="780" height="900" loading="eager" decoding="async"/>
+                <img data-mf-asset="new-operator-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecfbcdb4eea68e0a716_mf-new-operator-mobile.png" alt="Curated Operator Explorer crop focusing on decision metrics" width="780" height="118" loading="eager" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -931,7 +891,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen" data-preview-id="soft-brand">
-                <img data-mf-asset="soft-brand-mobile" src="assets/crops/soft-brand-mobile.png" alt="Curated Fee Estimator crop focusing on affiliation fee results" width="780" height="960" loading="lazy" decoding="async"/>
+                <img data-mf-asset="soft-brand-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f145eaef921ad0f3c41_mf-soft-brand-mobile.png" alt="Curated Fee Estimator crop focusing on affiliation fee results" width="780" height="232" loading="lazy" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -963,7 +923,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen" data-preview-id="independent">
-                <img data-mf-asset="independent-mobile" src="assets/crops/independent-mobile.png" alt="Curated Radar crop highlighting independent market share" width="780" height="1000" loading="lazy" decoding="async"/>
+                <img data-mf-asset="independent-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f149e762a2c93e35d15_mf-independent-mobile.png" alt="Curated Radar crop highlighting independent market share" width="510" height="290" loading="lazy" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -995,7 +955,7 @@
             <div class="mf-chrome" aria-hidden="true"><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-dot"></span><span class="mf-chrome-label">Dealality</span></div>
             <div class="mf-screens mf-screens--mobile">
               <div class="mf-screen" data-preview-id="branded-residences">
-                <img data-mf-asset="branded-residences-mobile" src="assets/crops/branded-residences-mobile.png" alt="Curated Opportunity Review crop focusing on deal brief summary" width="780" height="1000" loading="lazy" decoding="async"/>
+                <img data-mf-asset="branded-residences-mobile" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f150692bac596137240_mf-branded-residences-mobile.png" alt="Curated Opportunity Review crop focusing on deal brief summary" width="780" height="298" loading="lazy" decoding="async"/>
               </div>
             </div>
             <div class="mf-preview-foot">
@@ -1018,19 +978,19 @@
         </div>
         <div class="mf-screens mf-screens--desktop">
           <div class="mf-screen" data-preview-id="rebrand">
-            <img data-mf-asset="rebrand" src="assets/crops/rebrand-desktop.png" alt="Curated Brand Explorer crop focusing on brand positioning" width="1280" height="760" loading="lazy" decoding="async"/>
+            <img data-mf-asset="rebrand" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecf1bd127b9b4f752f2_mf-rebrand-desktop.png" alt="Curated Brand Explorer crop focusing on brand positioning" width="1280" height="600" loading="lazy" decoding="async"/>
           </div>
           <div class="mf-screen is-active" data-preview-id="new-operator">
-            <img data-mf-asset="new-operator" src="assets/crops/new-operator-desktop.png" alt="Curated Operator Explorer crop focusing on decision metrics" width="1280" height="700" loading="eager" decoding="async"/>
+            <img data-mf-asset="new-operator" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9ecfa88451795cb12191_mf-new-operator-desktop.png" alt="Curated Operator Explorer crop focusing on decision metrics" width="1280" height="294" loading="eager" decoding="async"/>
           </div>
           <div class="mf-screen" data-preview-id="soft-brand">
-            <img data-mf-asset="soft-brand" src="assets/crops/soft-brand-desktop.png" alt="Curated Fee Estimator crop focusing on affiliation fee results" width="1280" height="740" loading="lazy" decoding="async"/>
+            <img data-mf-asset="soft-brand" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f148786858d5f89eceb_mf-soft-brand-desktop.png" alt="Curated Fee Estimator crop focusing on affiliation fee results" width="1280" height="600" loading="lazy" decoding="async"/>
           </div>
           <div class="mf-screen" data-preview-id="independent">
-            <img data-mf-asset="independent" src="assets/crops/independent-desktop.png" alt="Curated Radar crop highlighting independent market share" width="1280" height="760" loading="lazy" decoding="async"/>
+            <img data-mf-asset="independent" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f145eaef921ad0f3c73_mf-independent-desktop.png" alt="Curated Radar crop highlighting independent market share" width="1280" height="600" loading="lazy" decoding="async"/>
           </div>
           <div class="mf-screen" data-preview-id="branded-residences">
-            <img data-mf-asset="branded-residences" src="assets/crops/branded-residences-desktop.png" alt="Curated Opportunity Review crop focusing on deal brief summary" width="1280" height="760" loading="lazy" decoding="async"/>
+            <img data-mf-asset="branded-residences" src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6b9f148786858d5f89ed1e_mf-branded-residences-desktop.png" alt="Curated Opportunity Review crop focusing on deal brief summary" width="1280" height="575" loading="lazy" decoding="async"/>
           </div>
         </div>
         <div class="mf-preview-foot" data-desktop-foot>
