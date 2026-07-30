@@ -721,6 +721,177 @@ def make_financial_term_library(desktop: bool) -> Image.Image:
     return img
 
 
+def make_operator_smart_matching(desktop: bool) -> Image.Image:
+    """Operator Strategy Match Score table — My Deals Operator Strategy tab.
+
+    Source live interface: #operatorStrategyTable (Operating Company, Project Location,
+    Score / alignmentScoreOptional, Outreach Status, Key Consideration, Data Confidence).
+    Score badge bands from OPERATOR_MATCH_SCORE_BANDS / DcOperatorMatchScoreUi.
+    No brand names or Preferred Brand columns.
+    """
+    if desktop:
+        w, h = DESKTOP
+        pad = 20
+    else:
+        w, h = MOBILE_W, 560
+        pad = 16
+    img, draw = card_base(w, h)
+    y = pad
+    y = draw_label(draw, pad, y)
+
+    draw.text(
+        (pad, y),
+        "Operator Strategy",
+        font=font(22 if desktop else 24, True),
+        fill=TEXT,
+    )
+    y += 26
+    draw.text(
+        (pad, y),
+        "OPERATOR MATCH SCORE & FIT SIGNALS",
+        font=font(11, True),
+        fill=ACCENT_SOFT,
+    )
+    y += 18
+    draw.text(
+        (pad, y),
+        "Alignment scores highlight fit signals and data gaps—not approval or terms.",
+        font=font(12),
+        fill=MUTED,
+    )
+    y += 28
+
+    # Filter chip row (real filter label: Alignment Signal)
+    chip_y = y
+    chip_x = pad
+    for label, fill in (
+        ("Alignment Signal: Strong", (34, 90, 70)),
+        ("Showing operator-company rows", PANEL),
+    ):
+        tw = draw.textlength(label, font=font(11, True))
+        rounded_rect(
+            draw,
+            [chip_x, chip_y, chip_x + tw + 20, chip_y + 26],
+            999,
+            fill=fill,
+            outline=BORDER,
+        )
+        draw.text((chip_x + 10, chip_y + 6), label, font=font(11, True), fill=TEXT)
+        chip_x += int(tw) + 28
+    y = chip_y + 38
+
+    # Table headers — subset of live Operator Strategy columns (no brand columns)
+    if desktop:
+        cols = [
+            ("Operating Company", 0.34),
+            ("Project Location", 0.22),
+            ("Score", 0.12),
+            ("Key Consideration", 0.32),
+        ]
+    else:
+        cols = [
+            ("Operating Company", 0.42),
+            ("Score", 0.18),
+            ("Key Consideration", 0.40),
+        ]
+
+    table_x = pad
+    table_w = w - pad * 2
+    header_h = 34
+    rounded_rect(draw, [table_x, y, table_x + table_w, y + header_h], 8, fill=PANEL2, outline=BORDER)
+    cx = table_x + 10
+    for label, frac in cols:
+        draw.text((cx, y + 9), label.upper(), font=font(10, True), fill=MUTED2)
+        cx += int(table_w * frac)
+    y += header_h + 2
+
+    # Fictional demonstration operators — clearly demo names, not live clients
+    rows = [
+        (
+            "Cenote Azul Operadores",
+            "San Juan, Puerto Rico",
+            86.4,
+            "Strong alignment signals",
+            "Regional conversion experience",
+            GREEN,
+        ),
+        (
+            "Caribe Host Management",
+            "San Juan, Puerto Rico",
+            71.2,
+            "Moderate alignment — review gaps",
+            "Validate urban asset focus",
+            ORANGE,
+        ),
+        (
+            "Atlántica Hospitality Ops",
+            "San Juan, Puerto Rico",
+            54.8,
+            "Moderate alignment — review gaps",
+            "Confirm owner reporting cadence",
+            ORANGE,
+        ),
+        (
+            "Litoral Operating Group",
+            "San Juan, Puerto Rico",
+            38.1,
+            "Weak alignment — significant gaps",
+            "Limited market overlap",
+            RED,
+        ),
+    ]
+    if not desktop:
+        rows = rows[:3]
+
+    row_h = 52 if desktop else 58
+    for company, location, score, band, consideration, color in rows:
+        rounded_rect(
+            draw,
+            [table_x, y, table_x + table_w, y + row_h],
+            6,
+            fill=PANEL,
+            outline=BORDER,
+        )
+        cx = table_x + 10
+        # Company
+        draw.text((cx, y + 10), company, font=font(13 if desktop else 14, True), fill=TEXT)
+        draw.text((cx, y + 30), "Demo operator record", font=font(10), fill=MUTED2)
+        cx += int(table_w * cols[0][1])
+
+        if desktop:
+            draw.text((cx, y + 18), location, font=font(12), fill=MUTED)
+            cx += int(table_w * cols[1][1])
+
+        # Score badge (live Score column + match-score band colors)
+        score_idx = 2 if desktop else 1
+        badge_w, badge_h = 54, 24
+        bx = cx
+        by = y + (row_h - badge_h) // 2
+        rounded_rect(draw, [bx, by, bx + badge_w, by + badge_h], 999, fill=color)
+        score_txt = f"{score:.1f}"
+        sw = draw.textlength(score_txt, font=font(12, True))
+        draw.text((bx + (badge_w - sw) / 2, by + 4), score_txt, font=font(12, True), fill=TEXT)
+        cx += int(table_w * cols[score_idx][1])
+
+        # Key Consideration + band hint
+        draw.text((cx, y + 12), consideration, font=font(12), fill=MUTED)
+        draw.text((cx, y + 32), band, font=font(10), fill=MUTED2)
+        y += row_h + 4
+
+    # Footer note matching product disclaimer language
+    y += 6
+    draw.text(
+        (pad, min(y, h - 28)),
+        "Overall Operator Alignment Score · 0–100 · nine scored factors",
+        font=font(11),
+        fill=MUTED2,
+    )
+
+    if not desktop:
+        return finalize_mobile(img, min_h=520)
+    return img
+
+
 def make_submit_proposal(desktop: bool) -> Image.Image:
     """Submit Proposal — verified Brand Deal Request fields only.
 
@@ -805,6 +976,7 @@ def main():
 
     print("=== FEATURE PANELS (stylized) ===")
     stylized = [
+        ("smart-matching-operators", make_operator_smart_matching),
         ("deal-readiness", make_deal_readiness),
         ("clause-library", make_clause_library),
         ("financial-term-library", make_financial_term_library),

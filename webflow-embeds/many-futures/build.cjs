@@ -63,6 +63,8 @@ const FEATURE_FILES = [
   "deal-compare-mobile.png",
   "smart-matching-desktop.png",
   "smart-matching-mobile.png",
+  "smart-matching-operators-desktop.png",
+  "smart-matching-operators-mobile.png",
   "deal-readiness-desktop.png",
   "deal-readiness-mobile.png",
   "clause-library-desktop.png",
