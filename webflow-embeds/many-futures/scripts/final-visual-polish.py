@@ -77,16 +77,24 @@ def navy_canvas(inner: Image.Image, out_w: int, out_h: int, pad: int = 14) -> Im
 
 
 def brand_smart_matching_crops() -> None:
-    """Zoom into Preferred Brand + Match Score from real matched-brands UI."""
+    """Zoomed-out Preferred Brand + Match Score, right-biased cover fill."""
     src = Image.open(SRC / "matched-brands.png").convert("RGB")
     w, h = src.size
-    # Preferred Brand + Match Score only (right side), skip filters; ~4 rows
-    desk_crop = src.crop((640, 115, w - 4, min(h - 4, 460)))
-    save_png_webp(navy_canvas(desk_crop, 1024, 576, pad=10), "smart-matching-desktop")
 
-    # Mobile: even tighter on brand name + score pills
-    mob_crop = src.crop((700, 115, w - 4, min(h - 4, 470)))
-    save_png_webp(navy_canvas(mob_crop, 780, 560, pad=8), "smart-matching-mobile")
+    def cover_fill(inner: Image.Image, out_w: int, out_h: int, ox: float = 0.86, oy: float = 0.3) -> Image.Image:
+        scale = max(out_w / inner.width, out_h / inner.height)
+        nw = max(out_w, int(round(inner.width * scale)))
+        nh = max(out_h, int(round(inner.height * scale)))
+        resized = inner.resize((nw, nh), Image.Resampling.LANCZOS)
+        left = int(round(max(0, nw - out_w) * ox))
+        top = int(round(max(0, nh - out_h) * oy))
+        return resized.crop((left, top, left + out_w, top + out_h))
+
+    # Wider region = zoom out; trim just past score pills; high ox keeps scores on the right edge
+    desk_region = src.crop((540, 78, min(w - 6, 990), min(h - 2, 508)))
+    mob_region = src.crop((580, 82, min(w - 6, 990), min(h - 2, 510)))
+    save_png_webp(cover_fill(desk_region, 1024, 480, ox=0.88, oy=0.34), "smart-matching-desktop")
+    save_png_webp(cover_fill(mob_region, 780, 420, ox=0.92, oy=0.32), "smart-matching-mobile")
 
 
 def operator_smart_matching_crops() -> None:

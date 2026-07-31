@@ -586,16 +586,17 @@
 }
 
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--scores) {
-  max-height: 128px;
-  padding: 0 12px;
+  /* Taller frame = zoom out vs prior 128px crop */
+  max-height: 188px;
+  padding: 0 6px;
   box-sizing: border-box;
   background: #0a1228;
 }
 
 #dealality-many-futures .mf-feat-img--scores {
   object-fit: cover;
-  /* Slide crop right so match rows sit more centered with edge breathing room. */
-  object-position: 70% center;
+  /* Asset is already right-biased; keep a mild right/top bias in-tile */
+  object-position: 62% 32%;
 }
 
 #dealality-many-futures .mf-feat-img--fee {
