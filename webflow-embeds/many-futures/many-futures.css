@@ -101,6 +101,12 @@
   filter: drop-shadow(0 0 5px rgba(108, 114, 255, 0.4));
 }
 
+#dealality-many-futures .mf-connectors path.mf-conn--outcome.is-active {
+  stroke: var(--mf-value);
+  stroke-opacity: 0.9;
+  filter: drop-shadow(0 0 5px rgba(253, 181, 42, 0.35));
+}
+
 #dealality-many-futures .mf-connectors .mf-node {
   fill: var(--mf-panel);
   stroke: rgba(174, 185, 225, 0.28);
@@ -424,8 +430,9 @@
   min-width: 0;
 }
 
-/* Decision outcome — full workspace width, beneath features / chips */
+/* Decision outcome — separate box under supporting feature (right column) */
 #dealality-many-futures .mf-decision-outcome,
+#dealality-many-futures .mf-feat-stack > .mf-outcome,
 #dealality-many-futures .mf-panel > .mf-outcome {
   display: flex;
   flex-direction: column;
@@ -440,7 +447,12 @@
   box-shadow: none;
 }
 
+#dealality-many-futures .mf-feat-stack > .mf-decision-outcome {
+  flex: 0 0 auto;
+}
+
 #dealality-many-futures .mf-decision-outcome .mf-outcome-label,
+#dealality-many-futures .mf-feat-stack > .mf-outcome .mf-outcome-label,
 #dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-label {
   font-size: 0.65rem;
   font-weight: 700;
@@ -450,8 +462,9 @@
 }
 
 #dealality-many-futures .mf-decision-outcome .mf-outcome-text,
+#dealality-many-futures .mf-feat-stack > .mf-outcome .mf-outcome-text,
 #dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-text {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 550;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.94);
@@ -529,11 +542,18 @@
 }
 
 #dealality-many-futures .mf-feat--support .mf-feat-visual {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
 }
 
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui) {
-  max-height: 128px;
+  max-height: 280px;
+  min-height: 200px;
+}
+
+#dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--fee) {
+  aspect-ratio: 16 / 10;
+  min-height: 200px;
+  max-height: 240px;
 }
 
 /* Image frames keep media ratios; UI frames are overridden at file end */
@@ -557,8 +577,20 @@
 }
 
 #dealality-many-futures .mf-feat-img--fee {
-  object-fit: contain;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   object-position: center center;
+  background: #0a1228;
+}
+
+#dealality-many-futures .mf-feat--support > .mf-feat-visual:has(.mf-feat-img--fee),
+#dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--fee) {
+  aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 200px;
+  max-height: 240px;
   background: #0a1228;
 }
 
@@ -791,7 +823,11 @@
 #dealality-many-futures .mf-ui-table tbody tr td:last-child{border-radius:0 6px 6px 0}
 #dealality-many-futures .mf-ui-cell-primary{display:block;font-size:.8125rem;font-weight:650;color:rgba(255,255,255,.92)}
 #dealality-many-futures .mf-ui-cell-sub{display:block;margin-top:.1rem;font-size:.625rem;color:var(--mf-muted-2)}
-#dealality-many-futures .mf-ui-score{display:inline-flex;min-width:2.75rem;padding:.2rem .45rem;border-radius:999px;font-size:.75rem;font-weight:700;color:#fff;justify-content:center}
+#dealality-many-futures .mf-ui-score{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:.05rem;width:max-content;max-width:100%;padding:.45rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;line-height:1.2;color:#fff;text-align:center;box-sizing:border-box;vertical-align:middle}
+#dealality-many-futures .mf-ui-score-line{display:block;width:100%;text-align:center}
+#dealality-many-futures .mf-ui-table td:has(> .mf-ui-score){text-align:center;vertical-align:middle}
+#dealality-many-futures .mf-ui-table th:nth-child(3){text-align:center}
+#dealality-many-futures .mf-ui--action-tracking .mf-ui-table td:nth-child(3){text-align:center;vertical-align:middle;min-width:7.5rem}
 #dealality-many-futures .mf-ui-score--green{background:#48a878}
 #dealality-many-futures .mf-ui-score--orange{background:#dc8c46}
 #dealality-many-futures .mf-ui-score--red{background:#c85a5a}
@@ -995,7 +1031,7 @@
   }
 
   #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual.mf-feat-visual--ui {
-    max-height: min(16vh, 148px);
+    max-height: min(24vh, 220px);
     overflow: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
@@ -1004,6 +1040,16 @@
 
   #dealality-many-futures article.mf-feat.mf-feat--primary > .mf-feat-visual:not(.mf-feat-visual--ui) {
     max-height: min(28vh, 260px);
+  }
+
+  #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui) {
+    max-height: min(26vh, 280px);
+    min-height: 200px;
+  }
+
+  #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual:has(.mf-feat-img--fee) {
+    min-height: 200px;
+    max-height: 240px;
   }
 }
 

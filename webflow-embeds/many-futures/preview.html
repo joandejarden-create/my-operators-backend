@@ -200,6 +200,12 @@
   filter: drop-shadow(0 0 5px rgba(108, 114, 255, 0.4));
 }
 
+#dealality-many-futures .mf-connectors path.mf-conn--outcome.is-active {
+  stroke: var(--mf-value);
+  stroke-opacity: 0.9;
+  filter: drop-shadow(0 0 5px rgba(253, 181, 42, 0.35));
+}
+
 #dealality-many-futures .mf-connectors .mf-node {
   fill: var(--mf-panel);
   stroke: rgba(174, 185, 225, 0.28);
@@ -523,8 +529,9 @@
   min-width: 0;
 }
 
-/* Decision outcome — full workspace width, beneath features / chips */
+/* Decision outcome — separate box under supporting feature (right column) */
 #dealality-many-futures .mf-decision-outcome,
+#dealality-many-futures .mf-feat-stack > .mf-outcome,
 #dealality-many-futures .mf-panel > .mf-outcome {
   display: flex;
   flex-direction: column;
@@ -539,7 +546,12 @@
   box-shadow: none;
 }
 
+#dealality-many-futures .mf-feat-stack > .mf-decision-outcome {
+  flex: 0 0 auto;
+}
+
 #dealality-many-futures .mf-decision-outcome .mf-outcome-label,
+#dealality-many-futures .mf-feat-stack > .mf-outcome .mf-outcome-label,
 #dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-label {
   font-size: 0.65rem;
   font-weight: 700;
@@ -549,8 +561,9 @@
 }
 
 #dealality-many-futures .mf-decision-outcome .mf-outcome-text,
+#dealality-many-futures .mf-feat-stack > .mf-outcome .mf-outcome-text,
 #dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-text {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 550;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.94);
@@ -628,11 +641,17 @@
 }
 
 #dealality-many-futures .mf-feat--support .mf-feat-visual {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
 }
 
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui) {
-  max-height: 128px;
+  max-height: 280px;
+  min-height: 200px;
+}
+
+#dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--fee) {
+  min-height: 0;
+  max-height: none;
 }
 
 /* Image frames keep media ratios; UI frames are overridden at file end */
@@ -656,8 +675,20 @@
 }
 
 #dealality-many-futures .mf-feat-img--fee {
-  object-fit: contain;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   object-position: center center;
+  background: #0a1228;
+}
+
+#dealality-many-futures .mf-feat--support > .mf-feat-visual:has(.mf-feat-img--fee),
+#dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--fee) {
+  aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 200px;
+  max-height: 240px;
   background: #0a1228;
 }
 
@@ -890,7 +921,11 @@
 #dealality-many-futures .mf-ui-table tbody tr td:last-child{border-radius:0 6px 6px 0}
 #dealality-many-futures .mf-ui-cell-primary{display:block;font-size:.8125rem;font-weight:650;color:rgba(255,255,255,.92)}
 #dealality-many-futures .mf-ui-cell-sub{display:block;margin-top:.1rem;font-size:.625rem;color:var(--mf-muted-2)}
-#dealality-many-futures .mf-ui-score{display:inline-flex;min-width:2.75rem;padding:.2rem .45rem;border-radius:999px;font-size:.75rem;font-weight:700;color:#fff;justify-content:center}
+#dealality-many-futures .mf-ui-score{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:.05rem;width:max-content;max-width:100%;padding:.45rem .85rem;border-radius:999px;font-size:.72rem;font-weight:700;line-height:1.2;color:#fff;text-align:center;box-sizing:border-box;vertical-align:middle}
+#dealality-many-futures .mf-ui-score-line{display:block;width:100%;text-align:center}
+#dealality-many-futures .mf-ui-table td:has(> .mf-ui-score){text-align:center;vertical-align:middle}
+#dealality-many-futures .mf-ui-table th:nth-child(3){text-align:center}
+#dealality-many-futures .mf-ui--action-tracking .mf-ui-table td:nth-child(3){text-align:center;vertical-align:middle;min-width:7.5rem}
 #dealality-many-futures .mf-ui-score--green{background:#48a878}
 #dealality-many-futures .mf-ui-score--orange{background:#dc8c46}
 #dealality-many-futures .mf-ui-score--red{background:#c85a5a}
@@ -1094,7 +1129,7 @@
   }
 
   #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual.mf-feat-visual--ui {
-    max-height: min(16vh, 148px);
+    max-height: min(24vh, 220px);
     overflow: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
@@ -1103,6 +1138,16 @@
 
   #dealality-many-futures article.mf-feat.mf-feat--primary > .mf-feat-visual:not(.mf-feat-visual--ui) {
     max-height: min(28vh, 260px);
+  }
+
+  #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui) {
+    max-height: min(26vh, 280px);
+    min-height: 200px;
+  }
+
+  #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual:has(.mf-feat-img--fee) {
+    min-height: 200px;
+    max-height: 240px;
   }
 }
 
@@ -1425,6 +1470,7 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
                 <picture>
@@ -1442,6 +1488,8 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Explore a broader set of credible brand paths before familiarity or early momentum begins defining the decision.</span></p>
+            </div>
           </div>
           <aside class="mf-also" aria-label="Also supported by">
           <p class="mf-also-label">Also supported by</p>
@@ -1450,7 +1498,6 @@
           </ul>
         </aside>
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Explore a broader set of credible brand paths before familiarity or early momentum begins defining the decision.</span></p>
       </section>
 
       <!-- Q: operators -->
@@ -1496,6 +1543,7 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
                 <picture>
@@ -1513,6 +1561,8 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Identify operators that fit the hotel and ownership strategy—not simply those already known to the owner.</span></p>
+            </div>
           </div>
           <aside class="mf-also" aria-label="Also supported by">
           <p class="mf-also-label">Also supported by</p>
@@ -1521,7 +1571,6 @@
           </ul>
         </aside>
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Identify operators that fit the hotel and ownership strategy—not simply those already known to the owner.</span></p>
       </section>
 
       <!-- Q: affiliation -->
@@ -1553,13 +1602,14 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
                 <picture>
                   <source type="image/webp" media="(max-width:767px)" srcset="assets/features/fee-estimator-mobile.webp" />
                   <source media="(max-width:767px)" srcset="assets/features/fee-estimator-mobile.png" />
                   <source type="image/webp" media="(min-width:768px)" srcset="assets/features/fee-estimator-desktop.webp" />
-                  <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--fee"/>
+                  <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results" width="1024" height="413" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--fee"/>
                 </picture>
               </div>
               <div class="mf-feat-body">
@@ -1570,6 +1620,8 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Determine whether affiliation’s strategic and commercial value justifies its fees, requirements, and reduced flexibility.</span></p>
+            </div>
           </div>
           <aside class="mf-also" aria-label="Also supported by">
           <p class="mf-also-label">Also supported by</p>
@@ -1578,7 +1630,6 @@
           </ul>
         </aside>
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Determine whether affiliation’s strategic and commercial value justifies its fees, requirements, and reduced flexibility.</span></p>
       </section>
 
       <!-- Q: residences -->
@@ -1625,6 +1676,7 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual mf-feat-visual--ui">
               <div class="mf-ui mf-ui--brand-explorer" role="img" aria-label="Brand Explorer Brand Positioning and value scenarios">
@@ -1657,6 +1709,8 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Understand whether a residential component merits deeper evaluation within the wider asset strategy.</span></p>
+            </div>
           </div>
           <aside class="mf-also" aria-label="Also supported by">
           <p class="mf-also-label">Also supported by</p>
@@ -1665,7 +1719,6 @@
           </ul>
         </aside>
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Understand whether a residential component merits deeper evaluation within the wider asset strategy.</span></p>
       </section>
 
       <!-- Q: confidential -->
@@ -1735,6 +1788,7 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual mf-feat-visual--ui">
               <div class="mf-ui mf-ui--opportunity-review" role="img" aria-label="Deal Brief opportunity review for the illustrative hotel">
@@ -1767,10 +1821,11 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Engage selected partners while retaining control of participation, information sharing, and process timing.</span></p>
+            </div>
           </div>
           
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Engage selected partners while retaining control of participation, information sharing, and process timing.</span></p>
       </section>
 
       <!-- Q: market -->
@@ -1827,6 +1882,7 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
                 <picture>
@@ -1844,6 +1900,8 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Keep the decision current as relevant market activity, brand movement, and competitive context evolve.</span></p>
+            </div>
           </div>
           <aside class="mf-also" aria-label="Also supported by">
           <p class="mf-also-label">Also supported by</p>
@@ -1852,7 +1910,6 @@
           </ul>
         </aside>
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Keep the decision current as relevant market activity, brand movement, and competitive context evolve.</span></p>
       </section>
 
       <!-- Q: actions -->
@@ -1885,19 +1942,19 @@
                       <tr>
                         <td><span class="mf-ui-cell-primary">Upscale A</span><span class="mf-ui-cell-sub">Hard Brand</span></td>
                         <td>Proposal received</td>
-                        <td><span class="mf-ui-score mf-ui-score--green">Owner to compare terms</span></td>
+                        <td><span class="mf-ui-score mf-ui-score--green"><span class="mf-ui-score-line">Owner to compare</span><span class="mf-ui-score-line">terms</span></span></td>
                         <td class="mf-ui-hide-mobile">Apr 12</td>
                       </tr>
                       <tr>
                         <td><span class="mf-ui-cell-primary">Upper Upscale</span><span class="mf-ui-cell-sub">Hard Brand</span></td>
                         <td>In review</td>
-                        <td><span class="mf-ui-score mf-ui-score--orange">Awaiting brand response</span></td>
+                        <td><span class="mf-ui-score mf-ui-score--orange"><span class="mf-ui-score-line">Awaiting brand</span><span class="mf-ui-score-line">response</span></span></td>
                         <td class="mf-ui-hide-mobile">Apr 18</td>
                       </tr>
                       <tr>
                         <td><span class="mf-ui-cell-primary">Upscale B</span><span class="mf-ui-cell-sub">Hard Brand</span></td>
                         <td>Shortlisted</td>
-                        <td><span class="mf-ui-score mf-ui-score--green">Send term entry link</span></td>
+                        <td><span class="mf-ui-score mf-ui-score--green"><span class="mf-ui-score-line">Send term</span><span class="mf-ui-score-line">entry link</span></span></td>
                         <td class="mf-ui-hide-mobile">Apr 9</td>
                       </tr>
                     </tbody>
@@ -1922,6 +1979,7 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual mf-feat-visual--ui">
               <div class="mf-ui mf-ui--deal-compare" role="img" aria-label="Deal Compare side-by-side commercial terms across chain scales">
@@ -1960,6 +2018,8 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Turn responses into visible next actions so the process does not stall across email, notes, and disconnected follow-ups.</span></p>
+            </div>
           </div>
           <aside class="mf-also" aria-label="Also supported by">
           <p class="mf-also-label">Also supported by</p>
@@ -1968,7 +2028,6 @@
           </ul>
         </aside>
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Turn responses into visible next actions so the process does not stall across email, notes, and disconnected follow-ups.</span></p>
       </section>
 
       <!-- Q: proposals -->
@@ -2021,13 +2080,14 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual">
                 <picture>
                   <source type="image/webp" media="(max-width:767px)" srcset="assets/features/fee-estimator-mobile.webp" />
                   <source media="(max-width:767px)" srcset="assets/features/fee-estimator-mobile.png" />
                   <source type="image/webp" media="(min-width:768px)" srcset="assets/features/fee-estimator-desktop.webp" />
-                  <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results" width="1024" height="576" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--fee"/>
+                  <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results" width="1024" height="413" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--fee"/>
                 </picture>
               </div>
               <div class="mf-feat-body">
@@ -2038,6 +2098,8 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Compare the complete value proposition—not only the most visible headline terms.</span></p>
+            </div>
           </div>
           <aside class="mf-also" aria-label="Also supported by">
           <p class="mf-also-label">Also supported by</p>
@@ -2046,7 +2108,6 @@
           </ul>
         </aside>
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Compare the complete value proposition—not only the most visible headline terms.</span></p>
       </section>
 
       <!-- Q: clarify -->
@@ -2114,6 +2175,7 @@
               </div>
             </div>
             </article>
+            <div class="mf-feat-stack">
             <article class="mf-feat mf-feat--support">
               <div class="mf-feat-visual mf-feat-visual--ui">
               <div class="mf-ui mf-ui--term-libraries" role="img" aria-label="Clause Library and Financial Term Library grouped presentation">
@@ -2166,10 +2228,11 @@
               </div>
             </div>
             </article>
+            <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Enter negotiation with a clearer view of unresolved issues, important terms, and decision risks.</span></p>
+            </div>
           </div>
           
         </div>
-        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Enter negotiation with a clearer view of unresolved issues, important terms, and decision risks.</span></p>
       </section>
     </div>    </div>
   </div>
@@ -2340,52 +2403,121 @@
 
     var btnRect = btn.getBoundingClientRect();
     var wsRect = workspaceEl.getBoundingClientRect();
+    var panel = root.querySelector('.mf-panel[data-panel="' + id + '"].is-active') ||
+      root.querySelector('.mf-panel[data-panel="' + id + '"]');
+    var primary = panel ? panel.querySelector(".mf-feat--primary") : null;
+    var support = panel ? panel.querySelector(".mf-feat--support") : null;
+    var outcome = panel
+      ? panel.querySelector(".mf-feat-stack .mf-decision-outcome") ||
+        panel.querySelector(".mf-decision-outcome")
+      : null;
 
-    var x1 = hotelRect.left + hotelRect.width / 2 - layoutRect.left;
-    var y1 = hotelRect.top + hotelRect.height / 2 - layoutRect.top;
+    function lx(rect, ratio) {
+      return rect.left + rect.width * (ratio == null ? 0.5 : ratio) - layoutRect.left;
+    }
+    function ly(rect, ratio) {
+      return rect.top + rect.height * (ratio == null ? 0.5 : ratio) - layoutRect.top;
+    }
+    function addPath(d, active, extraClass) {
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", d);
+      if (active !== false) path.classList.add("is-active");
+      if (extraClass) path.classList.add(extraClass);
+      svg.appendChild(path);
+    }
+    function addNode(cx, cy) {
+      var node = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      node.setAttribute("cx", String(cx));
+      node.setAttribute("cy", String(cy));
+      node.setAttribute("r", "4");
+      node.classList.add("mf-node", "is-active");
+      svg.appendChild(node);
+    }
+    function curve(x1, y1, x2, y2, pull) {
+      var mid = (x1 + x2) / 2;
+      var c1x = x1 + (pull == null ? 40 : pull);
+      var c2x = x2 - (pull == null ? 36 : pull);
+      if (Math.abs(x2 - x1) < 48) {
+        /* mostly vertical */
+        return (
+          "M " +
+          x1 +
+          " " +
+          y1 +
+          " C " +
+          x1 +
+          " " +
+          (y1 + (y2 - y1) * 0.35) +
+          ", " +
+          x2 +
+          " " +
+          (y1 + (y2 - y1) * 0.65) +
+          ", " +
+          x2 +
+          " " +
+          y2
+        );
+      }
+      return (
+        "M " +
+        x1 +
+        " " +
+        y1 +
+        " C " +
+        c1x +
+        " " +
+        y1 +
+        ", " +
+        c2x +
+        " " +
+        y2 +
+        ", " +
+        x2 +
+        " " +
+        y2
+      );
+    }
+
+    var x1 = lx(hotelRect);
+    var y1 = ly(hotelRect);
     var x2 = btnRect.left - layoutRect.left;
-    var y2 = btnRect.top + btnRect.height / 2 - layoutRect.top;
+    var y2 = ly(btnRect);
     var x3 = wsRect.left - layoutRect.left;
     var y3 = wsRect.top + Math.min(80, wsRect.height * 0.2) - layoutRect.top;
 
-    var d1 =
-      "M " + x1 + " " + y1 + " C " + (x1 + 40) + " " + y1 + ", " + (x2 - 36) + " " + y2 + ", " + x2 + " " + y2;
-    var d2 =
-      "M " +
-      (btnRect.right - layoutRect.left) +
-      " " +
-      y2 +
-      " C " +
-      (btnRect.right - layoutRect.left + 36) +
-      " " +
-      y2 +
-      ", " +
-      (x3 - 28) +
-      " " +
-      y3 +
-      ", " +
-      x3 +
-      " " +
-      y3;
-
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-    var path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path1.setAttribute("d", d1);
-    path1.classList.add("is-active");
-    svg.appendChild(path1);
+    addPath(curve(x1, y1, x2, y2, 40));
+    addPath(
+      curve(btnRect.right - layoutRect.left, y2, x3, y3, 36)
+    );
+    addNode(x2, y2);
 
-    var path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path2.setAttribute("d", d2);
-    path2.classList.add("is-active");
-    svg.appendChild(path2);
+    if (primary) {
+      var pRect = primary.getBoundingClientRect();
+      var px = pRect.left - layoutRect.left;
+      var py = ly(pRect, 0.22);
+      addPath(curve(x3, y3, px, py, 28));
+      addNode(px, py);
 
-    var node = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    node.setAttribute("cx", String(x2));
-    node.setAttribute("cy", String(y2));
-    node.setAttribute("r", "4");
-    node.classList.add("mf-node", "is-active");
-    svg.appendChild(node);
+      if (support) {
+        var sRect = support.getBoundingClientRect();
+        var sx = sRect.left - layoutRect.left;
+        var sy = ly(sRect, 0.18);
+        addPath(curve(pRect.right - layoutRect.left, py, sx, sy, 24));
+        addNode(sx, sy);
+
+        if (outcome) {
+          var oRect = outcome.getBoundingClientRect();
+          var ox = lx(oRect);
+          var oy = oRect.top - layoutRect.top;
+          var fromX = lx(sRect);
+          var fromY = sRect.bottom - layoutRect.top;
+          addPath(curve(fromX, fromY, ox, oy, 12), true, "mf-conn--outcome");
+          addNode(ox, oy);
+        }
+      }
+    }
   }
 
   for (var i = 0; i < questions.length; i++) {

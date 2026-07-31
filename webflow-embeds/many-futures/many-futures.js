@@ -160,52 +160,121 @@
 
     var btnRect = btn.getBoundingClientRect();
     var wsRect = workspaceEl.getBoundingClientRect();
+    var panel = root.querySelector('.mf-panel[data-panel="' + id + '"].is-active') ||
+      root.querySelector('.mf-panel[data-panel="' + id + '"]');
+    var primary = panel ? panel.querySelector(".mf-feat--primary") : null;
+    var support = panel ? panel.querySelector(".mf-feat--support") : null;
+    var outcome = panel
+      ? panel.querySelector(".mf-feat-stack .mf-decision-outcome") ||
+        panel.querySelector(".mf-decision-outcome")
+      : null;
 
-    var x1 = hotelRect.left + hotelRect.width / 2 - layoutRect.left;
-    var y1 = hotelRect.top + hotelRect.height / 2 - layoutRect.top;
+    function lx(rect, ratio) {
+      return rect.left + rect.width * (ratio == null ? 0.5 : ratio) - layoutRect.left;
+    }
+    function ly(rect, ratio) {
+      return rect.top + rect.height * (ratio == null ? 0.5 : ratio) - layoutRect.top;
+    }
+    function addPath(d, active, extraClass) {
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", d);
+      if (active !== false) path.classList.add("is-active");
+      if (extraClass) path.classList.add(extraClass);
+      svg.appendChild(path);
+    }
+    function addNode(cx, cy) {
+      var node = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      node.setAttribute("cx", String(cx));
+      node.setAttribute("cy", String(cy));
+      node.setAttribute("r", "4");
+      node.classList.add("mf-node", "is-active");
+      svg.appendChild(node);
+    }
+    function curve(x1, y1, x2, y2, pull) {
+      var mid = (x1 + x2) / 2;
+      var c1x = x1 + (pull == null ? 40 : pull);
+      var c2x = x2 - (pull == null ? 36 : pull);
+      if (Math.abs(x2 - x1) < 48) {
+        /* mostly vertical */
+        return (
+          "M " +
+          x1 +
+          " " +
+          y1 +
+          " C " +
+          x1 +
+          " " +
+          (y1 + (y2 - y1) * 0.35) +
+          ", " +
+          x2 +
+          " " +
+          (y1 + (y2 - y1) * 0.65) +
+          ", " +
+          x2 +
+          " " +
+          y2
+        );
+      }
+      return (
+        "M " +
+        x1 +
+        " " +
+        y1 +
+        " C " +
+        c1x +
+        " " +
+        y1 +
+        ", " +
+        c2x +
+        " " +
+        y2 +
+        ", " +
+        x2 +
+        " " +
+        y2
+      );
+    }
+
+    var x1 = lx(hotelRect);
+    var y1 = ly(hotelRect);
     var x2 = btnRect.left - layoutRect.left;
-    var y2 = btnRect.top + btnRect.height / 2 - layoutRect.top;
+    var y2 = ly(btnRect);
     var x3 = wsRect.left - layoutRect.left;
     var y3 = wsRect.top + Math.min(80, wsRect.height * 0.2) - layoutRect.top;
 
-    var d1 =
-      "M " + x1 + " " + y1 + " C " + (x1 + 40) + " " + y1 + ", " + (x2 - 36) + " " + y2 + ", " + x2 + " " + y2;
-    var d2 =
-      "M " +
-      (btnRect.right - layoutRect.left) +
-      " " +
-      y2 +
-      " C " +
-      (btnRect.right - layoutRect.left + 36) +
-      " " +
-      y2 +
-      ", " +
-      (x3 - 28) +
-      " " +
-      y3 +
-      ", " +
-      x3 +
-      " " +
-      y3;
-
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-    var path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path1.setAttribute("d", d1);
-    path1.classList.add("is-active");
-    svg.appendChild(path1);
+    addPath(curve(x1, y1, x2, y2, 40));
+    addPath(
+      curve(btnRect.right - layoutRect.left, y2, x3, y3, 36)
+    );
+    addNode(x2, y2);
 
-    var path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path2.setAttribute("d", d2);
-    path2.classList.add("is-active");
-    svg.appendChild(path2);
+    if (primary) {
+      var pRect = primary.getBoundingClientRect();
+      var px = pRect.left - layoutRect.left;
+      var py = ly(pRect, 0.22);
+      addPath(curve(x3, y3, px, py, 28));
+      addNode(px, py);
 
-    var node = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    node.setAttribute("cx", String(x2));
-    node.setAttribute("cy", String(y2));
-    node.setAttribute("r", "4");
-    node.classList.add("mf-node", "is-active");
-    svg.appendChild(node);
+      if (support) {
+        var sRect = support.getBoundingClientRect();
+        var sx = sRect.left - layoutRect.left;
+        var sy = ly(sRect, 0.18);
+        addPath(curve(pRect.right - layoutRect.left, py, sx, sy, 24));
+        addNode(sx, sy);
+
+        if (outcome) {
+          var oRect = outcome.getBoundingClientRect();
+          var ox = lx(oRect);
+          var oy = oRect.top - layoutRect.top;
+          var fromX = lx(sRect);
+          var fromY = sRect.bottom - layoutRect.top;
+          addPath(curve(fromX, fromY, ox, oy, 12), true, "mf-conn--outcome");
+          addNode(ox, oy);
+        }
+      }
+    }
   }
 
   for (var i = 0; i < questions.length; i++) {
