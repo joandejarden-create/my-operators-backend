@@ -111,7 +111,7 @@
   --mf-muted: rgba(255, 255, 255, 0.62);
   --mf-muted-2: rgba(255, 255, 255, 0.45);
   --mf-radius: 14px;
-  --mf-max: 1232px;
+  --mf-max: 1360px;
   --mf-font: "Inter Tight", "Plus Jakarta Sans", system-ui, sans-serif;
   --mf-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --mf-dur: 420ms;
@@ -142,9 +142,9 @@
 #dealality-many-futures .mf-layout {
   position: relative;
   display: grid;
-  /* Workspace dominates; hotel establishes context without competing */
-  grid-template-columns: minmax(0, 0.18fr) minmax(0, 0.24fr) minmax(0, 0.58fr);
-  gap: 1rem 1.1rem;
+  /* Hotel / questions constrained; workspace takes remaining width */
+  grid-template-columns: minmax(210px, 230px) minmax(270px, 300px) minmax(0, 1fr);
+  gap: 1rem 1rem;
   align-items: start;
 }
 
@@ -154,7 +154,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0; /* decorative */
   overflow: visible;
 }
 
@@ -189,7 +189,7 @@
 /* Hotel */
 #dealality-many-futures .mf-hotel {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--mf-border);
@@ -304,13 +304,13 @@
   border-radius: 50%;
   background: var(--mf-accent-soft);
   box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.2);
-  z-index: 3;
+  z-index: 2;
 }
 
 /* Questions — compact */
 #dealality-many-futures .mf-questions {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
@@ -344,13 +344,14 @@
 
 #dealality-many-futures .mf-q:focus-visible {
   box-shadow: 0 0 0 2px rgba(108, 114, 255, 0.35);
+  z-index: 3;
 }
 
 #dealality-many-futures .mf-q.is-active {
   border-color: var(--mf-border-strong);
   background: linear-gradient(180deg, rgba(108, 114, 255, 0.12), rgba(17, 27, 58, 0.95));
   box-shadow: 0 0 0 1px rgba(108, 114, 255, 0.15);
-  transform: translateX(4px);
+  /* no translate — avoids layout shift against workspace */
 }
 
 #dealality-many-futures .mf-q-num {
@@ -392,25 +393,24 @@
   display: inline-flex;
 }
 
-/* Workspace — product-led */
+/* Workspace — product-led, normal document flow */
 #dealality-many-futures .mf-workspace {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   min-width: 0;
+  min-height: 0;
 }
 
 #dealality-many-futures .mf-panel {
   display: none;
   flex-direction: column;
-  gap: 0.95rem;
+  gap: 1rem;
   opacity: 0;
-  transform: translateY(10px);
 }
 
 #dealality-many-futures .mf-panel.is-active {
   display: flex;
   opacity: 1;
-  transform: translateY(0);
   animation: mf-in var(--mf-dur) var(--mf-ease) both;
 }
 
@@ -419,12 +419,13 @@
 }
 
 @keyframes mf-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 #dealality-many-futures .mf-decision {
-  padding: 0.85rem 1rem;
+  width: 100%;
+  padding: 0.9rem 1.05rem;
   border: 1px solid var(--mf-border);
   border-radius: var(--mf-radius);
   background: rgba(13, 22, 48, 0.9);
@@ -455,65 +456,67 @@
 
 #dealality-many-futures .mf-features {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: 0.85rem;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.9fr);
+  gap: 16px;
   align-items: stretch;
+  min-width: 0;
 }
 
-/* Two-panel workspace: primary + one substantial support (no empty third slot) */
 #dealality-many-futures .mf-features--duo {
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.9fr);
 }
 
 #dealality-many-futures .mf-features--duo .mf-feat-stack {
-  display: contents;
-}
-
-#dealality-many-futures .mf-features--duo .mf-feat--support {
-  min-height: 100%;
-}
-
-#dealality-many-futures .mf-features--duo .mf-feat--support .mf-feat-visual {
-  aspect-ratio: 16/9;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 #dealality-many-futures .mf-feat-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 16px;
   min-width: 0;
+  min-height: 0;
 }
 
 #dealality-many-futures .mf-feat {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
+  height: 100%;
   border: 1px solid var(--mf-border);
   border-radius: var(--mf-radius);
   background: var(--mf-panel);
-  overflow: hidden;
-  transition: border-color var(--mf-dur) var(--mf-ease), transform var(--mf-dur) var(--mf-ease);
+  overflow: visible; /* text must not clip; visual clips itself */
+  transition: border-color var(--mf-dur) var(--mf-ease);
 }
 
 #dealality-many-futures .mf-feat--primary {
   border-color: rgba(108, 114, 255, 0.34);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
 }
 
 #dealality-many-futures .mf-feat-visual {
   position: relative;
+  width: 100%;
+  flex: 0 0 auto;
+  overflow: hidden;
   background: #0a1228;
-  aspect-ratio: 16/9;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--mf-radius) var(--mf-radius) 0 0;
 }
 
 #dealality-many-futures .mf-feat--primary .mf-feat-visual {
-  aspect-ratio: 16/10.2;
-  min-height: 12.5rem;
+  aspect-ratio: 16 / 10;
 }
 
 #dealality-many-futures .mf-feat--support .mf-feat-visual {
-  aspect-ratio: 16/8.5;
+  aspect-ratio: 16 / 9;
 }
+
+/* Image frames keep media ratios; UI frames are overridden at file end */
 
 #dealality-many-futures .mf-feat-img {
   display: block;
@@ -527,15 +530,113 @@
   display: none;
 }
 
+#dealality-many-futures .mf-feat-body,
+#dealality-many-futures .mf-feat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: visible;
+}
+
+#dealality-many-futures .mf-feat-cat {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mf-muted-2);
+}
+
+#dealality-many-futures .mf-feat-name {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 720;
+  line-height: 1.25;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+#dealality-many-futures .mf-feat--support .mf-feat-name {
+  font-size: 1rem;
+}
+
+#dealality-many-futures .mf-feat-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+  min-width: 0;
+}
+
+#dealality-many-futures .mf-feat-kicker {
+  margin: 0.35rem 0 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mf-accent-soft);
+}
+
+#dealality-many-futures .mf-feat-kicker:first-child {
+  margin-top: 0;
+}
+
+#dealality-many-futures .mf-feat-purpose,
+#dealality-many-futures .mf-feat-benefit {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--mf-muted);
+  overflow: visible;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+#dealality-many-futures .mf-feat--support .mf-feat-purpose,
+#dealality-many-futures .mf-feat--support .mf-feat-benefit {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+#dealality-many-futures .mf-outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.9rem 1.05rem;
+  border-top: 1px solid rgba(108, 114, 255, 0.22);
+  border-radius: 0 0 var(--mf-radius) var(--mf-radius);
+  background: rgba(108, 114, 255, 0.06);
+}
+
+#dealality-many-futures .mf-outcome-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--mf-accent-soft);
+}
+
+#dealality-many-futures .mf-outcome-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+}
+
 /* HTML mini-UI panels (replaces raster reconstructions) */
 
 #dealality-many-futures .mf-hotel-media img{object-position:center 35%}
 
-/* Feature HTML UIs — compact */
-#dealality-many-futures .mf-feat-visual--ui{aspect-ratio:auto;min-height:12rem;padding:.55rem;background:linear-gradient(180deg,#0c1430,#080f25)}
-#dealality-many-futures .mf-feat--primary .mf-feat-visual--ui{min-height:13.5rem}
-#dealality-many-futures .mf-feat--support .mf-feat-visual--ui{min-height:11rem}
-#dealality-many-futures .mf-ui{box-sizing:border-box;width:100%;padding:.7rem .75rem;border:1px solid var(--mf-border);border-radius:10px;background:rgba(17,27,58,.96);color:var(--mf-text);font-size:.8125rem;line-height:1.35}
+/* Feature HTML UIs — fit container; no fixed oversized widths */
+#dealality-many-futures .mf-feat-visual--ui{
+  padding: 0.55rem;
+  background: linear-gradient(180deg, #0c1430, #080f25);
+  overflow: hidden;
+}
+#dealality-many-futures .mf-ui{box-sizing:border-box;width:100%;max-width:100%;height:auto;padding:.7rem .75rem;border:1px solid var(--mf-border);border-radius:10px;background:rgba(17,27,58,.96);color:var(--mf-text);font-size:.8125rem;line-height:1.35}
 #dealality-many-futures .mf-ui-label{display:inline-flex;margin:0 0 .4rem;padding:.18rem .45rem;border:1px solid rgba(174,185,225,.22);border-radius:999px;background:rgba(8,15,37,.85);color:var(--mf-muted-2);font-size:.625rem;font-weight:700;letter-spacing:.04em}
 #dealality-many-futures .mf-ui-title{margin:0 0 .15rem;font-size:1.05rem;font-weight:720;line-height:1.2}
 #dealality-many-futures .mf-ui-descriptor{margin:0 0 .2rem;font-size:.6875rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mf-accent-soft)}
@@ -589,33 +690,38 @@
 #dealality-many-futures .mf-ui-section{margin:.35rem 0 .25rem;font-size:.6875rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mf-accent-soft)}
 
 @media screen and (max-width:991px){
-#dealality-many-futures .mf-layout{grid-template-columns:minmax(0,.4fr) minmax(0,.6fr);grid-template-areas:"hotel questions" "workspace workspace"}
+#dealality-many-futures .mf-layout{grid-template-columns:minmax(0,.38fr) minmax(0,.62fr);grid-template-areas:"hotel questions" "workspace workspace";gap:1rem}
 #dealality-many-futures .mf-hotel{grid-area:hotel}
 #dealality-many-futures .mf-questions{grid-area:questions}
 #dealality-many-futures .mf-workspace{grid-area:workspace}
 #dealality-many-futures .mf-connectors,#dealality-many-futures .mf-hotel-node{display:none}
-#dealality-many-futures .mf-features{grid-template-columns:1fr}
-#dealality-many-futures .mf-feat-stack{display:grid;grid-template-columns:1fr 1fr}
+#dealality-many-futures .mf-features{grid-template-columns:1fr;gap:16px}
+#dealality-many-futures .mf-feat-stack{display:grid;grid-template-columns:1fr;gap:16px}
 #dealality-many-futures .mf-q.is-active{transform:none}
+#dealality-many-futures .mf-ui-value-grid,#dealality-many-futures .mf-ui-metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#dealality-many-futures .mf-ui-readiness-grid{grid-template-columns:1fr}
 }
 @media screen and (max-width:767px){
 #dealality-many-futures .mf-layout{display:flex;flex-direction:column;gap:.85rem}
 #dealality-many-futures .mf-feat-img--desk{display:none}
 #dealality-many-futures .mf-feat-img--mob{display:block}
 #dealality-many-futures .mf-ui-hide-mobile{display:none}
-#dealality-many-futures .mf-ui-readiness-grid,#dealality-many-futures .mf-ui-cards--terms,#dealality-many-futures .mf-ui-form-grid{grid-template-columns:1fr}
+#dealality-many-futures .mf-ui-readiness-grid,#dealality-many-futures .mf-ui-cards--terms,#dealality-many-futures .mf-ui-form-grid,#dealality-many-futures .mf-ui-value-grid,#dealality-many-futures .mf-ui-metric-grid,#dealality-many-futures .mf-ui-field-group{grid-template-columns:1fr}
 #dealality-many-futures .mf-feat-visual--ui{padding:.5rem}
 #dealality-many-futures .mf-ui{padding:.65rem .7rem;font-size:.8125rem}
 #dealality-many-futures .mf-ui-title{font-size:1rem}
 #dealality-many-futures .mf-feat-stack{grid-template-columns:1fr}
+#dealality-many-futures .mf-features{grid-template-columns:1fr}
 #dealality-many-futures .mf-questions{gap:.4rem}
 #dealality-many-futures .mf-workspace{order:3}
 #dealality-many-futures .mf-mobile-slot{display:block}
 #dealality-many-futures .mf-decision-title{font-size:1.08rem}
-#dealality-many-futures .mf-feat-name{font-size:1rem}
+#dealality-many-futures .mf-feat-name{font-size:1.05rem}
 #dealality-many-futures .mf-hotel-title{font-size:.98rem}
 #dealality-many-futures .mf-hotel-media{aspect-ratio:4/5;object-position:center 30%}
 #dealality-many-futures .mf-hotel-media img{object-position:center 28%}
+#dealality-many-futures .mf-feat-body{padding:.9rem}
+#dealality-many-futures .mf-feat-visual:not(.mf-feat-visual--ui){aspect-ratio:16/10}
 }
 @media (prefers-reduced-motion:reduce){
 #dealality-many-futures .mf-q,#dealality-many-futures .mf-panel,#dealality-many-futures .mf-feat,#dealality-many-futures .mf-connectors path{transition:none!important;animation:none!important}
@@ -668,18 +774,88 @@
 #dealality-many-futures .mf-ui-callout-label{margin:0 0 .25rem;font-size:.625rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mf-accent-soft)}
 #dealality-many-futures .mf-ui-callout-body{margin:0;font-size:.8125rem;line-height:1.4;color:rgba(255,255,255,.88)}
 #dealality-many-futures .mf-ui-value-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem}
-#dealality-many-futures .mf-ui-value-card{padding:.5rem .55rem;border:1px solid var(--mf-border);border-radius:10px;background:var(--mf-panel)}
+#dealality-many-futures .mf-ui-value-card{padding:.5rem .55rem;border:1px solid var(--mf-border);border-radius:10px;background:var(--mf-panel);min-width:0}
 #dealality-many-futures .mf-ui-value-title{margin:0 0 .2rem;font-size:.75rem;font-weight:700;color:rgba(255,255,255,.92)}
 #dealality-many-futures .mf-ui-value-body{margin:0;font-size:.6875rem;line-height:1.35;color:var(--mf-muted)}
 #dealality-many-futures .mf-ui-metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem;margin-top:.35rem}
-#dealality-many-futures .mf-ui-metric{padding:.45rem .5rem;border:1px solid var(--mf-border);border-radius:10px;background:var(--mf-panel)}
+#dealality-many-futures .mf-ui-metric{padding:.45rem .5rem;border:1px solid var(--mf-border);border-radius:10px;background:var(--mf-panel);min-width:0}
 #dealality-many-futures .mf-ui-metric-label{display:block;font-size:.625rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mf-muted-2)}
-#dealality-many-futures .mf-ui-metric-value{display:block;margin-top:.2rem;font-size:.8125rem;font-weight:650;color:rgba(255,255,255,.92)}
+#dealality-many-futures .mf-ui-metric-value{display:block;margin-top:.2rem;font-size:.8125rem;font-weight:650;color:rgba(255,255,255,.92);overflow-wrap:anywhere}
 #dealality-many-futures .mf-ui-table--compare{font-size:.6875rem}
 #dealality-many-futures .mf-ui-em{color:#7dcea0;font-weight:700}
+/* Supporting cards are narrower — collapse dense grids */
+#dealality-many-futures .mf-feat--support .mf-ui-value-grid,
+#dealality-many-futures .mf-feat--support .mf-ui-metric-grid,
+#dealality-many-futures .mf-feat--support .mf-ui-cards--terms,
+#dealality-many-futures .mf-feat--support .mf-ui-form-grid,
+#dealality-many-futures .mf-feat--support .mf-ui-readiness-grid,
+#dealality-many-futures .mf-feat--support .mf-ui-field-group{grid-template-columns:1fr}
 @media screen and (max-width:767px){
 #dealality-many-futures .mf-ui-value-grid,#dealality-many-futures .mf-ui-metric-grid{grid-template-columns:1fr}
 #dealality-many-futures .mf-ui-callout-body{font-size:.8125rem}
+}
+
+/*
+ * FINAL cascade: HTML reconstructions size to their content.
+ * Must defeat .mf-feat--primary/.mf-feat--support .mf-feat-visual aspect-ratio
+ * rules (those win over a single .mf-feat-visual--ui class).
+ */
+#dealality-many-futures article.mf-feat > .mf-feat-visual.mf-feat-visual--ui,
+#dealality-many-futures article.mf-feat.mf-feat--primary > .mf-feat-visual.mf-feat-visual--ui,
+#dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual.mf-feat-visual--ui {
+  aspect-ratio: auto;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  flex: 0 0 auto;
+}
+
+/* Support column: compact reconstructions for ~280–320px width */
+#dealality-many-futures .mf-feat--support .mf-ui {
+  padding: 0.5rem 0.55rem;
+  font-size: 0.75rem;
+}
+#dealality-many-futures .mf-feat--support .mf-ui-title {
+  font-size: 0.95rem;
+}
+#dealality-many-futures .mf-feat--support .mf-ui-label,
+#dealality-many-futures .mf-feat--support .mf-ui-note,
+#dealality-many-futures .mf-feat--support .mf-ui-footnote,
+#dealality-many-futures .mf-feat--support .mf-ui-subtitle {
+  display: none;
+}
+#dealality-many-futures .mf-feat--support .mf-ui-cards > .mf-ui-card:nth-child(n + 3),
+#dealality-many-futures .mf-feat--support .mf-ui-table tbody tr:nth-child(n + 3),
+#dealality-many-futures .mf-feat--support .mf-ui-gap-list li:nth-child(n + 3),
+#dealality-many-futures .mf-feat--support .mf-ui-callouts > .mf-ui-callout:nth-child(n + 3),
+#dealality-many-futures .mf-feat--support .mf-ui-value-grid > .mf-ui-value-card:nth-child(n + 3) {
+  display: none;
+}
+#dealality-many-futures .mf-feat--support .mf-ui-card-summary {
+  font-size: 0.6875rem;
+  line-height: 1.35;
+}
+#dealality-many-futures .mf-feat--support .mf-ui-score-ring {
+  min-height: 5.5rem;
+  padding: 0.5rem;
+}
+#dealality-many-futures .mf-feat--support .mf-ui-ring-svg {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+#dealality-many-futures .mf-feat--support .mf-ui-form-grid {
+  gap: 0.4rem 0.5rem;
+}
+#dealality-many-futures .mf-feat--support .mf-ui-field-value {
+  padding: 0.35rem 0.45rem;
+  font-size: 0.75rem;
+}
+
+@media screen and (max-width: 767px) {
+  #dealality-many-futures article.mf-feat > .mf-feat-visual.mf-feat-visual--ui {
+    aspect-ratio: auto;
+    height: auto;
+  }
 }
 
 </style>
@@ -837,8 +1013,7 @@
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Brand intelligence</p>
               <h4 class="mf-feat-name">Brand Explorer</h4>
-              <p class="mf-feat-purpose"><strong>Purpose</strong> Understand each brand beyond its name.</p>
-              <p class="mf-feat-benefit"><strong>Benefit</strong> Review positioning, owner fit, footprint, development priorities, brand relationships, and relevant evidence before beginning outreach.</p>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand each brand beyond its name.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Review positioning, owner fit, footprint, development priorities, brand relationships, and relevant evidence before beginning outreach.</p></div>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -854,8 +1029,7 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Match Score &amp; Fit Signals</p>
                 <h4 class="mf-feat-name">Smart Matching</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Identify credible brand possibilities.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Evaluate fit against the asset, market, strategy, and owner priorities using real matching and fit outputs.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Identify credible brand possibilities.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Compare brand fit against the asset, market, strategy, and owner priorities.</p></div>
               </div>
             </article>
             <article class="mf-feat mf-feat--support">
@@ -870,13 +1044,12 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Market context</p>
                 <h4 class="mf-feat-name">Dealality Radar</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Understand current presence and market whitespace.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> See where brands operate, how the surrounding market is positioned, and where credible opportunity may remain.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand current presence and market whitespace.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">See brand presence, market positioning, and remaining opportunity.</p></div>
               </div>
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><strong>Owner outcome</strong> Explore a broader set of credible brand paths before familiarity or early momentum begins defining the decision.</p>
+        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Explore a broader set of credible brand paths before familiarity or early momentum begins defining the decision.</span></p>
       </section>
 
       <!-- Q2 Operators — Operator Track Record is the Proof & Track Record view inside Operator Explorer -->
@@ -913,8 +1086,7 @@
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Operator intelligence</p>
               <h4 class="mf-feat-name">Operator Explorer</h4>
-              <p class="mf-feat-purpose"><strong>Purpose</strong> Compare operator capabilities and partnership models.</p>
-              <p class="mf-feat-benefit"><strong>Benefit</strong> Review experience, operating structure, asset focus, team, regional presence, and brand relationships.</p>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Compare operator capabilities and partnership models.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Review experience, operating structure, asset focus, team, regional presence, and brand relationships.</p></div>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -985,8 +1157,7 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Operator Match Score &amp; Fit Signals</p>
                 <h4 class="mf-feat-name">Smart Matching</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Identify operators aligned with the opportunity.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Compare Operator Alignment Score and fit signals against the asset, market, operating needs, and owner priorities.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Identify operators aligned with the opportunity.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Compare Operator Alignment Score and fit signals to this hotel and ownership strategy.</p></div>
               </div>
             </article>
             <article class="mf-feat mf-feat--support">
@@ -999,13 +1170,12 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Operator Explorer</p>
                 <h4 class="mf-feat-name">Proof &amp; Track Record</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Review relevant operating experience, markets, asset types, brand relationships, and evidence of execution capability.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Assess case studies, references, and portfolio evidence from within Operator Explorer—not as a separate application module.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Review operating experience and execution evidence.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">See case studies and portfolio evidence inside Operator Explorer.</p></div>
               </div>
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><strong>Owner outcome</strong> Identify operators that fit the hotel and ownership strategy—not simply those already known to the owner.</p>
+        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Identify operators that fit the hotel and ownership strategy—not simply those already known to the owner.</span></p>
       </section>
 
       <!-- Q3 Affiliation -->
@@ -1028,8 +1198,7 @@
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Market context</p>
               <h4 class="mf-feat-name">Dealality Radar</h4>
-              <p class="mf-feat-purpose"><strong>Purpose</strong> Understand the market context around the decision.</p>
-              <p class="mf-feat-benefit"><strong>Benefit</strong> Review demand drivers, nearby supply, brand presence, infrastructure, and competitive conditions.</p>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand the market context around the decision.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Review demand drivers, nearby supply, brand presence, infrastructure, and competitive conditions.</p></div>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -1079,8 +1248,7 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Preparation</p>
                 <h4 class="mf-feat-name">Deal Readiness</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Assess whether the hotel is commercially prepared.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Surface readiness signals, information gaps, and areas that require further work.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Assess whether the hotel is commercially prepared.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Surface readiness signals and information gaps before market engagement.</p></div>
               </div>
             </article>
             <article class="mf-feat mf-feat--support">
@@ -1093,13 +1261,12 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Economics</p>
                 <h4 class="mf-feat-name">Fee Estimator</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Understand potential affiliation and management costs.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Estimate the long-term impact of franchise and management fees across possible structures.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand potential affiliation and management costs.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Estimate franchise and management fee impact across structures.</p></div>
               </div>
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><strong>Owner outcome</strong> Evaluate whether affiliation creates enough strategic and commercial value to justify its costs, requirements, and reduced flexibility.</p>
+        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Evaluate whether affiliation creates enough strategic and commercial value to justify its costs, requirements, and reduced flexibility.</span></p>
       </section>
 
       <!-- Q4 Residences — Submit Proposal omitted: brand form has no residential/mixed-use fields -->
@@ -1141,8 +1308,7 @@
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Deal Brief</p>
               <h4 class="mf-feat-name">Opportunity Review</h4>
-              <p class="mf-feat-purpose"><strong>Purpose</strong> Structure the wider hotel and residential opportunity.</p>
-              <p class="mf-feat-benefit"><strong>Benefit</strong> Bring the project concept, positioning, owner priorities, asset components, and development context into one controlled brief.</p>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Structure the wider hotel and residential opportunity.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Bring the project concept, positioning, owner priorities, asset components, and development context into one controlled brief.</p></div>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -1173,8 +1339,7 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Brand intelligence</p>
                 <h4 class="mf-feat-name">Brand Explorer</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Explore relevant brand possibilities.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Review positioning, owner fit, footprint, and available evidence before engaging potential brands.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Explore relevant brand possibilities.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Review positioning, owner fit, footprint, and evidence before outreach.</p></div>
               </div>
             </article>
             <article class="mf-feat mf-feat--support">
@@ -1189,13 +1354,12 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Market context</p>
                 <h4 class="mf-feat-name">Dealality Radar</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Understand market, location, and competitive context around the project.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Review nearby supply, demand drivers, brand presence, and strategic positioning signals that inform whether a residential component merits deeper evaluation.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand market and competitive context.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Review supply, demand, and brand presence to judge residential potential.</p></div>
               </div>
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><strong>Owner outcome</strong> Understand whether a residential component merits deeper evaluation as part of the wider asset strategy.</p>
+        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Understand whether a residential component merits deeper evaluation as part of the wider asset strategy.</span></p>
       </section>
 
       <!-- Q5 Proposals -->
@@ -1239,8 +1403,7 @@
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Commercial comparison</p>
               <h4 class="mf-feat-name">Deal Compare</h4>
-              <p class="mf-feat-purpose"><strong>Purpose</strong> See material commercial trade-offs side by side.</p>
-              <p class="mf-feat-benefit"><strong>Benefit</strong> Compare economics, term, flexibility, support, key money, owner obligations, and other material differences.</p>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">See material commercial trade-offs side by side.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Compare economics, term, flexibility, support, key money, owner obligations, and other material differences.</p></div>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -1289,8 +1452,7 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Brand Response Workflow</p>
                 <h4 class="mf-feat-name">Submit Proposal</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Capture brand proposal information through a structured Deal Request response.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Bring proposal terms and supporting information into the Dealality process in a more consistent format.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Capture brand proposals through a structured Deal Request.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Record proposal terms in a consistent Deal Request format.</p></div>
               </div>
             </article>
             <article class="mf-feat mf-feat--support">
@@ -1303,13 +1465,12 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Economics</p>
                 <h4 class="mf-feat-name">Fee Estimator</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Understand longer-term economic exposure.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Estimate franchise and management fee impact across competing structures and offers.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand longer-term economic exposure.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Estimate fee impact across competing structures and offers.</p></div>
               </div>
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><strong>Owner outcome</strong> Compare the complete owner value proposition—not only the most visible headline terms.</p>
+        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Compare the complete owner value proposition—not only the most visible headline terms.</span></p>
       </section>
 
       <!-- Q6 Clarify -->
@@ -1366,8 +1527,7 @@
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Preparation</p>
               <h4 class="mf-feat-name">Deal Readiness</h4>
-              <p class="mf-feat-purpose"><strong>Purpose</strong> Identify missing information before market engagement or commitment.</p>
-              <p class="mf-feat-benefit"><strong>Benefit</strong> Surface gaps that may weaken outreach, delay evaluation, or reduce confidence in the decision.</p>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Identify missing information before market engagement or commitment.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Surface gaps that may weaken outreach, delay evaluation, or reduce confidence in the decision.</p></div>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -1421,8 +1581,7 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Contractual</p>
                 <h4 class="mf-feat-name">Clause Library</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Recognize contractual provisions requiring closer attention.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Organize relevant clauses, negotiation considerations, and potential issues before legal review and negotiation.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Recognize contractual provisions requiring closer attention.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Organize key clauses and negotiation issues before legal review.</p></div>
               </div>
             </article>
             <article class="mf-feat mf-feat--support">
@@ -1475,13 +1634,12 @@
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Commercial terms</p>
                 <h4 class="mf-feat-name">Financial Term Library</h4>
-                <p class="mf-feat-purpose"><strong>Purpose</strong> Understand important financial and commercial terms.</p>
-                <p class="mf-feat-benefit"><strong>Benefit</strong> Clarify the meaning and implications of fees, obligations, incentives, and other material deal terms.</p>
+                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand important financial and commercial terms.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Clarify fees, obligations, incentives, and other material deal terms.</p></div>
               </div>
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><strong>Owner outcome</strong> Enter negotiation with a clearer view of unresolved issues, important terms, and potential decision risks.</p>
+        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Enter negotiation with a clearer view of unresolved issues, important terms, and potential decision risks.</span></p>
       </section>
     </div>
   </div>
