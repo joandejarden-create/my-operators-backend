@@ -6,7 +6,7 @@
   var host=document.getElementById("mf-embed-host");
   if(!host) return;
   var base="https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@78d305ceea63269fd8d16da60b9184f00993e439/webflow-embeds/many-futures";
-  fetch("https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@78d305ceea63269fd8d16da60b9184f00993e439/webflow-embeds/many-futures/dist/many-futures.6b3e0c1d635c.body.html").then(function(r){return r.text();}).then(function(html){
+  fetch("https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@78d305ceea63269fd8d16da60b9184f00993e439/webflow-embeds/many-futures/dist/many-futures.1cec6f3f34c9.body.html").then(function(r){return r.text();}).then(function(html){
     host.outerHTML=html.split("__MF_CDN_BASE__").join(base);
     var s=document.createElement("script");
     s.src="https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@78d305ceea63269fd8d16da60b9184f00993e439/webflow-embeds/many-futures/dist/many-futures.cf482eb7cce1.js";
