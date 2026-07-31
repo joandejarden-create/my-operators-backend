@@ -661,9 +661,9 @@
 }
 
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--fee) {
-  aspect-ratio: 16 / 10;
-  min-height: 200px;
-  max-height: 240px;
+  aspect-ratio: 16 / 9;
+  min-height: 210px;
+  max-height: 260px;
 }
 
 /* Image frames keep media ratios; UI frames are overridden at file end */
@@ -699,16 +699,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  /* Bias slightly down so result cards + bar chart stay in frame */
+  object-position: center 58%;
   background: #0a1228;
 }
 
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:has(.mf-feat-img--fee),
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--fee) {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   height: auto;
-  min-height: 200px;
-  max-height: 240px;
+  min-height: 210px;
+  max-height: 260px;
   background: #0a1228;
 }
 
@@ -1161,8 +1162,8 @@
   }
 
   #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual:has(.mf-feat-img--fee) {
-    min-height: 200px;
-    max-height: 240px;
+    min-height: 210px;
+    max-height: 260px;
   }
 }
 
@@ -1625,7 +1626,7 @@
                   <source type="image/webp" media="(max-width:767px)" srcset="assets/features/fee-estimator-mobile.webp" />
                   <source media="(max-width:767px)" srcset="assets/features/fee-estimator-mobile.png" />
                   <source type="image/webp" media="(min-width:768px)" srcset="assets/features/fee-estimator-desktop.webp" />
-                  <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results" width="1024" height="413" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--fee"/>
+                  <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results with bar charts" width="993" height="453" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--fee"/>
                 </picture>
               </div>
               <div class="mf-feat-body">
@@ -2114,7 +2115,7 @@
                   <source type="image/webp" media="(max-width:767px)" srcset="assets/features/fee-estimator-mobile.webp" />
                   <source media="(max-width:767px)" srcset="assets/features/fee-estimator-mobile.png" />
                   <source type="image/webp" media="(min-width:768px)" srcset="assets/features/fee-estimator-desktop.webp" />
-                  <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results" width="1024" height="413" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--fee"/>
+                  <img src="assets/features/fee-estimator-desktop.png" alt="Fee Estimator: franchise and management fee results with bar charts" width="993" height="453" loading="lazy" decoding="async" class="mf-feat-img mf-feat-img--fee"/>
                 </picture>
               </div>
               <div class="mf-feat-body">
