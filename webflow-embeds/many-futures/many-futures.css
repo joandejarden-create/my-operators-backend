@@ -520,6 +520,8 @@
 }
 
 #dealality-many-futures .mf-feat {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -580,9 +582,17 @@
   object-position: center 12%;
 }
 
+#dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--scores) {
+  max-height: 128px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background: #0a1228;
+}
+
 #dealality-many-futures .mf-feat-img--scores {
   object-fit: cover;
-  object-position: center center;
+  /* Slide crop right so match rows sit more centered with edge breathing room. */
+  object-position: 70% center;
 }
 
 #dealality-many-futures .mf-feat-img--fee {

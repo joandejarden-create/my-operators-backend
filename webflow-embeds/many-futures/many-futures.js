@@ -234,7 +234,7 @@
       );
     }
 
-    /* Hotel → active question → Decision to evaluate (no feature connectors). */
+    /* Hotel → active question → Decision to evaluate (no feature-to-feature lines). */
     var x1 = lx(hotelRect);
     var y1 = ly(hotelRect);
     var x2 = btnRect.left - layoutRect.left;
@@ -245,6 +245,9 @@
       ? ly(decisionRect)
       : wsRect.top + Math.min(80, wsRect.height * 0.2) - layoutRect.top;
 
+    var primary = panel ? panel.querySelector(".mf-feat--primary") : null;
+    var support = panel ? panel.querySelector(".mf-feat--support") : null;
+
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
     addPath(curve(x1, y1, x2, y2, 40));
@@ -254,25 +257,31 @@
     /* Endpoint behind the Decision to evaluate box. */
     addNode(x3 + 6, y3);
 
-    /* Yellow side-approach into Decision outcome (not feature-to-feature). */
+    /* Yellow lines: one from primary (big), one from support (above outcome) → side of outcome. */
     if (outcome) {
       var oRect = outcome.getBoundingClientRect();
       var oy = ly(oRect);
       /* End slightly inside the box so the yellow dot sits behind it. */
       var oxEnd = oRect.left - layoutRect.left + 8;
-      var oxMid = oRect.left - layoutRect.left - 36;
-      var oxStart = Math.max(
-        wsRect.left - layoutRect.left + 24,
-        oRect.left - layoutRect.left - 120
-      );
-      var yUpper = oy - 18;
-      var yLower = oy + 18;
 
-      /* Two yellow approach curves meet the left side of the outcome. */
-      addPath(curve(oxStart, yUpper, oxEnd, oy, 28), true, "mf-conn--outcome");
-      addPath(curve(oxMid, yLower, oxEnd, oy, 18), true, "mf-conn--outcome");
-      addNode(oxStart, yUpper, "mf-node--outcome");
-      addNode(oxMid, yLower, "mf-node--outcome");
+      if (primary) {
+        var pRect = primary.getBoundingClientRect();
+        /* From lower-right of the big feature into the outcome’s left side. */
+        var fromPX = lx(pRect, 0.88);
+        var fromPY = pRect.bottom - layoutRect.top;
+        addPath(curve(fromPX, fromPY, oxEnd, oy, 42), true, "mf-conn--outcome");
+        addNode(fromPX, fromPY, "mf-node--outcome");
+      }
+
+      if (support) {
+        var sRect = support.getBoundingClientRect();
+        /* From bottom of the smaller feature above the outcome. */
+        var fromSX = lx(sRect, 0.28);
+        var fromSY = sRect.bottom - layoutRect.top;
+        addPath(curve(fromSX, fromSY, oxEnd, oy, 12), true, "mf-conn--outcome");
+        addNode(fromSX, fromSY, "mf-node--outcome");
+      }
+
       addNode(oxEnd, oy, "mf-node--outcome");
     }
   }
