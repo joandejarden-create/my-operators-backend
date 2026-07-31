@@ -586,17 +586,20 @@
 }
 
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--scores) {
-  /* Taller frame = zoom out vs prior 128px crop */
-  max-height: 188px;
-  padding: 0 6px;
+  /* Taller than default 16/9 support frame so cover zooms out */
+  aspect-ratio: 16 / 11;
+  height: auto;
+  min-height: 176px;
+  max-height: 210px;
+  padding: 0 4px;
   box-sizing: border-box;
   background: #0a1228;
 }
 
 #dealality-many-futures .mf-feat-img--scores {
   object-fit: cover;
-  /* Asset is already right-biased; keep a mild right/top bias in-tile */
-  object-position: 62% 32%;
+  /* Mild right bias: Preferred Brand + full Match Score / View Details */
+  object-position: 72% 30%;
 }
 
 #dealality-many-futures .mf-feat-img--fee {

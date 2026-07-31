@@ -90,11 +90,11 @@ def brand_smart_matching_crops() -> None:
         top = int(round(max(0, nh - out_h) * oy))
         return resized.crop((left, top, left + out_w, top + out_h))
 
-    # Wider region = zoom out; trim just past score pills; high ox keeps scores on the right edge
-    desk_region = src.crop((540, 78, min(w - 6, 990), min(h - 2, 508)))
-    mob_region = src.crop((580, 82, min(w - 6, 990), min(h - 2, 510)))
-    save_png_webp(cover_fill(desk_region, 1024, 480, ox=0.88, oy=0.34), "smart-matching-desktop")
-    save_png_webp(cover_fill(mob_region, 780, 420, ox=0.92, oy=0.32), "smart-matching-mobile")
+    # Start near Preferred Brand; keep full Match Score + View Details
+    desk_region = src.crop((655, 82, w - 2, min(h - 2, 508)))
+    mob_region = src.crop((690, 88, w - 2, min(h - 2, 510)))
+    save_png_webp(cover_fill(desk_region, 1024, 500, ox=0.62, oy=0.30), "smart-matching-desktop")
+    save_png_webp(cover_fill(mob_region, 780, 440, ox=0.68, oy=0.28), "smart-matching-mobile")
 
 
 def operator_smart_matching_crops() -> None:
