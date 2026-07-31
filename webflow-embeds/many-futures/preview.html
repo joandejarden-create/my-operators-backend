@@ -148,17 +148,27 @@
   /* Rail (hotel + questions) + workspace */
   grid-template-columns: minmax(500px, 546px) minmax(0, 1fr);
   gap: 1rem 1rem;
-  align-items: start;
+  /* Stretch so .mf-rail is as tall as the workspace — required for sticky */
+  align-items: stretch;
 }
 
 #dealality-many-futures .mf-rail {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  align-self: stretch;
+  /* Tall column (matches workspace); sticky child sticks while scrolling panels */
+  min-height: 100%;
+}
+
+#dealality-many-futures .mf-rail-sticky {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(210px, 230px) minmax(270px, 300px);
   gap: 1rem;
   align-items: start;
-  min-width: 0;
+  width: 100%;
 }
 
 #dealality-many-futures .mf-connectors {
@@ -353,7 +363,12 @@
     box-shadow var(--mf-dur) var(--mf-ease);
 }
 
-#dealality-many-futures .mf-q:hover,
+/* Hover is visual only — never mimics .is-active (selection is click/keyboard) */
+#dealality-many-futures .mf-q:hover:not(.is-active) {
+  border-color: rgba(108, 114, 255, 0.28);
+  background: rgba(108, 114, 255, 0.04);
+}
+
 #dealality-many-futures .mf-q:focus-visible {
   border-color: rgba(108, 114, 255, 0.35);
   outline: none;
@@ -760,8 +775,9 @@
 #dealality-many-futures .mf-ui-section{margin:.35rem 0 .25rem;font-size:.6875rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mf-accent-soft)}
 
 @media screen and (max-width:991px){
-#dealality-many-futures .mf-layout{grid-template-columns:1fr;grid-template-areas:"rail" "workspace";gap:1rem}
-#dealality-many-futures .mf-rail{grid-area:rail;grid-template-columns:minmax(0,.38fr) minmax(0,.62fr);align-items:start}
+#dealality-many-futures .mf-layout{grid-template-columns:1fr;grid-template-areas:"rail" "workspace";gap:1rem;align-items:start}
+#dealality-many-futures .mf-rail{grid-area:rail;min-height:0}
+#dealality-many-futures .mf-rail-sticky{grid-template-columns:minmax(0,.38fr) minmax(0,.62fr);align-items:start;position:relative;top:auto;max-height:none}
 #dealality-many-futures .mf-workspace{grid-area:workspace}
 #dealality-many-futures .mf-connectors,#dealality-many-futures .mf-hotel-node{display:none}
 #dealality-many-futures .mf-features,#dealality-many-futures .mf-features--duo,#dealality-many-futures .mf-workspace--two-panel .mf-features,#dealality-many-futures .mf-workspace--two-panel .mf-features--duo{grid-template-columns:1fr;gap:16px}
@@ -782,7 +798,8 @@
 }
 @media screen and (max-width:767px){
 #dealality-many-futures .mf-layout{display:flex;flex-direction:column;gap:.85rem}
-#dealality-many-futures .mf-rail{display:contents}
+#dealality-many-futures .mf-rail,
+#dealality-many-futures .mf-rail-sticky{display:contents}
 #dealality-many-futures .mf-feat-img--desk{display:none}
 #dealality-many-futures .mf-feat-img--mob{display:block}
 #dealality-many-futures .mf-ui-hide-mobile{display:none}
@@ -961,22 +978,38 @@
   }
 }
 
-/* Final desktop sticky rail — hotel defines height; questions fill to match */
+/* Final desktop sticky rail — one sticky unit (hotel + questions) inside a tall column */
 @media screen and (min-width: 992px) {
+  #dealality-many-futures .mf-layout {
+    align-items: stretch;
+  }
+
   #dealality-many-futures .mf-rail {
+    align-self: stretch;
+    min-height: 100%;
+    height: auto;
+  }
+
+  /* Sticks while the tall rail column scrolls with the workspace */
+  #dealality-many-futures .mf-rail-sticky {
+    position: sticky;
+    top: 1.25rem;
     display: flex;
     flex-direction: row;
     align-items: stretch;
     gap: 1rem;
+    width: 100%;
+    max-height: calc(100vh - 2.5rem);
+    z-index: 2;
   }
 
   #dealality-many-futures .mf-hotel {
-    position: sticky;
-    top: 1.25rem;
+    position: relative;
+    top: auto;
     flex: 0 0 clamp(210px, 16vw, 230px);
     width: clamp(210px, 16vw, 230px);
-    align-self: flex-start;
-    height: fit-content;
+    align-self: stretch;
+    height: auto;
     max-height: calc(100vh - 2.5rem);
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -995,13 +1028,10 @@
     max-width: 300px;
     width: 100%;
     align-self: stretch;
-    position: sticky;
-    top: 1.25rem;
-    max-height: calc(100vh - 2.5rem);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(108, 114, 255, 0.45) transparent;
+    position: relative;
+    top: auto;
+    max-height: none;
+    overflow: visible;
   }
 
   #dealality-many-futures .mf-question-list .mf-q,
@@ -1069,6 +1099,7 @@
     <svg class="mf-connectors" aria-hidden="true" focusable="false"></svg>
 
     <div class="mf-rail">
+    <div class="mf-rail-sticky">
     <article class="mf-hotel" aria-label="Illustrative hotel opportunity">
       <div class="mf-hotel-media">
         <picture>
@@ -1169,6 +1200,7 @@
         </span>
         <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
+    </div>
     </div>
     </div>
 
@@ -2334,9 +2366,10 @@
 
   for (var i = 0; i < questions.length; i++) {
     (function (btn) {
-      /* Desktop: click/keyboard select. Hover preview removed — it reset when
-         the pointer moved into the feature workspace to read the panels. */
-      btn.addEventListener("click", function () {
+      /* Selection is click/keyboard only. Hover must not change panels — moving
+         into the feature workspace would otherwise look like a reset to Q01. */
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
         setActive(btn.getAttribute("data-q"));
       });
       btn.addEventListener("keydown", function (e) {
@@ -2348,9 +2381,19 @@
     })(questions[i]);
   }
 
-  window.addEventListener("resize", function () {
-    setActive(current);
-  });
+  var scrollRaf = 0;
+  function onScrollOrResize() {
+    if (scrollRaf) return;
+    scrollRaf = window.requestAnimationFrame(function () {
+      scrollRaf = 0;
+      placeMobilePanel(current);
+      syncWorkspaceLayout(current);
+      drawConnectors(current);
+    });
+  }
+
+  window.addEventListener("resize", onScrollOrResize);
+  window.addEventListener("scroll", onScrollOrResize, { passive: true });
 
   for (var p = 0; p < panels.length; p++) {
     if (!panels[p].classList.contains("is-active")) deferPanelImages(panels[p]);

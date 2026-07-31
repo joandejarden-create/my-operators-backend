@@ -210,9 +210,10 @@
 
   for (var i = 0; i < questions.length; i++) {
     (function (btn) {
-      /* Desktop: click/keyboard select. Hover preview removed — it reset when
-         the pointer moved into the feature workspace to read the panels. */
-      btn.addEventListener("click", function () {
+      /* Selection is click/keyboard only. Hover must not change panels — moving
+         into the feature workspace would otherwise look like a reset to Q01. */
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
         setActive(btn.getAttribute("data-q"));
       });
       btn.addEventListener("keydown", function (e) {
@@ -224,9 +225,19 @@
     })(questions[i]);
   }
 
-  window.addEventListener("resize", function () {
-    setActive(current);
-  });
+  var scrollRaf = 0;
+  function onScrollOrResize() {
+    if (scrollRaf) return;
+    scrollRaf = window.requestAnimationFrame(function () {
+      scrollRaf = 0;
+      placeMobilePanel(current);
+      syncWorkspaceLayout(current);
+      drawConnectors(current);
+    });
+  }
+
+  window.addEventListener("resize", onScrollOrResize);
+  window.addEventListener("scroll", onScrollOrResize, { passive: true });
 
   for (var p = 0; p < panels.length; p++) {
     if (!panels[p].classList.contains("is-active")) deferPanelImages(panels[p]);
