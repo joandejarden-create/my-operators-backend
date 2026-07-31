@@ -159,7 +159,7 @@
   function start(root, viewport, slides, dotsWrap) {
     if (started) return;
     started = true;
-    window.__ohTestimonials = 202607325;
+    window.__ohTestimonials = 202607326;
 
     var index = 0;
     var timer = null;
@@ -256,7 +256,7 @@
   }
 
   function tryBoot() {
-    if (started || window.__ohTestimonials >= 202607325) return;
+    if (started || window.__ohTestimonials >= 202607326) return;
     var root = document.getElementById("testimonials") || document.getElementById("trust");
     if (!root) {
       scheduleRetry();
