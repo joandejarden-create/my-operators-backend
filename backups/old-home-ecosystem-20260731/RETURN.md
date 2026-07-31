@@ -4,7 +4,7 @@
 - Page: Old Home `68108c2a063eeb5d1bd7ae90`
 - Section marker: `section#ecosystem[data-oh-ecosystem="owner-advisor-led"]`
 - Page freeform head CSS:
-  `https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6cd5951ccc2ecda4768e1f_dealality-old-home-ecosystem.v20260731g.css`
+  `https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6cd7cd3737b3abf85f7993_dealality-old-home-ecosystem.v20260731i.css`
 - Site freeform head: unchanged (root `/` untouched)
 - Publish: not performed
 
