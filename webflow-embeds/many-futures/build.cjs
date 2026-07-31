@@ -100,7 +100,9 @@ const FEATURE_FILES = [
   "operator-track-record-desktop.png",
   "operator-track-record-mobile.png",
   "fee-estimator-desktop.png",
+  "fee-estimator-desktop.webp",
   "fee-estimator-mobile.png",
+  "fee-estimator-mobile.webp",
   "radar-desktop.png",
   "radar-desktop.webp",
   "radar-desktop-800.png",
@@ -111,6 +113,10 @@ const FEATURE_FILES = [
   "smart-matching-desktop.webp",
   "smart-matching-mobile.png",
   "smart-matching-mobile.webp",
+  "smart-matching-operators-desktop.png",
+  "smart-matching-operators-desktop.webp",
+  "smart-matching-operators-mobile.png",
+  "smart-matching-operators-mobile.webp",
 ];
 
 for (const file of FEATURE_FILES) {
