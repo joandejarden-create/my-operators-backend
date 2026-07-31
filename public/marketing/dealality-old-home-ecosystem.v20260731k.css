@@ -5,34 +5,43 @@
 .oh-eco-stage .oh-eco-conn-line:after{right:-1px;border-left:5px solid rgba(120,150,255,.55)}
 .oh-eco-stage .oh-eco-list li > svg{display:none!important}
 .oh-eco-stage .oh-eco-list li{
-  display:flex;
-  align-items:flex-start;
-  gap:8px;
-  padding-left:0;
-  margin:0;
+  display:flex!important;
+  align-items:flex-start!important;
+  gap:8px!important;
+  padding-left:0!important;
+  margin:0!important;
+  text-indent:0!important;
 }
 .oh-eco-stage .oh-eco-list li::before{
-  content:"";
-  flex:0 0 12px;
-  width:12px;
-  height:12px;
-  margin-top:3px;
-  background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3 7.2l2.4 2.4L11 4' stroke='%236EA8FF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  content:""!important;
+  flex:0 0 12px!important;
+  width:12px!important;
+  height:12px!important;
+  margin:3px 0 0!important;
+  padding:0!important;
+  background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3 7.2l2.4 2.4L11 4' stroke='%236EA8FF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
 }
 .oh-eco-stage .oh-eco-advisors .oh-eco-list li::before{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3 7.2l2.4 2.4L11 4' stroke='%23B39BFF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3 7.2l2.4 2.4L11 4' stroke='%23B39BFF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
 }
 .oh-eco-stage .oh-eco-capital .oh-eco-list li::before{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3 7.2l2.4 2.4L11 4' stroke='%234FD6CB' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3 7.2l2.4 2.4L11 4' stroke='%234FD6CB' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
 }
 .oh-eco-stage .oh-eco-list li span{
-  flex:1 1 auto;
-  min-width:0;
-  display:block;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  display:block!important;
+  padding:0!important;
+  margin:0!important;
+  text-indent:0!important;
 }
-.oh-eco-stage .oh-eco-list li span:before{
+.oh-eco-stage .oh-eco-list li span:before,
+.oh-eco-stage .oh-eco-list li span::before{
   content:none!important;
   display:none!important;
+  width:0!important;
+  height:0!important;
+  margin:0!important;
 }
 .oh-eco-stage .oh-eco-band-pill > svg{display:none!important}
 
@@ -125,4 +134,4 @@ section[data-oh-ecosystem="owner-advisor-led"] .oh-eco-conn-line{
   gap:8px;
 }
 
-/* v20260731k: hide Process Can Be Led By pill; left-align bullets via li::before; close primary Hero Yellow #fdb52a */
+/* v20260731k: hide Process Can Be Led By pill; left-align bullets via li::before (hanging indent); close primary Hero Yellow #fdb52a */

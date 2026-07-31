@@ -11,7 +11,7 @@ Old Home `/old-home` only. Staging subdomain publish. Production domains not upd
 
 ## Assets
 - CSS: `dealality-old-home-ecosystem.v20260731k.css`
-- CDN: `https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6ced234857e4ef1b08ca2a_dealality-old-home-ecosystem.v20260731k.css`
+- CDN: `https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6cee2683565c3822a31219_dealality-old-home-ecosystem.v20260731k.css`
 
 ## Staging checks
 - Headers use `&`
