@@ -14,23 +14,67 @@
     return window.matchMedia("(max-width: 767px)").matches;
   };
 
+  function stashAttr(el, name) {
+    if (!el || !el.hasAttribute(name)) return;
+    var dataKey = name === "src" ? "mfSrc" : name === "srcset" ? "mfSrcset" : null;
+    if (!dataKey) return;
+    if (!el.dataset[dataKey]) el.dataset[dataKey] = el.getAttribute(name);
+    el.removeAttribute(name);
+  }
+
+  function restoreAttr(el, name) {
+    if (!el) return;
+    var dataKey = name === "src" ? "mfSrc" : name === "srcset" ? "mfSrcset" : null;
+    if (!dataKey || !el.dataset[dataKey]) return;
+    el.setAttribute(name, el.dataset[dataKey]);
+    delete el.dataset[dataKey];
+  }
+
+  function deferPicture(picture) {
+    if (!picture) return;
+    var sources = picture.querySelectorAll("source");
+    for (var i = 0; i < sources.length; i++) stashAttr(sources[i], "srcset");
+    var img = picture.querySelector("img");
+    if (img) {
+      stashAttr(img, "srcset");
+      stashAttr(img, "src");
+    }
+  }
+
+  function loadPicture(picture) {
+    if (!picture) return;
+    var sources = picture.querySelectorAll("source");
+    for (var i = 0; i < sources.length; i++) restoreAttr(sources[i], "srcset");
+    var img = picture.querySelector("img");
+    if (img) {
+      restoreAttr(img, "srcset");
+      restoreAttr(img, "src");
+    }
+  }
+
   function deferPanelImages(panel) {
     if (!panel) return;
+    var pictures = panel.querySelectorAll("picture");
+    for (var i = 0; i < pictures.length; i++) {
+      if (pictures[i].closest(".mf-hotel-media")) continue;
+      deferPicture(pictures[i]);
+    }
     var imgs = panel.querySelectorAll("img.mf-feat-img[src]");
-    for (var i = 0; i < imgs.length; i++) {
-      if (!imgs[i].dataset.mfSrc) {
-        imgs[i].dataset.mfSrc = imgs[i].getAttribute("src");
-        imgs[i].removeAttribute("src");
-      }
+    for (var j = 0; j < imgs.length; j++) {
+      if (!imgs[j].closest("picture")) stashAttr(imgs[j], "src");
     }
   }
 
   function loadPanelImages(panel) {
     if (!panel) return;
-    var imgs = panel.querySelectorAll("img.mf-feat-img[data-mf-src]");
-    for (var i = 0; i < imgs.length; i++) {
-      imgs[i].setAttribute("src", imgs[i].dataset.mfSrc);
-      delete imgs[i].dataset.mfSrc;
+    var pictures = panel.querySelectorAll("picture");
+    for (var i = 0; i < pictures.length; i++) {
+      if (pictures[i].closest(".mf-hotel-media")) continue;
+      loadPicture(pictures[i]);
+    }
+    var imgs = panel.querySelectorAll("img.mf-feat-img");
+    for (var j = 0; j < imgs.length; j++) {
+      if (!imgs[j].closest("picture")) restoreAttr(imgs[j], "src");
     }
   }
 
@@ -54,6 +98,7 @@
         panels[i].removeAttribute("hidden");
       } else {
         panels[i].setAttribute("hidden", "");
+        deferPanelImages(panels[i]);
       }
     }
 
@@ -69,7 +114,6 @@
     if (!activePanel || !activeBtn) return;
 
     if (isMobile()) {
-      // Insert active panel content region immediately after the active question
       if (activeBtn.nextElementSibling !== workspace) {
         activeBtn.insertAdjacentElement("afterend", workspace);
       }
@@ -93,7 +137,9 @@
 
     var layoutRect = layout.getBoundingClientRect();
     var hotelRect = hotelNode.getBoundingClientRect();
-    var btn = root.querySelector('.mf-q[data-q="' + id + '"].is-active') || root.querySelector('.mf-q[data-q="' + id + '"]');
+    var btn =
+      root.querySelector('.mf-q[data-q="' + id + '"].is-active') ||
+      root.querySelector('.mf-q[data-q="' + id + '"]');
     var workspaceEl = root.querySelector(".mf-workspace");
     if (!btn || !workspaceEl) return;
 
@@ -108,22 +154,7 @@
     var y3 = wsRect.top + Math.min(80, wsRect.height * 0.2) - layoutRect.top;
 
     var d1 =
-      "M " +
-      x1 +
-      " " +
-      y1 +
-      " C " +
-      (x1 + 40) +
-      " " +
-      y1 +
-      ", " +
-      (x2 - 36) +
-      " " +
-      y2 +
-      ", " +
-      x2 +
-      " " +
-      y2;
+      "M " + x1 + " " + y1 + " C " + (x1 + 40) + " " + y1 + ", " + (x2 - 36) + " " + y2 + ", " + x2 + " " + y2;
     var d2 =
       "M " +
       (btnRect.right - layoutRect.left) +

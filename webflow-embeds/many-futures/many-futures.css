@@ -553,3 +553,32 @@
 @media screen and (max-width:767px){
 #dealality-many-futures .mf-ui-field-group{grid-template-columns:1fr}
 }
+
+/* Breakpoint pictures: only one asset requested per viewport */
+#dealality-many-futures .mf-feat-picture{display:block;width:100%;height:100%}
+#dealality-many-futures .mf-feat-picture img{width:100%;height:100%;object-fit:cover;display:block}
+#dealality-many-futures .mf-feat-picture--mob{display:none}
+@media screen and (max-width:767px){
+#dealality-many-futures .mf-feat-picture--desk{display:none}
+#dealality-many-futures .mf-feat-picture--mob{display:block}
+}
+
+/* Brand Explorer / Operator / Opportunity / Deal Compare HTML primaries */
+#dealality-many-futures .mf-ui-callouts{display:grid;gap:.45rem;margin:.45rem 0 .55rem}
+#dealality-many-futures .mf-ui-callout{padding:.55rem .6rem;border:1px solid var(--mf-border);border-radius:10px;background:var(--mf-panel)}
+#dealality-many-futures .mf-ui-callout-label{margin:0 0 .25rem;font-size:.625rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mf-accent-soft)}
+#dealality-many-futures .mf-ui-callout-body{margin:0;font-size:.8125rem;line-height:1.4;color:rgba(255,255,255,.88)}
+#dealality-many-futures .mf-ui-value-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem}
+#dealality-many-futures .mf-ui-value-card{padding:.5rem .55rem;border:1px solid var(--mf-border);border-radius:10px;background:var(--mf-panel)}
+#dealality-many-futures .mf-ui-value-title{margin:0 0 .2rem;font-size:.75rem;font-weight:700;color:rgba(255,255,255,.92)}
+#dealality-many-futures .mf-ui-value-body{margin:0;font-size:.6875rem;line-height:1.35;color:var(--mf-muted)}
+#dealality-many-futures .mf-ui-metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem;margin-top:.35rem}
+#dealality-many-futures .mf-ui-metric{padding:.45rem .5rem;border:1px solid var(--mf-border);border-radius:10px;background:var(--mf-panel)}
+#dealality-many-futures .mf-ui-metric-label{display:block;font-size:.625rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mf-muted-2)}
+#dealality-many-futures .mf-ui-metric-value{display:block;margin-top:.2rem;font-size:.8125rem;font-weight:650;color:rgba(255,255,255,.92)}
+#dealality-many-futures .mf-ui-table--compare{font-size:.6875rem}
+#dealality-many-futures .mf-ui-em{color:#7dcea0;font-weight:700}
+@media screen and (max-width:767px){
+#dealality-many-futures .mf-ui-value-grid,#dealality-many-futures .mf-ui-metric-grid{grid-template-columns:1fr}
+#dealality-many-futures .mf-ui-callout-body{font-size:.8125rem}
+}
