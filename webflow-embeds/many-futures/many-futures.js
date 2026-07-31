@@ -257,32 +257,35 @@
     /* Endpoint behind the Decision to evaluate box. */
     addNode(x3 + 6, y3);
 
-    /* Yellow lines: one from primary (big), one from support (above outcome) → side of outcome. */
+    /* Yellow outcome lines — endpoints sit slightly inside the box so dots paint behind it. */
     if (outcome) {
       var oRect = outcome.getBoundingClientRect();
-      var oy = ly(oRect);
-      /* End slightly inside the box so the yellow dot sits behind it. */
-      var oxEnd = oRect.left - layoutRect.left + 8;
+      /* Left-side attachment (from big/primary feature). */
+      var oxLeft = oRect.left - layoutRect.left + 8;
+      var oyMid = ly(oRect, 0.55);
+      /* Top-side attachment (from support feature above). */
+      var oxTop = lx(oRect, 0.42);
+      var oyTop = oRect.top - layoutRect.top + 6;
 
       if (primary) {
         var pRect = primary.getBoundingClientRect();
-        /* From lower-right of the big feature into the outcome’s left side. */
-        var fromPX = lx(pRect, 0.88);
-        var fromPY = pRect.bottom - layoutRect.top;
-        addPath(curve(fromPX, fromPY, oxEnd, oy, 42), true, "mf-conn--outcome");
+        /* From the right side of the big (lower) feature → left side of Decision outcome. */
+        var fromPX = pRect.right - layoutRect.left;
+        var fromPY = ly(pRect, 0.78);
+        addPath(curve(fromPX, fromPY, oxLeft, oyMid, 36), true, "mf-conn--outcome");
         addNode(fromPX, fromPY, "mf-node--outcome");
+        addNode(oxLeft, oyMid, "mf-node--outcome");
       }
 
       if (support) {
         var sRect = support.getBoundingClientRect();
-        /* From bottom of the smaller feature above the outcome. */
-        var fromSX = lx(sRect, 0.28);
+        /* From bottom of the smaller feature above → top of Decision outcome. */
+        var fromSX = lx(sRect, 0.5);
         var fromSY = sRect.bottom - layoutRect.top;
-        addPath(curve(fromSX, fromSY, oxEnd, oy, 12), true, "mf-conn--outcome");
+        addPath(curve(fromSX, fromSY, oxTop, oyTop, 10), true, "mf-conn--outcome");
         addNode(fromSX, fromSY, "mf-node--outcome");
+        addNode(oxTop, oyTop, "mf-node--outcome");
       }
-
-      addNode(oxEnd, oy, "mf-node--outcome");
     }
   }
 
