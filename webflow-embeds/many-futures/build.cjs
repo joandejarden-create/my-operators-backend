@@ -74,12 +74,14 @@ const CDN_SHA =
     : "d2aee9c5201f671fde32d4b3ee1e810d7d58c9f0");
 
 const CDN_BASE = `https://cdn.jsdelivr.net/gh/joandejarden-create/my-operators-backend@${CDN_SHA}/webflow-embeds/many-futures`;
+/* Body markup uses a stable token so content hash does not change when CDN_SHA is pinned. */
+const BODY_CDN_TOKEN = "__MF_CDN_BASE__";
 
 const ASSET_REWRITES = [
-  ["assets/hotel-final.jpg", `${CDN_BASE}/assets/hotel-final.jpg`],
-  ["assets/hotel-final-640.webp", `${CDN_BASE}/assets/hotel-final-640.webp`],
-  ["assets/hotel-final-960.webp", `${CDN_BASE}/assets/hotel-final-960.webp`],
-  ["assets/hotel-final-1280.webp", `${CDN_BASE}/assets/hotel-final-1280.webp`],
+  ["assets/hotel-final.jpg", `${BODY_CDN_TOKEN}/assets/hotel-final.jpg`],
+  ["assets/hotel-final-640.webp", `${BODY_CDN_TOKEN}/assets/hotel-final-640.webp`],
+  ["assets/hotel-final-960.webp", `${BODY_CDN_TOKEN}/assets/hotel-final-960.webp`],
+  ["assets/hotel-final-1280.webp", `${BODY_CDN_TOKEN}/assets/hotel-final-1280.webp`],
 ];
 
 const FEATURE_FILES = [
@@ -108,23 +110,24 @@ const FEATURE_FILES = [
 for (const file of FEATURE_FILES) {
   ASSET_REWRITES.push([
     `assets/features/${file}`,
-    `${CDN_BASE}/assets/features/${file}`,
+    `${BODY_CDN_TOKEN}/assets/features/${file}`,
   ]);
 }
 
-let prodMarkup = markup;
+let tokenMarkup = markup;
 for (const [from, to] of ASSET_REWRITES) {
-  prodMarkup = prodMarkup.split(from).join(to);
+  tokenMarkup = tokenMarkup.split(from).join(to);
 }
 
-const markupOut = minifyMarkup(prodMarkup);
-const markupHash = shortHash(markupOut);
+const markupOutToken = minifyMarkup(tokenMarkup);
+const markupOut = markupOutToken.split(BODY_CDN_TOKEN).join(CDN_BASE);
+const markupHash = shortHash(markupOutToken);
 const bodyFile = `many-futures.${markupHash}.body.html`;
 const bodyPath = path.join(distDir, bodyFile);
-if (fs.existsSync(bodyPath) && fs.readFileSync(bodyPath, "utf8") !== markupOut) {
+if (fs.existsSync(bodyPath) && fs.readFileSync(bodyPath, "utf8") !== markupOutToken) {
   throw new Error(`Hash collision or mutated asset: ${bodyFile}`);
 }
-fs.writeFileSync(bodyPath, markupOut);
+fs.writeFileSync(bodyPath, markupOutToken);
 
 const cssUrl = `${CDN_BASE}/dist/${cssFile}`;
 const jsUrl = `${CDN_BASE}/dist/${jsFile}`;
@@ -138,7 +141,7 @@ const embedInline = `<style>${cssOut}</style>${markupOut}<script>${jsOut}</scrip
 const embedFull = `${critical}<link rel="stylesheet" href="${cssUrl}" /><script src="${jsUrl}" defer></script>${markupOut}`;
 
 /* Webflow Code Embed soft limit ~50KB. Nine-state markup exceeds it — use hashed body fetch. */
-const embedLoader = `${critical}<link rel="stylesheet" href="${cssUrl}" /><div id="mf-embed-host" aria-busy="true"></div><script>(function(){var h=document.getElementById("mf-embed-host");if(!h)return;fetch("${bodyUrl}").then(function(r){if(!r.ok)throw new Error("mf body");return r.text()}).then(function(html){h.outerHTML=html;var s=document.createElement("script");s.src="${jsUrl}";s.defer=true;document.body.appendChild(s)}).catch(function(){h.setAttribute("aria-busy","false");h.textContent="Many Futures interactive could not load. Refresh to try again."})})();</script>`;
+const embedLoader = `${critical}<link rel="stylesheet" href="${cssUrl}" /><div id="mf-embed-host" aria-busy="true"></div><script>(function(){var h=document.getElementById("mf-embed-host");if(!h)return;var base=${JSON.stringify(CDN_BASE)};fetch(${JSON.stringify(bodyUrl)}).then(function(r){if(!r.ok)throw new Error("mf body");return r.text()}).then(function(html){h.outerHTML=html.split(${JSON.stringify(BODY_CDN_TOKEN)}).join(base);var s=document.createElement("script");s.src=${JSON.stringify(jsUrl)};s.defer=true;document.body.appendChild(s)}).catch(function(){h.setAttribute("aria-busy","false");h.textContent="Many Futures interactive could not load. Refresh to try again."})})();</script>`;
 
 const embed = embedFull.length <= 49500 ? embedFull : embedLoader;
 const WEBFLOW_MODE = embedFull.length <= 49500 ? "inline-markup" : "cdn-body-loader";
@@ -173,10 +176,11 @@ const loader = `<!-- Many Futures — CDN loader backup (use only if inline Embe
 (function(){
   var host=document.getElementById("mf-embed-host");
   if(!host) return;
-  fetch("${bodyUrl}").then(function(r){return r.text();}).then(function(html){
-    host.outerHTML=html;
+  var base=${JSON.stringify(CDN_BASE)};
+  fetch(${JSON.stringify(bodyUrl)}).then(function(r){return r.text();}).then(function(html){
+    host.outerHTML=html.split(${JSON.stringify(BODY_CDN_TOKEN)}).join(base);
     var s=document.createElement("script");
-    s.src="${jsUrl}";
+    s.src=${JSON.stringify(jsUrl)};
     s.defer=true;
     document.body.appendChild(s);
   });
