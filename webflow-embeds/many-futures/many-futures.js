@@ -160,10 +160,10 @@
 
     var btnRect = btn.getBoundingClientRect();
     var wsRect = workspaceEl.getBoundingClientRect();
-    var panel = root.querySelector('.mf-panel[data-panel="' + id + '"].is-active') ||
+    var panel =
+      root.querySelector('.mf-panel[data-panel="' + id + '"].is-active') ||
       root.querySelector('.mf-panel[data-panel="' + id + '"]');
-    var primary = panel ? panel.querySelector(".mf-feat--primary") : null;
-    var support = panel ? panel.querySelector(".mf-feat--support") : null;
+    var decision = panel ? panel.querySelector(".mf-decision") : null;
     var outcome = panel
       ? panel.querySelector(".mf-feat-stack .mf-decision-outcome") ||
         panel.querySelector(".mf-decision-outcome")
@@ -182,20 +182,19 @@
       if (extraClass) path.classList.add(extraClass);
       svg.appendChild(path);
     }
-    function addNode(cx, cy) {
+    function addNode(cx, cy, extraClass) {
       var node = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       node.setAttribute("cx", String(cx));
       node.setAttribute("cy", String(cy));
       node.setAttribute("r", "4");
       node.classList.add("mf-node", "is-active");
+      if (extraClass) node.classList.add(extraClass);
       svg.appendChild(node);
     }
     function curve(x1, y1, x2, y2, pull) {
-      var mid = (x1 + x2) / 2;
       var c1x = x1 + (pull == null ? 40 : pull);
       var c2x = x2 - (pull == null ? 36 : pull);
       if (Math.abs(x2 - x1) < 48) {
-        /* mostly vertical */
         return (
           "M " +
           x1 +
@@ -235,45 +234,46 @@
       );
     }
 
+    /* Hotel → active question → Decision to evaluate (no feature connectors). */
     var x1 = lx(hotelRect);
     var y1 = ly(hotelRect);
     var x2 = btnRect.left - layoutRect.left;
     var y2 = ly(btnRect);
-    var x3 = wsRect.left - layoutRect.left;
-    var y3 = wsRect.top + Math.min(80, wsRect.height * 0.2) - layoutRect.top;
+    var decisionRect = decision ? decision.getBoundingClientRect() : wsRect;
+    var x3 = decisionRect.left - layoutRect.left;
+    var y3 = decision
+      ? ly(decisionRect)
+      : wsRect.top + Math.min(80, wsRect.height * 0.2) - layoutRect.top;
 
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
     addPath(curve(x1, y1, x2, y2, 40));
-    addPath(
-      curve(btnRect.right - layoutRect.left, y2, x3, y3, 36)
-    );
+    addPath(curve(btnRect.right - layoutRect.left, y2, x3, y3, 36));
+    /* Node sits on the question edge; question card paints above the SVG. */
     addNode(x2, y2);
+    /* Endpoint behind the Decision to evaluate box. */
+    addNode(x3 + 6, y3);
 
-    if (primary) {
-      var pRect = primary.getBoundingClientRect();
-      var px = pRect.left - layoutRect.left;
-      var py = ly(pRect, 0.22);
-      addPath(curve(x3, y3, px, py, 28));
-      addNode(px, py);
+    /* Yellow side-approach into Decision outcome (not feature-to-feature). */
+    if (outcome) {
+      var oRect = outcome.getBoundingClientRect();
+      var oy = ly(oRect);
+      /* End slightly inside the box so the yellow dot sits behind it. */
+      var oxEnd = oRect.left - layoutRect.left + 8;
+      var oxMid = oRect.left - layoutRect.left - 36;
+      var oxStart = Math.max(
+        wsRect.left - layoutRect.left + 24,
+        oRect.left - layoutRect.left - 120
+      );
+      var yUpper = oy - 18;
+      var yLower = oy + 18;
 
-      if (support) {
-        var sRect = support.getBoundingClientRect();
-        var sx = sRect.left - layoutRect.left;
-        var sy = ly(sRect, 0.18);
-        addPath(curve(pRect.right - layoutRect.left, py, sx, sy, 24));
-        addNode(sx, sy);
-
-        if (outcome) {
-          var oRect = outcome.getBoundingClientRect();
-          var ox = lx(oRect);
-          var oy = oRect.top - layoutRect.top;
-          var fromX = lx(sRect);
-          var fromY = sRect.bottom - layoutRect.top;
-          addPath(curve(fromX, fromY, ox, oy, 12), true, "mf-conn--outcome");
-          addNode(ox, oy);
-        }
-      }
+      /* Two yellow approach curves meet the left side of the outcome. */
+      addPath(curve(oxStart, yUpper, oxEnd, oy, 28), true, "mf-conn--outcome");
+      addPath(curve(oxMid, yLower, oxEnd, oy, 18), true, "mf-conn--outcome");
+      addNode(oxStart, yUpper, "mf-node--outcome");
+      addNode(oxMid, yLower, "mf-node--outcome");
+      addNode(oxEnd, oy, "mf-node--outcome");
     }
   }
 

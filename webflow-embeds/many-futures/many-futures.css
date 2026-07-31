@@ -119,6 +119,12 @@
   filter: drop-shadow(0 0 4px rgba(139, 144, 255, 0.5));
 }
 
+#dealality-many-futures .mf-connectors .mf-node.mf-node--outcome.is-active {
+  fill: var(--mf-value);
+  stroke: #ffe09a;
+  filter: drop-shadow(0 0 4px rgba(253, 181, 42, 0.55));
+}
+
 /* Hotel */
 #dealality-many-futures .mf-hotel {
   position: relative;
@@ -389,6 +395,8 @@
 }
 
 #dealality-many-futures .mf-decision {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -434,6 +442,8 @@
 #dealality-many-futures .mf-decision-outcome,
 #dealality-many-futures .mf-feat-stack > .mf-outcome,
 #dealality-many-futures .mf-panel > .mf-outcome {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.22rem;
@@ -542,12 +552,11 @@
 }
 
 #dealality-many-futures .mf-feat--support .mf-feat-visual {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
 }
 
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui) {
-  max-height: 280px;
-  min-height: 200px;
+  max-height: 128px;
 }
 
 #dealality-many-futures .mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui):has(.mf-feat-img--fee) {
@@ -1040,11 +1049,6 @@
 
   #dealality-many-futures article.mf-feat.mf-feat--primary > .mf-feat-visual:not(.mf-feat-visual--ui) {
     max-height: min(28vh, 260px);
-  }
-
-  #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual:not(.mf-feat-visual--ui) {
-    max-height: min(26vh, 280px);
-    min-height: 200px;
   }
 
   #dealality-many-futures article.mf-feat.mf-feat--support > .mf-feat-visual:has(.mf-feat-img--fee) {
