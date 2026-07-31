@@ -8,6 +8,7 @@
   <div class="mf-layout">
     <svg class="mf-connectors" aria-hidden="true" focusable="false"></svg>
 
+    <div class="mf-rail">
     <article class="mf-hotel" aria-label="Illustrative hotel opportunity">
       <div class="mf-hotel-media">
         <picture>
@@ -44,7 +45,7 @@
       <span class="mf-hotel-node" aria-hidden="true"></span>
     </article>
 
-    <div class="mf-questions" role="group" aria-label="Owner decision questions">
+    <div class="mf-questions mf-question-list" role="group" aria-label="Owner decision questions">
       <button type="button" class="mf-q is-active" data-q="rebrand" aria-pressed="true">
         <span class="mf-q-num">01</span>
         <span class="mf-q-text">
@@ -108,6 +109,7 @@
         </span>
         <span class="mf-q-badge">Active</span>
       </button>
+    </div>
     </div>
 
     <div class="mf-workspace" aria-live="polite">
@@ -451,13 +453,13 @@
           <h3 class="mf-decision-title">How do I keep the process confidential and owner-controlled?</h3>
           <p class="mf-decision-context">Who participates, what they receive, and when the process advances should remain under the owner’s control.</p>
         </header>
-        <div class="mf-features mf-features--duo">
+        <div class="mf-features mf-features--duo" data-mf-layout="two-panel">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual mf-feat-visual--ui">
-              <div class="mf-ui mf-ui--outreach-setup" role="img" aria-label="Outreach Setup confidentiality and access controls">
+              <div class="mf-ui mf-ui--outreach-setup" role="img" aria-label="Outreach Setup confidentiality and outreach controls">
                 <p class="mf-ui-label">Interface simplified for presentation</p>
                 <h5 class="mf-ui-title">Outreach Setup</h5>
-                <p class="mf-ui-descriptor">Owner-Controlled Process</p>
+                <p class="mf-ui-descriptor">Confidentiality &amp; targeting</p>
                 <p class="mf-ui-subtitle">Confidentiality, identity, attachments, and when outreach begins.</p>
                 <p class="mf-ui-section">Confidentiality &amp; targeting</p>
                 <div class="mf-ui-form-grid">
@@ -500,43 +502,41 @@
               </div>
             </div>
             <div class="mf-feat-body">
-              <p class="mf-feat-cat">Outreach Setup</p>
-              <h4 class="mf-feat-name">Owner-Controlled Process</h4>
+              <p class="mf-feat-cat">Owner control</p>
+              <h4 class="mf-feat-name">Outreach Setup</h4>
               <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Control participation and the movement of information through the process.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Decide which partners are invited, what information is shared, and how the opportunity advances.</p></div>
             </div>
           </article>
-          <div class="mf-feat-stack">
-            <article class="mf-feat mf-feat--support">
-              <div class="mf-feat-visual mf-feat-visual--ui">
-                <div class="mf-ui mf-ui--opportunity-review" role="img" aria-label="Deal Brief opportunity review for the illustrative hotel">
-                  <p class="mf-ui-label">Interface simplified for presentation</p>
-                  <h5 class="mf-ui-title">Deal Brief</h5>
-                  <p class="mf-ui-descriptor">Opportunity Review</p>
-                  <p class="mf-ui-subtitle">Owner draft brief from saved Deal Setup fields.</p>
-                  <div class="mf-ui-chips">
-                    <span class="mf-ui-chip">120 Keys</span>
-                    <span class="mf-ui-chip">Urban Conversion</span>
-                    <span class="mf-ui-chip">Upper Upscale</span>
+          <article class="mf-feat mf-feat--support">
+            <div class="mf-feat-visual mf-feat-visual--ui">
+              <div class="mf-ui mf-ui--opportunity-review" role="img" aria-label="Deal Brief opportunity review for the illustrative hotel">
+                <p class="mf-ui-label">Interface simplified for presentation</p>
+                <h5 class="mf-ui-title">Deal Brief</h5>
+                <p class="mf-ui-descriptor">Opportunity Review</p>
+                <p class="mf-ui-subtitle">Owner draft brief from saved Deal Setup fields.</p>
+                <div class="mf-ui-chips">
+                  <span class="mf-ui-chip">120 Keys</span>
+                  <span class="mf-ui-chip">Urban Conversion</span>
+                  <span class="mf-ui-chip">Upper Upscale</span>
+                </div>
+                <div class="mf-ui-callouts">
+                  <div class="mf-ui-callout">
+                    <p class="mf-ui-callout-label">The Opportunity</p>
+                    <p class="mf-ui-callout-body">120-key upper-upscale urban conversion in San Juan—shared only when the owner advances outreach.</p>
                   </div>
-                  <div class="mf-ui-callouts">
-                    <div class="mf-ui-callout">
-                      <p class="mf-ui-callout-label">The Opportunity</p>
-                      <p class="mf-ui-callout-body">120-key upper-upscale urban conversion in San Juan—shared only when the owner advances outreach.</p>
-                    </div>
-                    <div class="mf-ui-callout">
-                      <p class="mf-ui-callout-label">Controlled brief</p>
-                      <p class="mf-ui-callout-body">Structured context for evaluation without fragmented email threads.</p>
-                    </div>
+                  <div class="mf-ui-callout">
+                    <p class="mf-ui-callout-label">Controlled brief</p>
+                    <p class="mf-ui-callout-body">Structured context for evaluation without fragmented email threads.</p>
                   </div>
                 </div>
               </div>
-              <div class="mf-feat-body">
-                <p class="mf-feat-cat">Deal Brief</p>
-                <h4 class="mf-feat-name">Opportunity Review</h4>
-                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Present the opportunity through a structured, controlled brief.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Share the context required for evaluation without relying on fragmented email, documents, and informal explanations.</p></div>
-              </div>
-            </article>
-          </div>
+            </div>
+            <div class="mf-feat-body">
+              <p class="mf-feat-cat">Deal Brief</p>
+              <h4 class="mf-feat-name">Opportunity Review</h4>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Present the opportunity through a structured, controlled brief.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Share the context required for evaluation without relying on fragmented email, documents, and informal explanations.</p></div>
+            </div>
+          </article>
         </div>
         <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Engage selected partners without surrendering control of the opportunity, information, or process.</span></p>
       </section>
@@ -551,10 +551,11 @@
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual mf-feat-visual--ui">
-              <div class="mf-ui mf-ui--market-alerts" role="img" aria-label="Market Alerts headlines and live feed">
+              <div class="mf-ui mf-ui--market-alerts" role="img" aria-label="Market Alerts curated recent activity">
                 <p class="mf-ui-label">Interface simplified for presentation</p>
                 <h5 class="mf-ui-title">Market Alerts</h5>
-                <p class="mf-ui-descriptor">Curated industry signals</p>
+                <p class="mf-ui-descriptor">Curated recent activity</p>
+                <p class="mf-ui-subtitle">Curated recent activity and relevant market developments.</p>
                 <div class="mf-ui-chips">
                   <span class="mf-ui-chip mf-ui-chip--strong">7d</span>
                   <span class="mf-ui-chip">Brand</span>
@@ -579,13 +580,13 @@
                     <p class="mf-ui-card-summary">Comparable pathway activity for owners evaluating affiliation.</p>
                   </div>
                 </div>
-                <p class="mf-ui-footnote">Curated hospitality headlines · refreshed on a scheduled sync — not a predictive feed</p>
+                <p class="mf-ui-footnote">Curated recent activity and relevant market developments.</p>
               </div>
             </div>
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Market Intelligence</p>
               <h4 class="mf-feat-name">Market Alerts</h4>
-              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Surface relevant changes that may affect the opportunity or decision.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Keep owners informed as market activity, brand movement, or relevant context changes.</p></div>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Surface curated recent activity and relevant market developments.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Keep owners informed as market activity, brand movement, or relevant context changes.</p></div>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -632,7 +633,7 @@
               </div>
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Brand Explorer</p>
-                <h4 class="mf-feat-name">Recent Momentum</h4>
+                <h4 class="mf-feat-name">Footprint &amp; Growth</h4>
                 <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand recent brand activity relevant to the decision.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Add current development and portfolio context to the owner’s evaluation.</p></div>
               </div>
             </article>

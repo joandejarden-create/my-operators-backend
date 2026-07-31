@@ -46,10 +46,20 @@
 #dealality-many-futures .mf-layout {
   position: relative;
   display: grid;
-  /* Hotel / questions constrained; workspace takes remaining width */
-  grid-template-columns: minmax(210px, 230px) minmax(270px, 300px) minmax(0, 1fr);
+  /* Rail (hotel + questions) + workspace */
+  grid-template-columns: minmax(500px, 546px) minmax(0, 1fr);
   gap: 1rem 1rem;
   align-items: start;
+}
+
+#dealality-many-futures .mf-rail {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(210px, 230px) minmax(270px, 300px);
+  gap: 1rem;
+  align-items: start;
+  min-width: 0;
 }
 
 #dealality-many-futures .mf-connectors {
@@ -211,13 +221,15 @@
   z-index: 2;
 }
 
-/* Questions — compact (nine-state: align with hotel column) */
-#dealality-many-futures .mf-questions {
+/* Questions — compact (nine-state: align with hotel column on desktop) */
+#dealality-many-futures .mf-questions,
+#dealality-many-futures .mf-question-list {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.32rem;
+  min-width: 0;
 }
 
 #dealality-many-futures .mf-q {
@@ -366,13 +378,25 @@
 }
 
 #dealality-many-futures .mf-features--duo {
-  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.9fr);
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
 }
 
 #dealality-many-futures .mf-features--duo .mf-feat-stack {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* Dedicated two-panel workspace state (Q05) — balanced ~62/38, no empty third column */
+#dealality-many-futures .mf-workspace--two-panel .mf-features,
+#dealality-many-futures .mf-workspace--two-panel .mf-features--duo {
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+#dealality-many-futures .mf-workspace--two-panel .mf-feat--primary,
+#dealality-many-futures .mf-workspace--two-panel .mf-feat--support {
+  height: 100%;
 }
 
 #dealality-many-futures .mf-feat-stack {
@@ -611,19 +635,22 @@
 #dealality-many-futures .mf-ui-section{margin:.35rem 0 .25rem;font-size:.6875rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mf-accent-soft)}
 
 @media screen and (max-width:991px){
-#dealality-many-futures .mf-layout{grid-template-columns:minmax(0,.38fr) minmax(0,.62fr);grid-template-areas:"hotel questions" "workspace workspace";gap:1rem}
-#dealality-many-futures .mf-hotel{grid-area:hotel}
-#dealality-many-futures .mf-questions{grid-area:questions}
+#dealality-many-futures .mf-layout{grid-template-columns:1fr;grid-template-areas:"rail" "workspace";gap:1rem}
+#dealality-many-futures .mf-rail{grid-area:rail;grid-template-columns:minmax(0,.38fr) minmax(0,.62fr);align-items:start}
 #dealality-many-futures .mf-workspace{grid-area:workspace}
 #dealality-many-futures .mf-connectors,#dealality-many-futures .mf-hotel-node{display:none}
-#dealality-many-futures .mf-features{grid-template-columns:1fr;gap:16px}
+#dealality-many-futures .mf-features,#dealality-many-futures .mf-features--duo,#dealality-many-futures .mf-workspace--two-panel .mf-features,#dealality-many-futures .mf-workspace--two-panel .mf-features--duo{grid-template-columns:1fr;gap:16px}
 #dealality-many-futures .mf-feat-stack{display:grid;grid-template-columns:1fr;gap:16px}
 #dealality-many-futures .mf-q.is-active{transform:none}
 #dealality-many-futures .mf-ui-value-grid,#dealality-many-futures .mf-ui-metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 #dealality-many-futures .mf-ui-readiness-grid{grid-template-columns:1fr}
+/* Tablet: natural-height question buttons — do not match hotel card */
+#dealality-many-futures .mf-question-list,#dealality-many-futures .mf-questions{display:flex;flex-direction:column;height:auto;gap:.28rem}
+#dealality-many-futures .mf-question-list .mf-q,#dealality-many-futures .mf-questions .mf-q{height:auto;min-height:0;padding:.42rem .55rem}
 }
 @media screen and (max-width:767px){
 #dealality-many-futures .mf-layout{display:flex;flex-direction:column;gap:.85rem}
+#dealality-many-futures .mf-rail{display:contents}
 #dealality-many-futures .mf-feat-img--desk{display:none}
 #dealality-many-futures .mf-feat-img--mob{display:block}
 #dealality-many-futures .mf-ui-hide-mobile{display:none}
@@ -632,8 +659,9 @@
 #dealality-many-futures .mf-ui{padding:.65rem .7rem;font-size:.8125rem}
 #dealality-many-futures .mf-ui-title{font-size:1rem}
 #dealality-many-futures .mf-feat-stack{grid-template-columns:1fr}
-#dealality-many-futures .mf-features{grid-template-columns:1fr}
-#dealality-many-futures .mf-questions{gap:.28rem}
+#dealality-many-futures .mf-features,#dealality-many-futures .mf-features--duo,#dealality-many-futures .mf-workspace--two-panel .mf-features{grid-template-columns:1fr}
+#dealality-many-futures .mf-questions,#dealality-many-futures .mf-question-list{display:flex;flex-direction:column;gap:.28rem;height:auto}
+#dealality-many-futures .mf-question-list .mf-q{height:auto;min-height:0}
 /* Workspace is inserted after the active question via JS — do not force order */
 #dealality-many-futures .mf-mobile-slot{display:block}
 #dealality-many-futures .mf-decision-title{font-size:1.08rem}
@@ -801,10 +829,40 @@
   }
 }
 
-/* Final desktop sticky rail — must follow base position:relative on hotel/questions */
+/* Final desktop sticky rail — hotel defines height; questions fill to match */
 @media screen and (min-width: 992px) {
-  #dealality-many-futures .mf-hotel,
+  #dealality-many-futures .mf-rail {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  #dealality-many-futures .mf-hotel {
+    position: sticky;
+    top: 1.25rem;
+    flex: 0 0 clamp(210px, 16vw, 230px);
+    width: clamp(210px, 16vw, 230px);
+    align-self: flex-start;
+    height: fit-content;
+    max-height: calc(100vh - 2.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(108, 114, 255, 0.45) transparent;
+  }
+
+  /* Shared height from hotel card via flex stretch; nine equal rows fill the column */
+  #dealality-many-futures .mf-question-list,
   #dealality-many-futures .mf-questions {
+    display: grid;
+    grid-template-rows: repeat(9, minmax(0, 1fr));
+    gap: 8px;
+    flex: 1 1 0;
+    min-width: 270px;
+    max-width: 300px;
+    width: 100%;
+    align-self: stretch;
     position: sticky;
     top: 1.25rem;
     max-height: calc(100vh - 2.5rem);
@@ -812,5 +870,19 @@
     overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: rgba(108, 114, 255, 0.45) transparent;
+  }
+
+  #dealality-many-futures .mf-question-list .mf-q,
+  #dealality-many-futures .mf-questions .mf-q {
+    min-height: 0;
+    height: 100%;
+    padding: 0.52rem 0.65rem;
+    align-items: center;
+  }
+
+  #dealality-many-futures .mf-question-list .mf-q-title,
+  #dealality-many-futures .mf-questions .mf-q-title {
+    font-size: 0.8125rem;
+    line-height: 1.25;
   }
 }

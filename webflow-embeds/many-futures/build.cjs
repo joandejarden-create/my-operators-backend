@@ -65,20 +65,6 @@ if (fs.existsSync(jsPath) && fs.readFileSync(jsPath, "utf8") !== jsOut) {
 }
 fs.writeFileSync(cssPath, cssOut);
 fs.writeFileSync(jsPath, jsOut);
-fs.writeFileSync(
-  path.join(distDir, "MANIFEST.json"),
-  JSON.stringify(
-    {
-      css: cssFile,
-      js: jsFile,
-      cssHash,
-      jsHash,
-      builtAt: new Date().toISOString(),
-    },
-    null,
-    2
-  ) + "\n"
-);
 
 /* Pin CDN to commit SHA after push. Placeholder updated by release script / rebuild. */
 const CDN_SHA =
@@ -132,20 +118,53 @@ for (const [from, to] of ASSET_REWRITES) {
 }
 
 const markupOut = minifyMarkup(prodMarkup);
+const markupHash = shortHash(markupOut);
+const bodyFile = `many-futures.${markupHash}.body.html`;
+const bodyPath = path.join(distDir, bodyFile);
+if (fs.existsSync(bodyPath) && fs.readFileSync(bodyPath, "utf8") !== markupOut) {
+  throw new Error(`Hash collision or mutated asset: ${bodyFile}`);
+}
+fs.writeFileSync(bodyPath, markupOut);
 
 const cssUrl = `${CDN_BASE}/dist/${cssFile}`;
 const jsUrl = `${CDN_BASE}/dist/${jsFile}`;
+const bodyUrl = `${CDN_BASE}/dist/${bodyFile}`;
 
 /* Tiny critical CSS so content is not invisible before stylesheet arrives */
 const critical =
   "<style>#dealality-many-futures{color:#e8ecf8;font-family:system-ui,sans-serif}#dealality-many-futures .mf-panel[hidden]{display:none!important}</style>";
 
 const embedInline = `<style>${cssOut}</style>${markupOut}<script>${jsOut}</script>`;
-const embed = `${critical}<link rel="stylesheet" href="${cssUrl}" /><script src="${jsUrl}" defer></script>${markupOut}`;
+const embedFull = `${critical}<link rel="stylesheet" href="${cssUrl}" /><script src="${jsUrl}" defer></script>${markupOut}`;
+
+/* Webflow Code Embed soft limit ~50KB. Nine-state markup exceeds it — use hashed body fetch. */
+const embedLoader = `${critical}<link rel="stylesheet" href="${cssUrl}" /><div id="mf-embed-host" aria-busy="true"></div><script>(function(){var h=document.getElementById("mf-embed-host");if(!h)return;fetch("${bodyUrl}").then(function(r){if(!r.ok)throw new Error("mf body");return r.text()}).then(function(html){h.outerHTML=html;var s=document.createElement("script");s.src="${jsUrl}";s.defer=true;document.body.appendChild(s)}).catch(function(){h.setAttribute("aria-busy","false");h.textContent="Many Futures interactive could not load. Refresh to try again."})})();</script>`;
+
+const embed = embedFull.length <= 49500 ? embedFull : embedLoader;
+const WEBFLOW_MODE = embedFull.length <= 49500 ? "inline-markup" : "cdn-body-loader";
 
 const out = path.join(dir, "..", "many-futures-section.html");
-fs.writeFileSync(out, embed);
+fs.writeFileSync(out, embedFull);
+fs.writeFileSync(path.join(dir, "webflow-embed.html"), embed);
 fs.writeFileSync(path.join(dir, "many-futures-section-full-inline.html"), embedInline);
+
+fs.writeFileSync(
+  path.join(distDir, "MANIFEST.json"),
+  JSON.stringify(
+    {
+      css: cssFile,
+      js: jsFile,
+      body: bodyFile,
+      cssHash,
+      jsHash,
+      markupHash,
+      webflowMode: WEBFLOW_MODE,
+      builtAt: new Date().toISOString(),
+    },
+    null,
+    2
+  ) + "\n"
+);
 
 const loader = `<!-- Many Futures — CDN loader backup (use only if inline Embed is rejected) -->
 <link rel="stylesheet" href="${cssUrl}" />
@@ -154,8 +173,8 @@ const loader = `<!-- Many Futures — CDN loader backup (use only if inline Embe
 (function(){
   var host=document.getElementById("mf-embed-host");
   if(!host) return;
-  fetch("${CDN_BASE}/markup.html").then(function(r){return r.text();}).then(function(html){
-    host.innerHTML=html;
+  fetch("${bodyUrl}").then(function(r){return r.text();}).then(function(html){
+    host.outerHTML=html;
     var s=document.createElement("script");
     s.src="${jsUrl}";
     s.defer=true;
@@ -181,14 +200,17 @@ const preview = previewShell
 fs.writeFileSync(path.join(dir, "preview.html"), preview);
 
 console.log("Wrote", out);
+console.log("Webflow embed:", path.join(dir, "webflow-embed.html"), `(${WEBFLOW_MODE})`);
 console.log("CSS URL:", cssUrl);
 console.log("JS URL:", jsUrl);
+console.log("Body URL:", bodyUrl);
 console.log("CDN_SHA:", CDN_SHA);
-console.log("Phase C Embed characters:", embed.length, "KB:", (embed.length / 1024).toFixed(1));
+console.log("Full embed characters:", embedFull.length, "KB:", (embedFull.length / 1024).toFixed(1));
+console.log("Webflow embed characters:", embed.length, "KB:", (embed.length / 1024).toFixed(1));
 console.log(
   embed.length <= 50000
-    ? "Phase C Embed within ~50KB Webflow Code Embed limit."
-    : "Phase C Embed still exceeds ~50KB."
+    ? "Webflow embed within ~50KB Code Embed limit."
+    : "Webflow embed still exceeds ~50KB."
 );
 console.log(
   embedInline.length <= 50000

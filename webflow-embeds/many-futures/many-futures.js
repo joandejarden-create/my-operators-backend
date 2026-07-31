@@ -82,6 +82,7 @@
     if (!id) return;
     if (id === current) {
       placeMobilePanel(id);
+      syncWorkspaceLayout(id);
       drawConnectors(id);
       return;
     }
@@ -109,7 +110,18 @@
 
     loadPanelImages(activePanel);
     placeMobilePanel(id);
+    syncWorkspaceLayout(id);
     drawConnectors(id);
+  }
+
+  function syncWorkspaceLayout(id) {
+    if (!workspace) return;
+    var panel = root.querySelector('.mf-panel[data-panel="' + id + '"]');
+    var two =
+      panel &&
+      (panel.querySelector('.mf-features[data-mf-layout="two-panel"]') ||
+        panel.querySelector(".mf-features--duo"));
+    workspace.classList.toggle("mf-workspace--two-panel", !!two);
   }
 
   function placeMobilePanel(id) {
@@ -122,9 +134,11 @@
       if (activeBtn.nextElementSibling !== workspace) {
         activeBtn.insertAdjacentElement("afterend", workspace);
       }
-    } else if (workspace.parentElement !== root.querySelector(".mf-layout")) {
+    } else {
       var layout = root.querySelector(".mf-layout");
-      if (layout) layout.appendChild(workspace);
+      if (layout && workspace.parentElement !== layout) {
+        layout.appendChild(workspace);
+      }
     }
   }
 

@@ -145,10 +145,20 @@
 #dealality-many-futures .mf-layout {
   position: relative;
   display: grid;
-  /* Hotel / questions constrained; workspace takes remaining width */
-  grid-template-columns: minmax(210px, 230px) minmax(270px, 300px) minmax(0, 1fr);
+  /* Rail (hotel + questions) + workspace */
+  grid-template-columns: minmax(500px, 546px) minmax(0, 1fr);
   gap: 1rem 1rem;
   align-items: start;
+}
+
+#dealality-many-futures .mf-rail {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(210px, 230px) minmax(270px, 300px);
+  gap: 1rem;
+  align-items: start;
+  min-width: 0;
 }
 
 #dealality-many-futures .mf-connectors {
@@ -310,13 +320,15 @@
   z-index: 2;
 }
 
-/* Questions — compact (nine-state: align with hotel column) */
-#dealality-many-futures .mf-questions {
+/* Questions — compact (nine-state: align with hotel column on desktop) */
+#dealality-many-futures .mf-questions,
+#dealality-many-futures .mf-question-list {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.32rem;
+  min-width: 0;
 }
 
 #dealality-many-futures .mf-q {
@@ -465,13 +477,25 @@
 }
 
 #dealality-many-futures .mf-features--duo {
-  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.9fr);
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
 }
 
 #dealality-many-futures .mf-features--duo .mf-feat-stack {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* Dedicated two-panel workspace state (Q05) — balanced ~62/38, no empty third column */
+#dealality-many-futures .mf-workspace--two-panel .mf-features,
+#dealality-many-futures .mf-workspace--two-panel .mf-features--duo {
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+#dealality-many-futures .mf-workspace--two-panel .mf-feat--primary,
+#dealality-many-futures .mf-workspace--two-panel .mf-feat--support {
+  height: 100%;
 }
 
 #dealality-many-futures .mf-feat-stack {
@@ -710,19 +734,22 @@
 #dealality-many-futures .mf-ui-section{margin:.35rem 0 .25rem;font-size:.6875rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mf-accent-soft)}
 
 @media screen and (max-width:991px){
-#dealality-many-futures .mf-layout{grid-template-columns:minmax(0,.38fr) minmax(0,.62fr);grid-template-areas:"hotel questions" "workspace workspace";gap:1rem}
-#dealality-many-futures .mf-hotel{grid-area:hotel}
-#dealality-many-futures .mf-questions{grid-area:questions}
+#dealality-many-futures .mf-layout{grid-template-columns:1fr;grid-template-areas:"rail" "workspace";gap:1rem}
+#dealality-many-futures .mf-rail{grid-area:rail;grid-template-columns:minmax(0,.38fr) minmax(0,.62fr);align-items:start}
 #dealality-many-futures .mf-workspace{grid-area:workspace}
 #dealality-many-futures .mf-connectors,#dealality-many-futures .mf-hotel-node{display:none}
-#dealality-many-futures .mf-features{grid-template-columns:1fr;gap:16px}
+#dealality-many-futures .mf-features,#dealality-many-futures .mf-features--duo,#dealality-many-futures .mf-workspace--two-panel .mf-features,#dealality-many-futures .mf-workspace--two-panel .mf-features--duo{grid-template-columns:1fr;gap:16px}
 #dealality-many-futures .mf-feat-stack{display:grid;grid-template-columns:1fr;gap:16px}
 #dealality-many-futures .mf-q.is-active{transform:none}
 #dealality-many-futures .mf-ui-value-grid,#dealality-many-futures .mf-ui-metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 #dealality-many-futures .mf-ui-readiness-grid{grid-template-columns:1fr}
+/* Tablet: natural-height question buttons — do not match hotel card */
+#dealality-many-futures .mf-question-list,#dealality-many-futures .mf-questions{display:flex;flex-direction:column;height:auto;gap:.28rem}
+#dealality-many-futures .mf-question-list .mf-q,#dealality-many-futures .mf-questions .mf-q{height:auto;min-height:0;padding:.42rem .55rem}
 }
 @media screen and (max-width:767px){
 #dealality-many-futures .mf-layout{display:flex;flex-direction:column;gap:.85rem}
+#dealality-many-futures .mf-rail{display:contents}
 #dealality-many-futures .mf-feat-img--desk{display:none}
 #dealality-many-futures .mf-feat-img--mob{display:block}
 #dealality-many-futures .mf-ui-hide-mobile{display:none}
@@ -731,8 +758,9 @@
 #dealality-many-futures .mf-ui{padding:.65rem .7rem;font-size:.8125rem}
 #dealality-many-futures .mf-ui-title{font-size:1rem}
 #dealality-many-futures .mf-feat-stack{grid-template-columns:1fr}
-#dealality-many-futures .mf-features{grid-template-columns:1fr}
-#dealality-many-futures .mf-questions{gap:.28rem}
+#dealality-many-futures .mf-features,#dealality-many-futures .mf-features--duo,#dealality-many-futures .mf-workspace--two-panel .mf-features{grid-template-columns:1fr}
+#dealality-many-futures .mf-questions,#dealality-many-futures .mf-question-list{display:flex;flex-direction:column;gap:.28rem;height:auto}
+#dealality-many-futures .mf-question-list .mf-q{height:auto;min-height:0}
 /* Workspace is inserted after the active question via JS — do not force order */
 #dealality-many-futures .mf-mobile-slot{display:block}
 #dealality-many-futures .mf-decision-title{font-size:1.08rem}
@@ -900,10 +928,40 @@
   }
 }
 
-/* Final desktop sticky rail — must follow base position:relative on hotel/questions */
+/* Final desktop sticky rail — hotel defines height; questions fill to match */
 @media screen and (min-width: 992px) {
-  #dealality-many-futures .mf-hotel,
+  #dealality-many-futures .mf-rail {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  #dealality-many-futures .mf-hotel {
+    position: sticky;
+    top: 1.25rem;
+    flex: 0 0 clamp(210px, 16vw, 230px);
+    width: clamp(210px, 16vw, 230px);
+    align-self: flex-start;
+    height: fit-content;
+    max-height: calc(100vh - 2.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(108, 114, 255, 0.45) transparent;
+  }
+
+  /* Shared height from hotel card via flex stretch; nine equal rows fill the column */
+  #dealality-many-futures .mf-question-list,
   #dealality-many-futures .mf-questions {
+    display: grid;
+    grid-template-rows: repeat(9, minmax(0, 1fr));
+    gap: 8px;
+    flex: 1 1 0;
+    min-width: 270px;
+    max-width: 300px;
+    width: 100%;
+    align-self: stretch;
     position: sticky;
     top: 1.25rem;
     max-height: calc(100vh - 2.5rem);
@@ -911,6 +969,20 @@
     overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: rgba(108, 114, 255, 0.45) transparent;
+  }
+
+  #dealality-many-futures .mf-question-list .mf-q,
+  #dealality-many-futures .mf-questions .mf-q {
+    min-height: 0;
+    height: 100%;
+    padding: 0.52rem 0.65rem;
+    align-items: center;
+  }
+
+  #dealality-many-futures .mf-question-list .mf-q-title,
+  #dealality-many-futures .mf-questions .mf-q-title {
+    font-size: 0.8125rem;
+    line-height: 1.25;
   }
 }
 
@@ -953,6 +1025,7 @@
   <div class="mf-layout">
     <svg class="mf-connectors" aria-hidden="true" focusable="false"></svg>
 
+    <div class="mf-rail">
     <article class="mf-hotel" aria-label="Illustrative hotel opportunity">
       <div class="mf-hotel-media">
         <picture>
@@ -989,7 +1062,7 @@
       <span class="mf-hotel-node" aria-hidden="true"></span>
     </article>
 
-    <div class="mf-questions" role="group" aria-label="Owner decision questions">
+    <div class="mf-questions mf-question-list" role="group" aria-label="Owner decision questions">
       <button type="button" class="mf-q is-active" data-q="rebrand" aria-pressed="true">
         <span class="mf-q-num">01</span>
         <span class="mf-q-text">
@@ -1053,6 +1126,7 @@
         </span>
         <span class="mf-q-badge">Active</span>
       </button>
+    </div>
     </div>
 
     <div class="mf-workspace" aria-live="polite">
@@ -1396,13 +1470,13 @@
           <h3 class="mf-decision-title">How do I keep the process confidential and owner-controlled?</h3>
           <p class="mf-decision-context">Who participates, what they receive, and when the process advances should remain under the owner’s control.</p>
         </header>
-        <div class="mf-features mf-features--duo">
+        <div class="mf-features mf-features--duo" data-mf-layout="two-panel">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual mf-feat-visual--ui">
-              <div class="mf-ui mf-ui--outreach-setup" role="img" aria-label="Outreach Setup confidentiality and access controls">
+              <div class="mf-ui mf-ui--outreach-setup" role="img" aria-label="Outreach Setup confidentiality and outreach controls">
                 <p class="mf-ui-label">Interface simplified for presentation</p>
                 <h5 class="mf-ui-title">Outreach Setup</h5>
-                <p class="mf-ui-descriptor">Owner-Controlled Process</p>
+                <p class="mf-ui-descriptor">Confidentiality &amp; targeting</p>
                 <p class="mf-ui-subtitle">Confidentiality, identity, attachments, and when outreach begins.</p>
                 <p class="mf-ui-section">Confidentiality &amp; targeting</p>
                 <div class="mf-ui-form-grid">
@@ -1445,43 +1519,41 @@
               </div>
             </div>
             <div class="mf-feat-body">
-              <p class="mf-feat-cat">Outreach Setup</p>
-              <h4 class="mf-feat-name">Owner-Controlled Process</h4>
+              <p class="mf-feat-cat">Owner control</p>
+              <h4 class="mf-feat-name">Outreach Setup</h4>
               <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Control participation and the movement of information through the process.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Decide which partners are invited, what information is shared, and how the opportunity advances.</p></div>
             </div>
           </article>
-          <div class="mf-feat-stack">
-            <article class="mf-feat mf-feat--support">
-              <div class="mf-feat-visual mf-feat-visual--ui">
-                <div class="mf-ui mf-ui--opportunity-review" role="img" aria-label="Deal Brief opportunity review for the illustrative hotel">
-                  <p class="mf-ui-label">Interface simplified for presentation</p>
-                  <h5 class="mf-ui-title">Deal Brief</h5>
-                  <p class="mf-ui-descriptor">Opportunity Review</p>
-                  <p class="mf-ui-subtitle">Owner draft brief from saved Deal Setup fields.</p>
-                  <div class="mf-ui-chips">
-                    <span class="mf-ui-chip">120 Keys</span>
-                    <span class="mf-ui-chip">Urban Conversion</span>
-                    <span class="mf-ui-chip">Upper Upscale</span>
+          <article class="mf-feat mf-feat--support">
+            <div class="mf-feat-visual mf-feat-visual--ui">
+              <div class="mf-ui mf-ui--opportunity-review" role="img" aria-label="Deal Brief opportunity review for the illustrative hotel">
+                <p class="mf-ui-label">Interface simplified for presentation</p>
+                <h5 class="mf-ui-title">Deal Brief</h5>
+                <p class="mf-ui-descriptor">Opportunity Review</p>
+                <p class="mf-ui-subtitle">Owner draft brief from saved Deal Setup fields.</p>
+                <div class="mf-ui-chips">
+                  <span class="mf-ui-chip">120 Keys</span>
+                  <span class="mf-ui-chip">Urban Conversion</span>
+                  <span class="mf-ui-chip">Upper Upscale</span>
+                </div>
+                <div class="mf-ui-callouts">
+                  <div class="mf-ui-callout">
+                    <p class="mf-ui-callout-label">The Opportunity</p>
+                    <p class="mf-ui-callout-body">120-key upper-upscale urban conversion in San Juan—shared only when the owner advances outreach.</p>
                   </div>
-                  <div class="mf-ui-callouts">
-                    <div class="mf-ui-callout">
-                      <p class="mf-ui-callout-label">The Opportunity</p>
-                      <p class="mf-ui-callout-body">120-key upper-upscale urban conversion in San Juan—shared only when the owner advances outreach.</p>
-                    </div>
-                    <div class="mf-ui-callout">
-                      <p class="mf-ui-callout-label">Controlled brief</p>
-                      <p class="mf-ui-callout-body">Structured context for evaluation without fragmented email threads.</p>
-                    </div>
+                  <div class="mf-ui-callout">
+                    <p class="mf-ui-callout-label">Controlled brief</p>
+                    <p class="mf-ui-callout-body">Structured context for evaluation without fragmented email threads.</p>
                   </div>
                 </div>
               </div>
-              <div class="mf-feat-body">
-                <p class="mf-feat-cat">Deal Brief</p>
-                <h4 class="mf-feat-name">Opportunity Review</h4>
-                <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Present the opportunity through a structured, controlled brief.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Share the context required for evaluation without relying on fragmented email, documents, and informal explanations.</p></div>
-              </div>
-            </article>
-          </div>
+            </div>
+            <div class="mf-feat-body">
+              <p class="mf-feat-cat">Deal Brief</p>
+              <h4 class="mf-feat-name">Opportunity Review</h4>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Present the opportunity through a structured, controlled brief.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Share the context required for evaluation without relying on fragmented email, documents, and informal explanations.</p></div>
+            </div>
+          </article>
         </div>
         <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Engage selected partners without surrendering control of the opportunity, information, or process.</span></p>
       </section>
@@ -1496,10 +1568,11 @@
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual mf-feat-visual--ui">
-              <div class="mf-ui mf-ui--market-alerts" role="img" aria-label="Market Alerts headlines and live feed">
+              <div class="mf-ui mf-ui--market-alerts" role="img" aria-label="Market Alerts curated recent activity">
                 <p class="mf-ui-label">Interface simplified for presentation</p>
                 <h5 class="mf-ui-title">Market Alerts</h5>
-                <p class="mf-ui-descriptor">Curated industry signals</p>
+                <p class="mf-ui-descriptor">Curated recent activity</p>
+                <p class="mf-ui-subtitle">Curated recent activity and relevant market developments.</p>
                 <div class="mf-ui-chips">
                   <span class="mf-ui-chip mf-ui-chip--strong">7d</span>
                   <span class="mf-ui-chip">Brand</span>
@@ -1524,13 +1597,13 @@
                     <p class="mf-ui-card-summary">Comparable pathway activity for owners evaluating affiliation.</p>
                   </div>
                 </div>
-                <p class="mf-ui-footnote">Curated hospitality headlines · refreshed on a scheduled sync — not a predictive feed</p>
+                <p class="mf-ui-footnote">Curated recent activity and relevant market developments.</p>
               </div>
             </div>
             <div class="mf-feat-body">
               <p class="mf-feat-cat">Market Intelligence</p>
               <h4 class="mf-feat-name">Market Alerts</h4>
-              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Surface relevant changes that may affect the opportunity or decision.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Keep owners informed as market activity, brand movement, or relevant context changes.</p></div>
+              <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Surface curated recent activity and relevant market developments.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Keep owners informed as market activity, brand movement, or relevant context changes.</p></div>
             </div>
           </article>
           <div class="mf-feat-stack">
@@ -1577,7 +1650,7 @@
               </div>
               <div class="mf-feat-body">
                 <p class="mf-feat-cat">Brand Explorer</p>
-                <h4 class="mf-feat-name">Recent Momentum</h4>
+                <h4 class="mf-feat-name">Footprint &amp; Growth</h4>
                 <div class="mf-feat-copy"><p class="mf-feat-kicker">Purpose</p><p class="mf-feat-purpose">Understand recent brand activity relevant to the decision.</p><p class="mf-feat-kicker">Benefit</p><p class="mf-feat-benefit">Add current development and portfolio context to the owner’s evaluation.</p></div>
               </div>
             </article>
@@ -2090,6 +2163,7 @@
     if (!id) return;
     if (id === current) {
       placeMobilePanel(id);
+      syncWorkspaceLayout(id);
       drawConnectors(id);
       return;
     }
@@ -2117,7 +2191,18 @@
 
     loadPanelImages(activePanel);
     placeMobilePanel(id);
+    syncWorkspaceLayout(id);
     drawConnectors(id);
+  }
+
+  function syncWorkspaceLayout(id) {
+    if (!workspace) return;
+    var panel = root.querySelector('.mf-panel[data-panel="' + id + '"]');
+    var two =
+      panel &&
+      (panel.querySelector('.mf-features[data-mf-layout="two-panel"]') ||
+        panel.querySelector(".mf-features--duo"));
+    workspace.classList.toggle("mf-workspace--two-panel", !!two);
   }
 
   function placeMobilePanel(id) {
@@ -2130,9 +2215,11 @@
       if (activeBtn.nextElementSibling !== workspace) {
         activeBtn.insertAdjacentElement("afterend", workspace);
       }
-    } else if (workspace.parentElement !== root.querySelector(".mf-layout")) {
+    } else {
       var layout = root.querySelector(".mf-layout");
-      if (layout) layout.appendChild(workspace);
+      if (layout && workspace.parentElement !== layout) {
+        layout.appendChild(workspace);
+      }
     }
   }
 
