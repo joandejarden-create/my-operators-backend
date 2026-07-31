@@ -8,7 +8,7 @@
   var questionsCol = root.querySelector(".mf-questions");
   var svg = root.querySelector(".mf-connectors");
   var hotelNode = root.querySelector(".mf-hotel-node");
-  var pinned = null;
+  var current = "rebrand";
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var isMobile = function () {
     return window.matchMedia("(max-width: 767px)").matches;
@@ -78,9 +78,14 @@
     }
   }
 
-  function setActive(id, pin) {
+  function setActive(id) {
     if (!id) return;
-    if (pin) pinned = id;
+    if (id === current) {
+      placeMobilePanel(id);
+      drawConnectors(id);
+      return;
+    }
+    current = id;
 
     var i;
     for (i = 0; i < questions.length; i++) {
@@ -121,10 +126,6 @@
       var layout = root.querySelector(".mf-layout");
       if (layout) layout.appendChild(workspace);
     }
-  }
-
-  function activeId() {
-    return pinned || "rebrand";
   }
 
   function drawConnectors(id) {
@@ -195,42 +196,28 @@
 
   for (var i = 0; i < questions.length; i++) {
     (function (btn) {
-      btn.addEventListener("mouseenter", function () {
-        if (isMobile()) return;
-        setActive(btn.getAttribute("data-q"), false);
-      });
-      btn.addEventListener("focus", function () {
-        if (isMobile()) return;
-        setActive(btn.getAttribute("data-q"), false);
-      });
+      /* Desktop: click/keyboard select. Hover preview removed — it reset when
+         the pointer moved into the feature workspace to read the panels. */
       btn.addEventListener("click", function () {
-        setActive(btn.getAttribute("data-q"), true);
+        setActive(btn.getAttribute("data-q"));
       });
       btn.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          setActive(btn.getAttribute("data-q"), true);
+          setActive(btn.getAttribute("data-q"));
         }
       });
     })(questions[i]);
   }
 
-  if (questionsCol) {
-    questionsCol.addEventListener("mouseleave", function () {
-      if (isMobile()) return;
-      setActive(activeId(), false);
-    });
-  }
-
   window.addEventListener("resize", function () {
-    setActive(activeId(), false);
+    setActive(current);
   });
 
-  pinned = "rebrand";
   for (var p = 0; p < panels.length; p++) {
     if (!panels[p].classList.contains("is-active")) deferPanelImages(panels[p]);
   }
-  setActive("rebrand", true);
+  setActive("rebrand");
   root.classList.add("mf-js-ready");
 
   if (reduceMotion) root.classList.add("mf-reduced-motion");
