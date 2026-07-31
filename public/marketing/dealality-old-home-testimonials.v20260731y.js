@@ -1,5 +1,5 @@
 /**
- * Old Home testimonials carousel (v20260731x)
+ * Old Home testimonials carousel (v20260731y)
  * Path-gated to /old-home.
  * - One auto-advance pass, then manual only
  * - 2 tiles visible per slide (SoT relies on #oh-tt)
@@ -8,7 +8,7 @@
  * - Name/title attribution centered under each quote
  * - 31v: Gustavo face-crop avatar so circular tile shows his face
  * - 31w: Justin Boutwell face-crop avatar as well
- * - 31x: Gustavo full-head avatar shifted down with headroom
+ * - 31y: Gustavo full-head (no 18% face bias) avatar shifted down with headroom
  */
 (function () {
   "use strict";
@@ -16,7 +16,7 @@
   try {
     var path = (location.pathname || "").replace(/\/+$/, "").toLowerCase();
     if (path !== "/old-home") return;
-    if (window.__ohTestimonials >= 202607323) return;
+    if (window.__ohTestimonials >= 202607324) return;
   } catch (ePath) {
     return;
   }
@@ -158,7 +158,7 @@
   function start(root, viewport, slides, dotsWrap) {
     if (started) return;
     started = true;
-    window.__ohTestimonials = 202607323;
+    window.__ohTestimonials = 202607324;
 
     var index = 0;
     var timer = null;
@@ -255,7 +255,7 @@
   }
 
   function tryBoot() {
-    if (started || window.__ohTestimonials >= 202607323) return;
+    if (started || window.__ohTestimonials >= 202607324) return;
     var root = document.getElementById("testimonials") || document.getElementById("trust");
     if (!root) {
       scheduleRetry();
