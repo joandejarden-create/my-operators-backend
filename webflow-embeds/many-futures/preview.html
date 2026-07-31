@@ -334,8 +334,10 @@
 #dealality-many-futures .mf-q {
   position: relative;
   display: grid;
-  grid-template-columns: 1.5rem 1fr auto;
-  gap: 0.45rem;
+  /* num | title | reserved ACTIVE badge column — never collapses */
+  grid-template-columns: 24px minmax(0, 1fr) 54px;
+  column-gap: 10px;
+  row-gap: 0;
   align-items: center;
   width: 100%;
   margin: 0;
@@ -348,7 +350,7 @@
   text-align: left;
   cursor: pointer;
   transition: border-color var(--mf-dur) var(--mf-ease), background var(--mf-dur) var(--mf-ease),
-    transform var(--mf-dur) var(--mf-ease), box-shadow var(--mf-dur) var(--mf-ease);
+    box-shadow var(--mf-dur) var(--mf-ease);
 }
 
 #dealality-many-futures .mf-q:hover,
@@ -366,6 +368,7 @@
   border-color: var(--mf-border-strong);
   background: linear-gradient(180deg, rgba(108, 114, 255, 0.18), #0f1834 55%, #0d1630);
   box-shadow: inset 0 0 0 1px rgba(139, 144, 255, 0.22), 0 0 18px rgba(108, 114, 255, 0.18);
+  transform: none;
 }
 
 #dealality-many-futures .mf-q-num {
@@ -373,27 +376,47 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--mf-muted-2);
+  line-height: 1.2;
 }
 
 #dealality-many-futures .mf-q.is-active .mf-q-num {
   color: var(--mf-accent-soft);
 }
 
+#dealality-many-futures .mf-q-text {
+  min-width: 0;
+  max-width: 100%;
+}
+
 #dealality-many-futures .mf-q-title {
   display: block;
+  max-width: 100%;
   font-size: 0.8125rem;
   font-weight: 650;
-  line-height: 1.28;
+  line-height: 1.2;
   color: rgba(255, 255, 255, 0.88);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: manual;
 }
 
 #dealality-many-futures .mf-q.is-active .mf-q-title {
   color: #ffffff;
+  font-size: 0.8125rem;
+  line-height: 1.2;
 }
 
+/* Always reserve badge width; hide visually when inactive */
 #dealality-many-futures .mf-q-badge {
-  display: none;
-  padding: 0.18rem 0.42rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 54px;
+  min-width: 54px;
+  max-width: 54px;
+  padding: 0.18rem 0;
   border-radius: 999px;
   background: rgba(108, 114, 255, 0.28);
   color: var(--mf-accent-soft);
@@ -401,10 +424,13 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  line-height: 1;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 #dealality-many-futures .mf-q.is-active .mf-q-badge {
-  display: inline-flex;
+  visibility: visible;
 }
 
 /* Workspace — product-led, normal document flow */
@@ -745,7 +771,14 @@
 #dealality-many-futures .mf-ui-readiness-grid{grid-template-columns:1fr}
 /* Tablet: natural-height question buttons — do not match hotel card */
 #dealality-many-futures .mf-question-list,#dealality-many-futures .mf-questions{display:flex;flex-direction:column;height:auto;gap:.28rem}
-#dealality-many-futures .mf-question-list .mf-q,#dealality-many-futures .mf-questions .mf-q{height:auto;min-height:0;padding:.42rem .55rem}
+#dealality-many-futures .mf-question-list .mf-q,#dealality-many-futures .mf-questions .mf-q{
+  height:auto;
+  min-height:0;
+  max-height:none;
+  padding:.42rem .55rem;
+  grid-template-columns:24px minmax(0,1fr) 54px;
+  column-gap:10px;
+}
 }
 @media screen and (max-width:767px){
 #dealality-many-futures .mf-layout{display:flex;flex-direction:column;gap:.85rem}
@@ -975,14 +1008,24 @@
   #dealality-many-futures .mf-questions .mf-q {
     min-height: 0;
     height: 100%;
-    padding: 0.52rem 0.65rem;
+    max-height: 56px;
+    padding: 0.4rem 0.55rem;
     align-items: center;
+    grid-template-columns: 24px minmax(0, 1fr) 54px;
+    column-gap: 10px;
   }
 
   #dealality-many-futures .mf-question-list .mf-q-title,
   #dealality-many-futures .mf-questions .mf-q-title {
     font-size: 0.8125rem;
-    line-height: 1.25;
+    line-height: 1.2;
+  }
+
+  #dealality-many-futures .mf-question-list .mf-q-badge,
+  #dealality-many-futures .mf-questions .mf-q-badge {
+    width: 54px;
+    min-width: 54px;
+    max-width: 54px;
   }
 }
 
@@ -1068,63 +1111,63 @@
         <span class="mf-q-text">
           <span class="mf-q-title">Should I rebrand?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
       <button type="button" class="mf-q" data-q="operators" aria-pressed="false">
         <span class="mf-q-num">02</span>
         <span class="mf-q-text">
-          <span class="mf-q-title">Which operators genuinely fit this hotel?</span>
+          <span class="mf-q-title">Which operators best fit this hotel?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
       <button type="button" class="mf-q" data-q="affiliation" aria-pressed="false">
         <span class="mf-q-num">03</span>
         <span class="mf-q-text">
           <span class="mf-q-title">Independent or affiliated?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
       <button type="button" class="mf-q" data-q="residences" aria-pressed="false">
         <span class="mf-q-num">04</span>
         <span class="mf-q-text">
           <span class="mf-q-title">Could branded residences strengthen the project?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
       <button type="button" class="mf-q" data-q="confidential" aria-pressed="false">
         <span class="mf-q-num">05</span>
         <span class="mf-q-text">
-          <span class="mf-q-title">How do I keep the process confidential and owner-controlled?</span>
+          <span class="mf-q-title">How do I preserve confidentiality and control?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
       <button type="button" class="mf-q" data-q="market" aria-pressed="false">
         <span class="mf-q-num">06</span>
         <span class="mf-q-text">
-          <span class="mf-q-title">What is changing while I evaluate my options?</span>
+          <span class="mf-q-title">What is changing in the market?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
       <button type="button" class="mf-q" data-q="actions" aria-pressed="false">
         <span class="mf-q-num">07</span>
         <span class="mf-q-text">
-          <span class="mf-q-title">How do I keep the process moving after responses arrive?</span>
+          <span class="mf-q-title">How do I move responses forward?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
       <button type="button" class="mf-q" data-q="proposals" aria-pressed="false">
         <span class="mf-q-num">08</span>
         <span class="mf-q-text">
-          <span class="mf-q-title">Which proposal creates the strongest owner value?</span>
+          <span class="mf-q-title">Which proposal creates the most owner value?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
       <button type="button" class="mf-q" data-q="clarify" aria-pressed="false">
         <span class="mf-q-num">09</span>
         <span class="mf-q-text">
-          <span class="mf-q-title">What should I clarify before committing?</span>
+          <span class="mf-q-title">What needs clarification before I commit?</span>
         </span>
-        <span class="mf-q-badge">Active</span>
+        <span class="mf-q-badge" aria-hidden="true">Active</span>
       </button>
     </div>
     </div>
