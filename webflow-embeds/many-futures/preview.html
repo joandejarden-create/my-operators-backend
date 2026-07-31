@@ -107,6 +107,9 @@
   --mf-accent: #6c72ff;
   --mf-accent-soft: #8b90ff;
   --mf-accent-dim: rgba(108, 114, 255, 0.14);
+  /* Old Home value yellow — Decision outcome + Benefit kickers only */
+  --mf-value: #fdb52a;
+  --mf-value-soft: rgba(253, 181, 42, 0.12);
   --mf-text: #ffffff;
   --mf-muted: rgba(255, 255, 255, 0.72);
   --mf-muted-2: rgba(255, 255, 255, 0.55);
@@ -459,7 +462,7 @@
 #dealality-many-futures .mf-panel {
   display: none;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
   opacity: 0;
 }
 
@@ -479,6 +482,8 @@
 }
 
 #dealality-many-futures .mf-decision {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--mf-border);
@@ -507,6 +512,39 @@
   font-size: 0.85rem;
   line-height: 1.4;
   color: var(--mf-muted);
+}
+
+/* Decision outcome — full workspace width, under context, above features */
+#dealality-many-futures .mf-decision-outcome,
+#dealality-many-futures .mf-panel > .mf-outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 0.75rem 0.55rem 0.8rem;
+  border: none;
+  border-left: 3px solid var(--mf-value);
+  border-radius: 10px;
+  background: var(--mf-value-soft);
+  box-shadow: none;
+}
+
+#dealality-many-futures .mf-decision-outcome .mf-outcome-label,
+#dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mf-value);
+}
+
+#dealality-many-futures .mf-decision-outcome .mf-outcome-text,
+#dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-text {
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.94);
 }
 
 #dealality-many-futures .mf-features {
@@ -660,11 +698,16 @@
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--mf-accent-soft);
+  color: var(--mf-accent-soft); /* Purpose — lavender/accent */
 }
 
 #dealality-many-futures .mf-feat-kicker:first-child {
   margin-top: 0;
+}
+
+/* Benefit kicker follows Purpose body — yellow value language only */
+#dealality-many-futures .mf-feat-purpose + .mf-feat-kicker {
+  color: var(--mf-value);
 }
 
 #dealality-many-futures .mf-feat-purpose,
@@ -684,30 +727,33 @@
   line-height: 1.45;
 }
 
+/* Fallback if an outcome appears outside .mf-decision (should not in this pass) */
 #dealality-many-futures .mf-outcome {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.22rem;
   width: 100%;
   margin: 0;
-  padding: 0.75rem 0.95rem;
-  border: 1px solid rgba(108, 114, 255, 0.28);
-  border-radius: var(--mf-radius);
-  background: linear-gradient(180deg, rgba(17, 27, 58, 0.95), rgba(10, 18, 40, 0.98));
+  padding: 0.5rem 0.75rem 0.55rem 0.8rem;
+  border: none;
+  border-left: 3px solid var(--mf-value);
+  border-radius: 10px;
+  background: var(--mf-value-soft);
 }
 
 #dealality-many-futures .mf-outcome-label {
-  font-size: 0.6875rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--mf-accent-soft);
+  color: var(--mf-value);
 }
 
 #dealality-many-futures .mf-outcome-text {
-  font-size: 0.92rem;
-  line-height: 1.5;
-  color: rgba(245, 247, 255, 0.92);
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.94);
 }
 
 /* HTML mini-UI panels (replaces raster reconstructions) */
@@ -816,10 +862,22 @@
 #dealality-many-futures .mf-decision-title{font-size:1.08rem}
 #dealality-many-futures .mf-feat-name{font-size:1.05rem}
 #dealality-many-futures .mf-hotel-title{font-size:.98rem}
+#dealality-many-futures .mf-decision{padding:.65rem .75rem}
+#dealality-many-futures .mf-decision-outcome,
+#dealality-many-futures .mf-panel > .mf-outcome{padding:.4rem .6rem .42rem .65rem}
+#dealality-many-futures .mf-decision-outcome .mf-outcome-label,
+#dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-label{font-size:.6rem;letter-spacing:.07em}
+#dealality-many-futures .mf-decision-outcome .mf-outcome-text,
+#dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-text{font-size:.8125rem;line-height:1.32;font-weight:550}
 #dealality-many-futures .mf-hotel-media{aspect-ratio:4/5;object-position:center 30%}
 #dealality-many-futures .mf-hotel-media img{object-position:center 28%}
 #dealality-many-futures .mf-feat-body{padding:.9rem}
 #dealality-many-futures .mf-feat-visual:not(.mf-feat-visual--ui){aspect-ratio:16/10}
+}
+@media screen and (max-width:360px){
+#dealality-many-futures .mf-decision{padding:.55rem .6rem}
+#dealality-many-futures .mf-decision-outcome .mf-outcome-text,
+#dealality-many-futures .mf-panel > .mf-outcome .mf-outcome-text{font-size:.75rem;line-height:1.3}
 }
 @media (prefers-reduced-motion:reduce){
 #dealality-many-futures .mf-q,#dealality-many-futures .mf-panel,#dealality-many-futures .mf-feat,#dealality-many-futures .mf-connectors path{transition:none!important;animation:none!important}
@@ -1212,6 +1270,7 @@
           <h3 class="mf-decision-title">Should I rebrand?</h3>
           <p class="mf-decision-context">Could another brand strengthen the hotel’s positioning, distribution, commercial performance, and long-term asset value?</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Explore a broader set of credible brand paths before familiarity or early momentum begins defining the decision.</span></p>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
                         <div class="mf-feat-visual mf-feat-visual--ui">
@@ -1276,8 +1335,7 @@
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Explore a broader set of credible brand paths before familiarity or early momentum begins defining the decision.</span></p>
-      </section>
+</section>
 
       <!-- Q2 Operators — Operator Track Record is the Proof & Track Record view inside Operator Explorer -->
       <section class="mf-panel" data-panel="operators" aria-label="Which operators genuinely fit this hotel?" hidden>
@@ -1286,6 +1344,7 @@
           <h3 class="mf-decision-title">Which operators genuinely fit this hotel?</h3>
           <p class="mf-decision-context">Which operators have the right regional experience, operating model, asset focus, brand relationships, and partnership approach for this hotel?</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Identify operators that fit the hotel and ownership strategy—not simply those already known to the owner.</span></p>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
                         <div class="mf-feat-visual mf-feat-visual--ui">
@@ -1347,8 +1406,7 @@
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Identify operators that fit the hotel and ownership strategy—not simply those already known to the owner.</span></p>
-      </section>
+</section>
 
       <!-- Q3 Affiliation -->
       <section class="mf-panel" data-panel="affiliation" aria-label="Independent or affiliated?" hidden>
@@ -1357,6 +1415,7 @@
           <h3 class="mf-decision-title">Independent or affiliated?</h3>
           <p class="mf-decision-context">Would independence preserve greater control and flexibility, or would affiliation create enough strategic and commercial value to justify its fees and requirements?</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Determine whether affiliation’s strategic and commercial value justifies its fees, requirements, and reduced flexibility.</span></p>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
                         <div class="mf-feat-visual">
@@ -1442,8 +1501,7 @@
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Evaluate whether affiliation creates enough strategic and commercial value to justify its costs, requirements, and reduced flexibility.</span></p>
-      </section>
+</section>
 
       <!-- Q4 Residences — Submit Proposal omitted: brand form has no residential/mixed-use fields -->
       <section class="mf-panel" data-panel="residences" aria-label="Could branded residences strengthen the project?" hidden>
@@ -1452,6 +1510,7 @@
           <h3 class="mf-decision-title">Could branded residences strengthen the project?</h3>
           <p class="mf-decision-context">Could a residential component improve the project’s positioning, economics, market appeal, or long-term asset value?</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Understand whether a residential component merits deeper evaluation within the wider asset strategy.</span></p>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
                         <div class="mf-feat-visual mf-feat-visual--ui">
@@ -1535,8 +1594,7 @@
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Understand whether a residential component merits deeper evaluation as part of the wider asset strategy.</span></p>
-      </section>
+</section>
 
       <!-- Q5 Confidentiality — two-panel: Access & Activity Controls not a distinct live surface -->
       <section class="mf-panel" data-panel="confidential" aria-label="How do I keep the process confidential and owner-controlled?" hidden>
@@ -1545,6 +1603,7 @@
           <h3 class="mf-decision-title">How do I keep the process confidential and owner-controlled?</h3>
           <p class="mf-decision-context">Who participates, what they receive, and when the process advances should remain under the owner’s control.</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Engage selected partners while retaining control of participation, information sharing, and process timing.</span></p>
         <div class="mf-features mf-features--duo" data-mf-layout="two-panel">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual mf-feat-visual--ui">
@@ -1630,8 +1689,7 @@
             </div>
           </article>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Engage selected partners without surrendering control of the opportunity, information, or process.</span></p>
-      </section>
+</section>
 
       <!-- Q6 Market changes -->
       <section class="mf-panel" data-panel="market" aria-label="What is changing while I evaluate my options?" hidden>
@@ -1640,6 +1698,7 @@
           <h3 class="mf-decision-title">What is changing while I evaluate my options?</h3>
           <p class="mf-decision-context">Brand activity, competitive presence, market conditions, and development momentum may change while the decision is underway.</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Keep the decision current as relevant market activity, brand movement, and competitive context evolve.</span></p>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual mf-feat-visual--ui">
@@ -1731,8 +1790,7 @@
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Keep the decision current instead of relying on a market picture captured only at the beginning of the process.</span></p>
-      </section>
+</section>
 
       <!-- Q7 After responses -->
       <section class="mf-panel" data-panel="actions" aria-label="How do I keep the process moving after responses arrive?" hidden>
@@ -1741,6 +1799,7 @@
           <h3 class="mf-decision-title">How do I keep the process moving after responses arrive?</h3>
           <p class="mf-decision-context">Every response, clarification, follow-up, and unresolved item needs a visible next action.</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Turn responses into visible next actions so the process does not stall across email, notes, and disconnected follow-ups.</span></p>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual mf-feat-visual--ui">
@@ -1861,8 +1920,7 @@
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Turn responses into visible next steps so opportunities do not stall across email, notes, and disconnected follow-ups.</span></p>
-      </section>
+</section>
 
       <!-- Q8 Proposals -->
       <section class="mf-panel" data-panel="proposals" aria-label="Which proposal creates the strongest owner value?" hidden>
@@ -1871,6 +1929,7 @@
           <h3 class="mf-decision-title">Which proposal creates the strongest owner value?</h3>
           <p class="mf-decision-context">How do the economics, support, commitments, control implications, flexibility, and long-term obligations compare across competing proposals?</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Compare the complete value proposition—not only the most visible headline terms.</span></p>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
                         <div class="mf-feat-visual mf-feat-visual--ui">
@@ -1974,8 +2033,7 @@
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Compare the complete owner value proposition—not only the most visible headline terms.</span></p>
-      </section>
+</section>
 
       <!-- Q9 Clarify -->
       <section class="mf-panel" data-panel="clarify" aria-label="What should I clarify before committing?" hidden>
@@ -1984,6 +2042,7 @@
           <h3 class="mf-decision-title">What should I clarify before committing?</h3>
           <p class="mf-decision-context">Which information gaps, commercial terms, contractual provisions, and decision risks still require attention before the process advances?</p>
         </header>
+        <p class="mf-decision-outcome mf-outcome"><span class="mf-outcome-label">Decision outcome</span><span class="mf-outcome-text">Enter negotiation with a clearer view of unresolved issues, important terms, and decision risks.</span></p>
         <div class="mf-features">
           <article class="mf-feat mf-feat--primary">
             <div class="mf-feat-visual mf-feat-visual--ui">
@@ -2145,8 +2204,7 @@
             </article>
           </div>
         </div>
-        <p class="mf-outcome"><span class="mf-outcome-label">Owner outcome</span><span class="mf-outcome-text">Enter negotiation with a clearer view of unresolved issues, important terms, and potential decision risks.</span></p>
-      </section>
+</section>
     </div>
   </div>
 </div>
