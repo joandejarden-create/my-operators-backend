@@ -538,12 +538,13 @@
 }
 
 /* Decision outcome — separate box under supporting feature (right column).
-   z-index above .mf-connectors so yellow endpoint dots sit behind this box. */
+   Solid fill + z-index above .mf-connectors so yellow endpoint dots sit behind this box. */
 #dealality-many-futures .mf-decision-outcome,
 #dealality-many-futures .mf-feat-stack > .mf-outcome,
 #dealality-many-futures .mf-panel > .mf-outcome {
   position: relative;
   z-index: 2;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   gap: 0.22rem;
@@ -553,7 +554,8 @@
   border: none;
   border-left: 3px solid var(--mf-value);
   border-radius: 10px;
-  background: var(--mf-value-soft);
+  /* Opaque (not rgba soft) so connector dots cannot show through */
+  background: #1a1730;
   box-shadow: none;
 }
 
