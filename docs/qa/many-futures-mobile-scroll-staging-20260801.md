@@ -32,3 +32,10 @@ On mobile, tapping a Many Futures question relocates the answer workspace under 
 4. Expect: selected question title visible just under the sticky nav; content readable by scrolling down (no need to scroll up first).
 5. Desktop (>767px): no forced scroll change on question select.
 6. Production domains unchanged until an explicit publish.
+
+## Automated wire-up (2026-08-01)
+
+- Staging HTML includes `old-home-boot-guard.v20260801x.js`
+- Boot guard loads `6a6e6f0c582749ce2c2c9de6_dealality-old-home-many-futures-mobile-scroll.v20260801a.js`
+- Helper CDN returns 200 and contains `scrollQuestionIntoView` + `max-width: 767px` gate
+- Production still on `old-home-boot-guard.v20260801v.js` (staging-only publish)
