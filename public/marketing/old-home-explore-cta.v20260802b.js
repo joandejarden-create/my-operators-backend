@@ -35,15 +35,6 @@
           try {
             var href = a.getAttribute("href") || "";
             if (!href || href.charAt(0) === "#") return;
-            // Explicit id targets always win (auth chrome may restore absolute EN URLs).
-            if (pair[0] === "#nav-cta") {
-              a.setAttribute("href", "/es/signup");
-              return;
-            }
-            if (pair[0] === "#nav-signin") {
-              a.setAttribute("href", "/es/login");
-              return;
-            }
             if (/opportunity-review/i.test(pair[0]) || /opportunity-review/i.test(href)) {
               a.setAttribute("href", OR_URL);
               return;
@@ -227,7 +218,7 @@
     } else {
       boot();
     }
-    [0, 400, 1200, 2500, 5000, 8000].forEach(function (ms) {
+    [0, 400, 1200, 2500].forEach(function (ms) {
       window.setTimeout(boot, ms);
     });
 

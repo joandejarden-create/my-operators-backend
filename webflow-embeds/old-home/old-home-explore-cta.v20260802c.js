@@ -1,4 +1,4 @@
-/** v20260802b: rewrite /es hrefs after DOM ready; force locale OR URL into iframe opener. */
+/** v20260802c: rewrite /es hrefs after DOM ready; force locale OR URL into iframe opener. */
 /**
  * Old Home — unify Explore / Opportunity Review CTAs (v20260802a)
  * 01d: also runs on /who-its-for (role page).
@@ -231,26 +231,45 @@
       window.setTimeout(boot, ms);
     });
 
-    /* If Request-a-Demo CSS injects later, re-assert Explore chrome */
+    /* Re-assert Explore chrome + locale hrefs when auth/demo scripts mutate DOM */
     try {
       var mo = new MutationObserver(function (muts) {
+        var needStyle = false;
+        var needRewrite = false;
         for (var i = 0; i < muts.length; i++) {
-          var nodes = muts[i].addedNodes || [];
-          for (var j = 0; j < nodes.length; j++) {
-            var n = nodes[j];
-            if (n && n.id === "oh-demo-css") {
-              ensureStyle();
-              return;
+          var m = muts[i];
+          if (m.type === "attributes" && m.attributeName === "href") {
+            var t = m.target;
+            if (
+              t &&
+              (t.id === "nav-cta" ||
+                t.id === "nav-signin" ||
+                (t.classList && t.classList.contains("cta-button")))
+            ) {
+              needRewrite = true;
             }
           }
+          var nodes = m.addedNodes || [];
+          for (var j = 0; j < nodes.length; j++) {
+            var n = nodes[j];
+            if (n && n.id === "oh-demo-css") needStyle = true;
+            if (n && n.nodeType === 1) needRewrite = true;
+          }
         }
+        if (needStyle) ensureStyle();
+        if (needRewrite) rewriteLocaleHrefs();
       });
-      mo.observe(document.documentElement, { childList: true, subtree: true });
+      mo.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["href"],
+      });
       window.setTimeout(function () {
         try {
           mo.disconnect();
         } catch (_e) {}
-      }, 8000);
+      }, 12000);
     } catch (_e2) {}
   } catch (err) {
     if (typeof console !== "undefined" && console.warn) {
