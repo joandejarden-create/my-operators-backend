@@ -1,5 +1,6 @@
 /**
- * Old Home — Request a Demo (v20260802a)
+ * Old Home — Request a Demo (v20260802b)
+ * 02b: /es — "Or request a demo" → "O solicita una demo".
  * 02a: /es — Spanish modal + CTA labels; keep Solicitar acceso on nav.
  * 01d: ops mailto / fallback → hello@aohospitalityadvisors.com
  * 01b: no hover translateY bump on #fsw-demo-link (color/filter only).
@@ -17,8 +18,8 @@
     var path = (location.pathname || "").replace(/\/+$/, "").toLowerCase() || "/";
     var isEs = path === "/es" || path.indexOf("/es/") === 0;
     if (path !== "/old-home" && path !== "/" && path !== "/home" && !isEs) return;
-    if (window.__ohRequestDemo >= 202608021) return;
-    window.__ohRequestDemo = 202608021;
+    if (window.__ohRequestDemo >= 202608022) return;
+    window.__ohRequestDemo = 202608022;
 
     var DEFAULT_API = "https://my-operators-backend-staging.up.railway.app";
     var FALLBACK_MAILTO = "hello@aohospitalityadvisors.com";
@@ -426,7 +427,7 @@
         var link = document.createElement("button");
         link.type = "button";
         link.id = "cta-band-demo";
-        link.textContent = "Or request a demo";
+        link.textContent = isEs ? "O solicita una demo" : "Or request a demo";
         wrap.appendChild(link);
         ctaBtn.insertAdjacentElement("afterend", wrap);
         wireTrigger(link, true);
