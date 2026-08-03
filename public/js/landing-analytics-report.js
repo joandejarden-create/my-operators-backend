@@ -850,9 +850,7 @@
       if (row.sessions > maxSessions) maxSessions = row.sessions;
     });
 
-    var html = '<div class="panel-split">';
-    html += "<div>";
-    html += '<div class="overview-metrics">';
+    var html = '<div class="overview-metrics">';
     html +=
       '<div class="overview-metric"><span class="overview-metric__value">' +
       esc(audience.totalSessions) +
@@ -863,12 +861,12 @@
       '</span><span class="overview-metric__label">Median session</span></div>';
     html += "</div>";
 
-    var w = 520;
-    var h = 168;
-    var pad = { l: 14, r: 14, t: 28, b: 36 };
+    var days = audience.days;
+    var w = Math.max(640, 48 + days.length * 36);
+    var h = 180;
+    var pad = { l: 16, r: 16, t: 30, b: 34 };
     var innerW = w - pad.l - pad.r;
     var innerH = h - pad.t - pad.b;
-    var days = audience.days;
     var points = days.map(function (row, i) {
       var x =
         pad.l +
@@ -940,27 +938,39 @@
         esc(p.label) +
         "</text>";
     });
-    html += "</svg></div>";
+    html += "</svg>";
 
-    html += "<div>";
     html +=
-      '<table class="dash-table line-chart__table" aria-label="Sessions by day data table">';
+      '<div class="date-matrix-wrap" style="--date-cols:' +
+      days.length +
+      '">';
     html +=
-      "<thead><tr><th>Day</th><th>Sessions</th><th>Median time</th></tr></thead><tbody>";
+      '<table class="date-matrix" aria-label="Sessions and median time by day">';
+    html += "<thead><tr><th>Metric</th>";
+    html += days
+      .map(function (row) {
+        return "<th>" + esc(row.label) + "</th>";
+      })
+      .join("");
+    html += "</tr></thead><tbody>";
+    html += "<tr><td>Sessions</td>";
+    html += days
+      .map(function (row) {
+        return "<td>" + esc(row.sessions) + "</td>";
+      })
+      .join("");
+    html += "</tr>";
+    html += '<tr><td>Median time</td>';
     html += days
       .map(function (row) {
         return (
-          "<tr><td>" +
-          esc(row.label) +
-          "</td><td>" +
-          esc(row.sessions) +
-          "</td><td>" +
+          '<td class="date-matrix__duration">' +
           esc(fmtDuration(row.medianDurationSeconds)) +
-          "</td></tr>"
+          "</td>"
         );
       })
       .join("");
-    html += "</tbody></table></div></div>";
+    html += "</tr></tbody></table></div>";
     el.innerHTML = html;
   }
 
@@ -978,7 +988,7 @@
       if (row.total > maxTotal) maxTotal = row.total;
     });
 
-    var colHeight = 110;
+    var colHeight = 140;
     var html =
       '<div class="stacked-chart" role="img" aria-label="Sessions by acquisition channel">';
     html += acquisition.days
