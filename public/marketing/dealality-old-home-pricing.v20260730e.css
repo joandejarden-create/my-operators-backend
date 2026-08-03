@@ -1,0 +1,283 @@
+/* Pricing — single comparison composition (role headers + perspective benefits) */
+#pricing{
+  position:relative!important;
+  padding:96px 1.5rem 88px!important;
+  background:#080F25!important;
+  color:#e8ecf5!important;
+  border-top:1px solid rgba(255,255,255,.06)!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;
+  overflow:hidden!important;
+}
+#pricing-inner{
+  max-width:1180px!important;
+  margin:0 auto!important;
+  position:relative!important;
+  z-index:1!important;
+}
+#pricing-badges{
+  display:flex!important;
+  justify-content:center!important;
+  margin:0 0 18px!important;
+}
+#pricing-badge{
+  display:inline-flex!important;
+  align-items:center!important;
+  overflow:hidden!important;
+  border-radius:999px!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  background:rgba(8,15,37,.92)!important;
+  padding:5px 15px 5px 5px!important;
+  box-shadow:0 0 0 1px rgba(109,92,216,.1),0 0 28px rgba(109,92,216,.18)!important;
+  font-size:0!important;
+}
+#pricing-badge-left,#pricing-badge-right{
+  display:inline-flex!important;
+  align-items:center!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:1rem!important;
+  font-weight:500!important;
+  line-height:1!important;
+  color:#fff!important;
+}
+#pricing-badge-left{
+  height:32px!important;
+  padding:0 12px!important;
+  border-radius:10px!important;
+  background:#343259!important;
+}
+#pricing-badge-right{margin-left:14px!important}
+#pricing-h2{
+  margin:0 auto 14px!important;
+  max-width:20em!important;
+  text-align:center!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:clamp(1.9rem,1.4rem + 1.7vw,2.85rem)!important;
+  line-height:1.2!important;
+  font-weight:550!important;
+  letter-spacing:-.02em!important;
+  color:#fff!important;
+}
+#pricing-lead{
+  margin:0 auto 36px!important;
+  max-width:36rem!important;
+  text-align:center!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:1.05rem!important;
+  line-height:1.55!important;
+  color:rgba(255,255,255,.68)!important;
+}
+
+/* Card grid collapsed — icons/CTAs relocated into matrix headers */
+#pricing-grid[data-oh-pricing-hidden="1"],
+#pricing-grid[hidden]{
+  display:none!important;
+}
+
+#pricing-matrix-wrap{margin:0!important}
+#pricing-matrix-hint{
+  display:none!important;
+  margin:0 0 .65rem!important;
+  text-align:right!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:.78rem!important;
+  letter-spacing:.02em!important;
+  color:rgba(255,255,255,.42)!important;
+}
+#pricing-matrix-scroll{
+  overflow-x:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  border-radius:20px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(13,21,48,.72)!important;
+  box-shadow:0 18px 40px rgba(0,0,0,.22)!important;
+}
+#pricing-matrix{
+  width:100%!important;
+  min-width:860px!important;
+  border-collapse:collapse!important;
+  table-layout:fixed!important;
+}
+#pricing-matrix th,
+#pricing-matrix td{
+  padding:.9rem 1rem!important;
+  text-align:left!important;
+  vertical-align:top!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:.9rem!important;
+  line-height:1.45!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;
+}
+#pricing-matrix thead th{
+  vertical-align:top!important;
+  background:rgba(255,255,255,.025)!important;
+  border-bottom:1px solid rgba(255,255,255,.1)!important;
+  color:rgba(255,255,255,.88)!important;
+  font-weight:600!important;
+  text-transform:none!important;
+  letter-spacing:0!important;
+}
+#pricing-matrix thead th.oh-px-corner{
+  width:16%!important;
+  vertical-align:bottom!important;
+  padding-bottom:1.15rem!important;
+}
+#pricing-matrix thead th.oh-px-corner span{
+  display:inline-block!important;
+  font-size:.72rem!important;
+  font-weight:650!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+  color:rgba(255,255,255,.42)!important;
+}
+#pricing-matrix tbody th{
+  width:16%!important;
+  color:rgba(255,255,255,.48)!important;
+  font-weight:600!important;
+  font-size:.78rem!important;
+  text-transform:uppercase!important;
+  letter-spacing:.03em!important;
+  background:transparent!important;
+}
+#pricing-matrix tbody td{color:rgba(255,255,255,.78)!important}
+#pricing-matrix tbody tr.oh-px-benefit-row td.oh-px-benefit{
+  color:rgba(255,255,255,.84)!important;
+  font-size:.88rem!important;
+  line-height:1.5!important;
+}
+#pricing-matrix tbody tr:last-child th,
+#pricing-matrix tbody tr:last-child td{border-bottom:0!important}
+
+.oh-px-head{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  gap:.45rem!important;
+  min-height:100%!important;
+}
+.oh-px-role{
+  margin:.15rem 0 0!important;
+  font-size:1.15rem!important;
+  font-weight:650!important;
+  letter-spacing:-.01em!important;
+  color:#fff!important;
+  line-height:1.2!important;
+}
+.oh-px-audience{
+  font-size:.82rem!important;
+  font-style:italic!important;
+  line-height:1.35!important;
+  color:rgba(255,255,255,.55)!important;
+  min-height:2.3em!important;
+}
+.oh-px-model{
+  margin-top:.15rem!important;
+  font-size:1.05rem!important;
+  font-weight:700!important;
+  letter-spacing:-.02em!important;
+  color:#fff!important;
+}
+.oh-px-cta-slot{
+  width:100%!important;
+  margin-top:.55rem!important;
+}
+#pricing-owners-icon,
+#pricing-brands-icon,
+#pricing-operators-icon,
+#pricing-advisors-icon{
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  min-height:48px!important;
+  border-radius:999px!important;
+  border:none!important;
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+  background:radial-gradient(circle at 50% 45%,rgba(140,146,255,.55) 0%,rgba(108,114,255,.22) 42%,rgba(108,114,255,.06) 68%,transparent 78%)!important;
+  box-shadow:0 0 24px rgba(108,114,255,.28)!important;
+}
+#pricing-owners-icon::before,
+#pricing-brands-icon::before,
+#pricing-operators-icon::before,
+#pricing-advisors-icon::before{content:none!important;display:none!important}
+#pricing-owners-icon svg,
+#pricing-brands-icon svg,
+#pricing-operators-icon svg,
+#pricing-advisors-icon svg{
+  width:34px!important;
+  height:34px!important;
+  display:block!important;
+}
+#pricing-owners-cta,
+#pricing-brands-cta,
+#pricing-operators-cta,
+#pricing-advisors-cta{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:2.55rem!important;
+  padding:.65rem .75rem!important;
+  border-radius:999px!important;
+  background:linear-gradient(135deg,#8B7CF7,#6C72FF)!important;
+  color:#fff!important;
+  text-decoration:none!important;
+  font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif!important;
+  font-size:.78rem!important;
+  font-weight:650!important;
+  border:0!important;
+  box-shadow:0 10px 24px rgba(108,114,255,.22)!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  text-align:center!important;
+  white-space:normal!important;
+  line-height:1.25!important;
+}
+#pricing-owners-cta:hover,
+#pricing-brands-cta:hover,
+#pricing-operators-cta:hover,
+#pricing-advisors-cta:hover{filter:brightness(1.06)!important}
+
+#pricing-matrix .oh-px-owners{
+  background:rgba(155,138,251,.07)!important;
+}
+#pricing-matrix thead th.oh-px-owners{
+  background:linear-gradient(180deg,rgba(28,24,58,.55) 0%,rgba(155,138,251,.08) 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(155,138,251,.18)!important;
+}
+
+#pricing-owners-features,
+#pricing-brands-features,
+#pricing-operators-features,
+#pricing-advisors-features{display:none!important}
+
+#pricing-terms{
+  margin-top:1.2rem!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:.3rem!important;
+}
+#pricing-term-owners,
+#pricing-term-subscription,
+#pricing-term-brands,
+#pricing-term-operators,
+#pricing-term-advisors{
+  margin:0!important;
+  font-size:.8rem!important;
+  line-height:1.45!important;
+  color:rgba(255,255,255,.45)!important;
+}
+
+@media(max-width:900px){
+  #pricing-matrix-hint{display:block!important}
+}
+@media(max-width:700px){
+  #pricing{padding:72px 1.25rem 64px!important}
+  #pricing-badge-right{font-size:.9rem!important}
+  #pricing-matrix{min-width:780px!important}
+  .oh-px-audience{min-height:0!important}
+}
+@media(max-width:480px){
+  #pricing-badge-right{display:none!important}
+}
