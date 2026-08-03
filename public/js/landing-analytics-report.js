@@ -111,19 +111,82 @@
     return $("laDays").value || "7";
   }
 
+  function selectedVersion() {
+    return ($("laVersion") && $("laVersion").value) || "all";
+  }
+
+  function selectedLang() {
+    return ($("laLang") && $("laLang").value) || "all";
+  }
+
+  function selectedCutover() {
+    return ($("laCutover") && $("laCutover").value) || "";
+  }
+
+  function selectedEra() {
+    if (!selectedCutover()) return "all";
+    return ($("laEra") && $("laEra").value) || "all";
+  }
+
+  function syncEraEnabled() {
+    var era = $("laEra");
+    if (!era) return;
+    era.disabled = !selectedCutover();
+    if (era.disabled) era.value = "all";
+  }
+
   function selectedExcludeInternal() {
     return Boolean($("laExcludeInternal") && $("laExcludeInternal").checked);
   }
 
-  function syncFiltersToUrl(days, excludeInternal) {
+  function reportQueryString() {
+    var q =
+      "days=" +
+      encodeURIComponent(selectedDays()) +
+      "&version=" +
+      encodeURIComponent(selectedVersion()) +
+      "&lang=" +
+      encodeURIComponent(selectedLang()) +
+      "&excludeInternal=" +
+      (selectedExcludeInternal() ? "1" : "0");
+    var cutover = selectedCutover();
+    if (cutover) {
+      q +=
+        "&cutover=" +
+        encodeURIComponent(cutover) +
+        "&era=" +
+        encodeURIComponent(selectedEra());
+    }
+    return q;
+  }
+
+  function syncFiltersToUrl() {
     try {
       var url = new URL(window.location.href);
-      url.searchParams.set("days", String(days));
-      if (excludeInternal) {
+      url.searchParams.set("days", String(selectedDays()));
+      url.searchParams.set("version", String(selectedVersion()));
+      url.searchParams.set("lang", String(selectedLang()));
+      if (selectedExcludeInternal()) {
         url.searchParams.set("excludeInternal", "1");
       } else {
         url.searchParams.delete("excludeInternal");
       }
+      var cutover = selectedCutover();
+      if (cutover) {
+        url.searchParams.set("cutover", cutover);
+        url.searchParams.set("era", selectedEra());
+      } else {
+        url.searchParams.delete("cutover");
+        url.searchParams.delete("era");
+      }
+      window.history.replaceState(null, "", url.toString());
+    } catch (_e) {}
+  }
+
+  function syncDaysToUrl(days) {
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.set("days", String(days));
       window.history.replaceState(null, "", url.toString());
     } catch (_e) {}
   }
@@ -133,13 +196,39 @@
       var params = new URLSearchParams(window.location.search);
       var days = params.get("days");
       if (days && $("laDays")) {
-        var option = $("laDays").querySelector('option[value="' + days + '"]');
-        if (option) $("laDays").value = days;
+        var dayOpt = $("laDays").querySelector('option[value="' + days + '"]');
+        if (dayOpt) $("laDays").value = days;
+      }
+      var version = params.get("version");
+      if (version && $("laVersion")) {
+        var verOpt = $("laVersion").querySelector(
+          'option[value="' + version + '"]'
+        );
+        if (verOpt) $("laVersion").value = version;
+      }
+      var lang = params.get("lang") || params.get("locale");
+      if (lang && $("laLang")) {
+        var langOpt = $("laLang").querySelector('option[value="' + lang + '"]');
+        if (langOpt) $("laLang").value = lang;
+      }
+      var cutover = params.get("cutover");
+      if (cutover && $("laCutover") && /^\d{4}-\d{2}-\d{2}$/.test(cutover)) {
+        $("laCutover").value = cutover;
+      }
+      var era = params.get("era");
+      if (era && $("laEra")) {
+        var eraOpt = $("laEra").querySelector('option[value="' + era + '"]');
+        if (eraOpt) $("laEra").value = era;
       }
       if ($("laExcludeInternal")) {
         $("laExcludeInternal").checked = params.get("excludeInternal") === "1";
       }
+      syncEraEnabled();
     } catch (_e2) {}
+  }
+
+  function applyDaysFromUrl() {
+    applyFiltersFromUrl();
   }
 
   async function apiFetch(path) {
@@ -197,7 +286,7 @@
           '<article class="insight insight--' +
           esc(item.tone || "info") +
           '">' +
-          '<h3>' +
+          "<h3>" +
           esc(item.title) +
           "</h3>" +
           "<p>" +
@@ -207,6 +296,170 @@
         );
       })
       .join("");
+  }
+
+  function severityLabel(severity) {
+    if (severity === "critical") return "Critical";
+    if (severity === "opportunity") return "Opportunity";
+    if (severity === "win") return "Working";
+    return "Watch";
+  }
+
+  function categoryLabel(category) {
+    if (category === "conversion") return "Conversion";
+    if (category === "flow") return "Flow";
+    if (category === "content") return "Content";
+    if (category === "locale") return "EN / ES";
+    return category || "Insight";
+  }
+
+  function renderRecommendations(recs) {
+    var el = $("laRecommendations");
+    var sub = $("laRecsSub");
+    if (!el) return;
+    var items = (recs && recs.items) || [];
+    var summary = (recs && recs.summary) || {};
+    if (sub) {
+      sub.textContent = items.length
+        ? summary.actionableCount +
+          " action item" +
+          (summary.actionableCount === 1 ? "" : "s") +
+          (summary.winCount
+            ? " · " + summary.winCount + " strength" + (summary.winCount === 1 ? "" : "s")
+            : "") +
+          " from " +
+          (summary.sessions || 0) +
+          " sessions in this view."
+        : "Recommendations appear once homepage sessions are recorded for the selected filters.";
+    }
+    if (!items.length) {
+      el.innerHTML =
+        '<p class="empty">No recommendations yet — visit / and /es, interact with CTAs, scroll, FAQ, and video, then refresh.</p>';
+      return;
+    }
+    el.innerHTML = items
+      .map(function (item) {
+        return (
+          '<article class="rec rec--' +
+          esc(item.severity || "watch") +
+          '">' +
+          '<div class="rec__meta">' +
+          '<span class="rec__pill rec__pill--severity">' +
+          esc(severityLabel(item.severity)) +
+          "</span>" +
+          '<span class="rec__pill">' +
+          esc(categoryLabel(item.category)) +
+          "</span>" +
+          (item.locale && item.locale !== "both"
+            ? '<span class="rec__pill">' +
+              esc(String(item.locale).toUpperCase()) +
+              "</span>"
+            : "") +
+          "</div>" +
+          "<h3>" +
+          esc(item.title) +
+          "</h3>" +
+          "<p>" +
+          esc(item.body) +
+          "</p>" +
+          (item.action
+            ? '<p class="rec__action"><strong>Next:</strong> ' +
+              esc(item.action) +
+              "</p>"
+            : "") +
+          (item.evidence
+            ? '<div class="rec__evidence">' + esc(item.evidence) + "</div>"
+            : "") +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+
+  function renderLocaleCard(slice) {
+    if (!slice) return "";
+    return (
+      '<div class="locale-card">' +
+      "<h3>" +
+      esc(slice.label || slice.key) +
+      "</h3>" +
+      '<div class="locale-metrics">' +
+      "<div><strong>" +
+      esc(slice.sessions || 0) +
+      "</strong><span>Sessions</span></div>" +
+      "<div><strong>" +
+      esc(slice.ctaRate || 0) +
+      "%</strong><span>CTA rate</span></div>" +
+      "<div><strong>" +
+      esc(slice.scrollRate || 0) +
+      "%</strong><span>Scroll start</span></div>" +
+      "<div><strong>" +
+      esc(slice.videoOpenRate || 0) +
+      "%</strong><span>Video open</span></div>" +
+      "</div>" +
+      (slice.topCta
+        ? '<div class="locale-delta">Top CTA: <strong>' +
+          esc(slice.topCta.key) +
+          "</strong> · " +
+          esc(slice.topCta.count) +
+          "</div>"
+        : "") +
+      (slice.topFaq
+        ? '<div class="locale-delta">Top FAQ: <strong>' +
+          esc(slice.topFaq.key) +
+          "</strong> · " +
+          esc(slice.topFaq.count) +
+          "</div>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function renderLocaleCompare(compare) {
+    var el = $("laLocaleCompare");
+    var panel = $("laLocalePanel");
+    if (!el) return;
+    if (!compare || (!(compare.en && compare.en.sessions) && !(compare.es && compare.es.sessions))) {
+      el.innerHTML =
+        '<p class="empty">EN/ES split appears after old-home visits on / and /es (language is tagged automatically).</p>';
+      if (panel) panel.hidden = false;
+      return;
+    }
+    if (panel) panel.hidden = false;
+    var html = '<div class="locale-compare-grid">';
+    html += renderLocaleCard(compare.en);
+    html += renderLocaleCard(compare.es);
+    html += "</div>";
+    if (compare.deltas && compare.deltas.length) {
+      html +=
+        '<div class="locale-delta" style="margin-top:12px">' +
+        compare.deltas
+          .map(function (d) {
+            var leader = d.leader === "en" ? "English" : "Spanish";
+            return (
+              "<div><strong>" +
+              esc(d.label) +
+              ":</strong> " +
+              leader +
+              " leads by " +
+              esc(Math.abs(d.gapPts)) +
+              " pts (EN " +
+              esc(d.en) +
+              "% · ES " +
+              esc(d.es) +
+              "%)</div>"
+            );
+          })
+          .join("") +
+        "</div>";
+    }
+    if (compare.unknownSessionsHint) {
+      html +=
+        '<p class="panel-sub" style="margin:10px 0 0;">' +
+        esc(compare.unknownSessionsHint) +
+        "</p>";
+    }
+    el.innerHTML = html;
   }
 
   function renderTrafficSegments(segments) {
@@ -296,11 +549,21 @@
       },
     ];
 
-    if (totals.videoOpens > 0 && totals.videoCompletionRate != null) {
+    if (totals.videoOpens > 0) {
       cards.push({
-        label: "Video Completion Rate",
-        value: totals.videoCompletionRate + "%",
-        sub: (totals.videoCompletes || 0) + " of " + totals.videoOpens + " Opens",
+        label: "Video Opens",
+        value: totals.videoOpens,
+        sub:
+          totals.videoAvgWatchSeconds != null
+            ? "Avg watch " + fmtDuration(totals.videoAvgWatchSeconds) +
+              (totals.videoCompletionRate != null
+                ? " · " + totals.videoCompletionRate + "% complete"
+                : "")
+            : (totals.videoCompletes || 0) +
+              " completes" +
+              (totals.videoCompletionRate != null
+                ? " · " + totals.videoCompletionRate + "%"
+                : ""),
         accent: "teal",
       });
     }
@@ -423,6 +686,7 @@
 
   function renderBarList(containerId, rows, emptyLabel) {
     var el = $(containerId);
+    if (!el) return;
     if (!rows || !rows.length) {
       el.innerHTML = '<p class="empty">' + esc(emptyLabel || "No Data") + "</p>";
       return;
@@ -586,7 +850,9 @@
       if (row.sessions > maxSessions) maxSessions = row.sessions;
     });
 
-    var html = '<div class="overview-metrics">';
+    var html = '<div class="panel-split">';
+    html += "<div>";
+    html += '<div class="overview-metrics">';
     html +=
       '<div class="overview-metric"><span class="overview-metric__value">' +
       esc(audience.totalSessions) +
@@ -597,9 +863,9 @@
       '</span><span class="overview-metric__label">Median session</span></div>';
     html += "</div>";
 
-    var w = 400;
-    var h = 148;
-    var pad = { l: 12, r: 12, t: 22, b: 30 };
+    var w = 520;
+    var h = 168;
+    var pad = { l: 14, r: 14, t: 28, b: 36 };
     var innerW = w - pad.l - pad.r;
     var innerH = h - pad.t - pad.b;
     var days = audience.days;
@@ -627,7 +893,7 @@
       w +
       " " +
       h +
-      '" role="img" aria-label="Sessions over time">';
+      '" role="img" aria-label="Sessions and median time by day">';
     html +=
       '<polyline fill="none" stroke="#5b8cff" stroke-width="2.5" stroke-linejoin="round" points="' +
       polyline +
@@ -651,10 +917,20 @@
         '<text x="' +
         p.x +
         '" y="' +
-        Math.max(12, p.y - 9) +
+        Math.max(12, p.y - 18) +
         '" text-anchor="middle" class="line-chart__value">' +
         esc(p.sessions) +
         "</text>";
+      if (p.duration != null) {
+        html +=
+          '<text x="' +
+          p.x +
+          '" y="' +
+          Math.max(22, p.y - 6) +
+          '" text-anchor="middle" class="line-chart__duration">' +
+          esc(fmtDuration(p.duration)) +
+          "</text>";
+      }
       html +=
         '<text x="' +
         p.x +
@@ -664,10 +940,13 @@
         esc(p.label) +
         "</text>";
     });
-    html += "</svg>";
+    html += "</svg></div>";
 
-    html += '<table class="dash-table line-chart__table" aria-label="Sessions by day data table">';
-    html += "<thead><tr><th>Day</th><th>Sessions</th><th>Median Session</th></tr></thead><tbody>";
+    html += "<div>";
+    html +=
+      '<table class="dash-table line-chart__table" aria-label="Sessions by day data table">';
+    html +=
+      "<thead><tr><th>Day</th><th>Sessions</th><th>Median time</th></tr></thead><tbody>";
     html += days
       .map(function (row) {
         return (
@@ -681,7 +960,7 @@
         );
       })
       .join("");
-    html += "</tbody></table>";
+    html += "</tbody></table></div></div>";
     el.innerHTML = html;
   }
 
@@ -1085,33 +1364,6 @@
       .join("");
     html += "</div>";
 
-    html += '<div class="barlist">';
-    html += data.days
-      .slice()
-      .reverse()
-      .map(function (row) {
-        var width = Math.max(6, Math.round((row.uniqueUsers / max) * 100));
-        return (
-          '<div class="barlist__row">' +
-          '<div class="barlist__meta">' +
-          '<span class="barlist__label">' +
-          esc(row.label) +
-          "</span>" +
-          '<span class="barlist__count">' +
-          esc(row.uniqueUsers) +
-          " Users · " +
-          esc(row.sessions) +
-          " Sessions</span>" +
-          "</div>" +
-          '<div class="barlist__track"><div class="barlist__bar barlist__bar--scroll" style="width:' +
-          width +
-          '%"></div></div>' +
-          "</div>"
-        );
-      })
-      .join("");
-    html += "</div>";
-
     if (data.peakDay && data.peakDay.uniqueUsers > 0) {
       html +=
         '<p class="panel-sub" style="margin:10px 0 0;">Peak day: ' +
@@ -1125,6 +1377,116 @@
         '<p class="panel-sub" style="margin:6px 0 0;">' + esc(data.note) + "</p>";
     }
 
+    el.innerHTML = html;
+  }
+
+  function renderVideoEngagement(video) {
+    var el = $("laVideo");
+    if (!el) return;
+    if (!video || !video.hasData) {
+      el.innerHTML =
+        '<p class="empty">No video engagement yet — opens, closes, watch time, and 25/50/75/100% progress appear after visitors play the platform overview.</p>';
+      return;
+    }
+
+    var openSessions = video.sessionsOpened || 0;
+    var kpis = [
+      {
+        value: openSessions || video.opens || 0,
+        label:
+          "Opens" +
+          (video.starts ? " · " + video.starts + " starts" : ""),
+      },
+      {
+        value: video.closes || 0,
+        label:
+          "Closes" +
+          (video.closeRate != null ? " · " + video.closeRate + "%" : ""),
+      },
+      {
+        value: video.completes || 0,
+        label:
+          "Completes" +
+          (video.completionRate != null ? " · " + video.completionRate + "%" : ""),
+      },
+      {
+        value: fmtDuration(video.avgWatchSeconds),
+        label:
+          "Avg watch" +
+          (video.medianWatchSeconds != null
+            ? " · med " + fmtDuration(video.medianWatchSeconds)
+            : ""),
+      },
+      {
+        value: video.watchSamples || 0,
+        label:
+          "Watch samples" +
+          (video.maxWatchSeconds != null
+            ? " · max " + fmtDuration(video.maxWatchSeconds)
+            : ""),
+      },
+      {
+        value: video.impressions || 0,
+        label:
+          "Launcher seen" +
+          (video.dismissals ? " · " + video.dismissals + " dismiss" : ""),
+      },
+    ];
+
+    var html = '<div class="video-kpi-row">';
+    html += kpis
+      .map(function (item) {
+        return (
+          '<div class="video-kpi">' +
+          '<span class="video-kpi__value">' +
+          esc(item.value) +
+          '</span><span class="video-kpi__label">' +
+          esc(item.label) +
+          "</span></div>"
+        );
+      })
+      .join("");
+    html += "</div>";
+
+    var progress = video.progress || [];
+    var maxCount = Math.max(
+      1,
+      openSessions,
+      ...progress.map(function (row) {
+        return Number(row.count || 0);
+      })
+    );
+    html += '<div class="progress-funnel" aria-label="Video progress funnel">';
+    if (!progress.some(function (row) {
+      return Number(row.count || 0) > 0;
+    })) {
+      html +=
+        '<p class="empty">Progress milestones will fill in as viewers reach 25%, 50%, 75%, and complete.</p>';
+    } else {
+      html += progress
+        .map(function (row) {
+          var width = Math.max(
+            6,
+            Math.round((Number(row.count || 0) / maxCount) * 100)
+          );
+          return (
+            '<div class="funnel__row">' +
+            '<div class="funnel__meta">' +
+            '<span class="funnel__label">' +
+            esc(row.label) +
+            '</span><span class="funnel__stats">' +
+            esc(row.count) +
+            " sessions · " +
+            esc(row.rate) +
+            "%</span></div>" +
+            '<div class="funnel__track"><div class="funnel__bar" style="width:' +
+            width +
+            '%"></div></div></div>'
+          );
+        })
+        .join("");
+    }
+    html += "</div>";
     el.innerHTML = html;
   }
 
@@ -1301,14 +1663,11 @@
     $("laSessionTimeline").innerHTML = '<p class="empty">Loading Session…</p>';
     try {
       var days = selectedDays();
-      var excludeInternal = selectedExcludeInternal();
       var data = await apiFetch(
         "/api/marketing/landing-events/session?sessionId=" +
           encodeURIComponent(sessionId) +
-          "&days=" +
-          encodeURIComponent(days) +
-          "&excludeInternal=" +
-          (excludeInternal ? "1" : "0") +
+          "&" +
+          reportQueryString() +
           "&_=" +
           Date.now()
       );
@@ -1320,21 +1679,16 @@
   }
 
   function downloadExport(format) {
-    var days = selectedDays();
-    var excludeInternal = selectedExcludeInternal();
-    var url =
-      appendReportKey(
-        "/api/marketing/landing-events/export?days=" +
-          encodeURIComponent(days) +
-          "&excludeInternal=" +
-          (excludeInternal ? "1" : "0") +
-          "&format=" +
-          encodeURIComponent(format)
-      );
+    var url = appendReportKey(
+      "/api/marketing/landing-events/export?" +
+        reportQueryString() +
+        "&format=" +
+        encodeURIComponent(format)
+    );
     window.location.href = url;
   }
 
-  function formatStorageBanner(storage, totals, window) {
+  function formatStorageBanner(storage, totals, window, filters) {
     var parts = [];
     if (window && window.label) {
       parts.push(window.label);
@@ -1342,6 +1696,22 @@
       parts.push(
         window.days === 1 ? "Last 24 Hours" : "Last " + window.days + " Days"
       );
+    }
+    if (filters && filters.versionLabel) {
+      parts.push(filters.versionLabel);
+    } else if (filters && filters.version && filters.version !== "all") {
+      parts.push("Version: " + filters.version);
+    }
+    if (filters && filters.localeLabel) {
+      parts.push(filters.localeLabel);
+    } else if (filters && filters.locale && filters.locale !== "all") {
+      parts.push("Lang: " + filters.locale);
+    }
+    if (filters && filters.cutover) {
+      var cut = String(filters.cutover).slice(0, 10);
+      if (filters.era === "before") parts.push("Before " + cut);
+      else if (filters.era === "after") parts.push("On/After " + cut);
+      else parts.push("Cutover " + cut);
     }
     parts.push(
       (totals && totals.sessions ? totals.sessions : 0) + " Landing Sessions"
@@ -1365,6 +1735,43 @@
       }
     }
     return parts.join(" · ");
+  }
+
+  function renderCompare(compare) {
+    var panel = $("laComparePanel");
+    var cards = $("laCompareCards");
+    var sub = $("laCompareSub");
+    if (!panel || !cards) return;
+    if (!compare || !compare.before || !compare.after) {
+      panel.hidden = true;
+      cards.innerHTML = "";
+      return;
+    }
+    panel.hidden = false;
+    if (sub) {
+      sub.textContent =
+        "Split at " +
+        (compare.cutoverLabel || String(compare.cutover || "").slice(0, 10)) +
+        " inside the selected time window. Site version filter still applies. Historical rows stay in the log.";
+    }
+    function card(title, side, tone) {
+      return (
+        '<article class="kpi' +
+        (tone ? " " + tone : "") +
+        '"><div class="kpi__label">' +
+        esc(title) +
+        '</div><div class="kpi__value">' +
+        esc(side.sessions || 0) +
+        '</div><div class="kpi__sub">' +
+        esc(side.events || 0) +
+        " events · " +
+        esc(side.ctaClicks || 0) +
+        " CTA clicks</div></article>"
+      );
+    }
+    cards.innerHTML =
+      card("Before Cutover", compare.before, "kpi--violet") +
+      card("On/After Cutover", compare.after, "kpi--teal");
   }
 
   function renderScrollDepths(rows) {
@@ -1472,26 +1879,44 @@
 
   async function loadReport() {
     var days = selectedDays();
-    var excludeInternal = selectedExcludeInternal();
-    syncFiltersToUrl(days, excludeInternal);
-    setBanner("Loading " + (days === "1" ? "last 24 hours" : "last " + days + " days") + "…", "info");
+    syncEraEnabled();
+    syncFiltersToUrl();
+    var version = selectedVersion();
+    var lang = selectedLang();
+    var cutover = selectedCutover();
+    var era = selectedEra();
+    var msg =
+      "Loading " +
+      (days === "1" ? "last 24 hours" : "last " + days + " days");
+    if (version === "previous") msg += " · previous landing";
+    else if (version === "old-home") msg += " · new site";
+    if (lang === "en") msg += " · English";
+    else if (lang === "es") msg += " · Spanish";
+    if (cutover) {
+      if (era === "before") msg += " · before " + cutover;
+      else if (era === "after") msg += " · on/after " + cutover;
+      else msg += " · cutover " + cutover;
+    }
+    setBanner(msg + "…", "info");
     $("laReport").hidden = true;
     try {
       var data = await apiFetch(
-        "/api/marketing/landing-events/report?days=" +
-          encodeURIComponent(days) +
-          "&excludeInternal=" +
-          (excludeInternal ? "1" : "0") +
+        "/api/marketing/landing-events/report?" +
+          reportQueryString() +
           "&_=" +
           Date.now()
       );
       renderInsights(data.insights);
+      renderRecommendations(data.recommendations);
+      renderLocaleCompare(data.localeCompare);
       renderHeroKpis(data.totals || {}, data.funnel);
       renderTrafficSegments(data.trafficSegments);
+      renderCompare(data.compare);
       renderDashboard(data.dashboard);
       renderInsightsHub(data.insightsHub);
       renderBenchmarks(data.benchmarks);
       renderDailyUniqueUsers(data.dailyUniqueUsers);
+      renderVideoEngagement(data.video);
       renderFunnel(data.funnel);
       renderSectionJourney(data.funnel && data.funnel.sectionJourney);
       renderCtaPaths(data.ctaPaths);
@@ -1510,15 +1935,24 @@
       renderBarList("laGeoCountries", data.geography && data.geography.countries, "No Country Data Yet — Captured on New Visits After Deploy");
       renderBarList("laGeoCities", data.geography && data.geography.cities, "No City Data Yet — Captured on New Visits After Deploy");
       renderScrollDepths(data.scrollDepths);
-      renderDevices(data.devices);
       renderBarList("laUtm", data.utmSources, "No Campaign Tags Yet");
+      renderBarList(
+        "laVersions",
+        data.landingVersions,
+        "No Version Tags Yet"
+      );
       renderRecent(data.recent);
       renderRawTable("laByEvent", data.byEvent, "No Events", true);
       renderRawTable("laSections", data.sections, "No Section Views", true);
       $("laReport").hidden = false;
       var bannerKind = data.storage && !data.storage.persistent ? "warn" : "info";
       setBanner(
-        formatStorageBanner(data.storage, data.totals, data.window) +
+        formatStorageBanner(
+          data.storage,
+          data.totals,
+          data.window,
+          data.filters
+        ) +
           (data.storage && data.storage.retentionNote && !data.storage.persistent
             ? " — " + data.storage.retentionNote
             : ""),
@@ -1590,11 +2024,21 @@
   }
 
   applyFiltersFromUrl();
+  syncEraEnabled();
   $("laRefresh").addEventListener("click", loadReport);
   $("laDays").addEventListener("change", loadReport);
+  if ($("laVersion")) $("laVersion").addEventListener("change", loadReport);
+  if ($("laLang")) $("laLang").addEventListener("change", loadReport);
   if ($("laExcludeInternal")) {
     $("laExcludeInternal").addEventListener("change", loadReport);
   }
+  if ($("laCutover")) {
+    $("laCutover").addEventListener("change", function () {
+      syncEraEnabled();
+      loadReport();
+    });
+  }
+  if ($("laEra")) $("laEra").addEventListener("change", loadReport);
   if ($("laExportEvents")) {
     $("laExportEvents").addEventListener("click", function () {
       downloadExport("events");
