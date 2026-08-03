@@ -111,6 +111,60 @@
     return $("laDays").value || "7";
   }
 
+  function selectedVersion() {
+    return ($("laVersion") && $("laVersion").value) || "all";
+  }
+
+  function selectedCutover() {
+    return ($("laCutover") && $("laCutover").value) || "";
+  }
+
+  function selectedEra() {
+    if (!selectedCutover()) return "all";
+    return ($("laEra") && $("laEra").value) || "all";
+  }
+
+  function syncEraEnabled() {
+    var era = $("laEra");
+    if (!era) return;
+    era.disabled = !selectedCutover();
+    if (era.disabled) era.value = "all";
+  }
+
+  function reportQueryString() {
+    var q =
+      "days=" +
+      encodeURIComponent(selectedDays()) +
+      "&version=" +
+      encodeURIComponent(selectedVersion());
+    var cutover = selectedCutover();
+    if (cutover) {
+      q +=
+        "&cutover=" +
+        encodeURIComponent(cutover) +
+        "&era=" +
+        encodeURIComponent(selectedEra());
+    }
+    return q;
+  }
+
+  function syncFiltersToUrl() {
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.set("days", String(selectedDays()));
+      url.searchParams.set("version", String(selectedVersion()));
+      var cutover = selectedCutover();
+      if (cutover) {
+        url.searchParams.set("cutover", cutover);
+        url.searchParams.set("era", selectedEra());
+      } else {
+        url.searchParams.delete("cutover");
+        url.searchParams.delete("era");
+      }
+      window.history.replaceState(null, "", url.toString());
+    } catch (_e) {}
+  }
+
   function syncDaysToUrl(days) {
     try {
       var url = new URL(window.location.href);
@@ -119,14 +173,36 @@
     } catch (_e) {}
   }
 
-  function applyDaysFromUrl() {
+  function applyFiltersFromUrl() {
     try {
       var params = new URLSearchParams(window.location.search);
       var days = params.get("days");
-      if (!days || !$("laDays")) return;
-      var option = $("laDays").querySelector('option[value="' + days + '"]');
-      if (option) $("laDays").value = days;
+      if (days && $("laDays")) {
+        var dayOpt = $("laDays").querySelector('option[value="' + days + '"]');
+        if (dayOpt) $("laDays").value = days;
+      }
+      var version = params.get("version");
+      if (version && $("laVersion")) {
+        var verOpt = $("laVersion").querySelector(
+          'option[value="' + version + '"]'
+        );
+        if (verOpt) $("laVersion").value = version;
+      }
+      var cutover = params.get("cutover");
+      if (cutover && $("laCutover") && /^\d{4}-\d{2}-\d{2}$/.test(cutover)) {
+        $("laCutover").value = cutover;
+      }
+      var era = params.get("era");
+      if (era && $("laEra")) {
+        var eraOpt = $("laEra").querySelector('option[value="' + era + '"]');
+        if (eraOpt) $("laEra").value = era;
+      }
+      syncEraEnabled();
     } catch (_e2) {}
+  }
+
+  function applyDaysFromUrl() {
+    applyFiltersFromUrl();
   }
 
   async function apiFetch(path) {
@@ -364,6 +440,7 @@
 
   function renderBarList(containerId, rows, emptyLabel) {
     var el = $(containerId);
+    if (!el) return;
     if (!rows || !rows.length) {
       el.innerHTML = '<p class="empty">' + esc(emptyLabel || "No Data") + "</p>";
       return;
@@ -1245,8 +1322,8 @@
       var data = await apiFetch(
         "/api/marketing/landing-events/session?sessionId=" +
           encodeURIComponent(sessionId) +
-          "&days=" +
-          encodeURIComponent(days) +
+          "&" +
+          reportQueryString() +
           "&_=" +
           Date.now()
       );
@@ -1258,18 +1335,16 @@
   }
 
   function downloadExport(format) {
-    var days = selectedDays();
-    var url =
-      appendReportKey(
-        "/api/marketing/landing-events/export?days=" +
-          encodeURIComponent(days) +
-          "&format=" +
-          encodeURIComponent(format)
-      );
+    var url = appendReportKey(
+      "/api/marketing/landing-events/export?" +
+        reportQueryString() +
+        "&format=" +
+        encodeURIComponent(format)
+    );
     window.location.href = url;
   }
 
-  function formatStorageBanner(storage, totals, window) {
+  function formatStorageBanner(storage, totals, window, filters) {
     var parts = [];
     if (window && window.label) {
       parts.push(window.label);
@@ -1277,6 +1352,17 @@
       parts.push(
         window.days === 1 ? "Last 24 Hours" : "Last " + window.days + " Days"
       );
+    }
+    if (filters && filters.versionLabel) {
+      parts.push(filters.versionLabel);
+    } else if (filters && filters.version && filters.version !== "all") {
+      parts.push("Version: " + filters.version);
+    }
+    if (filters && filters.cutover) {
+      var cut = String(filters.cutover).slice(0, 10);
+      if (filters.era === "before") parts.push("Before " + cut);
+      else if (filters.era === "after") parts.push("On/After " + cut);
+      else parts.push("Cutover " + cut);
     }
     parts.push(
       (totals && totals.sessions ? totals.sessions : 0) + " Landing Sessions"
@@ -1300,6 +1386,43 @@
       }
     }
     return parts.join(" · ");
+  }
+
+  function renderCompare(compare) {
+    var panel = $("laComparePanel");
+    var cards = $("laCompareCards");
+    var sub = $("laCompareSub");
+    if (!panel || !cards) return;
+    if (!compare || !compare.before || !compare.after) {
+      panel.hidden = true;
+      cards.innerHTML = "";
+      return;
+    }
+    panel.hidden = false;
+    if (sub) {
+      sub.textContent =
+        "Split at " +
+        (compare.cutoverLabel || String(compare.cutover || "").slice(0, 10)) +
+        " inside the selected time window. Site version filter still applies. Historical rows stay in the log.";
+    }
+    function card(title, side, tone) {
+      return (
+        '<article class="kpi' +
+        (tone ? " " + tone : "") +
+        '"><div class="kpi__label">' +
+        esc(title) +
+        '</div><div class="kpi__value">' +
+        esc(side.sessions || 0) +
+        '</div><div class="kpi__sub">' +
+        esc(side.events || 0) +
+        " events · " +
+        esc(side.ctaClicks || 0) +
+        " CTA clicks</div></article>"
+      );
+    }
+    cards.innerHTML =
+      card("Before Cutover", compare.before, "kpi--violet") +
+      card("On/After Cutover", compare.after, "kpi--teal");
   }
 
   function renderScrollDepths(rows) {
@@ -1407,18 +1530,33 @@
 
   async function loadReport() {
     var days = selectedDays();
-    syncDaysToUrl(days);
-    setBanner("Loading " + (days === "1" ? "last 24 hours" : "last " + days + " days") + "…", "info");
+    syncEraEnabled();
+    syncFiltersToUrl();
+    var version = selectedVersion();
+    var cutover = selectedCutover();
+    var era = selectedEra();
+    var msg =
+      "Loading " +
+      (days === "1" ? "last 24 hours" : "last " + days + " days");
+    if (version === "previous") msg += " · previous landing";
+    else if (version === "old-home") msg += " · new site";
+    if (cutover) {
+      if (era === "before") msg += " · before " + cutover;
+      else if (era === "after") msg += " · on/after " + cutover;
+      else msg += " · cutover " + cutover;
+    }
+    setBanner(msg + "…", "info");
     $("laReport").hidden = true;
     try {
       var data = await apiFetch(
-        "/api/marketing/landing-events/report?days=" +
-          encodeURIComponent(days) +
+        "/api/marketing/landing-events/report?" +
+          reportQueryString() +
           "&_=" +
           Date.now()
       );
       renderInsights(data.insights);
       renderHeroKpis(data.totals || {}, data.funnel);
+      renderCompare(data.compare);
       renderDashboard(data.dashboard);
       renderInsightsHub(data.insightsHub);
       renderBenchmarks(data.benchmarks);
@@ -1443,13 +1581,23 @@
       renderScrollDepths(data.scrollDepths);
       renderDevices(data.devices);
       renderBarList("laUtm", data.utmSources, "No Campaign Tags Yet");
+      renderBarList(
+        "laVersions",
+        data.landingVersions,
+        "No Version Tags Yet"
+      );
       renderRecent(data.recent);
       renderRawTable("laByEvent", data.byEvent, "No Events", true);
       renderRawTable("laSections", data.sections, "No Section Views", true);
       $("laReport").hidden = false;
       var bannerKind = data.storage && !data.storage.persistent ? "warn" : "info";
       setBanner(
-        formatStorageBanner(data.storage, data.totals, data.window) +
+        formatStorageBanner(
+          data.storage,
+          data.totals,
+          data.window,
+          data.filters
+        ) +
           (data.storage && data.storage.retentionNote && !data.storage.persistent
             ? " — " + data.storage.retentionNote
             : ""),
@@ -1520,9 +1668,18 @@
     );
   }
 
-  applyDaysFromUrl();
+  applyFiltersFromUrl();
+  syncEraEnabled();
   $("laRefresh").addEventListener("click", loadReport);
   $("laDays").addEventListener("change", loadReport);
+  if ($("laVersion")) $("laVersion").addEventListener("change", loadReport);
+  if ($("laCutover")) {
+    $("laCutover").addEventListener("change", function () {
+      syncEraEnabled();
+      loadReport();
+    });
+  }
+  if ($("laEra")) $("laEra").addEventListener("change", loadReport);
   if ($("laExportEvents")) {
     $("laExportEvents").addEventListener("click", function () {
       downloadExport("events");

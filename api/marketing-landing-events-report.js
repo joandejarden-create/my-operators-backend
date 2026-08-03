@@ -3,6 +3,7 @@ import {
   buildReportWindow,
   loadOptionsForWindow,
 } from "../lib/marketing-landing-events-window.js";
+import { parseReportFilters } from "../lib/marketing-landing-events-version.js";
 
 function setReportNoStore(res) {
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -29,8 +30,9 @@ function requireLandingAnalyticsAdmin(req, res, next) {
 }
 
 /**
- * GET /api/marketing/landing-events/report?days=7
+ * GET /api/marketing/landing-events/report?days=7&version=all|previous|old-home&cutover=YYYY-MM-DD&era=all|before|after
  * Admin-only summary of append-only landing analytics JSONL.
+ * Historical rows are preserved; version/cutover only filter the view.
  */
 export async function getMarketingLandingEventsReport(req, res) {
   try {
@@ -40,7 +42,12 @@ export async function getMarketingLandingEventsReport(req, res) {
 
     setReportNoStore(res);
     const window = buildReportWindow(req.query?.days);
-    const report = buildLandingEventsReport(loadOptionsForWindow(window), window);
+    const filters = parseReportFilters(req.query);
+    const report = buildLandingEventsReport(
+      loadOptionsForWindow(window),
+      window,
+      filters
+    );
     return res.status(200).json(report);
   } catch (err) {
     console.error("Error in marketing-landing-events-report:", err);
