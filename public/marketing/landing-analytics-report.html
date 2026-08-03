@@ -373,6 +373,53 @@
     .device-row__meta { display: flex; align-items: center; gap: 8px; }
     .device-row__swatch { width: 10px; height: 10px; border-radius: 2px; }
     .device-row__pct { color: var(--muted); font-size: 12px; min-width: 42px; text-align: right; }
+    .recs-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 10px;
+    }
+    .rec {
+      border-radius: 12px; padding: 12px 14px; border: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+    .rec__meta {
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px;
+    }
+    .rec__pill {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      border-radius: 6px; padding: 3px 7px; border: 1px solid var(--border); color: var(--muted);
+    }
+    .rec--critical { border-color: rgba(255, 123, 143, 0.55); background: linear-gradient(180deg, rgba(255,123,143,0.1), var(--surface-2)); }
+    .rec--critical .rec__pill--severity { color: var(--bad); border-color: rgba(255,123,143,0.45); }
+    .rec--opportunity { border-color: rgba(245, 185, 66, 0.5); background: linear-gradient(180deg, rgba(245,185,66,0.08), var(--surface-2)); }
+    .rec--opportunity .rec__pill--severity { color: var(--warn); border-color: rgba(245,185,66,0.4); }
+    .rec--win { border-color: rgba(62, 207, 142, 0.45); background: linear-gradient(180deg, rgba(62,207,142,0.08), var(--surface-2)); }
+    .rec--win .rec__pill--severity { color: var(--good); border-color: rgba(62,207,142,0.4); }
+    .rec--watch .rec__pill--severity { color: #9eb4ff; }
+    .rec h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
+    .rec p { margin: 0 0 6px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .rec__action {
+      margin: 0; font-size: 12px; color: var(--text); line-height: 1.45;
+      border-top: 1px solid var(--border); padding-top: 8px;
+    }
+    .rec__evidence { font-size: 11px; color: var(--muted); }
+    .locale-compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 760px) { .locale-compare-grid { grid-template-columns: 1fr; } }
+    .locale-card {
+      border: 1px solid var(--border); border-radius: 10px; padding: 12px;
+      background: var(--surface-2);
+    }
+    .locale-card h3 { margin: 0 0 8px; font-size: 13px; font-weight: 600; }
+    .locale-metrics {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; font-size: 12px;
+    }
+    .locale-metrics strong { display: block; font-size: 18px; letter-spacing: -0.02em; }
+    .locale-metrics span { color: var(--muted); }
+    .locale-delta {
+      margin-top: 10px; font-size: 12px; color: var(--muted);
+      border-top: 1px solid var(--border); padding-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -380,8 +427,9 @@
     <header class="page-head">
       <h1>Homepage Landing Analytics</h1>
       <p class="sub">
-        How visitors move through Dealality homepage surfaces and Insights (/insights).
-        Historical Railway log is append-only — use Site version / Cutover to compare the previous landing with the new Webflow site without losing before data.
+        Source of truth for what works on Dealality’s English (/) and Spanish (/es) homepage —
+        conversion, scroll flow, content, and video. Historical Railway log is append-only;
+        use Site version / Language / Cutover to compare without losing before data.
       </p>
     </header>
 
@@ -401,6 +449,14 @@
           <option value="all" selected>All sites</option>
           <option value="previous">Previous landing (v7–v9)</option>
           <option value="old-home">New site (old-home)</option>
+        </select>
+      </label>
+      <label>
+        Language
+        <select id="laLang">
+          <option value="all" selected>All languages</option>
+          <option value="en">English (/)</option>
+          <option value="es">Spanish (/es)</option>
         </select>
       </label>
       <label>
@@ -455,6 +511,20 @@
 
     <div id="laReport" hidden>
       <section class="insights" id="laInsights" hidden></section>
+
+      <section class="panel" style="margin-bottom:12px;">
+        <h2>What To Improve Next</h2>
+        <p class="panel-sub" id="laRecsSub">
+          Prioritized conversion, flow, content, and EN/ES recommendations from this filtered window.
+        </p>
+        <div class="recs-grid" id="laRecommendations"></div>
+      </section>
+
+      <section class="panel" id="laLocalePanel" style="margin-bottom:12px;">
+        <h2>English vs Spanish</h2>
+        <p class="panel-sub">Side-by-side homepage performance. Use Language filter above to drill into one locale.</p>
+        <div id="laLocaleCompare"></div>
+      </section>
 
       <section class="kpi-grid" id="laCards"></section>
 
@@ -658,6 +728,6 @@
   </div>
 
   <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614e"></script>
-  <script src="/js/landing-analytics-report.js?v=20260803c"></script>
+  <script src="/js/landing-analytics-report.js?v=20260803d"></script>
 </body>
 </html>

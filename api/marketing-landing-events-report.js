@@ -30,9 +30,9 @@ function requireLandingAnalyticsAdmin(req, res, next) {
 }
 
 /**
- * GET /api/marketing/landing-events/report?days=7&version=all|previous|old-home&cutover=YYYY-MM-DD&era=all|before|after
+ * GET /api/marketing/landing-events/report?days=7&version=all|previous|old-home&lang=all|en|es&cutover=YYYY-MM-DD&era=all|before|after
  * Admin-only summary of append-only landing analytics JSONL.
- * Historical rows are preserved; version/cutover only filter the view.
+ * Historical rows are preserved; version/locale/cutover only filter the view.
  */
 export async function getMarketingLandingEventsReport(req, res) {
   try {

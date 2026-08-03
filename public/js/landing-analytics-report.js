@@ -115,6 +115,10 @@
     return ($("laVersion") && $("laVersion").value) || "all";
   }
 
+  function selectedLang() {
+    return ($("laLang") && $("laLang").value) || "all";
+  }
+
   function selectedCutover() {
     return ($("laCutover") && $("laCutover").value) || "";
   }
@@ -136,7 +140,9 @@
       "days=" +
       encodeURIComponent(selectedDays()) +
       "&version=" +
-      encodeURIComponent(selectedVersion());
+      encodeURIComponent(selectedVersion()) +
+      "&lang=" +
+      encodeURIComponent(selectedLang());
     var cutover = selectedCutover();
     if (cutover) {
       q +=
@@ -153,6 +159,7 @@
       var url = new URL(window.location.href);
       url.searchParams.set("days", String(selectedDays()));
       url.searchParams.set("version", String(selectedVersion()));
+      url.searchParams.set("lang", String(selectedLang()));
       var cutover = selectedCutover();
       if (cutover) {
         url.searchParams.set("cutover", cutover);
@@ -187,6 +194,11 @@
           'option[value="' + version + '"]'
         );
         if (verOpt) $("laVersion").value = version;
+      }
+      var lang = params.get("lang") || params.get("locale");
+      if (lang && $("laLang")) {
+        var langOpt = $("laLang").querySelector('option[value="' + lang + '"]');
+        if (langOpt) $("laLang").value = lang;
       }
       var cutover = params.get("cutover");
       if (cutover && $("laCutover") && /^\d{4}-\d{2}-\d{2}$/.test(cutover)) {
@@ -260,7 +272,7 @@
           '<article class="insight insight--' +
           esc(item.tone || "info") +
           '">' +
-          '<h3>' +
+          "<h3>" +
           esc(item.title) +
           "</h3>" +
           "<p>" +
@@ -270,6 +282,170 @@
         );
       })
       .join("");
+  }
+
+  function severityLabel(severity) {
+    if (severity === "critical") return "Critical";
+    if (severity === "opportunity") return "Opportunity";
+    if (severity === "win") return "Working";
+    return "Watch";
+  }
+
+  function categoryLabel(category) {
+    if (category === "conversion") return "Conversion";
+    if (category === "flow") return "Flow";
+    if (category === "content") return "Content";
+    if (category === "locale") return "EN / ES";
+    return category || "Insight";
+  }
+
+  function renderRecommendations(recs) {
+    var el = $("laRecommendations");
+    var sub = $("laRecsSub");
+    if (!el) return;
+    var items = (recs && recs.items) || [];
+    var summary = (recs && recs.summary) || {};
+    if (sub) {
+      sub.textContent = items.length
+        ? summary.actionableCount +
+          " action item" +
+          (summary.actionableCount === 1 ? "" : "s") +
+          (summary.winCount
+            ? " · " + summary.winCount + " strength" + (summary.winCount === 1 ? "" : "s")
+            : "") +
+          " from " +
+          (summary.sessions || 0) +
+          " sessions in this view."
+        : "Recommendations appear once homepage sessions are recorded for the selected filters.";
+    }
+    if (!items.length) {
+      el.innerHTML =
+        '<p class="empty">No recommendations yet — visit / and /es, interact with CTAs, scroll, FAQ, and video, then refresh.</p>';
+      return;
+    }
+    el.innerHTML = items
+      .map(function (item) {
+        return (
+          '<article class="rec rec--' +
+          esc(item.severity || "watch") +
+          '">' +
+          '<div class="rec__meta">' +
+          '<span class="rec__pill rec__pill--severity">' +
+          esc(severityLabel(item.severity)) +
+          "</span>" +
+          '<span class="rec__pill">' +
+          esc(categoryLabel(item.category)) +
+          "</span>" +
+          (item.locale && item.locale !== "both"
+            ? '<span class="rec__pill">' +
+              esc(String(item.locale).toUpperCase()) +
+              "</span>"
+            : "") +
+          "</div>" +
+          "<h3>" +
+          esc(item.title) +
+          "</h3>" +
+          "<p>" +
+          esc(item.body) +
+          "</p>" +
+          (item.action
+            ? '<p class="rec__action"><strong>Next:</strong> ' +
+              esc(item.action) +
+              "</p>"
+            : "") +
+          (item.evidence
+            ? '<div class="rec__evidence">' + esc(item.evidence) + "</div>"
+            : "") +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+
+  function renderLocaleCard(slice) {
+    if (!slice) return "";
+    return (
+      '<div class="locale-card">' +
+      "<h3>" +
+      esc(slice.label || slice.key) +
+      "</h3>" +
+      '<div class="locale-metrics">' +
+      "<div><strong>" +
+      esc(slice.sessions || 0) +
+      "</strong><span>Sessions</span></div>" +
+      "<div><strong>" +
+      esc(slice.ctaRate || 0) +
+      "%</strong><span>CTA rate</span></div>" +
+      "<div><strong>" +
+      esc(slice.scrollRate || 0) +
+      "%</strong><span>Scroll start</span></div>" +
+      "<div><strong>" +
+      esc(slice.videoOpenRate || 0) +
+      "%</strong><span>Video open</span></div>" +
+      "</div>" +
+      (slice.topCta
+        ? '<div class="locale-delta">Top CTA: <strong>' +
+          esc(slice.topCta.key) +
+          "</strong> · " +
+          esc(slice.topCta.count) +
+          "</div>"
+        : "") +
+      (slice.topFaq
+        ? '<div class="locale-delta">Top FAQ: <strong>' +
+          esc(slice.topFaq.key) +
+          "</strong> · " +
+          esc(slice.topFaq.count) +
+          "</div>"
+        : "") +
+      "</div>"
+    );
+  }
+
+  function renderLocaleCompare(compare) {
+    var el = $("laLocaleCompare");
+    var panel = $("laLocalePanel");
+    if (!el) return;
+    if (!compare || (!(compare.en && compare.en.sessions) && !(compare.es && compare.es.sessions))) {
+      el.innerHTML =
+        '<p class="empty">EN/ES split appears after old-home visits on / and /es (language is tagged automatically).</p>';
+      if (panel) panel.hidden = false;
+      return;
+    }
+    if (panel) panel.hidden = false;
+    var html = '<div class="locale-compare-grid">';
+    html += renderLocaleCard(compare.en);
+    html += renderLocaleCard(compare.es);
+    html += "</div>";
+    if (compare.deltas && compare.deltas.length) {
+      html +=
+        '<div class="locale-delta" style="margin-top:12px">' +
+        compare.deltas
+          .map(function (d) {
+            var leader = d.leader === "en" ? "English" : "Spanish";
+            return (
+              "<div><strong>" +
+              esc(d.label) +
+              ":</strong> " +
+              leader +
+              " leads by " +
+              esc(Math.abs(d.gapPts)) +
+              " pts (EN " +
+              esc(d.en) +
+              "% · ES " +
+              esc(d.es) +
+              "%)</div>"
+            );
+          })
+          .join("") +
+        "</div>";
+    }
+    if (compare.unknownSessionsHint) {
+      html +=
+        '<p class="panel-sub" style="margin:10px 0 0;">' +
+        esc(compare.unknownSessionsHint) +
+        "</p>";
+    }
+    el.innerHTML = html;
   }
 
   function renderHeroKpis(totals, funnel) {
@@ -1466,6 +1642,11 @@
     } else if (filters && filters.version && filters.version !== "all") {
       parts.push("Version: " + filters.version);
     }
+    if (filters && filters.localeLabel) {
+      parts.push(filters.localeLabel);
+    } else if (filters && filters.locale && filters.locale !== "all") {
+      parts.push("Lang: " + filters.locale);
+    }
     if (filters && filters.cutover) {
       var cut = String(filters.cutover).slice(0, 10);
       if (filters.era === "before") parts.push("Before " + cut);
@@ -1641,6 +1822,7 @@
     syncEraEnabled();
     syncFiltersToUrl();
     var version = selectedVersion();
+    var lang = selectedLang();
     var cutover = selectedCutover();
     var era = selectedEra();
     var msg =
@@ -1648,6 +1830,8 @@
       (days === "1" ? "last 24 hours" : "last " + days + " days");
     if (version === "previous") msg += " · previous landing";
     else if (version === "old-home") msg += " · new site";
+    if (lang === "en") msg += " · English";
+    else if (lang === "es") msg += " · Spanish";
     if (cutover) {
       if (era === "before") msg += " · before " + cutover;
       else if (era === "after") msg += " · on/after " + cutover;
@@ -1663,6 +1847,8 @@
           Date.now()
       );
       renderInsights(data.insights);
+      renderRecommendations(data.recommendations);
+      renderLocaleCompare(data.localeCompare);
       renderHeroKpis(data.totals || {}, data.funnel);
       renderCompare(data.compare);
       renderDashboard(data.dashboard);
@@ -1781,6 +1967,7 @@
   $("laRefresh").addEventListener("click", loadReport);
   $("laDays").addEventListener("change", loadReport);
   if ($("laVersion")) $("laVersion").addEventListener("change", loadReport);
+  if ($("laLang")) $("laLang").addEventListener("change", loadReport);
   if ($("laCutover")) {
     $("laCutover").addEventListener("change", function () {
       syncEraEnabled();
