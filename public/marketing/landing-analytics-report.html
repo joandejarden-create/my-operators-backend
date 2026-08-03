@@ -93,20 +93,25 @@
       background: var(--surface-2); border-color: var(--border); color: var(--text);
     }
     .insights {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px; margin-bottom: 22px;
+      display: flex; flex-wrap: nowrap; gap: 10px; margin-bottom: 22px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
     }
     .insight {
-      border-radius: 12px; padding: 14px 16px; border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 12px; border: 1px solid var(--border);
       background: var(--surface);
+      flex: 1 1 0; min-width: 140px;
     }
-    .insight h3 { margin: 0 0 6px; font-size: 14px; font-weight: 600; }
-    .insight p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .insight h3 { margin: 0 0 6px; font-size: 12px; font-weight: 600; line-height: 1.3; }
+    .insight p { margin: 0; font-size: 11px; color: var(--muted); line-height: 1.45; }
     .insight--good { border-color: rgba(62, 207, 142, 0.45); background: linear-gradient(180deg, rgba(62,207,142,0.08), var(--surface)); }
     .insight--good h3 { color: var(--good); }
     .insight--warn { border-color: rgba(245, 185, 66, 0.45); background: linear-gradient(180deg, rgba(245,185,66,0.08), var(--surface)); }
     .insight--warn h3 { color: var(--warn); }
     .insight--info h3 { color: #9eb4ff; }
+    @media (max-width: 900px) {
+      .insights { flex-wrap: wrap; }
+      .insight { flex: 1 1 calc(50% - 10px); min-width: 180px; }
+    }
     .kpi-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 10px; margin-bottom: 14px;
@@ -786,6 +791,6 @@
   </div>
 
   <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614e"></script>
-  <script src="/js/landing-analytics-report.js?v=20260803f-stackcharts"></script>
+  <script src="/js/landing-analytics-report.js?v=20260803g-insightsrow"></script>
 </body>
 </html>
