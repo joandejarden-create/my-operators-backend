@@ -74,6 +74,16 @@ The admin report banner shows whether storage is persistent.
 
 **Admin report:** `https://<railway-host>/landing-analytics-report?key=<LANDING_ANALYTICS_REPORT_KEY>` — no Memberstack sign-in when the env key is set. Fallback: admin JWT via dealality.com.
 
+**Site version filters (do not wipe history):** append-only JSONL keeps previous iframe landing (`v7`/`v9`) and new Webflow homepage (`old-home`) in the same file. The report toolbar supports:
+
+- `version=all|previous|old-home`
+- optional `cutover=YYYY-MM-DD` with `era=all|before|after`
+- before/after KPI compare when a cutover is set
+
+Example: `/landing-analytics-report?key=…&days=30&version=old-home&cutover=2026-08-01&era=after`
+
+**New homepage tagging:** load `dealality-old-home-analytics.js` on `/` and `/es` (sets `landingVersion=old-home`). Partial helpers (scroll cue, video) already tag `old-home` on their events.
+
 **Clarity in iframe:** set `CLARITY_PROJECT_ID` on Railway (same id as Webflow). Landing loads `dealality-landing-clarity.js` before analytics so custom events (`cta_click`, `scroll_depth`, etc.) reach Clarity.
 
 **Local inspection:** `Get-Content data/marketing-landing-events.jsonl -Tail 20`
