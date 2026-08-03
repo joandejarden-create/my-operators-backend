@@ -126,6 +126,9 @@
       display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px; margin-bottom: 12px;
     }
     @media (max-width: 960px) { .layout-main { grid-template-columns: 1fr; } }
+    .layout-stack {
+      display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px;
+    }
     .layout-secondary {
       display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
     }
@@ -327,6 +330,27 @@
       margin-top: 0; font-size: 12px;
     }
     .line-chart__table th, .line-chart__table td { padding: 6px 4px; }
+    .date-matrix-wrap {
+      overflow-x: auto; margin-top: 10px; -webkit-overflow-scrolling: touch;
+    }
+    .date-matrix {
+      width: 100%; border-collapse: collapse; font-size: 11px;
+      min-width: max(100%, calc(72px + var(--date-cols, 7) * 44px));
+    }
+    .date-matrix th, .date-matrix td {
+      padding: 6px 4px; border-bottom: 1px solid var(--border);
+      text-align: center; white-space: nowrap; vertical-align: middle;
+    }
+    .date-matrix th:first-child,
+    .date-matrix td:first-child {
+      text-align: left; position: sticky; left: 0; background: var(--surface);
+      color: var(--muted); font-weight: 600; min-width: 72px; z-index: 1;
+    }
+    .date-matrix thead th {
+      color: var(--muted); font-weight: 600; font-size: 10px;
+    }
+    .date-matrix td { color: var(--text); font-variant-numeric: tabular-nums; }
+    .date-matrix td.date-matrix__duration { color: var(--accent-2); font-size: 10px; }
     .dash-side-stack { display: grid; gap: 10px; }
     .daily-chart { margin-bottom: 0; }
     .stacked-chart {
@@ -562,10 +586,10 @@
         <div id="laTrafficSegments"></div>
       </section>
 
-      <div class="layout-main">
+      <div class="layout-stack">
         <section class="panel">
           <h2>Audience Overview</h2>
-          <p class="panel-sub">Sessions and median time on page by day — chart left, daily table right.</p>
+          <p class="panel-sub">Sessions and median time by day — full-width chart with a compact date-aligned table below.</p>
           <div id="laAudienceOverview"></div>
         </section>
         <section class="panel">
