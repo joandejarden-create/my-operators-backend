@@ -10,10 +10,20 @@
 
   try {
     var path = (global.location.pathname || "").replace(/\/+$/, "").toLowerCase() || "/";
+    var isEsHome = path === "/es";
     var isEs = path === "/es" || path.indexOf("/es/") === 0;
-    if (path !== "/" && path !== "/old-home" && !isEs) return;
-    if (global.__ohLandingAnalytics >= 2026080302) return;
-    global.__ohLandingAnalytics = 2026080302;
+    // Only the homepage itself — not /es/insights, /es/who-its-for, etc.
+    // Those are covered by dealality-public-analytics.js.
+    var isHome =
+      path === "/" ||
+      path === "/old-home" ||
+      path === "/home-legacy" ||
+      isEsHome ||
+      path === "/es/old-home" ||
+      path === "/es/home-legacy";
+    if (!isHome) return;
+    if (global.__ohLandingAnalytics >= 2026080303) return;
+    global.__ohLandingAnalytics = 2026080303;
 
     var SESSION_KEY = "dl_landing_sid_v1";
     var VISITOR_KEY = "dl_landing_vid_v1";

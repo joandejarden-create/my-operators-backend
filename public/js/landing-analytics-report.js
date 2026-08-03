@@ -1034,24 +1034,27 @@
     html += "</div>";
     html += renderDashboardLegend(acquisition.totals || []);
     if (acquisition.topReferrers && acquisition.topReferrers.length) {
+      var maxRef = acquisition.topReferrers[0].count || 1;
       html +=
-        '<div class="date-matrix-wrap" style="margin-top:12px;--date-cols:' +
-        Math.min(8, acquisition.topReferrers.length) +
-        '">';
-      html +=
-        '<table class="date-matrix" aria-label="Top traffic sources"><thead><tr><th>Where they came from</th>';
+        '<div style="margin-top:12px"><div class="panel-sub" style="margin:0 0 8px;">Where they came from</div>';
       html += acquisition.topReferrers
         .map(function (row) {
-          return "<th>" + esc(row.label) + "</th>";
+          var width = Math.max(6, Math.round((row.count / maxRef) * 100));
+          return (
+            '<div class="barlist__row">' +
+            '<div class="barlist__meta">' +
+            '<span class="barlist__label">' +
+            esc(row.label) +
+            '</span><span class="barlist__count">' +
+            esc(row.count) +
+            "</span></div>" +
+            '<div class="barlist__track"><div class="barlist__bar" style="width:' +
+            width +
+            '%;background:#a78bfa"></div></div></div>'
+          );
         })
         .join("");
-      html += "</tr></thead><tbody><tr><td>Sessions</td>";
-      html += acquisition.topReferrers
-        .map(function (row) {
-          return "<td>" + esc(row.count) + "</td>";
-        })
-        .join("");
-      html += "</tr></tbody></table></div>";
+      html += "</div>";
     }
     if (acquisition.note) {
       html +=

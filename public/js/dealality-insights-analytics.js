@@ -7,6 +7,9 @@
 (function (global) {
   "use strict";
 
+  if (global.__dealalityInsightsAnalytics) return;
+  global.__dealalityInsightsAnalytics = 20260803;
+
   var SESSION_KEY = "dl_landing_sid_v1";
   var VISITOR_KEY = "dl_landing_vid_v1";
   var VISITOR_COOKIE = "dl_landing_vid_v1";
