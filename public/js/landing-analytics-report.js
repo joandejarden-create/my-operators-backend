@@ -313,11 +313,21 @@
       },
     ];
 
-    if (totals.videoOpens > 0 && totals.videoCompletionRate != null) {
+    if (totals.videoOpens > 0) {
       cards.push({
-        label: "Video Completion Rate",
-        value: totals.videoCompletionRate + "%",
-        sub: (totals.videoCompletes || 0) + " of " + totals.videoOpens + " Opens",
+        label: "Video Opens",
+        value: totals.videoOpens,
+        sub:
+          totals.videoAvgWatchSeconds != null
+            ? "Avg watch " + fmtDuration(totals.videoAvgWatchSeconds) +
+              (totals.videoCompletionRate != null
+                ? " · " + totals.videoCompletionRate + "% complete"
+                : "")
+            : (totals.videoCompletes || 0) +
+              " completes" +
+              (totals.videoCompletionRate != null
+                ? " · " + totals.videoCompletionRate + "%"
+                : ""),
         accent: "teal",
       });
     }
@@ -604,7 +614,9 @@
       if (row.sessions > maxSessions) maxSessions = row.sessions;
     });
 
-    var html = '<div class="overview-metrics">';
+    var html = '<div class="panel-split">';
+    html += "<div>";
+    html += '<div class="overview-metrics">';
     html +=
       '<div class="overview-metric"><span class="overview-metric__value">' +
       esc(audience.totalSessions) +
@@ -615,9 +627,9 @@
       '</span><span class="overview-metric__label">Median session</span></div>';
     html += "</div>";
 
-    var w = 400;
-    var h = 148;
-    var pad = { l: 12, r: 12, t: 22, b: 30 };
+    var w = 520;
+    var h = 168;
+    var pad = { l: 14, r: 14, t: 28, b: 36 };
     var innerW = w - pad.l - pad.r;
     var innerH = h - pad.t - pad.b;
     var days = audience.days;
@@ -645,7 +657,7 @@
       w +
       " " +
       h +
-      '" role="img" aria-label="Sessions over time">';
+      '" role="img" aria-label="Sessions and median time by day">';
     html +=
       '<polyline fill="none" stroke="#5b8cff" stroke-width="2.5" stroke-linejoin="round" points="' +
       polyline +
@@ -669,10 +681,20 @@
         '<text x="' +
         p.x +
         '" y="' +
-        Math.max(12, p.y - 9) +
+        Math.max(12, p.y - 18) +
         '" text-anchor="middle" class="line-chart__value">' +
         esc(p.sessions) +
         "</text>";
+      if (p.duration != null) {
+        html +=
+          '<text x="' +
+          p.x +
+          '" y="' +
+          Math.max(22, p.y - 6) +
+          '" text-anchor="middle" class="line-chart__duration">' +
+          esc(fmtDuration(p.duration)) +
+          "</text>";
+      }
       html +=
         '<text x="' +
         p.x +
@@ -682,10 +704,13 @@
         esc(p.label) +
         "</text>";
     });
-    html += "</svg>";
+    html += "</svg></div>";
 
-    html += '<table class="dash-table line-chart__table" aria-label="Sessions by day data table">';
-    html += "<thead><tr><th>Day</th><th>Sessions</th><th>Median Session</th></tr></thead><tbody>";
+    html += "<div>";
+    html +=
+      '<table class="dash-table line-chart__table" aria-label="Sessions by day data table">';
+    html +=
+      "<thead><tr><th>Day</th><th>Sessions</th><th>Median time</th></tr></thead><tbody>";
     html += days
       .map(function (row) {
         return (
@@ -699,7 +724,7 @@
         );
       })
       .join("");
-    html += "</tbody></table>";
+    html += "</tbody></table></div></div>";
     el.innerHTML = html;
   }
 
@@ -1103,33 +1128,6 @@
       .join("");
     html += "</div>";
 
-    html += '<div class="barlist">';
-    html += data.days
-      .slice()
-      .reverse()
-      .map(function (row) {
-        var width = Math.max(6, Math.round((row.uniqueUsers / max) * 100));
-        return (
-          '<div class="barlist__row">' +
-          '<div class="barlist__meta">' +
-          '<span class="barlist__label">' +
-          esc(row.label) +
-          "</span>" +
-          '<span class="barlist__count">' +
-          esc(row.uniqueUsers) +
-          " Users · " +
-          esc(row.sessions) +
-          " Sessions</span>" +
-          "</div>" +
-          '<div class="barlist__track"><div class="barlist__bar barlist__bar--scroll" style="width:' +
-          width +
-          '%"></div></div>' +
-          "</div>"
-        );
-      })
-      .join("");
-    html += "</div>";
-
     if (data.peakDay && data.peakDay.uniqueUsers > 0) {
       html +=
         '<p class="panel-sub" style="margin:10px 0 0;">Peak day: ' +
@@ -1143,6 +1141,116 @@
         '<p class="panel-sub" style="margin:6px 0 0;">' + esc(data.note) + "</p>";
     }
 
+    el.innerHTML = html;
+  }
+
+  function renderVideoEngagement(video) {
+    var el = $("laVideo");
+    if (!el) return;
+    if (!video || !video.hasData) {
+      el.innerHTML =
+        '<p class="empty">No video engagement yet — opens, closes, watch time, and 25/50/75/100% progress appear after visitors play the platform overview.</p>';
+      return;
+    }
+
+    var openSessions = video.sessionsOpened || 0;
+    var kpis = [
+      {
+        value: openSessions || video.opens || 0,
+        label:
+          "Opens" +
+          (video.starts ? " · " + video.starts + " starts" : ""),
+      },
+      {
+        value: video.closes || 0,
+        label:
+          "Closes" +
+          (video.closeRate != null ? " · " + video.closeRate + "%" : ""),
+      },
+      {
+        value: video.completes || 0,
+        label:
+          "Completes" +
+          (video.completionRate != null ? " · " + video.completionRate + "%" : ""),
+      },
+      {
+        value: fmtDuration(video.avgWatchSeconds),
+        label:
+          "Avg watch" +
+          (video.medianWatchSeconds != null
+            ? " · med " + fmtDuration(video.medianWatchSeconds)
+            : ""),
+      },
+      {
+        value: video.watchSamples || 0,
+        label:
+          "Watch samples" +
+          (video.maxWatchSeconds != null
+            ? " · max " + fmtDuration(video.maxWatchSeconds)
+            : ""),
+      },
+      {
+        value: video.impressions || 0,
+        label:
+          "Launcher seen" +
+          (video.dismissals ? " · " + video.dismissals + " dismiss" : ""),
+      },
+    ];
+
+    var html = '<div class="video-kpi-row">';
+    html += kpis
+      .map(function (item) {
+        return (
+          '<div class="video-kpi">' +
+          '<span class="video-kpi__value">' +
+          esc(item.value) +
+          '</span><span class="video-kpi__label">' +
+          esc(item.label) +
+          "</span></div>"
+        );
+      })
+      .join("");
+    html += "</div>";
+
+    var progress = video.progress || [];
+    var maxCount = Math.max(
+      1,
+      openSessions,
+      ...progress.map(function (row) {
+        return Number(row.count || 0);
+      })
+    );
+    html += '<div class="progress-funnel" aria-label="Video progress funnel">';
+    if (!progress.some(function (row) {
+      return Number(row.count || 0) > 0;
+    })) {
+      html +=
+        '<p class="empty">Progress milestones will fill in as viewers reach 25%, 50%, 75%, and complete.</p>';
+    } else {
+      html += progress
+        .map(function (row) {
+          var width = Math.max(
+            6,
+            Math.round((Number(row.count || 0) / maxCount) * 100)
+          );
+          return (
+            '<div class="funnel__row">' +
+            '<div class="funnel__meta">' +
+            '<span class="funnel__label">' +
+            esc(row.label) +
+            '</span><span class="funnel__stats">' +
+            esc(row.count) +
+            " sessions · " +
+            esc(row.rate) +
+            "%</span></div>" +
+            '<div class="funnel__track"><div class="funnel__bar" style="width:' +
+            width +
+            '%"></div></div></div>'
+          );
+        })
+        .join("");
+    }
+    html += "</div>";
     el.innerHTML = html;
   }
 
@@ -1561,6 +1669,7 @@
       renderInsightsHub(data.insightsHub);
       renderBenchmarks(data.benchmarks);
       renderDailyUniqueUsers(data.dailyUniqueUsers);
+      renderVideoEngagement(data.video);
       renderFunnel(data.funnel);
       renderSectionJourney(data.funnel && data.funnel.sectionJourney);
       renderCtaPaths(data.ctaPaths);
@@ -1579,7 +1688,6 @@
       renderBarList("laGeoCountries", data.geography && data.geography.countries, "No Country Data Yet — Captured on New Visits After Deploy");
       renderBarList("laGeoCities", data.geography && data.geography.cities, "No City Data Yet — Captured on New Visits After Deploy");
       renderScrollDepths(data.scrollDepths);
-      renderDevices(data.devices);
       renderBarList("laUtm", data.utmSources, "No Campaign Tags Yet");
       renderBarList(
         "laVersions",

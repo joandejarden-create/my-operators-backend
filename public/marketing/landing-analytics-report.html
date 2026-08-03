@@ -27,13 +27,15 @@
       font-family: Inter, system-ui, -apple-system, sans-serif;
       line-height: 1.45;
     }
-    .shell { max-width: 1180px; margin: 0 auto; padding: 28px 20px 64px; }
-    .page-head { margin-bottom: 24px; }
-    .page-head h1 { margin: 0 0 6px; font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
-    .page-head .sub { margin: 0; color: var(--muted); font-size: 14px; max-width: 62ch; }
+    .shell { max-width: 1360px; margin: 0 auto; padding: 20px 18px 48px; }
+    .page-head { margin-bottom: 14px; }
+    .page-head h1 { margin: 0 0 4px; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+    .page-head .sub { margin: 0; color: var(--muted); font-size: 13px; max-width: 72ch; }
     .toolbar {
       display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px; position: sticky; top: 0; z-index: 20;
+      padding: 10px 0; background: linear-gradient(180deg, rgba(7,13,31,0.96), rgba(7,13,31,0.88));
+      backdrop-filter: blur(8px);
     }
     .toolbar label { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
     .toolbar select, .toolbar button, .toolbar input[type="date"] {
@@ -92,38 +94,58 @@
     .insight--warn h3 { color: var(--warn); }
     .insight--info h3 { color: #9eb4ff; }
     .kpi-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 12px; margin-bottom: 22px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px; margin-bottom: 14px;
     }
     .kpi {
-      border-radius: 14px; padding: 16px; border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 14px; border: 1px solid var(--border);
       background: var(--surface);
     }
     .kpi--primary { border-color: rgba(123, 130, 255, 0.5); }
     .kpi--teal { border-color: rgba(61, 214, 198, 0.45); }
     .kpi--violet { border-color: rgba(167, 139, 250, 0.45); }
     .kpi--green { border-color: rgba(62, 207, 142, 0.45); }
-    .kpi__label { font-size: 12px; color: var(--muted); letter-spacing: 0.01em; }
-    .kpi__value { font-size: 30px; font-weight: 700; margin: 8px 0 4px; letter-spacing: -0.03em; }
-    .kpi__sub { font-size: 12px; color: var(--muted); }
+    .kpi__label { font-size: 11px; color: var(--muted); letter-spacing: 0.01em; }
+    .kpi__value { font-size: 24px; font-weight: 700; margin: 6px 0 2px; letter-spacing: -0.03em; }
+    .kpi__sub { font-size: 11px; color: var(--muted); }
     .layout-main {
-      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 18px; margin-bottom: 18px;
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px; margin-bottom: 12px;
     }
     @media (max-width: 960px) { .layout-main { grid-template-columns: 1fr; } }
     .layout-secondary {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
     }
     @media (max-width: 760px) { .layout-secondary { grid-template-columns: 1fr; } }
+    .layout-dense-3 {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px; margin-bottom: 12px;
+    }
+    @media (max-width: 1100px) { .layout-dense-3 { grid-template-columns: 1fr; } }
     .panel {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 18px;
+      border-radius: 12px; padding: 14px 16px;
     }
     .panel h2 {
-      margin: 0 0 4px; font-size: 15px; font-weight: 600;
+      margin: 0 0 2px; font-size: 14px; font-weight: 600;
     }
     .panel .panel-sub {
-      margin: 0 0 14px; font-size: 12px; color: var(--muted);
+      margin: 0 0 10px; font-size: 11px; color: var(--muted);
     }
+    .panel-split {
+      display: grid; grid-template-columns: 1.35fr 0.85fr; gap: 14px; align-items: start;
+    }
+    @media (max-width: 860px) { .panel-split { grid-template-columns: 1fr; } }
+    .video-kpi-row {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px;
+    }
+    @media (max-width: 640px) { .video-kpi-row { grid-template-columns: 1fr 1fr; } }
+    .video-kpi {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px;
+    }
+    .video-kpi__value { display: block; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+    .video-kpi__label { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .progress-funnel { display: grid; gap: 8px; }
     .funnel__row { margin-bottom: 12px; }
     .funnel__meta {
       display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
@@ -265,17 +287,17 @@
     .return-row code { font-size: 11px; color: var(--muted); }
     .layout-dashboard-triple {
       display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px; margin-bottom: 18px;
+      gap: 12px; margin-bottom: 12px;
     }
     @media (max-width: 960px) { .layout-dashboard-triple { grid-template-columns: 1fr; } }
     .overview-metrics {
-      display: flex; flex-wrap: wrap; gap: 20px 28px; margin-bottom: 14px;
+      display: flex; flex-wrap: wrap; gap: 12px 18px; margin-bottom: 10px;
     }
     .overview-metric__value {
-      display: block; font-size: 28px; font-weight: 700; letter-spacing: -0.03em;
+      display: block; font-size: 22px; font-weight: 700; letter-spacing: -0.03em;
     }
     .overview-metric__label {
-      display: block; font-size: 12px; color: var(--muted); margin-top: 2px;
+      display: block; font-size: 11px; color: var(--muted); margin-top: 2px;
     }
     .line-chart { width: 100%; height: auto; display: block; }
     .line-chart__label {
@@ -284,9 +306,15 @@
     .line-chart__value {
       fill: #eef1ff; font-size: 11px; font-weight: 600; font-family: inherit;
     }
-    .line-chart__table {
-      margin-top: 12px;
+    .line-chart__duration {
+      fill: var(--accent-2); font-size: 9px; font-family: inherit;
     }
+    .line-chart__table {
+      margin-top: 0; font-size: 12px;
+    }
+    .line-chart__table th, .line-chart__table td { padding: 6px 4px; }
+    .dash-side-stack { display: grid; gap: 10px; }
+    .daily-chart { margin-bottom: 0; }
     .stacked-chart {
       display: flex; align-items: flex-end; gap: 10px;
       min-height: 150px; padding: 8px 4px 0;
@@ -433,13 +461,49 @@
       <div class="layout-main">
         <section class="panel">
           <h2>Audience Overview</h2>
-          <p class="panel-sub">Sessions and median time on page per day — landing traffic only (Railway log).</p>
+          <p class="panel-sub">Sessions and median time on page by day — chart left, daily table right.</p>
           <div id="laAudienceOverview"></div>
         </section>
         <section class="panel">
-          <h2>Acquisition Report</h2>
-          <p class="panel-sub">How visitors arrived — direct, referral, campaign tags, or homepage embed.</p>
+          <h2>Acquisition</h2>
+          <p class="panel-sub">How visitors arrived — direct, referral, campaign, or embed.</p>
           <div id="laAcquisition"></div>
+        </section>
+      </div>
+
+      <div class="layout-dense-3">
+        <section class="panel">
+          <h2>Unique Users / Day</h2>
+          <p class="panel-sub">Distinct visitors by UTC day. Chart only — no duplicate table.</p>
+          <div id="laDailyUsers"></div>
+        </section>
+        <section class="panel">
+          <h2>Video Engagement</h2>
+          <p class="panel-sub">Opens, closes, watch time, and progress on the platform overview video.</p>
+          <div id="laVideo"></div>
+        </section>
+        <section class="panel">
+          <h2>Conversion Funnel</h2>
+          <p class="panel-sub">Share of sessions reaching each milestone.</p>
+          <div id="laFunnel"></div>
+        </section>
+      </div>
+
+      <div class="layout-dense-3">
+        <section class="panel">
+          <h2>Page Journey</h2>
+          <p class="panel-sub">How far visitors get down the page.</p>
+          <div id="laJourney"></div>
+        </section>
+        <section class="panel">
+          <h2>CTA Paths</h2>
+          <p class="panel-sub">Intent signals — deep scroll without convert, or hero CTA without scroll.</p>
+          <div id="laCtaPaths"></div>
+        </section>
+        <section class="panel">
+          <h2>FAQ Heatmap</h2>
+          <p class="panel-sub">Which FAQ questions visitors expand most.</p>
+          <div id="laFaq"></div>
         </section>
       </div>
 
@@ -465,169 +529,108 @@
         <h2>Insights Hub</h2>
         <p class="panel-sub">
           Traffic on <code>dealality.com/insights</code> — article clicks, languages, scroll depth, and CTAs.
-          Requires the Webflow insights analytics script (see repo <code>public/js/dealality-insights-analytics.js</code>).
         </p>
-        <div class="kpi-grid" id="laInsightsKpis" style="margin-bottom:18px;"></div>
+        <div class="kpi-grid" id="laInsightsKpis" style="margin-bottom:12px;"></div>
         <div class="layout-main">
           <section>
-            <h3 style="margin:0 0 4px;font-size:14px;font-weight:600;">Audience Overview</h3>
-            <p class="panel-sub">Sessions and median time on the insights index page.</p>
+            <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;">Audience Overview</h3>
             <div id="laInsightsAudience"></div>
           </section>
           <section>
-            <h3 style="margin:0 0 4px;font-size:14px;font-weight:600;">Acquisition Report</h3>
-            <p class="panel-sub">How visitors arrived at /insights.</p>
+            <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;">Acquisition</h3>
             <div id="laInsightsAcquisition"></div>
           </section>
         </div>
-        <div class="layout-dashboard-triple" style="margin-top:18px;">
+        <div class="layout-dashboard-triple" style="margin-top:12px;">
           <section>
-            <h3 style="margin:0 0 4px;font-size:14px;font-weight:600;">Top Articles</h3>
-            <p class="panel-sub">Most-clicked insight cards (English / Spanish).</p>
+            <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;">Top Articles</h3>
             <div id="laInsightsArticles"></div>
           </section>
           <section>
-            <h3 style="margin:0 0 4px;font-size:14px;font-weight:600;">Sessions by Country</h3>
+            <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;">Countries</h3>
             <div id="laInsightsCountries"></div>
           </section>
           <section>
-            <h3 style="margin:0 0 4px;font-size:14px;font-weight:600;">Sessions by Device</h3>
+            <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;">Devices</h3>
             <div id="laInsightsDevices"></div>
           </section>
         </div>
-        <div class="layout-secondary" style="margin-top:18px;margin-bottom:0;">
+        <div class="layout-dense-3" style="margin-top:12px;margin-bottom:0;">
           <section>
-            <h3 style="margin:0 0 4px;font-size:14px;font-weight:600;">Article Languages</h3>
+            <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;">Languages</h3>
             <div id="laInsightsLanguages"></div>
           </section>
           <section>
-            <h3 style="margin:0 0 4px;font-size:14px;font-weight:600;">CTA Clicks</h3>
+            <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;">CTA Clicks</h3>
             <div id="laInsightsCtas"></div>
           </section>
           <section>
-            <h3 style="margin:0 0 4px;font-size:14px;font-weight:600;">Scroll Depth</h3>
+            <h3 style="margin:0 0 4px;font-size:13px;font-weight:600;">Scroll Depth</h3>
             <div id="laInsightsScroll"></div>
           </section>
         </div>
       </section>
 
-      <div class="layout-secondary">
+      <div class="layout-dense-3">
         <section class="panel">
           <h2>Funnel Benchmarks</h2>
-          <p class="panel-sub">Green = at target, amber = directional, red = below floor. Targets are configurable in code.</p>
+          <p class="panel-sub">Green = at target, amber = directional, red = below floor.</p>
           <div id="laBenchmarks"></div>
         </section>
         <section class="panel">
-          <h2>Unique Users per Day</h2>
-          <p class="panel-sub">Distinct visitors each day — track whether homepage traffic is growing. Dates are UTC.</p>
-          <div id="laDailyUsers"></div>
-        </section>
-      </div>
-
-      <div class="layout-main">
-        <section class="panel">
-          <h2>Conversion Funnel</h2>
-          <p class="panel-sub">Share of sessions that reach each milestone. Drop-offs show where you may be losing visitors.</p>
-          <div id="laFunnel"></div>
-        </section>
-        <section class="panel">
-          <h2>Page Journey</h2>
-          <p class="panel-sub">Sections in scroll order — how far visitors get down the page.</p>
-          <div id="laJourney"></div>
-        </section>
-      </div>
-
-      <div class="layout-secondary">
-        <section class="panel">
-          <h2>CTA Path Analysis</h2>
-          <p class="panel-sub">Intent signals — visitors who reached the bottom but didn't convert, or jumped to hero CTA without scrolling.</p>
-          <div id="laCtaPaths"></div>
-        </section>
-        <section class="panel">
-          <h2>FAQ Heatmap</h2>
-          <p class="panel-sub">Which FAQ questions visitors expand most often.</p>
-          <div id="laFaq"></div>
-        </section>
-      </div>
-
-      <div class="layout-secondary">
-        <section class="panel">
           <h2>Return Visitors</h2>
-          <p class="panel-sub">Same browser returning across sessions or days (localStorage visitor id).</p>
+          <p class="panel-sub">Same browser returning across sessions (visitor id).</p>
           <div id="laReturnVisitors"></div>
         </section>
         <section class="panel">
           <h2>Visit Timing</h2>
-          <p class="panel-sub">When sessions start — hour and day of week (UTC). Useful for CALA vs US browsing patterns.</p>
+          <p class="panel-sub">Hour and day of week (UTC).</p>
           <div id="laTimingHours"></div>
-          <div id="laTimingDays" style="margin-top:14px;"></div>
+          <div id="laTimingDays" style="margin-top:10px;"></div>
         </section>
       </div>
 
-      <div class="layout-secondary">
+      <div class="layout-dense-3">
         <section class="panel">
           <h2>Time on Page</h2>
-          <p class="panel-sub">Sessions that stayed at least 30, 60, or 120 seconds — a signal of real reading, not a bounce.</p>
+          <p class="panel-sub">30s / 60s / 120s milestones.</p>
           <div id="laEngagement"></div>
         </section>
         <section class="panel">
           <h2>Content Interactions</h2>
-          <p class="panel-sub">Video, FAQ, audience tabs, platform tour, and navigation — what visitors actively engage with.</p>
+          <p class="panel-sub">Video, FAQ, tabs, and nav engagement.</p>
           <div id="laInteractions"></div>
         </section>
-      </div>
-
-      <div class="layout-secondary">
         <section class="panel">
-          <h2>Visitor Countries</h2>
-          <p class="panel-sub">Approximate country from IP on first page load (no exact address).</p>
-          <div id="laGeoCountries"></div>
-        </section>
-        <section class="panel">
-          <h2>Visitor Cities</h2>
-          <p class="panel-sub">City-level estimate when available — useful for CALA / regional campaigns.</p>
-          <div id="laGeoCities"></div>
-        </section>
-      </div>
-
-      <div class="layout-secondary">
-        <section class="panel">
-          <h2>CTA Performance</h2>
-          <p class="panel-sub">Which “Request Early Access” buttons get clicked.</p>
-          <div id="laCta"></div>
-        </section>
-        <section class="panel">
-          <h2>Scroll Depth</h2>
-          <p class="panel-sub">How far visitors scroll as a % of page height.</p>
+          <h2>Scroll · CTAs · Campaigns</h2>
+          <p class="panel-sub">Depth, button clicks, UTM sources, site versions.</p>
           <div id="laScroll"></div>
-        </section>
-        <section class="panel">
-          <h2>Devices</h2>
-          <p class="panel-sub">Desktop vs mobile vs tablet.</p>
-          <div id="laDevices"></div>
-        </section>
-        <section class="panel">
-          <h2>Campaign Sources</h2>
-          <p class="panel-sub">UTM source tags on landing visits.</p>
-          <div id="laUtm"></div>
-        </section>
-        <section class="panel">
-          <h2>Site Versions in Window</h2>
-          <p class="panel-sub">Sessions tagged by landingVersion (v9 = previous iframe landing, old-home = new Webflow site).</p>
-          <div id="laVersions"></div>
+          <div id="laCta" style="margin-top:10px;"></div>
+          <div id="laUtm" style="margin-top:10px;"></div>
+          <div id="laVersions" style="margin-top:10px;"></div>
         </section>
       </div>
 
-      <section class="panel">
-        <h2>Session Replay</h2>
-        <p class="panel-sub">Click a session to see the full event timeline in order — scroll, sections, CTAs, and video.</p>
-        <div class="session-strip" id="laSessionStrip"></div>
-        <div class="timeline" id="laSessionTimeline"></div>
-      </section>
+      <div class="layout-secondary">
+        <section class="panel">
+          <h2>Visitor Geography</h2>
+          <p class="panel-sub">Country and city estimates from IP on first page load.</p>
+          <div class="panel-split">
+            <div id="laGeoCountries"></div>
+            <div id="laGeoCities"></div>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Session Replay</h2>
+          <p class="panel-sub">Click a session for the event timeline — scroll, sections, CTAs, video.</p>
+          <div class="session-strip" id="laSessionStrip"></div>
+          <div class="timeline" id="laSessionTimeline"></div>
+        </section>
+      </div>
 
-      <section class="panel">
-        <h2>Recent Activity</h2>
-        <p class="panel-sub">Latest visitor actions — human-readable labels.</p>
+      <details class="raw-panel">
+        <summary>Recent Activity</summary>
+        <p class="panel-sub" style="margin-top:0;">Latest visitor actions — human-readable labels.</p>
         <div class="recent-wrap">
           <table id="laRecent">
             <thead>
@@ -636,7 +639,7 @@
             <tbody></tbody>
           </table>
         </div>
-      </section>
+      </details>
 
       <details class="raw-panel">
         <summary>Technical Event Breakdown (for Debugging)</summary>
@@ -655,6 +658,6 @@
   </div>
 
   <script src="/js/dealality-memberstack-auth.js?v=la-report-20260614e"></script>
-  <script src="/js/landing-analytics-report.js?v=20260803a"></script>
+  <script src="/js/landing-analytics-report.js?v=20260803c"></script>
 </body>
 </html>

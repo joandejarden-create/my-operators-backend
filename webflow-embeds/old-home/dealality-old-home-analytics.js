@@ -12,8 +12,8 @@
     var path = (global.location.pathname || "").replace(/\/+$/, "").toLowerCase() || "/";
     var isEs = path === "/es" || path.indexOf("/es/") === 0;
     if (path !== "/" && path !== "/old-home" && !isEs) return;
-    if (global.__ohLandingAnalytics >= 2026080301) return;
-    global.__ohLandingAnalytics = 2026080301;
+    if (global.__ohLandingAnalytics >= 2026080302) return;
+    global.__ohLandingAnalytics = 2026080302;
 
     var SESSION_KEY = "dl_landing_sid_v1";
     var VISITOR_KEY = "dl_landing_vid_v1";
@@ -215,6 +215,7 @@
     function locationFor(el) {
       if (!el || !el.closest) return "unknown";
       if (el.id === "fsw-btn" || el.closest("#hero")) return "hero";
+      if (el.id === "fsw-secondary" || el.id === "oh-pvl-open") return "hero_video";
       if (el.id === "pricing-owners-cta" || el.closest("#pricing")) return "pricing_owners";
       if (el.id === "nav-cta") return "nav_cta";
       if (el.id === "nav-signin") return "nav_signin";
@@ -229,12 +230,15 @@
     function bindCtas() {
       var selectors = [
         "#fsw-btn",
+        "#fsw-secondary",
         "#pricing-owners-cta",
         "#cta-band-btn",
         "#nav-cta",
         "#nav-signin",
+        "#oh-pvl-open",
         '[data-dealality-process-cta="explore"]',
         '[data-dealality-process-cta="demo"]',
+        '[data-dealality-process-cta="video"]',
         'a[href*="opportunity-review"]',
         'a[href*="signup"]',
         'a[href*="login"]',
