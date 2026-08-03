@@ -1033,6 +1033,32 @@
       .join("");
     html += "</div>";
     html += renderDashboardLegend(acquisition.totals || []);
+    if (acquisition.topReferrers && acquisition.topReferrers.length) {
+      html +=
+        '<div class="date-matrix-wrap" style="margin-top:12px;--date-cols:' +
+        Math.min(8, acquisition.topReferrers.length) +
+        '">';
+      html +=
+        '<table class="date-matrix" aria-label="Top traffic sources"><thead><tr><th>Where they came from</th>';
+      html += acquisition.topReferrers
+        .map(function (row) {
+          return "<th>" + esc(row.label) + "</th>";
+        })
+        .join("");
+      html += "</tr></thead><tbody><tr><td>Sessions</td>";
+      html += acquisition.topReferrers
+        .map(function (row) {
+          return "<td>" + esc(row.count) + "</td>";
+        })
+        .join("");
+      html += "</tr></tbody></table></div>";
+    }
+    if (acquisition.note) {
+      html +=
+        '<p class="panel-sub" style="margin:10px 0 0;">' +
+        esc(acquisition.note) +
+        "</p>";
+    }
     el.innerHTML = html;
   }
 
