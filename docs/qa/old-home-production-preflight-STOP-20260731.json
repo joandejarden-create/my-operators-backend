@@ -1,0 +1,38 @@
+{
+  "verdict": "STOP_NO_PUBLISH",
+  "gates": {
+    "gate1_unpublished_audit": "FAIL",
+    "gate2_staging_parity": "FAIL",
+    "gate3_root_baseline": "RECORDED",
+    "gate4_payload": "PREPARED_NOT_EXECUTED"
+  },
+  "anchors": {
+    "last_production_publish": "2026-07-31T15:18:27.790Z",
+    "staging_publish": "2026-07-31T17:29:13.149Z",
+    "site_lastUpdated_at_preflight": "2026-07-31T17:47:56.902Z",
+    "old_home_lastUpdated_at_preflight": "2026-07-31T17:43:53.253Z",
+    "root_home_id": "6a234ea31be55631d54044d8",
+    "root_home_lastUpdated": "2026-07-30T13:46:47.675Z"
+  },
+  "blocking_findings": [
+    "Old Home Designer lastUpdated after staging-validated publish",
+    "Staging #about is data-oh-problem=manual-process without data-visual=cinematic-v1",
+    "Production #about is data-oh-problem=deal-desk with data-visual=cinematic-v1",
+    "Publishing would replace cinematic Deal Desk with manual-process",
+    "Staging PVL did not hide while #about substantially visible",
+    "Staging Replay control not found"
+  ],
+  "intended_payload_not_executed": {
+    "site_id": "68108c29063eeb5d1bd7ae4a",
+    "customDomains": [
+      "www.dealality.com",
+      "dealality.com"
+    ],
+    "publishToWebflowSubdomain": true
+  },
+  "production_domains_unchanged": {
+    "www.dealality.com": "2026-07-31T15:18:27.790Z",
+    "dealality.com": "2026-07-31T15:18:27.790Z"
+  },
+  "recommendation": "B_prepublish_correction_required_do_not_publish"
+}
