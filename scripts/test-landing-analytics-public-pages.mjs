@@ -20,9 +20,11 @@ assert.equal(inferSurfaceFromPath("/"), SURFACE_LANDING);
 assert.equal(inferSurfaceFromPath("/es"), SURFACE_LANDING);
 assert.equal(inferSurfaceFromPath("/insights"), SURFACE_INSIGHTS);
 assert.equal(inferSurfaceFromPath("/es/insights/foo"), SURFACE_INSIGHTS);
+assert.equal(inferSurfaceFromPath("/insights-posts/marriott-hilton"), SURFACE_INSIGHTS);
 assert.equal(inferSurfaceFromPath("/opportunity-review"), SURFACE_OPPORTUNITY_REVIEW);
 assert.equal(inferSurfaceFromPath("/es/who-its-for"), SURFACE_SITE);
 assert.equal(inferSurfaceFromPath("/terms"), SURFACE_SITE);
+assert.equal(inferSurfaceFromPath("/marketing/dealality-landing-v7.html"), SURFACE_LANDING);
 
 assert.equal(eventSurface({ surface: "site", path: "/" }), SURFACE_SITE);
 assert.ok(isLandingEvent({ path: "/" }));

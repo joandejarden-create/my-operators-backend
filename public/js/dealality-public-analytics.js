@@ -71,7 +71,14 @@
 
   function surfaceFor(path) {
     var rest = stripLocale(path);
-    if (rest === "/insights" || rest.indexOf("/insights/") === 0) return "insights";
+    if (
+      rest === "/insights" ||
+      rest.indexOf("/insights/") === 0 ||
+      rest === "/insights-posts" ||
+      rest.indexOf("/insights-posts/") === 0
+    ) {
+      return "insights";
+    }
     if (rest === "/opportunity-review" || rest.indexOf("/opportunity-review/") === 0) {
       return "opportunity_review";
     }
