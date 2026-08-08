@@ -77,3 +77,12 @@
 1. Upload new embed assets to Webflow CDN
 2. Swap site scripts to `v20260808a` versions (15-slot limit; prefer freeform/duplicates carefully)
 3. Publish **custom domains only** (`dealality.com` / `www`), not webflow.io
+
+## Sentence-case headings (v20260808b)
+
+Section H2s/eyebrows use sentence case (e.g. “One hotel. Many futures. The tools to judge each one.”).
+
+- Designer EN + ES localization updated for section headings
+- CDN: FAQs / ecosystem-pricing / how-we-do-it / boot-guard `v20260808b`
+- Footer triad remains ALL CAPS by design
+- Insight article titles left as article titles (not section H2s)
