@@ -86,3 +86,14 @@ Section H2s/eyebrows use sentence case (e.g. “One hotel. Many futures. The too
 - CDN: FAQs / ecosystem-pricing / how-we-do-it / boot-guard `v20260808b`
 - Footer triad remains ALL CAPS by design
 - Insight article titles left as article titles (not section H2s)
+
+## Title Case headings (v20260808c)
+
+Eyebrows, headers, and section titles use Title Case (not sentence case).
+
+Examples:
+- One Hotel. Many Futures. The Tools to Judge Each One.
+- Questions Owners Actually Ask.
+- Built Around How Hotel Decisions Actually Happen.
+
+CDN: modules / FAQs / testimonials / ecosystem / how-we-do-it / boot-guard `v20260808c`
