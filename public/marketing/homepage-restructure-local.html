@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dealality — Local Restructure (compare draft)</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Local-only restructure of the Dealality homepage for comparison with the live site. Not published." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080f25;
+      --bg2: #0c1430;
+      --bg3: #111b3a;
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #e8ecf8;
+      --muted: rgba(255, 255, 255, 0.62);
+      --faint: rgba(255, 255, 255, 0.38);
+      --accent: #6c72ff;
+      --accent-soft: rgba(108, 114, 255, 0.14);
+      --gold: #d78e2c;
+      --cream: #faf3e1;
+      --font: "Plus Jakarta Sans", sans-serif;
+      --display: "Instrument Serif", Georgia, serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --max: 1120px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    [id] { scroll-margin-top: 96px; }
+
+    /* Compare bar */
+    .compare-bar {
+      position: sticky;
+      top: 0;
+      z-index: 300;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #1a1430, #0e1a3a 45%, #142038);
+      border-bottom: 1px solid rgba(215, 142, 44, 0.35);
+      font-size: 13px;
+    }
+    .compare-bar strong { color: var(--cream); font-weight: 700; }
+    .compare-bar p { color: var(--muted); max-width: 52ch; }
+    .compare-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .compare-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12.5px;
+      border: 1px solid var(--line);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .compare-actions a:hover { border-color: rgba(255,255,255,0.22); transform: translateY(-1px); }
+    .compare-actions .live {
+      background: var(--gold);
+      color: #1a1206;
+      border-color: transparent;
+    }
+    .compare-actions .split {
+      background: var(--accent-soft);
+      border-color: rgba(108,114,255,0.35);
+    }
+
+    /* Nav */
+    .site-nav {
+      position: sticky;
+      top: 45px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 28px;
+      background: rgba(8, 15, 37, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+    .logo img { height: 26px; width: auto; }
+    .nav-links { display: flex; gap: 22px; list-style: none; }
+    .nav-links a {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 16px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: #5a5fe6; transform: translateY(-1px); }
+    .nav-toggle { display: none; padding: 8px; }
+    .nav-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      margin: 4px 0;
+    }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: min(92vh, 860px);
+      display: flex;
+      align-items: flex-end;
+      padding: 72px 0 64px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 72% 38%, rgba(108,114,255,0.28), transparent 55%),
+        radial-gradient(ellipse 50% 40% at 18% 70%, rgba(215,142,44,0.12), transparent 50%),
+        linear-gradient(160deg, #060b1c 0%, #0a1330 45%, #0d1840 100%);
+    }
+    .hero-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(180deg, #000 20%, transparent 90%);
+      opacity: 0.55;
+    }
+    .hero-photo {
+      position: absolute;
+      right: -4%;
+      top: 8%;
+      width: min(58vw, 720px);
+      height: min(70vh, 620px);
+      z-index: 0;
+      border-radius: 0;
+      overflow: hidden;
+      opacity: 0.42;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 28%, #000 70%, transparent 100%),
+                  linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.85) contrast(1.05);
+      transform: scale(1.04);
+      animation: heroDrift 18s var(--ease) infinite alternate;
+    }
+    @keyframes heroDrift {
+      from { transform: scale(1.04) translate3d(0, 0, 0); }
+      to { transform: scale(1.08) translate3d(-1.5%, 1%, 0); }
+    }
+    .hero .wrap { position: relative; z-index: 1; max-width: 720px; margin-left: max(24px, calc((100% - var(--max)) / 2)); margin-right: auto; width: auto; padding-right: 24px; }
+    .brand-mark {
+      font-family: var(--display);
+      font-size: clamp(2.6rem, 6vw, 4.4rem);
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+      color: #fff;
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: rise 0.8s var(--ease) 0.05s forwards;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+      opacity: 0;
+      animation: rise 0.7s var(--ease) 0.12s forwards;
+    }
+    .hero h1 {
+      font-size: clamp(1.85rem, 3.6vw, 2.85rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      max-width: 16ch;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: rise 0.8s var(--ease) 0.18s forwards;
+    }
+    .hero-lead {
+      font-size: clamp(1rem, 1.5vw, 1.125rem);
+      color: var(--muted);
+      max-width: 42ch;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: rise 0.8s var(--ease) 0.26s forwards;
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      opacity: 0;
+      animation: rise 0.8s var(--ease) 0.34s forwards;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: #5a5fe6;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px rgba(108,114,255,0.28);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: rgba(215,142,44,0.16);
+      border: 1px solid rgba(215,142,44,0.45);
+      color: var(--cream);
+      font-weight: 700;
+      font-size: 14px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { background: rgba(215,142,44,0.26); transform: translateY(-1px); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* Sections */
+    section { padding: 88px 0; border-top: 1px solid var(--line); }
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.55rem, 2.8vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      max-width: 18ch;
+      margin-bottom: 14px;
+    }
+    .section-lead {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 52ch;
+      margin-bottom: 36px;
+    }
+
+    /* Problem */
+    #problem {
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(108,114,255,0.1), transparent 60%),
+        var(--bg);
+    }
+    .contrast {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .contrast-col h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+    }
+    .contrast-col.with .chip {
+      border-color: rgba(108,114,255,0.35);
+      background: var(--accent-soft);
+      color: #d8daff;
+    }
+    .contrast-col.without .chip {
+      border-color: rgba(255,255,255,0.1);
+      color: var(--faint);
+    }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* Process */
+    #process { background: var(--bg2); }
+    .process-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 28px;
+      align-items: stretch;
+      min-height: 420px;
+    }
+    .process-nav {
+      position: relative;
+      padding-left: 18px;
+    }
+    .process-nav-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 14px;
+      margin-left: -18px;
+    }
+    .process-rail {
+      position: absolute;
+      left: 0;
+      top: 34px;
+      bottom: 12px;
+      width: 2px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .process-rail > i {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 12%;
+      background: linear-gradient(180deg, var(--accent), rgba(108,114,255,0.2));
+      border-radius: 2px;
+      transition: height 0.38s var(--ease);
+    }
+    .step-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 10px 10px 14px;
+      margin-bottom: 2px;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .step-btn:hover { background: rgba(255,255,255,0.04); }
+    .step-btn.active { background: var(--accent-soft); }
+    .step-num {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 2px;
+    }
+    .step-btn.active .step-num { color: var(--accent); }
+    .step-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .step-btn.active .step-label { color: #fff; }
+    .process-panel {
+      background:
+        linear-gradient(145deg, rgba(108,114,255,0.08), transparent 40%),
+        var(--bg3);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 28px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 360px;
+    }
+    .mode-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+    }
+    .mode-pill.platform { border-color: rgba(108,114,255,0.4); color: #b8bbff; background: var(--accent-soft); }
+    .mode-pill.offline { border-color: rgba(215,142,44,0.4); color: #f0c789; background: rgba(215,142,44,0.12); }
+    .process-panel h3 {
+      font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      text-transform: capitalize;
+    }
+    .process-panel .primary {
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 10px;
+      max-width: 40ch;
+    }
+    .process-panel .support {
+      color: var(--muted);
+      max-width: 48ch;
+      margin-bottom: 20px;
+    }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      color: var(--muted);
+    }
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--faint);
+    }
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .legend .lg-platform::before { background: var(--accent); }
+    .legend .lg-offline::before { background: var(--gold); }
+
+    /* Outcomes */
+    #outcomes .outcome-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px 22px;
+    }
+    .outcome {
+      padding: 8px 0 18px;
+      border-top: 1px solid var(--line);
+    }
+    .outcome h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 14px 0 8px;
+      letter-spacing: -0.01em;
+    }
+    .outcome p { color: var(--muted); font-size: 0.95rem; max-width: 34ch; }
+
+    /* Proof */
+    #proof { background: var(--bg2); }
+    .quote-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .quote {
+      padding: 24px 0;
+      border-top: 1px solid var(--line);
+    }
+    .quote blockquote {
+      font-family: var(--display);
+      font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+      line-height: 1.35;
+      color: #fff;
+      margin-bottom: 18px;
+      font-weight: 400;
+    }
+    .quote-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .quote-meta img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--line);
+    }
+    .quote-meta strong { display: block; font-size: 14px; }
+    .quote-meta span { font-size: 13px; color: var(--faint); }
+
+    /* FAQ */
+    .faq-list { max-width: 720px; }
+    .faq-item { border-top: 1px solid var(--line); }
+    .faq-item:last-child { border-bottom: 1px solid var(--line); }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 0;
+      text-align: left;
+      font-size: 1.02rem;
+      font-weight: 650;
+    }
+    .faq-q svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      stroke: var(--muted);
+      transition: transform 0.3s var(--ease);
+    }
+    .faq-item.open .faq-q svg { transform: rotate(180deg); }
+    .faq-a {
+      display: none;
+      padding: 0 0 18px;
+      color: var(--muted);
+    }
+    .faq-item.open .faq-a { display: block; }
+    .faq-a p + p { margin-top: 8px; }
+
+    /* Path / CTA */
+    #path {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 70% 80% at 50% 120%, rgba(108,114,255,0.22), transparent 55%),
+        var(--bg);
+      text-align: center;
+    }
+    #path .section-title { margin-left: auto; margin-right: auto; max-width: 18ch; }
+    #path .section-lead { margin-left: auto; margin-right: auto; }
+    #path .cta-row { justify-content: center; }
+    .roles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+      text-align: left;
+    }
+    .role {
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .role h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .role p { font-size: 0.9rem; color: var(--muted); }
+
+    /* Footer */
+    footer {
+      padding: 48px 0 36px;
+      border-top: 1px solid var(--line);
+      background: #060b1c;
+    }
+    .footer-triad {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--cream);
+      margin-bottom: 14px;
+    }
+    .footer-blurb { color: var(--muted); max-width: 40ch; margin-bottom: 20px; font-size: 0.95rem; }
+    .footer-meta { color: var(--faint); font-size: 12px; }
+
+    .diff-note {
+      margin-top: 28px;
+      padding: 14px 16px;
+      border: 1px dashed rgba(215,142,44,0.4);
+      border-radius: 10px;
+      background: rgba(215,142,44,0.06);
+      color: var(--muted);
+      font-size: 13px;
+      text-align: left;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .diff-note strong { color: var(--cream); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .site-nav.open .nav-links {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(8,15,37,0.98);
+        padding: 16px 24px 24px;
+        border-bottom: 1px solid var(--line);
+        gap: 12px;
+      }
+      .hero-photo { opacity: 0.22; width: 100%; right: 0; }
+      .hero .wrap { max-width: 100%; margin-left: 24px; }
+      .contrast, .process-layout, .outcome-grid, .quote-grid, .roles {
+        grid-template-columns: 1fr;
+      }
+      .process-nav { padding-left: 0; }
+      .process-rail { display: none; }
+      .process-nav-label { margin-left: 0; }
+      section { padding: 64px 0; }
+      .wrap { width: min(var(--max), calc(100% - 32px)); }
+      .site-nav { top: auto; position: relative; }
+      .compare-bar { position: relative; }
+    }
+  </style>
+</head>
+<body>
+  <div class="compare-bar">
+    <div>
+      <strong>Local restructure draft</strong>
+      <p>Option A flow: Problem → Process → Outcomes → Proof → Path. Live site is unchanged.</p>
+    </div>
+    <div class="compare-actions">
+      <a class="live" href="https://www.dealality.com/" target="_blank" rel="noopener">Open live site</a>
+      <a class="split" href="/marketing/homepage-structure-compare.html">Side-by-side compare</a>
+    </div>
+  </div>
+
+  <header class="site-nav" id="site-nav">
+    <a class="logo" href="#top" aria-label="Dealality">
+      <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c165b66fa5faacc0395b4a_Dealality%20Logo%20(4x).png" alt="Dealality" />
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#process">The Process</a></li>
+      <li><a href="#outcomes">What You Get</a></li>
+      <li><a href="#proof">Proof</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="nav-cta" href="https://www.dealality.com/" target="_blank" rel="noopener">Explore Your Hotel Opportunity</a>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-label="Hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-photo" aria-hidden="true">
+        <img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a679518a66ce83bcb18be55_brand-explorer.png" alt="" />
+      </div>
+      <div class="wrap">
+        <p class="brand-mark">Dealality</p>
+        <p class="eyebrow">One Hotel. Many Possible Futures.</p>
+        <h1>Find the Best Path for Your Hotel.</h1>
+        <p class="hero-lead">
+          Dealality is hotel deal-making done as a clear confidential process.
+          See real options, talk to brands and operators, compare offers side by side,
+          and choose the best path before you commit.
+        </p>
+        <div class="cta-row">
+          <a class="btn-primary" href="https://www.dealality.com/" target="_blank" rel="noopener">Explore Your Hotel Opportunity</a>
+          <a class="btn-secondary" href="https://www.dealality.com/" target="_blank" rel="noopener">See Dealality in Action</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem">
+      <div class="wrap">
+        <p class="section-kicker reveal">The Problem</p>
+        <h2 class="section-title reveal">Same Hotel. Different Ways to Decide.</h2>
+        <p class="section-lead reveal">
+          Most owners do not miss value because they lack options.
+          They miss it because the process for judging those options is scattered.
+        </p>
+        <div class="contrast reveal">
+          <div class="contrast-col with">
+            <h3>With a Shared Process</h3>
+            <div class="chips">
+              <span class="chip">More Options</span>
+              <span class="chip">Faster Decisions</span>
+              <span class="chip">Stronger Leverage</span>
+            </div>
+          </div>
+          <div class="contrast-col without">
+            <h3>Without a Shared Process</h3>
+            <div class="chips">
+              <span class="chip">Scattered Information</span>
+              <span class="chip">Slower Decisions</span>
+              <span class="chip">Missed Upside</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <p class="section-kicker reveal">The Process</p>
+        <h2 class="section-title reveal">One Hotel. Many Futures. The Tools to Judge Each One.</h2>
+        <p class="section-lead reveal">
+          Structured. Confidential. Owner-led.
+          Platform steps keep the record clear; offline steps keep the relationships human.
+        </p>
+        <div class="process-layout reveal">
+          <aside class="process-nav" aria-label="Process Steps">
+            <p class="process-nav-label">Process Steps</p>
+            <div class="process-rail" aria-hidden="true"><i id="process-progress"></i></div>
+            <div id="step-buttons"></div>
+            <div class="legend">
+              <span class="lg-platform">Platform</span>
+              <span class="lg-offline">Offline</span>
+            </div>
+          </aside>
+          <article class="process-panel" id="process-panel" aria-live="polite"></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="outcomes">
+      <div class="wrap">
+        <p class="section-kicker reveal">What You Get</p>
+        <h2 class="section-title reveal">Keep the Deal in One Place. Compare Offers Side by Side. Decide with Confidence.</h2>
+        <p class="section-lead reveal">
+          Dealality helps hotel owners organize the opportunity, talk to the right people,
+          compare responses the same way, and keep good backup choices open before they commit.
+        </p>
+        <div class="outcome-grid" id="outcomes-grid"></div>
+      </div>
+    </section>
+
+    <section id="proof">
+      <div class="wrap">
+        <p class="section-kicker reveal">Proof</p>
+        <h2 class="section-title reveal">Built Around How Hotel Decisions Actually Happen.</h2>
+        <p class="section-lead reveal">
+          Dealality comes from real hotel brand, operator, development, and partner decisions,
+          shaped by work with global brands and senior hospitality leaders.
+        </p>
+        <div class="quote-grid reveal" id="quotes"></div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap">
+        <p class="section-kicker reveal">FAQ</p>
+        <h2 class="section-title reveal">Questions Owners Actually Ask.</h2>
+        <p class="section-lead reveal">Straight answers on control, confidentiality, and what Dealality is — and is not.</p>
+        <div class="faq-list reveal" id="faq-list"></div>
+      </div>
+    </section>
+
+    <section id="path">
+      <div class="wrap">
+        <p class="section-kicker reveal">Next Step</p>
+        <h2 class="section-title reveal">How Much Hotel Value Are You Leaving Untested?</h2>
+        <p class="section-lead reveal">
+          Before you choose a brand, operator, or capital partner,
+          see which path could create more value.
+        </p>
+        <div class="cta-row reveal">
+          <a class="btn-primary" href="https://www.dealality.com/" target="_blank" rel="noopener">Start an Opportunity Review</a>
+          <a class="btn-secondary" href="https://www.dealality.com/" target="_blank" rel="noopener">Explore Your Hotel Opportunity</a>
+        </div>
+        <div class="roles reveal">
+          <div class="role">
+            <h3>Owners &amp; Advisors</h3>
+            <p>Lead a confidential process with real alternatives still in view.</p>
+          </div>
+          <div class="role">
+            <h3>Brands &amp; Operators</h3>
+            <p>Respond to clear briefs instead of scattered outreach threads.</p>
+          </div>
+          <div class="role">
+            <h3>Capital Partners</h3>
+            <p>Enter when the opportunity story and comparison are ready.</p>
+          </div>
+        </div>
+        <p class="diff-note reveal">
+          <strong>What changed vs live:</strong>
+          Ecosystem and Platform explainers are folded into Process + Outcomes.
+          Insights moved off the main path.
+          Nav labels match the decision journey instead of product feature names.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p class="footer-triad">ONE HOTEL. BETTER DECISIONS. MORE VALUE.</p>
+      <p class="footer-blurb">Hotel deal-making as a clear confidential process. Best path before you commit.</p>
+      <p class="footer-meta">Local comparison draft · Not published to dealality.com</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var STEPS = [
+        {
+          n: "01", mode: "platform", title: "Define the Opportunity",
+          primary: "Clarify what the owner wants before any relationship starts shaping the answer.",
+          support: "Bring the hotel, market context, objectives, constraints, and decision criteria into one brief—so later conversations start from clarity.",
+          labels: ["Asset Context", "Owner Objectives", "Commercial Priorities", "Control Preferences", "Timing", "Decision Criteria"]
+        },
+        {
+          n: "02", mode: "platform", title: "See the Real Options",
+          primary: "See more than the first available option.",
+          support: "Identify the brand, operator, conversion, and partner paths worth evaluating—so the owner chooses who to meet with intention.",
+          labels: ["Brand Paths", "Operator Paths", "Conversion", "Operating Models", "Capital", "Alternatives"]
+        },
+        {
+          n: "03", mode: "platform", title: "Prepare and Engage",
+          primary: "Open the right conversations—without losing control of the story.",
+          support: "Select participants, manage confidentiality, coordinate outreach, and capture responses so introduction calls start ready—not cold.",
+          labels: ["Opportunity Brief", "Participants", "Confidentiality", "Outreach", "Questions", "Responses"]
+        },
+        {
+          n: "04", mode: "offline", title: "Meet and Align",
+          primary: "Put people in the room—where trust actually begins.",
+          support: "Introductions and clarifications happen offline, between people. Dealality prepares both sides and tracks outcomes so the conversation stays part of the process.",
+          labels: ["Introduction Call", "Clarification Call", "Fit Discussion", "Open Questions", "Tracked Outcome"]
+        },
+        {
+          n: "05", mode: "platform", title: "Compare What Matters",
+          primary: "Give every proposal a shared basis—so the next conversation can go deeper.",
+          support: "Compare economics, control, requirements, support, timing, and gaps side by side. The numbers do not replace judgment; they prepare it.",
+          labels: ["Fees", "Owner Control", "Capital Support", "Requirements", "Timing", "Gaps"]
+        },
+        {
+          n: "06", mode: "offline", title: "Collaborate and Review",
+          primary: "Take the comparison into the real world—calls, walkthroughs, and technical review.",
+          support: "Collaboration calls and site or tech review happen offline. Dealality facilitates scheduling and context, then tracks what was covered.",
+          labels: ["Collaboration Calls", "Site Visit", "Tech Review", "Trade-offs", "Tracked Notes"]
+        },
+        {
+          n: "07", mode: "platform", title: "Choose a Path and Move Forward",
+          primary: "Hold finalists, materials, and feasibility in one place while conversations continue.",
+          support: "Confirm finalists, open the Deal Room, and sync feasibility—so momentum does not disappear between facilitated offline alignment moments.",
+          labels: ["Finalists", "Deal Room", "Feasibility", "Conditions", "Decision Record"]
+        },
+        {
+          n: "08", mode: "offline", title: "Align and Hand Off",
+          primary: "Close alignment between people—then hand into legal with a clean, tracked exit.",
+          support: "Final alignment on vision, cost, and ops stays human and offline. Dealality tracks readiness through LOI intent, then supports a clean handoff into legal drafting.",
+          labels: ["Final Alignment Call", "LOI Intent", "Legal Start", "MA / FA Drafting", "Tracked Handoff"]
+        }
+      ];
+
+      var OUTCOMES = [
+        ["Keep the Deal in One Place", "Asset story, goals, people, documents, questions, and responses stay in one confidential process."],
+        ["See the Real Options", "Review brand, operator, conversion, positioning, capital, and partner paths before you narrow the choice."],
+        ["Talk to the Right People", "Give brands, operators, and partners the context they need so they can respond clearly."],
+        ["Get to a Clear Yes or No Faster", "Outreach, questions, responses, and next steps without scattered email threads."],
+        ["Compare Offers the Same Way", "Fees, requirements, support, timing, open questions, and missing terms in one shared view."],
+        ["Keep Backup Choices Open", "Stay ready for negotiation with real alternatives still in view before you pick one path."]
+      ];
+
+      var QUOTES = [
+        {
+          quote: "Owners had options, but no clear way to compare them. I built Dealality so owners can see what an asset could become, in a confidential process, before they commit.",
+          name: "Joan Dejarden", title: "Founder",
+          img: "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a679518bded1ae16ef415eb_founder-joan-dejarden.png"
+        },
+        {
+          quote: "Dealality is the perfect tool to centralize and streamline the information, communications, tools, and deal participants I need for evaluating an opportunity.",
+          name: "Justin Boutwell", title: "Lead Asset Manager",
+          img: "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6cabdcddb9933257d89126_justin-boutwell-avatar.v20260731a.jpg"
+        },
+        {
+          quote: "Development and operating decisions move faster when the right people are working from the same opportunity. Dealality helps bring those conversations together.",
+          name: "Gustavo Sarago", title: "Developer and Operator",
+          img: "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6d0a1ffa5aa34cdd6103cc_gustavo-sarago-avatar.v20260731k.png"
+        },
+        {
+          quote: "Owners gain more when counsel shapes the path before it is half-chosen. Dealality brings advisors into the workflow early enough to change the outcome.",
+          name: "Joan Dejarden", title: "Founder",
+          img: "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a679518bded1ae16ef415eb_founder-joan-dejarden.png"
+        }
+      ];
+
+      var FAQS = [
+        ["Who Sees My Project?", ["Only the parties you select.", "There are no public listings and no open browsing.", "You can start with a blind teaser and remove any party at any time."]],
+        ["How Is Confidentiality Handled?", ["Projects are private by default.", "You choose who sees what, and when.", "Sensitive materials stay in NDA-gated deal rooms."]],
+        ["Is Dealality a Broker?", ["No. Dealality is software, not a broker or intermediary.", "We help structure the evaluation process.", "We do not advise on brand choice, represent either party, or take deal commissions."]],
+        ["Why Not Only Talk to a Brand or Operator?", ["You should. The question is when.", "See the real options first, then talk with a clearer position."]],
+        ["Can Dealality Pick My Brand?", ["No.", "It helps you compare paths and trade-offs.", "You decide."]],
+        ["What If I Already Have a Preferred Brand or Operator?", ["This is not about replacing it.", "It is about checking it is still the strongest path after seeing real alternatives."]]
+      ];
+
+      /* Process UI */
+      var btnWrap = document.getElementById("step-buttons");
+      var panel = document.getElementById("process-panel");
+      var progress = document.getElementById("process-progress");
+      var active = 0;
+
+      function renderStep(i) {
+        active = i;
+        var s = STEPS[i];
+        Array.prototype.forEach.call(btnWrap.querySelectorAll(".step-btn"), function (b, idx) {
+          b.classList.toggle("active", idx === i);
+          b.setAttribute("aria-current", idx === i ? "true" : "false");
+        });
+        var pct = ((i + 0.5) / STEPS.length) * 100;
+        progress.style.height = pct + "%";
+        panel.innerHTML =
+          '<span class="mode-pill ' + s.mode + '">' + (s.mode === "platform" ? "Platform" : "Offline") + "</span>" +
+          "<h3>" + s.title + "</h3>" +
+          '<p class="primary">' + s.primary + "</p>" +
+          '<p class="support">' + s.support + "</p>" +
+          '<div class="tag-row">' + s.labels.map(function (l) { return '<span class="tag">' + l + "</span>"; }).join("") + "</div>";
+      }
+
+      STEPS.forEach(function (s, i) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "step-btn" + (i === 0 ? " active" : "");
+        b.innerHTML = '<span class="step-num">Step ' + s.n + '</span><span class="step-label">' + s.title + "</span>";
+        b.addEventListener("click", function () { renderStep(i); });
+        btnWrap.appendChild(b);
+      });
+      renderStep(0);
+
+      /* Outcomes */
+      var og = document.getElementById("outcomes-grid");
+      OUTCOMES.forEach(function (o) {
+        var el = document.createElement("article");
+        el.className = "outcome reveal";
+        el.innerHTML = "<h3>" + o[0] + "</h3><p>" + o[1] + "</p>";
+        og.appendChild(el);
+      });
+
+      /* Quotes */
+      var qg = document.getElementById("quotes");
+      QUOTES.forEach(function (q) {
+        var el = document.createElement("article");
+        el.className = "quote";
+        el.innerHTML =
+          "<blockquote>“" + q.quote + "”</blockquote>" +
+          '<div class="quote-meta"><img src="' + q.img + '" alt="' + q.name + '" />' +
+          "<div><strong>" + q.name + "</strong><span>" + q.title + "</span></div></div>";
+        qg.appendChild(el);
+      });
+
+      /* FAQ */
+      var fl = document.getElementById("faq-list");
+      FAQS.forEach(function (f, idx) {
+        var item = document.createElement("div");
+        item.className = "faq-item" + (idx === 0 ? " open" : "");
+        item.innerHTML =
+          '<button class="faq-q" type="button" aria-expanded="' + (idx === 0) + '">' +
+          "<span>" + f[0] + "</span>" +
+          '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>' +
+          '<div class="faq-a">' + f[1].map(function (p) { return "<p>" + p + "</p>"; }).join("") + "</div>";
+        item.querySelector(".faq-q").addEventListener("click", function () {
+          var open = item.classList.toggle("open");
+          this.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+        fl.appendChild(item);
+      });
+
+      /* Reveal */
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+      document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+
+      /* Mobile nav */
+      document.getElementById("nav-toggle").addEventListener("click", function () {
+        document.getElementById("site-nav").classList.toggle("open");
+      });
+    })();
+  </script>
+</body>
+</html>
