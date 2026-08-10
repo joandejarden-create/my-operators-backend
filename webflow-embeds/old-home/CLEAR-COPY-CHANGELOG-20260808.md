@@ -97,3 +97,11 @@ Examples:
 - Built Around How Hotel Decisions Actually Happen.
 
 CDN: modules / FAQs / testimonials / ecosystem / how-we-do-it / boot-guard `v20260808c`
+
+## Process Steps clarity (v20260808d)
+
+How We Do It left rail:
+- Column label: Process Steps / Pasos del Proceso
+- Numbers: Step 01 … Step 08 (Paso 01 … on /es)
+- Platform / Offline legend kept
+- Progress line animates to the active step on click
