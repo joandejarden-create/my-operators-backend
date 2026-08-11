@@ -472,10 +472,10 @@
     .pi-band-label--platform {
       position: absolute;
       top: 10px;
-      left: 0;
-      right: 0;
+      left: 14px;
+      right: auto;
       z-index: 3;
-      text-align: center;
+      text-align: left;
       font-size: 9.5px;
       font-weight: 800;
       letter-spacing: 0.11em;
@@ -521,23 +521,23 @@
     .pi-path-layer path.pi-rail {
       fill: none;
       stroke: url(#piGoldGrad);
-      stroke-width: 4.5;
+      stroke-width: 5;
       stroke-linecap: round;
       stroke-linejoin: round;
       filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
     }
     .pi-path-layer circle.pi-node {
       fill: #0d1530;
-      stroke: #d4a853;
+      stroke: #E8A84A;
       stroke-width: 3.5;
     }
     .pi-path-layer circle.pi-node-offline {
-      fill: #1a1620;
+      fill: #0d1530;
       stroke: #E8A84A;
-      stroke-width: 3;
+      stroke-width: 3.5;
     }
     .pi-path-layer text.pi-node-label {
-      fill: #a8abff;
+      fill: #F0B86A;
       font-size: 11px;
       font-weight: 800;
       font-family: var(--font);
@@ -1287,21 +1287,26 @@
         }
 
         function buildPath() {
-          var d = "M " + colX(0) + " " + platformY;
+          var d = "M " + colX(0).toFixed(1) + " " + platformY;
+          var currX = colX(0);
           for (var i = 1; i < COLS; i++) {
             var x = colX(i);
-            var prev = colX(i - 1);
+            var dx = x - currX;
             if (STEPS[i].mode === "offline") {
-              var lead = prev + (x - prev) * 0.52;
-              d += " L " + lead + " " + platformY;
-              d += " C " + (lead + (x - lead) * 0.55) + " " + platformY;
-              d += " " + (x - colW * 0.04) + " " + offlineY;
-              d += " " + x + " " + offlineY;
-              d += " C " + (x + colW * 0.04) + " " + offlineY;
-              d += " " + (x + colW * 0.08) + " " + platformY;
-              d += " " + x + " " + platformY;
+              d += " C " + (currX + dx * 0.42).toFixed(1) + " " + platformY;
+              d += " " + (x - dx * 0.18).toFixed(1) + " " + offlineY;
+              d += " " + x.toFixed(1) + " " + offlineY;
+              var landX = i < COLS - 1 ? (x + colX(i + 1)) * 0.5 : x + Math.max(48, colW * 0.45);
+              var fall = landX - x;
+              d += " C " + (x + fall * 0.2).toFixed(1) + " " + offlineY;
+              d += " " + (landX - fall * 0.25).toFixed(1) + " " + platformY;
+              d += " " + landX.toFixed(1) + " " + platformY;
+              currX = landX;
             } else {
-              d += " L " + x + " " + platformY;
+              d += " C " + (currX + (x - currX) * 0.45).toFixed(1) + " " + platformY;
+              d += " " + (currX + (x - currX) * 0.7).toFixed(1) + " " + platformY;
+              d += " " + x.toFixed(1) + " " + platformY;
+              currX = x;
             }
           }
           return d;
@@ -1365,17 +1370,18 @@
           circle.setAttribute("class", "pi-node" + (s.mode === "offline" ? " pi-node-offline" : ""));
           circle.setAttribute("cx", cx);
           circle.setAttribute("cy", cy);
-          circle.setAttribute("r", s.mode === "offline" ? 13 : 15);
+          circle.setAttribute("r", 14);
           svg.appendChild(circle);
 
-          if (s.mode === "platform") {
-            var label = document.createElementNS(svgNS, "text");
-            label.setAttribute("class", "pi-node-label pi-node-label-platform");
-            label.setAttribute("x", cx);
-            label.setAttribute("y", cy);
-            label.textContent = s.n;
-            svg.appendChild(label);
-          }
+          var label = document.createElementNS(svgNS, "text");
+          label.setAttribute(
+            "class",
+            "pi-node-label" + (s.mode === "platform" ? " pi-node-label-platform" : "")
+          );
+          label.setAttribute("x", cx);
+          label.setAttribute("y", cy);
+          label.textContent = s.n;
+          svg.appendChild(label);
         });
 
         platformWrap.appendChild(svg);
@@ -1389,8 +1395,6 @@
               '<span class="pi-num">Step ' + s.n + "</span>" +
               "<h4>" + s.title + "</h4>" +
               "<p>" + s.short + "</p></article>";
-          } else {
-            pCol.innerHTML = '<div class="pi-node-pass" aria-hidden="true"></div>';
           }
           platformWrap.appendChild(pCol);
         });
