@@ -340,208 +340,384 @@
     .reveal.in { opacity: 1; transform: none; }
 
     /* Process — infographic mock (local only) */
-    #process { background: #f4f1ea; color: #1a1a22; }
+    #process {
+      background: linear-gradient(180deg, #f8f6f0 0%, #f0ece3 100%);
+      color: #1a1a22;
+    }
     #process .section-kicker { color: #8a5a18; }
     #process .section-title { color: #12131a; max-width: 22ch; }
-    #process .section-lead { color: #4a4f5e; }
+    #process .section-lead { color: #4a4f5e; max-width: 58ch; }
     .process-view-toggle {
       display: inline-flex;
       gap: 4px;
       padding: 4px;
       border-radius: 10px;
-      background: rgba(0,0,0,0.06);
-      margin-bottom: 20px;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid rgba(0,0,0,0.06);
+      margin-bottom: 24px;
     }
     .process-view-toggle button {
-      padding: 8px 14px;
+      padding: 8px 16px;
       border-radius: 8px;
       font-size: 13px;
       font-weight: 650;
       color: #5a6070;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     }
     .process-view-toggle button.active {
       background: #fff;
       color: #12131a;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 10px rgba(18,19,26,0.1);
     }
     .process-infographic-title {
-      font-size: clamp(1.35rem, 2.4vw, 1.85rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
+      font-family: var(--display);
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
       color: #12131a;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
+      line-height: 1.1;
     }
     .process-infographic-title em {
-      font-style: normal;
-      color: #c45c3e;
+      font-style: italic;
+      color: #b84a32;
     }
-    .pi-scroll {
-      overflow-x: auto;
-      margin: 0 -24px;
-      padding: 0 24px 8px;
-      -webkit-overflow-scrolling: touch;
-    }
-    .pi-chart {
-      position: relative;
-      min-width: 1040px;
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 14px;
-      overflow: hidden;
-      background: #faf8f3;
-      box-shadow: 0 18px 48px rgba(18,19,26,0.08);
-    }
-    .pi-band-label {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 10px 16px 0;
-    }
-    .pi-band--offline { background: #faf8f3; min-height: 148px; }
-    .pi-band--offline .pi-band-label { color: #8a5a18; }
-    .pi-band--platform {
-      position: relative;
-      min-height: 200px;
-      background:
-        linear-gradient(180deg, rgba(8,15,37,0.72), rgba(8,15,37,0.88)),
-        url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=60") center/cover;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .pi-band--platform .pi-band-label { color: rgba(255,255,255,0.55); }
-    .pi-band--triggers {
-      background: #fff;
-      border-top: 1px solid rgba(0,0,0,0.06);
-      padding-bottom: 8px;
-    }
-    .pi-band--triggers .pi-band-label { color: #8a909e; }
-    .pi-cols {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: 0;
-    }
-    .pi-col { position: relative; padding: 0 8px 12px; min-width: 0; }
-    .pi-offline-slot { min-height: 118px; display: flex; align-items: flex-end; padding-bottom: 8px; }
-    .pi-offline-card {
-      width: 100%;
-      padding: 10px 10px 12px;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #fff9ef, #f3e8d4);
-      border: 1px solid rgba(215,142,44,0.35);
-      box-shadow: 0 6px 16px rgba(138,90,24,0.08);
-    }
-    .pi-offline-card .pi-num { color: #8a5a18; }
-    .pi-offline-card h4 { color: #3d3018; font-size: 12px; font-weight: 800; line-height: 1.25; margin: 4px 0 6px; }
-    .pi-offline-card p { color: #6a5a40; font-size: 10.5px; line-height: 1.45; }
-    .pi-platform-slot {
-      min-height: 168px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 28px 0 16px;
-      position: relative;
-      z-index: 2;
-    }
-    .pi-platform-card {
-      width: 100%;
-      padding: 12px 10px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.14);
-      backdrop-filter: blur(4px);
-    }
-    .pi-platform-card .pi-num { color: #b8bbff; }
-    .pi-platform-card h4 { color: #fff; font-size: 12px; font-weight: 800; line-height: 1.25; margin: 4px 0 6px; }
-    .pi-platform-card p { color: rgba(255,255,255,0.72); font-size: 10.5px; line-height: 1.45; }
-    .pi-node-only {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 3px solid #d4a853;
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(212,168,83,0.25);
-      position: relative;
-      z-index: 3;
-    }
-    .pi-num {
-      display: block;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
-    .pi-trigger {
-      padding: 10px 6px 14px;
-      font-size: 10px;
-      line-height: 1.45;
-      color: #5a6070;
-      border-right: 1px solid rgba(0,0,0,0.05);
-      min-height: 72px;
-    }
-    .pi-col:last-child .pi-trigger { border-right: 0; }
-    .pi-trigger strong {
-      display: block;
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #9aa0ad;
-      margin-bottom: 4px;
-    }
-    .pi-path-svg {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      height: 100%;
-      width: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .pi-path-svg path {
-      fill: none;
-      stroke: #d4a853;
-      stroke-width: 4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .pi-loi-badge {
-      position: absolute;
-      right: 12px;
-      bottom: 18px;
-      z-index: 4;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #faf3e1;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .pi-loi-badge svg { width: 14px; height: 14px; stroke: #7dffb2; fill: none; stroke-width: 2.5; }
     .pi-legend-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px 24px;
-      margin: 14px 0 18px;
-      font-size: 12px;
-      color: #5a6070;
+      gap: 12px 28px;
+      margin: 0 0 22px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #5c6372;
+    }
+    .pi-legend-row span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     .pi-legend-row span::before {
       content: "";
-      display: inline-block;
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
-      margin-right: 6px;
-      vertical-align: middle;
+      flex-shrink: 0;
     }
-    .pi-legend-row .lg-platform::before { background: #6c72ff; }
-    .pi-legend-row .lg-offline::before { background: #d4a853; }
+    .pi-legend-row .lg-offline::before { background: linear-gradient(135deg, #e8c06a, #c8942e); box-shadow: 0 0 0 2px rgba(201,148,46,0.2); }
+    .pi-legend-row .lg-platform::before { background: linear-gradient(135deg, #8b90ff, #5c62e8); box-shadow: 0 0 0 2px rgba(108,114,255,0.2); }
+    .pi-scroll {
+      overflow-x: auto;
+      margin: 0 -24px;
+      padding: 4px 24px 12px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-color: rgba(0,0,0,0.15) transparent;
+    }
+    .pi-chart {
+      position: relative;
+      min-width: 1180px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #faf8f4;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.8) inset,
+        0 24px 64px rgba(18,19,26,0.12),
+        0 4px 16px rgba(18,19,26,0.06);
+      border: 1px solid rgba(0,0,0,0.07);
+    }
+    .pi-grid {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(132px, 1fr));
+      grid-template-rows: auto 148px 228px auto;
+    }
+    .pi-grid-head {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      padding: 14px 16px 6px;
+      background: #faf8f4;
+    }
+    .pi-grid-head span {
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: #9a7b38;
+    }
+    .pi-col-offline {
+      grid-row: 2;
+      padding: 0 10px 0;
+      min-height: 132px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      position: relative;
+    }
+    .pi-band-label--platform {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      text-align: center;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.48);
+      pointer-events: none;
+    }
+    .pi-col-platform-wrap {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      display: grid;
+      grid-template-columns: subgrid;
+      position: relative;
+      min-height: 220px;
+      background:
+        linear-gradient(180deg, rgba(6,10,24,0.55) 0%, rgba(8,15,37,0.82) 45%, rgba(8,15,37,0.92) 100%),
+        url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1800&q=70") center 40%/cover;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .pi-col-platform-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(108,114,255,0.12), transparent 60%);
+      pointer-events: none;
+    }
+    .pi-col-platform {
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      min-height: 220px;
+    }
+    .pi-path-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .pi-path-layer path.pi-rail {
+      fill: none;
+      stroke: url(#piGoldGrad);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
+    }
+    .pi-path-layer circle.pi-node {
+      fill: #fff;
+      stroke: #d4a853;
+      stroke-width: 4;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+    }
+    .pi-path-layer circle.pi-node-offline {
+      fill: #faf8f4;
+      stroke: #d4a853;
+      stroke-width: 3;
+    }
+    .pi-path-layer text.pi-node-label {
+      fill: #8a5a18;
+      font-size: 11px;
+      font-weight: 800;
+      font-family: var(--font);
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .pi-path-layer text.pi-node-label-platform {
+      fill: #5a5fe6;
+    }
+    .pi-offline-card {
+      position: relative;
+      width: 100%;
+      max-width: 148px;
+      padding: 14px 12px 13px;
+      border-radius: 12px;
+      background: linear-gradient(165deg, #fffdf8 0%, #f5ead6 100%);
+      border: 1px solid rgba(201,148,46,0.28);
+      box-shadow:
+        0 10px 24px rgba(138,90,24,0.1),
+        0 1px 0 rgba(255,255,255,0.9) inset;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    }
+    .pi-offline-card:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 16px 32px rgba(138,90,24,0.14),
+        0 1px 0 rgba(255,255,255,0.9) inset;
+    }
+    .pi-offline-card::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -28px;
+      width: 2px;
+      height: 28px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #d4a853, rgba(212,168,83,0.15));
+      border-radius: 2px;
+    }
+    .pi-offline-card .pi-num {
+      color: #9a7b38;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .pi-offline-card h4 {
+      color: #2e2618;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      margin-bottom: 7px;
+    }
+    .pi-offline-card p {
+      color: #6b5d45;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .pi-platform-card {
+      position: relative;
+      width: 100%;
+      max-width: 148px;
+      margin-top: -36px;
+      padding: 14px 12px 13px;
+      border-radius: 12px;
+      background: rgba(12,18,42,0.72);
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(8px);
+      box-shadow:
+        0 12px 32px rgba(0,0,0,0.35),
+        0 1px 0 rgba(255,255,255,0.08) inset;
+      transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    }
+    .pi-platform-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(168,171,255,0.45);
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.42),
+        0 0 0 1px rgba(108,114,255,0.2),
+        0 1px 0 rgba(255,255,255,0.1) inset;
+    }
+    .pi-platform-card .pi-num {
+      color: #a8abff;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .pi-platform-card h4 {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      margin-bottom: 7px;
+    }
+    .pi-platform-card p {
+      color: rgba(255,255,255,0.74);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .pi-node-pass {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #fff;
+      border: 4px solid #d4a853;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+      flex-shrink: 0;
+    }
+    .pi-col-trigger-wrap {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      display: grid;
+      grid-template-columns: subgrid;
+      background: #fff;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    .pi-col-trigger-wrap > .pi-band-label {
+      grid-column: 1 / -1;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: #9aa0ad;
+      padding: 12px 16px 0;
+    }
+    .pi-col-trigger {
+      padding: 8px 12px 16px;
+      border-right: 1px solid rgba(0,0,0,0.05);
+      min-height: 78px;
+    }
+    .pi-col-trigger:last-child { border-right: 0; }
+    .pi-col-trigger strong {
+      display: block;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #b0b5c0;
+      margin-bottom: 5px;
+    }
+    .pi-col-trigger p {
+      font-size: 11px;
+      line-height: 1.48;
+      color: #4a5060;
+    }
+    .pi-loi-badge {
+      position: absolute;
+      right: 16px;
+      bottom: 20px;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #faf3e1;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      backdrop-filter: blur(6px);
+    }
+    .pi-loi-badge svg { width: 14px; height: 14px; stroke: #6ee7a8; fill: none; stroke-width: 2.5; }
+    .pi-fade-in .pi-offline-card,
+    .pi-fade-in .pi-platform-card {
+      animation: piCardIn 0.55s var(--ease) both;
+      animation-delay: calc(var(--pi-i, 0) * 0.06s);
+    }
+    .pi-scroll-hint {
+      display: none;
+      margin: 10px 0 0;
+      font-size: 11px;
+      font-weight: 600;
+      color: #8a909c;
+      text-align: center;
+    }
+    .pi-scroll-hint svg {
+      width: 14px;
+      height: 14px;
+      vertical-align: -2px;
+      margin-right: 4px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+    @media (max-width: 900px) {
+      .pi-scroll-hint { display: block; }
+    }
+    @keyframes piCardIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
     .process-layout {
       display: none;
       grid-template-columns: 280px 1fr;
@@ -880,6 +1056,10 @@
           <div class="pi-scroll">
             <div class="pi-chart" id="pi-chart"></div>
           </div>
+          <p class="pi-scroll-hint" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Scroll timeline to see all eight steps
+          </p>
         </div>
         <div class="process-layout reveal" id="process-detail">
           <aside class="process-nav" aria-label="Process Steps">
@@ -1088,74 +1268,152 @@
         var chart = document.getElementById("pi-chart");
         if (!chart) return;
 
-        var offlineCols = document.createElement("div");
-        offlineCols.className = "pi-cols";
-        var platformWrap = document.createElement("div");
-        platformWrap.className = "pi-band pi-band--platform";
-        platformWrap.innerHTML =
-          '<p class="pi-band-label">In Platform · Managed Within Dealality</p>' +
-          '<svg class="pi-path-svg" viewBox="0 0 960 168" preserveAspectRatio="none" aria-hidden="true">' +
-          '<path d="M 60 118 H 360 H 480 Q 480 118 480 42 Q 480 118 600 118 H 720 Q 720 118 720 42 Q 720 118 900 118" />' +
-          "</svg>" +
-          '<div class="pi-loi-badge"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> LOI intent tracked</div>';
-        var platformCols = document.createElement("div");
-        platformCols.className = "pi-cols";
-        var triggerWrap = document.createElement("div");
-        triggerWrap.className = "pi-band pi-band--triggers";
-        triggerWrap.innerHTML = '<p class="pi-band-label">Next Trigger</p>';
-        var triggerCols = document.createElement("div");
-        triggerCols.className = "pi-cols";
+        var COLS = STEPS.length;
+        var VB_W = 1180;
+        var VB_H = 200;
+        var PAD = 74;
+        var colW = (VB_W - PAD * 2) / (COLS - 1);
+        var platformY = 118;
+        var offlineY = 36;
 
-        STEPS.forEach(function (s) {
+        function colX(i) {
+          return PAD + i * colW;
+        }
+
+        function buildPath() {
+          var d = "M " + colX(0) + " " + platformY;
+          for (var i = 1; i < COLS; i++) {
+            var x = colX(i);
+            var prev = colX(i - 1);
+            if (STEPS[i].mode === "offline") {
+              var lead = prev + (x - prev) * 0.52;
+              d += " L " + lead + " " + platformY;
+              d += " C " + (lead + (x - lead) * 0.55) + " " + platformY;
+              d += " " + (x - colW * 0.04) + " " + offlineY;
+              d += " " + x + " " + offlineY;
+              d += " C " + (x + colW * 0.04) + " " + offlineY;
+              d += " " + (x + colW * 0.08) + " " + platformY;
+              d += " " + x + " " + platformY;
+            } else {
+              d += " L " + x + " " + platformY;
+            }
+          }
+          return d;
+        }
+
+        var grid = document.createElement("div");
+        grid.className = "pi-grid";
+
+        var head = document.createElement("div");
+        head.className = "pi-grid-head";
+        head.innerHTML = '<span>Outside Platform · Facilitated by Dealality, Executed Offline</span>';
+        grid.appendChild(head);
+
+        STEPS.forEach(function (s, i) {
           var offlineCol = document.createElement("div");
-          offlineCol.className = "pi-col";
-          var offlineSlot = document.createElement("div");
-          offlineSlot.className = "pi-offline-slot";
+          offlineCol.className = "pi-col-offline";
+          offlineCol.style.gridColumn = String(i + 1);
           if (s.mode === "offline") {
-            offlineSlot.innerHTML =
-              '<article class="pi-offline-card">' +
+            offlineCol.innerHTML =
+              '<article class="pi-offline-card" style="--pi-i:' + i + '">' +
               '<span class="pi-num">Step ' + s.n + "</span>" +
               "<h4>" + s.title + "</h4>" +
               "<p>" + s.short + "</p></article>";
           }
-          offlineCol.appendChild(offlineSlot);
-          offlineCols.appendChild(offlineCol);
+          grid.appendChild(offlineCol);
+        });
 
-          var pCol = document.createElement("div");
-          pCol.className = "pi-col";
-          var platformSlot = document.createElement("div");
-          platformSlot.className = "pi-platform-slot";
+        var platformWrap = document.createElement("div");
+        platformWrap.className = "pi-col-platform-wrap";
+
+        var platformLabel = document.createElement("p");
+        platformLabel.className = "pi-band-label pi-band-label--platform";
+        platformLabel.textContent = "In Platform · Managed Within Dealality";
+        platformWrap.appendChild(platformLabel);
+
+        var svgNS = "http://www.w3.org/2000/svg";
+        var svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute("class", "pi-path-layer");
+        svg.setAttribute("viewBox", "0 0 " + VB_W + " " + VB_H);
+        svg.setAttribute("preserveAspectRatio", "none");
+        svg.setAttribute("aria-hidden", "true");
+
+        var defs = document.createElementNS(svgNS, "defs");
+        defs.innerHTML =
+          '<linearGradient id="piGoldGrad" x1="0%" y1="0%" x2="100%" y2="0%">' +
+          '<stop offset="0%" stop-color="#e8c06a"/>' +
+          '<stop offset="50%" stop-color="#d4a853"/>' +
+          '<stop offset="100%" stop-color="#c8942e"/>' +
+          "</linearGradient>";
+        svg.appendChild(defs);
+
+        var path = document.createElementNS(svgNS, "path");
+        path.setAttribute("class", "pi-rail");
+        path.setAttribute("d", buildPath());
+        svg.appendChild(path);
+
+        STEPS.forEach(function (s, i) {
+          var cx = colX(i);
+          var cy = s.mode === "offline" ? offlineY : platformY;
+          var circle = document.createElementNS(svgNS, "circle");
+          circle.setAttribute("class", "pi-node" + (s.mode === "offline" ? " pi-node-offline" : ""));
+          circle.setAttribute("cx", cx);
+          circle.setAttribute("cy", cy);
+          circle.setAttribute("r", s.mode === "offline" ? 14 : 16);
+          svg.appendChild(circle);
+
           if (s.mode === "platform") {
-            platformSlot.innerHTML =
-              '<article class="pi-platform-card">' +
+            var label = document.createElementNS(svgNS, "text");
+            label.setAttribute("class", "pi-node-label pi-node-label-platform");
+            label.setAttribute("x", cx);
+            label.setAttribute("y", cy);
+            label.textContent = s.n;
+            svg.appendChild(label);
+          }
+        });
+
+        platformWrap.appendChild(svg);
+
+        STEPS.forEach(function (s, i) {
+          var pCol = document.createElement("div");
+          pCol.className = "pi-col-platform";
+          if (s.mode === "platform") {
+            pCol.innerHTML =
+              '<article class="pi-platform-card" style="--pi-i:' + i + '">' +
               '<span class="pi-num">Step ' + s.n + "</span>" +
               "<h4>" + s.title + "</h4>" +
               "<p>" + s.short + "</p></article>";
           } else {
-            platformSlot.innerHTML = '<div class="pi-node-only" aria-hidden="true"></div>';
+            pCol.innerHTML = '<div class="pi-node-pass" aria-hidden="true"></div>';
           }
-          pCol.appendChild(platformSlot);
-          platformCols.appendChild(pCol);
-
-          var tCol = document.createElement("div");
-          tCol.className = "pi-col";
-          tCol.innerHTML = '<div class="pi-trigger"><strong>Next trigger</strong>' + s.trigger + "</div>";
-          triggerCols.appendChild(tCol);
+          platformWrap.appendChild(pCol);
         });
 
-        var offlineBand = document.createElement("div");
-        offlineBand.className = "pi-band pi-band--offline";
-        offlineBand.innerHTML =
-          '<p class="pi-band-label">Outside Platform · Facilitated by Dealality, Executed Offline</p>';
-        offlineBand.appendChild(offlineCols);
+        var loiBadge = document.createElement("div");
+        loiBadge.className = "pi-loi-badge";
+        loiBadge.innerHTML =
+          '<svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> LOI intent tracked';
+        platformWrap.appendChild(loiBadge);
+        grid.appendChild(platformWrap);
 
-        platformWrap.appendChild(platformCols);
-        triggerWrap.appendChild(triggerCols);
+        var triggerWrap = document.createElement("div");
+        triggerWrap.className = "pi-col-trigger-wrap";
+        var triggerLabel = document.createElement("p");
+        triggerLabel.className = "pi-band-label";
+        triggerLabel.textContent = "Next Trigger";
+        triggerWrap.appendChild(triggerLabel);
 
+        STEPS.forEach(function (s) {
+          var tCol = document.createElement("div");
+          tCol.className = "pi-col-trigger";
+          tCol.innerHTML = "<strong>Next trigger</strong><p>" + s.trigger + "</p>";
+          triggerWrap.appendChild(tCol);
+        });
+        grid.appendChild(triggerWrap);
+
+        chart.className = "pi-chart pi-fade-in";
         chart.innerHTML = "";
-        chart.appendChild(offlineBand);
-        chart.appendChild(platformWrap);
-        chart.appendChild(triggerWrap);
+        chart.appendChild(grid);
       }
 
       buildInfographic();
