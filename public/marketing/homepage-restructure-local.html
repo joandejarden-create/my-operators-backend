@@ -339,21 +339,41 @@
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
     .reveal.in { opacity: 1; transform: none; }
 
-    /* Process — infographic mock (local only) */
+    /* Process — infographic mock (platform-matched) */
     #process {
-      background: linear-gradient(180deg, #f8f6f0 0%, #f0ece3 100%);
-      color: #1a1a22;
+      --pi-card-h: 140px;
+      --pi-trigger-h: 72px;
+      position: relative;
+      overflow: hidden;
+      background: #080F25;
+      color: var(--text);
+      padding: 52px 0 44px;
     }
-    #process .section-kicker { color: #8a5a18; }
-    #process .section-title { color: #12131a; max-width: 22ch; }
-    #process .section-lead { color: #4a4f5e; max-width: 58ch; }
+    #process::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 18%;
+      width: min(92vw, 900px);
+      height: 280px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(108,114,255,.14) 0%, rgba(108,114,255,.04) 46%, transparent 72%);
+      filter: blur(36px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    #process .wrap { position: relative; z-index: 1; }
+    #process .section-kicker { color: var(--accent); }
+    #process .section-title { color: #fff; max-width: 22ch; }
+    #process .section-lead { color: var(--muted); max-width: 58ch; }
     .process-view-toggle {
       display: inline-flex;
       gap: 4px;
       padding: 4px;
       border-radius: 10px;
-      background: rgba(255,255,255,0.65);
-      border: 1px solid rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
       margin-bottom: 24px;
     }
     .process-view-toggle button {
@@ -361,35 +381,35 @@
       border-radius: 8px;
       font-size: 13px;
       font-weight: 650;
-      color: #5a6070;
+      color: var(--muted);
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     }
     .process-view-toggle button.active {
-      background: #fff;
-      color: #12131a;
-      box-shadow: 0 2px 10px rgba(18,19,26,0.1);
+      background: var(--accent-soft);
+      color: #fff;
+      box-shadow: 0 0 0 1px rgba(108,114,255,0.28);
     }
     .process-infographic-title {
-      font-family: var(--display);
-      font-size: clamp(1.75rem, 3vw, 2.35rem);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      color: #12131a;
+      font-family: var(--font);
+      font-size: clamp(1.55rem, 2.8vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
       margin-bottom: 10px;
-      line-height: 1.1;
+      line-height: 1.15;
     }
     .process-infographic-title em {
-      font-style: italic;
-      color: #b84a32;
+      font-style: normal;
+      color: #8B90FF;
     }
     .pi-legend-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px 28px;
-      margin: 0 0 22px;
+      margin: 0 0 18px;
       font-size: 12.5px;
       font-weight: 600;
-      color: #5c6372;
+      color: rgba(255,255,255,0.58);
     }
     .pi-legend-row span {
       display: inline-flex;
@@ -398,58 +418,56 @@
     }
     .pi-legend-row span::before {
       content: "";
-      width: 11px;
-      height: 11px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       flex-shrink: 0;
     }
-    .pi-legend-row .lg-offline::before { background: linear-gradient(135deg, #e8c06a, #c8942e); box-shadow: 0 0 0 2px rgba(201,148,46,0.2); }
-    .pi-legend-row .lg-platform::before { background: linear-gradient(135deg, #8b90ff, #5c62e8); box-shadow: 0 0 0 2px rgba(108,114,255,0.2); }
+    .pi-legend-row .lg-offline::before { background: #E8A84A; box-shadow: 0 0 0 3px rgba(215,142,44,0.22); }
+    .pi-legend-row .lg-platform::before { background: #8b90ff; box-shadow: 0 0 0 3px rgba(108,114,255,0.2); }
     .pi-scroll {
       overflow-x: auto;
-      margin: 0 -24px;
-      padding: 4px 24px 12px;
+      margin: 0;
+      padding: 0 0 4px;
       -webkit-overflow-scrolling: touch;
-      scrollbar-color: rgba(0,0,0,0.15) transparent;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.18) transparent;
     }
     .pi-chart {
       position: relative;
-      min-width: 1180px;
-      border-radius: 16px;
+      width: 100%;
+      border-radius: 14px;
       overflow: hidden;
-      background: #faf8f4;
-      box-shadow:
-        0 1px 0 rgba(255,255,255,0.8) inset,
-        0 24px 64px rgba(18,19,26,0.12),
-        0 4px 16px rgba(18,19,26,0.06);
-      border: 1px solid rgba(0,0,0,0.07);
+      background: rgba(10,16,36,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
     }
     .pi-grid {
       display: grid;
-      grid-template-columns: repeat(8, minmax(132px, 1fr));
-      grid-template-rows: auto 148px 228px auto;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      grid-template-rows: auto var(--pi-card-h) 220px auto;
+      width: 100%;
+      min-width: 0;
     }
     .pi-grid-head {
       grid-column: 1 / -1;
       grid-row: 1;
-      padding: 14px 16px 6px;
-      background: #faf8f4;
+      padding: 12px 14px 6px;
     }
     .pi-grid-head span {
       font-size: 9.5px;
       font-weight: 800;
       letter-spacing: 0.11em;
       text-transform: uppercase;
-      color: #9a7b38;
+      color: #F0B86A;
     }
     .pi-col-offline {
       grid-row: 2;
-      padding: 0 10px 0;
-      min-height: 132px;
+      padding: 0 6px;
+      height: var(--pi-card-h);
       display: flex;
-      align-items: flex-end;
+      align-items: stretch;
       justify-content: center;
-      position: relative;
+      min-width: 0;
     }
     .pi-band-label--platform {
       position: absolute;
@@ -462,8 +480,9 @@
       font-weight: 800;
       letter-spacing: 0.11em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.48);
+      color: rgba(255,255,255,0.42);
       pointer-events: none;
+      margin: 0;
     }
     .pi-col-platform-wrap {
       grid-column: 1 / -1;
@@ -471,28 +490,27 @@
       display: grid;
       grid-template-columns: subgrid;
       position: relative;
-      min-height: 220px;
-      background:
-        linear-gradient(180deg, rgba(6,10,24,0.55) 0%, rgba(8,15,37,0.82) 45%, rgba(8,15,37,0.92) 100%),
-        url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1800&q=70") center 40%/cover;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      height: 220px;
+      background: linear-gradient(180deg, rgba(17,27,58,0.55), rgba(8,15,37,0.72));
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .pi-col-platform-wrap::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(108,114,255,0.12), transparent 60%);
+      background: radial-gradient(ellipse 70% 55% at 50% 100%, rgba(108,114,255,0.14), transparent 62%);
       pointer-events: none;
     }
     .pi-col-platform {
-      padding: 0 10px;
+      padding: 0 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       z-index: 2;
-      min-height: 220px;
+      height: 220px;
+      min-width: 0;
     }
     .pi-path-layer {
       position: absolute;
@@ -503,24 +521,23 @@
     .pi-path-layer path.pi-rail {
       fill: none;
       stroke: url(#piGoldGrad);
-      stroke-width: 5;
+      stroke-width: 4.5;
       stroke-linecap: round;
       stroke-linejoin: round;
       filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
     }
     .pi-path-layer circle.pi-node {
-      fill: #fff;
+      fill: #0d1530;
       stroke: #d4a853;
-      stroke-width: 4;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+      stroke-width: 3.5;
     }
     .pi-path-layer circle.pi-node-offline {
-      fill: #faf8f4;
-      stroke: #d4a853;
+      fill: #1a1620;
+      stroke: #E8A84A;
       stroke-width: 3;
     }
     .pi-path-layer text.pi-node-label {
-      fill: #8a5a18;
+      fill: #a8abff;
       font-size: 11px;
       font-weight: 800;
       font-family: var(--font);
@@ -528,107 +545,89 @@
       dominant-baseline: central;
     }
     .pi-path-layer text.pi-node-label-platform {
-      fill: #5a5fe6;
+      fill: #a8abff;
+    }
+    .pi-card {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 118px;
+      height: var(--pi-card-h);
+      min-height: var(--pi-card-h);
+      max-height: var(--pi-card-h);
+      padding: 11px 9px;
+      border-radius: 12px;
+      animation: piCardIn 0.55s var(--ease) both;
+      animation-delay: calc(var(--pi-i, 0) * 0.05s);
+    }
+    .pi-card .pi-num {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      flex: 0 0 auto;
+      line-height: 1.2;
+    }
+    .pi-card h4 {
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      margin: 0 0 5px;
+      height: 2.44em;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+    .pi-card p {
+      font-size: 10.5px;
+      line-height: 1.4;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .pi-offline-card {
       position: relative;
-      width: 100%;
-      max-width: 148px;
-      padding: 14px 12px 13px;
-      border-radius: 12px;
-      background: linear-gradient(165deg, #fffdf8 0%, #f5ead6 100%);
-      border: 1px solid rgba(201,148,46,0.28);
-      box-shadow:
-        0 10px 24px rgba(138,90,24,0.1),
-        0 1px 0 rgba(255,255,255,0.9) inset;
-      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
-    }
-    .pi-offline-card:hover {
-      transform: translateY(-3px);
-      box-shadow:
-        0 16px 32px rgba(138,90,24,0.14),
-        0 1px 0 rgba(255,255,255,0.9) inset;
+      background: linear-gradient(165deg, rgba(215,142,44,0.16), rgba(32,26,18,0.55));
+      border: 1px solid rgba(215,142,44,0.32);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
     }
     .pi-offline-card::after {
       content: "";
       position: absolute;
       left: 50%;
-      bottom: -28px;
+      bottom: -22px;
       width: 2px;
-      height: 28px;
+      height: 22px;
       transform: translateX(-50%);
-      background: linear-gradient(180deg, #d4a853, rgba(212,168,83,0.15));
+      background: linear-gradient(180deg, #E8A84A, rgba(232,168,74,0.12));
       border-radius: 2px;
     }
-    .pi-offline-card .pi-num {
-      color: #9a7b38;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .pi-offline-card h4 {
-      color: #2e2618;
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.22;
-      letter-spacing: -0.02em;
-      margin-bottom: 7px;
-    }
-    .pi-offline-card p {
-      color: #6b5d45;
-      font-size: 11px;
-      line-height: 1.5;
-    }
+    .pi-offline-card .pi-num { color: #F0B86A; }
+    .pi-offline-card h4 { color: #fff; }
+    .pi-offline-card p { color: rgba(255,255,255,0.68); }
     .pi-platform-card {
-      position: relative;
-      width: 100%;
-      max-width: 148px;
-      margin-top: -36px;
-      padding: 14px 12px 13px;
-      border-radius: 12px;
-      background: rgba(12,18,42,0.72);
-      border: 1px solid rgba(255,255,255,0.16);
+      margin-top: -22px;
+      background: rgba(12,18,42,0.88);
+      border: 1px solid rgba(108,114,255,0.28);
       backdrop-filter: blur(8px);
-      box-shadow:
-        0 12px 32px rgba(0,0,0,0.35),
-        0 1px 0 rgba(255,255,255,0.08) inset;
-      transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.06) inset;
     }
-    .pi-platform-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(168,171,255,0.45);
-      box-shadow:
-        0 18px 40px rgba(0,0,0,0.42),
-        0 0 0 1px rgba(108,114,255,0.2),
-        0 1px 0 rgba(255,255,255,0.1) inset;
-    }
-    .pi-platform-card .pi-num {
-      color: #a8abff;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .pi-platform-card h4 {
-      color: #fff;
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.22;
-      letter-spacing: -0.02em;
-      margin-bottom: 7px;
-    }
-    .pi-platform-card p {
-      color: rgba(255,255,255,0.74);
-      font-size: 11px;
-      line-height: 1.5;
-    }
+    .pi-platform-card .pi-num { color: #a8abff; }
+    .pi-platform-card h4 { color: #fff; }
+    .pi-platform-card p { color: rgba(255,255,255,0.68); }
     .pi-node-pass {
-      width: 40px;
-      height: 40px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: #fff;
-      border: 4px solid #d4a853;
+      background: #0d1530;
+      border: 3.5px solid #E8A84A;
       box-shadow: 0 4px 14px rgba(0,0,0,0.28);
       flex-shrink: 0;
     }
@@ -637,8 +636,8 @@
       grid-row: 4;
       display: grid;
       grid-template-columns: subgrid;
-      background: #fff;
-      border-top: 1px solid rgba(0,0,0,0.06);
+      background: rgba(8,15,37,0.45);
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
     .pi-col-trigger-wrap > .pi-band-label {
       grid-column: 1 / -1;
@@ -646,13 +645,15 @@
       font-weight: 800;
       letter-spacing: 0.11em;
       text-transform: uppercase;
-      color: #9aa0ad;
-      padding: 12px 16px 0;
+      color: rgba(255,255,255,0.38);
+      padding: 12px 14px 0;
+      margin: 0;
     }
     .pi-col-trigger {
-      padding: 8px 12px 16px;
-      border-right: 1px solid rgba(0,0,0,0.05);
-      min-height: 78px;
+      padding: 8px 8px 14px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      height: calc(var(--pi-trigger-h) + 34px);
+      min-width: 0;
     }
     .pi-col-trigger:last-child { border-right: 0; }
     .pi-col-trigger strong {
@@ -661,45 +662,46 @@
       font-weight: 800;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #b0b5c0;
+      color: rgba(255,255,255,0.35);
       margin-bottom: 5px;
     }
     .pi-col-trigger p {
       font-size: 11px;
-      line-height: 1.48;
-      color: #4a5060;
+      line-height: 1.4;
+      color: rgba(255,255,255,0.58);
+      margin: 0;
+      height: var(--pi-trigger-h);
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
     }
     .pi-loi-badge {
       position: absolute;
-      right: 16px;
-      bottom: 20px;
+      right: 12px;
+      bottom: 14px;
       z-index: 4;
       display: flex;
       align-items: center;
       gap: 7px;
-      padding: 7px 12px;
+      padding: 7px 11px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.22);
-      color: #faf3e1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.82);
       font-size: 10px;
       font-weight: 800;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       backdrop-filter: blur(6px);
     }
     .pi-loi-badge svg { width: 14px; height: 14px; stroke: #6ee7a8; fill: none; stroke-width: 2.5; }
-    .pi-fade-in .pi-offline-card,
-    .pi-fade-in .pi-platform-card {
-      animation: piCardIn 0.55s var(--ease) both;
-      animation-delay: calc(var(--pi-i, 0) * 0.06s);
-    }
     .pi-scroll-hint {
       display: none;
       margin: 10px 0 0;
       font-size: 11px;
       font-weight: 600;
-      color: #8a909c;
+      color: rgba(255,255,255,0.4);
       text-align: center;
     }
     .pi-scroll-hint svg {
@@ -711,8 +713,12 @@
       fill: none;
       stroke-width: 2;
     }
-    @media (max-width: 900px) {
+    @media (max-width: 1100px) {
+      .pi-grid { min-width: 980px; }
       .pi-scroll-hint { display: block; }
+    }
+    @media (max-width: 900px) {
+      #process { --pi-card-h: 148px; padding: 44px 0 40px; }
     }
     @keyframes piCardIn {
       from { opacity: 0; transform: translateY(8px); }
@@ -1269,9 +1275,9 @@
         if (!chart) return;
 
         var COLS = STEPS.length;
-        var VB_W = 1180;
+        var VB_W = 1120;
         var VB_H = 200;
-        var PAD = 74;
+        var PAD = 70;
         var colW = (VB_W - PAD * 2) / (COLS - 1);
         var platformY = 118;
         var offlineY = 36;
@@ -1315,7 +1321,7 @@
           offlineCol.style.gridColumn = String(i + 1);
           if (s.mode === "offline") {
             offlineCol.innerHTML =
-              '<article class="pi-offline-card" style="--pi-i:' + i + '">' +
+              '<article class="pi-card pi-offline-card" style="--pi-i:' + i + '">' +
               '<span class="pi-num">Step ' + s.n + "</span>" +
               "<h4>" + s.title + "</h4>" +
               "<p>" + s.short + "</p></article>";
@@ -1341,9 +1347,9 @@
         var defs = document.createElementNS(svgNS, "defs");
         defs.innerHTML =
           '<linearGradient id="piGoldGrad" x1="0%" y1="0%" x2="100%" y2="0%">' +
-          '<stop offset="0%" stop-color="#e8c06a"/>' +
-          '<stop offset="50%" stop-color="#d4a853"/>' +
-          '<stop offset="100%" stop-color="#c8942e"/>' +
+          '<stop offset="0%" stop-color="#F0B86A"/>' +
+          '<stop offset="50%" stop-color="#D78E2C"/>' +
+          '<stop offset="100%" stop-color="#E8A84A"/>' +
           "</linearGradient>";
         svg.appendChild(defs);
 
@@ -1359,7 +1365,7 @@
           circle.setAttribute("class", "pi-node" + (s.mode === "offline" ? " pi-node-offline" : ""));
           circle.setAttribute("cx", cx);
           circle.setAttribute("cy", cy);
-          circle.setAttribute("r", s.mode === "offline" ? 14 : 16);
+          circle.setAttribute("r", s.mode === "offline" ? 13 : 15);
           svg.appendChild(circle);
 
           if (s.mode === "platform") {
@@ -1379,7 +1385,7 @@
           pCol.className = "pi-col-platform";
           if (s.mode === "platform") {
             pCol.innerHTML =
-              '<article class="pi-platform-card" style="--pi-i:' + i + '">' +
+              '<article class="pi-card pi-platform-card" style="--pi-i:' + i + '">' +
               '<span class="pi-num">Step ' + s.n + "</span>" +
               "<h4>" + s.title + "</h4>" +
               "<p>" + s.short + "</p></article>";
@@ -1411,7 +1417,7 @@
         });
         grid.appendChild(triggerWrap);
 
-        chart.className = "pi-chart pi-fade-in";
+        chart.className = "pi-chart";
         chart.innerHTML = "";
         chart.appendChild(grid);
       }
