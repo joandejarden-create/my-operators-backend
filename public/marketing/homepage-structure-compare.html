@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dealality — Live vs Local Restructure</title>
   <meta name="robots" content="noindex,nofollow" />
+  <script>
+    window.DL_LOCAL_DRAFT_URL =
+      "https://htmlpreview.github.io/?https://raw.githubusercontent.com/joandejarden-create/my-operators-backend/cursor/homepage-clear-copy-df84/public/marketing/homepage-restructure-local.html";
+  </script>
   <style>
     :root {
       --bg: #080f25;
@@ -106,7 +110,7 @@
     </div>
     <div class="actions">
       <a class="primary" href="https://www.dealality.com/" target="_blank" rel="noopener">Open live only</a>
-      <a class="accent" href="homepage-restructure-local.html" target="_blank" rel="noopener">Open local only</a>
+      <a class="accent" id="local-only-link" href="#" target="_blank" rel="noopener">Open local only</a>
       <button type="button" id="reload-both">Reload both</button>
     </div>
   </div>
@@ -116,13 +120,20 @@
   </div>
   <div class="frames">
     <iframe id="live-frame" title="Live Dealality homepage" src="https://www.dealality.com/"></iframe>
-    <iframe id="local-frame" title="Local restructure draft" src="homepage-restructure-local.html"></iframe>
+    <iframe id="local-frame" title="Local restructure draft" src="about:blank"></iframe>
   </div>
   <p class="note">
     On narrow screens, use the buttons above to open live and local in separate tabs.
     Side-by-side works best on desktop.
   </p>
   <script>
+    (function () {
+      var localUrl = window.DL_LOCAL_DRAFT_URL;
+      var localFrame = document.getElementById("local-frame");
+      var localLink = document.getElementById("local-only-link");
+      if (localFrame && localUrl) localFrame.src = localUrl;
+      if (localLink && localUrl) localLink.href = localUrl;
+    })();
     document.getElementById("reload-both").addEventListener("click", function () {
       var live = document.getElementById("live-frame");
       var local = document.getElementById("local-frame");
