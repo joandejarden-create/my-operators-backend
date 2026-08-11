@@ -471,21 +471,6 @@
     platformWrap.appendChild(loiBadge);
     grid.appendChild(platformWrap);
 
-    var triggerWrap = document.createElement("div");
-    triggerWrap.className = "ptm-col-trigger-wrap";
-    var triggerLabel = document.createElement("p");
-    triggerLabel.className = "ptm-band-label";
-    triggerLabel.textContent = "Next Trigger";
-    triggerWrap.appendChild(triggerLabel);
-
-    STEPS.forEach(function (s) {
-      var tCol = document.createElement("div");
-      tCol.className = "ptm-col-trigger";
-      tCol.innerHTML = "<strong>Next trigger</strong><p>" + s.trigger + "</p>";
-      triggerWrap.appendChild(tCol);
-    });
-    grid.appendChild(triggerWrap);
-
     chart.innerHTML = "";
     chart.appendChild(grid);
 
