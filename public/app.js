@@ -59,6 +59,8 @@
     var authenticatedRole = '';
     var isDevMode = false;
 
+    var MARKET_ALERTS_EMBED_VERSION = '1.3.2';
+
     var ROUTES = {
         '/home': { file: '/app/home.html', title: 'Home' },
         '/my-deals': { file: '/my-deals.html', title: 'My Deals' },
@@ -693,6 +695,9 @@
 
     function routeToEmbedUrl(route, role) {
         var embedQs = 'embed=1&appShell=1';
+        if (route === '/market-alerts') {
+            embedQs += '&v=' + MARKET_ALERTS_EMBED_VERSION;
+        }
         if (route === '/opportunity-radar' && role === 'operator') {
             return appendMsTokenToEmbedUrl('/operator-intelligence-radar-with-list.html?' + embedQs);
         }
@@ -1119,6 +1124,11 @@
                         var expectedRecordId = expectedUrlObj.searchParams.get('recordId') || '';
                         var childRecordId = childQs.get('recordId') || '';
                         if (expectedRecordId !== childRecordId) {
+                            mustReloadFrame = true;
+                        }
+                        var expectedAssetV = expectedUrlObj.searchParams.get('v') || '';
+                        var childAssetV = childQs.get('v') || '';
+                        if (expectedAssetV !== childAssetV) {
                             mustReloadFrame = true;
                         }
                     }

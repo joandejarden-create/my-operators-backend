@@ -811,12 +811,25 @@ app.patch("/api/outreach-hub/:table/:recordId", outreachHubUpdate);
 app.delete("/api/outreach-hub/:table/:recordId", outreachHubRemove);
 app.get("/api/outreach/deal-activity-log", getOutreachDealActivityLog);
 
+function sendPublicNoStore(res, publicRelativePath) {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.sendFile(path.join(__dirname, "public", publicRelativePath));
+}
+
 // Serve the unified app hub and brand setup BEFORE static so paths are not treated as static files
 app.get("/app", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'app.html'));
+    sendPublicNoStore(res, "app.html");
 });
 app.get("/app/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'app.html'));
+    sendPublicNoStore(res, "app.html");
+});
+app.get("/app.html", (req, res) => {
+    sendPublicNoStore(res, "app.html");
+});
+app.get("/app.js", (req, res) => {
+    sendPublicNoStore(res, "app.js");
 });
 app.get("/app/home", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'app', 'home.html'));
@@ -1146,7 +1159,13 @@ app.get("/deal-benchmarking", (req, res) => {
 });
 
 app.get("/market-alerts", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'market-alerts.html'));
+    sendPublicNoStore(res, "market-alerts.html");
+});
+app.get("/market-alerts.html", (req, res) => {
+    sendPublicNoStore(res, "market-alerts.html");
+});
+app.get("/market-alerts.js", (req, res) => {
+    sendPublicNoStore(res, "market-alerts.js");
 });
 app.get("/market-alerts-back", (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'market-alerts-back.html'));

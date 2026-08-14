@@ -246,11 +246,12 @@
     }
 
     function normalizeItem(apiItem) {
-        var f = apiItem.fields || {};
+        apiItem = apiItem || {};
+        var f = apiItem.fields || apiItem;
         var publishedAt = f['Published At'] || f.publishedAt || null;
-        var intel = apiItem.intelligence || null;
+        var intel = apiItem.intelligence || f.intelligence || null;
         return {
-            id: apiItem.id,
+            id: apiItem.id || f.id,
             title: sanitizeDisplayText(f['Title'] || f.title || 'Untitled'),
             summary: sanitizeDisplayText(f['Summary'] || f.summary || ''),
             category: f['Category'] || f.category || '',
@@ -262,10 +263,10 @@
             timeAgo: timeAgo(publishedAt),
             sortDate: publishedAt ? new Date(publishedAt).getTime() : 0,
             intelligence: intel,
-            worthReviewing: !!(intel && intel.worthReviewing),
-            actionable: !!(intel && intel.actionable),
-            signalType: (intel && intel.signalType) || '',
-            signalTiming: (intel && intel.signalTiming) || '',
+            worthReviewing: !!(intel && intel.worthReviewing) || !!f.worthReviewing,
+            actionable: !!(intel && intel.actionable) || !!f.actionable,
+            signalType: getUserFacingSourceName((intel && intel.signalType) || f.signalType || ''),
+            signalTiming: (intel && intel.signalTiming) || f.signalTiming || '',
             projectDirection: (intel && intel.projectDirection) || '',
             timingDirection: (intel && intel.timingDirection) || '',
             whatChanged: (intel && intel.whatChanged) || '',
@@ -483,7 +484,7 @@
         }).join('');
 
         titleEl.textContent = item.title;
-        metaEl.textContent = [item.sourceName || 'Source', item.timeAgo || ''].filter(Boolean).join(' \u2022 ');
+        metaEl.textContent = [getUserFacingSourceName(item.sourceName) || 'Source', item.timeAgo || ''].filter(Boolean).join(' \u2022 ');
 
         fillDrawerAnalysis(item);
 
@@ -561,7 +562,7 @@
         var title = escapeHtml(i.title);
         var dek = escapeHtml((i.summary || '').slice(0, 220));
         if (i.summary && i.summary.length > 220) dek += '\u2026';
-        var metaParts = [i.regionGroup, i.sourceName, i.timeAgo].filter(Boolean);
+        var metaParts = [i.regionGroup, getUserFacingSourceName(i.sourceName), i.timeAgo].filter(Boolean);
         var meta = escapeHtml(metaParts.join(' \u2022 '));
         var saved = isSaved(i.id);
         var starClass = 'card-star' + (saved ? ' saved' : '');
@@ -679,9 +680,7 @@
         var wrap = document.getElementById('topReadRail');
         if (!el) return;
         var list = (items && items.length) ? items : (railData && railData.topRead) || [];
-        var normalized = Array.isArray(list) && list.length && list[0] && list[0].fields
-            ? list.map(function (i) { return normalizeItem(i); })
-            : list;
+        var normalized = (Array.isArray(list) ? list : []).map(function (i) { return normalizeItem(i || {}); });
         var hideIds = {};
         (railData.actionableNow || []).forEach(function (i) {
             var id = i && (i.id || (i.fields && i.id));
@@ -737,7 +736,8 @@
 
     function feedRowHtml(i) {
         var iconInfo = iconForCategory(i.category);
-        var meta = [i.category, i.regionGroup, i.sourceName, i.timeAgo].filter(Boolean).join(' \u2022 ');
+        var source = getUserFacingSourceName(i.sourceName || '');
+        var meta = [i.category, i.regionGroup, source, i.timeAgo].filter(Boolean).join(' \u2022 ');
         if (i.actionable && i.signalType) meta = i.signalType + ' \u2022 ' + meta;
         else if (i.worthReviewing && i.signalType) meta = i.signalType + ' \u2022 ' + meta;
         var title = escapeHtml(i.title);
@@ -763,13 +763,12 @@
         var wrap = document.getElementById('actionableNowRail');
         var el = document.getElementById('actionableNowList');
         if (!wrap || !el) return;
-        var list = applySavedFilter(items || []);
+        var list = applySavedFilter((items || []).map(function (i) { return normalizeItem(i || {}); }).filter(function (i) { return i && i.id; }));
+        wrap.style.display = 'block';
         if (!list.length) {
-            wrap.style.display = 'none';
-            el.innerHTML = '';
+            el.innerHTML = '<li class="empty-state" style="padding:12px 0;">No actionable signals right now.</li>';
             return;
         }
-        wrap.style.display = 'block';
         el.innerHTML = list.map(feedRowHtml).join('');
         bindFeedRows(el, list);
     }
@@ -778,13 +777,12 @@
         var wrap = document.getElementById('worthReviewingRail');
         var el = document.getElementById('worthReviewingList');
         if (!wrap || !el) return;
-        var list = applySavedFilter(items || []);
+        var list = applySavedFilter((items || []).map(function (i) { return normalizeItem(i || {}); }).filter(function (i) { return i && i.id; }));
+        wrap.style.display = 'block';
         if (!list.length) {
-            wrap.style.display = 'none';
-            el.innerHTML = '';
+            el.innerHTML = '<li class="empty-state" style="padding:12px 0;">No Worth Reviewing alerts in this window yet.</li>';
             return;
         }
-        wrap.style.display = 'block';
         el.innerHTML = list.map(feedRowHtml).join('');
         bindFeedRows(el, list);
     }
@@ -828,14 +826,10 @@
         }
         renderHeroGrid(feedItems);
         renderActionableRail(
-            (railData.actionableNow || []).map(function (i) {
-                return i.fields ? normalizeItem(i) : i;
-            })
+            (railData.actionableNow || []).map(function (i) { return normalizeItem(i || {}); })
         );
         renderWorthReviewingRail(
-            (railData.worthReviewing || []).map(function (i) {
-                return i.fields ? normalizeItem(i) : i;
-            })
+            (railData.worthReviewing || []).map(function (i) { return normalizeItem(i || {}); })
         );
         renderTopRead(railData.topRead || []);
         renderLiveFeed(feedItems);
@@ -856,18 +850,18 @@
                     liveFeed: data.liveFeed || []
                 };
                 renderActionableRail(
-                    (railData.actionableNow || []).map(function (i) {
-                        return i.fields ? normalizeItem(i) : i;
-                    })
+                    (railData.actionableNow || []).map(function (i) { return normalizeItem(i || {}); })
                 );
                 renderWorthReviewingRail(
-                    (railData.worthReviewing || []).map(function (i) {
-                        return i.fields ? normalizeItem(i) : i;
-                    })
+                    (railData.worthReviewing || []).map(function (i) { return normalizeItem(i || {}); })
                 );
                 renderTopRead(railData.topRead || []);
             })
-            .catch(function () {});
+            .catch(function (err) {
+                if (window.console && console.warn) {
+                    console.warn('[market-alerts] rail fetch failed', err && err.message ? err.message : err);
+                }
+            });
     }
 
     function emptyMessageForFeedMode() {
