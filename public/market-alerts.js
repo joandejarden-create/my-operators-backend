@@ -50,7 +50,7 @@
     let searchTerm = '';
     let savedFilterOn = false;
     let searchDebounceTimer = null;
-    let feedMode = 'actionable'; // 'actionable' | 'worth' | 'all'
+    let feedMode = 'all'; // 'actionable' | 'worth' | 'all'
     let activeAudience = 'all'; // 'owner' | 'brand' | 'operator' | 'all'
     let authHeaders = {};
 
@@ -107,12 +107,12 @@
         if (actionableBtn) {
             actionableBtn.disabled = false;
             actionableBtn.removeAttribute('disabled');
-            actionableBtn.title = 'Open decision windows';
+            actionableBtn.title = 'A credible open decision window remains';
         }
         if (worthBtn) {
             worthBtn.disabled = false;
             worthBtn.removeAttribute('disabled');
-            worthBtn.title = 'Important intelligence that may no longer be actionable';
+            worthBtn.title = 'Meaningful intelligence worth monitoring';
         }
         if (actionableBtn) actionableBtn.classList.toggle('active', feedMode === 'actionable');
         if (worthBtn) worthBtn.classList.toggle('active', feedMode === 'worth');
@@ -172,42 +172,36 @@
         return getSavedIds().indexOf(id) !== -1;
     }
 
+    var toastHideTimeout = null;
+    var toastHideTimeout2 = null;
+    var TOAST_DURATION_MS = 5000;
+    var TOAST_SLIDE_MS = 300;
+
     function showToast(message) {
-        if (!document.getElementById('marketAlertsToastStyle')) {
-            var style = document.createElement('style');
-            style.id = 'marketAlertsToastStyle';
-            style.textContent = '' +
-                '.market-alerts-toast{' +
-                'position:fixed;top:20px;right:20px;max-width:320px;' +
-                'background:rgba(10,16,34,0.96);border:1px solid rgba(255,255,255,0.2);' +
-                'color:var(--dc-text);padding:10px 14px;border-radius:10px;font-size:12px;font-weight:600;' +
-                'z-index:10001;box-shadow:0 8px 24px rgba(0,0,0,0.35);' +
-                'opacity:0;transform:translateY(-8px);pointer-events:none;' +
-                'transition:opacity .22s ease,transform .22s ease;' +
-                '}' +
-                '.market-alerts-toast.show{opacity:1;transform:translateY(0);}' +
-                '@media (max-width:768px){.market-alerts-toast{left:12px;right:12px;max-width:none;top:12px;}}';
-            document.head.appendChild(style);
-        }
-
-        var el = document.getElementById('marketAlertsToast');
-        if (!el) {
-            el = document.createElement('div');
-            el.id = 'marketAlertsToast';
-            el.setAttribute('role', 'status');
-            el.className = 'market-alerts-toast';
-            document.body.appendChild(el);
-        }
-
-        el.textContent = message;
+        var el = document.getElementById('successMessage');
+        if (!el) return;
+        var msgEl = el.querySelector('.toast-message');
+        if (msgEl) msgEl.textContent = message || 'View reset';
+        if (toastHideTimeout) { clearTimeout(toastHideTimeout); toastHideTimeout = null; }
+        if (toastHideTimeout2) { clearTimeout(toastHideTimeout2); toastHideTimeout2 = null; }
+        var bar = el.querySelector('.toast-progress-bar');
+        if (bar) { bar.style.width = '0%'; bar.classList.remove('animate'); }
+        el.style.display = 'block';
         el.classList.remove('show');
-        // Reflow so rapid consecutive toasts retrigger animation.
-        void el.offsetWidth;
-        el.classList.add('show');
-        clearTimeout(showToast._t);
-        showToast._t = setTimeout(function () {
+        void el.offsetHeight;
+        setTimeout(function () {
+            el.classList.add('show');
+            if (bar) { void bar.offsetHeight; bar.classList.add('animate'); }
+        }, 20);
+        toastHideTimeout = setTimeout(function () {
             el.classList.remove('show');
-        }, 2500);
+            toastHideTimeout = null;
+            toastHideTimeout2 = setTimeout(function () {
+                el.style.display = 'none';
+                if (bar) { bar.style.width = '0%'; bar.classList.remove('animate'); }
+                toastHideTimeout2 = null;
+            }, TOAST_SLIDE_MS);
+        }, TOAST_DURATION_MS);
     }
 
     function escapeHtml(s) {
@@ -385,11 +379,11 @@
         if (badgeEl) {
             if (showActionable) {
                 badgeEl.style.display = 'inline-block';
-                badgeEl.textContent = 'ACTIONABLE';
+                badgeEl.textContent = 'ACT NOW';
                 badgeEl.className = 'drawer-mode-badge is-actionable';
             } else {
                 badgeEl.style.display = 'inline-block';
-                badgeEl.textContent = 'WORTH REVIEWING';
+                badgeEl.textContent = 'WATCH';
                 badgeEl.className = 'drawer-mode-badge is-worth';
             }
         }
@@ -476,8 +470,8 @@
 
         var pills = [item.category || 'Alert', item.regionGroup || 'Global'];
         if (item.priority) pills.push(item.priority);
-        if (item.actionable) pills.push('Actionable');
-        else if (item.worthReviewing) pills.push('Worth Reviewing');
+        if (item.actionable) pills.push('Act Now');
+        else if (item.worthReviewing) pills.push('Watch');
         pills = pills.filter(function (p) { return !isInternalTagLabel(p); });
         pillsEl.innerHTML = pills.map(function (p) {
             return '<span class="news-drawer-pill">' + escapeHtml(p) + '</span>';
@@ -577,8 +571,8 @@
         if (actionable) cardClass += ' is-actionable';
         else if (worth) cardClass += ' is-worth-reviewing';
         var chip = actionable
-            ? '<span class="card-actionable-chip">Actionable</span>'
-            : (worth ? '<span class="card-worth-chip">Worth Reviewing</span>' : '');
+            ? '<span class="card-actionable-chip">Act Now</span>'
+            : (worth ? '<span class="card-worth-chip">Watch</span>' : '');
         return '<div class="' + cardClass + '" data-id="' + escapeAttr(i.id) + '">' +
             '<div class="card-top">' +
             '<span class="card-label">' + chip + tag + '</span>' +
@@ -734,18 +728,51 @@
         });
     }
 
+    function looksUnknown(v) {
+        if (v == null) return true;
+        var s = String(v).trim();
+        if (!s) return true;
+        return /^(unknown|n\/?a|none|null|undefined|-|not (?:available|specified))$/i.test(s);
+    }
+
+    function noteworthyProjectDirection(dir) {
+        if (looksUnknown(dir)) return '';
+        var m = String(dir).trim().match(/\b(Challenged|Delayed|Blocked|Advancing)\b/i);
+        if (!m) return '';
+        var token = m[1];
+        return token.charAt(0).toUpperCase() + token.slice(1).toLowerCase();
+    }
+
+    function compactIntelMeta(i) {
+        i = i || {};
+        var parts = [];
+        if (!looksUnknown(i.signalType)) parts.push(String(i.signalType).trim());
+        var timing = '';
+        if (!looksUnknown(i.timingDirection)) timing = String(i.timingDirection).trim();
+        else if (!looksUnknown(i.signalTiming)) timing = String(i.signalTiming).trim();
+        var dir = noteworthyProjectDirection(i.projectDirection);
+        if (dir && timing && !new RegExp('\\b' + dir.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(timing)) {
+            timing = timing + ' \u00b7 ' + dir;
+        } else if (!timing && dir) {
+            timing = dir;
+        }
+        if (timing) parts.push(timing);
+        if (!looksUnknown(i.regionGroup)) parts.push(String(i.regionGroup).trim());
+        var source = getUserFacingSourceName(i.sourceName || '');
+        if (source) parts.push(source);
+        if (!looksUnknown(i.timeAgo)) parts.push(String(i.timeAgo).trim());
+        return parts.join(' \u2022 ');
+    }
+
     function feedRowHtml(i) {
         var iconInfo = iconForCategory(i.category);
-        var source = getUserFacingSourceName(i.sourceName || '');
-        var meta = [i.category, i.regionGroup, source, i.timeAgo].filter(Boolean).join(' \u2022 ');
-        if (i.actionable && i.signalType) meta = i.signalType + ' \u2022 ' + meta;
-        else if (i.worthReviewing && i.signalType) meta = i.signalType + ' \u2022 ' + meta;
+        var meta = compactIntelMeta(i);
         var title = escapeHtml(i.title);
         var saved = isSaved(i.id);
         var starClass = 'feed-star' + (saved ? ' saved' : '');
         var chip = i.actionable
-            ? '<span class="card-actionable-chip">Actionable</span> '
-            : (i.worthReviewing ? '<span class="card-worth-chip">Worth Reviewing</span> ' : '');
+            ? '<span class="card-actionable-chip">Act Now</span> '
+            : (i.worthReviewing ? '<span class="card-worth-chip">Watch</span> ' : '');
         var rowClass = 'news-feed-row';
         if (i.actionable) rowClass += ' is-actionable';
         else if (i.worthReviewing) rowClass += ' is-worth-reviewing';
@@ -766,7 +793,7 @@
         var list = applySavedFilter((items || []).map(function (i) { return normalizeItem(i || {}); }).filter(function (i) { return i && i.id; }));
         wrap.style.display = 'block';
         if (!list.length) {
-            el.innerHTML = '<li class="empty-state" style="padding:12px 0;">No actionable signals right now.</li>';
+            el.innerHTML = '<li class="empty-state" style="padding:12px 0;">No open decision windows right now.</li>';
             return;
         }
         el.innerHTML = list.map(feedRowHtml).join('');
@@ -780,7 +807,7 @@
         var list = applySavedFilter((items || []).map(function (i) { return normalizeItem(i || {}); }).filter(function (i) { return i && i.id; }));
         wrap.style.display = 'block';
         if (!list.length) {
-            el.innerHTML = '<li class="empty-state" style="padding:12px 0;">No Worth Reviewing alerts in this window yet.</li>';
+            el.innerHTML = '<li class="empty-state" style="padding:12px 0;">No Watch alerts in this window yet.</li>';
             return;
         }
         el.innerHTML = list.map(feedRowHtml).join('');
@@ -802,6 +829,7 @@
         if (searchTerm.trim()) n += 1;
         if (savedFilterOn) n += 1;
         if (selectedTimeWindow !== '7d') n += 1;
+        if (feedMode !== 'all') n += 1;
         return n;
     }
 
@@ -831,8 +859,6 @@
         renderWorthReviewingRail(
             (railData.worthReviewing || []).map(function (i) { return normalizeItem(i || {}); })
         );
-        renderTopRead(railData.topRead || []);
-        renderLiveFeed(feedItems);
     }
 
     function loadRail() {
@@ -855,7 +881,6 @@
                 renderWorthReviewingRail(
                     (railData.worthReviewing || []).map(function (i) { return normalizeItem(i || {}); })
                 );
-                renderTopRead(railData.topRead || []);
             })
             .catch(function (err) {
                 if (window.console && console.warn) {
@@ -866,10 +891,10 @@
 
     function emptyMessageForFeedMode() {
         if (feedMode === 'actionable') {
-            return 'No actionable signals right now. Dealality will surface projects and market events when a relevant decision window appears to remain open.';
+            return 'No open decision windows right now. Dealality will surface projects and market events when a relevant decision window appears to remain open.';
         }
         if (feedMode === 'worth') {
-            return 'No Worth Reviewing alerts for your workspace in this window yet. Try All Market Activity or widen the time filter.';
+            return 'No Watch alerts for your workspace in this window yet. Try All or widen the time filter.';
         }
         return 'No market signals are available for the selected filters yet.';
     }
@@ -908,19 +933,6 @@
                 try {
                     var raw = Array.isArray(data && data.items) ? data.items : [];
                     feedItems = raw.map(function (r) { return normalizeItem(r || {}); }).sort(function (a, b) { return (b.sortDate || 0) - (a.sortDate || 0); });
-
-                    if (!opts.skipFallback && opts.autoFallback && feedMode === 'actionable' && feedItems.length === 0) {
-                        feedMode = 'worth';
-                        updateFeedModeControls();
-                        loadFeed({ autoFallback: true, skipFallback: false, fallbackAttempted: true });
-                        return;
-                    }
-                    if (!opts.skipFallback && opts.autoFallback && feedMode === 'worth' && feedItems.length === 0) {
-                        feedMode = 'all';
-                        updateFeedModeControls();
-                        loadFeed({ skipFallback: true });
-                        return;
-                    }
 
                     setViewState(false, false, false);
                     if (feedItems.length === 0) {
@@ -978,7 +990,7 @@
                 searchTerm = '';
                 savedFilterOn = false;
                 selectedTimeWindow = '7d';
-                feedMode = 'actionable';
+                feedMode = 'all';
                 renderCategoryNav();
                 renderRegionNav();
                 updateFeedModeControls();
@@ -989,10 +1001,10 @@
                 document.querySelectorAll('.btn-time').forEach(function (b) {
                     b.classList.toggle('active', (b.getAttribute('data-window') || '7d') === '7d');
                 });
-                loadFeed({ autoFallback: true });
+                loadFeed();
                 loadRail();
                 updateResetViewButton();
-                showToast('Filters cleared');
+                showToast('View reset');
             });
         }
 
@@ -1029,9 +1041,9 @@
 
         updateResetViewButton();
         resolveAuthAndAudience().finally(function () {
-            feedMode = 'actionable';
+            feedMode = 'all';
             updateFeedModeControls();
-            loadFeed({ autoFallback: true });
+            loadFeed();
             loadRail();
         });
     }

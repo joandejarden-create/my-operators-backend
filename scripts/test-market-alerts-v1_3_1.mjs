@@ -71,9 +71,11 @@ assert(canonicalMarketAlertsAudience({}) === "all", "empty flags → all");
 assert(normalizeMarketAlertsAudienceParam("all") === "all", "query audience=all");
 assert(normalizeMarketAlertsAudienceParam("owner") === "owner", "query audience=owner");
 
-assert(/id="feedModeActionable"/.test(html) && !/id="feedModeActionable"[^>]*disabled/.test(html), "Actionable tab not disabled in HTML");
-assert(/id="feedModeWorth"/.test(html) && !/id="feedModeWorth"[^>]*disabled/.test(html), "Worth Reviewing tab not disabled in HTML");
-assert(/id="feedModeAll"/.test(html), "All Market Activity tab present");
+assert(/id="feedModeActionable"/.test(html) && !/id="feedModeActionable"[^>]*disabled/.test(html), "Act Now tab not disabled in HTML");
+assert(/id="feedModeWorth"/.test(html) && !/id="feedModeWorth"[^>]*disabled/.test(html), "Watch tab not disabled in HTML");
+assert(/id="feedModeAll"/.test(html), "All intelligence tab present");
+assert(/id="feedModeActionable"[^>]*>\s*Act Now\s*</.test(html), "Act Now label");
+assert(/id="feedModeWorth"[^>]*>\s*Watch\s*</.test(html), "Watch label");
 assert(!/Actionable needs an Owner/.test(uiJs), "no Owner/Brand/Operator filter lock copy");
 assert(!/audience_unavailable/.test(uiJs), "no audience_unavailable UI branch");
 
@@ -165,13 +167,15 @@ assert(googleNewsSourceLabel("planning") === "Google News", "future writes use c
 const tags = sanitizeUserFacingTags(["RSS", "EARLY_SIGNAL", "EARLY_SIGNAL_PLANNING", "Deals"]);
 assert(JSON.stringify(tags) === JSON.stringify(["Deals"]), "internal tags hidden");
 
-// --- TOP READ / RAIL MARKERS ---
-assert(/id="topReadList"/.test(html), "Top Read list restored");
-assert(/Top Read/.test(html), "Top Read heading restored");
-assert(/id="actionableNowRail"/.test(html), "Actionable Now rail present");
-assert(/id="worthReviewingRail"/.test(html), "Worth Reviewing rail present");
-assert(/Latest Market Activity/.test(html), "Latest Market Activity present");
-assert(/topRead: data\.topRead/.test(uiJs) || /data\.topRead \|\| \[\]/.test(uiJs), "UI uses actual topRead array");
+// --- RAIL MARKERS (Top Read / Latest summary UI removed in V1.3.2; API still supplies topRead) ---
+assert(!/id="topReadList"/.test(html), "Top Read list UI removed");
+assert(!/>\s*Top Read\s*</.test(html), "Top Read heading absent");
+assert(/id="actionableNowRail"/.test(html), "Act Now rail present");
+assert(/id="worthReviewingRail"/.test(html), "Watch rail present");
+assert(/<h2>Act Now<\/h2>/.test(html), "Act Now heading");
+assert(/<h2>Watch<\/h2>/.test(html), "Watch heading");
+assert(!/Latest Market Activity/.test(html), "Latest Market Activity summary absent");
+assert(/topRead: data\.topRead/.test(uiJs) || /data\.topRead \|\| \[\]/.test(uiJs), "UI still receives actual topRead array");
 assert(!/topRead: latestMarketActivity/.test(fs.readFileSync(path.join(ROOT, "api", "market-alerts.js"), "utf8")), "API does not alias topRead to latest");
 
 // --- NO INTERNAL METADATA IN UI SOURCE PATH ---

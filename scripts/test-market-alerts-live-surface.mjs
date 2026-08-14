@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Market Alerts V1.3.2 — live-surface smoke.
+ * Market Alerts live-surface smoke (V1.3.2 UI / cache-bust 1.3.3).
  * Validates the files Express actually serves AND, when a host is reachable,
  * the HTTP HTML/JS the browser would receive (including the app-shell iframe URL).
  *
@@ -15,14 +15,20 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
-const UI_VERSION = "1.3.2";
+const UI_VERSION = "1.3.3";
 const REQUIRED_HTML_STRINGS = [
-  "Actionable",
-  "Worth Reviewing",
+  ">Act Now<",
+  ">Watch<",
+  'data-mode="all"',
+  "intel-summary-row",
+  "news-filter-divider",
+  'id="successMessage"',
+];
+const FORBIDDEN_USER_LABELS = [
+  "Actionable Now",
   "All Market Activity",
   "Top Read",
   "Latest Market Activity",
-  "Actionable Now",
 ];
 
 let failed = 0;
@@ -62,6 +68,10 @@ async function fetchUrl(url, timeoutMs) {
   }
 }
 
+function stripScripts(html) {
+  return html.replace(/<script[\s\S]*?<\/script>/gi, "");
+}
+
 function assertHtmlSurface(label, html) {
   for (const s of REQUIRED_HTML_STRINGS) {
     assert(html.includes(s), `${label} contains "${s}"`);
@@ -74,14 +84,24 @@ function assertHtmlSurface(label, html) {
     html.includes(`market-alerts.js?v=${UI_VERSION}`),
     `${label} loads market-alerts.js?v=${UI_VERSION}`
   );
-  assert(/id="feedModeActionable"/.test(html), `${label} has Actionable button`);
-  assert(/id="feedModeWorth"/.test(html), `${label} has Worth Reviewing button`);
-  assert(/id="feedModeAll"/.test(html), `${label} has All Market Activity button`);
-  assert(!/id="feedModeActionable"[^>]*\bdisabled\b/.test(html), `${label} Actionable not disabled`);
-  assert(!/id="feedModeWorth"[^>]*\bdisabled\b/.test(html), `${label} Worth Reviewing not disabled`);
-  assert(/id="topReadRail"/.test(html) && /id="topReadList"/.test(html), `${label} has Top Read rail`);
-  assert(!/style="display:\s*none;"[^>]*>\s*<h2>Actionable Now/.test(html), `${label} Actionable Now not hidden by default`);
-  const htmlOnly = html.replace(/<script[\s\S]*?<\/script>/gi, "");
+  assert(/id="feedModeActionable"[^>]*>\s*Act Now\s*</.test(html), `${label} Act Now button label`);
+  assert(/id="feedModeWorth"[^>]*>\s*Watch\s*</.test(html), `${label} Watch button label`);
+  assert(/id="feedModeAll"[^>]*>\s*All\s*</.test(html), `${label} All intelligence button`);
+  assert(/class="btn-time active"[^>]*data-window="7d"|data-window="7d"[^>]*class="[^"]*\bactive\b/.test(html), `${label} default 7d selected`);
+  assert(/class="btn-feed-mode active"[^>]*id="feedModeAll"|id="feedModeAll"[^>]*class="[^"]*\bactive\b/.test(html), `${label} default All intelligence selected`);
+  assert(!/id="feedModeActionable"[^>]*\bdisabled\b/.test(html), `${label} Act Now not disabled`);
+  assert(!/id="feedModeWorth"[^>]*\bdisabled\b/.test(html), `${label} Watch not disabled`);
+  assert(!/id="topReadRail"|id="topReadList"|id="liveFeedList"/.test(html), `${label} Top Read / Latest list markup absent`);
+  assert(/<h2>Act Now<\/h2>/.test(html), `${label} Act Now section`);
+  assert(/<h2>Watch<\/h2>/.test(html), `${label} Watch section`);
+  assert(/class="success-message"[^>]*id="successMessage"|id="successMessage"[^>]*class="success-message"/.test(html), `${label} shared Radar toast`);
+
+  const htmlOnly = stripScripts(html);
+  for (const s of FORBIDDEN_USER_LABELS) {
+    assert(!htmlOnly.includes(s), `${label} must not show "${s}"`);
+  }
+  assert(!/>\s*Actionable\s*</.test(htmlOnly), `${label} no Actionable filter label`);
+  assert(!/>\s*Worth Reviewing\s*</.test(htmlOnly), `${label} no Worth Reviewing filter label`);
   assert(!/EARLY_SIGNAL_/.test(htmlOnly), `${label} markup has no EARLY_SIGNAL_`);
   assert(!/EARLY_SIGNAL/.test(htmlOnly), `${label} markup has no EARLY_SIGNAL`);
 }
@@ -89,10 +109,16 @@ function assertHtmlSurface(label, html) {
 function assertJsSurface(label, js) {
   assert(js.includes("function getUserFacingSourceName"), `${label} has getUserFacingSourceName`);
   assert(js.includes("EARLY_SIGNAL"), `${label} sanitizer still knows EARLY_SIGNAL`);
-  assert(js.includes("No widely read alerts yet."), `${label} Top Read empty state`);
-  assert(js.includes("No actionable signals right now."), `${label} Actionable Now empty state`);
-  assert(!/actionableBtn\.disabled\s*=\s*true/.test(js), `${label} does not disable Actionable by role`);
-  assert(js.includes("actionableBtn.disabled = false"), `${label} keeps Actionable enabled`);
+  assert(js.includes("function compactIntelMeta"), `${label} has compactIntelMeta`);
+  assert(js.includes("No open decision windows right now."), `${label} Act Now empty state`);
+  assert(js.includes("No Watch alerts in this window yet."), `${label} Watch empty state`);
+  assert(/let feedMode = 'all'/.test(js), `${label} default feedMode all`);
+  assert(/feedMode = 'all'/.test(js) && /showToast\('View reset'\)/.test(js), `${label} Reset View → all + View reset toast`);
+  assert(js.includes("getElementById('successMessage')"), `${label} uses shared successMessage toast`);
+  assert(!/actionableBtn\.disabled\s*=\s*true/.test(js), `${label} does not disable Act Now by role`);
+  assert(js.includes("actionableBtn.disabled = false"), `${label} keeps Act Now enabled`);
+  assert(!/renderTopRead\(railData/.test(js), `${label} does not render Top Read UI`);
+  assert(!/loadFeed\(\{\s*autoFallback:\s*true/.test(js), `${label} does not auto-fallback modes on load/reset`);
 }
 
 const htmlDisk = readPublic("market-alerts.html");
@@ -192,8 +218,8 @@ if (httpChecked === 0) {
 }
 
 if (failed) {
-  console.error(`\n${failed} Market Alerts V1.3.2 live-surface test(s) failed`);
+  console.error(`\n${failed} Market Alerts live-surface test(s) failed`);
   process.exit(1);
 }
-console.log("\nAll Market Alerts V1.3.2 live-surface tests passed");
+console.log("\nAll Market Alerts live-surface tests passed");
 console.log(`HTTP hosts checked: ${httpChecked}`);

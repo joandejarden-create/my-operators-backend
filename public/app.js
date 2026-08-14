@@ -59,7 +59,7 @@
     var authenticatedRole = '';
     var isDevMode = false;
 
-    var MARKET_ALERTS_EMBED_VERSION = '1.3.2';
+    var MARKET_ALERTS_EMBED_VERSION = '1.3.3';
 
     var ROUTES = {
         '/home': { file: '/app/home.html', title: 'Home' },
