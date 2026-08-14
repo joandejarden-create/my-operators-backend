@@ -8,8 +8,7 @@
  *   node scripts/sync-market-alerts-rss-to-airtable.mjs --dry-run --limit 50
  */
 import "../load-env.js";
-import { fetchMarketAlertsRssItems } from "../api/market-alerts-news.js";
-import { syncRssItemsToAirtable } from "../api/lib/market-alerts-rss-airtable.js";
+import { runMarketAlertsRssSync } from "../api/run-market-alerts-rss-sync.js";
 
 function parseArgs(argv) {
   let limit = parseInt(process.env.RSS_TOTAL_TARGET || "100", 10);
@@ -21,17 +20,13 @@ function parseArgs(argv) {
     if (argv[i].startsWith("--limit=")) limit = parseInt(argv[i].slice("--limit=".length), 10);
   }
 
-  limit = Math.min(Math.max(limit || 100, 1), 250);
   return { limit, dryRun };
 }
 
 const { limit, dryRun } = parseArgs(process.argv.slice(2));
 
 console.log(`Fetching up to ${limit} RSS items…`);
-const items = await fetchMarketAlertsRssItems({ limit });
-console.log(`Fetched ${items.length} unique headline(s). Syncing to Airtable${dryRun ? " (dry run)" : ""}…`);
-
-const result = await syncRssItemsToAirtable({ items, dryRun });
+const result = await runMarketAlertsRssSync({ limit, dryRun });
 
 if (!result.ok && result.error) {
   console.error(result.error);
