@@ -43,19 +43,19 @@
     const DEFAULT_LIMIT = 100;
 
     let feedItems = [];
-    let railData = { actionableNow: [], worthReviewing: [], latestMarketActivity: [], liveFeed: [] };
+    let railData = { actionableNow: [], worthReviewing: [], topRead: [], latestMarketActivity: [], liveFeed: [] };
     let selectedTimeWindow = '7d';
     let selectedCategory = null;
     let selectedRegionGroup = null;
     let searchTerm = '';
     let savedFilterOn = false;
     let searchDebounceTimer = null;
-    let feedMode = 'all'; // 'actionable' | 'worth' | 'all'
-    let activeAudience = null; // 'owner' | 'brand' | 'operator' | null
+    let feedMode = 'actionable'; // 'actionable' | 'worth' | 'all'
+    let activeAudience = 'all'; // 'owner' | 'brand' | 'operator' | 'all'
     let authHeaders = {};
 
     function audienceFromMePayload(data) {
-        if (!data) return null;
+        if (!data) return 'all';
         var d = data.dealality || data;
         var flags = d.flags || d;
         if (flags.isOwnerOperator || (flags.isOwner && flags.isOperator)) return 'owner';
@@ -68,7 +68,7 @@
         if (legacy === 'owner' || legacy === 'owner-operator') return 'owner';
         if (legacy === 'brand') return 'brand';
         if (legacy === 'operator') return 'operator';
-        return null;
+        return 'all';
     }
 
     async function resolveAuthAndAudience() {
@@ -89,12 +89,12 @@
             });
             if (res.ok) {
                 var data = await res.json();
-                activeAudience = audienceFromMePayload(data);
+                activeAudience = audienceFromMePayload(data) || 'all';
             } else {
-                activeAudience = null;
+                activeAudience = 'all';
             }
         } catch (_) {
-            activeAudience = null;
+            activeAudience = 'all';
         }
 
         updateFeedModeControls();
@@ -104,25 +104,28 @@
         var actionableBtn = document.getElementById('feedModeActionable');
         var worthBtn = document.getElementById('feedModeWorth');
         var allBtn = document.getElementById('feedModeAll');
-        var needsAudience = feedMode === 'worth' || feedMode === 'actionable';
         if (actionableBtn) {
-            actionableBtn.disabled = !activeAudience;
-            actionableBtn.title = activeAudience
-                ? 'Open decision windows for your workspace'
-                : 'Actionable needs an Owner, Brand, or Operator workspace';
+            actionableBtn.disabled = false;
+            actionableBtn.removeAttribute('disabled');
+            actionableBtn.title = 'Open decision windows';
         }
         if (worthBtn) {
-            worthBtn.disabled = !activeAudience;
-            worthBtn.title = activeAudience
-                ? 'Important intelligence that may no longer be actionable'
-                : 'Worth Reviewing needs an Owner, Brand, or Operator workspace';
-        }
-        if (needsAudience && !activeAudience) {
-            feedMode = 'all';
+            worthBtn.disabled = false;
+            worthBtn.removeAttribute('disabled');
+            worthBtn.title = 'Important intelligence that may no longer be actionable';
         }
         if (actionableBtn) actionableBtn.classList.toggle('active', feedMode === 'actionable');
         if (worthBtn) worthBtn.classList.toggle('active', feedMode === 'worth');
         if (allBtn) allBtn.classList.toggle('active', feedMode === 'all');
+    }
+
+    function getUserFacingSourceName(raw) {
+        var s = String(raw || '').trim();
+        if (!s) return '';
+        s = s.replace(/\s*\((?:EARLY_SIGNAL(?:_[A-Z0-9]+)*|RSS|GOOGLE_NEWS(?:_[A-Z0-9]+)*|QUERY_FAMILY_[A-Z0-9_]+|INGEST_[A-Z0-9_]+|DEBUG_[A-Z0-9_]+)\)\s*/gi, ' ');
+        s = s.replace(/\b(?:EARLY_SIGNAL(?:_[A-Z0-9]+)*|GOOGLE_NEWS(?:_[A-Z0-9]+)*|QUERY_FAMILY_[A-Z0-9_]+)\b/g, ' ');
+        s = s.replace(/\s{2,}/g, ' ').trim();
+        return s;
     }
 
     function sanitizeDisplayText(text) {
@@ -252,7 +255,7 @@
             summary: sanitizeDisplayText(f['Summary'] || f.summary || ''),
             category: f['Category'] || f.category || '',
             regionGroup: f['Region Group'] || f.regionGroup || 'Global',
-            sourceName: f['Source Name'] || f.sourceName || '',
+            sourceName: getUserFacingSourceName(f['Source Name'] || f.sourceName || ''),
             sourceUrl: f['Source URL'] || f.sourceUrl || '',
             publishedAt: publishedAt,
             priority: f['Priority'] || f.priority || '',
@@ -673,19 +676,38 @@
 
     function renderTopRead(items) {
         var el = document.getElementById('topReadList');
+        var wrap = document.getElementById('topReadRail');
         if (!el) return;
         var list = (items && items.length) ? items : (railData && railData.topRead) || [];
         var normalized = Array.isArray(list) && list.length && list[0] && list[0].fields
             ? list.map(function (i) { return normalizeItem(i); })
             : list;
-        var slice = normalized.slice(0, 5);
+        var hideIds = {};
+        (railData.actionableNow || []).forEach(function (i) {
+            var id = i && (i.id || (i.fields && i.id));
+            if (i && i.id) hideIds[i.id] = true;
+        });
+        (railData.worthReviewing || []).forEach(function (i) {
+            if (i && i.id) hideIds[i.id] = true;
+        });
+        var slice = normalized.filter(function (i) { return i && i.id && !hideIds[i.id]; }).slice(0, 5);
+        if (!slice.length) {
+            el.innerHTML = '<li class="empty-state" style="padding:12px 0;">No widely read alerts yet.</li>';
+            if (wrap) wrap.style.display = 'block';
+            return;
+        }
         el.innerHTML = slice.map(function (i, idx) {
             var title = escapeHtml(i.title);
             var href = i.sourceUrl || '#';
             var target = href !== '#' ? ' target="_blank" rel="noopener"' : '';
             var num = idx + 1;
-            return '<li><span class="top-read-num-circle" aria-hidden="true">' + num + '</span><a href="' + escapeAttr(href) + '"' + target + '>' + title + '</a></li>';
+            var source = escapeHtml(getUserFacingSourceName(i.sourceName || ''));
+            var meta = [source, i.timeAgo].filter(Boolean).join(' \u00b7 ');
+            return '<li><span class="top-read-num-circle" aria-hidden="true">' + num + '</span><a href="' + escapeAttr(href) + '"' + target + '>' + title + '</a>' +
+                (meta ? '<div class="feed-meta">' + meta + '</div>' : '') +
+                '</li>';
         }).join('');
+        if (wrap) wrap.style.display = 'block';
     }
 
     function bindFeedRows(el, sourceItems) {
@@ -742,7 +764,7 @@
         var el = document.getElementById('actionableNowList');
         if (!wrap || !el) return;
         var list = applySavedFilter(items || []);
-        if (!activeAudience || !list.length) {
+        if (!list.length) {
             wrap.style.display = 'none';
             el.innerHTML = '';
             return;
@@ -757,7 +779,7 @@
         var el = document.getElementById('worthReviewingList');
         if (!wrap || !el) return;
         var list = applySavedFilter(items || []);
-        if (!activeAudience || !list.length) {
+        if (!list.length) {
             wrap.style.display = 'none';
             el.innerHTML = '';
             return;
@@ -804,10 +826,6 @@
             setViewState(false, false, true, 'No saved alerts. Save items with the star to see them here (saved locally until you sign in).');
             return;
         }
-        if ((feedMode === 'worth' || feedMode === 'actionable') && !activeAudience) {
-            setViewState(false, false, true, 'Actionable and Worth Reviewing are available when you are signed in with an Owner, Brand, or Operator workspace. Use All Market Activity to browse the full feed.');
-            return;
-        }
         renderHeroGrid(feedItems);
         renderActionableRail(
             (railData.actionableNow || []).map(function (i) {
@@ -819,6 +837,7 @@
                 return i.fields ? normalizeItem(i) : i;
             })
         );
+        renderTopRead(railData.topRead || []);
         renderLiveFeed(feedItems);
     }
 
@@ -832,7 +851,8 @@
                 railData = {
                     actionableNow: data.actionableNow || [],
                     worthReviewing: data.worthReviewing || [],
-                    latestMarketActivity: data.latestMarketActivity || data.topRead || [],
+                    topRead: data.topRead || [],
+                    latestMarketActivity: data.latestMarketActivity || [],
                     liveFeed: data.liveFeed || []
                 };
                 renderActionableRail(
@@ -845,6 +865,7 @@
                         return i.fields ? normalizeItem(i) : i;
                     })
                 );
+                renderTopRead(railData.topRead || []);
             })
             .catch(function () {});
     }
@@ -862,11 +883,6 @@
     function loadFeed(opts) {
         opts = opts || {};
         setViewState(true, false, false);
-
-        if ((feedMode === 'worth' || feedMode === 'actionable') && !activeAudience) {
-            setViewState(false, false, true, 'Actionable and Worth Reviewing are available when you are signed in with an Owner, Brand, or Operator workspace. Use All Market Activity to browse the full feed.');
-            return;
-        }
 
         var params = new URLSearchParams();
         params.set('timeWindow', selectedTimeWindow);
@@ -899,19 +915,22 @@
                     var raw = Array.isArray(data && data.items) ? data.items : [];
                     feedItems = raw.map(function (r) { return normalizeItem(r || {}); }).sort(function (a, b) { return (b.sortDate || 0) - (a.sortDate || 0); });
 
-                    if (!opts.skipFallback && feedMode === 'actionable' && activeAudience && feedItems.length === 0 && !opts.fallbackAttempted) {
+                    if (!opts.skipFallback && opts.autoFallback && feedMode === 'actionable' && feedItems.length === 0) {
                         feedMode = 'worth';
                         updateFeedModeControls();
-                        loadFeed({ fallbackAttempted: true, skipFallback: true });
+                        loadFeed({ autoFallback: true, skipFallback: false, fallbackAttempted: true });
+                        return;
+                    }
+                    if (!opts.skipFallback && opts.autoFallback && feedMode === 'worth' && feedItems.length === 0) {
+                        feedMode = 'all';
+                        updateFeedModeControls();
+                        loadFeed({ skipFallback: true });
                         return;
                     }
 
                     setViewState(false, false, false);
                     if (feedItems.length === 0) {
                         var emptyMsg = emptyMessageForFeedMode();
-                        if (data && data.meta && data.meta.emptyReason === 'audience_unavailable') {
-                            emptyMsg = 'Actionable and Worth Reviewing are available when you are signed in with an Owner, Brand, or Operator workspace.';
-                        }
                         setViewState(false, false, true, emptyMsg);
                         return;
                     }
@@ -942,9 +961,7 @@
 
         document.querySelectorAll('.btn-feed-mode').forEach(function (btn) {
             btn.addEventListener('click', function () {
-                if (btn.disabled) return;
                 var mode = btn.getAttribute('data-mode') || 'all';
-                if ((mode === 'worth' || mode === 'actionable') && !activeAudience) return;
                 feedMode = mode;
                 updateFeedModeControls();
                 loadFeed();
@@ -967,7 +984,7 @@
                 searchTerm = '';
                 savedFilterOn = false;
                 selectedTimeWindow = '7d';
-                feedMode = 'all';
+                feedMode = 'actionable';
                 renderCategoryNav();
                 renderRegionNav();
                 updateFeedModeControls();
@@ -978,7 +995,7 @@
                 document.querySelectorAll('.btn-time').forEach(function (b) {
                     b.classList.toggle('active', (b.getAttribute('data-window') || '7d') === '7d');
                 });
-                loadFeed();
+                loadFeed({ autoFallback: true });
                 loadRail();
                 updateResetViewButton();
                 showToast('Filters cleared');
@@ -1018,9 +1035,9 @@
 
         updateResetViewButton();
         resolveAuthAndAudience().finally(function () {
-            if (activeAudience) feedMode = 'actionable';
+            feedMode = 'actionable';
             updateFeedModeControls();
-            loadFeed();
+            loadFeed({ autoFallback: true });
             loadRail();
         });
     }

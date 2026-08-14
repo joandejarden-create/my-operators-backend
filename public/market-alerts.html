@@ -1178,8 +1178,8 @@
 
         <div class="news-filters-bar">
             <div class="news-feed-mode" id="feedModeNav" role="group" aria-label="Feed mode">
-                <button type="button" class="btn-feed-mode" id="feedModeActionable" data-mode="actionable" disabled title="Sign in with an Owner, Brand, or Operator workspace">Actionable</button>
-                <button type="button" class="btn-feed-mode" id="feedModeWorth" data-mode="worth" disabled title="Sign in with an Owner, Brand, or Operator workspace">Worth Reviewing</button>
+                <button type="button" class="btn-feed-mode" id="feedModeActionable" data-mode="actionable" title="Open decision windows">Actionable</button>
+                <button type="button" class="btn-feed-mode" id="feedModeWorth" data-mode="worth" title="Important intelligence that may no longer be actionable">Worth Reviewing</button>
                 <button type="button" class="btn-feed-mode active" id="feedModeAll" data-mode="all">All Market Activity</button>
             </div>
             <div class="news-time-pills" role="group" aria-label="Time window">
@@ -1254,6 +1254,13 @@
                             <h2>Worth Reviewing</h2>
                             <ul id="worthReviewingList" class="news-feed-list"></ul>
                         </div>
+                        <div id="topReadRail" class="rail-worth-section">
+                            <div class="news-feed-section-header news-feed-section-header--top-read">
+                                <h2>Top Read</h2>
+                                <span class="rail-sub">Most read</span>
+                            </div>
+                            <ol id="topReadList" class="news-top-read news-feed-list"></ol>
+                        </div>
                         <div class="news-feed-section-header">
                             <h2>Latest Market Activity</h2>
                         </div>
@@ -1327,7 +1334,7 @@
         </div>
     </aside>
 
-    <script src="market-alerts.js"></script>
+    <script src="market-alerts.js?v=1.3.1"></script>
     <script src="/embed-chrome.js" defer></script>
 </body>
 </html>

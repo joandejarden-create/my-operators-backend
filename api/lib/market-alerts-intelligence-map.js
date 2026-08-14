@@ -263,3 +263,8 @@ export function audienceWorthField(audience) {
   if (audience === "operator") return MAP_INTEL.worthReviewingOperator;
   return null;
 }
+
+/** Airtable formula: Worth Reviewing for any specialized audience (generic/all fallback). */
+export function worthReviewingAnyFormula() {
+  return `OR({${MAP_INTEL.worthReviewingOwner}} = TRUE(), {${MAP_INTEL.worthReviewingBrand}} = TRUE(), {${MAP_INTEL.worthReviewingOperator}} = TRUE())`;
+}
