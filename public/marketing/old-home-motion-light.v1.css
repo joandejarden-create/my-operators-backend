@@ -1,0 +1,73 @@
+/**
+ * Dealality Old Home — light motion (local preview)
+ * Scope: scroll reveal + soft card hover. No loops, no parallax, no bounce.
+ * Toggle off: html[data-oh-motion="0"] or prefers-reduced-motion.
+ */
+html[data-oh-motion="light"] {
+  --oh-motion-duration: 0.42s;
+  --oh-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --oh-motion-y: 14px;
+  --oh-motion-stagger: 55ms;
+}
+
+html[data-oh-motion="light"] .oh-m-reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--oh-motion-y), 0);
+  transition:
+    opacity var(--oh-motion-duration) var(--oh-motion-ease),
+    transform var(--oh-motion-duration) var(--oh-motion-ease);
+  transition-delay: calc(var(--oh-m-i, 0) * var(--oh-motion-stagger));
+  will-change: opacity, transform;
+}
+
+html[data-oh-motion="light"] .oh-m-reveal.is-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* Soft hover on dense card grids only */
+html[data-oh-motion="light"] .oh-m-lift {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+html[data-oh-motion="light"] .oh-m-lift:hover {
+  transform: translateY(-2px);
+  border-color: rgba(155, 138, 251, 0.28);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+html[data-oh-motion="0"] .oh-m-reveal,
+html[data-oh-motion="off"] .oh-m-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html[data-oh-motion="0"] .oh-m-lift,
+html[data-oh-motion="off"] .oh-m-lift {
+  transition: none !important;
+}
+
+html[data-oh-motion="0"] .oh-m-lift:hover,
+html[data-oh-motion="off"] .oh-m-lift:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-oh-motion="light"] .oh-m-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  html[data-oh-motion="light"] .oh-m-lift,
+  html[data-oh-motion="light"] .oh-m-lift:hover {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}

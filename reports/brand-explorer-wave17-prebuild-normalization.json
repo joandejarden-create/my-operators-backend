@@ -1,0 +1,329 @@
+{
+  "version": "wave17-prebuild-normalization-v1",
+  "mode": "apply",
+  "pass": true,
+  "readyStatement": "wave17_prebuild_normalization_complete_batch_a_ready",
+  "issues": [],
+  "flagCheck": {
+    "apply": true,
+    "ok": true,
+    "missing": [],
+    "required": [
+      "--confirm-active-universe-65",
+      "--confirm-status-only-writes",
+      "--confirm-no-presentation-images-momentum",
+      "--confirm-dream-create-if-missing"
+    ]
+  },
+  "universeBefore": {
+    "totalCount": 65
+  },
+  "universeAfter": {
+    "totalCount": 65
+  },
+  "statusWrites": [
+    {
+      "name": "Hyatt Regency",
+      "recordId": "recP9SqDootMrzaU1",
+      "fromStatus": "Draft",
+      "toStatus": "Under Review",
+      "batch": "A",
+      "applied": true,
+      "fieldsPatched": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Under Review"
+      },
+      "liveBefore": {
+        "recordId": "recP9SqDootMrzaU1",
+        "expectedName": "Hyatt Regency",
+        "name": "Hyatt Regency",
+        "status": "Draft",
+        "parent": "Hyatt Hotels Corporation",
+        "slug": "hyatt-regency",
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "name": "Destination by Hyatt",
+      "recordId": "recUWTcF6fEFcWhMQ",
+      "fromStatus": "Draft",
+      "toStatus": "Under Review",
+      "batch": "B",
+      "applied": true,
+      "fieldsPatched": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Under Review"
+      },
+      "liveBefore": {
+        "recordId": "recUWTcF6fEFcWhMQ",
+        "expectedName": "Destination by Hyatt",
+        "name": "Destination by Hyatt",
+        "status": "Draft",
+        "parent": "Hyatt Hotels Corporation",
+        "slug": "destination-by-hyatt",
+        "ok": true,
+        "issues": []
+      }
+    },
+    {
+      "name": "Caption by Hyatt",
+      "recordId": "recSgIQ0bhRpPXZbU",
+      "fromStatus": "Draft",
+      "toStatus": "Under Review",
+      "batch": "B",
+      "applied": true,
+      "fieldsPatched": [
+        "Brand Status"
+      ],
+      "sanitizedPayloadPreview": {
+        "Brand Status": "Under Review"
+      },
+      "liveBefore": {
+        "recordId": "recSgIQ0bhRpPXZbU",
+        "expectedName": "Caption by Hyatt",
+        "name": "Caption by Hyatt",
+        "status": "Draft",
+        "parent": "Hyatt Hotels Corporation",
+        "slug": "caption-by-hyatt",
+        "ok": true,
+        "issues": []
+      }
+    }
+  ],
+  "confirmOnly": [
+    {
+      "name": "Hyatt Centric",
+      "recordId": "recNy2efMm4N1JtgC",
+      "expectedStatus": "Under Review",
+      "batch": "A"
+    },
+    {
+      "name": "Thompson Hotels",
+      "recordId": "rec4Mga6ejz3L1M3P",
+      "expectedStatus": "Under Review",
+      "batch": "A"
+    },
+    {
+      "name": "Unbound Collection by Hyatt",
+      "recordId": "recDQwcMFontK2CSP",
+      "expectedStatus": "Under Review",
+      "batch": "B"
+    }
+  ],
+  "dream": {
+    "created": true,
+    "recordId": "recdOAwTjgtuQ13WP",
+    "name": "Dream Hotels",
+    "status": "Under Review",
+    "parent": "Hyatt Hotels Corporation",
+    "slug": "dream-hotels",
+    "fieldsCreated": [
+      "Brand Name",
+      "Parent Company",
+      "Brand Status"
+    ],
+    "sanitizedPayloadPreview": {
+      "Brand Name": "Dream Hotels",
+      "Parent Company": "Hyatt Hotels Corporation",
+      "Brand Status": "Under Review"
+    },
+    "identityResult": "DREAM_IDENTITY_READY_FOR_READINESS_SCORING"
+  },
+  "dreamCandidates": {
+    "exact": [],
+    "aliasish": [],
+    "forbiddenHits": [
+      {
+        "id": "rec6iaZERtyk8Zxen",
+        "name": "Dreams Resorts & Spas",
+        "status": "Draft",
+        "parent": "Hyatt Hotels Corporation"
+      }
+    ],
+    "all": [
+      {
+        "id": "rec6iaZERtyk8Zxen",
+        "name": "Dreams Resorts & Spas",
+        "status": "Draft",
+        "parent": "Hyatt Hotels Corporation"
+      }
+    ]
+  },
+  "dreamIdentity": {
+    "recordId": "recdOAwTjgtuQ13WP",
+    "name": "Dream Hotels",
+    "parent": "Hyatt Hotels Corporation",
+    "status": "Under Review",
+    "slug": "dream-hotels",
+    "checks": {
+      "brandNaming": {
+        "pass": true,
+        "note": "Brand Name=\"Dream Hotels\""
+      },
+      "hyattPortfolioRelationship": {
+        "pass": true,
+        "note": "Parent Company=\"Hyatt Hotels Corporation\""
+      },
+      "brandStatusUnderReview": {
+        "pass": true,
+        "note": "Brand Status=\"Under Review\""
+      },
+      "distinctFromThompson": {
+        "pass": true,
+        "note": "Separate Basics record from Thompson Hotels (rec4Mga6ejz3L1M3P)"
+      },
+      "distinctFromDreamsResortsSpas": {
+        "pass": true,
+        "note": "Not mapped to Dreams Resorts & Spas (rec6iaZERtyk8Zxen)"
+      },
+      "distinctFromDesignHotels": {
+        "pass": true,
+        "note": "Not mapped to Design Hotels"
+      },
+      "officialBrandSupport": {
+        "pass": true,
+        "note": "Official Dream Hotels identity confirmed via Hyatt brand path and/or dreamhotels.com vanity redirect",
+        "evidence": [
+          {
+            "url": "https://www.hyatt.com/en-US/brand/dream-hotels",
+            "status": 403,
+            "finalUrl": "https://www.hyatt.com/en-US/brand/dream-hotels",
+            "hitDream": true,
+            "hitHyatt": true,
+            "hitThompson": false,
+            "hitDreams": false,
+            "vanityRedirectToHyattDream": false
+          },
+          {
+            "url": "https://www.dreamhotels.com/",
+            "status": 403,
+            "finalUrl": "https://www.hyatt.com/dream-hotels/en-US?src=vanity_dreamhotels.com",
+            "hitDream": true,
+            "hitHyatt": true,
+            "hitThompson": false,
+            "hitDreams": false,
+            "vanityRedirectToHyattDream": true
+          },
+          {
+            "url": "https://www.hyatt.com/explore-hotels/dream",
+            "status": 403,
+            "finalUrl": "https://www.hyatt.com/explore-hotels/dream",
+            "hitDream": false,
+            "hitHyatt": true,
+            "hitThompson": false,
+            "hitDreams": false,
+            "vanityRedirectToHyattDream": false
+          },
+          {
+            "url": "https://www.hyatt.com/dream-hotels/en-US",
+            "status": 403,
+            "finalUrl": "https://www.hyatt.com/dream-hotels/en-US",
+            "hitDream": true,
+            "hitHyatt": true,
+            "hitThompson": false,
+            "hitDreams": false,
+            "vanityRedirectToHyattDream": false
+          }
+        ]
+      },
+      "propertyExamples": {
+        "pass": true,
+        "note": "Dream-branded hotel examples exist in Hyatt lifestyle portfolio (identity support)",
+        "evidence": [
+          "Dream Downtown New York",
+          "Dream Hollywood",
+          "Dream Midtown",
+          "Dream Nashville"
+        ]
+      }
+    },
+    "result": "DREAM_IDENTITY_READY_FOR_READINESS_SCORING",
+    "batchAssignment": "identity_readiness_pending"
+  },
+  "writeCounts": {
+    "protectedFields": 0,
+    "presentation": 0,
+    "images": 0,
+    "recentMomentum": 0,
+    "nonTarget": 0,
+    "activeLive": 0,
+    "brandStatusPatches": 3,
+    "dreamCreates": 1,
+    "protectedFieldNamesNeverWritten": [
+      "Company Validated",
+      "Company Validation Date",
+      "Founder Visual Review Pass",
+      "Ready for Active Profile",
+      "Active Profile Approved",
+      "Active Profile Approved Date",
+      "External Display Status"
+    ]
+  },
+  "batchAReady": true,
+  "cohortFinal": [
+    {
+      "name": "Hyatt Regency",
+      "recordId": "recP9SqDootMrzaU1",
+      "status": "Under Review",
+      "batch": "A",
+      "expectedAfterApply": "Under Review"
+    },
+    {
+      "name": "Destination by Hyatt",
+      "recordId": "recUWTcF6fEFcWhMQ",
+      "status": "Under Review",
+      "batch": "B",
+      "expectedAfterApply": "Under Review"
+    },
+    {
+      "name": "Caption by Hyatt",
+      "recordId": "recSgIQ0bhRpPXZbU",
+      "status": "Under Review",
+      "batch": "B",
+      "expectedAfterApply": "Under Review"
+    },
+    {
+      "name": "Hyatt Centric",
+      "recordId": "recNy2efMm4N1JtgC",
+      "status": "Under Review",
+      "batch": "A"
+    },
+    {
+      "name": "Thompson Hotels",
+      "recordId": "rec4Mga6ejz3L1M3P",
+      "status": "Under Review",
+      "batch": "A"
+    },
+    {
+      "name": "Unbound Collection by Hyatt",
+      "recordId": "recDQwcMFontK2CSP",
+      "status": "Under Review",
+      "batch": "B"
+    },
+    {
+      "name": "Dream Hotels",
+      "recordId": "recdOAwTjgtuQ13WP",
+      "status": "Under Review",
+      "batch": "identity_readiness_pending"
+    }
+  ],
+  "batches": {
+    "A": [
+      "Hyatt Regency",
+      "Hyatt Centric",
+      "Thompson Hotels"
+    ],
+    "B": [
+      "Caption by Hyatt",
+      "Destination by Hyatt",
+      "Unbound Collection by Hyatt"
+    ],
+    "dream": "identity_readiness_pending"
+  },
+  "identityRevalidatedAt": "2026-08-13T00:09:56.393Z"
+}

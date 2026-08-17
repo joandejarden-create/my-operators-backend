@@ -1,0 +1,80 @@
+{
+  "fields": [
+    {
+      "FIELD_NAME": "Continent",
+      "FIELD_ID": "fldN4YbhOgN286JWP",
+      "FIELD_TYPE": "singleSelect",
+      "PURPOSE": "Derived geography hierarchy",
+      "POPULATED_COUNT": 1838,
+      "NULL_COUNT": 13647,
+      "COMPLETENESS_PERCENT": 11.87,
+      "UNIQUE_VALUE_COUNT": 2,
+      "REFERENCED_BY_CODE": false,
+      "REFERENCED_BY_BRAND_EXPLORER": true,
+      "REFERENCED_BY_HOTEL_INTELLIGENCE": true,
+      "REFERENCED_BY_UI": false,
+      "REFERENCED_BY_MCP": false,
+      "REFERENCED_BY_TESTS": false,
+      "REPO_MATCH_SUM": 766,
+      "REFERENCE_CONFIDENCE": "repo_search_hits",
+      "AIRTABLE_VIEWS_AUTOMATIONS": "UNKNOWN_NOT_QUERIED",
+      "DISPOSITION": "CONSOLIDATE",
+      "RATIONALE": "Prefer derive from Country config; deprecate stored duplicates after validation",
+      "CONSOLIDATE_INTO": [
+        "Country"
+      ],
+      "IN_MAP_CENSUS_FIELDS": false
+    },
+    {
+      "FIELD_NAME": "Sub-Continent",
+      "FIELD_ID": "fld5sOW7bpFEL3m0R",
+      "FIELD_TYPE": "singleSelect",
+      "PURPOSE": "Derived geography hierarchy",
+      "POPULATED_COUNT": 1838,
+      "NULL_COUNT": 13647,
+      "COMPLETENESS_PERCENT": 11.87,
+      "UNIQUE_VALUE_COUNT": 5,
+      "REFERENCED_BY_CODE": false,
+      "REFERENCED_BY_BRAND_EXPLORER": false,
+      "REFERENCED_BY_HOTEL_INTELLIGENCE": true,
+      "REFERENCED_BY_UI": false,
+      "REFERENCED_BY_MCP": false,
+      "REFERENCED_BY_TESTS": false,
+      "REPO_MATCH_SUM": 168,
+      "REFERENCE_CONFIDENCE": "repo_search_hits",
+      "AIRTABLE_VIEWS_AUTOMATIONS": "UNKNOWN_NOT_QUERIED",
+      "DISPOSITION": "CONSOLIDATE",
+      "RATIONALE": "Prefer derive from Country config; deprecate stored duplicates after validation",
+      "CONSOLIDATE_INTO": [
+        "Country"
+      ],
+      "IN_MAP_CENSUS_FIELDS": false
+    },
+    {
+      "FIELD_NAME": "Market / Submarket",
+      "FIELD_ID": "fldAH9njArCewgL8n",
+      "FIELD_TYPE": "singleLineText",
+      "PURPOSE": "Duplicate geography concept vs Market + Submarket",
+      "POPULATED_COUNT": 291,
+      "NULL_COUNT": 15194,
+      "COMPLETENESS_PERCENT": 1.88,
+      "UNIQUE_VALUE_COUNT": 25,
+      "REFERENCED_BY_CODE": false,
+      "REFERENCED_BY_BRAND_EXPLORER": true,
+      "REFERENCED_BY_HOTEL_INTELLIGENCE": true,
+      "REFERENCED_BY_UI": false,
+      "REFERENCED_BY_MCP": false,
+      "REFERENCED_BY_TESTS": false,
+      "REPO_MATCH_SUM": 73,
+      "REFERENCE_CONFIDENCE": "repo_search_hits",
+      "AIRTABLE_VIEWS_AUTOMATIONS": "UNKNOWN_NOT_QUERIED",
+      "DISPOSITION": "CONSOLIDATE",
+      "RATIONALE": "Consolidate into Market and Submarket fields",
+      "CONSOLIDATE_INTO": [
+        "Market",
+        "Submarket"
+      ],
+      "IN_MAP_CENSUS_FIELDS": false
+    }
+  ]
+}

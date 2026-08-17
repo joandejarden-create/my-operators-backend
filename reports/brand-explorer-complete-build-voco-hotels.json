@@ -1,0 +1,414 @@
+{
+  "generatedAt": "2026-07-10T13:04:20.168Z",
+  "mode": "dry-run",
+  "orchestratorVersion": "2",
+  "brand": {
+    "slug": "voco-hotels",
+    "recordId": "recwONQTqGU1jHCsM",
+    "name": "Voco Hotels",
+    "resolution": {
+      "inputTarget": "voco-hotels",
+      "resolvedBrandName": "Voco Hotels",
+      "resolvedRecordId": "recwONQTqGU1jHCsM",
+      "resolvedSlug": "voco-hotels",
+      "resolutionSource": "expansion_backlog",
+      "parentCompany": "InterContinental Hotels Group",
+      "parentFamily": "IHG (source-confirmed)",
+      "wave": 4,
+      "ambiguous": false,
+      "error": null,
+      "suggestedMatches": []
+    }
+  },
+  "resolution": {
+    "inputTarget": "voco-hotels",
+    "resolvedBrandName": "Voco Hotels",
+    "resolvedRecordId": "recwONQTqGU1jHCsM",
+    "resolvedSlug": "voco-hotels",
+    "resolutionSource": "expansion_backlog",
+    "parentCompany": "InterContinental Hotels Group",
+    "parentFamily": "IHG (source-confirmed)",
+    "wave": 4,
+    "ambiguous": false,
+    "error": null,
+    "suggestedMatches": []
+  },
+  "targetQuality": "active-profile",
+  "halted": true,
+  "haltReason": "critical_visual_defects",
+  "completedBatches": [],
+  "stageResults": [
+    {
+      "stage": "profile_inspection",
+      "status": "complete",
+      "summary": {
+        "brandName": "Voco Hotels",
+        "recordId": "recwONQTqGU1jHCsM",
+        "companyValidated": null,
+        "companyValidationDate": null
+      }
+    },
+    {
+      "stage": "source_inventory",
+      "status": "complete",
+      "summary": {
+        "sourceCount": 0,
+        "approvedForExplorer": 0
+      }
+    },
+    {
+      "stage": "fact_inventory",
+      "status": "complete",
+      "summary": {
+        "factCount": 0,
+        "approved": 0,
+        "pending": 0
+      }
+    },
+    {
+      "stage": "brand_residences_legacy_migration",
+      "status": "complete",
+      "summary": {
+        "alreadySynced": 1,
+        "migrateFromLegacy": 0,
+        "conflicts": 0,
+        "noDataDefault": 0,
+        "sourceBackedPreserved": 0,
+        "wouldUpdate": 0
+      },
+      "command": "npm run brand-residences-legacy-migration-writer -- --brand voco-hotels --dry-run",
+      "futureSetupWritesToBrandBasicsOnly": true
+    },
+    {
+      "stage": "required_section_contract",
+      "status": "blocked",
+      "summary": {
+        "readinessScore": 0,
+        "ready": false,
+        "sectionsReady": 0,
+        "sectionsTotal": 8,
+        "nextWriters": [
+          "1) row creation writer",
+          "2) source capture writer",
+          "3) row creation writer",
+          "4) brand-explorer-portfolio-mix-context-normalization-writer",
+          "5) standards founder-review package",
+          "6) brand-explorer-demand-scenario-writer",
+          "7) fact approval writer",
+          "8) brand-explorer-tribute-geographic-footprint-refinement-writer"
+        ]
+      },
+      "command": "npm run brand-explorer-required-section-population-contract -- --brand voco-hotels --dry-run"
+    },
+    {
+      "stage": "visual_defect_audit",
+      "status": "blocked",
+      "summary": {
+        "defects": {
+          "total": 20,
+          "critical": 2,
+          "high": 10,
+          "medium": 8,
+          "low": 0,
+          "missingImage": 3,
+          "emptyBullet": 2,
+          "titleOnlyOrThin": 11,
+          "placeholderGeneric": 2,
+          "sortOrder": 0
+        },
+        "comparableToCurio": false,
+        "nextBatch": "v24B_media_asset_fix"
+      },
+      "command": "npm run brand-explorer-visual-display-defect-audit -- --brand voco-hotels --dry-run"
+    },
+    {
+      "stage": "final_qa_auditor",
+      "status": "blocked",
+      "summary": {
+        "requiredSectionReadinessScore": 0,
+        "presentationQualityScore": 0,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 100,
+        "visualCompletenessScore": 0,
+        "overallNumeric": 30,
+        "overallActiveProfileReadiness": "blocked"
+      },
+      "command": "npm run brand-explorer-final-qa-auditor -- --brand voco-hotels --dry-run"
+    }
+  ],
+  "blockers": [
+    {
+      "type": "required_section",
+      "section": "Openings / Examples / Properties",
+      "classification": "required_backfill",
+      "message": "Insufficient complete openings rows.",
+      "category": "data",
+      "recommendedWriter": "row creation writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Recent Momentum",
+      "classification": "required_backfill",
+      "message": "No minimum set of dated/source-backed momentum rows.",
+      "category": "data",
+      "recommendedWriter": "source capture writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Portfolio Mix",
+      "classification": "required_backfill",
+      "message": "Portfolio mix coverage below minimum.",
+      "category": "data",
+      "recommendedWriter": "row creation writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Portfolio Context",
+      "classification": "required_backfill",
+      "message": "missing_portfolio_context_row; portfolio_context_body_empty; portfolio_context_too_thin",
+      "category": "data",
+      "recommendedWriter": "brand-explorer-portfolio-mix-context-normalization-writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Standard Detail / Where Available",
+      "classification": "required_backfill + founder_review_required",
+      "message": "No approved external-display-safe standards owner table package.",
+      "category": "founder_legal_review",
+      "recommendedWriter": "standards founder-review package"
+    },
+    {
+      "type": "required_section",
+      "section": "Demand Scenario View",
+      "classification": "required_backfill",
+      "message": "incomplete_demand_rows:0<3",
+      "category": "data",
+      "recommendedWriter": "brand-explorer-demand-scenario-writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Loyalty Program",
+      "classification": "required_backfill + fact_approval_required",
+      "message": "Required loyalty mechanics/proof coverage incomplete.",
+      "category": "source",
+      "recommendedWriter": "fact approval writer"
+    },
+    {
+      "type": "required_section",
+      "section": "Geographic Footprint",
+      "classification": "required_refinement",
+      "message": "Regional copy still template-thin.",
+      "category": "data",
+      "recommendedWriter": "brand-explorer-tribute-geographic-footprint-refinement-writer"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Where This Brand Creates the Most Value",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Where This Brand Creates the Most Value",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Where This Brand Creates the Most Value",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Value Creation Scenarios",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Key Watchouts",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Standard Detail, Where Available",
+      "severity": "critical",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Standard Detail, Where Available",
+      "severity": "critical",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Portfolio Context",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    },
+    {
+      "type": "visual_defect",
+      "section": "Brand Materials",
+      "severity": "high",
+      "category": "frontend",
+      "recommendedWriter": "v24B_media_asset_fix"
+    }
+  ],
+  "tributeExpectedRemaining": [],
+  "stagedApplyCommands": [
+    {
+      "section": "Portfolio Context",
+      "blockerType": "required_section",
+      "dryRunCommand": "npm run brand-explorer-portfolio-context-ladder-mapping-repair -- --brand voco-hotels --dry-run",
+      "applyCommand": null,
+      "requiresApproval": true,
+      "requiresFounderReview": false
+    },
+    {
+      "section": "Standard Detail / Where Available",
+      "blockerType": "required_section",
+      "dryRunCommand": "npm run brand-explorer-tribute-standard-detail-table-writer -- --brand voco-hotels --dry-run",
+      "applyCommand": null,
+      "requiresApproval": true,
+      "requiresFounderReview": true
+    },
+    {
+      "section": "Demand Scenario View",
+      "blockerType": "required_section",
+      "dryRunCommand": "npm run brand-explorer-display-content-completion-writer -- --brand voco-hotels --dry-run",
+      "applyCommand": null,
+      "requiresApproval": true,
+      "requiresFounderReview": false
+    },
+    {
+      "section": "Geographic Footprint",
+      "blockerType": "required_section",
+      "dryRunCommand": "npm run brand-explorer-display-content-completion-writer -- --brand voco-hotels --dry-run",
+      "applyCommand": null,
+      "requiresApproval": true,
+      "requiresFounderReview": false
+    },
+    {
+      "section": "Portfolio Context",
+      "blockerType": "visual_defect",
+      "dryRunCommand": "npm run brand-explorer-portfolio-context-ladder-mapping-repair -- --brand voco-hotels --dry-run",
+      "applyCommand": null,
+      "requiresApproval": true,
+      "requiresFounderReview": false
+    }
+  ],
+  "nextRequiredWriter": "row creation writer",
+  "finalQaScores": {
+    "requiredSectionReadinessScore": 0,
+    "presentationQualityScore": 0,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 100,
+    "visualCompletenessScore": 0,
+    "overallNumeric": 30,
+    "overallActiveProfileReadiness": "blocked"
+  },
+  "contractReadinessScore": 0,
+  "requiredSectionStatus": {
+    "score": 0,
+    "ready": false,
+    "sectionsReady": 0,
+    "sectionsTotal": 8
+  },
+  "visualQaStatus": {
+    "score": 0,
+    "comparableToReference": false,
+    "defectCounts": {
+      "total": 20,
+      "critical": 2,
+      "high": 10,
+      "medium": 8,
+      "low": 0,
+      "missingImage": 3,
+      "emptyBullet": 2,
+      "titleOnlyOrThin": 11,
+      "placeholderGeneric": 2,
+      "sortOrder": 0
+    },
+    "recommendedNextBatch": "v24B_media_asset_fix"
+  },
+  "governanceStatus": {
+    "governedPlatformReady": false,
+    "sourceCount": 0,
+    "approvedExplorerSources": 0,
+    "explorerFactCount": 0,
+    "pendingFacts": 0,
+    "sourceEvidenceNeeded": true,
+    "factApprovalNeeded": true,
+    "founderReviewNeeded": true
+  },
+  "governedPlatformReady": false,
+  "readyForActiveProfile": false,
+  "readinessBand": "blocked",
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "companyValidationDateSnapshot": null,
+  "exactDryRunCommand": "npm run brand-explorer-complete-build -- --brand voco-hotels --dry-run --target-quality active-profile",
+  "exactApplyCommand": "npm run brand-explorer-complete-build -- --brand voco-hotels --apply-approved --approve-brand-explorer-complete-build --target-quality active-profile",
+  "reportBasename": "brand-explorer-complete-build-voco-hotels",
+  "applySafety": {
+    "safeForApplyApproved": false,
+    "applyBlockReasons": [
+      "2 critical Final QA defect(s) remain",
+      "Required sections are not ready",
+      "Required image slots are still missing",
+      "Source governance is insufficient for governed apply",
+      "Human/founder/legal review is required"
+    ],
+    "applySkippedReasons": [
+      "2 critical Final QA defect(s) remain",
+      "Required sections are not ready",
+      "Required image slots are still missing",
+      "Source governance is insufficient for governed apply",
+      "Human/founder/legal review is required"
+    ],
+    "applyCommandsEligible": [],
+    "governanceSnapshot": {
+      "companyValidated": null,
+      "governedPlatformReady": false,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": true,
+      "pendingFacts": 0,
+      "internalFacts": 0,
+      "fddFacts": 0
+    }
+  },
+  "applyExecutionLog": [],
+  "airtableModified": false
+}

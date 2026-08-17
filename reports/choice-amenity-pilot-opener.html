@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Choice amenity pilot — steward saves</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 1100px; color: #1a1a1a; }
+    h1 { font-size: 1.25rem; }
+    .note { background: #fff8e6; border: 1px solid #e6d9a8; padding: 0.75rem 1rem; margin: 1rem 0; }
+    ol { line-height: 1.65; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1.5rem; font-size: 0.9rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f4f4f4; }
+    code { font-size: 0.85em; }
+    pre { background: #f6f6f6; padding: 0.75rem 1rem; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>Choice amenities pilot (12 properties)</h1>
+  <div class="note">
+    <strong>Automated fetch is blocked</strong> (403 / Akamai). Do not invent amenity lists.
+    Only HTML saved from a real browser property page can be applied.
+  </div>
+  <p>Save each page to <code>reports/choice-amenity-html/{propertyId}.html</code> (lowercase id, e.g. <code>mx077.html</code>), then:</p>
+  <pre>node scripts/apply-choice-amenities-from-html.mjs
+node scripts/apply-choice-amenities-from-html.mjs --apply</pre>
+  <ol>
+    <li>Click <strong>Open property page</strong> (Chrome/Edge — not Puppeteer/headless).</li>
+    <li>Wait until the page fully loads and an <strong>amenities</strong> section is visible.</li>
+    <li><kbd>Ctrl+S</kbd> → <strong>Webpage, Complete</strong>.</li>
+    <li>Save exactly to the path in the <strong>Save as</strong> column (under <code>reports/choice-amenity-html/</code>).</li>
+    <li>Repeat for each row. Dry-run apply, then <code>--apply</code> (fill-blank Amenities only).</li>
+  </ol>
+  <table>
+    <thead><tr><th>ID</th><th>Name</th><th>Country</th><th>Link</th><th>Save as</th></tr></thead>
+    <tbody>
+    <tr>
+      <td><code>MX043</code></td>
+      <td>Hotel Chihuahua San Francisco</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx043.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX050</code></td>
+      <td>Comfort Inn Cordoba</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/veracruz/cordoba/comfort-inn-hotels/mx050" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx050.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX051</code></td>
+      <td>Comfort Inn Monterrey Valle</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/nuevo-leon/monterrey/comfort-inn-hotels/mx051" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx051.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX054</code></td>
+      <td>Quality Inn Ciudad Obregon</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/sonora/obregon/quality-inn-hotels/mx054" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx054.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX056</code></td>
+      <td>Comfort Inn Tampico</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/tamaulipas/tampico/comfort-inn-hotels/mx056" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx056.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX058</code></td>
+      <td>Quality Inn Piedras Negras</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/coahuila/piedras-negras/quality-inn-hotels/mx058" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx058.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX061</code></td>
+      <td>Comfort Inn Puerto Vallarta</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/jalisco/puerto-vallarta/comfort-inn-hotels/mx061" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx061.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX063</code></td>
+      <td>Quality Inn Aguascalientes</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/aguascalientes/aguascalientes/quality-inn-hotels/mx063" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx063.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX065</code></td>
+      <td>Sleep Inn Torreon</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/coahuila/torreon/sleep-inn-hotels/mx065" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx065.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX070</code></td>
+      <td>Quality Inn &amp; Suites Saltillo Eurotel</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/coahuila/saltillo/quality-inn-hotels/mx070" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx070.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX071</code></td>
+      <td>Quality Inn Mazatlan</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/sinaloa/mazatlan/quality-inn-hotels/mx071" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx071.html</code></td>
+    </tr>
+    <tr>
+      <td><code>MX075</code></td>
+      <td>Quality Inn Monterrey La Fe</td>
+      <td>Mexico</td>
+      <td><a href="https://www.choicehotels.com/nuevo-leon/cd-guadalupe-nuevo-leon/quality-inn-hotels/mx075" target="_blank" rel="noopener">Open property page</a></td>
+      <td><code>reports/choice-amenity-html/mx075.html</code></td>
+    </tr></tbody>
+  </table>
+  <p style="margin-top:1.5rem;font-size:0.9rem;color:#555;">
+    Runbook: <code>reports/choice-amenities-steward-runbook.md</code>
+  </p>
+</body>
+</html>

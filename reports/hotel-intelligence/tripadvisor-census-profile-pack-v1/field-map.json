@@ -1,0 +1,276 @@
+{
+  "map": [
+    {
+      "ta": "id",
+      "destination": "external_id_registry",
+      "classification": "PROVENANCE_ONLY",
+      "tier": "TIER_A_SAFE_GAP_FILL",
+      "note": "Tripadvisor property ID via hotel_id ↔ external_ids (not a census column)"
+    },
+    {
+      "ta": "name",
+      "destination": "match_only",
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Use for identity match; do not overwrite census names"
+    },
+    {
+      "ta": "webUrl",
+      "destination": "provenance",
+      "classification": "PROVENANCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Source URL for observations"
+    },
+    {
+      "ta": "website",
+      "censusField": "Official Property URL",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_A_SAFE_GAP_FILL",
+      "note": "Null-fill Official Property URL when domain validates"
+    },
+    {
+      "ta": "phone",
+      "censusField": "Phone",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_A_SAFE_GAP_FILL",
+      "note": "Null-fill Phone + Phone Source Type/URL/Confidence when empty"
+    },
+    {
+      "ta": "email",
+      "censusField": null,
+      "classification": "NEW_CENSUS_FIELD_RECOMMENDED",
+      "recommendedCensusFields": [
+        "Email",
+        "Email Confidence",
+        "Email Source Type",
+        "Email Source URL"
+      ],
+      "tier": "TIER_B_CONDITIONAL",
+      "note": "No Email column today — recommend Phone-parity provenance suite; until then HI-only"
+    },
+    {
+      "ta": "address / addressObj",
+      "censusField": "Address",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_A_SAFE_GAP_FILL",
+      "note": "Null-fill Address when missing; city/country usually already present on shells"
+    },
+    {
+      "ta": "addressObj.city",
+      "censusField": "City",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_B_CONDITIONAL",
+      "note": "Only fill if City empty AND country compatible — rare on census shells"
+    },
+    {
+      "ta": "addressObj.state",
+      "censusField": "State / Region",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_B_CONDITIONAL",
+      "note": "Null-fill State / Region cautiously"
+    },
+    {
+      "ta": "addressObj.country",
+      "censusField": "Country",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "DO_NOT_STORE",
+      "note": "Never overwrite Country from Tripadvisor"
+    },
+    {
+      "ta": "addressObj.postalcode",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Postal Code not on live census schema — do not invent column unless product asks"
+    },
+    {
+      "ta": "latitude",
+      "censusField": "Latitude",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_A_SAFE_GAP_FILL",
+      "note": "Null-fill coords only; ENABLE_COORDINATE_WRITES must be on for apply"
+    },
+    {
+      "ta": "longitude",
+      "censusField": "Longitude",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_A_SAFE_GAP_FILL",
+      "note": "Paired with latitude"
+    },
+    {
+      "ta": "numberOfRooms",
+      "censusField": "Rooms / Keys",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_C_CANDIDATE_ONLY",
+      "note": "Never auto-authoritative; candidate/provenance model only"
+    },
+    {
+      "ta": "hotelClass",
+      "censusField": "Hotel Class / Segment",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_B_CONDITIONAL",
+      "note": "Retain attribution; methodologies differ (often Giata)"
+    },
+    {
+      "ta": "subcategories",
+      "censusField": "Property Type",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_B_CONDITIONAL",
+      "note": "Map cautiously to Property Type; do not invent options"
+    },
+    {
+      "ta": "amenities",
+      "censusField": "Amenities - Structured Tags",
+      "classification": "EXISTING_CENSUS_FIELD",
+      "tier": "TIER_B_CONDITIONAL",
+      "note": "Append/normalize tags when empty; keep Amenities - Source Text as research-only"
+    },
+    {
+      "ta": "brand (inferred)",
+      "censusField": "Current Brand",
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Do not infer Current Brand from Tripadvisor name"
+    },
+    {
+      "ta": "rating",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "numberOfReviews",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "rankingPosition",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "rankingDenominator",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "rankingString",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "ratingHistogram",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "categoryReviewScores",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "priceLevel",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "priceRange",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "photoCount",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "travelerChoiceAward",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "rawRanking",
+      "censusField": null,
+      "classification": "HOTEL_INTELLIGENCE_ONLY",
+      "tier": "HOTEL_INTELLIGENCE_ONLY",
+      "note": "Dynamic observational Profile Pack — not durable census identity"
+    },
+    {
+      "ta": "description",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Rights / transient — research input only"
+    },
+    {
+      "ta": "roomTips",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Rights / transient — research input only"
+    },
+    {
+      "ta": "aiReviewsSummary",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Rights / transient — research input only"
+    },
+    {
+      "ta": "image",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Rights / transient — research input only"
+    },
+    {
+      "ta": "photos",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Rights / transient — research input only"
+    },
+    {
+      "ta": "offers",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Rights / transient — research input only"
+    },
+    {
+      "ta": "checkInDate",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Rights / transient — research input only"
+    },
+    {
+      "ta": "checkOutDate",
+      "censusField": null,
+      "classification": "DO_NOT_STORE",
+      "tier": "DO_NOT_STORE",
+      "note": "Rights / transient — research input only"
+    }
+  ]
+}

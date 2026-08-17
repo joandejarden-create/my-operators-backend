@@ -1,0 +1,735 @@
+{
+  "ok": true,
+  "status": "production_census_dataforseo_discovery_pilot_v2_partial_policy_decision_needed",
+  "objective": "dataforseo-discovery-pilot-v2",
+  "recommendation": "adjust_then_scale_candidates",
+  "recommendation_notes": "Moderate stricter-classifier yield — keep candidate-only, prefer site:brand-domain + Spanish/Portuguese rooms queries, deepen Maps only for contact/geo gaps, then re-pilot before full 1,224 scale.",
+  "recommended_write_policy": "No Census writes yet. Promote only brand_official URL candidates and tourism_registry / factsheet rooms evidence after human or High extractor validation. Reject affiliate mirrors (already classifier-hard). Travel Weekly = verification only. Maps = candidate-only.",
+  "version": "dataforseo-discovery-pilot-v2",
+  "classifier_version": "dataforseo-candidate-classifier-v2",
+  "generated_at": "2026-08-07T21:32:33.662Z",
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam",
+    "role": "read_only_for_this_pilot"
+  },
+  "gates": {
+    "ok": true,
+    "blockers": [],
+    "candidates_only": true,
+    "validated_writes": false,
+    "census_writes_allowed": false,
+    "dataforseo_is_source_of_truth": false
+  },
+  "census_writes": 0,
+  "brand_setup_writes": 0,
+  "brand_explorer_writes": 0,
+  "records_piloted": 200,
+  "queries_run": 1200,
+  "estimated_cost_usd": 0.396,
+  "useful_candidates_found": 584,
+  "trusted_secondary_candidates_found": 48,
+  "cost_per_useful_candidate": 0.000678,
+  "official_hotel_urls_found": 566,
+  "rooms_evidence_pages_found": 207,
+  "address_candidates_found": 55,
+  "phone_candidates_found": 52,
+  "google_maps_candidates_found": 55,
+  "lat_long_candidates_found": 55,
+  "tourism_registry_candidates_found": 5,
+  "rejected_sources": {
+    "rejected_ota_or_ugc_host": 386,
+    "no_useful_candidate_signal": 236,
+    "rejected_affiliate_mirror": 144,
+    "title_name_mismatch": 111
+  },
+  "source_tier_counts": {
+    "hotel_official": 246,
+    "brand_official": 320,
+    "hospitality_trade_secondary": 48,
+    "google_maps_local": 12,
+    "convention_bureau": 4,
+    "factsheet_pdf": 1,
+    "tourism_board": 1
+  },
+  "source_classifier_precision_estimate": 0.804,
+  "precision_detail": {
+    "precision_estimate": 0.804,
+    "n": 566,
+    "brand_official": 320,
+    "hotel_official": 246
+  },
+  "official_url_hit_rate_records": 0.165,
+  "parent_mix": {
+    "Choice": 74,
+    "Marriott": 126
+  },
+  "top_25_official_urls": [
+    {
+      "hotel_name": "Comfort Inn & Suites Veracruz",
+      "record_id": "rec2mY62wnBxrSb3h",
+      "url": "https://www.choicehotels.com/en-mx/veracruz/veracruz/comfort-suites-hotels",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Book Comfort Suites Hotels in Heroica Veracruz, MX"
+    },
+    {
+      "hotel_name": "Comfort Inn Puebla Centro Histórico",
+      "record_id": "recJmRWXMaR3PLXLF",
+      "url": "https://www.choicehotels.com/es-mx/puebla/puebla/comfort-inn-hotels/mx224?gclid=CjwKCAiAg9urBhB_EiwAgw88mYvzgFOQZJvbiKVIf38BnTgEIAJ54jTG-H1pip1O8wteZSanxVy0RhoCZREQAvD_BwE",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "google_maps_local_candidate",
+        "address_candidate",
+        "phone_candidate",
+        "lat_long_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Puebla Centro Historico"
+    },
+    {
+      "hotel_name": "Radisson Puebla Angelopolis",
+      "record_id": "recOyzLQATwUVnc17",
+      "url": "https://www.choicehotels.com/mexico/puebla/radisson-hotels/mx227?mc=llgoxxpx",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "google_maps_local_candidate",
+        "address_candidate",
+        "phone_candidate",
+        "lat_long_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Radisson Puebla Angelopolis"
+    },
+    {
+      "hotel_name": "Radisson Puebla Angelopolis",
+      "record_id": "recOyzLQATwUVnc17",
+      "url": "https://www.choicehotels.com/mexico/puebla/radisson-hotels/mx227",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Radisson Puebla Angelopolis (Updated 2026)"
+    },
+    {
+      "hotel_name": "Radisson Puebla Angelopolis",
+      "record_id": "recOyzLQATwUVnc17",
+      "url": "https://www.choicehotels.com/mexico/puebla/radisson-hotels/mx227?mc=llgoxxpx",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Radisson Puebla Angelopolis"
+    },
+    {
+      "hotel_name": "Quality Inn Aguascalientes",
+      "record_id": "recamZJUape5BZylI",
+      "url": "http://www.choicehotelsmexico.com/es/quality-inn-aguascalientes-aguascalientes-hotel-MX063",
+      "host": "choicehotelsmexico.com",
+      "source_tier": "hotel_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "google_maps_local_candidate",
+        "address_candidate",
+        "phone_candidate",
+        "lat_long_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Quality Inn Aguascalientes"
+    },
+    {
+      "hotel_name": "Quality Inn Aguascalientes",
+      "record_id": "recamZJUape5BZylI",
+      "url": "https://www.choicehotels.com/es-mx/aguascalientes/aguascalientes/quality-inn-hotels/mx063",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Quality Inn Aguascalientes – Hotel en ..."
+    },
+    {
+      "hotel_name": "Quality Inn Aguascalientes",
+      "record_id": "recamZJUape5BZylI",
+      "url": "https://www.choicehotels.com/mexico/aguascalientes/quality-inn-hotels/mx063",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Quality Inn Aguascalientes"
+    },
+    {
+      "hotel_name": "Quality Inn Chihuahua",
+      "record_id": "recmWNlAbpgMinyLt",
+      "url": "https://hotelsanfranciscocuu.com/",
+      "host": "hotelsanfranciscocuu.com",
+      "source_tier": "hotel_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "google_maps_local_candidate",
+        "address_candidate",
+        "phone_candidate",
+        "lat_long_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Quality Inn Chihuahua San Francisco"
+    },
+    {
+      "hotel_name": "Comfort Inn Monterrey Norte",
+      "record_id": "recoGI3BaW8xQXvUU",
+      "url": "https://www.choicehotels.com/es-mx/nuevo-leon/nuevo-leon/comfort-inn-hotels/mx080",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Monterrey Norte - Hotel en Monterrey, México"
+    },
+    {
+      "hotel_name": "Comfort Inn Monterrey Norte",
+      "record_id": "recoGI3BaW8xQXvUU",
+      "url": "https://www.choicehotels.com/mexico/monterrey,-nuevo-leon/comfort-inn-hotels/mx080",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Monterrey Norte"
+    },
+    {
+      "hotel_name": "Sleep Inn Puebla Centro Histórico",
+      "record_id": "recr7UYJGEvU7EvkO",
+      "url": "https://www.choicehotels.com/es-mx/puebla/puebla/sleep-inn-hotels/mx225",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "google_maps_local_candidate",
+        "address_candidate",
+        "phone_candidate",
+        "lat_long_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Sleep Inn Puebla Centro Historico"
+    },
+    {
+      "hotel_name": "Sleep Inn Puebla Centro Histórico",
+      "record_id": "recr7UYJGEvU7EvkO",
+      "url": "https://www.choicehotels.com/mexico/puebla/sleep-inn-hotels/mx225",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Hotel in Puebla, PUE | Sleep Inn Puebla Centro Histórico"
+    },
+    {
+      "hotel_name": "Comfort Inn Chihuahua",
+      "record_id": "recvR2BdCxtEu6wvr",
+      "url": "https://www.choicehotels.com/es-mx/chihuahua/chihuahua/comfort-inn-hotels/mx077",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Chihuahua – Hotel en Chihuahua, México"
+    },
+    {
+      "hotel_name": "Comfort Inn Chihuahua",
+      "record_id": "recvR2BdCxtEu6wvr",
+      "url": "https://www.choicehotels.com/es-mx/mexico/chihuahua/comfort-inn-hotels/mx077",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Chihuahua – Hotel en Chihuahua, México"
+    },
+    {
+      "hotel_name": "Comfort Inn Chihuahua",
+      "record_id": "recvR2BdCxtEu6wvr",
+      "url": "https://www.choicehotels.com/mexico/chihuahua/comfort-inn-hotels/mx077",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Hotel in Chihuahua, CHH | Comfort Inn ..."
+    },
+    {
+      "hotel_name": "Amberes 64, an Ascend Collection Hotel",
+      "record_id": "recxjhraXKAz0BaVH",
+      "url": "https://www.choicehotels.com/en-mx/mexico/mexico-city/ascend-hotels/mx228",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Amberes 64, an Ascend Collection Hotel - Mexico City"
+    },
+    {
+      "hotel_name": "Amberes 64, an Ascend Collection Hotel",
+      "record_id": "recxjhraXKAz0BaVH",
+      "url": "https://www.choicehotels.com/es-mx/mexico/mexico-city/ascend-hotels/mx228",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Amberes 64, Ascend Collection Hotel"
+    },
+    {
+      "hotel_name": "Amberes 64, an Ascend Collection Hotel",
+      "record_id": "recxjhraXKAz0BaVH",
+      "url": "https://www.choicehotels.com/en-mx/mexico/mexico-city/ascend-hotels/mx228",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Amberes 64, an Ascend Collection Hotel - Mexico City"
+    },
+    {
+      "hotel_name": "Amberes 64, an Ascend Collection Hotel",
+      "record_id": "recxjhraXKAz0BaVH",
+      "url": "https://www.choicehotels.com/en-mx/mexico/mexico-city/ascend-hotels/mx228",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Amberes 64, an Ascend Collection Hotel - Mexico City"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/es/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels™"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/en-us/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels™"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/en-us/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/reviews/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/es/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels™"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/es/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels™"
+    }
+  ],
+  "top_25_rooms_evidence": [
+    {
+      "hotel_name": "Comfort Inn & Suites Veracruz",
+      "record_id": "rec2mY62wnBxrSb3h",
+      "url": "https://www.choicehotels.com/en-mx/veracruz/veracruz/comfort-suites-hotels",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Book Comfort Suites Hotels in Heroica Veracruz, MX"
+    },
+    {
+      "hotel_name": "Quality Inn Aguascalientes",
+      "record_id": "recamZJUape5BZylI",
+      "url": "https://www.choicehotels.com/es-mx/aguascalientes/aguascalientes/quality-inn-hotels/mx063",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Quality Inn Aguascalientes – Hotel en ..."
+    },
+    {
+      "hotel_name": "Quality Inn Aguascalientes",
+      "record_id": "recamZJUape5BZylI",
+      "url": "https://www.choicehotels.com/mexico/aguascalientes/quality-inn-hotels/mx063",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Quality Inn Aguascalientes"
+    },
+    {
+      "hotel_name": "Comfort Inn Monterrey Norte",
+      "record_id": "recoGI3BaW8xQXvUU",
+      "url": "https://www.choicehotels.com/es-mx/nuevo-leon/nuevo-leon/comfort-inn-hotels/mx080",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Monterrey Norte - Hotel en Monterrey, México"
+    },
+    {
+      "hotel_name": "Comfort Inn Monterrey Norte",
+      "record_id": "recoGI3BaW8xQXvUU",
+      "url": "https://www.choicehotels.com/mexico/monterrey,-nuevo-leon/comfort-inn-hotels/mx080",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Monterrey Norte"
+    },
+    {
+      "hotel_name": "Comfort Inn Chihuahua",
+      "record_id": "recvR2BdCxtEu6wvr",
+      "url": "https://www.choicehotels.com/es-mx/chihuahua/chihuahua/comfort-inn-hotels/mx077",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Chihuahua – Hotel en Chihuahua, México"
+    },
+    {
+      "hotel_name": "Comfort Inn Chihuahua",
+      "record_id": "recvR2BdCxtEu6wvr",
+      "url": "https://www.choicehotels.com/es-mx/mexico/chihuahua/comfort-inn-hotels/mx077",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Comfort Inn Chihuahua – Hotel en Chihuahua, México"
+    },
+    {
+      "hotel_name": "Comfort Inn Chihuahua",
+      "record_id": "recvR2BdCxtEu6wvr",
+      "url": "https://www.choicehotels.com/mexico/chihuahua/comfort-inn-hotels/mx077",
+      "host": "choicehotels.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Hotel in Chihuahua, CHH | Comfort Inn ..."
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/en-us/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/rooms/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/en-us/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/photos/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/es/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/rooms/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/en-us/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/rooms/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+      "record_id": "rec1f0W6zwB9lA50p",
+      "url": "https://www.marriott.com/es/hotels/pbcds-la-purificadora-puebla-a-member-of-design-hotels/photos/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "La Purificadora, Puebla, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "City Express by Marriott Ciudad De Mexico Alameda",
+      "record_id": "rec7J2JVuPaZTT3I5",
+      "url": "https://www.marriott.com/en-us/hotels/mexxd-city-express-ciudad-de-mexico-alameda/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "City Express by Marriott Ciudad De Mexico Alameda"
+    },
+    {
+      "hotel_name": "CONDESA df, Mexico City, a Member of Design Hotels™",
+      "record_id": "rec80isZs41AC5dqE",
+      "url": "https://www.marriott.com/en-us/hotels/mexds-condesa-df-mexico-city-a-member-of-design-hotels/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "CONDESA df, Mexico City, a Member of Design Hotels™"
+    },
+    {
+      "hotel_name": "CONDESA df, Mexico City, a Member of Design Hotels™",
+      "record_id": "rec80isZs41AC5dqE",
+      "url": "https://www.marriott.com/en-us/hotels/mexds-condesa-df-mexico-city-a-member-of-design-hotels/rooms/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "CONDESA df, Mexico City, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "CONDESA df, Mexico City, a Member of Design Hotels™",
+      "record_id": "rec80isZs41AC5dqE",
+      "url": "https://www.marriott.com/en-us/hotels/mexds-condesa-df-mexico-city-a-member-of-design-hotels/experiences/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "CONDESA df, Mexico City, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "CONDESA df, Mexico City, a Member of Design Hotels™",
+      "record_id": "rec80isZs41AC5dqE",
+      "url": "https://www.marriott.com/en-us/hotels/mexds-condesa-df-mexico-city-a-member-of-design-hotels/rooms/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "CONDESA df, Mexico City, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "CONDESA df, Mexico City, a Member of Design Hotels™",
+      "record_id": "rec80isZs41AC5dqE",
+      "url": "https://www.marriott.com/en-us/hotels/mexds-condesa-df-mexico-city-a-member-of-design-hotels/rooms/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "CONDESA df, Mexico City, a Member of Design Hotels"
+    },
+    {
+      "hotel_name": "Courtyard by Marriott Mexico City Toreo",
+      "record_id": "rec8p6hfmDomxInK1",
+      "url": "https://www.marriott.com/en-us/hotels/mexna-courtyard-mexico-city-toreo/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Courtyard by Marriott Mexico City Toreo | Hotel with ..."
+    },
+    {
+      "hotel_name": "Courtyard by Marriott Mexico City Toreo",
+      "record_id": "rec8p6hfmDomxInK1",
+      "url": "https://www.marriott.com/en-us/hotels/mexna-courtyard-mexico-city-toreo/rooms/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Rooms | Courtyard by Marriott Mexico City Toreo"
+    },
+    {
+      "hotel_name": "Courtyard by Marriott Mexico City Toreo",
+      "record_id": "rec8p6hfmDomxInK1",
+      "url": "https://www.marriott.com/en-us/hotels/mexna-courtyard-mexico-city-toreo/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Courtyard by Marriott Mexico City Toreo | Hotel with ..."
+    },
+    {
+      "hotel_name": "Courtyard by Marriott Mexico City Toreo",
+      "record_id": "rec8p6hfmDomxInK1",
+      "url": "https://www.marriott.com/en-us/hotels/mexna-courtyard-mexico-city-toreo/rooms/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Rooms | Courtyard by Marriott Mexico City Toreo"
+    },
+    {
+      "hotel_name": "Gran Hotel de Puebla by HNF",
+      "record_id": "rec9SQXzPOOsjPTqc",
+      "url": "https://www.marriott.com/en-us/hotels/pbcde-gran-hotel-de-puebla-by-hnf/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Gran Hotel de Puebla by HNF"
+    },
+    {
+      "hotel_name": "Gran Hotel de Puebla by HNF",
+      "record_id": "rec9SQXzPOOsjPTqc",
+      "url": "https://www.marriott.com/en-us/hotels/pbcde-gran-hotel-de-puebla-by-hnf/overview/",
+      "host": "marriott.com",
+      "source_tier": "brand_official",
+      "categories": [
+        "official_hotel_url_candidate",
+        "rooms_evidence_page_candidate"
+      ],
+      "match_confidence": 1,
+      "title": "Gran Hotel de Puebla by HNF"
+    }
+  ],
+  "scale_estimate": {
+    "universe": 1224,
+    "pilot_records": 200,
+    "estimated_queries": 7344,
+    "estimated_cost_usd": 2.4235,
+    "estimated_useful_candidates": 3574,
+    "estimated_official_urls": 3464,
+    "estimated_rooms_evidence": 1267
+  },
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T21-05-20_CALA-dataforseo-discovery-pilot-v2"
+}

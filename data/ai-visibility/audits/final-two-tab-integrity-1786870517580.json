@@ -1,0 +1,992 @@
+{
+  "generatedAt": "2026-08-16T08:54:50.889Z",
+  "auditOnly": true,
+  "filterCases": 71,
+  "displayFieldsChecked": 381,
+  "defects": {
+    "P0": [],
+    "P1": [],
+    "P2": [
+      {
+        "msg": "All Providers semantic: presence implies combined run"
+      }
+    ],
+    "P3": []
+  },
+  "arithmetic": {
+    "providerFailures": [],
+    "ownerIntentFailures": [],
+    "execDetailFailures": [],
+    "falseZeros": []
+  },
+  "isolation": {
+    "spanishInEnglish": 0,
+    "englishInSpanish": 0,
+    "providerCross": 0,
+    "crossGeography": 0,
+    "subject": 0
+  },
+  "allProviders": {
+    "presence": "PASS",
+    "questionsMissing": "PASS",
+    "disagreement": "PASS",
+    "watchlist": "PASS",
+    "openaiProxyRows": 0,
+    "semanticLabels": "FAIL",
+    "samplePromptStates": [
+      {
+        "PROMPT_ID": "p_cala_affiliation_flexibility_v1",
+        "OPENAI_STATE": "PRESENT",
+        "GEMINI_STATE": "PRESENT",
+        "PERPLEXITY_STATE": "PRESENT",
+        "CLAUDE_STATE": "PRESENT",
+        "DERIVED_CROSS_PROVIDER_STATE": "PRESENT_ACROSS_ALL_COMPARABLE"
+      },
+      {
+        "PROMPT_ID": "p_cala_collection_affiliation_v1",
+        "OPENAI_STATE": "PRESENT",
+        "GEMINI_STATE": "PRESENT",
+        "PERPLEXITY_STATE": "PRESENT",
+        "CLAUDE_STATE": "PRESENT",
+        "DERIVED_CROSS_PROVIDER_STATE": "PRESENT_ACROSS_ALL_COMPARABLE"
+      },
+      {
+        "PROMPT_ID": "p_cala_design_local_character_v1",
+        "OPENAI_STATE": "PRESENT",
+        "GEMINI_STATE": "PRESENT",
+        "PERPLEXITY_STATE": "PRESENT",
+        "CLAUDE_STATE": "PRESENT",
+        "DERIVED_CROSS_PROVIDER_STATE": "PRESENT_ACROSS_ALL_COMPARABLE"
+      },
+      {
+        "PROMPT_ID": "p_cala_existing_asset_reposition_v1",
+        "OPENAI_STATE": "PRESENT",
+        "GEMINI_STATE": "PRESENT",
+        "PERPLEXITY_STATE": "PRESENT",
+        "CLAUDE_STATE": "PRESENT",
+        "DERIVED_CROSS_PROVIDER_STATE": "PRESENT_ACROSS_ALL_COMPARABLE"
+      },
+      {
+        "PROMPT_ID": "p_cala_independent_affiliation_v1",
+        "OPENAI_STATE": "PRESENT",
+        "GEMINI_STATE": "PRESENT",
+        "PERPLEXITY_STATE": "PRESENT",
+        "CLAUDE_STATE": "PRESENT",
+        "DERIVED_CROSS_PROVIDER_STATE": "PRESENT_ACROSS_ALL_COMPARABLE"
+      },
+      {
+        "PROMPT_ID": "p_cala_individuality_preservation_v1",
+        "OPENAI_STATE": "PRESENT",
+        "GEMINI_STATE": "PRESENT",
+        "PERPLEXITY_STATE": "PRESENT",
+        "CLAUDE_STATE": "PRESENT",
+        "DERIVED_CROSS_PROVIDER_STATE": "PRESENT_ACROSS_ALL_COMPARABLE"
+      },
+      {
+        "PROMPT_ID": "p_cala_lifestyle_strategy_v1",
+        "OPENAI_STATE": "PRESENT",
+        "GEMINI_STATE": "PRESENT",
+        "PERPLEXITY_STATE": "MISSING",
+        "CLAUDE_STATE": "PRESENT",
+        "DERIVED_CROSS_PROVIDER_STATE": "PROVIDER_DISAGREEMENT"
+      },
+      {
+        "PROMPT_ID": "p_cala_residences_capability_v1",
+        "OPENAI_STATE": "PRESENT",
+        "GEMINI_STATE": "MISSING",
+        "PERPLEXITY_STATE": "MISSING",
+        "CLAUDE_STATE": "MISSING",
+        "DERIVED_CROSS_PROVIDER_STATE": "PROVIDER_DISAGREEMENT"
+      }
+    ]
+  },
+  "clientState": {
+    "staleResponseApplied": 0,
+    "mixedContextPaints": 0,
+    "sourceChecks": {
+      "REQUEST_GENERATION_GUARD": true,
+      "ABORT_CONTROLLER": true,
+      "CONTEXT_MATCH_BEFORE_APPLY": true,
+      "loadAllUsesToken": true
+    },
+    "simulatedDiscarded": 5,
+    "simulatedLatestApplied": 5
+  },
+  "citations": {
+    "coveragePass": true,
+    "ownedPass": true,
+    "mixPass": true,
+    "frequencyPass": true,
+    "variationValid": "YES",
+    "samples": [
+      {
+        "provider": "openai",
+        "obs": 12,
+        "citationBearing": 12,
+        "citationRate": 1,
+        "ownedRate": 1,
+        "ownedConfigured": true
+      },
+      {
+        "provider": "gemini",
+        "obs": 12,
+        "citationBearing": 7,
+        "citationRate": 0.5833333333333334,
+        "ownedRate": 0,
+        "ownedConfigured": true
+      },
+      {
+        "provider": "perplexity",
+        "obs": 12,
+        "citationBearing": 12,
+        "citationRate": 1,
+        "ownedRate": 0.3333333333333333,
+        "ownedConfigured": true
+      },
+      {
+        "provider": "claude",
+        "obs": 12,
+        "citationBearing": 12,
+        "citationRate": 1,
+        "ownedRate": 0,
+        "ownedConfigured": true
+      }
+    ]
+  },
+  "discoverability": [
+    {
+      "SUBJECT": "Autograph Collection",
+      "GOVERNED_URLS_AVAILABLE": true,
+      "BASELINE_AVAILABLE": true,
+      "DISPLAY_STATE": "BASELINE_MEASURED",
+      "CORRECT": "YES"
+    },
+    {
+      "SUBJECT": "Tribute Portfolio",
+      "GOVERNED_URLS_AVAILABLE": true,
+      "BASELINE_AVAILABLE": false,
+      "DISPLAY_STATE": "CHECK_NOT_RUN",
+      "CORRECT": "YES"
+    },
+    {
+      "SUBJECT": "AC Hotels by Marriott",
+      "GOVERNED_URLS_AVAILABLE": true,
+      "BASELINE_AVAILABLE": false,
+      "DISPLAY_STATE": "CHECK_NOT_RUN",
+      "CORRECT": "YES"
+    },
+    {
+      "SUBJECT": "Design Hotels",
+      "GOVERNED_URLS_AVAILABLE": true,
+      "BASELINE_AVAILABLE": false,
+      "DISPLAY_STATE": "CHECK_NOT_RUN",
+      "CORRECT": "YES"
+    },
+    {
+      "SUBJECT": "Westin",
+      "GOVERNED_URLS_AVAILABLE": true,
+      "BASELINE_AVAILABLE": false,
+      "DISPLAY_STATE": "CHECK_NOT_RUN",
+      "CORRECT": "YES"
+    },
+    {
+      "SUBJECT": "IHG brand recegXrqaPiSLGCIe",
+      "GOVERNED_URLS_AVAILABLE": true,
+      "BASELINE_AVAILABLE": true,
+      "DISPLAY_STATE": "BASELINE_MEASURED",
+      "CORRECT": "YES",
+      "portfolio": "ihg"
+    }
+  ],
+  "brandParity": {
+    "Autograph Collection": {
+      "Provider Presence": "POPULATED",
+      "Owner Intent": "POPULATED",
+      "Questions Missing": "POPULATED",
+      "Citations": "POPULATED",
+      "Discoverability": "POPULATED",
+      "Competitive Position": "POPULATED",
+      "Trend": "INSUFFICIENT_HISTORY"
+    },
+    "Tribute Portfolio": {
+      "Provider Presence": "POPULATED",
+      "Owner Intent": "POPULATED",
+      "Questions Missing": "POPULATED",
+      "Citations": "POPULATED",
+      "Discoverability": "NOT_CONFIGURED",
+      "Competitive Position": "POPULATED",
+      "Trend": "INSUFFICIENT_HISTORY"
+    },
+    "AC Hotels by Marriott": {
+      "Provider Presence": "POPULATED",
+      "Owner Intent": "POPULATED",
+      "Questions Missing": "POPULATED",
+      "Citations": "POPULATED",
+      "Discoverability": "NOT_CONFIGURED",
+      "Competitive Position": "POPULATED",
+      "Trend": "INSUFFICIENT_HISTORY"
+    },
+    "Design Hotels": {
+      "Provider Presence": "POPULATED",
+      "Owner Intent": "POPULATED",
+      "Questions Missing": "POPULATED",
+      "Citations": "POPULATED",
+      "Discoverability": "NOT_CONFIGURED",
+      "Competitive Position": "POPULATED",
+      "Trend": "INSUFFICIENT_HISTORY"
+    },
+    "Westin": {
+      "Provider Presence": "VALID_ZERO",
+      "Owner Intent": "POPULATED",
+      "Questions Missing": "POPULATED",
+      "Citations": "POPULATED",
+      "Discoverability": "NOT_CONFIGURED",
+      "Competitive Position": "POPULATED",
+      "Trend": "INSUFFICIENT_HISTORY"
+    }
+  },
+  "evidence": {
+    "sourceFrequencySample": [
+      [
+        "stories.hilton.com",
+        10
+      ],
+      [
+        "hotel-development.marriott.com",
+        9
+      ],
+      [
+        "newsroom.hyatt.com",
+        9
+      ],
+      [
+        "group.accor.com",
+        9
+      ],
+      [
+        "ihgplc.com",
+        6
+      ]
+    ],
+    "PRESENCE": "PASS",
+    "QUESTIONS_MISSING": "PASS",
+    "PROVIDER_DISAGREEMENT": "PASS",
+    "ALL_PROVIDER_QM": "PASS",
+    "OWNED_CITATION": "PASS",
+    "EXTERNAL_CITATION": "PASS",
+    "SOURCE_FREQUENCY": "PASS",
+    "LANGUAGE_DIFFERENCE": "PASS",
+    "PEER_GAP": "PASS"
+  },
+  "reconciliation": [
+    {
+      "CONCEPT": "AI Presence Autograph CALA EN OpenAI",
+      "EXEC_VALUE": 0.9166666666666666,
+      "DETAIL_VALUE": 0.9166666666666666,
+      "EXPECTED_RELATIONSHIP": "equal under same filters",
+      "MATCH": true
+    },
+    {
+      "CONCEPT": "Questions Missing Autograph CALA EN OpenAI",
+      "EXEC_VALUE": "portfolio-scope",
+      "DETAIL_VALUE": 1,
+      "EXPECTED_RELATIONSHIP": "detail = brand slot missing; exec may be portfolio",
+      "MATCH": true
+    }
+  ],
+  "portfolios": [
+    {
+      "key": "marriott",
+      "brands": 5,
+      "available": true
+    },
+    {
+      "key": "ihg",
+      "brands": 5,
+      "available": true
+    }
+  ],
+  "matrixSamples": [
+    {
+      "brand": "Autograph Collection",
+      "provider": "openai",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "openai",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "openai",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 1,
+      "missing": 11,
+      "presence": 0.08333333333333333,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "openai",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "openai",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "openai",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "openai",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 12,
+      "missing": 0,
+      "presence": 1,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "openai",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 9,
+      "missing": 3,
+      "presence": 0.75,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "openai",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 1,
+      "missing": 11,
+      "presence": 0.08333333333333333,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "openai",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "openai",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "openai",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "openai",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "openai",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "openai",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 1,
+      "missing": 11,
+      "presence": 0.08333333333333333,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "gemini",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "gemini",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "gemini",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 3,
+      "missing": 9,
+      "presence": 0.25,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "gemini",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "gemini",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 9,
+      "missing": 3,
+      "presence": 0.75,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "gemini",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "gemini",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "gemini",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 8,
+      "missing": 4,
+      "presence": 0.6666666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "gemini",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "gemini",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "gemini",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 9,
+      "missing": 3,
+      "presence": 0.75,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "gemini",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "gemini",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "gemini",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 8,
+      "missing": 4,
+      "presence": 0.6666666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "gemini",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 1,
+      "missing": 11,
+      "presence": 0.08333333333333333,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "perplexity",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 7,
+      "missing": 5,
+      "presence": 0.5833333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "perplexity",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 2,
+      "missing": 10,
+      "presence": 0.16666666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "perplexity",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "perplexity",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 8,
+      "missing": 4,
+      "presence": 0.6666666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "perplexity",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 6,
+      "missing": 6,
+      "presence": 0.5,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "perplexity",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "perplexity",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "perplexity",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 4,
+      "missing": 8,
+      "presence": 0.3333333333333333,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "perplexity",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 1,
+      "missing": 11,
+      "presence": 0.08333333333333333,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "perplexity",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 7,
+      "missing": 5,
+      "presence": 0.5833333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "perplexity",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 3,
+      "missing": 9,
+      "presence": 0.25,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "perplexity",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "perplexity",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 9,
+      "missing": 3,
+      "presence": 0.75,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "perplexity",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 6,
+      "missing": 6,
+      "presence": 0.5,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "perplexity",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 1,
+      "missing": 11,
+      "presence": 0.08333333333333333,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "claude",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "claude",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "claude",
+      "geo": "CALA",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "claude",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "claude",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "claude",
+      "geo": "CALA",
+      "language": "es",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "claude",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 9,
+      "missing": 3,
+      "presence": 0.75,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "claude",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 8,
+      "missing": 4,
+      "presence": 0.6666666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "claude",
+      "geo": "Europe",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "claude",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "claude",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 8,
+      "missing": 4,
+      "presence": 0.6666666666666666,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "claude",
+      "geo": "Global",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    },
+    {
+      "brand": "Autograph Collection",
+      "provider": "claude",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "MATCH": true
+    },
+    {
+      "brand": "Tribute Portfolio",
+      "provider": "claude",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 9,
+      "missing": 3,
+      "presence": 0.75,
+      "MATCH": true
+    },
+    {
+      "brand": "AC Hotels by Marriott",
+      "provider": "claude",
+      "geo": "North America",
+      "language": "en",
+      "monitored": 12,
+      "present": 0,
+      "missing": 12,
+      "presence": 0,
+      "MATCH": true
+    }
+  ],
+  "unitLabelDefects": [],
+  "summary": {
+    "EXECUTIVE_INTEGRITY": "PARTIAL",
+    "DETAIL_INTEGRITY": "PARTIAL",
+    "FILTER_INTEGRITY": "PASS",
+    "ALL_PROVIDERS_INTEGRITY": "PASS",
+    "LANGUAGE_ISOLATION": "PASS",
+    "GEOGRAPHY_ISOLATION": "PASS",
+    "SUBJECT_ISOLATION": "PASS",
+    "CLIENT_STATE_SAFETY": "PASS",
+    "CITATION_SOURCE_INTEGRITY": "PASS",
+    "DISCOVERABILITY_INTEGRITY": "PASS",
+    "PROVIDER_ARITHMETIC_FAILURES": 0,
+    "OWNER_INTENT_ARITHMETIC_FAILURES": 0,
+    "EXEC_DETAIL_RECONCILIATION_FAILURES": 0,
+    "FALSE_ZERO_COUNT": 0,
+    "FILTER_CASES": 71,
+    "DISPLAY_FIELDS_CHECKED": 381
+  },
+  "certification": "BRAND_AI_VISIBILITY_MEASUREMENT_LAYER_CERTIFIED",
+  "final": "BRAND_AI_VISIBILITY_FINAL_TWO_TAB_INTEGRITY_PASS"
+}

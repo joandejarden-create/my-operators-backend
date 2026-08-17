@@ -1,0 +1,240 @@
+{
+  "pipelineVersion": "1",
+  "batchName": "mini-batch-2",
+  "batchDisplayName": "Choice Legacy Mini-Batch 2",
+  "generatedAt": "2026-07-07T09:22:57.969Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "halted": false,
+  "haltReason": null,
+  "errors": [],
+  "executiveSummary": {
+    "batchName": "mini-batch-2",
+    "brandsIncluded": [
+      "Country Inn & Suites by Choice",
+      "Radisson by Choice",
+      "Radisson Individuals by Choice",
+      "Radisson RED by Choice"
+    ],
+    "brandsPlatformReady": 4,
+    "brandsChanged": 0,
+    "brandsBlocked": 0,
+    "currentStageByBrand": {
+      "Country Inn & Suites by Choice": "Platform Ready",
+      "Radisson by Choice": "Platform Ready",
+      "Radisson Individuals by Choice": "Platform Ready",
+      "Radisson RED by Choice": "Platform Ready"
+    },
+    "nextRecommendedAction": "No action — batch Platform Ready",
+    "applyRecommended": false,
+    "exactApplyCommand": "npm run choice-legacy-batch-pipeline -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-pipeline"
+  },
+  "brands": [
+    {
+      "brandKey": "country-inn-suites-choice",
+      "brandName": "Country Inn & Suites by Choice",
+      "recordId": "recaayt9u7YYg8h7Y",
+      "explorerStatus": "Active",
+      "profileStatus": "Platform Ready",
+      "sourceCount": 2,
+      "pendingFactCount": 0,
+      "approvedFactCount": 6,
+      "heldFactCount": 0,
+      "governanceStatus": "Company Published",
+      "expectedChip": "AI-Assisted Profile",
+      "sourceBasis": "Company Materials",
+      "currentStage": "Platform Ready",
+      "blockers": [
+        "split_out:press_kit_uncertain_or_missing"
+      ],
+      "actionsAppliedOrProposed": [],
+      "rebuildNeeded": false,
+      "platformReady": true,
+      "applyRecommended": false,
+      "splitOutRecommended": true,
+      "splitOutReason": "press_kit_uncertain_or_missing"
+    },
+    {
+      "brandKey": "radisson-choice",
+      "brandName": "Radisson by Choice",
+      "recordId": "recywbx1YQSTCPqW1",
+      "explorerStatus": "Active",
+      "profileStatus": "Platform Ready",
+      "sourceCount": 3,
+      "pendingFactCount": 3,
+      "approvedFactCount": 4,
+      "heldFactCount": 3,
+      "governanceStatus": "Company Published",
+      "expectedChip": "AI-Assisted Profile",
+      "sourceBasis": "Company Materials",
+      "currentStage": "Platform Ready",
+      "blockers": [],
+      "actionsAppliedOrProposed": [],
+      "rebuildNeeded": false,
+      "platformReady": true,
+      "applyRecommended": false,
+      "splitOutRecommended": false,
+      "splitOutReason": null
+    },
+    {
+      "brandKey": "radisson-individuals-choice",
+      "brandName": "Radisson Individuals by Choice",
+      "recordId": "recRyvM8OmLlDj9G7",
+      "explorerStatus": "Active",
+      "profileStatus": "Platform Ready",
+      "sourceCount": 3,
+      "pendingFactCount": 0,
+      "approvedFactCount": 7,
+      "heldFactCount": 0,
+      "governanceStatus": "Company Published",
+      "expectedChip": "AI-Assisted Profile",
+      "sourceBasis": "Company Materials",
+      "currentStage": "Platform Ready",
+      "blockers": [],
+      "actionsAppliedOrProposed": [],
+      "rebuildNeeded": false,
+      "platformReady": true,
+      "applyRecommended": false,
+      "splitOutRecommended": false,
+      "splitOutReason": null
+    },
+    {
+      "brandKey": "radisson-red-choice",
+      "brandName": "Radisson RED by Choice",
+      "recordId": "recmKqo7M7mLZgRqQ",
+      "explorerStatus": "Active",
+      "profileStatus": "Platform Ready",
+      "sourceCount": 3,
+      "pendingFactCount": 3,
+      "approvedFactCount": 5,
+      "heldFactCount": 3,
+      "governanceStatus": "Company Published",
+      "expectedChip": "AI-Assisted Profile",
+      "sourceBasis": "Company Materials",
+      "currentStage": "Platform Ready",
+      "blockers": [],
+      "actionsAppliedOrProposed": [],
+      "rebuildNeeded": false,
+      "platformReady": true,
+      "applyRecommended": false,
+      "splitOutRecommended": false,
+      "splitOutReason": null
+    }
+  ],
+  "pipelineSummary": {
+    "sourcePackage": {
+      "status": "planned",
+      "summary": {
+        "totalBrands": 4,
+        "readyForPdfRegistration": 0,
+        "needingUrlCapture": 4,
+        "jsShellDevelopmentRisk": 4,
+        "blocked": 0,
+        "alreadyRegisteredPdf": 4,
+        "splitOutRecommended": 1,
+        "pressKitUncertain": 1
+      }
+    },
+    "urlCapture": {
+      "status": "planned",
+      "summary": {
+        "totalUrlsPlanned": 7,
+        "readyToCapture": 0,
+        "captured": 0,
+        "skippedDuplicates": 7,
+        "failed": 0,
+        "warnings": [
+          "duplicate_source_url"
+        ]
+      }
+    },
+    "sourceStewardship": {
+      "status": "planned",
+      "summary": {
+        "totalBrands": 4,
+        "totalSourcesFound": 11,
+        "sourcesEligibleForApproval": 11,
+        "sourcesSkipped": 0,
+        "brandsWithEligibleSources": 4,
+        "blockers": []
+      }
+    },
+    "extraction": {
+      "status": "planned",
+      "summary": {
+        "totalBrands": 4,
+        "totalSourcesInScope": 11,
+        "totalProposedFacts": 0,
+        "proposedFactsByBrand": {
+          "Country Inn & Suites by Choice": 0,
+          "Radisson by Choice": 0,
+          "Radisson Individuals by Choice": 0,
+          "Radisson RED by Choice": 0
+        },
+        "highConfidenceFacts": 0,
+        "factsNeedingReview": 0,
+        "brandsReadyForBatchApply": 0,
+        "brandsToSplitOut": 0,
+        "duplicateWarnings": 16
+      }
+    },
+    "factStewardship": {
+      "status": "planned",
+      "summary": {
+        "totalPendingFactsReviewed": 6,
+        "factsRecommendedForBatchApproval": 0,
+        "factsHeld": 6,
+        "factsRejected": 0,
+        "brandsProjectedGovernanceEligible": 4,
+        "brandsStillBlocked": 0,
+        "brandsToSplitOut": 4
+      }
+    },
+    "governancePublish": {
+      "status": "planned",
+      "summary": {
+        "totalBrands": 4,
+        "eligibleForGovernancePublish": 4,
+        "blocked": 0,
+        "skipped": 0,
+        "splitOutRecommended": 0,
+        "proposedChipSummary": "AI-Assisted Profile",
+        "proposedSourceBasisSummary": "Company Materials"
+      }
+    },
+    "verification": {
+      "mode": "dry_run",
+      "platformReady": 4
+    }
+  },
+  "stageResults": {
+    "verification": {
+      "mode": "dry_run",
+      "platformReady": 4
+    }
+  },
+  "applyLog": [],
+  "batchApplyCommands": {
+    "sourcePackageDryRun": "npm run choice-legacy-brand-source-package-batch -- --batch mini-batch-2 --dry-run",
+    "sourcePackageApply": "npm run choice-legacy-brand-source-package-batch -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-source-register",
+    "urlCaptureDryRun": "npm run choice-legacy-batch-url-capture -- --batch mini-batch-2 --dry-run",
+    "urlCaptureApply": "npm run choice-legacy-batch-url-capture -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-url-capture",
+    "stewardshipDryRun": "npm run choice-legacy-batch-source-stewardship -- --batch mini-batch-2 --dry-run",
+    "stewardshipApply": "npm run choice-legacy-batch-source-stewardship -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-stewardship",
+    "extractDryRun": "npm run choice-legacy-batch-extract -- --batch mini-batch-2 --dry-run",
+    "extractApply": "npm run choice-legacy-batch-extract -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-extract",
+    "factStewardshipDryRun": "npm run choice-legacy-batch-fact-stewardship -- --batch mini-batch-2 --dry-run",
+    "factStewardshipApply": "npm run choice-legacy-batch-fact-stewardship -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-fact-stewardship",
+    "governancePublishDryRun": "npm run choice-legacy-batch-governance-publish -- --batch mini-batch-2 --dry-run",
+    "governancePublishApply": "npm run choice-legacy-batch-governance-publish -- --batch mini-batch-2 --apply --approve-choice-legacy-batch-governance-publish"
+  },
+  "doesNotDo": [
+    "Rebuild Brand Explorer content or overwrite Brand Setup content fields",
+    "Auto-approve unsafe or held facts",
+    "Set Company Validated or Company Validation Date",
+    "Weaken RHG/global safeguards for Choice/Americas brands",
+    "Publish Source-Informed posture for official Choice company materials",
+    "Duplicate existing sources or facts",
+    "Change UI, scoring, BAS, OAS, OCS, Deal Readiness, or schema"
+  ]
+}

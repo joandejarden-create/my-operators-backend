@@ -1,0 +1,125 @@
+{
+  "ok": true,
+  "status": "production_census_rooms_secondary_source_completion_v1_partial_source_remaining",
+  "objective": "rooms-count-completion-v1",
+  "version": "rooms-count-completion-v1",
+  "generated_at": "2026-08-07T19:37:16.139Z",
+  "table_id": "tbl9aY5ijiuIzzWam",
+  "base_role": "platform_alt",
+  "airtable_writes": true,
+  "records_updated": 58,
+  "records_inserted": 0,
+  "rooms_written": 58,
+  "official_rooms_written": 0,
+  "secondary_rooms_written": 58,
+  "conflicts_held": 0,
+  "phone_written": 0,
+  "phone_blocked_by_policy": 872,
+  "phone_central_rejected": 0,
+  "fields_written": [
+    "Rooms / Keys",
+    "Rooms Confidence",
+    "Rooms Source URL",
+    "Rooms Source Type",
+    "Rooms Reviewed Date",
+    "Rooms Notes",
+    "Last Reviewed Date",
+    "Enrichment Status",
+    "Human Review Required"
+  ],
+  "sources_used_this_run": {
+    "trusted_secondary_source": 58
+  },
+  "before": {
+    "total": 1224,
+    "with_rooms": 116,
+    "missing": 1108,
+    "coverage_pct": 9.48,
+    "official_high_rooms": 102,
+    "official_high_pct": 87.93,
+    "secondary_source_rooms": 0,
+    "secondary_source_pct": 0,
+    "steward_verified_rooms": 0,
+    "steward_verified_pct": 0,
+    "rooms_conflict_hold": 0,
+    "sources_used_by_type": {
+      "(blank)": 111,
+      "official_property_page": 5
+    }
+  },
+  "after": {
+    "total": 1224,
+    "with_rooms": 174,
+    "missing": 1050,
+    "coverage_pct": 14.22,
+    "official_high_rooms": 102,
+    "official_high_pct": 58.62,
+    "secondary_source_rooms": 58,
+    "secondary_source_pct": 33.33,
+    "steward_verified_rooms": 0,
+    "steward_verified_pct": 0,
+    "rooms_conflict_hold": 0,
+    "sources_used_by_type": {
+      "trusted_secondary_source": 58,
+      "(blank)": 111,
+      "official_property_page": 5
+    }
+  },
+  "policy": {
+    "version": "census-secondary-hotel-data-policy-v1",
+    "enable_secondary_hotel_data_sources": true,
+    "enable_secondary_rooms_sources": true,
+    "enable_secondary_phone_sources": false,
+    "rooms_approved": [
+      "official_parent_brand_source",
+      "official_hotel_website",
+      "official_factsheet",
+      "official_press_release_or_opening_announcement",
+      "owner_developer_reit_fund_asset_manager_website",
+      "tourism_board_convention_bureau_destination_authority",
+      "reputable_hospitality_trade_publication",
+      "licensed_hospitality_dataset_if_available",
+      "steward_verified_source"
+    ],
+    "rooms_forbidden": [
+      "ota_random",
+      "google_panel",
+      "tripadvisor",
+      "ai_estimate",
+      "building_size_floor_inference",
+      "meeting_room_count",
+      "residence_count_unless_hotel_keys",
+      "sitewide_default",
+      "vague_marketing_description"
+    ],
+    "phone_policy": "phone_secondary_source_policy_not_approved",
+    "schema_gaps": [
+      {
+        "field": "Rooms Evidence Tier",
+        "status": "missing_from_hotel_property_census",
+        "fallback": "Rooms Notes evidence_tier=… prefix"
+      }
+    ]
+  },
+  "colombia_missing_before": 102,
+  "rnt_rows_loaded": 15398,
+  "source_remaining_classified": 44,
+  "schema_gaps": [
+    {
+      "field": "Rooms Evidence Tier",
+      "status": "missing_from_hotel_property_census",
+      "fallback": "Rooms Notes evidence_tier=… prefix"
+    }
+  ],
+  "next_backlog": [
+    "Mexico / DR / Panama / Costa Rica rooms still need official parent adapters or approved country open-data matches",
+    "Add Airtable field Rooms Evidence Tier (currently encoded in Rooms Notes)",
+    "Phone remains blocked — founder has not approved secondary phone sources",
+    "Choice property pages 403 / central phones / rooms=25 defaults remain rejected",
+    "Expand RNT year coverage + fuzzy city aliases for more Colombia matches",
+    "Marriott DAM factsheet batch for Marriott blanks (official High path)"
+  ],
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T19-36-41_CALA-rooms-count-completion-v1",
+  "write_errors": [],
+  "argv_has_enable_production_writes": true
+}

@@ -1,0 +1,6240 @@
+{
+  "count": 101,
+  "sample": [
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recmWNlAbpgMinyLt",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recmWNlAbpgMinyLt",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country",
+          "Market"
+        ],
+        "impact_score": 35,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX043",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX043",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX043"
+        },
+        "official_url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX043"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Submarket",
+          "reason": "submarket_not_high"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/chihuahua/chihuahua/quality-inn-hotels/mx043"
+        },
+        {
+          "field": "Submarket",
+          "reason": "submarket_not_high"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recCBwyTopFYX8wir",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recCBwyTopFYX8wir",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "blank"
+          },
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_blank",
+            "current": null
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 55,
+        "missing_keys": [
+          "canonical_property_name",
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:PN018",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "PN018",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "PN018"
+        },
+        "official_url": "https://www.choicehotels.com/panama/panama/radisson-hotels/pn018"
+      },
+      "patch": {
+        "Canonical Property Name": "Radisson Riviera Panama",
+        "Continent": "North America",
+        "Sub-Continent": "Central America",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "source_url": "https://www.choicehotels.com/panama/panama/radisson-hotels/pn018",
+          "match": "property_id",
+          "prior_incorrect": "canonical_blank"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/panama/panama/radisson-hotels/pn018"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_missing_or_ambiguous"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/panama/panama/radisson-hotels/pn018"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_missing_or_ambiguous"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recMmMDnAc2Q687ug",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recMmMDnAc2Q687ug",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "blank"
+          },
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_blank",
+            "current": null
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 55,
+        "missing_keys": [
+          "canonical_property_name",
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:PN010",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "PN010",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "PN010"
+        },
+        "official_url": "https://www.choicehotels.com/cocle/cuidad-de-colon/radisson-hotels/pn010"
+      },
+      "patch": {
+        "Canonical Property Name": "Radisson Colón 2000 Hotel & Casino at Cruise Port & Duty Free Mall",
+        "Address": "Paseo Gorgas, Calle 13",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.choicehotels.com/cocle/cuidad-de-colon/radisson-hotels/pn010",
+        "Continent": "North America",
+        "Sub-Continent": "Central America",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "source_url": "https://www.choicehotels.com/cocle/cuidad-de-colon/radisson-hotels/pn010",
+          "match": "property_id",
+          "prior_incorrect": "canonical_blank"
+        },
+        {
+          "field": "Address",
+          "source_url": "https://www.choicehotels.com/cocle/cuidad-de-colon/radisson-hotels/pn010",
+          "method": "choice_directory"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/cocle/cuidad-de-colon/radisson-hotels/pn010"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_missing_or_ambiguous"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/cocle/cuidad-de-colon/radisson-hotels/pn010"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_missing_or_ambiguous"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "missing_or_unknown_city"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recNx55qHaDlu1SGJ",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recNx55qHaDlu1SGJ",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "blank"
+          },
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_blank",
+            "current": null
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 55,
+        "missing_keys": [
+          "canonical_property_name",
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:PN011",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "PN011",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "PN011"
+        },
+        "official_url": "https://www.choicehotels.com/panama/amador/radisson-hotels/pn011"
+      },
+      "patch": {
+        "Canonical Property Name": "Radisson Hotel Panama Canal",
+        "Continent": "North America",
+        "Sub-Continent": "Central America",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "source_url": "https://www.choicehotels.com/panama/amador/radisson-hotels/pn011",
+          "match": "property_id",
+          "prior_incorrect": "canonical_blank"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/panama/amador/radisson-hotels/pn011"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_missing_or_ambiguous"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/panama/amador/radisson-hotels/pn011"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_missing_or_ambiguous"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec35J5pknfdYHECD",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec35J5pknfdYHECD",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX155"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 54,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX155",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX155",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX155"
+        },
+        "official_url": "https://www.choicehotels.com/mexico/san-miguel-de-allende/ascend-hotels/mx155"
+      },
+      "patch": {
+        "Canonical Property Name": "Ascend Hotel Collection San Miguel de Allende",
+        "Property Name": "Ascend Hotel Collection San Miguel de Allende",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/mexico/san-miguel-de-allende/ascend-hotels/mx155"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/mexico/san-miguel-de-allende/ascend-hotels/mx155"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX155"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/mexico/san-miguel-de-allende/ascend-hotels/mx155"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/mexico/san-miguel-de-allende/ascend-hotels/mx155"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec2mY62wnBxrSb3h",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec2mY62wnBxrSb3h",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX073"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX073",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX073",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX073"
+        },
+        "official_url": "https://www.choicehotels.com/veracruz/veracruz/comfort-inn-hotels/mx073"
+      },
+      "patch": {
+        "Canonical Property Name": "Comfort Inn & Suites Veracruz",
+        "Property Name": "Comfort Inn & Suites Veracruz",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/veracruz/veracruz/comfort-inn-hotels/mx073"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/veracruz/veracruz/comfort-inn-hotels/mx073"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX073"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/veracruz/veracruz/comfort-inn-hotels/mx073"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/veracruz/veracruz/comfort-inn-hotels/mx073"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec5Yiueiagomif1m",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec5Yiueiagomif1m",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX183"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX183",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX183",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX183"
+        },
+        "official_url": "https://www.choicehotels.com/mexico/saltillo/radisson-hotels/mx183"
+      },
+      "patch": {
+        "Canonical Property Name": "Radisson by Choice Saltillo",
+        "Property Name": "Radisson by Choice Saltillo",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/mexico/saltillo/radisson-hotels/mx183"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/mexico/saltillo/radisson-hotels/mx183"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX183"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/mexico/saltillo/radisson-hotels/mx183"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/mexico/saltillo/radisson-hotels/mx183"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recCv8y71tA2C8PvP",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recCv8y71tA2C8PvP",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX179"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX179",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX179",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX179"
+        },
+        "official_url": "https://www.choicehotels.com/guanajuato/leon/radisson-hotels/mx179"
+      },
+      "patch": {
+        "Canonical Property Name": "Radisson by Choice León",
+        "Property Name": "Radisson by Choice León",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/guanajuato/leon/radisson-hotels/mx179"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/guanajuato/leon/radisson-hotels/mx179"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX179"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/guanajuato/leon/radisson-hotels/mx179"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/guanajuato/leon/radisson-hotels/mx179"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recHUTFJFR9QH5cpx",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recHUTFJFR9QH5cpx",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX083"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX083",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX083",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX083"
+        },
+        "official_url": "https://www.choicehotels.com/chiapas/tuxtla-gutierrez/sleep-inn-hotels/mx083"
+      },
+      "patch": {
+        "Canonical Property Name": "Sleep Inn Tuxtla Gutiérrez",
+        "Property Name": "Sleep Inn Tuxtla Gutiérrez",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/chiapas/tuxtla-gutierrez/sleep-inn-hotels/mx083"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/chiapas/tuxtla-gutierrez/sleep-inn-hotels/mx083"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX083"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/chiapas/tuxtla-gutierrez/sleep-inn-hotels/mx083"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/chiapas/tuxtla-gutierrez/sleep-inn-hotels/mx083"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recTX9v5Rpipe8Dtz",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recTX9v5Rpipe8Dtz",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX107"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX107",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX107",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX107"
+        },
+        "official_url": "https://www.choicehotels.com/tabasco/villahermosa/sleep-inn-hotels/mx107"
+      },
+      "patch": {
+        "Canonical Property Name": "Sleep Inn Villahermosa",
+        "Property Name": "Sleep Inn Villahermosa",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/tabasco/villahermosa/sleep-inn-hotels/mx107"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/tabasco/villahermosa/sleep-inn-hotels/mx107"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX107"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/tabasco/villahermosa/sleep-inn-hotels/mx107"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/tabasco/villahermosa/sleep-inn-hotels/mx107"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recU8cSWTcus5kbVa",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recU8cSWTcus5kbVa",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX065"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX065",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX065",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX065"
+        },
+        "official_url": "https://www.choicehotels.com/coahuila/torreon/sleep-inn-hotels/mx065"
+      },
+      "patch": {
+        "Canonical Property Name": "Sleep Inn Torreón",
+        "Property Name": "Sleep Inn Torreón",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/coahuila/torreon/sleep-inn-hotels/mx065"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/coahuila/torreon/sleep-inn-hotels/mx065"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX065"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/coahuila/torreon/sleep-inn-hotels/mx065"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/coahuila/torreon/sleep-inn-hotels/mx065"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recabSgALHHvys0In",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recabSgALHHvys0In",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX092"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX092",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX092",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX092"
+        },
+        "official_url": "https://www.choicehotels.com/guanajuato/irapuato/comfort-inn-hotels/mx092"
+      },
+      "patch": {
+        "Canonical Property Name": "Comfort Inn & Suites Irapuato",
+        "Property Name": "Comfort Inn & Suites Irapuato",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/guanajuato/irapuato/comfort-inn-hotels/mx092"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/guanajuato/irapuato/comfort-inn-hotels/mx092"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX092"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/guanajuato/irapuato/comfort-inn-hotels/mx092"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/guanajuato/irapuato/comfort-inn-hotels/mx092"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recoKIP6S1Gh5fSXb",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recoKIP6S1Gh5fSXb",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX104"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX104",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX104",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX104"
+        },
+        "official_url": "https://www.choicehotels.com/mexico/zacatecas/ascend-hotels/mx104"
+      },
+      "patch": {
+        "Canonical Property Name": "Ascend Hotel Collection Zacatecas",
+        "Property Name": "Ascend Hotel Collection Zacatecas",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/mexico/zacatecas/ascend-hotels/mx104"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/mexico/zacatecas/ascend-hotels/mx104"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX104"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/mexico/zacatecas/ascend-hotels/mx104"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/mexico/zacatecas/ascend-hotels/mx104"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recsBUnZKJuP3bW5M",
+      "family": "Choice",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recsBUnZKJuP3bW5M",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [
+          {
+            "field": "Canonical Property Name",
+            "key": "canonical_property_name",
+            "reason": "canonical_parent_property_code_stub",
+            "current": "Choice property MX070"
+          }
+        ],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "State / Region",
+          "Country"
+        ],
+        "impact_score": 49,
+        "missing_keys": [
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": [
+          "canonical_property_name"
+        ]
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Choice",
+        "primary": "choice_property_id",
+        "strategies": [
+          "choice_property_id",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "choice_id:MX070",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": "MX070",
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": "MX070"
+        },
+        "official_url": "https://www.choicehotels.com/coahuila/saltillo/quality-inn-hotels/mx070"
+      },
+      "patch": {
+        "Canonical Property Name": "Quality Inn Saltillo",
+        "Property Name": "Quality Inn Saltillo",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Choice official"
+      },
+      "provenance": [
+        {
+          "field": "Canonical Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/coahuila/saltillo/quality-inn-hotels/mx070"
+        },
+        {
+          "field": "Property Name",
+          "method": "brand_city_compose_from_clean_identity",
+          "source_url": "https://www.choicehotels.com/coahuila/saltillo/quality-inn-hotels/mx070"
+        }
+      ],
+      "blockers": [
+        {
+          "field": "directory",
+          "reason": "not_in_choice_cala_regional",
+          "property_id": "MX070"
+        },
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.choicehotels.com/coahuila/saltillo/quality-inn-hotels/mx070"
+        },
+        {
+          "field": "property_page",
+          "reason": "choice_property_page_unavailable"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "property_page",
+          "reason": "timeout",
+          "url": "https://www.choicehotels.com/coahuila/saltillo/quality-inn-hotels/mx070"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec02wJ8dk7HtjPjx",
+      "family": "Accor",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Accor",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "accor_catalog",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:BJXDS",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "BJXDS",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Accor"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_missing_or_ambiguous"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec1Snj6DNXcKzOfR",
+      "family": "Marriott",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec1Snj6DNXcKzOfR",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Marriott",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:GDLAR",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "GDLAR",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/gdlar-ac-hotel-guadalajara-expo-mexico/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Marriott"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/gdlar-ac-hotel-guadalajara-expo-mexico/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec1XdpdiXxT2K18C",
+      "family": "Hilton",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec1XdpdiXxT2K18C",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Hilton",
+        "primary": "hilton_directory_property",
+        "strategies": [
+          "hilton_directory_property",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "hilton:LIRRPLX",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": "LIRRPLX",
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.hilton.com/en/hotels/lirrplx-rio-perdido/"
+      },
+      "patch": {
+        "Address": "4 km de la plaza de San Bernardo",
+        "Address Confidence": "High",
+        "Address Source URL": "https://www.hilton.com/en/hotels/lirrplx-rio-perdido/",
+        "Phone": "+506 2673 3600",
+        "Continent": "North America",
+        "Sub-Continent": "Central America",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Hilton"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.hilton.com/en/hotels/lirrplx-rio-perdido/"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "clean_core_not_pass"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec1dTLhN2kHSjyv1",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec1dTLhN2kHSjyv1",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/san-jose/sjoap/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Central America",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/san-jose/sjoap/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec1o8iZswZ7NeEFe",
+      "family": "Marriott",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec1o8iZswZ7NeEFe",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Marriott",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:MXLCY",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "MXLCY",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/mxlcy-courtyard-mexicali/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Marriott"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/mxlcy-courtyard-mexicali/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec1oiGrJEa7LYgcI",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec1oiGrJEa7LYgcI",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/candlewood/hotels/us/en/juriquilla/qroja/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/candlewood/hotels/us/en/juriquilla/qroja/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec3QgXCAUGHlVw6c",
+      "family": "Accor",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec3QgXCAUGHlVw6c",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Accor",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "accor_catalog",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:LAPBC",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "LAPBC",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/lapbc-baja-club-hotel-la-paz-baja-california-sur-a-member-of-design-hotels/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Accor"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/lapbc-baja-club-hotel-la-paz-baja-california-sur-a-member-of-design-hotels/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec3YDnRVUb9TBd5g",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec3YDnRVUb9TBd5g",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/intercontinental/hotels/us/en/medellin/mdeha/hoteldetail"
+      },
+      "patch": {
+        "Continent": "South America",
+        "Sub-Continent": "South America",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/intercontinental/hotels/us/en/medellin/mdeha/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec3iveAi0TN3xNRO",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec3iveAi0TN3xNRO",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinn/hotels/us/en/cartagena-de-indias/ctghi/hoteldetail"
+      },
+      "patch": {
+        "Continent": "South America",
+        "Sub-Continent": "South America",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinn/hotels/us/en/cartagena-de-indias/ctghi/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec49Ilr511CNNF9s",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec49Ilr511CNNF9s",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinn/hotels/us/en/belvidere/vsadg/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinn/hotels/us/en/belvidere/vsadg/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec4RFvhSq1gfL3k1",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec4RFvhSq1gfL3k1",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinn/hotels/us/en/mexico/mexpd/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinn/hotels/us/en/mexico/mexpd/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec4UM5tor3ZMOvpp",
+      "family": "Marriott",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec4UM5tor3ZMOvpp",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Marriott",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:PAZXT",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "PAZXT",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/pazxt-city-express-tuxpan/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Marriott"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/pazxt-city-express-tuxpan/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec55rqVTckL1tlN7",
+      "family": "Marriott",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec55rqVTckL1tlN7",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Marriott",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:BJXAK",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "BJXAK",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/bjxak-clevia-san-miguel-de-allende-autograph-collection/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Marriott"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/bjxak-clevia-san-miguel-de-allende-autograph-collection/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec5b4Cscv9AfHspt",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec5b4Cscv9AfHspt",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/spnd/hotels/us/en/santa-rosa/midsr/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/spnd/hotels/us/en/santa-rosa/midsr/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec5ipKwCzFMSjwck",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec5ipKwCzFMSjwck",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/kimptonhotels/hotels/us/en/mas-olas-resort-spa-todos-santos/sjdtd/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/kimptonhotels/hotels/us/en/mas-olas-resort-spa-todos-santos/sjdtd/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec5lQjew5gySpyxx",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec5lQjew5gySpyxx",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinn/hotels/us/en/huatulco/huxhi/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinn/hotels/us/en/huatulco/huxhi/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec65MbQi3ofUHfL2",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec65MbQi3ofUHfL2",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/intercontinental/hotels/us/en/san-jose/sjoha/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Central America",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/intercontinental/hotels/us/en/san-jose/sjoha/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec6pPaRLOnkHYLI9",
+      "family": "Marriott",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec6pPaRLOnkHYLI9",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Marriott",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:MEXFP",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "MEXFP",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/mexfp-four-points-mexico-city-colonia-roma/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Marriott"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/mexfp-four-points-mexico-city-colonia-roma/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec75djNRYWlkjEtL",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec75djNRYWlkjEtL",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinn/hotels/us/en/orizaba/veroz/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinn/hotels/us/en/orizaba/veroz/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec8CHh0phndcYdHv",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec8CHh0phndcYdHv",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/mexico/mexre/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinnexpress/hotels/us/en/mexico/mexre/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec8aCl84KcJdhl9k",
+      "family": "Marriott",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec8aCl84KcJdhl9k",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Marriott",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:CUNPA",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "CUNPA",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/cunpa-planet-hollywood-cancun-adult-scene-by-royalton-autograph-collection-all-inclusive-resort-adults/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Marriott"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/cunpa-planet-hollywood-cancun-adult-scene-by-royalton-autograph-collection-all-inclusive-resort-adults/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec8rSwsvFmvAyK0v",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec8rSwsvFmvAyK0v",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinn/hotels/us/en/mexico/mexzr/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinn/hotels/us/en/mexico/mexzr/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec9CIiEsuw1S4AhN",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec9CIiEsuw1S4AhN",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinn/hotels/us/en/mexico/mexaa/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinn/hotels/us/en/mexico/mexaa/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "rec9gAZZzQOvgzcBy",
+      "family": "Accor",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "rec9gAZZzQOvgzcBy",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Accor",
+        "primary": "accor_catalog",
+        "strategies": [
+          "accor_catalog",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "accor:C0D9",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": "C0D9",
+          "property_code_override": null
+        },
+        "official_url": "https://all.accor.com/hotel/C0D9/index.en.shtml"
+      },
+      "patch": {
+        "Address": "Juan Salvador Agraz 97, Santa Fe, Cuajimalpa de Morelos",
+        "Address Confidence": "High",
+        "Address Source URL": "https://all.accor.com/hotel/C0D9/index.en.shtml",
+        "Phone": "+525511050170",
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Accor"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "Rooms / Keys",
+          "reason": "rooms_missing_from_official_source"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "blocked_dirty_core_identity"
+        }
+      ],
+      "secondary_opportunities": [
+        {
+          "field": "Rooms / Keys",
+          "reason": "official_page_lacks_exact_rooms"
+        }
+      ],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recA9EJlX8xR7DRZB",
+      "family": "IHG",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recA9EJlX8xR7DRZB",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "IHG",
+        "primary": "ihg_property_page",
+        "strategies": [
+          "ihg_property_page",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": null,
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.ihg.com/holidayinn/hotels/us/en/navojoa/cennj/hoteldetail"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — IHG"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.ihg.com/holidayinn/hotels/us/en/navojoa/cennj/hoteldetail"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    },
+    {
+      "ok": true,
+      "status": "partial",
+      "record_id": "recAVVYEbtuOwoRXW",
+      "family": "Marriott",
+      "inspection": {
+        "version": "universal-hotel-record-inspector-v1",
+        "record_id": "recAVVYEbtuOwoRXW",
+        "incomplete": true,
+        "missing": [
+          {
+            "field": "State / Region",
+            "key": "state_region",
+            "reason": "blank"
+          },
+          {
+            "field": "Continent",
+            "key": "continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Sub-Continent",
+            "key": "sub_continent",
+            "reason": "blank"
+          },
+          {
+            "field": "Market",
+            "key": "market",
+            "reason": "blank"
+          },
+          {
+            "field": "Submarket",
+            "key": "submarket",
+            "reason": "blank"
+          },
+          {
+            "field": "Address",
+            "key": "address",
+            "reason": "blank"
+          },
+          {
+            "field": "Phone",
+            "key": "phone",
+            "reason": "blank"
+          },
+          {
+            "field": "Rooms / Keys",
+            "key": "rooms",
+            "reason": "blank"
+          },
+          {
+            "field": "Latitude/Longitude",
+            "key": "coordinates",
+            "reason": "blank"
+          }
+        ],
+        "incorrect": [],
+        "present": [
+          "Property Name",
+          "Canonical Property Name",
+          "Current Brand",
+          "Brand Family",
+          "Official Property URL",
+          "City",
+          "Country"
+        ],
+        "impact_score": 45,
+        "missing_keys": [
+          "state_region",
+          "continent",
+          "sub_continent",
+          "market",
+          "submarket",
+          "address",
+          "phone",
+          "rooms",
+          "coordinates"
+        ],
+        "incorrect_keys": []
+      },
+      "route": {
+        "version": "universal-record-source-router-v1",
+        "family": "Marriott",
+        "primary": "marriott_marsha_official",
+        "strategies": [
+          "marriott_marsha_official",
+          "official_property_url",
+          "geography_maps_only"
+        ],
+        "signals": [
+          "marsha:SLPCS",
+          "has_official_url"
+        ],
+        "codes": {
+          "choice_property_id": null,
+          "marsha": "SLPCS",
+          "hilton_ctyhocn": null,
+          "accor_property_id": null,
+          "property_code_override": null
+        },
+        "official_url": "https://www.marriott.com/en-us/hotels/slpcs-courtyard-san-luis-potosi-los-lagos/overview"
+      },
+      "patch": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Last Reviewed Date": "2026-08-07",
+        "Enrichment Status": "Universal record resolver — Marriott"
+      },
+      "provenance": [],
+      "blockers": [
+        {
+          "field": "property_page",
+          "reason": "bot_blocked",
+          "url": "https://www.marriott.com/en-us/hotels/slpcs-courtyard-san-luis-potosi-los-lagos/overview"
+        },
+        {
+          "field": "State / Region",
+          "reason": "city_state_mapping_missing"
+        },
+        {
+          "field": "Market",
+          "reason": "market_source_needed"
+        },
+        {
+          "field": "Latitude/Longitude",
+          "reason": "mapbox_waiting_for_high_address"
+        }
+      ],
+      "secondary_opportunities": [],
+      "secondary_writes": 0,
+      "secondary_enabled": false,
+      "unresolved_keys": [
+        "state_region",
+        "continent",
+        "sub_continent",
+        "market",
+        "submarket",
+        "address",
+        "phone",
+        "rooms",
+        "coordinates"
+      ],
+      "webhound_as_sot": false,
+      "version": "universal-hotel-record-resolver-v1"
+    }
+  ]
+}

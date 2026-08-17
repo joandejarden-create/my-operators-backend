@@ -1,0 +1,164 @@
+{
+  "version": "production-census-source-of-truth-v1",
+  "productionHotelPropertyCensus": {
+    "baseName": "Deal Capture Platform",
+    "tableName": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam",
+    "role": "production_property_table",
+    "allowedWriteTarget": true,
+    "envBaseResolver": "AIRTABLE_BASE_ID_ALT (Deal Capture Platform)"
+  },
+  "productionCensusSupportingTables": [
+    {
+      "tableName": "Hotel Property Brand Affiliations",
+      "tableId": "tbll7n0xgmYywyrTd",
+      "role": "supporting_affiliations",
+      "allowedWriteTarget": false,
+      "autopilotDefault": "read_or_explicit_queue_approved"
+    },
+    {
+      "tableName": "Hotel Property Source Evidence",
+      "tableId": "tblfhosu44nMbvSbS",
+      "role": "supporting_source_evidence",
+      "allowedWriteTarget": false,
+      "autopilotDefault": "read_or_explicit_queue_approved"
+    },
+    {
+      "tableName": "Hotel Property Steward Review",
+      "tableId": "tbluxLjGTuKGRO2iM",
+      "role": "supporting_steward_review",
+      "allowedWriteTarget": false,
+      "autopilotDefault": "read_or_explicit_queue_approved"
+    }
+  ],
+  "blockedWriteTargets": [
+    {
+      "key": "legacy_hotel_census",
+      "labels": [
+        "Hotel Census",
+        "legacy Hotel Census",
+        "legacy Census",
+        "old Census"
+      ],
+      "role": "legacy_deprecated",
+      "allowedWriteTarget": false,
+      "allowedRead": false,
+      "note": "Not active production; migration/audit mode only"
+    },
+    {
+      "key": "vic_source_claims",
+      "labels": [
+        "Verified Independent Census",
+        "Verified Independent Hotel Census",
+        "VIC",
+        "VIC staging",
+        "verified-independent-census"
+      ],
+      "role": "evidence_claim_library",
+      "allowedWriteTarget": false,
+      "allowedRead": true,
+      "note": "VIC source claims — evidence lineage only; never production write"
+    },
+    {
+      "key": "candidates_evidence_staging",
+      "labels": [
+        "Independent Hotel Source Candidates",
+        "Independent Hotel Source Evidence",
+        "Candidates",
+        "Evidence staging"
+      ],
+      "role": "staging",
+      "allowedWriteTarget": false,
+      "allowedRead": false,
+      "note": "Staging / candidates — not Autopilot write target"
+    },
+    {
+      "key": "brand_setup",
+      "labels": [
+        "Brand Setup",
+        "Brand Setup - Brand Basics",
+        "Brand Setup active control list"
+      ],
+      "role": "brand_control_layer",
+      "allowedWriteTarget": false,
+      "allowedRead": true,
+      "note": "Active/Live brand control list — read-only for Autopilot"
+    },
+    {
+      "key": "brand_explorer",
+      "labels": [
+        "Brand Explorer",
+        "Brand Setup - Brand Explorer Presentation",
+        "Brand Presentation",
+        "presentation"
+      ],
+      "role": "presentation_layer",
+      "allowedWriteTarget": false,
+      "allowedRead": false,
+      "note": "Brand Explorer / presentation — never Autopilot write"
+    },
+    {
+      "key": "company_validated_brand_status",
+      "labels": [
+        "Company Validated",
+        "Brand Verified",
+        "Brand Status"
+      ],
+      "role": "protected_brand_governance",
+      "allowedWriteTarget": false,
+      "allowedRead": false,
+      "note": "Protected brand governance fields/tables — blocked"
+    }
+  ],
+  "readRules": {
+    "brand_setup_active_control_list": "read_only",
+    "hotel_property_census": "read_and_write_allowlisted_fields",
+    "vic_source_claims": "read_evidence_lineage_only",
+    "supporting_census_evidence_tables": "read_or_explicit_queue_approved_write"
+  },
+  "writeRules": {
+    "allowed": [
+      "Hotel Property Census"
+    ],
+    "forbidden": [
+      "legacy_hotel_census",
+      "vic_source_claims",
+      "candidates_evidence_staging",
+      "brand_setup",
+      "brand_explorer",
+      "company_validated_brand_status"
+    ]
+  },
+  "preciseMatchSummaryLine": "Matched Active / Live Brand Setup brands to production Hotel Property Census records.",
+  "ambiguousMatchPhrases": [
+    "Matched brands to Census",
+    "matched to Census",
+    "match to Census",
+    "brands to Census"
+  ],
+  "failClosedCode": "blocked_wrong_census_target",
+  "assert": {
+    "ok": true,
+    "status": "production_census_write_target_ok",
+    "code": null,
+    "errors": [],
+    "expected": {
+      "baseName": "Deal Capture Platform",
+      "tableName": "Hotel Property Census",
+      "tableId": "tbl9aY5ijiuIzzWam",
+      "role": "production_property_table"
+    },
+    "actual": {
+      "baseName": "Deal Capture Platform",
+      "baseId": null,
+      "tableName": "Hotel Property Census",
+      "tableId": "tbl9aY5ijiuIzzWam"
+    },
+    "base_resolution": null,
+    "blocked_classification": null
+  },
+  "legacy_census_write_blocked": true,
+  "vic_write_blocked": true,
+  "brand_setup_write_blocked": true,
+  "brand_explorer_write_blocked": true
+}

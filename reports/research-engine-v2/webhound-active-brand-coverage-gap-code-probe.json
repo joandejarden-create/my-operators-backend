@@ -1,0 +1,528 @@
+{
+  "run_type": "webhound_active_brand_coverage_gap_code_probe",
+  "generated_at": "2026-08-05T23:58:10.700Z",
+  "production_writes": false,
+  "airtable_writes": false,
+  "webhound_session_id": "0abff16f-9e6e-4203-ae91-9ec79556cea6",
+  "probes": {
+    "accor": {
+      "parent": "Accor",
+      "sitemap": {
+        "url": "https://all.accor.com/sitemap-fh.en.xml",
+        "status": 200,
+        "ok": true,
+        "hotel_loc_count": 5895,
+        "cala_country_counts": {},
+        "cala_sample": [],
+        "url_shape_sample": [
+          "https://all.accor.com/hotel/0338/index.en.shtml",
+          "https://all.accor.com/hotel/0339/index.en.shtml",
+          "https://all.accor.com/hotel/0340/index.en.shtml",
+          "https://all.accor.com/hotel/0341/index.en.shtml",
+          "https://all.accor.com/hotel/0343/index.en.shtml"
+        ]
+      },
+      "continents": {
+        "southAmerica": {
+          "url": "https://all.accor.com/a/en/destination/continent/hotels-south-america-c02.html",
+          "status": 200,
+          "ok": true,
+          "count": 300,
+          "sample": [
+            {
+              "propertyId": "8644",
+              "propertyUrl": "https://all.accor.com/hotel/8644/index.en.shtml",
+              "inferredHotelName": "ibis Sinop",
+              "source": "accor_continent_browse"
+            },
+            {
+              "propertyId": "B9G7",
+              "propertyUrl": "https://all.accor.com/hotel/B9G7/index.en.shtml",
+              "inferredHotelName": "IBIS TANGARA DA SERRA",
+              "source": "accor_continent_browse"
+            },
+            {
+              "propertyId": "9624",
+              "propertyUrl": "https://all.accor.com/hotel/9624/index.en.shtml",
+              "inferredHotelName": "Ibis Budget Parauapebas",
+              "source": "accor_continent_browse"
+            }
+          ]
+        },
+        "centralAmerica": {
+          "url": "https://all.accor.com/a/en/destination/continent/hotels-central-america-c10.html",
+          "status": 200,
+          "ok": true,
+          "count": 151,
+          "sample": [
+            {
+              "propertyId": "9252",
+              "propertyUrl": "https://all.accor.com/hotel/9252/index.en.shtml",
+              "inferredHotelName": "Novotel Panama City",
+              "source": "accor_continent_browse"
+            },
+            {
+              "propertyId": "9156",
+              "propertyUrl": "https://all.accor.com/hotel/9156/index.en.shtml",
+              "inferredHotelName": "Sofitel Legend Casco Viejo - Panama City",
+              "source": "accor_continent_browse"
+            },
+            {
+              "propertyId": "B1T9",
+              "propertyUrl": "https://all.accor.com/hotel/B1T9/index.en.shtml",
+              "inferredHotelName": "Banyan Tree Mayakoba",
+              "source": "accor_continent_browse"
+            }
+          ]
+        },
+        "northAmerica": {
+          "url": "https://all.accor.com/a/en/destination/continent/hotels-north-america-c01.html",
+          "status": 200,
+          "ok": true,
+          "count": 131,
+          "sample": [
+            {
+              "propertyId": "A559",
+              "propertyUrl": "https://all.accor.com/hotel/A559/index.en.shtml",
+              "inferredHotelName": "Fairmont Hotel Macdonald",
+              "source": "accor_continent_browse"
+            },
+            {
+              "propertyId": "A555",
+              "propertyUrl": "https://all.accor.com/hotel/A555/index.en.shtml",
+              "inferredHotelName": "Fairmont Palliser",
+              "source": "accor_continent_browse"
+            },
+            {
+              "propertyId": "A592",
+              "propertyUrl": "https://all.accor.com/hotel/A592/index.en.shtml",
+              "inferredHotelName": "Fairmont Winnipeg",
+              "source": "accor_continent_browse"
+            }
+          ]
+        }
+      },
+      "property_url_pattern": "https://all.accor.com/hotel/{CODE}/index.en.shtml",
+      "property_id_pattern": "/hotel/([0-9A-Za-z]+)/",
+      "recommendation": "extend_existing_extractor_wire_autopilot",
+      "prior_cala_sample": [
+        {
+          "propertyId": "A0V4",
+          "name": "Ibis Tijuana Zona Rio",
+          "country": "Mexico",
+          "city": "TIJUANA",
+          "url": "https://all.accor.com/hotel/A0V4/index.en.shtml"
+        },
+        {
+          "propertyId": "6930",
+          "name": "ibis San Luis Potosi",
+          "country": "Mexico",
+          "city": "San Luis Potosi",
+          "url": "https://all.accor.com/hotel/6930/index.en.shtml"
+        },
+        {
+          "propertyId": "9369",
+          "name": "ibis Los Mochis",
+          "country": "Mexico",
+          "city": "Los Mochis",
+          "url": "https://all.accor.com/hotel/9369/index.en.shtml"
+        },
+        {
+          "propertyId": "9252",
+          "name": "Novotel Panama City",
+          "country": "Panama",
+          "city": "Bella Vista, Panamá City, Panama",
+          "url": "https://all.accor.com/hotel/9252/index.en.shtml"
+        },
+        {
+          "propertyId": "7082",
+          "name": "ibis Aguascalientes Norte",
+          "country": "Mexico",
+          "city": "Aguascalientes",
+          "url": "https://all.accor.com/hotel/7082/index.en.shtml"
+        },
+        {
+          "propertyId": "A573",
+          "name": "Fairmont Mayakoba - Luxury Hotel in Riviera Maya | ALL",
+          "country": "Mexico",
+          "city": "RIVIERA MAYA",
+          "url": "https://all.accor.com/hotel/A573/index.en.shtml"
+        },
+        {
+          "propertyId": "9156",
+          "name": "Sofitel Legend Casco Viejo, Panama City | Oceanfront Hotel - ALL",
+          "country": "Panama",
+          "city": "PANAMA CITY",
+          "url": "https://all.accor.com/hotel/9156/index.en.shtml"
+        },
+        {
+          "propertyId": "A7V8",
+          "name": "Ibis Styles Merida Galerías",
+          "country": "Mexico",
+          "city": "MERIDA",
+          "url": "https://all.accor.com/hotel/A7V8/index.en.shtml"
+        }
+      ],
+      "continent_url_pattern": "https://all.accor.com/a/en/destination/continent/{slug}.html"
+    },
+    "wyndham": {
+      "parent": "Wyndham",
+      "sitemap_index": {
+        "url": "https://www.wyndhamhotels.com/sitemap.xml",
+        "status": 200,
+        "ok": true,
+        "child_count": 695,
+        "hotelish_children_sample": [
+          "https://www.wyndhamhotels.com/sitemap_en-us_kg_static.xml",
+          "https://www.wyndhamhotels.com/sitemap_en-us_kg_properties_1.xml",
+          "https://www.wyndhamhotels.com/sitemap_en-us_av_static.xml",
+          "https://www.wyndhamhotels.com/sitemap_en-us_lq_static.xml",
+          "https://www.wyndhamhotels.com/sitemap_en-us_lq_properties_1.xml",
+          "https://www.wyndhamhotels.com/sitemap_en-us_aa_static.xml",
+          "https://www.wyndhamhotels.com/sitemap_en-us_aa_properties_1.xml",
+          "https://www.wyndhamhotels.com/sitemap_en-us_bu_static.xml"
+        ]
+      },
+      "cala_property_url_sample": [],
+      "cala_url_count_sampled": 0,
+      "property_url_hint": "wyndhamhotels.com/.../overview or brand path with property id",
+      "recommendation": "extend_existing_extractor_wire_autopilot",
+      "property_sitemaps_count": 227,
+      "first_properties_overview_count": 0,
+      "overview_url_sample": [],
+      "parsed_sample": [],
+      "brand_sitemap_samples": [
+        {
+          "sitemap": "sitemap_en-us_lq_properties_1.xml",
+          "overview_count": 914,
+          "calaish_path_count": 34,
+          "sample": "https://www.wyndhamhotels.com/laquinta/panama-city-florida/la-quinta-panama-city/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/laquinta/panama-city-florida/la-quinta-panama-city/overview",
+            "brandSlug": "laquinta",
+            "brandName": "Laquinta",
+            "regionSlug": "panama-city-florida",
+            "citySlug": "la-quinta-panama-city",
+            "propertySlug": "la-quinta-panama-city",
+            "inferredHotelName": "Laquinta La Quinta Panama City",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_aa_properties_1.xml",
+          "overview_count": 233,
+          "calaish_path_count": 0,
+          "sample": "https://www.wyndhamhotels.com/americinn/johnston-iowa/americinn-hotel-and-suites-johnston-des-moines/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/americinn/johnston-iowa/americinn-hotel-and-suites-johnston-des-moines/overview",
+            "brandSlug": "americinn",
+            "brandName": "Americinn",
+            "regionSlug": "johnston-iowa",
+            "citySlug": "americinn-hotel-and-suites-johnston-des-moines",
+            "propertySlug": "americinn-hotel-and-suites-johnston-des-moines",
+            "inferredHotelName": "Americinn Americinn Hotel And Suites Johnston Des Moines",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_bu_properties_1.xml",
+          "overview_count": 703,
+          "calaish_path_count": 12,
+          "sample": "https://www.wyndhamhotels.com/baymont/panama-city-beach-florida/baymont-panama-city-beach/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/baymont/panama-city-beach-florida/baymont-panama-city-beach/overview",
+            "brandSlug": "baymont",
+            "brandName": "Baymont",
+            "regionSlug": "panama-city-beach-florida",
+            "citySlug": "baymont-panama-city-beach",
+            "propertySlug": "baymont-panama-city-beach",
+            "inferredHotelName": "Baymont Baymont Panama City Beach",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_ce_properties_1.xml",
+          "overview_count": 12,
+          "calaish_path_count": 0,
+          "sample": "https://www.wyndhamhotels.com/caesars-rewards/las-vegas-nevada/caesars-palace-las-vegas/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/caesars-rewards/las-vegas-nevada/caesars-palace-las-vegas/overview",
+            "brandSlug": "caesars-rewards",
+            "brandName": "Caesars Rewards",
+            "regionSlug": "las-vegas-nevada",
+            "citySlug": "caesars-palace-las-vegas",
+            "propertySlug": "caesars-palace-las-vegas",
+            "inferredHotelName": "Caesars Rewards Caesars Palace Las Vegas",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_di_properties_1.xml",
+          "overview_count": 2267,
+          "calaish_path_count": 57,
+          "sample": "https://www.wyndhamhotels.com/days-inn/panama-city-beach-florida/days-inn-panama-city-beach-beachfront-resort/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/days-inn/panama-city-beach-florida/days-inn-panama-city-beach-beachfront-resort/overview",
+            "brandSlug": "days-inn",
+            "brandName": "Days Inn",
+            "regionSlug": "panama-city-beach-florida",
+            "citySlug": "days-inn-panama-city-beach-beachfront-resort",
+            "propertySlug": "days-inn-panama-city-beach-beachfront-resort",
+            "inferredHotelName": "Days Inn Days Inn Panama City Beach Beachfront Resort",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_dz_properties_1.xml",
+          "overview_count": 24,
+          "calaish_path_count": 12,
+          "sample": "https://www.wyndhamhotels.com/dazzler/buenos-aires-argentina/dazzler-palermo-buenos-aires/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/dazzler/buenos-aires-argentina/dazzler-palermo-buenos-aires/overview",
+            "brandSlug": "dazzler",
+            "brandName": "Dazzler",
+            "regionSlug": "buenos-aires-argentina",
+            "citySlug": "dazzler-palermo-buenos-aires",
+            "propertySlug": "dazzler-palermo-buenos-aires",
+            "inferredHotelName": "Dazzler Dazzler Palermo Buenos Aires",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_es_properties_1.xml",
+          "overview_count": 12,
+          "calaish_path_count": 10,
+          "sample": "https://www.wyndhamhotels.com/esplendor/mendoza-argentina/esplendor-mendoza-hotel/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/esplendor/mendoza-argentina/esplendor-mendoza-hotel/overview",
+            "brandSlug": "esplendor",
+            "brandName": "Esplendor",
+            "regionSlug": "mendoza-argentina",
+            "citySlug": "esplendor-mendoza-hotel",
+            "propertySlug": "esplendor-mendoza-hotel",
+            "inferredHotelName": "Esplendor Esplendor Mendoza Hotel",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_dx_properties_1.xml",
+          "overview_count": 24,
+          "calaish_path_count": 1,
+          "sample": "https://www.wyndhamhotels.com/dolce/belo-horizonte-brazil/ouro-minas-hotel-belo-horizonte-dolce/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/dolce/belo-horizonte-brazil/ouro-minas-hotel-belo-horizonte-dolce/overview",
+            "brandSlug": "dolce",
+            "brandName": "Dolce",
+            "regionSlug": "belo-horizonte-brazil",
+            "citySlug": "ouro-minas-hotel-belo-horizonte-dolce",
+            "propertySlug": "ouro-minas-hotel-belo-horizonte-dolce",
+            "inferredHotelName": "Dolce Ouro Minas Hotel Belo Horizonte Dolce",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_bh_properties_1.xml",
+          "overview_count": 162,
+          "calaish_path_count": 2,
+          "sample": "https://www.wyndhamhotels.com/hawthorn-extended-stay/albuquerque-new-mexico/hawthorn-suites-by-wyndham-albuquerque/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/hawthorn-extended-stay/albuquerque-new-mexico/hawthorn-suites-by-wyndham-albuquerque/overview",
+            "brandSlug": "hawthorn-extended-stay",
+            "brandName": "Hawthorn Extended Stay",
+            "regionSlug": "albuquerque-new-mexico",
+            "citySlug": "hawthorn-suites-by-wyndham-albuquerque",
+            "propertySlug": "hawthorn-suites-by-wyndham-albuquerque",
+            "inferredHotelName": "Hawthorn Extended Stay Hawthorn Suites By Wyndham Albuquerque",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_hj_properties_1.xml",
+          "overview_count": 606,
+          "calaish_path_count": 68,
+          "sample": "https://www.wyndhamhotels.com/hojo/panama-city-florida/howard-johnson-inn-panama-city/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/hojo/panama-city-florida/howard-johnson-inn-panama-city/overview",
+            "brandSlug": "hojo",
+            "brandName": "Hojo",
+            "regionSlug": "panama-city-florida",
+            "citySlug": "howard-johnson-inn-panama-city",
+            "propertySlug": "howard-johnson-inn-panama-city",
+            "inferredHotelName": "Hojo Howard Johnson Inn Panama City",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_mt_properties_1.xml",
+          "overview_count": 429,
+          "calaish_path_count": 16,
+          "sample": "https://www.wyndhamhotels.com/microtel/albuquerque-new-mexico/microtel-inn-and-suites-albuquerque-west/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/microtel/albuquerque-new-mexico/microtel-inn-and-suites-albuquerque-west/overview",
+            "brandSlug": "microtel",
+            "brandName": "Microtel",
+            "regionSlug": "albuquerque-new-mexico",
+            "citySlug": "microtel-inn-and-suites-albuquerque-west",
+            "propertySlug": "microtel-inn-and-suites-albuquerque-west",
+            "inferredHotelName": "Microtel Microtel Inn And Suites Albuquerque West",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        },
+        {
+          "sitemap": "sitemap_en-us_ra_properties_1.xml",
+          "overview_count": 1502,
+          "calaish_path_count": 57,
+          "sample": "https://www.wyndhamhotels.com/ramada/panama-city-florida/ramada-panama-city/overview",
+          "parsed": {
+            "propertyUrl": "https://www.wyndhamhotels.com/ramada/panama-city-florida/ramada-panama-city/overview",
+            "brandSlug": "ramada",
+            "brandName": "Ramada",
+            "regionSlug": "panama-city-florida",
+            "citySlug": "ramada-panama-city",
+            "propertySlug": "ramada-panama-city",
+            "inferredHotelName": "Ramada Ramada Panama City",
+            "inferredCountry": "",
+            "source": "wyndham_sitemap"
+          }
+        }
+      ],
+      "note": "Some *properties_*.xml are empty (e.g. kg); others have /overview URLs. CALA often needs page JSON-LD country, not path alone."
+    },
+    "bwh": {
+      "parent": "BWH Hotels",
+      "seed_catalog_count": 10,
+      "sample_seed_parse": {
+        "propertyUrl": "https://www.bestwestern.com/en_US/book/hotels-in-kingston/terra-nova-bw-premier-collection/propertyCode.71034.html",
+        "propertyCode": "71034",
+        "brandFamily": "bw-premier-collection",
+        "source": "bwh_official_property_url"
+      },
+      "live_probe": {
+        "url": "https://www.bestwestern.com/en_US/book/hotels-in-kingston/terra-nova-bw-premier-collection/propertyCode.71034.html",
+        "status": 403,
+        "ok": false,
+        "bytes": 778,
+        "note": "likely_blocked_or_missing"
+      },
+      "property_url_patterns": [
+        "bestwestern.com/.../propertyCode.{NNNNN}.html",
+        "bestwestern.com/.../hotel-details.{NNNNN}.html"
+      ],
+      "recommendation": "steward_seed_catalog_live_often_blocked"
+    },
+    "soft_collections": [
+      {
+        "parent": "Preferred Hotels & Resorts",
+        "probes": [
+          {
+            "url": "https://preferredhotels.com/",
+            "status": 200,
+            "ok": true,
+            "bytes": 215964,
+            "has_json_ld": false,
+            "hotel_link_hints": 30
+          },
+          {
+            "url": "https://preferredhotels.com/destinations",
+            "status": 200,
+            "ok": true,
+            "bytes": 68078,
+            "has_json_ld": false,
+            "hotel_link_hints": 0
+          },
+          {
+            "url": "https://preferredhotels.com/hotels",
+            "status": 404,
+            "ok": false,
+            "bytes": 62740,
+            "has_json_ld": false,
+            "hotel_link_hints": 0
+          }
+        ]
+      },
+      {
+        "parent": "SLH",
+        "probes": [
+          {
+            "url": "https://www.slh.com/",
+            "status": 200,
+            "ok": true,
+            "bytes": 76368,
+            "has_json_ld": false,
+            "hotel_link_hints": 38
+          },
+          {
+            "url": "https://www.slh.com/hotels",
+            "status": 404,
+            "ok": false,
+            "bytes": 38141,
+            "has_json_ld": false,
+            "hotel_link_hints": 0
+          },
+          {
+            "url": "https://www.slh.com/destinations",
+            "status": 404,
+            "ok": false,
+            "bytes": 38147,
+            "has_json_ld": false,
+            "hotel_link_hints": 0
+          }
+        ]
+      },
+      {
+        "parent": "Bunkhouse",
+        "probes": [
+          {
+            "url": "https://www.bunkhousehotels.com/",
+            "status": 200,
+            "ok": true,
+            "bytes": 1066238,
+            "has_json_ld": true,
+            "hotel_link_hints": 1
+          },
+          {
+            "url": "https://www.bunkhousehotels.com/hotels",
+            "status": 404,
+            "ok": false,
+            "bytes": 1006416,
+            "has_json_ld": true,
+            "hotel_link_hints": 1
+          }
+        ]
+      },
+      {
+        "parent": "Design Hotels (Accor soft brand)",
+        "probes": [
+          {
+            "url": "https://www.designhotels.com/",
+            "status": 403,
+            "ok": false,
+            "bytes": 5688,
+            "has_json_ld": false,
+            "hotel_link_hints": 0
+          },
+          {
+            "url": "https://www.designhotels.com/hotels",
+            "status": 403,
+            "ok": false,
+            "bytes": 5730,
+            "has_json_ld": false,
+            "hotel_link_hints": 3
+          }
+        ]
+      }
+    ]
+  },
+  "reprobed_at": "2026-08-05T23:59:39.878Z"
+}

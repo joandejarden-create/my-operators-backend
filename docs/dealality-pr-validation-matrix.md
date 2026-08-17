@@ -38,15 +38,18 @@
 | `api/lib/third-party-operator-new-two-field-bindings.json` | **High** | Same as above + regenerate audit if mapping doc stale: `node scripts/generate-operator-setup-to-explorer-field-mapping-audit.mjs` |
 | `public/third-party-operator-setup*.html`, `public/js/operator-setup*.js` | **Medium** | Manual: save dry-run in staging; `test:batch2a-final-validation` if intake validation touched |
 | `public/js/operator-explorer*.js`, operator explorer API | **Medium** | Manual QA on one Active operator profile; check loading/empty/error states |
+| Operator Explorer quality baseline / Tab Factory / fixtures (`lib/partner-intelligence/operator-explorer-*`, `fixtures/operator-*-arbor-cala.json`, `fixtures/operator-*-he-cala.json`, operator explorer OS docs) | **High** | `npm run test:operator-explorer-quality-baseline`; `npm run test:operator-explorer-mandatory-release-gates`; `npm run test:operator-explorer-tab-factory-audit`; `npm run test:operator-explorer-section-pattern-parity`; `npm run test:operator-explorer-source-provenance-by-tab`; `npm run test:operator-explorer-os`; `npm run operator-explorer-tab-factory-audit -- --source=fixtures --dry-run`; `npm run operator-explorer-section-pattern-parity-audit -- --source=fixtures --dry-run`; `npm run operator-explorer-source-provenance-by-tab -- --source=fixtures --dry-run`; `npm run operator-explorer-os -- --source=merged --dry-run`. Rules: `docs/data-intelligence/operator-explorer-protected-baseline-rules.md`. Next-operator checklist: `docs/data-intelligence/operator-explorer-ready-for-next-operator.md`. Do not degrade Arbor / Hotel Equities goldens without explicit baseline revision. |
 
 ### Brand Explorer
 
 | Changed paths | Risk | Run before merge |
 |---------------|------|------------------|
-| `fixtures/brand-explorer-presentation-*` | **Medium** | `npm run audit-choice-explorer-presentation-gaps`; `npm run audit-brand-explorer-presentation-formats` |
-| `scripts/apply-*-explorer*`, `scripts/apply-choice-*` | **High** | Gap + format audits before **and** after apply; never apply in PR without dry-run log |
-| `api/brand-library.js`, `public/js/brand-explorer*.js` | **Medium** | Manual: one brand detail load; list + detail cache behavior if TTL changed |
+| Active/Live profiles, Presentation writers, Brand Explorer lib/scripts/API/UI, fixtures apply, PVQL/quality/baseline tooling | **High** | **Protected baseline (54):** `npm run test:brand-explorer-54-active-public-full-baseline`; `npm run test:brand-explorer-public-visibility-quality-lock -- --public-full-only`; `npm run test:brand-explorer-recent-momentum-evidence-quality`; `npm run brand-explorer-ai-assisted-footnote-standardization -- --audit`. Rules: `docs/data-intelligence/brand-explorer-protected-baseline-rules.md`. Quiet sequential (429 avoidance): `node scripts/brand-explorer-quiet-sequential-pvql.mjs`, `node scripts/brand-explorer-quiet-sequential-quality-audit.mjs`. Historical 24/27/39/45/46 freezes remain artifacts only. |
+| `fixtures/brand-explorer-presentation-*` | **Medium** | `npm run audit-choice-explorer-presentation-gaps`; `npm run audit-brand-explorer-presentation-formats` (+ baseline gates above when apply/writers touched) |
+| `scripts/apply-*-explorer*`, `scripts/apply-choice-*` | **High** | Gap + format audits before **and** after apply; never apply in PR without dry-run log; then protected baseline + PVQL public-full |
+| `api/brand-library.js`, `public/js/brand-explorer*.js` | **Medium–High** | Manual: one brand detail load; list + detail cache if TTL changed; protected baseline + PVQL when display/public-full behavior changes |
 | `scripts/strip-internal-fee-notes-airtable.mjs` | **High** | Dry-run only in PR; apply in separate controlled run |
+| Openings contract / CALA openings / Lane 2 openings writers (`lib/partner-intelligence/brand-explorer-openings-*`, `brand-explorer-cala-property-example-rules.js`, `brand-explorer-lane2-*` openings paths, `scripts/brand-explorer-openings-*`) | **High** | `npm run brand-explorer-openings-ascend-template-audit` (live; expects Ascend template + CALA-first where inventory exists). Remediation applies: dry-run first via `npm run brand-explorer-openings-ascend-cala-remediation -- --dry-run`. Then protected baseline + PVQL public-full |
 
 ### Deals, deal room, NDA
 

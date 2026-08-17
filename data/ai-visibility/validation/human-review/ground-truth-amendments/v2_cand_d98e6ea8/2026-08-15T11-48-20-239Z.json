@@ -1,0 +1,62 @@
+{
+  "version": "ai_intelligence_golden_set_ground_truth_amendment_v1",
+  "caseId": "v2_cand_d98e6ea8",
+  "action": "INVALIDATE_CANDIDATE_SUBJECT",
+  "AMENDMENT_ACTION": "INVALIDATE_CANDIDATE_SUBJECT",
+  "ORIGINAL_HUMAN_LABEL": {
+    "expectedEntityPresent": true,
+    "expectedRecommendationRole": "discussed",
+    "expectedRecommendationClass": "discussed",
+    "expectedFirstRecommendation": false,
+    "expectedQuestionStatus": "DISCUSSION_ONLY",
+    "expectedCitationAssociation": "UNKNOWN",
+    "candidateEntity": "Playa Hotels & Resorts",
+    "canonicalEntityId": "rec3TUHT9Z4AnFp5P",
+    "reviewStatus": "CORRECTED",
+    "groundTruthInvalidated": false,
+    "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+    "reviewedAt": "2026-08-14T23:06:58.571Z"
+  },
+  "ORIGINAL_CANDIDATE_SUBJECT": "Playa Hotels & Resorts",
+  "ORIGINAL_CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+  "AMENDED_HUMAN_LABEL": {
+    "expectedEntityPresent": false,
+    "expectedRecommendationRole": "discussed",
+    "expectedRecommendationClass": "discussed",
+    "expectedFirstRecommendation": false,
+    "expectedQuestionStatus": "DISCUSSION_ONLY",
+    "expectedCitationAssociation": "UNKNOWN",
+    "candidateEntity": "Playa Hotels & Resorts",
+    "canonicalEntityId": "rec3TUHT9Z4AnFp5P",
+    "reviewStatus": "INVALIDATED_CANDIDATE_SUBJECT",
+    "groundTruthInvalidated": true,
+    "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+    "reviewedAt": "2026-08-14T23:06:58.571Z",
+    "excludeFromClassificationDenominator": true
+  },
+  "AMENDMENT_REASON": "Candidate subject was over-nominated. The stored response does not contain an unambiguous reference to the specific canonical entity. Generic/common-language or parent-company references are insufficient. Same pre-holdout Playa Hotels & Resorts governance rule as DEV residual INVALIDATE (2026-08-15). Holdout integrity repair only — does not restore Holdout v1 untouched certification.",
+  "REVIEWER": "joan@dealality (founder — chat-authorized holdout integrity INVALIDATE_CANDIDATE_SUBJECT 2026-08-15 Presence Holdout Integrity Audit)",
+  "AMENDED_AT": "2026-08-15T11:48:20.239Z",
+  "ORIGINAL_REVIEW_AUDIT": {
+    "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+    "reviewedAt": "2026-08-14T23:06:58.571Z",
+    "reviewStatus": "CORRECTED",
+    "notes": "The wording supports presence/discussion but does not clearly elevate the entity to a positive recommendation.",
+    "source": "human_review_promoted",
+    "systemSuggestionPreserved": {
+      "expectedRecommendationClass": "discussed",
+      "expectedFirstRecommendation": false,
+      "expectedQuestionStatus": "DISCUSSION_ONLY",
+      "expectedCitationAssociation": "NOT_APPLICABLE",
+      "note": "SYSTEM_SUGGESTION only — not ground truth",
+      "classifierVersion": "ai_visibility_recommendation_classifier_v3",
+      "resolverVersion": "ai_visibility_entity_resolver_v2"
+    }
+  },
+  "CLASSIFIER_LOGIC_CHANGE": false,
+  "AUTO_LABEL_CHANGES": false,
+  "HOLDOUT_ACCESSED": true,
+  "HOLDOUT_INTEGRITY_REPAIR": true,
+  "HOLDOUT_UNTOUCHED_RESTORED": false,
+  "note": "Holdout integrity repair only — does not restore untouched certification eligibility"
+}

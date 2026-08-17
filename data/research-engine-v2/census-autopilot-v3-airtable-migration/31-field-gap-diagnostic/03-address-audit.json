@@ -1,0 +1,52 @@
+{
+  "field": "Address",
+  "answers": {
+    "1_researched": "NO — not present on V2.3 freeze physical / not derived into pilot object",
+    "2_staging_nonblank_count": 0,
+    "3_primary_source": "none_in_staging (policy: official_page_only_this_pilot)",
+    "4_match_confidence": "High (identity); geography submarket_confidence Medium|No Match when present",
+    "5_source_rights_status": "official_property_page ALLOWED_WITH_CONSTRAINTS (but no staging value + writer omit)",
+    "6_write_class": "CORROBORATED_WRITE",
+    "7_in_phase1_mutation_manifest": false,
+    "8_why_not_if_not": "V2.3 discovery toDiscoveryRecord() does not persist address on physical; field_evidence empty for cohort; classifyFieldWrites() also never calls add('Address') despite CORROBORATED_WRITE mapping (latent omission).",
+    "9_airtable_field_mapping": true,
+    "10_type_select_blocked": false,
+    "11_writer_intentionally_suppressed": true,
+    "12_expected_or_bug": "EXPECTED"
+  },
+  "staging_nonblank_count": 0,
+  "dry_run_mutation_count": 0,
+  "tx_written_count": 0,
+  "post_write_inserted": {
+    "inserted_records": 115,
+    "blank": 115,
+    "nonblank": 0
+  },
+  "schema": {
+    "name": "Address",
+    "type": "singleLineText",
+    "id": "fldj05XBG2l6WLCo5"
+  },
+  "mapping": {
+    "golden_census_field": "Address",
+    "airtable_field": "Address",
+    "type": "singleLineText",
+    "exists_on_live_schema": true,
+    "write_class": "CORROBORATED_WRITE",
+    "source_requirement": "official_page_only_this_pilot",
+    "current_write_support": true,
+    "in_autopilot_allowlist": true,
+    "in_insert_allowlist": true,
+    "forbidden": false
+  },
+  "policy": {
+    "inAuto": false,
+    "inCorr": true,
+    "inBlocked": false,
+    "inInsertAllow": true,
+    "classifierAdds": false
+  },
+  "blank_reason_code": "A. RESEARCH VALUE NOT FOUND",
+  "expected_or_bug": "EXPECTED",
+  "staging_keys_sample": []
+}

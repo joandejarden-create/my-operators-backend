@@ -372,11 +372,17 @@
         ])
       );
 
+    var residenceFit =
+      nz(pick((vm && vm.ex) || {}, (vm && vm.prefill) || {}, "bf_signal_residence")) ||
+      nz(pick((vm && vm.ex) || {}, (vm && vm.prefill) || {}, "brandedResidenceExperienceLevel")) ||
+      nz(pick((vm && vm.ex) || {}, (vm && vm.prefill) || {}, "brandedResidencesAllowed"));
+
     return [
       ["Ideal Markets", idealMarkets || "—"],
       ["Ideal Asset Types", idealAssetTypes || "—"],
       ["Ideal Ownership Profile", idealOwnership || "—"],
       ["Project Stages", projectStages || "—"],
+      ["Branded Residence Fit", residenceFit || "—"],
       ["Less Ideal For", lessIdeal || "—"],
     ];
   }
@@ -568,6 +574,65 @@
     );
   }
 
+  function buildBrandedResidenceFitSection(vm) {
+    var ex = (vm && vm.ex) || {};
+    var p = (vm && vm.prefill) || {};
+    var allowed = nz(pick(ex, p, "brandedResidencesAllowed"));
+    var mixedUse = nz(pick(ex, p, "mixedUseAllowed"));
+    var experience = nz(pick(ex, p, "brandedResidenceExperienceLevel"));
+    var programs = joinList(
+      fieldList(vm, ["brandedResidenceProgramModelsSupported"], [
+        "Branded Residence Program Models Supported",
+      ])
+    );
+    var rental = joinList(
+      fieldList(vm, ["condoRentalProgramModelsSupported"], ["Condo Rental Program Models Supported"])
+    );
+    var props = nz(pick(ex, p, "brandedResidencePropertiesManaged"));
+    var mixedCount = nz(pick(ex, p, "mixedUseHospitalityExperience"));
+    var hoa = nz(pick(ex, p, "hoaCondoAssociationInterface"));
+    var sales = nz(pick(ex, p, "residenceSalesClosingSupport"));
+    var signal = nz(pick(ex, p, "bf_signal_residence"));
+
+    var rows = [
+      ["Branded residences", allowed],
+      ["Mixed-use development", mixedUse],
+      ["Residence experience", experience],
+      ["Program models", programs],
+      ["Rental pool models", rental],
+      ["Residence properties", props],
+      ["Mixed-use projects", mixedCount],
+      ["HOA / condo interface", hoa],
+      ["Sales & closing support", sales],
+      ["Fit signal", signal],
+    ].filter(function (pair) {
+      return nz(pair[1]);
+    });
+
+    if (!rows.length) return "";
+
+    var body = rows
+      .map(function (pair) {
+        return (
+          "<tr><th scope=\"row\">" +
+          escapeHtml(pair[0]) +
+          "</th><td>" +
+          escapeHtml(pair[1]) +
+          "</td></tr>"
+        );
+      })
+      .join("");
+
+    return wrapSection(
+      "Branded Residence & Mixed-Use Fit",
+      "Willingness, operating experience, and program models for hotel-branded residences and mixed-use hospitality.",
+      '<div class="oe-bf-table-wrap"><table class="oe-bf-table oe-bf-table--two-col"><tbody>' +
+        body +
+        "</tbody></table></div>",
+      "oe-bf-section--residence"
+    );
+  }
+
   function buildRedFlagsSection(vm) {
     var rows = sectionData(vm, FIELD.redFlags);
     if (!rows.length) return "";
@@ -631,6 +696,10 @@
       parseMillions(nz(p.portfolioValue)) ||
       "$15M+";
     var geosVal = geos ? String(geos) : "3";
+    var residenceSignal =
+      nz(pick(ex, p, "bf_signal_residence")) ||
+      nz(pick(ex, p, "brandedResidenceExperienceLevel")) ||
+      nz(pick(ex, p, "brandedResidencesAllowed"));
 
     function row(labelLines, value, note) {
       var s = nz(value);
@@ -670,6 +739,11 @@
         timeline,
         "Typical timing from first conversation to proposal and alignment on next steps"
       ),
+      row(
+        ["Branded", "Residence Fit"],
+        residenceSignal,
+        "Mixed-use / branded residence willingness and operating depth"
+      ),
     ].filter(Boolean);
   }
 
@@ -677,6 +751,7 @@
     return (
       buildFitCriteriaSection(vm) +
       buildBestFitProjectTypesSection(vm) +
+      buildBrandedResidenceFitSection(vm) +
       buildPreferredDealProfileSection(vm) +
       buildEvaluationPathSection(vm) +
       buildRedFlagsSection(vm)

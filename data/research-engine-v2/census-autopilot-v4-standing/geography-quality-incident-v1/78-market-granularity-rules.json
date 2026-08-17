@@ -1,0 +1,11 @@
+{
+  "terminate_at_country": "Only when single_market_country allowlist says Market canonical name may equal Country",
+  "terminate_at_state": "Only via STATE_TO_MARKET_EXPLICIT registry rule (weak/missing city only)",
+  "terminate_at_market": "Default commercial geography for multi-metro countries",
+  "terminate_at_submarket": "Corridors inside a Market when taxonomy exists; else NOT_APPLICABLE",
+  "large_country_rule": "Never treat Mexico/Brazil/Argentina/DR/Costa Rica as one Market due to missing map",
+  "small_island_rule": "May be one Market with Submarket corridors",
+  "resort_region_rule": "One Market may span municipalities (e.g. Cancún / Riviera Maya)",
+  "metro_rule": "One Market with multiple Submarkets when corridors exist; suburbs map to parent metro Market",
+  "coordinate_rule": "Centroid radius assignment only when city is weak/missing; never Country-wide"
+}

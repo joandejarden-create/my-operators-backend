@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "version": "census-autopilot-coverage-reconciliation-v1",
+  "objective": "coverage-reconciliation-v1",
+  "region": "CALA",
+  "parent_company": "Marriott",
+  "brand": "Sheraton",
+  "mode": "controlled",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "official_inventory_count": 9,
+  "census_inventory_count": 6,
+  "census_inventory_count_before": 6,
+  "census_inventory_count_after": 6,
+  "census_total_records": 907,
+  "coverage_counts": {
+    "existing_exact_match": 6,
+    "existing_probable_match": 0,
+    "missing_high_confidence": 3,
+    "missing_needs_steward": 0,
+    "duplicate_risk": 0,
+    "source_blocked": 0,
+    "source_insufficient": 0
+  },
+  "brand_rollups": [
+    {
+      "brand": "Sheraton",
+      "official_inventory_count": 9,
+      "census_inventory_count": 6,
+      "existing_exact": 6,
+      "existing_probable": 0,
+      "missing_high_confidence": 3,
+      "missing_needs_steward": 0,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "missing_official_property_urls": [
+        "https://www.marriott.com/en-us/hotels/sdqds-sheraton-santo-domingo-hotel/overview",
+        "https://www.marriott.com/en-us/hotels/bogsi-sheraton-bogota-hotel/overview",
+        "https://www.marriott.com/en-us/hotels/ptysi-sheraton-grand-panama/overview"
+      ],
+      "recommended_action": "insert_high_confidence_missing",
+      "missing_count": 3,
+      "coverage_percentage": 66.7
+    }
+  ],
+  "missing_hotels": [
+    {
+      "property_name": "Sheraton Santo Domingo Hotel",
+      "brand": "Sheraton",
+      "city": "Santo Domingo",
+      "country": "Dominican Republic",
+      "official_property_id": "SDQDS",
+      "official_property_url": "https://www.marriott.com/en-us/hotels/sdqds-sheraton-santo-domingo-hotel/overview",
+      "official_directory_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+      "coverage_class": "missing_high_confidence",
+      "identity_confidence": "High",
+      "identity_key": "ind_marriott_do_sdqds"
+    },
+    {
+      "property_name": "Sheraton Bogota Hotel",
+      "brand": "Sheraton",
+      "city": "Bogotá",
+      "country": "Colombia",
+      "official_property_id": "BOGSI",
+      "official_property_url": "https://www.marriott.com/en-us/hotels/bogsi-sheraton-bogota-hotel/overview",
+      "official_directory_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+      "coverage_class": "missing_high_confidence",
+      "identity_confidence": "High",
+      "identity_key": "ind_marriott_co_bogsi"
+    },
+    {
+      "property_name": "Sheraton Grand Panama",
+      "brand": "Sheraton",
+      "city": "Panama City",
+      "country": "Panama",
+      "official_property_id": "PTYSI",
+      "official_property_url": "https://www.marriott.com/en-us/hotels/ptysi-sheraton-grand-panama/overview",
+      "official_directory_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+      "coverage_class": "missing_high_confidence",
+      "identity_confidence": "High",
+      "identity_key": "ind_marriott_pa_ptysi"
+    }
+  ],
+  "inserted_hotels": [],
+  "inserted_count": 0,
+  "stewarded_count": 0,
+  "stewarded_hotels": [],
+  "duplicate_risks": [],
+  "source_blockers": [],
+  "official_sources": [
+    {
+      "family": "Marriott",
+      "source": "marriott_country_hotel_sitemap",
+      "note": "Official country hotel-sitemaps (MARSHA + property URL); HQV not used for discovery",
+      "adapter": "marriott_cala_country_sitemap"
+    },
+    {
+      "family": "VIC_evidence",
+      "note": "official_family_directory_adapter"
+    }
+  ],
+  "proposed_insert_count": 3,
+  "insert_apply": null,
+  "airtable_writes": false,
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T22-42-16_CALA-coverage-reconciliation-v1",
+  "parent_framework": [
+    "Marriott",
+    "Hilton",
+    "IHG",
+    "Choice",
+    "Accor",
+    "Wyndham",
+    "Preferred"
+  ],
+  "next_recommended_action": "review_steward_and_insert_remaining_high_or_expand_sources",
+  "blocked_hard": false,
+  "status": "production_census_coverage_reconciliation_v1_partial_missing_remaining"
+}

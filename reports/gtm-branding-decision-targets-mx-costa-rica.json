@@ -1,0 +1,1341 @@
+{
+  "generatedAt": "2026-07-04T22:29:35.917Z",
+  "filters": {
+    "minScore": 25,
+    "country": "Costa Rica",
+    "outreachReadyOnly": true,
+    "preDecisionOnly": false,
+    "brandDecisionOnly": false
+  },
+  "config": {
+    "typicalFranchiseTermYears": 20,
+    "renewalWindowMonthsAhead": 36,
+    "conversionAgeYears": 22,
+    "recentRenovationYears": 8,
+    "newBuildRecentYears": 3,
+    "outreachReadyMinScore": 45,
+    "verifiedContactBonus": 15,
+    "reachableContactBonus": 5,
+    "verifiedPhoneBonus": 8
+  },
+  "dataLimits": [
+    "Franchise contract expiry dates are NOT in CoStar — brand_renewal_window is heuristic.",
+    "Land purchase / pre-permit hotel sites need news, permits, or advisor intel (Phase 2)."
+  ],
+  "summary": {
+    "total": 11,
+    "outreachReady": 11,
+    "withVerifiedContact": 7,
+    "byDealTrigger": {
+      "brand_renewal_window": 3,
+      "independent_unbranded": 7,
+      "reflag": 1
+    },
+    "byConfidence": {
+      "medium": 7,
+      "high": 4
+    },
+    "byOutreachTrack": {
+      "third_party_brand_decision": 6,
+      "asset_owner": 4,
+      "integrated_operator_mixed": 1
+    }
+  },
+  "items": [
+    {
+      "ownerName": "Caribe Hospitality",
+      "intentScore": 84,
+      "confidence": "medium",
+      "primaryDealTrigger": "brand_renewal_window",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 7,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Marriott International)",
+          "propertyCount": 7,
+          "examples": [
+            "Courtyard by Marriott San Jose Airport Alajuela",
+            "Fairfield by Marriott San Jose Airport Alajuela",
+            "Residence Inn San Jose Escazu"
+          ]
+        },
+        {
+          "id": "brand_renewal_window",
+          "dealTrigger": "brand_renewal_window",
+          "label": "Estimated brand/management renewal window (heuristic)",
+          "weight": 20,
+          "confidence": "low",
+          "decisionTiming": "pre_decision",
+          "reason": "Heuristic renewal ~2029 (20y from 2009) — NOT contract date",
+          "propertyCount": 1,
+          "examples": [
+            "Residence Inn San Jose Escazu"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 2002 (24y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Courtyard San Jose Escazu"
+          ]
+        },
+        {
+          "id": "portfolio_mixed_brands",
+          "dealTrigger": "portfolio_standardization",
+          "label": "Mixed brands across portfolio — standardization opportunity",
+          "weight": 18,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "6 distinct brands across CALA portfolio",
+          "propertyCount": 7,
+          "examples": [
+            "Courtyard",
+            "Fairfield Inn",
+            "Residence Inn"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 7,
+      "distinctBrandCount": 6,
+      "topProperties": [
+        {
+          "buildingName": "Courtyard San Jose Escazu",
+          "city": "San Jose",
+          "country": "Costa Rica",
+          "brandAffiliation": "Courtyard",
+          "hotelOperator": "Marriott International",
+          "brandDecisionEligible": true,
+          "propertyScore": 46,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate",
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Residence Inn San Jose Escazu",
+          "city": "San Jose",
+          "country": "Costa Rica",
+          "brandAffiliation": "Residence Inn",
+          "hotelOperator": "Marriott International",
+          "brandDecisionEligible": true,
+          "propertyScore": 44,
+          "primaryDealTrigger": "brand_renewal_window",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Estimated brand/management renewal window (heuristic)"
+          ]
+        },
+        {
+          "buildingName": "Courtyard by Marriott San Jose Airport Alajuela",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "Courtyard",
+          "hotelOperator": "Marriott International",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Fairfield by Marriott San Jose Airport Alajuela",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "Fairfield Inn",
+          "hotelOperator": "Marriott International",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "AC Hotel San Jose Escazu",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "AC Hotels by Marriott",
+          "hotelOperator": "Marriott International",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        }
+      ],
+      "ownerTargetId": "recat6sUtfIexZ5G3",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 15,
+      "countriesSummary": "Barbados; Costa Rica; El Salvador; Jamaica; Mexico; Puerto Rico; Trinidad",
+      "outreachScore": 99,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Daniel Campos",
+        "email": "dcampos@caribehospitality.com",
+        "phone": "00 506 2208 8890",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "00 506 2208 8890",
+        "linkedIn": "https://www.linkedin.com/in/dcamposlara",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Approaching estimated brand/management renewal window — evaluate alternatives before recommit.",
+      "dataGaps": [
+        "Franchise expiry date unknown — renewal window is heuristic only",
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Grupo Leumi",
+      "intentScore": 70,
+      "confidence": "medium",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 3,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Hilton Garden Inn San Jose La Sabana)",
+          "propertyCount": 2,
+          "examples": [
+            "Hilton Garden Inn San Jose La Sabana",
+            "Hilton San Jose La Sabana"
+          ]
+        },
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "Soft collection / independent-spirited brand: Curio Collection by Hilton",
+          "propertyCount": 1,
+          "examples": [
+            "Gran Hotel Costa Rica, Curio Collection by Hilton"
+          ]
+        },
+        {
+          "id": "portfolio_mixed_brands",
+          "dealTrigger": "portfolio_standardization",
+          "label": "Mixed brands across portfolio — standardization opportunity",
+          "weight": 18,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "3 distinct brands across CALA portfolio",
+          "propertyCount": 3,
+          "examples": [
+            "Hilton Garden Inn",
+            "Curio Collection by Hilton",
+            "Hilton"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 3,
+      "distinctBrandCount": 3,
+      "topProperties": [
+        {
+          "buildingName": "Gran Hotel Costa Rica, Curio Collection by Hilton",
+          "city": "San Jose",
+          "country": "Costa Rica",
+          "brandAffiliation": "Curio Collection by Hilton",
+          "hotelOperator": "",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Hilton Garden Inn San Jose La Sabana",
+          "city": "San Jose",
+          "country": "Costa Rica",
+          "brandAffiliation": "Hilton Garden Inn",
+          "hotelOperator": "Hilton Garden Inn San Jose La Sabana",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Hilton San Jose La Sabana",
+          "city": "San Jose",
+          "country": "Costa Rica",
+          "brandAffiliation": "Hilton",
+          "hotelOperator": "CLS Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        }
+      ],
+      "ownerTargetId": "reccBBmN7D5tzEnuV",
+      "priorityTier": "C",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 3,
+      "countriesSummary": "Costa Rica",
+      "outreachScore": 85,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Stanley Rattner",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/stanley-rattner-896773112",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Gran Hotel Costa Rica, Curio Collection by Hilton\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Real Hotels & Resorts",
+      "intentScore": 60,
+      "confidence": "medium",
+      "primaryDealTrigger": "brand_renewal_window",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 3,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 2001 (25y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Four Points by Sheraton San Jose Costa Rica"
+          ]
+        },
+        {
+          "id": "brand_renewal_window",
+          "dealTrigger": "brand_renewal_window",
+          "label": "Estimated brand/management renewal window (heuristic)",
+          "weight": 20,
+          "confidence": "low",
+          "decisionTiming": "pre_decision",
+          "reason": "Heuristic renewal ~2027 (20y from 2007) — NOT contract date",
+          "propertyCount": 1,
+          "examples": [
+            "Four Points by Sheraton San Jose Costa Rica"
+          ]
+        },
+        {
+          "id": "portfolio_mixed_brands",
+          "dealTrigger": "portfolio_standardization",
+          "label": "Mixed brands across portfolio — standardization opportunity",
+          "weight": 18,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "3 distinct brands across CALA portfolio",
+          "propertyCount": 3,
+          "examples": [
+            "InterContinental",
+            "JW Marriott",
+            "Four Points by Sheraton"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 3,
+      "distinctBrandCount": 3,
+      "topProperties": [
+        {
+          "buildingName": "Four Points by Sheraton San Jose Costa Rica",
+          "city": "San Jose",
+          "country": "Costa Rica",
+          "brandAffiliation": "Four Points by Sheraton",
+          "hotelOperator": "Real Hotels & Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 42,
+          "primaryDealTrigger": "brand_renewal_window",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate",
+            "Estimated brand/management renewal window (heuristic)"
+          ]
+        }
+      ],
+      "ownerTargetId": "recbkiwiCrlDpHi4Q",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 22,
+      "countriesSummary": "Colombia; Costa Rica; Dominican Republic; El Salvador; Guatemala; Honduras; Nicaragua; Panama; Peru",
+      "outreachScore": 75,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Mafalda Alves Dias",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/mafaldalvesdias",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Approaching estimated brand/management renewal window — evaluate alternatives before recommit.",
+      "dataGaps": [
+        "Franchise expiry date unknown — renewal window is heuristic only",
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Böëna Lodges",
+      "intentScore": 58,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 5,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 5,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 5,
+          "examples": [
+            "Lapa Rios Lodge",
+            "Pacuare Lodge",
+            "Monteverde Lodge"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "high",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1995 (31y) without recent major renov",
+          "propertyCount": 2,
+          "examples": [
+            "Pacuare Lodge",
+            "Tortuga Lodge"
+          ]
+        }
+      ],
+      "independentPropertyCount": 5,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Pacuare Lodge",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Böëna Lodges",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Tortuga Lodge",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Böëna Lodges",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Lapa Rios Lodge",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Böëna Lodges",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Monteverde Lodge",
+          "city": "Monteverde",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Böëna Lodges",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Cloud Forest Lodge",
+          "city": "Monteverde",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Böëna Lodges",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "recF9lXdtix68dL5T",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 5,
+      "countriesSummary": "Costa Rica",
+      "outreachScore": 73,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Jack Loeb",
+        "email": "jack@boena.com",
+        "phone": "+506 8851-9276",
+        "businessPhone": "+506 8851-9276",
+        "mobilePhone": "",
+        "businessPhoneTier": "VP3",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "VP1",
+        "phonesDisplay": "HQ +506 8851-9276 (VP3)",
+        "linkedIn": "https://www.linkedin.com/in/jack-loeb",
+        "verificationTier": "V1R",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Pacuare Lodge\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Grupo Marta",
+      "intentScore": 68,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 4,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 1,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1976 (50y) without recent major renov",
+          "propertyCount": 3,
+          "examples": [
+            "Best Western Jaco Beach All Inclusive Resort",
+            "Holiday Inn Express San Jose Costa Rica Airport",
+            "Irazú Hotel & Studios"
+          ]
+        },
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 1,
+          "examples": [
+            "Irazú Hotel & Studios"
+          ]
+        },
+        {
+          "id": "portfolio_mixed_brands",
+          "dealTrigger": "portfolio_standardization",
+          "label": "Mixed brands across portfolio — standardization opportunity",
+          "weight": 18,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "3 distinct brands across CALA portfolio",
+          "propertyCount": 4,
+          "examples": [
+            "Best Western",
+            "Holiday Inn Express",
+            "Holiday Inn"
+          ]
+        }
+      ],
+      "independentPropertyCount": 1,
+      "brandedPropertyCount": 3,
+      "distinctBrandCount": 3,
+      "topProperties": [
+        {
+          "buildingName": "Irazú Hotel & Studios",
+          "city": "San Jose",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Grupo Marta",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Best Western Jaco Beach All Inclusive Resort",
+          "city": "Jaco",
+          "country": "Costa Rica",
+          "brandAffiliation": "Best Western",
+          "hotelOperator": "Grupo Marta",
+          "brandDecisionEligible": true,
+          "propertyScore": 22,
+          "primaryDealTrigger": "conversion",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Holiday Inn Express San Jose Costa Rica Airport",
+          "city": "San Jose",
+          "country": "Costa Rica",
+          "brandAffiliation": "Holiday Inn Express",
+          "hotelOperator": "Grupo Marta",
+          "brandDecisionEligible": true,
+          "propertyScore": 22,
+          "primaryDealTrigger": "conversion",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate"
+          ]
+        }
+      ],
+      "ownerTargetId": "recOtN7YOnT2HctUt",
+      "priorityTier": "A",
+      "icpSegment": "asset_owner",
+      "calaPropertyCount": 4,
+      "countriesSummary": "Costa Rica",
+      "outreachScore": 73,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Daisy Puig",
+        "email": "dpuig@grupomarta.com",
+        "phone": "00 506 2290 2321",
+        "businessPhone": "00 506 2290 2321",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 00 506 2290 2321 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Irazú Hotel & Studios\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Alojica",
+      "intentScore": 52,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 3,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 1,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Marriott International)",
+          "propertyCount": 2,
+          "examples": [
+            "Costa Rica Marriott Hotel Hacienda Belen",
+            "Los Suenos Marriott Ocean & Golf Resort"
+          ]
+        },
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 1,
+          "examples": [
+            "Fiesta Resort"
+          ]
+        }
+      ],
+      "independentPropertyCount": 1,
+      "brandedPropertyCount": 2,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Fiesta Resort",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Costa Rica Marriott Hotel Hacienda Belen",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "Marriott",
+          "hotelOperator": "Marriott International",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        },
+        {
+          "buildingName": "Los Suenos Marriott Ocean & Golf Resort",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "Marriott",
+          "hotelOperator": "Marriott International",
+          "brandDecisionEligible": true,
+          "propertyScore": 24,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        }
+      ],
+      "ownerTargetId": "recqVaRXgZ7Vxkm0r",
+      "priorityTier": "A",
+      "icpSegment": "asset_owner",
+      "calaPropertyCount": 5,
+      "countriesSummary": "Costa Rica; Mexico",
+      "outreachScore": 67,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Ana Maria Añez",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/anamariaanez",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Fiesta Resort\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Gencom",
+      "intentScore": 52,
+      "confidence": "medium",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "Soft collection / independent-spirited brand: Auberge Collection",
+          "propertyCount": 1,
+          "examples": [
+            "Hacienda AltaGracia, Auberge Collection"
+          ]
+        },
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Auberge Resorts, LLC)",
+          "propertyCount": 1,
+          "examples": [
+            "Hacienda AltaGracia, Auberge Collection"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 1,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Hacienda AltaGracia, Auberge Collection",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "Auberge Collection",
+          "hotelOperator": "Auberge Resorts, LLC",
+          "brandDecisionEligible": true,
+          "propertyScore": 52,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Owner ≠ operator — potential reflag or operator change"
+          ]
+        }
+      ],
+      "ownerTargetId": "rec1PTbLmuSj1k7f6",
+      "priorityTier": "B",
+      "icpSegment": "asset_owner",
+      "calaPropertyCount": 2,
+      "countriesSummary": "Bermuda; Costa Rica",
+      "outreachScore": 67,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Mark Scheinberg",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/mark-scheinberg-538b24215",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Hacienda AltaGracia, Auberge Collection\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Enchanting Hotels",
+      "intentScore": 58,
+      "confidence": "high",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 11,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 11,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "high",
+          "decisionTiming": "pre_decision",
+          "reason": "No brand affiliation in CoStar",
+          "propertyCount": 11,
+          "examples": [
+            "Cristal Ballena Boutique Hotel & Spa",
+            "Almonds & Corals Boutique Hotel",
+            "Manatus Hotel"
+          ]
+        },
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "high",
+          "decisionTiming": "uncertain",
+          "reason": "Built 2003 (23y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Playa Nicuesa Rainforest Lodge"
+          ]
+        }
+      ],
+      "independentPropertyCount": 11,
+      "brandedPropertyCount": 0,
+      "distinctBrandCount": 0,
+      "topProperties": [
+        {
+          "buildingName": "Playa Nicuesa Rainforest Lodge",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Enchanting Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 50,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel",
+            "Aging product — conversion / repositioning candidate"
+          ]
+        },
+        {
+          "buildingName": "Cristal Ballena Boutique Hotel & Spa",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Enchanting Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Almonds & Corals Boutique Hotel",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Enchanting Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Manatus Hotel",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Enchanting Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        },
+        {
+          "buildingName": "Hacienda Guachipelin Volcano Ranch Hotel & Hot Springs",
+          "city": "Liberia",
+          "country": "Costa Rica",
+          "brandAffiliation": "",
+          "hotelOperator": "Enchanting Hotels",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "rec7Uo5603XHmCEkp",
+      "priorityTier": "B",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 11,
+      "countriesSummary": "Costa Rica",
+      "outreachScore": 63,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Daniel Chavarria",
+        "email": "daniel@enchanting-hotels.com",
+        "phone": "00 506 2222 0704",
+        "businessPhone": "00 506 2222 0704",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 00 506 2222 0704 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Playa Nicuesa Rainforest Lodge\" and portfolio.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Royalton Hotels & Resorts",
+      "intentScore": 54,
+      "confidence": "medium",
+      "primaryDealTrigger": "independent_unbranded",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "third_party_brand_decision",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "independent_unbranded",
+          "dealTrigger": "independent_unbranded",
+          "label": "Independent / unbranded hotel",
+          "weight": 28,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "Soft collection / independent-spirited brand: Autograph Collection",
+          "propertyCount": 1,
+          "examples": [
+            "Planet Hollywood Costa Rica by Royalton, An Autograph Collection All-Inclusive Resort"
+          ]
+        },
+        {
+          "id": "development_pipeline",
+          "dealTrigger": "development_pipeline",
+          "label": "Owner development pipeline (CoStar profile / property type)",
+          "weight": 26,
+          "confidence": "medium",
+          "decisionTiming": "pre_decision",
+          "reason": "1 asset(s) under development in CoStar company profile",
+          "propertyCount": 1,
+          "examples": []
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 1,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Planet Hollywood Costa Rica by Royalton, An Autograph Collection All-Inclusive Resort",
+          "city": "Liberia",
+          "country": "Costa Rica",
+          "brandAffiliation": "Autograph Collection",
+          "hotelOperator": "Royalton Hotels & Resorts",
+          "brandDecisionEligible": true,
+          "propertyScore": 28,
+          "primaryDealTrigger": "independent_unbranded",
+          "signalLabels": [
+            "Independent / unbranded hotel"
+          ]
+        }
+      ],
+      "ownerTargetId": "reciCLtenXkoktzzB",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 19,
+      "countriesSummary": "Antigua and Barbuda; Barbados; Costa Rica; Dominican Republic; Grenada; Jamaica; Mexico; Saint Lucia",
+      "outreachScore": 59,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Jordi Pelfort",
+        "email": "JPelfort@BlueDiamondResorts.com",
+        "phone": "00 1 855-744-8371",
+        "businessPhone": "00 1 855-744-8371",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 00 1 855-744-8371 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Independent CALA hotel owner — brand/franchise evaluation workspace for \"Planet Hollywood Costa Rica by Royalton, An Autograph Collection All-Inclusive Resort\" and portfolio.",
+      "dataGaps": []
+    },
+    {
+      "ownerName": "Mullen Real Estate Capital",
+      "intentScore": 40,
+      "confidence": "medium",
+      "primaryDealTrigger": "reflag",
+      "brandDecisionTiming": "uncertain",
+      "outreachTrack": "asset_owner",
+      "brandDecisionEligiblePropertyCount": 1,
+      "houseBrandPropertyCount": 0,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "reflag_operator_mismatch",
+          "dealTrigger": "reflag",
+          "label": "Owner ≠ operator — potential reflag or operator change",
+          "weight": 24,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Owner asset with third-party operator (Apple Leisure Group)",
+          "propertyCount": 1,
+          "examples": [
+            "Secrets Papagayo Costa Rica"
+          ]
+        },
+        {
+          "id": "operator_rfp_proxy",
+          "dealTrigger": "operator_rfp",
+          "label": "Third-party operator on asset — operator selection proxy",
+          "weight": 16,
+          "confidence": "low",
+          "decisionTiming": "uncertain",
+          "reason": "Operator field: Apple Leisure Group",
+          "propertyCount": 1,
+          "examples": [
+            "Secrets Papagayo Costa Rica"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 1,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Secrets Papagayo Costa Rica",
+          "city": "",
+          "country": "Costa Rica",
+          "brandAffiliation": "Secrets Resorts & Spas",
+          "hotelOperator": "Apple Leisure Group",
+          "brandDecisionEligible": true,
+          "propertyScore": 40,
+          "primaryDealTrigger": "reflag",
+          "signalLabels": [
+            "Owner ≠ operator — potential reflag or operator change",
+            "Third-party operator on asset — operator selection proxy"
+          ]
+        }
+      ],
+      "ownerTargetId": "recInM1cvhNyluaOW",
+      "priorityTier": "A",
+      "icpSegment": "institutional",
+      "calaPropertyCount": 2,
+      "countriesSummary": "Costa Rica; Dominican Republic",
+      "outreachScore": 55,
+      "outreachReady": true,
+      "dealalityFit": "uncertain",
+      "contact": {
+        "name": "Jeff Mullen",
+        "email": "",
+        "phone": "",
+        "businessPhone": "",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "",
+        "linkedIn": "https://www.linkedin.com/in/jeffmmullen",
+        "verificationTier": "V2",
+        "hasVerifiedContact": true,
+        "hasVerifiedPersonEmail": "",
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Owner-operator separation on CALA assets — reflag/operator RFP decision support.",
+      "dataGaps": [
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    },
+    {
+      "ownerName": "Barcelo Gestion Hotelera S.L.",
+      "intentScore": 42,
+      "confidence": "medium",
+      "primaryDealTrigger": "brand_renewal_window",
+      "brandDecisionTiming": "pre_decision",
+      "outreachTrack": "integrated_operator_mixed",
+      "brandDecisionEligiblePropertyCount": 2,
+      "houseBrandPropertyCount": 2,
+      "preDecisionPropertyCount": 0,
+      "postDecisionPropertyCount": 0,
+      "signals": [
+        {
+          "id": "conversion_candidate",
+          "dealTrigger": "conversion",
+          "label": "Aging product — conversion / repositioning candidate",
+          "weight": 22,
+          "confidence": "medium",
+          "decisionTiming": "uncertain",
+          "reason": "Built 1992 (34y) without recent major renov",
+          "propertyCount": 1,
+          "examples": [
+            "Occidental Papagayo - Adults Only - All Inclusive"
+          ]
+        },
+        {
+          "id": "brand_renewal_window",
+          "dealTrigger": "brand_renewal_window",
+          "label": "Estimated brand/management renewal window (heuristic)",
+          "weight": 20,
+          "confidence": "low",
+          "decisionTiming": "pre_decision",
+          "reason": "Heuristic renewal ~2027 (20y from 2007) — NOT contract date",
+          "propertyCount": 1,
+          "examples": [
+            "Occidental Papagayo - Adults Only - All Inclusive"
+          ]
+        }
+      ],
+      "independentPropertyCount": 0,
+      "brandedPropertyCount": 4,
+      "distinctBrandCount": 1,
+      "topProperties": [
+        {
+          "buildingName": "Occidental Papagayo - Adults Only - All Inclusive",
+          "city": "Liberia",
+          "country": "Costa Rica",
+          "brandAffiliation": "Occidental",
+          "hotelOperator": "Barcelo Gestion Hotelera S.L.",
+          "brandDecisionEligible": true,
+          "propertyScore": 42,
+          "primaryDealTrigger": "brand_renewal_window",
+          "signalLabels": [
+            "Aging product — conversion / repositioning candidate",
+            "Estimated brand/management renewal window (heuristic)"
+          ]
+        }
+      ],
+      "ownerTargetId": "recz4sXU8JnsGFHiA",
+      "priorityTier": "A",
+      "icpSegment": "owner_operator",
+      "calaPropertyCount": 36,
+      "countriesSummary": "Aruba; Costa Rica; Cuba; Dominican Republic; El Salvador; Guatemala; Mexico; Nicaragua",
+      "outreachScore": 47,
+      "outreachReady": true,
+      "dealalityFit": "brand_decision_window",
+      "contact": {
+        "name": "Simón Pedro Barceló Vadell",
+        "email": "sp.barcelo@barcelo.com",
+        "phone": "971 77 17 00",
+        "businessPhone": "971 77 17 00",
+        "mobilePhone": "",
+        "businessPhoneTier": "",
+        "mobilePhoneTier": "",
+        "phoneVerificationTier": "",
+        "phonesDisplay": "HQ 971 77 17 00 (?)",
+        "linkedIn": "",
+        "verificationTier": "",
+        "hasVerifiedContact": false,
+        "hasVerifiedPersonEmail": true,
+        "hasVerifiedPersonPhone": false,
+        "isNonPersonMailbox": false,
+        "isGenericMailbox": false
+      },
+      "pitchAngle": "Mixed portfolio — brand/franchise evaluation on third-party-flag and unbranded assets (lead: \"Occidental Papagayo - Adults Only - All Inclusive\").",
+      "dataGaps": [
+        "Franchise expiry date unknown — renewal window is heuristic only",
+        "Land purchase / pre-permit projects not in CoStar — add news/advisor signals"
+      ]
+    }
+  ]
+}

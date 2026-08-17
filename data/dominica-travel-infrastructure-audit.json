@@ -1,0 +1,87 @@
+{
+  "auditedAt": "2026-06-25T10:44:58.163Z",
+  "country": "Dominica",
+  "market": "Dominica Countrywide",
+  "keywords": [
+    "dominica",
+    "roseau",
+    "portsmouth",
+    "douglas-charles",
+    "dom",
+    "cruise",
+    "boiling lake",
+    "scotts head",
+    "cabrits"
+  ],
+  "summary": {
+    "countryTravelInfrastructureTotal": 3,
+    "marketMatchedRecords": 2,
+    "existingExpectedNodes": 2,
+    "likelyMissingNodes": 2,
+    "duplicateCandidates": 0,
+    "weakSubmarketRecords": 2,
+    "governanceBackfillCandidates": 0,
+    "additionalFixtureRecommended": true,
+    "mexicoTravelInfrastructureTotal": 3
+  },
+  "existingMatchingRecords": [
+    {
+      "name": "Roseau Cruise Port",
+      "pointType": "Cruise Port",
+      "city": "Roseau",
+      "submarket": "",
+      "latitude": 15.3017,
+      "longitude": -61.3881,
+      "sourceReference": "https://www.openstreetmap.org/?mlat=15.3017&mlon=-61.3881&zoom=13",
+      "dataConfidence": "High"
+    },
+    {
+      "name": "Roseau Douglas-Charles Airport",
+      "pointType": "Airport",
+      "city": "Roseau",
+      "submarket": "",
+      "latitude": 15.5467,
+      "longitude": -61.2992,
+      "sourceReference": "https://en.wikipedia.org/wiki/Douglas%E2%80%93Charles_Airport",
+      "dataConfidence": "High"
+    }
+  ],
+  "expectedNodeCoverage": [
+    {
+      "label": "Douglas-Charles Airport / DOM",
+      "name": "Roseau Douglas-Charles Airport",
+      "city": "Roseau",
+      "submarket": "",
+      "pointType": "Airport"
+    },
+    {
+      "label": "Roseau cruise berth",
+      "name": "Roseau Cruise Port",
+      "city": "Roseau",
+      "submarket": "",
+      "pointType": "Cruise Port"
+    }
+  ],
+  "likelyMissingRecords": [
+    "Portsmouth Cabrits",
+    "Boiling Lake trailhead"
+  ],
+  "duplicateCandidates": [],
+  "weakSubmarketRecords": [
+    {
+      "name": "Roseau Cruise Port",
+      "city": "Roseau",
+      "submarket": ""
+    },
+    {
+      "name": "Roseau Douglas-Charles Airport",
+      "city": "Roseau",
+      "submarket": ""
+    }
+  ],
+  "governanceBackfillCandidates": [],
+  "notes": [
+    "Demand anchors should not duplicate TI airports/ferries unless explicitly DA-relevant.",
+    "Do not import TI from this audit unless gaps are confirmed and fixture is prepared."
+  ]
+}

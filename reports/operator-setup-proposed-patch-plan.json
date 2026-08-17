@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-06-02T07:42:44.722Z",
+  "checkpoint": "B",
+  "stage": 10,
+  "proposalOnly": true,
+  "batches": [
+    {
+      "order": 1,
+      "scope": "Guard rails",
+      "changes": [
+        "Disable mock fallback in operator explorer API for production.",
+        "Enforce rec-id-only detail lookup contract."
+      ],
+      "risk": "Low",
+      "touching": [
+        "api/operator-explorer.js"
+      ]
+    },
+    {
+      "order": 2,
+      "scope": "Write path hardening",
+      "changes": [
+        "Lock intake to canonical new-base path for go-live mode.",
+        "Keep legacy shadow writes only in non-prod diagnostics mode."
+      ],
+      "risk": "Medium",
+      "touching": [
+        "api/third-party-operator-intake.js",
+        "env/feature-flag docs"
+      ]
+    },
+    {
+      "order": 3,
+      "scope": "Mapping completeness",
+      "changes": [
+        "Resolve high-risk unmapped My Operator keys from Stage 2.",
+        "Update build-sheet JSON/CSV and add validation assertions."
+      ],
+      "risk": "Medium-High",
+      "touching": [
+        "api/lib/operator-setup-new-base-build-sheet-rows.json",
+        "mapping scripts",
+        "UI form names"
+      ]
+    },
+    {
+      "order": 4,
+      "scope": "Option normalization",
+      "changes": [
+        "Define canonical option sets and alias maps (non-destructive migration).",
+        "Update validators + UI option sources + scoring normalizers."
+      ],
+      "risk": "Medium-High",
+      "touching": [
+        "field maps",
+        "form option providers",
+        "scoring normalizers"
+      ]
+    }
+  ]
+}

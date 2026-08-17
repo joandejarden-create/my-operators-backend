@@ -1191,9 +1191,17 @@
         </div>
     </div>
 
+    <script src="/js/dealality-memberstack-auth.js"></script>
     <script src="/dealality-webflow-nav.js"></script>
     <script>
 (function () {
+    function myDealsAuthFetch(url, options) {
+        var auth = window.DealalityMemberstackAuth;
+        if (auth && typeof auth.fetchMyDealsApi === "function") {
+            return auth.fetchMyDealsApi(url, options || {});
+        }
+        return fetch(url, options || {});
+    }
     var form = document.getElementById("faForm");
     var sectionNav = document.getElementById("sectionNav");
     var formSections = document.querySelectorAll(".form-section");
@@ -1549,8 +1557,8 @@
         showForm(false);
         showError("");
         Promise.all([
-            fetch("/api/my-deals/" + encodeURIComponent(dealId)).then(function (r) { return r.json().catch(function () { return {}; }); }),
-            fetch("/api/franchise-application/" + encodeURIComponent(dealId)).then(function (r) { return r.json().catch(function () { return {}; }); }),
+            myDealsAuthFetch("/api/my-deals/" + encodeURIComponent(dealId)).then(function (r) { return r.json().catch(function () { return {}; }); }),
+            myDealsAuthFetch("/api/franchise-application/" + encodeURIComponent(dealId)).then(function (r) { return r.json().catch(function () { return {}; }); }),
             typeof brandsReadyPromise !== "undefined" ? brandsReadyPromise : Promise.resolve()
         ]).then(function (results) {
             var data = results[0];
@@ -1692,7 +1700,7 @@
         fields._savedAt = new Date().toISOString();
         saveBtn.classList.add("loading");
         var apiUrl = "/api/franchise-application/" + encodeURIComponent(dealId);
-        fetch(apiUrl, {
+        myDealsAuthFetch(apiUrl, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(fields)

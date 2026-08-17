@@ -1,0 +1,212 @@
+{
+  "actions_completed": [
+    {
+      "pass": 1,
+      "action": "geo_url_completion",
+      "updates": 773
+    },
+    {
+      "pass": 1,
+      "action": "coverage_reconciliation_growth",
+      "inserts": 0,
+      "updates": 0,
+      "status": "production_census_coverage_reconciliation_v1_partial_missing_remaining"
+    },
+    {
+      "pass": 1,
+      "action": "level_2_source_extraction",
+      "updates": 0,
+      "status": "production_census_level_2_adapter_wave_2_partial_source_remaining"
+    },
+    {
+      "pass": 2,
+      "action": "coverage_reconciliation_growth",
+      "inserts": 0,
+      "updates": 0,
+      "status": "production_census_coverage_reconciliation_v1_partial_missing_remaining"
+    },
+    {
+      "pass": 2,
+      "action": "level_2_source_extraction",
+      "updates": 0,
+      "status": "production_census_level_2_adapter_wave_2_partial_source_remaining"
+    },
+    {
+      "pass": 2,
+      "action": "cala_census_completion",
+      "updates": 57,
+      "inserts": 0,
+      "status": "production_census_cala_completion_v1_partial_source_remaining"
+    },
+    {
+      "pass": 3,
+      "action": "level_2_source_extraction",
+      "updates": 0,
+      "status": "production_census_level_2_adapter_wave_2_partial_source_remaining"
+    },
+    {
+      "pass": 3,
+      "action": "cala_census_completion",
+      "updates": 0,
+      "inserts": 0,
+      "status": "production_census_cala_completion_v1_partial_source_remaining"
+    }
+  ],
+  "actions_attempted_source_insufficient": [
+    {
+      "pass": 1,
+      "action": "level_2_source_extraction",
+      "reason": "no_high_proposals_or_source_insufficient"
+    },
+    {
+      "pass": 2,
+      "action": "geo_url_completion",
+      "reason": "no_high_deterministic_proposals"
+    },
+    {
+      "pass": 2,
+      "action": "level_2_source_extraction",
+      "reason": "no_high_proposals_or_source_insufficient"
+    },
+    {
+      "pass": 3,
+      "action": "geo_url_completion",
+      "reason": "no_high_deterministic_proposals"
+    },
+    {
+      "pass": 3,
+      "action": "level_2_source_extraction",
+      "reason": "no_high_proposals_or_source_insufficient"
+    }
+  ],
+  "next_source_adapters_to_build": [],
+  "next_source_families_to_target": [
+    "Accor",
+    "Hilton",
+    "Marriott International",
+    "IHG",
+    "SLH",
+    "Preferred Hotels & Resorts",
+    "Choice Hotels International",
+    "Wyndham Hotels & Resorts",
+    "Hyatt",
+    "Hodelpa",
+    "Bahía Príncipe"
+  ],
+  "next_country_parent_batches": [
+    {
+      "field": "Market",
+      "strategy": "approved_market_map",
+      "parent_targets": [
+        "Accor",
+        "Hilton",
+        "Marriott International",
+        "IHG",
+        "SLH",
+        "Preferred Hotels & Resorts",
+        "Choice Hotels International",
+        "Wyndham Hotels & Resorts",
+        "Hyatt"
+      ],
+      "country_targets": [
+        "Mexico",
+        "Colombia",
+        "Costa Rica",
+        "Panama",
+        "Dominican Republic"
+      ],
+      "expected_yield": 400
+    },
+    {
+      "field": "Latitude",
+      "strategy": "mapbox_permanent",
+      "parent_targets": [
+        "Accor",
+        "Marriott International",
+        "SLH",
+        "Wyndham Hotels & Resorts",
+        "IHG",
+        "Choice Hotels International",
+        "Preferred Hotels & Resorts",
+        "Hyatt",
+        "Hilton",
+        "Hodelpa",
+        "Bahía Príncipe"
+      ],
+      "country_targets": [
+        "Mexico",
+        "Colombia",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "expected_yield": 588
+    },
+    {
+      "field": "Longitude",
+      "strategy": "mapbox_permanent",
+      "parent_targets": [
+        "Accor",
+        "Marriott International",
+        "SLH",
+        "Wyndham Hotels & Resorts",
+        "IHG",
+        "Choice Hotels International",
+        "Preferred Hotels & Resorts",
+        "Hyatt",
+        "Hilton",
+        "Hodelpa",
+        "Bahía Príncipe"
+      ],
+      "country_targets": [
+        "Mexico",
+        "Colombia",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "expected_yield": 588
+    },
+    {
+      "field": "Address",
+      "strategy": "official_json_ld",
+      "parent_targets": [
+        "Marriott International",
+        "Hilton",
+        "SLH",
+        "IHG",
+        "Accor"
+      ],
+      "country_targets": [
+        "Colombia",
+        "Mexico",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "expected_yield": 221
+    },
+    {
+      "field": "Phone",
+      "strategy": "official_property_page",
+      "parent_targets": [
+        "Accor",
+        "Marriott International",
+        "SLH",
+        "IHG",
+        "Hilton"
+      ],
+      "country_targets": [
+        "Mexico",
+        "Colombia",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "expected_yield": 221
+    }
+  ],
+  "expected_yield_summary": 2018,
+  "command_to_continue": "ALLOW_CENSUS_AUTOPILOT_APPLY=1 \\\nCONFIRM_WRITE_TO_PRODUCTION_CENSUS=1 \\\nCONFIRM_NO_BRAND_EXPLORER_WRITES=1 \\\nCONFIRM_NO_OWNER_OPERATOR_WRITES=1 \\\nnpm run census:autopilot -- --region CALA --scope official-parent-inventory --mode mission \\\n  --objective full-latam-census-autopilot-v3 \\\n  --census-mode growth \\\n  --strategy highest-yield-safe \\\n  --run-until-complete \\\n  --max-passes 10 \\\n  --batch-size 100 \\\n  --confirm-safe-writes \\\n  --confirm-write-to-production-census \\\n  --confirm-no-brand-explorer-writes \\\n  --confirm-no-owner-operator \\\n  --confirm-no-date-writes \\\n  --confirm-no-recent-momentum \\\n  --confirm-no-company-validation \\\n  --confirm-webhound-not-production-source \\\n  --enable-production-writes",
+  "founder_gate_between_passes": false
+}

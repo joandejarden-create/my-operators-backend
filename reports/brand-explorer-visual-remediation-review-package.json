@@ -1,0 +1,696 @@
+{
+  "packageVersion": "24A",
+  "generatedAt": "2026-07-09T07:05:38.051Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "imagesUntouched": true,
+  "companyValidatedUntouched": true,
+  "companyValidationDateUntouched": true,
+  "marriottValidationImplied": false,
+  "brand": {
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+    "reports/brand-explorer-presentation-sort-order-audit.json",
+    "reports/brand-explorer-presentation-sort-order-audit.md",
+    "reports/brand-explorer-evidence-fact-review-package.json",
+    "reports/brand-explorer-evidence-fact-review-package.md",
+    "reports/tribute-portfolio-targeted-extract.json",
+    "reports/tribute-portfolio-targeted-extract.md",
+    "reports/brand-explorer-visual-qa-verification.json",
+    "reports/brand-explorer-visual-qa-verification.md",
+    "reports/brand-explorer-slot-completion-remaining-plan.md",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "fixtures/brand-explorer-presentation-curio-full.json",
+    "live Tribute/Curio presentation rows (API)",
+    "Tribute approved sources + facts + asset registry"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-visual-remediation-review-package.js",
+    "scripts/brand-explorer-visual-remediation-review-package.mjs",
+    "docs/data-intelligence/brand-explorer-visual-remediation-review-package-v24A.md",
+    "reports/brand-explorer-visual-remediation-review-package.md",
+    "reports/brand-explorer-visual-remediation-review-package.json",
+    "package.json"
+  ],
+  "v24AReviewPackageExists": true,
+  "v24Baseline": {
+    "visualDisplayScore": 0,
+    "tributeBlockCount": 104,
+    "curioBlockCount": 206,
+    "defectCount": 17
+  },
+  "defectsReviewed": 15,
+  "remediationPlans": [
+    {
+      "section": "Where This Brand Creates the Most Value",
+      "slotKey": "overview.scenario.3",
+      "displayPath": "overview.scenario.3.imageUrl",
+      "currentTributeValue": "Historic urban cores, landmark buildings, and architecturally distinctive conversions where sense of place is the product—soft-brand PIP and design narrative support premium full-service positioning when local ADR supports operating complexity. Confirm heritage constraints, conversion timeline, and Marriott development economics before modeling from standardized prototypes.",
+      "referencePattern": "Curio scenario.3 has promoted scenario image",
+      "defectType": "missing_card_image",
+      "severity": "high",
+      "remediationBucket": "should_remain_blank_or_suppressed",
+      "proposedFix": "No approved registry asset for overview.scenario.3 — keep image blank or suppress empty visual placeholder until heritage/conversion asset is approved in Brand Asset Registry.",
+      "proposedTitle": "Adaptive Reuse & Heritage Repositioning",
+      "proposedBody": null,
+      "sourceBasis": "Value-driver overview.scenario.3 (Conversion / Adaptive Reuse) remains intentionally unpopulated.",
+      "reviewStatus": "suppress_until_asset_approved",
+      "safeForFutureWriter": false,
+      "needsMedia": true,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": true,
+      "scenario3ImageCanBeSafelyFixedNow": false
+    },
+    {
+      "section": "Brand Materials",
+      "slotKey": "materials.gallery.3",
+      "displayPath": "materials.gallery.3.imageUrl",
+      "currentTributeValue": "No image attachment",
+      "referencePattern": "Curio gallery slots populated where assets approved",
+      "defectType": "missing_card_image",
+      "severity": "medium",
+      "remediationBucket": "should_remain_blank_or_suppressed",
+      "proposedFix": "Keep materials.gallery.3 blank until approved candidate exists — do not invent image.",
+      "proposedTitle": "",
+      "proposedBody": null,
+      "sourceBasis": "Visual QA: gallery.3 intentionally unpopulated",
+      "reviewStatus": "remain_blank",
+      "safeForFutureWriter": false,
+      "needsMedia": true,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": true
+    },
+    {
+      "section": "Why Value Is Strongest in These Scenarios",
+      "slotKey": "overview.why_value",
+      "displayPath": "overview.why_value.bullets[5]",
+      "currentTributeValue": "4/5 bullets (bullet 5 empty)",
+      "referencePattern": "Curio overview.why_value has 5 substantive line-broken bullets",
+      "defectType": "empty_bullet",
+      "severity": "medium",
+      "remediationBucket": "copy_cleanup_safe",
+      "proposedFix": "Append 5th line to overview.why_value Body (newline-separated) OR trim UI pad to 4 bullets in future frontend pass.",
+      "proposedTitle": "",
+      "proposedBody": "Operator fit: owners and operators who can sustain design-forward full-service operations with collection QA—not limited-service reflag economics.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Tribute consumer brand positioning + existing overview.why_value bullets 1–4 tone (no new KPIs)",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Key Watchouts",
+      "slotKey": "valueOwners.watchouts",
+      "displayPath": "valueOwners.watchouts.bullets[5]",
+      "currentTributeValue": "4/5 bullets",
+      "referencePattern": "Curio valueOwners.watchouts has 5 distinct considerations",
+      "defectType": "empty_bullet",
+      "severity": "high",
+      "remediationBucket": "copy_cleanup_safe",
+      "proposedFix": "Add 5th watchout line to valueOwners.watchouts Body.",
+      "proposedTitle": "",
+      "proposedBody": "Collection standards and QA rhythm require sustained operating investment through conversion and hold—not a one-time affiliation event.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Existing watchout bullets 1–4 + standards/QA theme (paraphrase only; no FDD legal text)",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Key Differentiators",
+      "slotKey": "overview.differentiators.identity",
+      "displayPath": "overview.differentiators.identity.bullets[4]",
+      "currentTributeValue": "3/4 bullets",
+      "referencePattern": "Curio identity differentiators: 4 line-broken bullets",
+      "defectType": "empty_bullet",
+      "severity": "medium",
+      "remediationBucket": "copy_cleanup_safe",
+      "proposedFix": "Add 4th identity bullet to overview.differentiators.identity Body.",
+      "proposedTitle": "",
+      "proposedBody": "Soft-collection positioning: independent hotel character with Marriott systems—not rigid chain retail.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Tribute consumer site independent-collection statement (paraphrase)",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Key Differentiators",
+      "slotKey": "overview.differentiators.commercial",
+      "displayPath": "overview.differentiators.commercial.bullets[4]",
+      "currentTributeValue": "3/4 bullets",
+      "referencePattern": "Curio commercial differentiators: 4 bullets incl. distribution + conversion",
+      "defectType": "empty_bullet",
+      "severity": "medium",
+      "remediationBucket": "copy_cleanup_safe",
+      "proposedFix": "Add 4th commercial bullet to overview.differentiators.commercial Body.",
+      "proposedTitle": "",
+      "proposedBody": "Conversion-led collection path—confirm development milestones, area of protection, and brand approval steps with Marriott development for your market.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Tribute development_model presentation slot tone (no fee/KPI numerics)",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Value Creation Scenarios",
+      "slotKey": "valueOwners.scenario.1",
+      "displayPath": "valueOwners.scenario.1.body",
+      "currentTributeValue": "Independent Reflag",
+      "referencePattern": "Curio uses valueOwners.scenarios paragraph blocks (Tribute uses per-card slots)",
+      "defectType": "title_only_card",
+      "severity": "high",
+      "remediationBucket": "source_evidence_required",
+      "proposedFix": "Populate valueOwners.scenario.1 Body with owner-education copy after founder review.",
+      "proposedTitle": "Independent Reflag",
+      "proposedBody": "Independent and boutique full-service hotels that already have local story and design point of view—Tribute adds Bonvoy participation and Marriott commercial systems while preserving property individuality.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "overview.scenario.1 body tone + consumer independent-collection statement",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": true,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Value Creation Scenarios",
+      "slotKey": "valueOwners.scenario.2",
+      "displayPath": "valueOwners.scenario.2.body",
+      "currentTributeValue": "Tired Upscale Asset",
+      "referencePattern": "Curio uses valueOwners.scenarios paragraph blocks (Tribute uses per-card slots)",
+      "defectType": "title_only_card",
+      "severity": "high",
+      "remediationBucket": "source_evidence_required",
+      "proposedFix": "Populate valueOwners.scenario.2 Body with owner-education copy after founder review.",
+      "proposedTitle": "Tired Upscale Asset",
+      "proposedBody": "Upscale or upper-upscale assets needing repositioning where design narrative, F&B complexity, and service investment can be aligned to collection standards—confirm PIP scope and ramp assumptions before underwriting.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "overview.scenario.2 body + watchout PIP theme",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": true,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Value Creation Scenarios",
+      "slotKey": "valueOwners.scenario.3",
+      "displayPath": "valueOwners.scenario.3.body",
+      "currentTributeValue": "Markets With Strong Brand Presence",
+      "referencePattern": "Curio uses valueOwners.scenarios paragraph blocks (Tribute uses per-card slots)",
+      "defectType": "title_only_card",
+      "severity": "high",
+      "remediationBucket": "source_evidence_required",
+      "proposedFix": "Populate valueOwners.scenario.3 Body with owner-education copy after founder review.",
+      "proposedTitle": "Markets With Strong Brand Presence",
+      "proposedBody": "Markets where Marriott distribution and Bonvoy member demand can complement a distinctive local asset—best when comp-set ADR supports full-service operating complexity, not select-service economics.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Existing Tribute scenario copy patterns (no market KPIs)",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": true,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Value Creation Scenarios",
+      "slotKey": "valueOwners.scenario.4",
+      "displayPath": "valueOwners.scenario.4.body",
+      "currentTributeValue": "Third-Party Operator–Led",
+      "referencePattern": "Curio uses valueOwners.scenarios paragraph blocks (Tribute uses per-card slots)",
+      "defectType": "title_only_card",
+      "severity": "high",
+      "remediationBucket": "source_evidence_required",
+      "proposedFix": "Populate valueOwners.scenario.4 Body with owner-education copy after founder review.",
+      "proposedTitle": "Third-Party Operator–Led",
+      "proposedBody": "Third-party management is common—fits when the operator can execute collection design compliance, service standards, and Marriott systems cutover while the sponsor underwrites conversion and hold-period economics.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Curio valueOwners.scenarios pattern paraphrased for Tribute (no Hilton-specific claims)",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": true,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Standard Detail, Where Available",
+      "slotKey": "standards.requirement",
+      "displayPath": "standards.requirement.table",
+      "currentTributeValue": "0 structured rows — placeholder visible",
+      "referencePattern": "Curio: 7+ standards.requirement rows with Typical consideration / Owner planning / Status / Notes body format",
+      "defectType": "missing_table_structure",
+      "severity": "critical",
+      "remediationBucket": "source_evidence_required",
+      "proposedFix": "Do not auto-build table from Internal Only FDD fragment. Workflow: (1) founder approves/rejects be.standards.qualityAssuranceTheme; (2) capture design-standards source or FDD Item excerpts with legal review; (3) human-author structured standards.requirement rows using owner-table template.",
+      "proposedTitle": null,
+      "proposedBody": null,
+      "sourceBasis": "Pending fact be.standards.qualityAssuranceTheme — Internal Only, Pending; not external-display safe",
+      "reviewStatus": "blocked_pending_fact_approval_and_source_capture",
+      "safeForFutureWriter": false,
+      "needsMedia": false,
+      "needsSourceEvidence": true,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": true,
+      "standardsTableCanBeSafelyBuiltNow": false,
+      "relatedFacts": {
+        "qualityAssuranceTheme": {
+          "fieldKey": "be.standards.qualityAssuranceTheme",
+          "visibility": "Internal Only",
+          "status": "Pending"
+        },
+        "fddDocumentVintage": {
+          "fieldKey": "be.meta.fddDocumentVintage",
+          "supportsSlot": "standards.last_reviewed",
+          "status": "Pending"
+        }
+      }
+    },
+    {
+      "section": "Standard Detail, Where Available",
+      "slotKey": "standards.requirement",
+      "displayPath": "renderStandardsOwnerConsiderations.fallback",
+      "currentTributeValue": "No owner planning checklist is published…",
+      "referencePattern": "Curio renders five-column owner standards table",
+      "defectType": "generic_placeholder_copy",
+      "severity": "critical",
+      "remediationBucket": "source_evidence_required",
+      "proposedFix": "Suppress placeholder only after standards.requirement rows exist — do not hide section without replacement table.",
+      "proposedTitle": null,
+      "proposedBody": null,
+      "sourceBasis": "Depends on standards.requirement row creation (v24C)",
+      "reviewStatus": "blocked_pending_table_rows",
+      "safeForFutureWriter": false,
+      "needsMedia": false,
+      "needsSourceEvidence": true,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": true
+    },
+    {
+      "section": "Portfolio Context",
+      "slotKey": "overview.portfolio_context",
+      "displayPath": "buildPortfolioLadderCellsHtml",
+      "currentTributeValue": "Generic Lower-scale / Mid-scale / Upscale / Upper-scale labels",
+      "referencePattern": "Curio overview.portfolio_context title=3 + body explaining Hilton ladder position; Hilton static ladder shows sibling brand names",
+      "defectType": "missing_peer_portfolio_context",
+      "severity": "high",
+      "remediationBucket": "frontend_mapping_required",
+      "proposedFix": "Two-part fix: (A) populate overview.portfolio_context Title=3 + Body ladder narrative; (B) add Marriott static portfolio ladder mapping in brand-explorer-atelier-from-api.js (mirror HILTON_PORTFOLIO_* pattern for Marriott International).",
+      "proposedTitle": "3",
+      "proposedBody": "Upper-upscale soft collection within Marriott—Tribute sits among lifestyle and collection flags that preserve independent character with Bonvoy and Marriott commercial systems; not limited-service, extended-stay, or rigid full-service chain retail formats.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Tribute consumer site + brandArchitecture (Autograph/Tribute/Luxury Collection family) — no hotel-count KPIs",
+      "reviewStatus": "pending_founder_review_and_frontend_mapping",
+      "safeForFutureWriter": false,
+      "needsMedia": false,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false,
+      "portfolioContextCanBeSafelyFixedNow": false,
+      "note": "Copy-only partial fix improves hint text but ladder cells stay generic until Marriott frontend mapping ships."
+    },
+    {
+      "section": "Featured Application / Conversion Example",
+      "slotKey": "overview.featured_application",
+      "displayPath": "featured-case-preview__sub (brandPositioning.slice(0,220))",
+      "currentTributeValue": "Tribute Portfolio is Marriott's soft collection for independent hotels with distinctive style and local flavor—curated …",
+      "referencePattern": "Curio featured block uses substantive tagline + positioning within UI truncation",
+      "defectType": "truncated_copy",
+      "severity": "medium",
+      "remediationBucket": "copy_cleanup_safe",
+      "proposedFix": "Shorten featured lead copy to fit 220-char UI slice OR extend truncation in future frontend pass.",
+      "proposedTitle": "Exactly like nothing else.",
+      "proposedBody": "Independent boutique hotels with distinctive style and local flavor—Bonvoy and Marriott commercial support without erasing individuality.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "brandPositioning shortened for 220-char UI slice — consumer site paraphrase",
+      "reviewStatus": "pending_founder_review",
+      "safeForFutureWriter": true,
+      "needsMedia": false,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": false,
+      "suppressUntilEvidence": false
+    },
+    {
+      "section": "Cross-section",
+      "slotKey": "(multi-row slots)",
+      "displayPath": "presentation.Sort Order",
+      "currentTributeValue": "82 rows with index×10 writer defaults",
+      "referencePattern": "Curio completed brands: Sort Order 0 predominant per slot family",
+      "defectType": "bad_sort_order",
+      "severity": "high",
+      "remediationBucket": "sort_order_required",
+      "proposedFix": "Future v24D gated Sort Order correction writer — normalize after v24A–v24C content batches; do not change Sort Order in this package.",
+      "proposedTitle": null,
+      "proposedBody": null,
+      "sourceBasis": "reports/brand-explorer-presentation-sort-order-audit.json",
+      "reviewStatus": "deferred_v24D",
+      "safeForFutureWriter": false,
+      "needsMedia": false,
+      "needsSourceEvidence": false,
+      "needsSortOrderCorrection": true,
+      "suppressUntilEvidence": false,
+      "v24DSampleCorrections": [
+        {
+          "recordId": "rec66EQgSd6vnMZoy",
+          "slotKey": "materials.gallery.5",
+          "tab": "Brand Materials",
+          "title": "Humano, Lima, a Tribute Portfolio Hotel",
+          "currentSortOrder": 0,
+          "proposedSortOrder": 5,
+          "rowIndexWithinSlot": 0,
+          "referencePatternUsed": {
+            "modeSortOrder": 5,
+            "modeAgreementPct": 100,
+            "brandsReporting": 8,
+            "uniqueSortOrders": [
+              5
+            ]
+          },
+          "confidence": "high",
+          "safeForFutureWriter": true,
+          "correctionReason": "reference_mode_mismatch"
+        },
+        {
+          "recordId": "recb7ZgWf6s1IzGaj",
+          "slotKey": "materials.gallery.2",
+          "tab": "Brand Materials",
+          "title": "Crystal Cove, Barbados, a Tribute Portfolio All-Inclusive Resort",
+          "currentSortOrder": 0,
+          "proposedSortOrder": 2,
+          "rowIndexWithinSlot": 0,
+          "referencePatternUsed": {
+            "modeSortOrder": 2,
+            "modeAgreementPct": 100,
+            "brandsReporting": 8,
+            "uniqueSortOrders": [
+              2
+            ]
+          },
+          "confidence": "high",
+          "safeForFutureWriter": true,
+          "correctionReason": "reference_mode_mismatch"
+        },
+        {
+          "recordId": "recFjJ444WHSE9A6b",
+          "slotKey": "materials.gallery.4",
+          "tab": "Brand Materials",
+          "title": "Hotel Rumbao, a Tribute Portfolio Hotel",
+          "currentSortOrder": 0,
+          "proposedSortOrder": 4,
+          "rowIndexWithinSlot": 0,
+          "referencePatternUsed": {
+            "modeSortOrder": 4,
+            "modeAgreementPct": 100,
+            "brandsReporting": 8,
+            "uniqueSortOrders": [
+              4
+            ]
+          },
+          "confidence": "high",
+          "safeForFutureWriter": true,
+          "correctionReason": "reference_mode_mismatch"
+        },
+        {
+          "recordId": "recHn6N3Z77lv6wxR",
+          "slotKey": "materials.gallery.6",
+          "tab": "Brand Materials",
+          "title": "Loma, Medellin, a Tribute Portfolio Hotel",
+          "currentSortOrder": 0,
+          "proposedSortOrder": 6,
+          "rowIndexWithinSlot": 0,
+          "referencePatternUsed": {
+            "modeSortOrder": 6,
+            "modeAgreementPct": 100,
+            "brandsReporting": 8,
+            "uniqueSortOrders": [
+              6
+            ]
+          },
+          "confidence": "high",
+          "safeForFutureWriter": true,
+          "correctionReason": "reference_mode_mismatch"
+        },
+        {
+          "recordId": "reciNKaL1zf5KEvtn",
+          "slotKey": "materials.gallery.1",
+          "tab": "Brand Materials",
+          "title": "Casa Nizuc, a Tribute Portfolio Resort",
+          "currentSortOrder": 0,
+          "proposedSortOrder": 1,
+          "rowIndexWithinSlot": 0,
+          "referencePatternUsed": {
+            "modeSortOrder": 1,
+            "modeAgreementPct": 100,
+            "brandsReporting": 8,
+            "uniqueSortOrders": [
+              1
+            ]
+          },
+          "confidence": "high",
+          "safeForFutureWriter": true,
+          "correctionReason": "reference_mode_mismatch"
+        }
+      ],
+      "tributeRowCount": 104
+    }
+  ],
+  "defectsByRemediationBucket": {
+    "copy_cleanup_safe": [
+      "overview.why_value",
+      "valueOwners.watchouts",
+      "overview.differentiators.identity",
+      "overview.differentiators.commercial",
+      "overview.featured_application"
+    ],
+    "media_asset_required": [],
+    "source_evidence_required": [
+      "valueOwners.scenario.1",
+      "valueOwners.scenario.2",
+      "valueOwners.scenario.3",
+      "valueOwners.scenario.4",
+      "standards.requirement",
+      "standards.requirement"
+    ],
+    "sort_order_required": [
+      "(multi-row slots)"
+    ],
+    "frontend_mapping_required": [
+      "overview.portfolio_context"
+    ],
+    "should_remain_blank_or_suppressed": [
+      "overview.scenario.3",
+      "materials.gallery.3"
+    ]
+  },
+  "copyCleanupSafe": [
+    "overview.why_value",
+    "valueOwners.watchouts",
+    "overview.differentiators.identity",
+    "overview.differentiators.commercial",
+    "overview.featured_application"
+  ],
+  "mediaAssetRequired": [],
+  "sourceEvidenceRequired": [
+    "valueOwners.scenario.1",
+    "valueOwners.scenario.2",
+    "valueOwners.scenario.3",
+    "valueOwners.scenario.4",
+    "standards.requirement",
+    "standards.requirement"
+  ],
+  "sortOrderRequired": [
+    "(multi-row slots)"
+  ],
+  "frontendMappingRequired": [
+    "overview.portfolio_context"
+  ],
+  "remainBlankOrSuppressed": [
+    "overview.scenario.3",
+    "materials.gallery.3"
+  ],
+  "exactProposedCopyForSafeFixes": [
+    {
+      "slotKey": "overview.why_value",
+      "displayPath": "overview.why_value.bullets[5]",
+      "proposedTitle": null,
+      "proposedBody": "Operator fit: owners and operators who can sustain design-forward full-service operations with collection QA—not limited-service reflag economics.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Tribute consumer brand positioning + existing overview.why_value bullets 1–4 tone (no new KPIs)"
+    },
+    {
+      "slotKey": "valueOwners.watchouts",
+      "displayPath": "valueOwners.watchouts.bullets[5]",
+      "proposedTitle": null,
+      "proposedBody": "Collection standards and QA rhythm require sustained operating investment through conversion and hold—not a one-time affiliation event.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Existing watchout bullets 1–4 + standards/QA theme (paraphrase only; no FDD legal text)"
+    },
+    {
+      "slotKey": "overview.differentiators.identity",
+      "displayPath": "overview.differentiators.identity.bullets[4]",
+      "proposedTitle": null,
+      "proposedBody": "Soft-collection positioning: independent hotel character with Marriott systems—not rigid chain retail.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Tribute consumer site independent-collection statement (paraphrase)"
+    },
+    {
+      "slotKey": "overview.differentiators.commercial",
+      "displayPath": "overview.differentiators.commercial.bullets[4]",
+      "proposedTitle": null,
+      "proposedBody": "Conversion-led collection path—confirm development milestones, area of protection, and brand approval steps with Marriott development for your market.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "Tribute development_model presentation slot tone (no fee/KPI numerics)"
+    },
+    {
+      "slotKey": "overview.featured_application",
+      "displayPath": "featured-case-preview__sub (brandPositioning.slice(0,220))",
+      "proposedTitle": "Exactly like nothing else.",
+      "proposedBody": "Independent boutique hotels with distinctive style and local flavor—Bonvoy and Marriott commercial support without erasing individuality.",
+      "copyLabel": "AI-drafted / pending founder review · Not company-validated · Not Marriott-validated",
+      "sourceBasis": "brandPositioning shortened for 220-char UI slice — consumer site paraphrase"
+    }
+  ],
+  "exactMediaAssetsNeeded": [
+    {
+      "slotKey": "overview.scenario.3",
+      "approvedAssetExists": false,
+      "assets": [],
+      "action": "No approved registry asset for overview.scenario.3 — keep image blank or suppress empty visual placeholder until heritage/conversion asset is approved in Brand Asset Registry."
+    },
+    {
+      "slotKey": "materials.gallery.3",
+      "approvedAssetExists": false,
+      "assets": [],
+      "action": "Keep materials.gallery.3 blank until approved candidate exists — do not invent image."
+    }
+  ],
+  "exactSourceEvidenceNeeded": [
+    {
+      "slotKey": "valueOwners.scenario.1",
+      "section": "Value Creation Scenarios",
+      "workflow": "Populate valueOwners.scenario.1 Body with owner-education copy after founder review.",
+      "suppressUntilReady": false
+    },
+    {
+      "slotKey": "valueOwners.scenario.2",
+      "section": "Value Creation Scenarios",
+      "workflow": "Populate valueOwners.scenario.2 Body with owner-education copy after founder review.",
+      "suppressUntilReady": false
+    },
+    {
+      "slotKey": "valueOwners.scenario.3",
+      "section": "Value Creation Scenarios",
+      "workflow": "Populate valueOwners.scenario.3 Body with owner-education copy after founder review.",
+      "suppressUntilReady": false
+    },
+    {
+      "slotKey": "valueOwners.scenario.4",
+      "section": "Value Creation Scenarios",
+      "workflow": "Populate valueOwners.scenario.4 Body with owner-education copy after founder review.",
+      "suppressUntilReady": false
+    },
+    {
+      "slotKey": "standards.requirement",
+      "section": "Standard Detail, Where Available",
+      "workflow": "Do not auto-build table from Internal Only FDD fragment. Workflow: (1) founder approves/rejects be.standards.qualityAssuranceTheme; (2) capture design-standards source or FDD Item excerpts with legal review; (3) human-author structured standards.requirement rows using owner-table template.",
+      "suppressUntilReady": true
+    },
+    {
+      "slotKey": "standards.requirement",
+      "section": "Standard Detail, Where Available",
+      "workflow": "Suppress placeholder only after standards.requirement rows exist — do not hide section without replacement table.",
+      "suppressUntilReady": true
+    }
+  ],
+  "standardsTableCanBeSafelyBuiltNow": false,
+  "scenario3ImageCanBeSafelyFixedNow": false,
+  "portfolioContextCanBeSafelyFixedNow": false,
+  "recommendedBatches": {
+    "v24A": {
+      "description": "Founder review of AI-drafted copy fixes (bullets, featured lead) — no Airtable writer yet",
+      "slotKeys": [
+        "overview.why_value",
+        "valueOwners.watchouts",
+        "overview.differentiators.identity",
+        "overview.differentiators.commercial",
+        "overview.featured_application"
+      ],
+      "count": 5
+    },
+    "v24B": {
+      "description": "Media/asset promotion when registry assets approved for scenario.3 and gallery.3",
+      "slotKeys": [
+        "overview.scenario.3",
+        "materials.gallery.3"
+      ],
+      "count": 2
+    },
+    "v24C": {
+      "description": "Source-evidence workflow: standards table, valueOwners scenario bodies, fact approval",
+      "slotKeys": [
+        "valueOwners.scenario.1",
+        "valueOwners.scenario.2",
+        "valueOwners.scenario.3",
+        "valueOwners.scenario.4",
+        "standards.requirement",
+        "standards.requirement"
+      ],
+      "count": 6
+    },
+    "v24D": {
+      "description": "Sort Order correction writer after content stabilization",
+      "slotKeys": [
+        "(multi-row slots)"
+      ],
+      "rowCount": 104,
+      "likelyWriterDefaults": 82
+    }
+  },
+  "recommendedNextBatch": "v24A_copy_cleanup_founder_review_then_v24C_standards_and_owner_scenarios",
+  "postSafeFixComparability": {
+    "visuallyComparableAfterOnlySafeFixes": false,
+    "projectedScoreAfterCopyCleanupOnly": 49,
+    "rationale": "Copy cleanup (bullets, featured lead, partial portfolio hint) cannot resolve critical standards table, title-only owner scenarios, or missing scenario.3 image — Curio parity requires v24B + v24C.",
+    "criticalDefectsRemainingAfterCopyOnly": 2
+  },
+  "sourceContext": {
+    "approvedSourceCount": 6,
+    "factCount": 41,
+    "pendingFacts": 12,
+    "approvedRegistryAssets": 9,
+    "targetedExtractAvailable": true
+  },
+  "curioReferenceSummary": {
+    "recordId": "receQkxgjlezsc1xg",
+    "blockCount": 206,
+    "portfolioContextTitle": "3",
+    "standardsRequirementRows": 7
+  },
+  "exactNextCommand": "Founder review proposed copy in reports/brand-explorer-visual-remediation-review-package.json, then: npm run brand-explorer-visual-remediation-review-package -- --brand tribute-portfolio --dry-run"
+}

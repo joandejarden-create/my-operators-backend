@@ -1,0 +1,47 @@
+{
+  "starting_live": 2482,
+  "ending_live": 2482,
+  "inserts": 0,
+  "updates": 0,
+  "footprint": {
+    "live_production": 2482,
+    "prior_denom_12846": 12846,
+    "reconciled_unique_physical_estimate": 15012,
+    "footprint_vs_prior_12846_pct": 19.3,
+    "footprint_vs_reconciled_unique_pct": 16.5,
+    "methodology": "Footprint = live Hotel Property Census count / reconciled unique property_identity_id (excluding duplicates/non-hotels). Prior 12,846 kept as comparative KPI only."
+  },
+  "probe": {
+    "actionable": true,
+    "free_work_units": 4,
+    "paid_only": false,
+    "engineering_only": false,
+    "temporarily_blocked": false,
+    "complete": false,
+    "breakdown": {
+      "verified_ready": 3,
+      "all_caps_city": 0,
+      "official_directory_new": 0,
+      "independent_rediscovery_eligible": 0,
+      "remediation_eligible": 0,
+      "researchable_or_cvent_challenge": 10788,
+      "serpapi_eligible": 0,
+      "engineering_required": 0
+    }
+  },
+  "transitions": [
+    {
+      "iteration": 2,
+      "lane": "OFFICIAL_DIRECTORY_DISCOVERY",
+      "reason": "directory_new_remaining",
+      "inserts": 0,
+      "updates": 0,
+      "queue_size": 0,
+      "note": "directory_no_new discovered=1843 new_class=10",
+      "at": "2026-08-09T01:05:38.708Z"
+    }
+  ],
+  "stop_reason": "INFRASTRUCTURE_RUNTIME_BOUNDARY",
+  "controller_status": "ACTIVE",
+  "joan_batch_approval_required": false
+}

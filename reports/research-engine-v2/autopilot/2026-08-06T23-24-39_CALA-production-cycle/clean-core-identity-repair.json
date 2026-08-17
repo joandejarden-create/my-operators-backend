@@ -1,0 +1,845 @@
+{
+  "ok": true,
+  "version": "census-clean-core-identity-repair-v1",
+  "generated_at": "2026-08-06T23:25:21.500Z",
+  "status": "production_census_clean_core_identity_repair_partial_source_lookup_remaining",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "airtable_writes": true,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "inserts_applied": 0,
+  "cleanup_existing_only": true,
+  "paused_queues": [
+    "source_discovery_inserts",
+    "address_confirmation",
+    "coordinate_completion",
+    "phone_number_enrichment",
+    "rooms_keys",
+    "description_extraction",
+    "amenities_extraction"
+  ],
+  "queues_executed": [
+    "brand_normalization"
+  ],
+  "before": {
+    "total_records": 1091,
+    "clean_core": 577,
+    "below_clean_core": 514,
+    "canonical_blank": 5,
+    "canonical_dirty": 0,
+    "canonical_conflict": 6,
+    "canonical_safe_autofill": 0,
+    "canonical_duplicate_risk": 61,
+    "unknown_city": 8,
+    "blank_city": 0,
+    "descriptor_city": 0,
+    "all_caps_city": 19,
+    "all_lowercase_city": 0,
+    "city_state_combined": 2,
+    "city_safe_normalization": 41,
+    "state_region_complete": 43,
+    "state_blank": 1048,
+    "source_url_complete": 1091,
+    "source_url_missing": 0,
+    "human_review_required": 61,
+    "coordinate_blocked_dirty_identity": 19,
+    "by_class": {
+      "Clean Core": 577,
+      "Needs Source Lookup": 7,
+      "Needs Steward Review": 446,
+      "Duplicate Risk": 61,
+      "Not Usable Yet": 0
+    },
+    "by_parent": {
+      "Hilton": {
+        "below_clean_core": 47,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Accor": {
+        "below_clean_core": 29,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott International": {
+        "below_clean_core": 129,
+        "unknown_city": 3,
+        "canonical_blank": 0
+      },
+      "Marriott": {
+        "below_clean_core": 32,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice": {
+        "below_clean_core": 5,
+        "unknown_city": 5,
+        "canonical_blank": 5
+      },
+      "Wyndham": {
+        "below_clean_core": 58,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "IHG Hotels & Resorts": {
+        "below_clean_core": 128,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice Hotels International, Inc.": {
+        "below_clean_core": 49,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "IHG": {
+        "below_clean_core": 37,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Preferred Hotels & Resorts": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      }
+    }
+  },
+  "after": {
+    "total_records": 1091,
+    "clean_core": 632,
+    "below_clean_core": 459,
+    "canonical_blank": 5,
+    "canonical_dirty": 0,
+    "canonical_conflict": 6,
+    "canonical_safe_autofill": 0,
+    "canonical_duplicate_risk": 61,
+    "unknown_city": 8,
+    "blank_city": 0,
+    "descriptor_city": 0,
+    "all_caps_city": 19,
+    "all_lowercase_city": 0,
+    "city_state_combined": 2,
+    "city_safe_normalization": 41,
+    "state_region_complete": 43,
+    "state_blank": 1048,
+    "source_url_complete": 1091,
+    "source_url_missing": 0,
+    "human_review_required": 61,
+    "coordinate_blocked_dirty_identity": 19,
+    "by_class": {
+      "Clean Core": 632,
+      "Needs Source Lookup": 7,
+      "Needs Steward Review": 391,
+      "Duplicate Risk": 61,
+      "Not Usable Yet": 0
+    },
+    "by_parent": {
+      "Hilton": {
+        "below_clean_core": 42,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Accor": {
+        "below_clean_core": 28,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Marriott International": {
+        "below_clean_core": 129,
+        "unknown_city": 3,
+        "canonical_blank": 0
+      },
+      "Marriott": {
+        "below_clean_core": 32,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice": {
+        "below_clean_core": 5,
+        "unknown_city": 5,
+        "canonical_blank": 5
+      },
+      "Wyndham": {
+        "below_clean_core": 58,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "IHG Hotels & Resorts": {
+        "below_clean_core": 115,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Choice Hotels International, Inc.": {
+        "below_clean_core": 19,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "IHG": {
+        "below_clean_core": 31,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      },
+      "Preferred Hotels & Resorts": {
+        "below_clean_core": 0,
+        "unknown_city": 0,
+        "canonical_blank": 0
+      }
+    }
+  },
+  "applied": {
+    "records_fixed": 59,
+    "fields_written": [
+      "Current Brand"
+    ],
+    "examples": [
+      {
+        "record_id": "rec0qmO7Xj7uyjWLZ",
+        "before": "(see pass proposals)",
+        "after": "fields=Current Brand"
+      },
+      {
+        "record_id": "rec1dTLhN2kHSjyv1",
+        "before": "(see pass proposals)",
+        "after": "fields=Current Brand"
+      },
+      {
+        "record_id": "rec2mY62wnBxrSb3h",
+        "before": "(see pass proposals)",
+        "after": "fields=Current Brand"
+      },
+      {
+        "record_id": "rec3MHAXsWlTUz2gY",
+        "before": "(see pass proposals)",
+        "after": "fields=Current Brand"
+      },
+      {
+        "record_id": "rec3VtNHyHrW0xDk8",
+        "before": "(see pass proposals)",
+        "after": "fields=Current Brand"
+      }
+    ]
+  },
+  "classification": {
+    "Clean Core": 632,
+    "Needs Source Lookup": 7,
+    "Needs Steward Review": 391,
+    "Duplicate Risk": 61,
+    "Not Usable Yet": 0
+  },
+  "top_remaining_source_gaps_by_parent": [
+    {
+      "parent": "Marriott International",
+      "below_clean_core": 129,
+      "unknown_city": 3,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "IHG Hotels & Resorts",
+      "below_clean_core": 115,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Wyndham",
+      "below_clean_core": 58,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Hilton",
+      "below_clean_core": 42,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Marriott",
+      "below_clean_core": 32,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "IHG",
+      "below_clean_core": 31,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Accor",
+      "below_clean_core": 28,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Choice Hotels International, Inc.",
+      "below_clean_core": 19,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    },
+    {
+      "parent": "Choice",
+      "below_clean_core": 5,
+      "unknown_city": 5,
+      "canonical_blank": 5
+    },
+    {
+      "parent": "Preferred Hotels & Resorts",
+      "below_clean_core": 0,
+      "unknown_city": 0,
+      "canonical_blank": 0
+    }
+  ],
+  "examples_before_after": [
+    {
+      "record_id": "rec0qmO7Xj7uyjWLZ",
+      "before": "(see pass proposals)",
+      "after": "fields=Current Brand"
+    },
+    {
+      "record_id": "rec1dTLhN2kHSjyv1",
+      "before": "(see pass proposals)",
+      "after": "fields=Current Brand"
+    },
+    {
+      "record_id": "rec2mY62wnBxrSb3h",
+      "before": "(see pass proposals)",
+      "after": "fields=Current Brand"
+    },
+    {
+      "record_id": "rec3MHAXsWlTUz2gY",
+      "before": "(see pass proposals)",
+      "after": "fields=Current Brand"
+    },
+    {
+      "record_id": "rec3VtNHyHrW0xDk8",
+      "before": "(see pass proposals)",
+      "after": "fields=Current Brand"
+    }
+  ],
+  "steward_remaining": [
+    {
+      "record_id": "rec02pPY8kVklN6mK",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec02wJ8dk7HtjPjx",
+      "class": "Duplicate Risk",
+      "city_class": "city_unknown",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_source_mismatch",
+        "city_city_unknown",
+        "canonical_steward_review_required",
+        "human_review_required",
+        "blocked_dirty_core_identity"
+      ]
+    },
+    {
+      "record_id": "rec07FR57B9Yt3TCh",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec0IqAQQtjvBvstj",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_source_mismatch",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec0P2XU4LWSkAMKm",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_source_mismatch",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec0TMfTtlRbuKJ7K",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec0VkbM7Cbvim1uc",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec0bO3lF7Ld8I6He",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec0kWb1pecfDy0J4",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec0sn1JPUrwyOXNP",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec13QjLTqkbFqXip",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec1XdpdiXxT2K18C",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_source_mismatch",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1f0W6zwB9lA50p",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_source_mismatch",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec1oiGrJEa7LYgcI",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec1t7GShNGHnNdYy",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec20YJGeQtCJYfF9",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec2FW7EDhNaZzQkk",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec2nNF6YawIhzOcv",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec2vPnXJrkRLOAoB",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec2zNrEGGLpuog2u",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec30eORcGKDSQKhJ",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_source_mismatch",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3GKxcjqWzLB7ou",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec3QgXCAUGHlVw6c",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_source_mismatch",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec3YDnRVUb9TBd5g",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec3bK7fOFBnEsJwM",
+      "class": "Needs Steward Review",
+      "city_class": "city_accent_or_canonical_normalize",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "city_pending_normalize"
+      ]
+    },
+    {
+      "record_id": "rec3iIZHWQ28nkGOW",
+      "class": "Needs Source Lookup",
+      "city_class": "city_state_mixed_unresolved",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "city_city_state_mixed_unresolved",
+        "blocked_dirty_core_identity"
+      ]
+    },
+    {
+      "record_id": "rec3iveAi0TN3xNRO",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec3lq6HNkA6e7vGu",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec49Ilr511CNNF9s",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec4RFvhSq1gfL3k1",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec4T9KTOyM3RYz5w",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec4TCkTfWQN60yfs",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec4wOyl25nCjDn5s",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5ElC8RoYWYTGst",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5HytFhKHHeQ8Kj",
+      "class": "Duplicate Risk",
+      "city_class": "city_clean",
+      "canonical_status": "steward_review_required",
+      "missing": [],
+      "blockers": [
+        "brand_brand_source_mismatch",
+        "canonical_steward_review_required",
+        "human_review_required"
+      ]
+    },
+    {
+      "record_id": "rec5ZRmltNrow3koY",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5ZvmkJakW4VvVj",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5b4Cscv9AfHspt",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5i0bwI4gOWw3LI",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5lQjew5gySpyxx",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5pNhtj60u7YitU",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5sfe6f4FvnY26s",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec5vacRpPZdW8Ip0",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec61aOhNCTEqGAkE",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec65MbQi3ofUHfL2",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec6BST2QRkgwdGxW",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec6QsU0IyLwBGJdy",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec6dfi5hrk6vBZsD",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    },
+    {
+      "record_id": "rec6pGcGtBpLNH2nn",
+      "class": "Needs Steward Review",
+      "city_class": "city_accent_or_canonical_normalize",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary",
+        "city_pending_normalize"
+      ]
+    },
+    {
+      "record_id": "rec6pPaRLOnkHYLI9",
+      "class": "Needs Steward Review",
+      "city_class": "city_clean",
+      "canonical_status": "complete_clean",
+      "missing": [],
+      "blockers": [
+        "brand_brand_unknown_not_in_dictionary"
+      ]
+    }
+  ],
+  "next_recommended_action": "Continue official source lookup for Unknown/descriptor cities and blank Canonical; steward duplicate risks. Keep address/Mapbox paused."
+}

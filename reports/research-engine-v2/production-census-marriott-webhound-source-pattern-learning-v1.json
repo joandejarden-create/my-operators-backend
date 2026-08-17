@@ -1,0 +1,2357 @@
+{
+  "ok": true,
+  "status": "production_census_marriott_webhound_source_pattern_learning_v1_partial_adapter_backlog_remaining",
+  "version": "marriott-webhound-source-pattern-learning-v1",
+  "objective": "marriott-webhound-source-pattern-learning-v1",
+  "census_mode": "field-completion-only",
+  "region": "CALA",
+  "parent_company": "Marriott International",
+  "generated_at": "2026-08-07T17:49:33.883Z",
+  "elapsed_ms": 47471,
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "airtable_writes": false,
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "webhound_as_census_sot": false,
+  "founder_gate_between_passes": false,
+  "records_updated": 0,
+  "records_inserted": 0,
+  "field_counts": {
+    "hotel_url": 0,
+    "state": 0,
+    "address": 0,
+    "phone": 0,
+    "rooms": 0,
+    "coordinates": 0
+  },
+  "discovery": {
+    "marriott_records_scanned": 393,
+    "webhound_session_id": "3a2c3654-bb5f-4da4-90c8-e4dd1c18330a",
+    "webhound_searches_run": 1,
+    "patterns_discovered": 62,
+    "repeatable_patterns": 32,
+    "rejected_patterns": 5,
+    "bot_blocked_attempts": 40,
+    "gap_clusters": {
+      "marriott_total": 393,
+      "with_marsha": 392,
+      "with_url_blocked": 0,
+      "missing_rooms": 392,
+      "missing_address": 374,
+      "missing_phone": 365,
+      "priority_order": [
+        "marriott_official_url_page_blocked",
+        "marriott_marsha_missing_level_2",
+        "marriott_clean_identity_missing_rooms",
+        "marriott_resort_microsite_candidate",
+        "marriott_factsheet_potential",
+        "marriott_missing_address_phone_only",
+        "marriott_missing_rooms_only"
+      ],
+      "samples_by_cluster": {
+        "marriott_marsha_missing_level_2": [
+          {
+            "is_marriott": true,
+            "record_id": "rec02wJ8dk7HtjPjx",
+            "marsha": "BJXDS",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": true
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "Elena de Cobre, a Member of Design Hotels™",
+            "brand": "Design Hotels",
+            "city": "Unknown",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec07FR57B9Yt3TCh",
+            "marsha": "BOGJW",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "JW Marriott Hotel Bogota",
+            "brand": "JW Marriott",
+            "city": "Bogotá",
+            "country": "Colombia"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0H65Zl2xa0St9L",
+            "marsha": "CENXO",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "City Express by Marriott Ciudad Obregón",
+            "brand": "City Express by Marriott",
+            "city": "Ciudad Obregón",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0RcSXXANhkrrqD",
+            "marsha": "VSACY",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/vsacy-courtyard-villahermosa-tabasco/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "Courtyard by Marriott Villahermosa Tabasco",
+            "brand": "Courtyard by Marriott",
+            "city": "Villahermosa",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0VkbM7Cbvim1uc",
+            "marsha": "CUNCM",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cuncm-the-st-regis-costa-mujeres-resort-cancun/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+            "brand": "St. Regis",
+            "city": "Cancún",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0dxxcwt79FO1nZ",
+            "marsha": "NOGXN",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "City Express by Marriott Nogales",
+            "brand": "City Express by Marriott",
+            "city": "Nogales",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0kWb1pecfDy0J4",
+            "marsha": "BJXJL",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bjxjl-city-express-junior-leon-centro-de-convenciones/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "City Express Junior by Marriott León Centro De Convenciones",
+            "brand": "City Express Junior by Marriott",
+            "city": "León",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec1Ev3JERhmOhtEf",
+            "marsha": "SJOAA",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/sjoaa-ac-hotel-san-jose-airport-belen/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "AC Hotel San Jose Airport Belen",
+            "brand": "AC Hotels by Marriott",
+            "city": "San José",
+            "country": "Costa Rica"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec1My4XyDnlhej31",
+            "marsha": "PTYWI",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/ptywi-the-westin-panama/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "The Westin Panama",
+            "brand": "Westin",
+            "city": "Panama City",
+            "country": "Panama"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec1Snj6DNXcKzOfR",
+            "marsha": "GDLAR",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/gdlar-ac-hotel-guadalajara-expo-mexico/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": true
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "AC Hotel Guadalajara Expo, Mexico",
+            "brand": "AC Hotels by Marriott",
+            "city": "Mexico",
+            "country": "Mexico"
+          }
+        ],
+        "marriott_clean_identity_missing_rooms": [
+          {
+            "is_marriott": true,
+            "record_id": "rec02wJ8dk7HtjPjx",
+            "marsha": "BJXDS",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": true
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "Elena de Cobre, a Member of Design Hotels™",
+            "brand": "Design Hotels",
+            "city": "Unknown",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec07FR57B9Yt3TCh",
+            "marsha": "BOGJW",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "JW Marriott Hotel Bogota",
+            "brand": "JW Marriott",
+            "city": "Bogotá",
+            "country": "Colombia"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0H65Zl2xa0St9L",
+            "marsha": "CENXO",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "City Express by Marriott Ciudad Obregón",
+            "brand": "City Express by Marriott",
+            "city": "Ciudad Obregón",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0RcSXXANhkrrqD",
+            "marsha": "VSACY",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/vsacy-courtyard-villahermosa-tabasco/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "Courtyard by Marriott Villahermosa Tabasco",
+            "brand": "Courtyard by Marriott",
+            "city": "Villahermosa",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0VkbM7Cbvim1uc",
+            "marsha": "CUNCM",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cuncm-the-st-regis-costa-mujeres-resort-cancun/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+            "brand": "St. Regis",
+            "city": "Cancún",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0dxxcwt79FO1nZ",
+            "marsha": "NOGXN",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "City Express by Marriott Nogales",
+            "brand": "City Express by Marriott",
+            "city": "Nogales",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0kWb1pecfDy0J4",
+            "marsha": "BJXJL",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bjxjl-city-express-junior-leon-centro-de-convenciones/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "City Express Junior by Marriott León Centro De Convenciones",
+            "brand": "City Express Junior by Marriott",
+            "city": "León",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec1Ev3JERhmOhtEf",
+            "marsha": "SJOAA",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/sjoaa-ac-hotel-san-jose-airport-belen/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "AC Hotel San Jose Airport Belen",
+            "brand": "AC Hotels by Marriott",
+            "city": "San José",
+            "country": "Costa Rica"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec1My4XyDnlhej31",
+            "marsha": "PTYWI",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/ptywi-the-westin-panama/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "The Westin Panama",
+            "brand": "Westin",
+            "city": "Panama City",
+            "country": "Panama"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec1Snj6DNXcKzOfR",
+            "marsha": "GDLAR",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/gdlar-ac-hotel-guadalajara-expo-mexico/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": true
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms"
+            ],
+            "property_name": "AC Hotel Guadalajara Expo, Mexico",
+            "brand": "AC Hotels by Marriott",
+            "city": "Mexico",
+            "country": "Mexico"
+          }
+        ],
+        "marriott_resort_microsite_candidate": [
+          {
+            "is_marriott": true,
+            "record_id": "rec07FR57B9Yt3TCh",
+            "marsha": "BOGJW",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "JW Marriott Hotel Bogota",
+            "brand": "JW Marriott",
+            "city": "Bogotá",
+            "country": "Colombia"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0VkbM7Cbvim1uc",
+            "marsha": "CUNCM",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cuncm-the-st-regis-costa-mujeres-resort-cancun/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+            "brand": "St. Regis",
+            "city": "Cancún",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec2qzq0V2Hvr2m6l",
+            "marsha": "PUJSM",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujsm-marriott-miches-beach-an-all-inclusive-resort/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Marriott Miches Beach, An All-Inclusive Resort",
+            "brand": "Marriott Hotels",
+            "city": "Miches",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec2vPnXJrkRLOAoB",
+            "marsha": "PUJWH",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujwh-w-punta-cana-adult-all-inclusive/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "W Punta Cana, Adult All-Inclusive",
+            "brand": "W Hotels",
+            "city": "Punta Cana",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec4327YEwJT59CAv",
+            "marsha": "CUNAN",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "Casa Nizuc, a Tribute Portfolio Resort",
+            "brand": "Tribute Portfolio",
+            "city": "Cancún",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec55rqVTckL1tlN7",
+            "marsha": "BJXAK",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bjxak-clevia-san-miguel-de-allende-autograph-collection/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": true
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "Cleviá, San Miguel de Allende, Autograph Collection",
+            "brand": "Autograph Collection",
+            "city": "San Miguel de Allende",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec6qICeecQM6fOT9",
+            "marsha": "CUNJW",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cunjw-jw-marriott-cancun-resort-and-spa/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "JW Marriott Cancun Resort & Spa",
+            "brand": "JW Marriott",
+            "city": "Cancún",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec70lgDfrGrhRk3X",
+            "marsha": "SJDWV",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/sjdwv-the-westin-los-cabos-resort-villas/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "The Westin Los Cabos Resort Villas",
+            "brand": "Westin",
+            "city": "Los Cabos",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec7Z9d1HeCnfobLW",
+            "marsha": "PVRXR",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "The St. Regis Punta Mita Resort",
+            "brand": "St. Regis",
+            "city": "Punta Mita",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec8aCl84KcJdhl9k",
+            "marsha": "CUNPA",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cunpa-planet-hollywood-cancun-adult-scene-by-royalton-autograph-collection-all-inclusive-resort-adults/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": true
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "Planet Hollywood Cancun Adult Scene by Royalton, Autograph Collection All-Inclusive Resort - Adults",
+            "brand": "Autograph Collection",
+            "city": "- Adults",
+            "country": "Mexico"
+          }
+        ],
+        "marriott_factsheet_potential": [
+          {
+            "is_marriott": true,
+            "record_id": "rec07FR57B9Yt3TCh",
+            "marsha": "BOGJW",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "JW Marriott Hotel Bogota",
+            "brand": "JW Marriott",
+            "city": "Bogotá",
+            "country": "Colombia"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec0VkbM7Cbvim1uc",
+            "marsha": "CUNCM",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cuncm-the-st-regis-costa-mujeres-resort-cancun/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+            "brand": "St. Regis",
+            "city": "Cancún",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec2qzq0V2Hvr2m6l",
+            "marsha": "PUJSM",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujsm-marriott-miches-beach-an-all-inclusive-resort/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Marriott Miches Beach, An All-Inclusive Resort",
+            "brand": "Marriott Hotels",
+            "city": "Miches",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec2vPnXJrkRLOAoB",
+            "marsha": "PUJWH",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujwh-w-punta-cana-adult-all-inclusive/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "W Punta Cana, Adult All-Inclusive",
+            "brand": "W Hotels",
+            "city": "Punta Cana",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec4327YEwJT59CAv",
+            "marsha": "CUNAN",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "Casa Nizuc, a Tribute Portfolio Resort",
+            "brand": "Tribute Portfolio",
+            "city": "Cancún",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec55rqVTckL1tlN7",
+            "marsha": "BJXAK",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/bjxak-clevia-san-miguel-de-allende-autograph-collection/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": true
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "Cleviá, San Miguel de Allende, Autograph Collection",
+            "brand": "Autograph Collection",
+            "city": "San Miguel de Allende",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec6qICeecQM6fOT9",
+            "marsha": "CUNJW",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cunjw-jw-marriott-cancun-resort-and-spa/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "JW Marriott Cancun Resort & Spa",
+            "brand": "JW Marriott",
+            "city": "Cancún",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec70lgDfrGrhRk3X",
+            "marsha": "SJDWV",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/sjdwv-the-westin-los-cabos-resort-villas/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "The Westin Los Cabos Resort Villas",
+            "brand": "Westin",
+            "city": "Los Cabos",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec7Z9d1HeCnfobLW",
+            "marsha": "PVRXR",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+            "source_url": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "The St. Regis Punta Mita Resort",
+            "brand": "St. Regis",
+            "city": "Punta Mita",
+            "country": "Mexico"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec8aCl84KcJdhl9k",
+            "marsha": "CUNPA",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/cunpa-planet-hollywood-cancun-adult-scene-by-royalton-autograph-collection-all-inclusive-resort-adults/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": true,
+              "phone": true,
+              "rooms": true,
+              "coords": true,
+              "state": true
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential"
+            ],
+            "property_name": "Planet Hollywood Cancun Adult Scene by Royalton, Autograph Collection All-Inclusive Resort - Adults",
+            "brand": "Autograph Collection",
+            "city": "- Adults",
+            "country": "Mexico"
+          }
+        ],
+        "marriott_missing_rooms_only": [
+          {
+            "is_marriott": true,
+            "record_id": "rec2qzq0V2Hvr2m6l",
+            "marsha": "PUJSM",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujsm-marriott-miches-beach-an-all-inclusive-resort/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Marriott Miches Beach, An All-Inclusive Resort",
+            "brand": "Marriott Hotels",
+            "city": "Miches",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec2vPnXJrkRLOAoB",
+            "marsha": "PUJWH",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujwh-w-punta-cana-adult-all-inclusive/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "W Punta Cana, Adult All-Inclusive",
+            "brand": "W Hotels",
+            "city": "Punta Cana",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec8qJankNUMwUwUB",
+            "marsha": "PUJFP",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujfp-four-points-puntacana/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Four Points by Sheraton Puntacana",
+            "brand": "Four Points by Sheraton",
+            "city": "Punta Cana",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "rec9gW2cGsKupex5d",
+            "marsha": "SDQCY",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/sdqcy-courtyard-santo-domingo/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": false,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Courtyard by Marriott Santo Domingo",
+            "brand": "Courtyard by Marriott",
+            "city": "Santo Domingo",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "recESHsNsWUFYZrxR",
+            "marsha": "SDQJW",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/sdqjw-jw-marriott-hotel-santo-domingo/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": false,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "JW Marriott Hotel Santo Domingo",
+            "brand": "JW Marriott",
+            "city": "Santo Domingo",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "recHrQIsyUlttR7wo",
+            "marsha": "PUJRO",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujro-royalton-punta-cana-an-autograph-collection-all-inclusive-resort-and-casino/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Royalton Punta Cana, An Autograph Collection All-Inclusive Resort & Casino",
+            "brand": "Autograph Collection",
+            "city": "Punta Cana",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "recMzzHNZjAlaQh7y",
+            "marsha": "SDQGW",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/sdqgw-renaissance-santo-domingo-jaragua-hotel-and-casino/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": false,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Renaissance Santo Domingo Jaragua Hotel & Casino",
+            "brand": "Renaissance Hotels",
+            "city": "Santo Domingo",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "recPEhDXYOmH34H4U",
+            "marsha": "PUJSM",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujsm-marriott-miches-beach-an-all-inclusive-resort/overview/",
+            "source_url": "https://www.openstreetmap.org/node/11216277399",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": false,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Marriott Miches Beach, An All-Inclusive Resort",
+            "brand": "Marriott",
+            "city": "Miches",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "recXqEEF2geBdce1d",
+            "marsha": "STIRI",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/stiri-residence-inn-santiago-de-los-caballeros/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": false,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Residence Inn by Marriott Santiago de los Caballeros",
+            "brand": "Residence Inn by Marriott",
+            "city": "Santiago",
+            "country": "Dominican Republic"
+          },
+          {
+            "is_marriott": true,
+            "record_id": "recb3yKuNBmM3ql8m",
+            "marsha": "PUJRB",
+            "official_property_url": "https://www.marriott.com/en-us/hotels/pujrb-royalton-bavaro-an-autograph-collection-all-inclusive-resort-and-casino/overview",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+            "missing": {
+              "hotel_url": false,
+              "address": false,
+              "phone": false,
+              "rooms": true,
+              "coords": true,
+              "state": false
+            },
+            "clusters": [
+              "marriott_marsha_missing_level_2",
+              "marriott_clean_identity_missing_rooms",
+              "marriott_resort_microsite_candidate",
+              "marriott_factsheet_potential",
+              "marriott_missing_rooms_only"
+            ],
+            "property_name": "Royalton Bavaro, An Autograph Collection All-Inclusive Resort & Casino",
+            "brand": "Autograph Collection",
+            "city": "Bávaro",
+            "country": "Dominican Republic"
+          }
+        ]
+      },
+      "webhound_seed_records": [
+        {
+          "is_marriott": true,
+          "record_id": "rec02wJ8dk7HtjPjx",
+          "marsha": "BJXDS",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": true
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "Elena de Cobre, a Member of Design Hotels™",
+          "brand": "Design Hotels",
+          "city": "Unknown",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec07FR57B9Yt3TCh",
+          "marsha": "BOGJW",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "JW Marriott Hotel Bogota",
+          "brand": "JW Marriott",
+          "city": "Bogotá",
+          "country": "Colombia"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0H65Zl2xa0St9L",
+          "marsha": "CENXO",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "City Express by Marriott Ciudad Obregón",
+          "brand": "City Express by Marriott",
+          "city": "Ciudad Obregón",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0RcSXXANhkrrqD",
+          "marsha": "VSACY",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/vsacy-courtyard-villahermosa-tabasco/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "Courtyard by Marriott Villahermosa Tabasco",
+          "brand": "Courtyard by Marriott",
+          "city": "Villahermosa",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0VkbM7Cbvim1uc",
+          "marsha": "CUNCM",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cuncm-the-st-regis-costa-mujeres-resort-cancun/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+          "brand": "St. Regis",
+          "city": "Cancún",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0dxxcwt79FO1nZ",
+          "marsha": "NOGXN",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "City Express by Marriott Nogales",
+          "brand": "City Express by Marriott",
+          "city": "Nogales",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0kWb1pecfDy0J4",
+          "marsha": "BJXJL",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bjxjl-city-express-junior-leon-centro-de-convenciones/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "City Express Junior by Marriott León Centro De Convenciones",
+          "brand": "City Express Junior by Marriott",
+          "city": "León",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec1Ev3JERhmOhtEf",
+          "marsha": "SJOAA",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/sjoaa-ac-hotel-san-jose-airport-belen/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "AC Hotel San Jose Airport Belen",
+          "brand": "AC Hotels by Marriott",
+          "city": "San José",
+          "country": "Costa Rica"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec1My4XyDnlhej31",
+          "marsha": "PTYWI",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/ptywi-the-westin-panama/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "The Westin Panama",
+          "brand": "Westin",
+          "city": "Panama City",
+          "country": "Panama"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec1Snj6DNXcKzOfR",
+          "marsha": "GDLAR",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/gdlar-ac-hotel-guadalajara-expo-mexico/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": true
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "AC Hotel Guadalajara Expo, Mexico",
+          "brand": "AC Hotels by Marriott",
+          "city": "Mexico",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec02wJ8dk7HtjPjx",
+          "marsha": "BJXDS",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/bjxds-elena-de-cobre-a-member-of-design-hotels/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": true
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "Elena de Cobre, a Member of Design Hotels™",
+          "brand": "Design Hotels",
+          "city": "Unknown",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec07FR57B9Yt3TCh",
+          "marsha": "BOGJW",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "JW Marriott Hotel Bogota",
+          "brand": "JW Marriott",
+          "city": "Bogotá",
+          "country": "Colombia"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0H65Zl2xa0St9L",
+          "marsha": "CENXO",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/cenxo-city-express-ciudad-obregon/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "City Express by Marriott Ciudad Obregón",
+          "brand": "City Express by Marriott",
+          "city": "Ciudad Obregón",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0RcSXXANhkrrqD",
+          "marsha": "VSACY",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/vsacy-courtyard-villahermosa-tabasco/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "Courtyard by Marriott Villahermosa Tabasco",
+          "brand": "Courtyard by Marriott",
+          "city": "Villahermosa",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0VkbM7Cbvim1uc",
+          "marsha": "CUNCM",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cuncm-the-st-regis-costa-mujeres-resort-cancun/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+          "brand": "St. Regis",
+          "city": "Cancún",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0dxxcwt79FO1nZ",
+          "marsha": "NOGXN",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/nogxn-city-express-nogales/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "City Express by Marriott Nogales",
+          "brand": "City Express by Marriott",
+          "city": "Nogales",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0kWb1pecfDy0J4",
+          "marsha": "BJXJL",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bjxjl-city-express-junior-leon-centro-de-convenciones/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "City Express Junior by Marriott León Centro De Convenciones",
+          "brand": "City Express Junior by Marriott",
+          "city": "León",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec1Ev3JERhmOhtEf",
+          "marsha": "SJOAA",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/sjoaa-ac-hotel-san-jose-airport-belen/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "AC Hotel San Jose Airport Belen",
+          "brand": "AC Hotels by Marriott",
+          "city": "San José",
+          "country": "Costa Rica"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec1My4XyDnlhej31",
+          "marsha": "PTYWI",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/ptywi-the-westin-panama/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "The Westin Panama",
+          "brand": "Westin",
+          "city": "Panama City",
+          "country": "Panama"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec1Snj6DNXcKzOfR",
+          "marsha": "GDLAR",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/gdlar-ac-hotel-guadalajara-expo-mexico/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": true
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms"
+          ],
+          "property_name": "AC Hotel Guadalajara Expo, Mexico",
+          "brand": "AC Hotels by Marriott",
+          "city": "Mexico",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec07FR57B9Yt3TCh",
+          "marsha": "BOGJW",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "JW Marriott Hotel Bogota",
+          "brand": "JW Marriott",
+          "city": "Bogotá",
+          "country": "Colombia"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0VkbM7Cbvim1uc",
+          "marsha": "CUNCM",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cuncm-the-st-regis-costa-mujeres-resort-cancun/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+          "brand": "St. Regis",
+          "city": "Cancún",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec2qzq0V2Hvr2m6l",
+          "marsha": "PUJSM",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/pujsm-marriott-miches-beach-an-all-inclusive-resort/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": false,
+            "phone": false,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential",
+            "marriott_missing_rooms_only"
+          ],
+          "property_name": "Marriott Miches Beach, An All-Inclusive Resort",
+          "brand": "Marriott Hotels",
+          "city": "Miches",
+          "country": "Dominican Republic"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec2vPnXJrkRLOAoB",
+          "marsha": "PUJWH",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/pujwh-w-punta-cana-adult-all-inclusive/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": false,
+            "phone": false,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential",
+            "marriott_missing_rooms_only"
+          ],
+          "property_name": "W Punta Cana, Adult All-Inclusive",
+          "brand": "W Hotels",
+          "city": "Punta Cana",
+          "country": "Dominican Republic"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec4327YEwJT59CAv",
+          "marsha": "CUNAN",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "Casa Nizuc, a Tribute Portfolio Resort",
+          "brand": "Tribute Portfolio",
+          "city": "Cancún",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec55rqVTckL1tlN7",
+          "marsha": "BJXAK",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bjxak-clevia-san-miguel-de-allende-autograph-collection/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": true
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "Cleviá, San Miguel de Allende, Autograph Collection",
+          "brand": "Autograph Collection",
+          "city": "San Miguel de Allende",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec6qICeecQM6fOT9",
+          "marsha": "CUNJW",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cunjw-jw-marriott-cancun-resort-and-spa/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "JW Marriott Cancun Resort & Spa",
+          "brand": "JW Marriott",
+          "city": "Cancún",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec70lgDfrGrhRk3X",
+          "marsha": "SJDWV",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/sjdwv-the-westin-los-cabos-resort-villas/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "The Westin Los Cabos Resort Villas",
+          "brand": "Westin",
+          "city": "Los Cabos",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec7Z9d1HeCnfobLW",
+          "marsha": "PVRXR",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "The St. Regis Punta Mita Resort",
+          "brand": "St. Regis",
+          "city": "Punta Mita",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec8aCl84KcJdhl9k",
+          "marsha": "CUNPA",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cunpa-planet-hollywood-cancun-adult-scene-by-royalton-autograph-collection-all-inclusive-resort-adults/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": true
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "Planet Hollywood Cancun Adult Scene by Royalton, Autograph Collection All-Inclusive Resort - Adults",
+          "brand": "Autograph Collection",
+          "city": "- Adults",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec07FR57B9Yt3TCh",
+          "marsha": "BOGJW",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bogjw-jw-marriott-hotel-bogota/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "JW Marriott Hotel Bogota",
+          "brand": "JW Marriott",
+          "city": "Bogotá",
+          "country": "Colombia"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec0VkbM7Cbvim1uc",
+          "marsha": "CUNCM",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cuncm-the-st-regis-costa-mujeres-resort-cancun/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+          "brand": "St. Regis",
+          "city": "Cancún",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec2qzq0V2Hvr2m6l",
+          "marsha": "PUJSM",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/pujsm-marriott-miches-beach-an-all-inclusive-resort/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": false,
+            "phone": false,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential",
+            "marriott_missing_rooms_only"
+          ],
+          "property_name": "Marriott Miches Beach, An All-Inclusive Resort",
+          "brand": "Marriott Hotels",
+          "city": "Miches",
+          "country": "Dominican Republic"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec2vPnXJrkRLOAoB",
+          "marsha": "PUJWH",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/pujwh-w-punta-cana-adult-all-inclusive/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": false,
+            "phone": false,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential",
+            "marriott_missing_rooms_only"
+          ],
+          "property_name": "W Punta Cana, Adult All-Inclusive",
+          "brand": "W Hotels",
+          "city": "Punta Cana",
+          "country": "Dominican Republic"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec4327YEwJT59CAv",
+          "marsha": "CUNAN",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "Casa Nizuc, a Tribute Portfolio Resort",
+          "brand": "Tribute Portfolio",
+          "city": "Cancún",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec55rqVTckL1tlN7",
+          "marsha": "BJXAK",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/bjxak-clevia-san-miguel-de-allende-autograph-collection/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": true
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "Cleviá, San Miguel de Allende, Autograph Collection",
+          "brand": "Autograph Collection",
+          "city": "San Miguel de Allende",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec6qICeecQM6fOT9",
+          "marsha": "CUNJW",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cunjw-jw-marriott-cancun-resort-and-spa/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "JW Marriott Cancun Resort & Spa",
+          "brand": "JW Marriott",
+          "city": "Cancún",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec70lgDfrGrhRk3X",
+          "marsha": "SJDWV",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/sjdwv-the-westin-los-cabos-resort-villas/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "The Westin Los Cabos Resort Villas",
+          "brand": "Westin",
+          "city": "Los Cabos",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec7Z9d1HeCnfobLW",
+          "marsha": "PVRXR",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+          "source_url": "https://www.marriott.com/en-us/hotels/pvrxr-the-st-regis-punta-mita-resort/overview",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": false
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "The St. Regis Punta Mita Resort",
+          "brand": "St. Regis",
+          "city": "Punta Mita",
+          "country": "Mexico"
+        },
+        {
+          "is_marriott": true,
+          "record_id": "rec8aCl84KcJdhl9k",
+          "marsha": "CUNPA",
+          "official_property_url": "https://www.marriott.com/en-us/hotels/cunpa-planet-hollywood-cancun-adult-scene-by-royalton-autograph-collection-all-inclusive-resort-adults/overview",
+          "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "missing": {
+            "hotel_url": false,
+            "address": true,
+            "phone": true,
+            "rooms": true,
+            "coords": true,
+            "state": true
+          },
+          "clusters": [
+            "marriott_marsha_missing_level_2",
+            "marriott_clean_identity_missing_rooms",
+            "marriott_resort_microsite_candidate",
+            "marriott_factsheet_potential"
+          ],
+          "property_name": "Planet Hollywood Cancun Adult Scene by Royalton, Autograph Collection All-Inclusive Resort - Adults",
+          "brand": "Autograph Collection",
+          "city": "- Adults",
+          "country": "Mexico"
+        }
+      ]
+    }
+  },
+  "adapter_learning": {
+    "adapters_created_or_updated": [
+      "marriott-source-pattern-discovery.js",
+      "marriott-webhound-pattern-learner.js",
+      "marriott-official-metadata-adapter.js",
+      "marriott-factsheet-adapter.js",
+      "marriott-linked-hotel-site-adapter.js",
+      "marriott-rooms-source-adapter.js"
+    ],
+    "records_tested": 40,
+    "extraction_success": 0,
+    "success_rate_pct": 0,
+    "proposals_prepared": 0
+  },
+  "remaining_blockers": {
+    "akamai_blocked": 40,
+    "no_official_source_found": 0,
+    "insufficient_metadata": 40,
+    "rooms_source_missing": 40,
+    "phone_source_missing": 37,
+    "address_source_missing": 38,
+    "steward_review_required": 0
+  },
+  "scorecard_marriott": {
+    "clean_core": 0,
+    "state_region": 86,
+    "market": 0,
+    "submarket": 0,
+    "hotel_url": 100,
+    "address": 4.8,
+    "address_high": 3.8,
+    "lat_long": 3.3,
+    "phone": 7.1,
+    "rooms": 0.3,
+    "complete_census_v1": 0,
+    "public_eligible": 66.2,
+    "radar_eligible": 65.1,
+    "governance_hold": 33.8,
+    "data_quality_hold": 1.3
+  },
+  "chain_v3": null,
+  "safety_stops": [],
+  "command_to_continue": "ALLOW_CENSUS_AUTOPILOT_APPLY=1 \\\nCONFIRM_WRITE_TO_PRODUCTION_CENSUS=1 \\\nCONFIRM_NO_BRAND_EXPLORER_WRITES=1 \\\nCONFIRM_NO_OWNER_OPERATOR_WRITES=1 \\\nnpm run census:autopilot -- --region CALA --scope official-parent-inventory --mode mission \\\n  --objective marriott-webhound-source-pattern-learning-v1 \\\n  --census-mode field-completion-only \\\n  --parent-company \"Marriott International\" \\\n  --strategy highest-yield-safe --run-until-complete --max-passes 8 --batch-size 100 \\\n  --confirm-safe-writes --confirm-write-to-production-census \\\n  --confirm-no-brand-explorer-writes --confirm-no-owner-operator \\\n  --confirm-no-date-writes --confirm-no-recent-momentum \\\n  --confirm-no-company-validation --confirm-webhound-not-production-source \\\n  --enable-production-writes",
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T17-48-46_CALA-marriott-webhound-learning-v1",
+  "dam_factsheet": {
+    "adapter": "marriott-dam-factsheet-discovery.js",
+    "index_path": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\marriott-dam-factsheet-url-index.json",
+    "index_count": 2,
+    "seed_marshas": [
+      "SJULU",
+      "GYECY"
+    ],
+    "seed_in_census": [],
+    "seed_missing_from_census": [
+      "SJULU",
+      "GYECY"
+    ],
+    "dry_run": {
+      "SJULU": {
+        "rooms": 104,
+        "address": true,
+        "phone": true
+      },
+      "GYECY": {
+        "rooms": 144,
+        "address": false,
+        "phone": false
+      }
+    },
+    "webhound_as_census_sot": false,
+    "production_updates": 0,
+    "blocker": "dam_url_index_does_not_yet_cover_in_census_marshas"
+  },
+  "adapter_backlog": [
+    {
+      "item": "Expand DAM URL index for in-Census MARSHAs (targeted Webhound / official harvest)",
+      "expected_yield": "High",
+      "blocker": "asset id not in Census seed set"
+    },
+    {
+      "item": "news.marriott.com room NLP",
+      "expected_yield": "Medium",
+      "blocker": "sparse"
+    },
+    {
+      "item": "modules.marriott.com property-specific rooms",
+      "expected_yield": "Medium",
+      "blocker": "aggregate risk"
+    }
+  ]
+}

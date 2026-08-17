@@ -1,0 +1,314 @@
+{
+  "registryVersion": "ai_visibility_scenario_registry_v1",
+  "registryId": "hotel_brand_ai_intelligence_scenario_registry_v1",
+  "requireTwelveCore": true,
+  "notes": [
+    "Owner Decision Scenario layer — distinct from Prompt ID (execution) and Prompt Family (wording variant group).",
+    "One scenarioId may span multiple promptFamilies (variant groups), languages, geographies, and versions.",
+    "Language pairs remain governed by Semantic Pair ID on prompt rows — not separate scenarios.",
+    "Operator Selection scenarios deferred from Brand CORE panel."
+  ],
+  "scenarios": [
+    {
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "scenarioName": "Independent upper-upscale conversion",
+      "intentFamily": "Conversion",
+      "ownerPriority": "Conversion Suitability",
+      "commercialPriority": "CRITICAL",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Independent or unaffiliated upper-upscale hotel owner evaluating conversion or collection affiliation.",
+      "defaultDimensions": {
+        "existingAffiliation": "Independent",
+        "keyCountBand": "100-400",
+        "brandFamily": "Upper-Upscale Collection"
+      },
+      "variantPolicy": {
+        "tier": 1,
+        "maxVariants": 2,
+        "allowInvestigationVariants": true
+      }
+    },
+    {
+      "scenarioId": "scenario_newbuild_uu_brand_selection_v1",
+      "scenarioName": "New-build upper-upscale brand selection",
+      "intentFamily": "Brand Selection",
+      "ownerPriority": "Market Fit",
+      "commercialPriority": "CRITICAL",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner developing a new upper-upscale hotel evaluating brand shortlist options.",
+      "defaultDimensions": {
+        "existingAffiliation": "None",
+        "keyCountBand": "150-350",
+        "brandFamily": "Upper-Upscale"
+      },
+      "variantPolicy": {
+        "tier": 1,
+        "maxVariants": 2,
+        "allowInvestigationVariants": false
+      }
+    },
+    {
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "scenarioName": "Soft-brand / collection affiliation",
+      "intentFamily": "Collection / Soft Brand",
+      "ownerPriority": "Design Individuality",
+      "commercialPriority": "CRITICAL",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner comparing soft-brand or collection affiliation models for individuality vs platform.",
+      "defaultDimensions": {
+        "existingAffiliation": "Independent",
+        "brandFamily": "Collection / Soft Brand"
+      },
+      "variantPolicy": {
+        "tier": 2,
+        "maxVariants": 3,
+        "allowInvestigationVariants": true
+      }
+    },
+    {
+      "scenarioId": "scenario_owner_flexibility_control_v1",
+      "scenarioName": "Owner flexibility / control",
+      "intentFamily": "Owner Flexibility",
+      "ownerPriority": "Flexibility / Control",
+      "commercialPriority": "CRITICAL",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner evaluating operating control, approvals, and flexibility under brand affiliation.",
+      "defaultDimensions": {
+        "brandFamily": "Collection / Soft Brand"
+      },
+      "variantPolicy": {
+        "tier": 2,
+        "maxVariants": 3,
+        "allowInvestigationVariants": true
+      }
+    },
+    {
+      "scenarioId": "scenario_owner_economics_v1",
+      "scenarioName": "Owner economics",
+      "intentFamily": "Owner Economics",
+      "ownerPriority": "Economics",
+      "commercialPriority": "CRITICAL",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner assessing fees, incentives, and economic structure of brand affiliation.",
+      "defaultDimensions": {},
+      "variantPolicy": {
+        "tier": 1,
+        "maxVariants": 1,
+        "allowInvestigationVariants": false
+      }
+    },
+    {
+      "scenarioId": "scenario_distribution_loyalty_v1",
+      "scenarioName": "Distribution & loyalty",
+      "intentFamily": "Brand Selection",
+      "ownerPriority": "Distribution",
+      "commercialPriority": "HIGH",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "PLANNED_NO_PROMPTS",
+      "description": "Owner comparing distribution reach and loyalty program strength across brand options. Loyalty tracked under Distribution owner priority until dedicated prompts exist.",
+      "defaultDimensions": {},
+      "variantPolicy": {
+        "tier": 1,
+        "maxVariants": 1,
+        "allowInvestigationVariants": false
+      }
+    },
+    {
+      "scenarioId": "scenario_conversion_suitability_v1",
+      "scenarioName": "Conversion suitability",
+      "intentFamily": "Conversion",
+      "ownerPriority": "Conversion Suitability",
+      "commercialPriority": "HIGH",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner repositioning an existing asset evaluating brand fit for conversion or reflag.",
+      "defaultDimensions": {
+        "existingAffiliation": "Independent or Other Brand"
+      },
+      "variantPolicy": {
+        "tier": 1,
+        "maxVariants": 2,
+        "allowInvestigationVariants": true
+      }
+    },
+    {
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "scenarioName": "Branded residences capability",
+      "intentFamily": "Branded Residences",
+      "ownerPriority": "Branded Residences Capability",
+      "commercialPriority": "HIGH",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner evaluating branded residences capability alongside hotel development or mixed-use.",
+      "defaultDimensions": {
+        "brandFamily": "Mixed Use / Residences"
+      },
+      "variantPolicy": {
+        "tier": 2,
+        "maxVariants": 2,
+        "allowInvestigationVariants": true
+      }
+    },
+    {
+      "scenarioId": "scenario_chainscale_positioning_fit_v1",
+      "scenarioName": "Chain-scale / positioning fit",
+      "intentFamily": "Chain Scale / Positioning",
+      "ownerPriority": "Positioning",
+      "commercialPriority": "HIGH",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner validating chain-scale segment and positioning credibility for a project.",
+      "defaultDimensions": {
+        "brandFamily": "Upper-Upscale"
+      },
+      "variantPolicy": {
+        "tier": 1,
+        "maxVariants": 2,
+        "allowInvestigationVariants": false
+      }
+    },
+    {
+      "scenarioId": "scenario_market_entry_geographic_relevance_v1",
+      "scenarioName": "Market-entry / geographic relevance",
+      "intentFamily": "Market / Geography",
+      "ownerPriority": "Market Fit",
+      "commercialPriority": "HIGH",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner entering a market evaluating which brands are relevant or present in that geography.",
+      "defaultDimensions": {},
+      "variantPolicy": {
+        "tier": 1,
+        "maxVariants": 1,
+        "allowInvestigationVariants": false
+      }
+    },
+    {
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "scenarioName": "Lifestyle / individuality positioning",
+      "intentFamily": "Lifestyle Positioning",
+      "ownerPriority": "Design Individuality",
+      "commercialPriority": "HIGH",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner prioritizing lifestyle positioning and design individuality in brand selection.",
+      "defaultDimensions": {
+        "brandFamily": "Lifestyle / Collection"
+      },
+      "variantPolicy": {
+        "tier": 2,
+        "maxVariants": 3,
+        "allowInvestigationVariants": true
+      }
+    },
+    {
+      "scenarioId": "scenario_hma_vs_franchise_v1",
+      "scenarioName": "HMA vs franchise decision",
+      "intentFamily": "HMA vs Franchise",
+      "ownerPriority": "Flexibility / Control",
+      "commercialPriority": "HIGH",
+      "monitoringPanel": "CORE",
+      "scenarioVersion": "1",
+      "status": "ACTIVE",
+      "description": "Owner comparing HMA/management contract vs franchise structure for a hotel project.",
+      "defaultDimensions": {},
+      "variantPolicy": {
+        "tier": 1,
+        "maxVariants": 1,
+        "allowInvestigationVariants": false
+      }
+    }
+  ],
+  "variantGroups": [
+    {
+      "variantGroupId": "vg_independent_uu_conversion_affiliation_v1",
+      "scenarioId": "scenario_independent_uu_conversion_v1",
+      "promptFamilies": ["showcase_conversion_independent_affiliation"]
+    },
+    {
+      "variantGroupId": "vg_newbuild_uu_shortlist_v1",
+      "scenarioId": "scenario_newbuild_uu_brand_selection_v1",
+      "promptFamilies": ["showcase_upper_upscale_shortlist"]
+    },
+    {
+      "variantGroupId": "vg_soft_brand_collection_affiliation_v1",
+      "scenarioId": "scenario_soft_brand_collection_affiliation_v1",
+      "promptFamilies": [
+        "showcase_collection_soft_affiliation",
+        "showcase_collection_soft_shortlist"
+      ]
+    },
+    {
+      "variantGroupId": "vg_owner_flexibility_control_v1",
+      "scenarioId": "scenario_owner_flexibility_control_v1",
+      "promptFamilies": [
+        "showcase_soft_brand_affiliation_flexibility",
+        "owner_flexibility_brand"
+      ]
+    },
+    {
+      "variantGroupId": "vg_owner_economics_v1",
+      "scenarioId": "scenario_owner_economics_v1",
+      "promptFamilies": ["owner_economics_brand"]
+    },
+    {
+      "variantGroupId": "vg_conversion_suitability_reposition_v1",
+      "scenarioId": "scenario_conversion_suitability_v1",
+      "promptFamilies": ["showcase_conversion_existing_asset_reposition"]
+    },
+    {
+      "variantGroupId": "vg_branded_residences_capability_v1",
+      "scenarioId": "scenario_branded_residences_capability_v1",
+      "promptFamilies": [
+        "showcase_branded_residences_capability",
+        "showcase_branded_residences_hotel_project",
+        "branded_residences_association"
+      ]
+    },
+    {
+      "variantGroupId": "vg_chainscale_positioning_v1",
+      "scenarioId": "scenario_chainscale_positioning_fit_v1",
+      "promptFamilies": [
+        "showcase_upper_upscale_positioning",
+        "chain_scale_resort_positioning"
+      ]
+    },
+    {
+      "variantGroupId": "vg_market_entry_geography_v1",
+      "scenarioId": "scenario_market_entry_geographic_relevance_v1",
+      "promptFamilies": ["market_geography_brand_fit"]
+    },
+    {
+      "variantGroupId": "vg_lifestyle_individuality_v1",
+      "scenarioId": "scenario_lifestyle_individuality_positioning_v1",
+      "promptFamilies": [
+        "showcase_lifestyle_positioning_strategy",
+        "showcase_lifestyle_design_character",
+        "showcase_soft_brand_individuality",
+        "lifestyle_urban_brand_selection"
+      ]
+    },
+    {
+      "variantGroupId": "vg_hma_vs_franchise_v1",
+      "scenarioId": "scenario_hma_vs_franchise_v1",
+      "promptFamilies": ["hma_vs_franchise_operator"]
+    }
+  ],
+  "promptMappings": []
+}

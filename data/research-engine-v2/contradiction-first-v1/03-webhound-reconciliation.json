@@ -1,0 +1,546 @@
+{
+  "generatedAt": "2026-08-04T21:12:26.697Z",
+  "method": "Manual material-finding list from TEST6-RECONCILIATION.md after native freeze",
+  "note": "Replaces noisy automated markdown bullet matcher",
+  "highConfidenceMaterial": {
+    "found": 7,
+    "partial": 0,
+    "better": 0,
+    "rejected": 0,
+    "missed": 1,
+    "rate": 87.5,
+    "denom": 8
+  },
+  "allMaterialIncludingMedium": {
+    "found": 8,
+    "partial": 1,
+    "better": 0,
+    "rejected": 0,
+    "missed": 3,
+    "rate": 70.8,
+    "denom": 12
+  },
+  "successThreshold": {
+    "targetPct": 70,
+    "stretchPct": 80,
+    "metHigh": true,
+    "metStretchHigh": true
+  },
+  "comparisons": [
+    {
+      "id": "indigo-playa-pipeline-open",
+      "brand": "Hotel Indigo",
+      "hotelName": "Hotel Indigo Playa del Carmen",
+      "class": "Pipeline → Operating",
+      "wh": "Webhound appears correct",
+      "importance": "high",
+      "nativeMatch": {
+        "verdict": "Found It Independently",
+        "evidence": {
+          "hotel_id": "rec7kEIRaGkGWvHAE",
+          "hotel_name": "Hotel Indigo Playa del Carmen",
+          "field": "status",
+          "current_value": "Pipeline",
+          "observed_value": "Open",
+          "classification": "Contradicted",
+          "evidence": [
+            {
+              "url": "https://www.ihg.com/hotelindigo/hotels/us/en/playa-del-carmen/pcmaa/hoteldetail",
+              "sourceType": "official_brand_directory",
+              "retrievedAt": "2026-08-04T21:09:18.404Z",
+              "adapter": "ihg"
+            }
+          ],
+          "confidence": 0.85,
+          "reason": "Higher-authority source preferred over weaker conflicting source",
+          "recommended_action": "Proposed Status Change"
+        }
+      }
+    },
+    {
+      "id": "indigo-tijuana-pipeline-open",
+      "brand": "Hotel Indigo",
+      "hotelName": "Hotel Indigo Tijuana Downtown",
+      "class": "Pipeline → Operating",
+      "wh": "Webhound appears correct",
+      "importance": "high",
+      "nativeMatch": {
+        "verdict": "Found It Independently",
+        "evidence": {
+          "hotel_id": "recktat7ilgC8aYKI",
+          "hotel_name": "Hotel Indigo Tijuana Downtown",
+          "field": "status",
+          "current_value": "Pipeline",
+          "observed_value": "Open",
+          "classification": "Contradicted",
+          "evidence": [
+            {
+              "url": "https://www.ihg.com/hotelindigo/hotels/us/en/tijuana/tijgc/hoteldetail",
+              "sourceType": "official_brand_directory",
+              "retrievedAt": "2026-08-04T21:09:30.446Z",
+              "adapter": "ihg"
+            }
+          ],
+          "confidence": 0.85,
+          "reason": "Higher-authority source preferred over weaker conflicting source",
+          "recommended_action": "Proposed Status Change"
+        }
+      }
+    },
+    {
+      "id": "indigo-lima-pipeline-open",
+      "brand": "Hotel Indigo",
+      "hotelName": "Hotel Indigo Lima Miraflores",
+      "class": "Pipeline → Operating",
+      "wh": "Webhound appears correct",
+      "importance": "high",
+      "nativeMatch": {
+        "verdict": "Found It Independently",
+        "evidence": {
+          "hotel_id": "recO3IywjWrniJotn",
+          "hotel_name": "Hotel Indigo Lima Miraflores",
+          "field": "status",
+          "current_value": "Pipeline",
+          "observed_value": "Open",
+          "classification": "Contradicted",
+          "evidence": [
+            {
+              "url": "https://www.ihg.com/hotelindigo/hotels/us/en/lima/limmd/hoteldetail",
+              "sourceType": "official_brand_directory",
+              "retrievedAt": "2026-08-04T21:09:24.617Z",
+              "adapter": "ihg"
+            }
+          ],
+          "confidence": 0.85,
+          "reason": "Higher-authority source preferred over weaker conflicting source",
+          "recommended_action": "Proposed Status Change"
+        }
+      }
+    },
+    {
+      "id": "indigo-barbados-pipeline-open",
+      "brand": "Hotel Indigo",
+      "hotelName": "Hotel Indigo Bridgetown Barbados",
+      "class": "Pipeline → Operating",
+      "wh": "Webhound appears correct",
+      "importance": "high",
+      "nativeMatch": {
+        "verdict": "Found It Independently",
+        "evidence": {
+          "hotel_id": "recpsGuv6acQp4GW5",
+          "hotel_name": "Hotel Indigo Bridgetown Barbados",
+          "field": "status",
+          "current_value": "Pipeline",
+          "observed_value": "Open",
+          "classification": "Contradicted",
+          "evidence": [
+            {
+              "url": "https://www.ihg.com/hotelindigo/hotels/us/en/bridgetown-christchurch/bgiid/hoteldetail",
+              "sourceType": "official_brand_directory",
+              "retrievedAt": "2026-08-04T21:09:31.755Z",
+              "adapter": "ihg"
+            }
+          ],
+          "confidence": 0.85,
+          "reason": "Higher-authority source preferred over weaker conflicting source",
+          "recommended_action": "Proposed Status Change"
+        }
+      }
+    },
+    {
+      "id": "tribute-casa-nizuc-missing-pipeline",
+      "brand": "Tribute Portfolio",
+      "hotelName": "Casa Nizuc",
+      "class": "Missing pipeline hotels",
+      "wh": "Webhound appears correct",
+      "importance": "high",
+      "nativeMatch": {
+        "verdict": "Found It Independently",
+        "evidence": {
+          "directoryName": "Casa Nizuc, a Tribute Portfolio Resort",
+          "country": "mexico",
+          "city": null,
+          "brand": null,
+          "officialUrl": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/overview/",
+          "bestCensusScore": 0.125,
+          "classification": "Possible Missing Census Record",
+          "recommended_action": "Review"
+        }
+      }
+    },
+    {
+      "id": "barbados-autograph-to-tribute",
+      "brand": "Tribute Portfolio",
+      "hotelName": "Crystal Cove / Turtle Beach Barbados",
+      "class": "Reflags",
+      "wh": "Webhound appears correct",
+      "importance": "high",
+      "nativeMatch": {
+        "verdict": "Missed It",
+        "evidence": null,
+        "why": "Barbados Crystal Cove / Turtle Beach not in amenities-blank census snapshot; no Autograph Barbados rows to reflag"
+      }
+    },
+    {
+      "id": "avani-missing-brand-explorer",
+      "brand": "Avani",
+      "hotelName": "Avani (brand)",
+      "class": "Missing brand census / BE profile",
+      "wh": "Dealality product state / material gap",
+      "importance": "high",
+      "nativeMatch": {
+        "verdict": "Found It Independently",
+        "evidence": {
+          "type": "brand_explorer_missing_vs_census_operating",
+          "brand": "Avani",
+          "censusOperatingCount": 2,
+          "brandExplorerPresent": false,
+          "recommended_action": "Review",
+          "notes": "Census has operating hotels but Brand Explorer presence flagged absent"
+        }
+      }
+    },
+    {
+      "id": "kimpton-tres-rios-missing",
+      "brand": "Kimpton",
+      "hotelName": "Kimpton Tres Rios",
+      "class": "Missing pipeline / census hotels",
+      "wh": "Evidence conflicting — WH found directory property absent from Dealality set",
+      "importance": "high",
+      "nativeMatch": {
+        "verdict": "Found It Independently",
+        "evidence": {
+          "directoryName": "Kimpton Tres Rios - All Inclusive",
+          "country": "Mexico",
+          "city": "Quintana Roo",
+          "brand": "kimptonhotels",
+          "officialUrl": "https://www.ihg.com/kimptonhotels/hotels/us/en/tres-rios-riviera-maya/pcmht/hoteldetail",
+          "bestCensusScore": 0.167,
+          "classification": "Possible Missing Census Record",
+          "recommended_action": "Review"
+        }
+      }
+    },
+    {
+      "id": "kimpton-aluna-identity",
+      "brand": "Kimpton",
+      "hotelName": "Kimpton Aluna Resort Tulum",
+      "class": "Cross-table / identity conflict",
+      "wh": "Evidence conflicting — Aluna Open in Dealality vs weak/absent IHG match",
+      "importance": "medium",
+      "nativeMatch": {
+        "verdict": "Partially Found It",
+        "evidence": {
+          "claimType": "HOTEL_EXISTS",
+          "hotelId": "recyBf7nk9LrbXfb6",
+          "hotelName": "Kimpton Aluna Resort Tulum",
+          "currentDealalityValue": true,
+          "independentlyObservedValue": false,
+          "claimStatus": "Unknown",
+          "evidenceSource": null,
+          "sourceType": "official_brand_directory",
+          "sourceDate": null,
+          "eventDate": null,
+          "evidenceRetrievalDate": "2026-08-04T21:09:34.856Z",
+          "dealalityLastVerified": null,
+          "confidence": 0.2,
+          "contradictionFound": false,
+          "proposedCorrection": null,
+          "notes": "No IHG directory match for hotel name/geo",
+          "supportQueries": [
+            "Kimpton Aluna Resort Tulum Mexico Kimpton",
+            "Kimpton Aluna Resort Tulum Kimpton official",
+            "Kimpton Aluna Resort Tulum ihg directory",
+            "Kimpton Aluna Resort Tulum Kimpton open",
+            "Kimpton Aluna Resort Tulum book Kimpton",
+            "Kimpton Aluna Resort Tulum IHG Hotels & Resorts"
+          ],
+          "contradictionQueries": [
+            "Kimpton Aluna Resort Tulum closed",
+            "Kimpton Aluna Resort Tulum permanently closed",
+            "Kimpton Aluna Resort Tulum coming soon",
+            "Kimpton Aluna Resort Tulum pipeline",
+            "Kimpton Aluna Resort Tulum reflag",
+            "Kimpton Aluna Resort Tulum new brand",
+            "Kimpton Aluna Resort Tulum renamed",
+            "Kimpton Aluna Resort Tulum independent",
+            "Kimpton Aluna Resort Tulum current official site",
+            "Kimpton Aluna Resort Tulum Hotel Indigo",
+            "Kimpton Aluna Resort Tulum Kimpton",
+            "Kimpton Aluna Resort Tulum IHG",
+            "Kimpton Aluna Resort Tulum operator",
+            "Kimpton Aluna Resort Tulum parent company"
+          ]
+        },
+        "why": "Aluna Open in census but no IHG directory match — identity/freshness risk flagged as Unverified/Unknown, not auto-corrected"
+      }
+    },
+    {
+      "id": "tribute-mexico-gaps-alameda-merida-holbox",
+      "brand": "Tribute Portfolio",
+      "hotelName": "Alameda / Merida / Mystique Holbox",
+      "class": "Missing brand census records",
+      "wh": "Both / Unable — WH incomplete but directory gaps are material for integrity",
+      "importance": "medium",
+      "nativeMatch": {
+        "verdict": "Found It Independently",
+        "evidence": [
+          {
+            "directoryName": "Mexico City, Alameda, a Tribute Portfolio Hotel",
+            "country": "Mexico",
+            "city": null,
+            "brand": null,
+            "officialUrl": null,
+            "bestCensusScore": 0.375,
+            "classification": "Possible Missing Census Record",
+            "recommended_action": "Review"
+          },
+          {
+            "directoryName": "Mystique Holbox by Royalton, A Tribute Portfolio Resort",
+            "country": "mexico",
+            "city": null,
+            "brand": null,
+            "officialUrl": "https://www.marriott.com/en-us/hotels/cunmh-mystique-holbox-by-royalton-a-tribute-portfolio-resort/overview/",
+            "bestCensusScore": 0.111,
+            "classification": "Possible Missing Census Record",
+            "recommended_action": "Review"
+          },
+          {
+            "directoryName": "Tribute Portfolio Merida Mexico",
+            "country": "Mexico",
+            "city": null,
+            "brand": null,
+            "officialUrl": null,
+            "bestCensusScore": 0.125,
+            "classification": "Possible Missing Census Record",
+            "recommended_action": "Review"
+          }
+        ]
+      }
+    },
+    {
+      "id": "tulum-tribute-vs-design-hotels",
+      "brand": "Tribute Portfolio",
+      "hotelName": "Tulum Tribute / Design Hotels",
+      "class": "Reflags / brand page conflict",
+      "wh": "Evidence conflicting",
+      "importance": "medium",
+      "nativeMatch": {
+        "verdict": "Missed It",
+        "evidence": null,
+        "why": "No Design Hotels Tulum / Tribute page conflict check in V1 adapters"
+      }
+    },
+    {
+      "id": "choice-faranda-extra-hotels",
+      "brand": "Radisson Individuals Americas",
+      "hotelName": "V Grand Medellin / Faranda Collection Cartagena",
+      "class": "Missing census records / operator spine",
+      "wh": "Both partially correct — WH richer count",
+      "importance": "medium",
+      "nativeMatch": {
+        "verdict": "Missed It",
+        "evidence": null,
+        "why": "Choice adapter checked existing census rows only; no Choice directory-gap pass in V1"
+      }
+    }
+  ],
+  "falsePositives": {
+    "statusKeepPipelineButNativeOpen": [
+      {
+        "hotel_id": "recCz76fzl1oqVWNl",
+        "hotel_name": "Hotel Indigo Mexico City Downtown",
+        "field": "status",
+        "current_value": "Pipeline",
+        "observed_value": "Open",
+        "classification": "Contradicted",
+        "evidence": [
+          {
+            "url": "https://www.ihg.com/intercontinental/hotels/us/en/mexico/mexha/hoteldetail",
+            "sourceType": "official_brand_directory",
+            "retrievedAt": "2026-08-04T21:09:19.765Z",
+            "adapter": "ihg"
+          }
+        ],
+        "confidence": 0.65,
+        "reason": "Higher-authority source preferred over weaker conflicting source",
+        "recommended_action": "Proposed Status Change"
+      },
+      {
+        "hotel_id": "recYXD5LOOKVPTFCy",
+        "hotel_name": "Hotel Indigo Tulum",
+        "field": "status",
+        "current_value": "Pipeline",
+        "observed_value": "Open",
+        "classification": "Contradicted",
+        "evidence": [
+          {
+            "url": "https://www.ihg.com/holidayinn/hotels/us/en/tulum/tuydt/hoteldetail",
+            "sourceType": "official_brand_directory",
+            "retrievedAt": "2026-08-04T21:09:25.937Z",
+            "adapter": "ihg"
+          }
+        ],
+        "confidence": 0.65,
+        "reason": "Higher-authority source preferred over weaker conflicting source",
+        "recommended_action": "Proposed Status Change"
+      },
+      {
+        "hotel_id": "recmn5Ou1ZCM6CKbx",
+        "hotel_name": "Hotel Indigo Guadalajara Providencia",
+        "field": "status",
+        "current_value": "Pipeline",
+        "observed_value": "Open",
+        "classification": "Contradicted",
+        "evidence": [
+          {
+            "url": "https://www.ihg.com/hotelindigo/hotels/us/en/guadalajara/gdlal/hoteldetail",
+            "sourceType": "official_brand_directory",
+            "retrievedAt": "2026-08-04T21:09:31.179Z",
+            "adapter": "ihg"
+          }
+        ],
+        "confidence": 0.65,
+        "reason": "Higher-authority source preferred over weaker conflicting source",
+        "recommended_action": "Proposed Status Change"
+      }
+    ],
+    "likelyBadReflagMatches": [
+      {
+        "hotel_id": "recCz76fzl1oqVWNl",
+        "hotel_name": "Hotel Indigo Mexico City Downtown",
+        "field": "Affiliation",
+        "current_value": "Hotel Indigo",
+        "observed_value": "intercontinental",
+        "classification": "Contradicted",
+        "evidence": [
+          {
+            "url": "https://www.ihg.com/intercontinental/hotels/us/en/mexico/mexha/hoteldetail",
+            "sourceType": "official_brand_directory",
+            "retrievedAt": "2026-08-04T21:09:19.765Z",
+            "adapter": "ihg"
+          }
+        ],
+        "confidence": 0.65,
+        "reason": "Official directory brand differs from Dealality affiliation",
+        "recommended_action": "Proposed Reflag"
+      },
+      {
+        "hotel_id": "recImFmHWCO2hYUZM",
+        "hotel_name": "Faranda Collection Cali A Member Of Radisson Individuals",
+        "field": "Affiliation",
+        "current_value": "Radisson Individuals Americas",
+        "observed_value": "Ascend Collection",
+        "classification": "Contradicted",
+        "evidence": [
+          {
+            "url": "https://www.choicehotels.com/colombia/cali/ascend-hotels/cb003",
+            "sourceType": "official_brand_directory",
+            "retrievedAt": "2026-08-04T21:09:22.748Z",
+            "adapter": "choice"
+          }
+        ],
+        "confidence": 0.25,
+        "reason": "Official directory brand differs from Dealality affiliation",
+        "recommended_action": "Proposed Reflag"
+      },
+      {
+        "hotel_id": "recYXD5LOOKVPTFCy",
+        "hotel_name": "Hotel Indigo Tulum",
+        "field": "Affiliation",
+        "current_value": "Hotel Indigo",
+        "observed_value": "holidayinn",
+        "classification": "Contradicted",
+        "evidence": [
+          {
+            "url": "https://www.ihg.com/holidayinn/hotels/us/en/tulum/tuydt/hoteldetail",
+            "sourceType": "official_brand_directory",
+            "retrievedAt": "2026-08-04T21:09:25.937Z",
+            "adapter": "ihg"
+          }
+        ],
+        "confidence": 0.65,
+        "reason": "Official directory brand differs from Dealality affiliation",
+        "recommended_action": "Proposed Reflag"
+      },
+      {
+        "hotel_id": "recsn48RbhQGS0TB5",
+        "hotel_name": "Casa Francia, Autograph Collection",
+        "field": "Affiliation",
+        "current_value": "Autograph Collection",
+        "observed_value": "Tribute Portfolio",
+        "classification": "Contradicted",
+        "evidence": [
+          {
+            "url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/photos/",
+            "sourceType": "official_brand_directory",
+            "retrievedAt": "2026-08-04T21:09:32.914Z",
+            "adapter": "marriott"
+          }
+        ],
+        "confidence": 0.6,
+        "reason": "Official directory brand differs from Dealality affiliation",
+        "recommended_action": "Proposed Reflag"
+      }
+    ]
+  },
+  "nativeOnlyHighlights": [
+    {
+      "hotel_id": "recsn48RbhQGS0TB5",
+      "hotel_name": "Casa Francia, Autograph Collection",
+      "field": "status",
+      "current_value": "Pipeline",
+      "observed_value": "Open",
+      "classification": "Contradicted",
+      "evidence": [
+        {
+          "url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/photos/",
+          "sourceType": "official_brand_directory",
+          "retrievedAt": "2026-08-04T21:09:32.914Z",
+          "adapter": "marriott"
+        }
+      ],
+      "confidence": 0.6,
+      "reason": "Higher-authority source preferred over weaker conflicting source",
+      "recommended_action": "Proposed Status Change"
+    },
+    {
+      "hotel_id": "recsn48RbhQGS0TB5",
+      "hotel_name": "Casa Francia, Autograph Collection",
+      "field": "Affiliation",
+      "current_value": "Autograph Collection",
+      "observed_value": "Tribute Portfolio",
+      "classification": "Contradicted",
+      "evidence": [
+        {
+          "url": "https://www.marriott.com/en-us/hotels/cunan-casa-nizuc-a-tribute-portfolio-resort/photos/",
+          "sourceType": "official_brand_directory",
+          "retrievedAt": "2026-08-04T21:09:32.914Z",
+          "adapter": "marriott"
+        }
+      ],
+      "confidence": 0.6,
+      "reason": "Official directory brand differs from Dealality affiliation",
+      "recommended_action": "Proposed Reflag"
+    },
+    {
+      "hotel_id": "rec7FBbyaR2UiXfzJ",
+      "hotel_name": "Kimpton Virgilio",
+      "field": "status",
+      "current_value": "Pipeline",
+      "observed_value": "Open",
+      "classification": "Contradicted",
+      "evidence": [
+        {
+          "url": "https://www.ihg.com/kimptonhotels/hotels/us/en/virgilio-mexico-city/mexpl/hoteldetail",
+          "sourceType": "official_brand_directory",
+          "retrievedAt": "2026-08-04T21:09:17.940Z",
+          "adapter": "ihg"
+        }
+      ],
+      "confidence": 0.65,
+      "reason": "Higher-authority source preferred over weaker conflicting source",
+      "recommended_action": "Proposed Status Change"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+<!-- Dealality: Old Home FOUC gate (hide until critical CSS) -->
+<script>
+(function (w, d) {
+  var path = (w.location.pathname || '').replace(/\/+$/, '').toLowerCase() || '/';
+  if (path !== '/old-home') return;
+  d.documentElement.classList.add('oh-boot');
+  // Failsafe reveal if hosted gate script never runs
+  setTimeout(function () {
+    d.documentElement.classList.add('oh-ready');
+  }, 1600);
+})(window, document);
+</script>
+<style id="oh-fouc-gate">
+  html.oh-boot { background: #080F25 !important; }
+  html.oh-boot:not(.oh-ready) #dc-page,
+  html.oh-boot:not(.oh-ready) .oh-page { visibility: hidden !important; }
+  html.oh-boot #hero-globe-list {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+</style>

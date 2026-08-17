@@ -10,6 +10,10 @@
   var MAX_SIGNALS_MARKET = 6;
   var MAX_RECENT_ACTIVITY = 12;
   var MAX_MARKET_INTEL = 8;
+  /**
+   * Command Center dashboard preview only (sample metrics layout).
+   * Not the app-shell workspace — see dealality_active_workspace in public/app.js.
+   */
   var ROLE_STORAGE_KEY = 'dc_dashboard_role_view';
   var trendChartInstance = null;
   var regionalDistChartInstance = null;

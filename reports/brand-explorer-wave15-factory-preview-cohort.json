@@ -1,0 +1,163 @@
+{
+  "version": "brand-explorer-wave15-factory-preview-cohort-v1",
+  "stage": "factory-preview-cohort",
+  "displayState": "factory_preview_internal",
+  "bannerText": "Factory Preview — Not Public / Not Active Baseline",
+  "candidateSlugs": [
+    "hilton-hotels-and-resorts",
+    "homewood-suites-by-hilton",
+    "home2-suites-by-hilton",
+    "tru-by-hilton",
+    "doubletree-by-hilton",
+    "hampton-by-hilton",
+    "hilton-garden-inn",
+    "spark-by-hilton"
+  ],
+  "identities": {
+    "hilton-hotels-and-resorts": {
+      "slug": "hilton-hotels-and-resorts",
+      "name": "Hilton Hotels & Resorts",
+      "recordId": "recWubG3rhiS1BaWi",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Hilton Worldwide",
+      "wave": "wave15",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "homewood-suites-by-hilton": {
+      "slug": "homewood-suites-by-hilton",
+      "name": "Homewood Suites by Hilton",
+      "recordId": "recZjYI4nYflGHFNR",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Hilton Worldwide",
+      "wave": "wave15",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "home2-suites-by-hilton": {
+      "slug": "home2-suites-by-hilton",
+      "name": "Home2 Suites by Hilton",
+      "recordId": "reccZ4zV6wMav7a2i",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Hilton Worldwide",
+      "wave": "wave15",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "tru-by-hilton": {
+      "slug": "tru-by-hilton",
+      "name": "Tru by Hilton",
+      "recordId": "recJLiMTv4W8VgO9L",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Hilton Worldwide",
+      "wave": "wave15",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "doubletree-by-hilton": {
+      "slug": "doubletree-by-hilton",
+      "name": "DoubleTree by Hilton",
+      "recordId": "rechVYWQ5ikRnr99B",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Hilton Worldwide",
+      "wave": "wave15",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "hampton-by-hilton": {
+      "slug": "hampton-by-hilton",
+      "name": "Hampton by Hilton",
+      "recordId": "rectRvOWQPaL6FkzZ",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Hilton Worldwide",
+      "wave": "wave15",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "hilton-garden-inn": {
+      "slug": "hilton-garden-inn",
+      "name": "Hilton Garden Inn",
+      "recordId": "recrvdAjRlXxPvPPF",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Hilton Worldwide",
+      "wave": "wave15",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    },
+    "spark-by-hilton": {
+      "slug": "spark-by-hilton",
+      "name": "Spark by Hilton",
+      "recordId": "recfv66er4Ch2vJDO",
+      "recommendedStatusWhileInFactory": "Under Review",
+      "parentPlatform": "Hilton Worldwide",
+      "wave": "wave15",
+      "classification": "existing_needs_factory_build",
+      "brandStatus": "Under Review",
+      "missingBasics": false
+    }
+  },
+  "priorCandidatesPreservedNote": "Wave 14 Marriott factory preview brands that are now Active/Live sit in the protected 54 baseline — Wave 15 replaces the factory preview allowlist with Hilton Brand Family targets.",
+  "affectsActiveUniverse": false,
+  "airtableWrites": false,
+  "protectedBaselineCount": 54,
+  "aiAssistedFootnoteInPreview": true,
+  "generatedAt": "2026-08-03T20:54:00.900Z",
+  "dryRun": false,
+  "applyRequested": true,
+  "applyFlagsOk": true,
+  "missingFlags": [],
+  "modulePath": "lib/partner-intelligence/brand-explorer-factory-preview-candidates.js",
+  "priorCandidateSlugs": [
+    "marriott-hotels",
+    "sheraton",
+    "westin",
+    "residence-inn-by-marriott",
+    "springhill-suites-by-marriott",
+    "towneplace-suites-by-marriott",
+    "aloft-hotels",
+    "four-points-flex-by-sheraton",
+    "studiores"
+  ],
+  "protectedActiveCount": 54,
+  "expectedProtectedCount": 54,
+  "activeUniverseDrift": [],
+  "openItems": {
+    "missingBrandBasics": [],
+    "blockedManualReview": []
+  },
+  "invariant": {
+    "ok": true,
+    "errors": [],
+    "activeUniverseSource": {
+      "name": "Brand Basics Brand Status Active/Live",
+      "table": "Brand Setup - Brand Basics",
+      "file": "lib/brand-status-active.js",
+      "formula": "OR({Brand Status}='Active', {Brand Status}='Live')",
+      "filterCriteria": "OR({Brand Status}='Active', {Brand Status}='Live')",
+      "apis": [
+        "GET /api/brand-library/brands",
+        "GET /api/brand-explorer/brands"
+      ],
+      "note": "Canonical Brand Explorer active universe. Code cohort lists are operational overlays, not this universe."
+    },
+    "candidateCount": 9
+  },
+  "wroteModule": true,
+  "brandStatusWrites": false,
+  "releaseFieldWrites": false,
+  "protectedBaselineWrites": false,
+  "presentationWrites": false,
+  "companyValidatedWrites": false,
+  "sourceLibraryWrites": false,
+  "registryWrites": false,
+  "pass": true,
+  "stopRecommended": false,
+  "readyStatement": "wave15_factory_preview_cohort_applied"
+}

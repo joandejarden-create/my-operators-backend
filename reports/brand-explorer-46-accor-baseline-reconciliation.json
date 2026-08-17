@@ -1,0 +1,372 @@
+{
+  "version": "brand-explorer-46-accor-baseline-reconciliation-v1",
+  "generatedAt": "2026-07-28T19:49:20.864Z",
+  "dryRun": false,
+  "apply": true,
+  "airtableWrites": 0,
+  "presentationWrites": 0,
+  "imageWrites": 0,
+  "brandStatusChanges": 0,
+  "releaseFieldWrites": 0,
+  "companyValidationChanges": 0,
+  "sourceLibraryStatusChanges": 0,
+  "registryApprovalChanges": 0,
+  "wave14Writes": 0,
+  "gateWeakening": false,
+  "footnoteEnrichedPathPreserved": true,
+  "applyFlags": {
+    "apply": true,
+    "ok": true,
+    "missing": [],
+    "required": [
+      "--approve-accor-baseline-resolver-reconciliation",
+      "--confirm-code-or-report-only",
+      "--confirm-no-airtable-writes",
+      "--confirm-no-presentation-writes",
+      "--confirm-no-image-writes",
+      "--confirm-no-brand-status-changes",
+      "--confirm-no-release-field-writes",
+      "--confirm-no-company-validation-changes",
+      "--confirm-no-source-library-status-changes",
+      "--confirm-no-registry-approval-changes",
+      "--confirm-no-wave14-writes",
+      "--confirm-no-gate-weakening",
+      "--confirm-footnote-enriched-path-preserved"
+    ]
+  },
+  "identityAnchorsVersion": "wave13-active-identity-anchors-v1",
+  "identityAnchorsFile": "lib/partner-intelligence/brand-explorer-wave13-active-identity-anchors.js",
+  "codePathsFixed": [
+    "lib/partner-intelligence/brand-explorer-wave13-active-identity-anchors.js",
+    "lib/partner-intelligence/brand-explorer-active-universe.js (EXTRA_ACTIVE_IDENTITY_ANCHORS + alias resolve)",
+    "lib/partner-intelligence/brand-explorer-46-active-public-full-baseline.js (BASELINE_46_WAVE13_PUBLIC_SEVEN via getWave13ActiveIdentityBySlug)",
+    "lib/partner-intelligence/brand-explorer-ai-assisted-footnote.js (WAVE13_REGION_BASIS fairmont/so aliases)",
+    "lib/partner-intelligence/brand-explorer-public-visibility-quality-lock.js (prefer recordId / active-universe resolve)",
+    "lib/partner-intelligence/brand-explorer-ai-assisted-footnote-standardization.js (prefer recordId)",
+    "lib/partner-intelligence/brand-explorer-image-role-match.js (ignore Accor DAM false positives on Airtable CDN hashes)"
+  ],
+  "affectedBrands": [
+    {
+      "slug": "mama-shelter",
+      "recordId": "recXCZCK05XXYX7Q8",
+      "name": "Mama Shelter",
+      "canonical": "mama-shelter"
+    },
+    {
+      "slug": "mercure",
+      "recordId": "recevrLJ3m6rIug3S",
+      "name": "Mercure",
+      "canonical": "mercure"
+    },
+    {
+      "slug": "novotel",
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "name": "Novotel",
+      "canonical": "novotel"
+    },
+    {
+      "slug": "pullman",
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "name": "Pullman",
+      "canonical": "pullman"
+    },
+    {
+      "slug": "fairmont-hotels-and-resorts",
+      "recordId": "recJhPaDVU3YUDQUt",
+      "name": "Fairmont",
+      "canonical": "fairmont-hotels-and-resorts"
+    },
+    {
+      "slug": "so-hotels-and-resorts",
+      "recordId": "recTJdPlr4mDs9app",
+      "name": "SO/",
+      "canonical": "so-hotels-and-resorts"
+    }
+  ],
+  "rootCause": "Wave 13 Accor Active brands were dropped from identity maps when FACTORY_PREVIEW became Wave-14-only. Without resolveActiveUniverseRecordId(slug), PVQL/footnote/quality fall back to slug-as-name → brand_not_found → PVQL blocker → quality remediation_required (40 vs 46). Not a Wave 14 Stage 5 write defect.",
+  "classification": {
+    "primary": "recordId_to_slug_resolver_gap",
+    "secondary": [
+      "alias_or_presentation_identity_mismatch",
+      "footnote_enricher_identity_mismatch",
+      "stale_report_or_old_quality_audit_cache"
+    ],
+    "not": [
+      "real_profile_content_defect",
+      "real_release_or_visibility_defect"
+    ]
+  },
+  "failuresArtifact": {
+    "json": "brand-explorer-46-accor-baseline-reconciliation-failures.json",
+    "md": "brand-explorer-46-accor-baseline-reconciliation-failures.md",
+    "summary": {
+      "affectedCount": 6,
+      "resolverPassCount": 6,
+      "brandNotFoundCount": 6,
+      "airtableWriteRequiredAny": false
+    }
+  },
+  "resolverProbe": {
+    "activeUniverseCount": 46,
+    "probes": [
+      {
+        "brand": "Mama Shelter",
+        "slug": "mama-shelter",
+        "recordId": "recXCZCK05XXYX7Q8",
+        "liveUniverseSlug": "mama-shelter",
+        "liveUniverseStatus": "Active",
+        "inActiveUniverse": true,
+        "resolveByCanonicalSlug": "recXCZCK05XXYX7Q8",
+        "resolveByAliases": {},
+        "resolverPass": true,
+        "pvql": {
+          "lockPass": true,
+          "error": null,
+          "failures": [],
+          "publicFullProfile": true
+        }
+      },
+      {
+        "brand": "Mercure",
+        "slug": "mercure",
+        "recordId": "recevrLJ3m6rIug3S",
+        "liveUniverseSlug": "mercure",
+        "liveUniverseStatus": "Active",
+        "inActiveUniverse": true,
+        "resolveByCanonicalSlug": "recevrLJ3m6rIug3S",
+        "resolveByAliases": {},
+        "resolverPass": true,
+        "pvql": {
+          "lockPass": true,
+          "error": null,
+          "failures": [],
+          "publicFullProfile": true
+        }
+      },
+      {
+        "brand": "ibis",
+        "slug": "ibis",
+        "recordId": "reclFXbpZ5XzLWbGP",
+        "liveUniverseSlug": "ibis",
+        "liveUniverseStatus": "Active",
+        "inActiveUniverse": true,
+        "resolveByCanonicalSlug": "reclFXbpZ5XzLWbGP",
+        "resolveByAliases": {},
+        "resolverPass": true,
+        "pvql": {
+          "lockPass": true,
+          "error": null,
+          "failures": [],
+          "publicFullProfile": true
+        }
+      },
+      {
+        "brand": "Novotel",
+        "slug": "novotel",
+        "recordId": "recQE2lSSSSyuUrMQ",
+        "liveUniverseSlug": "novotel",
+        "liveUniverseStatus": "Active",
+        "inActiveUniverse": true,
+        "resolveByCanonicalSlug": "recQE2lSSSSyuUrMQ",
+        "resolveByAliases": {},
+        "resolverPass": true,
+        "pvql": {
+          "lockPass": true,
+          "error": null,
+          "failures": [],
+          "publicFullProfile": true
+        }
+      },
+      {
+        "brand": "Pullman",
+        "slug": "pullman",
+        "recordId": "recFW9kfqKfOjv7Z1",
+        "liveUniverseSlug": "pullman",
+        "liveUniverseStatus": "Active",
+        "inActiveUniverse": true,
+        "resolveByCanonicalSlug": "recFW9kfqKfOjv7Z1",
+        "resolveByAliases": {},
+        "resolverPass": true,
+        "pvql": {
+          "lockPass": true,
+          "error": null,
+          "failures": [],
+          "publicFullProfile": true
+        }
+      },
+      {
+        "brand": "Fairmont",
+        "slug": "fairmont-hotels-and-resorts",
+        "recordId": "recJhPaDVU3YUDQUt",
+        "liveUniverseSlug": "fairmont-hotels-and-resorts",
+        "liveUniverseStatus": "Active",
+        "inActiveUniverse": true,
+        "resolveByCanonicalSlug": "recJhPaDVU3YUDQUt",
+        "resolveByAliases": {
+          "fairmont": "recJhPaDVU3YUDQUt"
+        },
+        "resolverPass": true,
+        "pvql": {
+          "lockPass": true,
+          "error": null,
+          "failures": [],
+          "publicFullProfile": true
+        }
+      },
+      {
+        "brand": "SO/",
+        "slug": "so-hotels-and-resorts",
+        "recordId": "recTJdPlr4mDs9app",
+        "liveUniverseSlug": "so-hotels-and-resorts",
+        "liveUniverseStatus": "Active",
+        "inActiveUniverse": true,
+        "resolveByCanonicalSlug": "recTJdPlr4mDs9app",
+        "resolveByAliases": {
+          "so": "recTJdPlr4mDs9app"
+        },
+        "resolverPass": true,
+        "pvql": {
+          "lockPass": true,
+          "error": null,
+          "failures": [],
+          "publicFullProfile": true
+        }
+      }
+    ],
+    "allResolverPass": true
+  },
+  "qualityRefresh": {
+    "refreshed": [
+      {
+        "slug": "mama-shelter",
+        "recordId": "recXCZCK05XXYX7Q8",
+        "recommendation": "approve_for_baseline_freeze",
+        "composite": 97,
+        "blockers": 0,
+        "pvqlStatus": "pass"
+      },
+      {
+        "slug": "mercure",
+        "recordId": "recevrLJ3m6rIug3S",
+        "recommendation": "approve_for_baseline_freeze",
+        "composite": 97,
+        "blockers": 0,
+        "pvqlStatus": "pass"
+      },
+      {
+        "slug": "ibis",
+        "recordId": "reclFXbpZ5XzLWbGP",
+        "recommendation": "approve_for_baseline_freeze",
+        "composite": 97,
+        "blockers": 0,
+        "pvqlStatus": "pass"
+      },
+      {
+        "slug": "novotel",
+        "recordId": "recQE2lSSSSyuUrMQ",
+        "recommendation": "approve_for_baseline_freeze",
+        "composite": 97,
+        "blockers": 0,
+        "pvqlStatus": "pass"
+      },
+      {
+        "slug": "pullman",
+        "recordId": "recFW9kfqKfOjv7Z1",
+        "recommendation": "approve_for_baseline_freeze",
+        "composite": 98,
+        "blockers": 0,
+        "pvqlStatus": "pass"
+      },
+      {
+        "slug": "fairmont-hotels-and-resorts",
+        "recordId": "recJhPaDVU3YUDQUt",
+        "recommendation": "approve_for_baseline_freeze",
+        "composite": 97,
+        "blockers": 0,
+        "pvqlStatus": "pass"
+      },
+      {
+        "slug": "so-hotels-and-resorts",
+        "recordId": "recTJdPlr4mDs9app",
+        "recommendation": "approve_for_baseline_freeze",
+        "composite": 97,
+        "blockers": 0,
+        "pvqlStatus": "pass"
+      }
+    ],
+    "freezeCountAfter": 46,
+    "baselineFreezeDecision": "ready_to_freeze_46_active_public_full_baseline",
+    "paths": {
+      "jsonPath": "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-24-tab-section-quality-audit.json",
+      "mdPath": "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-24-tab-section-quality-audit.md",
+      "imgJsonPath": "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-24-image-repetition-audit.json",
+      "imgMdPath": "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-24-image-repetition-audit.md",
+      "docsPath": "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\docs\\data-intelligence\\brand-explorer-24-tab-section-quality-audit.md",
+      "perBrandPaths": [
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-ac-hotels-by-marriott.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-ascend.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-autograph-collection.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-avid-hotels.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-bunkhouse-hotels.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-bw-premier-collection.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-bw-signature-collection.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-canopy-by-hilton.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-city-express-by-marriott.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-comfort-inn-suites.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-country-inn-suites.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-courtyard-by-marriott.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-curio-collection.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-dazzler-by-wyndham.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-design-hotels.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-even-hotels.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-everhome-suites.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-fairmont-hotels-and-resorts.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-handwritten-collection.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-holiday-inn-express.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-hotel-indigo.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-ibis.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-kimpton.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-mama-shelter.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-mercure.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-mgallery-collection.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-motto-by-hilton.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-moxy-hotels.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-novotel.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-preferred-hotels-and-resorts.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-pullman.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-quality-inn.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-radisson-blu.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-radisson.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-radisson-individuals-by-choice.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-radisson-red.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-small-luxury-hotels-of-the-world.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-so-hotels-and-resorts.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-suburban-studios.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-tapestry-collection-by-hilton.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-tempo-by-hilton.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-trademark-collection-by-wyndham.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-tribute-portfolio.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-vignette-collection.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-voco-hotels.md",
+        "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-quality-audit-woodspring-suites.md"
+      ]
+    }
+  },
+  "qualityFreezeCount": 46,
+  "contentDefectStop": false,
+  "readyState": "protected_46_accor_baseline_reconciled_wave14_may_resume",
+  "wave14PostImageCleanupMayResume": true,
+  "protections": {
+    "noAirtableWrites": true,
+    "noPresentationWrites": true,
+    "noImageWrites": true,
+    "noBrandStatusChanges": true,
+    "noReleaseFieldWrites": true,
+    "noCompanyValidationChanges": true,
+    "noSourceLibraryStatusChanges": true,
+    "noRegistryApprovalChanges": true,
+    "noWave14Writes": true,
+    "noGateWeakening": true,
+    "footnoteEnrichedPathPreserved": true
+  }
+}

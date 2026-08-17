@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  data-oh-motion="medium"
+  data-oh-motion-style="rise"
+  data-oh-scroll-cue="1"
+  data-oh-early-reveal="1"
+  data-oh-depth="0"
+  data-oh-edge="1"
+  data-oh-sec-hero="1"
+  data-oh-sec-about="1"
+  data-oh-sec-perspectives="1"
+  data-oh-sec-how="1"
+  data-oh-sec-features="1"
+  data-oh-sec-modules="1"
+  data-oh-sec-testimonials="1"
+  data-oh-sec-pricing="1"
+  data-oh-sec-faq="1"
+  data-oh-sec-insights="1"
+  data-oh-sec-cta="1"
+>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Old Home — Motion Lab (local only)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;550;600;650;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="./dealality-old-home-premium.css"/>
+<link rel="stylesheet" href="./old-home-motion-lab.v1.css"/>
+<style>
+  .oh-lab-chrome {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    padding: 0.7rem 1rem 0.8rem;
+    background: rgba(8, 15, 37, 0.97);
+    border-bottom: 1px solid rgba(155, 138, 251, 0.28);
+    color: rgba(255, 255, 255, 0.55);
+    font: 12px/1.35 "Inter Tight", system-ui, sans-serif;
+    backdrop-filter: blur(12px);
+    max-height: 42vh;
+    overflow: auto;
+  }
+  .oh-lab-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.75rem;
+    margin-bottom: 0.55rem;
+  }
+  .oh-lab-chrome strong { color: #fff; font-weight: 650; }
+  .oh-lab-chrome .tag {
+    display: inline-flex;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(155, 138, 251, 0.35);
+    background: rgba(108, 114, 255, 0.12);
+    color: #c4b5fd;
+    font-weight: 550;
+  }
+  .oh-lab-note { color: rgba(255, 255, 255, 0.42); }
+  .oh-lab-rows { display: grid; gap: 0.4rem; }
+  .oh-lab-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.4rem;
+  }
+  .oh-lab-row > span.label {
+    min-width: 4.6rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 550;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.68rem;
+  }
+  .oh-lab-chrome button {
+    appearance: none;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.3rem 0.58rem;
+    font: inherit;
+    font-weight: 550;
+    cursor: pointer;
+  }
+  .oh-lab-chrome button[aria-pressed="true"] {
+    border-color: rgba(108, 114, 255, 0.55);
+    background: rgba(108, 114, 255, 0.24);
+  }
+  .oh-lab-chrome button.primary {
+    border-color: rgba(253, 181, 42, 0.45);
+    background: rgba(253, 181, 42, 0.12);
+    color: #ffd27a;
+  }
+  .oh-lab-chrome button.ghost {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+  }
+  #oh-lab-sections button {
+    font-size: 0.72rem;
+  }
+  #oh-lab-sections button[aria-pressed="false"] {
+    opacity: 0.55;
+  }
+  #oh-lab-status {
+    margin-left: auto;
+    color: rgba(196, 181, 253, 0.85);
+    font-weight: 550;
+    max-width: 28rem;
+    text-align: right;
+  }
+  #oh-lab-hint {
+    margin: 0.35rem 0 0;
+    color: rgba(255, 255, 255, 0.38);
+    font-size: 0.72rem;
+    min-height: 1em;
+  }
+  #oh-motion-load-err {
+    display: none;
+    margin: 2rem auto;
+    max-width: 40rem;
+    padding: 1.25rem 1.4rem;
+    border-radius: 12px;
+    border: 1px solid rgba(248, 113, 113, 0.35);
+    background: rgba(127, 29, 29, 0.25);
+    color: #fecaca;
+    font: 14px/1.5 "Inter Tight", system-ui, sans-serif;
+  }
+  #mnav { display: none !important; }
+  #h1wrap { display: none !important; }
+  #hero-h1 { display: block !important; }
+  @media (max-width: 720px) {
+    .oh-lab-row > span.label { min-width: 100%; margin-bottom: 0.1rem; }
+    #oh-lab-status { margin-left: 0; width: 100%; text-align: left; }
+    .oh-lab-chrome { max-height: 50vh; }
+  }
+</style>
+</head>
+<body>
+<div class="oh-lab-chrome" role="region" aria-label="Motion lab controls">
+  <div class="oh-lab-top">
+    <strong>Motion Lab</strong>
+    <span class="tag">Local only</span>
+    <span class="oh-lab-note">Section suggestions on · toggle each to compare · not on Webflow</span>
+    <button type="button" class="primary" id="oh-lab-replay">Replay from top</button>
+    <button type="button" class="ghost" id="oh-lab-sec-all">Sections all on</button>
+    <button type="button" class="ghost" id="oh-lab-sec-none">Sections all off</button>
+    <span id="oh-lab-status">medium · rise</span>
+  </div>
+  <div class="oh-lab-rows">
+    <div class="oh-lab-row" data-group="level">
+      <span class="label">Level</span>
+      <button type="button" data-level="0">Off</button>
+      <button type="button" data-level="light">Light</button>
+      <button type="button" data-level="medium" aria-pressed="true">Medium</button>
+      <button type="button" data-level="bold">Bold</button>
+    </div>
+    <div class="oh-lab-row" data-group="style">
+      <span class="label">Style</span>
+      <button type="button" data-style="rise" aria-pressed="true" title="Fade up from below">Rise</button>
+      <button type="button" data-style="cascade" title="Stronger downward cascade + soft blur">Cascade</button>
+      <button type="button" data-style="scale" title="Soft scale into place">Scale</button>
+      <button type="button" data-style="slide" title="Slide in from left + slight rise">Slide</button>
+      <button type="button" data-style="clip" title="Wipe upward into frame">Clip</button>
+    </div>
+    <div class="oh-lab-row" data-group="aids">
+      <span class="label">Scroll pull</span>
+      <button type="button" data-aid="cue" aria-pressed="true" title="Chevron cue under hero">Scroll cue</button>
+      <button type="button" data-aid="early" aria-pressed="true" title="Start revealing next section earlier">Early reveal</button>
+      <button type="button" data-aid="depth" aria-pressed="false" title="Keep upcoming content dim until near">Depth fade</button>
+      <button type="button" data-aid="edge" aria-pressed="true" title="Soft gradient at bottom of viewport">Edge hint</button>
+    </div>
+    <div class="oh-lab-row" id="oh-lab-sections" data-group="sections">
+      <span class="label">Sections</span>
+      <!-- filled by JS from DealalityOldHomeMotionLab.SECTIONS -->
+    </div>
+  </div>
+  <p id="oh-lab-hint">Hover a section button for its recommended behavior.</p>
+</div>
+
+<div id="oh-motion-load-err" role="alert"></div>
+
+<div id="dc-page">
+  <div id="dc-premium" aria-busy="true">
+    <p style="margin:3rem auto;max-width:28rem;text-align:center;color:rgba(255,255,255,.45);font:14px/1.5 'Inter Tight',system-ui,sans-serif">
+      Loading homepage markup…
+    </p>
+  </div>
+</div>
+
+<script src="./old-home-motion-lab.v1.js" defer></script>
+<script>
+(function () {
+  var mount = document.getElementById("dc-premium");
+  var errEl = document.getElementById("oh-motion-load-err");
+  var statusEl = document.getElementById("oh-lab-status");
+  var hintEl = document.getElementById("oh-lab-hint");
+  var secRow = document.getElementById("oh-lab-sections");
+  var ready = false;
+
+  function lab() {
+    return window.DealalityOldHomeMotionLab;
+  }
+
+  function buildSectionButtons() {
+    var api = lab();
+    if (!api || !api.SECTIONS) return;
+    // Keep label span; remove old buttons
+    Array.prototype.slice.call(secRow.querySelectorAll("button")).forEach(function (b) {
+      b.remove();
+    });
+    api.SECTIONS.forEach(function (s) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.setAttribute("data-sec", s.id);
+      btn.setAttribute("aria-pressed", s.defaultOn ? "true" : "false");
+      btn.title = s.hint;
+      btn.textContent = s.label;
+      btn.addEventListener("mouseenter", function () {
+        hintEl.textContent = s.label + ": " + s.hint;
+      });
+      btn.addEventListener("mouseleave", function () {
+        hintEl.textContent = "Hover a section button for its recommended behavior.";
+      });
+      btn.addEventListener("click", function () {
+        var on = btn.getAttribute("aria-pressed") !== "true";
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        applyFromUi({ replay: false, sectionOnly: s.id });
+      });
+      secRow.appendChild(btn);
+    });
+  }
+
+  function readUiConfig() {
+    var levelBtn = document.querySelector('[data-group="level"] button[aria-pressed="true"]');
+    var styleBtn = document.querySelector('[data-group="style"] button[aria-pressed="true"]');
+    var cue = document.querySelector('[data-aid="cue"]').getAttribute("aria-pressed") === "true";
+    var early = document.querySelector('[data-aid="early"]').getAttribute("aria-pressed") === "true";
+    var depth = document.querySelector('[data-aid="depth"]').getAttribute("aria-pressed") === "true";
+    var edge = document.querySelector('[data-aid="edge"]').getAttribute("aria-pressed") === "true";
+    var sections = {};
+    document.querySelectorAll("#oh-lab-sections [data-sec]").forEach(function (btn) {
+      sections[btn.getAttribute("data-sec")] =
+        btn.getAttribute("aria-pressed") === "true" ? "1" : "0";
+    });
+    return {
+      level: levelBtn ? levelBtn.getAttribute("data-level") : "medium",
+      style: styleBtn ? styleBtn.getAttribute("data-style") : "rise",
+      cue: cue ? "1" : "0",
+      early: early ? "1" : "0",
+      depth: depth ? "1" : "0",
+      edge: edge ? "1" : "0",
+      sections: sections,
+    };
+  }
+
+  function syncPressed(group, attr, value) {
+    document.querySelectorAll('[data-group="' + group + '"] button').forEach(function (btn) {
+      var v = btn.getAttribute(attr);
+      btn.setAttribute("aria-pressed", v === value ? "true" : "false");
+    });
+  }
+
+  function syncAids(cfg) {
+    document.querySelector('[data-aid="cue"]').setAttribute("aria-pressed", cfg.cue === "1" ? "true" : "false");
+    document.querySelector('[data-aid="early"]').setAttribute("aria-pressed", cfg.early === "1" ? "true" : "false");
+    document.querySelector('[data-aid="depth"]').setAttribute("aria-pressed", cfg.depth === "1" ? "true" : "false");
+    document.querySelector('[data-aid="edge"]').setAttribute("aria-pressed", cfg.edge === "1" ? "true" : "false");
+  }
+
+  function syncSections(sections) {
+    document.querySelectorAll("#oh-lab-sections [data-sec]").forEach(function (btn) {
+      var id = btn.getAttribute("data-sec");
+      var on = sections[id] !== "0" && sections[id] !== false;
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  function updateStatus(cfg) {
+    var onSecs = Object.keys(cfg.sections || {}).filter(function (k) {
+      return cfg.sections[k] === "1";
+    });
+    var parts = [];
+    if (cfg.level === "0" || cfg.level === "off") parts.push("off");
+    else {
+      parts.push(cfg.level);
+      parts.push(cfg.style);
+      parts.push(onSecs.length + "/" + Object.keys(cfg.sections).length + " sections");
+    }
+    statusEl.textContent = parts.join(" · ");
+  }
+
+  function writeUrl(cfg) {
+    try {
+      var u = new URL(window.location.href);
+      u.searchParams.set("level", cfg.level);
+      u.searchParams.set("style", cfg.style);
+      u.searchParams.set("cue", cfg.cue);
+      u.searchParams.set("early", cfg.early);
+      u.searchParams.set("depth", cfg.depth);
+      u.searchParams.set("edge", cfg.edge);
+      var off = Object.keys(cfg.sections || {}).filter(function (k) {
+        return cfg.sections[k] === "0";
+      });
+      if (off.length) u.searchParams.set("secOff", off.join(","));
+      else u.searchParams.delete("secOff");
+      u.searchParams.delete("motion");
+      window.history.replaceState({}, "", u.toString());
+    } catch (e) {}
+  }
+
+  function applyFromUi(opts) {
+    opts = opts || {};
+    var cfg = readUiConfig();
+    syncPressed("level", "data-level", cfg.level);
+    syncPressed("style", "data-style", cfg.style);
+    syncAids(cfg);
+    syncSections(cfg.sections);
+    updateStatus(cfg);
+    writeUrl(cfg);
+
+    var api = lab();
+    if (!api || !ready) return;
+
+    api.applyConfig(cfg);
+
+    if (opts.sectionOnly && api.setSection) {
+      var on = cfg.sections[opts.sectionOnly] === "1";
+      api.setSection(opts.sectionOnly, on);
+      return;
+    }
+
+    if (cfg.level === "0" || cfg.level === "off") {
+      api.revealAll();
+      return;
+    }
+    if (opts.replay !== false) api.replay();
+    else {
+      api.resetReveals();
+      api.observe();
+    }
+  }
+
+  function parseUrlIntoUi() {
+    var p = new URLSearchParams(window.location.search);
+    var legacy = p.get("motion");
+    var level =
+      p.get("level") ||
+      (legacy === "0" || legacy === "off" ? "0" : legacy === "light" ? "light" : null) ||
+      "medium";
+    var style = p.get("style") || "rise";
+    var cue = p.get("cue") == null ? "1" : p.get("cue");
+    var early = p.get("early") == null ? "1" : p.get("early");
+    var depth = p.get("depth") == null ? "0" : p.get("depth");
+    var edge = p.get("edge") == null ? "1" : p.get("edge");
+
+    var sections = {};
+    var api = lab();
+    if (api && api.SECTIONS) {
+      api.SECTIONS.forEach(function (s) {
+        sections[s.id] = "1";
+      });
+    }
+    var secOff = (p.get("secOff") || "").split(",").filter(Boolean);
+    secOff.forEach(function (id) {
+      sections[id] = "0";
+    });
+
+    syncPressed("level", "data-level", level);
+    syncPressed("style", "data-style", style);
+    syncAids({ cue: cue, early: early, depth: depth, edge: edge });
+    syncSections(sections);
+    return {
+      level: level,
+      style: style,
+      cue: cue,
+      early: early,
+      depth: depth,
+      edge: edge,
+      sections: sections,
+    };
+  }
+
+  function setAllSections(on) {
+    document.querySelectorAll("#oh-lab-sections [data-sec]").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    applyFromUi({ replay: true });
+  }
+
+  document.querySelectorAll('[data-group="level"] button').forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      syncPressed("level", "data-level", btn.getAttribute("data-level"));
+      applyFromUi({ replay: true });
+    });
+  });
+  document.querySelectorAll('[data-group="style"] button').forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      syncPressed("style", "data-style", btn.getAttribute("data-style"));
+      applyFromUi({ replay: true });
+    });
+  });
+  document.querySelectorAll("[data-aid]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var on = btn.getAttribute("aria-pressed") !== "true";
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      applyFromUi({ replay: true });
+    });
+  });
+  document.getElementById("oh-lab-replay").addEventListener("click", function () {
+    applyFromUi({ replay: true });
+  });
+  document.getElementById("oh-lab-sec-all").addEventListener("click", function () {
+    setAllSections(true);
+  });
+  document.getElementById("oh-lab-sec-none").addEventListener("click", function () {
+    setAllSections(false);
+  });
+
+  function bootUi() {
+    buildSectionButtons();
+    var initial = parseUrlIntoUi();
+    updateStatus(initial);
+    writeUrl(initial);
+    return initial;
+  }
+
+  // SECTIONS available after lab script; defer may still be pending
+  function whenLabReady(cb) {
+    if (lab()) return cb();
+    var n = 0;
+    var t = setInterval(function () {
+      n += 1;
+      if (lab() || n > 40) {
+        clearInterval(t);
+        cb();
+      }
+    }, 50);
+  }
+
+  whenLabReady(function () {
+    var initial = bootUi();
+
+    fetch("./dealality-old-home-premium.html", { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.text();
+      })
+      .then(function (html) {
+        mount.innerHTML = html;
+        mount.setAttribute("aria-busy", "false");
+        ready = true;
+        var api = lab();
+        if (api) api.init(mount, readUiConfig());
+        wirePreviewTabs();
+      })
+      .catch(function (err) {
+        mount.setAttribute("aria-busy", "false");
+        mount.innerHTML = "";
+        errEl.style.display = "block";
+        errEl.textContent =
+          "Could not load dealality-old-home-premium.html. Serve this folder over HTTP (not file://). " +
+          String(err && err.message ? err.message : err);
+        console.error("[oh-motion-lab]", err);
+      });
+  });
+
+  function wirePreviewTabs() {
+    document.querySelectorAll("#persp-tabs [role='tab']").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        var panelId = tab.getAttribute("data-panel") || tab.getAttribute("aria-controls");
+        document.querySelectorAll("#persp-tabs [role='tab']").forEach(function (t) {
+          t.setAttribute("aria-selected", t === tab ? "true" : "false");
+        });
+        ["persp-panel-owners", "persp-panel-brands", "persp-panel-advisors"].forEach(function (id) {
+          var panel = document.getElementById(id);
+          if (!panel) return;
+          panel.hidden = id !== panelId;
+        });
+      });
+    });
+
+    var tabOut = document.getElementById("modules-tab-outcomes");
+    var tabPlat = document.getElementById("modules-tab-platform");
+    var panelOut = document.getElementById("modules-panel-outcomes");
+    var panelPlat = document.getElementById("modules-panel-platform");
+    function showModules(which) {
+      if (!panelOut || !panelPlat) return;
+      var outcomes = which === "outcomes";
+      panelOut.hidden = !outcomes;
+      panelPlat.hidden = outcomes;
+      if (tabOut) tabOut.setAttribute("aria-selected", outcomes ? "true" : "false");
+      if (tabPlat) tabPlat.setAttribute("aria-selected", outcomes ? "false" : "true");
+    }
+    if (tabOut) tabOut.addEventListener("click", function () { showModules("outcomes"); });
+    if (tabPlat) tabPlat.addEventListener("click", function () { showModules("platform"); });
+  }
+})();
+</script>
+</body>
+</html>

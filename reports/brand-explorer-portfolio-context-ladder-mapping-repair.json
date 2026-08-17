@@ -1,0 +1,137 @@
+{
+  "writerVersion": "25C-4D",
+  "writerExists": true,
+  "v25C4DWriterExists": true,
+  "generatedAt": "2026-07-10T11:06:25.393Z",
+  "mode": "dry-run",
+  "brand": {
+    "name": "Tribute Portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "slug": "tribute-portfolio"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-portfolio-mix-context-normalization-writer.md",
+    "reports/brand-explorer-portfolio-mix-context-normalization-writer.json",
+    "reports/brand-explorer-required-section-population-contract.md",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "lib/partner-intelligence/brand-explorer-portfolio-ladder-mapping.js",
+    "live Tribute Brand Explorer Presentation rows",
+    "live Curio/Kimpton/Radisson/Ascend Portfolio Context reference rows"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-portfolio-ladder-mapping.js",
+    "lib/partner-intelligence/brand-explorer-portfolio-context-ladder-mapping-repair.js",
+    "scripts/brand-explorer-portfolio-context-ladder-mapping-repair.mjs",
+    "docs/data-intelligence/brand-explorer-portfolio-context-ladder-mapping-repair-v25C-4D.md",
+    "reports/brand-explorer-portfolio-context-ladder-mapping-repair.md",
+    "reports/brand-explorer-portfolio-context-ladder-mapping-repair.json",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+    "package.json"
+  ],
+  "rootCause": "v25C-4C populated overview.portfolio_context and added partial Marriott frontend mapping; v25C-4D audit still flagged Marriott because visual-display-defect-audit only treated Hilton/Choice as static-ladder parents and Marriott tier-2 peers were not soft-collection focused.",
+  "rootCauseDetail": "Data row overview.portfolio_context exists with tier Title=2 and founder-reviewed Body. API exposes it via brand.brandExplorer.blocks. Remaining defect was display-mapping: audit omitted Marriott from usesParentStaticLadder and frontend tier-2 peer list needed soft-collection owner-planning labels (Autograph Collection, Design Hotels, etc.).",
+  "dataExists": true,
+  "apiExposesPortfolioContext": true,
+  "frontendMappingIncomplete": false,
+  "frontendRepairsNeeded": [],
+  "portfolioContextDiagnosis": {
+    "portfolioContextRowExists": true,
+    "portfolioContextRecordId": "rec03qcBLx0q6LLDT",
+    "portfolioContextTitle": "2",
+    "portfolioContextBodyPreview": "Tribute Portfolio sits within Marriott's independent/lifestyle collection conversation. For owners, it can be relevant when an asset should retain local charact",
+    "portfolioContextTierIndex": 2,
+    "narrativeRenders": true,
+    "apiExposesPortfolioContext": true,
+    "frontendMarriottMappingPresent": true,
+    "frontendSoftCollectionPeersPresent": true,
+    "tributeHighlightedInLadder": true,
+    "marriottSiblingLabelsRender": true,
+    "usesGenericScaleLabels": false,
+    "inactiveGenericTierCount": 0,
+    "ladderCells": [
+      {
+        "tierIndex": 0,
+        "active": false,
+        "label": "Fairfield by Marriott, Courtyard by Marriott, Residence Inn, TownePlace Suites",
+        "fallbackOnly": false,
+        "usesGenericFallback": false
+      },
+      {
+        "tierIndex": 1,
+        "active": false,
+        "label": "SpringHill Suites, Four Points, Aloft, AC Hotels",
+        "fallbackOnly": false,
+        "usesGenericFallback": false
+      },
+      {
+        "tierIndex": 2,
+        "active": true,
+        "label": "Tribute Portfolio",
+        "fallbackOnly": false,
+        "usesGenericFallback": false
+      },
+      {
+        "tierIndex": 3,
+        "active": false,
+        "label": "The Ritz-Carlton, St. Regis, W Hotels, The Luxury Collection, Edition",
+        "fallbackOnly": false,
+        "usesGenericFallback": false
+      }
+    ],
+    "activeCellLabel": "Tribute Portfolio",
+    "rootCause": "resolved_after_v25C_4D",
+    "ownerPlanningContext": true
+  },
+  "proposedCodeRepair": {
+    "atelierJs": [
+      "Refine MARRIOTT_PORTFOLIO_TIER_BRANDS tier 2 to soft-collection peers (Autograph Collection, Tribute Portfolio, Design Hotels, Moxy Hotels, Element Hotels).",
+      "Update tier label to Lifestyle & Soft Collections.",
+      "Add Marriott owner-planning hint copy on Portfolio Context section."
+    ],
+    "visualDefectAudit": [
+      "Treat Marriott International as usesParentStaticLadder when frontend MARRIOTT_PORTFOLIO_TIER_BRANDS is present."
+    ]
+  },
+  "proposedDataRepair": null,
+  "rowsWouldUpdate": [],
+  "rowsWouldCreate": [],
+  "genericLadderLabelsBlocked": [
+    "Lower-scale brands",
+    "Mid-scale brands",
+    "Upscale brands",
+    "Upper-scale brands"
+  ],
+  "companyValidatedUntouched": true,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedAfter": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "loyaltyRowsUntouched": true,
+  "openingsRowsUntouched": true,
+  "momentumRowsUntouched": true,
+  "portfolioMixRowsUntouched": true,
+  "standardsRowsUntouched": true,
+  "airtableModified": false,
+  "applyGates": {
+    "apply": false,
+    "approveBatch": false,
+    "ownerPlanningConfirmed": false,
+    "ready": false,
+    "canApply": false,
+    "mappingReady": true
+  },
+  "applyBlockers": [],
+  "applyResults": null,
+  "exactApplyCommand": "npm run brand-explorer-portfolio-context-ladder-mapping-repair -- --brand tribute-portfolio --apply --approve-brand-explorer-v25C-4D-portfolio-context-ladder-mapping --confirm-marriott-context-is-owner-planning-not-company-validated",
+  "idempotentAfterApply": true
+}

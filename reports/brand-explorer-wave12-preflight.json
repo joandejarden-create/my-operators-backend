@@ -1,0 +1,111 @@
+{
+  "version": "wave12-factory-v1",
+  "stage": "preflight",
+  "generatedAt": "2026-07-24T13:56:29.529Z",
+  "dryRun": true,
+  "airtableWrites": false,
+  "protectedBaselineVersion": "27-active-public-full-baseline-v2",
+  "expectedActiveCount": 27,
+  "liveActiveCount": 27,
+  "wave12SlugsInActiveUniverse": [],
+  "pass": true,
+  "stopRecommended": false,
+  "gates": [
+    {
+      "command": "npm run test:brand-explorer-27-active-public-full-baseline",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "[PASS] suburban-studios status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] tapestry-collection-by-hilton status=Active pvql=true quality=approve_for_baseline_freeze evidence=true",
+        "[PASS] trademark-collection-by-wyndham status=Active pvql=true quality=approve_for_baseline_freeze evidence=true",
+        "[PASS] tribute-portfolio status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] vignette-collection status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] woodspring-suites status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] baseline regression aggregate",
+        "All 27 Active/Live public-full baseline checks passed. writePerformed=false."
+      ]
+    },
+    {
+      "command": "npm run test:brand-explorer-recent-momentum-evidence-quality",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"",
+        "[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"",
+        "[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"",
+        "[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"",
+        "[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"",
+        "[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"",
+        "[PASS] tapestry-collection-by-hilton recent-momentum-evidence-quality",
+        "All 3 brand(s) passed recent-momentum-evidence-quality."
+      ]
+    },
+    {
+      "command": "npm run test:brand-explorer-mandatory-release-gates",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "> top100-projects-scraper@1.0.0 test:brand-explorer-mandatory-release-gates",
+        "> node scripts/test-brand-explorer-mandatory-release-gates.mjs",
+        "[PASS] brand-explorer mandatory release gates (source + auditPass + OS state)"
+      ]
+    },
+    {
+      "command": "npm run test:brand-explorer-public-visibility-quality-lock -- --public-full-only",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "  [PASS] suburban-studios cohort=restored_legacy_public full=true failures=—",
+        "  [PASS] tapestry-collection-by-hilton cohort=restored_legacy_public full=true failures=—",
+        "  [PASS] trademark-collection-by-wyndham cohort=restored_legacy_public full=true failures=—",
+        "  [PASS] tribute-portfolio cohort=restored_legacy_public full=true failures=—",
+        "  [PASS] vignette-collection cohort=restored_legacy_public full=true failures=—",
+        "  [PASS] woodspring-suites cohort=restored_legacy_public full=true failures=—",
+        "Public-full-only: count=27 allPass=true",
+        "[Brand Library] Basics link \"Brand Setup - Deal Terms\" → Brand Setup - Deal Terms failed: An unexpected error occurred"
+      ]
+    },
+    {
+      "command": "npm run brand-explorer-os -- --stage release-readiness --dry-run --skip-regression",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "  everhome-suites: active_profile_ready → no_action | founder=false active=false",
+        "  kimpton: active_profile_ready → no_action | founder=false active=false",
+        "  radisson-individuals-by-choice: active_profile_ready → no_action | founder=false active=false",
+        "  design-hotels: active_profile_ready → no_action | founder=false active=false",
+        "  hotel-indigo: active_profile_ready → no_action | founder=false active=false",
+        "  mgallery-collection: active_profile_ready → no_action | founder=false active=false",
+        "  small-luxury-hotels-of-the-world: active_profile_ready → no_action | founder=false active=false",
+        "v41 OS complete — read-only; no Airtable writes; no unlock; no active release."
+      ]
+    },
+    {
+      "command": "npm run brand-explorer-24-tab-section-quality-audit -- --dry-run",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "  radisson-red: approve_for_baseline_freeze composite=96 blockers=0 images=9",
+        "  small-luxury-hotels-of-the-world: approve_for_baseline_freeze composite=98 blockers=0 images=7",
+        "  suburban-studios: approve_for_baseline_freeze composite=95 blockers=0 images=12",
+        "  tapestry-collection-by-hilton: approve_for_baseline_freeze composite=97 blockers=0 images=6",
+        "  trademark-collection-by-wyndham: approve_for_baseline_freeze composite=95 blockers=0 images=7",
+        "  tribute-portfolio: approve_for_baseline_freeze composite=97 blockers=0 images=9",
+        "  vignette-collection: approve_for_baseline_freeze composite=97 blockers=0 images=4",
+        "  woodspring-suites: approve_for_baseline_freeze composite=95 blockers=0 images=11"
+      ]
+    }
+  ],
+  "summary": {
+    "protectedBaselineClean": true,
+    "activeUniverseIs27": true,
+    "noWave12ActiveDrift": true
+  }
+}

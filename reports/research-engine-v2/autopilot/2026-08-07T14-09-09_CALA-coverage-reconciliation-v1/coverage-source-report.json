@@ -1,0 +1,101 @@
+{
+  "families_used": [
+    "Marriott",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [
+    "Choice",
+    "IHG",
+    "Accor",
+    "Wyndham",
+    "Preferred"
+  ],
+  "adapter_errors": [
+    {
+      "family": "IHG",
+      "error": "no_ready_ihg_countries_in_scope"
+    },
+    {
+      "family": "Accor",
+      "error": "no_ready_accor_countries_in_scope"
+    },
+    {
+      "family": "Wyndham",
+      "error": "no_ready_wyndham_countries_in_scope"
+    },
+    {
+      "family": "Preferred",
+      "error": "no_ready_preferred_countries_in_scope"
+    }
+  ],
+  "vic_evidence_rows": 666,
+  "discover_all_official_parents": true,
+  "parent_scoped_discovery": true,
+  "require_brand_match": false,
+  "control_list_purpose": "official_parent_inventory_discovery",
+  "marriott_discovery": {
+    "source": {
+      "type": "official_country_hotel_sitemap",
+      "origin": "https://www.marriott.com",
+      "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+      "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+      "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+      "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+      "hqv_required_for_discovery": false,
+      "deprecated_blocked_patterns": [
+        "/en/hotels/{country}.sitemap-hotels.xml",
+        "*.sitemap-hotels.xml"
+      ]
+    },
+    "countries": [
+      "Dominican Republic"
+    ],
+    "hqv_required_for_discovery": false,
+    "deprecated_sitemap_hotels_xml_blocked": true,
+    "meta": {
+      "version": "census-autopilot-marriott-discovery-adapter-v1",
+      "source": {
+        "type": "official_country_hotel_sitemap",
+        "origin": "https://www.marriott.com",
+        "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+        "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+        "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+        "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+        "hqv_required_for_discovery": false,
+        "deprecated_blocked_patterns": [
+          "/en/hotels/{country}.sitemap-hotels.xml",
+          "*.sitemap-hotels.xml"
+        ]
+      },
+      "countries": [
+        "Dominican Republic"
+      ],
+      "country_stats": [
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        }
+      ],
+      "errors": [],
+      "hqv_required_for_discovery": false,
+      "loaded_at": "2026-08-07T14:09:08.588Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v2-wave-2",
+    "loaded_at": null,
+    "hilton_count": 0,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 25,
+  "brand_governance_counts": {
+    "active_brand_setup": 24,
+    "dirty_partner_label": 1
+  },
+  "owner_facing_eligible_count": 24,
+  "promotion_candidate_count": 0
+}

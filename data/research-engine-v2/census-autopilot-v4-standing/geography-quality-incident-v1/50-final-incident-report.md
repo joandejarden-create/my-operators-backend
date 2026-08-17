@@ -1,0 +1,76 @@
+# Final Incident Report — Geography + Current Brand
+
+**V4 production writes: PAUSED**  
+**Corrective apply: NOT AUTHORIZED / NOT APPLIED**  
+**Keys audited: 400 (expected 400)**
+
+## Final verdicts
+
+| Verdict | Result |
+| --- | --- |
+| ROOT CAUSES | **FOUND** |
+| PRODUCTION DAMAGE | **BOUNDED** |
+| COORDINATED REPAIR | **READY FOR AUTHORIZATION** |
+| GOLDEN FIELD SEMANTICS | **PROTECTED** |
+| V4 RESTART | **READY AFTER REPAIR** |
+
+## Answers 1–50
+
+| # | Answer |
+| ---: | --- |
+| 1 | **400** |
+| 2 | **70** |
+| 3 | **70** |
+| 4 | **211** |
+| 5 | **11** |
+| 6 | **25** |
+| 7 | **152** |
+| 8 | **0** |
+| 9 | **156** |
+| 10 | **0** |
+| 11 | **244** |
+| 12 | **164** |
+| 13 | **220** |
+| 14 | inferCityFromMarriottTitle comma-tail parse retained 'An Autograph Collection…Adults Only' after incomplete marketing strip → wrote marketing fragment as City; V3 geography sanitizeCity did not reject descriptors; isDescriptorCity existed but was not wired into Autopilot write path. |
+| 15 | Mix: official page blocked (403); research not found; and researched-but-not-written gaps — see 38-address-resolution-status.json |
+| 16 | State resolver depends on valid City/address/coords; invalid/Unknown City blocked deterministic state. / Missing address + coords + usable city → state unresolved. |
+| 17 | Blank written without MATCHED/NOT_APPLICABLE/UNRESOLVED status; applicability not persisted. |
+| 18 | Choice discovery omitted brandName; current_brand||family and brand||family fallbacks wrote 'Choice'; persisted by writer. |
+| 19 | ["Current Brand ← pilot.brand || pilot.family","brand ← current_brand || brand_family","current_brand ← brand || affiliation || family","Brand completeness ← p.brand || p.family","city ← comma tail of hotel title (marketing)","sanitizeCity lacked descriptor rejection"] |
+| 20 | **11** |
+| 21 | **6** |
+| 22 | **true** |
+| 23 | **70** safe |
+| 24 | **281** |
+| 25 | **5** |
+| 26 | **70** |
+| 27 | **38** |
+| 28 | **111** |
+| 29 | **20** |
+| 30 | **37** |
+| 31 | **NO** |
+| 32 | **NO** |
+| 33 | **0** |
+| 34 | **0** |
+| 35 | **0** |
+| 36 | **100%** |
+| 37 | **86.4%** completeness proxy |
+| 38 | see expected completeness lift via safe fills in 45-expected-post-repair-coverage.json |
+| 39 | **84.1** |
+| 40 | **86.5** |
+| 41 | **56.8%** |
+| 42 | **83.5%** |
+| 43 | **76.5%** |
+| 44 | **100%** |
+| 45 | **100%** |
+| 46 | **100%** |
+| 47 | **YES** |
+| 48 | **YES** |
+| 49 | **YES** (affiliation + prior suite) |
+| 50 | **YES — after authorized repair + post-write audit** |
+
+## Explicit non-actions
+
+- Manifest **not** applied
+- V4 **not** resumed
+- No Cvent / legacy brand or geography factual evidence

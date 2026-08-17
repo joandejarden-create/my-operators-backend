@@ -1,0 +1,49 @@
+<script>
+(function(){
+  function on(sel,evt,fn){document.querySelectorAll(sel).forEach(function(el){el.addEventListener(evt,fn);});}
+  // FAQ
+  on('.faq-q','click',function(){
+    var item=this.closest('.faq-item');
+    if(!item)return;
+    var open=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');});
+    if(!open)item.classList.add('open');
+  });
+  // Stage tabs
+  on('.fbt','click',function(){
+    var i=this.getAttribute('data-p');
+    document.querySelectorAll('.fbt').forEach(function(b){b.classList.toggle('on',b===this);b.setAttribute('aria-selected',b===this?'true':'false');}.bind(this));
+    document.querySelectorAll('.fbp').forEach(function(p){var on=p.id==='stage-panel-'+i;p.classList.toggle('on',on);p.hidden=!on;});
+  });
+  // Audience tabs
+  on('.audt','click',function(){
+    var i=this.getAttribute('data-a');
+    document.querySelectorAll('.audt').forEach(function(b){b.classList.toggle('on',b===this);b.setAttribute('aria-selected',b===this?'true':'false');}.bind(this));
+    document.querySelectorAll('.audp').forEach(function(p){var on=p.id==='aud-panel-'+i;p.classList.toggle('on',on);p.hidden=!on;});
+  });
+  // Mobile nav
+  var nmenu=document.getElementById('nmenu'), mnav=document.getElementById('mnav');
+  if(nmenu&&mnav){
+    nmenu.addEventListener('click',function(){
+      var open=!mnav.classList.contains('open');
+      mnav.classList.toggle('open',open);
+      mnav.setAttribute('aria-hidden',open?'false':'true');
+      nmenu.setAttribute('aria-expanded',open?'true':'false');
+    });
+    on('.mnav-link','click',function(){mnav.classList.remove('open');});
+  }
+  // Overview video
+  var learn=document.getElementById('hero-learn-more');
+  var wrap=document.getElementById('hero-overview-wrap');
+  var close=document.getElementById('hero-overview-close');
+  var vid=document.getElementById('hero-overview-video');
+  function setOpen(o){
+    if(!wrap)return;
+    wrap.hidden=!o; wrap.classList.toggle('is-open',o);
+    if(learn)learn.setAttribute('aria-expanded',o?'true':'false');
+    if(!o&&vid){try{vid.pause();}catch(e){}}
+  }
+  if(learn)learn.addEventListener('click',function(){setOpen(wrap.hidden);});
+  if(close)close.addEventListener('click',function(){setOpen(false);});
+})();
+</script>

@@ -1,0 +1,772 @@
+{
+  "generatedAt": "2026-08-17T10:44:43.607Z",
+  "phase": "P0D-A.1",
+  "originalTruthResults": {
+    "ALIGNED": 1430,
+    "POTENTIAL_PERCEPTION_GAP": 32,
+    "NOT_EVALUATED": 0
+  },
+  "semanticAudit": {
+    "TRUE_SAME_DIMENSION_CONFLICT": 3,
+    "TERMINOLOGY_VARIATION": 0,
+    "CROSS_DIMENSION_NON_CONFLICT": 9,
+    "AMBIGUOUS_NOT_COMPARABLE": 18,
+    "DATA_NORMALIZATION_ISSUE": 0,
+    "ENTITY_BINDING_ISSUE": 0
+  },
+  "originalGapSemanticAudit": {
+    "AMBIGUOUS_NOT_COMPARABLE": 18,
+    "CROSS_DIMENSION_NON_CONFLICT": 9,
+    "TRUE_SAME_DIMENSION_CONFLICT": 5
+  },
+  "gapAudits": [
+    {
+      "truthComparisonId": "tcmp_1dcfa53ce2299a4a",
+      "brand": "Westin",
+      "aiClaim": "Soft/Collection Brand",
+      "aiClaimType": "SOFT_BRAND_COLLECTION",
+      "aiClaimNormalized": "Soft/Collection Brand",
+      "dealalityFact": "Standalone Brand",
+      "dealalityFactType": "SOFT_BRAND_COLLECTION",
+      "dealalityNormalized": "Standalone Brand",
+      "currentDimension": "SOFT_BRAND_COLLECTION_STATUS",
+      "supportingSpan": "For an **existing mid-size upper-upscale hotel in Mexico**, the most practical conversion candidates from the results are **IHG’s voco hotels**, **Marriott’s Sheraton/Westin/Le Méridien/Delta**, **Hilton’s DoubleTree**, **Hyatt Regency or Hyatt Centric**, and **Wyndham’s Wyndham Grand or upper-upscale soft-brand options** like **Registry Collection Hotels** where the asset is distinctive enough.",
+      "dealalitySourceField": "Brand Setup - Brand Basics",
+      "comparisonReason": "collection_status_mismatch",
+      "semanticClassification": "TRUE_SAME_DIMENSION_CONFLICT",
+      "executiveEligible": false,
+      "executiveEligibilityReason": "non_mutually_exclusive_values"
+    },
+    {
+      "truthComparisonId": "tcmp_4295949864ab5543",
+      "brand": "Westin",
+      "aiClaim": "Soft Brand",
+      "aiClaimType": "BRAND_MODEL",
+      "aiClaimNormalized": "Soft Brand",
+      "dealalityFact": "Hard Brand",
+      "dealalityFactType": "BRAND_MODEL",
+      "dealalityNormalized": "Hard Brand",
+      "currentDimension": "BRAND_ARCHITECTURE",
+      "supportingSpan": "The most commonly cited upper-upscale brand families in the sources are **Marriott, Hilton, Hyatt, IHG, and select global independents/luxury-soft brands** such as **Westin, Sheraton, Le Méridien, Renaissance, Conrad, InterContinental, Kimpton, Hyatt Regency, Grand Hyatt, Park Hyatt, Fairmont, Shangri-La, Kempinski, and W**.",
+      "dealalitySourceField": "Brand Setup - Brand Basics",
+      "comparisonReason": "brand_architecture_mismatch",
+      "semanticClassification": "TRUE_SAME_DIMENSION_CONFLICT",
+      "executiveEligible": true,
+      "executiveEligibilityReason": "explicit_same_dimension_conflict"
+    },
+    {
+      "truthComparisonId": "tcmp_c60a4c437a5fea43",
+      "brand": "Westin",
+      "aiClaim": "Soft/Collection Brand",
+      "aiClaimType": "SOFT_BRAND_COLLECTION",
+      "aiClaimNormalized": "Soft/Collection Brand",
+      "dealalityFact": "Standalone Brand",
+      "dealalityFactType": "SOFT_BRAND_COLLECTION",
+      "dealalityNormalized": "Standalone Brand",
+      "currentDimension": "SOFT_BRAND_COLLECTION_STATUS",
+      "supportingSpan": "[1][2][4] Marriott’s **Autograph Collection** and Hilton’s **Curio Collection** are also widely used soft-brand options for upper-upscale assets, and the Cornell conversion study shows historic examples of hotels converting into brands such as **Crowne Plaza, Sheraton, Westin, Hyatt, and DoubleTree**, indicating these brands have long been active conversion destinations.",
+      "dealalitySourceField": "Brand Setup - Brand Basics",
+      "comparisonReason": "collection_status_mismatch",
+      "semanticClassification": "TRUE_SAME_DIMENSION_CONFLICT",
+      "executiveEligible": false,
+      "executiveEligibilityReason": "non_mutually_exclusive_values"
+    }
+  ],
+  "parentCompanyConflicts": {
+    "totalReported": 10,
+    "normalizationVariation": 10,
+    "genuineConflict": 0,
+    "unresolved": 0,
+    "rows": [
+      {
+        "brand": "Curio Collection by Hilton",
+        "brandId": "receQkxgjlezsc1xg",
+        "rawParentValue": "Hilton Worldwide",
+        "canonicalParentValue": "Hilton",
+        "conflictSource": "Brand Basics legal suffix / display form",
+        "conflictType": "LEGAL_ENTITY_SUFFIX",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Tapestry Collection by Hilton",
+        "brandId": "reccXxMHEh7NNRhIE",
+        "rawParentValue": "Hilton Worldwide",
+        "canonicalParentValue": "Hilton",
+        "conflictSource": "Brand Basics legal suffix / display form",
+        "conflictType": "LEGAL_ENTITY_SUFFIX",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Canopy by Hilton",
+        "brandId": "recsggfbKlJbjeRP9",
+        "rawParentValue": "Hilton Worldwide",
+        "canonicalParentValue": "Hilton",
+        "conflictSource": "Brand Basics legal suffix / display form",
+        "conflictType": "LEGAL_ENTITY_SUFFIX",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Tempo by Hilton",
+        "brandId": "recqiHq3GHKMj8Meo",
+        "rawParentValue": "Hilton Worldwide",
+        "canonicalParentValue": "Hilton",
+        "conflictSource": "Brand Basics legal suffix / display form",
+        "conflictType": "LEGAL_ENTITY_SUFFIX",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Ascend Hotel Collection",
+        "brandId": "reclkgOzvAcBheUSo",
+        "rawParentValue": "Choice Hotels International",
+        "canonicalParentValue": "Choice Hotels",
+        "conflictSource": "Brand Basics legal suffix / display form",
+        "conflictType": "LEGAL_ENTITY_SUFFIX",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Radisson Individuals by Choice",
+        "brandId": "recRyvM8OmLlDj9G7",
+        "rawParentValue": "Choice Hotels International",
+        "canonicalParentValue": "Choice Hotels",
+        "conflictSource": "Brand Basics legal suffix / display form",
+        "conflictType": "LEGAL_ENTITY_SUFFIX",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Radisson Blu by Choice",
+        "brandId": "recWPEvxBQxVVzSq3",
+        "rawParentValue": "Choice Hotels International",
+        "canonicalParentValue": "Choice Hotels",
+        "conflictSource": "Brand Basics legal suffix / display form",
+        "conflictType": "LEGAL_ENTITY_SUFFIX",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Radisson RED by Choice",
+        "brandId": "recmKqo7M7mLZgRqQ",
+        "rawParentValue": "Choice Hotels International",
+        "canonicalParentValue": "Choice Hotels",
+        "conflictSource": "Brand Basics legal suffix / display form",
+        "conflictType": "LEGAL_ENTITY_SUFFIX",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Hotel Indigo",
+        "brandId": "recegXrqaPiSLGCIe",
+        "rawParentValue": "InterContinental Hotels Group",
+        "canonicalParentValue": "IHG",
+        "conflictSource": "Known parent alias pair",
+        "conflictType": "PARENT_ALIAS",
+        "classification": "NORMALIZATION_VARIATION"
+      },
+      {
+        "brand": "Kimpton Hotels",
+        "brandId": "recCKuXCmGvxHPfb3",
+        "rawParentValue": "InterContinental Hotels Group",
+        "canonicalParentValue": "IHG",
+        "conflictSource": "Known parent alias pair",
+        "conflictType": "PARENT_ALIAS",
+        "classification": "NORMALIZATION_VARIATION"
+      }
+    ],
+    "safeForTruthLayer": true
+  },
+  "brandModelAudit": {
+    "totalEvaluated": 215,
+    "gaps": 1,
+    "notEvaluated": 46,
+    "uniqueAiValues": [
+      {
+        "aiValue": "Soft Brand",
+        "count": 28,
+        "gapCount": 1,
+        "notEvalCount": 27,
+        "classifications": {
+          "SAME_DIMENSION": 1,
+          "AMBIGUOUS": 27
+        }
+      },
+      {
+        "aiValue": "Hard Brand",
+        "count": 7,
+        "gapCount": 0,
+        "notEvalCount": 7,
+        "classifications": {
+          "AMBIGUOUS": 7
+        }
+      },
+      {
+        "aiValue": "Lifestyle Brand",
+        "count": 6,
+        "gapCount": 0,
+        "notEvalCount": 6,
+        "classifications": {
+          "CROSS_DIMENSION": 6
+        }
+      },
+      {
+        "aiValue": "Conversion Brand",
+        "count": 2,
+        "gapCount": 0,
+        "notEvalCount": 2,
+        "classifications": {
+          "CROSS_DIMENSION": 2
+        }
+      },
+      {
+        "aiValue": "Collection Brand",
+        "count": 4,
+        "gapCount": 0,
+        "notEvalCount": 4,
+        "classifications": {
+          "AMBIGUOUS": 4
+        }
+      }
+    ],
+    "gapRecords": [
+      {
+        "brand": "Westin",
+        "ai": "Soft Brand",
+        "deal": "Hard Brand",
+        "reason": "brand_architecture_mismatch",
+        "executiveEligible": true,
+        "span": "The most commonly cited upper-upscale brand families in the sources are **Marriott, Hilton, Hyatt, I"
+      }
+    ]
+  },
+  "chainScaleAudit": {
+    "TOTAL_CHAIN_SCALE_CLAIMS": 1095,
+    "EXPLICIT_CHAIN_SCALE_CLAIMS": 517,
+    "GENERIC_POSITIONING_LANGUAGE": 13,
+    "AMBIGUOUS": 565,
+    "TRUE_COMPARABLE": 530,
+    "GAPS": 0,
+    "gapDetails": []
+  },
+  "softBrandAudit": {
+    "westinTotal": 19,
+    "westinGaps": 3,
+    "westinNotEvaluated": 10,
+    "westinRecords": [
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Collection Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "list_enumeration_not_subject_attribute",
+        "span": "Marriott officially places Westin, Sheraton, Renaissance, Le Méridien, Marriott Hotels and its collection brands within its premium full-service portfolio.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Hard Brand",
+        "deal": "Hard Brand",
+        "status": "ALIGNED",
+        "reason": "brand_model_match",
+        "span": "Una hard brand de Marriott: **Westin, Renaissance o Marriott Hotels**.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Collection Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "list_enumeration_not_subject_attribute",
+        "span": "For most conventional North American projects, a sensible first-round solicitation would include **Marriott or Westin, Hilton, Hyatt Regency, Renaissance, Embassy Suites and one or two collection brands—usually Autograph, Curio, Tribute or JdV—depending on the asset’s physical character.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Collection Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "list_enumeration_not_subject_attribute",
+        "span": "Marriott treats Marriott Hotels, Sheraton, Westin, Le Méridien and Renaissance as premium full-service offerings, alongside its collection brands.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Collection Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "list_enumeration_not_subject_attribute",
+        "span": "**Bottom line:** the most universally relevant starting set is **Marriott/Sheraton/Westin, Hilton/Curio, Hyatt Regency/Hyatt Centric, Crowne Plaza/voco, Pullman/Swissôtel/Mövenpick, Radisson Blu, and NH Collection/Avani**—supplemented by collection brands whenever the asset has distinctive architecture, local character or conversion constraints.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Soft Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "contrastive_context_not_subject_claim",
+        "span": "New Build Flexibility:** Soft brands (Autograph, Curio) typically require lower PIP (Property Improvement Plan) capital expenditures compared to strict hard brands (Westin, Grand Hyatt).",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Hard Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "contrastive_context_not_subject_claim",
+        "span": "New Build Flexibility:** Soft brands (Autograph, Curio) typically require lower PIP (Property Improvement Plan) capital expenditures compared to strict hard brands (Westin, Grand Hyatt).",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Hard Brand",
+        "deal": "Hard Brand",
+        "status": "ALIGNED",
+        "reason": "brand_model_match",
+        "span": "Un *hard brand* como Westin o DoubleTree exigirá adaptar habitaciones y áreas comunes a estándares rígidos, mientras que Autograph, Curio o Curamoria respetarán más el inventario existente.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Hard Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "contrastive_context_not_subject_claim",
+        "span": "* **New Build:** Hard brands like Westin or Hyatt Regency provide proven prototype layouts and operational efficiencies, making financing easier with Mexican and international banks.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Soft Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "contrastive_context_not_subject_claim",
+        "span": "Soft brands generally require much lower physical standardization than \"hard\" flags like Westin, Hilton, or Marriott.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Soft Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "contrastive_context_not_subject_claim",
+        "span": "Objeto Nuevo (Greenfield):** Si se trata de reconvertir un hotel existente, las *Soft Brands* (Autograph, Curio) lideran la lista porque exigen menores cambios de PIP (*Property Improvement Plan*) en comparación con una marca dura como Westin o Hyatt Regency.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "SOFT_BRAND_COLLECTION",
+        "ai": "Soft/Collection Brand",
+        "deal": "Standalone Brand",
+        "status": "POTENTIAL_PERCEPTION_GAP",
+        "reason": "collection_status_mismatch",
+        "span": "For an **existing mid-size upper-upscale hotel in Mexico**, the most practical conversion candidates from the results are **IHG’s voco hotels**, **Marriott’s Sheraton/Westin/Le Méridien/Delta**, **Hilton’s DoubleTree**, **Hyatt Regency or Hyatt Centric**, and **Wyndham’s Wyndham Grand or upper-upscale soft-brand options** like **Registry Collection Hotels** where the asset is distinctive enough.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Soft Brand",
+        "deal": "Hard Brand",
+        "status": "POTENTIAL_PERCEPTION_GAP",
+        "reason": "brand_architecture_mismatch",
+        "span": "The most commonly cited upper-upscale brand families in the sources are **Marriott, Hilton, Hyatt, IHG, and select global independents/luxury-soft brands** such as **Westin, Sheraton, Le Méridien, Renaissance, Conrad, InterContinental, Kimpton, Hyatt Regency, Grand Hyatt, Park Hyatt, Fairmont, Shangri-La, Kempinski, and W**.",
+        "executiveEligible": true
+      },
+      {
+        "claimType": "SOFT_BRAND_COLLECTION",
+        "ai": "Soft/Collection Brand",
+        "deal": "Standalone Brand",
+        "status": "POTENTIAL_PERCEPTION_GAP",
+        "reason": "collection_status_mismatch",
+        "span": "[1][2][4] Marriott’s **Autograph Collection** and Hilton’s **Curio Collection** are also widely used soft-brand options for upper-upscale assets, and the Cornell conversion study shows historic examples of hotels converting into brands such as **Crowne Plaza, Sheraton, Westin, Hyatt, and DoubleTree**, indicating these brands have long been active conversion destinations.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Soft Brand",
+        "deal": "Hard Brand",
+        "status": "NOT_EVALUATED",
+        "reason": "contrastive_context_not_subject_claim",
+        "span": "In summary, the **top upper-upscale brands for Europe** are **Radisson Blu**, **Hilton**, **Crowne Plaza**, **Sheraton**, **Westin**, **Hyatt Regency**, **Pullman**, **NH Collection**, **Hotel Indigo**, and **Kimpton** — with soft brands like **voco**, **Autograph Collection**, **Curio Collection**, and **MGallery** offering appealing conversion-friendly options for independent or repositioning properties.",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Hard Brand",
+        "deal": "Hard Brand",
+        "status": "ALIGNED",
+        "reason": "brand_model_match",
+        "span": "| **Westin** | Hard brand | Bienestar y resort, muy activa en Caribe |",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Hard Brand",
+        "deal": "Hard Brand",
+        "status": "ALIGNED",
+        "reason": "brand_model_match",
+        "span": "Westin Hotels & Resorts *(Hard Brand – Upper-Upscale)*",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Hard Brand",
+        "deal": "Hard Brand",
+        "status": "ALIGNED",
+        "reason": "brand_model_match",
+        "span": "| Westin | Marriott | Hard Brand | Propiedades wellness y resort |",
+        "executiveEligible": false
+      },
+      {
+        "claimType": "BRAND_MODEL",
+        "ai": "Hard Brand",
+        "deal": "Hard Brand",
+        "status": "ALIGNED",
+        "reason": "brand_model_match",
+        "span": "- **W Hotels / Westin / Sheraton** – Hard brand options for more standardised upper-upscale conversions.",
+        "executiveEligible": false
+      }
+    ]
+  },
+  "comparabilityMatrix": [
+    {
+      "pair": "PARENT_COMPANY|PARENT_COMPANY",
+      "comparable": "YES"
+    },
+    {
+      "pair": "PARENT_COMPANY|BRAND_ARCHITECTURE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "PARENT_COMPANY|BRAND_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "PARENT_COMPANY|CHAIN_SCALE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "PARENT_COMPANY|POSITIONING",
+      "comparable": "NO"
+    },
+    {
+      "pair": "PARENT_COMPANY|SOFT_BRAND_COLLECTION_STATUS",
+      "comparable": "NO"
+    },
+    {
+      "pair": "PARENT_COMPANY|BRAND_FAMILY",
+      "comparable": "YES"
+    },
+    {
+      "pair": "PARENT_COMPANY|OPERATING_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_ARCHITECTURE|PARENT_COMPANY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_ARCHITECTURE|BRAND_ARCHITECTURE",
+      "comparable": "YES"
+    },
+    {
+      "pair": "BRAND_ARCHITECTURE|BRAND_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_ARCHITECTURE|CHAIN_SCALE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_ARCHITECTURE|POSITIONING",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_ARCHITECTURE|SOFT_BRAND_COLLECTION_STATUS",
+      "comparable": "CONDITIONAL"
+    },
+    {
+      "pair": "BRAND_ARCHITECTURE|BRAND_FAMILY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_ARCHITECTURE|OPERATING_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_MODEL|PARENT_COMPANY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_MODEL|BRAND_ARCHITECTURE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_MODEL|BRAND_MODEL",
+      "comparable": "YES"
+    },
+    {
+      "pair": "BRAND_MODEL|CHAIN_SCALE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_MODEL|POSITIONING",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_MODEL|SOFT_BRAND_COLLECTION_STATUS",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_MODEL|BRAND_FAMILY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_MODEL|OPERATING_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "CHAIN_SCALE|PARENT_COMPANY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "CHAIN_SCALE|BRAND_ARCHITECTURE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "CHAIN_SCALE|BRAND_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "CHAIN_SCALE|CHAIN_SCALE",
+      "comparable": "YES"
+    },
+    {
+      "pair": "CHAIN_SCALE|POSITIONING",
+      "comparable": "NO"
+    },
+    {
+      "pair": "CHAIN_SCALE|SOFT_BRAND_COLLECTION_STATUS",
+      "comparable": "NO"
+    },
+    {
+      "pair": "CHAIN_SCALE|BRAND_FAMILY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "CHAIN_SCALE|OPERATING_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "POSITIONING|PARENT_COMPANY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "POSITIONING|BRAND_ARCHITECTURE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "POSITIONING|BRAND_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "POSITIONING|CHAIN_SCALE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "POSITIONING|POSITIONING",
+      "comparable": "NO"
+    },
+    {
+      "pair": "POSITIONING|SOFT_BRAND_COLLECTION_STATUS",
+      "comparable": "NO"
+    },
+    {
+      "pair": "POSITIONING|BRAND_FAMILY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "POSITIONING|OPERATING_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "SOFT_BRAND_COLLECTION_STATUS|PARENT_COMPANY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "SOFT_BRAND_COLLECTION_STATUS|BRAND_ARCHITECTURE",
+      "comparable": "CONDITIONAL"
+    },
+    {
+      "pair": "SOFT_BRAND_COLLECTION_STATUS|BRAND_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "SOFT_BRAND_COLLECTION_STATUS|CHAIN_SCALE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "SOFT_BRAND_COLLECTION_STATUS|POSITIONING",
+      "comparable": "NO"
+    },
+    {
+      "pair": "SOFT_BRAND_COLLECTION_STATUS|SOFT_BRAND_COLLECTION_STATUS",
+      "comparable": "YES"
+    },
+    {
+      "pair": "SOFT_BRAND_COLLECTION_STATUS|BRAND_FAMILY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "SOFT_BRAND_COLLECTION_STATUS|OPERATING_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_FAMILY|PARENT_COMPANY",
+      "comparable": "YES"
+    },
+    {
+      "pair": "BRAND_FAMILY|BRAND_ARCHITECTURE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_FAMILY|BRAND_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_FAMILY|CHAIN_SCALE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_FAMILY|POSITIONING",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_FAMILY|SOFT_BRAND_COLLECTION_STATUS",
+      "comparable": "NO"
+    },
+    {
+      "pair": "BRAND_FAMILY|BRAND_FAMILY",
+      "comparable": "YES"
+    },
+    {
+      "pair": "BRAND_FAMILY|OPERATING_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "OPERATING_MODEL|PARENT_COMPANY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "OPERATING_MODEL|BRAND_ARCHITECTURE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "OPERATING_MODEL|BRAND_MODEL",
+      "comparable": "NO"
+    },
+    {
+      "pair": "OPERATING_MODEL|CHAIN_SCALE",
+      "comparable": "NO"
+    },
+    {
+      "pair": "OPERATING_MODEL|POSITIONING",
+      "comparable": "NO"
+    },
+    {
+      "pair": "OPERATING_MODEL|SOFT_BRAND_COLLECTION_STATUS",
+      "comparable": "NO"
+    },
+    {
+      "pair": "OPERATING_MODEL|BRAND_FAMILY",
+      "comparable": "NO"
+    },
+    {
+      "pair": "OPERATING_MODEL|OPERATING_MODEL",
+      "comparable": "YES"
+    }
+  ],
+  "truthTaxonomy": {
+    "PARENT_COMPANY": {
+      "governedField": "Parent Company",
+      "source": "Brand Basics",
+      "status": "PRODUCTION_VALIDATED"
+    },
+    "CHAIN_SCALE": {
+      "governedField": "Hotel Chain Scale",
+      "source": "Brand Basics",
+      "status": "CONDITIONAL"
+    },
+    "BRAND_ARCHITECTURE": {
+      "governedField": "Brand Model",
+      "source": "Brand Basics",
+      "note": "Brand Model field conflates architecture (Collection/Hard/Soft) with operating posture (Lifestyle/Conversion). P0D-A compares architecture claims only against architecture values.",
+      "status": "PRODUCTION_VALIDATED"
+    },
+    "POSITIONING": {
+      "governedField": null,
+      "source": "NOT_STRUCTURED",
+      "status": "DEFERRED",
+      "note": "Lifestyle/luxury/upscale marketing language — not comparable to Brand Model architecture."
+    },
+    "OPERATING_MODEL": {
+      "governedField": null,
+      "source": "NOT_STRUCTURED",
+      "status": "DEFERRED",
+      "note": "Conversion/franchise/managed posture — not in Brand Model field as distinct dimension."
+    },
+    "SOFT_BRAND_COLLECTION_STATUS": {
+      "governedField": "Brand Architecture (inferred from Brand Model)",
+      "source": "Brand Basics",
+      "status": "PRODUCTION_VALIDATED"
+    },
+    "BRAND_FAMILY": {
+      "governedField": "Parent Company",
+      "source": "Brand Basics",
+      "status": "PRODUCTION_VALIDATED"
+    }
+  },
+  "afterRemediation": {
+    "BEFORE_ALIGNED": 1430,
+    "BEFORE_GAPS": 32,
+    "AFTER_ALIGNED": 841,
+    "AFTER_GAPS": 3,
+    "AFTER_NOT_EVALUATED": 618,
+    "FALSE_GAPS_REMOVED": 29
+  },
+  "p0cClassD": {
+    "CURRENT_D": 32,
+    "SURVIVING_D": 1,
+    "REMOVED_FALSE_CONFLICT": 31,
+    "DETAIL_ONLY": 2,
+    "EXECUTIVE_ELIGIBLE": 1,
+    "REMOVED": 29
+  },
+  "executiveFindings": [
+    {
+      "BRAND": "Westin",
+      "AI_PERCEPTION": "Soft Brand",
+      "DEALALITY_FACT": "Hard Brand",
+      "DIMENSION": "BRAND_ARCHITECTURE",
+      "OBSERVATIONS": 1,
+      "PROVIDERS": [
+        "perplexity"
+      ],
+      "SCENARIOS": [
+        "scenario_chainscale_positioning_fit_v1"
+      ],
+      "PERSISTENCE": "SINGLE",
+      "WHY_THIS_IS_A_REAL_GAP": "explicit_same_dimension_conflict",
+      "EVIDENCE": "The most commonly cited upper-upscale brand families in the sources are **Marriott, Hilton, Hyatt, IHG, and select global independents/luxury-soft brands** such as **Westin, Sheraton, Le Méridien, Ren",
+      "EXECUTIVE_ELIGIBLE": "YES"
+    }
+  ],
+  "certifiedLayer": {
+    "PRESENCE_DIFF": 0,
+    "QM_DIFF": 0,
+    "ALL_PROVIDERS_DIFF": 0,
+    "CITATION_DIFF": 0,
+    "ASSOCIATION_DIFF": 0,
+    "P0C_A_B_GAP_DIFF": 0
+  },
+  "census": {
+    "STATUS": "DEFERRED_INCOMPLETE_CENSUS",
+    "READS_FOR_TRUTH": 0
+  },
+  "readiness": "TRUTH_LAYER_SEMANTICALLY_CERTIFIED",
+  "next": "READY_FOR_P0E_EXECUTIVE_INTELLIGENCE",
+  "finalToken": "HOTEL_BRAND_AI_INTELLIGENCE_P0DA1_PASS"
+}

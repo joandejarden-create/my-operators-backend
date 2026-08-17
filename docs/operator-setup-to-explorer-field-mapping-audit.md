@@ -15,9 +15,9 @@ No code, Airtable schema, scoring, BAS/OCS/OAS PDF, or My Deals UX changes.
 |--------|------:|
 | Airtable / child audit rows | 477 |
 | Static setup form fields (inventory) | 417 |
-| New-base build-sheet rows | 117 |
-| **Fully Covered** (UI + new-base writer) | 120 |
-| **Legacy Only** | 26 |
+| New-base build-sheet rows | 146 |
+| **Fully Covered** (UI + new-base writer) | 121 |
+| **Legacy Only** | 25 |
 | **Static Form Only** | 266 |
 | **Schema Only** | 34 |
 | Explorer display **Yes** (live rail / prefill) | 37 |
@@ -27,9 +27,7 @@ No code, Airtable schema, scoring, BAS/OCS/OAS PDF, or My Deals UX changes.
 | **P1 gaps before Phase E** | 0 |
 
 **Full consistency across Setup → new-base → Explorer → OAS/Strategy?** **No — Partial.**  
-Live `rec…` Explorer profiles (Phase D) surface P1 fields when prefill is populated, but **26** legacy-only and **266** static-form-only rows mean many setup inputs still do not persist to new-base.
-
-**P1 staging proof (2026-05-26):** [operator-setup-p1-staging-proof.md](./operator-setup-p1-staging-proof.md) — sandbox `recBVEgtm8cS96mu7`; all **18** P1 fields pass new-base write + readback + OAS companies. Phase E may proceed after brief Explorer/Strategy UI QA; production writer flag remains off.
+Live `rec…` Explorer profiles (Phase D) surface P1 fields when prefill is populated, but **25** legacy-only and **266** static-form-only rows mean many setup inputs still do not persist to new-base. Phase E (Deal Operator Review Set) should wait until P1 save + display paths are verified in staging.
 
 ---
 
@@ -46,9 +44,9 @@ See CSV for every row with columns:
 | Coverage Status | Count |
 |-----------------|------:|
 | Static Form Only | 266 |
-| Fully Covered | 120 |
+| Fully Covered | 121 |
 | Schema Only | 34 |
-| Legacy Only | 26 |
+| Legacy Only | 25 |
 | JSON / Child Table Only | 21 |
 | System Field | 8 |
 | Needs Decision | 2 |
@@ -73,7 +71,7 @@ Source: `scripts/he-cala-form-inventory.json` (417 fields) + OAS inject fields o
 | 9. Best Fit & Preferences | 47 | 10 | 0 | 37 | 9 | 9 |
 | 10. Deal Terms | 50 | 1 | 0 | 49 | 0 | 0 |
 | 11. Proof & Track Record | 4 | 4 | 0 | 0 | 4 | 0 |
-| 12. Diligence | 5 | 0 | 5 | 0 | 0 | 0 |
+| 12. Diligence | 5 | 1 | 4 | 0 | 0 | 0 |
 
 **Recommended actions (tabs):**
 
@@ -112,7 +110,7 @@ Source: `scripts/he-cala-form-inventory.json` (417 fields) + OAS inject fields o
 1. **Airtable fields not in Setup UI** — 34 schema-only rows + admin columns without forms.
 2. **Airtable fields not in Explorer** — High-value fields with `Displayed=No` but Explorer consumer Yes (see CSV filter).
 3. **Setup UI not saving new-base** — **266** static-form-only + orphan forms.
-4. **Setup UI legacy-only** — **26** legacy-only rows.
+4. **Setup UI legacy-only** — **25** legacy-only rows.
 5. **Explorer shows data not reliably in new-base** — Legacy tab narratives + list/detail when `OPERATOR_SETUP_USE_NEW_BASE_WRITER=0`.
 6. **OAS fields not in Explorer** — Scoring-only fields (e.g. `bf_*` inputs) may appear only in OAS book, not Phase D rail — acceptable if intentional.
 7. **Strategy fields not in Explorer** — Strategy uses OAS companies API; same prefill spine — `dataConfidenceLevel`, `companyName`, alignment band.
@@ -166,7 +164,7 @@ dealTermsOptIn, diligenceQaOptIn, granular service columns (writer-derived), leg
 | # | Question | Answer |
 |---|----------|--------|
 | 1 | All Airtable fields have Setup UI? | **No** — system, schema-only, writer-derived, child JSON. |
-| 2 | All Airtable fields have new-base writer? | **No** — 26 legacy-only, 266 static-only, child JSON paths. |
+| 2 | All Airtable fields have new-base writer? | **No** — 25 legacy-only, 266 static-only, child JSON paths. |
 | 3 | All high-value fields display in Explorer? | **Partial** — Phase D rail for P1 keys; legacy tabs for narratives; gaps when prefill empty. |
 | 4 | All OAS-needed fields in Explorer? | **Partial** — Core footprint in rail; `bf_*` / scoring inputs primarily in OAS book. |
 | 5 | All Strategy-needed fields in Explorer? | **Partial** — Strategy uses OAS companies; profile shows alignment context with dealId. |
@@ -184,7 +182,7 @@ dealTermsOptIn, diligenceQaOptIn, granular service columns (writer-derived), leg
 - List cards: optional chips from `activeCountries` / chain scale.
 
 ### Phase B2 — New-base writer
-- Extend build sheet for remaining **Legacy Only** rows consumed by OAS/Explorer (26 rows).
+- Extend build sheet for remaining **Legacy Only** rows consumed by OAS/Explorer (25 rows).
 - Map OAS inject fields missing `nbMapped=Yes`.
 - Resolve `regions` vs `geo_*` / `specificMarkets`.
 
@@ -212,4 +210,4 @@ node scripts/generate-operator-setup-to-explorer-field-mapping-audit.mjs
 node scripts/validate-operator-setup-to-explorer-field-mapping.mjs
 ```
 
-*Generated 2026-05-26.*
+*Generated 2026-06-02.*

@@ -1,0 +1,135 @@
+/**
+ * Dealality Old Home — production motion (locked Motion Lab preset)
+ * Preset: medium · rise · cue · early · edge · all sections
+ * Version: v20260801b
+ * 01b: sticky rail gated until Platform section-in (pairs with motion JS 01f).
+ * Scope: /old-home only when boot detects page.
+ */
+html[data-oh-motion="medium"] {
+  --oh-motion-duration: 0.55s;
+  --oh-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --oh-motion-y: 28px;
+  --oh-motion-stagger: 70ms;
+  --oh-lift-y: -3px;
+}
+
+html[data-oh-motion="medium"] .oh-m-reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--oh-motion-y), 0);
+  transition:
+    opacity var(--oh-motion-duration) var(--oh-motion-ease),
+    transform var(--oh-motion-duration) var(--oh-motion-ease);
+  transition-delay: calc(var(--oh-m-i, 0) * var(--oh-motion-stagger));
+  will-change: opacity, transform;
+}
+
+html[data-oh-motion="medium"] .oh-m-reveal.is-in {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+html[data-oh-motion="medium"] .oh-m-lift {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+html[data-oh-motion="medium"] .oh-m-lift:hover {
+  transform: translateY(var(--oh-lift-y));
+  border-color: rgba(155, 138, 251, 0.28);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+/* Benefits row cascade (slightly stronger travel) */
+html[data-oh-motion="medium"] #modules-grid > article.oh-m-reveal:not(.is-in),
+html[data-oh-motion="medium"] #modules-grid-platform > article.oh-m-reveal:not(.is-in) {
+  transform: translate3d(0, calc(var(--oh-motion-y) * 1.2), 0);
+}
+
+/* Scroll cue under hero */
+#oh-scroll-cue {
+  display: none;
+  justify-content: center;
+  margin: -0.35rem 0 0.5rem;
+  padding: 0 1.5rem 1.25rem;
+  pointer-events: none;
+}
+html[data-oh-scroll-cue="1"] #oh-scroll-cue {
+  display: flex;
+}
+#oh-scroll-cue .oh-scroll-cue-inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(196, 181, 253, 0.72);
+  font: 550 0.78rem/1.2 "Inter Tight", system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+#oh-scroll-cue .oh-scroll-cue-chev {
+  width: 18px;
+  height: 18px;
+  border-right: 2px solid rgba(168, 173, 255, 0.75);
+  border-bottom: 2px solid rgba(168, 173, 255, 0.75);
+  transform: rotate(45deg);
+  animation: ohScrollCueBob 1.6s ease-in-out infinite;
+}
+@keyframes ohScrollCueBob {
+  0%, 100% { transform: translateY(0) rotate(45deg); opacity: 0.45; }
+  50% { transform: translateY(7px) rotate(45deg); opacity: 1; }
+}
+html.oh-scrolled-past-hero #oh-scroll-cue {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+/* Bottom edge hint */
+html[data-oh-edge="1"] body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 72px;
+  pointer-events: none;
+  z-index: 40;
+  background: linear-gradient(to top, rgba(8, 15, 37, 0.72), transparent);
+  transition: opacity 0.35s ease;
+}
+html[data-oh-edge="1"].oh-near-page-end body::after {
+  opacity: 0;
+}
+
+.oh-m-reveal.oh-m-forced {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-oh-motion="medium"] .oh-m-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  html[data-oh-motion="medium"] .oh-m-lift,
+  html[data-oh-motion="medium"] .oh-m-lift:hover {
+    transition: none !important;
+    transform: none !important;
+  }
+  #oh-scroll-cue .oh-scroll-cue-chev {
+    animation: none !important;
+  }
+  html[data-oh-edge="1"] body::after {
+    display: none !important;
+  }
+}
+
+/* Sticky only after Platform section enter (pairs with motion JS 01f) */
+@media screen and (min-width: 992px) {
+  #many-futures:not(.oh-m-section-in) .mf-rail-sticky,
+  #platform-features:not(.oh-m-section-in) .mf-rail-sticky {
+    position: relative !important;
+    top: auto !important;
+    max-height: none !important;
+  }
+}

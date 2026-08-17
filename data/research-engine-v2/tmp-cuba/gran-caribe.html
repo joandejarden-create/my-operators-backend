@@ -1,0 +1,591 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+<title>Cuba Hotels – Gran Caribe Hotels in Cuba</title>
+<meta name="robots" content="index, follow"/>
+
+	<link rel="canonical" href="https://www.gran-caribe.com" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="description" content="Gran Caribe offers real time reservations for Cuba hotels. Hotels accommodations at discount rates and special Cuba hotels offers with Gran-Caribe.com"/>
+<meta name="keywords" content="cuba hotels, gran caribe hotels, cuba hotels reservations, discount cuba hotels, cheap cuba hotels, havana, varadero, cuba, hotels"/>
+<link href="favicon.ico" rel="shortcut icon"/>
+<link href="css/gc_styles.css" rel="stylesheet" type="text/css"/>
+<script language="JavaScript" type="text/JavaScript" src="comun/scripts/valida_email.js"></script>
+<script language="javascript" type="text/javascript" src="comun/scripts/popup.js"></script>
+<script language="JavaScript" type="text/JavaScript" src="comun/scripts/cuba_hotels_valida_email.js"></script>
+<script language="JavaScript" type="text/Javascript" src="comun/scripts/date_time.js"></script>
+<script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
+<script type="text/javascript" src="ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+<!--
+if(typeof jQuery == 'undefined'){
+	document.write(unescape("%3Cscript src='" + "/Scripts/jquery/1.9.1/jquery.min.js" + "' type='text/javascript'%3E%3C/script%3E"));
+}
+-->
+</script>
+<script src="Scripts/jquery.bgiframe.js" type="text/javascript"></script>
+<!-- calendar stylesheet -->
+<script type="text/javascript" src="https://partner.googleadservices.com/gampad/google_service.js">
+</script>
+</head>
+<body>
+<div id="ly_bg"></div>
+<div id="ly_container">
+    <div class="top_text" align="center"><h1 class="c4 fn">Gran Caribe Cuba Hotels </h1></div>
+<div id="top">	
+            <div id="logo">
+                <a href="cuba_hotels.html" class="logo_link"><img src="images/GranCaribe_logo.jpg" alt="Cuba Hotels with Gran Caribe" width="168" height="147"/></a>
+            </div>
+            <div id="menu_top_yellow">                      
+                <div id="top_info">
+                	 <div class="t1">
+                       <big>Gran Caribe Cuba Hotels</big> <br/><span class="fb"></span>
+					 </div>	
+                     <div class="bg_line1"></div>
+                     <div class="top_links">
+                	       <a title="Havana, Cuba" href="english/havana.html">Havana</a>
+ |<a title="Varadero, Cuba" href="english/varadero.html">Varadero</a>
+ |<a title="Cienfuegos, Cuba" href="english/cienfuegos.html">Cienfuegos</a>
+ |<a title="Cayo Largo, Cuba" href="english/cayo_largo.html">Cayo Largo</a>
+ |<a title="Cayo Guillermo, Cuba" href="english/cayo_guillermo.html">Cayo Guillermo</a>
+ |<a title="Santiago de Cuba City, Cuba" href="english/santiago_de_cuba.html">Santiago de Cuba City</a>
+                     </div>
+                     <div class="top_languages">
+	<form name="frm_site_path" action="" method="post" style="display:inline;"> 
+	<select name="currency_id" id="cb_change_currency" style="width:80px;" onchange="javascript:this.form.submit();" title="Select your currency">
+		<option value="AUD">Australian Dollars</option>
+		<option value="CAD">Canadian Dollars</option>
+		<option value="CHF">Swiss franc</option>
+		<option value="DKK">Danish krone</option>
+		<option value="EUR">Euros</option>
+		<option value="GBP">Pounds Sterling</option>
+		<option value="JPY">Japanese Yen</option>
+		<option value="NOK">Norwegian krone</option>
+		<option value="NZD">New Zealand Dollar</option>
+		<option value="RUB">Russian Ruble</option>
+		<option value="SEK">Swedish krona</option>
+		<option value="USD" selected="selected">United States Dollars</option>
+		<option value="ZAR">South African Rand</option>
+	</select> 
+	<select name="cb_change_language" id="cb_change_language" style="width:80px;" onchange="javascript:document.location = document.getElementById(&#39;cb_change_language&#39;).value;" title="Select your language">
+		<option value="/cuba_hotels.asp" selected="selected">English</option>
+		<option value="/cuba_hoteles.asp">Español</option>
+		<option value="/it/cuba_hotel.asp">Italiano</option>
+		<option value="/fr/hotels_cuba.asp">Francais</option>
+		<option value="/de/kuba_hotels.asp">Deutsch</option>
+		<option value="/nl/cuba_hotels.asp">Nederlands</option>
+    </select>
+	</form>
+                     </div>
+                </div>
+            </div>            
+<script type="text/javascript">
+$(document).ready(function(){
+$("#nav").data("site_section", 'home');
+	$('.submenu_hotel').bgiframe();
+$('.submenu_destination').bgiframe();
+$("#nav ul:first ").css({display: "none"});
+$("#nav li").hover(function(){
+		$(this).find('ul.submenu_hotel:hidden').css({visibility: "visible", display: "none"}).slideDown(0);
+	$(this).find('ul.submenu_destination:hidden').css({visibility: "visible", display: "none"}).slideDown(0);
+	if (($(this).attr('id') == 'hotels_menu') ||  ($(this).attr('id') == 'destinations')){
+		$('.c',$(this)).css({
+			   "background-color": "#FDFAEF",
+			   "border": "1px solid #03334B",
+			   "border-bottom": "0",
+			   "color":"#03334B"
+			})
+		$('.im_menu', $(this)).attr('src', 'images/grancaribe_flechadesplegadaBN.jpg');		
+		$('.im_menu', $(this)).css("top","20px");
+		$('.general_link').css("text-decoration","none");
+        $('a', $(this)).css("color","#03334B");
+		}	
+},function(){
+		//$(this).find('ul.submenu').delay(600);
+		$(this).find('ul.submenu_destination').slideUp(0);
+			$(this).find('ul.submenu_hotel').slideUp(0);
+		$('.im_menu', $(this)).attr('src', 'images/GranCaribe_flechaBN.jpg');
+		$('a', $(this)).attr('class', '');
+		//alert($("#nav").data("site_section"));	
+	if (($(this).attr('id') == 'hotels_menu') || ($(this).attr('id') == 'destinations')){
+		//	$('.im_menu', $(this)).attr('src', 'images/GranCaribe_flechaBN_rollovers.jpg');
+			//$('a', $(this)).attr('class', 'selected');
+			//$('.c',$(this)).attr('class', '');
+			if ($(this).attr('id') == $("#nav").data("site_section"))  {			
+				$('.im_menu', $(this)).attr('src', 'images/GranCaribe_flechaBN_rollovers.jpg');
+				$('.im_menu', $(this)).css("top","20px");
+				$('a', $(this)).css("color","#E2C02C");
+				$('.c',$(this)).css({
+				   "background-color": "",
+				   "border": "",
+				   "color":"#E2C02C"
+				})	   
+			}else{
+				$('a', $(this)).css("color","#FAFAFA");
+				$('.c',$(this)).css({
+				   "background-color": "",
+				   "border": "",			   
+				   "color":"#FAFAFA"
+				})			
+			}			
+			$('.im_menu', $(this)).css("top","0");		
+		}
+		if ($(this).attr('id') == $("#nav").data("site_section"))  {			
+			$('a', $(this)).attr('class', 'selected');
+		}
+	});
+	 $("#rates_reservation").click(function () { 	   
+       hhotelDispoprice( document.forms.idForm);
+    });
+});
+</script>
+<img alt="" style="display: none;" src="images/grancaribe_flechadesplegadaBN.jpg"/>
+<img alt="" style="display: none;" src="images/grancaribe_flechadesplegadaBN.jpg"/>
+<div id="menu_top">
+               <ul id="nav" class="nav">
+                    <li class="off_screen" id="site_section"></li>
+                    <li class="home" id="home"><a class="selected" href="cuba_hotels.html" title="Home"><span class="c">Home</span></a>					
+                    </li> 
+                    <li class="separator_menu"></li>
+                    <li class="hotels" id="hotels_menu"><a href="english/gran_caribe_cuba_hotels.html" id="hotel_link" title="Hotels &amp; Resorts" class="general_link "><span class="c">Hotels &amp; Resorts<img src="images/GranCaribe_flechaBN.jpg" alt="" class="im_menu"/></span></a>					
+						<ul class="submenu_hotel" style="visibility: visible; display: none;">  
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Club Atlantico (East Havana)" href="english/hotel_hotel_code-sctgccatlantico.html" class="sub_link">Hotel Club Atlantico (East Havana)</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">East Havana Beaches</span>
+								 <span class="m_price c2">US$109</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Club Kawama" href="english/hotel_hotel_code-sctgcvkawama.html" class="sub_link">Hotel Club Kawama</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Varadero</span>
+								 <span class="m_price c2">US$92</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Colony" href="english/hotel_hotel_code-sctgccolony.html" class="sub_link">Hotel Colony</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Isla de la Juventud</span>
+								 <span class="m_price c2">US$49</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Deauville" href="english/hotel_hotel_code-scthordeauville.html" class="sub_link">Hotel Deauville</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Centro Habana</span>
+								 <span class="m_price c2">US$82</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Encanto Casa Verde" href="english/hotel_hotel_code-sctgccasaverde.html" class="sub_link">Hotel Encanto Casa Verde</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Cienfuegos City</span>
+								 <span class="m_price c2">US$83</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Faro Luna" href="english/hotel_hotel_code-sctcubfarodeluna.html" class="sub_link">Hotel Faro Luna</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Cienfuegos</span>
+								 <span class="m_price c2">US$86</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Inglaterra" href="english/hotel_hotel_code-sctgcinglaterra.html" class="sub_link">Hotel Inglaterra</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Old Havana</span>
+								 <span class="m_price c2">US$276</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Jagua" href="english/hotel_hotel_code-sctgcjagua.html" class="sub_link">Hotel Jagua</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Cienfuegos City</span>
+								 <span class="m_price c2">US$141</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - La Unión" href="english/hotel_hotel_code-scthunion.html" class="sub_link">Hotel La Unión</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Cienfuegos City</span>
+								 <span class="m_price c2">US$141</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Nacional de Cuba" href="english/hotel_hotel_code-sctgcnacional.html" class="sub_link">Hotel Nacional de Cuba</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas5.gif"/></span>
+								 <span class="m_type c3">Vedado</span>
+								 <span class="m_price c2">US$270</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Neptuno - Tritón" href="english/hotel_hotel_code-sctgcntriton.html" class="sub_link">Hotel Neptuno - Tritón</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Miramar</span>
+								 <span class="m_price c2">US$57</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Palacio Azul" href="english/hotel_hotel_code-sctcubhpalacioa.html" class="sub_link">Hotel Palacio Azul</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Cienfuegos City</span>
+								 <span class="m_price c2">US$78</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Pelícano" href="english/hotel_hotel_code-sctsmpelicano.html" class="sub_link">Hotel Pelícano</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Cayo Largo</span>
+								 <span class="m_price c2">US$154</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Playa Caleta Salsa Club" href="english/hotel_hotel_code-scthcplayacaleta.html" class="sub_link">Hotel Playa Caleta Salsa Club</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Varadero</span>
+								 <span class="m_price c2">US$115</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Plaza" href="english/hotel_hotel_code-sctgcplaza.html" class="sub_link">Hotel Plaza</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Old Havana</span>
+								 <span class="m_price c2">US$159</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Puntarena Beach Fun" href="english/hotel_hotel_code-sctscpuntarena.html" class="sub_link">Hotel Puntarena Beach Fun</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas4.gif"/></span>
+								 <span class="m_type c3">Varadero</span>
+								 <span class="m_price c2">US$115</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Rancho Luna" href="english/hotel_hotel_code-sctcubcaranchol.html" class="sub_link">Hotel Rancho Luna</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Cienfuegos</span>
+								 <span class="m_price c2">US$77</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Saint John&#39;s" href="english/hotel_hotel_code-scthorsjhons.html" class="sub_link">Hotel Saint John&#39;s</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Vedado</span>
+								 <span class="m_price c2">US$82</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Sun Beach" href="english/hotel_hotel_code-scthotsumbeach.html" class="sub_link">Hotel Sun Beach</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Varadero</span>
+								 <span class="m_price c2">US$74</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Vedado" href="english/hotel_hotel_code-scthorvedado.html" class="sub_link">Hotel Vedado</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Vedado</span>
+								 <span class="m_price c2">US$82</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Villa Los Pinos" href="english/hotel_hotel_code-sctgcvlpinos.html" class="sub_link">Hotel Villa Los Pinos</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">East Havana Beaches</span>
+								 <span class="m_price c2">US$135</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Villa Tortuga" href="english/hotel_hotel_code-scthortortuga.html" class="sub_link">Hotel Villa Tortuga</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Varadero</span>
+								 <span class="m_price c2">US$70</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+							 <li>                         
+								 <span class="m_title"><a title="Gran Caribe Hotel - Villa Trópico" href="english/hotel_hotel_code-sctgcvillatropico.html" class="sub_link">Hotel Villa Trópico</a></span>
+								 <span class="m_star"><img src="images/GranCaribe_estrellas3.gif"/></span>
+								 <span class="m_type c3">Jibacoa</span>
+								 <span class="m_price c2">US$88</span>
+								  <div class="bg_line6 fs_bug"></div>
+							 </li>                         
+						<li class="separator"></li>
+						<li><a href="https://www.progettomarzotto.org/">Siti Casino Non Aams</a></li><li><a href="https://www.isorg.fr/">Casino En Ligne France</a></li><li><a href="https://www.incontriconlamatematica.net/">I Migliori Siti Di Poker Online</a></li><li><a href="https://www.cinquequotidiano.it/">Migliori Casino Non Aams</a></li><li><a href="https://subscribeonline.co.uk/">Casinos Not On Gamstop</a></li></ul>			
+                    </li> 
+                    <li class="separator_menu"></li>
+                    <li class="rates" id="rates"><a href="javascript:;" id="rates_reservation" title="Rates &amp; Reservations" class=""><span class="c">Rates &amp; Reservations</span></a>
+                    </li>
+                    <li class="separator_menu"></li>
+                    <li class="special_offers_menu" id="special_offers_menu"><a title="Special Offers" href="english/special_offers.html" class="general_link "><span class="c">Special Offers</span></a> 
+                    </li>
+                     <li class="separator_menu"></li>
+                    <li class="destinations" id="destinations"><a id="destinations_link" title="Cuba Destinations" href="english/cuba_destinations.html" class="general_link "><span class="c">Cuba Destinations<img src="images/GranCaribe_flechaBN.jpg" alt="" class="im_menu"/></span></a>
+							<ul class="submenu_destination" style="visibility: visible; display: none;">  
+									<li>                         
+									 <span class="m_title_d"><a title=" Isla de la Juventud Hotels, Cuba" href="english/isla-de-la-juventud.html" class="sub_link"> Isla de la Juventud Hotels</a> <span class="c3">[1]</span></span>  													
+									</li>                         
+									 <li class="separator_h">
+									   <div class="bg_line7 fs_bug"></div>
+									 </li> 
+									<li>                         
+									 <span class="m_title_d"><a title="Cayo Largo Hotels, Cuba" href="english/cayo_largo.html" class="sub_link">Cayo Largo Hotels</a> <span class="c3">[1]</span></span>  													
+									</li>                         
+									 <li class="separator_h">
+									   <div class="bg_line7 fs_bug"></div>
+									 </li> 
+									<li>                         
+									 <span class="m_title_d"><a title="Cienfuegos Hotels, Cuba" href="english/cienfuegos.html" class="sub_link">Cienfuegos Hotels</a> <span class="c3">[6]</span></span>  													
+									</li>                         
+									 <li class="separator_h">
+									   <div class="bg_line7 fs_bug"></div>
+									 </li> 
+									<li>                         
+									 <span class="m_title_d"><a title="Havana Hotels, Cuba" href="english/havana.html" class="sub_link">Havana Hotels</a> <span class="c3">[10]</span></span>  													
+									</li>                         
+									 <li class="separator_h">
+									   <div class="bg_line7 fs_bug"></div>
+									 </li> 
+									<li>                         
+									 <span class="m_title_d"><a title="Varadero Hotels, Cuba" href="english/varadero.html" class="sub_link">Varadero Hotels</a> <span class="c3">[5]</span></span>  													
+									</li>                         
+									 <li class="separator_h">
+									   <div class="bg_line7 fs_bug"></div>
+									 </li> 
+                        <li class="separator"></li>
+                    </ul>
+                    </li>
+                     <li class="separator_menu"></li>	
+                     <li class="contact" id="contact"><a title="Contact Us" class="" href="english/contact_gran_caribe.html"><span class="c">Contact Us</span></a></li>					
+                    </ul>
+            </div>
+     </div>     
+     <div id="ly_content_wrapper">   
+        <div id="animated_banner">
+<div id="animated_banner_slide">
+	<div id="animated_banner_slide_images_holder">
+			<img src="images/GranCaribe_imghome3.jpg" border="0" alt=""/>							
+	</div>
+</div>
+<div id="search_box"><div class="fm_elements t_top_sp pb">
+<span class="c1 fm_title">Search Cuba Hotels</span>
+</div></div>
+        </div>
+        <div id="home_container">
+           <div class="home_center c3">
+				<h2 class="c4">Cuba Hotels with Gran Caribe</h2>
+                <p>Gran Caribe is Cuba&#39;s foremost hotel group operating 4 and 5 star hotels across Cuba. The hotels owned by Gran Caribe are located in Cuba&#39;s most important destinations and range from landmark properties such as the Hotel Nacional de Cuba and the historic Hotel Inglaterra in Havana, to our hotels on beautifully stretched beaches in Varadero and on the keys overlooking crystal clear waters. For <b>Cuba hotels</b> reservations and information visit the links on this web site. We hope you enjoy our selection of <b>Cuba hotels.</b> </p>    
+           </div>
+           <div class="home_left">
+<div class="h_b_type">
+<h3>Gran Caribe Hotels by Type</h3>
+ <div class="bg_line3"></div> 
+		<div class="h_t_box">
+			<div class="h_t_title">
+				<a href="english/all_inclusive_cuba_hotels.html" title="All Inclusive Cuba Hotels"><img src="images/GranCaribe_flecha2.gif" width="5" height="7" class="h_im" align="middle"/>
+				<span class="h_t1 c1">All Inclusive </span><span class="h_t2 c3"> Hotels  </span>				
+				</a>
+			 </div>   
+				<img src="images/GranCaribe_hotelall_inclusive.jpg" width="330" height="90" alt="All Inclusive Cuba Hotels"/> 
+		</div> 
+		<div class="h_t_box">
+			<div class="h_t_title">
+				<a href="english/family_cuba_hotels.html" title="Family Cuba Hotels"><img src="images/GranCaribe_flecha2.gif" width="5" height="7" class="h_im" align="middle"/>
+				<span class="h_t1 c1">Family</span><span class="h_t2 c3"> Cuba Hotels</span>				
+				</a>
+			 </div>   
+				<img src="images/GranCaribe_hotelfamily.jpg" width="330" height="90" alt="Family Cuba Hotels"/> 
+		</div> 
+		<div class="h_t_box">
+			<div class="h_t_title">
+				<a href="english/historic_cuba_hotels.html" title="Historic Cuba Hotels"><img src="images/GranCaribe_flecha2.gif" width="5" height="7" class="h_im" align="middle"/>
+				<span class="h_t1 c1">Historic</span><span class="h_t2 c3"> Cuba Hotels</span>				
+				</a>
+			 </div>   
+				<img src="images/GranCaribe_hotelhistoric.jpg" width="330" height="90" alt="Historic Cuba Hotels"/> 
+		</div> 
+		<div class="h_t_box">
+			<div class="h_t_title">
+				<a href="english/business_cuba_hotels.html" title="Business Cuba Hotels"><img src="images/GranCaribe_flecha2.gif" width="5" height="7" class="h_im" align="middle"/>
+				<span class="h_t1 c1">Business</span><span class="h_t2 c3"> Cuba Hotels</span>				
+				</a>
+			 </div>   
+				<img src="images/GranCaribe_hotelnegocios.jpg" width="330" height="90" alt="Business Cuba Hotels"/> 
+		</div> 
+		<div class="bg_line3"></div>     
+		<div class="c1 more_h_link">        
+		  <a href="english/cuba_hotels_by_type.html" title="">[more hotel classifications]</a>
+		 </div> 
+</div>         
+<div class="contact_box c1">
+		<div class="c_b_t">Speak to our travel consultants</div>
+		<div class="c_b_info">		
+		<!-- <p class="c_b_numb"></p>
+		 -->
+		<div class="bg_line5"></div>
+		<br/>
+		<div class="c_hours">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody><tr>
+					<td width="75" align="right">Mon - Fri</td>
+					<td>:</td>
+					<td width="55">8.30 am</td>
+					<td>-</td>
+					<td>5.15 pm (EST)</td>
+				  </tr>
+				  <tr>
+					<td width="65" align="right">Sat</td>
+					<td width="8">:</td>
+					<td width="55">9.00 am</td>
+					<td width="10">-</td>
+					<td>12.00 m</td>
+				  </tr>
+				</tbody></table>
+		</div>		
+		<p><b>Address:</b></p>
+			  <p>CTN House, Calle 31, No. 1411, e/14 y 18<br/>
+Miramar, Playa, Havana </p>
+		 <p>Book online or <a href="english/contact_us_form.html">Email Us</a></p>
+		</div>
+</div>  
+           </div>
+           <div class="home_right">
+             <div class="link_and_map">               
+               		<h2>Gran Caribe Useful Links</h2>
+                    <div class="bg_line3 fs_bug"></div>                    
+<h3 class="c3">Explore Cuba</h3>
+	<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="english/explore_general.html" title="Explore Cuba - General" class="c1">General </a></span><br/>
+	<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="english/explore_activities.html" title="Explore Cuba - Activities" class="c1">Activities </a></span><br/>
+	<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="english/explore_environment.html" title="Explore Cuba - Environment" class="c1">Environment</a> </span><br/>
+	<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="english/explore_economy.html" title="Explore Cuba - Economy" class="c1">Economy</a> </span><br/>			
+	<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="english/explore_culture.html" title="Explore Cuba - Culture" class="c1">Culture</a></span>
+					<br/><br/>
+ <h3 class="c3">Gran Caribe Newsletter</h3>
+  <span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="IS_GC_01.pdf" title="Gran Caribe Newsletter" target="_blank" class="c1">Download Gran Caribe weekly newsletter </a></span>
+					<br/><br/>
+<h3 class="c3">Travel Tools</h3>
+<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="javascript:open_window(&#39;/english/weather.asp&#39;,&#39;&#39;,&#39;width=500,height=470&#39;)" class="c1" title="Travel Tools - Weather">Weather</a></span><br/>
+<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="javascript:open_window(&#39;/english/currency.asp&#39;,&#39;&#39;,&#39;width=550,height=400&#39;)" class="c1" title="Travel Tools - Currency Converter">Currency Converter</a></span><br/>
+<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="javascript:open_window(&#39;/english/time.asp&#39;,&#39;&#39;,&#39;width=450,height=380&#39;)" class="c1" title="Travel Tools - Time Calculator">Time Calculator</a></span>
+<br/>
+<span class="q_l_f c3">&gt;</span><span class="q_l_text"><a href="javascript:open_window(&#39;/english/chain_gallery.asp&#39;,&#39;&#39;,&#39;width=600,height=600&#39;)" class="c1" title="Travel Tools - Picture Gallery">Picture Gallery</a></span>
+					<br/><br/>
+             </div>
+             <div class="gg_ads"> 	
+				<div class="map_box">
+               		<h2 class="map_title">Cuba Hotels by Map</h2>
+                    <a href="english/cuba_hotels_by_map.html"><img src="images/GranCaribe_mapa.gif" width="299" height="134" alt="Explore Cuba Map - Find Cuba Hotels"/></a>					               	  
+               </div>
+             </div>
+           </div>  
+			<div style="clear: both;"></div>			
+        </div>        
+<div id="bottom">
+		  <div class="bg_line3 fs_bug"></div> 
+		  <div class="bottom_links"><a href="" title="City Cuba Hotels">City Cuba Hotels</a> | <a href="" title="Beach Cuba Hotels">Beach Cuba Hotels</a> | <a href="english/key_cuba_hotels.html" title="Key Cuba Hotels">Key Cuba Hotels</a> | <a href="english/partners_cuba_hotels.html" title="Partners Cuba Hotels">Partners Cuba Hotels</a>
+		  </div>
+		<div id="menu_bottom">	
+		    <a href="english/about_gran_caribe.html" title="About Us">About Us</a> | <a href="english/contact_gran_caribe.html" title="Contact Us">Contact Us</a> | <a href="english/faqs.html" title="FAQs">FAQs</a> | <a href="english/terms_use.html" title="Terms &amp; Conditions">Terms &amp; Conditions</a> | <a href="english/privacy_policy.html" title="Privacy Policy">Privacy Policy</a> | <a href="english/more_links/more_links.html" title="More Links">More Links</a> | <a href="english/news/news_archive.html" title="Cuba News">Cuba News</a>			
+		</div>
+		<span class="c1 fb">Cuba Hotels with Gran-Caribe.com</span>
+		<p align="center" class="c3">©
+				<script language="javascript" type="text/javascript">
+				   year = currentYear();
+				   document.write(year);
+				</script>
+				Gran-Caribe.com All rights reserved.</p>
+	</div>		
+      </div>  
+	</div>
+				<script type="text/javascript" src="comun/scripts/jquery.cycle.all.js"></script>
+        <div style="display:none">
+        </div>
+		<script type="text/javascript"> 
+			<!--		
+			$(document).ready(function (){
+				$(window).load(
+					function(){
+						 $(".slideshow_preloader", "#animated_banner_slide").hide()									
+						$('#animated_banner_slide_nav').hide();
+				});			
+			});
+			-->
+		</script>
+	<link href="css/ui-lightness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-migrate-1.0.0.js"></script>
+<script type="text/javascript" src="ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script type="text/javascript">
+<!--
+if(typeof jQuery.datepicker == 'undefined'){
+	document.write(unescape("%3Cscript src='" + "/scripts/jquery-ui-1.10.3.custom.min.js" + "' type='text/javascript'%3E%3C/script%3E"));
+}
+-->
+</script>
+<script src="comun/scripts/ctnsyslib.js" type="text/javascript"></script>
+<script src="comun/scripts/hotel_bookings_form/script.js" type="text/javascript"></script>
+<script type="text/javascript">
+var h = searchHotels();
+h.helper = formHelper ();
+h.options.id = "shb_";
+h.options.container = "search_box";
+h.options.language = 'en';
+h.options.currency = 'USD';
+h.options.point_of_sale = "PR-PROV-GCCOM";
+h.options.commercial_client_code = "ctn";
+h.options.commercial_client_type = "ctn";
+h.options.hotel = "";
+h.options.show_currency = false;
+h.options.show_promotional_code = false;
+//h.options.show_destinations = false;
+//h.options.show_hotels = false;
+h.options.chain = "21";
+h.options.site_owner = "21";
+h.options.release_time = "0";
+h.options.site_type = "MSHotelChain";
+h.options.page_type = "";
+h.options.marketing_code = "_A";
+h.options.action_request_book = "english/contact_us_form.html";
+function mp_data_load(data){
+	var o = h.options;
+	h.data_load(data, o);
+}
+var datafunction = function ()
+{
+	jQuery.getScript("/comun/services/json.asp?q=hotel_book_destinations_ctnsys,hotel_book_hotels_ctnsys&language_id=" + h.options.language + "&country=" + h.options.country + "&chain_id=" + h.options.chain + "&jsoncallback=ms_data_load", function(data){});
+//jQuery.getScript("/comun/data/searchbox_ctnsys/json_ctnsys_mp_" + h.options.language + "_CUB.js", function(data){});
+}
+function ms_data_load(data){
+	var  o = h.options;
+	h.data_load(data, o);
+}
+$.ajax({
+	url: h.options.template,
+	data: { id : h.options.id,
+			request_location : h.options.request_location , 
+			max_rooms : h.options.max_rooms ,
+			max_adults : h.options.max_adults ,
+			max_children : h.options.max_children ,
+			max_infants : h.options.max_infants ,
+			release_time : h.options.release_time ,
+			booking_time : h.options.booking_time ,
+			title : h.options.title ,
+			language : h.options.language ,
+			currency: h.options.currency ,
+			country	: h.options.country ,
+			destination	: h.options.destination ,
+			hotel : h.options.hotel ,
+			show_access_code : h.options.show_access_code ,
+			url_access_code	: h.options.url_access_code ,
+			url_iata_code : h.options.url_iata_code ,
+			show_promotional_code : h.options.show_promotional_code ,
+			show_destinations : h.options.show_destinations ,
+			show_hotels : h.options.show_hotels ,
+			show_button	: h.options.show_button 
+		}
+	}).done(function(data) { 
+		$("#" + h.options.container).append(data);
+		h.init();
+	datafunction();
+	}
+);
+</script>
+
+<div style="text-align:center"><h2>Online treasures</h2><ul style="list-style:none;padding-left:0"><li><a href="https://www.edp-biologie.fr/">Bitcoin Casino</a></li><li><a href="https://www.parafishcontrol.eu/">Casino Non AAMS</a></li><li><a href="https://thegame0.com/">Casino En Ligne Bonus Sans Dépôt</a></li><li><a href="https://eutmmali.eu/">Meilleur Casino En Ligne Français</a></li><li><a href="https://feedpress.it/">Migliori Casino Online</a></li><li><a href="https://www.cycle-terre.eu/">Casino En Ligne Fiable</a></li><li><a href="https://toots100.be/">Meilleurs Sites De Paris Sportifs Belgique</a></li><li><a href="https://www.terradituttifilmfestival.org/">Siti Non Aams</a></li><li><a href="https://www.progettoasco.it/">Migliori App Casino Online</a></li><li><a href="https://www.roma2022.eu/">App Per Scommesse</a></li><li><a href="https://www.edmaster.it/">Siti Scommesse Crypto</a></li><li><a href="https://www.tropiland.it/">Casino Esteri Per Italiani</a></li><li><a href="https://www.bernypack.fr/">Sites Pour Parier Tennis</a></li><li><a href="https://www.sondages-en-france.fr/">Paris Sportif Ufc Mma</a></li><li><a href="https://www.maru5ebisu.jp/">ライブカジノ</a></li><li><a href="https://techsviewer.com/">비트코인 베팅사이트</a></li><li><a href="https://infolight.org.ua/">10 лучших казино онлайн</a></li><li><a href="https://www.datchamandala.net/">Casino Live</a></li><li><a href="https://thouarsetmoi.fr/">Paris Sportif Crypto</a></li><li><a href="https://www.groupe-hotelier-bataille.com/">Paris Sportif Crypto</a></li><li><a href="https://www.placedumarche.fr/">Casino En Ligne 2026</a></li><li><a href="https://lemouvementradical.fr/">Casino Nouveau En Ligne</a></li><li><a href="https://orguefrance.org/">Meilleur Casino En Ligne France</a></li><li><a href="https://www.cisis.it/">Bookmaker Non Aams</a></li><li><a href="https://www.circuitocittadarte.it/">Sweet Bonanza Opinioni</a></li><li><a href="https://neowordpress.fr/">Casino En Ligne 2026</a></li><li><a href="https://www.absurdityisnothing.net/">Casino Senza KYC</a></li><li><a href="https://www.arizuka.com/">Meilleur Casino En Ligne 2026</a></li><li><a href="https://www.forum-avignon.org/">Casino En Ligne 2026</a></li><li><a href="https://www.champigny94.fr/">Casino En Ligne Fiable</a></li><li><a href="https://welcomingeurope.it/">Migliori Crypto Casino</a></li><li><a href="https://dig-hum-nord.eu/">Casino Bonus Senza Documenti</a></li><li><a href="https://ilbegroup.it/">Free Spin Gratis Senza Deposito</a></li><li><a href="https://www.placard-network.eu/">Migliore Casino Non Aams</a></li><li><a href="https://www.bonjourmaurice.be/">Casino En Ligne Belgique</a></li><li><a href="https://operazionematogrosso.org/">Casino Non Aams Sicuri</a></li><li><a href="https://reseaurural.fr/">Casino En Ligne Français</a></li><li><a href="https://www.axnet.it/">Crypto Casino Italia</a></li><li><a href="https://normandie2014.com/">Meilleur Casino En Ligne</a></li><li><a href="https://www.immigrazioneoggi.it/">Best Crypto Casino</a></li><li><a href="https://www.pariscotejardin.fr/">Casino En Ligne</a></li><li><a href="https://www.peugeotscooters.fr/">Casino Crypto En Ligne</a></li><li><a href="https://www.haut-couserans.com/">Nouveau Casino En Ligne</a></li><li><a href="https://troops.fr/">Casino En Ligne Avis</a></li><li><a href="https://www.footitalia.com/meilleur-casino-en-ligne/">Casino En Ligne Le Plus Payant</a></li><li><a href="https://www.cardplayer.com/it/casino-online/non-aams">Lista Casino Non Aams</a></li></ul></div></body></html>

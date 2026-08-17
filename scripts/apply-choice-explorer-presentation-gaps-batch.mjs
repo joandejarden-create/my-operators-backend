@@ -13,6 +13,7 @@ import { fileURLToPath } from "url";
 import "../load-env.js";
 import Airtable from "airtable";
 import { buildCompletePresentationRows } from "./lib/choice-explorer-complete-rows.mjs";
+import { resolveChiBrandBasicsName } from "./lib/choice-chi-brand-resolve.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -44,8 +45,9 @@ async function main() {
   );
   let brands = await listChiBrands(base);
   if (brandFilter) {
-    brands = brands.filter((b) => b === brandFilter);
-    if (!brands.length) throw new Error(`No CHI brand: ${brandFilter}`);
+    const resolved = resolveChiBrandBasicsName(brandFilter, brands);
+    if (!resolved) throw new Error(`No CHI brand: ${brandFilter}`);
+    brands = [resolved];
   }
 
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "dc-explorer-gap-"));

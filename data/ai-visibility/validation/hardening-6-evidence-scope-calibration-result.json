@@ -1,0 +1,538 @@
+{
+  "version": "hardening_6_evidence_scope_calibration_v1",
+  "generatedAt": "2026-08-15T01:22:19.355Z",
+  "phase": "AI_INTELLIGENCE_EVIDENCE_SCOPE_CALIBRATION_HARDENING_6_COMPLETE",
+  "architecture": {
+    "V3_3": "ai_visibility_recommendation_classifier_v3_3",
+    "V4": "ai_visibility_recommendation_classifier_v4 + evidence_v4",
+    "V4_1": "ai_visibility_recommendation_classifier_v4_1 + ai_visibility_recommendation_evidence_v4_1",
+    "KEEP_EVIDENCE_ARCHITECTURE": true
+  },
+  "DEV_N": 290,
+  "ENTITY_GATE": "PASS",
+  "ENTITY_METRICS": {
+    "precision": 1,
+    "recall": 1,
+    "f1": 1
+  },
+  "v3_3": {
+    "ACCURACY": 0.8379310344827586,
+    "PRECISION": 0.8379310344827586,
+    "RECALL": 0.8379310344827586,
+    "F1": 0.8379310344827586,
+    "MACRO_P": 0.8291134628853927,
+    "MACRO_R": 0.8898162145712054,
+    "MACRO_F1": 0.851712511959564,
+    "FIRST_REC": 0.9551724137931035,
+    "QUESTION_STATUS": 0.8215767634854771,
+    "source": "hardening-5 frozen baseline"
+  },
+  "v4": {
+    "ACCURACY": 0.6137931034482759,
+    "PRECISION": 0.6137931034482759,
+    "RECALL": 0.6137931034482759,
+    "F1": 0.6137931034482759,
+    "MACRO_P": 0.6425225858992201,
+    "MACRO_R": 0.5033445048796815,
+    "MACRO_F1": 0.569733556455724,
+    "FIRST_REC": 0.8827586206896552,
+    "QUESTION_STATUS": 0.6058091286307054,
+    "source": "hardening-5 frozen baseline"
+  },
+  "v4_1": {
+    "ACCURACY": 0.6206896551724138,
+    "PRECISION": 0.6206896551724138,
+    "RECALL": 0.6206896551724138,
+    "F1": 0.6206896551724138,
+    "MACRO_P": 0.7092161715343246,
+    "MACRO_R": 0.6717595066009713,
+    "MACRO_F1": 0.6530297091771275,
+    "FIRST_REC": 0.8758620689655172,
+    "QUESTION_STATUS": 0.5975103734439834,
+    "CLASS_METRICS": {
+      "first_recommendation": {
+        "precision": 1,
+        "recall": 0.28,
+        "f1": 0.43750000000000006,
+        "tp": 14,
+        "fp": 0,
+        "fn": 36
+      },
+      "ranked_recommendation": {
+        "precision": 0.7777777777777778,
+        "recall": 0.4117647058823529,
+        "f1": 0.5384615384615384,
+        "tp": 7,
+        "fp": 2,
+        "fn": 10
+      },
+      "explicit_recommendation": {
+        "precision": 0.4666666666666667,
+        "recall": 0.7368421052631579,
+        "f1": 0.5714285714285714,
+        "tp": 14,
+        "fp": 16,
+        "fn": 5
+      },
+      "associated_option": {
+        "precision": 0.3064516129032258,
+        "recall": 0.48717948717948717,
+        "f1": 0.37623762376237624,
+        "tp": 19,
+        "fp": 43,
+        "fn": 20
+      },
+      "comparator": {
+        "precision": 0.6666666666666666,
+        "recall": 0.5714285714285714,
+        "f1": 0.6153846153846153,
+        "tp": 4,
+        "fp": 2,
+        "fn": 3
+      },
+      "discussed": {
+        "precision": 0.7189542483660131,
+        "recall": 0.7586206896551724,
+        "f1": 0.738255033557047,
+        "tp": 110,
+        "fp": 43,
+        "fn": 35
+      },
+      "passing_mention": {
+        "precision": 0.5714285714285714,
+        "recall": 0.8,
+        "f1": 0.6666666666666666,
+        "tp": 4,
+        "fp": 3,
+        "fn": 1
+      },
+      "negative_or_qualified": {
+        "precision": 0.875,
+        "recall": 1,
+        "f1": 0.9333333333333333,
+        "tp": 7,
+        "fp": 1,
+        "fn": 0
+      },
+      "source_only": {
+        "precision": 1,
+        "recall": 1,
+        "f1": 1,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0
+      }
+    },
+    "CONFUSION_MATRIX": {
+      "first_recommendation": {
+        "first_recommendation": 14,
+        "ranked_recommendation": 0,
+        "explicit_recommendation": 13,
+        "associated_option": 8,
+        "comparator": 0,
+        "discussed": 14,
+        "passing_mention": 1,
+        "negative_or_qualified": 0,
+        "source_only": 0
+      },
+      "ranked_recommendation": {
+        "first_recommendation": 0,
+        "ranked_recommendation": 7,
+        "explicit_recommendation": 0,
+        "associated_option": 7,
+        "comparator": 0,
+        "discussed": 3,
+        "passing_mention": 0,
+        "negative_or_qualified": 0,
+        "source_only": 0
+      },
+      "explicit_recommendation": {
+        "first_recommendation": 0,
+        "ranked_recommendation": 0,
+        "explicit_recommendation": 14,
+        "associated_option": 0,
+        "comparator": 0,
+        "discussed": 5,
+        "passing_mention": 0,
+        "negative_or_qualified": 0,
+        "source_only": 0
+      },
+      "associated_option": {
+        "first_recommendation": 0,
+        "ranked_recommendation": 0,
+        "explicit_recommendation": 1,
+        "associated_option": 19,
+        "comparator": 0,
+        "discussed": 17,
+        "passing_mention": 2,
+        "negative_or_qualified": 0,
+        "source_only": 0
+      },
+      "comparator": {
+        "first_recommendation": 0,
+        "ranked_recommendation": 0,
+        "explicit_recommendation": 0,
+        "associated_option": 0,
+        "comparator": 4,
+        "discussed": 3,
+        "passing_mention": 0,
+        "negative_or_qualified": 0,
+        "source_only": 0
+      },
+      "discussed": {
+        "first_recommendation": 0,
+        "ranked_recommendation": 2,
+        "explicit_recommendation": 2,
+        "associated_option": 28,
+        "comparator": 2,
+        "discussed": 110,
+        "passing_mention": 0,
+        "negative_or_qualified": 1,
+        "source_only": 0
+      },
+      "passing_mention": {
+        "first_recommendation": 0,
+        "ranked_recommendation": 0,
+        "explicit_recommendation": 0,
+        "associated_option": 0,
+        "comparator": 0,
+        "discussed": 1,
+        "passing_mention": 4,
+        "negative_or_qualified": 0,
+        "source_only": 0
+      },
+      "negative_or_qualified": {
+        "first_recommendation": 0,
+        "ranked_recommendation": 0,
+        "explicit_recommendation": 0,
+        "associated_option": 0,
+        "comparator": 0,
+        "discussed": 0,
+        "passing_mention": 0,
+        "negative_or_qualified": 7,
+        "source_only": 0
+      },
+      "source_only": {
+        "first_recommendation": 0,
+        "ranked_recommendation": 0,
+        "explicit_recommendation": 0,
+        "associated_option": 0,
+        "comparator": 0,
+        "discussed": 0,
+        "passing_mention": 0,
+        "negative_or_qualified": 0,
+        "source_only": 1
+      }
+    },
+    "BY_PAIR": [
+      {
+        "pair": "discussed => associated_option",
+        "count": 28
+      },
+      {
+        "pair": "associated_option => discussed",
+        "count": 17
+      },
+      {
+        "pair": "first_recommendation => discussed",
+        "count": 14
+      },
+      {
+        "pair": "first_recommendation => explicit_recommendation",
+        "count": 13
+      },
+      {
+        "pair": "first_recommendation => associated_option",
+        "count": 8
+      },
+      {
+        "pair": "ranked_recommendation => associated_option",
+        "count": 7
+      },
+      {
+        "pair": "explicit_recommendation => discussed",
+        "count": 5
+      },
+      {
+        "pair": "ranked_recommendation => discussed",
+        "count": 3
+      },
+      {
+        "pair": "comparator => discussed",
+        "count": 3
+      },
+      {
+        "pair": "discussed => comparator",
+        "count": 2
+      },
+      {
+        "pair": "discussed => ranked_recommendation",
+        "count": 2
+      },
+      {
+        "pair": "associated_option => passing_mention",
+        "count": 2
+      },
+      {
+        "pair": "discussed => explicit_recommendation",
+        "count": 2
+      },
+      {
+        "pair": "first_recommendation => passing_mention",
+        "count": 1
+      },
+      {
+        "pair": "discussed => negative_or_qualified",
+        "count": 1
+      },
+      {
+        "pair": "associated_option => explicit_recommendation",
+        "count": 1
+      },
+      {
+        "pair": "passing_mention => discussed",
+        "count": 1
+      }
+    ],
+    "ERROR_COUNT": 110,
+    "SUBGROUPS": {
+      "PROVIDER": {
+        "unspecified": {
+          "n": 50,
+          "accuracy": 0.88
+        },
+        "claude": {
+          "n": 67,
+          "accuracy": 0.5671641791044776
+        },
+        "gemini": {
+          "n": 71,
+          "accuracy": 0.7183098591549296
+        },
+        "perplexity": {
+          "n": 64,
+          "accuracy": 0.375
+        },
+        "openai": {
+          "n": 38,
+          "accuracy": 0.6052631578947368
+        }
+      },
+      "LANGUAGE": {
+        "unspecified": {
+          "n": 50,
+          "accuracy": 0.88
+        },
+        "es": {
+          "n": 118,
+          "accuracy": 0.6016949152542372
+        },
+        "en": {
+          "n": 122,
+          "accuracy": 0.5327868852459017
+        }
+      },
+      "GEOGRAPHY": {
+        "unspecified": {
+          "n": 50,
+          "accuracy": 0.88
+        },
+        "CALA": {
+          "n": 80,
+          "accuracy": 0.6625
+        },
+        "MEXICO": {
+          "n": 85,
+          "accuracy": 0.47058823529411764
+        },
+        "EUROPE": {
+          "n": 21,
+          "accuracy": 0.5238095238095238
+        },
+        "GLOBAL": {
+          "n": 30,
+          "accuracy": 0.4666666666666667
+        },
+        "NORTH_AMERICA": {
+          "n": 24,
+          "accuracy": 0.75
+        }
+      }
+    },
+    "source": "live scoreGoldenSetHydrated holdoutPolicy=exclude"
+  },
+  "missingEvidenceAudit": {
+    "TOTAL_V4_NEW_ERRORS": 64,
+    "BY_MISSING_EVIDENCE_TYPE": {
+      "OTHER": 23,
+      "LOCAL_POSITIVE_CONTEXT": 5,
+      "CONFIRMED_RANK_CONTEXT": 7,
+      "SECTION_CONSIDERATION_CONTEXT": 7,
+      "LEAD_CONTEXT": 13,
+      "TABLE_CONTEXT": 5,
+      "SPANISH_CONTEXT": 3,
+      "SECTION_RECOMMENDATION_CONTEXT": 1
+    }
+  },
+  "sectionModel": {
+    "SECTION_TYPES": [
+      "LEAD_RECOMMENDATION_SECTION",
+      "RANKED_RECOMMENDATION_SECTION",
+      "RECOMMENDATION_SET_SECTION",
+      "CONSIDERATION_SET_SECTION",
+      "COMPARISON_SECTION",
+      "NEGATIVE_SECTION",
+      "NEUTRAL_CATALOG_SECTION",
+      "DESCRIPTIVE_SECTION",
+      "UNKNOWN_SECTION"
+    ],
+    "PROPAGATION_RULES": "entity inside section + known boundary + no heading reset + compatible cue + distance bound; list/table children inherit consideration/rec-set; untitled mid-prose does not promote whole doc",
+    "RANK_RULES": "confirmed RANK_SEMANTICS only; pos1=first; pos>1=ranked; ordinary ordered lists and section numbers excluded",
+    "CONSIDERATION_RULES": "consideration heading/intro → associated for list children; not first/ranked; semicolon clause break blocks false link; Brands to consider ≠ ranked",
+    "SPANISH_RULES": "marcas a considerar / orden de prioridad / principales marcas…consideradas / las más citadas — structural only",
+    "EXPLICIT_VS_ASSOCIATED": "Recommended brands: → explicit for children; Brands to consider: → associated"
+  },
+  "regression": {
+    "V4_ERRORS_FIXED": 24,
+    "NEW_ERRORS_VS_V4": 22,
+    "V4_ERROR_COUNT": 112,
+    "V4_1_ERROR_COUNT": 110,
+    "NET_VS_V4_ACCURACY_DELTA": 0.006896551724137945,
+    "NET_VS_V3_3_ACCURACY_DELTA": -0.21724137931034482,
+    "V3_3_ERRORS_FIXED": null,
+    "NEW_ERRORS_VS_V3_3": null
+  },
+  "GROUND_TRUTH_REVIEW_CANDIDATES": [
+    {
+      "CASE_ID": "v1_g023",
+      "ENTITY": "Aimbridge Hospitality (LATAM)",
+      "HUMAN_ROLE": "first_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v1_g024",
+      "ENTITY": "GHL Hoteles (GHL Holding)",
+      "HUMAN_ROLE": "ranked_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v1_g045",
+      "ENTITY": "Tribute Portfolio",
+      "HUMAN_ROLE": "first_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_035ffe13",
+      "ENTITY": "Small Luxury Hotels of the World",
+      "HUMAN_ROLE": "first_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_090e59ac",
+      "ENTITY": "Ascend Hotel Collection",
+      "HUMAN_ROLE": "ranked_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_0a8cfa16",
+      "ENTITY": "DoubleTree by Hilton",
+      "HUMAN_ROLE": "ranked_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_14651e14",
+      "ENTITY": "Hilton Hotels & Resorts",
+      "HUMAN_ROLE": "first_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_2cad5049",
+      "ENTITY": "Sheraton",
+      "HUMAN_ROLE": "ranked_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_2e0a4ca6",
+      "ENTITY": "Preferred Hotels & Resorts",
+      "HUMAN_ROLE": "first_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_3468ce7e",
+      "ENTITY": "Design Hotels",
+      "HUMAN_ROLE": "ranked_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_359453c0",
+      "ENTITY": "Preferred Hotels & Resorts",
+      "HUMAN_ROLE": "first_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_3c28453a",
+      "ENTITY": "Handwritten Collection",
+      "HUMAN_ROLE": "first_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_6995af8a",
+      "ENTITY": "Hotel Indigo",
+      "HUMAN_ROLE": "first_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_967d73b3",
+      "ENTITY": "Hotel Indigo",
+      "HUMAN_ROLE": "ranked_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    },
+    {
+      "CASE_ID": "v2_cand_ed35e8e8",
+      "ENTITY": "Kimpton Hotels",
+      "HUMAN_ROLE": "ranked_recommendation",
+      "PREDICTED": "associated_option",
+      "NOTE": "first/ranked GT under consideration-style structure — may conflict with clarified taxonomy (associated)"
+    }
+  ],
+  "gates": {
+    "ENTITY_GATE": "PASS",
+    "RECOMMENDATION_GATE": "FAIL",
+    "FIRST_REC_GATE": "FAIL",
+    "CLASS_BALANCE_STATUS": "WEAK",
+    "QUESTION_STATUS_STATUS": "FAIL"
+  },
+  "holdout": {
+    "HOLDOUT_ACCESSED": false,
+    "HOLDOUT_CASES_INSPECTED": 0,
+    "HOLDOUT_METRICS_RUN": false
+  },
+  "hardGuards": {
+    "LIVE_PROVIDER_CALLS": 0,
+    "NEW_MONITORING": 0,
+    "PUBLIC_CRAWL": 0,
+    "HOLDOUT_ACCESS": 0,
+    "HOLDOUT_TUNING": 0,
+    "AUTO_GROUND_TRUTH_CHANGES": 0,
+    "UNAUTHORIZED_GOLDEN_SET_CHANGES": 0,
+    "AIRTABLE_WRITES": 0,
+    "SCHEMA_CHANGES": 0,
+    "DEPLOYS": 0
+  },
+  "nextStep": "MORE_DEVELOPMENT_HARDENING_REQUIRED",
+  "status": "AI_INTELLIGENCE_EVIDENCE_SCOPE_CALIBRATION_HARDENING_6_REVIEW_REQUIRED"
+}

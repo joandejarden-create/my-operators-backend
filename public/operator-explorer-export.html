@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Explorer — PDF Export</title>
+    <link rel="stylesheet" href="/css/brand-explorer-export.css">
+    <link rel="stylesheet" href="/css/operator-explorer-export-shell.css">
+</head>
+<body class="bee-page">
+    <header class="bee-toolbar bee-no-print" id="oeeToolbar">
+        <div>
+            <p class="bee-toolbar__title" id="oeeToolbarTitle">Operator Explorer — PDF export</p>
+            <p class="bee-toolbar__hint">
+                Same width as Operator Explorer in the platform (1360px). Wait until <strong>Print / Save as PDF</strong> is enabled, then print with
+                <strong>Background graphics</strong> on and <strong>Headers and footers</strong> off.
+                Add <code>?spacious=1</code> for one tab per page, or <code>?compact=1</code> for a smaller dense layout.
+                Optional <code>?dealId=rec…</code> includes alignment context.
+            </p>
+        </div>
+        <div class="bee-toolbar__actions">
+            <button type="button" class="bee-btn" id="oeePrintBtn" disabled>Print / Save as PDF</button>
+            <a class="bee-btn bee-btn--secondary" id="oeeOpenInAppLink" href="/operator-explorer-gold-mock.html">Open profile</a>
+        </div>
+    </header>
+    <p class="bee-page-error hidden" id="oeePageError" role="alert"></p>
+    <div class="bee-frame-wrap oee-frame-wrap">
+        <p class="bee-loading" id="oeeLoading" role="status" aria-live="polite">Loading Operator Profile…</p>
+        <iframe
+            class="bee-frame"
+            id="oeeFrame"
+            title="Operator Explorer export preview"
+            src="about:blank"
+        ></iframe>
+    </div>
+    <script>
+    (function () {
+        'use strict';
+
+        var DEFAULT_OPERATOR_ID = 'recTUjuDxL96yWcQA';
+        var params = new URLSearchParams(window.location.search || '');
+        var operatorKey = (
+            params.get('id') ||
+            params.get('operatorId') ||
+            params.get('recordId') ||
+            ''
+        ).trim();
+        var autoPrint = params.get('print') === '1' || params.get('print') === 'true';
+        var dealId = (params.get('dealId') || '').trim();
+
+        var frame = document.getElementById('oeeFrame');
+        var loading = document.getElementById('oeeLoading');
+        var printBtn = document.getElementById('oeePrintBtn');
+        var openApp = document.getElementById('oeeOpenInAppLink');
+        var pageError = document.getElementById('oeePageError');
+        var toolbarTitle = document.getElementById('oeeToolbarTitle');
+        var exportReady = false;
+
+        function showError(msg) {
+            if (loading) loading.classList.add('hidden');
+            if (pageError) {
+                pageError.textContent = msg;
+                pageError.classList.remove('hidden');
+            }
+            if (frame) frame.style.display = 'none';
+        }
+
+        function buildIframeSrc() {
+            var q = new URLSearchParams();
+            q.set('embed', '1');
+            q.set('exportPdf', '1');
+            if (operatorKey) q.set('id', operatorKey);
+            if (dealId) q.set('dealId', dealId);
+            if (autoPrint) q.set('print', '1');
+            if (params.get('spacious') === '1' || params.get('spacious') === 'true') {
+                q.set('spacious', '1');
+            }
+            if (params.get('compact') === '1' || params.get('compact') === 'true') {
+                q.set('compact', '1');
+            }
+            return '/operator-explorer-gold-mock.html?' + q.toString();
+        }
+
+        function resizeFrame() {
+            if (!frame || !frame.contentDocument || !frame.contentDocument.body) return;
+            try {
+                var h = frame.contentDocument.documentElement.scrollHeight;
+                if (h > 200) frame.style.height = Math.max(h + 24, window.innerHeight - 88) + 'px';
+            } catch (_) {}
+        }
+
+        function onExportReady() {
+            exportReady = true;
+            if (loading) loading.classList.add('hidden');
+            if (printBtn) printBtn.disabled = false;
+            resizeFrame();
+            window.setTimeout(resizeFrame, 600);
+            window.setTimeout(resizeFrame, 2000);
+            if (autoPrint) {
+                window.setTimeout(printExport, 900);
+            }
+        }
+
+        function printExport() {
+            if (!frame || !frame.contentWindow) {
+                window.print();
+                return;
+            }
+            try {
+                frame.contentWindow.focus();
+                frame.contentWindow.print();
+            } catch (_) {
+                window.print();
+            }
+        }
+
+        if (!operatorKey) {
+            operatorKey = DEFAULT_OPERATOR_ID;
+            try {
+                var shareUrl = new URL(window.location.href);
+                shareUrl.searchParams.set('id', DEFAULT_OPERATOR_ID);
+                window.history.replaceState({}, '', shareUrl);
+            } catch (_) {}
+        }
+
+        if (toolbarTitle) {
+            toolbarTitle.textContent = 'Operator Explorer — ' + operatorKey;
+        }
+        if (openApp) {
+            var profileHref = '/operator-explorer-gold-mock.html?id=' + encodeURIComponent(operatorKey);
+            if (dealId) profileHref += '&dealId=' + encodeURIComponent(dealId);
+            openApp.href = profileHref;
+        }
+
+        if (printBtn) {
+            printBtn.addEventListener('click', printExport);
+        }
+
+        window.addEventListener('message', function (ev) {
+            if (!ev.data || ev.data.type !== 'operator-explorer-export-ready') return;
+            onExportReady();
+        });
+
+        if (frame) {
+            frame.addEventListener('load', function () {
+                window.setTimeout(resizeFrame, 400);
+                window.setTimeout(resizeFrame, 2000);
+                window.setTimeout(resizeFrame, 6000);
+            });
+            frame.src = buildIframeSrc();
+        }
+
+        window.setTimeout(function () {
+            if (!exportReady && loading && !loading.classList.contains('hidden')) {
+                if (printBtn) printBtn.disabled = false;
+            }
+        }, 45000);
+    })();
+    </script>
+</body>
+</html>

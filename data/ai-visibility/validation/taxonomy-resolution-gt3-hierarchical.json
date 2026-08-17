@@ -1,0 +1,75 @@
+{
+  "TOTAL": 3,
+  "KEEP": 2,
+  "AMEND": 0,
+  "DEFER": 1,
+  "cases": [
+    {
+      "CASE_ID": "v1_g034",
+      "ENTITY": "Hotel Equities (CALA)",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_PREDICTION": "explicit_recommendation",
+      "FULL_RELEVANT_CONTEXT": "I would shortlist Hotel Equities (CALA) for lifestyle hotels.",
+      "TAXONOMY_CONFLICT": "human=first_recommendation vs pred=explicit_recommendation; lead=true pos=true cons=false",
+      "STRUCTURAL": {
+        "hasLead": true,
+        "hasPos": true,
+        "inCons": false,
+        "leadCue": true,
+        "directPositiveCue": true,
+        "considerationSetCue": false
+      },
+      "DECISION": "KEEP",
+      "FINAL_PROPOSED_ROLE": "first_recommendation",
+      "REASON": "RULE4: lead evidence supports first_recommendation — keep human",
+      "taxonomyRuleApplied": [
+        "RULE_4_LEAD_OVERRIDE"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v1_g041",
+      "ENTITY": "Aimbridge Hospitality (LATAM)",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_PREDICTION": "explicit_recommendation",
+      "FULL_RELEVANT_CONTEXT": "Issue an RFP to Aimbridge Hospitality (LATAM) and Highgate.",
+      "TAXONOMY_CONFLICT": "human=first_recommendation vs pred=explicit_recommendation; lead=true pos=true cons=false",
+      "STRUCTURAL": {
+        "hasLead": true,
+        "hasPos": true,
+        "inCons": false,
+        "leadCue": true,
+        "directPositiveCue": true,
+        "considerationSetCue": false
+      },
+      "DECISION": "KEEP",
+      "FINAL_PROPOSED_ROLE": "first_recommendation",
+      "REASON": "RULE4: lead evidence supports first_recommendation — keep human",
+      "taxonomyRuleApplied": [
+        "RULE_4_LEAD_OVERRIDE"
+      ],
+      "holdoutSplit": "development"
+    },
+    {
+      "CASE_ID": "v2_cand_035ffe13",
+      "ENTITY": "Small Luxury Hotels of the World",
+      "CURRENT_HUMAN_LABEL": "first_recommendation",
+      "CURRENT_PREDICTION": "associated_option",
+      "FULL_RELEVANT_CONTEXT": "in May 2025, becoming the first Curio hotel in Vienna. - **Tapestry Collection** (Upper-Upscale): Tapestry in particular is growing in high-barrier-to-entry markets in Europe where small boutique properties are looking for an engine to help them grow. - **LXR Hotels & Resorts** (Luxury): Hilton maintains LXR Hotels & Resorts for the luxury end, and in 2024, also announced a partnership with **Small Luxury Hotels of the World (SLH)**. --- ### 🟣 Hyatt Hotels Corporation Hyatt has three soft-brand offerings: **The Unbound Collection by Hyatt** (upper-upscale to luxury), **Destination by Hyatt** (upper-upscale to luxury), and **JdV by Hyatt** (upscale to upper-upscale). - **Unbound Collection**: Half of the Unbound Collection's properties are in Asia and Europe. - **JdV by Hyatt*",
+      "TAXONOMY_CONFLICT": "human=first_recommendation vs pred=associated_option; lead=false pos=false cons=false",
+      "STRUCTURAL": {
+        "hasLead": false,
+        "hasPos": false,
+        "inCons": false,
+        "leadCue": false,
+        "directPositiveCue": false,
+        "considerationSetCue": false
+      },
+      "DECISION": "DEFER",
+      "FINAL_PROPOSED_ROLE": null,
+      "REASON": "Ambiguous under Rules 1–5",
+      "taxonomyRuleApplied": [],
+      "holdoutSplit": "development"
+    }
+  ]
+}

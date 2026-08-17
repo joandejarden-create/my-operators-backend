@@ -28,6 +28,18 @@ import { extractLinkedRecordIds, cellToString } from "../lib/airtable-utils.js";
 import { roleInfoFromUserFieldsAsync } from "../lib/dealality/resolve-user.js";
 import { resolveOperatorScope, MAP_OPERATOR_SCOPE } from "../lib/dealality/resolve-operator-scope.js";
 import { resolveAccountAccessStatus } from "../lib/dealality/account-access-status.js";
+import { isInternalRunbookAdmin } from "../lib/dealality/internal-runbook-admin.js";
+import {
+  enrichDealalityMeForDemoStakeholder,
+  readActiveWorkspaceHeader,
+} from "../lib/dealality/demo-stakeholder-workspace.js";
+import {
+  applyDemoBrandPortfolioContext,
+  listDemoBrandPortfolioOptions,
+  readDemoBrandPortfolioHeader,
+  canUseDemoBrandPortfolioSwitch,
+} from "../lib/dealality/demo-brand-portfolio-context.js";
+import { resolveWorkspaceOptions } from "../lib/dealality/resolve-workspace-options.js";
 import {
   emailFromUserFields,
   profilePhotoUrlFromFields,
@@ -392,6 +404,84 @@ async function getMe(req, res) {
     accountStatusRaw,
   });
 
+  let dealality = {
+    /** Legacy nav / old consumers — use workspaceAccess for permissions. */
+    role: dealalityRole.role,
+    primaryRole: dealalityRole.primaryRole || dealalityRole.role,
+    legacyRole: dealalityRole.legacyRole || dealalityRole.role,
+    roleRaw: dealalityRole.roleRaw,
+    roleSource: dealalityRole.roleSource || null,
+    userRoleRaw: dealalityRole.userRoleRaw || null,
+    companyType: dealalityRole.companyType || dealalityRole.companyTypeRaw || null,
+    companyTypeRaw: dealalityRole.companyTypeRaw || null,
+    companyProfileId,
+    companyIds: companyProfileIds,
+    companyName,
+    profilePhotoUrl,
+    workspaceAccess: dealalityRole.workspaceAccess || [],
+    flags: dealalityRole.flags || {
+      isOwner: !!dealalityRole.isOwner,
+      isOperator: !!dealalityRole.isOperator,
+      isBrand: !!dealalityRole.isBrand,
+      isDemo: !!dealalityRole.isDemo,
+      isAdmin: !!dealalityRole.isAdmin,
+      isOwnerOperator: !!dealalityRole.isOwnerOperator,
+    },
+    isOwner: dealalityRole.isOwner,
+    isBrand: dealalityRole.isBrand,
+    isOperator: dealalityRole.isOperator,
+    isDemo: !!dealalityRole.isDemo,
+    isAdmin: dealalityRole.isAdmin,
+    isOwnerOperator: !!dealalityRole.isOwnerOperator,
+    isInternalRunbookAdmin: isInternalRunbookAdmin({
+      email,
+      dealality: dealalityRole,
+      companyName,
+    }),
+    canAccessOwnerWorkspace: !!dealalityRole.canAccessOwnerWorkspace,
+    canAccessOperatorWorkspace: !!dealalityRole.canAccessOperatorWorkspace,
+    canAccessBrandWorkspace: !!dealalityRole.canAccessBrandWorkspace,
+    canAccessDemoWorkspace: !!dealalityRole.canAccessDemoWorkspace,
+    demoPreviewWorkspaces: Array.isArray(dealalityRole.demoPreviewWorkspaces)
+      ? dealalityRole.demoPreviewWorkspaces
+      : [],
+    demoStakeholderWorkspaces: [],
+    demoStakeholderMode: false,
+    thirdPartyManagementAvailable: !!dealalityRole.thirdPartyManagementAvailable,
+    activeWorkspace: dealalityRole.activeWorkspace || null,
+    operatorExplorerEligible: !!dealalityRole.operatorExplorerEligible,
+    operatorDealRequestEligible: !!dealalityRole.operatorDealRequestEligible,
+    reviewBeforeOutreach: !!dealalityRole.reviewBeforeOutreach,
+    thirdPartyManagementAvailabilityStatus:
+      dealalityRole.thirdPartyManagementAvailabilityStatus || null,
+    eligibilitySource: dealalityRole.eligibilitySource || null,
+  };
+
+  dealality = enrichDealalityMeForDemoStakeholder(dealality, {
+    companyIds: companyProfileIds,
+    requestedWorkspace: readActiveWorkspaceHeader(req),
+  });
+
+  // Attach demo Brand Portfolio options + active key for workspace UI.
+  const portfolioProbe = {
+    ...dealality,
+    companyIds: companyProfileIds,
+    isAdmin: dealality.isAdmin,
+    flags: dealality.flags,
+  };
+  applyDemoBrandPortfolioContext(portfolioProbe, readDemoBrandPortfolioHeader(req));
+  dealality.demoBrandPortfolioSwitchAvailable = canUseDemoBrandPortfolioSwitch(portfolioProbe);
+  dealality.demoBrandPortfolioOptions = listDemoBrandPortfolioOptions();
+  dealality.demoBrandPortfolioKey = portfolioProbe.demoBrandPortfolioKey || null;
+  dealality.demoBrandPortfolioLabel =
+    portfolioProbe.demoBrandPortfolio?.canonicalCompanyName || null;
+
+  // Re-assert canonical options after portfolio attach (portfolio must not shrink list).
+  dealality.canonicalWorkspaceOptions = resolveWorkspaceOptions({
+    ...dealality,
+    companyIds: companyProfileIds,
+  });
+
   return res.json({
     success: true,
     memberstackId,
@@ -413,8 +503,8 @@ async function getMe(req, res) {
       firstName,
       lastName,
       profilePhotoUrl,
-      companyProfileId,
-      companyName,
+      companyProfileId: dealality.companyProfileId || companyProfileId,
+      companyName: dealality.companyName || companyName,
     },
     permissions: {
       allowedBrandNames,
@@ -424,50 +514,7 @@ async function getMe(req, res) {
       allowedOperatorSetupIds: operatorScope.allowedOperatorSetupIds || [],
       primaryOperatingCompanyName: operatorScope.primaryOperatingCompanyName || null,
     },
-    dealality: {
-      /** Legacy nav / old consumers — use workspaceAccess for permissions. */
-      role: dealalityRole.role,
-      primaryRole: dealalityRole.primaryRole || dealalityRole.role,
-      legacyRole: dealalityRole.legacyRole || dealalityRole.role,
-      roleRaw: dealalityRole.roleRaw,
-      roleSource: dealalityRole.roleSource || null,
-      userRoleRaw: dealalityRole.userRoleRaw || null,
-      companyType: dealalityRole.companyType || dealalityRole.companyTypeRaw || null,
-      companyTypeRaw: dealalityRole.companyTypeRaw || null,
-      companyProfileId,
-      companyName,
-      profilePhotoUrl,
-      workspaceAccess: dealalityRole.workspaceAccess || [],
-      flags: dealalityRole.flags || {
-        isOwner: !!dealalityRole.isOwner,
-        isOperator: !!dealalityRole.isOperator,
-        isBrand: !!dealalityRole.isBrand,
-        isDemo: !!dealalityRole.isDemo,
-        isAdmin: !!dealalityRole.isAdmin,
-        isOwnerOperator: !!dealalityRole.isOwnerOperator,
-      },
-      isOwner: dealalityRole.isOwner,
-      isBrand: dealalityRole.isBrand,
-      isOperator: dealalityRole.isOperator,
-      isDemo: !!dealalityRole.isDemo,
-      isAdmin: dealalityRole.isAdmin,
-      isOwnerOperator: !!dealalityRole.isOwnerOperator,
-      canAccessOwnerWorkspace: !!dealalityRole.canAccessOwnerWorkspace,
-      canAccessOperatorWorkspace: !!dealalityRole.canAccessOperatorWorkspace,
-      canAccessBrandWorkspace: !!dealalityRole.canAccessBrandWorkspace,
-      canAccessDemoWorkspace: !!dealalityRole.canAccessDemoWorkspace,
-      demoPreviewWorkspaces: Array.isArray(dealalityRole.demoPreviewWorkspaces)
-        ? dealalityRole.demoPreviewWorkspaces
-        : [],
-      thirdPartyManagementAvailable: !!dealalityRole.thirdPartyManagementAvailable,
-      activeWorkspace: dealalityRole.activeWorkspace || null,
-      operatorExplorerEligible: !!dealalityRole.operatorExplorerEligible,
-      operatorDealRequestEligible: !!dealalityRole.operatorDealRequestEligible,
-      reviewBeforeOutreach: !!dealalityRole.reviewBeforeOutreach,
-      thirdPartyManagementAvailabilityStatus:
-        dealalityRole.thirdPartyManagementAvailabilityStatus || null,
-      eligibilitySource: dealalityRole.eligibilitySource || null,
-    },
+    dealality,
     accountAccess,
     meta: {
       usersTable: USERS_TABLE,

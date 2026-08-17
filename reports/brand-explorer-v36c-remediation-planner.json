@@ -1,0 +1,4103 @@
+{
+  "version": "v36C",
+  "generatedAt": "2026-07-21T09:12:05.636Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "brands": [
+    "hotel-indigo",
+    "mgallery-collection"
+  ],
+  "brandResults": [
+    {
+      "brandSlug": "hotel-indigo",
+      "brandName": "Hotel Indigo",
+      "dryRun": true,
+      "draftState": {
+        "version": "v36C",
+        "brandSlug": "hotel-indigo",
+        "primaryState": "sources_seeded",
+        "secondaryStates": [
+          "remediation_required"
+        ],
+        "readyForApplyDraft": false,
+        "signals": {
+          "visiblePresentationRows": 0,
+          "approvedSourcesCount": 3,
+          "galleryVisibleInApi": 0,
+          "galleryMinimum": 6,
+          "assetPackReadinessBand": "blocked_no_assets",
+          "draftPatchCount": 3,
+          "draftPendingPatches": 3,
+          "draftNoopPatches": 0,
+          "factoryPass": false,
+          "renderPass": false,
+          "readyForActiveProfile": false,
+          "draftLikelyApplied": false,
+          "draftNotApplied": true
+        },
+        "interpretation": "Draft plan exists but live API/materialization incomplete — apply-draft may be next step"
+      },
+      "enforcement": {
+        "version": "v36C",
+        "brandSlug": "hotel-indigo",
+        "numericScore": 0,
+        "scoreCap": 50,
+        "band": "founder_review_required",
+        "pass": false,
+        "categories": [
+          "blocked_by_images",
+          "content_shell_only",
+          "founder_review_required",
+          "blocked_by_renderer_mismatch"
+        ],
+        "violations": [
+          {
+            "id": "gallery_render_not_ready",
+            "severity": "high",
+            "slotKey": "materials.gallery.*",
+            "ownerVisible": true,
+            "penalty": 20,
+            "detail": "0/6"
+          },
+          {
+            "id": "property_example_render_not_ready",
+            "severity": "high",
+            "slotKey": "footprint.openings",
+            "ownerVisible": true,
+            "penalty": 22,
+            "detail": "0/3 row-level image match"
+          },
+          {
+            "id": "registry_only_images",
+            "severity": "high",
+            "ownerVisible": false,
+            "penalty": 15,
+            "detail": "6 assets"
+          },
+          {
+            "id": "underpopulated_tabs",
+            "severity": "high",
+            "ownerVisible": true,
+            "penalty": 100,
+            "detail": "Overview, Value to Owners, Operating Model, Owner Considerations, Commercial Engine, Economics & Obligations, Loyalty Program, Footprint & Growth, Brand Materials, Dealality Insight"
+          },
+          {
+            "id": "tab_coverage_gap",
+            "severity": "high",
+            "tab": "Owner Considerations",
+            "ownerVisible": true,
+            "penalty": 12,
+            "detail": "0/3 populated slots"
+          },
+          {
+            "id": "tab_coverage_gap",
+            "severity": "high",
+            "tab": "Loyalty Program",
+            "ownerVisible": true,
+            "penalty": 12,
+            "detail": "0/2 populated slots"
+          },
+          {
+            "id": "tab_coverage_gap",
+            "severity": "high",
+            "tab": "Economics & Obligations",
+            "ownerVisible": true,
+            "penalty": 12,
+            "detail": "0/2 populated slots"
+          },
+          {
+            "id": "scenario_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.1",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block with imageUrl — atelier may render Urban Repositioning"
+          },
+          {
+            "id": "scenario_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.2",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block with imageUrl — atelier may render Leisure-Forward Conversions"
+          },
+          {
+            "id": "scenario_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.3",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block with imageUrl — atelier may render Boutique Resort Adjacency"
+          },
+          {
+            "id": "proof_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.proof.*",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "Proof grid may show fallback: Global Open Footprint"
+          },
+          {
+            "id": "proof_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.proof.*",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "Proof grid may show fallback: Pipeline Depth"
+          },
+          {
+            "id": "ui_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.1",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "id": "ui_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.2",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "id": "ui_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.3",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "id": "commercial_static_demand",
+            "severity": "medium",
+            "slotKey": "commercial.demand",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "Static demand matrix when commercial.demand slots empty"
+          },
+          {
+            "id": "loyalty_demand_matrix",
+            "severity": "medium",
+            "slotKey": "loyalty.*",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "Hardcoded loyalty demand pairs when loyalty slots thin"
+          }
+        ],
+        "founderVisibleViolationCount": 16,
+        "blockers": [
+          "gallery_render_not_ready:materials.gallery.*",
+          "property_example_render_not_ready:footprint.openings",
+          "registry_only_images:",
+          "underpopulated_tabs:",
+          "tab_coverage_gap:Owner Considerations",
+          "tab_coverage_gap:Loyalty Program",
+          "tab_coverage_gap:Economics & Obligations",
+          "scenario_fallback_risk:overview.scenario.1",
+          "scenario_fallback_risk:overview.scenario.2",
+          "scenario_fallback_risk:overview.scenario.3",
+          "proof_fallback_risk:overview.proof.*",
+          "proof_fallback_risk:overview.proof.*",
+          "ui_fallback_risk:overview.scenario.1",
+          "ui_fallback_risk:overview.scenario.2",
+          "ui_fallback_risk:overview.scenario.3",
+          "commercial_static_demand:commercial.demand",
+          "loyalty_demand_matrix:loyalty.*"
+        ],
+        "ruleDetail": {
+          "ruleId": "external_owner_readiness",
+          "pass": true,
+          "blockers": [],
+          "urlHitCount": 0,
+          "emptyCardCount": 0,
+          "emptyCardRows": [],
+          "modalPlaceholderCount": 0
+        }
+      },
+      "planEnforcement": {
+        "pass": false,
+        "externalOwnerReady": 0,
+        "total": 3,
+        "renderBlocked": 3,
+        "blockers": [
+          "overview.scenario.1:missing_presentation_image_field",
+          "overview.scenario.1:api_missing_imageUrl",
+          "overview.scenario.1:imageUrl_not_loadable",
+          "overview.scenario.1:image_placeholder",
+          "overview.scenario.2:missing_presentation_image_field",
+          "overview.scenario.2:api_missing_imageUrl",
+          "overview.scenario.2:imageUrl_not_loadable",
+          "overview.scenario.2:image_placeholder",
+          "overview.scenario.3:missing_presentation_image_field",
+          "overview.scenario.3:api_missing_imageUrl",
+          "overview.scenario.3:imageUrl_not_loadable",
+          "overview.scenario.3:image_placeholder"
+        ]
+      },
+      "remediationPlan": {
+        "version": "v36C",
+        "brandSlug": "hotel-indigo",
+        "brandName": "Hotel Indigo",
+        "itemCount": 24,
+        "ownerVisibleCount": 21,
+        "items": [
+          {
+            "issueId": "hotel-indigo:gallery_render_not_ready:materials.gallery.*",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Brand Materials",
+            "slot": "materials.gallery.*",
+            "recordId": null,
+            "issueType": "gallery_render_not_ready",
+            "ownerVisible": true,
+            "rootCause": "0/6",
+            "proposedFix": "Materialize Presentation Image attachment from asset pack; verify API imageUrl",
+            "requiredSystemStage": "visual_asset_materialization",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:property_example_render_not_ready:footprint.openings",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Footprint & Growth",
+            "slot": "footprint.openings",
+            "recordId": null,
+            "issueType": "property_example_render_not_ready",
+            "ownerVisible": true,
+            "rootCause": "0/3 row-level image match",
+            "proposedFix": "Match footprint.openings row by property name; attach hotel image per catalog entry",
+            "requiredSystemStage": "visual_asset_materialization",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:registry_only_images:global",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Unknown",
+            "slot": null,
+            "recordId": null,
+            "issueType": "registry_only_images",
+            "ownerVisible": false,
+            "rootCause": "6 assets",
+            "proposedFix": "Draft apply must write Presentation Image — registry alone does not render",
+            "requiredSystemStage": "registry_traceability",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:underpopulated_tabs:global",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Unknown",
+            "slot": null,
+            "recordId": null,
+            "issueType": "underpopulated_tabs",
+            "ownerVisible": true,
+            "rootCause": "Overview, Value to Owners, Operating Model, Owner Considerations, Commercial Engine, Economics & Obligations, Loyalty Program, Footprint & Growth, Brand Materials, Dealality Insight",
+            "proposedFix": "Founder review required",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:tab_coverage_gap:Owner Considerations",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Owner Considerations",
+            "slot": null,
+            "recordId": null,
+            "issueType": "tab_coverage_gap",
+            "ownerVisible": true,
+            "rootCause": "0/3 populated slots",
+            "proposedFix": "Add presentation rows for tab via brand config packages or factory draft",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": true,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:tab_coverage_gap:Loyalty Program",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Loyalty Program",
+            "slot": null,
+            "recordId": null,
+            "issueType": "tab_coverage_gap",
+            "ownerVisible": true,
+            "rootCause": "0/2 populated slots",
+            "proposedFix": "Add presentation rows for tab via brand config packages or factory draft",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": true,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:tab_coverage_gap:Economics & Obligations",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Economics & Obligations",
+            "slot": null,
+            "recordId": null,
+            "issueType": "tab_coverage_gap",
+            "ownerVisible": true,
+            "rootCause": "0/2 populated slots",
+            "proposedFix": "Add presentation rows for tab via brand config packages or factory draft",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": true,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:factory:need_6_visible_gallery_imageUrl_got_0",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "need_6_visible_gallery_imageUrl_got_0",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "visual_asset_materialization",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:factory:too_few_visible_openings:footprint.openings",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": false,
+            "rootCause": "too_few_visible_openings:footprint.openings",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:factory:no_visible_scenario_cards_in_api",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "no_visible_scenario_cards_in_api",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "hotel-indigo:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+            "severity": "high",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:scenario_fallback_risk:overview.scenario.1",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "slot": "overview.scenario.1",
+            "recordId": null,
+            "issueType": "scenario_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block with imageUrl — atelier may render Urban Repositioning",
+            "proposedFix": "Ensure overview.scenario.N has imageUrl in API before founder review",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:scenario_fallback_risk:overview.scenario.2",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "slot": "overview.scenario.2",
+            "recordId": null,
+            "issueType": "scenario_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block with imageUrl — atelier may render Leisure-Forward Conversions",
+            "proposedFix": "Ensure overview.scenario.N has imageUrl in API before founder review",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:scenario_fallback_risk:overview.scenario.3",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "slot": "overview.scenario.3",
+            "recordId": null,
+            "issueType": "scenario_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block with imageUrl — atelier may render Boutique Resort Adjacency",
+            "proposedFix": "Ensure overview.scenario.N has imageUrl in API before founder review",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:proof_fallback_risk:overview.proof.*",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "slot": "overview.proof.*",
+            "recordId": null,
+            "issueType": "proof_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "Proof grid may show fallback: Global Open Footprint",
+            "proposedFix": "Populate overview.proof.1–6 with brand-specific proof cards",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:proof_fallback_risk:overview.proof.*",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "slot": "overview.proof.*",
+            "recordId": null,
+            "issueType": "proof_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "Proof grid may show fallback: Pipeline Depth",
+            "proposedFix": "Populate overview.proof.1–6 with brand-specific proof cards",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:ui_fallback_risk:overview.scenario.1",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "slot": "overview.scenario.1",
+            "recordId": null,
+            "issueType": "ui_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block — atelier may render Urban/Boutique defaults",
+            "proposedFix": "Populate slots that trigger atelier hardcoded fallbacks",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:ui_fallback_risk:overview.scenario.2",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "slot": "overview.scenario.2",
+            "recordId": null,
+            "issueType": "ui_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block — atelier may render Urban/Boutique defaults",
+            "proposedFix": "Populate slots that trigger atelier hardcoded fallbacks",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:ui_fallback_risk:overview.scenario.3",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "slot": "overview.scenario.3",
+            "recordId": null,
+            "issueType": "ui_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block — atelier may render Urban/Boutique defaults",
+            "proposedFix": "Populate slots that trigger atelier hardcoded fallbacks",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:commercial_static_demand:commercial.demand",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Commercial Engine",
+            "slot": "commercial.demand",
+            "recordId": null,
+            "issueType": "commercial_static_demand",
+            "ownerVisible": true,
+            "rootCause": "Static demand matrix when commercial.demand slots empty",
+            "proposedFix": "Populate commercial.demand slots to suppress COMM_STATIC",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:loyalty_demand_matrix:loyalty.*",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Loyalty Program",
+            "slot": "loyalty.*",
+            "recordId": null,
+            "issueType": "loyalty_demand_matrix",
+            "ownerVisible": true,
+            "rootCause": "Hardcoded loyalty demand pairs when loyalty slots thin",
+            "proposedFix": "Populate loyalty KPI/proof rows to suppress LOY_DEMAND matrix",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "hotel-indigo:presentation_plan_invalid",
+            "severity": "medium",
+            "brand": "Hotel Indigo",
+            "brandSlug": "hotel-indigo",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "presentation_plan_contract",
+            "ownerVisible": false,
+            "rootCause": "3 plan rows fail contract",
+            "proposedFix": "Fix plan row externalBody, renderReadiness, and model-fit before apply-draft",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          }
+        ],
+        "byStage": {
+          "source_capture": [],
+          "asset_pack": [],
+          "draft_build": [
+            "hotel-indigo:underpopulated_tabs:global",
+            "hotel-indigo:tab_coverage_gap:Owner Considerations",
+            "hotel-indigo:tab_coverage_gap:Loyalty Program",
+            "hotel-indigo:tab_coverage_gap:Economics & Obligations",
+            "hotel-indigo:factory:too_few_visible_openings:footprint.openings",
+            "hotel-indigo:factory:no_visible_scenario_cards_in_api",
+            "hotel-indigo:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+            "hotel-indigo:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+            "hotel-indigo:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+            "hotel-indigo:presentation_plan_invalid"
+          ],
+          "copy_governance": [],
+          "external_owner_cleanup": [],
+          "visual_asset_materialization": [
+            "hotel-indigo:gallery_render_not_ready:materials.gallery.*",
+            "hotel-indigo:property_example_render_not_ready:footprint.openings",
+            "hotel-indigo:factory:need_6_visible_gallery_imageUrl_got_0"
+          ],
+          "registry_traceability": [
+            "hotel-indigo:registry_only_images:global"
+          ],
+          "standard_detail_governance": [],
+          "renderer_fix": [
+            "hotel-indigo:scenario_fallback_risk:overview.scenario.1",
+            "hotel-indigo:scenario_fallback_risk:overview.scenario.2",
+            "hotel-indigo:scenario_fallback_risk:overview.scenario.3",
+            "hotel-indigo:proof_fallback_risk:overview.proof.*",
+            "hotel-indigo:proof_fallback_risk:overview.proof.*",
+            "hotel-indigo:ui_fallback_risk:overview.scenario.1",
+            "hotel-indigo:ui_fallback_risk:overview.scenario.2",
+            "hotel-indigo:ui_fallback_risk:overview.scenario.3",
+            "hotel-indigo:commercial_static_demand:commercial.demand",
+            "hotel-indigo:loyalty_demand_matrix:loyalty.*"
+          ],
+          "founder_exception_review": [],
+          "active_approval": []
+        },
+        "summary": {
+          "critical": 0,
+          "high": 13,
+          "medium": 11,
+          "stagesTouched": [
+            "draft_build",
+            "visual_asset_materialization",
+            "registry_traceability",
+            "renderer_fix"
+          ]
+        },
+        "renderContractPass": false,
+        "activeProfileReady": false
+      },
+      "applyGate": {
+        "recommendation": "no_apply_allowed",
+        "reasons": [
+          "Sources, copy, or contract blockers must clear first"
+        ],
+        "applyDraftAllowed": false,
+        "remediationApplyRequired": false,
+        "founderReviewAllowed": false,
+        "applyApprovedAllowed": false,
+        "note": "apply-approved_allowed is informational only — v36C never executes apply"
+      },
+      "renderContract": {
+        "contractVersion": "v36B",
+        "brandSlug": "hotel-indigo",
+        "summary": {
+          "galleryRegistryReady": 0,
+          "galleryRenderReady": 0,
+          "galleryMinimum": 6,
+          "visibleGalleryInApi": 0,
+          "propertyExamplesRenderReady": 0,
+          "propertyExampleMinimum": 3,
+          "scenariosRenderReady": 0,
+          "scenarioMinimum": 3,
+          "registryOnlyCount": 6,
+          "scenarioFallbackRisk": [
+            "overview.scenario.1",
+            "overview.scenario.2",
+            "overview.scenario.3"
+          ],
+          "atelierScenarioFallbackTitles": [
+            "Urban Repositioning",
+            "Leisure-Forward Conversions",
+            "Boutique Resort Adjacency"
+          ]
+        },
+        "gallery": [
+          {
+            "slotKey": "materials.gallery.1",
+            "intendedSlot": "materials.gallery.1",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.1)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "guan",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.1",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "intendedSlot": "materials.gallery.2",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.2)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "gdl",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.2",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "intendedSlot": "materials.gallery.3",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.3)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "lim",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.3",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.4",
+            "intendedSlot": "materials.gallery.4",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.4)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "bna",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.4",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.5",
+            "intendedSlot": "materials.gallery.5",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.5)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "guan",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.5",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.6",
+            "intendedSlot": "materials.gallery.6",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.6)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "gdl",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.6",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          }
+        ],
+        "propertyExamples": [
+          {
+            "slotKey": "footprint.openings",
+            "intendedSlot": "footprint.openings — Hotel Indigo Guanajuato",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/guanajuato/guan/hoteldetail",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for guan)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "property_example",
+            "propertyKey": "guan",
+            "propertyName": "Hotel Indigo Guanajuato",
+            "notes": "no_property_specific_hotel_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "footprint.openings — Hotel Indigo Guanajuato",
+              "pass": true,
+              "notes": "no_property_specific_hotel_image"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "intendedSlot": "footprint.openings — Hotel Indigo Guadalajara Expo",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/guadalajara/gdl/hoteldetail",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for gdl)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "property_example",
+            "propertyKey": "gdl",
+            "propertyName": "Hotel Indigo Guadalajara Expo",
+            "notes": "no_property_specific_hotel_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "footprint.openings — Hotel Indigo Guadalajara Expo",
+              "pass": true,
+              "notes": "no_property_specific_hotel_image"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "intendedSlot": "footprint.openings — Hotel Indigo Lima Miraflores",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/lima/lim/hoteldetail",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for lim)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "property_example",
+            "propertyKey": "lim",
+            "propertyName": "Hotel Indigo Lima Miraflores",
+            "notes": "no_property_specific_hotel_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "footprint.openings — Hotel Indigo Lima Miraflores",
+              "pass": true,
+              "notes": "no_property_specific_hotel_image"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          }
+        ],
+        "scenarios": [
+          {
+            "slotKey": "overview.scenario.1",
+            "intendedSlot": "overview.scenario.1",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": "(new row for overview.scenario.1)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "scenario",
+            "propertyKey": "",
+            "propertyName": "Neighborhood Boutique Lifestyle",
+            "notes": "copy package available",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "overview.scenario.1",
+              "pass": true,
+              "notes": "copy package available"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "intendedSlot": "overview.scenario.2",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": "(new row for overview.scenario.2)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "scenario",
+            "propertyKey": "",
+            "propertyName": "Conversion / Repositioning",
+            "notes": "copy package available",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "overview.scenario.2",
+              "pass": true,
+              "notes": "copy package available"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "intendedSlot": "overview.scenario.3",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": "(new row for overview.scenario.3)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "scenario",
+            "propertyKey": "",
+            "propertyName": "Urban Leisure–Business Mix",
+            "notes": "copy package available",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "overview.scenario.3",
+              "pass": true,
+              "notes": "copy package available"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          }
+        ],
+        "momentumSources": [
+          {
+            "slotKey": "footprint.momentum",
+            "intendedSlot": "momentum_source_1",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "medium",
+            "imageTypeClassification": "text_source",
+            "approvalStatus": "source_candidate",
+            "renderReadiness": "copy_only",
+            "assetRole": "momentum",
+            "notes": "Momentum narrative source — no image required"
+          },
+          {
+            "slotKey": "footprint.momentum",
+            "intendedSlot": "momentum_source_2",
+            "sourcePageUrl": "https://development.ihg.com/brand/hotel-indigo",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "medium",
+            "imageTypeClassification": "text_source",
+            "approvalStatus": "source_candidate",
+            "renderReadiness": "copy_only",
+            "assetRole": "momentum",
+            "notes": "Momentum narrative source — no image required"
+          }
+        ],
+        "proofSupport": [
+          {
+            "slotKey": "overview.proof.1",
+            "intendedSlot": "overview.proof.1",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.2",
+            "intendedSlot": "overview.proof.2",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.3",
+            "intendedSlot": "overview.proof.3",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.4",
+            "intendedSlot": "overview.proof.4",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.5",
+            "intendedSlot": "overview.proof.5",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.6",
+            "intendedSlot": "overview.proof.6",
+            "sourcePageUrl": "https://www.ihg.com/hotelindigo/hotels/us/en/reservation",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          }
+        ],
+        "rules": {
+          "registryReadyNotEqualRenderReady": true,
+          "activeProfileRequiresRenderReadyImages": true,
+          "galleryMinimumVisibleRenderReady": 6,
+          "propertyExamplesRequireHotelImages": true,
+          "scenarioCardsNoPlaceholders": true
+        },
+        "pass": false
+      },
+      "presentationPlan": {
+        "contractVersion": "v36B",
+        "pass": false,
+        "summary": {
+          "total": 3,
+          "externalOwnerReady": 0,
+          "founderReviewRequired": 3,
+          "genericFiller": 0,
+          "renderBlocked": 3,
+          "modelFitBlocked": 0
+        },
+        "rows": [
+          {
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "section": "Overview scenarios",
+            "slotKey": "overview.scenario.1",
+            "title": "Neighborhood Boutique Lifestyle",
+            "externalBody": "Neighborhood Boutique Lifestyle\n\nUrban neighborhood hotels where local discovery, design narrative, and guest experience authenticity matter—Hotel Indigo fits when owners want IHG distribution and IHG One Rewards within a lifestyle full-brand operating model.",
+            "internalEvidenceRefs": [],
+            "sourceRecordIds": [],
+            "claimIds": [],
+            "visualAssetIds": [],
+            "sortOrder": null,
+            "externalDisplayStatus": "Do Not Display",
+            "ownerReadinessStatus": "blocked",
+            "founderReviewRequired": true,
+            "reasonForFounderReview": "missing_presentation_image_field; api_missing_imageUrl; imageUrl_not_loadable",
+            "disallowedTermsCheck": {
+              "pass": true,
+              "hits": [],
+              "termHits": []
+            },
+            "sourceTraceabilityCheck": {
+              "pass": false,
+              "sourceRecordIds": [],
+              "internalEvidenceRefs": [],
+              "note": "Internal trace required in plan row; must not appear in externalBody"
+            },
+            "renderReadinessCheck": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "brandModelFitCheck": {
+              "pass": true,
+              "blockers": [],
+              "modelType": "lifestyle_full_brand",
+              "franchiseBlocked": true
+            },
+            "isGenericFiller": false,
+            "isExternalOwnerReady": false,
+            "blockers": [
+              "missing_presentation_image_field",
+              "api_missing_imageUrl",
+              "imageUrl_not_loadable",
+              "image_placeholder"
+            ],
+            "patchMeta": {
+              "recordId": null,
+              "reason": "hide_scenario_without_image",
+              "mode": "create"
+            }
+          },
+          {
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "section": "Overview scenarios",
+            "slotKey": "overview.scenario.2",
+            "title": "Conversion / Repositioning",
+            "externalBody": "Conversion / Repositioning\n\nIndependent or soft-product hotels evaluating IHG affiliation where design-led repositioning and neighborhood storytelling are central—owners diligence PIP scope, IHG systems, and operating model fit.",
+            "internalEvidenceRefs": [],
+            "sourceRecordIds": [],
+            "claimIds": [],
+            "visualAssetIds": [],
+            "sortOrder": null,
+            "externalDisplayStatus": "Do Not Display",
+            "ownerReadinessStatus": "blocked",
+            "founderReviewRequired": true,
+            "reasonForFounderReview": "missing_presentation_image_field; api_missing_imageUrl; imageUrl_not_loadable",
+            "disallowedTermsCheck": {
+              "pass": true,
+              "hits": [],
+              "termHits": []
+            },
+            "sourceTraceabilityCheck": {
+              "pass": false,
+              "sourceRecordIds": [],
+              "internalEvidenceRefs": [],
+              "note": "Internal trace required in plan row; must not appear in externalBody"
+            },
+            "renderReadinessCheck": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "brandModelFitCheck": {
+              "pass": true,
+              "blockers": [],
+              "modelType": "lifestyle_full_brand",
+              "franchiseBlocked": true
+            },
+            "isGenericFiller": false,
+            "isExternalOwnerReady": false,
+            "blockers": [
+              "missing_presentation_image_field",
+              "api_missing_imageUrl",
+              "imageUrl_not_loadable",
+              "image_placeholder"
+            ],
+            "patchMeta": {
+              "recordId": null,
+              "reason": "hide_scenario_without_image",
+              "mode": "create"
+            }
+          },
+          {
+            "brandSlug": "hotel-indigo",
+            "tab": "Overview",
+            "section": "Overview scenarios",
+            "slotKey": "overview.scenario.3",
+            "title": "Urban Leisure–Business Mix",
+            "externalBody": "Urban Leisure–Business Mix\n\nGateway and secondary-city assets blending corporate transient and leisure demand—Hotel Indigo suits owners comparing lifestyle positioning against voco, Kimpton, and Crowne Plaza tiers within IHG.",
+            "internalEvidenceRefs": [],
+            "sourceRecordIds": [],
+            "claimIds": [],
+            "visualAssetIds": [],
+            "sortOrder": null,
+            "externalDisplayStatus": "Do Not Display",
+            "ownerReadinessStatus": "blocked",
+            "founderReviewRequired": true,
+            "reasonForFounderReview": "missing_presentation_image_field; api_missing_imageUrl; imageUrl_not_loadable",
+            "disallowedTermsCheck": {
+              "pass": true,
+              "hits": [],
+              "termHits": []
+            },
+            "sourceTraceabilityCheck": {
+              "pass": false,
+              "sourceRecordIds": [],
+              "internalEvidenceRefs": [],
+              "note": "Internal trace required in plan row; must not appear in externalBody"
+            },
+            "renderReadinessCheck": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "brandModelFitCheck": {
+              "pass": true,
+              "blockers": [],
+              "modelType": "lifestyle_full_brand",
+              "franchiseBlocked": true
+            },
+            "isGenericFiller": false,
+            "isExternalOwnerReady": false,
+            "blockers": [
+              "missing_presentation_image_field",
+              "api_missing_imageUrl",
+              "imageUrl_not_loadable",
+              "image_placeholder"
+            ],
+            "patchMeta": {
+              "recordId": null,
+              "reason": "hide_scenario_without_image",
+              "mode": "create"
+            }
+          }
+        ],
+        "blockers": [
+          "overview.scenario.1:missing_presentation_image_field",
+          "overview.scenario.1:api_missing_imageUrl",
+          "overview.scenario.1:imageUrl_not_loadable",
+          "overview.scenario.1:image_placeholder",
+          "overview.scenario.2:missing_presentation_image_field",
+          "overview.scenario.2:api_missing_imageUrl",
+          "overview.scenario.2:imageUrl_not_loadable",
+          "overview.scenario.2:image_placeholder",
+          "overview.scenario.3:missing_presentation_image_field",
+          "overview.scenario.3:api_missing_imageUrl",
+          "overview.scenario.3:imageUrl_not_loadable",
+          "overview.scenario.3:image_placeholder"
+        ]
+      },
+      "factoryRules": {
+        "factoryVersion": "v34D",
+        "pass": false,
+        "rules": {
+          "gallery": {
+            "ruleId": "gallery_minimum_six_visible",
+            "pass": false,
+            "minimum": 6,
+            "visibleInApi": 0,
+            "withImageUrl": 0,
+            "missingImageUrl": [],
+            "logoOrGenericSlots": [],
+            "blockers": [
+              "need_6_visible_gallery_imageUrl_got_0"
+            ]
+          },
+          "propertyExamples": {
+            "ruleId": "property_example_real_hotel_images",
+            "pass": false,
+            "visibleOpeningCards": 0,
+            "expectedOpeningCards": 3,
+            "defects": [
+              {
+                "slotKey": "footprint.openings",
+                "issue": "too_few_visible_openings",
+                "count": 0
+              }
+            ],
+            "blockers": [
+              "too_few_visible_openings:footprint.openings"
+            ]
+          },
+          "scenarioImages": {
+            "ruleId": "scenario_no_image_placeholder",
+            "pass": false,
+            "visibleScenarioCards": 0,
+            "placeholderSlots": [],
+            "staleFallbackTitles": false,
+            "blockers": [
+              "no_visible_scenario_cards_in_api"
+            ]
+          },
+          "registryTraceability": {
+            "ruleId": "registry_traceability",
+            "pass": true,
+            "visualSlotsChecked": 0,
+            "gaps": [],
+            "blockers": []
+          },
+          "uiFallback": {
+            "ruleId": "ui_fallback_preference",
+            "pass": false,
+            "risks": [
+              {
+                "surface": "overview.scenario.1",
+                "issue": "atelier_hardcoded_scenario_fallback_risk",
+                "detail": "No API block — atelier may render Urban/Boutique defaults"
+              },
+              {
+                "surface": "overview.scenario.2",
+                "issue": "atelier_hardcoded_scenario_fallback_risk",
+                "detail": "No API block — atelier may render Urban/Boutique defaults"
+              },
+              {
+                "surface": "overview.scenario.3",
+                "issue": "atelier_hardcoded_scenario_fallback_risk",
+                "detail": "No API block — atelier may render Urban/Boutique defaults"
+              }
+            ],
+            "blockers": [
+              "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+              "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+              "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+            ]
+          },
+          "copySafety": {
+            "ruleId": "copy_safety",
+            "pass": true,
+            "findings": [],
+            "highCount": 0,
+            "blockers": []
+          },
+          "externalOwnerReadiness": {
+            "ruleId": "external_owner_readiness",
+            "pass": true,
+            "blockers": [],
+            "urlHitCount": 0,
+            "emptyCardCount": 0,
+            "emptyCardRows": [],
+            "modalPlaceholderCount": 0
+          },
+          "standardDetail": {
+            "ruleId": "standard_detail_governance",
+            "pass": true,
+            "sectionStatus": "unknown",
+            "needsFounderReview": false,
+            "blockers": []
+          }
+        },
+        "imageGovernanceDefects": [],
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_0",
+          "too_few_visible_openings:footprint.openings",
+          "no_visible_scenario_cards_in_api",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "galleryMinimum": 6,
+        "visibleGalleryCount": 0
+      },
+      "draftPlan": {
+        "draftBuilderVersion": "v34B",
+        "brandSlug": "hotel-indigo",
+        "mode": "dry-run",
+        "presentationPatches": [
+          {
+            "recordId": null,
+            "slotKey": "overview.scenario.1",
+            "fields": {
+              "Title": "Neighborhood Boutique Lifestyle",
+              "Body": "Urban neighborhood hotels where local discovery, design narrative, and guest experience authenticity matter—Hotel Indigo fits when owners want IHG distribution and IHG One Rewards within a lifestyle full-brand operating model.",
+              "External Display Status": "Do Not Display"
+            },
+            "reason": "hide_scenario_without_image",
+            "riskyCopyRemoved": [
+              "ihg"
+            ],
+            "createIfMissing": true
+          },
+          {
+            "recordId": null,
+            "slotKey": "overview.scenario.2",
+            "fields": {
+              "Title": "Conversion / Repositioning",
+              "Body": "Independent or soft-product hotels evaluating IHG affiliation where design-led repositioning and neighborhood storytelling are central—owners diligence PIP scope, IHG systems, and operating model fit.",
+              "External Display Status": "Do Not Display"
+            },
+            "reason": "hide_scenario_without_image",
+            "riskyCopyRemoved": [
+              "ihg"
+            ],
+            "createIfMissing": true
+          },
+          {
+            "recordId": null,
+            "slotKey": "overview.scenario.3",
+            "fields": {
+              "Title": "Urban Leisure–Business Mix",
+              "Body": "Gateway and secondary-city assets blending corporate transient and leisure demand—Hotel Indigo suits owners comparing lifestyle positioning against voco, Kimpton, and Crowne Plaza tiers within IHG.",
+              "External Display Status": "Do Not Display"
+            },
+            "reason": "hide_scenario_without_image",
+            "riskyCopyRemoved": [
+              "kimpton",
+              "ihg"
+            ],
+            "createIfMissing": true
+          }
+        ],
+        "registryCreates": [],
+        "registryPatches": [],
+        "visibilityPatches": [
+          {
+            "slotKey": "overview.scenario.1",
+            "action": "hide",
+            "reason": "no_scenario_image_source"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "action": "hide",
+            "reason": "no_scenario_image_source"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "action": "hide",
+            "reason": "no_scenario_image_source"
+          }
+        ],
+        "copyPatches": [
+          {
+            "slotKey": "overview.scenario.1",
+            "title": "Neighborhood Boutique Lifestyle",
+            "source": "brand_config"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "title": "Conversion / Repositioning",
+            "source": "brand_config"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "title": "Urban Leisure–Business Mix",
+            "source": "brand_config"
+          }
+        ],
+        "riskyCopyRemoved": [
+          "ihg",
+          "kimpton"
+        ],
+        "missingSourceEvidence": [
+          {
+            "slotKey": "materials.gallery.1",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.4",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.5",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.6",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "assetRole": "property_example",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "assetRole": "property_example",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "assetRole": "property_example",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "overview.scenario.1",
+            "assetRole": "scenario",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "assetRole": "scenario",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "assetRole": "scenario",
+            "issue": "missing_image"
+          }
+        ],
+        "pendingGovernanceGates": [
+          "standard_detail_governance_review",
+          "founder_visual_review"
+        ],
+        "willApply": {
+          "presentationPatchCount": 3,
+          "registryCreateCount": 0,
+          "visibilityPatchCount": 3,
+          "sections": [
+            "overview.scenario"
+          ],
+          "slots": [
+            "overview.scenario.1",
+            "overview.scenario.2",
+            "overview.scenario.3"
+          ]
+        },
+        "remainsHumanReviewed": [
+          "Company Validated field — never auto-written",
+          "Summary URL field — never auto-written",
+          "Standard Detail governance sign-off",
+          "Founder visual review approval",
+          "materials.gallery.1: missing_image",
+          "materials.gallery.2: missing_image",
+          "materials.gallery.3: missing_image",
+          "materials.gallery.4: missing_image",
+          "materials.gallery.5: missing_image",
+          "materials.gallery.6: missing_image",
+          "footprint.openings: missing_image",
+          "footprint.openings: missing_image",
+          "footprint.openings: missing_image",
+          "overview.scenario.1: missing_image",
+          "overview.scenario.2: missing_image",
+          "overview.scenario.3: missing_image"
+        ],
+        "summary": {
+          "patchCount": 3,
+          "registryCreates": 0,
+          "galleryPatches": 0,
+          "propertyPatches": 0,
+          "scenarioPatches": 3,
+          "readyForDryRunReview": true
+        }
+      },
+      "v36bScoreComparison": {
+        "v36b": 3,
+        "v36cCalibrated": 0,
+        "v36bBand": "fail",
+        "v36cBand": "founder_review_required"
+      },
+      "knowledgePackSummary": {
+        "visualAssetCoverage": {
+          "galleryRenderReady": 0,
+          "galleryMinimum": 6,
+          "propertyExamplesRenderReady": 0,
+          "scenariosRenderReady": 0,
+          "registryOnlyCount": 6,
+          "pass": false
+        },
+        "tabCoverage": [
+          {
+            "tab": "Overview",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Value to Owners",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Operating Model",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Owner Considerations",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Commercial Engine",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Economics & Obligations",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Loyalty Program",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Footprint & Growth",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Brand Materials",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Dealality Insight",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          }
+        ]
+      },
+      "factoryReportSummary": {
+        "stage": "copy-governance",
+        "factoryPass": false,
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_0",
+          "too_few_visible_openings:footprint.openings",
+          "no_visible_scenario_cards_in_api",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "draftPatchCount": 3
+      },
+      "completeBuildReady": false
+    },
+    {
+      "brandSlug": "mgallery-collection",
+      "brandName": "MGallery Collection",
+      "dryRun": true,
+      "draftState": {
+        "version": "v36C",
+        "brandSlug": "mgallery-collection",
+        "primaryState": "sources_seeded",
+        "secondaryStates": [
+          "remediation_required"
+        ],
+        "readyForApplyDraft": false,
+        "signals": {
+          "visiblePresentationRows": 0,
+          "approvedSourcesCount": 3,
+          "galleryVisibleInApi": 0,
+          "galleryMinimum": 6,
+          "assetPackReadinessBand": "blocked_no_assets",
+          "draftPatchCount": 3,
+          "draftPendingPatches": 3,
+          "draftNoopPatches": 0,
+          "factoryPass": false,
+          "renderPass": false,
+          "readyForActiveProfile": false,
+          "draftLikelyApplied": false,
+          "draftNotApplied": true
+        },
+        "interpretation": "Draft plan exists but live API/materialization incomplete — apply-draft may be next step"
+      },
+      "enforcement": {
+        "version": "v36C",
+        "brandSlug": "mgallery-collection",
+        "numericScore": 0,
+        "scoreCap": 50,
+        "band": "founder_review_required",
+        "pass": false,
+        "categories": [
+          "blocked_by_images",
+          "content_shell_only",
+          "founder_review_required",
+          "blocked_by_renderer_mismatch"
+        ],
+        "violations": [
+          {
+            "id": "gallery_render_not_ready",
+            "severity": "high",
+            "slotKey": "materials.gallery.*",
+            "ownerVisible": true,
+            "penalty": 20,
+            "detail": "0/6"
+          },
+          {
+            "id": "property_example_render_not_ready",
+            "severity": "high",
+            "slotKey": "footprint.openings",
+            "ownerVisible": true,
+            "penalty": 22,
+            "detail": "0/3 row-level image match"
+          },
+          {
+            "id": "registry_only_images",
+            "severity": "high",
+            "ownerVisible": false,
+            "penalty": 15,
+            "detail": "6 assets"
+          },
+          {
+            "id": "underpopulated_tabs",
+            "severity": "high",
+            "ownerVisible": true,
+            "penalty": 100,
+            "detail": "Overview, Value to Owners, Operating Model, Owner Considerations, Commercial Engine, Economics & Obligations, Loyalty Program, Footprint & Growth, Brand Materials, Dealality Insight"
+          },
+          {
+            "id": "tab_coverage_gap",
+            "severity": "high",
+            "tab": "Owner Considerations",
+            "ownerVisible": true,
+            "penalty": 12,
+            "detail": "0/3 populated slots"
+          },
+          {
+            "id": "tab_coverage_gap",
+            "severity": "high",
+            "tab": "Loyalty Program",
+            "ownerVisible": true,
+            "penalty": 12,
+            "detail": "0/2 populated slots"
+          },
+          {
+            "id": "tab_coverage_gap",
+            "severity": "high",
+            "tab": "Economics & Obligations",
+            "ownerVisible": true,
+            "penalty": 12,
+            "detail": "0/2 populated slots"
+          },
+          {
+            "id": "scenario_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.1",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block with imageUrl — atelier may render Urban Repositioning"
+          },
+          {
+            "id": "scenario_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.2",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block with imageUrl — atelier may render Leisure-Forward Conversions"
+          },
+          {
+            "id": "scenario_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.3",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block with imageUrl — atelier may render Boutique Resort Adjacency"
+          },
+          {
+            "id": "proof_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.proof.*",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "Proof grid may show fallback: Global Open Footprint"
+          },
+          {
+            "id": "proof_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.proof.*",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "Proof grid may show fallback: Pipeline Depth"
+          },
+          {
+            "id": "ui_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.1",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "id": "ui_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.2",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "id": "ui_fallback_risk",
+            "severity": "medium",
+            "slotKey": "overview.scenario.3",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "id": "commercial_static_demand",
+            "severity": "medium",
+            "slotKey": "commercial.demand",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "Static demand matrix when commercial.demand slots empty"
+          },
+          {
+            "id": "loyalty_demand_matrix",
+            "severity": "medium",
+            "slotKey": "loyalty.*",
+            "ownerVisible": true,
+            "penalty": 15,
+            "detail": "Hardcoded loyalty demand pairs when loyalty slots thin"
+          }
+        ],
+        "founderVisibleViolationCount": 16,
+        "blockers": [
+          "gallery_render_not_ready:materials.gallery.*",
+          "property_example_render_not_ready:footprint.openings",
+          "registry_only_images:",
+          "underpopulated_tabs:",
+          "tab_coverage_gap:Owner Considerations",
+          "tab_coverage_gap:Loyalty Program",
+          "tab_coverage_gap:Economics & Obligations",
+          "scenario_fallback_risk:overview.scenario.1",
+          "scenario_fallback_risk:overview.scenario.2",
+          "scenario_fallback_risk:overview.scenario.3",
+          "proof_fallback_risk:overview.proof.*",
+          "proof_fallback_risk:overview.proof.*",
+          "ui_fallback_risk:overview.scenario.1",
+          "ui_fallback_risk:overview.scenario.2",
+          "ui_fallback_risk:overview.scenario.3",
+          "commercial_static_demand:commercial.demand",
+          "loyalty_demand_matrix:loyalty.*"
+        ],
+        "ruleDetail": {
+          "ruleId": "external_owner_readiness",
+          "pass": true,
+          "blockers": [],
+          "urlHitCount": 0,
+          "emptyCardCount": 0,
+          "emptyCardRows": [],
+          "modalPlaceholderCount": 0
+        }
+      },
+      "planEnforcement": {
+        "pass": false,
+        "externalOwnerReady": 0,
+        "total": 3,
+        "renderBlocked": 3,
+        "blockers": [
+          "overview.scenario.1:missing_presentation_image_field",
+          "overview.scenario.1:api_missing_imageUrl",
+          "overview.scenario.1:imageUrl_not_loadable",
+          "overview.scenario.1:image_placeholder",
+          "overview.scenario.2:missing_presentation_image_field",
+          "overview.scenario.2:api_missing_imageUrl",
+          "overview.scenario.2:imageUrl_not_loadable",
+          "overview.scenario.2:image_placeholder",
+          "overview.scenario.2:weak_brand_anchor",
+          "overview.scenario.3:missing_presentation_image_field",
+          "overview.scenario.3:api_missing_imageUrl",
+          "overview.scenario.3:imageUrl_not_loadable",
+          "overview.scenario.3:image_placeholder"
+        ]
+      },
+      "remediationPlan": {
+        "version": "v36C",
+        "brandSlug": "mgallery-collection",
+        "brandName": "MGallery Collection",
+        "itemCount": 24,
+        "ownerVisibleCount": 21,
+        "items": [
+          {
+            "issueId": "mgallery-collection:gallery_render_not_ready:materials.gallery.*",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Brand Materials",
+            "slot": "materials.gallery.*",
+            "recordId": null,
+            "issueType": "gallery_render_not_ready",
+            "ownerVisible": true,
+            "rootCause": "0/6",
+            "proposedFix": "Materialize Presentation Image attachment from asset pack; verify API imageUrl",
+            "requiredSystemStage": "visual_asset_materialization",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:property_example_render_not_ready:footprint.openings",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Footprint & Growth",
+            "slot": "footprint.openings",
+            "recordId": null,
+            "issueType": "property_example_render_not_ready",
+            "ownerVisible": true,
+            "rootCause": "0/3 row-level image match",
+            "proposedFix": "Match footprint.openings row by property name; attach hotel image per catalog entry",
+            "requiredSystemStage": "visual_asset_materialization",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:registry_only_images:global",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Unknown",
+            "slot": null,
+            "recordId": null,
+            "issueType": "registry_only_images",
+            "ownerVisible": false,
+            "rootCause": "6 assets",
+            "proposedFix": "Draft apply must write Presentation Image — registry alone does not render",
+            "requiredSystemStage": "registry_traceability",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:underpopulated_tabs:global",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Unknown",
+            "slot": null,
+            "recordId": null,
+            "issueType": "underpopulated_tabs",
+            "ownerVisible": true,
+            "rootCause": "Overview, Value to Owners, Operating Model, Owner Considerations, Commercial Engine, Economics & Obligations, Loyalty Program, Footprint & Growth, Brand Materials, Dealality Insight",
+            "proposedFix": "Founder review required",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:tab_coverage_gap:Owner Considerations",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Owner Considerations",
+            "slot": null,
+            "recordId": null,
+            "issueType": "tab_coverage_gap",
+            "ownerVisible": true,
+            "rootCause": "0/3 populated slots",
+            "proposedFix": "Add presentation rows for tab via brand config packages or factory draft",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": true,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:tab_coverage_gap:Loyalty Program",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Loyalty Program",
+            "slot": null,
+            "recordId": null,
+            "issueType": "tab_coverage_gap",
+            "ownerVisible": true,
+            "rootCause": "0/2 populated slots",
+            "proposedFix": "Add presentation rows for tab via brand config packages or factory draft",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": true,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:tab_coverage_gap:Economics & Obligations",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Economics & Obligations",
+            "slot": null,
+            "recordId": null,
+            "issueType": "tab_coverage_gap",
+            "ownerVisible": true,
+            "rootCause": "0/2 populated slots",
+            "proposedFix": "Add presentation rows for tab via brand config packages or factory draft",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": true,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:factory:need_6_visible_gallery_imageUrl_got_0",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "need_6_visible_gallery_imageUrl_got_0",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "visual_asset_materialization",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:factory:too_few_visible_openings:footprint.openings",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": false,
+            "rootCause": "too_few_visible_openings:footprint.openings",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:factory:no_visible_scenario_cards_in_api",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "no_visible_scenario_cards_in_api",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          },
+          {
+            "issueId": "mgallery-collection:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+            "severity": "high",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "factory_rule_blocker",
+            "ownerVisible": true,
+            "rootCause": "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+            "proposedFix": "Resolve via mapped factory stage before apply or approval",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:scenario_fallback_risk:overview.scenario.1",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "slot": "overview.scenario.1",
+            "recordId": null,
+            "issueType": "scenario_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block with imageUrl — atelier may render Urban Repositioning",
+            "proposedFix": "Ensure overview.scenario.N has imageUrl in API before founder review",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:scenario_fallback_risk:overview.scenario.2",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "slot": "overview.scenario.2",
+            "recordId": null,
+            "issueType": "scenario_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block with imageUrl — atelier may render Leisure-Forward Conversions",
+            "proposedFix": "Ensure overview.scenario.N has imageUrl in API before founder review",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:scenario_fallback_risk:overview.scenario.3",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "slot": "overview.scenario.3",
+            "recordId": null,
+            "issueType": "scenario_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block with imageUrl — atelier may render Boutique Resort Adjacency",
+            "proposedFix": "Ensure overview.scenario.N has imageUrl in API before founder review",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:proof_fallback_risk:overview.proof.*",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "slot": "overview.proof.*",
+            "recordId": null,
+            "issueType": "proof_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "Proof grid may show fallback: Global Open Footprint",
+            "proposedFix": "Populate overview.proof.1–6 with brand-specific proof cards",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:proof_fallback_risk:overview.proof.*",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "slot": "overview.proof.*",
+            "recordId": null,
+            "issueType": "proof_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "Proof grid may show fallback: Pipeline Depth",
+            "proposedFix": "Populate overview.proof.1–6 with brand-specific proof cards",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:ui_fallback_risk:overview.scenario.1",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "slot": "overview.scenario.1",
+            "recordId": null,
+            "issueType": "ui_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block — atelier may render Urban/Boutique defaults",
+            "proposedFix": "Populate slots that trigger atelier hardcoded fallbacks",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:ui_fallback_risk:overview.scenario.2",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "slot": "overview.scenario.2",
+            "recordId": null,
+            "issueType": "ui_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block — atelier may render Urban/Boutique defaults",
+            "proposedFix": "Populate slots that trigger atelier hardcoded fallbacks",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:ui_fallback_risk:overview.scenario.3",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "slot": "overview.scenario.3",
+            "recordId": null,
+            "issueType": "ui_fallback_risk",
+            "ownerVisible": true,
+            "rootCause": "No API block — atelier may render Urban/Boutique defaults",
+            "proposedFix": "Populate slots that trigger atelier hardcoded fallbacks",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:commercial_static_demand:commercial.demand",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Commercial Engine",
+            "slot": "commercial.demand",
+            "recordId": null,
+            "issueType": "commercial_static_demand",
+            "ownerVisible": true,
+            "rootCause": "Static demand matrix when commercial.demand slots empty",
+            "proposedFix": "Populate commercial.demand slots to suppress COMM_STATIC",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:loyalty_demand_matrix:loyalty.*",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Loyalty Program",
+            "slot": "loyalty.*",
+            "recordId": null,
+            "issueType": "loyalty_demand_matrix",
+            "ownerVisible": true,
+            "rootCause": "Hardcoded loyalty demand pairs when loyalty slots thin",
+            "proposedFix": "Populate loyalty KPI/proof rows to suppress LOY_DEMAND matrix",
+            "requiredSystemStage": "renderer_fix",
+            "genericFactoryCanFix": false,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": false,
+            "codeRenderPatchRequired": true
+          },
+          {
+            "issueId": "mgallery-collection:presentation_plan_invalid",
+            "severity": "medium",
+            "brand": "MGallery Collection",
+            "brandSlug": "mgallery-collection",
+            "tab": "Cross-tab",
+            "slot": null,
+            "recordId": null,
+            "issueType": "presentation_plan_contract",
+            "ownerVisible": false,
+            "rootCause": "3 plan rows fail contract",
+            "proposedFix": "Fix plan row externalBody, renderReadiness, and model-fit before apply-draft",
+            "requiredSystemStage": "draft_build",
+            "genericFactoryCanFix": true,
+            "brandSpecificConfigNeeded": false,
+            "founderJudgmentNeeded": false,
+            "airtableWriteRequiredLater": true,
+            "codeRenderPatchRequired": false
+          }
+        ],
+        "byStage": {
+          "source_capture": [],
+          "asset_pack": [],
+          "draft_build": [
+            "mgallery-collection:underpopulated_tabs:global",
+            "mgallery-collection:tab_coverage_gap:Owner Considerations",
+            "mgallery-collection:tab_coverage_gap:Loyalty Program",
+            "mgallery-collection:tab_coverage_gap:Economics & Obligations",
+            "mgallery-collection:factory:too_few_visible_openings:footprint.openings",
+            "mgallery-collection:factory:no_visible_scenario_cards_in_api",
+            "mgallery-collection:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+            "mgallery-collection:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+            "mgallery-collection:factory:atelier_hardcoded_scenario_fallback_risk:overview.scenario.3",
+            "mgallery-collection:presentation_plan_invalid"
+          ],
+          "copy_governance": [],
+          "external_owner_cleanup": [],
+          "visual_asset_materialization": [
+            "mgallery-collection:gallery_render_not_ready:materials.gallery.*",
+            "mgallery-collection:property_example_render_not_ready:footprint.openings",
+            "mgallery-collection:factory:need_6_visible_gallery_imageUrl_got_0"
+          ],
+          "registry_traceability": [
+            "mgallery-collection:registry_only_images:global"
+          ],
+          "standard_detail_governance": [],
+          "renderer_fix": [
+            "mgallery-collection:scenario_fallback_risk:overview.scenario.1",
+            "mgallery-collection:scenario_fallback_risk:overview.scenario.2",
+            "mgallery-collection:scenario_fallback_risk:overview.scenario.3",
+            "mgallery-collection:proof_fallback_risk:overview.proof.*",
+            "mgallery-collection:proof_fallback_risk:overview.proof.*",
+            "mgallery-collection:ui_fallback_risk:overview.scenario.1",
+            "mgallery-collection:ui_fallback_risk:overview.scenario.2",
+            "mgallery-collection:ui_fallback_risk:overview.scenario.3",
+            "mgallery-collection:commercial_static_demand:commercial.demand",
+            "mgallery-collection:loyalty_demand_matrix:loyalty.*"
+          ],
+          "founder_exception_review": [],
+          "active_approval": []
+        },
+        "summary": {
+          "critical": 0,
+          "high": 13,
+          "medium": 11,
+          "stagesTouched": [
+            "draft_build",
+            "visual_asset_materialization",
+            "registry_traceability",
+            "renderer_fix"
+          ]
+        },
+        "renderContractPass": false,
+        "activeProfileReady": false
+      },
+      "applyGate": {
+        "recommendation": "no_apply_allowed",
+        "reasons": [
+          "Sources, copy, or contract blockers must clear first"
+        ],
+        "applyDraftAllowed": false,
+        "remediationApplyRequired": false,
+        "founderReviewAllowed": false,
+        "applyApprovedAllowed": false,
+        "note": "apply-approved_allowed is informational only — v36C never executes apply"
+      },
+      "renderContract": {
+        "contractVersion": "v36B",
+        "brandSlug": "mgallery-collection",
+        "summary": {
+          "galleryRegistryReady": 0,
+          "galleryRenderReady": 0,
+          "galleryMinimum": 6,
+          "visibleGalleryInApi": 0,
+          "propertyExamplesRenderReady": 0,
+          "propertyExampleMinimum": 3,
+          "scenariosRenderReady": 0,
+          "scenarioMinimum": 3,
+          "registryOnlyCount": 6,
+          "scenarioFallbackRisk": [
+            "overview.scenario.1",
+            "overview.scenario.2",
+            "overview.scenario.3"
+          ],
+          "atelierScenarioFallbackTitles": [
+            "Urban Repositioning",
+            "Leisure-Forward Conversions",
+            "Boutique Resort Adjacency"
+          ]
+        },
+        "gallery": [
+          {
+            "slotKey": "materials.gallery.1",
+            "intendedSlot": "materials.gallery.1",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.1)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "b1r7",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.1",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "intendedSlot": "materials.gallery.2",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.2)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "b3g3",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.2",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "intendedSlot": "materials.gallery.3",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.3)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "a1x5",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.3",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.4",
+            "intendedSlot": "materials.gallery.4",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.4)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "c2a2",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.4",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.5",
+            "intendedSlot": "materials.gallery.5",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.5)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "b1r7",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.5",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          },
+          {
+            "slotKey": "materials.gallery.6",
+            "intendedSlot": "materials.gallery.6",
+            "sourcePageUrl": "",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for materials.gallery.6)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "gallery",
+            "propertyKey": "b3g3",
+            "propertyName": "",
+            "notes": "no_lifestyle_gallery_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": false,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": false,
+              "brandMatch": true,
+              "intendedSlot": "materials.gallery.6",
+              "pass": false,
+              "notes": "no_lifestyle_gallery_image"
+            },
+            "renderReady": false,
+            "registryReady": false,
+            "readinessGap": null
+          }
+        ],
+        "propertyExamples": [
+          {
+            "slotKey": "footprint.openings",
+            "intendedSlot": "footprint.openings — Palladio Hotel Buenos Aires MGallery Collection",
+            "sourcePageUrl": "https://all.accor.com/hotel/B1R7/index.en.shtml",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for b1r7)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "property_example",
+            "propertyKey": "b1r7",
+            "propertyName": "Palladio Hotel Buenos Aires MGallery Collection",
+            "notes": "no_property_specific_hotel_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "footprint.openings — Palladio Hotel Buenos Aires MGallery Collection",
+              "pass": true,
+              "notes": "no_property_specific_hotel_image"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "intendedSlot": "footprint.openings — Hotel Costanero Montevideo - MGallery Collection",
+            "sourcePageUrl": "https://all.accor.com/hotel/B3G3/index.en.shtml",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for b3g3)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "property_example",
+            "propertyKey": "b3g3",
+            "propertyName": "Hotel Costanero Montevideo - MGallery Collection",
+            "notes": "no_property_specific_hotel_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "footprint.openings — Hotel Costanero Montevideo - MGallery Collection",
+              "pass": true,
+              "notes": "no_property_specific_hotel_image"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "intendedSlot": "footprint.openings — Santa Teresa Hotel RJ - MGallery Collection",
+            "sourcePageUrl": "https://all.accor.com/hotel/A1X5/index.en.shtml",
+            "imageUrl": "",
+            "registryRowCandidate": "(new registry for a1x5)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "property_example",
+            "propertyKey": "a1x5",
+            "propertyName": "Santa Teresa Hotel RJ - MGallery Collection",
+            "notes": "no_property_specific_hotel_image",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "footprint.openings — Santa Teresa Hotel RJ - MGallery Collection",
+              "pass": true,
+              "notes": "no_property_specific_hotel_image"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          }
+        ],
+        "scenarios": [
+          {
+            "slotKey": "overview.scenario.1",
+            "intendedSlot": "overview.scenario.1",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": "(new row for overview.scenario.1)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "scenario",
+            "propertyKey": "",
+            "propertyName": "Distinctive Local Character",
+            "notes": "copy package available",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "overview.scenario.1",
+              "pass": true,
+              "notes": "copy package available"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "intendedSlot": "overview.scenario.2",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": "(new row for overview.scenario.2)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "scenario",
+            "propertyKey": "",
+            "propertyName": "Soft-Collection Conversion",
+            "notes": "copy package available",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "overview.scenario.2",
+              "pass": true,
+              "notes": "copy package available"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "intendedSlot": "overview.scenario.3",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": "(new row for overview.scenario.3)",
+            "sourceConfidence": "none",
+            "imageTypeClassification": "missing",
+            "isHotelPhotography": false,
+            "approvalStatus": "pending_founder_review",
+            "renderReadiness": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "assetRole": "scenario",
+            "propertyKey": "",
+            "propertyName": "CALA Collection Reference",
+            "notes": "copy package available",
+            "passesPropertyExampleRule": true,
+            "passesGalleryRule": true,
+            "registryReadiness": {
+              "registryCandidateExists": false,
+              "approvedStatus": "pending_founder_review",
+              "sourceSupport": true,
+              "brandMatch": true,
+              "intendedSlot": "overview.scenario.3",
+              "pass": true,
+              "notes": "copy package available"
+            },
+            "renderReady": false,
+            "registryReady": true,
+            "readinessGap": "registry_only_not_render"
+          }
+        ],
+        "momentumSources": [
+          {
+            "slotKey": "footprint.momentum",
+            "intendedSlot": "momentum_source_1",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "medium",
+            "imageTypeClassification": "text_source",
+            "approvalStatus": "source_candidate",
+            "renderReadiness": "copy_only",
+            "assetRole": "momentum",
+            "notes": "Momentum narrative source — no image required"
+          }
+        ],
+        "proofSupport": [
+          {
+            "slotKey": "overview.proof.1",
+            "intendedSlot": "overview.proof.1",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.2",
+            "intendedSlot": "overview.proof.2",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.3",
+            "intendedSlot": "overview.proof.3",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.4",
+            "intendedSlot": "overview.proof.4",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.5",
+            "intendedSlot": "overview.proof.5",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          },
+          {
+            "slotKey": "overview.proof.6",
+            "intendedSlot": "overview.proof.6",
+            "sourcePageUrl": "https://mgallery.accor.com/",
+            "imageUrl": "",
+            "registryRowCandidate": null,
+            "sourceConfidence": "low",
+            "approvalStatus": "needs_copy",
+            "renderReadiness": "needs_review",
+            "assetRole": "proof_card"
+          }
+        ],
+        "rules": {
+          "registryReadyNotEqualRenderReady": true,
+          "activeProfileRequiresRenderReadyImages": true,
+          "galleryMinimumVisibleRenderReady": 6,
+          "propertyExamplesRequireHotelImages": true,
+          "scenarioCardsNoPlaceholders": true
+        },
+        "pass": false
+      },
+      "presentationPlan": {
+        "contractVersion": "v36B",
+        "pass": false,
+        "summary": {
+          "total": 3,
+          "externalOwnerReady": 0,
+          "founderReviewRequired": 3,
+          "genericFiller": 0,
+          "renderBlocked": 3,
+          "modelFitBlocked": 1
+        },
+        "rows": [
+          {
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "section": "Overview scenarios",
+            "slotKey": "overview.scenario.1",
+            "title": "Distinctive Local Character",
+            "externalBody": "Distinctive Local Character\n\nMemorable hotels with strong local narrative and design identity—MGallery fits when owners want Accor collection affiliation while preserving property character and storytelling.",
+            "internalEvidenceRefs": [],
+            "sourceRecordIds": [],
+            "claimIds": [],
+            "visualAssetIds": [],
+            "sortOrder": null,
+            "externalDisplayStatus": "Do Not Display",
+            "ownerReadinessStatus": "blocked",
+            "founderReviewRequired": true,
+            "reasonForFounderReview": "missing_presentation_image_field; api_missing_imageUrl; imageUrl_not_loadable",
+            "disallowedTermsCheck": {
+              "pass": true,
+              "hits": [],
+              "termHits": []
+            },
+            "sourceTraceabilityCheck": {
+              "pass": false,
+              "sourceRecordIds": [],
+              "internalEvidenceRefs": [],
+              "note": "Internal trace required in plan row; must not appear in externalBody"
+            },
+            "renderReadinessCheck": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "brandModelFitCheck": {
+              "pass": true,
+              "blockers": [],
+              "modelType": "soft_brand_collection",
+              "franchiseBlocked": true
+            },
+            "isGenericFiller": false,
+            "isExternalOwnerReady": false,
+            "blockers": [
+              "missing_presentation_image_field",
+              "api_missing_imageUrl",
+              "imageUrl_not_loadable",
+              "image_placeholder"
+            ],
+            "patchMeta": {
+              "recordId": null,
+              "reason": "hide_scenario_without_image",
+              "mode": "create"
+            }
+          },
+          {
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "section": "Overview scenarios",
+            "slotKey": "overview.scenario.2",
+            "title": "Soft-Collection Conversion",
+            "externalBody": "Soft-Collection Conversion\n\nIndependent or boutique assets evaluating Accor soft-collection path—owners diligence collection standards, conversion PIP, and ALL participation without generic Accor boilerplate.",
+            "internalEvidenceRefs": [],
+            "sourceRecordIds": [],
+            "claimIds": [],
+            "visualAssetIds": [],
+            "sortOrder": null,
+            "externalDisplayStatus": "Do Not Display",
+            "ownerReadinessStatus": "blocked",
+            "founderReviewRequired": true,
+            "reasonForFounderReview": "missing_presentation_image_field; api_missing_imageUrl; imageUrl_not_loadable",
+            "disallowedTermsCheck": {
+              "pass": true,
+              "hits": [],
+              "termHits": []
+            },
+            "sourceTraceabilityCheck": {
+              "pass": false,
+              "sourceRecordIds": [],
+              "internalEvidenceRefs": [],
+              "note": "Internal trace required in plan row; must not appear in externalBody"
+            },
+            "renderReadinessCheck": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "brandModelFitCheck": {
+              "pass": false,
+              "blockers": [
+                "weak_brand_anchor"
+              ],
+              "modelType": "soft_brand_collection",
+              "franchiseBlocked": true
+            },
+            "isGenericFiller": false,
+            "isExternalOwnerReady": false,
+            "blockers": [
+              "missing_presentation_image_field",
+              "api_missing_imageUrl",
+              "imageUrl_not_loadable",
+              "image_placeholder",
+              "weak_brand_anchor"
+            ],
+            "patchMeta": {
+              "recordId": null,
+              "reason": "hide_scenario_without_image",
+              "mode": "create"
+            }
+          },
+          {
+            "brandSlug": "mgallery-collection",
+            "tab": "Overview",
+            "section": "Overview scenarios",
+            "slotKey": "overview.scenario.3",
+            "title": "CALA Collection Reference",
+            "externalBody": "CALA Collection Reference\n\nCaribbean and Latin America distinctive hotels comparing Accor collection options—MGallery competes when local character and curated experience matter in the region.",
+            "internalEvidenceRefs": [],
+            "sourceRecordIds": [],
+            "claimIds": [],
+            "visualAssetIds": [],
+            "sortOrder": null,
+            "externalDisplayStatus": "Do Not Display",
+            "ownerReadinessStatus": "blocked",
+            "founderReviewRequired": true,
+            "reasonForFounderReview": "missing_presentation_image_field; api_missing_imageUrl; imageUrl_not_loadable",
+            "disallowedTermsCheck": {
+              "pass": true,
+              "hits": [],
+              "termHits": []
+            },
+            "sourceTraceabilityCheck": {
+              "pass": false,
+              "sourceRecordIds": [],
+              "internalEvidenceRefs": [],
+              "note": "Internal trace required in plan row; must not appear in externalBody"
+            },
+            "renderReadinessCheck": {
+              "presentationImageFieldExists": false,
+              "apiReturnsImageUrl": false,
+              "imageUrlLoads": false,
+              "rowVisible": true,
+              "noImagePlaceholder": false,
+              "pass": false,
+              "blockers": [
+                "missing_presentation_image_field",
+                "api_missing_imageUrl",
+                "imageUrl_not_loadable",
+                "image_placeholder"
+              ],
+              "status": "missing_image"
+            },
+            "brandModelFitCheck": {
+              "pass": true,
+              "blockers": [],
+              "modelType": "soft_brand_collection",
+              "franchiseBlocked": true
+            },
+            "isGenericFiller": false,
+            "isExternalOwnerReady": false,
+            "blockers": [
+              "missing_presentation_image_field",
+              "api_missing_imageUrl",
+              "imageUrl_not_loadable",
+              "image_placeholder"
+            ],
+            "patchMeta": {
+              "recordId": null,
+              "reason": "hide_scenario_without_image",
+              "mode": "create"
+            }
+          }
+        ],
+        "blockers": [
+          "overview.scenario.1:missing_presentation_image_field",
+          "overview.scenario.1:api_missing_imageUrl",
+          "overview.scenario.1:imageUrl_not_loadable",
+          "overview.scenario.1:image_placeholder",
+          "overview.scenario.2:missing_presentation_image_field",
+          "overview.scenario.2:api_missing_imageUrl",
+          "overview.scenario.2:imageUrl_not_loadable",
+          "overview.scenario.2:image_placeholder",
+          "overview.scenario.2:weak_brand_anchor",
+          "overview.scenario.3:missing_presentation_image_field",
+          "overview.scenario.3:api_missing_imageUrl",
+          "overview.scenario.3:imageUrl_not_loadable",
+          "overview.scenario.3:image_placeholder"
+        ]
+      },
+      "factoryRules": {
+        "factoryVersion": "v34D",
+        "pass": false,
+        "rules": {
+          "gallery": {
+            "ruleId": "gallery_minimum_six_visible",
+            "pass": false,
+            "minimum": 6,
+            "visibleInApi": 0,
+            "withImageUrl": 0,
+            "missingImageUrl": [],
+            "logoOrGenericSlots": [],
+            "blockers": [
+              "need_6_visible_gallery_imageUrl_got_0"
+            ]
+          },
+          "propertyExamples": {
+            "ruleId": "property_example_real_hotel_images",
+            "pass": false,
+            "visibleOpeningCards": 0,
+            "expectedOpeningCards": 3,
+            "defects": [
+              {
+                "slotKey": "footprint.openings",
+                "issue": "too_few_visible_openings",
+                "count": 0
+              }
+            ],
+            "blockers": [
+              "too_few_visible_openings:footprint.openings"
+            ]
+          },
+          "scenarioImages": {
+            "ruleId": "scenario_no_image_placeholder",
+            "pass": false,
+            "visibleScenarioCards": 0,
+            "placeholderSlots": [],
+            "staleFallbackTitles": false,
+            "blockers": [
+              "no_visible_scenario_cards_in_api"
+            ]
+          },
+          "registryTraceability": {
+            "ruleId": "registry_traceability",
+            "pass": true,
+            "visualSlotsChecked": 0,
+            "gaps": [],
+            "blockers": []
+          },
+          "uiFallback": {
+            "ruleId": "ui_fallback_preference",
+            "pass": false,
+            "risks": [
+              {
+                "surface": "overview.scenario.1",
+                "issue": "atelier_hardcoded_scenario_fallback_risk",
+                "detail": "No API block — atelier may render Urban/Boutique defaults"
+              },
+              {
+                "surface": "overview.scenario.2",
+                "issue": "atelier_hardcoded_scenario_fallback_risk",
+                "detail": "No API block — atelier may render Urban/Boutique defaults"
+              },
+              {
+                "surface": "overview.scenario.3",
+                "issue": "atelier_hardcoded_scenario_fallback_risk",
+                "detail": "No API block — atelier may render Urban/Boutique defaults"
+              }
+            ],
+            "blockers": [
+              "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+              "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+              "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+            ]
+          },
+          "copySafety": {
+            "ruleId": "copy_safety",
+            "pass": true,
+            "findings": [],
+            "highCount": 0,
+            "blockers": []
+          },
+          "externalOwnerReadiness": {
+            "ruleId": "external_owner_readiness",
+            "pass": true,
+            "blockers": [],
+            "urlHitCount": 0,
+            "emptyCardCount": 0,
+            "emptyCardRows": [],
+            "modalPlaceholderCount": 0
+          },
+          "standardDetail": {
+            "ruleId": "standard_detail_governance",
+            "pass": true,
+            "sectionStatus": "unknown",
+            "needsFounderReview": false,
+            "blockers": []
+          }
+        },
+        "imageGovernanceDefects": [],
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_0",
+          "too_few_visible_openings:footprint.openings",
+          "no_visible_scenario_cards_in_api",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "galleryMinimum": 6,
+        "visibleGalleryCount": 0
+      },
+      "draftPlan": {
+        "draftBuilderVersion": "v34B",
+        "brandSlug": "mgallery-collection",
+        "mode": "dry-run",
+        "presentationPatches": [
+          {
+            "recordId": null,
+            "slotKey": "overview.scenario.1",
+            "fields": {
+              "Title": "Distinctive Local Character",
+              "Body": "Memorable hotels with strong local narrative and design identity—MGallery fits when owners want Accor collection affiliation while preserving property character and storytelling.",
+              "External Display Status": "Do Not Display"
+            },
+            "reason": "hide_scenario_without_image",
+            "riskyCopyRemoved": [],
+            "createIfMissing": true
+          },
+          {
+            "recordId": null,
+            "slotKey": "overview.scenario.2",
+            "fields": {
+              "Title": "Soft-Collection Conversion",
+              "Body": "Independent or boutique assets evaluating Accor soft-collection path—owners diligence collection standards, conversion PIP, and ALL participation without generic Accor boilerplate.",
+              "External Display Status": "Do Not Display"
+            },
+            "reason": "hide_scenario_without_image",
+            "riskyCopyRemoved": [],
+            "createIfMissing": true
+          },
+          {
+            "recordId": null,
+            "slotKey": "overview.scenario.3",
+            "fields": {
+              "Title": "CALA Collection Reference",
+              "Body": "Caribbean and Latin America distinctive hotels comparing Accor collection options—MGallery competes when local character and curated experience matter in the region.",
+              "External Display Status": "Do Not Display"
+            },
+            "reason": "hide_scenario_without_image",
+            "riskyCopyRemoved": [],
+            "createIfMissing": true
+          }
+        ],
+        "registryCreates": [],
+        "registryPatches": [],
+        "visibilityPatches": [
+          {
+            "slotKey": "overview.scenario.1",
+            "action": "hide",
+            "reason": "no_scenario_image_source"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "action": "hide",
+            "reason": "no_scenario_image_source"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "action": "hide",
+            "reason": "no_scenario_image_source"
+          }
+        ],
+        "copyPatches": [
+          {
+            "slotKey": "overview.scenario.1",
+            "title": "Distinctive Local Character",
+            "source": "brand_config"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "title": "Soft-Collection Conversion",
+            "source": "brand_config"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "title": "CALA Collection Reference",
+            "source": "brand_config"
+          }
+        ],
+        "riskyCopyRemoved": [],
+        "missingSourceEvidence": [
+          {
+            "slotKey": "materials.gallery.1",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.2",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.3",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.4",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.5",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "materials.gallery.6",
+            "assetRole": "gallery",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "assetRole": "property_example",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "assetRole": "property_example",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "footprint.openings",
+            "assetRole": "property_example",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "overview.scenario.1",
+            "assetRole": "scenario",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "overview.scenario.2",
+            "assetRole": "scenario",
+            "issue": "missing_image"
+          },
+          {
+            "slotKey": "overview.scenario.3",
+            "assetRole": "scenario",
+            "issue": "missing_image"
+          }
+        ],
+        "pendingGovernanceGates": [
+          "standard_detail_governance_review",
+          "founder_visual_review"
+        ],
+        "willApply": {
+          "presentationPatchCount": 3,
+          "registryCreateCount": 0,
+          "visibilityPatchCount": 3,
+          "sections": [
+            "overview.scenario"
+          ],
+          "slots": [
+            "overview.scenario.1",
+            "overview.scenario.2",
+            "overview.scenario.3"
+          ]
+        },
+        "remainsHumanReviewed": [
+          "Company Validated field — never auto-written",
+          "Summary URL field — never auto-written",
+          "Standard Detail governance sign-off",
+          "Founder visual review approval",
+          "materials.gallery.1: missing_image",
+          "materials.gallery.2: missing_image",
+          "materials.gallery.3: missing_image",
+          "materials.gallery.4: missing_image",
+          "materials.gallery.5: missing_image",
+          "materials.gallery.6: missing_image",
+          "footprint.openings: missing_image",
+          "footprint.openings: missing_image",
+          "footprint.openings: missing_image",
+          "overview.scenario.1: missing_image",
+          "overview.scenario.2: missing_image",
+          "overview.scenario.3: missing_image"
+        ],
+        "summary": {
+          "patchCount": 3,
+          "registryCreates": 0,
+          "galleryPatches": 0,
+          "propertyPatches": 0,
+          "scenarioPatches": 3,
+          "readyForDryRunReview": true
+        }
+      },
+      "v36bScoreComparison": {
+        "v36b": 3,
+        "v36cCalibrated": 0,
+        "v36bBand": "fail",
+        "v36cBand": "founder_review_required"
+      },
+      "knowledgePackSummary": {
+        "visualAssetCoverage": {
+          "galleryRenderReady": 0,
+          "galleryMinimum": 6,
+          "propertyExamplesRenderReady": 0,
+          "scenariosRenderReady": 0,
+          "registryOnlyCount": 6,
+          "pass": false
+        },
+        "tabCoverage": [
+          {
+            "tab": "Overview",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Value to Owners",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Operating Model",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Owner Considerations",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Commercial Engine",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Economics & Obligations",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Loyalty Program",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Footprint & Growth",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Brand Materials",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          },
+          {
+            "tab": "Dealality Insight",
+            "rowCount": 0,
+            "populated": 0,
+            "hasImageSlots": 0,
+            "status": "empty"
+          }
+        ]
+      },
+      "factoryReportSummary": {
+        "stage": "copy-governance",
+        "factoryPass": false,
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_0",
+          "too_few_visible_openings:footprint.openings",
+          "no_visible_scenario_cards_in_api",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ],
+        "draftPatchCount": 3
+      },
+      "completeBuildReady": false
+    }
+  ],
+  "designHotelsRemediation": null,
+  "slhNextAction": null,
+  "tributeBenchmark": null,
+  "regressionChecks": [],
+  "validationTests": [
+    {
+      "script": "test:brand-explorer-active-profile-staged-apply",
+      "status": "pass",
+      "exitCode": 0
+    },
+    {
+      "script": "test:partner-intelligence-publish-readiness",
+      "status": "pass",
+      "exitCode": 0
+    },
+    {
+      "script": "test:partner-intelligence-profile-governance-publish",
+      "status": "pass",
+      "exitCode": 0
+    }
+  ]
+}

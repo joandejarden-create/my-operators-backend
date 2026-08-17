@@ -1,0 +1,300 @@
+{
+  "experimentId": "QUERY_ORIGIN_REGIONALIZATION_EXPERIMENT_V1",
+  "status": "RESEARCH_COMPLETE_NO_PRODUCTIZATION",
+  "createdAt": "2026-08-15T15:05:00.000Z",
+  "phase": "QUERY_ORIGIN_RESEARCH_CLOSED",
+  "blocksOn": null,
+  "note": "RESEARCH_COMPLETE_NO_PRODUCTIZATION. Stage 1 OpenAI answered the research question (NO_MEANINGFUL_REPEATABLE_DIFFERENCE). Not failed. No production Query-Origin dimension. Stage 2 Claude NOT_PLANNED. Capability retained for future reopen.",
+  "currentPresenceCertificationAffected": false,
+  "holdoutDataUsed": false,
+  "productionClaimsAllowed": false,
+  "executionAllowed": false,
+  "PRODUCTION_DIMENSION": "NO",
+  "STAGE_2_CLAUDE": "NOT_PLANNED",
+  "REOPEN_CONDITIONS": [
+    "a provider materially changes localization behavior",
+    "customer evidence suggests geographic divergence",
+    "another asset geography shows a stronger hypothesis",
+    "source/search localization becomes strategically important",
+    "future monitoring detects unexplained regional response differences"
+  ],
+  "recurringTestsScheduled": false,
+  "preservedResearchCapability": [
+    "assetGeography",
+    "queryOriginGeography",
+    "providerLocationContext",
+    "experiment metadata"
+  ],
+  "PROVIDER_CALLS": 192,
+  "EXPERIMENT_EXECUTION": 1,
+  "geographicModel": {
+    "ASSET_GEOGRAPHY": "Where the hotel / development project is located (e.g. Mexico, CALA, Europe). Controlled constant in this experiment.",
+    "QUERY_ORIGIN_GEOGRAPHY": "Hypothetical decision-maker / asker market cohort (e.g. US_NORTHEAST). Experimental variable.",
+    "PROVIDER_LOCATION_CONTEXT": "Governed location payload passed to provider search/localization APIs (city/region/country/timezone or latLng). Must not be simulated by rewriting prompt text."
+  },
+  "origins": [
+    {
+      "queryOriginGeography": "US_NORTHEAST",
+      "referenceCity": "New York",
+      "country": "US",
+      "region": "New York",
+      "timezone": "America/New_York",
+      "providerLocationContext": {
+        "type": "approximate",
+        "city": "New York",
+        "region": "New York",
+        "country": "US",
+        "timezone": "America/New_York"
+      }
+    },
+    {
+      "queryOriginGeography": "US_SOUTHEAST",
+      "referenceCity": "Miami",
+      "country": "US",
+      "region": "Florida",
+      "timezone": "America/New_York",
+      "providerLocationContext": {
+        "type": "approximate",
+        "city": "Miami",
+        "region": "Florida",
+        "country": "US",
+        "timezone": "America/New_York"
+      }
+    },
+    {
+      "queryOriginGeography": "MEXICO",
+      "referenceCity": "Mexico City",
+      "country": "MX",
+      "region": "Ciudad de México",
+      "timezone": "America/Mexico_City",
+      "providerLocationContext": {
+        "type": "approximate",
+        "city": "Mexico City",
+        "region": "Ciudad de México",
+        "country": "MX",
+        "timezone": "America/Mexico_City"
+      }
+    },
+    {
+      "queryOriginGeography": "SPAIN",
+      "referenceCity": "Madrid",
+      "country": "ES",
+      "region": "Madrid",
+      "timezone": "Europe/Madrid",
+      "providerLocationContext": {
+        "type": "approximate",
+        "city": "Madrid",
+        "region": "Madrid",
+        "country": "ES",
+        "timezone": "Europe/Madrid"
+      }
+    }
+  ],
+  "recommendedAssetGeography": {
+    "value": "Mexico",
+    "rationale": [
+      "High Dealality commercial relevance and existing EN/ES Mexico prompt coverage in governed showcase/presence pools",
+      "Strong international owner/developer interest from both U.S. and European information ecosystems",
+      "Country-scope Mexico prompts already exist as a distinct cohort (not rolled into headline CALA regional metrics)",
+      "Enables identical Asset Geography while varying only Query-Origin / Provider Location Context"
+    ]
+  },
+  "promptFamilies": [
+    "Conversion / existing-asset reposition",
+    "Collection / Soft Brand shortlist",
+    "Lifestyle positioning",
+    "Upper-Upscale owner shortlist",
+    "Owner Flexibility / affiliation flexibility",
+    "Branded Residences capability",
+    "Brand Selection (soft-brand / affiliation)",
+    "Development Strategy / new-build positioning (Mexico-governed twin where available)"
+  ],
+  "promptSelectionRules": {
+    "source": "Existing governed owner-intent prompts (Airtable AI Visibility - Prompts / showcase seed) — Mexico asset geography only",
+    "identicalQuestionTextAcrossOrigins": true,
+    "identicalAssetGeography": true,
+    "identicalProviderModelWithinComparison": true,
+    "noPromptInjectedLocationAsSubstituteForProviderLocation": true,
+    "exampleMexicoPromptIds": [
+      "p_mx_existing_asset_reposition_v1",
+      "p_mx_existing_asset_reposition_es_v1",
+      "p_mx_soft_brand_shortlist_v1",
+      "p_mx_soft_brand_shortlist_es_v1",
+      "p_mx_lifestyle_strategy_v1",
+      "p_mx_uu_owner_shortlist_v1",
+      "p_mx_residences_capability_es_v1",
+      "p_cala_affiliation_flexibility_es_v1"
+    ],
+    "note": "Final 8–10 family IDs locked at execution gate after Presence certification; prefer Mexico twins with EN+ES. Do not invent new prompt wording in v1."
+  },
+  "languages": {
+    "cohorts": [
+      "en",
+      "es"
+    ],
+    "rule": "EN and ES are separate controlled cohorts. Same exact EN string across all four origins; same exact ES string across all four origins. Do not origin-specific translate."
+  },
+  "repetition": {
+    "MINIMUM_REPEAT_COUNT": 3,
+    "recommendedRepeatCount": 3,
+    "rationale": "LLM outputs are probabilistic; single-shot origin vs origin is insufficient to claim observed query-origin difference. Three repeats per prompt×provider×language×origin is the minimum bounded design."
+  },
+  "providerCapabilityAudit": {
+    "openai": {
+      "EXPLICIT_LOCATION_PARAMETER_SUPPORTED": "YES",
+      "LOCATION_FIELDS_SUPPORTED": [
+        "web_search.user_location.type=approximate",
+        "country (ISO-2)",
+        "city",
+        "region",
+        "timezone (IANA)"
+      ],
+      "WEB_SEARCH_LOCATION_AWARE": "YES",
+      "CURRENT_ADAPTER_SUPPORT": "NO — adapter sends tools:[{type:web_search}] without user_location",
+      "ADAPTER_CHANGE_REQUIRED": "YES",
+      "LOCATION_CONTROL": "COMPARABLE_AFTER_ADAPTER",
+      "docs": "https://developers.openai.com/api/docs/guides/tools-web-search"
+    },
+    "perplexity": {
+      "EXPLICIT_LOCATION_PARAMETER_SUPPORTED": "YES",
+      "LOCATION_FIELDS_SUPPORTED": [
+        "web_search_options.user_location.country (ISO-2)",
+        "region",
+        "city",
+        "latitude+longitude (require country when coords used)"
+      ],
+      "WEB_SEARCH_LOCATION_AWARE": "YES",
+      "CURRENT_ADAPTER_SUPPORT": "NO — Sonar chat/completions body has no web_search_options.user_location",
+      "ADAPTER_CHANGE_REQUIRED": "YES",
+      "LOCATION_CONTROL": "COMPARABLE_AFTER_ADAPTER_VERIFY_ON_SONAR",
+      "docs": "Perplexity Sonar web_search_options.user_location / Agent web_search filters"
+    },
+    "gemini": {
+      "EXPLICIT_LOCATION_PARAMETER_SUPPORTED": "PARTIAL",
+      "LOCATION_FIELDS_SUPPORTED": [
+        "Vertex/enterprise googleSearch may support toolConfig.retrievalConfig.latLng",
+        "Google Maps grounding uses latLng (different tool — not current monitoring path)",
+        "No city/region/country approximate parity with OpenAI/Claude on current GL API google_search adapter path"
+      ],
+      "WEB_SEARCH_LOCATION_AWARE": "UNCERTAIN_ON_CURRENT_ADAPTER_PATH",
+      "CURRENT_ADAPTER_SUPPORT": "NO — tools:[{google_search:{}}] only",
+      "ADAPTER_CHANGE_REQUIRED": "YES_AND_VERIFY",
+      "LOCATION_CONTROL": "NOT_COMPARABLE",
+      "note": "Do not fake parity. Exclude Gemini from v1 cross-origin comparable cohort until location control is verified on the exact generateContent path Dealality uses."
+    },
+    "claude": {
+      "EXPLICIT_LOCATION_PARAMETER_SUPPORTED": "YES",
+      "LOCATION_FIELDS_SUPPORTED": [
+        "web_search tool user_location.type=approximate",
+        "country (ISO-2)",
+        "city",
+        "region",
+        "timezone (IANA)"
+      ],
+      "WEB_SEARCH_LOCATION_AWARE": "YES",
+      "CURRENT_ADAPTER_SUPPORT": "NO — web_search_20260209 without user_location",
+      "ADAPTER_CHANGE_REQUIRED": "YES",
+      "LOCATION_CONTROL": "COMPARABLE_AFTER_ADAPTER",
+      "docs": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+    }
+  },
+  "executionPlanV1": {
+    "providersInComparableCohort": [
+      "openai",
+      "claude"
+    ],
+    "providersDeferred": [
+      "gemini"
+    ],
+    "providersOptionalAfterVerify": [
+      "perplexity"
+    ],
+    "assetGeography": "Mexico",
+    "origins": 4,
+    "promptFamiliesTarget": 8,
+    "languages": [
+      "en",
+      "es"
+    ],
+    "assumedEnPrompts": 8,
+    "assumedEsPrompts": 6,
+    "repeatCount": 3,
+    "formula": "(EN_prompts + ES_prompts) × origins × providers × repeats",
+    "TOTAL_PLANNED_CALLS_OPENAI_ONLY": 168,
+    "TOTAL_PLANNED_CALLS_OPENAI_CLAUDE": 336,
+    "ESTIMATED_COST_OPENAI_ONLY_USD": 42,
+    "ESTIMATED_COST_OPENAI_CLAUDE_USD": 84,
+    "COST_CAP_SUGGESTED_USD": 100,
+    "EST_USD_PER_CALL": 0.25,
+    "note": "Preferred first execution after Presence certification: OpenAI-only 168-call cohort under $100 cap; expand Claude only if OpenAI shows material origin deltas."
+  },
+  "measures": {
+    "COMPOSITE_SCORE": "NO",
+    "primary": [
+      "AI_PRESENCE_RATE_BY_QUERY_ORIGIN",
+      "BRAND_PRESENCE_DELTA_BETWEEN_ORIGINS",
+      "PROVIDER_SPECIFIC_PRESENCE_DIFFERENCES",
+      "SOURCE_CITATION_DOMAIN_DIFFERENCES",
+      "BRAND_SET_OVERLAP_BETWEEN_ORIGINS"
+    ],
+    "alsoCapture": [
+      "UNIQUE_BRANDS_SURFACED",
+      "BRANDS_UNIQUE_TO_ORIGIN",
+      "SOURCES_UNIQUE_TO_ORIGIN",
+      "PRESENCE_RATE_NYC",
+      "PRESENCE_RATE_MIAMI",
+      "PRESENCE_RATE_MEXICO_CITY",
+      "PRESENCE_RATE_MADRID",
+      "MAX_MIN_PRESENCE_DELTA",
+      "SOURCE_DOMAIN_OVERLAP",
+      "PROVIDER_AGREEMENT_DISAGREEMENT"
+    ],
+    "recommendationFirstSignals": "INTERNAL_RESEARCH_ONLY_IF_VALIDATION_ALLOWS — not production experiment metrics while NOT_READY"
+  },
+  "interpretationRules": {
+    "forbiddenClaims": [
+      "AI thinks differently in the Southeast",
+      "causality from isolated responses",
+      "production regionalization without repeated comparable observations"
+    ],
+    "allowedLanguage": "Observed query-origin difference — only when supported by repeated comparable observations",
+    "persistence": "Require MINIMUM_REPEAT_COUNT before describing difference as persistent or material"
+  },
+  "storage": {
+    "layer": "Existing AI Visibility file / federated store under data/ai-visibility/",
+    "parallelArchitecture": false,
+    "airtableRawDump": false,
+    "metadataFields": [
+      "assetGeography",
+      "queryOriginGeography",
+      "providerLocationContext",
+      "experimentId",
+      "experimentCohortId"
+    ]
+  },
+  "roadmap": {
+    "CURRENT": "RESEARCH_COMPLETE_NO_PRODUCTIZATION",
+    "NEXT": "RECOMMENDED_SIGNAL_DEFINITION_REVIEW",
+    "THEN_IF_MATERIAL": "Do not auto-promote; require new reopen mandate",
+    "THEN_IF_NOT_MATERIAL": "Retain research-only; do not burden production UI",
+    "futureProductConcept": "Query-Origin Intelligence (do not build)",
+    "recommendedFirstDoesNotBlock": true,
+    "STAGE_2_CLAUDE": "NOT_PLANNED"
+  },
+  "hardGuards": {
+    "CURRENT_PRESENCE_HOLDOUT_CHANGES": 0,
+    "GOLDEN_SET_CHANGES": 0,
+    "ENTITY_RESOLVER_CHANGES": 0,
+    "ALIAS_CHANGES": 0,
+    "CURRENT_HUMAN_LABEL_CHANGES": 0,
+    "PROVIDER_CALLS": 0,
+    "EXPERIMENT_EXECUTION": 0,
+    "NEW_CLIENT_METRICS": 0,
+    "AIRTABLE_SCHEMA_CHANGES": 0,
+    "DEPLOYS": 0
+  },
+  "updatedAt": "2026-08-15T17:55:00.000Z",
+  "stage1Decision": "NO_MEANINGFUL_REPEATABLE_DIFFERENCE",
+  "stage1NextStep": "QUERY_ORIGIN_REMAINS_RESEARCH_ONLY",
+  "closureStatus": "RESEARCH_COMPLETE_NO_PRODUCTIZATION"
+}

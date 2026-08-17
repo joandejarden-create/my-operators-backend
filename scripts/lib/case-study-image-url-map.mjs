@@ -26,6 +26,14 @@ export const IMAGE_BY_SOURCE_URL = {
     "https://www.choicehotels.com/hoteldam/mx/mx108/images/1280/MX108Exterior01_1.jpg",
   "https://www.choicehotels.com/argentina/rosario/radisson-red-hotels/aa024":
     "https://www.choicehotels.com/hoteldam/aa/aa024/images/1280/AA024ExteriorTemp1.jpg",
+  "https://www.choicehotels.com/minnesota/minneapolis/radisson-red-hotels/mn290":
+    "https://www.choicehotels.com/hoteldam/mn/mn290/images/1280/MN290ExteriorTemp01_1.jpg",
+  "https://www.choicehotels.com/florida/miami/radisson-red-hotels/flj13":
+    "https://www.choicehotels.com/hoteldam/fl/flj13/images/1280/FLJ13ExteriorTemp01_1.jpg",
+  "https://www.choicehotels.com/brazil/campinas/radisson-red-hotels/br157":
+    "https://www.choicehotels.com/hoteldam/br/br157/images/1280/BR157ExteriorTemp01_1.jpg",
+  "https://www.choicehotels.com/peru/miraflores/radisson-red-hotels/pe012":
+    "https://www.choicehotels.com/hoteldam/pe/pe012/images/1280/PE012ExteriorTemp01_1.jpg",
   "https://www.choicehotels.com/es-mx/panama/panama/radisson-hotels/pn018":
     "https://www.choicehotels.com/hoteldam/pn/pn018/images/1280/PN018AerialTemp1_1.jpg",
 };

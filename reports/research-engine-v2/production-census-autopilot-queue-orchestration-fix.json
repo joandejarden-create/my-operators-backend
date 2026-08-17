@@ -1,0 +1,53 @@
+{
+  "status": "production_census_autopilot_queue_orchestration_fixed_ready_for_multi_queue_controlled",
+  "generated_at": "2026-08-05T21:15:00.000Z",
+  "what_was_wrong": "controlled_mode_defaulted_to_rooms_keys_only_unless_queue_flag",
+  "fix": "multi_queue_orchestrator_fastest_safe_default",
+  "modules_changed": [
+    "lib/research-engine-v2/census-autopilot-queue-orchestrator.js",
+    "scripts/census-autopilot.mjs",
+    "lib/research-engine-v2/census-autopilot-runner.js",
+    "lib/research-engine-v2/census-autopilot-approval-bundle-apply.js",
+    "lib/research-engine-v2/production-census-population-lane-2.js",
+    "scripts/test-census-autopilot.mjs"
+  ],
+  "default_no_queue": "execute_all_eligible_fastest_safe_order",
+  "targeted_queue": "execute_only_named_queue",
+  "smoke_run_id": "2026-08-05_21-13-16-CALA-active-brands",
+  "targeted_description_run_id": "2026-08-05_21-13-30-CALA-active-brands",
+  "queues_executed": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_name_cleanup",
+    "property_type_asset_context",
+    "rooms_keys"
+  ],
+  "queues_exhausted": [
+    "description_extraction",
+    "amenities_extraction",
+    "radar_public_readiness",
+    "address_confirmation",
+    "property_name_cleanup",
+    "rooms_keys"
+  ],
+  "queues_skipped": [],
+  "queues_soft_deferred": ["coordinate_resolution"],
+  "approval_bundle": {
+    "records_proposed": 1,
+    "fields_proposed": ["Asset Context"],
+    "airtable_writes": false,
+    "queues_with_proposals": ["property_type_asset_context"]
+  },
+  "runtime_ms_orchestrator": 193011,
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "validation": {
+    "test_census_autopilot": "pass",
+    "dealality_batch_learning_audit": "pass"
+  },
+  "recommended_next": "review_approval_bundle_then_bundle_bound_apply_when_founder_approves",
+  "change_impact": "medium"
+}

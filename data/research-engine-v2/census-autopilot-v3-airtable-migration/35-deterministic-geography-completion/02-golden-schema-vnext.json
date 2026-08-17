@@ -1,0 +1,35 @@
+{
+  "version": "golden-census-schema-v3.0.3",
+  "effective_date": "2026-08-08",
+  "supersedes": "golden-to-airtable-field-map-v3",
+  "notes": "Formalizes Phone CONDITIONAL REQUIRED and Submarket APPLICABILITY-BASED. Does not silently rewrite historical V3.0.2A artifacts.",
+  "fields": {
+    "Phone": {
+      "golden_requirement": "CONDITIONAL_REQUIRED",
+      "required_when": "property_direct_phone_exists_or_reasonably_expected",
+      "not_applicable_when": [
+        "CENTRAL_RESERVATIONS_only",
+        "SALES_only",
+        "no_public_property_direct_after_research"
+      ],
+      "do_not_force_central_into_property_direct": true
+    },
+    "Submarket": {
+      "golden_requirement": "APPLICABILITY_BASED",
+      "required_when": "market_has_meaningful_dealality_corridor_structure",
+      "not_applicable_when": "market_is_terminal_geography",
+      "unknown_when": "corridor_expected_but_unresolved",
+      "not_applicable_excluded_from_denominator": true,
+      "no_artificial_submarkets": true
+    },
+    "State / Region": {
+      "golden_requirement": "REQUIRED",
+      "derivation": "dealality_geography_deterministic",
+      "administrative_type_tracked_separately": true
+    },
+    "Market": {
+      "golden_requirement": "REQUIRED",
+      "derivation": "dealality_geography_deterministic"
+    }
+  }
+}

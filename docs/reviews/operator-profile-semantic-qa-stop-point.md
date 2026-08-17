@@ -1,0 +1,43 @@
+# Profile Semantic QA — Stop Point
+
+- **mode**: apply+post-verify
+- **activeProfileFields**: 55
+- **activeProfileCellsAudited**: 1980
+- **validBefore**: 1881
+- **genericBefore**: 77
+- **templateBefore**: 22
+- **unsupportedBefore**: 0
+- **wrongSemanticBefore**: 0
+- **wrongCompanyBefore**: 0
+- **standardizedTaxonomyCells**: 398
+- **remainingGenericMarkerExact (pre-apply)**: 28 (ops 22 · narrative 2 · diligence placeholder 4) — all repaired; after = 0
+- **cellsAutomaticallyRepaired**: 101
+- **cellsReresearched**: 101
+- **cellsDerivedCorrected**: 0
+- **fieldsRecommendedConsolidationRemoval**: none
+- **overviewBestatSemanticVerdict**: RETAIN — cards distinct within operators; company-specific presentation pack
+- **overviewBestatRepairedCells**: 12
+- **companyTaglineSemanticVerdict**: DEALALITY_POSITIONING_HEADLINE_OR_VERIFIED_OFFICIAL: 7 verified-official-style · 29 Dealality positioning headlines — single field accepts verified official OR short company-specific positioning (not company-name-only)
+- **missionPhilosophyOverlapVerdict**: 2 operators with high mission/philosophy overlap — rewritten; post-verify DISTINCT
+- **brandJsonParityVerdict**: JSON rebuilt from Brand Families + company differentiators when template/generic detected; post-verify no identical template clusters
+- **genericAfter**: 0
+- **templateAfter**: 0
+- **unsupportedAfter**: 0
+- **wrongSemanticAfter**: 0
+- **wrongCompanyAfter**: 0
+- **populationCoverage**: 100%
+- **semanticValidityAfter**: 100.0%
+- **companySpecificNarrativeCoverage**: 100.0%
+- **sourceTraceableCoverage**: 100.0%
+- **canonicalDerivationParity**: yearsInBusiness/numberOfBrands/brandedVsIndependentMix/brand JSON — rechecked on repair; post-verify PASS
+- **founderHadToIdentifyDefectsManually**: 0
+- **profileFinalQualityVerdict**: PASS
+- **genericQaModuleUpgraded**: true
+- **readyToRunSameEngineOnPlatform**: true
+- **confirmationPlatformNotStarted**: true
+- **confirmationFitNotStarted**: true
+- **airtableWrites**: 101
+- **failures**: 0
+- **backupDir**: C:\Dev\deal-capture-proxy\backups\operator-setup\profile-semantic-qa\2026-08-11T14-28-01
+
+See machine JSON: `data/operator-setup/profile-semantic-qa/profile-semantic-qa-stop-point.json`

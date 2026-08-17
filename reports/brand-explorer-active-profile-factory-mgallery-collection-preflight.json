@@ -1,0 +1,326 @@
+{
+  "factoryVersion": "v34D",
+  "brandConfigVersion": "v35B",
+  "stage": "preflight",
+  "generatedAt": "2026-07-21T09:16:37.611Z",
+  "brand": {
+    "slug": "mgallery-collection",
+    "recordId": "recrWCD1LMqu864oU",
+    "name": "MGallery Collection",
+    "parentCompany": "Accor",
+    "consumerUrl": "https://mgallery.accor.com/"
+  },
+  "activeProfileConfig": {
+    "slug": "mgallery-collection",
+    "recordId": "recrWCD1LMqu864oU",
+    "brandFamily": "accor-soft-collection",
+    "propertyExampleStrategy": "lifestyle_property_page_probe",
+    "galleryMinimum": 6
+  },
+  "mode": "dry-run",
+  "guardrails": {
+    "companyValidatedNeverAuto": true,
+    "imageApprovalNotCompanyValidation": true,
+    "noSummaryUrlWrites": true,
+    "registryOnlyNotVisibleReadiness": true,
+    "founderVisualReviewRequiredForApply": true,
+    "stagedApplyWorkflow": "apply-draft → founder-review → apply-approved",
+    "galleryMinimum": 6
+  },
+  "factoryRules": {
+    "factoryVersion": "v34D",
+    "pass": false,
+    "rules": {
+      "gallery": {
+        "ruleId": "gallery_minimum_six_visible",
+        "pass": false,
+        "minimum": 6,
+        "visibleInApi": 0,
+        "withImageUrl": 0,
+        "missingImageUrl": [],
+        "logoOrGenericSlots": [],
+        "blockers": [
+          "need_6_visible_gallery_imageUrl_got_0"
+        ]
+      },
+      "propertyExamples": {
+        "ruleId": "property_example_real_hotel_images",
+        "pass": false,
+        "visibleOpeningCards": 0,
+        "expectedOpeningCards": 3,
+        "defects": [
+          {
+            "slotKey": "footprint.openings",
+            "issue": "too_few_visible_openings",
+            "count": 0
+          }
+        ],
+        "blockers": [
+          "too_few_visible_openings:footprint.openings"
+        ]
+      },
+      "scenarioImages": {
+        "ruleId": "scenario_no_image_placeholder",
+        "pass": false,
+        "visibleScenarioCards": 0,
+        "placeholderSlots": [],
+        "staleFallbackTitles": false,
+        "blockers": [
+          "no_visible_scenario_cards_in_api"
+        ]
+      },
+      "registryTraceability": {
+        "ruleId": "registry_traceability",
+        "pass": true,
+        "visualSlotsChecked": 0,
+        "gaps": [],
+        "blockers": []
+      },
+      "uiFallback": {
+        "ruleId": "ui_fallback_preference",
+        "pass": false,
+        "risks": [
+          {
+            "surface": "overview.scenario.1",
+            "issue": "atelier_hardcoded_scenario_fallback_risk",
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "surface": "overview.scenario.2",
+            "issue": "atelier_hardcoded_scenario_fallback_risk",
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          },
+          {
+            "surface": "overview.scenario.3",
+            "issue": "atelier_hardcoded_scenario_fallback_risk",
+            "detail": "No API block — atelier may render Urban/Boutique defaults"
+          }
+        ],
+        "blockers": [
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+          "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+        ]
+      },
+      "copySafety": {
+        "ruleId": "copy_safety",
+        "pass": true,
+        "findings": [],
+        "highCount": 0,
+        "blockers": []
+      },
+      "externalOwnerReadiness": {
+        "ruleId": "external_owner_readiness",
+        "pass": true,
+        "blockers": [],
+        "urlHitCount": 0,
+        "emptyCardCount": 0,
+        "emptyCardRows": [],
+        "modalPlaceholderCount": 0
+      },
+      "standardDetail": {
+        "ruleId": "standard_detail_governance",
+        "pass": true,
+        "sectionStatus": "unknown",
+        "needsFounderReview": false,
+        "blockers": []
+      }
+    },
+    "imageGovernanceDefects": [],
+    "blockers": [
+      "need_6_visible_gallery_imageUrl_got_0",
+      "too_few_visible_openings:footprint.openings",
+      "no_visible_scenario_cards_in_api",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.1",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.2",
+      "atelier_hardcoded_scenario_fallback_risk:overview.scenario.3"
+    ],
+    "galleryMinimum": 6,
+    "visibleGalleryCount": 0
+  },
+  "assetPack": null,
+  "draftPlan": null,
+  "copyGovernancePlan": null,
+  "approvedSourcesCount": 0,
+  "applyResult": null,
+  "legacyWriterChainReference": [],
+  "finalQa": {
+    "readiness": "blocked",
+    "numeric": 30,
+    "defectCount": 20
+  },
+  "visualDefects": null,
+  "completeBuild": {
+    "readyForActiveProfile": false,
+    "readinessBand": "blocked"
+  },
+  "suburbanReadiness": null,
+  "applyApproved": {
+    "allowed": false,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-approved -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile --confirm-founder-visual-review-passed --confirm-no-company-validation-claim --confirm-brand-only",
+    "blockers": []
+  },
+  "applyDraft": {
+    "allowed": true,
+    "exactCommand": "npm run brand-explorer-active-profile-apply-draft -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed",
+    "blockers": [],
+    "writesActiveProfileApproval": false
+  },
+  "stagedApplyVersion": "v34D",
+  "founderVisualReview": {
+    "stagedApplyVersion": "v34D",
+    "pass": false,
+    "checks": [
+      {
+        "id": "gallery_six_visible",
+        "label": "6 gallery images visible with imageUrl",
+        "pass": false,
+        "detail": "0/6"
+      },
+      {
+        "id": "property_examples_hotel_images",
+        "label": "3 property examples visible with hotel images",
+        "pass": false,
+        "detail": "0 cards"
+      },
+      {
+        "id": "no_logo_lifestyle_property_images",
+        "label": "No logo/lifestyle/generic property images",
+        "pass": true,
+        "detail": "gallery + property scan"
+      },
+      {
+        "id": "scenario_no_placeholders",
+        "label": "No IMAGE placeholders on scenario cards",
+        "pass": false,
+        "detail": "ok"
+      },
+      {
+        "id": "external_owner_readiness",
+        "label": "No visible source URLs, governance language, or modal placeholders in owner copy",
+        "pass": true,
+        "detail": "0 blockers"
+      },
+      {
+        "id": "copy_safety",
+        "label": "No FDD / Item 19 / ADR / RevPAR / net contribution language",
+        "pass": true,
+        "detail": "0 high findings"
+      },
+      {
+        "id": "standard_detail_governance",
+        "label": "Standard detail governance visible and safe",
+        "pass": true,
+        "detail": "unknown"
+      },
+      {
+        "id": "company_validated_untouched",
+        "label": "Company Validated untouched",
+        "pass": true,
+        "detail": "before=false after=false"
+      },
+      {
+        "id": "registry_traceability",
+        "label": "Registry traceability for visual slots",
+        "pass": true,
+        "detail": "0 gaps"
+      },
+      {
+        "id": "ui_fallback_risk",
+        "label": "No stale UI fallback titles",
+        "pass": false,
+        "detail": "3 risks"
+      }
+    ],
+    "failedChecks": [
+      {
+        "id": "gallery_six_visible",
+        "label": "6 gallery images visible with imageUrl",
+        "pass": false,
+        "detail": "0/6"
+      },
+      {
+        "id": "property_examples_hotel_images",
+        "label": "3 property examples visible with hotel images",
+        "pass": false,
+        "detail": "0 cards"
+      },
+      {
+        "id": "scenario_no_placeholders",
+        "label": "No IMAGE placeholders on scenario cards",
+        "pass": false,
+        "detail": "ok"
+      },
+      {
+        "id": "ui_fallback_risk",
+        "label": "No stale UI fallback titles",
+        "pass": false,
+        "detail": "3 risks"
+      }
+    ],
+    "blockers": [
+      "founder_visual_check_failed:gallery_six_visible",
+      "founder_visual_check_failed:property_examples_hotel_images",
+      "founder_visual_check_failed:scenario_no_placeholders",
+      "founder_visual_check_failed:ui_fallback_risk"
+    ],
+    "highBlockerCount": 0
+  },
+  "draftApplyValidation": {
+    "stage": "apply-draft",
+    "allowed": true,
+    "blockers": [],
+    "missingFlagsForApply": [
+      "approveBrandExplorerActiveProfileDraft",
+      "founderVisualReview",
+      "confirmNoCompanyValidationClaim",
+      "confirmNoSummaryUrlField",
+      "confirmBrandOnly",
+      "confirmOfficialSourceImagesOnly",
+      "confirmMinimumSixVisibleGalleryImages",
+      "confirmPropertyExamplesHaveHotelImages",
+      "confirmNoLogoLifestylePropertyImages",
+      "confirmStandardDetailGovernanceReviewed"
+    ],
+    "requiredFlags": [
+      "approveBrandExplorerActiveProfileDraft",
+      "founderVisualReview",
+      "confirmNoCompanyValidationClaim",
+      "confirmNoSummaryUrlField",
+      "confirmBrandOnly",
+      "confirmOfficialSourceImagesOnly",
+      "confirmMinimumSixVisibleGalleryImages",
+      "confirmPropertyExamplesHaveHotelImages",
+      "confirmNoLogoLifestylePropertyImages",
+      "confirmStandardDetailGovernanceReviewed"
+    ],
+    "writesActiveProfileApproval": false,
+    "setsReadyForActiveProfile": false
+  },
+  "activeApprovalValidation": {
+    "stage": "apply-approved",
+    "allowed": true,
+    "blockers": [],
+    "missingFlagsForApply": [
+      "approveBrandExplorerActiveProfile",
+      "confirmFounderVisualReviewPassed",
+      "confirmNoCompanyValidationClaim",
+      "confirmBrandOnly"
+    ],
+    "requiredFlags": [
+      "approveBrandExplorerActiveProfile",
+      "confirmFounderVisualReviewPassed",
+      "confirmNoCompanyValidationClaim",
+      "confirmBrandOnly"
+    ],
+    "writesDraftContent": false
+  },
+  "postDraftApply": null,
+  "postDraftFactoryRules": null,
+  "founderVisualReviewMarkdown": "# Founder Visual Review v34D\n\n- Brand: **MGallery Collection** (`mgallery-collection`)\n- Generated: 2026-07-21T09:16:37.611Z\n- Overall: **FAIL**\n\n## Live Brand Explorer checks\n- **FAIL** — 6 gallery images visible with imageUrl (0/6)\n- **FAIL** — 3 property examples visible with hotel images (0 cards)\n- **PASS** — No logo/lifestyle/generic property images (gallery + property scan)\n- **FAIL** — No IMAGE placeholders on scenario cards (ok)\n- **PASS** — No visible source URLs, governance language, or modal placeholders in owner copy (0 blockers)\n- **PASS** — No FDD / Item 19 / ADR / RevPAR / net contribution language (0 high findings)\n- **PASS** — Standard detail governance visible and safe (unknown)\n- **PASS** — Company Validated untouched (before=false after=false)\n- **PASS** — Registry traceability for visual slots (0 gaps)\n- **FAIL** — No stale UI fallback titles (3 risks)\n\n## Failed checks\n- `gallery_six_visible`: 6 gallery images visible with imageUrl\n- `property_examples_hotel_images`: 3 property examples visible with hotel images\n- `scenario_no_placeholders`: No IMAGE placeholders on scenario cards\n- `ui_fallback_risk`: No stale UI fallback titles\n\n## Stage 1 — Draft apply\n- Allowed (apply mode): **yes**\n- Flags required for apply: approveBrandExplorerActiveProfileDraft, founderVisualReview, confirmNoCompanyValidationClaim, confirmNoSummaryUrlField, confirmBrandOnly, confirmOfficialSourceImagesOnly, confirmMinimumSixVisibleGalleryImages, confirmPropertyExamplesHaveHotelImages, confirmNoLogoLifestylePropertyImages, confirmStandardDetailGovernanceReviewed\n```bash\nnpm run brand-explorer-active-profile-apply-draft -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed\n```\n\n## Stage 2 — Founder visual review (this report)\nBlocked. Fix issues or re-run draft apply, then re-run founder visual review.\n\n## Stage 3 — Active approval\n- Allowed: **no**\n- blocker: founder_visual_review_not_passed\n- Flags required for apply: approveBrandExplorerActiveProfile, confirmFounderVisualReviewPassed, confirmNoCompanyValidationClaim, confirmBrandOnly\n\n## Workflow separation\n1. **apply-draft** — writes gallery, property examples, scenarios, copy governance, visibility; does **not** approve active profile.\n2. **founder-review** — live rendered checks (this report).\n3. **apply-approved** — records active-profile approval only after visual review passes.",
+  "markdown": "# Brand Explorer Active Profile Founder Review v34D\n\n- Brand: **MGallery Collection** (`mgallery-collection`)\n- Generated: 2026-07-21T09:16:37.611Z\n- Factory pass: **no**\n\n## Visual readiness\n- Gallery (6 visible + imageUrl): **FAIL** (0/6)\n- Property examples: **FAIL**\n- Scenario cards (no IMAGE placeholder): **FAIL**\n- Registry traceability: **PASS**\n- UI fallback risk: **FAIL**\n- Copy safety: **PASS**\n- Standard Detail governance: **PASS**\n\n## Property cards (asset pack)\n\n## Gallery image pack\n\n## Scenario cards\n\n## Proof cards\n\n## What will be applied (dry-run draft)\n- Presentation patches: **0**\n- Registry creates: **0**\n- Sections: (none)\n\n## Remains human-reviewed\n\n## Blockers\n- need_6_visible_gallery_imageUrl_got_0\n- too_few_visible_openings:footprint.openings\n- no_visible_scenario_cards_in_api\n- atelier_hardcoded_scenario_fallback_risk:overview.scenario.1\n- atelier_hardcoded_scenario_fallback_risk:overview.scenario.2\n- atelier_hardcoded_scenario_fallback_risk:overview.scenario.3\n\n## Staged apply workflow (v34D)\n\n### Stage 1 — Draft apply (preview writes)\n_Run after dry-runs are clean. Does not approve active profile._\n```bash\nnpm run brand-explorer-active-profile-apply-draft -- --brand mgallery-collection --apply --approve-brand-explorer-active-profile-draft --approve-brand-explorer-active-profile-copy-governance --founder-approved-active-profile-visual-review --confirm-no-company-validation-claim --confirm-no-summary-url-field --confirm-brand-only --confirm-official-source-images-only --confirm-minimum-six-visible-gallery-images --confirm-property-examples-have-hotel-images --confirm-no-logo-lifestyle-property-images --confirm-standard-detail-governance-reviewed\n```\n\n### Stage 2 — Founder visual review\n```bash\nnpm run brand-explorer-active-profile-founder-review -- --brand mgallery-collection --dry-run\n```\n\n### Stage 3 — Active approval\n_Blocked until founder visual review passes._",
+  "assetPackMarkdown": null,
+  "draftMarkdown": null,
+  "copyGovernanceMarkdown": null,
+  "founderQueueAuditMarkdown": null
+}

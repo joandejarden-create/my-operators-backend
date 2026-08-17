@@ -1,0 +1,156 @@
+(function(w,i){
+      w.style.transition=animate?"opacity .45s ease":"none";
+      var dist=Math.abs(i-ri);
+      setActiveClass(w,dist===0);
+      w.classList.toggle("near",dist===1);
+      w.classList.toggle("far",dist===2);
+    });
+  };
+  var boot=function(){setWidth();paint(false);};
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(boot).catch(boot);}else{boot();}
+  var rotMs=window.matchMedia("(prefers-reduced-motion: reduce)").matches?0:3400;
+  if(rotMs>0){
+    setInterval(function(){
+      ri++;
+      paint(true);
+      if(ri>=loopEnd)setTimeout(function(){ri=start;paint(false);},700);
+    },rotMs);
+    window.addEventListener("resize",function(){setWidth();paint(false);},{passive:true});
+  }
+}
+})();</script>
+<script>(function(){
+var email=document.getElementById("fsw-email");
+if(email){
+  if(!email.getAttribute("placeholder"))email.setAttribute("placeholder","Email Address");
+  email.setAttribute("autocomplete","email");
+}
+var form=document.getElementById("fsw-inner");
+function go(e){
+  if(e){e.preventDefault();e.stopPropagation();}
+  if(email&&typeof email.reportValidity==="function"&&!email.reportValidity())return;
+  var v=(email&&email.value||"").trim();
+  var url="https://www.dealality.com/opportunity-review";
+  if(v)url+="?email="+encodeURIComponent(v);
+  if(typeof window.ohOpenOpportunityReview==="function"){
+    window.ohOpenOpportunityReview(url,"Explore Your Hotel Opportunity");
+    return;
+  }
+  window.location.href=url;
+}
+if(form){
+  form.setAttribute("action","https://www.dealality.com/opportunity-review");
+  form.setAttribute("method","get");
+  form.addEventListener("submit",go,true);
+}
+var btn=document.getElementById("fsw-btn");
+if(btn){btn.addEventListener("click",go);}
+var hit=document.getElementById("fsw-submit-hit");
+if(hit){hit.addEventListener("click",go);}
+})();</script>
+<script>(function(){
+var root=document.getElementById("insights");
+var ctaBtn=document.getElementById("cta-band-btn");
+var fswBtn=document.getElementById("fsw-btn");
+if(!root&&!ctaBtn&&!fswBtn)return;
+function isArticleUrl(href){
+  try{
+    var u=new URL(href,window.location.href);
+    return /\/insights-posts\//i.test(u.pathname);
+  }catch(err){return false;}
+}
+function isOpportunityUrl(href){
+  try{
+    var u=new URL(href,window.location.href);
+    return /\/opportunity-review\/?$/i.test(u.pathname);
+  }catch(err){return false;}
+}
+function ensureModal(){
+  var el=document.getElementById("oh-article-reader");
+  if(el)return el;
+  el=document.createElement("div");
+  el.id="oh-article-reader";
+  el.setAttribute("hidden","");
+  el.setAttribute("aria-hidden","true");
+  el.innerHTML='<div id="oh-ar-dialog" role="dialog" aria-modal="true" aria-labelledby="oh-ar-title">'+
+    '<div id="oh-ar-bar">'+
+      '<p id="oh-ar-title">Article</p>'+
+      '<div id="oh-ar-actions">'+
+        '<a id="oh-ar-open" href="#" target="_blank" rel="noopener noreferrer">Open full page</a>'+
+        '<button type="button" id="oh-ar-close" aria-label="Close">×</button>'+
+      '</div>'+
+    '</div>'+
+    '<div id="oh-ar-body">'+
+      '<div id="oh-ar-loading" class="is-on" role="status">Loading…</div>'+
+      '<div id="oh-ar-error" role="alert">This page could not be loaded in the reader. <a id="oh-ar-error-link" href="#" target="_blank" rel="noopener noreferrer">Open it in a new tab</a>.</div>'+
+      '<iframe id="oh-ar-frame" title="Embedded page reader" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(el);
+  return el;
+}
+var modal=ensureModal();
+var dialog=document.getElementById("oh-ar-dialog");
+var frame=document.getElementById("oh-ar-frame");
+var titleEl=document.getElementById("oh-ar-title");
+var openEl=document.getElementById("oh-ar-open");
+var closeEl=document.getElementById("oh-ar-close");
+var loadingEl=document.getElementById("oh-ar-loading");
+var errorEl=document.getElementById("oh-ar-error");
+var errorLink=document.getElementById("oh-ar-error-link");
+var lastFocus=null;
+var loadTimer=null;
+
+function setLoading(on,label){
+  if(loadingEl){
+    loadingEl.classList.toggle("is-on",!!on);
+    if(on)loadingEl.textContent=label||"Loading…";
+  }
+}
+function setError(on){
+  if(errorEl)errorEl.classList.toggle("is-on",!!on);
+}
+function hideEmbedChrome(doc){
+  if(!doc)return;
+  try{
+    var links=doc.querySelectorAll(".insights-back-link,a.insights-back-link");
+    links.forEach(function(link){
+      link.style.setProperty("display","none","important");
+      link.setAttribute("aria-hidden","true");
+      link.setAttribute("hidden","");
+    });
+    if(!doc.getElementById("oh-embed-hide-back")){
+      var style=doc.createElement("style");
+      style.id="oh-embed-hide-back";
+      style.textContent=".insights-back-link{display:none!important;}";
+      (doc.head||doc.documentElement).appendChild(style);
+    }
+  }catch(err){}
+}
+function closeReader(){
+  if(loadTimer){clearTimeout(loadTimer);loadTimer=null;}
+  modal.classList.remove("is-open");
+  modal.setAttribute("hidden","");
+  modal.setAttribute("aria-hidden","true");
+  document.documentElement.style.overflow="";
+  document.body.style.overflow="";
+  if(frame){frame.removeAttribute("src");frame.src="about:blank";}
+  setLoading(false);
+  setError(false);
+  if(lastFocus&&typeof lastFocus.focus==="function")lastFocus.focus();
+  lastFocus=null;
+}
+function openReader(url,label,opts){
+  opts=opts||{};
+  lastFocus=document.activeElement;
+  titleEl.textContent=label||"Dealality";
+  openEl.href=url;
+  if(errorLink)errorLink.href=url;
+  setError(false);
+  setLoading(true,opts.loadingText||"Loading…");
+  modal.removeAttribute("hidden");
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden","false");
+  document.documentElement.style.overflow="hidden";
+  document.body.style.overflow="hidden";
+  if(loadTimer)

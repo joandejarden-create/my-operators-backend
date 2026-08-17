@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CALA Radar Buildout Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/radar-buildout-dashboard.css">
+</head>
+<body>
+  <h1>CALA Radar Buildout</h1>
+  <p class="muted">Country build status, targets, and live counts from Demand Anchors + Travel Infrastructure.</p>
+  <p class="muted">
+    <a href="/deal-capture-radar-with-ranked-list.html">Radar Map</a> ·
+    <a href="/demand-anchors-import.html">Demand Anchors Import</a> ·
+    <a href="/travel-infrastructure-import.html">Travel Infrastructure Import</a>
+  </p>
+
+  <div class="panel">
+    <div class="filters">
+      <div>
+        <label for="filterTier">Priority Tier</label>
+        <select id="filterTier">
+          <option value="">All</option>
+          <option value="Tier 1">Tier 1</option>
+          <option value="Tier 2">Tier 2</option>
+          <option value="Tier 3">Tier 3</option>
+          <option value="Future">Future</option>
+        </select>
+      </div>
+      <div>
+        <label for="filterStrategy">Build Strategy</label>
+        <select id="filterStrategy">
+          <option value="">All</option>
+          <option value="Island / Compact Countrywide">Island / Compact Countrywide</option>
+          <option value="Corridor-Based Resort Country">Corridor-Based Resort Country</option>
+          <option value="Large Country / Market-by-Market">Large Country / Market-by-Market</option>
+        </select>
+      </div>
+      <div>
+        <label for="filterStatus">Build Status</label>
+        <select id="filterStatus">
+          <option value="">All</option>
+          <option value="Not Started">Not Started</option>
+          <option value="Planned">Planned</option>
+          <option value="Seeded">Seeded</option>
+          <option value="Market Ready">Market Ready</option>
+          <option value="Deal Ready">Deal Ready</option>
+          <option value="Intelligence Ready">Intelligence Ready</option>
+          <option value="Needs Review">Needs Review</option>
+        </select>
+      </div>
+      <div>
+        <label for="filterSort">Sort</label>
+        <select id="filterSort">
+          <option value="sequence">Priority + Build Sequence</option>
+          <option value="country">Country A–Z</option>
+        </select>
+      </div>
+      <div>
+        <label for="filterRegion">Region</label>
+        <select id="filterRegion">
+          <option value="">All</option>
+          <option value="Caribbean">Caribbean</option>
+          <option value="Mexico">Mexico</option>
+          <option value="Central America">Central America</option>
+          <option value="South America">South America</option>
+        </select>
+      </div>
+      <button type="button" id="btnRefresh">Refresh Counts</button>
+      <button type="button" class="secondary" id="btnGenerate">Generate Build Plan</button>
+    </div>
+    <p id="summary" class="muted" style="margin-top:12px;"></p>
+    <p id="error" class="error"></p>
+  </div>
+
+  <div class="panel table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Seq</th>
+          <th>Country</th>
+          <th>Next Market</th>
+          <th>Region</th>
+          <th>Strategy</th>
+          <th>Priority Tier</th>
+          <th>Build Status</th>
+          <th>Demand Anchors</th>
+          <th>Travel Infrastructure</th>
+          <th>Total Radar Points</th>
+          <th>Source Coverage</th>
+          <th>Coordinate Coverage</th>
+          <th>Last Build Date</th>
+          <th>Next Action</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="buildoutTableBody"></tbody>
+    </table>
+  </div>
+
+  <script src="/js/radar-buildout-dashboard.js"></script>
+</body>
+</html>

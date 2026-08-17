@@ -1106,7 +1106,7 @@
             var metricTooltips = {
                 'Parent Company': 'Parent company of the brand. Affects resources, standards, and market positioning.',
                 'Chain Scale': 'Positioning (e.g. Luxury, Upper Upscale). Affects guest expectations and investment level.',
-                'Brand Model': 'Franchise, managed, or hybrid. Affects control, fees, and operator involvement.',
+                'Affiliation Model': 'How tightly the brand controls identity and standards (Soft Brand vs Hard Brand vs Collection). Soft Brand keeps more independence; Hard Brand = full brand system.',
                 'Initial Franchise Fee': 'One-time initial franchise fee from the submitted proposal. Lower is better for upfront cost.',
                 'Application Fee': 'Application fee from the submitted proposal. Lower is better for upfront cost.',
                 'Ongoing Royalties': 'Recurring royalty paid to the brand. Lower improves cash flow.',
@@ -1246,7 +1246,7 @@
 
                 tbodyHtml += rowWithSection('Parent Company', brands.map(function (b, i) { return noFallback(b.parentCompany || '', 'parentCompany', i, brands.length); }), false);
                 tbodyHtml += rowWithSection('Chain Scale', brands.map(function (b, i) { return noFallback(b.chainScale || '', 'chainScale', i, brands.length); }), false);
-                tbodyHtml += rowWithSection('Brand Model', brands.map(function (b, i) { return noFallback(b.brandModel || '', 'brandModel', i, brands.length); }), false);
+                tbodyHtml += rowWithSection('Affiliation Model', brands.map(function (b, i) { return noFallback(b.brandModel || '', 'brandModel', i, brands.length); }), false);
 
                 const initialFranchiseFees = brands.map(function (b, i) {
                     const fs = b.feeStructure || {};

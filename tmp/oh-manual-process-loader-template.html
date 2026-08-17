@@ -1,0 +1,44 @@
+<!-- Old Home Manual Process v1.1 loader — markup/CSS/JS are immutable CDN assets -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6cd9146403b81b28b3a9bf_old-home-manual-process.v20260731a.css" />
+<style id="dmp-shell-neutralize">
+#about[data-oh-problem="manual-process"]{padding-top:0!important;padding-bottom:0!important}
+#about[data-oh-problem="manual-process"] .oh-problem-shell{max-width:none!important;width:100%!important;margin:0!important;padding:0!important}
+#about[data-oh-problem="manual-process"] .oh-problem-stage{margin:0!important;padding:0!important;min-height:0!important}
+#dealality-manual-process-host[data-dmp-state="loading"]{min-height:480px}
+#dealality-manual-process-host[data-dmp-state="error"]{padding:48px 24px;text-align:center;color:#5b6472;font:500 15px/1.5 "Inter Tight",system-ui,sans-serif}
+</style>
+<div id="dealality-manual-process-host" data-dmp-state="loading" aria-busy="true">Loading…</div>
+<script>
+(function () {
+  var HTML_URL = "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/__DMP_HTML_ID___old-home-manual-process.v20260731a.html";
+  var JS_URL = "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6cd9140230e8c779bd70c9_old-home-manual-process.v20260731a.js";
+  var host = document.getElementById("dealality-manual-process-host");
+  if (!host || host.getAttribute("data-dmp-boot") === "1") return;
+  host.setAttribute("data-dmp-boot", "1");
+  fetch(HTML_URL, { credentials: "omit", cache: "force-cache" })
+    .then(function (res) {
+      if (!res.ok) throw new Error("dmp-html-" + res.status);
+      return res.text();
+    })
+    .then(function (html) {
+      host.outerHTML = html;
+      if (document.querySelector('script[data-dmp-js="1"]')) return;
+      var s = document.createElement("script");
+      s.src = JS_URL;
+      s.defer = true;
+      s.setAttribute("data-dmp-js", "1");
+      (document.getElementById("dealality-manual-process") || document.body).appendChild(s);
+    })
+    .catch(function (err) {
+      console.warn("[dealality-manual-process]", err);
+      var el = document.getElementById("dealality-manual-process-host");
+      if (!el) return;
+      el.setAttribute("data-dmp-state", "error");
+      el.removeAttribute("aria-busy");
+      el.textContent = "Unable to load this section. Please refresh and try again.";
+    });
+})();
+</script>

@@ -164,8 +164,25 @@
 
   function escapeHtml(text) {
     if (text == null || text === '') return '';
+    // Owner-safe scrub before HTML escape (covers Brand Basics fallbacks + Presentation).
+    var cleaned = String(text)
+      .replace(/\bfranchise disclosure document\b/gi, 'commercial agreement materials')
+      .replace(/\bfranchise disclosure\b/gi, 'commercial agreement review')
+      .replace(/\bdisclosure document\b/gi, 'commercial agreement materials')
+      .replace(/\bfee stack\b/gi, 'participation costs and program fees')
+      .replace(/\bnet contribution\b/gi, 'contribution after program costs')
+      .replace(/\bItem\s*19\b/gi, 'public performance materials')
+      .replace(/\bItem\s*7\b/gi, 'initial investment schedules')
+      .replace(/\bFDD\b/g, 'commercial agreement materials')
+      .replace(/\bLOI\b/g, 'commercial proposal')
+      .replace(/\bADR\b/g, 'average daily rate')
+      .replace(/\bRevPAR\b/g, 'revenue per available room')
+      .replace(/\bparticipation cost categories\b/gi, 'participation costs and program fees')
+      .replace(/\bowner economics after brand-related costs\b/gi, 'whether brand economics fit the asset after program costs')
+      .replace(/\bOutput Note\.?/gi, '')
+      .replace(/\binternal review\b/gi, 'owner diligence review');
     var div = document.createElement('div');
-    div.textContent = text;
+    div.textContent = cleaned;
     return div.innerHTML;
   }
 
@@ -175,10 +192,195 @@
     return true;
   }
 
-  function isSafeHttpUrl(u) {
-    if (!u || typeof u !== 'string') return false;
-    var s = u.trim();
-    return s.indexOf('https://') === 0 || s.indexOf('http://') === 0;
+  function isSafeHttpUrl(url) {
+    var s = url == null ? '' : String(url).trim();
+    if (!s) return false;
+    if (typeof URL === 'function') {
+      try {
+        var u = new URL(s);
+        return u.protocol === 'http:' || u.protocol === 'https:';
+      } catch (_) {
+        return false;
+      }
+    }
+    // Fallback when URL ctor is unavailable (restricted embeds / test sandboxes).
+    return /^https?:\/\/[^\s<>"']+$/i.test(s);
+  }
+
+  /** Pull a trailing http(s) URL out of free text so it never remains as raw body copy. */
+  function splitTrailingHttpUrl(text) {
+    var t = String(text == null ? '' : text).trim();
+    if (!t) return { text: '', url: '' };
+    var m = t.match(/^(?:([\s\S]*?)(?:\n+|\s+))?(https?:\/\/[^\s<>"']+)\s*$/i);
+    if (!m || !m[2]) return { text: t, url: '' };
+    return { text: String(m[1] || '').trim(), url: String(m[2]).trim() };
+  }
+
+  /** Proof Points section label — only "Brand-Verified" when Company Validated is true on brand payload. */
+  function proofPointsSectionHint(brand) {
+    var cv =
+      brand &&
+      (brand.companyValidated === true ||
+        brand.companyValidated === 'Yes' ||
+        brand.company_validated === true ||
+        brand.company_validated === 'Yes');
+    return cv
+      ? 'Brand-Verified Content · Curated by Dealality'
+      : 'AI-Assisted from Official Public Sources · Curated by Dealality';
+  }
+
+  function proofThemeMaterialsLabel(brand) {
+    var cv =
+      brand &&
+      (brand.companyValidated === true ||
+        brand.companyValidated === 'Yes' ||
+        brand.company_validated === true ||
+        brand.company_validated === 'Yes');
+    return cv ? 'Brand-Verified Materials' : 'Official Public Source Materials';
+  }
+
+  function isAffiliationCurationBrand(brand) {
+    var id = brand && (brand.id || brand.recordId || '');
+    if (String(id) === 'rec02zPClpWUTCyXM') return true;
+    var name = brand && (brand.name || brand.brandName || '');
+    return /design hotels|small luxury hotels of the world|\bslh\b/i.test(String(name));
+  }
+
+  var LIFESTYLE_GALLERY_SLOT_LABELS = [
+    'Exterior / Arrival',
+    'Guest Room / Suite',
+    'Public Space',
+    'F&B or Local Experience',
+    'Design Detail',
+    'Property Setting'
+  ];
+
+  function normalizeImageUrlKey(url) {
+    return String(url || '')
+      .trim()
+      .toLowerCase()
+      .split('?')[0];
+  }
+
+  function isGenericLifestyleGalleryTitle(title) {
+    if (!hasVal(title)) return true;
+    return LIFESTYLE_GALLERY_SLOT_LABELS.indexOf(String(title).trim()) >= 0;
+  }
+
+  function propertyNameFromOpeningTitle(title) {
+    if (!hasVal(title)) return '';
+    return String(title)
+      .trim()
+      .split(/\s*[—–-]\s*/)[0]
+      .trim();
+  }
+
+  function propertyNameFromHotelPageUrl(url) {
+    if (!hasVal(url)) return '';
+    var u = String(url).trim();
+    var dh = u.match(/designhotels\.com\/hotels\/[^/]+\/[^/]+\/([^/?#]+)/i);
+    if (dh) {
+      return dh[1]
+        .split('-')
+        .map(function (w) {
+          if (!w) return '';
+          if (w.length <= 2) return w.toUpperCase();
+          return w.charAt(0).toUpperCase() + w.slice(1);
+        })
+        .filter(Boolean)
+        .join(' ');
+    }
+    var slh = u.match(/slh\.com\/hotels\/([^/?#]+)/i);
+    if (slh) {
+      return slh[1]
+        .split('-')
+        .map(function (w) {
+          if (!w) return '';
+          return w.charAt(0).toUpperCase() + w.slice(1);
+        })
+        .filter(Boolean)
+        .join(' ');
+    }
+    return '';
+  }
+
+  function propertyNameFromDesignHotelsImageUrl(url) {
+    var u = normalizeImageUrlKey(url);
+    var slugHints = [
+      ['wake-biohotel', 'Wake BioHotel'],
+      ['condesadf', 'Condesa DF'],
+      ['carlota-quito', 'Carlota'],
+      ['wake-medellin', 'Wake Medellín'],
+      ['downtownmexico', 'Downtown Mexico'],
+      ['habita-mexicocity', 'Habita']
+    ];
+    for (var i = 0; i < slugHints.length; i++) {
+      if (u.indexOf(slugHints[i][0]) >= 0) return slugHints[i][1];
+    }
+    return '';
+  }
+
+  function buildGalleryImagePropertyMap(brand) {
+    var map = {};
+    var be = brand && brand.brandExplorer;
+    if (!be || !Array.isArray(be.blocks)) return map;
+    be.blocks.forEach(function (b) {
+      if (!b || !hasVal(b.imageUrl)) return;
+      var key = normalizeImageUrlKey(b.imageUrl);
+      var name = '';
+      if (String(b.slotKey || '') === FOOTPRINT_OPENINGS_SLOT && hasVal(b.title)) {
+        name = propertyNameFromOpeningTitle(b.title);
+      } else if (hasVal(b.body)) {
+        name = propertyNameFromHotelPageUrl(firstHttpUrlInString(b.body));
+      }
+      if (!hasVal(name) && hasVal(b.title) && !isGenericLifestyleGalleryTitle(b.title)) {
+        name = propertyNameFromOpeningTitle(b.title);
+      }
+      if (!hasVal(name)) return;
+      if (String(b.slotKey || '') === FOOTPRINT_OPENINGS_SLOT || !map[key]) {
+        map[key] = name;
+      }
+    });
+    return map;
+  }
+
+  /** Affiliation gallery collage: "{Space label} - {Hotel Name}" when property is known. */
+  function galleryCaptionForRow(brand, row, fallback) {
+    var spaceLabel = row && hasVal(row.title) ? String(row.title).trim() : fallback;
+    if (!isAffiliationCurationBrand(brand)) {
+      return spaceLabel;
+    }
+    if (!isGenericLifestyleGalleryTitle(spaceLabel)) {
+      return spaceLabel;
+    }
+    var body = row && hasVal(row.body) ? String(row.body).trim() : '';
+    if (hasVal(body)) {
+      if (body.indexOf(' - ') >= 0 || body.indexOf(' — ') >= 0) return body;
+      if (!isGenericLifestyleGalleryTitle(body) && body.length <= 80) {
+        return spaceLabel + ' - ' + body;
+      }
+    }
+    var imgUrl = row && hasVal(row.imageUrl) ? String(row.imageUrl).trim() : '';
+    if (hasVal(imgUrl)) {
+      var propMap = buildGalleryImagePropertyMap(brand);
+      var propName = propMap[normalizeImageUrlKey(imgUrl)];
+      if (!hasVal(propName) && /design hotels/i.test(String(brand.name || brand.brandName || ''))) {
+        propName = propertyNameFromDesignHotelsImageUrl(imgUrl);
+      }
+      if (hasVal(propName)) return spaceLabel + ' - ' + propName;
+    }
+    return spaceLabel;
+  }
+
+  function modalDetailBlock(title, content) {
+    if (!hasVal(content) || String(content).trim() === '—') return '';
+    return (
+      '<div class="be-case-detail-block"><h4>' +
+      escapeHtml(title) +
+      '</h4><p>' +
+      escapeHtml(String(content).trim()) +
+      '</p></div>'
+    );
   }
 
   function firstHttpUrlInString(txt) {
@@ -211,11 +413,13 @@
     if (hay.indexOf('.pdf') !== -1) return 'PDF';
     if (hay.indexOf('.docx') !== -1) return 'DOC';
     if (hay.indexOf('.doc') !== -1) return 'DOC';
+    if (hay.indexOf('.mp4') !== -1 || hay.indexOf('.mov') !== -1) return 'MP4';
     return 'LINK';
   }
 
   /** Brand Explorer presentation: rows from GET brand.brandExplorer.blocks (see docs/brand-explorer-presentation-slots.md). */
-  function explorerBlocksForSlot(brand, slotKey) {
+  function explorerBlocksForSlot(brand, slotKey, opts) {
+    opts = opts || {};
     var be = brand.brandExplorer;
     if (!be || !Array.isArray(be.blocks)) return [];
     function imgRank(b) {
@@ -224,7 +428,12 @@
       return u.indexOf('http') === 0 ? 1 : 0;
     }
     var rows = be.blocks.filter(function (b) {
-      return b && String(b.slotKey) === String(slotKey);
+      if (!b) return false;
+      var sk = String(b.slotKey || '');
+      if (opts.prefix) {
+        return sk === String(slotKey) || sk.indexOf(String(slotKey) + '.') === 0;
+      }
+      return sk === String(slotKey);
     });
     rows.sort(function (a, b) {
       var ir = imgRank(b) - imgRank(a);
@@ -250,9 +459,219 @@
       .join(joinStr);
   }
 
+  /**
+   * Body-only join for KV / labeled UI slots.
+   * Prefer Body; fall back to Title only when Body is empty.
+   * Does not prepend "Title: " — the UI already supplies the label.
+   */
+  function explorerMergedBodiesOnly(brand, slotKey, joinStr) {
+    joinStr = joinStr == null ? '\n\n' : joinStr;
+    return explorerBlocksForSlot(brand, slotKey)
+      .map(function (r) {
+        var bd = hasVal(r.body) ? String(r.body).trim() : '';
+        if (bd) return bd;
+        return hasVal(r.title) ? String(r.title).trim() : '';
+      })
+      .filter(hasVal)
+      .join(joinStr);
+  }
+
+  /** Strip a leading "Label: " when Body already duplicates the UI KV label. */
+  function stripKvLabelPrefix(text, labels) {
+    var s = String(text || '').trim();
+    if (!s || !labels || !labels.length) return s;
+    for (var i = 0; i < labels.length; i++) {
+      var label = String(labels[i] || '').trim();
+      if (!label) continue;
+      var escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      var re = new RegExp('^' + escaped + '\\s*:\\s*', 'i');
+      if (re.test(s)) {
+        return s.replace(re, '').trim();
+      }
+    }
+    return s;
+  }
+
   function explorerFirstBlock(brand, slotKey) {
     var rows = explorerBlocksForSlot(brand, slotKey);
     return rows.length ? rows[0] : null;
+  }
+
+  function isV37LifestyleBatchBrand(brand) {
+    var n = String((brand && brand.name) || (brand && brand.brandName) || '').trim().toLowerCase();
+    return n === 'hotel indigo' || n === 'mgallery collection';
+  }
+
+  function isInternalPreviewRequest() {
+    try {
+      return /(?:\?|&)beInternalPreview=1(?:&|$)/.test(String(window.location.search || ''));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /** Built-in factory candidate allowlist (mirrors server module; API may also set factoryPreview.eligible). */
+  var FACTORY_PREVIEW_CANDIDATE_SLUGS = {
+    'tapestry-collection-by-hilton': true,
+    'dazzler-by-wyndham': true,
+    'trademark-collection-by-wyndham': true
+  };
+
+  function isFactoryPreviewRequest() {
+    try {
+      var q = String(window.location.search || '');
+      return (
+        /(?:\?|&)beInternalPreview=1(?:&|$)/.test(q) &&
+        /(?:\?|&)factoryPreview=1(?:&|$)/.test(q)
+      );
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function resolveBrandSlugForPreview(brand) {
+    if (!brand) return '';
+    var slug = String(brand.slug || '').trim().toLowerCase();
+    if (slug) return slug;
+    if (brand.factoryPreview && brand.factoryPreview.slug) {
+      return String(brand.factoryPreview.slug).trim().toLowerCase();
+    }
+    var id = String(brand.id || '').trim();
+    if (id === 'reccXxMHEh7NNRhIE') return 'tapestry-collection-by-hilton';
+    if (id === 'rec5CNMM4ZUD7ZHlM') return 'dazzler-by-wyndham';
+    if (id === 'recob7tgHRryRSbeO') return 'trademark-collection-by-wyndham';
+    try {
+      var params = new URLSearchParams(String(window.location.search || ''));
+      return String(params.get('brand') || params.get('slug') || '')
+        .trim()
+        .toLowerCase();
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function isFactoryPreviewCandidateSlug(slug) {
+    var s = String(slug || '')
+      .trim()
+      .toLowerCase();
+    return !!(s && FACTORY_PREVIEW_CANDIDATE_SLUGS[s]);
+  }
+
+  /**
+   * Factory Preview Mode — allowlisted candidates only, with explicit query flags.
+   * Does not change production public-full / shouldRenderFullProfile API truth.
+   */
+  function canRenderFactoryPreview(brand) {
+    if (!isFactoryPreviewRequest()) return false;
+    if (!hasPresentationRows(brand)) return false;
+    if (brand && brand.factoryPreview && brand.factoryPreview.eligible === false) return false;
+    if (brand && brand.factoryPreview && brand.factoryPreview.eligible === true) return true;
+    return isFactoryPreviewCandidateSlug(resolveBrandSlugForPreview(brand));
+  }
+
+  function factoryPreviewBannerHtml() {
+    return (
+      '<div class="be-atelier-internal-preview-banner be-atelier-factory-preview-banner" role="note" data-be-display-gate="factory_preview_internal" data-be-factory-preview="1">' +
+      '<strong>Factory Preview — Not Public / Not Active Baseline</strong>' +
+      '<span> This profile is for local/internal factory review only. Brand Status is not Active/Live for production, and this brand is not part of the protected Active/Live baseline.</span>' +
+      '</div>'
+    );
+  }
+
+  function hasPresentationRows(brand) {
+    var be = brand && brand.brandExplorer;
+    return !!(be && Array.isArray(be.blocks) && be.blocks.length > 0);
+  }
+
+  /** External (public) full-profile decision — ignores founder / factory preview overrides. */
+  function externalShouldRenderFullProfile(brand) {
+    if (brand && brand.shouldRenderFullProfile === true) return true;
+    if (brand && brand.shouldRenderFullProfile === false) {
+      // Still allow legacy pending migration when API completeness supports unlock.
+      if (
+        brand.brandExplorerDisplayState === 'legacy_approved_pending_migration' &&
+        brand.brandExplorerDisplayCompleteness &&
+        brand.brandExplorerDisplayCompleteness.historicalApproved === true &&
+        brand.brandExplorerDisplayCompleteness.visualsCountReady === true &&
+        brand.brandExplorerDisplayCompleteness.imageUniquenessPass === true
+      ) {
+        return true;
+      }
+      return false;
+    }
+    if (brand && brand.brandExplorerDisplayState) {
+      return (
+        brand.brandExplorerDisplayState === 'external_owner_ready' ||
+        brand.brandExplorerDisplayState === 'active_profile_ready' ||
+        brand.brandExplorerDisplayState === 'founder_review_ready' ||
+        (brand.brandExplorerDisplayState === 'legacy_approved_pending_migration' &&
+          brand.brandExplorerDisplayCompleteness &&
+          brand.brandExplorerDisplayCompleteness.visualsCountReady === true &&
+          brand.brandExplorerDisplayCompleteness.imageUniquenessPass !== false)
+      );
+    }
+    return false;
+  }
+
+  function shouldRenderFullProfile(brand) {
+    // Factory preview: full tabs for allowlisted candidates only (distinct from public-full).
+    if (canRenderFactoryPreview(brand)) return true;
+    if (isInternalPreviewRequest()) {
+      // Founder/internal preview: full tabs when presentation rows exist.
+      return hasPresentationRows(brand) || externalShouldRenderFullProfile(brand);
+    }
+    return externalShouldRenderFullProfile(brand);
+  }
+
+  function isExternalQualityLocked(brand) {
+    return !externalShouldRenderFullProfile(brand);
+  }
+
+  function shouldSuppressIncompleteExternalSections(brand) {
+    if (canRenderFactoryPreview(brand) || isInternalPreviewRequest()) return false;
+    return isExternalQualityLocked(brand);
+  }
+
+  function internalPreviewBannerHtml() {
+    return (
+      '<div class="be-atelier-internal-preview-banner" role="note" data-be-display-gate="internal_preview">' +
+      '<strong>Founder Preview</strong>' +
+      '<span> This profile is visible for internal review. Some active-profile gates may still be pending.</span>' +
+      '</div>'
+    );
+  }
+
+  function profileInPreparationSectionHtml() {
+    return (
+      '<section class="oe-section oe-section--profile-in-preparation" data-be-display-gate="profile-in-preparation">' +
+      '<h2 class="oe-section-title">Profile in Preparation</h2>' +
+      '<p class="oe-section-hint">This brand profile is being prepared for external review. Full Brand Explorer tabs, scenario cards, proof points, and owner-facing narrative will appear after presentation, visual assets, copy governance, founder review, and active-profile gates pass.</p>' +
+      '</section>'
+    );
+  }
+
+  function lockedExternalProfileHtml() {
+    return (
+      '<div class="be-atelier-oe be-atelier-oe--quality-locked">' +
+      profileInPreparationSectionHtml() +
+      '</div>'
+    );
+  }
+
+  /** Gallery blocks from API only — excludes Do Not Display rows filtered server-side. */
+  function explorerGalleryBlocks(brand) {
+    var be = brand.brandExplorer;
+    if (!be || !Array.isArray(be.blocks)) return [];
+    return be.blocks
+      .filter(function (b) {
+        return b && /^materials\.gallery\.\d+$/.test(String(b.slotKey || ''));
+      })
+      .sort(function (a, b) {
+        var as = typeof a.sort === 'number' && !isNaN(a.sort) ? a.sort : 0;
+        var bs = typeof b.sort === 'number' && !isNaN(b.sort) ? b.sort : 0;
+        if (as !== bs) return as - bs;
+        return String(a.slotKey || '').localeCompare(String(b.slotKey || ''));
+      });
   }
 
   /** Single-line copy from Brand Explorer Presentation (Body, else Title). */
@@ -284,9 +703,9 @@
     return '';
   }
 
-  /** Multiple rows with same slotKey → list of { title, body } (sorted). */
-  function explorerCardRowsForSlot(brand, slotKey) {
-    return explorerBlocksForSlot(brand, slotKey).map(function (r) {
+  /** Multiple rows with same slotKey → list of { title, body } (sorted). opts.prefix matches insight.similar.1 style keys. */
+  function explorerCardRowsForSlot(brand, slotKey, opts) {
+    return explorerBlocksForSlot(brand, slotKey, opts).map(function (r) {
       return {
         title: hasVal(r.title) ? String(r.title).trim() : '',
         body: hasVal(r.body) ? String(r.body).trim() : ''
@@ -338,10 +757,27 @@
   }
 
   function sanitizeDisplayCopy(text) {
+    var raw = text == null ? '' : String(text);
     if (typeof window !== 'undefined' && window.DealalitySanitizeExternalCopy) {
-      return window.DealalitySanitizeExternalCopy.sanitizeExternalCopy(text);
+      raw = window.DealalitySanitizeExternalCopy.sanitizeExternalCopy(raw);
     }
-    return text == null ? '' : String(text);
+    // Owner-safe display scrub for Brand Basics / Presentation fallbacks in full profile + internal preview.
+    raw = raw.replace(/\bfranchise disclosure document\b/gi, 'commercial agreement materials');
+    raw = raw.replace(/\bfranchise disclosure\b/gi, 'commercial agreement review');
+    raw = raw.replace(/\bdisclosure document\b/gi, 'commercial agreement materials');
+    raw = raw.replace(/\bfee stack\b/gi, 'participation costs and program fees');
+    raw = raw.replace(/\bnet contribution\b/gi, 'contribution after program costs');
+    raw = raw.replace(/\bItem\s*19\b/gi, 'public performance materials');
+    raw = raw.replace(/\bItem\s*7\b/gi, 'initial investment schedules');
+    raw = raw.replace(/\bFDD\b/g, 'commercial agreement materials');
+    raw = raw.replace(/\bLOI\b/g, 'commercial proposal');
+    raw = raw.replace(/\bADR\b/g, 'average daily rate');
+    raw = raw.replace(/\bRevPAR\b/g, 'revenue per available room');
+    raw = raw.replace(/\bparticipation cost categories\b/gi, 'participation costs and program fees');
+    raw = raw.replace(/\bowner economics after brand-related costs\b/gi, 'whether brand economics fit the asset after program costs');
+    raw = raw.replace(/\bOutput Note\.?/gi, '');
+    raw = raw.replace(/\binternal review\b/gi, 'owner diligence review');
+    return raw;
   }
 
   function fmtCell(v) {
@@ -362,11 +798,18 @@
     var s = String(val || '').trim();
     if (!s) return '';
     if (s.indexOf('http') !== 0) return escapeHtml(s);
+    var label = 'Official brand website';
+    try {
+      var u = new URL(s);
+      if (u && u.hostname) label = u.hostname.replace(/^www\./, '');
+    } catch (e) {
+      label = 'Official brand website';
+    }
     return (
       '<a class="be-link" href="' +
       escapeHtml(s) +
       '" target="_blank" rel="noopener noreferrer">' +
-      escapeHtml(s) +
+      escapeHtml(label) +
       '</a>'
     );
   }
@@ -523,7 +966,8 @@
 
   /**
    * Management Option (atelier static: franchise vs managed posture).
-   * Uses Footprint managed/franchised %; does not reuse Hotel Service Model (that is operational style).
+   * Uses Footprint managed/franchised %; does not reuse Hotel Service Model /
+   * Service / Operating Model (that is operational style, not affiliation control).
    */
   function managementOptionLine(brand) {
     var mix = managedFranchisedMixLine(brand);
@@ -613,11 +1057,15 @@
 
   /** Overview snapshot: where the brand succeeds (not Footprint city lists). */
   function typicalUseCaseFromBrand(brand) {
-    var slot = explorerMergedBody(brand, 'overview.typical_use_case');
-    if (hasVal(slot)) return String(slot).trim();
+    var slot = explorerMergedBodiesOnly(brand, 'overview.typical_use_case');
+    if (hasVal(slot)) return stripKvLabelPrefix(slot, ['Typical Use Case']);
     var row = explorerFirstBlock(brand, 'overview.typical_use_case');
-    if (row && hasVal(row.body)) return String(row.body).trim();
-    if (row && hasVal(row.title)) return String(row.title).trim();
+    if (row && hasVal(row.body)) {
+      return stripKvLabelPrefix(String(row.body).trim(), ['Typical Use Case']);
+    }
+    if (row && hasVal(row.title) && !/^typical use case$/i.test(String(row.title).trim())) {
+      return String(row.title).trim();
+    }
 
     var pf = brand.projectFit || {};
     var pfFv = pf.formValues || pf;
@@ -629,16 +1077,58 @@
 
   /** Overview snapshot: conversion vs new-build emphasis (not Basics stage + model join). */
   function developmentModelFromBrand(brand) {
-    var slot = explorerMergedBody(brand, 'overview.development_model');
-    if (hasVal(slot)) return String(slot).trim();
+    var slot = explorerMergedBodiesOnly(brand, 'overview.development_model');
+    if (hasVal(slot)) return stripKvLabelPrefix(slot, ['Development Model']);
     var row = explorerFirstBlock(brand, 'overview.development_model');
-    if (row && hasVal(row.body)) return String(row.body).trim();
-    if (row && hasVal(row.title)) return String(row.title).trim();
+    if (row && hasVal(row.body)) {
+      return stripKvLabelPrefix(String(row.body).trim(), ['Development Model']);
+    }
+    if (row && hasVal(row.title) && !/^development model$/i.test(String(row.title).trim())) {
+      return String(row.title).trim();
+    }
     return '';
+  }
+
+  function brandedResidencesLine(brand) {
+    var r = brand && brand.residences ? brand.residences : null;
+    var status = r && hasVal(r.status) ? String(r.status).trim() : 'Not Confirmed';
+    return status;
+  }
+
+  function brandedResidencesHelperHtml(brand) {
+    var r = brand && brand.residences ? brand.residences : null;
+    if (!r) return '';
+    var status = brandedResidencesLine(brand);
+    var parts = [];
+    if (hasVal(r.notes) && (status === 'Yes' || status === 'Case-by-Case')) {
+      parts.push('<p class="oe-section-hint">' + escapeHtml(String(r.notes).trim()) + '</p>');
+    } else if (status === 'Case-by-Case' || status === 'Yes') {
+      parts.push(
+        '<p class="oe-section-hint">Confirm market, license structure, and brand approval requirements before underwriting.</p>'
+      );
+    }
+    if (hasVal(r.sourceUrl)) {
+      parts.push(
+        '<p class="oe-section-hint"><a href="' +
+          escapeHtml(String(r.sourceUrl).trim()) +
+          '" target="_blank" rel="noopener noreferrer">Source</a></p>'
+      );
+    }
+    return parts.join('');
   }
 
   /** Overview snapshot: position within parent portfolio (not Brand Positioning long copy). */
   function relativePositioningFromBrand(brand) {
+    var relLabels = ['Relative Positioning'];
+    var relSlot = explorerMergedBodiesOnly(brand, 'overview.relative_positioning');
+    if (hasVal(relSlot)) return stripKvLabelPrefix(relSlot, relLabels);
+    var relRow = explorerFirstBlock(brand, 'overview.relative_positioning');
+    if (relRow && hasVal(relRow.body)) {
+      return stripKvLabelPrefix(String(relRow.body).trim(), relLabels);
+    }
+    if (relRow && hasVal(relRow.title) && !/^relative positioning$/i.test(String(relRow.title).trim())) {
+      return String(relRow.title).trim();
+    }
     var ctxRow = explorerFirstBlock(brand, 'overview.portfolio_context');
     if (ctxRow && hasVal(ctxRow.body)) {
       var tierInTitle = hasVal(ctxRow.title) ? String(ctxRow.title).trim() : '';
@@ -656,11 +1146,6 @@
       }
       return bodyText;
     }
-    var slot = explorerMergedBody(brand, 'overview.relative_positioning');
-    if (hasVal(slot)) return String(slot).trim();
-    var row = explorerFirstBlock(brand, 'overview.relative_positioning');
-    if (row && hasVal(row.body)) return String(row.body).trim();
-    if (row && hasVal(row.title)) return String(row.title).trim();
     return '';
   }
 
@@ -688,8 +1173,15 @@
     return '<dd class="oe-dd">' + escapeHtml(fmtCell(v)).replace(/\n/g, '<br>') + '</dd>';
   }
 
-  function oeKvBlock(title, rows) {
-    var inner = (rows || [])
+  /** For active_profile_ready: omit blank KV rows instead of rendering empty shells. */
+  function oeKvBlock(title, rows, opts) {
+    opts = opts || {};
+    var suppressEmpty = opts.suppressEmpty === true;
+    var visible = (rows || []).filter(function (r) {
+      return !suppressEmpty || hasVal(r.v);
+    });
+    if (suppressEmpty && !visible.length) return '';
+    var inner = visible
       .map(function (r) {
         return '<dt>' + escapeHtml(r.k) + '</dt>' + oeDd(r.v);
       })
@@ -714,6 +1206,21 @@
     if (s.indexOf('upper mid') !== -1 || s.indexOf('midscale') !== -1) return 1;
     if (s.indexOf('economy') !== -1) return 0;
     return 2;
+  }
+
+  /** Prefer fixed parent-ladder seat over chain-scale so Courtyard isn’t left of SpringHill while highlighting as “upscale”. */
+  function staticPortfolioTierIndexForBrand(brand) {
+    var parentKey = portfolioParentKeyForSiblingMatch(brand && brand.parentCompany);
+    var name = brand && hasVal(brand.name) ? String(brand.name).trim() : '';
+    if (!name) return null;
+    var matrix = staticPortfolioMatrixForParentKey(parentKey);
+    if (!matrix) return null;
+    for (var i = 0; i < matrix.length; i++) {
+      for (var j = 0; j < (matrix[i] || []).length; j++) {
+        if (portfolioBrandNamesReferToSameBrand(matrix[i][j], name)) return i;
+      }
+    }
+    return null;
   }
 
   function ladderTierIndexFromPresentationRaw(raw) {
@@ -765,6 +1272,8 @@
       var fromLegacy = ladderTierIndexFromPresentationRaw(raw);
       if (fromLegacy != null) return fromLegacy;
     }
+    var fromStaticLadder = staticPortfolioTierIndexForBrand(brand);
+    if (fromStaticLadder != null) return fromStaticLadder;
     return ladderIndexForScale(brand && (brand.hotelChainScale || brand.chainScale));
   }
 
@@ -777,20 +1286,189 @@
     ];
   }
 
-  /** IHG portfolio ladder — static until more IHG brands are in Brand Basics. */
+  /** IHG portfolio ladder — Dealality owner-planning context (illustrative; not company-validated). */
   var IHG_PORTFOLIO_LADDER_TIER_LABELS = [
-    'Essential & Extended Stay',
-    'Mainstream Upscale',
-    'Premium Upscale',
-    'Luxury & Lifestyle'
+    'Essential & Midscale Extended Stay',
+    'Mainstream Upper Mid / Core Upscale',
+    'Premium Upscale & Lifestyle',
+    'Luxury & Soft Collections'
   ];
 
   var IHG_PORTFOLIO_TIER_BRANDS = [
-    ['avid hotels', 'Candlewood Suites', 'Holiday Inn Express', 'Staybridge Suites'],
-    ['Holiday Inn', 'Garner Hotels', 'Atwell Suites'],
-    ['Crowne Plaza', 'Hotel Indigo', 'voco', 'EVEN Hotels', 'HUALUXE'],
-    ['InterContinental', 'Regent', 'Six Senses', 'Vignette Collection']
+    ['avid hotels', 'Candlewood Suites', 'Holiday Inn Express', 'Atwell Suites'],
+    ['Holiday Inn', 'Staybridge Suites', 'Garner Hotels'],
+    ['Crowne Plaza', 'Hotel Indigo', 'Voco Hotels', 'EVEN Hotels', 'HUALUXE'],
+    ['InterContinental', 'Kimpton Hotels', 'Regent', 'Six Senses', 'Vignette Collection']
   ];
+
+  /** Hilton Worldwide portfolio ladder — Dealality owner-planning context (illustrative; not company-validated). */
+  var HILTON_PORTFOLIO_LADDER_TIER_LABELS = [
+    'Focused Service & Value Extended Stay',
+    'Upscale Focused & Lifestyle Select',
+    'Premium Full-Service & Soft Collections',
+    'Luxury Flagship'
+  ];
+
+  var HILTON_PORTFOLIO_TIER_BRANDS = [
+    ['Tru by Hilton', 'Spark by Hilton', 'Hampton by Hilton', 'Home2 Suites', 'LivSmart Studios by Hilton'],
+    ['Hilton Garden Inn', 'Homewood Suites', 'Motto by Hilton', 'Tempo by Hilton'],
+    [
+      'DoubleTree by Hilton',
+      'Embassy Suites by Hilton',
+      'Hilton Hotels & Resorts',
+      'Canopy by Hilton',
+      'Signia by Hilton',
+      'Tapestry Collection by Hilton',
+      'Curio Collection by Hilton'
+    ],
+    ['Waldorf Astoria', 'Conrad Hotels & Resorts', 'LXR Hotels & Resorts']
+  ];
+
+  /** Marriott International portfolio ladder — Dealality owner-planning context (illustrative; not company-validated). */
+  var MARRIOTT_PORTFOLIO_LADDER_TIER_LABELS = [
+    'Upper Midscale Select & Extended Stay',
+    'Mainstream Upscale Select',
+    'Lifestyle Select & Soft Collections',
+    'Luxury & Lifestyle Flagship'
+  ];
+
+  var MARRIOTT_PORTFOLIO_TIER_BRANDS = [
+    ['Fairfield by Marriott', 'TownePlace Suites', 'City Express by Marriott'],
+    ['Courtyard by Marriott', 'Residence Inn', 'SpringHill Suites', 'Four Points'],
+    [
+      'Aloft',
+      'AC Hotels by Marriott',
+      'Moxy Hotels',
+      'Element Hotels',
+      'Autograph Collection',
+      'Tribute Portfolio',
+      'Design Hotels'
+    ],
+    ['The Ritz-Carlton', 'St. Regis', 'W Hotels', 'The Luxury Collection', 'Edition']
+  ];
+
+  /** Wyndham — Dealality owner-planning context (illustrative; not company-validated). */
+  var WYNDHAM_PORTFOLIO_LADDER_TIER_LABELS = [
+    'Economy & Midscale Core',
+    'Upper Mid / Focused Upscale',
+    'Lifestyle & Soft Collections',
+    'Premium Soft / Upscale Flag'
+  ];
+
+  var WYNDHAM_PORTFOLIO_TIER_BRANDS = [
+    ['Super 8', 'Days Inn', 'Travelodge', 'Microtel'],
+    ['La Quinta', 'Wingate', 'Ramada', 'Baymont'],
+    ['Trademark Collection by Wyndham', 'Dazzler by Wyndham', 'Esplendor by Wyndham'],
+    ['Wyndham Grand', 'Wyndham Hotels & Resorts', 'Dolce Hotels and Resorts']
+  ];
+
+  /** Best Western — Dealality owner-planning context (illustrative; not company-validated). */
+  var BEST_WESTERN_PORTFOLIO_LADDER_TIER_LABELS = [
+    'Economy / Core Midscale',
+    'Mainstream Midscale',
+    'Soft Collections & Lifestyle',
+    'Upper Soft / Premier'
+  ];
+
+  var BEST_WESTERN_PORTFOLIO_TIER_BRANDS = [
+    ['Best Western', 'Best Western Plus'],
+    ['Best Western Premier'],
+    ['BW Signature Collection', 'Handwritten Collection'],
+    ['BW Premier Collection']
+  ];
+
+  /** Accor — Dealality owner-planning context (illustrative; not company-validated). */
+  var ACCOR_PORTFOLIO_LADDER_TIER_LABELS = [
+    'Economy & Midscale',
+    'Upscale Mainstream',
+    'Lifestyle & Soft Collections',
+    'Luxury Flagship'
+  ];
+
+  var ACCOR_PORTFOLIO_TIER_BRANDS = [
+    ['ibis', 'ibis Styles', 'ibis budget', 'Mercure'],
+    ['Novotel', 'Pullman', 'Swissôtel'],
+    ['MGallery Collection', 'JO&JOE', 'tribe'],
+    ['Sofitel', 'Raffles', 'Fairmont']
+  ];
+
+  /** Choice Hotels International portfolio ladder — Dealality owner-planning context (illustrative; not company-validated). */
+  var CHOICE_PORTFOLIO_LADDER_TIER_LABELS = [
+    'Economy & Value Extended Stay',
+    'Midscale / Upper Midscale',
+    'Upscale & Soft Mid Collections',
+    'Upper Upscale / Soft Flagship'
+  ];
+
+  var CHOICE_PORTFOLIO_TIER_BRANDS = [
+    ['Econo Lodge', 'Rodeway Inn', 'Suburban Studios', 'WoodSpring Suites'],
+    [
+      'Quality Inn',
+      'Sleep Inn',
+      'Clarion Pointe',
+      'Everhome Suites',
+      'MainStay Suites',
+      'Comfort Inn & Suites',
+      'Country Inn & Suites',
+      'Park Inn by Choice',
+      'Radisson Inn & Suites'
+    ],
+    [
+      'Ascend Hotel Collection',
+      'Cambria Hotels',
+      'Clarion',
+      'Park Plaza by Choice',
+      'Radisson by Choice',
+      'Radisson RED by Choice'
+    ],
+    ['Radisson Blu by Choice', 'Radisson Collection by Choice', 'Radisson Individuals by Choice']
+  ];
+
+  /** Collapse "AC Hotels by Marriott" / "AC Hotels" via parent-suffix strip only (keep Inn/Blu/RED/etc.). */
+  function normalizePortfolioBrandCompareKey(name) {
+    return String(name || '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/\s+by\s+(marriott|hilton|ihg|choice|wyndham|hyatt|radisson|sheraton)\b/g, '')
+      .replace(/[^a-z0-9]+/g, '');
+  }
+
+  function portfolioBrandNamesReferToSameBrand(a, b) {
+    var na = normalizePortfolioBrandCompareKey(a);
+    var nb = normalizePortfolioBrandCompareKey(b);
+    if (!na || !nb) return false;
+    // Exact normalized match only. Prefix matching incorrectly collapses
+    // "Radisson Blu" / "Radisson RED" / "Radisson Inn & Suites" into one seat.
+    return na === nb;
+  }
+
+  function filterCurrentBrandFromPortfolioTier(tiers, currentBrandName) {
+    if (!currentBrandName || !tiers) return tiers;
+    for (var i = 0; i < tiers.length; i++) {
+      tiers[i] = (tiers[i] || []).filter(function (nm) {
+        return !portfolioBrandNamesReferToSameBrand(nm, currentBrandName);
+      });
+    }
+    return tiers;
+  }
+
+  /** Drop short/long-name duplicates inside a tier (e.g. "AC Hotels" + "AC Hotels by Marriott"). */
+  function dedupePortfolioTierByBrandAlias(tiers) {
+    if (!tiers) return tiers;
+    for (var i = 0; i < tiers.length; i++) {
+      var seen = {};
+      var out = [];
+      (tiers[i] || []).forEach(function (nm) {
+        var key = normalizePortfolioBrandCompareKey(nm);
+        if (!key || seen[key]) return;
+        seen[key] = true;
+        out.push(nm);
+      });
+      tiers[i] = out;
+    }
+    return tiers;
+  }
 
   function isIhgParentCompanyKey(parentKey) {
     return (
@@ -799,18 +1477,78 @@
     );
   }
 
+  function isHiltonParentCompanyKey(parentKey) {
+    return (
+      parentKey.indexOf('hilton worldwide') !== -1 ||
+      parentKey === 'hilton' ||
+      (parentKey.indexOf('hilton') !== -1 && parentKey.indexOf('hilton garden') === -1)
+    );
+  }
+
+  function isMarriottParentCompanyKey(parentKey) {
+    return parentKey.indexOf('marriott') !== -1;
+  }
+
+  function isChoiceParentCompanyKey(parentKey) {
+    return parentKey.indexOf('choice hotels') !== -1;
+  }
+
+  function isWyndhamParentCompanyKey(parentKey) {
+    return parentKey.indexOf('wyndham') !== -1;
+  }
+
+  function isBestWesternParentCompanyKey(parentKey) {
+    return (
+      parentKey.indexOf('best western') !== -1 ||
+      parentKey === 'bwh' ||
+      parentKey.indexOf('bwh hotels') !== -1
+    );
+  }
+
+  function isAccorParentCompanyKey(parentKey) {
+    return parentKey.indexOf('accor') !== -1;
+  }
+
+  function staticPortfolioMatrixForParentKey(parentKey) {
+    if (isMarriottParentCompanyKey(parentKey)) return MARRIOTT_PORTFOLIO_TIER_BRANDS;
+    if (isChoiceParentCompanyKey(parentKey)) return CHOICE_PORTFOLIO_TIER_BRANDS;
+    if (isIhgParentCompanyKey(parentKey)) return IHG_PORTFOLIO_TIER_BRANDS;
+    if (isHiltonParentCompanyKey(parentKey)) return HILTON_PORTFOLIO_TIER_BRANDS;
+    if (isWyndhamParentCompanyKey(parentKey)) return WYNDHAM_PORTFOLIO_TIER_BRANDS;
+    if (isBestWesternParentCompanyKey(parentKey)) return BEST_WESTERN_PORTFOLIO_TIER_BRANDS;
+    if (isAccorParentCompanyKey(parentKey)) return ACCOR_PORTFOLIO_TIER_BRANDS;
+    return null;
+  }
+
+  function portfolioParentKeyForSiblingMatch(parent) {
+    var key = normalizePortfolioParentKey(parent);
+    // Radisson CALA rows sometimes use Alpha Brand Studios in Basics; siblings are CHI.
+    if (key === 'alpha brand studios') return 'choice hotels international';
+    return key;
+  }
+
   function ladderTierFallbackLabelsForBrand(brand) {
-    var parentKey = normalizePortfolioParentKey(brand && brand.parentCompany);
-    if (parentKey.indexOf('choice hotels') !== -1) {
-      return [
-        'Economy / Core Midscale',
-        'Upper Mid / Mainstream Upscale',
-        'Premium / Upper Upscale',
-        'Luxury & Lifestyle Flagship'
-      ];
+    var parentKey = portfolioParentKeyForSiblingMatch(brand && brand.parentCompany);
+    if (isChoiceParentCompanyKey(parentKey) || parentKey.indexOf('choice hotels') !== -1) {
+      return CHOICE_PORTFOLIO_LADDER_TIER_LABELS.slice();
     }
     if (isIhgParentCompanyKey(parentKey)) {
       return IHG_PORTFOLIO_LADDER_TIER_LABELS.slice();
+    }
+    if (isHiltonParentCompanyKey(parentKey)) {
+      return HILTON_PORTFOLIO_LADDER_TIER_LABELS.slice();
+    }
+    if (isMarriottParentCompanyKey(parentKey)) {
+      return MARRIOTT_PORTFOLIO_LADDER_TIER_LABELS.slice();
+    }
+    if (isWyndhamParentCompanyKey(parentKey)) {
+      return WYNDHAM_PORTFOLIO_LADDER_TIER_LABELS.slice();
+    }
+    if (isBestWesternParentCompanyKey(parentKey)) {
+      return BEST_WESTERN_PORTFOLIO_LADDER_TIER_LABELS.slice();
+    }
+    if (isAccorParentCompanyKey(parentKey)) {
+      return ACCOR_PORTFOLIO_LADDER_TIER_LABELS.slice();
     }
     return ladderTierFallbackLabels();
   }
@@ -819,6 +1557,8 @@
     if (b && typeof b.portfolioLadderTier === 'number' && b.portfolioLadderTier >= 0 && b.portfolioLadderTier <= 3) {
       return b.portfolioLadderTier;
     }
+    var fromStatic = staticPortfolioTierIndexForBrand(b);
+    if (fromStatic != null) return fromStatic;
     return ladderIndexForScale(b && (b.hotelChainScale || b.chainScale));
   }
 
@@ -837,17 +1577,19 @@
 
   function portfolioSiblingNamesByLadderTier(brand, brandList) {
     var tiers = [[], [], [], []];
-    var parentKey = normalizePortfolioParentKey(brand && brand.parentCompany);
+    var parentKey = portfolioParentKeyForSiblingMatch(brand && brand.parentCompany);
     if (!parentKey) return tiers;
     if (brandList && brandList.length) {
       var currentId = brand && (brand.id || brand.brandId) ? String(brand.id || brand.brandId) : '';
+      var currentNmLive = brand && hasVal(brand.name) ? String(brand.name).trim() : '';
       brandList.forEach(function (b) {
         if (!b) return;
-        if (normalizePortfolioParentKey(b.parentCompany) !== parentKey) return;
+        if (portfolioParentKeyForSiblingMatch(b.parentCompany) !== parentKey) return;
         var nm = hasVal(b.name) ? String(b.name).trim() : '';
         if (!nm) return;
         var bid = b.id != null ? String(b.id) : '';
         if (currentId && bid === currentId) return;
+        if (currentNmLive && portfolioBrandNamesReferToSameBrand(nm, currentNmLive)) return;
         tiers[portfolioLadderTierForListBrand(b)].push(nm);
       });
       tiers.forEach(function (names) {
@@ -858,11 +1600,44 @@
     }
     if (isIhgParentCompanyKey(parentKey)) {
       for (var ti = 0; ti < 4; ti++) {
-        if (!tiers[ti].length) {
-          tiers[ti] = IHG_PORTFOLIO_TIER_BRANDS[ti].slice();
-        }
+        tiers[ti] = IHG_PORTFOLIO_TIER_BRANDS[ti].slice();
       }
     }
+    if (isHiltonParentCompanyKey(parentKey)) {
+      for (var hj = 0; hj < 4; hj++) {
+        tiers[hj] = HILTON_PORTFOLIO_TIER_BRANDS[hj].slice();
+      }
+    }
+    if (isMarriottParentCompanyKey(parentKey)) {
+      for (var mj = 0; mj < 4; mj++) {
+        tiers[mj] = MARRIOTT_PORTFOLIO_TIER_BRANDS[mj].slice();
+      }
+    }
+    if (isChoiceParentCompanyKey(parentKey)) {
+      for (var cj = 0; cj < 4; cj++) {
+        tiers[cj] = CHOICE_PORTFOLIO_TIER_BRANDS[cj].slice();
+      }
+    }
+    if (isWyndhamParentCompanyKey(parentKey)) {
+      for (var wj = 0; wj < 4; wj++) {
+        tiers[wj] = WYNDHAM_PORTFOLIO_TIER_BRANDS[wj].slice();
+      }
+    }
+    if (isBestWesternParentCompanyKey(parentKey)) {
+      for (var bj = 0; bj < 4; bj++) {
+        tiers[bj] = BEST_WESTERN_PORTFOLIO_TIER_BRANDS[bj].slice();
+      }
+    }
+    if (isAccorParentCompanyKey(parentKey)) {
+      for (var aj = 0; aj < 4; aj++) {
+        tiers[aj] = ACCOR_PORTFOLIO_TIER_BRANDS[aj].slice();
+      }
+    }
+    var currentNm =
+      brand && hasVal(brand.name) ? String(brand.name).trim() : '';
+    // Same alias strip for Marriott / Choice / IHG / Hilton / live sibling lists.
+    filterCurrentBrandFromPortfolioTier(tiers, currentNm);
+    dedupePortfolioTierByBrandAlias(tiers);
     return tiers;
   }
 
@@ -870,6 +1645,55 @@
     if (active) return hasVal(brandName) ? String(brandName).trim() : fallback;
     if (tierNames && tierNames.length) return tierNames.join(', ');
     return fallback;
+  }
+
+  function portfolioContextNarrativeFromBrand(brand) {
+    var ctxRow = explorerFirstBlock(brand, 'overview.portfolio_context');
+    if (!ctxRow || !hasVal(ctxRow.body)) return '';
+    return String(ctxRow.body).trim();
+  }
+
+  function portfolioContextSectionHint(brand) {
+    var parentKey = normalizePortfolioParentKey(brand && brand.parentCompany);
+    var brandNm = hasVal(brand && brand.name) ? String(brand.name) : 'This brand';
+    var parentNm = hasVal(brand && brand.parentCompany) ? String(brand.parentCompany) : 'the parent company';
+    if (isMarriottParentCompanyKey(parentKey)) {
+      return (
+        'Dealality owner-planning context — where <strong>' +
+        escapeHtml(brandNm) +
+        '</strong> sits among illustrative <strong>' +
+        escapeHtml(parentNm) +
+        '</strong> lifestyle and soft-collection paths (not an official company-validated hierarchy).'
+      );
+    }
+    if (hasVal(brand && brand.parentCompany)) {
+      return (
+        'Where <strong>' +
+        escapeHtml(brandNm) +
+        '</strong> sits among <strong>' +
+        escapeHtml(parentNm) +
+        '</strong> brands by chain scale—lower-scale flags on the left, higher-scale on the right (not a quality ranking).'
+      );
+    }
+    return 'Sibling brands by chain scale on the portfolio spectrum—lower on the left, higher on the right (not a quality ranking).';
+  }
+
+  function portfolioContextNarrativeHtml(brand) {
+    var narrative = portfolioContextNarrativeFromBrand(brand);
+    if (!hasVal(narrative)) return '';
+    var parentKey = normalizePortfolioParentKey(brand && brand.parentCompany);
+    var heading = isMarriottParentCompanyKey(parentKey)
+      ? 'Marriott Soft-Collection Context'
+      : 'Portfolio Context';
+    return (
+      '<div class="portfolio-context-narrative">' +
+      '<h3 class="portfolio-context-narrative__title">' +
+      escapeHtml(heading) +
+      '</h3>' +
+      '<div class="portfolio-context-narrative__body">' +
+      escapeHtml(narrative).replace(/\n/g, '<br>') +
+      '</div></div>'
+    );
   }
 
   function buildPortfolioLadderCellsHtml(brand) {
@@ -924,29 +1748,48 @@
     var relativePositioning = relativePositioningFromBrand(brand);
     var devModel = developmentModelFromBrand(brand);
 
+    var suppressEmptySnapshot = shouldRenderFullProfile(brand);
     var snapshotGrid =
       '<div class="oe-grid-2 oe-grid-2--snapshot">' +
-      oeKvBlock('Identity & lineage', [
-        { k: 'Parent Company', v: brand.parentCompany },
-        { k: 'Brand Family', v: brand.brandArchitecture },
-        { k: 'Launch Year', v: brand.yearBrandLaunched },
-        { k: 'Brand Website', v: brand.brandWebsite }
-      ]) +
-      oeKvBlock('Product & segment', [
-        { k: 'Segment', v: brand.hotelChainScale },
-        { k: 'Brand Type', v: brand.brandModelFormat },
-        { k: 'Service Level', v: brand.hotelServiceModel }
-      ]) +
-      oeKvBlock('Scale & geography', [
-        { k: 'Typical Keys Range', v: typicalKeysRangeFromPortfolio(brand) },
-        { k: 'Typical Use Case', v: typicalUse },
-        { k: 'Geographic Focus', v: geoFocus }
-      ]) +
-      oeKvBlock('Development & positioning', [
-        { k: 'Development Model', v: devModel },
-        { k: 'Relative Positioning', v: relativePositioning }
-      ]) +
-      '</div>';
+      oeKvBlock(
+        'Identity & lineage',
+        [
+          { k: 'Parent Company', v: brand.parentCompany },
+          { k: 'Brand Family', v: brand.brandArchitecture },
+          { k: 'Launch Year', v: brand.yearBrandLaunched },
+          { k: 'Brand Website', v: brand.brandWebsite }
+        ],
+        { suppressEmpty: suppressEmptySnapshot }
+      ) +
+      oeKvBlock(
+        'Product & segment',
+        [
+          { k: 'Segment', v: brand.hotelChainScale },
+          { k: 'Affiliation Model', v: brand.brandModelFormat },
+          { k: 'Service / Operating Model', v: brand.hotelServiceModel }
+        ],
+        { suppressEmpty: suppressEmptySnapshot }
+      ) +
+      oeKvBlock(
+        'Scale & geography',
+        [
+          { k: 'Typical Keys Range', v: typicalKeysRangeFromPortfolio(brand) },
+          { k: 'Typical Use Case', v: typicalUse },
+          { k: 'Geographic Focus', v: geoFocus }
+        ],
+        { suppressEmpty: suppressEmptySnapshot }
+      ) +
+      oeKvBlock(
+        'Development & positioning',
+        [
+          { k: 'Development Model', v: devModel },
+          { k: 'Relative Positioning', v: relativePositioning },
+          { k: 'Branded Residences', v: brandedResidencesLine(brand) }
+        ],
+        { suppressEmpty: suppressEmptySnapshot }
+      ) +
+      '</div>' +
+      brandedResidencesHelperHtml(brand);
 
     var posAudience =
       [brand.targetGuestSegments, brand.guestPsychographics, brand.brandCustomerPromise]
@@ -956,31 +1799,30 @@
         .filter(hasVal)
         .join(' ');
 
-    var scenarioBodies = splitBullets(brand.keyBrandDifferentiators).slice(0, 3);
-    while (scenarioBodies.length < 3) scenarioBodies.push('');
-    var scenarioTitles = [
-      'Urban Repositioning',
-      'Leisure-Forward Conversions',
-      'Boutique Resort Adjacency'
-    ];
-    var scen3Para = explorerParagraphs(brand, 'overview.scenarios', 3);
-    var sj;
-    for (sj = 0; sj < scen3Para.length; sj++) {
-      if (hasVal(scen3Para[sj])) scenarioBodies[sj] = scen3Para[sj];
-    }
-    for (sj = 0; sj < 3; sj++) {
-      var srowOv = explorerFirstBlock(brand, 'overview.scenario.' + (sj + 1));
-      if (srowOv && hasVal(srowOv.body)) scenarioBodies[sj] = String(srowOv.body).trim();
-      if (srowOv && hasVal(srowOv.title)) scenarioTitles[sj] = String(srowOv.title).trim();
-    }
-    var scenarioCards = scenarioTitles
-      .map(function (title, i) {
-        var body = scenarioBodies[i];
-        var srowImg = explorerFirstBlock(brand, 'overview.scenario.' + (i + 1));
+    var suppressStagingFallbacks = shouldSuppressIncompleteExternalSections(brand);
+    var scenarioBodies = suppressStagingFallbacks
+      ? []
+      : splitBullets(brand.keyBrandDifferentiators).slice(0, 3);
+    if (suppressStagingFallbacks) scenarioBodies.length = 0;
+    while (!suppressStagingFallbacks && scenarioBodies.length < 3) scenarioBodies.push('');
+    var scenarioApiBlocks = [1, 2, 3]
+      .map(function (i) {
+        return explorerFirstBlock(brand, 'overview.scenario.' + i);
+      })
+      .filter(Boolean);
+    var scenarioCards = scenarioApiBlocks
+      .map(function (srowOv, idx) {
+        var body = scenarioBodies[idx] || '';
+        var scen3Para = explorerParagraphs(brand, 'overview.scenarios', 3);
+        var sj;
+        for (sj = 0; sj < scen3Para.length; sj++) {
+          if (hasVal(scen3Para[sj])) scenarioBodies[sj] = scen3Para[sj];
+        }
+        if (srowOv && hasVal(srowOv.body)) body = String(srowOv.body).trim();
+        var title = srowOv && hasVal(srowOv.title) ? String(srowOv.title).trim() : '';
+        if (!hasVal(title)) title = 'Scenario ' + (idx + 1);
         var imgUrl =
-          srowImg && hasVal(srowImg.imageUrl)
-            ? String(srowImg.imageUrl).trim()
-            : '';
+          srowOv && hasVal(srowOv.imageUrl) ? String(srowOv.imageUrl).trim() : '';
         var visual = hasVal(imgUrl)
           ? '<div class="scenario-card__visual"><img src="' +
             escapeHtml(imgUrl) +
@@ -999,16 +1841,25 @@
         );
       })
       .join('');
+    if (!hasVal(scenarioCards)) {
+      scenarioCards = suppressStagingFallbacks
+        ? ''
+        : '<p class="oe-dd--empty">Scenario cards will appear when overview.scenario presentation rows are visible in Brand Explorer.</p>';
+    }
 
     var whySlotMerged = explorerMergedBody(brand, 'overview.why_value');
-    var whyLines = hasVal(whySlotMerged)
-      ? splitBullets(whySlotMerged)
-      : splitBullets(brand.brandValueProposition || brand.keyBrandDifferentiators);
-    while (whyLines.length < 5) whyLines.push('');
+    var whyLines = suppressStagingFallbacks
+      ? []
+      : hasVal(whySlotMerged)
+        ? splitBullets(whySlotMerged)
+        : splitBullets(brand.brandValueProposition || brand.keyBrandDifferentiators);
+    if (!suppressStagingFallbacks) {
+      while (whyLines.length < 5) whyLines.push('');
+    }
     var whyList = whyLines
       .slice(0, 5)
       .map(function (line) {
-        return '<li>' + (hasVal(line) ? escapeHtml(line) : '&nbsp;') + '</li>';
+        return '<li>' + (hasVal(line) ? escapeHtml(fmtCell(line)) : '&nbsp;') + '</li>';
       })
       .join('');
 
@@ -1019,30 +1870,37 @@
     if (hasVal(diffIdentitySlot) || hasVal(diffCommercialSlot)) {
       leftDiff = splitBullets(diffIdentitySlot);
       rightDiff = splitBullets(diffCommercialSlot);
+    } else if (suppressStagingFallbacks) {
+      leftDiff = [];
+      rightDiff = [];
     } else {
       var diffAll = splitBullets(brand.keyBrandDifferentiators);
       var mid = Math.ceil(diffAll.length / 2) || 0;
       leftDiff = diffAll.slice(0, mid);
       rightDiff = diffAll.slice(mid);
     }
-    while (leftDiff.length < 4) leftDiff.push('');
-    while (rightDiff.length < 4) rightDiff.push('');
+    if (!suppressStagingFallbacks) {
+      while (leftDiff.length < 4) leftDiff.push('');
+      while (rightDiff.length < 4) rightDiff.push('');
+    }
     function diffUl(arr) {
       return (
         '<ul>' +
         arr
           .slice(0, 4)
           .map(function (x) {
-            return '<li>' + (hasVal(x) ? escapeHtml(x) : '&nbsp;') + '</li>';
+            return '<li>' + (hasVal(x) ? escapeHtml(fmtCell(x)) : '&nbsp;') + '</li>';
           })
           .join('') +
         '</ul>'
       );
     }
 
-    var pillarParts = splitBullets(brand.brandPillars);
+    var pillarParts = suppressStagingFallbacks ? [] : splitBullets(brand.brandPillars);
     var bestTitles = ['Conversion & Repositioning', 'Blended-Demand Markets', 'Owner Speed-to-Flag'];
-    var bestCards = bestTitles
+    var bestCards = suppressStagingFallbacks
+      ? ''
+      : bestTitles
       .map(function (t, i) {
         var sk = 'overview.bestAt.' + (i + 1);
         var row = explorerFirstBlock(brand, sk);
@@ -1093,12 +1951,17 @@
       while (lines.length < max) lines.push('');
       return lines.slice(0, max);
     }
-    var ownerOut = linesFromText(brand.brandValueProposition, 4).filter(hasVal).slice(0, 4);
+
+    var ownerOut = suppressStagingFallbacks
+      ? []
+      : linesFromText(brand.brandValueProposition, 4).filter(hasVal).slice(0, 4);
     var exOwner = explorerMergedBody(brand, 'overview.owner_experience');
-    var ownerEx = linesFromText(hasVal(exOwner) ? exOwner : brand.companyHistory, 4).filter(hasVal).slice(0, 4);
+    var ownerEx = suppressStagingFallbacks
+      ? []
+      : linesFromText(hasVal(exOwner) ? exOwner : brand.companyHistory, 4).filter(hasVal).slice(0, 4);
 
     var proofOpSlot = explorerMergedBody(brand, 'overview.proof_operator');
-    var proofBodies = [
+    var proofFallbackBodies = [
       footLine,
       pipelineLineForProof(fp),
       [brand.brandModelFormat, brand.brandDevelopmentStage].filter(hasVal).join(' · '),
@@ -1106,7 +1969,7 @@
       loyaltyLine,
       hasVal(proofOpSlot) ? proofOpSlot : brand.brandValueProposition || ''
     ];
-    var proofHeads = [
+    var proofFallbackHeads = [
       'Global Open Footprint',
       'Pipeline Depth',
       'Conversion-Led Growth',
@@ -1114,15 +1977,39 @@
       loyaltyProofHeadline(brand),
       'Operator-Enabled Execution'
     ];
-    var proofGrid = proofHeads
-      .map(function (h, i) {
-        var b = proofBodies[i];
-        var empty = !hasVal(b);
-        var bodyText = empty ? '&nbsp;' : escapeHtml(fmtCell(b));
+    var proofRowsInApi = [1, 2, 3, 4, 5, 6]
+      .map(function (i) {
+        return explorerFirstBlock(brand, 'overview.proof.' + i);
+      })
+      .filter(Boolean);
+    var useProofFallbacks = !suppressStagingFallbacks && proofRowsInApi.length === 0;
+    var proofGrid = suppressStagingFallbacks
+      ? ''
+      : (useProofFallbacks ? proofFallbackHeads : proofRowsInApi)
+      .map(function (fallbackHead, i) {
+        var sk = useProofFallbacks
+          ? 'overview.proof.' + (i + 1)
+          : proofRowsInApi[i].slotKey || 'overview.proof.' + (i + 1);
+        var row = useProofFallbacks ? null : proofRowsInApi[i];
+        var slotBody = explorerMergedBody(brand, sk);
+        var title = useProofFallbacks ? fallbackHead : '';
+        if (row && hasVal(row.title)) title = String(row.title).trim();
+        var body;
+        if (hasVal(slotBody)) {
+          body = String(slotBody).trim();
+        } else if (row && hasVal(row.body)) {
+          body = String(row.body).trim();
+        } else if (useProofFallbacks) {
+          body = proofFallbackBodies[i];
+        } else {
+          body = '';
+        }
+        var empty = !hasVal(body);
+        var bodyText = empty ? '&nbsp;' : escapeHtml(fmtCell(body));
         if (!empty && bodyText.length > 420) bodyText = bodyText.slice(0, 417) + '…';
         return (
           '<article class="proof-point-card"><div class="proof-point-card__icon">◇</div><h3 class="proof-point-card__headline">' +
-          escapeHtml(h) +
+          escapeHtml(title) +
           '</h3><p class="proof-point-card__support' +
           (empty ? ' oe-dd--empty' : '') +
           '">' +
@@ -1138,7 +2025,7 @@
       'Repositioning Examples',
       'Operator-Enabled Scenarios',
       'Market Relevance',
-      'Brand-Verified Materials'
+      proofThemeMaterialsLabel(brand)
     ];
     var themeChips = themeLabels
       .map(function (t) {
@@ -1149,8 +2036,16 @@
     var featTitle = 'Featured Application · Conversion Example';
     var featLead = brand.brandTaglineMotto || '';
     var featBody = brand.brandPositioning || brand.brandCustomerPromise || '';
+    var featSlot = explorerFirstBlock(brand, 'overview.featured_application');
     var featSub = '';
-    if (!hasVal(featBody) && !hasVal(featLead)) {
+    if (featSlot && (hasVal(featSlot.body) || hasVal(featSlot.title))) {
+      var slotTitle = hasVal(featSlot.title) ? String(featSlot.title).trim() : '';
+      var slotBody = hasVal(featSlot.body) ? String(featSlot.body).trim() : '';
+      featSub =
+        (slotTitle ? '<strong>' + escapeHtml(slotTitle) + '</strong>' : '') +
+        (slotTitle && slotBody ? ' — ' : '') +
+        (slotBody ? escapeHtml(slotBody) : '');
+    } else if (!hasVal(featBody) && !hasVal(featLead)) {
       featSub = '&nbsp;';
     } else {
       featSub =
@@ -1159,17 +2054,22 @@
           ? escapeHtml(String(featBody).slice(0, 220)) + (String(featBody).length > 220 ? '…' : '')
           : '');
     }
-    var tagSrc = splitBullets(brand.brandPillars || brand.keyBrandDifferentiators).slice(0, 3);
-    while (tagSrc.length < 3) tagSrc.push('');
-    var featTags = tagSrc
-      .map(function (t) {
-        return (
-          '<span class="tag-chip">' + (hasVal(t) ? escapeHtml(String(t)) : '&nbsp;') + '</span>'
-        );
-      })
-      .join('');
+    var pillarsRaw = suppressStagingFallbacks ? '' : brand.brandPillars || brand.keyBrandDifferentiators;
+    var tagSrc = splitBullets(pillarsRaw).filter(hasVal);
+    if (!tagSrc.length && hasVal(pillarsRaw)) {
+      tagSrc = chipListFromCsv(pillarsRaw);
+    }
+    tagSrc = tagSrc.slice(0, 6);
+    var featTags = tagSrc.length
+      ? tagSrc
+          .map(function (t) {
+            return '<span class="tag-chip">' + escapeHtml(String(t)) + '</span>';
+          })
+          .join('')
+      : '';
 
     var ladderCells = buildPortfolioLadderCellsHtml(brand);
+    var portfolioContextNarrative = portfolioContextNarrativeHtml(brand);
 
     var hasOpenings = explorerBlocksForSlot(brand, FOOTPRINT_OPENINGS_SLOT).length > 0;
     var openingsJumpBtn =
@@ -1178,6 +2078,70 @@
         ? ' data-be-jump-atelier-tab="atelier-footprint" title="Open Footprint &amp; Growth — Recent openings"'
         : ' disabled title="Add Brand Explorer Presentation rows with Slot Key footprint.openings"') +
       '>View Recent Openings</button>';
+
+    var valueSectionsHtml = suppressStagingFallbacks
+      ? profileInPreparationSectionHtml()
+      : '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Where This Brand Creates the Most Value</h2>' +
+        '<div class="scenario-card-grid">' +
+        scenarioCards +
+        '</div>' +
+        (hasVal(whyList)
+          ? '<div class="oe-cluster"><h3>Why Value Is Strongest in These Scenarios</h3><ul>' + whyList + '</ul></div>'
+          : '') +
+        '</section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Key Differentiators</h2>' +
+        '<div class="oe-grid-2">' +
+        '<div class="oe-cluster"><h3>Experience &amp; Identity</h3>' +
+        diffUl(leftDiff) +
+        '</div>' +
+        '<div class="oe-cluster"><h3>Commercial &amp; Distribution</h3>' +
+        diffUl(rightDiff) +
+        '</div></div></section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">What This Brand Is Best At</h2>' +
+        '<div class="oe-grid-3">' +
+        bestCards +
+        '</div></section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Owner Value Snapshot</h2>' +
+        '<div class="oe-grid-2">' +
+        '<div class="oe-cluster"><h3>Owner Outcomes</h3><ul>' +
+        ownerOut
+          .map(function (x) {
+            return '<li>' + escapeHtml(x) + '</li>';
+          })
+          .join('') +
+        '</ul></div>' +
+        '<div class="oe-cluster"><h3>Owner Experience</h3><ul>' +
+        ownerEx
+          .map(function (x) {
+            return '<li>' + escapeHtml(x) + '</li>';
+          })
+          .join('') +
+        '</ul></div></div></section>' +
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Proof Points</h2>' +
+        '<p class="oe-section-hint">' + escapeHtml(proofPointsSectionHint(brand)) + '</p>' +
+        '<p class="proof-meta-line">Directional proof only—no confidential performance metrics, fee terms, or undisclosed pipeline detail.</p>' +
+        '<div class="evidence-row"><span class="evidence-row__intro">Themes Covered by the Proof Points Below</span>' +
+        '<ul class="evidence-chips" role="list">' +
+        themeChips +
+        '</ul></div>' +
+        '<div class="proof-points-grid">' +
+        proofGrid +
+        '</div>' +
+        '<div class="featured-case-preview">' +
+        '<div class="featured-case-preview__text"><strong>' +
+        escapeHtml(featTitle) +
+        '</strong><span class="featured-case-preview__sub">' +
+        featSub +
+        '</span><div class="tag-chip-row">' +
+        featTags +
+        '</div></div>' +
+        openingsJumpBtn +
+        '</div></section>';
 
     return (
       '<div class="be-atelier-oe">' +
@@ -1195,76 +2159,12 @@
       '<div class="brand-position-card"><h3 class="brand-position-card__label">Audience</h3>' +
       positionBody(posAudience) +
       '</div></div></section>' +
-      '<section class="oe-section">' +
-      '<h2 class="oe-section-title">Where This Brand Creates the Most Value</h2>' +
-      '<div class="scenario-card-grid">' +
-      scenarioCards +
-      '</div>' +
-      '<div class="oe-cluster"><h3>Why Value Is Strongest in These Scenarios</h3><ul>' +
-      whyList +
-      '</ul></div></section>' +
-      '<section class="oe-section">' +
-      '<h2 class="oe-section-title">Key Differentiators</h2>' +
-      '<div class="oe-grid-2">' +
-      '<div class="oe-cluster"><h3>Experience &amp; Identity</h3>' +
-      diffUl(leftDiff) +
-      '</div>' +
-      '<div class="oe-cluster"><h3>Commercial &amp; Distribution</h3>' +
-      diffUl(rightDiff) +
-      '</div></div></section>' +
-      '<section class="oe-section">' +
-      '<h2 class="oe-section-title">What This Brand Is Best At</h2>' +
-      '<div class="oe-grid-3">' +
-      bestCards +
-      '</div></section>' +
-      '<section class="oe-section">' +
-      '<h2 class="oe-section-title">Owner Value Snapshot</h2>' +
-      '<div class="oe-grid-2">' +
-      '<div class="oe-cluster"><h3>Owner Outcomes</h3><ul>' +
-      ownerOut
-        .map(function (x) {
-          return '<li>' + escapeHtml(x) + '</li>';
-        })
-        .join('') +
-      '</ul></div>' +
-      '<div class="oe-cluster"><h3>Owner Experience</h3><ul>' +
-      ownerEx
-        .map(function (x) {
-          return '<li>' + escapeHtml(x) + '</li>';
-        })
-        .join('') +
-      '</ul></div></div></section>' +
-      '<section class="oe-section">' +
-      '<h2 class="oe-section-title">Proof Points</h2>' +
-      '<p class="oe-section-hint">Brand-Verified Content · Curated by Dealality</p>' +
-      '<p class="proof-meta-line">Directional proof only—no confidential performance metrics, fee terms, or undisclosed pipeline detail.</p>' +
-      '<div class="evidence-row"><span class="evidence-row__intro">Themes Covered by the Proof Points Below</span>' +
-      '<ul class="evidence-chips" role="list">' +
-      themeChips +
-      '</ul></div>' +
-      '<div class="proof-points-grid">' +
-      proofGrid +
-      '</div>' +
-      '<div class="featured-case-preview">' +
-      '<div class="featured-case-preview__text"><strong>' +
-      escapeHtml(featTitle) +
-      '</strong><span class="featured-case-preview__sub">' +
-      featSub +
-      '</span><div class="tag-chip-row">' +
-      featTags +
-      '</div></div>' +
-      openingsJumpBtn +
-      '</div></section>' +
+      valueSectionsHtml +
       '<section class="oe-section">' +
       '<h2 class="oe-section-title">Portfolio Context</h2>' +
+      portfolioContextNarrative +
       '<p class="oe-section-hint">' +
-      (hasVal(brand.parentCompany)
-        ? 'Where <strong>' +
-          escapeHtml(String(brand.name || 'This brand')) +
-          '</strong> sits among <strong>' +
-          escapeHtml(String(brand.parentCompany)) +
-          '</strong> brands by chain scale—lower-scale flags on the left, higher-scale on the right (not a quality ranking).'
-        : 'Sibling brands by chain scale on the portfolio spectrum—lower on the left, higher on the right (not a quality ranking).') +
+      portfolioContextSectionHint(brand) +
       '</p>' +
       '<div class="ladder-axis-labels" aria-hidden="true"><span>← Lower On the Portfolio Spectrum</span><span>Higher On the Portfolio Spectrum →</span></div>' +
       '<div class="ladder" role="group" aria-label="Portfolio tiers relative to sibling brands, lower to higher on the company spectrum">' +
@@ -1278,18 +2178,22 @@
     return '<div class="be-atelier-oe">' + inner + '</div>';
   }
 
-  function explorerDetailCard(label, bodyText) {
-    var body = hasVal(bodyText)
-      ? '<p class="explorer-detail-card__body">' +
-        escapeHtml(fmtCell(bodyText)).replace(/\n/g, '<br>') +
-        '</p>'
-      : '<p class="explorer-detail-card__body oe-dd--empty">&nbsp;</p>';
+  function explorerDetailCard(label, bodyText, opts) {
+    opts = opts || {};
+    if (!hasVal(bodyText)) {
+      if (opts.suppressEmpty) return '';
+      return (
+        '<div class="explorer-detail-card"><h3 class="explorer-detail-card__label">' +
+        escapeHtml(label) +
+        '</h3><p class="explorer-detail-card__body oe-dd--empty">&nbsp;</p></div>'
+      );
+    }
     return (
       '<div class="explorer-detail-card"><h3 class="explorer-detail-card__label">' +
       escapeHtml(label) +
-      '</h3>' +
-      body +
-      '</div>'
+      '</h3><p class="explorer-detail-card__body">' +
+      escapeHtml(fmtCell(bodyText)).replace(/\n/g, '<br>') +
+      '</p></div>'
     );
   }
 
@@ -1345,7 +2249,9 @@
     );
   }
 
-  function timelinePhase(strong, spanDetail) {
+  function timelinePhase(strong, spanDetail, opts) {
+    opts = opts || {};
+    if (opts.suppressEmpty && !hasVal(spanDetail)) return '';
     return (
       '<div class="timeline__phase"><strong>' +
       escapeHtml(strong) +
@@ -1355,45 +2261,57 @@
     );
   }
 
-  function kpiCard(label, value) {
+  function kpiCard(label, value, opts) {
+    opts = opts || {};
+    if (!hasVal(value)) {
+      // Public full profiles must not render empty KPI shells (empty-component gate).
+      if (opts.suppressEmpty) return '';
+      return (
+        '<div class="brand-markets-kpi__card">' +
+        '<div class="brand-markets-kpi__label">' +
+        escapeHtml(label) +
+        '</div>' +
+        '<div class="brand-markets-kpi__value oe-dd--empty">&nbsp;</div></div>'
+      );
+    }
     return (
       '<div class="brand-markets-kpi__card">' +
       '<div class="brand-markets-kpi__label">' +
       escapeHtml(label) +
       '</div>' +
-      (hasVal(value)
-        ? '<div class="brand-markets-kpi__value">' + escapeHtml(fmtCell(value)) + '</div>'
-        : '<div class="brand-markets-kpi__value oe-dd--empty">&nbsp;</div>') +
-      '</div>'
+      '<div class="brand-markets-kpi__value">' +
+      escapeHtml(fmtCell(value)) +
+      '</div></div>'
     );
   }
 
-  function presenceIntelCard(label, value) {
+  function presenceIntelCard(label, value, opts) {
+    opts = opts || {};
+    if (!hasVal(value)) {
+      if (opts.suppressEmpty) return '';
+      return (
+        '<div class="presence-intel-card">' +
+        '<div class="presence-intel-card__label">' +
+        escapeHtml(label) +
+        '</div><div class="presence-intel-card__value oe-dd--empty">&nbsp;</div></div>'
+      );
+    }
     return (
       '<div class="presence-intel-card">' +
       '<div class="presence-intel-card__label">' +
       escapeHtml(label) +
-      '</div>' +
-      (hasVal(value)
-        ? '<div class="presence-intel-card__value">' + escapeHtml(fmtCell(value)) + '</div>'
-        : '<div class="presence-intel-card__value oe-dd--empty">&nbsp;</div>') +
-      '</div>'
+      '</div><div class="presence-intel-card__value">' +
+      escapeHtml(fmtCell(value)) +
+      '</div></div>'
     );
   }
 
   function presenceIntelFootprintMetric(label, hotels, rooms) {
     function metricBlock(count, unit) {
       var n = Number(count);
-      var show = hasVal(count) || (Number.isFinite(n) && n >= 0 && count !== '');
-      if (!show) {
-        return (
-          '<div class="presence-intel-card__metric presence-intel-card__metric--empty">' +
-          '<span class="presence-intel-card__metric-value oe-dd--empty">&nbsp;</span>' +
-          '<span class="presence-intel-card__metric-unit">' +
-          escapeHtml(unit) +
-          '</span></div>'
-        );
-      }
+      // Treat missing OR literal 0 as unavailable — never render "0 hotels/rooms" publicly.
+      var show = hasVal(count) && Number.isFinite(n) && n > 0;
+      if (!show) return '';
       return (
         '<div class="presence-intel-card__metric">' +
         '<span class="presence-intel-card__metric-value">' +
@@ -1404,6 +2322,9 @@
         '</span></div>'
       );
     }
+    var hotelsBlock = metricBlock(hotels, 'hotels');
+    var roomsBlock = metricBlock(rooms, 'rooms');
+    if (!hotelsBlock && !roomsBlock) return '';
     return (
       '<div class="presence-intel-card presence-intel-card--footprint-metrics">' +
       '<div class="presence-intel-card__label">' +
@@ -1412,8 +2333,8 @@
       '<div class="presence-intel-card__metrics" aria-label="' +
       escapeHtml(label + ' hotels and rooms') +
       '">' +
-      metricBlock(hotels, 'hotels') +
-      metricBlock(rooms, 'rooms') +
+      hotelsBlock +
+      roomsBlock +
       '</div></div>'
     );
   }
@@ -1587,12 +2508,23 @@
       });
     var slotVo = explorerMergedBody(brand, 'valueOwners.overview');
     var overviewBody = hasVal(slotVo) ? slotVo : overviewBits.join('\n\n');
-    var scenBodies = splitBullets(brand.brandValueProposition || brand.keyBrandDifferentiators);
-    while (scenBodies.length < 4) scenBodies.push('');
-    var scenFromSlot = explorerParagraphs(brand, 'valueOwners.scenarios', 4);
+    // Prefer dedicated valueOwners.scenario.1–4 Title/Body cards (Ascend gold).
+    // Do not mix brandValueProposition bullets into empty siblings when any
+    // dedicated scenario body exists — that caused one long card + blanks.
+    var scenBodies = ['', '', '', ''];
     var si;
-    for (si = 0; si < scenFromSlot.length; si++) {
-      if (hasVal(scenFromSlot[si])) scenBodies[si] = scenFromSlot[si];
+    var hasDedicatedScenarioBodies = false;
+    for (si = 0; si < 4; si++) {
+      var srowProbe = explorerFirstBlock(brand, 'valueOwners.scenario.' + (si + 1));
+      if (srowProbe && hasVal(srowProbe.body)) hasDedicatedScenarioBodies = true;
+    }
+    if (!hasDedicatedScenarioBodies) {
+      scenBodies = splitBullets(brand.brandValueProposition || brand.keyBrandDifferentiators);
+      while (scenBodies.length < 4) scenBodies.push('');
+      var scenFromSlot = explorerParagraphs(brand, 'valueOwners.scenarios', 4);
+      for (si = 0; si < scenFromSlot.length; si++) {
+        if (hasVal(scenFromSlot[si])) scenBodies[si] = scenFromSlot[si];
+      }
     }
     for (si = 0; si < 4; si++) {
       var srowV = explorerFirstBlock(brand, 'valueOwners.scenario.' + (si + 1));
@@ -1607,11 +2539,10 @@
     var watchLines = hasVal(watchSlot)
       ? splitBullets(watchSlot)
       : splitBullets(brand.keyBrandDifferentiators || brand.brandValueProposition);
-    while (watchLines.length < 5) watchLines.push('');
+    watchLines = watchLines.filter(hasVal).slice(0, 5);
     var watchUl = watchLines
-      .slice(0, 5)
       .map(function (line) {
-        return '<li>' + (hasVal(line) ? escapeHtml(line) : '&nbsp;') + '</li>';
+        return '<li>' + escapeHtml(line) + '</li>';
       })
       .join('');
     var timelineHtml = TIMELINE.map(function (ph, idx) {
@@ -1622,7 +2553,7 @@
         if (hasVal(slotL.title)) label = String(slotL.title).trim();
         if (hasVal(slotL.body)) det = String(slotL.body).trim();
       }
-      return timelinePhase(label, det);
+      return timelinePhase(label, det, { suppressEmpty: shouldRenderFullProfile(brand) });
     }).join('');
     return wrapOe(
       '<section class="oe-section">' +
@@ -1706,17 +2637,70 @@
     return '';
   }
 
+  /**
+   * Display tag must match Ascend/Curio: canonical level only (High, Moderate, …).
+   * Strips compound "Very high\nprose…" / "High Independent…" bodies.
+   */
+  function flexibilityDisplayTag(raw) {
+    var s = String(raw || '')
+      .trim()
+      .replace(/[–—]/g, '-');
+    if (!s) return '';
+    var firstLine = s.split(/\r?\n/)[0].trim();
+    var candidates = [firstLine];
+    if (firstLine !== s) candidates.push(s);
+    for (var i = 0; i < candidates.length; i++) {
+      var c = candidates[i];
+      var lower = c.toLowerCase();
+      if (
+        /^(moderate\s+to\s+high|high\s+to\s+moderate|high-moderate|medium-high|medium\s+to\s+high)\b/.test(
+          lower
+        )
+      ) {
+        return 'High';
+      }
+      if (
+        /^(low\s+to\s+moderate|moderate\s+to\s+low|low-moderate|low\s+to\s+medium|low-medium)\b/.test(
+          lower
+        )
+      ) {
+        return 'Low';
+      }
+      if (/^very\s*high\b/.test(lower)) return 'Very high';
+      if (/^very\s*low\b/.test(lower)) return 'Minimal';
+      if (/^minimal\b/.test(lower)) return 'Minimal';
+      if (/^moderate\b/.test(lower)) return 'Moderate';
+      if (/^medium\b/.test(lower)) return 'Medium';
+      if (/^high\b/.test(lower)) return 'High';
+      if (/^low\b/.test(lower)) return 'Low';
+    }
+    var fill = flexibilityFillClass(s);
+    var FILL_LABEL = {
+      'very-high': 'Very high',
+      high: 'High',
+      medium: 'Medium',
+      moderate: 'Moderate',
+      low: 'Low',
+      minimal: 'Minimal',
+      empty: ''
+    };
+    return FILL_LABEL[fill] || firstLine;
+  }
+
   function flexibilityIndicatorsHtml(brand) {
+    var suppressEmpty = shouldRenderFullProfile(brand);
     return FLEXIBILITY_INDICATOR_DEFS.map(function (d) {
-      var tag = flexibilityTagFromBrand(brand, d.slot);
-      if (!hasVal(tag)) {
+      var raw = flexibilityTagFromBrand(brand, d.slot);
+      if (!hasVal(raw)) {
+        if (suppressEmpty) return '';
         return (
           '<div class="indicator-bar"><span class="indicator-bar__label">' +
           escapeHtml(d.label) +
           '</span><div class="indicator-bar__track"><div class="indicator-bar__fill indicator-bar__fill--empty"></div></div><span class="indicator-bar__tag oe-dd--empty">&nbsp;</span></div>'
         );
       }
-      var fill = flexibilityFillClass(tag);
+      var tag = flexibilityDisplayTag(raw);
+      var fill = flexibilityFillClass(tag || raw);
       return (
         '<div class="indicator-bar"><span class="indicator-bar__label">' +
         escapeHtml(d.label) +
@@ -1741,6 +2725,7 @@
   function operatorCompatTagRowHtml(brand) {
     var tags = operatorCompatTagsFromBrand(brand);
     if (!tags.length) {
+      if (shouldRenderFullProfile(brand)) return '';
       return (
         '<div class="tag-chip-row" style="margin:0">' +
         '<span class="tag-chip oe-dd--empty">&nbsp;</span></div>'
@@ -1760,28 +2745,45 @@
   function renderOperationsStandards(brand) {
     var std = brand.brandStandards || {};
     var op = brand.operationalSupport || {};
+    var suppressEmpty = shouldRenderFullProfile(brand);
     var grid =
       '<div class="oe-grid-2 oe-grid-2--operating-model">' +
-      oeKvBlock('Structure & ownership', [
-        { k: 'Primary Model', v: explorerPresentationLine(brand, 'operations.model.primary_model') },
-        { k: 'Management Option', v: explorerPresentationLine(brand, 'operations.model.management_option') },
-        { k: 'Typical Ownership Structure', v: explorerPresentationLine(brand, 'operations.model.typical_ownership') }
-      ]) +
-      oeKvBlock('Brand involvement & systems', [
-        { k: 'Brand Involvement', v: explorerPresentationLine(brand, 'operations.model.brand_involvement') },
-        { k: 'Systems Integration', v: explorerPresentationLine(brand, 'operations.model.systems_integration') },
-        { k: 'Pre-opening Discipline', v: explorerPresentationLine(brand, 'operations.model.pre_opening') }
-      ]) +
-      oeKvBlock('Operations & complexity', [
-        { k: 'Staffing Intensity', v: explorerPresentationLine(brand, 'operations.model.staffing_intensity') },
-        { k: 'F&B Complexity', v: explorerPresentationLine(brand, 'operations.model.fb_complexity') },
-        { k: 'Training Requirements', v: explorerPresentationLine(brand, 'operations.model.training') }
-      ]) +
-      oeKvBlock('Governance & technology', [
-        { k: 'Reporting Discipline', v: explorerPresentationLine(brand, 'operations.model.reporting_discipline') },
-        { k: 'QA Rhythm', v: explorerPresentationLine(brand, 'operations.model.qa_rhythm') },
-        { k: 'Technology Expectations', v: explorerPresentationLine(brand, 'operations.model.technology') }
-      ]) +
+      oeKvBlock(
+        'Structure & ownership',
+        [
+          { k: 'Primary Model', v: explorerPresentationLine(brand, 'operations.model.primary_model') },
+          { k: 'Management Option', v: explorerPresentationLine(brand, 'operations.model.management_option') },
+          { k: 'Typical Ownership Structure', v: explorerPresentationLine(brand, 'operations.model.typical_ownership') }
+        ],
+        { suppressEmpty: suppressEmpty }
+      ) +
+      oeKvBlock(
+        'Brand involvement & systems',
+        [
+          { k: 'Brand Involvement', v: explorerPresentationLine(brand, 'operations.model.brand_involvement') },
+          { k: 'Systems Integration', v: explorerPresentationLine(brand, 'operations.model.systems_integration') },
+          { k: 'Pre-opening Discipline', v: explorerPresentationLine(brand, 'operations.model.pre_opening') }
+        ],
+        { suppressEmpty: suppressEmpty }
+      ) +
+      oeKvBlock(
+        'Operations & complexity',
+        [
+          { k: 'Staffing Intensity', v: explorerPresentationLine(brand, 'operations.model.staffing_intensity') },
+          { k: 'F&B Complexity', v: explorerPresentationLine(brand, 'operations.model.fb_complexity') },
+          { k: 'Training Requirements', v: explorerPresentationLine(brand, 'operations.model.training') }
+        ],
+        { suppressEmpty: suppressEmpty }
+      ) +
+      oeKvBlock(
+        'Governance & technology',
+        [
+          { k: 'Reporting Discipline', v: explorerPresentationLine(brand, 'operations.model.reporting_discipline') },
+          { k: 'QA Rhythm', v: explorerPresentationLine(brand, 'operations.model.qa_rhythm') },
+          { k: 'Technology Expectations', v: explorerPresentationLine(brand, 'operations.model.technology') }
+        ],
+        { suppressEmpty: suppressEmpty }
+      ) +
       '</div>';
     var indRows = flexibilityIndicatorsHtml(brand);
     var standardsPhilosophy = explorerMergedBody(brand, 'operations.standards_philosophy');
@@ -1803,31 +2805,48 @@
     var diffGrid = diffTitles
       .map(function (title, i) {
         var val = diffVals[i];
+        if (suppressEmpty && !hasVal(val)) return '';
         var inner = hasVal(val) ? escapeHtml(fmtCell(val)) : '&nbsp;';
         return '<div class="diff-card"><strong>' + escapeHtml(title) + '</strong><br/>' + inner + '</div>';
       })
       .join('');
+    var philosophySection =
+      suppressEmpty && !hasVal(standardsPhilosophy)
+        ? ''
+        : '<section class="oe-section"><h2 class="oe-section-title">Standards Philosophy</h2>' +
+          explorerDetailCard('Philosophy', standardsPhilosophy, { suppressEmpty: suppressEmpty }) +
+          '</section>';
+    var flexibilitySection =
+      suppressEmpty && !String(indRows || '').trim()
+        ? ''
+        : '<section class="oe-section"><h2 class="oe-section-title">Flexibility Indicators</h2>' +
+          '<div class="info-card"><div class="indicator-row">' +
+          indRows +
+          '</div></div></section>';
+    var compatSection =
+      suppressEmpty && !hasVal(opCompatSummary) && !hasVal(opCompatFit) && !hasVal(opCompatTagRow)
+        ? ''
+        : '<section class="oe-section"><h2 class="oe-section-title">Third-Party Operator Compatibility</h2>' +
+          '<div class="explorer-detail-stack">' +
+          explorerDetailCard('Summary', opCompatSummary, { suppressEmpty: suppressEmpty }) +
+          opCompatTagRow +
+          explorerDetailCard('Fit', opCompatFit, { suppressEmpty: suppressEmpty }) +
+          '</div></section>';
+    var complianceSection =
+      suppressEmpty && !String(diffGrid || '').trim()
+        ? ''
+        : '<section class="oe-section"><h2 class="oe-section-title">Compliance &amp; Oversight</h2>' +
+          '<div class="diff-grid">' +
+          diffGrid +
+          '</div></section>';
     return wrapOe(
       '<section class="oe-section"><h2 class="oe-section-title">Operating Model</h2>' +
         grid +
         '</section>' +
-        '<section class="oe-section"><h2 class="oe-section-title">Standards Philosophy</h2>' +
-        explorerDetailCard('Philosophy', standardsPhilosophy) +
-        '</section>' +
-        '<section class="oe-section"><h2 class="oe-section-title">Flexibility Indicators</h2>' +
-        '<div class="info-card"><div class="indicator-row">' +
-        indRows +
-        '</div></div></section>' +
-        '<section class="oe-section"><h2 class="oe-section-title">Third-Party Operator Compatibility</h2>' +
-        '<div class="explorer-detail-stack">' +
-        explorerDetailCard('Summary', opCompatSummary) +
-        opCompatTagRow +
-        explorerDetailCard('Fit', opCompatFit) +
-        '</div></section>' +
-        '<section class="oe-section"><h2 class="oe-section-title">Compliance &amp; Oversight</h2>' +
-        '<div class="diff-grid">' +
-        diffGrid +
-        '</div></section>'
+        philosophySection +
+        flexibilitySection +
+        compatSection +
+        complianceSection
     );
   }
 
@@ -2004,8 +3023,10 @@
       requirementsSection =
         '<section class="oe-section oe-section--standards-table">' +
         '<h2 class="oe-section-title">Standard Detail, Where Available</h2>' +
-        '<p class="be-atelier-placeholder">No owner planning checklist is published in Brand Explorer presentation for this brand yet. Confirm requirements with brand disclosure, the franchise agreement, and design standards manuals.</p>' +
-        fallback +
+        (shouldSuppressIncompleteExternalSections(brand)
+          ? ''
+          : '<p class="be-atelier-placeholder">No owner planning checklist is published in Brand Explorer presentation for this brand yet. Confirm requirements with brand disclosure, the franchise agreement, and design standards manuals.</p>' +
+            fallback) +
         '</section>';
     }
 
@@ -2038,11 +3059,7 @@
     }
 
     return wrapOe(
-      '<div class="be-standards-output-note" role="note">' +
-        '<p><strong>Output Note.</strong> ' +
-        escapeHtml(STANDARDS_OWNER_OUTPUT_NOTE) +
-        '</p></div>' +
-        metaHtml +
+      metaHtml +
         requirementsSection +
         (secondaryParts.length
           ? '<div class="be-standards-secondary-wrap">' + secondaryParts.join('') + '</div>'
@@ -2062,7 +3079,7 @@
       [
         'Revenue Management & Pricing Discipline',
         'Forecasting tools, competitive sets, restriction strategies, and brand-level playbooks tuned to the chain scale—not only discounting.',
-        'Underwrite ADR protection in peak windows and escalation support during shocks; confirm what is included in your agreement tier.'
+        'Underwrite average daily rate protection in peak windows and escalation support during shocks; confirm what is included in your agreement tier.'
       ],
       [
         'Digital Marketing & Performance Media',
@@ -2290,7 +3307,7 @@
   var ECON_FDD_KPI_DEFS = [
     {
       slot: 'economics.kpi.royalty',
-      label: 'Typical royalty',
+      label: 'Brand Royalty',
       feeKey: 'royalty'
     },
     {
@@ -2439,11 +3456,40 @@
     return econFddKpiValueFromApi(brand, def);
   }
 
+  function econSanitizeOwnerFacingChrome(text) {
+    if (!hasVal(text)) return '';
+    var out = String(text);
+    out = out.replace(/\bConfirm in Item 7 and your LOI\.?/gi, 'Ask brand development for current participation costs and timing before you commit.');
+    out = out.replace(/\bconfirm every line in your disclosure document and LOI\b/gi, 'ask brand development for current participation costs, operating obligations, and agreement terms before you commit');
+    out = out.replace(/\bConfirm participation costs and timing directly during brand engagement(?: and legal review)?\.?/gi, 'Ask brand development for current participation costs and timing before you commit');
+    out = out.replace(/\bconfirm participation costs, operating obligations, and agreement terms directly during brand engagement(?: and legal review)?\.?/gi, 'ask brand development for current participation costs, operating obligations, and agreement terms before you commit');
+    out = out.replace(/\bconfirm participation costs and agreement terms directly during brand engagement(?: and legal review)?\.?/gi, 'ask brand development for current participation costs and agreement terms before you commit');
+    out = out.replace(/\bfranchise disclosure document\b/gi, 'commercial agreement materials');
+    out = out.replace(/\bfranchise disclosure\b/gi, 'commercial agreement review');
+    out = out.replace(/\bdisclosure document\b/gi, 'commercial agreement materials');
+    out = out.replace(/\bfee stack\b/gi, 'participation costs and program fees');
+    out = out.replace(/\bnet contribution\b/gi, 'contribution after program costs');
+    out = out.replace(/\bItem\s*19\b/gi, 'portfolio-level brand performance materials');
+    out = out.replace(/\bItem\s*7\b/gi, 'initial investment schedules');
+    out = out.replace(/\bFDD\b/g, 'commercial agreement materials');
+    out = out.replace(/\bLOI\b/g, 'commercial proposal');
+    out = out.replace(/\bADR\b/g, 'average daily rate');
+    out = out.replace(/\bRevPAR\b/g, 'revenue per available room');
+    out = out.replace(/https?:\/\/\S+/gi, '');
+    out = out.replace(/\bSources?:\s*/gi, '');
+    out = out.replace(/\bSource:\s*/gi, '');
+    return out.replace(/[ \t]{2,}/g, ' ').trim();
+  }
+
   function econFeeSupportFromApi(fs, def) {
     if (!fs || !def) return '';
-    if (def.notes && hasVal(fs[def.notes])) return String(fs[def.notes]).trim();
+    if (def.notes && hasVal(fs[def.notes])) return econSanitizeOwnerFacingChrome(String(fs[def.notes]).trim());
     if (def.basis && hasVal(fs[def.basis])) {
-      return 'Basis: ' + fmtCell(fs[def.basis]) + '. Confirm in Item 7 and your LOI.';
+      return (
+        'Basis: ' +
+        fmtCell(fs[def.basis]) +
+        '. Ask brand development for current participation costs and timing before you commit.'
+      );
     }
     return '';
   }
@@ -2499,7 +3545,7 @@
 
     if (!cards.length) {
       var legacy = [
-        { slot: 'economics.kpi.fee_stack', label: 'Fee stack' },
+        { slot: 'economics.kpi.fee_stack', label: 'Participation costs' },
         { slot: 'economics.kpi.agreement', label: 'Agreement shape' },
         { slot: 'economics.kpi.capital', label: 'Capital rhythm' },
         { slot: 'economics.kpi.incentives', label: 'Incentives' }
@@ -2563,7 +3609,8 @@
   function econFeeBucketBulletCase(s) {
     if (!hasVal(s)) return '';
     var small = { a: 1, an: 1, and: 1, or: 1, of: 1, in: 1, on: 1, at: 1, to: 1, for: 1, the: 1, per: 1 };
-    var acronyms = { pip: 'PIP', fdd: 'FDD', loi: 'LOI', crs: 'CRS', pms: 'PMS', qa: 'QA' };
+    // Do not promote FDD/LOI as owner-facing acronyms in economics chrome.
+    var acronyms = { pip: 'PIP', crs: 'CRS', pms: 'PMS', qa: 'QA' };
     var wi = 0;
     return String(s).replace(/[a-zA-Z]+/g, function (core) {
       var low = core.toLowerCase();
@@ -2658,7 +3705,7 @@
         '</p>';
     } else if (!bullets.length) {
       supportHtml =
-        '<p class="proof-point-card__support proof-point-card__footnote oe-dd--empty">Confirm categories, basis, and timing in your FDD and LOI.</p>';
+        '<p class="proof-point-card__support proof-point-card__footnote">Confirm participation categories and timing directly with brand representatives.</p>';
     }
     return (
       '<article class="proof-point-card proof-point-card--fee-bucket">' +
@@ -2677,7 +3724,15 @@
     var title = slotRow && hasVal(slotRow.title) ? String(slotRow.title).trim() : bucket.title;
     var slotBody = slotRow && hasVal(slotRow.body) ? String(slotRow.body).trim() : '';
     var bullets = [];
-    if (bucket.defaultBullets && bucket.defaultBullets.length) {
+    var slotFootnote = '';
+    if (slotBody) {
+      var footParts = slotBody.split(/\n\n+/);
+      if (footParts.length > 1) {
+        slotFootnote = footParts.slice(1).join('\n\n').trim();
+        slotBody = footParts[0].trim();
+      }
+    }
+    if (bucket.defaultBullets && bucket.defaultBullets.length && !slotBody) {
       bullets = bucket.defaultBullets.map(econFeeBucketBulletCase);
     } else {
       bullets = econParseFeeBucketBullets(slotBody);
@@ -2685,7 +3740,14 @@
         bullets = econFeeBucketThemesFromApi(brand, bucket);
       }
     }
-    var footnote = bucket.footnote || '';
+    var footnote = slotFootnote || bucket.footnote || '';
+    if (/fdd|loi|franchise disclosure|net contribution|fee stack|item\s*7|item\s*19|disclosure document|directly during brand engagement/i.test(footnote)) {
+      footnote =
+        'Ask brand development for current participation costs, operating obligations, and agreement terms before you commit.';
+    }
+    if (!footnote && isAffiliationCurationBrand(brand)) {
+      footnote = 'Public materials do not disclose amounts—confirm participation terms during owner diligence.';
+    }
     return econFeeBucketCard(title, bullets, footnote);
   }
 
@@ -2722,14 +3784,14 @@
       parts.push('Typically assessed on: ' + fmtCell(fs[def.basis]) + '.');
     }
     if (def.notes && hasVal(fs[def.notes])) {
-      parts.push(String(fs[def.notes]).trim());
+      parts.push(econSanitizeOwnerFacingChrome(String(fs[def.notes]).trim()));
     }
     if (!parts.length) {
       parts.push(
-        'This fee category is part of the brand’s typical stack; confirm basis and timing in the franchise disclosure document and LOI.'
+        'This cost category is part of typical brand participation; confirm basis and timing directly with the brand and legal counsel.'
       );
     }
-    return parts.join(' ');
+    return econSanitizeOwnerFacingChrome(parts.join(' '));
   }
 
   function econFeeCardsFromApi(brand) {
@@ -2791,13 +3853,14 @@
         'Plan review, design, or inspection fees'
       ],
       footnote:
-        'Basis and timing vary by keys, market, and deal—confirm in the FDD and LOI.'
+        'Basis and timing vary by keys, market, and deal—ask brand development for current participation costs and agreement terms before you commit.'
     },
     {
       slot: 'economics.fee.operate',
       title: 'To Operate',
       typeKeys: ['royalty', 'marketing', 'technology', 'loyalty', 'reservation'],
-      footnote: 'Owners evaluate net contribution after mandatory program costs.'
+      footnote:
+        'Owners evaluate whether distribution, operating requirements, and program costs fit the asset after brand-related obligations.'
     },
     {
       slot: 'economics.fee.change',
@@ -2811,7 +3874,7 @@
   var ECON_CASH_PHASE_DEFS = [
     {
       slot: 'economics.cash.preopening',
-      label: 'Pre-opening',
+      label: 'Pre-Opening',
       legacySlot: 'economics.lifecycle.preopening',
       ownerDefault:
         'Front-loaded standards and FF&E alignment, technology cutover, working capital through opening, and application or training cash outlays.',
@@ -2820,7 +3883,7 @@
     },
     {
       slot: 'economics.cash.ramp',
-      label: 'Early years (ramp)',
+      label: 'Early Years (Ramp)',
       legacySlot: 'economics.lifecycle.ramp',
       ownerDefault:
         'Ramp marketing and loyalty enrollment while occupancy and rate build; recurring fees scale up as revenue mix stabilizes.',
@@ -2829,16 +3892,16 @@
     },
     {
       slot: 'economics.cash.steadystate',
-      label: 'Steady state',
+      label: 'Steady State',
       legacySlot: 'economics.lifecycle.steadystate',
       ownerDefault:
-        'The full recurring fee stack—royalty, marketing, technology, loyalty, and distribution—plus mandatory program participation once stabilized.',
+        'The full set of recurring participation costs—royalty, marketing, technology, loyalty, and distribution—plus mandatory program participation once stabilized.',
       brandDefault:
         'Sales and revenue support, brand systems access, and portfolio benchmarks—not property payroll or routine FF&E.'
     },
     {
       slot: 'economics.cash.renewal',
-      label: 'Renewal / repositioning',
+      label: 'Renewal / Repositioning',
       legacySlot: 'economics.lifecycle.renewal',
       ownerDefault:
         'Renewal or conversion PIP, owner reserves, and re-licensing work when triggers hit—not part of steady-state operations.',
@@ -2926,6 +3989,25 @@
     return cards;
   }
 
+  function econNormalizeRiskTitle(title) {
+    var raw = String(title || '').trim();
+    if (!raw) return raw;
+    var key = raw.toLowerCase();
+    if (key === 'term & renewal' || key === 'term and renewal' || key === 'initial term & renewal') {
+      return 'Terms & Renewals';
+    }
+    if (key === 'performance & exit' || key === 'performance and exit') {
+      return 'Performance & Exit';
+    }
+    if (key === 'transfer & sale' || key === 'transfer and sale') {
+      return 'Transfer & Sale';
+    }
+    if (key === 'area of protection') {
+      return 'Area of Protection';
+    }
+    return raw;
+  }
+
   function renderAtelierEconomicsObligations(brand) {
     var fs = brand.feeStructure && typeof brand.feeStructure === 'object' ? brand.feeStructure : {};
     var dt = brand.dealTerms && typeof brand.dealTerms === 'object' ? brand.dealTerms : {};
@@ -2934,7 +4016,7 @@
 
     var disclaimer =
       explorerMergedBody(brand, 'economics.intro') ||
-      'Illustrative brand-level patterns only—not a quote, financial model, or substitute for the franchise disclosure document, LOI, or your advisors. Use this tab to know what to ask and model, not what to sign.';
+      'Illustrative brand-level patterns only—not a quote, financial model, or substitute for agreement review with the brand and your advisors. Use this tab to know what to ask and model, not what to sign.';
 
     var cashGrid = ECON_CASH_PHASE_DEFS.map(function (def) {
       var raw =
@@ -2965,7 +4047,7 @@
       stepLabel = econListItemCase(stepLabel);
       var det = slotRow && hasVal(slotRow.body) ? String(slotRow.body).trim() : '';
       if (hasVal(det)) openingHasStepDetail = true;
-      return timelinePhase(stepLabel, det);
+      return timelinePhase(stepLabel, det, { suppressEmpty: shouldRenderFullProfile(brand) });
     }).join('');
 
     var openingProcess =
@@ -3014,16 +4096,35 @@
         }
       ];
     }
+    riskCards = riskCards
+      .map(function (r) {
+        return Object.assign({}, r, { title: econNormalizeRiskTitle(r && r.title) });
+      })
+      .sort(function (a, b) {
+        var order = {
+          'Terms & Renewals': 0,
+          'Performance & Exit': 1,
+          'Transfer & Sale': 2,
+          'Area of Protection': 3
+        };
+        var ao = Object.prototype.hasOwnProperty.call(order, a.title) ? order[a.title] : 99;
+        var bo = Object.prototype.hasOwnProperty.call(order, b.title) ? order[b.title] : 99;
+        return ao - bo;
+      });
     var riskGrid = riskCards
       .map(function (r) {
+        var title = r.title || 'Risk theme';
+        var isTermsRenewals = /terms?\s*&\s*renewals?/i.test(title) || /term|renewal/i.test(title);
+        var isPerformanceExit = /performance\s*&\s*exit/i.test(title);
         var anchor =
-          r.title && /term|renewal/i.test(r.title) && hasVal(termAnchor)
+          isTermsRenewals && hasVal(termAnchor)
             ? termAnchor + (hasVal(renewalAnchor) ? ' · Renewal ' + renewalAnchor : '')
             : '';
-        if (anchor) {
-          return econProofPointCard(r.title || 'Risk theme', anchor, r.body);
+        if (anchor || isPerformanceExit) {
+          // Keep headline baseline aligned for the first two risk cards.
+          return econProofPointCard(title, anchor || '\u00A0', r.body);
         }
-        return scenarioDetailCard(r.title || 'Risk theme', r.body);
+        return scenarioDetailCard(title, r.body);
       })
       .join('');
 
@@ -3085,18 +4186,36 @@
       explorerMergedBody(brand, 'economics.fee_variability') ||
       'Room count, market tier, new build versus conversion, incentive package, and operator model usually change how fees and capital line items land on your deal.';
 
+    var affiliationBrand = isAffiliationCurationBrand(brand);
+    // Owner-safe economics chrome for all brands (including internal preview / founder review).
+    var econGlanceHint = affiliationBrand
+      ? 'Owner diligence categories for affiliation and collection participation—confirm commercial terms directly with brand representatives'
+      : 'Typical ranges and fee-schedule notes from Brand Setup—ask brand development for current participation costs, operating obligations, and agreement terms before you commit';
+    var confirmSectionTitle = 'Confirm With Brand / Legal Counsel';
+    var confirmSectionHint = 'This page orients diligence—it does not replace agreement review';
+    var confirmSectionBody = affiliationBrand
+      ? 'All participation costs, distribution scope, design and curation expectations, and legal terms for your hotel must be confirmed directly with the brand and your counsel. Use this page to structure diligence—not as a quote or signed term sheet.'
+      : 'All economics, fees, capital obligations, and legal terms for your hotel must be confirmed directly with the brand and your counsel. Work with your advisor to tie the items on this page to your model and term sheet.';
+    if (/franchise disclosure|fdd|\bloi\b|disclosure document|item\s*7|item\s*19|fee stack|net contribution/i.test(disclaimer)) {
+      disclaimer =
+        explorerMergedBody(brand, 'economics.intro') ||
+        (affiliationBrand
+          ? 'Illustrative affiliation and participation considerations only—not a quote, financial model, or substitute for your agreement review. Use this tab to know what to ask and model, not what to sign.'
+          : 'Illustrative brand-level patterns only—not a quote, financial model, or substitute for agreement review with the brand and your advisors. Use this tab to know what to ask and model, not what to sign.');
+    }
+
     return wrapOe(
       '<section class="oe-section oe-section--econ-intro">' +
         explorerDetailCardMultiline('How to use this tab', disclaimer) +
         '</section>' +
       '<section class="oe-section">' +
-        '<h2 class="oe-section-title">Economics at a Glance</h2>' +
-        '<p class="oe-section-hint">Typical ranges and fee-schedule notes from Brand Setup (FDD Item 7 style)—confirm every line in your disclosure document and LOI</p>' +
+        '<h2 class="oe-section-title">Typical Economics at a Glance</h2>' +
+        '<p class="oe-section-hint">' + escapeHtml(econGlanceHint) + '</p>' +
         fddKpiRow +
         '</section>' +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Cash &amp; Capital Rhythm</h2>' +
-        '<p class="oe-section-hint">Who typically funds what—and when</p>' +
+        '<p class="oe-section-hint">Who Typically Funds What—and When</p>' +
         '<div class="scenario-card-grid scenario-card-grid--owner-value econ-cash-grid">' +
         cashGrid +
         '</div></section>' +
@@ -3114,7 +4233,7 @@
         '</section>' +
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Fees in Three Buckets</h2>' +
-        '<p class="oe-section-hint">Join · operate · change—typical fee categories in each phase</p>' +
+        '<p class="oe-section-hint">Join · Operate · Change—Typical Fee Categories in Each Phase</p>' +
         '<div class="proof-points-grid proof-points-grid--econ-buckets">' +
         feeBucketGrid +
         '</div>' +
@@ -3142,10 +4261,10 @@
         rarelyUl +
         '</div></div></section>' +
         '<section class="oe-section">' +
-        '<h2 class="oe-section-title">Confirm in the FDD &amp; LOI</h2>' +
-        '<p class="oe-section-hint">This page orients diligence—it does not replace disclosure documents</p>' +
+        '<h2 class="oe-section-title">' + confirmSectionTitle + '</h2>' +
+        '<p class="oe-section-hint">' + escapeHtml(confirmSectionHint) + '</p>' +
         '<div class="explorer-detail-card">' +
-        '<p class="explorer-detail-card__body">All economics, fees, capital obligations, and legal terms for your hotel must be confirmed in the franchise disclosure document, LOI, and executed franchise agreement. Work with your counsel and advisor to tie the items on this page to your model and term sheet.</p></div></section>'
+        '<p class="explorer-detail-card__body">' + escapeHtml(confirmSectionBody) + '</p></div></section>'
     );
   }
 
@@ -3157,18 +4276,25 @@
       String(brand && brand.parentCompany || '').toLowerCase().indexOf('choice hotels') >= 0 ||
       String(progNameEarly || '').toLowerCase().indexOf('choice privileges') >= 0 ||
       String(brand && brand.name || '').toLowerCase().indexOf('choice') >= 0;
+    var isMarriottBonvoy =
+      String(progNameEarly || '').toLowerCase().indexOf('bonvoy') >= 0 ||
+      String(brand && brand.parentCompany || '').toLowerCase().indexOf('marriott') >= 0;
     var memM = lcFv(brand, 'totalGlobalMembersMillions');
     var defMembersVal = hasVal(memM)
       ? '~' + String(memM).trim() + 'M members (est.)'
       : isChoiceFamily
         ? '~70M members (program-wide)'
-        : '—';
+        : isMarriottBonvoy
+          ? '200M+ members (Bonvoy program scale)'
+          : '—';
     var openHotels = Number(fp.totalExistingHotels);
     var defHotelsVal = '—';
     if (hasVal(fp.totalExistingHotels) && openHotels > 0) {
       defHotelsVal = fmtNum(fp.totalExistingHotels) + '+ hotels in portfolio (open)';
     } else if (isChoiceFamily) {
       defHotelsVal = '7,100+ properties (Choice Privileges network)';
+    } else if (isMarriottBonvoy) {
+      defHotelsVal = 'Global member directory · Bonvoy participation varies';
     }
     var marketsN = fpFv.numberOfMarkets;
     var defMarketsVal = hasVal(marketsN)
@@ -3183,7 +4309,11 @@
         ? 'Global · 20+ brands in portfolio'
         : '—';
     var mixPct = lcFv(brand, 'typicalLoyaltyRoomsPercent');
-    var defMixVal = hasVal(mixPct) ? '~' + String(mixPct).trim() + '% of rooms from loyalty (est.)' : '—';
+    var defMixVal = hasVal(mixPct)
+      ? '~' + String(mixPct).trim() + '% of rooms from loyalty (est.)'
+      : isMarriottBonvoy
+        ? 'Varies by property · confirm during diligence'
+        : '—';
 
     var heroRow = explorerFirstBlock(brand, 'loyalty.hero_title');
     var loyaltyH2;
@@ -3373,7 +4503,7 @@
 
     var implPnl =
       explorerMergedBody(brand, 'loyalty.implications.pnl') ||
-      'Owners typically evaluate loyalty through net contribution after costs: member discounts, channel mix, and redemption liability assumptions. Brands highlight disciplined revenue management alignment so member constructs support rate integrity—not only top-line room nights.';
+      'Owners typically evaluate loyalty through contribution after program costs: member discounts, channel mix, and redemption liability assumptions. Brands highlight disciplined revenue management alignment so member constructs support rate integrity—not only top-line room nights.';
     var implOps =
       explorerMergedBody(brand, 'loyalty.implications.ops') ||
       'Front-of-house recognition, elite fulfillment, and digital app flows are where brand promises meet operating reality. Strong programs emphasize playbooks without homogenizing the property’s local character.';
@@ -3440,15 +4570,54 @@
   /**
    * footprint.momentum Body: line 1 = date label; blank line; description; optional blank line; https URL (announcement).
    * Title = headline (strong).
+   * Also recovers space-collapsed / single-newline bodies produced by older scrubbers.
    */
-  function parseMomentumPresentationBlock(block) {
-    var headline = block && hasVal(block.title) ? String(block.title).trim() : '';
-    var paras = String((block && block.body) || '')
+  function looksLikeMomentumDateLabel(text) {
+    if (!hasVal(text)) return false;
+    var t = String(text).trim();
+    if (t.length > 56 || /https?:\/\//i.test(t)) return false;
+    if (/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/i.test(t)) return true;
+    if (/^Q[1-4]\b/i.test(t)) return true;
+    if (/^\d{4}(\s*[–—-]\s*\d{4})?$/.test(t)) return true;
+    if (/^(Editorial|Collection|Directory|Affiliation|Pipeline|Member growth|CALA)$/i.test(t)) return true;
+    return t.split(/\s+/).length <= 5 && t.length <= 36 && !/[.!?]$/.test(t);
+  }
+
+  function splitMomentumBodyUnits(rawBody) {
+    var raw = String(rawBody || '').trim();
+    if (!raw) return [];
+    var paras = raw
       .split(/\n\n+/)
       .map(function (s) {
         return s.trim();
       })
       .filter(Boolean);
+    if (paras.length > 1) return paras;
+
+    var lines = raw
+      .split(/\n/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+    if (lines.length > 1) return lines;
+
+    // Space-collapsed: "2024 Summary…" or "2024–2025 Summary… https://…"
+    var leadingDate = raw.match(/^(\d{4}(?:\s*[–—-]\s*\d{4})?)\s+([\s\S]+)$/);
+    if (leadingDate) {
+      var rest = leadingDate[2].trim();
+      var trailingUrl = rest.match(/^(.*?)\s+(https?:\/\/\S+)\s*$/i);
+      if (trailingUrl) {
+        return [leadingDate[1], trailingUrl[1].trim(), trailingUrl[2].trim()].filter(Boolean);
+      }
+      return [leadingDate[1], rest];
+    }
+    return paras.length ? paras : [raw];
+  }
+
+  function parseMomentumPresentationBlock(block) {
+    var headline = block && hasVal(block.title) ? String(block.title).trim() : '';
+    var paras = splitMomentumBodyUnits((block && block.body) || '');
     var date = paras.length ? paras[0] : '';
     var url = '';
     var descParts = [];
@@ -3456,10 +4625,62 @@
       if (isSafeHttpUrl(paras[i])) url = paras[i].trim();
       else descParts.push(paras[i]);
     }
+    if (paras.length === 1 && !descParts.length) {
+      if (headline && !looksLikeMomentumDateLabel(date)) {
+        descParts = [date];
+        date = '';
+      } else if (!headline && !looksLikeMomentumDateLabel(date)) {
+        descParts = [date];
+        date = '';
+      }
+    }
+    if (!descParts.length && date) {
+      var fauxStatus = date.match(/^(Ongoing|Active|Collection)\s+([\s\S]+)$/i);
+      if (fauxStatus) {
+        date = fauxStatus[1];
+        descParts = [fauxStatus[2].trim()];
+      }
+    }
+    if (/^ongoing$/i.test(date) && !descParts.length && paras.length === 1) {
+      date = '';
+    }
+    if (date && !looksLikeMomentumDateLabel(date) && descParts.length) {
+      descParts = [date].concat(descParts);
+      date = '';
+    }
+    // Defense: recover trailing URL stuck inside description (collapsed body / sandbox gaps).
+    if (!url && descParts.length) {
+      var lastIdx = descParts.length - 1;
+      var splitLast = splitTrailingHttpUrl(descParts[lastIdx]);
+      if (splitLast.url && isSafeHttpUrl(splitLast.url)) {
+        url = splitLast.url;
+        if (splitLast.text) descParts[lastIdx] = splitLast.text;
+        else descParts.pop();
+      }
+    }
+    var description = descParts.join('\n\n');
+    if (url) {
+      // Never leave the captured URL (or any raw URL line) in public body copy.
+      description = description
+        .split(/\n+/)
+        .map(function (line) {
+          return String(line || '').trim();
+        })
+        .filter(function (line) {
+          return line && !isSafeHttpUrl(line) && line.indexOf(url) === -1;
+        })
+        .join('\n\n');
+    } else {
+      var scrubAll = splitTrailingHttpUrl(description);
+      if (scrubAll.url && isSafeHttpUrl(scrubAll.url)) {
+        url = scrubAll.url;
+        description = scrubAll.text;
+      }
+    }
     return {
       date: date,
       headline: headline,
-      description: descParts.join('\n\n'),
+      description: description,
       url: url
     };
   }
@@ -3502,21 +4723,28 @@
 
   function portfolioMixSectionHtml(brand) {
     var pills = portfolioMixPillsFromBrand(brand);
-    var rowInner =
-      pills.length > 0
-        ? pills
-            .map(function (p) {
-              var level = hasVal(p.level) ? ' ' + escapeHtml(p.level) : '';
-              return (
-                '<span class="portfolio-mix__pill"><strong>' +
-                escapeHtml(p.category) +
-                '</strong>' +
-                level +
-                '</span>'
-              );
-            })
-            .join('')
-        : '<span class="portfolio-mix__pill oe-dd--empty">&nbsp;</span>';
+    if (!pills.length) {
+      if (shouldRenderFullProfile(brand)) return '';
+      return (
+        '<div class="portfolio-mix">' +
+        '<h3>Portfolio Mix</h3>' +
+        '<div class="portfolio-mix__row">' +
+        '<span class="portfolio-mix__pill oe-dd--empty">&nbsp;</span>' +
+        '</div></div>'
+      );
+    }
+    var rowInner = pills
+      .map(function (p) {
+        var level = hasVal(p.level) ? ' ' + escapeHtml(p.level) : '';
+        return (
+          '<span class="portfolio-mix__pill"><strong>' +
+          escapeHtml(p.category) +
+          '</strong>' +
+          level +
+          '</span>'
+        );
+      })
+      .join('');
     return (
       '<div class="portfolio-mix">' +
       '<h3>Portfolio Mix</h3>' +
@@ -3538,25 +4766,196 @@
     return '';
   }
 
-  function momentumAnnouncementLinkLabel(url, brand) {
+  function isMomentumPressOrNewsroomUrl(url) {
     var u = String(url || '').toLowerCase();
-    if (
+    return (
+      u.indexOf('newsroom') !== -1 ||
+      u.indexOf('press-release') !== -1 ||
+      u.indexOf('press_release') !== -1 ||
+      u.indexOf('/news/') !== -1 ||
+      u.indexOf('media.choicehotels.com') !== -1 ||
+      u.indexOf('ihgplc.com/news') !== -1 ||
+      u.indexOf('marriott.com/newsroom') !== -1
+    );
+  }
+
+  function isMarriottPropertyPageUrl(url) {
+    var u = String(url || '').toLowerCase();
+    return u.indexOf('marriott.com') !== -1 && u.indexOf('/hotels/') !== -1;
+  }
+
+  function isPrWireUrl(url) {
+    var u = String(url || '').toLowerCase();
+    return (
+      u.indexOf('prnewswire.com') !== -1 ||
+      u.indexOf('globenewswire.com') !== -1 ||
+      u.indexOf('businesswire.com') !== -1
+    );
+  }
+
+  function isMarriottPressAreaUrl(url) {
+    var u = String(url || '').toLowerCase();
+    return u.indexOf('marriott.pressarea.com') !== -1 || u.indexOf('marriott.africa-newsroom.com') !== -1;
+  }
+
+  function isOwnerPressUrl(url) {
+    var u = String(url || '').toLowerCase();
+    return u.indexOf('hotel-online.com/press') !== -1;
+  }
+
+  function isHospitalityTradeUrl(url) {
+    var u = String(url || '').toLowerCase();
+    return (
+      u.indexOf('travelweekly.com') !== -1 ||
+      u.indexOf('traveldailynews.com') !== -1 ||
+      u.indexOf('hotel-online.com/news') !== -1 ||
+      u.indexOf('ladevi.info') !== -1 ||
+      u.indexOf('semana.com') !== -1 ||
+      u.indexOf('ithic.it') !== -1 ||
+      u.indexOf('journaldespalaces.com') !== -1 ||
+      u.indexOf('hotelmanagement-network.com') !== -1 ||
+      u.indexOf('travelprnews.com') !== -1 ||
+      u.indexOf('breakingtravelnews.com') !== -1 ||
+      u.indexOf('hotelnewsresource.com') !== -1 ||
+      u.indexOf('newsismybusiness.com') !== -1
+    );
+  }
+
+  function isMarriottNewsroomUrl(url) {
+    var u = String(url || '').toLowerCase();
+    return (
+      u.indexOf('marriott.com/newsroom') !== -1 ||
+      u.indexOf('marriott.pressarea.com') !== -1 ||
+      u.indexOf('marriott.africa-newsroom.com') !== -1
+    );
+  }
+
+  function isMarriottPrWireRelease(url) {
+    if (!isPrWireUrl(url)) return false;
+    var u = String(url || '').toLowerCase();
+    return /marriott|tribute[-_]portfolio/.test(u);
+  }
+
+  /** Choice property listing market from URL path (e.g. cartagena, panama-city). v31M-R2 parity. */
+  function choiceHotelsPropertyMarketFromUrl(url) {
+    var u = String(url || '');
+    var m = u.match(/choicehotels\.com\/[^/]+\/([^/]+)\/radisson-individuals-hotels\//i);
+    if (!m) return '';
+    return m[1]
+      .replace(/-/g, ' ')
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(function (w) {
+        return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+      })
+      .join(' ');
+  }
+
+  function designHotelsPropertyMarketFromUrl(url) {
+    var u = String(url || '');
+    var m = u.match(/designhotels\.com\/hotels\/[^/]+\/([^/]+)\//i);
+    if (!m) return '';
+    return m[1]
+      .replace(/-/g, ' ')
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(function (w) {
+        return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+      })
+      .join(' ');
+  }
+
+  function momentumAnnouncementLinkLabel(url, brand) {
+    function properCaseLinkLabel(label) {
+      return String(label || '')
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(function (w) {
+          if (/^IHG$/i.test(w)) return 'IHG';
+          if (/^eHotelier$/i.test(w)) return 'eHotelier';
+          if (/^PR$/i.test(w)) return 'PR';
+          return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+        })
+        .join(' ');
+    }
+    var u = String(url || '').toLowerCase();
+    var raw = '';
+    if (u.indexOf('designhotels.com') !== -1 && u.indexOf('/hotels/') !== -1) {
+      var dhMarket = designHotelsPropertyMarketFromUrl(url);
+      raw = dhMarket ? 'View ' + dhMarket + ' Property Listing' : 'View Design Hotels Property Listing';
+    } else if (u.indexOf('einpresswire.com') !== -1) {
+      raw = 'View Press Release';
+    } else if (u.indexOf('businesstraveller.com') !== -1) {
+      raw = 'View Article';
+    } else if (isMarriottPropertyPageUrl(url)) {
+      raw = 'View Property';
+    } else if (u.indexOf('tribute-portfolio.marriott.com') !== -1) {
+      raw = 'View Tribute Portfolio Site';
+    } else if (isOwnerPressUrl(url)) {
+      raw = 'View Owner Announcement';
+    } else if (isHospitalityTradeUrl(url)) {
+      raw = 'View Article';
+    } else if (isMarriottNewsroomUrl(url) || isMarriottPressAreaUrl(url) || isMarriottPrWireRelease(url)) {
+      raw = 'View Marriott Announcement';
+    } else if (
       u.indexOf('ihgplc.com') !== -1 ||
       u.indexOf('ihg.com') !== -1 ||
       u.indexOf('kimptonhotels.com') !== -1
     ) {
-      return 'View IHG announcement';
+      raw = 'View IHG Announcement';
+    } else if (u.indexOf('hotelbusiness.com') !== -1) {
+      raw = 'View Hotel Business Article';
+    } else if (u.indexOf('hotelmanagement.net') !== -1) {
+      raw = 'View Hotel Management Article';
+    } else if (u.indexOf('lodgingmagazine.com') !== -1) {
+      raw = 'View Lodging Article';
+    } else if (u.indexOf('insights.ehotelier.com') !== -1) {
+      raw = 'View eHotelier Article';
+    } else if (u.indexOf('choicehotelsdevelopment.com') !== -1) {
+      raw = 'View Choice Development News';
+    } else if (u.indexOf('press-kit') !== -1 || u.indexOf('press_kit') !== -1) {
+      raw = 'View Choice Hotels Press Kit';
+    } else if (u.indexOf('choicehotels.com') !== -1 && /\/radisson-individuals-hotels\//.test(u)) {
+      var choiceMarket = choiceHotelsPropertyMarketFromUrl(url);
+      raw = choiceMarket ? 'View ' + choiceMarket + ' Property Listing' : 'View Property Listing';
+    } else if (
+      u.indexOf('choicehotels.com') !== -1 &&
+      (u.indexOf('/news') !== -1 || u.indexOf('newsroom') !== -1)
+    ) {
+      raw = 'View Choice Hotels Press Release';
+    } else if (u.indexOf('media.choicehotels.com') !== -1) {
+      raw = 'View Choice Hotels Press Release';
+    } else if (u.indexOf('investor.choicehotels.com') !== -1) {
+      raw = 'View Choice Hotels Press Release';
+    } else if (u.indexOf('choicehotels.com') !== -1) {
+      raw = 'View Choice Hotels Source';
+    } else if (u.indexOf('press.accor.com') !== -1 || u.indexOf('accor.com') !== -1) {
+      raw = 'View Accor Announcement';
+    } else if (u.indexOf('travelpulse.com') !== -1) {
+      raw = 'View Article';
+    } else if (isMomentumPressOrNewsroomUrl(url)) {
+      var publisher = momentumPublisherDisplayName(brand);
+      raw = publisher ? 'View ' + publisher + ' Announcement' : 'View Announcement';
+    } else if (isPrWireUrl(url)) {
+      raw = 'View Press Release';
+    } else if (u.indexOf('marriott.com') !== -1) {
+      raw = 'View Marriott Source';
+    } else {
+      raw = 'View Source';
     }
-    if (u.indexOf('choicehotels.com') !== -1 || u.indexOf('media.choicehotels.com') !== -1) {
-      return 'View Choice Hotels announcement';
-    }
-    var publisher = momentumPublisherDisplayName(brand);
-    if (publisher) return 'View ' + publisher + ' announcement';
-    return 'View announcement';
+    return properCaseLinkLabel(raw);
   }
 
   function momentumSectionDefaultLabel(brand) {
     var publisher = momentumPublisherDisplayName(brand);
+    var parentKey = normalizePortfolioParentKey(String((brand && brand.parentCompany) || ''));
+    var brandName = String((brand && brand.name) || '').toLowerCase();
+    if (brandName.indexOf('design hotels') >= 0) {
+      return 'Recent openings · linked announcements';
+    }
+    if (parentKey.indexOf('marriott') !== -1) {
+      return 'Recent portfolio momentum · linked announcements';
+    }
     if (publisher) return publisher + ' CALA openings · linked announcements';
     return 'Recent openings · linked announcements';
   }
@@ -3573,11 +4972,15 @@
         escapeHtml(momentumAnnouncementLinkLabel(item.url, brand)) +
         '</a></p>'
       : '';
+    var itemClass =
+      'momentum-feed__item' + (hasVal(item.date) ? '' : ' momentum-feed__item--no-date');
     return (
-      '<div class="momentum-feed__item">' +
-      '<div class="momentum-feed__date">' +
-      escapeHtml(item.date || '') +
-      '</div>' +
+      '<div class="' +
+      itemClass +
+      '">' +
+      (hasVal(item.date)
+        ? '<div class="momentum-feed__date">' + escapeHtml(item.date) + '</div>'
+        : '') +
       '<div class="momentum-feed__body">' +
       (hasVal(item.headline) ? '<strong>' + escapeHtml(item.headline) + '</strong>' : '') +
       descP +
@@ -3586,31 +4989,88 @@
     );
   }
 
+  function momentumDateSortKey(dateLabel) {
+    var t = String(dateLabel || '').trim();
+    if (!t) return 0;
+    var range = t.match(/^(\d{4})\s*[–—-]\s*(\d{4})$/);
+    if (range) return parseInt(range[2], 10) * 100 + 12;
+    var mon = t.match(
+      /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+(\d{4})$/i
+    );
+    if (mon) {
+      var monthMap = {
+        jan: 1,
+        feb: 2,
+        mar: 3,
+        apr: 4,
+        may: 5,
+        jun: 6,
+        jul: 7,
+        aug: 8,
+        sep: 9,
+        oct: 10,
+        nov: 11,
+        dec: 12
+      };
+      var m = monthMap[mon[1].slice(0, 3).toLowerCase()] || 12;
+      return parseInt(mon[2], 10) * 100 + m;
+    }
+    var q = t.match(/^Q([1-4])\s+(\d{4})$/i);
+    if (q) return parseInt(q[2], 10) * 100 + parseInt(q[1], 10) * 3;
+    var y = t.match(/^(\d{4})$/);
+    if (y) return parseInt(y[1], 10) * 100 + 12;
+    return 0;
+  }
+
   function renderMomentumSection(brand) {
     var blocks = explorerBlocksForSlot(brand, FOOTPRINT_MOMENTUM_SLOT);
     var labelRaw = explorerPresentationLine(brand, FOOTPRINT_MOMENTUM_LABEL_SLOT);
     var label = hasVal(labelRaw) ? labelRaw : momentumSectionDefaultLabel(brand);
-    var itemsHtml = blocks
+    var parsedItems = blocks
       .map(function (b) {
-        return momentumFeedItemHtml(parseMomentumPresentationBlock(b), brand);
+        return parseMomentumPresentationBlock(b);
+      })
+      .filter(function (item) {
+        return item && (hasVal(item.headline) || hasVal(item.description));
+      })
+      .sort(function (a, b) {
+        var db = momentumDateSortKey(b.date);
+        var da = momentumDateSortKey(a.date);
+        if (db !== da) return db - da;
+        return String(b.headline || '').localeCompare(String(a.headline || ''));
+      });
+    var itemsHtml = parsedItems
+      .map(function (item) {
+        return momentumFeedItemHtml(item, brand);
       })
       .filter(Boolean)
       .join('');
     if (!itemsHtml) {
+      var mixOnly = portfolioMixSectionHtml(brand);
+      if (shouldRenderFullProfile(brand)) {
+        if (!String(mixOnly || '').trim()) return '';
+        return (
+          '<section class="oe-section">' +
+          '<h2 class="oe-section-title">Recent Momentum</h2>' +
+          '<p class="oe-section-hint">Publicly disclosed recent activity is limited</p>' +
+          mixOnly +
+          '</section>'
+        );
+      }
       return (
         '<section class="oe-section">' +
         '<h2 class="oe-section-title">Recent Momentum</h2>' +
-        '<p class="oe-section-hint">Presentation or verified disclosures when available</p>' +
+        '<p class="oe-section-hint">Publicly disclosed recent activity is limited</p>' +
         '<p class="momentum-feed__label oe-dd--empty">&nbsp;</p>' +
         '<div class="momentum-feed oe-dd--empty">&nbsp;</div>' +
-        portfolioMixSectionHtml(brand) +
+        mixOnly +
         '</section>'
       );
     }
     return (
       '<section class="oe-section">' +
       '<h2 class="oe-section-title">Recent Momentum</h2>' +
-      '<p class="oe-section-hint">Illustrative activity</p>' +
+      '<p class="oe-section-hint">Recent openings and development signals</p>' +
       '<p class="momentum-feed__label">' +
       escapeHtml(label) +
       '</p>' +
@@ -3804,12 +5264,19 @@
         : hasVal(fv.specificMarkets)
           ? String(fv.specificMarkets).trim()
           : '';
+    var suppressEmptyKpi = shouldRenderFullProfile(brand);
     var kpiRow =
       '<div class="brand-markets-kpi" aria-label="Markets and Footprint Summary">' +
-      kpiCard('Regions', regionsSummary) +
-      kpiCard('Markets Operated In', fv.numberOfMarkets) +
-      kpiCard('Open Hotels (Public YE2025)', fp.totalExistingHotels) +
-      kpiCard('Coverage Model', [brand.brandModelFormat, brand.hotelChainScale].filter(hasVal).join(' · ')) +
+      kpiCard('Regions', regionsSummary, { suppressEmpty: suppressEmptyKpi }) +
+      kpiCard('Markets Operated In', fv.numberOfMarkets, { suppressEmpty: suppressEmptyKpi }) +
+      kpiCard('Open Hotels (Public YE2025)', fp.totalExistingHotels > 0 ? fp.totalExistingHotels : '', {
+        suppressEmpty: suppressEmptyKpi,
+      }) +
+      kpiCard(
+        'Coverage Model',
+        [brand.brandModelFormat, brand.hotelChainScale].filter(hasVal).join(' · '),
+        { suppressEmpty: suppressEmptyKpi }
+      ) +
       '</div>';
     var openH = fp.totalExistingHotels;
     var openR = fp.totalExistingRooms;
@@ -3905,20 +5372,22 @@
         ? openPipelineSub + portfolioDistribution
         : '<p class="brand-fp-table-note">Footprint tables are hidden until portfolio metrics are verified.</p>') +
       '</div>';
+    var suppressEmptyFp = shouldRenderFullProfile(brand);
     var presenceRow =
       '<div class="presence-intel-row">' +
       presenceIntelFootprintMetric('Open Hotels (Public)', openH, openR) +
       presenceIntelFootprintMetric('Pipeline (Public)', pipH, pipR) +
-      presenceIntelCard('Primary Regions', regionsSummary) +
-      presenceIntelCard('Typical Asset Pattern', brand.hotelServiceModel) +
-      presenceIntelCard('Growth Style', brand.brandDevelopmentStage) +
-      presenceIntelCard('Brand Maturity', brand.yearBrandLaunched) +
+      presenceIntelCard('Primary Regions', regionsSummary, { suppressEmpty: suppressEmptyFp }) +
+      presenceIntelCard('Typical Asset Pattern', brand.hotelServiceModel, { suppressEmpty: suppressEmptyFp }) +
+      presenceIntelCard('Growth Style', brand.brandDevelopmentStage, { suppressEmpty: suppressEmptyFp }) +
+      presenceIntelCard('Brand Maturity', brand.yearBrandLaunched, { suppressEmpty: suppressEmptyFp }) +
       '</div>';
     var geoSrc = String(explorerMergedBody(brand, 'footprint.geo_intro') || fv.specificMarkets || '').trim();
     var geoIntro;
     if (!hasVal(geoSrc)) {
-      geoIntro =
-        '<p style="font-size:0.8125rem;color:#d7e4fa;margin:0 0 14px;max-width:720px;line-height:1.5" class="oe-dd--empty">&nbsp;</p>';
+      geoIntro = suppressEmptyFp
+        ? ''
+        : '<p style="font-size:0.8125rem;color:#d7e4fa;margin:0 0 14px;max-width:720px;line-height:1.5" class="oe-dd--empty">&nbsp;</p>';
     } else {
       var geoSn = geoSrc.slice(0, 420);
       geoIntro =
@@ -3955,10 +5424,16 @@
         '</div>' +
         '<p class="footprint-schematic__caption">Schematic presence strip · illustrative, not geographic precision</p>';
     }
-    function regionStatusCard(name, dim, statusClass, statusLabel, narrative) {
-      var narrHtml = hasVal(narrative)
-        ? '<p>' + escapeHtml(narrative) + '</p>'
-        : '<p class="oe-dd--empty">&nbsp;</p>';
+    function regionStatusCard(name, dim, statusClass, statusLabel, narrative, opts) {
+      opts = opts || {};
+      var narrHtml = '';
+      if (hasVal(narrative)) {
+        narrHtml = '<p>' + escapeHtml(narrative) + '</p>';
+      } else if (!opts.suppressEmpty) {
+        narrHtml = '<p class="oe-dd--empty">&nbsp;</p>';
+      } else {
+        return '';
+      }
       return (
         '<div class="region-status-card' +
         (dim ? ' region-status-card--dim' : '') +
@@ -3986,12 +5461,17 @@
               footprintRegionCardDim(card.statusLabel),
               footprintRegionStatusClass(card.statusLabel),
               card.statusLabel,
-              card.narrative
+              card.narrative,
+              { suppressEmpty: suppressEmptyFp }
             );
           })
+          .filter(Boolean)
           .join('') +
         '</div>';
-    } else if (regionKeys.length) {
+      if (suppressEmptyFp && !String(regionGrid).replace(/<\/?div[^>]*>/g, '').trim()) {
+        regionGrid = '';
+      }
+    } else if (regionKeys.length && !suppressEmptyFp) {
       regionGrid =
         '<div class="region-footprint-grid">' +
         regionKeys
@@ -4002,7 +5482,8 @@
               idx > 3,
               'status-label--established',
               'From footprint data',
-              ''
+              '',
+              { suppressEmpty: false }
             );
           })
           .join('') +
@@ -4027,40 +5508,52 @@
               return '<span class="tag-chip">' + escapeHtml(String(t)) + '</span>';
             })
             .join('')
-        : '<span class="tag-chip">&nbsp;</span>';
+        : suppressEmptyFp
+          ? ''
+          : '<span class="tag-chip">&nbsp;</span>';
     var growthEditorial = explorerMergedBody(brand, 'footprint.growth_editorial');
     var growthRightP = hasVal(growthEditorial)
       ? '<p>' + escapeHtml(fmtCell(growthEditorial)).replace(/\n/g, '<br>') + '</p>'
-      : '<p class="oe-dd--empty">&nbsp;</p>';
-    var growthSection =
-      '<section class="oe-section">' +
-      '<h2 class="oe-section-title">Growth Priorities</h2>' +
-      '<p class="oe-section-hint">Directional Themes</p>' +
-      '<div class="growth-priority-layout">' +
-      '<div class="growth-priority-layout__left">' +
-      '<h3>Priority Growth Themes</h3>' +
-      '<div class="tag-chip-row" style="margin:0">' +
-      growthChips +
-      '</div></div>' +
-      '<div class="growth-priority-layout__right">' +
-      growthRightP +
-      '<div class="growth-fit-sub">' +
-      '<h4>Most Likely Growth Fit</h4>' +
-      (function () {
-        var fitItems = splitBullets(explorerMergedBody(brand, 'footprint.growth_fit')).filter(hasVal);
-        if (!fitItems.length) {
-          return '<ul><li class="oe-dd--empty">&nbsp;</li></ul></div></div></div></section>';
-        }
-        return (
-          '<ul>' +
-          fitItems
-            .map(function (li) {
-              return '<li>' + escapeHtml(String(li)) + '</li>';
-            })
-            .join('') +
-          '</ul></div></div></div></section>'
-        );
-      })();
+      : suppressEmptyFp
+        ? ''
+        : '<p class="oe-dd--empty">&nbsp;</p>';
+    var fitItems = splitBullets(explorerMergedBody(brand, 'footprint.growth_fit')).filter(hasVal);
+    var growthSection = '';
+    if (
+      suppressEmptyFp &&
+      !String(growthChips || '').trim() &&
+      !hasVal(growthEditorial) &&
+      !fitItems.length
+    ) {
+      growthSection = '';
+    } else {
+      growthSection =
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Growth Priorities</h2>' +
+        '<p class="oe-section-hint">Directional Themes</p>' +
+        '<div class="growth-priority-layout">' +
+        '<div class="growth-priority-layout__left">' +
+        '<h3>Priority Growth Themes</h3>' +
+        '<div class="tag-chip-row" style="margin:0">' +
+        growthChips +
+        '</div></div>' +
+        '<div class="growth-priority-layout__right">' +
+        growthRightP +
+        '<div class="growth-fit-sub">' +
+        '<h4>Most Likely Growth Fit</h4>' +
+        (fitItems.length
+          ? '<ul>' +
+            fitItems
+              .map(function (li) {
+                return '<li>' + escapeHtml(String(li)) + '</li>';
+              })
+              .join('') +
+            '</ul>'
+          : suppressEmptyFp
+            ? ''
+            : '<ul><li class="oe-dd--empty">&nbsp;</li></ul>') +
+        '</div></div></div></section>';
+    }
     function propertyShell() {
       return (
         '<article class="property-example-card">' +
@@ -4078,31 +5571,34 @@
       );
     }
     var openingBlocks = explorerBlocksForSlot(brand, FOOTPRINT_OPENINGS_SLOT);
-    var openingsGrid;
+    var openingsGrid = '';
+    var openingsSection = '';
     if (openingBlocks.length && footprintPropertyPayloadSink) {
+      var openingsHint = 'Curated · Not a Full Directory';
+      if (String(brand && brand.name || '').toLowerCase().indexOf('woodspring') >= 0) {
+        openingsHint = 'Curated U.S. examples · Not a full directory';
+      }
       openingsGrid = openingBlocks
         .map(function (block) {
           return propertyExampleCardFromBlock(block, footprintPropertyPayloadSink);
         })
         .join('');
-    } else {
-      openingsGrid = propertyShell() + propertyShell() + propertyShell();
+      openingsSection =
+        '<section class="oe-section" style="margin-top:8px">' +
+        '<h2 class="oe-section-title">Openings / Examples / Properties</h2>' +
+        '<p class="oe-section-hint">' + escapeHtml(openingsHint) + '</p>' +
+        '<div class="property-example-grid">' +
+        openingsGrid +
+        '</div></section>';
     }
-    var openingsSection =
-      '<section class="oe-section" style="margin-top:8px">' +
-      '<h2 class="oe-section-title">Openings / Examples / Properties</h2>' +
-      '<p class="oe-section-hint">Curated · Not a Full Directory</p>' +
-      '<div class="property-example-grid">' +
-      openingsGrid +
-      '</div></section>';
     var momentumSection = renderMomentumSection(brand);
     var fpEditorialP;
     var fpEditorial = explorerMergedBody(brand, 'footprint.editorial');
     if (hasVal(fpEditorial)) {
       fpEditorialP =
         '<p>' + escapeHtml(fmtCell(fpEditorial)).replace(/\n/g, '<br>') + '</p>';
-    } else if (hasVal(brand.name)) {
-      fpEditorialP = '<p class="oe-dd--empty">&nbsp;</p>';
+    } else if (suppressEmptyFp) {
+      fpEditorialP = '';
     } else {
       fpEditorialP = '<p class="oe-dd--empty">&nbsp;</p>';
     }
@@ -4116,16 +5612,19 @@
             })
             .join('') +
           '</ul>'
-        : '<ul><li class="oe-dd--empty">&nbsp;</li></ul>';
-    var dealalitySection =
-      '<section class="oe-section">' +
-      '<h2 class="oe-section-title">Dealality View on Market Presence</h2>' +
-      '<p class="oe-section-hint">Interpretation</p>' +
-      '<div class="dealality-editorial-card">' +
-      '<div class="dealality-editorial-card__brand">Dealality</div>' +
-      fpEditorialP +
-      fpEditorialUl +
-      '</div></section>';
+        : '';
+    var dealalitySection = '';
+    if (hasVal(fpEditorial) || fpBulletSrc.length) {
+      dealalitySection =
+        '<section class="oe-section">' +
+        '<h2 class="oe-section-title">Dealality View on Market Presence</h2>' +
+        '<p class="oe-section-hint">Interpretation</p>' +
+        '<div class="dealality-editorial-card">' +
+        '<div class="dealality-editorial-card__brand">Dealality</div>' +
+        fpEditorialP +
+        fpEditorialUl +
+        '</div></section>';
+    }
     return wrapOe(
       '<section class="oe-section">' +
         '<h2 class="oe-section-title">Markets &amp; Footprint</h2>' +
@@ -4257,18 +5756,34 @@
   }
 
   /**
-   * footprint.openings Body — not the same as materials.caseStudy short form.
+   * footprint.openings Body — Ascend / voco property-example card shape.
+   * Accepts blank-line paragraphs OR Ascend-style single-newline structural lines.
    * 4 blocks: chips, location, asset/meta, opening teaser (+ optional https URL).
-   * 5 blocks: + scenario accent line (voco property-example-card__scenario).
+   * 5 blocks: + scenario accent line (property-example-card__scenario).
    * 6 blocks: full case-study card blocks (chips … takeaway).
    */
-  function parseFootprintOpeningParas(bodyRaw) {
-    var paras = String(bodyRaw || '')
+  function splitOpeningsBodyUnits(bodyRaw) {
+    var raw = String(bodyRaw || '').trim();
+    if (!raw) return [];
+    var blank = raw
       .split(/\n\n+/)
       .map(function (s) {
         return s.trim();
       })
       .filter(Boolean);
+    if (blank.length >= 4) return blank;
+    var single = raw
+      .split(/\n/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+    if (single.length >= 4) return single;
+    return blank.length ? blank : single;
+  }
+
+  function parseFootprintOpeningParas(bodyRaw) {
+    var paras = splitOpeningsBodyUnits(bodyRaw);
     var summaryHref = '';
     if (paras.length && isSafeHttpUrl(paras[paras.length - 1])) {
       summaryHref = paras[paras.length - 1];
@@ -4471,10 +5986,10 @@
     return {
       title: title,
       subtitle: subtitle,
-      overview: overview || '—',
-      relevance: relevance || '—',
-      suggests: suggests || '—',
-      dealalityTakeaway: dealalityTakeaway || '—',
+      overview: overview || '',
+      relevance: relevance || '',
+      suggests: suggests || '',
+      dealalityTakeaway: dealalityTakeaway || '',
       tags: tags,
       externalUrl: ext
     };
@@ -4504,21 +6019,15 @@
       '<p style="margin:0 0 14px;font-size:0.8125rem;color:var(--muted,#9fb0d0)">' +
       escapeHtml(payload.subtitle || '') +
       '</p>' +
-      '<div class="be-case-detail-block"><h4>Property overview</h4><p>' +
-      escapeHtml(payload.overview) +
-      '</p></div>' +
-      '<div class="be-case-detail-block"><h4>Why it is relevant</h4><p>' +
-      escapeHtml(payload.relevance) +
-      '</p></div>' +
-      '<div class="be-case-detail-block"><h4>What it suggests about the brand</h4><p>' +
-      escapeHtml(payload.suggests) +
-      '</p></div>' +
-      '<div class="be-case-detail-block"><h4>Dealality takeaway</h4><p>' +
-      escapeHtml(payload.dealalityTakeaway) +
-      '</p></div>' +
-      '<div class="be-case-detail-block"><h4>Similar property types</h4><div class="be-case-modal__tags">' +
-      (tagsHtml || '<span class="be-case-modal__tags-empty">—</span>') +
-      '</div></div>' +
+      modalDetailBlock('Property overview', payload.overview) +
+      modalDetailBlock('Why it is relevant', payload.relevance) +
+      modalDetailBlock('What it suggests about the brand', payload.suggests) +
+      modalDetailBlock('Dealality takeaway', payload.dealalityTakeaway) +
+      (tagsHtml
+        ? '<div class="be-case-detail-block"><h4>Similar property types</h4><div class="be-case-modal__tags">' +
+          tagsHtml +
+          '</div></div>'
+        : '') +
       linkBlock;
     modal.classList.add('be-case-modal-overlay--open');
     document.body.style.overflow = 'hidden';
@@ -4563,15 +6072,19 @@
       if (hasVal(ovSn)) situationSn = String(ovSn).trim();
     }
     if (situationSn.length > 280) situationSn = situationSn.slice(0, 277) + '…';
-    var metaHtml = hasVal(p.asset)
-      ? escapeHtml(p.asset)
-      : '<span class="oe-dd--empty">&nbsp;</span>';
-    var scenarioHtml = hasVal(scenario)
-      ? escapeHtml(scenario)
-      : '<span class="oe-dd--empty">&nbsp;</span>';
-    var teaserHtml = hasVal(situationSn)
-      ? escapeHtml(situationSn)
-      : '<span class="oe-dd--empty">&nbsp;</span>';
+    var metaFallback = hasVal(p.asset)
+      ? String(p.asset).trim()
+      : hasVal(p.loc)
+        ? String(p.loc).trim()
+        : chipParts.length
+          ? chipParts[0]
+          : '';
+    var metaHtml = hasVal(metaFallback) ? escapeHtml(metaFallback) : '';
+    var scenarioHtml = hasVal(scenario) ? escapeHtml(scenario) : '';
+    var teaserHtml = hasVal(situationSn) ? escapeHtml(situationSn) : '';
+    if (!hasVal(title) || (!hasVal(metaHtml) && !hasVal(scenarioHtml) && !hasVal(teaserHtml))) {
+      return '';
+    }
     var fpPayload = buildFootprintPropertyPayload(block, p, chipParts, modalAppendixParsed);
     var fpIdx = footprintPropertyPayloadSink.length;
     footprintPropertyPayloadSink.push(fpPayload);
@@ -4582,21 +6095,18 @@
       '<span class="property-example-card__badge">Open</span>' +
       '<div class="property-example-card__titles">' +
       '<h4>' +
-      (hasVal(title) ? escapeHtml(title) : '&nbsp;') +
+      escapeHtml(title) +
       '</h4>' +
       '<span>' +
-      (hasVal(p.loc) ? escapeHtml(p.loc) : '&nbsp;') +
+      (hasVal(p.loc) ? escapeHtml(p.loc) : '') +
       '</span></div></div>' +
       '<div class="property-example-card__mid">' +
-      '<div class="property-example-card__meta">' +
-      metaHtml +
+      (hasVal(metaHtml) ? '<div class="property-example-card__meta">' + metaHtml + '</div>' : '') +
+      (hasVal(scenarioHtml)
+        ? '<div class="property-example-card__scenario">' + scenarioHtml + '</div>'
+        : '') +
+      (hasVal(teaserHtml) ? '<p>' + teaserHtml + '</p>' : '') +
       '</div>' +
-      '<div class="property-example-card__scenario">' +
-      scenarioHtml +
-      '</div>' +
-      '<p>' +
-      teaserHtml +
-      '</p></div>' +
       '<div class="property-example-card__bottom">' +
       '<div class="property-example-card__tags">' +
       tagsHtml +
@@ -4648,6 +6158,37 @@
     });
   }
 
+  function materialsFileDisplayTitle(row, href) {
+    var label = hasVal(row.title) ? String(row.title).trim() : '';
+    if (label && /^undefined$/i.test(label)) label = '';
+    if (label) return label;
+    var meta = materialsFileMetaFromBody(row.body);
+    if (meta) {
+      var parts = meta
+        .split('·')
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(Boolean);
+      var filePart = parts.length ? parts[parts.length - 1] : '';
+      if (filePart && /\.[a-z0-9]{2,5}$/i.test(filePart)) {
+        return filePart.replace(/_/g, ' ');
+      }
+    }
+    if (href) {
+      var pathBit = '';
+      try {
+        pathBit = decodeURIComponent(String(href).split('/').pop() || '').split('?')[0];
+      } catch (e) {
+        pathBit = String(href).split('/').pop() || '';
+      }
+      if (pathBit && !/airtableusercontent\.com/i.test(String(href)) && pathBit.length < 80) {
+        return pathBit;
+      }
+    }
+    return 'Brand material';
+  }
+
   function renderBrandMaterials(brand) {
     function materialsFileHref(block) {
       if (!block) return '';
@@ -4662,16 +6203,8 @@
       fileGrid = fileRows
         .map(function (row) {
           var href = materialsFileHref(row);
-          var label = hasVal(row.title) ? String(row.title).trim() : '';
-          var kind = href ? fileKindLabelFromUrl(href, label) : 'FILE';
-          if (!label && href) {
-            try {
-              label = decodeURIComponent(String(href).split('/').pop() || '').split('?')[0] || 'Download';
-            } catch (e) {
-              label = 'Download';
-            }
-          }
-          if (!label) label = 'Brand material';
+          var label = materialsFileDisplayTitle(row, href);
+          var kind = href ? fileKindLabelFromUrl(href, label + ' ' + (row.body || '')) : 'FILE';
           var metaLine = materialsFileMetaFromBody(row.body);
           var badgeLine = materialsFileBadgeFromBody(row.body);
           return fileCard(kind, label, metaLine, href, badgeLine);
@@ -4684,14 +6217,22 @@
         fileCard('PDF', 'Positioning Summary.pdf', 'PDF · 956 KB · Updated Mar 4, 2026') +
         fileCard('ZIP', 'Design Reference Gallery.zip', 'ZIP · 128 MB · Updated Dec 9, 2025');
     }
-    var galleryLabels = ['Lobby', 'Guest Room', 'Rooftop / Bar', 'Arrival', 'Pool & Resort Setting', 'Restaurant'];
+    var galleryDefaultLabels = {
+      'materials.gallery.1': 'Exterior / Prototype',
+      'materials.gallery.2': 'Guest Room',
+      'materials.gallery.3': 'Kitchen-Equipped Suite',
+      'materials.gallery.4': 'Extended-Stay Suite',
+      'materials.gallery.5': 'Brand Platform Visual',
+      'materials.gallery.6': 'Property Example'
+    };
+    var galleryRows = explorerGalleryBlocks(brand);
     var galleryHasImage = false;
-    var gallery = galleryLabels
-      .map(function (lab, i) {
-        var slot = 'materials.gallery.' + (i + 1);
-        var row = explorerFirstBlock(brand, slot);
+    var gallery = galleryRows
+      .map(function (row) {
+        var slot = String(row.slotKey || '');
         var imgUrl = row && hasVal(row.imageUrl) ? String(row.imageUrl).trim() : '';
-        var caption = row && hasVal(row.title) ? String(row.title).trim() : lab;
+        var fallback = galleryDefaultLabels[slot] || 'Gallery';
+        var caption = galleryCaptionForRow(brand, row, fallback);
         if (imgUrl && isSafeHttpUrl(imgUrl)) {
           galleryHasImage = true;
           return (
@@ -4747,7 +6288,7 @@
     ];
     var CAUTION_PAIRS = [
       ['Assets Without Identity', 'Weaker story limits lifestyle premium capture.'],
-      ['Markets That Won\u2019t Reward Premium', 'Rate and RevPAR may not support positioning.'],
+      ['Markets That Won\u2019t Reward Premium', 'Rate and revenue per available room may not support positioning.'],
       ['Limited Branded Experience', 'Operators without lifestyle depth may struggle with calibration.'],
       ['Expectations of Total Design Freedom', 'Guardrails still apply for guest confidence and QA.']
     ];
@@ -4765,7 +6306,7 @@
       '<li>Is the owner looking for individuality plus structure, rather than a highly standardized model?</li>' +
       '<li>Is loyalty contribution likely to matter in this demand mix?</li>' +
       '</ul>';
-    var similarRows = explorerCardRowsForSlot(brand, 'insight.similar');
+    var similarRows = explorerCardRowsForSlot(brand, 'insight.similar', { prefix: true });
     var similar =
       similarRows.length > 0
         ? similarRows
@@ -4821,6 +6362,32 @@
   }
 
   function buildAtelierPanelsHtml(brand) {
+    if (!isInternalPreviewRequest() && !canRenderFactoryPreview(brand) && isExternalQualityLocked(brand)) {
+      return {
+        html:
+          '<section class="be-atelier-tab-panel active" data-atelier-panel="atelier-locked">' +
+          atelierTabShell(lockedExternalProfileHtml()) +
+          '</section>',
+        footprintPropertyPayloads: [],
+        qualityLocked: true
+      };
+    }
+
+    if (
+      (isInternalPreviewRequest() || canRenderFactoryPreview(brand)) &&
+      !hasPresentationRows(brand) &&
+      isExternalQualityLocked(brand)
+    ) {
+      return {
+        html:
+          '<section class="be-atelier-tab-panel active" data-atelier-panel="atelier-locked">' +
+          atelierTabShell(lockedExternalProfileHtml()) +
+          '</section>',
+        footprintPropertyPayloads: [],
+        qualityLocked: true
+      };
+    }
+
     var footprintPropertyPayloadSink = [];
     var atelierMap = {
       'atelier-overview': renderAtelierOverview(brand),
@@ -4864,13 +6431,32 @@
         );
       })
       .join('');
+
+    if (canRenderFactoryPreview(brand) && isExternalQualityLocked(brand)) {
+      htmlStr = factoryPreviewBannerHtml() + htmlStr;
+    } else if (isInternalPreviewRequest() && isExternalQualityLocked(brand)) {
+      htmlStr = internalPreviewBannerHtml() + htmlStr;
+    }
+
     return {
       html: htmlStr,
-      footprintPropertyPayloads: footprintPropertyPayloadSink
+      footprintPropertyPayloads: footprintPropertyPayloadSink,
+      qualityLocked: false
     };
   }
 
-  function buildAtelierTabsHtml() {
+  function buildAtelierTabsHtml(brand) {
+    if (!isInternalPreviewRequest() && !canRenderFactoryPreview(brand) && brand && isExternalQualityLocked(brand)) {
+      return '';
+    }
+    if (
+      (isInternalPreviewRequest() || canRenderFactoryPreview(brand)) &&
+      brand &&
+      !hasPresentationRows(brand) &&
+      isExternalQualityLocked(brand)
+    ) {
+      return '';
+    }
     var G = window.BrandExplorerGoldDetail;
     var rows = combinedTabRowDefs();
     return rows
@@ -4961,10 +6547,16 @@
     var nav = rootEl.querySelector('[data-be-atelier-nav]');
     var panelsWrap = rootEl.querySelector('[data-be-atelier-panels]');
     if (!nav || !panelsWrap) return;
-    nav.innerHTML = buildAtelierTabsHtml();
+    nav.innerHTML = buildAtelierTabsHtml(brand);
     var built = buildAtelierPanelsHtml(brand);
     panelsWrap.innerHTML = built.html;
     panelsWrap._beFootprintPropertyPayloads = built.footprintPropertyPayloads;
+    if (built.qualityLocked) {
+      nav.setAttribute('hidden', 'hidden');
+      nav.innerHTML = '';
+    } else {
+      nav.removeAttribute('hidden');
+    }
     wireAtelierTabs(rootEl);
     if (window.BrandExplorerGoldDetail && window.BrandExplorerGoldDetail.applyChainScaleTheme) {
       window.BrandExplorerGoldDetail.applyChainScaleTheme(brand, rootEl);
@@ -5030,6 +6622,14 @@
   window.BrandExplorerAtelierFromApi = {
     mountIntoRoot: mountAtelierIntoRoot,
     mountFromBrand: mountAtelierFromBrand,
-    prepareAllPanelsForExport: prepareAllPanelsForExport
+    prepareAllPanelsForExport: prepareAllPanelsForExport,
+    buildPanelsHtmlForTest: buildAtelierPanelsHtml,
+    renderOverviewHtmlForTest: renderAtelierOverview,
+    shouldRenderFullProfile: shouldRenderFullProfile,
+    externalShouldRenderFullProfile: externalShouldRenderFullProfile,
+    isExternalQualityLocked: isExternalQualityLocked,
+    isInternalPreviewRequest: isInternalPreviewRequest,
+    isFactoryPreviewRequest: isFactoryPreviewRequest,
+    canRenderFactoryPreview: canRenderFactoryPreview
   };
 })();

@@ -1,0 +1,247 @@
+{
+  "plannerVersion": "25-R2",
+  "generatedAt": "2026-07-09T13:14:08.240Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "imagesUntouched": true,
+  "companyValidatedUntouched": true,
+  "companyValidationDateUntouched": true,
+  "brand": {
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio"
+  },
+  "v25PlannerExists": true,
+  "v25R2PlannerExists": true,
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-screenshot-seeded-remediation-review-package.md",
+    "reports/brand-explorer-visual-qa-verification.md",
+    "reports/tribute-visual-asset-slot-review.md",
+    "reports/brand-asset-human-review-readiness.md",
+    "reports/brand-asset-review-decision-writer.md",
+    "reports/brand-asset-download-attachment-writer.md",
+    "reports/explorer-media-promotion-writer.md",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "public/js/brand-explorer-gold-detail.js",
+    "live Tribute Brand Explorer Presentation rows",
+    "Tribute Brand Asset Registry records",
+    "completed reference brands rows/image counts"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-visual-minimums-backfill-planner.js",
+    "scripts/brand-explorer-visual-minimums-backfill-planner.mjs",
+    "docs/data-intelligence/brand-explorer-visual-minimums-backfill-planner-v25-R2.md",
+    "reports/brand-explorer-visual-minimums-backfill-planner.md",
+    "reports/brand-explorer-visual-minimums-backfill-planner.json",
+    "package.json"
+  ],
+  "visualMinimumContract": {
+    "hero": {
+      "section": "Hero",
+      "minimum": 1,
+      "slots": [
+        "overview.hero"
+      ]
+    },
+    "valueScenarios": {
+      "section": "Where This Brand Creates the Most Value",
+      "minimum": 3,
+      "slots": [
+        "overview.scenario.1",
+        "overview.scenario.2",
+        "overview.scenario.3"
+      ],
+      "noBlankPlaceholder": true
+    },
+    "gallery": {
+      "section": "Image Gallery",
+      "minimum": 6,
+      "slots": [
+        "materials.gallery.1",
+        "materials.gallery.2",
+        "materials.gallery.3",
+        "materials.gallery.4",
+        "materials.gallery.5",
+        "materials.gallery.6"
+      ],
+      "noSkippedNumber": true
+    },
+    "openings": {
+      "section": "Openings / Examples / Properties",
+      "minimum": 1,
+      "slots": [
+        "footprint.openings"
+      ],
+      "requiredCardFields": [
+        "image",
+        "title",
+        "location_or_descriptor",
+        "summary",
+        "url_if_available"
+      ]
+    },
+    "momentum": {
+      "section": "Recent Momentum",
+      "minimum": 1,
+      "slots": [
+        "footprint.momentum"
+      ],
+      "requiresDatedSourceRows": true
+    }
+  },
+  "currentCoverageBySection": [
+    {
+      "sectionKey": "hero",
+      "section": "Hero",
+      "requiredImageCount": 1,
+      "currentImageCount": 1,
+      "missingCount": 0,
+      "belowMinimum": false,
+      "currentSlotsWithImages": [
+        "overview.hero"
+      ],
+      "currentSlotsMissingImages": []
+    },
+    {
+      "sectionKey": "valueScenarios",
+      "section": "Where This Brand Creates the Most Value",
+      "requiredImageCount": 3,
+      "currentImageCount": 3,
+      "missingCount": 0,
+      "belowMinimum": false,
+      "currentSlotsWithImages": [
+        "overview.scenario.1",
+        "overview.scenario.2",
+        "overview.scenario.3"
+      ],
+      "currentSlotsMissingImages": []
+    },
+    {
+      "sectionKey": "gallery",
+      "section": "Image Gallery",
+      "requiredImageCount": 6,
+      "currentImageCount": 6,
+      "missingCount": 0,
+      "belowMinimum": false,
+      "currentSlotsWithImages": [
+        "materials.gallery.1",
+        "materials.gallery.2",
+        "materials.gallery.3",
+        "materials.gallery.4",
+        "materials.gallery.5",
+        "materials.gallery.6"
+      ],
+      "currentSlotsMissingImages": []
+    },
+    {
+      "sectionKey": "openings",
+      "section": "Openings / Examples / Properties",
+      "requiredImageCount": 1,
+      "currentImageCount": 0,
+      "missingCount": 1,
+      "belowMinimum": true,
+      "currentSlotsWithImages": [],
+      "currentSlotsMissingImages": [
+        "footprint.openings"
+      ]
+    },
+    {
+      "sectionKey": "momentum",
+      "section": "Recent Momentum",
+      "requiredImageCount": 0,
+      "currentImageCount": 0,
+      "missingCount": 1,
+      "belowMinimum": true,
+      "currentSlotsWithImages": [],
+      "currentSlotsMissingImages": [
+        "footprint.momentum"
+      ]
+    }
+  ],
+  "sectionsBelowMinimum": [
+    "Openings / Examples / Properties",
+    "Recent Momentum"
+  ],
+  "missingImageSlots": [],
+  "backfillCandidatesBySlot": {},
+  "recommendedAssignments": [],
+  "planAStrict": {
+    "name": "strict_governance",
+    "description": "Only ideal approved assets with exact slot match; no reuse; no unapproved candidates.",
+    "assignments": [],
+    "unresolvedSlots": [],
+    "assignmentCount": 0
+  },
+  "planBProvisional": {
+    "name": "provisional_visual_minimum",
+    "description": "Fills required image slots with best fallback asset; allows approved fallback, confirmed candidates, and provisional reuse to avoid blank placeholders.",
+    "assignments": [],
+    "unresolvedSlots": [],
+    "assignmentCount": 0,
+    "provisionalAssignmentLabel": "Provisional fallback · Pending founder visual review · Not company-validated · Not Marriott-validated · Replaceable later"
+  },
+  "assignmentOverviewScenario3": {
+    "planA": null,
+    "planB": null,
+    "strictUnresolved": false,
+    "provisionalUnresolved": false
+  },
+  "assignmentMaterialsGallery3": {
+    "planA": null,
+    "planB": null
+  },
+  "anyAssignmentUsesReuse": false,
+  "anyAssignmentIsProvisional": false,
+  "anyAssignmentRequiresFounderVisualReview": false,
+  "approvedCandidates": [],
+  "provisionalOrFounderReviewNeeded": [],
+  "suppressUntilReadySections": [
+    {
+      "section": "Openings / Examples / Properties",
+      "recommendation": "Suppress Openings / Examples / Properties until complete cards exist (image, title, location/descriptor, body/summary, source or property URL). Do not fill with random images.",
+      "slotKey": "footprint.openings"
+    },
+    {
+      "section": "Recent Momentum",
+      "recommendation": "Suppress Recent Momentum when no dated source-backed activity rows exist.",
+      "slotKey": "footprint.momentum"
+    }
+  ],
+  "sourceCaptureTasks": [
+    {
+      "section": "Openings / Examples / Properties",
+      "slotKey": "footprint.openings",
+      "task": "Capture property-specific opening example with image, location/descriptor, teaser, and property/source URL.",
+      "visualMinimumUnresolved": true
+    },
+    {
+      "section": "Recent Momentum",
+      "slotKey": "footprint.momentum",
+      "task": "Capture dated momentum rows with source-backed announcement URLs.",
+      "visualMinimumUnresolved": true
+    }
+  ],
+  "registryAssetSummary": {
+    "scanned": 27,
+    "approved": 12,
+    "candidatesNotRejected": 8,
+    "rejectedOrSuperseded": 7
+  },
+  "referenceBrandCoverage": {
+    "curio": {
+      "overviewScenarioImages": 3,
+      "galleryImages": 6,
+      "openingsRows": 5
+    }
+  },
+  "v25BWriterShouldBeBuilt": false,
+  "v25BWriterSafeToBuildStrict": false,
+  "v25BWriterSafeToBuildProvisional": false,
+  "v25BSlotsAssetsToWriteIfApproved": [],
+  "v25BStrictSlotsAssets": [],
+  "v25BProvisionalSlotsAssets": [],
+  "exactNextCommand": "npm run brand-explorer-visual-minimums-backfill-planner -- --brand tribute-portfolio --dry-run"
+}

@@ -1,0 +1,1637 @@
+{
+  "generatedAt": "2026-08-16T02:30:50.178Z",
+  "contracts": {
+    "CONTRACTS_READ": [
+      "docs/ai-build-system/FEATURE_BRIEF_AI_VISIBILITY.md",
+      "docs/ai-build-system/AI_VISIBILITY_EXECUTIVE_SUMMARY_DETAILED_VIEW_IA.md",
+      "docs/ai-build-system/AI_VISIBILITY_HOTEL_DECISION_VISIBILITY_DEFINITIONS.md",
+      "lib/ai-visibility/validation/metric-contracts.js",
+      "lib/ai-visibility/language-dimension.js",
+      "lib/ai-visibility/cross-provider-presence.js",
+      "lib/ai-visibility/provider-dimension.js",
+      "lib/ai-visibility/metrics.js",
+      "lib/ai-visibility/portfolio-question-metrics.js",
+      "lib/ai-visibility/owned-domain-resolution.js",
+      "lib/ai-visibility/citation-intelligence.js"
+    ],
+    "METRIC_CONTRACTS_READ": [
+      "AI_PRESENCE",
+      "QUESTIONS_MISSING (portfolio unique-prompt + brand observation)",
+      "COMPETITIVE_POSITION (Presence-rate rank)",
+      "CITATION / OWNED_SOURCE rates"
+    ],
+    "FILTER_CONTRACTS_READ": [
+      "Geography HEADLINE_GEOGRAPHIES",
+      "Provider first-class + All Providers DERIVED",
+      "Language en|es; no locale; no cross-language aggregation"
+    ],
+    "PROVIDER_CONTRACTS_READ": [
+      "KNOWN_AI_VISIBILITY_PROVIDER_IDS",
+      "ALL_PROVIDERS_SELECTOR_ID=all",
+      "pickScaffoldDataProvider prefers openai",
+      "MISSING != ZERO"
+    ],
+    "LANGUAGE_REGIONALIZATION_CONTRACTS_READ": [
+      "AI_VISIBILITY_LANGUAGE_VERSION",
+      "recordMatchesLanguage / treatMissingAsEn for legacy EN",
+      "Global not derived from regional average"
+    ],
+    "CITATION_CONTRACTS_READ": [
+      "Observation.citations canonical path",
+      "owned domains from Brand Website hierarchy",
+      "Source mix OWNED_ONLY|MIXED|EXTERNAL_ONLY|NO_CITATIONS"
+    ]
+  },
+  "filterUniverse": {
+    "GEOGRAPHY": [
+      "Global",
+      "North America",
+      "CALA",
+      "Europe",
+      "MEA",
+      "Asia Pacific"
+    ],
+    "PROVIDER": [
+      "all",
+      "openai",
+      "gemini",
+      "perplexity",
+      "claude"
+    ],
+    "PROVIDER_AVAILABLE_CALA": [
+      "claude",
+      "gemini",
+      "openai",
+      "perplexity"
+    ],
+    "LANGUAGE": [
+      "en",
+      "es"
+    ],
+    "BRAND_PORTFOLIO": {
+      "portfolio": [
+        "recEJCTDj1zrsjPM6",
+        "recCvV0PuZOi8c3hC",
+        "rec02zPClpWUTCyXM",
+        "recIPuBC50fv13zRR",
+        "rec9aZp7GHtzUEg0c"
+      ],
+      "brands": [
+        {
+          "id": "recEJCTDj1zrsjPM6",
+          "name": "Autograph Collection"
+        },
+        {
+          "id": "recCvV0PuZOi8c3hC",
+          "name": "Tribute Portfolio"
+        },
+        {
+          "id": "rec02zPClpWUTCyXM",
+          "name": "Design Hotels"
+        },
+        {
+          "id": "recIPuBC50fv13zRR",
+          "name": "Westin"
+        },
+        {
+          "id": "rec9aZp7GHtzUEg0c",
+          "name": "AC Hotels by Marriott"
+        }
+      ],
+      "peerSetId": "peers_uu_collection_lifestyle_owner_decision_v2",
+      "peerCount": 15
+    },
+    "PROMPT_FAMILY_UI": [
+      "Brand Selection",
+      "Operator Selection",
+      "Conversion",
+      "New Build",
+      "HMA vs Franchise",
+      "Owner Economics",
+      "Owner Flexibility",
+      "Branded Residences",
+      "Mixed Use",
+      "Market / Geography",
+      "Chain Scale / Positioning",
+      "Development Strategy",
+      "Other"
+    ],
+    "MONITORING_PERIOD": "Latest completed batch per provider×geo×language; prior comparable for deltas; trends require ≥2 comparable periods"
+  },
+  "matrix": {
+    "TOTAL_FILTER_COMBINATIONS_POSSIBLE": 240,
+    "AUDIT_CASES_SELECTED": 14,
+    "COVERAGE_RATIONALE": "Pairwise coverage: every provider×portfolio EN CALA; EN+ES brand; All Providers brand; high/low Presence brands; monitored+unmonitored geo; Claude+Gemini isolation; peer competitive via overview/competitors",
+    "UNTESTED_LOW_RISK_COMBINATIONS": [
+      "MEA/Asia × all providers × es",
+      "Global × every brand × every provider",
+      "Intent-territory filter permutations"
+    ]
+  },
+  "defects": [
+    {
+      "severity": "P0",
+      "tab": "executive",
+      "section": "Portfolio Snapshot",
+      "metric": "Portfolio AI Presence",
+      "filterContext": "CALA|all|en|portfolio",
+      "displayed": 0.418452380952381,
+      "recalculated": null,
+      "rootCause": "Mismatch vs mean_of_brand_cross_provider_averages"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|gemini",
+      "displayed": "9+22",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|perplexity",
+      "displayed": "4+57",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "CALA|openai|en|brand|claude",
+      "displayed": 0.7142857142857143,
+      "recalculated": 0.75,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|claude",
+      "displayed": "9+24",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|es|brand|gemini",
+      "displayed": "9+22",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|es|brand|perplexity",
+      "displayed": "4+57",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "CALA|openai|es|brand|claude",
+      "displayed": 0.7142857142857143,
+      "recalculated": 0.75,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|es|brand|claude",
+      "displayed": "9+24",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|gemini",
+      "displayed": "10+13",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "CALA|openai|en|brand|perplexity",
+      "displayed": 0.6190476190476191,
+      "recalculated": 0.5833333333333334,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|perplexity",
+      "displayed": "7+32",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "CALA|openai|en|brand|claude",
+      "displayed": 0.8571428571428571,
+      "recalculated": 0.8333333333333334,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|claude",
+      "displayed": "10+12",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "CALA|openai|en|brand|gemini",
+      "displayed": 0.05952380952380952,
+      "recalculated": 0.08333333333333333,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|gemini",
+      "displayed": "1+79",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "CALA|openai|en|brand|perplexity",
+      "displayed": 0.03571428571428571,
+      "recalculated": 0,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|perplexity",
+      "displayed": "0+81",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|openai|en|brand|claude",
+      "displayed": "0+84",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "Europe|openai|en|brand|gemini",
+      "displayed": "9+22",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "Europe|openai|en|brand|perplexity",
+      "displayed": "4+57",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "Europe|openai|en|brand|claude",
+      "displayed": 0.7142857142857143,
+      "recalculated": 0.75,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "Europe|openai|en|brand|claude",
+      "displayed": "9+24",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P0",
+      "tab": "detail",
+      "section": "Brand Detail",
+      "metric": "AI Presence",
+      "filterContext": "CALA|claude|en|brand",
+      "displayed": 0.7142857142857143,
+      "recalculated": null,
+      "rootCause": "Detail Presence ≠ computeAiPresenceRate on filtered cohort"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|claude|en|brand|gemini",
+      "displayed": "9+22",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|claude|en|brand|perplexity",
+      "displayed": "4+57",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "CALA|claude|en|brand|claude",
+      "displayed": 0.7142857142857143,
+      "recalculated": 0.75,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|claude|en|brand|claude",
+      "displayed": "9+24",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P0",
+      "tab": "detail",
+      "section": "Brand Detail",
+      "metric": "AI Presence",
+      "filterContext": "CALA|gemini|es|brand",
+      "displayed": 0.7380952380952381,
+      "recalculated": null,
+      "rootCause": "Detail Presence ≠ computeAiPresenceRate on filtered cohort"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|gemini|es|brand|gemini",
+      "displayed": "9+22",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|gemini|es|brand|perplexity",
+      "displayed": "4+57",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "Presence vs present/monitored",
+      "filterContext": "CALA|gemini|es|brand|claude",
+      "displayed": 0.7142857142857143,
+      "recalculated": 0.75,
+      "rootCause": "PRESENCE_RATE ≠ PRESENT_N/MONITORED_N"
+    },
+    {
+      "severity": "P2",
+      "tab": "detail",
+      "section": "Provider Presence",
+      "metric": "present+missing≠monitored",
+      "filterContext": "CALA|gemini|es|brand|claude",
+      "displayed": "9+24",
+      "recalculated": 12,
+      "rootCause": "Unit/denominator mismatch risk between present and missing"
+    }
+  ],
+  "contamination": {
+    "spanishInEnglish": 0,
+    "englishInSpanish": 0,
+    "providerCross": 0,
+    "crossGeography": 0,
+    "subject": 0
+  },
+  "cases": [
+    {
+      "id": "cala_openai_en_portfolio",
+      "geography": "CALA",
+      "provider": "openai",
+      "language": "en",
+      "subject": "portfolio",
+      "checks": {
+        "cohortN": 12,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "questionsMissing": {
+          "displayed": 1,
+          "recalculated": 1,
+          "eligible": 12,
+          "match": true
+        },
+        "portfolioAiPresence": {
+          "displayed": 0.9166666666666666,
+          "displayAvail": "observed",
+          "recalculated": 0.9166666666666666,
+          "method": "unique_prompt_portfolio",
+          "match": true
+        },
+        "languageComparison": {
+          "note": "Observed Presence was higher in English than Spanish for this comparable cohort."
+        }
+      }
+    },
+    {
+      "id": "cala_claude_en_portfolio",
+      "geography": "CALA",
+      "provider": "claude",
+      "language": "en",
+      "subject": "portfolio",
+      "checks": {
+        "cohortN": 0,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "claude",
+        "questionsMissing": {
+          "displayed": null,
+          "recalculated": 0,
+          "eligible": 0,
+          "match": false
+        },
+        "portfolioAiPresence": {
+          "displayed": null,
+          "displayAvail": "not_monitored",
+          "recalculated": null,
+          "method": "unique_prompt_portfolio",
+          "match": true
+        }
+      }
+    },
+    {
+      "id": "cala_gemini_en_portfolio",
+      "geography": "CALA",
+      "provider": "gemini",
+      "language": "en",
+      "subject": "portfolio",
+      "checks": {
+        "cohortN": 0,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "gemini",
+        "questionsMissing": {
+          "displayed": null,
+          "recalculated": 0,
+          "eligible": 0,
+          "match": false
+        },
+        "portfolioAiPresence": {
+          "displayed": null,
+          "displayAvail": "not_monitored",
+          "recalculated": null,
+          "method": "unique_prompt_portfolio",
+          "match": true
+        }
+      }
+    },
+    {
+      "id": "cala_perplexity_en_portfolio",
+      "geography": "CALA",
+      "provider": "perplexity",
+      "language": "en",
+      "subject": "portfolio",
+      "checks": {
+        "cohortN": 0,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "perplexity",
+        "questionsMissing": {
+          "displayed": null,
+          "recalculated": 0,
+          "eligible": 0,
+          "match": false
+        },
+        "portfolioAiPresence": {
+          "displayed": null,
+          "displayAvail": "not_monitored",
+          "recalculated": null,
+          "method": "unique_prompt_portfolio",
+          "match": true
+        }
+      }
+    },
+    {
+      "id": "cala_all_en_portfolio",
+      "geography": "CALA",
+      "provider": "all",
+      "language": "en",
+      "subject": "portfolio",
+      "checks": {
+        "cohortN": 12,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "portfolioAiPresence": {
+          "displayed": 0.418452380952381,
+          "displayAvail": "observed",
+          "recalculated": null,
+          "method": "mean_of_brand_cross_provider_averages",
+          "match": false
+        }
+      }
+    },
+    {
+      "id": "cala_openai_en_tribute",
+      "geography": "CALA",
+      "provider": "openai",
+      "language": "en",
+      "subject": "brand",
+      "brandId": "recCvV0PuZOi8c3hC",
+      "checks": {
+        "cohortN": 12,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "brandPresence": {
+          "displayed": 0.8333333333333334,
+          "recalculated": 0.8333333333333334,
+          "numerator": 10,
+          "denominator": 12,
+          "match": true
+        },
+        "questionsMissing": {
+          "displayed": 2,
+          "recalculated": 2,
+          "match": true
+        },
+        "providerPresenceArith": [
+          {
+            "provider": "gemini",
+            "present": 9,
+            "missing": 22,
+            "monitored": 12,
+            "sum": 31
+          },
+          {
+            "provider": "perplexity",
+            "present": 4,
+            "missing": 57,
+            "monitored": 12,
+            "sum": 61
+          },
+          {
+            "provider": "claude",
+            "present": 9,
+            "missing": 24,
+            "monitored": 12,
+            "sum": 33
+          }
+        ],
+        "ownedDomains": [
+          "tribute-portfolio.marriott.com",
+          "marriott.com",
+          "hotel-development.marriott.com"
+        ],
+        "ownedCitation": {
+          "displayed": 0.9166666666666666,
+          "recalculated": 0.9166666666666666,
+          "match": true
+        },
+        "competitors": {
+          "count": 15,
+          "subjectRank": 3
+        },
+        "trend": {
+          "points": 1,
+          "availability": "insufficient_history"
+        },
+        "watchlist": {
+          "rows": 2
+        },
+        "sources": {
+          "count": 31
+        }
+      }
+    },
+    {
+      "id": "cala_openai_es_tribute",
+      "geography": "CALA",
+      "provider": "openai",
+      "language": "es",
+      "subject": "brand",
+      "brandId": "recCvV0PuZOi8c3hC",
+      "checks": {
+        "cohortN": 12,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "brandPresence": {
+          "displayed": 0.8333333333333334,
+          "recalculated": 0.8333333333333334,
+          "numerator": 10,
+          "denominator": 12,
+          "match": true
+        },
+        "questionsMissing": {
+          "displayed": 2,
+          "recalculated": 2,
+          "match": true
+        },
+        "providerPresenceArith": [
+          {
+            "provider": "gemini",
+            "present": 9,
+            "missing": 22,
+            "monitored": 12,
+            "sum": 31
+          },
+          {
+            "provider": "perplexity",
+            "present": 4,
+            "missing": 57,
+            "monitored": 12,
+            "sum": 61
+          },
+          {
+            "provider": "claude",
+            "present": 9,
+            "missing": 24,
+            "monitored": 12,
+            "sum": 33
+          }
+        ],
+        "ownedDomains": [
+          "tribute-portfolio.marriott.com",
+          "marriott.com",
+          "hotel-development.marriott.com"
+        ],
+        "ownedCitation": {
+          "displayed": 0.9166666666666666,
+          "recalculated": 0.9166666666666666,
+          "match": true
+        },
+        "competitors": {
+          "count": 15,
+          "subjectRank": 3
+        },
+        "trend": {
+          "points": 1,
+          "availability": "insufficient_history"
+        },
+        "watchlist": {
+          "rows": 2
+        },
+        "sources": {
+          "count": 34
+        }
+      }
+    },
+    {
+      "id": "cala_all_en_tribute",
+      "geography": "CALA",
+      "provider": "all",
+      "language": "en",
+      "subject": "brand",
+      "brandId": "recCvV0PuZOi8c3hC",
+      "checks": {
+        "cohortN": 12,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "crossProvider": {
+          "displayed": 0.6517857142857143,
+          "recalculated": 0.6517857142857144,
+          "notComparable": false,
+          "monitored": [
+            "claude",
+            "gemini",
+            "openai",
+            "perplexity"
+          ],
+          "match": true
+        }
+      }
+    },
+    {
+      "id": "cala_openai_en_autograph_high",
+      "geography": "CALA",
+      "provider": "openai",
+      "language": "en",
+      "subject": "brand",
+      "brandId": "recEJCTDj1zrsjPM6",
+      "checks": {
+        "cohortN": 12,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "brandPresence": {
+          "displayed": 0.9166666666666666,
+          "recalculated": 0.9166666666666666,
+          "numerator": 11,
+          "denominator": 12,
+          "match": true
+        },
+        "questionsMissing": {
+          "displayed": 1,
+          "recalculated": 1,
+          "match": true
+        },
+        "providerPresenceArith": [
+          {
+            "provider": "gemini",
+            "present": 10,
+            "missing": 13,
+            "monitored": 12,
+            "sum": 23
+          },
+          {
+            "provider": "perplexity",
+            "present": 7,
+            "missing": 32,
+            "monitored": 12,
+            "sum": 39
+          },
+          {
+            "provider": "claude",
+            "present": 10,
+            "missing": 12,
+            "monitored": 12,
+            "sum": 22
+          }
+        ],
+        "ownedDomains": [
+          "marriott.com",
+          "hotel-development.marriott.com",
+          "marriottresidences.com"
+        ],
+        "ownedCitation": {
+          "displayed": 1,
+          "recalculated": 1,
+          "match": true
+        },
+        "competitors": {
+          "count": 15,
+          "subjectRank": 1
+        },
+        "trend": {
+          "points": 1,
+          "availability": "insufficient_history"
+        },
+        "watchlist": {
+          "rows": 1
+        },
+        "sources": {
+          "count": 31
+        }
+      }
+    },
+    {
+      "id": "cala_openai_en_ac_low",
+      "geography": "CALA",
+      "provider": "openai",
+      "language": "en",
+      "subject": "brand",
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "checks": {
+        "cohortN": 12,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "brandPresence": {
+          "displayed": 0.08333333333333333,
+          "recalculated": 0.08333333333333333,
+          "numerator": 1,
+          "denominator": 12,
+          "match": true
+        },
+        "questionsMissing": {
+          "displayed": 11,
+          "recalculated": 11,
+          "match": true
+        },
+        "providerPresenceArith": [
+          {
+            "provider": "gemini",
+            "present": 1,
+            "missing": 79,
+            "monitored": 12,
+            "sum": 80
+          },
+          {
+            "provider": "perplexity",
+            "present": 0,
+            "missing": 81,
+            "monitored": 12,
+            "sum": 81
+          },
+          {
+            "provider": "claude",
+            "present": 0,
+            "missing": 84,
+            "monitored": 12,
+            "sum": 84
+          }
+        ],
+        "ownedDomains": [
+          "marriott.com"
+        ],
+        "ownedCitation": {
+          "displayed": 0.16666666666666666,
+          "recalculated": 0.16666666666666666,
+          "match": true
+        },
+        "competitors": {
+          "count": 15,
+          "subjectRank": 12
+        },
+        "trend": {
+          "points": 1,
+          "availability": "insufficient_history"
+        },
+        "watchlist": {
+          "rows": 11
+        },
+        "sources": {
+          "count": 31
+        }
+      }
+    },
+    {
+      "id": "europe_openai_en_tribute",
+      "geography": "Europe",
+      "provider": "openai",
+      "language": "en",
+      "subject": "brand",
+      "brandId": "recCvV0PuZOi8c3hC",
+      "checks": {
+        "cohortN": 12,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "brandPresence": {
+          "displayed": 0.75,
+          "recalculated": 0.75,
+          "numerator": 9,
+          "denominator": 12,
+          "match": true
+        },
+        "questionsMissing": {
+          "displayed": 3,
+          "recalculated": 3,
+          "match": true
+        },
+        "providerPresenceArith": [
+          {
+            "provider": "gemini",
+            "present": 9,
+            "missing": 22,
+            "monitored": 12,
+            "sum": 31
+          },
+          {
+            "provider": "perplexity",
+            "present": 4,
+            "missing": 57,
+            "monitored": 12,
+            "sum": 61
+          },
+          {
+            "provider": "claude",
+            "present": 9,
+            "missing": 24,
+            "monitored": 12,
+            "sum": 33
+          }
+        ],
+        "ownedDomains": [
+          "tribute-portfolio.marriott.com",
+          "marriott.com",
+          "hotel-development.marriott.com"
+        ],
+        "ownedCitation": {
+          "displayed": 0.8333333333333334,
+          "recalculated": 0.8333333333333334,
+          "match": true
+        },
+        "competitors": {
+          "count": 15,
+          "subjectRank": 3
+        },
+        "trend": {
+          "points": 1,
+          "availability": "insufficient_history"
+        },
+        "watchlist": {
+          "rows": 3
+        },
+        "sources": {
+          "count": 36
+        }
+      }
+    },
+    {
+      "id": "mea_openai_en_tribute_not_monitored",
+      "geography": "MEA",
+      "provider": "openai",
+      "language": "en",
+      "subject": "brand",
+      "brandId": "recCvV0PuZOi8c3hC",
+      "checks": {
+        "cohortN": 0,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "openai",
+        "brandPresence": {
+          "recalculated": null,
+          "numerator": 0,
+          "denominator": 0,
+          "match": true
+        },
+        "questionsMissing": {
+          "recalculated": 0,
+          "match": false
+        },
+        "ownedDomains": [
+          "tribute-portfolio.marriott.com",
+          "marriott.com",
+          "hotel-development.marriott.com"
+        ],
+        "competitors": {
+          "count": 0
+        },
+        "trend": {
+          "points": 0,
+          "availability": "not_monitored"
+        },
+        "watchlist": {
+          "rows": 0
+        },
+        "sources": {
+          "count": 0
+        },
+        "notMonitoredExpected": true
+      }
+    },
+    {
+      "id": "cala_claude_en_tribute",
+      "geography": "CALA",
+      "provider": "claude",
+      "language": "en",
+      "subject": "brand",
+      "brandId": "recCvV0PuZOi8c3hC",
+      "checks": {
+        "cohortN": 0,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "claude",
+        "brandPresence": {
+          "displayed": 0.7142857142857143,
+          "recalculated": null,
+          "numerator": 0,
+          "denominator": 0,
+          "match": false
+        },
+        "questionsMissing": {
+          "displayed": 24,
+          "recalculated": 0,
+          "match": false
+        },
+        "providerPresenceArith": [
+          {
+            "provider": "gemini",
+            "present": 9,
+            "missing": 22,
+            "monitored": 12,
+            "sum": 31
+          },
+          {
+            "provider": "perplexity",
+            "present": 4,
+            "missing": 57,
+            "monitored": 12,
+            "sum": 61
+          },
+          {
+            "provider": "claude",
+            "present": 9,
+            "missing": 24,
+            "monitored": 12,
+            "sum": 33
+          }
+        ],
+        "ownedDomains": [
+          "tribute-portfolio.marriott.com",
+          "marriott.com",
+          "hotel-development.marriott.com"
+        ],
+        "competitors": {
+          "count": 15,
+          "subjectRank": 3
+        },
+        "trend": {
+          "points": 0,
+          "availability": "not_monitored"
+        },
+        "watchlist": {
+          "rows": 0
+        },
+        "sources": {
+          "count": 0
+        }
+      }
+    },
+    {
+      "id": "cala_gemini_es_tribute",
+      "geography": "CALA",
+      "provider": "gemini",
+      "language": "es",
+      "subject": "brand",
+      "brandId": "recCvV0PuZOi8c3hC",
+      "checks": {
+        "cohortN": 0,
+        "langContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "providerContamination": {
+          "wrong": 0,
+          "samples": []
+        },
+        "dataProvider": "gemini",
+        "brandPresence": {
+          "displayed": 0.7380952380952381,
+          "recalculated": null,
+          "numerator": 0,
+          "denominator": 0,
+          "match": false
+        },
+        "questionsMissing": {
+          "displayed": 22,
+          "recalculated": 0,
+          "match": false
+        },
+        "providerPresenceArith": [
+          {
+            "provider": "gemini",
+            "present": 9,
+            "missing": 22,
+            "monitored": 12,
+            "sum": 31
+          },
+          {
+            "provider": "perplexity",
+            "present": 4,
+            "missing": 57,
+            "monitored": 12,
+            "sum": 61
+          },
+          {
+            "provider": "claude",
+            "present": 9,
+            "missing": 24,
+            "monitored": 12,
+            "sum": 33
+          }
+        ],
+        "ownedDomains": [
+          "tribute-portfolio.marriott.com",
+          "marriott.com",
+          "hotel-development.marriott.com"
+        ],
+        "competitors": {
+          "count": 15,
+          "subjectRank": 3
+        },
+        "trend": {
+          "points": 0,
+          "availability": "not_monitored"
+        },
+        "watchlist": {
+          "rows": 0
+        },
+        "sources": {
+          "count": 0
+        }
+      }
+    }
+  ],
+  "reconciliation": [],
+  "allProviders": {
+    "DERIVATION": "Per-brand: mean of provider-specific Presence rates via buildCrossProviderPresenceIntelligence; Portfolio Presence = mean of those brand averages; Questions Missing from OpenAI scaffold unique-prompt; peer rank NOT_COMPARABLE",
+    "panel": {
+      "READY": true,
+      "DERIVED": true,
+      "ALL_PROVIDERS_RUN": false,
+      "PROVIDERS_MONITORED": [
+        "claude",
+        "gemini",
+        "openai",
+        "perplexity"
+      ],
+      "PROVIDERS_WHERE_BRAND_APPEARS": [
+        "claude",
+        "gemini",
+        "openai",
+        "perplexity"
+      ],
+      "CROSS_PROVIDER_AVERAGE_OBSERVED_PRESENCE": 0.8095238095238095,
+      "PRESENCE_BY_PROVIDER": [
+        {
+          "provider": "claude",
+          "label": "Claude",
+          "monitored": true,
+          "availability": "observed",
+          "presenceRate": 0.8571428571428571,
+          "questionsWithPresence": null,
+          "questionsTotal": null,
+          "MISSING_IS_NOT_ZERO": true
+        },
+        {
+          "provider": "gemini",
+          "label": "Gemini",
+          "monitored": true,
+          "availability": "observed",
+          "presenceRate": 0.8452380952380952,
+          "questionsWithPresence": null,
+          "questionsTotal": null,
+          "MISSING_IS_NOT_ZERO": true
+        },
+        {
+          "provider": "openai",
+          "label": "OpenAI",
+          "monitored": true,
+          "availability": "observed",
+          "presenceRate": 0.9166666666666666,
+          "questionsWithPresence": null,
+          "questionsTotal": null,
+          "MISSING_IS_NOT_ZERO": true
+        },
+        {
+          "provider": "perplexity",
+          "label": "Perplexity",
+          "monitored": true,
+          "availability": "observed",
+          "presenceRate": 0.6190476190476191,
+          "questionsWithPresence": null,
+          "questionsTotal": null,
+          "MISSING_IS_NOT_ZERO": true
+        }
+      ],
+      "STRONGEST_PROVIDER": {
+        "provider": "openai",
+        "rate": 0.9166666666666666
+      },
+      "WEAKEST_PROVIDER": {
+        "provider": "perplexity",
+        "rate": 0.6190476190476191
+      },
+      "PRESENCE_RANGE": {
+        "min": 0.6190476190476191,
+        "max": 0.9166666666666666,
+        "spread": 0.29761904761904756
+      },
+      "PROVIDER_DISAGREEMENT": {
+        "status": "DISAGREE",
+        "materialSpread": true,
+        "spread": 0.29761904761904756
+      },
+      "QUESTIONS_WITH_ALL_PROVIDER_PRESENCE": null,
+      "QUESTIONS_WITH_PARTIAL_PROVIDER_PRESENCE": null,
+      "QUESTIONS_WITH_NO_PROVIDER_PRESENCE": null,
+      "NOT_COMPARABLE": false,
+      "message": null,
+      "MISSING_PROVIDER_IS_NOT_ZERO": true
+    },
+    "portfolioPresence": {
+      "value": 0.418452380952381,
+      "availability": "observed",
+      "display": "41.8%",
+      "label": "Portfolio AI Presence",
+      "helper": "Share of monitored owner questions where at least one of your linked brands appeared.",
+      "ALL_PROVIDERS_DERIVED": true,
+      "aggregation": "mean_of_brand_cross_provider_averages"
+    },
+    "questionsMissing": {
+      "value": 1,
+      "availability": "observed",
+      "display": "8.3% (1)",
+      "denominator": 12,
+      "aggregation": "unique_prompts_no_entitled_brand_present"
+    },
+    "bestRank": {
+      "availability": "not_comparable",
+      "label": "Best Competitive Position",
+      "brandId": null,
+      "brandName": null,
+      "rank": null,
+      "peerCount": null,
+      "display": "Select a provider for peer rank",
+      "ALL_PROVIDERS_PEER_RANK": false
+    },
+    "COMPARABLE_INPUTS_ONLY": true,
+    "MISSING_AS_ZERO": false,
+    "scaffoldProvider": "openai"
+  },
+  "staleState": {
+    "abortController": false,
+    "requestGenerationGuard": false,
+    "STALE_ASYNC_OVERWRITE_POSSIBLE": true,
+    "note": "Client controller has no AbortController / request-generation guard; rapid filter changes can apply out-of-order responses."
+  },
+  "evidence": {
+    "PRESENCE": {
+      "status": "PASS",
+      "promptId": "p_cala_design_local_character_v1",
+      "evidenceId": "ev_d403248f8e4e4bb6",
+      "provider": "openai",
+      "language": "en"
+    },
+    "QUESTIONS_MISSING": {
+      "status": "PASS",
+      "promptId": "p_cala_residences_capability_v1",
+      "evidenceId": "ev_cb3cd19783664c93"
+    },
+    "LANGUAGE_DIFFERENCE": "checked via langContamination counters",
+    "PROVIDER_DIFFERENCE": "checked via providerContamination counters"
+  },
+  "denomChecks": [],
+  "ownerIntentArithmetic": [
+    {
+      "caseId": "cala_openai_en_tribute",
+      "family": "Collection / Soft Brand",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_tribute",
+      "family": "Conversion",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_tribute",
+      "family": "Lifestyle Positioning",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_tribute",
+      "family": "Soft-Brand Affiliation Flexibility",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_tribute",
+      "family": "Upper-Upscale Positioning",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_tribute",
+      "family": "Branded Residences",
+      "monitored": 2,
+      "present": 0,
+      "missing": 2,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_es_tribute",
+      "family": "Collection / Soft Brand",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_es_tribute",
+      "family": "Conversion",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_es_tribute",
+      "family": "Lifestyle Positioning",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_es_tribute",
+      "family": "Soft-Brand Affiliation Flexibility",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_es_tribute",
+      "family": "Upper-Upscale Positioning",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_es_tribute",
+      "family": "Branded Residences",
+      "monitored": 2,
+      "present": 0,
+      "missing": 2,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_autograph_high",
+      "family": "Collection / Soft Brand",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_autograph_high",
+      "family": "Conversion",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_autograph_high",
+      "family": "Lifestyle Positioning",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_autograph_high",
+      "family": "Soft-Brand Affiliation Flexibility",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_autograph_high",
+      "family": "Upper-Upscale Positioning",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_autograph_high",
+      "family": "Branded Residences",
+      "monitored": 2,
+      "present": 1,
+      "missing": 1,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_ac_low",
+      "family": "Collection / Soft Brand",
+      "monitored": 2,
+      "present": 0,
+      "missing": 2,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_ac_low",
+      "family": "Conversion",
+      "monitored": 2,
+      "present": 0,
+      "missing": 2,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_ac_low",
+      "family": "Lifestyle Positioning",
+      "monitored": 2,
+      "present": 1,
+      "missing": 1,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_ac_low",
+      "family": "Soft-Brand Affiliation Flexibility",
+      "monitored": 2,
+      "present": 0,
+      "missing": 2,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_ac_low",
+      "family": "Upper-Upscale Positioning",
+      "monitored": 2,
+      "present": 0,
+      "missing": 2,
+      "ok": true
+    },
+    {
+      "caseId": "cala_openai_en_ac_low",
+      "family": "Branded Residences",
+      "monitored": 2,
+      "present": 0,
+      "missing": 2,
+      "ok": true
+    },
+    {
+      "caseId": "europe_openai_en_tribute",
+      "family": "Branded Residences",
+      "monitored": 2,
+      "present": 0,
+      "missing": 2,
+      "ok": true
+    },
+    {
+      "caseId": "europe_openai_en_tribute",
+      "family": "Collection / Soft Brand",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "europe_openai_en_tribute",
+      "family": "Conversion",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "europe_openai_en_tribute",
+      "family": "Lifestyle Positioning",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "europe_openai_en_tribute",
+      "family": "Soft-Brand Affiliation Flexibility",
+      "monitored": 2,
+      "present": 2,
+      "missing": 0,
+      "ok": true
+    },
+    {
+      "caseId": "europe_openai_en_tribute",
+      "family": "Upper-Upscale Positioning",
+      "monitored": 2,
+      "present": 1,
+      "missing": 1,
+      "ok": true
+    }
+  ],
+  "promptLanguage": {
+    "metaEnPromptEs": 0,
+    "metaEsPromptEn": 0
+  }
+}

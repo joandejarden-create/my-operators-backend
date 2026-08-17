@@ -116,6 +116,11 @@ Paste **one** phrase in **Body** (Title optional). Matching is case-insensitive.
 
 **Enforcement (required):** Every brand must use the **same answer shape** per slot key. Do **not** mix canonical levels with narrative paragraphs or compound phrases (`Moderate to High`) on `operations.flexibility.*`—the UI bar label is the Body text exactly. Put prose in `operations.standards_philosophy`, `overview.development_model`, or other editorial slots.
 
+**Write-path gate (automatic):** Applies and Tab Factory builds sanitize Flexibility Bodies before Airtable write via `sanitizeFlexibilityPresentationBody` in `lib/brand-explorer-flexibility-levels.mjs`:
+- Leading level is kept (`Very high\nprose…` → `Very high`).
+- Empty / pure narrative falls back to a **segment-appropriate** default (`inferFlexSegmentForBrand` → `flexLevelForSlot`).
+- Wired in `scripts/apply-brand-explorer-presentation-fixture.mjs` and `lib/partner-intelligence/brand-explorer-full-tab-factory-build.js`. UI also displays level-only as a safety net.
+
 **Normalize / audit:**
 - `node scripts/generate-choice-tier1-explorer-full.mjs` — regenerates CHI `*-full.json` fixtures with canonical flex levels.
 - `node scripts/normalize-flexibility-presentation.mjs --fixtures` — patch existing JSON fixtures.
@@ -246,8 +251,8 @@ Optional footprint editorial slots (same table): `footprint.editorial`, `footpri
 | `footprint.growth_fit` | **Most Likely Growth Fit** bullets | One bullet per line. |
 | `footprint.editorial` | **Dealality View on Market Presence** → interpretation paragraph | Plain text (inside yellow-bordered Dealality card). |
 | `footprint.editorial_bullets` | Same section → bullet list | One bullet per line. |
-| `footprint.momentum_label` | **Recent Momentum** sub-label under section hint | Plain text (default: Choice Hotels CALA openings · linked announcements). |
-| `footprint.momentum` | **Recent Momentum** timeline items (multiple rows) | **Title** = headline. **Body:** line 1 = date (e.g. `Oct 2024`); blank line; description; blank line; `https://…` Choice Hotels media or hotel URL → **View Choice Hotels announcement** link. |
+| `footprint.momentum_label` | **Recent Momentum** sub-label under section hint | Plain text (default: Recent openings & pipeline · linked announcements). |
+| `footprint.momentum` | **Recent Momentum** timeline items (multiple rows) | **Permanent template (all brands):** **Title** = named opening/conversion/membership headline. **Body:** date line (e.g. `Oct 2024` or `2025`); blank line; owner-useful summary; blank line; trailing `https://…` announcement URL → Proper Case hyperlink in UI. Newest → oldest. Contract: `lib/partner-intelligence/brand-explorer-recent-momentum-contract.js`. Do not use untitled diligence blobs. |
 | `footprint.portfolio_mix` | **Portfolio Mix** pills under Recent Momentum (multiple rows) | **Title** = category (e.g. `Urban`). **Body** = level label (e.g. `High`). Alternate: one row, **Body** lines as `Category\|Level` or `Category: Level`. |
 
 | `operations.compliance.qa_cadence` | Operations & Standards → **Compliance & Oversight** → QA Cadence | **Body** only; overrides Brand Setup QA / deal terms fallback when set. |
@@ -263,7 +268,7 @@ Radisson fixture: [`fixtures/brand-explorer-presentation-radisson-footprint-geo-
 
 | Slot key | Where it appears | Behavior |
 |----------|------------------|----------|
-| `footprint.openings` | **Openings / Examples / Properties** (property-example cards + **View Property** modal) | **Multiple rows.** **Not** `materials.caseStudy` — separate row per property; attach hero **Image** here only. Tone = **recent opening** (voco footprint), not long case-study narrative. **Title** = property name. **Body** (card), blank line between blocks: (1) comma-separated tag chips, (2) location line (hero subtitle), (3) meta / asset line (`property-example-card__meta`), (4) scenario accent line (`property-example-card__scenario`, uppercase in UI), (5) one-sentence opening teaser (`<p>` under meta), (6) optional paragraph that is only `https://…` for **Open external link**. **Do not use only four blocks** — the UI parser treats four paragraphs as legacy case-study shape and drops meta/teaser. **Case Summary …** columns (preferred for modal — see mapping below). **Image** = card hero. |
+| `footprint.openings` | **Openings / Examples / Properties** (property-example cards + **View Property** modal) | **Permanent Ascend template (all brands):** **Title** = `{Property} {Brand} — {City}` (not `— Property Example`). **Body** (blank lines preferred; single newlines also OK): (1) comma-separated tag chips, (2) location line, (3) meta / asset line (country or conversion · keys · amenities), (4) optional scenario accent (uppercase lime in UI), (5) property-specific opening teaser, (6) optional `https://…`. **Case Summary …** columns for modal. **Image** = card hero. Contract: `lib/partner-intelligence/brand-explorer-openings-property-card-contract.js`. Forbidden: generic “affiliation fit / design narrative” boilerplate. |
 
 **`footprint.openings` — Case Summary column → View Property modal** (same Airtable columns as case studies; labels differ on screen):
 

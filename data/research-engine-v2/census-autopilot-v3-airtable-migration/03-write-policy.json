@@ -1,0 +1,91 @@
+{
+  "version": "write-policy-v3",
+  "field_level_only": true,
+  "rooms_unknown_does_not_block_verified": true,
+  "prefer_blank_fill_over_overwrite": true,
+  "temporal_fields_steward_unless_blank": [
+    "Current Brand",
+    "Property Name",
+    "Operator / Management Company"
+  ],
+  "auto_write_safe": [
+    "Property Identity Key",
+    "Country",
+    "Continent",
+    "Sub-Continent",
+    "City",
+    "State / Region",
+    "Market",
+    "Submarket",
+    "Family / Source Family",
+    "Source Type",
+    "Source Confidence",
+    "Identity Confidence",
+    "Data Eligible",
+    "Production Use Status",
+    "Discovery Date",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Last Reviewed Date"
+  ],
+  "corroborated_write": [
+    "Property Name",
+    "Canonical Property Name",
+    "Current Brand",
+    "Brand Family",
+    "Official Property URL",
+    "Source URL",
+    "Address",
+    "Address Confidence",
+    "Address Source URL"
+  ],
+  "steward_review": [
+    "Property Type",
+    "Asset Context",
+    "Affiliation Status"
+  ],
+  "first_party_validation": [
+    "Rooms / Keys",
+    "Rooms Confidence",
+    "Rooms Source URL",
+    "Rooms Source Type"
+  ],
+  "blocked_rights": [
+    "Latitude",
+    "Longitude",
+    "Phone",
+    "Amenities - Source Text",
+    "Amenities - Structured Tags",
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary"
+  ],
+  "prohibited": [
+    "Owner Name",
+    "Developer Name",
+    "Developer",
+    "Operator / Management Company",
+    "Opening Date",
+    "Renovation / Conversion Date",
+    "Renovation Date",
+    "Affiliation Start Date",
+    "Recent Momentum",
+    "Company Validated",
+    "Company Validation Date",
+    "Brand Verified",
+    "Brand Status",
+    "External Display Status",
+    "Release Status",
+    "Primary Release"
+  ],
+  "serpapi": {
+    "SERPAPI_RESEARCH_ALLOWED": true,
+    "SERPAPI_PRODUCTION_PERSISTENCE_APPROVED": false,
+    "note": "Pending explicit persistence clarification — SerpApi-only fields BLOCKED_RIGHTS"
+  },
+  "cvent": {
+    "production_evidence_allowed": false
+  },
+  "legacy": {
+    "production_evidence_allowed": false
+  }
+}

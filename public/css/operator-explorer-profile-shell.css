@@ -100,6 +100,16 @@
       font-size: 12px;
       color: var(--muted, #7e89ac);
     }
+    .oe-presentation-hero .oe-hero__verified-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 10px;
+    }
+    .oe-presentation-hero .oe-hero__verified-line .dc-governance-trust-subtitle {
+      font-size: 12px;
+      color: var(--muted, #7e89ac);
+    }
     .oe-presentation-hero .oe-hero__actions {
       display: flex;
       flex-direction: column;
@@ -143,7 +153,7 @@
       flex-wrap: wrap;
       gap: 5px;
       justify-content: flex-end;
-      max-width: min(100%, 280px);
+      max-width: min(100%, 420px);
     }
     .oe-presentation-hero .oe-hero-chip {
       display: inline-flex;
@@ -159,6 +169,11 @@
       border-radius: 6px;
       line-height: 1.2;
       text-align: center;
+    }
+    /* Inline --oe-chip-scale / background-color win over default purple fill */
+    .oe-presentation-hero .oe-hero-chip.oe-hero-chip--chain-scale {
+      border-width: 1px;
+      font-weight: 700;
     }
     @media (max-width: 900px) {
       .oe-presentation-hero .oe-hero__title-row { grid-template-columns: 1fr; }

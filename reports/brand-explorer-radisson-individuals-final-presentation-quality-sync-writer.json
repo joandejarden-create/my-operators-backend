@@ -1,0 +1,206 @@
+{
+  "writerVersion": "31N",
+  "v31nWriterExists": true,
+  "generatedAt": "2026-07-11T00:41:15.771Z",
+  "mode": "apply",
+  "brand": {
+    "slug": "radisson-individuals-by-choice",
+    "recordId": "recRyvM8OmLlDj9G7",
+    "name": "Radisson Individuals by Choice"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-final-qa-auditor.json",
+    "reports/brand-explorer-complete-build-radisson-individuals-by-choice.json",
+    "reports/brand-explorer-complete-build-orchestrator.json",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+    "live Radisson Individuals Brand Explorer Presentation rows",
+    "live Tribute Portfolio overview.featured_application row",
+    "live Radisson by Choice overview.featured_application row"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-radisson-individuals-final-presentation-quality-sync-writer.js",
+    "scripts/brand-explorer-radisson-individuals-final-presentation-quality-sync-writer.mjs",
+    "docs/data-intelligence/brand-explorer-radisson-individuals-final-presentation-quality-sync-writer-v31N.md",
+    "reports/brand-explorer-radisson-individuals-final-presentation-quality-sync-writer.md",
+    "reports/brand-explorer-radisson-individuals-final-presentation-quality-sync-writer.json",
+    "lib/partner-intelligence/brand-explorer-final-qa-auditor.js",
+    "package.json"
+  ],
+  "scoreMismatchAudit": {
+    "standaloneFinalQaBySlug": {
+      "requiredSectionReadinessScore": 100,
+      "presentationQualityScore": 100,
+      "brandCarryoverRiskScore": 100,
+      "sourceGovernanceScore": 100,
+      "visualCompletenessScore": 100,
+      "overallNumeric": 100,
+      "overallActiveProfileReadiness": "ready"
+    },
+    "standaloneFinalQaByRecordId": {
+      "requiredSectionReadinessScore": 100,
+      "presentationQualityScore": 100,
+      "brandCarryoverRiskScore": 100,
+      "sourceGovernanceScore": 100,
+      "visualCompletenessScore": 100,
+      "overallNumeric": 100,
+      "overallActiveProfileReadiness": "ready"
+    },
+    "completeBuildEmbedded": {
+      "requiredSectionReadinessScore": 100,
+      "presentationQualityScore": 100,
+      "brandCarryoverRiskScore": 100,
+      "sourceGovernanceScore": 100,
+      "visualCompletenessScore": 100,
+      "overallNumeric": 100,
+      "overallActiveProfileReadiness": "ready"
+    },
+    "visualDisplayDefectAuditScore": 100,
+    "requiredSectionReadiness": 100,
+    "activeProfileReadinessBySlug": "ready",
+    "activeProfileReadinessByRecordId": "ready",
+    "completeBuildReadyForActiveProfile": true,
+    "rootCause": {
+      "classification": "orchestrator_using_old_scoring_function",
+      "summary": "Fixed: record_id Final QA resolution now maps discovery-config expansion brands to expansion_backlog scoring scope (skips active-registry gallery title-only penalties).",
+      "slugCopyDefects": 0,
+      "recordCopyDefects": 0
+    },
+    "resolutionTargets": {
+      "slug": {
+        "resolutionSource": "expansion_backlog",
+        "isExpansion": true
+      },
+      "recordId": {
+        "resolutionSource": "expansion_backlog",
+        "isExpansion": true
+      }
+    }
+  },
+  "featuredApplicationAudit": {
+    "before": {
+      "recordId": "recmLXxrggj0nSzgY",
+      "title": "Conversion-Friendly Individuality",
+      "body": "Independent hotels seeking Choice-family distribution and soft-brand flexibility while preserving local identity, owner story, and market-specific positioning.",
+      "wordCount": 17,
+      "imageUrl": null,
+      "sourceUrl": null
+    },
+    "tributeReference": {
+      "label": "Tribute Portfolio",
+      "recordId": "reci9AYIlZIw83eRd",
+      "title": "Stay independent.",
+      "body": "Independent boutique and lifestyle hotels with distinctive local character—Marriott soft-collection affiliation with Bonvoy distribution without erasing individuality.",
+      "wordCount": 17,
+      "imageUrl": "",
+      "sourceUrl": ""
+    },
+    "radissonReference": {
+      "label": "Radisson by Choice",
+      "recordId": null,
+      "title": "",
+      "body": "",
+      "wordCount": 0,
+      "imageUrl": "",
+      "sourceUrl": ""
+    },
+    "visualDefect": {
+      "section": "Featured Application / Conversion Example",
+      "slotKey": "overview.featured_application",
+      "displayPath": "overview.featured_application.body",
+      "currentTributeValue": "Independent hotels seeking Choice-family distribution and soft-brand flexibility while preserving local identity, owner story, and market-specific positioning.",
+      "referencePattern": "Curio featured preview shows fuller positioning lead",
+      "defectType": "thin_copy_vs_reference",
+      "severity": "low",
+      "cosmeticNonBlocking": true,
+      "fixRequiresCopy": true,
+      "fixRequiresImage": false,
+      "fixRequiresSourceEvidence": false,
+      "fixRequiresDisplayMapping": false,
+      "proposedCorrection": "Optional cosmetic polish — dedicated featured slot is populated and not truncated.",
+      "safeForFutureWriter": false,
+      "verifiedKnownIssue": true
+    },
+    "copyDiagnosis": {
+      "needsUpgrade": true,
+      "reason": "thin_copy_vs_reference",
+      "wordCount": 17
+    },
+    "proposedUpdate": {
+      "recordId": "recmLXxrggj0nSzgY",
+      "slotKey": "overview.featured_application",
+      "fields": {
+        "Title": "Conversion-Friendly Individuality",
+        "Body": "Independent hotels that want Choice-family distribution and soft-brand flexibility while preserving local identity, owner story, and market-specific positioning within hand-selected collection standards—compare Individuals against rigid prototype flags when underwriting conversion economics.",
+        "Slot Key": "overview.featured_application"
+      },
+      "before": {
+        "title": "Conversion-Friendly Individuality",
+        "body": "Independent hotels seeking Choice-family distribution and soft-brand flexibility while preserving local identity, owner story, and market-specific positioning.",
+        "wordCount": 17
+      },
+      "after": {
+        "title": "Conversion-Friendly Individuality",
+        "body": "Independent hotels that want Choice-family distribution and soft-brand flexibility while preserving local identity, owner story, and market-specific positioning within hand-selected collection standards—compare Individuals against rigid prototype flags when underwriting conversion economics.",
+        "wordCount": 31
+      }
+    }
+  },
+  "orchestratorCodeChanged": true,
+  "orchestratorPatchSummary": "isExpansionBacklogBrandTarget() and resolveFinalQaBrandTarget() now treat discovery-config expansion brands consistently whether resolved by slug or record ID.",
+  "airtableModified": true,
+  "companyValidatedUntouched": true,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "companyValidatedAfter": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "applyBlockers": [],
+  "dryRunClean": true,
+  "expectedFinalQa": {
+    "requiredSectionReadinessScore": 100,
+    "presentationQualityScore": 100,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 100,
+    "visualCompletenessScore": 100,
+    "overallNumeric": 100,
+    "overallActiveProfileReadiness": "ready"
+  },
+  "expectedCompleteBuild": {
+    "finalQaScores": {
+      "requiredSectionReadinessScore": 100,
+      "presentationQualityScore": 100,
+      "brandCarryoverRiskScore": 100,
+      "sourceGovernanceScore": 100,
+      "visualCompletenessScore": 100,
+      "overallNumeric": 100,
+      "overallActiveProfileReadiness": "ready"
+    },
+    "readyForActiveProfile": true,
+    "readinessBand": "ready"
+  },
+  "exactApplyCommand": "npm run brand-explorer-radisson-individuals-final-presentation-quality-sync-writer -- --brand radisson-individuals-by-choice --apply --approve-brand-explorer-v31N-final-presentation-quality-sync --confirm-no-company-validation-claim --confirm-no-image-or-opening-changes",
+  "exactDryRunCommand": "npm run brand-explorer-radisson-individuals-final-presentation-quality-sync-writer -- --brand radisson-individuals-by-choice --dry-run",
+  "pipelineCommands": [
+    "npm run brand-explorer-radisson-individuals-final-presentation-quality-sync-writer -- --brand radisson-individuals-by-choice --dry-run",
+    "npm run brand-explorer-final-qa-auditor -- --brand radisson-individuals-by-choice --dry-run",
+    "npm run brand-explorer-complete-build -- --brand radisson-individuals-by-choice --dry-run --target-quality active-profile",
+    "npm run brand-explorer-visual-display-defect-audit -- --brand radisson-individuals-by-choice --dry-run"
+  ],
+  "applyResults": {
+    "updated": [
+      {
+        "recordId": "recmLXxrggj0nSzgY",
+        "slotKey": "overview.featured_application"
+      }
+    ],
+    "errors": []
+  },
+  "markdown": "# Brand Explorer Radisson Individuals Final Presentation Quality Sync v31N\n\n- Generated: 2026-07-11T00:41:15.771Z\n- Mode: **apply**\n- v31N exists: **yes**\n\n## Score mismatch root cause\n- Classification: **orchestrator_using_old_scoring_function**\n- Summary: Fixed: record_id Final QA resolution now maps discovery-config expansion brands to expansion_backlog scoring scope (skips active-registry gallery title-only penalties).\n\n## Scores compared\n- Final QA (slug): presentation 100, overall ready\n- Final QA (record ID): presentation 100, overall ready\n- Complete Build embedded: presentation 100, ready true\n\n## overview.featured_application\n- Word count before: 17\n- Copy upgrade needed: yes\n\n## Expected after fix\n- Final QA: {\"requiredSectionReadinessScore\":100,\"presentationQualityScore\":100,\"brandCarryoverRiskScore\":100,\"sourceGovernanceScore\":100,\"visualCompletenessScore\":100,\"overallNumeric\":100,\"overallActiveProfileReadiness\":\"ready\"}\n- Complete Build: {\"finalQaScores\":{\"requiredSectionReadinessScore\":100,\"presentationQualityScore\":100,\"brandCarryoverRiskScore\":100,\"sourceGovernanceScore\":100,\"visualCompletenessScore\":100,\"overallNumeric\":100,\"overallActiveProfileReadiness\":\"ready\"},\"readyForActiveProfile\":true,\"readinessBand\":\"ready\"}\n\n## Apply command\n```bash\nnpm run brand-explorer-radisson-individuals-final-presentation-quality-sync-writer -- --brand radisson-individuals-by-choice --apply --approve-brand-explorer-v31N-final-presentation-quality-sync --confirm-no-company-validation-claim --confirm-no-image-or-opening-changes\n```"
+}

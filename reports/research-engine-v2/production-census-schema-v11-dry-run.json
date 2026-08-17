@@ -1,0 +1,484 @@
+{
+  "version": "production-census-schema-v11-v1",
+  "generated_at": "2026-08-05T08:56:21.740Z",
+  "mode": "dry-run",
+  "execute": false,
+  "status": "production_census_schema_v11_dry_run_pass",
+  "dry_run_pass": true,
+  "token_masked": "patEUo…14eb",
+  "base_id_masked": "appCCU…foLk",
+  "env_flags": {
+    "ALLOW_PRODUCTION_CENSUS_SCHEMA_V11": true,
+    "CONFIRM_SCHEMA_ONLY_OR_SAFE_BACKFILL": true,
+    "CONFIRM_NO_BRAND_EXPLORER_WRITES": true
+  },
+  "env_ok_for_apply": true,
+  "table": "Hotel Property Census",
+  "table_id": "tbl9aY5ijiuIzzWam",
+  "fields_to_add": [
+    {
+      "name": "Hotel Description - Source Text",
+      "type": "multilineText"
+    },
+    {
+      "name": "Hotel Description - AI Summary",
+      "type": "multilineText"
+    },
+    {
+      "name": "Short Property Summary",
+      "type": "multilineText"
+    },
+    {
+      "name": "Property Positioning",
+      "type": "multilineText"
+    },
+    {
+      "name": "Hotel Class / Segment",
+      "type": "singleSelect",
+      "options_summary": [
+        "Luxury",
+        "Upper Upscale",
+        "Upscale",
+        "Upper Midscale",
+        "Midscale",
+        "Economy",
+        "Independent / Unclassified",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Property Type",
+      "type": "singleSelect",
+      "options_summary": [
+        "Hotel",
+        "Resort",
+        "Boutique Hotel",
+        "Extended Stay",
+        "All-Inclusive",
+        "Serviced Apartment",
+        "Mixed-Use",
+        "Other",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Asset Context",
+      "type": "singleSelect",
+      "options_summary": [
+        "Urban",
+        "Airport",
+        "Suburban",
+        "Beach / Waterfront",
+        "Resort Destination",
+        "Highway / Transit",
+        "Campus / Medical",
+        "Other",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Market / Submarket",
+      "type": "singleLineText"
+    },
+    {
+      "name": "Amenities - Source Text",
+      "type": "multilineText"
+    },
+    {
+      "name": "Amenities - Structured Tags",
+      "type": "multilineText"
+    },
+    {
+      "name": "F&B Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Meeting Space Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Fitness Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Pool Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Resort Amenities Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Extended Stay Amenity Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Parking Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Airport Shuttle Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Spa Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Beach / Waterfront Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Branded Residences Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Mixed-Use Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Rooms / Keys",
+      "type": "number"
+    },
+    {
+      "name": "Rooms Source URL",
+      "type": "url"
+    },
+    {
+      "name": "Rooms Confidence",
+      "type": "singleSelect",
+      "options_summary": [
+        "Exact",
+        "High",
+        "Medium",
+        "Low",
+        "Insufficient",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Building / Asset Notes",
+      "type": "multilineText"
+    },
+    {
+      "name": "Opening Date",
+      "type": "date"
+    },
+    {
+      "name": "Opening Date Source URL",
+      "type": "url"
+    },
+    {
+      "name": "Renovation / Conversion Status",
+      "type": "singleLineText"
+    },
+    {
+      "name": "Renovation / Conversion Date",
+      "type": "date"
+    },
+    {
+      "name": "Renovation / Conversion Source URL",
+      "type": "url"
+    },
+    {
+      "name": "Owner Name",
+      "type": "singleLineText"
+    },
+    {
+      "name": "Owner Type",
+      "type": "singleSelect",
+      "options_summary": [
+        "Institutional",
+        "Private Equity",
+        "Family Office",
+        "Individual / Family",
+        "REIT",
+        "Developer",
+        "Brand / Franchisor",
+        "Government / Sovereign",
+        "Other",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Owner Source URL",
+      "type": "url"
+    },
+    {
+      "name": "Owner Confidence",
+      "type": "singleSelect",
+      "options_summary": [
+        "Exact",
+        "High",
+        "Medium",
+        "Low",
+        "Insufficient",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Developer Name",
+      "type": "singleLineText"
+    },
+    {
+      "name": "Developer Source URL",
+      "type": "url"
+    },
+    {
+      "name": "Developer Confidence",
+      "type": "singleSelect",
+      "options_summary": [
+        "Exact",
+        "High",
+        "Medium",
+        "Low",
+        "Insufficient",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Ownership Review Status",
+      "type": "singleSelect",
+      "options_summary": [
+        "Not Reviewed",
+        "In Review",
+        "Confirmed",
+        "Disputed",
+        "Insufficient Evidence",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Operator / Management Company",
+      "type": "singleLineText"
+    },
+    {
+      "name": "Operator Type",
+      "type": "singleSelect",
+      "options_summary": [
+        "Brand-Managed",
+        "Third-Party Operator",
+        "Owner-Operated",
+        "Soft-Brand / Collection Distribution",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Management Model",
+      "type": "singleSelect",
+      "options_summary": [
+        "Management Agreement",
+        "Franchise",
+        "Lease",
+        "Owner-Operated",
+        "Hybrid",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Operator Source URL",
+      "type": "url"
+    },
+    {
+      "name": "Operator Confidence",
+      "type": "singleSelect",
+      "options_summary": [
+        "Exact",
+        "High",
+        "Medium",
+        "Low",
+        "Insufficient",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Operator Review Status",
+      "type": "singleSelect",
+      "options_summary": [
+        "Not Reviewed",
+        "In Review",
+        "Confirmed",
+        "Disputed",
+        "Insufficient Evidence",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Possible Operator Target",
+      "type": "checkbox"
+    },
+    {
+      "name": "Independent Hotel Flag",
+      "type": "checkbox"
+    },
+    {
+      "name": "Independent Classification",
+      "type": "singleSelect",
+      "options_summary": [
+        "True Independent",
+        "Formerly Branded",
+        "Soft-Brand Candidate",
+        "Brand-Unconfirmed",
+        "Not Independent",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Brand-Unassigned Reason",
+      "type": "singleLineText"
+    },
+    {
+      "name": "Possible Soft-Brand Candidate",
+      "type": "checkbox"
+    },
+    {
+      "name": "Possible Brand Conversion Candidate",
+      "type": "checkbox"
+    },
+    {
+      "name": "Possible Owner Outreach Target",
+      "type": "checkbox"
+    },
+    {
+      "name": "Possible Financing Target",
+      "type": "checkbox"
+    },
+    {
+      "name": "Possible Dealality Opportunity",
+      "type": "checkbox"
+    },
+    {
+      "name": "Data Confidence Tier",
+      "type": "singleSelect",
+      "options_summary": [
+        "Exact",
+        "High",
+        "Medium",
+        "Low",
+        "Insufficient",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Relationship Confidence",
+      "type": "singleSelect",
+      "options_summary": [
+        "Exact",
+        "High",
+        "Medium",
+        "Low",
+        "Insufficient",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Last Verified Date",
+      "type": "date"
+    },
+    {
+      "name": "Next Review Needed",
+      "type": "date"
+    },
+    {
+      "name": "Enrichment Status",
+      "type": "singleSelect",
+      "options_summary": [
+        "Not Started",
+        "In Progress",
+        "Partial",
+        "Complete",
+        "Held",
+        "Do Not Enrich"
+      ]
+    },
+    {
+      "name": "Enrichment Priority",
+      "type": "singleSelect",
+      "options_summary": [
+        "Critical",
+        "High",
+        "Medium",
+        "Low",
+        "Deferred"
+      ]
+    },
+    {
+      "name": "Human Review Required",
+      "type": "checkbox"
+    },
+    {
+      "name": "Notes for Steward",
+      "type": "multilineText"
+    }
+  ],
+  "fields_already_existed": [],
+  "fields_skipped": [],
+  "field_type_conflicts": [],
+  "safe_backfill_proposed": {
+    "enrichment_status_not_started": 666,
+    "human_review_required_true": 4,
+    "data_confidence_tier_from_identity": 666,
+    "enrichment_priority_derived": 666,
+    "independent_flag_only_if_independent": 0,
+    "possible_soft_brand_candidate": 89,
+    "possible_brand_conversion_candidate": 4,
+    "will_not_backfill": [
+      "Hotel Description",
+      "Amenities",
+      "Owner",
+      "Developer",
+      "Operator / Management Company",
+      "Rooms / Keys",
+      "Opening Date",
+      "Renovation Date",
+      "Management Model"
+    ]
+  },
+  "forbidden_untouched": [
+    "Owner Name values (fabricated)",
+    "Operator / Management Company values (fabricated)",
+    "Rooms / Keys values (fabricated)",
+    "Opening Date values (fabricated)",
+    "Brand Explorer Presentation/Basics/Status/CV/Verified/Momentum"
+  ],
+  "frozen_before": {
+    "vic": {
+      "file_count": 29,
+      "aggregate_sha256": "013a62f3f739cef81412467ecee3b56e5440be0e8c81d6b55ae9675705270a1e"
+    },
+    "frozen_62": [
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.json",
+        "exists": true,
+        "size": 189579,
+        "mtime_ms": 1785894190880.195,
+        "sha256": "87e2870b719327167d39564b45039227e37b1d3be518705da290c3469e50f8b7"
+      },
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190884.1685,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "docs/data-intelligence/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190885.1675,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-62-active-public-full-baseline.js",
+        "exists": true,
+        "size": 76327,
+        "mtime_ms": 1785915102595.374,
+        "sha256": "7bc5f0d6cca57b7aad0f141f8b56d3528e6fbb634327ce3945b182360966ac7c"
+      }
+    ]
+  },
+  "conflicts": [],
+  "census_record_count": 666,
+  "total_census_rows": 666,
+  "next_step": "Run --apply with all --confirm-* flags"
+}

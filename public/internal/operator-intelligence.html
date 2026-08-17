@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Operator Intelligence — Claims & Evidence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/support-runbook.css">
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css">
+  <style>
+    .oi-wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border-bottom: 1px solid var(--runbook-border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { color: var(--runbook-muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 18px; }
+    select, input { background: var(--runbook-bg); color: #fff; border: 1px solid var(--runbook-border); padding: 8px; }
+    h1,h2 { color: #fff; }
+  </style>
+</head>
+<body class="support-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>Internal Operator Intelligence view only.</p>
+  </div>
+  <div class="support-page-shell" id="supportGateContent" hidden>
+    <div class="oi-wrap">
+      <h1>Operator Intelligence — Claims, Sources, Exceptions</h1>
+      <p style="color:var(--runbook-muted)">Read-only. Companion to <a href="/internal/operator-fit-data-readiness.html" style="color:#6c72ff">data readiness</a> and <a href="/internal/operator-fit-calibration.html" style="color:#6c72ff">calibration alignment</a>. Airtable foundation applied for calibration; Wave 2 research is local-overlay until founder backfill approval.</p>
+      <div class="filters">
+        <label>Operator <select id="fOp"><option value="">All</option></select></label>
+        <label>Cohort <select id="fCohort"><option value="">All</option><option value="calibration">Calibration</option><option value="wave-2">Wave 2</option></select></label>
+        <label>Publication <select id="fPub"><option value="">All</option>
+          <option>Auto-Publish</option><option>Publish With Evidence Label</option><option>Internal Only</option>
+          <option>Human Review Required</option><option>Conflicted</option><option>Insufficient Evidence</option>
+        </select></label>
+        <label>Conflict <select id="fConf"><option value="">All</option><option>None</option><option>Hard</option><option>Soft</option></select></label>
+      </div>
+      <h2>Readiness (calibration after + Wave 2)</h2>
+      <div id="readyTable"></div>
+      <h2>Universe readiness</h2>
+      <div id="univTable"></div>
+      <h2>Claims</h2>
+      <div id="claimsTable"></div>
+      <h2>Sources</h2>
+      <div id="sourcesTable"></div>
+      <h2>Exceptions</h2>
+      <div id="exTable"></div>
+      <h2>Persistence / flag</h2>
+      <div id="persistBox" style="color:var(--runbook-muted);font-size:13px"></div>
+    </div>
+  </div>
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script>
+  (function () {
+    if (window.SupportAdminGate) SupportAdminGate.showPageLoading('supportGateLoading', 'Verifying…');
+    var data = null;
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>]/g, function (c) { return ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]; }); }
+    function render() {
+      var op = document.getElementById('fOp').value;
+      var cohort = document.getElementById('fCohort').value;
+      var pub = document.getElementById('fPub').value;
+      var conf = document.getElementById('fConf').value;
+      var ready = (data.readiness || []).filter(function (r) { return !op || r.operatorId === op; });
+      var w2ready = ((data.wave2 && data.wave2.readiness) || []).filter(function (r) { return !op || r.operatorId === op; });
+      if (cohort === 'wave-2') ready = w2ready;
+      else if (cohort === 'calibration') { /* keep calibration */ }
+      else ready = ready.concat(w2ready);
+      document.getElementById('readyTable').innerHTML = ready.length ? ('<table><tr><th>Operator</th><th>Status / Ranking Ready projects</th><th>Evidence / notes</th></tr>' +
+        ready.map(function (r) {
+          var status = r.afterStatus || (r.rankingReadyProjects && r.rankingReadyProjects.length ? 'Ranking Ready (' + r.rankingReadyProjects.join(', ') + ')' : 'see byProject');
+          var ev = r.evidenceAfter != null ? (r.evidenceAfter + '%') : ('pub ' + (r.publishedFacts || 0) + ' / qual ' + (r.qualifiedFacts || 0) + ' / int ' + (r.internalOnly || 0));
+          return '<tr><td>' + esc(r.operatorName) + '</td><td>' + esc(status) + '</td><td>' + esc(ev) + '</td></tr>';
+        }).join('') + '</table>') : '<p>No readiness rows.</p>';
+      var univ = (data.universeReadiness || []).filter(function (r) {
+        if (op && r.operatorId !== op) return false;
+        if (cohort && r.cohort !== cohort) return false;
+        return true;
+      });
+      document.getElementById('univTable').innerHTML = univ.length ? ('<table><tr><th>Operator</th><th>Cohort</th><th>RR #</th><th>Conditional #</th><th>Research #</th></tr>' +
+        univ.map(function (r) {
+          return '<tr><td>' + esc(r.operatorName) + '</td><td>' + esc(r.cohort) + '</td><td>' + esc(r.rankingReadyProjects && r.rankingReadyProjects.length) +
+            '</td><td>' + esc(r.conditionallyRankableProjects && r.conditionallyRankableProjects.length) +
+            '</td><td>' + esc(r.researchRequiredProjects && r.researchRequiredProjects.length) + '</td></tr>';
+        }).join('') + '</table>') : '<p>Run wave-2 evaluate to populate universe.</p>';
+      var claims = (data.claims || []).concat((data.wave2 && data.wave2.claims) || []);
+      claims = claims.filter(function (c) {
+        if (op && c.operatorId !== op) return false;
+        if (conf && String(c.conflictStatus || 'None') !== conf) return false;
+        if (cohort === 'wave-2' && String(c.id || '').indexOf('w2') === -1 && String(c.researcherOrProcess || '').indexOf('wave-2') === -1) return false;
+        if (cohort === 'calibration' && String(c.researcherOrProcess || '').indexOf('wave-2') !== -1) return false;
+        if (pub) {
+          var pc = String(c.publicationClass || '');
+          if (pub === 'Internal Only' && !(c.internalOnly || pc === '3')) return false;
+          if (pub === 'Auto-Publish' && pc && pc !== '1') return false;
+        }
+        return true;
+      });
+      document.getElementById('claimsTable').innerHTML = '<table><tr><th>Operator</th><th>Claim</th><th>Value</th><th>Class</th><th>Evidence</th><th>Conflict</th><th>Scoring</th></tr>' +
+        claims.map(function (c) {
+          return '<tr><td>' + esc(c.operatorName) + '</td><td>' + esc(c.claimSubject) + '</td><td>' + esc(c.normalizedValue || c.claimValue) +
+            '</td><td>' + esc(c.publicationClass) + '</td><td>' + esc(c.evidenceClass) + '</td><td>' + esc(c.conflictStatus) +
+            '</td><td>' + esc(c.potentialScoreImpact) + '</td></tr>';
+        }).join('') + '</table>';
+      var sources = (data.sources || []).concat((data.wave2 && data.wave2.sources) || []);
+      document.getElementById('sourcesTable').innerHTML = '<table><tr><th>Title</th><th>Publisher</th><th>Type</th><th>Date</th><th>URL</th></tr>' +
+        sources.map(function (s) {
+          return '<tr><td>' + esc(s.title) + '</td><td>' + esc(s.publisher) + '</td><td>' + esc(s.sourceType) +
+            '</td><td>' + esc(s.date || s.dateAccessed) + '</td><td style="max-width:240px;word-break:break-all">' + esc(s.url) + '</td></tr>';
+        }).join('') + '</table>';
+      var ex = (data.exceptions || []).concat((data.wave2 && data.wave2.exceptions) || []);
+      document.getElementById('exTable').innerHTML = '<table><tr><th>Operator</th><th>Claim</th><th>Existing</th><th>Proposed</th><th>Reason</th><th>Status</th></tr>' +
+        ex.filter(function (e) { return !op || e.operatorId === op; }).map(function (e) {
+          return '<tr><td>' + esc(e.operatorId) + '</td><td>' + esc(e.claim) + '</td><td>' + esc(e.existingValue) +
+            '</td><td>' + esc(e.proposedValue) + '</td><td>' + esc(e.reasonForEscalation) + '</td><td>' + esc(e.reviewStatus) + '</td></tr>';
+        }).join('') + '</table>';
+      var pers = data.airtablePersistence || {};
+      document.getElementById('persistBox').textContent = 'Feature flag: ' + (pers.featureFlag || data.featureFlag || '0') +
+        ' · Persistence: ' + (pers.appliedAt || 'see apply-result') + ' · My Deals: blocked';
+    }
+    async function init() {
+      var allowed = await SupportAdminGate.requireInternalRunbook({ contentId: 'supportGateContent' });
+      if (!allowed) return;
+      var res = await DealalityMemberstackAuth.authFetch('/api/support/operator-intelligence-calibration', { maxWaitMs: 20000 });
+      SupportAdminGate.hidePageLoading(document.getElementById('supportGateLoading'));
+      if (!res.ok) { document.getElementById('readyTable').textContent = 'Payload missing — run evaluate scripts.'; return; }
+      data = await res.json();
+      var sel = document.getElementById('fOp');
+      var ops = (data.operators || []).concat((data.wave2 && data.wave2.operators) || []);
+      var seen = {};
+      ops.forEach(function (o) {
+        if (!o || !o.operatorId || seen[o.operatorId]) return;
+        seen[o.operatorId] = 1;
+        var opt = document.createElement('option');
+        opt.value = o.operatorId; opt.textContent = o.operatorName;
+        sel.appendChild(opt);
+      });
+      ['fOp','fPub','fConf','fCohort'].forEach(function (id) {
+        document.getElementById(id).addEventListener('change', render);
+      });
+      render();
+    }
+    init();
+  })();
+  </script>
+</body>
+</html>

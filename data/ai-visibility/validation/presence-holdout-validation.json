@@ -1,0 +1,437 @@
+{
+  "phase": "AI_INTELLIGENCE_PRESENCE_HOLDOUT_VALIDATION_COMPLETE",
+  "status": "AI_INTELLIGENCE_PRESENCE_HOLDOUT_VALIDATION_REVIEW_REQUIRED",
+  "nextStep": "PRESENCE_HOLDOUT_REVIEW_REQUIRED",
+  "version": "ai_intelligence_presence_holdout_v1",
+  "holdoutIntegrity": {
+    "HOLDOUT_N": 93,
+    "HOLDOUT_VERSION": "ai_intelligence_holdout_v1",
+    "HOLDOUT_CREATED_AT": "2026-08-14",
+    "HOLDOUT_META_N": 93,
+    "HOLDOUT_PREVIOUSLY_ACCESSED": "NO",
+    "HOLDOUT_PREVIOUSLY_SCORED": "NO",
+    "HOLDOUT_CASES_USED_FOR_TUNING": 0,
+    "STRATIFICATION_STATUS": "STRATIFIED_BY_PROVIDER_LANGUAGE_CASE_TYPE",
+    "DEVELOPMENT_N": 302,
+    "priorHits": []
+  },
+  "signalEvaluated": "PRESENCE",
+  "signalsNotEvaluated": [
+    "RECOMMENDED",
+    "FIRST_RECOMMENDATION",
+    "NEGATIVE_OR_QUALIFIED",
+    "COMPARATOR"
+  ],
+  "recommendationClassifierInvoked": false,
+  "entityResolutionOnly": true,
+  "hydrationStats": {
+    "total": 93,
+    "hydratedFromStore": 78,
+    "excerptOnly": 15,
+    "missing": 0,
+    "bytesGained": 338648
+  },
+  "presence": {
+    "N": 93,
+    "TRUE_POSITIVES": 89,
+    "TRUE_NEGATIVES": 0,
+    "FALSE_POSITIVES": 0,
+    "FALSE_NEGATIVES": 4,
+    "ACCURACY": 0.956989247311828,
+    "PRECISION": 1,
+    "RECALL": 0.956989247311828,
+    "F1": 0.978021978021978
+  },
+  "subgroups": {
+    "Provider": {
+      "unspecified": {
+        "N": 15,
+        "TRUE_POSITIVES": 15,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "ACCURACY": 1,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1,
+        "GATE": "PASS"
+      },
+      "Perplexity": {
+        "N": 19,
+        "TRUE_POSITIVES": 18,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 1,
+        "ACCURACY": 0.9473684210526315,
+        "PRECISION": 1,
+        "RECALL": 0.9473684210526315,
+        "F1": 0.972972972972973,
+        "GATE": "FAIL"
+      },
+      "Claude": {
+        "N": 23,
+        "TRUE_POSITIVES": 21,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 2,
+        "ACCURACY": 0.9130434782608695,
+        "PRECISION": 1,
+        "RECALL": 0.9130434782608695,
+        "F1": 0.9545454545454545,
+        "GATE": "FAIL"
+      },
+      "Gemini": {
+        "N": 24,
+        "TRUE_POSITIVES": 23,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 1,
+        "ACCURACY": 0.9583333333333334,
+        "PRECISION": 1,
+        "RECALL": 0.9583333333333334,
+        "F1": 0.9787234042553191,
+        "GATE": "FAIL"
+      },
+      "OpenAI": {
+        "N": 12,
+        "TRUE_POSITIVES": 12,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "ACCURACY": 1,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1,
+        "GATE": "PASS"
+      }
+    },
+    "Language": {
+      "unspecified": {
+        "N": 15,
+        "TRUE_POSITIVES": 15,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "ACCURACY": 1,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1,
+        "GATE": "PASS"
+      },
+      "English": {
+        "N": 42,
+        "TRUE_POSITIVES": 41,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 1,
+        "ACCURACY": 0.9761904761904762,
+        "PRECISION": 1,
+        "RECALL": 0.9761904761904762,
+        "F1": 0.9879518072289156,
+        "GATE": "FAIL"
+      },
+      "Spanish": {
+        "N": 36,
+        "TRUE_POSITIVES": 33,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 3,
+        "ACCURACY": 0.9166666666666666,
+        "PRECISION": 1,
+        "RECALL": 0.9166666666666666,
+        "F1": 0.9565217391304348,
+        "GATE": "FAIL"
+      }
+    },
+    "Geography": {
+      "unspecified": {
+        "N": 15,
+        "TRUE_POSITIVES": 15,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "ACCURACY": 1,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1,
+        "GATE": "PASS"
+      },
+      "CALA": {
+        "N": 30,
+        "TRUE_POSITIVES": 28,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 2,
+        "ACCURACY": 0.9333333333333333,
+        "PRECISION": 1,
+        "RECALL": 0.9333333333333333,
+        "F1": 0.9655172413793104,
+        "GATE": "FAIL"
+      },
+      "Global": {
+        "N": 9,
+        "TRUE_POSITIVES": 9,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "ACCURACY": 1,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1,
+        "GATE": "INSUFFICIENT_N"
+      },
+      "Mexico": {
+        "N": 22,
+        "TRUE_POSITIVES": 20,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 2,
+        "ACCURACY": 0.9090909090909091,
+        "PRECISION": 1,
+        "RECALL": 0.9090909090909091,
+        "F1": 0.9523809523809523,
+        "GATE": "FAIL"
+      },
+      "Europe": {
+        "N": 7,
+        "TRUE_POSITIVES": 7,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "ACCURACY": 1,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1,
+        "GATE": "INSUFFICIENT_N"
+      },
+      "North America": {
+        "N": 10,
+        "TRUE_POSITIVES": 10,
+        "TRUE_NEGATIVES": 0,
+        "FALSE_POSITIVES": 0,
+        "FALSE_NEGATIVES": 0,
+        "ACCURACY": 1,
+        "PRECISION": 1,
+        "RECALL": 1,
+        "F1": 1,
+        "GATE": "PASS"
+      }
+    }
+  },
+  "materialSubgroupFailures": [
+    {
+      "dimension": "Provider",
+      "key": "Perplexity",
+      "N": 19,
+      "TRUE_POSITIVES": 18,
+      "TRUE_NEGATIVES": 0,
+      "FALSE_POSITIVES": 0,
+      "FALSE_NEGATIVES": 1,
+      "ACCURACY": 0.9473684210526315,
+      "PRECISION": 1,
+      "RECALL": 0.9473684210526315,
+      "F1": 0.972972972972973,
+      "GATE": "FAIL"
+    },
+    {
+      "dimension": "Provider",
+      "key": "Claude",
+      "N": 23,
+      "TRUE_POSITIVES": 21,
+      "TRUE_NEGATIVES": 0,
+      "FALSE_POSITIVES": 0,
+      "FALSE_NEGATIVES": 2,
+      "ACCURACY": 0.9130434782608695,
+      "PRECISION": 1,
+      "RECALL": 0.9130434782608695,
+      "F1": 0.9545454545454545,
+      "GATE": "FAIL"
+    },
+    {
+      "dimension": "Provider",
+      "key": "Gemini",
+      "N": 24,
+      "TRUE_POSITIVES": 23,
+      "TRUE_NEGATIVES": 0,
+      "FALSE_POSITIVES": 0,
+      "FALSE_NEGATIVES": 1,
+      "ACCURACY": 0.9583333333333334,
+      "PRECISION": 1,
+      "RECALL": 0.9583333333333334,
+      "F1": 0.9787234042553191,
+      "GATE": "FAIL"
+    },
+    {
+      "dimension": "Language",
+      "key": "English",
+      "N": 42,
+      "TRUE_POSITIVES": 41,
+      "TRUE_NEGATIVES": 0,
+      "FALSE_POSITIVES": 0,
+      "FALSE_NEGATIVES": 1,
+      "ACCURACY": 0.9761904761904762,
+      "PRECISION": 1,
+      "RECALL": 0.9761904761904762,
+      "F1": 0.9879518072289156,
+      "GATE": "FAIL"
+    },
+    {
+      "dimension": "Language",
+      "key": "Spanish",
+      "N": 36,
+      "TRUE_POSITIVES": 33,
+      "TRUE_NEGATIVES": 0,
+      "FALSE_POSITIVES": 0,
+      "FALSE_NEGATIVES": 3,
+      "ACCURACY": 0.9166666666666666,
+      "PRECISION": 1,
+      "RECALL": 0.9166666666666666,
+      "F1": 0.9565217391304348,
+      "GATE": "FAIL"
+    },
+    {
+      "dimension": "Geography",
+      "key": "CALA",
+      "N": 30,
+      "TRUE_POSITIVES": 28,
+      "TRUE_NEGATIVES": 0,
+      "FALSE_POSITIVES": 0,
+      "FALSE_NEGATIVES": 2,
+      "ACCURACY": 0.9333333333333333,
+      "PRECISION": 1,
+      "RECALL": 0.9333333333333333,
+      "F1": 0.9655172413793104,
+      "GATE": "FAIL"
+    },
+    {
+      "dimension": "Geography",
+      "key": "Mexico",
+      "N": 22,
+      "TRUE_POSITIVES": 20,
+      "TRUE_NEGATIVES": 0,
+      "FALSE_POSITIVES": 0,
+      "FALSE_NEGATIVES": 2,
+      "ACCURACY": 0.9090909090909091,
+      "PRECISION": 1,
+      "RECALL": 0.9090909090909091,
+      "F1": 0.9523809523809523,
+      "GATE": "FAIL"
+    }
+  ],
+  "errors": {
+    "TOTAL": 4,
+    "DETAILS": [
+      {
+        "CASE_ID": "v2_cand_bcdb2d55",
+        "PROVIDER": "gemini",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "ENTITY": "Playa Hotels & Resorts",
+        "EXPECTED": true,
+        "ACTUAL": false,
+        "ROOT_CAUSE": "FALSE_NEGATIVE — canonical company string absent; response only has geographic Playa tokens (e.g. Playa del Carmen). Entity index has no distinct Playa Hotels & Resorts alias hit. Possible subject/GT mismatch vs resolution gap. No tuning applied."
+      },
+      {
+        "CASE_ID": "v2_cand_d98e6ea8",
+        "PROVIDER": "claude",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "CALA",
+        "ENTITY": "Playa Hotels & Resorts",
+        "EXPECTED": true,
+        "ACTUAL": false,
+        "ROOT_CAUSE": "FALSE_NEGATIVE — canonical company string absent; response only has geographic Playa tokens (e.g. Playa del Carmen). Entity index has no distinct Playa Hotels & Resorts alias hit. Possible subject/GT mismatch vs resolution gap. No tuning applied."
+      },
+      {
+        "CASE_ID": "v2_cand_e57848c0",
+        "PROVIDER": "perplexity",
+        "LANGUAGE": "es",
+        "GEOGRAPHY": "MEXICO",
+        "ENTITY": "Playa Hotels & Resorts",
+        "EXPECTED": true,
+        "ACTUAL": false,
+        "ROOT_CAUSE": "FALSE_NEGATIVE — canonical company string absent; response only has geographic Playa tokens (e.g. Playa del Carmen). Entity index has no distinct Playa Hotels & Resorts alias hit. Possible subject/GT mismatch vs resolution gap. No tuning applied."
+      },
+      {
+        "CASE_ID": "v2_cand_f3f3fea0",
+        "PROVIDER": "claude",
+        "LANGUAGE": "en",
+        "GEOGRAPHY": "MEXICO",
+        "ENTITY": "Playa Hotels & Resorts",
+        "EXPECTED": true,
+        "ACTUAL": false,
+        "ROOT_CAUSE": "FALSE_NEGATIVE — canonical company string absent; response only has geographic Playa tokens (e.g. Playa del Carmen). Entity index has no distinct Playa Hotels & Resorts alias hit. Possible subject/GT mismatch vs resolution gap. No tuning applied."
+      }
+    ]
+  },
+  "gate": {
+    "DEV_GATE": "PASS",
+    "HOLDOUT_GATE": "FAIL",
+    "threshold": {
+      "precision": 0.98,
+      "recall": 0.98
+    },
+    "PRESENCE_STATUS": "HOLDOUT_FAILED",
+    "PRODUCTION_READINESS": "NOT_READY"
+  },
+  "productReleaseMap": {
+    "SAFE_TO_ENABLE": [],
+    "KEEP_BLOCKED": [
+      "AI Presence (blocked — Presence holdout failed)",
+      "Competitive Position (by Presence) (blocked — Presence holdout failed)",
+      "Regional Presence (blocked — Presence holdout failed)",
+      "Presence trends (blocked — Presence holdout failed)",
+      "AI Presence change (pp) (blocked — Presence holdout failed)",
+      "Questions Missing (blocked — Presence holdout failed)",
+      "Recommendation Share",
+      "Recommendation Rate",
+      "Top-3 Recommendation Rate",
+      "First Recommendation Rate",
+      "Questions Won",
+      "Internal 10-class recommendationStatus",
+      "Negative / Qualified signal",
+      "Comparator signal"
+    ],
+    "unavailableNeverZero": true,
+    "unavailableCopy": "Validated monitoring data is not currently available."
+  },
+  "scorecard": {
+    "PER_SIGNAL": true,
+    "COMPOSITE_SCORE": false,
+    "PRESENCE": {
+      "DEV": "PASS",
+      "HOLDOUT": "FAIL",
+      "PRODUCTION_READINESS": "NOT_READY"
+    },
+    "RECOMMENDED": {
+      "DEV": "NOT_READY",
+      "HOLDOUT": "NOT_RUN"
+    },
+    "FIRST_RECOMMENDATION": {
+      "DEV": "NOT_READY",
+      "HOLDOUT": "NOT_RUN"
+    },
+    "NEGATIVE": {
+      "DEV": "NOT_READY",
+      "HOLDOUT": "NOT_RUN"
+    },
+    "COMPARATOR": {
+      "DEV": "NOT_READY",
+      "HOLDOUT": "NOT_RUN"
+    }
+  },
+  "hardGuards": {
+    "NEW_MONITORING": 0,
+    "LIVE_PROVIDER_CALLS": 0,
+    "PUBLIC_CRAWL": 0,
+    "HOLDOUT_TUNING": 0,
+    "CLASSIFIER_CHANGES": 0,
+    "GROUND_TRUTH_CHANGES": 0,
+    "AIRTABLE_WRITES": 0,
+    "SCHEMA_CHANGES": 0,
+    "DEPLOYS": 0
+  },
+  "HOLDOUT_ACCESSED": true,
+  "HOLDOUT_CASES_INSPECTED": 93,
+  "HOLDOUT_METRICS_RUN": true,
+  "HOLDOUT_TUNING": 0
+}

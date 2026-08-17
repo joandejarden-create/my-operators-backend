@@ -1,0 +1,105 @@
+{
+  "ok": true,
+  "version": "census-coordinate-completion-v1",
+  "queue_id": "coordinate_completion",
+  "generated_at": "2026-08-07T23:28:09.396Z",
+  "status": "production_census_mapbox_coordinate_completion_ready_for_production_cycle",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "source_of_truth": {
+    "ok": true,
+    "status": "production_census_write_target_ok",
+    "code": null,
+    "errors": [],
+    "expected": {
+      "baseName": "Deal Capture Platform",
+      "tableName": "Hotel Property Census",
+      "tableId": "tbl9aY5ijiuIzzWam",
+      "role": "production_property_table"
+    },
+    "actual": {
+      "baseName": "Deal Capture Platform",
+      "baseId": null,
+      "tableName": "Hotel Property Census",
+      "tableId": "tbl9aY5ijiuIzzWam"
+    },
+    "base_resolution": null,
+    "blocked_classification": null
+  },
+  "provider_readiness": {
+    "version": "census-coordinate-provider-v1",
+    "provider": "mapbox",
+    "ready": true,
+    "mapbox_token_present": true,
+    "mapbox_permanent_geocoding": true,
+    "census_coordinate_completion_enabled": true,
+    "geocoding_provider": "mapbox",
+    "missing_flags": [],
+    "temporary_geocoding_blocked": true,
+    "nominatim_blocked": true,
+    "max_geocode_requests_per_run": 250,
+    "route": "geocode_apply",
+    "block_reason": null,
+    "note": "Mapbox Permanent Geocoding ready for Census coordinate completion."
+  },
+  "max_geocode_requests_per_run": 100,
+  "counters": {
+    "records_missing_coordinates": 786,
+    "records_eligible_for_mapbox": 0,
+    "records_geocoded": 0,
+    "coordinates_written_proposals": 0,
+    "skipped_no_address": 566,
+    "skipped_address_confidence_not_high": 7,
+    "skipped_city_or_unknown": 0,
+    "skipped_other": 213,
+    "city_centroid_rejected": 0,
+    "zero_zero_rejected": 0,
+    "country_mismatch_rejected": 0,
+    "low_confidence": 0,
+    "provider_errors": 0,
+    "steward_review_cases": 0,
+    "provider_decision_needed_cases": 0,
+    "skipped_identical": 0,
+    "cache_hits": 0,
+    "mapbox_requests": 0
+  },
+  "estimated_cost": {
+    "requests": 0,
+    "estimated_usd": 0,
+    "basis": "none",
+    "rate_per_1k_usd": 5,
+    "pricing_configured": false,
+    "note": "Pricing env unset — request count reported; default Mapbox Permanent order-of-magnitude used when estimating USD."
+  },
+  "exact_fields_written": [
+    "Latitude",
+    "Longitude",
+    "Coordinate Source Type",
+    "Coordinate Confidence",
+    "Geocode Provider",
+    "Geocode Method",
+    "Geocode Reviewed Date",
+    "Radar Geography Status",
+    "Radar Display Status",
+    "Radar Display Reason",
+    "Public Census Eligibility",
+    "Public Display Confidence",
+    "Public Display Review Status",
+    "Last Reviewed Date",
+    "Enrichment Status"
+  ],
+  "proposals": [],
+  "provider_decision_needed": [],
+  "steward_review": [],
+  "failures": [],
+  "constraints": {
+    "temporary_geocoding_blocked": true,
+    "nominatim_blocked": true,
+    "brand_setup_writes": false,
+    "brand_explorer_writes": false,
+    "owner_operator_date_writes": false
+  }
+}

@@ -1,0 +1,298 @@
+{
+  "version": "airtable-sandbox-validation-v1",
+  "status": "airtable_sandbox_validated_ready_for_vic_be_patch",
+  "generated_at": "2026-08-05T07:42:54.811Z",
+  "sandbox_base_id_masked": "appRbW…2ch1",
+  "sandbox_base_id_raw_for_ops_only": null,
+  "sandbox_base_name": "Deal Capture MVP — Sandbox",
+  "sandbox_api_key_label": "AIRTABLE_PAT",
+  "production_base_id_masked": "appvtn…INP6",
+  "ids_differ": true,
+  "env": {
+    "AIRTABLE_ENV": "sandbox",
+    "BE_PILOT_SANDBOX_CONFIRMED": "1",
+    "AIRTABLE_BASE_ID_SANDBOX_present": true
+  },
+  "checks": [
+    {
+      "id": "airtable_env_equals_sandbox",
+      "pass": true,
+      "detail": "AIRTABLE_ENV=sandbox"
+    },
+    {
+      "id": "be_pilot_sandbox_confirmed",
+      "pass": true,
+      "detail": "BE_PILOT_SANDBOX_CONFIRMED=1"
+    },
+    {
+      "id": "sandbox_base_id_present",
+      "pass": true,
+      "detail": "AIRTABLE_BASE_ID_SANDBOX=appRbW…2ch1"
+    },
+    {
+      "id": "sandbox_base_differs_from_production",
+      "pass": true,
+      "detail": "IDs differ (prod appvtn…INP6 vs sandbox appRbW…2ch1)"
+    },
+    {
+      "id": "production_write_client_not_initialized",
+      "pass": true,
+      "detail": "Validator does not construct Airtable(production) write client"
+    },
+    {
+      "id": "sandbox_token_can_access_base",
+      "pass": true,
+      "detail": "AIRTABLE_PAT can see sandbox base \"Deal Capture MVP — Sandbox\""
+    },
+    {
+      "id": "sandbox_base_name_includes_sandbox_staging_or_test",
+      "pass": true,
+      "detail": "base name=\"Deal Capture MVP — Sandbox\""
+    },
+    {
+      "id": "table_present_brand_setup_brand_basics",
+      "pass": true,
+      "detail": "table present (81 fields)"
+    },
+    {
+      "id": "table_present_brand_setup_brand_explorer_presentation",
+      "pass": true,
+      "detail": "table present (28 fields)"
+    },
+    {
+      "id": "basics_field_brand_name",
+      "pass": true,
+      "detail": "Brand Basics.Brand Name present"
+    },
+    {
+      "id": "basics_field_brand_status",
+      "pass": true,
+      "detail": "Brand Basics.Brand Status present"
+    },
+    {
+      "id": "presentation_field_title",
+      "pass": true,
+      "detail": "Presentation.Title present"
+    },
+    {
+      "id": "presentation_field_body",
+      "pass": true,
+      "detail": "Presentation.Body present"
+    },
+    {
+      "id": "presentation_brand_link_field",
+      "pass": true,
+      "detail": "Presentation brand link field=\"Brand\""
+    },
+    {
+      "id": "target_record_hotel_indigo",
+      "pass": true,
+      "detail": "found hotel-indigo as recegXrqaPiSLGCIe (exact_record_id) name=\"Hotel Indigo\""
+    },
+    {
+      "id": "target_record_ascend",
+      "pass": true,
+      "detail": "found ascend as reclkgOzvAcBheUSo (exact_record_id) name=\"Ascend Hotel Collection\""
+    },
+    {
+      "id": "target_record_curio_collection",
+      "pass": true,
+      "detail": "found curio-collection as receQkxgjlezsc1xg (exact_record_id) name=\"Curio Collection by Hilton\""
+    },
+    {
+      "id": "target_record_holiday_inn_express",
+      "pass": true,
+      "detail": "found holiday-inn-express as recmGmiIqDtAsm01f (exact_record_id) name=\"Holiday Inn Express\""
+    },
+    {
+      "id": "patch_execution_gated_on_validation",
+      "pass": true,
+      "detail": "validation PASS — VIC sandbox patch may execute only via sandbox write adapter"
+    }
+  ],
+  "table_availability": [
+    {
+      "table": "Brand Setup - Brand Basics",
+      "present": true,
+      "field_count": 81
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "present": true,
+      "field_count": 28
+    }
+  ],
+  "field_availability": [
+    {
+      "table": "Brand Setup - Brand Basics",
+      "field": "Brand Name",
+      "present": true,
+      "role": "required"
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "field": "Brand Status",
+      "present": true,
+      "role": "required"
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "field": "Title",
+      "present": true,
+      "role": "required"
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "field": "Body",
+      "present": true,
+      "role": "required"
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "field": "Brand",
+      "present": true,
+      "role": "brand_link"
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "field": "property_examples",
+      "present": true,
+      "role": "pilot_overlay_intent",
+      "note": "Maps to Presentation Title/Body rows — not a discrete Airtable column"
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "field": "geographic_footprint_mexico",
+      "present": true,
+      "role": "pilot_overlay_intent",
+      "note": "Maps to Presentation Title/Body rows — not a discrete Airtable column"
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "field": "portfolio_context",
+      "present": true,
+      "role": "pilot_overlay_intent",
+      "note": "Maps to Presentation Title/Body rows — not a discrete Airtable column"
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "field": "property_proof",
+      "present": true,
+      "role": "pilot_overlay_intent",
+      "note": "Maps to Presentation Title/Body rows — not a discrete Airtable column"
+    },
+    {
+      "table": "Brand Setup - Brand Explorer Presentation",
+      "field": "owner_facing_copy",
+      "present": true,
+      "role": "pilot_overlay_intent",
+      "note": "Maps to Presentation Title/Body rows — not a discrete Airtable column"
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "field": "Brand Status",
+      "present": true,
+      "role": "forbidden_write_target",
+      "note": "Must not be written by VIC pilot even if present"
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "field": "Company Validated",
+      "present": true,
+      "role": "forbidden_write_target",
+      "note": "Must not be written by VIC pilot even if present"
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "field": "Brand Verified",
+      "present": false,
+      "role": "forbidden_write_target",
+      "note": "Must not be written by VIC pilot even if present"
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "field": "Active Profile Approved",
+      "present": true,
+      "role": "forbidden_write_target",
+      "note": "Must not be written by VIC pilot even if present"
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "field": "Ready for Active Profile",
+      "present": true,
+      "role": "forbidden_write_target",
+      "note": "Must not be written by VIC pilot even if present"
+    },
+    {
+      "table": "Brand Setup - Brand Basics",
+      "field": "Founder Visual Review Pass",
+      "present": true,
+      "role": "forbidden_write_target",
+      "note": "Must not be written by VIC pilot even if present"
+    }
+  ],
+  "target_records": [
+    {
+      "slug": "hotel-indigo",
+      "expected_record_id": "recegXrqaPiSLGCIe",
+      "sandbox_record_id": "recegXrqaPiSLGCIe",
+      "brand_name": "Hotel Indigo",
+      "brand_status": "Active",
+      "resolution": "exact_record_id",
+      "found": true
+    },
+    {
+      "slug": "ascend",
+      "expected_record_id": "reclkgOzvAcBheUSo",
+      "sandbox_record_id": "reclkgOzvAcBheUSo",
+      "brand_name": "Ascend Hotel Collection",
+      "brand_status": "Active",
+      "resolution": "exact_record_id",
+      "found": true
+    },
+    {
+      "slug": "curio-collection",
+      "expected_record_id": "receQkxgjlezsc1xg",
+      "sandbox_record_id": "receQkxgjlezsc1xg",
+      "brand_name": "Curio Collection by Hilton",
+      "brand_status": "Active",
+      "resolution": "exact_record_id",
+      "found": true
+    },
+    {
+      "slug": "holiday-inn-express",
+      "expected_record_id": "recmGmiIqDtAsm01f",
+      "sandbox_record_id": "recmGmiIqDtAsm01f",
+      "brand_name": "Holiday Inn Express",
+      "brand_status": "Active",
+      "resolution": "exact_record_id",
+      "found": true
+    }
+  ],
+  "write_safety": {
+    "production_write_client_initialized": false,
+    "sandbox_read_performed": true,
+    "production_airtable_writes": false,
+    "sandbox_airtable_writes": false,
+    "patch_execution_allowed": true
+  },
+  "vic_sandbox_patch_may_execute": true,
+  "blockers": [],
+  "manual_setup_required": false,
+  "manual_setup_instructions": [
+    "In Airtable, duplicate production Brand Explorer base (Deal Capture MVP) as a new base.",
+    "Name it clearly, e.g. \"Deal Capture MVP — Sandbox\" or \"… Staging / Test\".",
+    "Ensure Brand Setup - Brand Basics + Brand Explorer Presentation (and pilot brand records) are present.",
+    "Copy the new base ID into .env as AIRTABLE_BASE_ID_SANDBOX=app…",
+    "Set AIRTABLE_ENV=sandbox",
+    "Set BE_PILOT_SANDBOX_CONFIRMED=1",
+    "Keep AIRTABLE_BASE_ID pointed at production for read-only comparison only.",
+    "Re-run: npm run research-engine-v2:validate-airtable-sandbox"
+  ],
+  "constraints": {
+    "production_airtable_writes": false,
+    "frozen_62_modified": false,
+    "frozen_vic_modified": false,
+    "webhound_used": false
+  }
+}

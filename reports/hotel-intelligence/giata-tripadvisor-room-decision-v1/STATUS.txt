@@ -1,0 +1,19 @@
+GIATA_TRIPADVISOR_ROOM_DECISION_COMPLETE
+OVERLAP_SAMPLE: 40
+GIATA_ROOM_COVERAGE: 72.5%
+GIATA_EXACT_ACCURACY: n/a (0 trusted Dealality room overlaps in TEST sample)
+GIATA_NEAR_MATCH: n/a
+GIATA_CONFLICT_RATE: n/a
+TA_GIATA_AGREEMENT: 76.5% (exact 64.7% + near 11.8%; n=17)
+TA_GIATA_CONFLICT: 23.5%
+TA_GIATA_AGREE_GROUND_TRUTH_ACCURACY: n/a
+GIATA_WINS_CONFLICTS: 0
+TRIPADVISOR_WINS_CONFLICTS: 0
+BOTH_WRONG_CONFLICTS: 0
+SIMULATED_VERIFIED_COVERAGE: 0%
+SIMULATED_REVIEW_REQUIRED: 10%
+SOURCE_INDEPENDENCE_ASSESSMENT: INDEPENDENCE_UNCERTAIN
+GIATA_24_MONTH_COST: €4,950
+DECISION: KEEP_GIATA_OPTION_OPEN
+RATIONALE: MHG num_rooms_total works in TEST and often agrees with Tripadvisor, but independence is uncertain (Giata class attribution ~94% on decision TA hotels), TEST geography is not CALA-valid, trusted ground-truth overlap is 0, and simulated verified coverage stays 0% when agreement cannot mint multi-source. Does not justify €4,950/24mo vs continuing TA candidates + primary verification.
+PRODUCTION_WRITES: 0

@@ -1,0 +1,4378 @@
+{
+  "extractVersion": "1",
+  "generatedAt": "2026-07-06T22:19:46.156Z",
+  "mode": "dry_run",
+  "airtableModified": false,
+  "targetFactKeys": [
+    "be.identity.brandName",
+    "be.identity.parentCompany",
+    "be.positioning.summary",
+    "be.positioning.guestPromise",
+    "be.positioning.tagline",
+    "be.overview.developmentModel",
+    "be.overview.whyValue",
+    "be.overview.typicalUseCase",
+    "be.footprint.geoIntro",
+    "be.loyalty.programName"
+  ],
+  "keyPlan": [
+    {
+      "fieldKey": "be.identity.brandName",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Brand Name",
+      "explorerSection": "Brand Identity"
+    },
+    {
+      "fieldKey": "be.identity.parentCompany",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Parent Company",
+      "explorerSection": "Parent Company"
+    },
+    {
+      "fieldKey": "be.positioning.summary",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Brand Positioning",
+      "explorerSection": "Brand Positioning"
+    },
+    {
+      "fieldKey": "be.positioning.guestPromise",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Brand Customer Promise",
+      "explorerSection": "Guest Promise"
+    },
+    {
+      "fieldKey": "be.positioning.tagline",
+      "priority": "P0",
+      "registrySupported": true,
+      "displayLabel": "Brand Tagline",
+      "explorerSection": "Tagline"
+    },
+    {
+      "fieldKey": "be.overview.developmentModel",
+      "priority": "P1",
+      "registrySupported": true,
+      "displayLabel": "Development Model",
+      "explorerSection": "Development Model"
+    },
+    {
+      "fieldKey": "be.overview.whyValue",
+      "priority": "P1",
+      "registrySupported": true,
+      "displayLabel": "Why Owners Choose Brand",
+      "explorerSection": "Why Value"
+    },
+    {
+      "fieldKey": "be.overview.typicalUseCase",
+      "priority": "P2",
+      "registrySupported": true,
+      "displayLabel": "Typical Use Case",
+      "explorerSection": "Target Guest"
+    },
+    {
+      "fieldKey": "be.footprint.geoIntro",
+      "priority": "P2",
+      "registrySupported": true,
+      "displayLabel": "Footprint Summary",
+      "explorerSection": "Geographic Intro"
+    },
+    {
+      "fieldKey": "be.loyalty.programName",
+      "priority": "P2",
+      "registrySupported": true,
+      "displayLabel": "Loyalty Program",
+      "explorerSection": "Program Name"
+    }
+  ],
+  "userRequestedKeyMapping": [
+    {
+      "requested": "be.positioning.segment",
+      "registryKey": null,
+      "supported": false,
+      "note": "Capture segment language in be.positioning.summary when source-backed."
+    },
+    {
+      "requested": "be.positioning.chainScale",
+      "registryKey": null,
+      "supported": false,
+      "note": "Hotel Chain Scale is Brand Setup — not a PI fact key."
+    },
+    {
+      "requested": "be.standards.conversionConsiderations",
+      "registryKey": "be.overview.developmentModel",
+      "supported": true
+    },
+    {
+      "requested": "be.ownerConsiderations.developmentPositioning",
+      "registryKey": "be.overview.whyValue",
+      "supported": true
+    }
+  ],
+  "brands": [
+    {
+      "brandConfig": {
+        "key": "comfort-inn-suites",
+        "brandName": "Comfort Inn & Suites",
+        "recordId": "recOzH5iAE1xEjyD0",
+        "allowlistedSourceIds": [
+          "recZFPfGRo5C9FF2Q",
+          "recxm2Jxqvi2n2I8K",
+          "recRbi8CjS8BVt4Z3"
+        ],
+        "primaryPdfSourceId": "recZFPfGRo5C9FF2Q",
+        "consumerSourceId": "recxm2Jxqvi2n2I8K",
+        "pressSourceId": "recRbi8CjS8BVt4Z3"
+      },
+      "brandName": "Comfort Inn & Suites",
+      "recordId": "recOzH5iAE1xEjyD0",
+      "allowlistedSourceIds": [
+        "recZFPfGRo5C9FF2Q",
+        "recxm2Jxqvi2n2I8K",
+        "recRbi8CjS8BVt4Z3"
+      ],
+      "sources": [
+        {
+          "id": "recZFPfGRo5C9FF2Q",
+          "sourceTitle": "Comfort Inn & Suites — Choice development brochure (local)",
+          "sourceType": "Development Brochure",
+          "sourceUrl": "",
+          "status": "Extracted",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/Comfort Inn/brochure--comfort-inn.pdf"
+        },
+        {
+          "id": "recxm2Jxqvi2n2I8K",
+          "sourceTitle": "Comfort Inn & Suites — Choice consumer brand page",
+          "sourceType": "Brand Page",
+          "sourceUrl": "https://www.choicehotels.com/comfort-hotels",
+          "status": "Approved",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/website/Comfort Inn & Suites — Choice consumer brand page.html"
+        },
+        {
+          "id": "recRbi8CjS8BVt4Z3",
+          "sourceTitle": "Comfort Inn & Suites — Choice press kit / media center",
+          "sourceType": "Press Release",
+          "sourceUrl": "https://media.choicehotels.com/comfort-press-kit",
+          "status": "Extracted",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/press/Comfort Inn & Suites — Choice press kit _ media center.html"
+        }
+      ],
+      "sourcesInScope": [
+        "recZFPfGRo5C9FF2Q",
+        "recxm2Jxqvi2n2I8K",
+        "recRbi8CjS8BVt4Z3"
+      ],
+      "existingFacts": {
+        "rows": [
+          {
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "fieldKey": "be.positioning.guestPromise",
+            "existingCount": 1,
+            "factIds": [
+              "rec7u6w9nYBYgbG9i"
+            ]
+          },
+          {
+            "sourceId": "recZFPfGRo5C9FF2Q",
+            "fieldKey": "be.overview.developmentModel",
+            "existingCount": 1,
+            "factIds": [
+              "recUDLm4RUGe3S9FI"
+            ]
+          },
+          {
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "fieldKey": "be.footprint.geoIntro",
+            "existingCount": 1,
+            "factIds": [
+              "recVyEc3coYVAJNVW"
+            ]
+          },
+          {
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "fieldKey": "be.identity.parentCompany",
+            "existingCount": 1,
+            "factIds": [
+              "recczE4VjgK2hOlyM"
+            ]
+          },
+          {
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "fieldKey": "be.loyalty.programName",
+            "existingCount": 1,
+            "factIds": [
+              "recm0jMMH2iASdLqn"
+            ]
+          },
+          {
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "fieldKey": "be.identity.brandName",
+            "existingCount": 1,
+            "factIds": [
+              "recpz8XRPoNkd7pyj"
+            ]
+          },
+          {
+            "sourceId": "recZFPfGRo5C9FF2Q",
+            "fieldKey": "be.positioning.summary",
+            "existingCount": 1,
+            "factIds": [
+              "rectlauiadCWm6sqh"
+            ]
+          }
+        ],
+        "existingCount": 7,
+        "existingKeyValues": [
+          "be.positioning.guestPromise::guest experience from welcome to goodbye.",
+          "be.overview.developmentModel::development types include franchise development (per choice brand materials).",
+          "be.footprint.geoIntro::north america.",
+          "be.identity.parentCompany::choice hotels international",
+          "be.loyalty.programName::choice privileges",
+          "be.identity.brandName::comfort inn & suites",
+          "be.positioning.summary::comfort® there’s never been a better time to invest incomfort at the heart of the comfort brand is a commitment to enabling our owners’ success."
+        ]
+      },
+      "sourcePreviews": [
+        {
+          "sourceId": "recZFPfGRo5C9FF2Q",
+          "sourceTitle": "Comfort Inn & Suites — Choice development brochure (local)",
+          "sourceUrl": "",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "pdf",
+          "classificationRole": "development_brochure",
+          "extractor": "brand_rules",
+          "textLength": 1858,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort® There’s never been a better time to invest inComfort At the heart of the Comfort brand is a commitment to enabling our owners’ success.",
+              "evidencePreview": "Comfort®\r\n\r\nThere’s never been a better time to invest inComfort\r\nAt the heart of the Comfort brand is a commitment to enabling our owners’ success.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+              "evidencePreview": "franchise development",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "recxm2Jxqvi2n2I8K",
+          "sourceTitle": "Comfort Inn & Suites — Choice consumer brand page",
+          "sourceUrl": "https://www.choicehotels.com/comfort-hotels",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 7080,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort Inn & Suites",
+              "evidencePreview": "Comfort Inn & Suites® and Comfort Suites® where we help guests feel refreshed and ready to take on their days.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels®\n\nAt Comfort hotels by Choice Hotels®, Our Business Is You.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort Hotels: Comfort Inn and Comfort Suites by Choice Hotels® At Comfort hotels by Choice Hotels®, Our Business Is You.",
+              "evidencePreview": "Comfort Hotels: Comfort Inn and Comfort Suites by Choice Hotels®\n\nAt Comfort hotels by Choice Hotels®, Our Business Is You.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+              "evidencePreview": "franchise partners.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges program—it’s free and easy to sign up.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "recRbi8CjS8BVt4Z3",
+          "sourceTitle": "Comfort Inn & Suites — Choice press kit / media center",
+          "sourceUrl": "https://media.choicehotels.com/comfort-press-kit",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 4945,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort Inn & Suites",
+              "evidencePreview": "Comfort Inn & Suites, and Comfort Suites, visit https://choicehotelsdevelopment.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels International internal data.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort® Download Logo The Comfort® brand, by Choice Hotels, has been trusted by both business and leisure travelers for more than 30 years.",
+              "evidencePreview": "Comfort® Download Logo The Comfort® brand, by Choice Hotels, has been trusted by both business and leisure travelers for more than 30 years.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "extractedValuePreview": "guest experience from Welcome to Goodbye.",
+              "evidencePreview": "guest experience from Welcome to Goodbye.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include new construction (per Choice brand materials).",
+              "evidencePreview": "franchisee satisfaction are near an all-time high following the brand’s transformation in its product and guest experience from Welcome to Goodbye.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "extractedValuePreview": "North America.",
+              "evidencePreview": "North America.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        }
+      ],
+      "wouldWrite": {
+        "targetFactKeys": [
+          "be.identity.brandName",
+          "be.identity.parentCompany",
+          "be.positioning.summary",
+          "be.positioning.guestPromise",
+          "be.positioning.tagline",
+          "be.overview.developmentModel",
+          "be.overview.whyValue",
+          "be.overview.typicalUseCase",
+          "be.footprint.geoIntro",
+          "be.loyalty.programName"
+        ],
+        "unsupportedRegistryKeys": [],
+        "duplicateWarnings": [
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Comfort Hotels: Comfort Inn and Comfort Suites by Choice Hotels® At Comfort hotels by Choice Hotels®, Our Business Is You.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Comfort Inn & Suites",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "Comfort® Download Logo The Comfort® brand, by Choice Hotels, has been trusted by both business and leisure travelers for more than 30 years.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "Development types include new construction (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          }
+        ],
+        "factRowsWouldCreate": [],
+        "factRowsSkipped": [
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Comfort Hotels: Comfort Inn and Comfort Suites by Choice Hotels® At Comfort hotels by Choice Hotels®, Our Business Is You.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Comfort Inn & Suites",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "Comfort® Download Logo The Comfort® brand, by Choice Hotels, has been trusted by both business and leisure travelers for more than 30 years.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "Development types include new construction (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "recxm2Jxqvi2n2I8K",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recZFPfGRo5C9FF2Q",
+            "extractedValuePreview": "Comfort® There’s never been a better time to invest inComfort At the heart of the Comfort brand is a commitment to enabling our owners’ success.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recZFPfGRo5C9FF2Q",
+            "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "Comfort Inn & Suites",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.guestPromise",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "guest experience from Welcome to Goodbye.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.footprint.geoIntro",
+            "sourceId": "recRbi8CjS8BVt4Z3",
+            "extractedValuePreview": "North America.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          }
+        ],
+        "sourcesWouldPatch": [],
+        "factsWouldCreateCount": 0,
+        "highConfidenceFactCount": 0,
+        "factsNeedingReviewCount": 0,
+        "doesNotWrite": [
+          "Human Review Status = Approved (facts remain Pending)",
+          "Approved for Explorer Use changes",
+          "Brand Setup profile governance fields",
+          "Company Validated / Company Validation Date",
+          "Governance publish / platform field publishing",
+          "Gap facts",
+          "Apply without --approve-choice-legacy-batch-extract"
+        ]
+      },
+      "extractionQuality": {
+        "brandKey": "comfort-inn-suites",
+        "brandName": "Comfort Inn & Suites",
+        "recordId": "recOzH5iAE1xEjyD0",
+        "sourcesInScope": 3,
+        "allHtmlTextClean": true,
+        "readableSourceCount": 3,
+        "substantiveFactCount": 0,
+        "hasBrandName": false,
+        "hasParentCompany": false,
+        "hasDevelopmentModel": false,
+        "proposedFactCount": 0,
+        "highConfidenceFactCount": 0,
+        "factsNeedingReviewCount": 0,
+        "overall": "weak_needs_more_sources_or_curation",
+        "applyRecommended": false,
+        "splitOutRecommended": false,
+        "splitOutReason": null,
+        "governanceReadinessAfterFactApproval": "blocked_until_more_approved_facts",
+        "risks": [
+          "Facts remain Pending until human stewardship approval.",
+          "Do not treat extracted positioning as Company Validated.",
+          "Consumer HTML may include booking boilerplate — review evidence quotes."
+        ]
+      }
+    },
+    {
+      "brandConfig": {
+        "key": "everhome-suites",
+        "brandName": "Everhome Suites",
+        "recordId": "recqkkrsevi4r9ibj",
+        "allowlistedSourceIds": [
+          "rechRqlbx7DF4YCCV",
+          "rec28KQ9ubpynVfTq",
+          "rechbWISi8BQwTqGb"
+        ],
+        "primaryPdfSourceId": "rechRqlbx7DF4YCCV",
+        "consumerSourceId": "rec28KQ9ubpynVfTq",
+        "pressSourceId": "rechbWISi8BQwTqGb"
+      },
+      "brandName": "Everhome Suites",
+      "recordId": "recqkkrsevi4r9ibj",
+      "allowlistedSourceIds": [
+        "rechRqlbx7DF4YCCV",
+        "rec28KQ9ubpynVfTq",
+        "rechbWISi8BQwTqGb"
+      ],
+      "sources": [
+        {
+          "id": "rechRqlbx7DF4YCCV",
+          "sourceTitle": "Everhome Suites — franchise development presentation (local)",
+          "sourceType": "Development Brochure",
+          "sourceUrl": "",
+          "status": "Extracted",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/Everhome Suites/Everhome Suites_Franchise Development Presentation.pdf"
+        },
+        {
+          "id": "rec28KQ9ubpynVfTq",
+          "sourceTitle": "Everhome Suites — Choice consumer brand page",
+          "sourceType": "Brand Page",
+          "sourceUrl": "https://www.choicehotels.com/everhome-suites",
+          "status": "Extracted",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/website/Everhome Suites — Choice consumer brand page.html"
+        },
+        {
+          "id": "rechbWISi8BQwTqGb",
+          "sourceTitle": "Everhome Suites — Choice press kit / media center",
+          "sourceType": "Press Release",
+          "sourceUrl": "https://media.choicehotels.com/everhome-suites",
+          "status": "Extracted",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/press/Everhome Suites — Choice press kit _ media center.html"
+        }
+      ],
+      "sourcesInScope": [
+        "rechRqlbx7DF4YCCV",
+        "rec28KQ9ubpynVfTq",
+        "rechbWISi8BQwTqGb"
+      ],
+      "existingFacts": {
+        "rows": [
+          {
+            "sourceId": "rechbWISi8BQwTqGb",
+            "fieldKey": "be.footprint.geoIntro",
+            "existingCount": 1,
+            "factIds": [
+              "recDp9fzAP5TJYBXJ"
+            ]
+          },
+          {
+            "sourceId": "rechbWISi8BQwTqGb",
+            "fieldKey": "be.identity.parentCompany",
+            "existingCount": 1,
+            "factIds": [
+              "recLKmZ0IQQxTMGAI"
+            ]
+          },
+          {
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "fieldKey": "be.overview.typicalUseCase",
+            "existingCount": 1,
+            "factIds": [
+              "reca3ViRTvBtq9svF"
+            ]
+          },
+          {
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "fieldKey": "be.overview.developmentModel",
+            "existingCount": 1,
+            "factIds": [
+              "rechKbWryPG8etuAj"
+            ]
+          },
+          {
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "fieldKey": "be.loyalty.programName",
+            "existingCount": 1,
+            "factIds": [
+              "recn9HvMifGI4xiyJ"
+            ]
+          },
+          {
+            "sourceId": "rechbWISi8BQwTqGb",
+            "fieldKey": "be.identity.brandName",
+            "existingCount": 1,
+            "factIds": [
+              "recqIMuc2NOy99mwc"
+            ]
+          },
+          {
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "fieldKey": "be.positioning.summary",
+            "existingCount": 1,
+            "factIds": [
+              "recs8I1cvZJYLCgoW"
+            ]
+          },
+          {
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "fieldKey": "be.positioning.guestPromise",
+            "existingCount": 1,
+            "factIds": [
+              "recwPnALiOcly82bA"
+            ]
+          }
+        ],
+        "existingCount": 8,
+        "existingKeyValues": [
+          "be.footprint.geoIntro::americas regions by choice hotels.",
+          "be.identity.parentCompany::choice hotels international",
+          "be.overview.typicalUseCase::travelers.",
+          "be.overview.developmentModel::development types include new construction, conversions (per choice brand materials).",
+          "be.loyalty.programName::choice privileges",
+          "be.identity.brandName::everhome suites",
+          "be.positioning.summary::everhome suites huntsville, al the choice hotels difference.",
+          "be.positioning.guestPromise::comfortable extended stay."
+        ]
+      },
+      "sourcePreviews": [
+        {
+          "sourceId": "rechRqlbx7DF4YCCV",
+          "sourceTitle": "Everhome Suites — franchise development presentation (local)",
+          "sourceUrl": "",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "pdf",
+          "classificationRole": "overview_en",
+          "extractor": "brand_rules",
+          "textLength": 25577,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome Suites",
+              "evidencePreview": "Everhome Suites Huntsville, AL\r\n\r\n\r\nThe Choice Hotels Difference.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels International, Inc.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome Suites Huntsville, AL The Choice Hotels Difference.",
+              "evidencePreview": "Everhome Suites Huntsville, AL\r\n\r\n\r\nThe Choice Hotels Difference.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include new construction, conversions (per Choice brand materials).",
+              "evidencePreview": "Conversions MainStay Suites® hotels offer affordable apartment-style living that \r\nallows guests to maintain and be in control of their lifestyle.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "extractedValuePreview": "travelers.",
+              "evidencePreview": "travelers.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges® \r\nmembers\r\n97M+ \r\nvisits \r\nto ChoiceHotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "rec28KQ9ubpynVfTq",
+          "sourceTitle": "Everhome Suites — Choice consumer brand page",
+          "sourceUrl": "https://www.choicehotels.com/everhome-suites",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 13527,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome Suites",
+              "evidencePreview": "Everhome SuitesTM by Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome SuitesTM Official Site – Book an Extended Stay Hotel Experience extended stay with Everhome SuitesTM by Choice Hotels.",
+              "evidencePreview": "Everhome SuitesTM Official Site – Book an Extended Stay Hotel\n\nExperience extended stay with Everhome SuitesTM by Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "extractedValuePreview": "comfortable extended stay.",
+              "evidencePreview": "comfortable extended stay.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges program.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "rechbWISi8BQwTqGb",
+          "sourceTitle": "Everhome Suites — Choice press kit / media center",
+          "sourceUrl": "https://media.choicehotels.com/everhome-suites",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 4546,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome Suites",
+              "evidencePreview": "Everhome Suites, view the attached fact sheet.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels International internal data.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome™ Suites Download Logo Everhome™ Suites is an all-new-construction midscale extended-stay brand from Choice Hotels.",
+              "evidencePreview": "Everhome™ Suites Download Logo Everhome™ Suites is an all-new-construction midscale extended-stay brand from Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+              "evidencePreview": "franchise development",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "extractedValuePreview": "Americas regions by Choice Hotels.",
+              "evidencePreview": "Americas regions by Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        }
+      ],
+      "wouldWrite": {
+        "targetFactKeys": [
+          "be.identity.brandName",
+          "be.identity.parentCompany",
+          "be.positioning.summary",
+          "be.positioning.guestPromise",
+          "be.positioning.tagline",
+          "be.overview.developmentModel",
+          "be.overview.whyValue",
+          "be.overview.typicalUseCase",
+          "be.footprint.geoIntro",
+          "be.loyalty.programName"
+        ],
+        "unsupportedRegistryKeys": [],
+        "duplicateWarnings": [
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "Everhome Suites",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "extractedValuePreview": "Everhome SuitesTM Official Site – Book an Extended Stay Hotel Experience extended stay with Everhome SuitesTM by Choice Hotels.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "extractedValuePreview": "Everhome Suites",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "rechbWISi8BQwTqGb",
+            "extractedValuePreview": "Everhome™ Suites Download Logo Everhome™ Suites is an all-new-construction midscale extended-stay brand from Choice Hotels.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "rechbWISi8BQwTqGb",
+            "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          }
+        ],
+        "factRowsWouldCreate": [],
+        "factRowsSkipped": [
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "Everhome Suites",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "extractedValuePreview": "Everhome SuitesTM Official Site – Book an Extended Stay Hotel Experience extended stay with Everhome SuitesTM by Choice Hotels.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "extractedValuePreview": "Everhome Suites",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "rechbWISi8BQwTqGb",
+            "extractedValuePreview": "Everhome™ Suites Download Logo Everhome™ Suites is an all-new-construction midscale extended-stay brand from Choice Hotels.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "rechbWISi8BQwTqGb",
+            "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "rechbWISi8BQwTqGb",
+            "extractedValuePreview": "Everhome Suites",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "rechbWISi8BQwTqGb",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "Everhome Suites Huntsville, AL The Choice Hotels Difference.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "Development types include new construction, conversions (per Choice brand materials).",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.typicalUseCase",
+            "sourceId": "rechRqlbx7DF4YCCV",
+            "extractedValuePreview": "travelers.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.guestPromise",
+            "sourceId": "rec28KQ9ubpynVfTq",
+            "extractedValuePreview": "comfortable extended stay.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.footprint.geoIntro",
+            "sourceId": "rechbWISi8BQwTqGb",
+            "extractedValuePreview": "Americas regions by Choice Hotels.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          }
+        ],
+        "sourcesWouldPatch": [],
+        "factsWouldCreateCount": 0,
+        "highConfidenceFactCount": 0,
+        "factsNeedingReviewCount": 0,
+        "doesNotWrite": [
+          "Human Review Status = Approved (facts remain Pending)",
+          "Approved for Explorer Use changes",
+          "Brand Setup profile governance fields",
+          "Company Validated / Company Validation Date",
+          "Governance publish / platform field publishing",
+          "Gap facts",
+          "Apply without --approve-choice-legacy-batch-extract"
+        ]
+      },
+      "extractionQuality": {
+        "brandKey": "everhome-suites",
+        "brandName": "Everhome Suites",
+        "recordId": "recqkkrsevi4r9ibj",
+        "sourcesInScope": 3,
+        "allHtmlTextClean": true,
+        "readableSourceCount": 3,
+        "substantiveFactCount": 0,
+        "hasBrandName": false,
+        "hasParentCompany": false,
+        "hasDevelopmentModel": false,
+        "proposedFactCount": 0,
+        "highConfidenceFactCount": 0,
+        "factsNeedingReviewCount": 0,
+        "overall": "weak_needs_more_sources_or_curation",
+        "applyRecommended": false,
+        "splitOutRecommended": false,
+        "splitOutReason": null,
+        "governanceReadinessAfterFactApproval": "blocked_until_more_approved_facts",
+        "risks": [
+          "Facts remain Pending until human stewardship approval.",
+          "Do not treat extracted positioning as Company Validated.",
+          "Consumer HTML may include booking boilerplate — review evidence quotes."
+        ]
+      }
+    },
+    {
+      "brandConfig": {
+        "key": "quality-inn",
+        "brandName": "Quality Inn",
+        "recordId": "recd8o4k1JddhkRWW",
+        "allowlistedSourceIds": [
+          "recmEnl9wcLfSA4Mk",
+          "recpsFcGtpvib16s0",
+          "recfh3rpBaKo0U0H1"
+        ],
+        "primaryPdfSourceId": "recmEnl9wcLfSA4Mk",
+        "consumerSourceId": "recpsFcGtpvib16s0",
+        "pressSourceId": "recfh3rpBaKo0U0H1"
+      },
+      "brandName": "Quality Inn",
+      "recordId": "recd8o4k1JddhkRWW",
+      "allowlistedSourceIds": [
+        "recmEnl9wcLfSA4Mk",
+        "recpsFcGtpvib16s0",
+        "recfh3rpBaKo0U0H1"
+      ],
+      "sources": [
+        {
+          "id": "recmEnl9wcLfSA4Mk",
+          "sourceTitle": "Quality Inn — Choice development brochure (local)",
+          "sourceType": "Development Brochure",
+          "sourceUrl": "",
+          "status": "Extracted",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/Quality Inn/brochure--quality-inn.pdf"
+        },
+        {
+          "id": "recpsFcGtpvib16s0",
+          "sourceTitle": "Quality Inn — Choice consumer brand page",
+          "sourceType": "Brand Page",
+          "sourceUrl": "https://www.choicehotels.com/quality-inn",
+          "status": "Approved",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/website/Quality Inn — Choice consumer brand page.html"
+        },
+        {
+          "id": "recfh3rpBaKo0U0H1",
+          "sourceTitle": "Quality Inn — Choice press kit / media center",
+          "sourceType": "Press Release",
+          "sourceUrl": "https://media.choicehotels.com/quality-press-kit",
+          "status": "Extracted",
+          "approvedForExtraction": "Yes",
+          "localFilePath": "Choice Hotels International/press/Quality Inn — Choice press kit _ media center.html"
+        }
+      ],
+      "sourcesInScope": [
+        "recmEnl9wcLfSA4Mk",
+        "recpsFcGtpvib16s0",
+        "recfh3rpBaKo0U0H1"
+      ],
+      "existingFacts": {
+        "rows": [
+          {
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "fieldKey": "be.loyalty.programName",
+            "existingCount": 1,
+            "factIds": [
+              "rec06RcyHCLZvreRi"
+            ]
+          },
+          {
+            "sourceId": "recmEnl9wcLfSA4Mk",
+            "fieldKey": "be.overview.developmentModel",
+            "existingCount": 1,
+            "factIds": [
+              "rec6dSr0R37UlYqpI"
+            ]
+          },
+          {
+            "sourceId": "recmEnl9wcLfSA4Mk",
+            "fieldKey": "be.overview.whyValue",
+            "existingCount": 1,
+            "factIds": [
+              "recEpe7aGf6PVyoUB"
+            ]
+          },
+          {
+            "sourceId": "recmEnl9wcLfSA4Mk",
+            "fieldKey": "be.positioning.summary",
+            "existingCount": 1,
+            "factIds": [
+              "reccaRYKW2N6rVx9a"
+            ]
+          },
+          {
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "fieldKey": "be.positioning.guestPromise",
+            "existingCount": 1,
+            "factIds": [
+              "reci0AaYhUTlX5uug"
+            ]
+          },
+          {
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "fieldKey": "be.identity.brandName",
+            "existingCount": 1,
+            "factIds": [
+              "reclAief28ZnBt16o"
+            ]
+          },
+          {
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "fieldKey": "be.identity.parentCompany",
+            "existingCount": 1,
+            "factIds": [
+              "recqXLJ6VzLrFKyKz"
+            ]
+          },
+          {
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "fieldKey": "be.footprint.geoIntro",
+            "existingCount": 1,
+            "factIds": [
+              "recwptd2xswi92NsR"
+            ]
+          }
+        ],
+        "existingCount": 8,
+        "existingKeyValues": [
+          "be.loyalty.programName::choice privileges",
+          "be.overview.developmentModel::development types include conversions (per choice brand materials).",
+          "be.overview.whyValue::owners maximize the ongoing return of their existing hotel by focusing on what matters most to the midscale guest.",
+          "be.positioning.summary::quality hotels help owners maximize the ongoing return of their existing hotel by focusing on what matters most to the midscale guest.",
+          "be.positioning.guestPromise::reliable and affordable lodging option.",
+          "be.identity.brandName::quality inn",
+          "be.identity.parentCompany::choice hotels international",
+          "be.footprint.geoIntro::united states alone."
+        ]
+      },
+      "sourcePreviews": [
+        {
+          "sourceId": "recmEnl9wcLfSA4Mk",
+          "sourceTitle": "Quality Inn — Choice development brochure (local)",
+          "sourceUrl": "",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "pdf",
+          "classificationRole": "development_brochure",
+          "extractor": "brand_rules",
+          "textLength": 1923,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels Advertising Tracking Study, Full Year 2019, conducted by Millward Brown.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Quality hotels help owners maximize the ongoing return of their existing hotel by focusing on what matters most to the midscale guest.",
+              "evidencePreview": "Quality  hotels \r\nhelp owners maximize \r\nthe ongoing return of \r\ntheir existing hotel by \r\nfocusing on what \r\nmatters most to the \r\nmidscale guest.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include conversions (per Choice brand materials).",
+              "evidencePreview": "conversions",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "extractedValuePreview": "owners maximize the ongoing return of their existing hotel by focusing on what matters most to the midscale guest.",
+              "evidencePreview": "owners maximize \r\nthe ongoing return of \r\ntheir existing hotel by \r\nfocusing on what \r\nmatters most to the \r\nmidscale guest.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "recpsFcGtpvib16s0",
+          "sourceTitle": "Quality Inn — Choice consumer brand page",
+          "sourceUrl": "https://www.choicehotels.com/quality-inn",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 8562,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Quality Inn",
+              "evidencePreview": "Quality Inn hotels by Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Quality Inn® by Choice Hotels – Book Now on the Official Site! Choose Quality Inn hotels by Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+              "evidencePreview": "Quality Inn® by Choice Hotels – Book Now on the Official Site!\n\nChoose Quality Inn hotels by Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+              "evidencePreview": "franchise partners.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges program—it’s free and easy to sign up.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "recfh3rpBaKo0U0H1",
+          "sourceTitle": "Quality Inn — Choice press kit / media center",
+          "sourceUrl": "https://media.choicehotels.com/quality-press-kit",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 3965,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Quality Inn",
+              "evidencePreview": "Quality Inn #F-48.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels International internal data.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Quality® Download Logo Quality ® is the brand upon which Choice Hotels was founded and remains committed to providing guests and owners with a reliable and affordable lodging option.",
+              "evidencePreview": "Quality® Download Logo Quality ® is the brand upon which Choice Hotels was founded and remains committed to providing guests and owners with a reliable and affordable lodging option.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "extractedValuePreview": "reliable and affordable lodging option.",
+              "evidencePreview": "reliable and affordable lodging option.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include conversions (per Choice brand materials).",
+              "evidencePreview": "conversions, which delivers owners a high return on investment.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "extractedValuePreview": "United States alone.",
+              "evidencePreview": "United States alone.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        }
+      ],
+      "wouldWrite": {
+        "targetFactKeys": [
+          "be.identity.brandName",
+          "be.identity.parentCompany",
+          "be.positioning.summary",
+          "be.positioning.guestPromise",
+          "be.positioning.tagline",
+          "be.overview.developmentModel",
+          "be.overview.whyValue",
+          "be.overview.typicalUseCase",
+          "be.footprint.geoIntro",
+          "be.loyalty.programName"
+        ],
+        "unsupportedRegistryKeys": [],
+        "duplicateWarnings": [
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "recmEnl9wcLfSA4Mk",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Quality Inn® by Choice Hotels – Book Now on the Official Site! Choose Quality Inn hotels by Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Quality Inn",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "Quality® Download Logo Quality ® is the brand upon which Choice Hotels was founded and remains committed to providing guests and owners with a reliable and affordable lodging option.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "Development types include conversions (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          }
+        ],
+        "factRowsWouldCreate": [],
+        "factRowsSkipped": [
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "recmEnl9wcLfSA4Mk",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Quality Inn® by Choice Hotels – Book Now on the Official Site! Choose Quality Inn hotels by Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Quality Inn",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "Quality® Download Logo Quality ® is the brand upon which Choice Hotels was founded and remains committed to providing guests and owners with a reliable and affordable lodging option.",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "Development types include conversions (per Choice brand materials).",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "recpsFcGtpvib16s0",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_field_key_keep_best"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.parentCompany",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "Choice Hotels International",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.summary",
+            "sourceId": "recmEnl9wcLfSA4Mk",
+            "extractedValuePreview": "Quality hotels help owners maximize the ongoing return of their existing hotel by focusing on what matters most to the midscale guest.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.developmentModel",
+            "sourceId": "recmEnl9wcLfSA4Mk",
+            "extractedValuePreview": "Development types include conversions (per Choice brand materials).",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.overview.whyValue",
+            "sourceId": "recmEnl9wcLfSA4Mk",
+            "extractedValuePreview": "owners maximize the ongoing return of their existing hotel by focusing on what matters most to the midscale guest.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.identity.brandName",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "Quality Inn",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.loyalty.programName",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "Choice Privileges",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.positioning.guestPromise",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "reliable and affordable lodging option.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          },
+          {
+            "fieldKey": "be.footprint.geoIntro",
+            "sourceId": "recfh3rpBaKo0U0H1",
+            "extractedValuePreview": "United States alone.",
+            "reasons": [
+              "duplicate_existing_airtable_fact"
+            ]
+          }
+        ],
+        "sourcesWouldPatch": [],
+        "factsWouldCreateCount": 0,
+        "highConfidenceFactCount": 0,
+        "factsNeedingReviewCount": 0,
+        "doesNotWrite": [
+          "Human Review Status = Approved (facts remain Pending)",
+          "Approved for Explorer Use changes",
+          "Brand Setup profile governance fields",
+          "Company Validated / Company Validation Date",
+          "Governance publish / platform field publishing",
+          "Gap facts",
+          "Apply without --approve-choice-legacy-batch-extract"
+        ]
+      },
+      "extractionQuality": {
+        "brandKey": "quality-inn",
+        "brandName": "Quality Inn",
+        "recordId": "recd8o4k1JddhkRWW",
+        "sourcesInScope": 3,
+        "allHtmlTextClean": true,
+        "readableSourceCount": 3,
+        "substantiveFactCount": 0,
+        "hasBrandName": false,
+        "hasParentCompany": false,
+        "hasDevelopmentModel": false,
+        "proposedFactCount": 0,
+        "highConfidenceFactCount": 0,
+        "factsNeedingReviewCount": 0,
+        "overall": "weak_needs_more_sources_or_curation",
+        "applyRecommended": false,
+        "splitOutRecommended": false,
+        "splitOutReason": null,
+        "governanceReadinessAfterFactApproval": "blocked_until_more_approved_facts",
+        "risks": [
+          "Facts remain Pending until human stewardship approval.",
+          "Do not treat extracted positioning as Company Validated.",
+          "Consumer HTML may include booking boilerplate — review evidence quotes."
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "totalBrands": 3,
+    "totalSourcesInScope": 9,
+    "totalProposedFacts": 0,
+    "proposedFactsByBrand": {
+      "Comfort Inn & Suites": 0,
+      "Everhome Suites": 0,
+      "Quality Inn": 0
+    },
+    "highConfidenceFacts": 0,
+    "factsNeedingReview": 0,
+    "brandsReadyForBatchApply": 0,
+    "brandsToSplitOut": 0,
+    "duplicateWarnings": 23
+  },
+  "batchApplyCommand": "npm run choice-legacy-batch-extract -- --apply --approve-choice-legacy-batch-extract",
+  "nextRecommendedCommand": "npm run steward-partner-intelligence -- --entity-type brand --target-rec-id <rec…> --dry-run --recompute",
+  "perBrandStewardCommands": [
+    "npm run steward-partner-intelligence -- --entity-type brand --target-rec-id recOzH5iAE1xEjyD0 --dry-run --recompute",
+    "npm run steward-partner-intelligence -- --entity-type brand --target-rec-id recqkkrsevi4r9ibj --dry-run --recompute",
+    "npm run steward-partner-intelligence -- --entity-type brand --target-rec-id recd8o4k1JddhkRWW --dry-run --recompute"
+  ],
+  "doesNotDo": [
+    "Rebuild Brand Explorer content or overwrite Brand Setup fields",
+    "Approve facts automatically",
+    "Publish governance or set Company Validated",
+    "Extract from development JS-shell pages or RHG/global sources",
+    "Create gap facts",
+    "Change UI, scoring, BAS, OAS, OCS, Deal Readiness, or schema"
+  ],
+  "sourcePreviews": [
+    {
+      "brandName": "Comfort Inn & Suites",
+      "previews": [
+        {
+          "sourceId": "recZFPfGRo5C9FF2Q",
+          "sourceTitle": "Comfort Inn & Suites — Choice development brochure (local)",
+          "sourceUrl": "",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "pdf",
+          "classificationRole": "development_brochure",
+          "extractor": "brand_rules",
+          "textLength": 1858,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort® There’s never been a better time to invest inComfort At the heart of the Comfort brand is a commitment to enabling our owners’ success.",
+              "evidencePreview": "Comfort®\r\n\r\nThere’s never been a better time to invest inComfort\r\nAt the heart of the Comfort brand is a commitment to enabling our owners’ success.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+              "evidencePreview": "franchise development",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "recxm2Jxqvi2n2I8K",
+          "sourceTitle": "Comfort Inn & Suites — Choice consumer brand page",
+          "sourceUrl": "https://www.choicehotels.com/comfort-hotels",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 7080,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort Inn & Suites",
+              "evidencePreview": "Comfort Inn & Suites® and Comfort Suites® where we help guests feel refreshed and ready to take on their days.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels®\n\nAt Comfort hotels by Choice Hotels®, Our Business Is You.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort Hotels: Comfort Inn and Comfort Suites by Choice Hotels® At Comfort hotels by Choice Hotels®, Our Business Is You.",
+              "evidencePreview": "Comfort Hotels: Comfort Inn and Comfort Suites by Choice Hotels®\n\nAt Comfort hotels by Choice Hotels®, Our Business Is You.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+              "evidencePreview": "franchise partners.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges program—it’s free and easy to sign up.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "recRbi8CjS8BVt4Z3",
+          "sourceTitle": "Comfort Inn & Suites — Choice press kit / media center",
+          "sourceUrl": "https://media.choicehotels.com/comfort-press-kit",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 4945,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort Inn & Suites",
+              "evidencePreview": "Comfort Inn & Suites, and Comfort Suites, visit https://choicehotelsdevelopment.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels International internal data.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Comfort® Download Logo The Comfort® brand, by Choice Hotels, has been trusted by both business and leisure travelers for more than 30 years.",
+              "evidencePreview": "Comfort® Download Logo The Comfort® brand, by Choice Hotels, has been trusted by both business and leisure travelers for more than 30 years.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "extractedValuePreview": "guest experience from Welcome to Goodbye.",
+              "evidencePreview": "guest experience from Welcome to Goodbye.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include new construction (per Choice brand materials).",
+              "evidencePreview": "franchisee satisfaction are near an all-time high following the brand’s transformation in its product and guest experience from Welcome to Goodbye.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "extractedValuePreview": "North America.",
+              "evidencePreview": "North America.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        }
+      ]
+    },
+    {
+      "brandName": "Everhome Suites",
+      "previews": [
+        {
+          "sourceId": "rechRqlbx7DF4YCCV",
+          "sourceTitle": "Everhome Suites — franchise development presentation (local)",
+          "sourceUrl": "",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "pdf",
+          "classificationRole": "overview_en",
+          "extractor": "brand_rules",
+          "textLength": 25577,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome Suites",
+              "evidencePreview": "Everhome Suites Huntsville, AL\r\n\r\n\r\nThe Choice Hotels Difference.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels International, Inc.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome Suites Huntsville, AL The Choice Hotels Difference.",
+              "evidencePreview": "Everhome Suites Huntsville, AL\r\n\r\n\r\nThe Choice Hotels Difference.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include new construction, conversions (per Choice brand materials).",
+              "evidencePreview": "Conversions MainStay Suites® hotels offer affordable apartment-style living that \r\nallows guests to maintain and be in control of their lifestyle.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "extractedValuePreview": "travelers.",
+              "evidencePreview": "travelers.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges® \r\nmembers\r\n97M+ \r\nvisits \r\nto ChoiceHotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "rec28KQ9ubpynVfTq",
+          "sourceTitle": "Everhome Suites — Choice consumer brand page",
+          "sourceUrl": "https://www.choicehotels.com/everhome-suites",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 13527,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome Suites",
+              "evidencePreview": "Everhome SuitesTM by Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome SuitesTM Official Site – Book an Extended Stay Hotel Experience extended stay with Everhome SuitesTM by Choice Hotels.",
+              "evidencePreview": "Everhome SuitesTM Official Site – Book an Extended Stay Hotel\n\nExperience extended stay with Everhome SuitesTM by Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "extractedValuePreview": "comfortable extended stay.",
+              "evidencePreview": "comfortable extended stay.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges program.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "rechbWISi8BQwTqGb",
+          "sourceTitle": "Everhome Suites — Choice press kit / media center",
+          "sourceUrl": "https://media.choicehotels.com/everhome-suites",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 4546,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome Suites",
+              "evidencePreview": "Everhome Suites, view the attached fact sheet.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels International internal data.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Everhome™ Suites Download Logo Everhome™ Suites is an all-new-construction midscale extended-stay brand from Choice Hotels.",
+              "evidencePreview": "Everhome™ Suites Download Logo Everhome™ Suites is an all-new-construction midscale extended-stay brand from Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+              "evidencePreview": "franchise development",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "extractedValuePreview": "Americas regions by Choice Hotels.",
+              "evidencePreview": "Americas regions by Choice Hotels.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        }
+      ]
+    },
+    {
+      "brandName": "Quality Inn",
+      "previews": [
+        {
+          "sourceId": "recmEnl9wcLfSA4Mk",
+          "sourceTitle": "Quality Inn — Choice development brochure (local)",
+          "sourceUrl": "",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "pdf",
+          "classificationRole": "development_brochure",
+          "extractor": "brand_rules",
+          "textLength": 1923,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels Advertising Tracking Study, Full Year 2019, conducted by Millward Brown.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Quality hotels help owners maximize the ongoing return of their existing hotel by focusing on what matters most to the midscale guest.",
+              "evidencePreview": "Quality  hotels \r\nhelp owners maximize \r\nthe ongoing return of \r\ntheir existing hotel by \r\nfocusing on what \r\nmatters most to the \r\nmidscale guest.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include conversions (per Choice brand materials).",
+              "evidencePreview": "conversions",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "extractedValuePreview": "owners maximize the ongoing return of their existing hotel by focusing on what matters most to the midscale guest.",
+              "evidencePreview": "owners maximize \r\nthe ongoing return of \r\ntheir existing hotel by \r\nfocusing on what \r\nmatters most to the \r\nmidscale guest.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "recpsFcGtpvib16s0",
+          "sourceTitle": "Quality Inn — Choice consumer brand page",
+          "sourceUrl": "https://www.choicehotels.com/quality-inn",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 8562,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Quality Inn",
+              "evidencePreview": "Quality Inn hotels by Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Quality Inn® by Choice Hotels – Book Now on the Official Site! Choose Quality Inn hotels by Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+              "evidencePreview": "Quality Inn® by Choice Hotels – Book Now on the Official Site!\n\nChoose Quality Inn hotels by Choice Hotels for value and exceptional amenities to ‘Get Your Money’s Worth’.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include franchise development (per Choice brand materials).",
+              "evidencePreview": "franchise partners.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges program—it’s free and easy to sign up.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        },
+        {
+          "sourceId": "recfh3rpBaKo0U0H1",
+          "sourceTitle": "Quality Inn — Choice press kit / media center",
+          "sourceUrl": "https://media.choicehotels.com/quality-press-kit",
+          "validation": {
+            "ok": true,
+            "reasons": []
+          },
+          "keyPlan": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Name",
+              "explorerSection": "Brand Identity"
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Parent Company",
+              "explorerSection": "Parent Company"
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Positioning",
+              "explorerSection": "Brand Positioning"
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Customer Promise",
+              "explorerSection": "Guest Promise"
+            },
+            {
+              "fieldKey": "be.positioning.tagline",
+              "priority": "P0",
+              "registrySupported": true,
+              "displayLabel": "Brand Tagline",
+              "explorerSection": "Tagline"
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Development Model",
+              "explorerSection": "Development Model"
+            },
+            {
+              "fieldKey": "be.overview.whyValue",
+              "priority": "P1",
+              "registrySupported": true,
+              "displayLabel": "Why Owners Choose Brand",
+              "explorerSection": "Why Value"
+            },
+            {
+              "fieldKey": "be.overview.typicalUseCase",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Typical Use Case",
+              "explorerSection": "Target Guest"
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Footprint Summary",
+              "explorerSection": "Geographic Intro"
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "registrySupported": true,
+              "displayLabel": "Loyalty Program",
+              "explorerSection": "Program Name"
+            }
+          ],
+          "supportedKeys": [
+            "be.identity.brandName",
+            "be.identity.parentCompany",
+            "be.positioning.summary",
+            "be.positioning.guestPromise",
+            "be.positioning.tagline",
+            "be.overview.developmentModel",
+            "be.overview.whyValue",
+            "be.overview.typicalUseCase",
+            "be.footprint.geoIntro",
+            "be.loyalty.programName"
+          ],
+          "unsupportedKeys": [],
+          "previewAvailable": true,
+          "previewSkippedReason": null,
+          "documentKind": "html",
+          "classificationRole": "public_web",
+          "extractor": "brand_rules",
+          "textLength": 3965,
+          "htmlTextClean": true,
+          "rawCandidateCount": 0,
+          "previewCandidates": [
+            {
+              "fieldKey": "be.identity.brandName",
+              "priority": "P0",
+              "extractedValuePreview": "Quality Inn",
+              "evidencePreview": "Quality Inn #F-48.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.identity.parentCompany",
+              "priority": "P0",
+              "extractedValuePreview": "Choice Hotels International",
+              "evidencePreview": "Choice Hotels International internal data.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.summary",
+              "priority": "P0",
+              "extractedValuePreview": "Quality® Download Logo Quality ® is the brand upon which Choice Hotels was founded and remains committed to providing guests and owners with a reliable and affordable lodging option.",
+              "evidencePreview": "Quality® Download Logo Quality ® is the brand upon which Choice Hotels was founded and remains committed to providing guests and owners with a reliable and affordable lodging option.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.positioning.guestPromise",
+              "priority": "P0",
+              "extractedValuePreview": "reliable and affordable lodging option.",
+              "evidencePreview": "reliable and affordable lodging option.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.overview.developmentModel",
+              "priority": "P1",
+              "extractedValuePreview": "Development types include conversions (per Choice brand materials).",
+              "evidencePreview": "conversions, which delivers owners a high return on investment.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.footprint.geoIntro",
+              "priority": "P2",
+              "extractedValuePreview": "United States alone.",
+              "evidencePreview": "United States alone.",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            },
+            {
+              "fieldKey": "be.loyalty.programName",
+              "priority": "P2",
+              "extractedValuePreview": "Choice Privileges",
+              "evidencePreview": "Choice Privileges",
+              "extractionType": "Directly Stated",
+              "confidenceLevel": "High",
+              "confidenceScore": 80,
+              "dataGap": "No",
+              "enriched": true,
+              "aiInterpreted": false,
+              "wouldWriteOnApply": true
+            }
+          ],
+          "skippedCandidates": []
+        }
+      ]
+    }
+  ],
+  "applyResult": null
+}

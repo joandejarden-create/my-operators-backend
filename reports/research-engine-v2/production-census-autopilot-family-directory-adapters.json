@@ -1,0 +1,176 @@
+{
+  "version": "census-autopilot-family-directory-adapters-v1",
+  "generated_at": "2026-08-05T22:12:52.518Z",
+  "status": "production_census_autopilot_family_directory_adapters_wired",
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "webhound_run": false,
+  "warm": {
+    "version": "census-autopilot-family-directory-adapters-v1",
+    "loaded_at": "2026-08-05T22:12:52.211Z",
+    "hilton_count": 102,
+    "choice_count": 50,
+    "errors": []
+  },
+  "cache": {
+    "version": "census-autopilot-family-directory-adapters-v1",
+    "loaded_at": "2026-08-05T22:12:52.211Z",
+    "hilton_count": 102,
+    "choice_count": 50,
+    "errors": [],
+    "unresolved_patterns": [
+      {
+        "id": "marriott_hqv_akamai_or_bot_blocked",
+        "family": "Marriott",
+        "pattern": "Marriott HQV failed: akamai_or_bot_blocked",
+        "count": 1,
+        "sample_urls": [],
+        "what_code_needs_to_learn": "Harvest MARRIOTT_GRAPHQL_OPERATION_SIGNATURE / Akamai-safe HQV path.",
+        "never_write_from_webhound": true
+      }
+    ]
+  },
+  "sample_resolutions": [
+    {
+      "family": "Hilton",
+      "identity_key": "ind_hilton_mx_qrohwhw",
+      "address": {
+        "ok": true,
+        "method": "hilton_locations_directory",
+        "address": "Gasa de Inc. a Carr. QRO-SLP  681",
+        "source_url": "https://www.hilton.com/en/locations/mexico/homewood-suites/"
+      },
+      "amenities": {
+        "ok": true,
+        "method": "hilton_directory_amenityIds",
+        "tag_count": 13,
+        "tags_preview": [
+          "Adjoining Rooms",
+          "Airport Shuttle",
+          "Cribs Available",
+          "EV Charging",
+          "Extended Stay",
+          "Fitness Center"
+        ]
+      },
+      "description": {
+        "ok": false,
+        "reason": "hilton_directory_has_amenities_not_narrative_description"
+      },
+      "coordinates": {
+        "ok": true,
+        "method": "hilton_locations_directory_coordinate",
+        "lat": 20.69,
+        "lng": -100.437334
+      }
+    },
+    {
+      "family": "Choice",
+      "identity_key": "ind_choice_mx_mx165",
+      "address": {
+        "ok": true,
+        "method": "choice_regional_hotel_card",
+        "address": "Av Camaron Sabalo 811",
+        "source_url": "https://www.choicehotels.com/sinaloa/mazatlan/ascend-hotels/mx165"
+      },
+      "amenities": {
+        "ok": true,
+        "method": "choice_regional_amenity_groups",
+        "tag_count": 25,
+        "tags_preview": [
+          "All-Inclusive Resort",
+          "Family Friendly",
+          "Lounge/Bar",
+          "Outdoor Pool",
+          "Business Center",
+          "Elevator(s)"
+        ]
+      },
+      "description": {
+        "ok": false,
+        "reason": "choice_regional_cards_lack_hotel_narrative_description"
+      },
+      "coordinates": {
+        "ok": true,
+        "method": "choice_regional_geoLocation",
+        "lat": 23.253705,
+        "lng": -106.456958
+      }
+    },
+    {
+      "family": "Marriott",
+      "identity_key": "ind_marriott_mx_mexcy",
+      "address": {
+        "ok": false,
+        "reason": "no_directory_address"
+      },
+      "amenities": {
+        "ok": false,
+        "reason": "family_has_no_directory_amenities_adapter"
+      },
+      "description": {
+        "ok": false,
+        "reason": "no_directory_description_adapter"
+      },
+      "coordinates": {
+        "ok": false,
+        "reason": "akamai_or_bot_blocked"
+      }
+    }
+  ],
+  "webhound_candidates": {
+    "version": "census-autopilot-webhound-learning-candidates-v1",
+    "capped_at": 25,
+    "run_webhound": false,
+    "write_from_webhound": false,
+    "candidates": [
+      {
+        "id": "marriott_hqv_akamai_or_bot_blocked",
+        "family": "Marriott",
+        "pattern": "Marriott HQV failed: akamai_or_bot_blocked",
+        "what_code_needs_to_learn": "Harvest MARRIOTT_GRAPHQL_OPERATION_SIGNATURE / Akamai-safe HQV path.",
+        "sample_urls": [],
+        "count": 1,
+        "never_write_from_webhound": true,
+        "source": "family_directory_adapter_unresolved"
+      },
+      {
+        "id": "hilton_edge_403_page_reference_code",
+        "family": "Hilton",
+        "pattern": "hilton.com/en/hotels/{ctyhocn}-…/ → HTTP 403 title 'Hilton Page Reference Code'",
+        "what_code_needs_to_learn": "Prefer Hilton locations directory adapters for address/amenities/coords; Webhound only if directory miss repeats.",
+        "sample_urls": [],
+        "never_write_from_webhound": true
+      },
+      {
+        "id": "marriott_com_403",
+        "family": "Marriott",
+        "pattern": "marriott.com/.../overview/ → HTTP 403 short body",
+        "what_code_needs_to_learn": "Prefer Marriott HQV GraphQL for coordinates; descriptions need alternate public path.",
+        "never_write_from_webhound": true
+      },
+      {
+        "id": "choicehotels_com_403",
+        "family": "Choice",
+        "pattern": "choicehotels.com/{state}/{city}/{brand}/{code} → HTTP 403",
+        "what_code_needs_to_learn": "Prefer Choice regional JSON-LD/hotel cards for address/amenities/coords; narrative description not on regional cards.",
+        "never_write_from_webhound": true
+      },
+      {
+        "id": "ihg_empty_numberOfRooms",
+        "family": "IHG",
+        "pattern": "hoteldetail JSON \"numberOfRooms\" : \"\"",
+        "what_code_needs_to_learn": "Where IHG publishes authoritative room counts when schema field is empty (without JS false positives).",
+        "never_write_from_webhound": true
+      }
+    ],
+    "note": "Candidates only — do not run Webhound in this task; never write Airtable from Webhound. Emit only for repeated unresolved source patterns after directory/HQV adapters."
+  },
+  "wiring": {
+    "address_confirmation": "resolveDirectoryAddressCandidate before property URL fetch",
+    "amenities_extraction": "Hilton amenityIds + Choice amenityGroups via directory before 403 pages",
+    "description_extraction": "Choice regional cards lack narrative — amenities only; deep signals when page fetch succeeds",
+    "coordinate_resolution": "Marriott HQV → Hilton/Choice directory geo → deep page signals → HTML"
+  }
+}

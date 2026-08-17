@@ -1,0 +1,385 @@
+{
+  "report": "operator-setup-batch-3-field-mapping-plan",
+  "generatedAt": "2026-06-02",
+  "status": "plan_only",
+  "constraints": {
+    "schema_changes": false,
+    "field_renames_or_deletes": false,
+    "select_option_normalization": false,
+    "scoring_methodology_changes": false,
+    "batch4_changes": false
+  },
+  "evidence": {
+    "currentCodeFiles": [
+      "public/third-party-operator-setup-new-two.html",
+      "public/js/operator-setup-explorer-behavior.js",
+      "api/third-party-operator-intake.js",
+      "api/lib/operator-setup-new-base-writer.js",
+      "api/lib/operator-setup-new-base-build-sheet-rows.json",
+      "api/lib/operator-setup-new-base-read.js",
+      "api/third-party-operator-detail.js",
+      "public/js/operator-explorer-new-base-profile.js",
+      "lib/operator-alignment-company-utils.js",
+      "api/operator-capability-snapshot.js",
+      "api/operator-alignment-snapshot.js"
+    ],
+    "liveSchemaBackedReports": [
+      "reports/operator-setup-field-inventory.json",
+      "reports/my-operator-input-to-airtable-map.json",
+      "reports/operator-field-usage-matrix.json",
+      "reports/operator-source-of-truth-gaps.json"
+    ],
+    "liveSchemaStatus": "ok"
+  },
+  "issues": [
+    {
+      "id": "B3-P0-01",
+      "priority": "P0",
+      "fieldConceptName": "Company logo attachment contract",
+      "affectedMyOperatorPageTabSection": "Profile & Positioning / Operator Quick Facts",
+      "frontendKey": "companyLogo",
+      "requestPayloadKey": "multipart file + payload body",
+      "apiFileFunction": "api/third-party-operator-intake.js::handleThirdPartyOperatorIntake + submitThirdPartyOperator; api/lib/operator-setup-new-base-writer.js::writeOperatorSetupToNewBase",
+      "airtableTable": "Operator Setup - Profile & Positioning",
+      "airtableField": "companyLogo (expected attachment)",
+      "readbackDetailKey": "pf.companyLogo -> list/detail logo mapping",
+      "downstreamPagesAffected": [
+        "Operator Explorer"
+      ],
+      "currentIssue": "Displayed in read/list flows but canonical new-base write path does not persist attachment.",
+      "proposedFix": "Add canonical attachment write mapping in new-base writer.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": true,
+      "uiChangeNeeded": false,
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": false,
+      "testNeeded": "Multipart save + detail reload confirms persisted logo.",
+      "riskLevel": "High",
+      "issueClasses": [
+        "displayed_but_not_written",
+        "runtime_validation_required"
+      ]
+    },
+    {
+      "id": "B3-P0-02",
+      "priority": "P0",
+      "fieldConceptName": "Narrative fields canonical save contract",
+      "affectedMyOperatorPageTabSection": "Profile & Positioning / Company Story & Positioning",
+      "frontendKey": "companyTagline, missionStatement, companyHistory, differentiators, managementPhilosophy",
+      "requestPayloadKey": "same keys",
+      "apiFileFunction": "api/lib/operator-setup-new-base-writer.js build-sheet mapping path",
+      "airtableTable": "Operator Setup - Profile & Positioning",
+      "airtableField": "corresponding narrative columns",
+      "readbackDetailKey": "buildBasicsShapedFieldsFromNewBase + prefill keys",
+      "downstreamPagesAffected": [
+        "Operator Explorer",
+        "Operator Alignment Snapshot",
+        "Operator Alignment Score Breakdown (supporting narratives)"
+      ],
+      "currentIssue": "UI has these fields; canonical build-sheet fallback omits several keys, creating save/read gaps.",
+      "proposedFix": "Add missing keys to canonical mapping source and verify round-trip to detail/prefill.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": true,
+      "uiChangeNeeded": false,
+      "dataMigrationNeeded": "maybe",
+      "snapshotScoringLogicAffected": "indirect",
+      "testNeeded": "Save each narrative field, refresh prefill, verify Explorer rendering.",
+      "riskLevel": "High",
+      "issueClasses": [
+        "no_confirmed_save_path",
+        "displayed_but_not_written",
+        "runtime_validation_required"
+      ]
+    },
+    {
+      "id": "B3-P0-03",
+      "priority": "P0",
+      "fieldConceptName": "Canonical vs alias read-key ambiguity",
+      "affectedMyOperatorPageTabSection": "Multiple tabs",
+      "frontendKey": "companyName, serviceModelsSupported, chainScalesSupported and aliases",
+      "requestPayloadKey": "camelCase keys + explorer payload keys",
+      "apiFileFunction": "api/lib/operator-setup-new-base-read.js + public/js/operator-explorer-new-base-profile.js + lib/operator-alignment-company-utils.js",
+      "airtableTable": "Operator Setup - Master/Profile & Positioning/Platform & Markets",
+      "airtableField": "company_name/companyName/title-case aliases",
+      "readbackDetailKey": "pickField/pickList fallback stacks",
+      "downstreamPagesAffected": [
+        "Operator Explorer",
+        "Operator Alignment Snapshot",
+        "Operator Alignment Score Breakdown"
+      ],
+      "currentIssue": "Writes and reads can resolve through different keys; fallback masks canonical gaps.",
+      "proposedFix": "Declare canonical source keys per field and keep fallback as compatibility with telemetry.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": true,
+      "uiChangeNeeded": false,
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": true,
+      "testNeeded": "Field provenance tests proving canonical key usage and fallback warnings.",
+      "riskLevel": "High",
+      "issueClasses": [
+        "written_key_differs_from_read_key",
+        "alias_or_fallback_keys",
+        "runtime_validation_required"
+      ]
+    },
+    {
+      "id": "B3-P0-04",
+      "priority": "P0",
+      "fieldConceptName": "Leadership child mapping consistency",
+      "affectedMyOperatorPageTabSection": "Leadership Team",
+      "frontendKey": "exec_*_role, exec_*_summary, exec_*_bio, exec_*_headshot",
+      "requestPayloadKey": "exec_* fields",
+      "apiFileFunction": "operator-leadership-member-map write/read mappers + operator-setup-new-base-read leadership detail mapper",
+      "airtableTable": "Operator Setup - Leadership Team Members",
+      "airtableField": "role, summary, bio, headshot",
+      "readbackDetailKey": "function, summary, bio, shortBio, experienceSummary",
+      "downstreamPagesAffected": [
+        "Operator Explorer"
+      ],
+      "currentIssue": "Write keys and read payload keys differ by alias/convention; not contract-tested.",
+      "proposedFix": "Codify mapper contract and add deterministic round-trip tests.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": true,
+      "uiChangeNeeded": false,
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": false,
+      "testNeeded": "Leadership section save->detail round trip validation.",
+      "riskLevel": "High",
+      "issueClasses": [
+        "written_key_differs_from_read_key",
+        "alias_or_fallback_keys",
+        "runtime_validation_required"
+      ]
+    },
+    {
+      "id": "B3-P0-05",
+      "priority": "P0",
+      "fieldConceptName": "Explorer JSON mirror mixed-contract risk",
+      "affectedMyOperatorPageTabSection": "Explorer payload sections (overview/cap/mkt/brand/exec)",
+      "frontendKey": "overview_*, cap_*, mkt_*, brand_*, exec_*",
+      "requestPayloadKey": "top-level keys + explorerProfileJson",
+      "apiFileFunction": "public/js/operator-setup-explorer-behavior.js enrichOperatorSetupSubmitData + api/third-party-operator-intake.js legacy mirror branch",
+      "airtableTable": "Legacy Basics JSON mirror + new-base split tables",
+      "airtableField": "explorerProfileJson mirror and structured fields",
+      "readbackDetailKey": "prefill direct keys + optional prefill.explorerProfileJson",
+      "downstreamPagesAffected": [
+        "Operator Explorer"
+      ],
+      "currentIssue": "Mixed storage pathways can conceal missing structured mappings.",
+      "proposedFix": "Treat structured mappings as primary contract and JSON mirror as compatibility-only.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": true,
+      "uiChangeNeeded": false,
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": "indirect",
+      "testNeeded": "Structured-only round-trip tests with mirror absent.",
+      "riskLevel": "High",
+      "issueClasses": [
+        "written_key_differs_from_read_key",
+        "alias_or_fallback_keys",
+        "runtime_validation_required"
+      ]
+    },
+    {
+      "id": "B3-P1-01",
+      "priority": "P1",
+      "fieldConceptName": "brand_conversion_project_count input gap",
+      "affectedMyOperatorPageTabSection": "Brand & Relationships",
+      "frontendKey": "missing control for brand_conversion_project_count",
+      "requestPayloadKey": "brand_conversion_project_count",
+      "apiFileFunction": "api/lib/operator-setup-new-base-build-sheet-rows.json mapping exists",
+      "airtableTable": "Operator Setup - Profile & Positioning",
+      "airtableField": "brand_conversion_project_count",
+      "readbackDetailKey": "direct prefill/read key",
+      "downstreamPagesAffected": [
+        "Operator Explorer",
+        "Operator Alignment Snapshot (contextual)"
+      ],
+      "currentIssue": "API mapping exists but UI cannot submit this field.",
+      "proposedFix": "Add missing form control or remove field from required demo display until enabled.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": "low_or_none",
+      "uiChangeNeeded": true,
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": false,
+      "testNeeded": "Input render + save + prefill + display.",
+      "riskLevel": "Medium",
+      "issueClasses": [
+        "api_mapping_exists_but_ui_missing"
+      ]
+    },
+    {
+      "id": "B3-P1-02",
+      "priority": "P1",
+      "fieldConceptName": "Written-but-not-displayed resilience/ESG cluster",
+      "affectedMyOperatorPageTabSection": "Extended profile fields",
+      "frontendKey": "emergencyResponse, businessContinuity, support24x7, crisisExperience, insuranceCoverage, sustainabilityPrograms, esgReporting, carbonTracking, etc.",
+      "requestPayloadKey": "same keys",
+      "apiFileFunction": "intake + new-base writer/read matrix",
+      "airtableTable": "Operator Setup - Profile & Positioning",
+      "airtableField": "matching columns",
+      "readbackDetailKey": "currently mostly No/Unclear in usage matrix",
+      "downstreamPagesAffected": [
+        "Operator Explorer",
+        "Operator Capability Snapshot",
+        "Operator Alignment Snapshot"
+      ],
+      "currentIssue": "Fields likely persist but are not surfaced in owner-facing outputs.",
+      "proposedFix": "Define visibility contract (display now vs capture-only deferred).",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": true,
+      "uiChangeNeeded": "maybe",
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": false,
+      "testNeeded": "Written-vs-displayed matrix assertion tests.",
+      "riskLevel": "Medium",
+      "issueClasses": [
+        "written_but_not_displayed"
+      ]
+    },
+    {
+      "id": "B3-P1-03",
+      "priority": "P1",
+      "fieldConceptName": "Capability Snapshot source-of-truth contract gap",
+      "affectedMyOperatorPageTabSection": "N/A (downstream service contract)",
+      "frontendKey": "N/A",
+      "requestPayloadKey": "dealId only",
+      "apiFileFunction": "api/operator-capability-snapshot.js",
+      "airtableTable": "Deal tables currently; Operator Setup contract not explicit here",
+      "airtableField": "N/A",
+      "readbackDetailKey": "N/A",
+      "downstreamPagesAffected": [
+        "Operator Capability Snapshot"
+      ],
+      "currentIssue": "No explicit Operator Setup field contract in this endpoint despite broader operator-flow expectations.",
+      "proposedFix": "Document current deal-derived behavior and explicitly decide whether Operator Setup fields belong in this snapshot.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": "maybe",
+      "uiChangeNeeded": "maybe",
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": true,
+      "testNeeded": "Contract tests showing exact source fields for output.",
+      "riskLevel": "Medium",
+      "issueClasses": [
+        "downstream_no_confirmed_source_of_truth"
+      ]
+    },
+    {
+      "id": "B3-P1-04",
+      "priority": "P1",
+      "fieldConceptName": "Alignment/score support fields have partial canonical provenance",
+      "affectedMyOperatorPageTabSection": "N/A (read-side consumers)",
+      "frontendKey": "operator setup canonical + alias fields",
+      "requestPayloadKey": "N/A",
+      "apiFileFunction": "lib/operator-alignment-company-utils.js",
+      "airtableTable": "Operator Setup Master/Profile/Platform",
+      "airtableField": "service model / chain scale / markets / parent company families",
+      "readbackDetailKey": "prefill.* fallback family",
+      "downstreamPagesAffected": [
+        "Operator Alignment Snapshot",
+        "Operator Alignment Score Breakdown"
+      ],
+      "currentIssue": "Alias-heavy prefill can hide source ambiguity for alignment context and confidence flags.",
+      "proposedFix": "Lock canonical input keys and emit fallback-used diagnostics without changing scoring formula.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": true,
+      "uiChangeNeeded": false,
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": true,
+      "testNeeded": "Scoring input provenance tests (not methodology changes).",
+      "riskLevel": "Medium-High",
+      "issueClasses": [
+        "downstream_no_confirmed_source_of_truth",
+        "alias_or_fallback_keys",
+        "runtime_validation_required"
+      ]
+    },
+    {
+      "id": "B3-P2-01",
+      "priority": "P2",
+      "fieldConceptName": "Schema field with no active contract",
+      "affectedMyOperatorPageTabSection": "Future governance/publication workflow",
+      "frontendKey": "none confirmed",
+      "requestPayloadKey": "none confirmed",
+      "apiFileFunction": "none confirmed",
+      "airtableTable": "Operator Setup - Profile & Positioning (per inventory)",
+      "airtableField": "readyForInvestorPublication",
+      "readbackDetailKey": "none confirmed",
+      "downstreamPagesAffected": [
+        "none_confirmed"
+      ],
+      "currentIssue": "Field exists in schema but no confirmed UI/API/readback path.",
+      "proposedFix": "Keep as needs-review legacy candidate until business workflow confirms activation.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": false,
+      "uiChangeNeeded": false,
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": false,
+      "testNeeded": "Usage scan + stakeholder confirmation before activation.",
+      "riskLevel": "Low-Unknown",
+      "issueClasses": [
+        "airtable_exists_but_api_mapping_missing"
+      ]
+    },
+    {
+      "id": "B3-P2-02",
+      "priority": "P2",
+      "fieldConceptName": "Derived/system fields should remain non-manual",
+      "affectedMyOperatorPageTabSection": "System fields",
+      "frontendKey": "none (should remain none)",
+      "requestPayloadKey": "must be ignored/controlled",
+      "apiFileFunction": "master read/write helpers",
+      "airtableTable": "Operator Setup - Master",
+      "airtableField": "operator_id, submission_status, created_at, updated_at",
+      "readbackDetailKey": "metadata only",
+      "downstreamPagesAffected": [
+        "all read paths"
+      ],
+      "currentIssue": "Need explicit contract guard to prevent accidental user-editable mapping.",
+      "proposedFix": "Document and test as derived/system-only; no UI inputs.",
+      "airtableSchemaChangeNeeded": false,
+      "codeChangeNeeded": "minimal",
+      "uiChangeNeeded": false,
+      "dataMigrationNeeded": false,
+      "snapshotScoringLogicAffected": false,
+      "testNeeded": "Payload injection test ensures these are not user-overwritten.",
+      "riskLevel": "Low",
+      "issueClasses": [
+        "derived_value_not_manual_input"
+      ]
+    }
+  ],
+  "smallestSafeImplementationBatch": {
+    "description": "Conservative batch focused on confirmed mapping gaps only",
+    "steps": [
+      "Fix canonical write mapping for companyLogo.",
+      "Add missing canonical mappings for companyTagline, missionStatement, companyHistory, differentiators, managementPhilosophy.",
+      "Add missing UI input for brand_conversion_project_count where mapping already exists.",
+      "Add contract/provenance tests for alias-heavy read paths (Explorer + Alignment) without changing scoring methodology."
+    ],
+    "outOfScope": [
+      "Schema changes",
+      "Option normalization",
+      "Scoring formula changes",
+      "Legacy alias removal",
+      "Batch 4"
+    ]
+  },
+  "doNotTouchYet": {
+    "legacyButReferenced": [
+      "Any Stage-5 legacy candidates without runtime proof of zero usage"
+    ],
+    "scoringTiedFields": [
+      "Alignment weighted input logic and thresholds (provenance only in Batch 3)"
+    ],
+    "requiresOptionNormalizationBeforeChange": [
+      "Divergent select/multi-select families across related fields"
+    ],
+    "requiresBusinessReview": [
+      "readyForInvestorPublication and publication workflow fields"
+    ],
+    "mayNeedFutureSchemaChanges": [
+      "Any unresolved contracts not fixable via current table/field mappings"
+    ]
+  }
+}

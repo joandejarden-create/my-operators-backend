@@ -1,0 +1,426 @@
+{
+  "ok": true,
+  "status": "production_census_rooms_secondary_source_wave_2_v1_partial_steward_remaining",
+  "objective": "rooms-secondary-source-wave-2-v1",
+  "version": "rooms-secondary-source-wave-2-v1",
+  "generated_at": "2026-08-07T19:59:25.587Z",
+  "table_id": "tbl9aY5ijiuIzzWam",
+  "airtable_writes": true,
+  "records_updated": 61,
+  "records_inserted": 0,
+  "rooms_written": 3,
+  "evidence_tier_backfills": 58,
+  "official_rooms_written": 0,
+  "colombia_fuzzy_written": 3,
+  "colombia_steward_held": 41,
+  "conflicts_held": 0,
+  "phone_written": 0,
+  "phone_blocked_by_policy": 872,
+  "bot_blocked_samples": 28,
+  "bot_blocked_by_country": {
+    "Mexico": 7,
+    "Dominican Republic": 6,
+    "Panama": 7,
+    "Costa Rica": 8
+  },
+  "rooms_written_by_country": {
+    "Colombia": 3
+  },
+  "fields_written": [
+    "Rooms / Keys",
+    "Rooms Confidence",
+    "Rooms Source URL",
+    "Rooms Source Type",
+    "Rooms Evidence Tier",
+    "Rooms Reviewed Date",
+    "Rooms Notes",
+    "Last Reviewed Date",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Human Review Required"
+  ],
+  "before": {
+    "total": 1224,
+    "with_rooms": 176,
+    "missing": 1048,
+    "coverage_pct": 14.38,
+    "official_high_rooms": 118,
+    "official_high_pct": 67.05,
+    "secondary_source_rooms": 58,
+    "secondary_source_pct": 32.95,
+    "steward_verified_rooms": 0,
+    "steward_verified_pct": 0,
+    "rooms_conflict_hold": 0,
+    "sources_used_by_type": {
+      "trusted_secondary_source": 58,
+      "(blank)": 113,
+      "official_property_page": 5
+    },
+    "rooms_by_evidence_tier": {
+      "secondary_tourism_board_destination_authority": 58,
+      "(blank)": 118
+    },
+    "missing_by_country": {
+      "Dominican Republic": 158,
+      "Mexico": 756,
+      "Panama": 43,
+      "Costa Rica": 47,
+      "Colombia": 44
+    }
+  },
+  "after": {
+    "total": 1224,
+    "with_rooms": 179,
+    "missing": 1045,
+    "coverage_pct": 14.62,
+    "official_high_rooms": 118,
+    "official_high_pct": 65.92,
+    "secondary_source_rooms": 61,
+    "secondary_source_pct": 34.08,
+    "steward_verified_rooms": 0,
+    "steward_verified_pct": 0,
+    "rooms_conflict_hold": 0,
+    "sources_used_by_type": {
+      "trusted_secondary_source": 61,
+      "(blank)": 113,
+      "official_property_page": 5
+    },
+    "rooms_by_evidence_tier": {
+      "Tier 5 Tourism Board / Destination Authority": 61,
+      "(blank)": 118
+    },
+    "missing_by_country": {
+      "Dominican Republic": 158,
+      "Mexico": 756,
+      "Panama": 43,
+      "Costa Rica": 47,
+      "Colombia": 41
+    }
+  },
+  "policy": {
+    "version": "census-secondary-hotel-data-policy-v1",
+    "enable_secondary_hotel_data_sources": true,
+    "enable_secondary_rooms_sources": true,
+    "enable_secondary_phone_sources": false,
+    "rooms_approved": [
+      "official_parent_brand_source",
+      "official_hotel_website",
+      "official_factsheet",
+      "official_press_release_or_opening_announcement",
+      "owner_developer_reit_fund_asset_manager_website",
+      "tourism_board_convention_bureau_destination_authority",
+      "reputable_hospitality_trade_publication",
+      "licensed_hospitality_dataset_if_available",
+      "steward_verified_source"
+    ],
+    "rooms_forbidden": [
+      "ota_random",
+      "google_panel",
+      "tripadvisor",
+      "ai_estimate",
+      "building_size_floor_inference",
+      "meeting_room_count",
+      "residence_count_unless_hotel_keys",
+      "sitewide_default",
+      "vague_marketing_description"
+    ],
+    "phone_policy": "phone_secondary_source_policy_not_approved",
+    "rooms_evidence_tier_field_exists": true,
+    "schema_gaps": []
+  },
+  "schema": {
+    "ok": true,
+    "status": "created",
+    "field": "Rooms Evidence Tier",
+    "field_id": "fldEJY1uPWIT5T3Ti",
+    "type": "singleSelect",
+    "choices": [
+      "Tier 1 Official Parent / Brand Source",
+      "Tier 2 Official Hotel Website",
+      "Tier 3 Official Press Release",
+      "Tier 4 Owner / Developer Source",
+      "Tier 5 Tourism Board / Destination Authority",
+      "Tier 6 Trusted Industry Source",
+      "Tier 7 Steward Verified"
+    ],
+    "created": true,
+    "dry_run": false,
+    "table_id": "tbl9aY5ijiuIzzWam",
+    "field_exists": true
+  },
+  "country_discovery": {
+    "version": "census-rooms-country-source-discovery-v1",
+    "generated_at": "2026-08-07T19:58:55.308Z",
+    "priority_order": [
+      "Mexico",
+      "Dominican Republic",
+      "Panama",
+      "Costa Rica",
+      "Colombia",
+      "Peru",
+      "Chile",
+      "Argentina",
+      "Brazil",
+      "Caribbean"
+    ],
+    "countries": [
+      {
+        "country": "Mexico",
+        "priority": 1,
+        "missing_rooms": 756,
+        "with_official_url": 756,
+        "bot_blocked_samples": 7,
+        "sources": [
+          {
+            "name": "SECTUR Registro Nacional de Turismo (consulta portal)",
+            "url": "https://rnt-consulta.sectur.gob.mx/",
+            "category": "tourism_board_convention_bureau_destination_authority",
+            "property_level_rooms": "unknown_portal_consulta_not_bulk_api",
+            "adapter_status": "discovery_only",
+            "notes": "Official consulta portal; no stable bulk JSON/CSV with habitaciones for Autopilot yet. Do not scrape Google mirrors (rntsecturgob.com deprecated)."
+          },
+          {
+            "name": "DATATUR hotel monitoring / open stats",
+            "url": "https://www.datatur.sectur.gob.mx/SitePages/hoteleria.aspx",
+            "category": "tourism_board_convention_bureau_destination_authority",
+            "property_level_rooms": false,
+            "adapter_status": "blocked_aggregate_only",
+            "notes": "Occupancy / cuartos at destination aggregate — not property keys."
+          },
+          {
+            "name": "Official parent property pages (Marriott/IHG/Hilton/Accor/Choice)",
+            "category": "official_parent_brand_source",
+            "property_level_rooms": true,
+            "adapter_status": "bot_blocked_from_runtime",
+            "notes": "403/Akamai common from Autopilot runtime; keep as Tier 1 when fetch succeeds."
+          }
+        ],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 1,
+          "blocked_or_aggregate": 2,
+          "notes": null
+        },
+        "next_action": "build_deterministic_property_level_adapter_or_steward_pack"
+      },
+      {
+        "country": "Dominican Republic",
+        "priority": 2,
+        "missing_rooms": 158,
+        "with_official_url": 158,
+        "bot_blocked_samples": 6,
+        "sources": [
+          {
+            "name": "MITUR Registro Nacional Turístico",
+            "url": "https://rnt.mitur.gob.do/",
+            "category": "tourism_board_convention_bureau_destination_authority",
+            "property_level_rooms": false,
+            "adapter_status": "discovery_only",
+            "notes": "Listing shows identity/status/phone/email columns; habitaciones not exposed in public table columns reviewed."
+          },
+          {
+            "name": "SITUR hotel industry dashboards / Excel",
+            "url": "https://situr.mitur.gob.do/estadisticas/",
+            "category": "tourism_board_convention_bureau_destination_authority",
+            "property_level_rooms": false,
+            "adapter_status": "blocked_aggregate_only",
+            "notes": "Zone/destination occupancy — not property-level keys."
+          },
+          {
+            "name": "ASONAHORES / association directories",
+            "category": "reputable_hospitality_trade_publication",
+            "property_level_rooms": "unknown",
+            "adapter_status": "discovery_only",
+            "notes": "Needs steward review before treating as Tier 6 SoT."
+          }
+        ],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 2,
+          "blocked_or_aggregate": 1,
+          "notes": null
+        },
+        "next_action": "build_deterministic_property_level_adapter_or_steward_pack"
+      },
+      {
+        "country": "Panama",
+        "priority": 3,
+        "missing_rooms": 43,
+        "with_official_url": 43,
+        "bot_blocked_samples": 7,
+        "sources": [
+          {
+            "name": "Visit Panama / ATP destination directories",
+            "url": "https://www.visitpanama.com/",
+            "category": "tourism_board_convention_bureau_destination_authority",
+            "property_level_rooms": false,
+            "adapter_status": "discovery_only",
+            "notes": "Destination marketing pages; property keys not systematically published."
+          },
+          {
+            "name": "Official parent property pages",
+            "category": "official_parent_brand_source",
+            "property_level_rooms": true,
+            "adapter_status": "bot_blocked_from_runtime"
+          }
+        ],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 1,
+          "blocked_or_aggregate": 1,
+          "notes": null
+        },
+        "next_action": "build_deterministic_property_level_adapter_or_steward_pack"
+      },
+      {
+        "country": "Costa Rica",
+        "priority": 4,
+        "missing_rooms": 47,
+        "with_official_url": 47,
+        "bot_blocked_samples": 8,
+        "sources": [
+          {
+            "name": "ICT tourism / lodging registry (investigation)",
+            "category": "tourism_board_convention_bureau_destination_authority",
+            "property_level_rooms": "unknown",
+            "adapter_status": "discovery_only",
+            "notes": "Confirm ICT open dataset with habitaciones before adapter; do not invent."
+          },
+          {
+            "name": "Official parent property pages",
+            "category": "official_parent_brand_source",
+            "property_level_rooms": true,
+            "adapter_status": "bot_blocked_from_runtime"
+          }
+        ],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 1,
+          "blocked_or_aggregate": 1,
+          "notes": null
+        },
+        "next_action": "build_deterministic_property_level_adapter_or_steward_pack"
+      },
+      {
+        "country": "Colombia",
+        "priority": 5,
+        "missing_rooms": 44,
+        "with_official_url": 44,
+        "bot_blocked_samples": 0,
+        "sources": [
+          {
+            "name": "MinCIT RNT open data (datos.gov.co thwd-ivmp)",
+            "url": "https://www.datos.gov.co/Comercio-Industria-y-Turismo/Registro-Nacional-de-Turismo-RNT/thwd-ivmp",
+            "category": "tourism_board_convention_bureau_destination_authority",
+            "property_level_rooms": true,
+            "adapter_status": "adapter_live",
+            "notes": "Wave 1 wrote 58; Wave 2 fuzzy steward for remaining ambiguous matches."
+          }
+        ],
+        "summary": {
+          "adapter_live": 1,
+          "discovery_only": 0,
+          "blocked_or_aggregate": 0,
+          "notes": null
+        },
+        "next_action": "continue_adapter_enrichment_with_strict_match"
+      },
+      {
+        "country": "Peru",
+        "priority": 6,
+        "missing_rooms": 0,
+        "with_official_url": 0,
+        "bot_blocked_samples": 0,
+        "sources": [
+          {
+            "name": "MINCETUR establecimientos hospedaje calificados CSV",
+            "url": "https://www.mincetur.gob.pe/Datos_abiertos/DGPDT/Establecimientos_hospedajes_calificados.csv",
+            "category": "tourism_board_convention_bureau_destination_authority",
+            "property_level_rooms": true,
+            "adapter_status": "adapter_ready_enrich_existing_only",
+            "notes": "Field-completion only when Peru rows exist in Hotel Property Census."
+          }
+        ],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 0,
+          "blocked_or_aggregate": 0,
+          "notes": null
+        },
+        "next_action": "official_parent_fetch_when_unblocked"
+      },
+      {
+        "country": "Chile",
+        "priority": 7,
+        "missing_rooms": 0,
+        "with_official_url": 0,
+        "bot_blocked_samples": 0,
+        "sources": [],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 0,
+          "blocked_or_aggregate": 0,
+          "notes": "No CALA census blank rooms in current 1,224 slice."
+        },
+        "next_action": "official_parent_fetch_when_unblocked"
+      },
+      {
+        "country": "Argentina",
+        "priority": 8,
+        "missing_rooms": 0,
+        "with_official_url": 0,
+        "bot_blocked_samples": 0,
+        "sources": [],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 0,
+          "blocked_or_aggregate": 0,
+          "notes": "No CALA census blank rooms in current 1,224 slice."
+        },
+        "next_action": "official_parent_fetch_when_unblocked"
+      },
+      {
+        "country": "Brazil",
+        "priority": 9,
+        "missing_rooms": 0,
+        "with_official_url": 0,
+        "bot_blocked_samples": 0,
+        "sources": [],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 0,
+          "blocked_or_aggregate": 0,
+          "notes": "No CALA census blank rooms in current 1,224 slice."
+        },
+        "next_action": "official_parent_fetch_when_unblocked"
+      },
+      {
+        "country": "Caribbean",
+        "priority": 10,
+        "missing_rooms": 0,
+        "with_official_url": 0,
+        "bot_blocked_samples": 0,
+        "sources": [],
+        "summary": {
+          "adapter_live": 0,
+          "discovery_only": 0,
+          "blocked_or_aggregate": 0,
+          "notes": "Covered via Dominican Republic / other island markets when present."
+        },
+        "next_action": "official_parent_fetch_when_unblocked"
+      }
+    ]
+  },
+  "next_backlog": [
+    "Mexico: build SECTUR RNT property-level rooms adapter (consulta portal is not bulk API); DATATUR remains aggregate-only",
+    "Dominican Republic: MITUR RNT listing lacks habitaciones columns — need property detail scrape steward or licensed dataset",
+    "Panama / Costa Rica: no property-level open lodging rooms dataset identified — official parent pages bot-blocked",
+    "Colombia steward pack: 41 remaining ambiguous/low-sim RNT matches — do not force writes",
+    "Official parent HTML: Marriott/IHG/Hilton/Choice commonly 403/Akamai from Autopilot runtime — need unblocked fetch path or DAM/factsheet cache",
+    "Phone secondary still not approved",
+    "Target coverage 95–100% (now 14.62%) requires Mexico-scale secondary adapter or unblocked official pages"
+  ],
+  "continue_command": "ALLOW_CENSUS_AUTOPILOT_APPLY=1 CONFIRM_WRITE_TO_PRODUCTION_CENSUS=1 \\\nCONFIRM_NO_BRAND_EXPLORER_WRITES=1 CONFIRM_NO_OWNER_OPERATOR_WRITES=1 \\\nENABLE_SECONDARY_HOTEL_DATA_SOURCES=1 ENABLE_SECONDARY_ROOMS_SOURCES=1 ENABLE_SECONDARY_PHONE_SOURCES=0 \\\nnpm run census:autopilot -- --region CALA --scope official-parent-inventory --mode mission \\\n  --objective rooms-secondary-source-wave-2-v1 --census-mode field-completion-only \\\n  --strategy highest-yield-safe --run-until-complete --batch-size 100 \\\n  --confirm-safe-writes --confirm-write-to-production-census \\\n  --confirm-no-brand-explorer-writes --confirm-no-owner-operator \\\n  --confirm-no-date-writes --confirm-no-recent-momentum \\\n  --confirm-no-company-validation --confirm-webhound-not-production-source \\\n  --enable-production-writes",
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T19-58-47_CALA-rooms-secondary-wave-2-v1",
+  "write_errors": []
+}

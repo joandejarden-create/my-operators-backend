@@ -1,0 +1,163 @@
+{
+  "writerVersion": "6.1",
+  "singleAssetMaterializationScope": {
+    "enabled": true,
+    "assetRecordId": "recgq6wOvz5yOWPmY",
+    "requiredApplyGate": "--approve-brand-asset-single-attachment-materialization",
+    "approved": true,
+    "preflight": {
+      "enabled": true,
+      "assetRecordId": "recgq6wOvz5yOWPmY",
+      "foundInBrandScope": true,
+      "formallyApproved": false,
+      "currentAttachmentCount": 0,
+      "sourceUrl": "https://cache.marriott.com/content/dam/marriott-renditions/CTGTX/ctgtx-exterior-4545-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=1336px:*",
+      "canDownloadRead": true,
+      "canWriteBackAttachmentField": true,
+      "proposedMaterializationAction": "materialize_attachment_on_registry_asset_only"
+    }
+  },
+  "generatedAt": "2026-07-09T12:02:31.776Z",
+  "mode": "attachment-materialization-repair-apply",
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-asset-review-decision-writer.md",
+    "reports/brand-asset-human-review-readiness.md",
+    "reports/tribute-visual-asset-slot-review.md",
+    "lib/partner-intelligence/brand-asset-review-decision-writer.js",
+    "lib/partner-intelligence/brand-asset-human-review-readiness.js",
+    "lib/partner-intelligence/tribute-visual-asset-slot-review.js",
+    "lib/partner-intelligence/brand-asset-registry-workflow.js",
+    "lib/partner-intelligence/airtable-source.js"
+  ],
+  "registryReadError": null,
+  "brand": {
+    "key": "tribute-portfolio",
+    "recordId": "recCvV0PuZOi8c3hC",
+    "name": "Tribute Portfolio",
+    "parentCompany": "Marriott International, Inc."
+  },
+  "textGovernanceStatus": {
+    "note": "Text/governance status is owned by the Tribute package pipeline; this module does not change it.",
+    "textGovernancePlatformReady": true
+  },
+  "totalRecordsScanned": 1,
+  "formallyApprovedRecordsFound": [],
+  "recordsExcluded": [],
+  "recordsEligibleForDownload": [],
+  "downloadPlan": [
+    {
+      "recordId": "recgq6wOvz5yOWPmY",
+      "assetName": "Ermita, Cartagena, a Tribute Portfolio Hotel — Where This Brand Creates the Most Value (exterior)",
+      "sourceUrl": "https://cache.marriott.com/content/dam/marriott-renditions/CTGTX/ctgtx-exterior-4545-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=1336px:*",
+      "localFilePath": "data/partner-intelligence/assets/tribute-portfolio/tribute-portfolio__value-driver-conversion__ermita-cartagena-a-tribute-portfolio-hotel.jpg",
+      "attachmentFilename": "tribute-portfolio__value-driver-conversion__ermita-cartagena-a-tribute-portfolio-hotel.jpg"
+    }
+  ],
+  "filePathsProposed": [
+    "data/partner-intelligence/assets/tribute-portfolio/tribute-portfolio__value-driver-conversion__ermita-cartagena-a-tribute-portfolio-hotel.jpg"
+  ],
+  "downloadValidation": {
+    "dryRunValidation": {
+      "passed": true,
+      "failedCount": 0
+    },
+    "perRecord": [
+      {
+        "recordId": "recgq6wOvz5yOWPmY",
+        "assetName": "Ermita, Cartagena, a Tribute Portfolio Hotel — Where This Brand Creates the Most Value (exterior)",
+        "validation": {
+          "ok": true,
+          "httpStatus": 200,
+          "contentType": "image/jpeg",
+          "sizeBytes": 394650,
+          "reason": "ok"
+        }
+      }
+    ],
+    "notDownloadable": []
+  },
+  "attachmentStrategy": {
+    "supported": true,
+    "mode": "Prefer Airtable content API uploadAttachment (bytes); fallback remote URL patch + reread verification",
+    "note": "v6.1 considers patch success insufficient; materialization is true only when reread Attachment count > 0.",
+    "fallback": "When direct byte upload is unavailable or exceeds 5MB, fallback to URL patch and confirm reread."
+  },
+  "airtableAttachmentUploadSupported": true,
+  "airtableDirectContentUploadAvailable": true,
+  "approvedAttachmentStatus": [
+    {
+      "recordId": "recgq6wOvz5yOWPmY",
+      "assetName": "Ermita, Cartagena, a Tribute Portfolio Hotel — Where This Brand Creates the Most Value (exterior)",
+      "recommendedExplorerSlot": "overview.why_value",
+      "sourceUrlPresent": true,
+      "sourceUrl": "https://cache.marriott.com/content/dam/marriott-renditions/CTGTX/ctgtx-exterior-4545-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=1336px:*",
+      "attachmentCount": 0,
+      "attachmentPresent": false,
+      "attachmentUrl": "",
+      "localFilePath": "data/partner-intelligence/assets/tribute-portfolio/tribute-portfolio__value-driver-conversion__ermita-cartagena-a-tribute-portfolio-hotel.jpg",
+      "localFilePresent": false,
+      "localFileMissing": true
+    }
+  ],
+  "recordsProposedForRepair": [
+    {
+      "recordId": "recgq6wOvz5yOWPmY",
+      "assetName": "Ermita, Cartagena, a Tribute Portfolio Hotel — Where This Brand Creates the Most Value (exterior)",
+      "localFilePath": "data/partner-intelligence/assets/tribute-portfolio/tribute-portfolio__value-driver-conversion__ermita-cartagena-a-tribute-portfolio-hotel.jpg",
+      "localFilePresent": false,
+      "sourceUrl": "https://cache.marriott.com/content/dam/marriott-renditions/CTGTX/ctgtx-exterior-4545-hor-wide.jpg?output-quality=70&interpolation=progressive-bilinear&downsize=1336px:*",
+      "reason": "Attachment missing; local file absent, will use source fetch bytes if available"
+    }
+  ],
+  "rootCause": {
+    "summary": "Airtable URL attachment patch accepted, but Marriott image URLs did not materialize into Attachment on reread for 8 non-logo records.",
+    "likelyFactors": [
+      "Remote URL ingestion by Airtable may fail asynchronously or be blocked by source host policies.",
+      "Patch response success does not guarantee attachment ingestion completion.",
+      "Materialization must be confirmed by reread Attachment count > 0."
+    ]
+  },
+  "applyResult": {
+    "filesDownloaded": [
+      {
+        "recordId": "recgq6wOvz5yOWPmY",
+        "assetName": "Ermita, Cartagena, a Tribute Portfolio Hotel — Where This Brand Creates the Most Value (exterior)",
+        "path": "data/partner-intelligence/assets/tribute-portfolio/tribute-portfolio__value-driver-conversion__ermita-cartagena-a-tribute-portfolio-hotel.jpg",
+        "sizeBytes": 394650
+      }
+    ],
+    "recordsUpdated": [
+      {
+        "recordId": "recgq6wOvz5yOWPmY",
+        "assetName": "Ermita, Cartagena, a Tribute Portfolio Hotel — Where This Brand Creates the Most Value (exterior)"
+      }
+    ],
+    "failedUpdates": [],
+    "recordsRepaired": [
+      {
+        "recordId": "recgq6wOvz5yOWPmY",
+        "assetName": "Ermita, Cartagena, a Tribute Portfolio Hotel — Where This Brand Creates the Most Value (exterior)",
+        "strategy": "content-api-upload",
+        "materialized": true
+      }
+    ],
+    "postApplyReread": [
+      {
+        "recordId": "recgq6wOvz5yOWPmY",
+        "attachmentCount": 1,
+        "attachmentUrl": "https://v5.airtableusercontent.com/v3/u/55/55/1783612800000/i5Qsn7TwXikRjuDaSypgzQ/3JbgbAtkWaXUuEE5E_SRhCp5mnU43oTCetkoEb98ktQS2n4N_svypwoSGbSIP9y5cTbGMaoxtO_coWRy58BZYnk_iMaC-5axriENwa8JLP2UX187luHg4srRV-5gLCn5W5zKFhxj9dXPNnQZ6-zPYr4Aqffoa3OpzY9LjMG9FtkCmus7MgtB-fLETHmtghtoovlGEOL0l1YZH2SwYJrWGJr4MEV1dzuRnSXdBHg8MOmwKM4htlSjS6hvlb9n_VQS6C2R8aypdqX5e2i-W_CjVg/LORVG38F5kU1-n7KxuJnOisp8jG9LCzpQ_bk-Rdel-Q",
+        "attachmentMaterialized": true
+      }
+    ],
+    "recordsStillNotMaterialized": []
+  },
+  "airtableModified": true,
+  "brandSetupMediaUntouched": true,
+  "explorerMediaFieldsUntouched": true,
+  "readyForExplorerMediaPromotionWriterV7": false,
+  "v7PresentationImagePatchSafeAfterRepair": true,
+  "applyCommand": "npm run brand-asset-download-attachment-writer -- --brand tribute-portfolio --asset-record-id recxVPbTlsrP9v4bQ --repair-missing-attachments --apply --approve-brand-asset-download-attachments --approve-brand-asset-attachment-materialization-repair --approve-brand-asset-single-attachment-materialization",
+  "nextCommand": "npm run brand-asset-download-attachment-writer -- --brand tribute-portfolio --dry-run --repair-missing-attachments",
+  "cleanupNote": "Binary files are staged under data/partner-intelligence/assets/tribute-portfolio/ on apply only. Do not commit binaries unless explicitly approved."
+}

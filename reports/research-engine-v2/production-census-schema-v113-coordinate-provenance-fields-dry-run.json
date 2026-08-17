@@ -1,0 +1,91 @@
+{
+  "version": "production-census-schema-v113-coordinate-provenance-v1",
+  "generated_at": "2026-08-05T15:21:26.545Z",
+  "mode": "dry-run",
+  "status": "production_census_schema_v113_dry_run_pass",
+  "dry_run_pass": true,
+  "base_id_masked": "appCCU…foLk",
+  "table_id": "tbl9aY5ijiuIzzWam",
+  "field_count_before": 101,
+  "expected_field_count_after": 108,
+  "fields_to_add": [
+    {
+      "name": "Address Confidence",
+      "type": "singleSelect",
+      "options": [
+        "High",
+        "Medium",
+        "Low",
+        "Hold"
+      ]
+    },
+    {
+      "name": "Address Source URL",
+      "type": "url",
+      "options": null
+    },
+    {
+      "name": "Coordinate Source Type",
+      "type": "singleSelect",
+      "options": [
+        "official_coordinates",
+        "official_address_geocode",
+        "existing_source",
+        "structured_data_extraction",
+        "embedded_map_extraction",
+        "blocked_low_confidence",
+        "blocked_no_official_address",
+        "steward_review"
+      ]
+    },
+    {
+      "name": "Coordinate Confidence",
+      "type": "singleSelect",
+      "options": [
+        "High",
+        "Medium",
+        "Low",
+        "Hold"
+      ]
+    },
+    {
+      "name": "Geocode Provider",
+      "type": "singleSelect",
+      "options": [
+        "Mapbox",
+        "Google",
+        "Official Page",
+        "Existing Source",
+        "Manual Review",
+        "None"
+      ]
+    },
+    {
+      "name": "Geocode Method",
+      "type": "singleSelect",
+      "options": [
+        "official_coordinates",
+        "official_address_geocode",
+        "structured_data_extraction",
+        "embedded_map_extraction",
+        "manual_review",
+        "none"
+      ]
+    },
+    {
+      "name": "Geocode Reviewed Date",
+      "type": "date",
+      "options": null
+    }
+  ],
+  "fields_already_existed": [],
+  "conflicts": [],
+  "census_record_count": 666,
+  "human_review_true": 4,
+  "env_ok_for_apply": false,
+  "env_flags": {
+    "ALLOW_PRODUCTION_CENSUS_SCHEMA_V113": false,
+    "CONFIRM_SCHEMA_ONLY_NO_RECORD_WRITES": false,
+    "CONFIRM_NO_BRAND_EXPLORER_WRITES": true
+  }
+}

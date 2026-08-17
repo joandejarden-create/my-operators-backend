@@ -1,0 +1,160 @@
+{
+  "version": "production-census-write-v1",
+  "generated_at": "2026-08-05T08:20:42.859Z",
+  "mode": "dry-run",
+  "execute": false,
+  "status": "production_census_write_dry_run_pass",
+  "dry_run_pass": true,
+  "token_masked": "patEUo…14eb",
+  "base_id_masked": "appCCU…foLk",
+  "env_flags": {
+    "ALLOW_PRODUCTION_CENSUS_WRITE": true,
+    "CONFIRM_CENSUS_ONLY_NOT_OWNER_FACING": true,
+    "CONFIRM_NO_BRAND_EXPLORER_WRITES": true,
+    "CENSUS_WRITE_FREEZE_HASH": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+    "freeze_match": true
+  },
+  "env_ok_for_apply": true,
+  "batch_size": 10,
+  "tables_targeted": [
+    "Hotel Property Census",
+    "Hotel Property Brand Affiliations",
+    "Hotel Property Source Evidence",
+    "Hotel Property Steward Review"
+  ],
+  "tables_forbidden": [
+    "Hotel Census",
+    "Verified Independent Hotel Census",
+    "Independent Hotel Source Candidates",
+    "Independent Hotel Source Evidence",
+    "Brand Setup - Brand Basics",
+    "Brand Setup - Brand Explorer Presentation"
+  ],
+  "counts": {
+    "vic_total": 666,
+    "data_eligible": 580,
+    "census_create": 666,
+    "census_update": 0,
+    "affiliations_create": 666,
+    "evidence_create": 666,
+    "steward_create": 4,
+    "held_brand_unconfirmed": 4,
+    "by_affiliation": {
+      "Soft-Branded / Collection": 89,
+      "Branded": 569,
+      "Future / Pipeline": 4,
+      "Brand-Unconfirmed": 4
+    }
+  },
+  "samples": {
+    "census_first": {
+      "Property Name": "JOIA Paraíso by Iberostar",
+      "Canonical Property Name": "JOIA Paraíso by Iberostar",
+      "Property Identity Key": "ind_ihg_mx_ghprm",
+      "Family / Source Family": "IHG",
+      "Country": "Mexico",
+      "City": "Riviera Maya",
+      "VIC Freeze Hash": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+      "Data Eligible": true,
+      "Identity Confidence": "High",
+      "Production Use Status": "Census Only / Not Owner-Facing",
+      "Current Brand": "JOIA Iberostar",
+      "Brand Family": "IHG Hotels & Resorts",
+      "Affiliation Status": "Soft-Branded / Collection",
+      "Future Opening Flag": false,
+      "Brand Confidence": "High",
+      "Steward Review Status": "none",
+      "Source Type": "brand_directory",
+      "Source Confidence": "High",
+      "Official Property URL": "https://www.ihg.com/joia-iberostar/hotels/us/en/riviera-maya/ghprm/hoteldetail",
+      "Source URL": "https://www.ihg.com/mexico",
+      "Discovery Date": "2026-08-04",
+      "Affiliation As-Of Date": "2026-08-04"
+    },
+    "steward_ids": [
+      "ind_marriott_mx_slwak",
+      "ind_marriott_mx_mtyjd",
+      "ind_marriott_mx_pbcde",
+      "ind_marriott_mx_gdlcc"
+    ]
+  },
+  "existing": {
+    "census_rows_for_freeze": 0,
+    "upsert_mode": false
+  },
+  "field_level_write_summary": {
+    "will_write": [
+      "Property Name",
+      "Canonical Property Name",
+      "Property Identity Key",
+      "Family / Source Family",
+      "Country",
+      "City",
+      "VIC Freeze Hash",
+      "Data Eligible",
+      "Identity Confidence",
+      "Production Use Status",
+      "Current Brand",
+      "Brand Family",
+      "Affiliation Status",
+      "Future Opening Flag",
+      "Brand Confidence",
+      "Steward Review Status",
+      "Source Type",
+      "Source Confidence",
+      "Official Property URL",
+      "Source URL",
+      "Discovery Date",
+      "Affiliation As-Of Date"
+    ],
+    "will_not_write": [
+      "Rooms",
+      "Owner",
+      "Operator",
+      "Opening Date",
+      "Affiliation Start Date",
+      "Latitude/Longitude when missing",
+      "Brand Explorer Presentation/Basics/Status/CV/Verified/Momentum"
+    ]
+  },
+  "frozen_before": {
+    "vic": {
+      "file_count": 29,
+      "aggregate_sha256": "013a62f3f739cef81412467ecee3b56e5440be0e8c81d6b55ae9675705270a1e"
+    },
+    "frozen_62": [
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.json",
+        "exists": true,
+        "size": 189579,
+        "mtime_ms": 1785894190880.195,
+        "sha256": "87e2870b719327167d39564b45039227e37b1d3be518705da290c3469e50f8b7"
+      },
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190884.1685,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "docs/data-intelligence/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190885.1675,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-62-active-public-full-baseline.js",
+        "exists": true,
+        "size": 76327,
+        "mtime_ms": 1785915102595.374,
+        "sha256": "7bc5f0d6cca57b7aad0f141f8b56d3528e6fbb634327ce3945b182360966ac7c"
+      }
+    ]
+  },
+  "conflicts": [],
+  "duration_ms_plan": 771,
+  "production_use_status": "Census Only / Not Owner-Facing",
+  "next_step": "Apply with --apply and all --confirm-* flags"
+}

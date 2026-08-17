@@ -1,0 +1,88 @@
+{
+  "families_used": [
+    "Choice",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [
+    "Marriott",
+    "IHG",
+    "Accor",
+    "Wyndham",
+    "Preferred"
+  ],
+  "adapter_errors": [
+    {
+      "family": "Marriott",
+      "error": "no_ready_marriott_countries_in_scope",
+      "note": "Marriott country hotel-sitemap adapter ready for mapped CALA slugs; check country filter"
+    },
+    {
+      "family": "IHG",
+      "error": "no_ready_ihg_countries_in_scope"
+    },
+    {
+      "family": "Accor",
+      "error": "no_ready_accor_countries_in_scope"
+    },
+    {
+      "family": "Wyndham",
+      "error": "no_ready_wyndham_countries_in_scope"
+    },
+    {
+      "family": "Preferred",
+      "error": "no_ready_preferred_countries_in_scope"
+    }
+  ],
+  "vic_evidence_rows": 666,
+  "discover_all_official_parents": true,
+  "parent_scoped_discovery": true,
+  "require_brand_match": false,
+  "control_list_purpose": "official_parent_inventory_discovery",
+  "choice_discovery": {
+    "source": {
+      "type": "official_choice_regional_directory",
+      "url_template": "https://www.choicehotels.com/en-uk/{country-slug}/regional-hotels",
+      "property_id_pattern": "[A-Z]{2}\\d{3}",
+      "note": "Regional URL for discovery only; Census Address Source URL must be property-level"
+    },
+    "countries": [
+      "Dominican Republic"
+    ],
+    "meta": {
+      "version": "census-autopilot-choice-cala-discovery-v1",
+      "source": {
+        "type": "official_choice_regional_directory",
+        "url_template": "https://www.choicehotels.com/en-uk/{country-slug}/regional-hotels",
+        "property_id_pattern": "[A-Z]{2}\\d{3}",
+        "note": "Regional URL for discovery only; Census Address Source URL must be property-level"
+      },
+      "countries": [
+        "Dominican Republic"
+      ],
+      "country_stats": [
+        {
+          "country": "Dominican Republic",
+          "url": "https://www.choicehotels.com/en-uk/dominican-republic/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        }
+      ],
+      "errors": [],
+      "loaded_at": "2026-08-07T14:05:57.574Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v2-wave-2",
+    "loaded_at": null,
+    "hilton_count": 0,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 3,
+  "brand_governance_counts": {
+    "unsupported_or_ambiguous": 3
+  },
+  "owner_facing_eligible_count": 0,
+  "promotion_candidate_count": 0
+}

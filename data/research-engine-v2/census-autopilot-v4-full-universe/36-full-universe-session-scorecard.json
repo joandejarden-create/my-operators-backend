@@ -1,0 +1,208 @@
+{
+  "answers": {
+    "1_drained_staged_queue": true,
+    "2_staged_inserted": 325,
+    "3_live_census_count": 2482,
+    "4_next_queue_auto_generated_without_joan": true,
+    "5_ledger_rows_accounted": 15198,
+    "6_genuinely_unprocessed_actionable": 10791,
+    "7_reconciled_actionable_universe": 15012,
+    "8_census_footprint_vs_12846_pct": 19.3,
+    "8b_footprint_vs_actionable_pct": 16.5,
+    "9_largest_missing_sources": "Cvent challenge records not independently rediscovered (~10.7k); Independent long-tail; residual branded hotels outside current directory harvest; Hyatt/Meliá/regional collections without strong adapters",
+    "10_largest_country_gaps": [
+      {
+        "country": "Brazil",
+        "total": 5135,
+        "in_production": 460,
+        "gap": 4675,
+        "footprint_pct": 9
+      },
+      {
+        "country": "Mexico",
+        "total": 4307,
+        "in_production": 1969,
+        "gap": 2338,
+        "footprint_pct": 45.7
+      },
+      {
+        "country": "Argentina",
+        "total": 959,
+        "in_production": 163,
+        "gap": 796,
+        "footprint_pct": 17
+      },
+      {
+        "country": "Colombia",
+        "total": 750,
+        "in_production": 220,
+        "gap": 530,
+        "footprint_pct": 29.3
+      },
+      {
+        "country": "Chile",
+        "total": 359,
+        "in_production": 33,
+        "gap": 326,
+        "footprint_pct": 9.2
+      },
+      {
+        "country": "Costa Rica",
+        "total": 456,
+        "in_production": 143,
+        "gap": 313,
+        "footprint_pct": 31.4
+      },
+      {
+        "country": "Peru",
+        "total": 343,
+        "in_production": 34,
+        "gap": 309,
+        "footprint_pct": 9.9
+      },
+      {
+        "country": "Dominican Republic",
+        "total": 378,
+        "in_production": 169,
+        "gap": 209,
+        "footprint_pct": 44.7
+      },
+      {
+        "country": "Jamaica",
+        "total": 261,
+        "in_production": 93,
+        "gap": 168,
+        "footprint_pct": 35.6
+      },
+      {
+        "country": "Panama",
+        "total": 181,
+        "in_production": 30,
+        "gap": 151,
+        "footprint_pct": 16.6
+      }
+    ],
+    "11_families_needing_adapters": [
+      "Hyatt",
+      "Accor",
+      "Wyndham",
+      "Melia"
+    ],
+    "12_independent_hotel_recall_gap": 10148,
+    "13_continuously_moving_verified_into_airtable": true,
+    "14_continues_after_staging_exhausted": true,
+    "15_joan_must_authorize_next_batch": false,
+    "16_what_prevents_full_universe_today": "Independent rediscovery throughput for ~10.7k Cvent-only challenges; adapter/country directory expansion still needed for luxury/regional families; selective SerpApi economics; evidence availability — NOT Joan authorization",
+    "17_constraint_type": "primarily evidence availability + source coverage + verification throughput (then API economics); engineering path ACTIVE",
+    "18_full_universe_build_still_active": true,
+    "session": {
+      "production_before": 1537,
+      "production_after": 2482,
+      "staged_inserts": 325,
+      "discovery_inserts": 620,
+      "total_net_inserts": 945,
+      "milestone_2000_crossed": true,
+      "serpapi_searches": 0,
+      "circuit_clear": true
+    },
+    "status_counts": {
+      "IDENTITY_CONFLICT": 729,
+      "NOT_YET_INDEPENDENTLY_REDISCOVERED": 10732,
+      "IN_PRODUCTION": 3463,
+      "PROBABLE_DUPLICATE": 186,
+      "INSUFFICIENT_EVIDENCE": 29,
+      "RESEARCHABLE_UNVERIFIED": 56,
+      "VERIFIED_READY_TO_INSERT": 3
+    },
+    "verdicts": {
+      "CURRENT_STAGED_QUEUE": "DRAINED",
+      "UNIVERSE_LEDGER": "COMPLETE",
+      "INDEPENDENT_DISCOVERY": "ACTIVE",
+      "AIRTABLE_INGESTION": "CONTINUOUS",
+      "CENSUS_FOOTPRINT": "19.3% vs prior 12,846 · 16.5% vs actionable ledger",
+      "FULL_UNIVERSE_BUILD": "ACTIVE"
+    }
+  },
+  "scorecard": {
+    "at": "2026-08-08T20:58:35.748Z",
+    "production_census_before": 1537,
+    "production_census_after": 2482,
+    "new_inserts": 945,
+    "updates": 0,
+    "raw_candidates": 14035,
+    "ledger_rows_accounted": 15198,
+    "reconciled_actionable_universe": 15012,
+    "prior_unique_estimate_12846": 12846,
+    "footprint_vs_12846_pct": 19.3,
+    "footprint_vs_actionable_pct": 16.5,
+    "status_counts": {
+      "IDENTITY_CONFLICT": 729,
+      "NOT_YET_INDEPENDENTLY_REDISCOVERED": 10732,
+      "IN_PRODUCTION": 3463,
+      "PROBABLE_DUPLICATE": 186,
+      "INSUFFICIENT_EVIDENCE": 29,
+      "RESEARCHABLE_UNVERIFIED": 56,
+      "VERIFIED_READY_TO_INSERT": 3
+    },
+    "verified_ready": 3,
+    "research_pending": 10788,
+    "duplicates": 186,
+    "identity_conflicts": 729,
+    "insufficient": 29,
+    "cvent_not_independently_rediscovered": 10732,
+    "serpapi_searches": 0,
+    "source_failures": 0,
+    "circuit": {
+      "clear": true
+    },
+    "joan_batch_approval_required": false,
+    "next_checkpoint": "independent_rediscovery_lane + remaining_luxury_regional_adapters",
+    "milestones": {
+      "m_2000": true,
+      "m_3000": false,
+      "m_5000": false
+    }
+  },
+  "wave_latest": {
+    "before": 2362,
+    "after": 2482,
+    "inserts": 120,
+    "skipped": 0,
+    "queue": 120,
+    "discovered": 1843,
+    "new_candidates": 130,
+    "families_used": [
+      "Hilton",
+      "Choice",
+      "Marriott",
+      "IHG",
+      "Accor",
+      "Wyndham",
+      "Preferred",
+      "VIC_evidence"
+    ],
+    "adapter_errors": [],
+    "circuit": {
+      "tripped": false,
+      "reason": null,
+      "detail": null
+    },
+    "joan_batch_approval_required": false
+  },
+  "drain": {
+    "before": 1537,
+    "after": 1862,
+    "staged_eligible": 325,
+    "staged_inserts": 325,
+    "next_queue_inserts": 0,
+    "total_inserts_session": 325,
+    "skipped": 0,
+    "fields_written": 6801,
+    "staged_drained": true,
+    "circuit": {
+      "tripped": false,
+      "reason": null,
+      "detail": null
+    }
+  }
+}

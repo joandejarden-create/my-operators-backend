@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Market Demand - Dealality</title>
+  <link rel="stylesheet" href="/css/market-demand.css" />
+</head>
+<body class="md-page">
+  <div class="md-shell" id="mdPageRoot">
+    <div class="md-loading" id="mdPageLoading" role="status" aria-live="polite">Loading market demand data…</div>
+  </div>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/market-demand.js"></script>
+  <script>
+  (function () {
+    var params = new URLSearchParams(window.location.search || "");
+    var dealId = (params.get("dealId") || "").trim();
+    var root = document.getElementById("mdPageRoot");
+    var loading = document.getElementById("mdPageLoading");
+
+    function showError(msg) {
+      if (loading) loading.style.display = "none";
+      if (root) {
+        root.innerHTML =
+          '<a class="md-back" href="/my-deals.html">← Back to My Deals</a>' +
+          '<div class="md-banner error">' + String(msg || "Request failed").replace(/</g, "&lt;") + "</div>";
+      }
+    }
+
+    if (!dealId || dealId.indexOf("rec") !== 0) {
+      showError("A valid dealId query parameter is required (e.g. ?dealId=rec…).");
+      return;
+    }
+
+    var fetchFn =
+      window.DealalityMemberstackAuth && window.DealalityMemberstackAuth.fetchMyDealsApi
+        ? window.DealalityMemberstackAuth.fetchMyDealsApi.bind(window.DealalityMemberstackAuth)
+        : function (url, opts) { return fetch(url, opts); };
+
+    function refresh() {
+      if (loading) {
+        loading.style.display = "block";
+        loading.textContent = "Loading market demand data…";
+      }
+      return window.MarketDemand.load(dealId, fetchFn)
+        .then(function (state) {
+          if (loading) loading.style.display = "none";
+          if (state.error) {
+            state.banner = state.error;
+            state.bannerType = state.errorCode === "market_demand_tables_missing" ? "info" : "error";
+          }
+          window.MarketDemand.render(root, state, {
+            dealId: dealId,
+            fullPage: true,
+            backHref: "/my-deals.html",
+            onRefresh: refresh,
+            onGenerate: function () {
+              if (loading) {
+                loading.style.display = "block";
+                loading.textContent = "Generating demand snapshot…";
+              }
+              fetchFn("/api/deals/" + encodeURIComponent(dealId) + "/generate-market-demand-snapshot", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({}),
+              })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                  if (!data.ok) throw new Error(data.message || data.error || "Generate failed");
+                  return refresh();
+                })
+                .catch(function (err) {
+                  showError(err.message || "Could not generate snapshot.");
+                });
+            },
+            onImport: function () {
+              window.MarketDemand.openImportModal(dealId, fetchFn, function () {
+                refresh();
+              });
+            },
+            onAddHotel: function () {
+              alert("Add Nearby Hotel will be available in a future release. Add records in Airtable for now.");
+            },
+          });
+          document.title = "Market Demand — Dealality";
+        })
+        .catch(function (err) {
+          showError(err.message || "Network error");
+        });
+    }
+
+    refresh();
+  })();
+  </script>
+</body>
+</html>

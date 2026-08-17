@@ -1,0 +1,206 @@
+{
+  "version": "brand-explorer-46-accor-baseline-reconciliation-v1-failures",
+  "generatedAt": "2026-07-28T19:49:06.774Z",
+  "dryRun": true,
+  "writePerformed": false,
+  "airtableWrites": 0,
+  "protectedBaselineExpected": 46,
+  "qualityFreezeCountOnDisk": 45,
+  "qualityFreezeGap": 1,
+  "identityAnchorsVersion": "wave13-active-identity-anchors-v1",
+  "watchNotePath": "reports/brand-explorer-wave14-active-baseline-watch-note.md",
+  "baselineFreezeDecision": "frozen_46_active_public_full_baseline",
+  "rootCauseSummary": "Wave 13 Accor Active brands were dropped from identity maps when FACTORY_PREVIEW became Wave-14-only. Without resolveActiveUniverseRecordId(slug), PVQL/footnote/quality fall back to slug-as-name → brand_not_found → PVQL blocker → quality remediation_required (40 vs 46). Not a Wave 14 Stage 5 write defect.",
+  "classification": {
+    "primary": "recordId_to_slug_resolver_gap",
+    "secondary": [
+      "alias_or_presentation_identity_mismatch",
+      "footnote_enricher_identity_mismatch",
+      "stale_report_or_old_quality_audit_cache"
+    ],
+    "not": [
+      "real_profile_content_defect",
+      "real_release_or_visibility_defect"
+    ]
+  },
+  "failures": [
+    {
+      "brand": "Mama Shelter",
+      "slug": "mama-shelter",
+      "slugAliases": [],
+      "recordId": "recXCZCK05XXYX7Q8",
+      "failureSource": "pvql|footnote_audit|protected_46_quality_freeze_count",
+      "failureType": "brand_not_found_resolver_identity",
+      "qualityRecommendation": "approve_for_baseline_freeze",
+      "qualityComposite": 97,
+      "qualityBlockerCount": 0,
+      "qualityPvqlStatus": "pass",
+      "pvqlError": "brand_not_found",
+      "pvqlFailures": [
+        "brand_not_found"
+      ],
+      "footnoteEnrichedFailure": "brand_not_found",
+      "footnoteRawFailure": "brand_not_found",
+      "currentResolverResult": "recXCZCK05XXYX7Q8",
+      "expectedResolverResult": "recXCZCK05XXYX7Q8",
+      "aliasResolverResult": null,
+      "resolverPass": true,
+      "likelyRootCause": "recordId_to_slug_resolver_gap|alias_or_presentation_identity_mismatch|footnote_enricher_identity_mismatch",
+      "rootCauseClassification": "B_C_resolver_identity_alias",
+      "proposedFix": "Restore Wave 13 Accor durable identity anchors (recordId↔slug + fairmont/so aliases) in EXTRA_ACTIVE_IDENTITY_ANCHORS; stop reading Accor ids from Wave-14-only FACTORY_PREVIEW_CANDIDATE_IDENTITIES; refresh Accor PVQL/quality/footnote reports only.",
+      "airtableWriteRequired": false,
+      "contentPatchRequired": false,
+      "wave14PatchRequired": false
+    },
+    {
+      "brand": "Mercure",
+      "slug": "mercure",
+      "slugAliases": [],
+      "recordId": "recevrLJ3m6rIug3S",
+      "failureSource": "24_tab_quality_audit|pvql|footnote_audit|protected_46_quality_freeze_count",
+      "failureType": "brand_not_found_resolver_identity",
+      "qualityRecommendation": "remediation_required",
+      "qualityComposite": 92,
+      "qualityBlockerCount": 1,
+      "qualityPvqlStatus": "pass",
+      "pvqlError": "brand_not_found",
+      "pvqlFailures": [
+        "brand_not_found"
+      ],
+      "footnoteEnrichedFailure": "brand_not_found",
+      "footnoteRawFailure": "brand_not_found",
+      "currentResolverResult": "recevrLJ3m6rIug3S",
+      "expectedResolverResult": "recevrLJ3m6rIug3S",
+      "aliasResolverResult": null,
+      "resolverPass": true,
+      "likelyRootCause": "recordId_to_slug_resolver_gap|alias_or_presentation_identity_mismatch|footnote_enricher_identity_mismatch",
+      "rootCauseClassification": "B_C_resolver_identity_alias",
+      "proposedFix": "Restore Wave 13 Accor durable identity anchors (recordId↔slug + fairmont/so aliases) in EXTRA_ACTIVE_IDENTITY_ANCHORS; stop reading Accor ids from Wave-14-only FACTORY_PREVIEW_CANDIDATE_IDENTITIES; refresh Accor PVQL/quality/footnote reports only.",
+      "airtableWriteRequired": false,
+      "contentPatchRequired": false,
+      "wave14PatchRequired": false
+    },
+    {
+      "brand": "Novotel",
+      "slug": "novotel",
+      "slugAliases": [],
+      "recordId": "recQE2lSSSSyuUrMQ",
+      "failureSource": "pvql|footnote_audit|protected_46_quality_freeze_count",
+      "failureType": "brand_not_found_resolver_identity",
+      "qualityRecommendation": "approve_for_baseline_freeze",
+      "qualityComposite": 97,
+      "qualityBlockerCount": 0,
+      "qualityPvqlStatus": "pass",
+      "pvqlError": "brand_not_found",
+      "pvqlFailures": [
+        "brand_not_found"
+      ],
+      "footnoteEnrichedFailure": "brand_not_found",
+      "footnoteRawFailure": "brand_not_found",
+      "currentResolverResult": "recQE2lSSSSyuUrMQ",
+      "expectedResolverResult": "recQE2lSSSSyuUrMQ",
+      "aliasResolverResult": null,
+      "resolverPass": true,
+      "likelyRootCause": "recordId_to_slug_resolver_gap|alias_or_presentation_identity_mismatch|footnote_enricher_identity_mismatch",
+      "rootCauseClassification": "B_C_resolver_identity_alias",
+      "proposedFix": "Restore Wave 13 Accor durable identity anchors (recordId↔slug + fairmont/so aliases) in EXTRA_ACTIVE_IDENTITY_ANCHORS; stop reading Accor ids from Wave-14-only FACTORY_PREVIEW_CANDIDATE_IDENTITIES; refresh Accor PVQL/quality/footnote reports only.",
+      "airtableWriteRequired": false,
+      "contentPatchRequired": false,
+      "wave14PatchRequired": false
+    },
+    {
+      "brand": "Pullman",
+      "slug": "pullman",
+      "slugAliases": [],
+      "recordId": "recFW9kfqKfOjv7Z1",
+      "failureSource": "pvql|footnote_audit|protected_46_quality_freeze_count",
+      "failureType": "brand_not_found_resolver_identity",
+      "qualityRecommendation": "approve_for_baseline_freeze",
+      "qualityComposite": 98,
+      "qualityBlockerCount": 0,
+      "qualityPvqlStatus": "pass",
+      "pvqlError": "brand_not_found",
+      "pvqlFailures": [
+        "brand_not_found"
+      ],
+      "footnoteEnrichedFailure": "brand_not_found",
+      "footnoteRawFailure": "brand_not_found",
+      "currentResolverResult": "recFW9kfqKfOjv7Z1",
+      "expectedResolverResult": "recFW9kfqKfOjv7Z1",
+      "aliasResolverResult": null,
+      "resolverPass": true,
+      "likelyRootCause": "recordId_to_slug_resolver_gap|alias_or_presentation_identity_mismatch|footnote_enricher_identity_mismatch",
+      "rootCauseClassification": "B_C_resolver_identity_alias",
+      "proposedFix": "Restore Wave 13 Accor durable identity anchors (recordId↔slug + fairmont/so aliases) in EXTRA_ACTIVE_IDENTITY_ANCHORS; stop reading Accor ids from Wave-14-only FACTORY_PREVIEW_CANDIDATE_IDENTITIES; refresh Accor PVQL/quality/footnote reports only.",
+      "airtableWriteRequired": false,
+      "contentPatchRequired": false,
+      "wave14PatchRequired": false
+    },
+    {
+      "brand": "Fairmont",
+      "slug": "fairmont-hotels-and-resorts",
+      "slugAliases": [
+        "fairmont"
+      ],
+      "recordId": "recJhPaDVU3YUDQUt",
+      "failureSource": "pvql|footnote_audit|protected_46_quality_freeze_count",
+      "failureType": "brand_not_found_resolver_identity",
+      "qualityRecommendation": "approve_for_baseline_freeze",
+      "qualityComposite": 97,
+      "qualityBlockerCount": 0,
+      "qualityPvqlStatus": "pass",
+      "pvqlError": "brand_not_found",
+      "pvqlFailures": [
+        "brand_not_found"
+      ],
+      "footnoteEnrichedFailure": "brand_not_found",
+      "footnoteRawFailure": "brand_not_found",
+      "currentResolverResult": "recJhPaDVU3YUDQUt",
+      "expectedResolverResult": "recJhPaDVU3YUDQUt",
+      "aliasResolverResult": "recJhPaDVU3YUDQUt",
+      "resolverPass": true,
+      "likelyRootCause": "recordId_to_slug_resolver_gap|alias_or_presentation_identity_mismatch|footnote_enricher_identity_mismatch",
+      "rootCauseClassification": "B_C_resolver_identity_alias",
+      "proposedFix": "Restore Wave 13 Accor durable identity anchors (recordId↔slug + fairmont/so aliases) in EXTRA_ACTIVE_IDENTITY_ANCHORS; stop reading Accor ids from Wave-14-only FACTORY_PREVIEW_CANDIDATE_IDENTITIES; refresh Accor PVQL/quality/footnote reports only.",
+      "airtableWriteRequired": false,
+      "contentPatchRequired": false,
+      "wave14PatchRequired": false
+    },
+    {
+      "brand": "SO/",
+      "slug": "so-hotels-and-resorts",
+      "slugAliases": [
+        "so"
+      ],
+      "recordId": "recTJdPlr4mDs9app",
+      "failureSource": "pvql|footnote_audit|protected_46_quality_freeze_count",
+      "failureType": "brand_not_found_resolver_identity",
+      "qualityRecommendation": "approve_for_baseline_freeze",
+      "qualityComposite": 97,
+      "qualityBlockerCount": 0,
+      "qualityPvqlStatus": "pass",
+      "pvqlError": "brand_not_found",
+      "pvqlFailures": [
+        "brand_not_found"
+      ],
+      "footnoteEnrichedFailure": "brand_not_found",
+      "footnoteRawFailure": "brand_not_found",
+      "currentResolverResult": "recTJdPlr4mDs9app",
+      "expectedResolverResult": "recTJdPlr4mDs9app",
+      "aliasResolverResult": "recTJdPlr4mDs9app",
+      "resolverPass": true,
+      "likelyRootCause": "recordId_to_slug_resolver_gap|alias_or_presentation_identity_mismatch|footnote_enricher_identity_mismatch",
+      "rootCauseClassification": "B_C_resolver_identity_alias",
+      "proposedFix": "Restore Wave 13 Accor durable identity anchors (recordId↔slug + fairmont/so aliases) in EXTRA_ACTIVE_IDENTITY_ANCHORS; stop reading Accor ids from Wave-14-only FACTORY_PREVIEW_CANDIDATE_IDENTITIES; refresh Accor PVQL/quality/footnote reports only.",
+      "airtableWriteRequired": false,
+      "contentPatchRequired": false,
+      "wave14PatchRequired": false
+    }
+  ],
+  "summary": {
+    "affectedCount": 6,
+    "resolverPassCount": 6,
+    "brandNotFoundCount": 6,
+    "airtableWriteRequiredAny": false
+  }
+}

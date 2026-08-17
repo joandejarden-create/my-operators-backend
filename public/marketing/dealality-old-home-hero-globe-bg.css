@@ -1,0 +1,15 @@
+/* Hero globe — subtle full-bleed background (not a column).
+   No soft atmosphere wash — navy scrim must keep hero copy readable. */
+#hero,.oh-hero{position:relative!important;overflow:hidden!important}
+#hero-globe{position:absolute!important;inset:0!important;z-index:0!important;display:block!important;pointer-events:none!important;overflow:hidden!important;opacity:.62}
+#hero-globe-container{position:absolute!important;top:-12%!important;right:-12%!important;bottom:-18%!important;left:12%!important;width:auto!important;height:auto!important}
+#oh-globe-canvas{display:block!important;width:100%!important;height:100%!important}
+#hero-globe-list{display:none!important}
+#hero::after{content:""!important;position:absolute!important;inset:0!important;z-index:0!important;pointer-events:none!important;background:radial-gradient(ellipse 72% 78% at 16% 40%,rgba(8,15,37,.92) 0%,rgba(8,15,37,.72) 38%,rgba(8,15,37,.42) 68%,rgba(8,15,37,.18) 100%),linear-gradient(90deg,rgba(8,15,37,.78) 0%,rgba(8,15,37,.38) 48%,rgba(8,15,37,.16) 100%)}
+#hero-inner{position:relative!important;z-index:1!important}
+@media(max-width:960px){
+#hero-globe{opacity:.42}
+#hero-globe-container{top:-10%!important;right:-28%!important;bottom:-24%!important;left:-8%!important}
+#hero::after{background:radial-gradient(ellipse 92% 74% at 50% 28%,rgba(8,15,37,.9) 0%,rgba(8,15,37,.68) 48%,rgba(8,15,37,.34) 100%)}
+}
+@media(prefers-reduced-motion:reduce){#hero-globe{opacity:.36}}

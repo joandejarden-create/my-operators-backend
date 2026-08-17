@@ -1,0 +1,134 @@
+{
+  "workflowVersion": "v1",
+  "generatedAt": "2026-07-06T16:13:07.595Z",
+  "mode": "plan",
+  "entityType": "brand",
+  "targetRecId": "recWPEvxBQxVVzSq3",
+  "entityName": "Radisson Blu by Choice",
+  "supportedEntityTypes": [
+    "brand",
+    "operator"
+  ],
+  "futureEntityTypes": [
+    "owner",
+    "capital_partner",
+    "advisor",
+    "market_anchor",
+    "deal_evidence"
+  ],
+  "currentStage": {
+    "stageId": 1,
+    "stageKey": "source_discovery",
+    "stageLabel": "Source discovery",
+    "blockers": [
+      "no_linked_sources"
+    ]
+  },
+  "completeness": {
+    "tier": "empty",
+    "approvedSourceCount": 0,
+    "approvedFactCount": 0,
+    "meetsMinimumPackage": false,
+    "meetsUsefulPackage": false
+  },
+  "sourceCounts": {
+    "total": 0,
+    "approvedExplorer": 0,
+    "publishReady": 0,
+    "captured": 0,
+    "extracted": 0
+  },
+  "factCounts": {
+    "total": 0,
+    "approved": 0,
+    "pendingCandidates": 0,
+    "excluded": 0,
+    "excludedFacts": [],
+    "pending": 0
+  },
+  "governance": {
+    "live": {
+      "validationStatus": null,
+      "usagePermission": null,
+      "sourceType": "Public Sources + AI Extraction",
+      "sourceRegion": null,
+      "confidenceLevel": null,
+      "lastReviewedDate": null,
+      "refreshDueDate": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "externalDisplayStatus": null,
+      "evidenceNotes": null,
+      "missingDataFlags": null,
+      "reviewedBy": null,
+      "internalNotes": null,
+      "_legacyLastUpdatedDate": null,
+      "_legacyHeroVerification": "Source-Backed Draft"
+    },
+    "normalized": {
+      "validationStatus": null,
+      "usagePermission": null,
+      "sourceType": "Public Sources + AI Extraction",
+      "sourceRegion": null,
+      "confidenceLevel": null,
+      "sourceBasis": null,
+      "lastReviewedDate": null,
+      "refreshDueDate": null,
+      "companyValidated": false,
+      "companyValidationDate": null,
+      "externalDisplayStatus": null,
+      "displayLabel": null,
+      "displaySubtitle": null,
+      "internalWarnings": [
+        "Governance Not Set"
+      ],
+      "sources": {
+        "canonicalTable": "Brand Setup - Brand Basics"
+      }
+    },
+    "changeClass": null,
+    "eligible": false,
+    "expectedChip": null
+  },
+  "blockers": {
+    "workflow": [
+      "no_linked_sources"
+    ],
+    "publishScope": [
+      "no_approved_explorer_sources",
+      "no_approved_facts",
+      "no_linked_sources"
+    ],
+    "labels": [
+      "no_approved_facts"
+    ]
+  },
+  "package": {
+    "sourceIds": [],
+    "factIds": [],
+    "approvedExplorerSourceIds": [],
+    "excludedFromPublishScope": []
+  },
+  "recommendedFactIds": [],
+  "nextCommands": [
+    "npm run partner-reference:search -- --operator \"Radisson Blu by Choice\"",
+    "npm run partner-reference:init-folder -- --company \"Radisson Blu by Choice\" --dry-run"
+  ],
+  "nextNotes": [
+    "Verify official URLs before capture; avoid third-party first-pass unless scoped."
+  ],
+  "narrowExtract": null,
+  "safety": {
+    "neverWrites": [
+      "Company Validated",
+      "Company Validation Date",
+      "BAS / OAS / OCS scoring fields",
+      "Deal Readiness outputs",
+      "Explorer UI",
+      "Airtable schema"
+    ],
+    "companyValidatedWritePathBlocked": true,
+    "applyOrchestrationInV1": false
+  },
+  "readinessSummary": null
+}

@@ -14,15 +14,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const TABLE = "Brand Setup - Brand Explorer Presentation";
 const SLOT = "footprint.openings";
-const FIXTURE = path.join(ROOT, "fixtures/brand-explorer-presentation-radisson-footprint-openings.json");
+const FIXTURE_DEFAULT = path.join(ROOT, "fixtures/brand-explorer-presentation-radisson-footprint-openings.json");
 
 function parseArgs(argv) {
   const dryRun = argv.includes("--dry-run");
   let brandName = "";
+  let fixturePath = FIXTURE_DEFAULT;
   for (let i = 2; i < argv.length; i++) {
     if (argv[i] === "--brand-name" && argv[i + 1]) brandName = argv[++i];
+    else if (argv[i] === "--fixture" && argv[i + 1]) {
+      const rel = argv[++i];
+      fixturePath = path.isAbsolute(rel) ? rel : path.resolve(ROOT, rel);
+    }
   }
-  return { dryRun, brandName: brandName.trim() || "Radisson" };
+  return { dryRun, brandName: brandName.trim() || "Radisson", fixturePath };
 }
 
 function buildPatchFields(r) {
@@ -38,8 +43,9 @@ function buildPatchFields(r) {
 }
 
 async function main() {
-  const { dryRun, brandName } = parseArgs(process.argv);
-  const data = JSON.parse(fs.readFileSync(FIXTURE, "utf8"));
+  const { dryRun, brandName, fixturePath } = parseArgs(process.argv);
+  if (!fs.existsSync(fixturePath)) throw new Error(`Fixture not found: ${fixturePath}`);
+  const data = JSON.parse(fs.readFileSync(fixturePath, "utf8"));
   const byTitle = new Map(
     data.rows.filter((r) => r.slotKey === SLOT).map((r) => [String(r.title).trim(), r])
   );
@@ -74,6 +80,8 @@ async function main() {
   );
   const records = merged.filter((rec) => {
     if (String(rec.get("Slot Key") || "").trim() !== SLOT) return false;
+    const bn = String(rec.get("Brand Name") || "").trim();
+    if (brandName && bn && bn !== brandName) return false;
     const title = String(rec.get("Title") || "").trim();
     return byTitle.has(title);
   });

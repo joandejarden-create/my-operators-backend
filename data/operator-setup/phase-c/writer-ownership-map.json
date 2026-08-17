@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-08-10T17:13:51.093Z",
+  "fields": [
+    {
+      "field": "Operating Model",
+      "writer": "om-ma-classifier",
+      "inputs": [
+        "Assignments.Operating / Management Structure"
+      ],
+      "refresh": "manual/wave",
+      "override": "founder"
+    },
+    {
+      "field": "Management Availability",
+      "writer": "om-ma-classifier",
+      "inputs": [
+        "Assignments structures"
+      ],
+      "refresh": "manual/wave",
+      "override": "founder"
+    },
+    {
+      "field": "Active Countries",
+      "writer": "derived-sync",
+      "inputs": [
+        "Market Presence",
+        "Assignments"
+      ],
+      "refresh": "after OE waves",
+      "override": "hold on conflict"
+    },
+    {
+      "field": "Profile researched narratives",
+      "writer": "profile-deepen / website-content",
+      "inputs": [
+        "packs"
+      ],
+      "refresh": "pack update",
+      "override": "blank-fill only"
+    },
+    {
+      "field": "Setup Brand Relationships rows",
+      "writer": "oe-brand-adapter",
+      "inputs": [
+        "Intel BR",
+        "Assignments"
+      ],
+      "refresh": "after OE waves",
+      "override": "skip if ≥3 rows"
+    },
+    {
+      "field": "Operating Platform rows",
+      "writer": "oe-operating-adapter",
+      "inputs": [
+        "Assignments",
+        "Presence"
+      ],
+      "refresh": "after OE waves",
+      "override": "skip if ≥5 rows"
+    },
+    {
+      "field": "locationType* / *Experience numbers",
+      "writer": "NONE",
+      "inputs": [],
+      "refresh": "n/a",
+      "override": "leave blank"
+    },
+    {
+      "field": "bf_*",
+      "writer": "NONE",
+      "inputs": [],
+      "refresh": "n/a",
+      "override": "Fit-specific"
+    }
+  ]
+}

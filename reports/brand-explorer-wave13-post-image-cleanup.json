@@ -1,0 +1,181 @@
+{
+  "version": "wave13-post-image-content-cleanup-v1",
+  "wave13Version": "brand-explorer-wave13-factory-v1",
+  "stage": "post-image-content-cleanup",
+  "generatedAt": "2026-07-27T16:38:26.999Z",
+  "dryRun": false,
+  "applyRequested": true,
+  "flagCheck": {
+    "apply": true,
+    "dryRun": false,
+    "missing": [],
+    "ok": true
+  },
+  "stage6Scope": [
+    "mama-shelter",
+    "mercure",
+    "ibis",
+    "novotel",
+    "pullman",
+    "so-hotels-and-resorts",
+    "fairmont-hotels-and-resorts"
+  ],
+  "protectedBaselineCount": 39,
+  "bunkhouse": {
+    "version": "bunkhouse-remediation-lock-resolution-v1",
+    "generatedAt": "2026-07-27T16:38:26.002Z",
+    "brandSlug": "bunkhouse-hotels",
+    "recordId": "recGv268Wda31PlSZ",
+    "priorPvqlSnapshot": {
+      "publicDisplayState": "active_profile_ready",
+      "publicFullProfile": true,
+      "cohort": "restored_legacy_public",
+      "remediationLocked": false,
+      "publicFullProfileCount": 39
+    },
+    "liveDiagnosis": {
+      "brandStatus": "Active",
+      "activeProfileApproved": true,
+      "founderVisualReviewPass": true,
+      "companyValidated": false,
+      "presentationRowCount": 107,
+      "imageUniquenessPass": true,
+      "imageRoleMatchPass": true,
+      "displayState": "active_profile_ready",
+      "shouldRenderFullProfile": true,
+      "galleryDistinct": 6,
+      "scenarioDistinct": 3,
+      "propertyDistinct": 3
+    },
+    "classification": "A_stale_report_or_transient_resolver_state",
+    "rootCause": "Prior PVQL captured bunkhouse as draft_applied_with_defects / remediation_locked while live Basics + Presentation now resolve to active_profile_ready with uniqueness and role-match PASS. No Bunkhouse writes required.",
+    "allowedWritesPerformed": [],
+    "airtableWrites": false,
+    "safeToProceedWithoutWrites": true,
+    "acceptance": {
+      "bunkhouseNotRemediationLockedLive": true,
+      "requiresFreshPvqlConfirm": true
+    },
+    "paths": {
+      "jsonPath": "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-39-bunkhouse-remediation-lock-resolution.json",
+      "mdPath": "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\brand-explorer-39-bunkhouse-remediation-lock-resolution.md"
+    }
+  },
+  "so": {
+    "brandSlug": "so-hotels-and-resorts",
+    "brandName": "SO/ Hotels & Resorts",
+    "basicsRecordId": "recTJdPlr4mDs9app",
+    "basicsName": "SO/",
+    "stewardDataIntentionallyNotFilled": [
+      "snapshot.*",
+      "footprint.primary_regions"
+    ],
+    "basicsPatches": [
+      {
+        "table": "Brand Setup - Brand Basics",
+        "recordId": "recTJdPlr4mDs9app",
+        "fields": {
+          "Brand Positioning": "SO/ is a fashion-led luxury lifestyle collection for design-forward urban hotels and selective resort assets. Owners should underwrite elevated public space, destination F&B, and brand-standard intensity above midscale lifestyle and distinct from heritage landmark luxury.",
+          "Guest Psychographics Description": "SO/ guests seek fashion-rooted, design-led luxury stays with destination energy, social F&B, and high-touch experiential hospitality — not economy, essential-stay, or limited-service product."
+        },
+        "fieldMap": {
+          "positioning.positioning": "Brand Positioning",
+          "positioning.audience": "Guest Psychographics Description"
+        },
+        "before": {
+          "Brand Positioning": "Smart, design-led economy; modern style and social spaces for value-conscious travelers.",
+          "Guest Psychographics Description": "Value-conscious travelers seeking smart, design-led economy stays."
+        },
+        "afterWordCounts": {
+          "positioning": 35,
+          "audience": 23
+        },
+        "rationale": "Rendered positioning.positioning / positioning.audience read Brand Basics Brand Positioning + Guest Psychographics Description. Replace economy-oriented thin copy with SO/ fashion-led luxury lifestyle owner language (≥12 words)."
+      }
+    ],
+    "presentationPatches": [],
+    "imagesUnchanged": true,
+    "brandStatusUnchanged": true
+  },
+  "fairmont": {
+    "brandSlug": "fairmont-hotels-and-resorts",
+    "brandName": "Fairmont",
+    "openingsRecordId": "recQXp6Y3EkfaC9hG",
+    "live": {
+      "recordId": "recQXp6Y3EkfaC9hG",
+      "title": "Fairmont San Francisco — International Reference",
+      "slotKey": "footprint.openings",
+      "externalDisplayStatus": "Do Not Display",
+      "hasImage": false
+    },
+    "alreadyHidden": true,
+    "presentationPatches": [],
+    "imagesUnchanged": true,
+    "brandStatusUnchanged": true
+  },
+  "applyResult": {
+    "applied": true,
+    "flagCheck": {
+      "apply": true,
+      "dryRun": false,
+      "missing": [],
+      "ok": true
+    },
+    "results": {
+      "so": [
+        {
+          "recordId": "recTJdPlr4mDs9app",
+          "fields": [
+            "Brand Positioning",
+            "Guest Psychographics Description"
+          ],
+          "ok": true
+        }
+      ],
+      "fairmont": [],
+      "errors": []
+    }
+  },
+  "guardrails": {
+    "noBrandStatus": true,
+    "noReleaseFields": true,
+    "noCompanyValidated": true,
+    "noSourceLibrary": true,
+    "noRegistry": true,
+    "noImageWrites": true,
+    "noHouseOfOriginals": true,
+    "noMorgansOriginals": true,
+    "noRadissonCollection": true,
+    "noSoStewardInventFills": true,
+    "targetedFieldFixesOnly": true
+  },
+  "readyStatement": "wave13_post_image_cleanup_ready_for_founder_review",
+  "pass": true,
+  "stopRecommended": false,
+  "postApplyValidation": {
+    "pvqlPublicFullOnly": {
+      "overallPass": true,
+      "publicFullProfileCount": 39,
+      "bunkhouseRemediationLocked": false,
+      "bunkhouseCohort": "restored_legacy_public"
+    },
+    "baseline39Pass": true,
+    "renderedCompletenessPass7": true,
+    "soPositioningResidualsCleared": true,
+    "noEmptyRenderedComponentsPass7": true,
+    "goldenContentQualityPass7": true,
+    "imageUniquenessPass7": true,
+    "imageRoleMatchPass7": true,
+    "evidenceQualityPermanentTargetsPass": true,
+    "evidenceQualityWave13BrandsFlag": "preexisting_factory_preview_momentum_body_thin_not_stage6_scope",
+    "tab24QualityAuditPass": true,
+    "tab24Recommendation": "ready_to_freeze_39_active_public_full_baseline",
+    "imagesUnchanged": true,
+    "brandStatusUnchanged": true,
+    "releaseFieldsUnchanged": true,
+    "companyValidatedUnchanged": true,
+    "sourceLibraryUnchanged": true,
+    "registryUnchanged": true
+  }
+}
+

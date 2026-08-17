@@ -1,0 +1,28 @@
+{
+  "version": "census-autopilot-v1.1-live-deep-research",
+  "auto_call_webhound": false,
+  "note": "Recalibrated post-run: owner/operator Unknown are NOT automatic Webhound. Realistic estimates below.",
+  "classification_policy": {
+    "Owner Name": "B first-party or D accept Unknown",
+    "Operator / Management Company": "D accept Unknown or C human/specialist — not auto Webhound",
+    "Rooms / Keys": "B first-party when branded page available; else A Webhound candidate",
+    "Opening Date": "A/B depending on family signals",
+    "Phone/Address/Coords": "E retry later via directory"
+  },
+  "realistic_estimates": {
+    "hotels_webhound_pct": "15-25",
+    "material_fields_webhound_pct": "5-10",
+    "likely_categories": ["rooms_keys", "opening_date_secondary", "hard_independent_discovery"],
+    "likely_budget_note": "Mexico 3-family ~$70–450 if 15–25% hotels at $2–5; do not auto-spend"
+  },
+  "naive_overcount_from_first_pass": {
+    "hotels_webhound_candidate": 363,
+    "reason": "Operator Deep Research Required was mis-routed to class A"
+  },
+  "from_hard_field_matrix": {
+    "rooms_unresolved": 349,
+    "opening_unresolved": 262,
+    "operator_deep_research_required": 363,
+    "owner_deep_research_required": 364
+  }
+}

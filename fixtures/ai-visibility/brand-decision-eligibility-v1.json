@@ -1,0 +1,1568 @@
+{
+  "id": "brand_decision_eligibility_v1",
+  "version": "1.3",
+  "configVersion": "brand_decision_eligibility_v1",
+  "VERSION_BEFORE": "1.2",
+  "VERSION_AFTER": "1.3",
+  "LANGUAGE_NEUTRAL": true,
+  "UNKNOWN_BEHAVIOR": "UNKNOWN ≠ NOT_ELIGIBLE; never coerce unknown to zero or ineligible",
+  "peerSetId": "peers_uu_collection_lifestyle_owner_decision_v2",
+  "decisionTerritories": [
+    "Conversion",
+    "Collection / Soft Brand",
+    "Lifestyle Positioning",
+    "Upper-Upscale Positioning",
+    "New Build",
+    "Branded Residences",
+    "Branded Residences / Mixed Use",
+    "Soft-Brand Affiliation Flexibility",
+    "Owner Economics / Flexibility"
+  ],
+  "notes": [
+    "Phase 3A.9.1: Additive eligibility for IHG showcase portfolio-only brands (Voco, Even, Vignette). Peer v2 unchanged.",
+    "Phase 3A.9: Branded Residences split from Mixed Use; Soft-Brand Affiliation Flexibility renames Owner Economics methodology.",
+    "Legacy territories Branded Residences / Mixed Use and Owner Economics / Flexibility retained for historical continuity.",
+    "Active showcase wave uses activeShowcaseTerritories only (New Build / Mixed Use deferred from prompts).",
+    "UNKNOWN ≠ NOT_ELIGIBLE; language-neutral; no suitability/fit scoring."
+  ],
+  "taxonomyRecommendations": {
+    "Conversion": "KEEP",
+    "Collection / Soft Brand": "KEEP",
+    "Lifestyle Positioning": "KEEP",
+    "Upper-Upscale Positioning": "KEEP",
+    "New Build": "DEFER_FROM_SHOWCASE_WAVE",
+    "Branded Residences": "KEEP",
+    "Branded Residences / Mixed Use": "LEGACY_SPLIT",
+    "Soft-Brand Affiliation Flexibility": "KEEP",
+    "Owner Economics / Flexibility": "LEGACY_RENAMED",
+    "Mixed Use": "DEFER"
+  },
+  "entries": [
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection / soft-brand owner decisions.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Collection Brand + showcase lifestyle/design role",
+      "reason": "Collection brand with governed lifestyle/design showcase role.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting. Recommended rename: Soft-Brand Affiliation Flexibility.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection / soft-brand owner decisions.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Collection Brand + showcase lifestyle/design role",
+      "reason": "Collection brand with governed lifestyle/design showcase role.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences=No. Interim combined territory is residences-led pending split — Mixed Use remains UNKNOWN separately.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting. Recommended rename: Soft-Brand Affiliation Flexibility.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection / soft-brand owner decisions.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Collection Brand + showcase lifestyle/design role",
+      "reason": "Collection brand with governed lifestyle/design showcase role.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "New Build",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel=0",
+      "reason": "Zero new-build count may reflect incomplete footprint — not treated as NOT_ELIGIBLE.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences=No. Interim combined territory is residences-led pending split — Mixed Use remains UNKNOWN separately.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting. Recommended rename: Soft-Brand Affiliation Flexibility.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Hard Brand + founder showcase rule",
+      "reason": "Hard brand — must not enter Collection / Soft Brand analysis.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Hard Brand",
+      "reason": "Hard brand — not a lifestyle-positioning subject.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "No governed owner-fee / franchise-flexibility field for hard/lifestyle brands.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand, not a collection / soft-brand model.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand — addressable for lifestyle positioning.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upscale",
+      "reason": "Upscale — excluded from UU positioning analysis.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences=No. Interim combined territory is residences-led pending split — Mixed Use remains UNKNOWN separately.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "No governed owner-fee / franchise-flexibility field for hard/lifestyle brands.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection / soft-brand owner decisions.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand without governed lifestyle positioning claim — do not force into Lifestyle.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences=No. Interim combined territory is residences-led pending split — Mixed Use remains UNKNOWN separately.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting. Recommended rename: Soft-Brand Affiliation Flexibility.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection / soft-brand owner decisions.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand without governed lifestyle positioning claim — do not force into Lifestyle.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting. Recommended rename: Soft-Brand Affiliation Flexibility.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand, not a collection / soft-brand model.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand — addressable for lifestyle positioning.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "No governed owner-fee / franchise-flexibility field for hard/lifestyle brands.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand, not a collection / soft-brand model.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand — addressable for lifestyle positioning.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upscale",
+      "reason": "Upscale — excluded from UU positioning analysis.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences=No. Interim combined territory is residences-led pending split — Mixed Use remains UNKNOWN separately.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "No governed owner-fee / franchise-flexibility field for hard/lifestyle brands.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection / soft-brand owner decisions.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand without governed lifestyle positioning claim — do not force into Lifestyle.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upscale",
+      "reason": "Upscale — excluded from UU positioning analysis.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "New Build",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel=0",
+      "reason": "Zero new-build count may reflect incomplete footprint — not treated as NOT_ELIGIBLE.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting. Recommended rename: Soft-Brand Affiliation Flexibility.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection / soft-brand owner decisions.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand without governed lifestyle positioning claim — do not force into Lifestyle.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting. Recommended rename: Soft-Brand Affiliation Flexibility.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Hard Brand + founder showcase rule",
+      "reason": "Hard brand — must not enter Collection / Soft Brand analysis.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Hard Brand",
+      "reason": "Hard brand — not a lifestyle-positioning subject.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "No governed owner-fee / franchise-flexibility field for hard/lifestyle brands.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand, not a collection / soft-brand model.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand — addressable for lifestyle positioning.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "No governed owner-fee / franchise-flexibility field for hard/lifestyle brands.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand, not a collection / soft-brand model.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle brand — addressable for lifestyle positioning.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "No governed owner-fee / franchise-flexibility field for hard/lifestyle brands.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live cohort membership",
+      "reason": "Active development brand in owner-decision cohort.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection / soft-brand owner decisions.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand without governed lifestyle positioning claim — do not force into Lifestyle.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upper Upscale",
+      "reason": "Upper Upscale chain scale.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "New Build",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Setup - Brand Footprint.Total New Build Hotel",
+      "reason": "Footprint records new-build hotels in system inventory/experience — brand has a governed new-build path.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status Case-by-Case — addressable for residences questions; Mixed Use still ungoverned.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting. Recommended rename: Soft-Brand Affiliation Flexibility.",
+      "version": "1.1"
+    },
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Branded Residences Status=No.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Branded Residences Status=No.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Branded Residences Status=No.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Branded Residences Status=No.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Branded Residences Status=No.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status",
+      "reason": "Residences status supports branded-residences owner decisions; Mixed Use deferred.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only — not franchise fee/economic underwriting.",
+      "version": "1.2"
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live",
+      "reason": "Active development brand — conversion-oriented Upscale brand.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Conversion Brand",
+      "reason": "Conversion Brand — not Collection/soft-brand affiliation.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Conversion Brand",
+      "reason": "Conversion Brand — not lifestyle positioning archetype.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upscale",
+      "reason": "Upscale chain scale — outside Upper Upscale.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences=No.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model≠Collection",
+      "reason": "Not Collection — affiliation-flexibility UNKNOWN (not fee-judged).",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "New Build",
+      "eligibility": "UNKNOWN",
+      "source": "No footprint eligibility applied in 3A.9.1",
+      "reason": "Portfolio-only brand; New Build deferred from Wave-1.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences-led legacy territory.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recwONQTqGU1jHCsM",
+      "brandName": "Voco Hotels",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model≠Collection",
+      "reason": "Legacy territory; not Collection.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live",
+      "reason": "Active development brand in IHG showcase portfolio.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle Brand — not Collection/soft-brand.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Lifestyle Brand",
+      "reason": "Lifestyle Brand — addressable for lifestyle positioning.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Upscale",
+      "reason": "Upscale chain scale — outside Upper Upscale.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences=No.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model≠Collection",
+      "reason": "Not Collection — affiliation-flexibility UNKNOWN.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "New Build",
+      "eligibility": "UNKNOWN",
+      "source": "No footprint eligibility applied in 3A.9.1",
+      "reason": "Portfolio-only brand; New Build deferred from Wave-1.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=No",
+      "reason": "Residences-led legacy territory.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recvvmiyReHhiKdoK",
+      "brandName": "Even Hotels",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Brand Model≠Collection",
+      "reason": "Legacy territory; not Collection.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "Conversion",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model + Active/Live",
+      "reason": "Active Collection Brand — conversion/affiliation consideration.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "Collection / Soft Brand",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Collection brand — addressable for collection/soft-brand decisions.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "Lifestyle Positioning",
+      "eligibility": "UNKNOWN",
+      "source": "Brand Basics Collection Brand without governed lifestyle role",
+      "reason": "Collection ≠ Lifestyle — UNKNOWN preserved.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "Upper-Upscale Positioning",
+      "eligibility": "NOT_ELIGIBLE",
+      "source": "Brand Basics Hotel Chain Scale=Luxury",
+      "reason": "Luxury chain scale — outside Upper Upscale.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "Branded Residences",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=Yes",
+      "reason": "Residences=Yes.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "Soft-Brand Affiliation Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Soft/collection affiliation flexibility only.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "New Build",
+      "eligibility": "UNKNOWN",
+      "source": "No footprint eligibility applied in 3A.9.1",
+      "reason": "Portfolio-only brand; New Build deferred from Wave-1.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "Branded Residences / Mixed Use",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Branded Residences Status=Yes",
+      "reason": "Residences-led legacy territory.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    },
+    {
+      "brandId": "recDwzv86TWnz2gGB",
+      "brandName": "Vignette Collection",
+      "decisionTerritory": "Owner Economics / Flexibility",
+      "eligibility": "ELIGIBLE",
+      "source": "Brand Basics Brand Model=Collection Brand",
+      "reason": "Legacy Collection→ELIGIBLE affiliation flexibility.",
+      "version": "1.3",
+      "portfolioOnly": true,
+      "peerSetMember": false
+    }
+  ],
+  "activeShowcaseTerritories": [
+    "Conversion",
+    "Collection / Soft Brand",
+    "Lifestyle Positioning",
+    "Upper-Upscale Positioning",
+    "Branded Residences",
+    "Soft-Brand Affiliation Flexibility"
+  ],
+  "deferredTerritories": [
+    "New Build",
+    "Mixed Use",
+    "Owner Economics / Flexibility",
+    "Branded Residences / Mixed Use"
+  ]
+}

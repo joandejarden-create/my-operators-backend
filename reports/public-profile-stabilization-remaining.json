@@ -1,0 +1,179 @@
+{
+  "kimpton": {
+    "failFindings": 1,
+    "empty": 0,
+    "emptyIds": [],
+    "golden": {
+      "pass": true,
+      "failures": []
+    },
+    "forb": [],
+    "fields": [
+      {
+        "id": "insight.similar",
+        "st": "too_thin",
+        "wc": 66,
+        "slot": "insight.similar",
+        "reason": "Owner checklist rows=1; need >= 2"
+      }
+    ]
+  },
+  "design-hotels": {
+    "failFindings": 4,
+    "empty": 0,
+    "emptyIds": [],
+    "golden": {
+      "pass": false,
+      "failures": [
+        "misleading_zero_metrics"
+      ]
+    },
+    "forb": [],
+    "fields": [
+      {
+        "id": "insight.similar",
+        "st": "missing",
+        "wc": 0,
+        "slot": "insight.similar",
+        "reason": "Owner checklist rows=0; need >= 2"
+      }
+    ]
+  },
+  "ascend": {
+    "failFindings": 4,
+    "empty": 1,
+    "emptyIds": [
+      {
+        "brandSlug": "ascend",
+        "id": "empty_dd_nodes",
+        "status": "blocked_empty_render",
+        "detail": "oe-dd--empty count=1",
+        "count": 1,
+        "recommendedAction": "suppress_component_or_fill"
+      }
+    ],
+    "golden": {
+      "pass": false,
+      "failures": [
+        "stub_chip:\\bconversion-friendly\\.?\\b",
+        "thin_opening:recdtUCBSl2zvPc5v:27",
+        "thin_opening:recXB3Peo2tysB1lg:23",
+        "thin_opening:rec349FbIW6lOTWIq:25",
+        "misleading_zero_metrics"
+      ]
+    },
+    "forb": [],
+    "fields": [
+      {
+        "st": "too_thin",
+        "slot": "Body / Case Summary",
+        "reason": "Opening body only 27 words."
+      },
+      {
+        "st": "too_thin",
+        "slot": "Body / Case Summary",
+        "reason": "Opening body only 23 words."
+      },
+      {
+        "st": "too_thin",
+        "slot": "Body / Case Summary",
+        "reason": "Opening body only 25 words."
+      }
+    ]
+  },
+  "comfort-inn-suites": {
+    "failFindings": 4,
+    "empty": 1,
+    "emptyIds": [
+      {
+        "brandSlug": "comfort-inn-suites",
+        "id": "empty_dd_nodes",
+        "status": "blocked_empty_render",
+        "detail": "oe-dd--empty count=1",
+        "count": 1,
+        "recommendedAction": "suppress_component_or_fill"
+      }
+    ],
+    "golden": {
+      "pass": false,
+      "failures": [
+        "thin_opening:rec61TLKkJqRBfRGU:25",
+        "thin_opening:recgFo1ENh7WGtgmu:27",
+        "misleading_zero_metrics"
+      ]
+    },
+    "forb": [],
+    "fields": [
+      {
+        "id": "footprint.growth_fit",
+        "st": "too_thin",
+        "wc": 19,
+        "min": 20,
+        "slot": "footprint.growth_fit",
+        "reason": "Only 19 words; minimum useful depth is 20."
+      },
+      {
+        "st": "too_thin",
+        "slot": "Body / Case Summary",
+        "reason": "Opening body only 25 words."
+      },
+      {
+        "st": "too_thin",
+        "slot": "Body / Case Summary",
+        "reason": "Opening body only 27 words."
+      }
+    ]
+  },
+  "curio-collection": {
+    "failFindings": 1,
+    "empty": 0,
+    "emptyIds": [],
+    "golden": {
+      "pass": false,
+      "failures": [
+        "stub_chip:\\bconversion-friendly\\.?\\b"
+      ]
+    },
+    "forb": [],
+    "fields": [
+      {
+        "id": "positioning.audience",
+        "st": "too_thin",
+        "wc": 9,
+        "min": 12,
+        "slot": "Guest Psychographics Description",
+        "reason": "Only 9 words; minimum useful depth is 12."
+      }
+    ]
+  },
+  "tribute-portfolio": {
+    "failFindings": 2,
+    "empty": 0,
+    "emptyIds": [],
+    "golden": {
+      "pass": false,
+      "failures": [
+        "stub_chip:\\bconversion-friendly\\.?\\b"
+      ]
+    },
+    "forb": [],
+    "fields": [
+      {
+        "id": "positioning.audience",
+        "st": "too_thin",
+        "wc": 8,
+        "min": 12,
+        "slot": "Guest Psychographics Description",
+        "reason": "Only 8 words; minimum useful depth is 12."
+      },
+      {
+        "id": "valueOwners.lifecycle.6",
+        "st": "too_thin",
+        "wc": 31,
+        "min": 35,
+        "slot": "valueOwners.lifecycle.6",
+        "reason": "Only 31 words; minimum useful depth is 35."
+      }
+    ]
+  }
+}

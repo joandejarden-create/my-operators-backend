@@ -1,0 +1,297 @@
+{
+  "version": "production-census-parent-coverage-reconciliation-suite-v1",
+  "status": "production_census_parent_coverage_reconciliation_suite_partial_steward_remaining",
+  "objective": "coverage-reconciliation-v1",
+  "region": "CALA",
+  "generated_at": "2026-08-06T23:00:32.870Z",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "safety": {
+    "brand_setup_writes": false,
+    "brand_explorer_writes": false,
+    "old_census_writes": false,
+    "vic_writes": false,
+    "owner_operator_date_writes": false,
+    "address_writes": false,
+    "coordinate_writes": false,
+    "phone_writes": false,
+    "rooms_writes": false,
+    "fuzzy_auto_insert": false,
+    "hotel_name_only_insert": false
+  },
+  "overall": {
+    "hotel_property_census_before": 942,
+    "hotel_property_census_after": 1077,
+    "suite_wave_inserts": 135,
+    "total_high_inserts_including_marriott_wave": 167,
+    "total_steward_cases_remaining": 25,
+    "total_missing_high_remaining": 0,
+    "parents_complete": [
+      "Hilton",
+      "Choice",
+      "Wyndham",
+      "Preferred"
+    ],
+    "parents_partial": [
+      "Marriott",
+      "IHG",
+      "Accor"
+    ],
+    "parents_blocked": []
+  },
+  "parents": [
+    {
+      "parent_company": "Marriott",
+      "status": "production_census_coverage_reconciliation_v1_partial_missing_remaining",
+      "official_inventory_count": 397,
+      "census_total_after_suite": 1077,
+      "exact_matches": 376,
+      "probable_matches": 0,
+      "high_missing_inserted": 32,
+      "missing_high_remaining": 0,
+      "steward_remaining": 21,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "official_source_pattern": "marriott_cala_country_sitemap (official country hotel-sitemaps / MARSHA)",
+      "brands_with_largest_gaps": [
+        {
+          "brand": "Autograph Collection",
+          "official": 23,
+          "census": 19,
+          "missing_high": 0,
+          "steward": 4,
+          "missing_count": 4,
+          "coverage_percentage": 82.6,
+          "recommended_action": "steward_review"
+        },
+        {
+          "brand": "Marriott Bonvoy — Brand Unconfirmed",
+          "official": 9,
+          "census": 4,
+          "missing_high": 0,
+          "steward": 4,
+          "missing_count": 4,
+          "coverage_percentage": 55.6,
+          "recommended_action": "steward_review"
+        },
+        {
+          "brand": "Design Hotels",
+          "official": 29,
+          "census": 26,
+          "missing_high": 0,
+          "steward": 3,
+          "missing_count": 3,
+          "coverage_percentage": 89.7,
+          "recommended_action": "steward_review"
+        },
+        {
+          "brand": "The Luxury Collection",
+          "official": 8,
+          "census": 6,
+          "missing_high": 0,
+          "steward": 2,
+          "missing_count": 2,
+          "coverage_percentage": 75,
+          "recommended_action": "steward_review"
+        },
+        {
+          "brand": "JW Marriott",
+          "official": 12,
+          "census": 10,
+          "missing_high": 0,
+          "steward": 2,
+          "missing_count": 2,
+          "coverage_percentage": 83.3,
+          "recommended_action": "steward_review"
+        }
+      ],
+      "write_target": {
+        "base": "Deal Capture Platform",
+        "table": "Hotel Property Census",
+        "table_id": "tbl9aY5ijiuIzzWam"
+      },
+      "brand_setup_writes": false,
+      "brand_explorer_writes": false
+    },
+    {
+      "parent_company": "Hilton",
+      "status": "production_census_coverage_reconciliation_v1_complete",
+      "official_inventory_count": 158,
+      "census_total_after_suite": 1077,
+      "exact_matches": 158,
+      "probable_matches": 0,
+      "high_missing_inserted": 16,
+      "missing_high_remaining": 0,
+      "steward_remaining": 0,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "official_source_pattern": "hilton_cala_locations (official Hilton locations directory)",
+      "brands_with_largest_gaps": [],
+      "write_target": {
+        "base": "Deal Capture Platform",
+        "table": "Hotel Property Census",
+        "table_id": "tbl9aY5ijiuIzzWam"
+      },
+      "brand_setup_writes": false,
+      "brand_explorer_writes": false
+    },
+    {
+      "parent_company": "IHG",
+      "status": "production_census_coverage_reconciliation_v1_partial_missing_remaining",
+      "official_inventory_count": 231,
+      "census_total_after_suite": 1077,
+      "exact_matches": 228,
+      "probable_matches": 0,
+      "high_missing_inserted": 34,
+      "missing_high_remaining": 0,
+      "steward_remaining": 3,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "official_source_pattern": "ihg_cala_destination_directory (official IHG destination directory)",
+      "brands_with_largest_gaps": [
+        {
+          "brand": "holidayinn",
+          "official": 67,
+          "census": 7,
+          "missing_high": 0,
+          "steward": 2,
+          "missing_count": 2,
+          "coverage_percentage": 97,
+          "recommended_action": "steward_review"
+        },
+        {
+          "brand": "crowneplaza",
+          "official": 13,
+          "census": 4,
+          "missing_high": 0,
+          "steward": 1,
+          "missing_count": 1,
+          "coverage_percentage": 92.3,
+          "recommended_action": "steward_review"
+        }
+      ],
+      "write_target": {
+        "base": "Deal Capture Platform",
+        "table": "Hotel Property Census",
+        "table_id": "tbl9aY5ijiuIzzWam"
+      },
+      "brand_setup_writes": false,
+      "brand_explorer_writes": false
+    },
+    {
+      "parent_company": "Choice",
+      "status": "production_census_coverage_reconciliation_v1_complete",
+      "official_inventory_count": 78,
+      "census_total_after_suite": 1077,
+      "exact_matches": 78,
+      "probable_matches": 0,
+      "high_missing_inserted": 0,
+      "missing_high_remaining": 0,
+      "steward_remaining": 0,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "official_source_pattern": "choice_cala_regional (official Choice regional hotel cards)",
+      "brands_with_largest_gaps": [],
+      "write_target": {
+        "base": "Deal Capture Platform",
+        "table": "Hotel Property Census",
+        "table_id": "tbl9aY5ijiuIzzWam"
+      },
+      "brand_setup_writes": false,
+      "brand_explorer_writes": false
+    },
+    {
+      "parent_company": "Accor",
+      "status": "production_census_coverage_reconciliation_v1_partial_missing_remaining",
+      "official_inventory_count": 77,
+      "census_total_after_suite": 1077,
+      "exact_matches": 76,
+      "probable_matches": 0,
+      "high_missing_inserted": 27,
+      "missing_high_remaining": 0,
+      "steward_remaining": 1,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "official_source_pattern": "accor_cala_continent_catalog (official Accor continent catalog)",
+      "brands_with_largest_gaps": [
+        {
+          "brand": "Sofitel",
+          "official": 3,
+          "census": 2,
+          "missing_high": 0,
+          "steward": 1,
+          "missing_count": 1,
+          "coverage_percentage": 66.7,
+          "recommended_action": "steward_review"
+        }
+      ],
+      "write_target": {
+        "base": "Deal Capture Platform",
+        "table": "Hotel Property Census",
+        "table_id": "tbl9aY5ijiuIzzWam"
+      },
+      "brand_setup_writes": false,
+      "brand_explorer_writes": false
+    },
+    {
+      "parent_company": "Wyndham",
+      "status": "production_census_coverage_reconciliation_v1_complete",
+      "official_inventory_count": 80,
+      "census_total_after_suite": 1077,
+      "exact_matches": 80,
+      "probable_matches": 0,
+      "high_missing_inserted": 58,
+      "missing_high_remaining": 0,
+      "steward_remaining": 0,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "official_source_pattern": "wyndham_cala_property_sitemap (official Wyndham property sitemap)",
+      "brands_with_largest_gaps": [],
+      "write_target": {
+        "base": "Deal Capture Platform",
+        "table": "Hotel Property Census",
+        "table_id": "tbl9aY5ijiuIzzWam"
+      },
+      "brand_setup_writes": false,
+      "brand_explorer_writes": false
+    },
+    {
+      "parent_company": "Preferred",
+      "status": "production_census_coverage_reconciliation_v1_complete",
+      "official_inventory_count": 61,
+      "census_total_after_suite": 1077,
+      "exact_matches": 61,
+      "probable_matches": 0,
+      "high_missing_inserted": 0,
+      "missing_high_remaining": 0,
+      "steward_remaining": 0,
+      "duplicate_risk": 0,
+      "source_blocked": 0,
+      "source_insufficient": 0,
+      "official_source_pattern": "preferred_directory (official Preferred Hotels directory)",
+      "brands_with_largest_gaps": [],
+      "write_target": {
+        "base": "Deal Capture Platform",
+        "table": "Hotel Property Census",
+        "table_id": "tbl9aY5ijiuIzzWam"
+      },
+      "brand_setup_writes": false,
+      "brand_explorer_writes": false
+    }
+  ],
+  "notes": [
+    "Marriott High inserts (32) applied in prior wave; suite baseline Census=942.",
+    "Remaining-parent suite wave inserted Hilton+IHG+Accor+Wyndham = 135 (942→1077).",
+    "Choice and Preferred had 0 High missing at controlled time.",
+    "Steward remaining: Marriott 21, IHG 3, Accor 1 — no fuzzy/name-only inserts."
+  ]
+}

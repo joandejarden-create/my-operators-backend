@@ -294,7 +294,7 @@ function explorerTabForField(name, formNames) {
   if (/^infra_/.test(n) || /^systems_/.test(n)) return "Infrastructure & Data";
   if (/^risk_/.test(n)) return "Risk, Compliance & ESG";
   if (/^lead_/.test(n) || /^exec_/.test(n) || f === "keyLeadership") return "Leadership";
-  if (/^bf_/.test(n) || /^bf_/.test(f)) return "Best Fit & Deal Profile";
+  if (/^bf_/.test(n) || /^bf_/.test(f)) return "Project Fit & Deal Profile";
   if (/^tr_/.test(n) || f === "caseStudiesDetail") return "Proof & Track Record";
   for (const [section, keys] of Object.entries(EXPLORER_SECTION_FIELDS)) {
     if (keys.includes(n) || keys.includes(f)) return section;

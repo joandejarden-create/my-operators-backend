@@ -1,0 +1,147 @@
+{
+  "version": "brand-explorer-wave15-factory-v1",
+  "stage": "preflight",
+  "generatedAt": "2026-08-03T20:53:32.972Z",
+  "dryRun": true,
+  "airtableWrites": false,
+  "presentationWrites": false,
+  "brandStatusWrites": false,
+  "releaseFieldWrites": false,
+  "companyValidatedWrites": false,
+  "sourceLibraryWrites": false,
+  "registryWrites": false,
+  "protectedBaselineTouched": false,
+  "wave15ContentGenerationStarted": false,
+  "reusedFreshReports": true,
+  "protectedBaselineVersion": "54-active-public-full-baseline-v1",
+  "expectedActiveCount": 54,
+  "protectedBaselineCount": 54,
+  "liveActiveCount": 54,
+  "publicFullCount": 54,
+  "publicFullPass": true,
+  "qualityApproveCount": 53,
+  "qualityDecision": "freeze_after_minor_cleanup_pass",
+  "freezeDecision": "frozen_54_active_public_full_baseline_semantic_clean_flex_held",
+  "footnoteAuditOk": true,
+  "forbiddenOwnerFacingIssues": [],
+  "wave15ActiveLiveDrift": [],
+  "pass": true,
+  "stopRecommended": false,
+  "issues": [],
+  "gates": [
+    {
+      "command": "reuse-fresh-reports:pvql+quality",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "pvqlAgeMin=57",
+        "qualityAgeMin=34",
+        "pvqlAt=2026-08-03T19:46:59.855Z",
+        "qualityAt=2026-08-03T20:10:37.313Z",
+        "baseline54At=2026-08-03T20:15:48.443Z"
+      ]
+    },
+    {
+      "command": "npm run test:brand-explorer-54-active-public-full-baseline -- --allow-cached-pvql-if-pass",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "[PASS] suburban-studios status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] tapestry-collection-by-hilton status=Active pvql=true quality=approve_for_baseline_freeze evidence=true",
+        "[PASS] tempo-by-hilton status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] towneplace-suites-by-marriott status=Active pvql=true quality=approve_for_baseline_freeze evidence=true",
+        "[PASS] trademark-collection-by-wyndham status=Active pvql=true quality=approve_for_baseline_freeze evidence=true",
+        "[PASS] tribute-portfolio status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] vignette-collection status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] voco-hotels status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] westin status=Active pvql=true quality=approve_for_baseline_freeze evidence=true",
+        "[PASS] woodspring-suites status=Active pvql=true quality=approve_for_baseline_freeze evidence=null",
+        "[PASS] baseline regression aggregate",
+        "All 54 Active/Live public-full baseline checks passed. writePerformed=false."
+      ]
+    },
+    {
+      "command": "npm run brand-explorer-ai-assisted-footnote-standardization -- --audit",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "Wrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-ai-assisted-footnote-audit.md",
+        "[Brand Library] API called: fetching brands... (Active only)",
+        "[Brand Library] Architecture field key: Brand Architecture | brands with architecture: 54 / 54 | options: [ 'Endorsed Brand', 'Masterbrand', 'Soft/Collection Brand' ]",
+        "[Brand Library] Region Offered field key: Region Offered | brands with region: 54 / 54 | options: [",
+        "  'Asia Pacific',",
+        "  'Caribbean & Latin America',",
+        "  'Europe',",
+        "  'Middle East & Africa',",
+        "  'North America'",
+        "]",
+        "Enriched audit: pass=55 fail=0",
+        "Wrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-ai-assisted-footnote-audit-enriched.json"
+      ]
+    },
+    {
+      "command": "npm run test:brand-explorer-recent-momentum-evidence-quality",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"",
+        "[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"",
+        "[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"",
+        "[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"",
+        "[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"",
+        "[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"",
+        "[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"",
+        "[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"",
+        "[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"",
+        "[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"",
+        "[PASS] tapestry-collection-by-hilton recent-momentum-evidence-quality",
+        "All 3 brand(s) passed recent-momentum-evidence-quality."
+      ]
+    },
+    {
+      "command": "npm run test:brand-explorer-mandatory-release-gates",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "> top100-projects-scraper@1.0.0 test:brand-explorer-mandatory-release-gates",
+        "> node scripts/test-brand-explorer-mandatory-release-gates.mjs",
+        "[PASS] brand-explorer mandatory release gates (source + auditPass + OS state)"
+      ]
+    },
+    {
+      "command": "npm run brand-explorer-os -- --stage release-readiness --dry-run --skip-regression",
+      "ok": true,
+      "status": 0,
+      "error": null,
+      "tail": [
+        "[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"",
+        "[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"",
+        "Wrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-v41-os-consolidation.json",
+        "Summary: states={\"active_profile_ready\":7} actions={\"no_action\":7} v40cApplyAllowed=false",
+        "  everhome-suites: active_profile_ready → no_action | founder=false active=false",
+        "  kimpton: active_profile_ready → no_action | founder=false active=false",
+        "  radisson-individuals-by-choice: active_profile_ready → no_action | founder=false active=false",
+        "  design-hotels: active_profile_ready → no_action | founder=false active=false",
+        "  hotel-indigo: active_profile_ready → no_action | founder=false active=false",
+        "  mgallery-collection: active_profile_ready → no_action | founder=false active=false",
+        "  small-luxury-hotels-of-the-world: active_profile_ready → no_action | founder=false active=false",
+        "v41 OS complete — read-only; no Airtable writes; no unlock; no active release."
+      ]
+    }
+  ],
+  "readyStatement": "protected_54_live_clean_wave15_may_resume",
+  "summary": {
+    "protected54LiveClean": true,
+    "activeUniverseIs54": true,
+    "publicFullClean": true,
+    "pvqlClean": true,
+    "approveForBaselineFreeze": 53,
+    "aiAssistedFootnoteComplete": true,
+    "noActiveLiveDrift": true
+  }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Operator Alignment — Dealality</title>
+    <link rel="stylesheet" href="/css/operator-fit-v2.css?v=of2-1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="of2-root" id="of2Root">
+      <div class="of2-empty" id="of2Status">Loading Operator Alignment…</div>
+      <div id="of2Mount" hidden></div>
+    </main>
+    <script src="/js/auth-helper.js"></script>
+    <script src="/js/operator-fit-v2-cards.js?v=of2-1"></script>
+    <script>
+      (async function () {
+        var statusEl = document.getElementById("of2Status");
+        var mount = document.getElementById("of2Mount");
+        var params = new URLSearchParams(window.location.search);
+        var dealId = params.get("dealId") || "";
+        function show(msg) {
+          statusEl.hidden = false;
+          statusEl.textContent = msg;
+          mount.hidden = true;
+        }
+        if (!dealId || dealId.indexOf("rec") !== 0) {
+          show("Insufficient project information — provide ?dealId=rec…");
+          return;
+        }
+        try {
+          var flagRes = await fetch("/api/operator-fit/v2/flag", {
+            credentials: "include",
+            headers: window.DcAuthHelper ? window.DcAuthHelper.authHeaders() : {},
+          });
+          var flag = await flagRes.json();
+          if (!flag.enabled) {
+            if (window.DcOperatorFitV2Ui) window.DcOperatorFitV2Ui.renderFlagOff(statusEl);
+            else show("Feature unavailable because the flag is off.");
+            return;
+          }
+          statusEl.textContent = "Building Operator Alignment…";
+          var res = await fetch("/api/operator-fit/v2/" + encodeURIComponent(dealId) + "/top5", {
+            credentials: "include",
+            headers: window.DcAuthHelper ? window.DcAuthHelper.authHeaders() : {},
+          });
+          var payload = await res.json();
+          if (!res.ok) {
+            show(payload.ownerMessage || payload.error || "Unable to load Operator Alignment.");
+            return;
+          }
+          statusEl.hidden = true;
+          mount.hidden = false;
+          window.DcOperatorFitV2Ui.renderTop5(payload, mount, {
+            explorerBase: "/operator-explorer-gold-mock.html?id=",
+          });
+        } catch (err) {
+          console.error("[operator-fit-v2]", err);
+          show("Unable to load Operator Alignment. Check authentication and try again.");
+        }
+      })();
+    </script>
+  </body>
+</html>

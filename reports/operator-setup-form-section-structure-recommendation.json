@@ -1,0 +1,200 @@
+{
+  "generatedAt": "2026-06-02T14:40:53.564Z",
+  "sections": [
+    {
+      "name": "Company Profile & Positioning",
+      "purpose": "Core identity and narrative",
+      "editable_fields": [
+        "companyName",
+        "companyDescription",
+        "website",
+        "headquarters",
+        "yearEstablished",
+        "companyTagline",
+        "companyHistory",
+        "differentiators",
+        "managementPhilosophy",
+        "missionStatement"
+      ],
+      "read_only_fields": [
+        "yearsInBusiness",
+        "numberOfBrands"
+      ],
+      "hidden_fields": [
+        "operator_id",
+        "created_at",
+        "updated_at"
+      ],
+      "explorer_feed": "High",
+      "oas_score_feed": "Medium",
+      "capability_feed": "Low/Medium",
+      "business_review_fields": [
+        "parentCompany"
+      ]
+    },
+    {
+      "name": "Operating Platform & Services",
+      "purpose": "Service model, chain scale, and capabilities",
+      "editable_fields": [
+        "primaryServiceModel",
+        "serviceModelsSupported",
+        "chainScalesSupported",
+        "offeredServices",
+        "revenueManagementCapability",
+        "salesPlatform",
+        "fBCapabilityLevel"
+      ],
+      "read_only_fields": [],
+      "hidden_fields": [],
+      "explorer_feed": "High",
+      "oas_score_feed": "High",
+      "capability_feed": "High",
+      "business_review_fields": [
+        "managementStructuresSupported select taxonomy"
+      ]
+    },
+    {
+      "name": "Markets, Segments & Asset Focus",
+      "purpose": "Geography and asset scope",
+      "editable_fields": [
+        "regions",
+        "specificMarkets",
+        "activeCountries",
+        "activeMarkets",
+        "propertyTypes",
+        "additionalExperience"
+      ],
+      "read_only_fields": [],
+      "hidden_fields": [],
+      "explorer_feed": "High",
+      "oas_score_feed": "High",
+      "capability_feed": "Medium",
+      "business_review_fields": [
+        "marketPresenceType"
+      ]
+    },
+    {
+      "name": "Brand Relationships & Portfolio Experience",
+      "purpose": "Brand mix and project experience",
+      "editable_fields": [
+        "brands",
+        "additionalBrands",
+        "brand_conversion_project_count",
+        "conversionReflagExperience",
+        "newBuildOpeningExperience"
+      ],
+      "read_only_fields": [
+        "numberOfBrands"
+      ],
+      "hidden_fields": [
+        "brandsPortfolioDetail (legacy JSON)"
+      ],
+      "explorer_feed": "High",
+      "oas_score_feed": "Medium",
+      "capability_feed": "Medium",
+      "business_review_fields": []
+    },
+    {
+      "name": "Governance, Compliance & Diligence",
+      "purpose": "Governance signals and QA evidence",
+      "editable_fields": [
+        "governanceCadence",
+        "ownerReportingLevel",
+        "dataConfidenceLevel",
+        "emergencyResponse",
+        "businessContinuity",
+        "support24x7",
+        "crisisExperience",
+        "insuranceCoverage"
+      ],
+      "read_only_fields": [],
+      "hidden_fields": [
+        "submission_status"
+      ],
+      "explorer_feed": "Medium",
+      "oas_score_feed": "High",
+      "capability_feed": "Medium",
+      "business_review_fields": [
+        "minimumKeyCount"
+      ]
+    },
+    {
+      "name": "Leadership Team",
+      "purpose": "Leadership roster and bios",
+      "editable_fields": [
+        "exec_*_name",
+        "exec_*_role",
+        "exec_*_summary",
+        "exec_*_bio",
+        "exec_*_headshot"
+      ],
+      "read_only_fields": [
+        "leadership profile derived strings"
+      ],
+      "hidden_fields": [
+        "legacy leadership aliases"
+      ],
+      "explorer_feed": "High",
+      "oas_score_feed": "Low/Medium",
+      "capability_feed": "Low",
+      "business_review_fields": []
+    },
+    {
+      "name": "Case Studies / Track Record",
+      "purpose": "Proof points and outcomes",
+      "editable_fields": [
+        "caseStudiesDetail[]"
+      ],
+      "read_only_fields": [],
+      "hidden_fields": [
+        "legacy case-study mirror fields"
+      ],
+      "explorer_feed": "High",
+      "oas_score_feed": "Medium",
+      "capability_feed": "Low",
+      "business_review_fields": []
+    },
+    {
+      "name": "Explorer Profile / Marketing Materials",
+      "purpose": "Owner-facing narrative cards and materials",
+      "editable_fields": [
+        "overview_*",
+        "cap_*",
+        "materials_*"
+      ],
+      "read_only_fields": [
+        "diagnostic provenance"
+      ],
+      "hidden_fields": [
+        "explorerProfileJson mirror"
+      ],
+      "explorer_feed": "High",
+      "oas_score_feed": "No direct score change",
+      "capability_feed": "High",
+      "business_review_fields": [
+        "mirror masking follow-up"
+      ]
+    },
+    {
+      "name": "Internal/System Review",
+      "purpose": "Operational metadata and compatibility controls",
+      "editable_fields": [],
+      "read_only_fields": [
+        "submission_status",
+        "sourceType",
+        "lastUpdatedDate"
+      ],
+      "hidden_fields": [
+        "operator_id",
+        "linked-record fields",
+        "timestamps"
+      ],
+      "explorer_feed": "Low",
+      "oas_score_feed": "Low",
+      "capability_feed": "Low",
+      "business_review_fields": [
+        "any field without canonical mapping"
+      ]
+    }
+  ]
+}

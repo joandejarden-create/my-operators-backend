@@ -1,0 +1,137 @@
+{
+  "writerVersion": "1",
+  "writerExists": true,
+  "generatedAt": "2026-07-10T11:29:08.036Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "allActive": false,
+  "filesRead": [
+    "AGENTS.md",
+    "docs/data-intelligence/brand-residences-status-field.md",
+    "api/brand-library.js",
+    "lib/partner-intelligence/brand-residences-status-setup.js",
+    "live Brand Setup - Brand Basics records",
+    "live Brand Setup - Project Fit records"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-residences-legacy-migration-writer.js",
+    "scripts/brand-residences-legacy-migration-writer.mjs",
+    "docs/data-intelligence/brand-residences-legacy-migration-writer.md",
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "package.json"
+  ],
+  "futureSetupWritesToBrandBasicsOnly": true,
+  "legacyFieldRetained": "Branded Residences Allowed",
+  "legacyTable": "Brand Setup - Project Fit",
+  "newFieldsTable": "Brand Setup - Brand Basics",
+  "classifications": {
+    "ALREADY_SYNCED": "already_synced",
+    "MIGRATE_FROM_LEGACY": "migrate_from_legacy",
+    "CONFLICT_REQUIRES_REVIEW": "conflict_requires_review",
+    "NO_DATA_DEFAULT_NOT_CONFIRMED": "no_data_default_not_confirmed",
+    "SOURCE_BACKED_NEW_VALUE_PRESERVED": "source_backed_new_value_preserved"
+  },
+  "brandPlans": [
+    {
+      "brand": {
+        "slug": "kimpton",
+        "name": "Kimpton Hotels",
+        "recordId": "recCKuXCmGvxHPfb3"
+      },
+      "projectFitRecordId": "rec2ZtjGsdDF8XYYP",
+      "classification": "conflict_requires_review",
+      "action": "block",
+      "blockers": [
+        "new_value_conflicts_with_legacy"
+      ],
+      "legacy": {
+        "raw": "Case-by-case",
+        "normalized": "Case-by-Case",
+        "derivedStatus": "Case-by-Case"
+      },
+      "current": {
+        "status": "No",
+        "reviewStatus": null,
+        "notes": null,
+        "sourceUrl": null,
+        "apiShape": {
+          "status": "No",
+          "notes": null,
+          "sourceUrl": null,
+          "reviewStatus": "Not Confirmed"
+        }
+      },
+      "proposed": {
+        "status": "Not Confirmed",
+        "reviewStatus": "Not Confirmed",
+        "notes": null,
+        "sourceUrl": null
+      },
+      "fieldsPatch": {},
+      "needsUpdate": false
+    }
+  ],
+  "summary": {
+    "alreadySynced": 0,
+    "migrateFromLegacy": 0,
+    "conflicts": 1,
+    "noDataDefault": 0,
+    "sourceBackedPreserved": 0,
+    "wouldUpdate": 0
+  },
+  "tributePlan": {
+    "brand": {
+      "slug": "kimpton",
+      "name": "Kimpton Hotels",
+      "recordId": "recCKuXCmGvxHPfb3"
+    },
+    "projectFitRecordId": "rec2ZtjGsdDF8XYYP",
+    "classification": "conflict_requires_review",
+    "action": "block",
+    "blockers": [
+      "new_value_conflicts_with_legacy"
+    ],
+    "legacy": {
+      "raw": "Case-by-case",
+      "normalized": "Case-by-Case",
+      "derivedStatus": "Case-by-Case"
+    },
+    "current": {
+      "status": "No",
+      "reviewStatus": null,
+      "notes": null,
+      "sourceUrl": null,
+      "apiShape": {
+        "status": "No",
+        "notes": null,
+        "sourceUrl": null,
+        "reviewStatus": "Not Confirmed"
+      }
+    },
+    "proposed": {
+      "status": "Not Confirmed",
+      "reviewStatus": "Not Confirmed",
+      "notes": null,
+      "sourceUrl": null
+    },
+    "fieldsPatch": {},
+    "needsUpdate": false
+  },
+  "applyGates": {
+    "apply": false,
+    "approveBatch": false,
+    "confirmNoUnsupportedInference": false,
+    "canApply": false,
+    "applyBlockers": [
+      "kimpton:new_value_conflicts_with_legacy",
+      "kimpton:conflict_requires_review"
+    ]
+  },
+  "applyResults": null,
+  "companyValidatedUntouched": true,
+  "companyValidatedBefore": {
+    "companyValidated": null,
+    "companyValidationDate": null
+  },
+  "exactApplyCommand": "npm run brand-residences-legacy-migration-writer -- --all-active --apply --approve-brand-residences-legacy-migration --confirm-no-unsupported-residences-inference"
+}

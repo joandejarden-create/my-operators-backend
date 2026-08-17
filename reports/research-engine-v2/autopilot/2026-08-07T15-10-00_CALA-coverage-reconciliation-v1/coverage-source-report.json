@@ -1,0 +1,595 @@
+{
+  "families_used": [
+    "Hilton",
+    "Choice",
+    "Marriott",
+    "IHG",
+    "Accor",
+    "Wyndham",
+    "Preferred",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [],
+  "adapter_errors": [],
+  "vic_evidence_rows": 666,
+  "discover_all_official_parents": true,
+  "parent_scoped_discovery": false,
+  "require_brand_match": false,
+  "control_list_purpose": "official_parent_inventory_discovery",
+  "hilton_discovery": {
+    "source": {
+      "type": "official_hilton_locations_directory",
+      "country_url_template": "https://www.hilton.com/en/locations/{country-slug}/",
+      "mexico_brand_url_template": "https://www.hilton.com/en/locations/mexico/{brand-slug}/",
+      "property_id_field": "ctyhocn"
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-hilton-cala-discovery-v1",
+      "source": {
+        "type": "official_hilton_locations_directory",
+        "country_url_template": "https://www.hilton.com/en/locations/{country-slug}/",
+        "mexico_brand_url_template": "https://www.hilton.com/en/locations/mexico/{brand-slug}/",
+        "property_id_field": "ctyhocn"
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "hotel_count": 102,
+          "ok": true,
+          "mode": "brand_locations"
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.hilton.com/en/locations/dominican-republic/",
+          "hotel_count": 10,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.hilton.com/en/locations/costa-rica/",
+          "hotel_count": 20,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.hilton.com/en/locations/colombia/",
+          "hotel_count": 20,
+          "ok": true,
+          "mode": "country_locations"
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.hilton.com/en/locations/panama/",
+          "hotel_count": 6,
+          "ok": true,
+          "mode": "country_locations"
+        }
+      ],
+      "errors": [],
+      "loaded_at": "2026-08-07T15:09:38.824Z"
+    }
+  },
+  "choice_discovery": {
+    "source": {
+      "type": "official_choice_regional_directory",
+      "url_template": "https://www.choicehotels.com/en-uk/{country-slug}/regional-hotels",
+      "property_id_pattern": "[A-Z]{2}\\d{3}",
+      "note": "Regional URL for discovery only; Census Address Source URL must be property-level"
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-choice-cala-discovery-v1",
+      "source": {
+        "type": "official_choice_regional_directory",
+        "url_template": "https://www.choicehotels.com/en-uk/{country-slug}/regional-hotels",
+        "property_id_pattern": "[A-Z]{2}\\d{3}",
+        "note": "Regional URL for discovery only; Census Address Source URL must be property-level"
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+          "hotel_count": 50,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "url": "https://www.choicehotels.com/en-uk/dominican-republic/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "url": "https://www.choicehotels.com/en-uk/costa-rica/regional-hotels",
+          "hotel_count": 3,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "url": "https://www.choicehotels.com/en-uk/colombia/regional-hotels",
+          "hotel_count": 15,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "url": "https://www.choicehotels.com/en-uk/panama/regional-hotels",
+          "hotel_count": 7,
+          "ok": true
+        }
+      ],
+      "errors": [],
+      "loaded_at": "2026-08-07T15:09:48.498Z"
+    }
+  },
+  "marriott_discovery": {
+    "source": {
+      "type": "official_country_hotel_sitemap",
+      "origin": "https://www.marriott.com",
+      "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+      "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+      "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+      "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+      "hqv_required_for_discovery": false,
+      "deprecated_blocked_patterns": [
+        "/en/hotels/{country}.sitemap-hotels.xml",
+        "*.sitemap-hotels.xml"
+      ]
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "hqv_required_for_discovery": false,
+    "deprecated_sitemap_hotels_xml_blocked": true,
+    "meta": {
+      "version": "census-autopilot-marriott-discovery-adapter-v1",
+      "source": {
+        "type": "official_country_hotel_sitemap",
+        "origin": "https://www.marriott.com",
+        "master_index": "https://www.marriott.com/content/dam/marriott-seo/en/marriott-tng/sitemap-hotel-sitemaps.xml",
+        "url_template": "https://www.marriott.com/en-us/hotel-sitemap/{country-slug}-hotel-sitemap",
+        "property_url_pattern": "https://www.marriott.com/en-us/hotels/{MARSHA5}-{slug}/overview",
+        "property_id_pattern": "/hotels/([A-Za-z0-9]{5})-",
+        "hqv_required_for_discovery": false,
+        "deprecated_blocked_patterns": [
+          "/en/hotels/{country}.sitemap-hotels.xml",
+          "*.sitemap-hotels.xml"
+        ]
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+          "hotel_count": 301,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/dominican-republic-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/costa-rica-hotel-sitemap",
+          "hotel_count": 25,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/colombia-hotel-sitemap",
+          "hotel_count": 30,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/panama-hotel-sitemap",
+          "hotel_count": 17,
+          "ok": true
+        }
+      ],
+      "errors": [],
+      "hqv_required_for_discovery": false,
+      "loaded_at": "2026-08-07T15:09:51.210Z"
+    }
+  },
+  "ihg_discovery": {
+    "source": {
+      "type": "official_ihg_destination_directory",
+      "url_template": "https://www.ihg.com/destinations/us/en/{country-slug}-hotels",
+      "secondary": "https://www.ihg.com/bin/sitemapindex.xml → hoteldetail XMLs",
+      "property_id_pattern": "/([A-Za-z0-9]{4,6})/hoteldetail",
+      "content_source": "ihg_destination_directory"
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-ihg-cala-discovery-v1",
+      "source": {
+        "type": "official_ihg_destination_directory",
+        "url_template": "https://www.ihg.com/destinations/us/en/{country-slug}-hotels",
+        "secondary": "https://www.ihg.com/bin/sitemapindex.xml → hoteldetail XMLs",
+        "property_id_pattern": "/([A-Za-z0-9]{4,6})/hoteldetail",
+        "content_source": "ihg_destination_directory"
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "page_results": [
+        {
+          "country": "Mexico",
+          "url": "https://www.ihg.com/destinations/us/en/mexico-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/mexico",
+          "cards": 194,
+          "added": 194,
+          "ok": true
+        },
+        {
+          "country": "Dominican Republic",
+          "url": "https://www.ihg.com/destinations/us/en/dominican-republic-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/dominican-republic",
+          "cards": 12,
+          "added": 12,
+          "ok": true
+        },
+        {
+          "country": "Costa Rica",
+          "url": "https://www.ihg.com/destinations/us/en/costa-rica-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/costa-rica",
+          "cards": 5,
+          "added": 5,
+          "ok": true
+        },
+        {
+          "country": "Colombia",
+          "url": "https://www.ihg.com/destinations/us/en/colombia-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/colombia",
+          "cards": 15,
+          "added": 15,
+          "ok": true
+        },
+        {
+          "country": "Panama",
+          "url": "https://www.ihg.com/destinations/us/en/panama-hotels",
+          "status": 200,
+          "finalUrl": "https://www.ihg.com/panama",
+          "cards": 5,
+          "added": 5,
+          "ok": true
+        }
+      ],
+      "fetch_errors": [],
+      "hotels_found": 231,
+      "loaded_at": "2026-08-07T15:09:53.497Z"
+    }
+  },
+  "accor_discovery": {
+    "source": {
+      "type": "official_accor_continent_browse_plus_catalog",
+      "continent_url_template": "https://all.accor.com/a/en/destination/continent/{continent-slug}.html",
+      "catalog_api": "https://api.accor.com/catalog/v1/hotels",
+      "property_url_template": "https://all.accor.com/hotel/{PROPERTY_ID}/index.en.shtml",
+      "blocked_patterns": [
+        "short continent path 403 patterns",
+        "OTA listings"
+      ]
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-accor-cala-discovery-adapter-v1",
+      "source": {
+        "type": "official_accor_continent_browse_plus_catalog",
+        "continent_url_template": "https://all.accor.com/a/en/destination/continent/{continent-slug}.html",
+        "catalog_api": "https://api.accor.com/catalog/v1/hotels",
+        "property_url_template": "https://all.accor.com/hotel/{PROPERTY_ID}/index.en.shtml",
+        "blocked_patterns": [
+          "short continent path 403 patterns",
+          "OTA listings"
+        ]
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "hotel_count": 53,
+          "ok": true,
+          "mode": "continent_browse_plus_catalog"
+        },
+        {
+          "country": "Dominican Republic",
+          "hotel_count": 0,
+          "ok": true,
+          "mode": "continent_browse_plus_catalog"
+        },
+        {
+          "country": "Costa Rica",
+          "hotel_count": 0,
+          "ok": true,
+          "mode": "continent_browse_plus_catalog"
+        },
+        {
+          "country": "Colombia",
+          "hotel_count": 22,
+          "ok": true,
+          "mode": "continent_browse_plus_catalog"
+        },
+        {
+          "country": "Panama",
+          "hotel_count": 2,
+          "ok": true,
+          "mode": "continent_browse_plus_catalog"
+        }
+      ],
+      "source_notes": [
+        {
+          "continent": "South America",
+          "count": 300
+        },
+        {
+          "continent": "Central America",
+          "count": 151
+        },
+        {
+          "continent": "North America",
+          "count": 131
+        },
+        {
+          "country_catalog": "Mexico",
+          "count": 53
+        },
+        {
+          "country_catalog": "Dominican Republic",
+          "count": 0
+        },
+        {
+          "country_catalog": "Costa Rica",
+          "count": 0
+        },
+        {
+          "country_catalog": "Colombia",
+          "count": 22
+        },
+        {
+          "country_catalog": "Panama",
+          "count": 2
+        }
+      ],
+      "continent_ids": 472,
+      "hydrated": 472,
+      "errors": [],
+      "loaded_at": "2026-08-07T15:09:59.053Z"
+    }
+  },
+  "wyndham_discovery": {
+    "source": {
+      "type": "official_wyndham_property_sitemap",
+      "origin": "https://www.wyndhamhotels.com",
+      "sitemap_index": "https://www.wyndhamhotels.com/sitemap.xml",
+      "property_url_pattern": "https://www.wyndhamhotels.com/{brand}/{region}/{property}/overview",
+      "cala_filter": "json_ld_addressCountry_metadata",
+      "blocked_patterns": [
+        "path_keyword_cala_guesses",
+        "OTA listings"
+      ]
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-wyndham-cala-discovery-adapter-v1",
+      "source": {
+        "type": "official_wyndham_property_sitemap",
+        "origin": "https://www.wyndhamhotels.com",
+        "sitemap_index": "https://www.wyndhamhotels.com/sitemap.xml",
+        "property_url_pattern": "https://www.wyndhamhotels.com/{brand}/{region}/{property}/overview",
+        "cala_filter": "json_ld_addressCountry_metadata",
+        "blocked_patterns": [
+          "path_keyword_cala_guesses",
+          "OTA listings"
+        ]
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "hotel_count": 223,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        },
+        {
+          "country": "Dominican Republic",
+          "hotel_count": 31,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        },
+        {
+          "country": "Costa Rica",
+          "hotel_count": 12,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        },
+        {
+          "country": "Colombia",
+          "hotel_count": 16,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        },
+        {
+          "country": "Panama",
+          "hotel_count": 21,
+          "ok": true,
+          "mode": "sitemap_jsonld_country_filter"
+        }
+      ],
+      "extract_ok": true,
+      "seed_used": true,
+      "seed_path": "C:\\Dev\\deal-capture-proxy\\reports\\wyndham-property-directory-extract.json",
+      "candidate_overview_urls": 46462,
+      "metadata_fetched": 723,
+      "errors": [],
+      "loaded_at": "2026-08-07T15:09:59.062Z"
+    }
+  },
+  "preferred_discovery": {
+    "source": {
+      "type": "official_preferred_directory",
+      "directory_url": "https://preferredhotels.com/directory?numberOfRooms=1",
+      "property_url_pattern": "https://preferredhotels.com/hotels/{country-slug}/{property-slug}",
+      "brand_display": "Preferred Hotels & Resorts",
+      "parent_company": "Preferred Hotels & Resorts",
+      "collection_note": "fieldPreferredCollections are collection labels only — do not invent Brand Setup rows"
+    },
+    "countries": [
+      "Mexico",
+      "Dominican Republic",
+      "Costa Rica",
+      "Colombia",
+      "Panama"
+    ],
+    "meta": {
+      "version": "census-autopilot-preferred-directory-discovery-adapter-v1",
+      "source": {
+        "type": "official_preferred_directory",
+        "directory_url": "https://preferredhotels.com/directory?numberOfRooms=1",
+        "property_url_pattern": "https://preferredhotels.com/hotels/{country-slug}/{property-slug}",
+        "brand_display": "Preferred Hotels & Resorts",
+        "parent_company": "Preferred Hotels & Resorts",
+        "collection_note": "fieldPreferredCollections are collection labels only — do not invent Brand Setup rows"
+      },
+      "countries": [
+        "Mexico",
+        "Dominican Republic",
+        "Costa Rica",
+        "Colombia",
+        "Panama"
+      ],
+      "country_stats": [
+        {
+          "country": "Mexico",
+          "hotel_count": 46,
+          "ok": true,
+          "mode": "preferred_directory_next_data"
+        },
+        {
+          "country": "Dominican Republic",
+          "hotel_count": 2,
+          "ok": true,
+          "mode": "preferred_directory_next_data"
+        },
+        {
+          "country": "Costa Rica",
+          "hotel_count": 4,
+          "ok": true,
+          "mode": "preferred_directory_next_data"
+        },
+        {
+          "country": "Colombia",
+          "hotel_count": 6,
+          "ok": true,
+          "mode": "preferred_directory_next_data"
+        },
+        {
+          "country": "Panama",
+          "hotel_count": 3,
+          "ok": true,
+          "mode": "preferred_directory_next_data"
+        }
+      ],
+      "directory_total": 669,
+      "cala_filtered": 61,
+      "errors": [],
+      "loaded_at": "2026-08-07T15:09:59.597Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v2-wave-2",
+    "loaded_at": "2026-08-07T15:09:37.638Z",
+    "hilton_count": 102,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 1083,
+  "brand_governance_counts": {
+    "active_brand_setup": 773,
+    "unsupported_or_ambiguous": 288,
+    "dirty_partner_label": 11,
+    "brand_code_unresolved": 11
+  },
+  "owner_facing_eligible_count": 773,
+  "promotion_candidate_count": 0
+}

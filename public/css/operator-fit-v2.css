@@ -1,0 +1,206 @@
+/* Operator Fit Engine v2 — Top-5 cards (BAS/OAS-aligned tokens) */
+.of2-root {
+  --of2-ink: #1a1f2e;
+  --of2-muted: #5c6478;
+  --of2-line: #d8dde8;
+  --of2-bg: #f6f7fb;
+  --of2-card: #ffffff;
+  --of2-accent: #2f5d50;
+  --of2-warn: #8a6d3b;
+  --of2-unknown: #6b7280;
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+  color: var(--of2-ink);
+  background: var(--of2-bg);
+  padding: 24px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.of2-header h2 {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.75rem;
+  margin: 0 0 8px;
+}
+.of2-header p,
+.of2-note,
+.of2-disclaimer,
+.of2-footnote {
+  color: var(--of2-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.of2-card {
+  background: var(--of2-card);
+  border: 1px solid var(--of2-line);
+  border-radius: 4px;
+  padding: 20px;
+  margin: 16px 0;
+}
+.of2-card-header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.of2-rank {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--of2-accent);
+  min-width: 2rem;
+}
+.of2-name {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+}
+.of2-score-block {
+  margin-left: auto;
+  text-align: right;
+}
+.of2-score {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--of2-accent);
+}
+.of2-score-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--of2-muted);
+}
+.of2-ceiling {
+  font-size: 0.75rem;
+  color: var(--of2-warn);
+}
+.of2-badge {
+  display: inline-block;
+  border: 1px solid var(--of2-line);
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+.of2-badge-brand {
+  border-color: var(--of2-accent);
+  color: var(--of2-accent);
+}
+.of2-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+.of2-pill {
+  border: 1px solid var(--of2-line);
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  background: var(--of2-bg);
+}
+.of2-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 12px 0;
+}
+.of2-cols h4,
+.of2-breakdown h5 {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--of2-muted);
+}
+.of2-cols ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.92rem;
+}
+.of2-unknown-list li {
+  color: var(--of2-unknown);
+}
+.of2-breakdown {
+  margin-top: 12px;
+  border-top: 1px solid var(--of2-line);
+  padding-top: 10px;
+}
+.of2-breakdown summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.of2-factor-row {
+  display: grid;
+  grid-template-columns: 1.4fr 2fr auto;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0;
+  font-size: 0.85rem;
+}
+.of2-bar-track {
+  height: 8px;
+  background: #e8ebf2;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.of2-bar-fill {
+  height: 100%;
+  background: var(--of2-accent);
+}
+.of2-state-unknown .of2-bar-fill {
+  background: transparent;
+  border-right: 2px dashed var(--of2-unknown);
+  width: 0 !important;
+}
+.of2-unknown-chip,
+.of2-na-chip {
+  font-size: 0.7rem;
+  color: var(--of2-unknown);
+  margin-left: 6px;
+}
+.of2-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+.of2-btn {
+  border: 1px solid var(--of2-accent);
+  background: var(--of2-accent);
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border-radius: 2px;
+}
+.of2-btn-secondary {
+  background: transparent;
+  color: var(--of2-accent);
+}
+.of2-btn-disabled,
+.of2-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: var(--of2-line);
+  background: var(--of2-line);
+  color: var(--of2-muted);
+}
+.of2-empty {
+  border: 1px dashed var(--of2-line);
+  padding: 28px;
+  text-align: center;
+  color: var(--of2-muted);
+  background: var(--of2-card);
+}
+.of2-error {
+  color: #7a2e2e;
+}
+@media (max-width: 720px) {
+  .of2-cols,
+  .of2-factor-row,
+  .of2-card-header {
+    grid-template-columns: 1fr;
+    display: block;
+  }
+  .of2-score-block {
+    margin: 12px 0 0;
+    text-align: left;
+  }
+}

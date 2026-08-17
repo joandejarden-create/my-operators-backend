@@ -1,0 +1,72 @@
+/* CALA Radar Buildout Dashboard */
+body {
+  font-family: Inter, system-ui, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  margin: 0;
+  padding: 24px;
+}
+h1 { font-size: 1.35rem; margin: 0 0 6px; }
+.muted { color: #94a3b8; font-size: 13px; }
+.panel {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+.filters label { font-size: 11px; color: #94a3b8; display: block; margin-bottom: 4px; }
+.filters select {
+  background: #0f172a;
+  border: 1px solid #475569;
+  color: #f1f5f9;
+  border-radius: 6px;
+  padding: 6px 8px;
+  min-width: 140px;
+}
+button {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 500;
+}
+button.secondary { background: #334155; }
+.actions { display: flex; flex-wrap: wrap; gap: 6px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+th, td {
+  border: 1px solid #334155;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #0f172a; position: sticky; top: 0; z-index: 1; }
+.table-wrap { overflow: auto; max-height: 70vh; }
+.status-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  background: #334155;
+}
+.status-pill.market-ready { background: #166534; }
+.status-pill.deal-ready { background: #1d4ed8; }
+.status-pill.intelligence-ready { background: #6d28d9; }
+.status-pill.planned, .status-pill.not-started { background: #475569; }
+.status-pill.seeded { background: #854d0e; }
+.error { color: #f87171; margin-top: 12px; }
+a { color: #60a5fa; text-decoration: none; }
+a:hover { text-decoration: underline; }

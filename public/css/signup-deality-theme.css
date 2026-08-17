@@ -73,6 +73,23 @@ body.signup-page .signup-wrapper {
   position: relative;
   z-index: 1;
   background: transparent !important;
+  display: flex;
+  flex-direction: column;
+}
+
+body.signup-page .signup-left {
+  order: 1;
+}
+
+body.signup-page .signup-right {
+  order: 2;
+}
+
+@media (min-width: 992px) {
+  body.signup-page .signup-wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 }
 
 /* Headlines (Deal Setup .form-section-title uses white) */

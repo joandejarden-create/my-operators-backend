@@ -1,0 +1,121 @@
+{
+  "status": "production_census_market_geography_completion_applied_clean",
+  "generated_at": "2026-08-06T21:55:00.000Z",
+  "write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "schema": {
+    "created_fields": [
+      { "name": "Continent", "type": "singleSelect", "id": "fldN4YbhOgN286JWP" },
+      { "name": "Sub-Continent", "type": "singleSelect", "id": "fld5sOW7bpFEL3m0R" },
+      { "name": "Market", "type": "singleLineText", "id": "fldB6DdmONl0pcsu1" },
+      { "name": "Submarket", "type": "singleLineText", "id": "fldPANZ60nzvxbGOQ" }
+    ],
+    "existing_combined_field_untouched": "Market / Submarket"
+  },
+  "controlled_run": {
+    "run_id": "2026-08-06_21-46-22-CALA-active-brands",
+    "records_scanned": 907,
+    "high_proposals": 903,
+    "continent_proposals": 903,
+    "subcontinent_proposals": 903,
+    "market_proposals": 461,
+    "submarket_proposals": 38,
+    "steward_cases": 0,
+    "airtable_writes": false
+  },
+  "mission_apply": {
+    "run_dir": "reports/research-engine-v2/autopilot/2026-08-06T21-46-35_CALA-clean-census-v1-mission",
+    "updates_applied": 903,
+    "inserts_applied": 0,
+    "airtable_writes": true
+  },
+  "before": {
+    "total_records": 907,
+    "clean_core": 865,
+    "below_clean_core": 42,
+    "continent_complete": 0,
+    "subcontinent_complete": 0,
+    "market_complete": 0,
+    "submarket_complete": 0
+  },
+  "after": {
+    "total_records": 907,
+    "clean_core": 865,
+    "below_clean_core": 42,
+    "continent_complete": 903,
+    "subcontinent_complete": 903,
+    "market_complete": 461,
+    "submarket_complete": 38
+  },
+  "fields_written": [
+    "Continent",
+    "Sub-Continent",
+    "Market",
+    "Submarket",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Last Reviewed Date"
+  ],
+  "fields_not_written": [
+    "Address",
+    "Latitude",
+    "Longitude",
+    "Phone",
+    "Rooms / Keys",
+    "owner",
+    "operator",
+    "Recent Momentum",
+    "Company Validated",
+    "Brand Verified",
+    "Brand Status"
+  ],
+  "source_gaps": {
+    "continent_blank_remaining": 4,
+    "market_source_needed": 446,
+    "submarket_optional_blank": 869,
+    "note": "Continent blank when Country missing/unmapped. Market blank when City not in recognized market map. Submarket optional High-only."
+  },
+  "examples_before_after": [
+    {
+      "property_name": "DoubleTree by Hilton Punta Cana Downtown",
+      "before": { "Continent": null, "Sub-Continent": null, "Market": null },
+      "after": {
+        "Continent": "North America",
+        "Sub-Continent": "Caribbean",
+        "Market": "Punta Cana"
+      }
+    },
+    {
+      "property_name": "HS HOTSSON Hotel CDMX Condesa Sur",
+      "before": { "Continent": null, "Market": null, "Submarket": null },
+      "after": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Market": "Mexico City",
+        "Submarket": "Condesa"
+      }
+    },
+    {
+      "property_name": "Tropicana Los Cabos, Tapestry Collection by Hilton",
+      "before": { "Continent": null, "Market": null, "Submarket": null },
+      "after": {
+        "Continent": "North America",
+        "Sub-Continent": "Mexico",
+        "Market": "Los Cabos",
+        "Submarket": "San José del Cabo"
+      }
+    }
+  ],
+  "modules": [
+    "lib/research-engine-v2/census-region-market-map.js",
+    "lib/research-engine-v2/census-market-submarket-classifier.js",
+    "scripts/ensure-hotel-property-census-market-geography-fields.mjs"
+  ],
+  "queue": "market_geography_completion",
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "vic_writes": false
+}

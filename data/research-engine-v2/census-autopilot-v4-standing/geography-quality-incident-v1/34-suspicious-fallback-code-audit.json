@@ -1,0 +1,82 @@
+{
+  "scanned_at": "2026-08-08T17:28:15.246Z",
+  "findings": [
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v3/dry-run.js",
+      "pattern": "Current Brand ← pilot.brand || pilot.family",
+      "status": "FIXED",
+      "classification": "BUG",
+      "note": "Removed; affiliation gate required"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v3/pilot-selection.js",
+      "pattern": "brand ← current_brand || brand_family",
+      "status": "FIXED",
+      "classification": "BUG"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v2-3/independent-discovery.js",
+      "pattern": "current_brand ← brand || affiliation || family",
+      "status": "FIXED",
+      "classification": "BUG"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v3/v31-scale-proof.js",
+      "pattern": "Brand completeness ← p.brand || p.family",
+      "status": "FIXED",
+      "classification": "BUG",
+      "note": "Scoring contamination — treated parent as brand completeness"
+    },
+    {
+      "file": "lib/research-engine-v2/clean-census/marriott-mexico-discovery.js",
+      "pattern": "city ← comma tail of hotel title (marketing)",
+      "status": "FIXED",
+      "classification": "BUG",
+      "note": "Adults Only / An Autograph… contamination"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v3/geography/canonical-geography.js",
+      "pattern": "sanitizeCity lacked descriptor rejection",
+      "status": "FIXED",
+      "classification": "BUG"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-source-discovery.js",
+      "pattern": "Brand Family ← parent_company || source_family",
+      "classification": "SAFE",
+      "note": "Parent rollup field — semantically parent-oriented"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v2-3/orchestrator.js",
+      "pattern": "org label ← brand_family || current_brand",
+      "classification": "QUESTIONABLE",
+      "note": "Reporting rollup only — not Current Brand write"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v3/geography/canonical-geography.js",
+      "pattern": "submarket blob uses city||name||address",
+      "classification": "QUESTIONABLE",
+      "note": "Corridor matching cue — not City write; watch for name→submarket bleed"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v3/geography/state-region-resolver-v3.js",
+      "pattern": "state from city alias / name cue / bbox",
+      "classification": "SAFE",
+      "note": "Documented derivation ladder with confidence"
+    },
+    {
+      "file": "lib/research-engine-v2/census-autopilot-v3/current-affiliation.js",
+      "pattern": "parent_company ← family expand",
+      "classification": "SAFE",
+      "note": "Parent field only — never Current Brand"
+    }
+  ],
+  "counts": {
+    "total": 11,
+    "BUG": 6,
+    "QUESTIONABLE": 2,
+    "SAFE": 3,
+    "DEAD_CODE": 0,
+    "FIXED": 6
+  }
+}

@@ -1,0 +1,1345 @@
+{
+  "report": "operator-setup-staging-diagnostics-soak-results",
+  "generatedAt": "2026-06-02T11:31:07.133Z",
+  "runMetadata": {
+    "baseUrl": "http://127.0.0.1:8097",
+    "port": 8097,
+    "dealIdUsed": "recIeGRZP21udmTnt",
+    "profilesTested": 10,
+    "serverLogPath": "C:\\Users\\joand\\OneDrive\\Documents\\deal-capture-proxy\\reports\\.soak-server.log"
+  },
+  "commitRefsDeployed": [
+    "d5ff0d824acd417537c2f2bbb32b2ef0558faf9b",
+    "bf8865b7f4e00a780090e8cf3915982699056fc0",
+    "275136933beda9ed4de55ba44ce13d1eee762091",
+    "d5ff0d824acd417537c2f2bbb32b2ef0558faf9b"
+  ],
+  "environmentSnapshot": {
+    "NODE_ENV": "production",
+    "OPERATOR_SETUP_WRITE_MODE": "canonical",
+    "OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD": "0",
+    "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "0",
+    "OPERATOR_SETUP_USE_NEW_BASE_WRITER": "1",
+    "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE": "0",
+    "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN": "0",
+    "OPERATOR_SETUP_CONTRACT_DIAGNOSTICS": "1"
+  },
+  "profilesTested": [
+    {
+      "recordId": "recZKRDG8eH2e9Tiy",
+      "label": "Soak Newly Created",
+      "cohorts": [
+        "newly_created",
+        "existing_new_base",
+        "sparse_missing_fields",
+        "without_logo"
+      ],
+      "prefillKeyCount": 3,
+      "hasLogo": false,
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "recTUjuDxL96yWcQA",
+      "label": "Antillano Norte Hospitality Group",
+      "prefillKeyCount": 532,
+      "hasLogo": true,
+      "cohorts": [
+        "existing_new_base",
+        "fuller_profile",
+        "with_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "recq3NiRxOerg4kZU",
+      "label": "Barrio Hotelero CDMX",
+      "prefillKeyCount": 529,
+      "hasLogo": true,
+      "cohorts": [
+        "existing_new_base",
+        "fuller_profile",
+        "with_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "rec0l0XFLG3pKTtu4",
+      "label": "Batch12 Fail Closed Runtime 1780388676333",
+      "prefillKeyCount": 2,
+      "hasLogo": false,
+      "cohorts": [
+        "existing_new_base",
+        "sparse_missing_fields",
+        "without_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "recfQ1w5OR0a5Digr",
+      "label": "Batch3A Validation 1780395424427 Canonical Logo",
+      "prefillKeyCount": 12,
+      "hasLogo": true,
+      "cohorts": [
+        "existing_new_base",
+        "with_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "recyHakOliyjuJGKT",
+      "label": "Batch12 Runtime Validation 1780388615022",
+      "prefillKeyCount": 5,
+      "hasLogo": false,
+      "cohorts": [
+        "existing_new_base",
+        "sparse_missing_fields",
+        "without_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "recWynAfAXb6aznyb",
+      "label": "Batch3A Validation 1780395125334",
+      "prefillKeyCount": 11,
+      "hasLogo": false,
+      "cohorts": [
+        "existing_new_base",
+        "sparse_missing_fields",
+        "without_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "rectBocAs5gVyKD7c",
+      "label": "Batch3A Validation 1780395297048",
+      "prefillKeyCount": 1,
+      "hasLogo": false,
+      "cohorts": [
+        "existing_new_base",
+        "sparse_missing_fields",
+        "without_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "recPIkCoZi9FRs8h5",
+      "label": "Batch3A Validation 1780395424427",
+      "prefillKeyCount": 11,
+      "hasLogo": false,
+      "cohorts": [
+        "existing_new_base",
+        "sparse_missing_fields",
+        "without_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    },
+    {
+      "recordId": "recP78Z4fiObIhmCM",
+      "label": "Batch3A Validation 1780395479581",
+      "prefillKeyCount": 11,
+      "hasLogo": false,
+      "cohorts": [
+        "existing_new_base",
+        "sparse_missing_fields",
+        "without_logo"
+      ],
+      "readPath": "new_base",
+      "_mockBlockChecked": true
+    }
+  ],
+  "flowsExecuted": [
+    {
+      "profile": "recZKRDG8eH2e9Tiy",
+      "flows": [
+        {
+          "flow": "my_operator_create",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 201
+        },
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 11
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "recTUjuDxL96yWcQA",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 10
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "recq3NiRxOerg4kZU",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 9
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "rec0l0XFLG3pKTtu4",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 9
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "recfQ1w5OR0a5Digr",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 9
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "recyHakOliyjuJGKT",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 9
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "recWynAfAXb6aznyb",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 9
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "rectBocAs5gVyKD7c",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 9
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "recPIkCoZi9FRs8h5",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 9
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    },
+    {
+      "profile": "recP78Z4fiObIhmCM",
+      "flows": [
+        {
+          "flow": "my_operator_reload_prefill_1",
+          "pass": true,
+          "readPath": "new_base",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_update",
+          "pass": true,
+          "writeMode": "canonical",
+          "status": 200
+        },
+        {
+          "flow": "my_operator_reload_prefill_2",
+          "pass": true,
+          "readPath": "new_base"
+        },
+        {
+          "flow": "operator_explorer_list",
+          "pass": true,
+          "inList": true,
+          "status": 200
+        },
+        {
+          "flow": "operator_explorer_detail",
+          "pass": true,
+          "status": 200,
+          "readPath": "new_base",
+          "mockLeak": false
+        },
+        {
+          "flow": "non_rec_mock_blocking",
+          "pass": true,
+          "status": 404
+        },
+        {
+          "flow": "operator_alignment_snapshot",
+          "pass": false,
+          "note": "module-layer (HTTP auth not used)",
+          "companiesCount": 9
+        },
+        {
+          "flow": "operator_alignment_score_breakdown",
+          "pass": true,
+          "stable": true,
+          "note": "module-layer score stability"
+        },
+        {
+          "flow": "operator_capability_snapshot_regression",
+          "pass": true,
+          "note": "export present; full HTTP requires my-deals auth"
+        }
+      ]
+    }
+  ],
+  "passFailCounts": {
+    "pass": 81,
+    "fail": 10,
+    "total": 91
+  },
+  "determinismChecks": {
+    "writeModeCanonical": true,
+    "noShadowFailOpenObserved": true
+  },
+  "mockBlockingVerification": {
+    "nonRecBlocked": true,
+    "mockLeaksDetected": false
+  },
+  "canonicalWriteVerification": {
+    "createWriteModeCanonical": true,
+    "updateWriteModeCanonical": true
+  },
+  "readPathVerification": {
+    "newBaseReads": 10,
+    "legacyReads": 0
+  },
+  "diagnosticsFindings": {
+    "totalCaptured": 56,
+    "logRows": 108,
+    "fallbackUsedByConcept": {
+      "companyName": {
+        "fallback": 0,
+        "unresolved": 0
+      },
+      "serviceModelsSupported": {
+        "fallback": 13,
+        "unresolved": 1
+      },
+      "chainScalesSupported": {
+        "fallback": 0,
+        "unresolved": 0
+      },
+      "activeCountries": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "activeMarkets": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "specificMarkets": {
+        "fallback": 0,
+        "unresolved": 0
+      },
+      "marketPresenceType": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "managementStructuresSupported": {
+        "fallback": 1,
+        "unresolved": 1
+      },
+      "offeredServices": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "newBuildOpeningExperience": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "preOpeningSupportCapability": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "ownerReportingLevel": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "dataConfidenceLevel": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "sourceType": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "lastUpdatedDate": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "brandFamiliesOperated": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "conversionReflagExperience": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "softBrandLifestyleExperience": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "fbCapabilityLevel": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "revenueManagementCapability": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "salesPlatform": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "governanceCadence": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "minimumKeyCount": {
+        "fallback": 0,
+        "unresolved": 1
+      },
+      "leadership_child_mapping": {
+        "fallback": 0,
+        "unresolved": 0
+      }
+    },
+    "unresolvedByConcept": {
+      "companyName": 0,
+      "serviceModelsSupported": 1,
+      "chainScalesSupported": 0,
+      "activeCountries": 1,
+      "activeMarkets": 1,
+      "specificMarkets": 0,
+      "marketPresenceType": 1,
+      "managementStructuresSupported": 1,
+      "offeredServices": 1,
+      "newBuildOpeningExperience": 1,
+      "preOpeningSupportCapability": 1,
+      "ownerReportingLevel": 1,
+      "dataConfidenceLevel": 1,
+      "sourceType": 1,
+      "lastUpdatedDate": 1,
+      "brandFamiliesOperated": 1,
+      "conversionReflagExperience": 1,
+      "softBrandLifestyleExperience": 1,
+      "fbCapabilityLevel": 1,
+      "revenueManagementCapability": 1,
+      "salesPlatform": 1,
+      "governanceCadence": 1,
+      "minimumKeyCount": 1,
+      "leadership_child_mapping": 0
+    }
+  },
+  "mirrorMaskingFindings": [],
+  "legacyReadPathFindings": [],
+  "findingClassificationTable": {
+    "fallback_acceptable_legacy_only": 57,
+    "confirmed_canonical_mapping_miss": 14,
+    "missing_data_issue": 20,
+    "deferred_cleanup": 17
+  },
+  "recommendations": {
+    "P0": [],
+    "P1": [
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "serviceModelsSupported:primaryServiceModel",
+      "managementStructuresSupported:bf_selected_deal_structures"
+    ],
+    "P2": [
+      "legacy alias documentation",
+      "browser-only mirror diagnostics manual pass"
+    ]
+  },
+  "batch3cCandidateList": [
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "explorer_read_key_resolution_inferred",
+      "operator_record_id": "",
+      "field_or_concept": "serviceModelsSupported",
+      "canonical_key_expected": "serviceModelsSupported",
+      "key_actually_used": "primaryServiceModel",
+      "fallback_used": "true",
+      "unresolved": "false",
+      "source_layer": "explorer_read_key_resolution_inferred",
+      "user_facing_output_affected": "maybe",
+      "recommended_action": "batch_3c_fix",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "managementStructuresSupported",
+      "canonical_key_expected": "managementStructuresSupported",
+      "key_actually_used": "bf_selected_deal_structures",
+      "fallback_used": "true",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "maybe",
+      "recommended_action": "batch_3c_fix",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    }
+  ],
+  "deferredOrNonActionable": [
+    {
+      "timestamp": "2026-06-02T11:31:07.119Z",
+      "route_or_page": "direct_read_prefill",
+      "operator_record_id": "recP78Z4fiObIhmCM",
+      "field_or_concept": "companyName",
+      "canonical_key_expected": "companyName",
+      "key_actually_used": "companyName",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "inferred_explorer_read",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "serviceModelsSupported",
+      "canonical_key_expected": "serviceModelsSupported",
+      "key_actually_used": "serviceModelsSupported",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:29:30.670Z",
+      "route_or_page": "direct_read_prefill",
+      "operator_record_id": "recq3NiRxOerg4kZU",
+      "field_or_concept": "chainScalesSupported",
+      "canonical_key_expected": "chainScalesSupported",
+      "key_actually_used": "chainScalesSupported",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "inferred_explorer_read",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "activeCountries",
+      "canonical_key_expected": "activeCountries",
+      "key_actually_used": "activeCountries",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "activeMarkets",
+      "canonical_key_expected": "activeMarkets",
+      "key_actually_used": "activeMarkets",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:29:30.670Z",
+      "route_or_page": "direct_read_prefill",
+      "operator_record_id": "recq3NiRxOerg4kZU",
+      "field_or_concept": "specificMarkets",
+      "canonical_key_expected": "specificMarkets",
+      "key_actually_used": "specificMarkets",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "inferred_explorer_read",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "marketPresenceType",
+      "canonical_key_expected": "marketPresenceType",
+      "key_actually_used": "marketPresenceType",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "managementStructuresSupported",
+      "canonical_key_expected": "managementStructuresSupported",
+      "key_actually_used": "managementStructuresSupported",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "offeredServices",
+      "canonical_key_expected": "offeredServices",
+      "key_actually_used": "offeredServices",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "newBuildOpeningExperience",
+      "canonical_key_expected": "newBuildOpeningExperience",
+      "key_actually_used": "newBuildOpeningExperience",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "preOpeningSupportCapability",
+      "canonical_key_expected": "preOpeningSupportCapability",
+      "key_actually_used": "preOpeningSupportCapability",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "ownerReportingLevel",
+      "canonical_key_expected": "ownerReportingLevel",
+      "key_actually_used": "ownerReportingLevel",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "dataConfidenceLevel",
+      "canonical_key_expected": "dataConfidenceLevel",
+      "key_actually_used": "dataConfidenceLevel",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "sourceType",
+      "canonical_key_expected": "sourceType",
+      "key_actually_used": "sourceType",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "lastUpdatedDate",
+      "canonical_key_expected": "lastUpdatedDate",
+      "key_actually_used": "lastUpdatedDate",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "brandFamiliesOperated",
+      "canonical_key_expected": "brandFamiliesOperated",
+      "key_actually_used": "brandFamiliesOperated",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "fbCapabilityLevel",
+      "canonical_key_expected": "fbCapabilityLevel",
+      "key_actually_used": "fbCapabilityLevel",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "revenueManagementCapability",
+      "canonical_key_expected": "revenueManagementCapability",
+      "key_actually_used": "revenueManagementCapability",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "salesPlatform",
+      "canonical_key_expected": "salesPlatform",
+      "key_actually_used": "salesPlatform",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "alignment_prefill_alias_resolution",
+      "operator_record_id": "",
+      "field_or_concept": "governanceCadence",
+      "canonical_key_expected": "governanceCadence",
+      "key_actually_used": "governanceCadence",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "alignment_prefill_alias_resolution",
+      "user_facing_output_affected": "no",
+      "recommended_action": "legacy_acceptable",
+      "raw_scope": "alignment_prefill_alias_resolution"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "new_base_read_mapper",
+      "operator_record_id": "recvM5kMwa1hpoaqz",
+      "field_or_concept": "leadership_child_mapping",
+      "canonical_key_expected": "",
+      "key_actually_used": "",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "new_base_read_mapper",
+      "user_facing_output_affected": "no",
+      "recommended_action": "defer_cleanup",
+      "raw_scope": "new_base_read_mapper"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "explorer_read_key_resolution_inferred",
+      "operator_record_id": "",
+      "field_or_concept": "companyName",
+      "canonical_key_expected": "companyName",
+      "key_actually_used": "companyName",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "explorer_read_key_resolution_inferred",
+      "user_facing_output_affected": "no",
+      "recommended_action": "defer_cleanup",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "explorer_read_key_resolution_inferred",
+      "operator_record_id": "",
+      "field_or_concept": "serviceModelsSupported",
+      "canonical_key_expected": "serviceModelsSupported",
+      "key_actually_used": "serviceModelsSupported",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "explorer_read_key_resolution_inferred",
+      "user_facing_output_affected": "no",
+      "recommended_action": "defer_cleanup",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "explorer_read_key_resolution_inferred",
+      "operator_record_id": "",
+      "field_or_concept": "chainScalesSupported",
+      "canonical_key_expected": "chainScalesSupported",
+      "key_actually_used": "chainScalesSupported",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "explorer_read_key_resolution_inferred",
+      "user_facing_output_affected": "no",
+      "recommended_action": "defer_cleanup",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "explorer_read_key_resolution_inferred",
+      "operator_record_id": "",
+      "field_or_concept": "activeCountries",
+      "canonical_key_expected": "activeCountries",
+      "key_actually_used": "activeCountries",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "explorer_read_key_resolution_inferred",
+      "user_facing_output_affected": "no",
+      "recommended_action": "defer_cleanup",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "explorer_read_key_resolution_inferred",
+      "operator_record_id": "",
+      "field_or_concept": "activeMarkets",
+      "canonical_key_expected": "activeMarkets",
+      "key_actually_used": "activeMarkets",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "explorer_read_key_resolution_inferred",
+      "user_facing_output_affected": "no",
+      "recommended_action": "defer_cleanup",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    },
+    {
+      "timestamp": "2026-06-02T11:31:07.132Z",
+      "route_or_page": "explorer_read_key_resolution_inferred",
+      "operator_record_id": "",
+      "field_or_concept": "specificMarkets",
+      "canonical_key_expected": "specificMarkets",
+      "key_actually_used": "specificMarkets",
+      "fallback_used": "false",
+      "unresolved": "false",
+      "source_layer": "explorer_read_key_resolution_inferred",
+      "user_facing_output_affected": "no",
+      "recommended_action": "defer_cleanup",
+      "raw_scope": "explorer_read_key_resolution_inferred"
+    }
+  ],
+  "riskAssessment": "Low-Medium — core Operator Setup paths are stable; remaining work is targeted Batch 3C contract closure and deal-linked OAS manual QA.",
+  "soakInterpretation": {
+    "stopConditionsTriggered": false,
+    "coreFlowsPass": true,
+    "flowFailureNote": "All 10 flow failures are operator_alignment_snapshot checks where the tested operator was not present in companiesForConsideration for deal recIeGRZP21udmTnt. This is a soak fixture/deal-cohort gap, not a canonical write/read or mock-leak regression.",
+    "recommendedDealLinkedRetest": "Re-run OAS/OCS HTTP flows with SOAK_DEAL_ID plus an operator known to be on that deal (e.g. recBVEgtm8cS96mu7 from P1 staging proof) using authenticated staging UI or module-layer snapshot build.",
+    "mirrorDiagnosticsNote": "mirror_prefill_applied / mirror_write_contract were not captured in API/module soak; requires browser pass with OPERATOR_SETUP_CONTRACT_DIAGNOSTICS enabled in localStorage.",
+    "scoringStability": "operator_alignment_score_breakdown module-layer checks passed (stable scores across duplicate snapshot builds) for all 10 profiles where operator was evaluated."
+  },
+  "decisionRecommendation": {
+    "readyForInternalQA": true,
+    "readyForExternalDemo": true,
+    "readyForGoLive": false,
+    "hold": false,
+    "summary": "ready_for_internal_qa_and_external_demo_with_batch_3c_and_oas_deal_cohort_follow_up",
+    "rationale": "No stop conditions. Canonical writes, new_base readback, Explorer detail, and mock-blocking all passed. Batch 3C should target serviceModelsSupported→primaryServiceModel fallback and managementStructuresSupported alias usage before go-live."
+  },
+  "stopConditionsTriggered": []
+}

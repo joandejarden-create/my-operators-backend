@@ -1,0 +1,110 @@
+{
+  "families_used": [
+    "Accor",
+    "VIC_evidence"
+  ],
+  "blocked_source_families": [
+    "Choice",
+    "Marriott",
+    "IHG",
+    "Wyndham",
+    "Preferred"
+  ],
+  "adapter_errors": [
+    {
+      "family": "Marriott",
+      "error": "no_ready_marriott_countries_in_scope",
+      "note": "Marriott country hotel-sitemap adapter ready for mapped CALA slugs; check country filter"
+    },
+    {
+      "family": "IHG",
+      "error": "no_ready_ihg_countries_in_scope"
+    },
+    {
+      "family": "Wyndham",
+      "error": "no_ready_wyndham_countries_in_scope"
+    },
+    {
+      "family": "Preferred",
+      "error": "no_ready_preferred_countries_in_scope"
+    }
+  ],
+  "vic_evidence_rows": 666,
+  "discover_all_official_parents": true,
+  "parent_scoped_discovery": true,
+  "require_brand_match": false,
+  "control_list_purpose": "official_parent_inventory_discovery",
+  "accor_discovery": {
+    "source": {
+      "type": "official_accor_continent_browse_plus_catalog",
+      "continent_url_template": "https://all.accor.com/a/en/destination/continent/{continent-slug}.html",
+      "catalog_api": "https://api.accor.com/catalog/v1/hotels",
+      "property_url_template": "https://all.accor.com/hotel/{PROPERTY_ID}/index.en.shtml",
+      "blocked_patterns": [
+        "short continent path 403 patterns",
+        "OTA listings"
+      ]
+    },
+    "countries": [
+      "Dominican Republic"
+    ],
+    "meta": {
+      "version": "census-autopilot-accor-cala-discovery-adapter-v1",
+      "source": {
+        "type": "official_accor_continent_browse_plus_catalog",
+        "continent_url_template": "https://all.accor.com/a/en/destination/continent/{continent-slug}.html",
+        "catalog_api": "https://api.accor.com/catalog/v1/hotels",
+        "property_url_template": "https://all.accor.com/hotel/{PROPERTY_ID}/index.en.shtml",
+        "blocked_patterns": [
+          "short continent path 403 patterns",
+          "OTA listings"
+        ]
+      },
+      "countries": [
+        "Dominican Republic"
+      ],
+      "country_stats": [
+        {
+          "country": "Dominican Republic",
+          "hotel_count": 0,
+          "ok": true,
+          "mode": "continent_browse_plus_catalog"
+        }
+      ],
+      "source_notes": [
+        {
+          "continent": "South America",
+          "count": 300
+        },
+        {
+          "continent": "Central America",
+          "count": 151
+        },
+        {
+          "continent": "North America",
+          "count": 131
+        },
+        {
+          "country_catalog": "Dominican Republic",
+          "count": 0
+        }
+      ],
+      "continent_ids": 471,
+      "hydrated": 471,
+      "errors": [],
+      "loaded_at": "2026-08-07T14:06:04.894Z"
+    }
+  },
+  "cache_stats": {
+    "version": "census-autopilot-family-directory-adapters-v2-wave-2",
+    "loaded_at": null,
+    "hilton_count": 0,
+    "choice_count": 0,
+    "errors": [],
+    "unresolved_patterns": []
+  },
+  "discovered_count": 0,
+  "brand_governance_counts": {},
+  "owner_facing_eligible_count": 0,
+  "promotion_candidate_count": 0
+}

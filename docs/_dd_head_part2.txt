@@ -1,0 +1,386 @@
+ var(--dpd-muted-2);
+  font-size: 0.58rem;
+  line-height: 1.35;
+}
+
+/* —— Zone 4: Path status —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-tracks,
+.dealality-problem-desk .dpd-tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  flex: 1;
+  justify-content: center;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track,
+.dealality-problem-desk .dpd-track {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  padding: 0.4rem 0.45rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 14, 32, 0.65);
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track--hot,
+.dealality-problem-desk .dpd-track--hot {
+  border-color: rgba(155, 138, 251, 0.48);
+  background: linear-gradient(90deg, rgba(91, 33, 182, 0.3), rgba(12, 18, 40, 0.9));
+  box-shadow: 0 0 0 1px rgba(155, 138, 251, 0.08);
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track-top,
+.dealality-problem-desk .dpd-track-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track-name,
+.dealality-problem-desk .dpd-track-name {
+  margin: 0;
+  color: var(--dpd-text);
+  font-size: 0.68rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track-status,
+.dealality-problem-desk .dpd-track-status {
+  margin: 0;
+  color: var(--dpd-muted-2);
+  font-size: 0.55rem;
+  line-height: 1.25;
+  text-align: right;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track--hot .dpd-track-status,
+.dealality-problem-desk .dpd-track--hot .dpd-track-status {
+  color: #c4b5fd;
+  font-weight: 550;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail,
+.dealality-problem-desk .dpd-rail {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill,
+.dealality-problem-desk .dpd-rail-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(155, 138, 251, 0.35), rgba(155, 138, 251, 0.88));
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill--82,
+.dealality-problem-desk .dpd-rail-fill--82 { width: 82%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill--48,
+.dealality-problem-desk .dpd-rail-fill--48 { width: 48%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill--28,
+.dealality-problem-desk .dpd-rail-fill--28 { width: 28%; }
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rail-fill--12,
+.dealality-problem-desk .dpd-rail-fill--12 { width: 12%; }
+
+/* —— Zone 5: Consequence —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome,
+.dealality-problem-desk .dpd-outcome {
+  border-color: rgba(155, 138, 251, 0.32);
+  background: radial-gradient(ellipse at 50% 0%, rgba(91, 33, 182, 0.32), rgba(8, 14, 32, 0.96) 62%);
+  justify-content: center;
+  overflow: hidden;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-ghost,
+.dealality-problem-desk .dpd-ghost {
+  position: absolute;
+  inset: 10% 6% 22%;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-ghost svg,
+.dealality-problem-desk .dpd-ghost svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-inner,
+.dealality-problem-desk .dpd-outcome-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-title,
+.dealality-problem-desk .dpd-outcome-title {
+  margin: 0;
+  color: #c4b5fd;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-body,
+.dealality-problem-desk .dpd-outcome-body {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-locks,
+.dealality-problem-desk .dpd-locks {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  opacity: 0.55;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lock,
+.dealality-problem-desk .dpd-lock {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px dashed rgba(155, 138, 251, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 14, 32, 0.4);
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lock svg,
+.dealality-problem-desk .dpd-lock svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* —— Bottom story strip —— */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-strip,
+.dealality-problem-desk .dpd-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+  padding: 0.15rem 0.1rem 0;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-strip-item,
+.dealality-problem-desk .dpd-strip-item {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-start;
+  padding: 0.45rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(8, 14, 32, 0.4);
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-strip-n,
+.dealality-problem-desk .dpd-strip-n {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 99px;
+  border: 1px solid rgba(155, 138, 251, 0.35);
+  color: var(--dpd-purple);
+  font-size: 0.55rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.05rem;
+}
+
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-strip-item p,
+.dealality-problem-desk .dpd-strip-item p {
+  margin: 0;
+  color: var(--dpd-muted-2);
+  font-size: 0.62rem;
+  line-height: 1.4;
+}
+
+/* —— Tablet —— */
+@media screen and (max-width: 991px) {
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-flow,
+  .dealality-problem-desk .dpd-flow {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    aspect-ratio: auto;
+    gap: 0.65rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--1,
+  .dealality-problem-desk .dpd-zone--1 { grid-column: 1; grid-row: 1; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--2,
+  .dealality-problem-desk .dpd-zone--2 { grid-column: 2; grid-row: 1; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--3,
+  .dealality-problem-desk .dpd-zone--3 { grid-column: 1 / -1; grid-row: 2; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--4,
+  .dealality-problem-desk .dpd-zone--4 { grid-column: 1; grid-row: 3; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--5,
+  .dealality-problem-desk .dpd-zone--5 { grid-column: 2; grid-row: 3; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-connectors,
+  .dealality-problem-desk .dpd-connectors { display: none; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lanes,
+  .dealality-problem-desk .dpd-lanes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-art--tertiary,
+  .dealality-problem-desk .dpd-art--tertiary { display: none; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare-row,
+  .dealality-problem-desk .dpd-compare-row {
+    grid-template-columns: minmax(4.5rem, 0.9fr) repeat(4, minmax(0, 1fr));
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-title,
+  .dealality-problem-desk .dpd-outcome-title { font-size: 1.15rem; }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-strip,
+  .dealality-problem-desk .dpd-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* —— Mobile —— */
+@media screen and (max-width: 767px) {
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-desk,
+  .dealality-problem-desk .dpd-desk {
+    padding: 0.9rem 0.75rem 0.85rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-flow,
+  .dealality-problem-desk .dpd-flow {
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--1,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--2,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--3,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--4,
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-zone--5,
+  .dealality-problem-desk .dpd-zone--1,
+  .dealality-problem-desk .dpd-zone--2,
+  .dealality-problem-desk .dpd-zone--3,
+  .dealality-problem-desk .dpd-zone--4,
+  .dealality-problem-desk .dpd-zone--5 {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-lanes,
+  .dealality-problem-desk .dpd-lanes {
+    grid-template-columns: 1fr;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-arts .dpd-art:nth-child(n + 3),
+  .dealality-problem-desk .dpd-arts .dpd-art:nth-child(n + 3) {
+    display: none;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare,
+  .dealality-problem-desk .dpd-compare {
+    gap: 0.35rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare-row--head,
+  .dealality-problem-desk .dpd-compare-row--head {
+    display: none;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare-row,
+  .dealality-problem-desk .dpd-compare-row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+    padding: 0.4rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(8, 14, 32, 0.45);
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-compare-row--hide-sm,
+  .dealality-problem-desk .dpd-compare-row--hide-sm {
+    display: none;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-rl,
+  .dealality-problem-desk .dpd-rl {
+    border: 0;
+    background: transparent;
+    padding: 0 0 0.15rem;
+    font-size: 0.72rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st,
+  .dealality-problem-desk .dpd-st {
+    justify-content: flex-start;
+    min-height: 0;
+    padding: 0.35rem 0.45rem;
+    font-size: 0.68rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-st::before,
+  .dealality-problem-desk .dpd-st::before {
+    content: attr(data-col);
+    color: var(--dpd-muted);
+    font-size: 0.58rem;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-right: 0.35rem;
+    min-width: 3.6rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track-top,
+  .dealality-problem-desk .dpd-track-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-track-status,
+  .dealality-problem-desk .dpd-track-status {
+    text-align: left;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-title,
+  .dealality-problem-desk .dpd-outcome-title {
+    font-size: 1.25rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-outcome-body,
+  .dealality-problem-desk .dpd-outcome-body {
+    font-size: 0.82rem;
+  }
+
+  #about[data-oh-problem="deal-desk"] .dealality-problem-desk .dpd-strip,
+  .dealality-problem-desk .dpd-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phase B hooks — final state shows all content (no hide rules for story stages in Phase A) */
+#about[data-oh-problem="deal-desk"] .dealality-problem-desk[data-story-state="final"] .dpd-zone,
+.dealali

@@ -1,0 +1,129 @@
+{
+  "objective": "hbx-access-diagnostic-v1",
+  "generated_at": "2026-08-11T16:53:55.598Z",
+  "HBX_DIAGNOSTIC_STATUS": "complete",
+  "TEST_CREDENTIALS_PRESENT": "NOT_SEPARATE",
+  "LIVE_CREDENTIALS_PRESENT": "NOT_SEPARATE",
+  "configured_hbx_env": "test",
+  "configured_api_host": "https://api.test.hotelbeds.com",
+  "configured_content_host": "https://api.test.hotelbeds.com/hotel-content-api/1.0",
+  "SIGNATURE_SELF_CHECK": "PASS",
+  "signature_check_detail": {
+    "failed": [],
+    "checks": {
+      "timestamp_is_seconds": true,
+      "timestamp_not_milliseconds": true,
+      "timestamp_current_within_120s": true,
+      "sha256_hex_length_64": true,
+      "lowercase_hex": true,
+      "independent_recompute_matches": true,
+      "key_no_surrounding_whitespace": true
+    }
+  },
+  "CLOCK_CHECK": "PASS",
+  "clock_detail": {
+    "result": "PASS",
+    "local_iso": "2026-08-11T16:53:55.596Z",
+    "unix_seconds": 1786467235,
+    "note": "Compared local Date.now(); external NTP not queried to avoid extra network"
+  },
+  "implementation_notes": {
+    "env_vars": [
+      "HBX_API_KEY",
+      "HBX_API_SECRET",
+      "HBX_ENV",
+      "HBX_API_BASE_URL",
+      "HBX_CONTENT_API_BASE_URL"
+    ],
+    "wave1_client": "lib/research-engine-v2/hbx-content-api-client.js (unchanged auth path)",
+    "prior_wave1_delay_ms": 150,
+    "geography_wave_default_delay_ms": 150,
+    "geography_wave_concurrency": 1,
+    "known_client_bug": "hbxFetchJson error_code ignored string json.error (e.g. Quota exceeded) — diagnostic extracts string errors correctly",
+    "prior_inventory_evidence": "reports show HTTP 403 with error Quota exceeded on TEST Content API"
+  },
+  "TEST_REQUEST_HTTP_STATUS": 200,
+  "TEST_SANITIZED_ERROR": {
+    "code": null,
+    "message": null,
+    "headers": {
+      "x-ratelimit-limit": "50",
+      "x-ratelimit-remaining": "49",
+      "x-ratelimit-reset": "1786553638",
+      "date": "Tue, 11 Aug 2026 16:53:58 GMT"
+    }
+  },
+  "LIVE_REQUEST_HTTP_STATUS": "SKIPPED_NO_SEPARATE_LIVE_CREDENTIALS",
+  "LIVE_SANITIZED_ERROR": {
+    "code": null,
+    "message": "Only single HBX_API_KEY/HBX_API_SECRET pair present; refused to send TEST key to LIVE host",
+    "headers": {}
+  },
+  "CONTENT_API_HTTP_STATUS": 200,
+  "CONTENT_API_SANITIZED_ERROR": {
+    "code": null,
+    "message": null,
+    "headers": {
+      "x-ratelimit-limit": "50",
+      "x-ratelimit-remaining": "48",
+      "x-ratelimit-reset": "1786553638",
+      "date": "Tue, 11 Aug 2026 16:54:03 GMT"
+    }
+  },
+  "CONTENT_API_TEST_STATUS": "ACCESS_OK",
+  "test_status": {
+    "http_status": 200,
+    "ok": true,
+    "elapsed_ms": 290,
+    "auth_meta": {
+      "timestamp_unix_seconds": 1786467237,
+      "signature_hex_length": 64
+    },
+    "response_headers": {
+      "x-ratelimit-limit": "50",
+      "x-ratelimit-remaining": "49",
+      "x-ratelimit-reset": "1786553638",
+      "date": "Tue, 11 Aug 2026 16:53:58 GMT"
+    },
+    "sanitized_error_code": null,
+    "sanitized_error_message": null,
+    "body_top_keys": [
+      "auditData",
+      "status"
+    ],
+    "audit_data_present": true
+  },
+  "content_api": {
+    "http_status": 200,
+    "ok": true,
+    "elapsed_ms": 165,
+    "auth_meta": {
+      "timestamp_unix_seconds": 1786467242,
+      "signature_hex_length": 64
+    },
+    "response_headers": {
+      "x-ratelimit-limit": "50",
+      "x-ratelimit-remaining": "48",
+      "x-ratelimit-reset": "1786553638",
+      "date": "Tue, 11 Aug 2026 16:54:03 GMT"
+    },
+    "sanitized_error_code": null,
+    "sanitized_error_message": null,
+    "body_top_keys": [
+      "from",
+      "to",
+      "total",
+      "auditData",
+      "hotels"
+    ],
+    "audit_data_present": true,
+    "hotel_rows_returned": "present_nonzero_or_empty_omitted"
+  },
+  "PRIMARY_ROOT_CAUSE": "ACCESS_OK",
+  "SECONDARY_ROOT_CAUSE": null,
+  "IS_CREDENTIAL_REPLACEMENT_REQUIRED": "NO",
+  "IS_HBX_ACCOUNT_ACTION_REQUIRED": "NO",
+  "IS_RATE_LIMIT_PATCH_REQUIRED": "YES",
+  "SAFE_TO_RESUME_DISCOVERY": "YES",
+  "NEXT_ACTION": null
+}

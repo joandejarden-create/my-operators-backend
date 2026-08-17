@@ -1,0 +1,86 @@
+#!/usr/bin/env node
+/**
+ * Brand Explorer WoodSpring Real Property Examples Rebuild v33C-R1.
+ *
+ *   npm run brand-explorer-woodspring-real-property-examples-writer -- --brand woodspring-suites --dry-run
+ */
+import "../load-env.js";
+import { mkdirSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import {
+  APPLY_FLAG_APPROVE,
+  APPLY_FLAG_FOUNDER,
+  APPLY_FLAG_NO_OTHER_SECTIONS,
+  APPLY_FLAG_NO_SUMMARY_URL,
+  APPLY_FLAG_NO_VALIDATION,
+  APPLY_FLAG_OFFICIAL_ONLY,
+  APPLY_FLAG_WOODSPRING_ONLY,
+  REPORT_JSON_NAME,
+  REPORT_MD_NAME,
+  buildBrandExplorerWoodspringRealPropertyExamplesWriterReport,
+  v33cR1WriterExists,
+} from "../lib/partner-intelligence/brand-explorer-woodspring-real-property-examples-writer.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, "..");
+const REPORT_JSON = join(ROOT, "reports", REPORT_JSON_NAME);
+const REPORT_MD = join(ROOT, "reports", REPORT_MD_NAME);
+
+function hasFlag(name) {
+  return process.argv.includes(name);
+}
+
+function argValue(name, fallback = "") {
+  const idx = process.argv.indexOf(name);
+  if (idx < 0) return fallback;
+  return process.argv[idx + 1] || fallback;
+}
+
+async function main() {
+  const apply = hasFlag("--apply");
+  const brand = argValue("--brand", "woodspring-suites");
+
+  const report = await buildBrandExplorerWoodspringRealPropertyExamplesWriterReport({
+    brandArg: brand,
+    apply,
+    approveBatch: hasFlag(APPLY_FLAG_APPROVE),
+    founderApproved: hasFlag(APPLY_FLAG_FOUNDER),
+    officialImagesOnly: hasFlag(APPLY_FLAG_OFFICIAL_ONLY),
+    noValidationClaim: hasFlag(APPLY_FLAG_NO_VALIDATION),
+    noSummaryUrl: hasFlag(APPLY_FLAG_NO_SUMMARY_URL),
+    noOtherSectionChanges: hasFlag(APPLY_FLAG_NO_OTHER_SECTIONS),
+    woodspringOnly: hasFlag(APPLY_FLAG_WOODSPRING_ONLY),
+  });
+
+  mkdirSync(dirname(REPORT_JSON), { recursive: true });
+  writeFileSync(REPORT_JSON, `${JSON.stringify(report, null, 2)}\n`);
+  writeFileSync(REPORT_MD, `${report.markdown}\n`);
+
+  console.log(`Wrote ${REPORT_JSON}`);
+  console.log(`Wrote ${REPORT_MD}`);
+  console.log(`v33C-R1 exists: ${v33cR1WriterExists() ? "yes" : "no"}`);
+  console.log(`Mode: ${report.mode}`);
+  console.log(`Dry-run clean: ${report.dryRunClean ? "yes" : "no"}`);
+  console.log(`Openings audited: ${report.currentOpeningsAudit.length}`);
+  console.log(`Property examples selected: ${report.selectedPropertyExamples.length}`);
+  console.log(`Presentation patches/images/hidden: ${report.presentationPatches.length}/${report.presentationImagePatches.length}/${report.visibilityPatches.length}`);
+  console.log(`Registry patches/creates: ${report.registryPatches.length}/${report.registryCreates.length}`);
+  console.log(`Choice-logo property image: ${report.choiceLogoPropertyImageUsed ? "yes" : "no"}`);
+  console.log(`Generic cards remain visible: ${report.genericCardsRemainVisible ? "yes" : "no"}`);
+  console.log(`Company Validated untouched: ${report.companyValidatedUntouched ? "yes" : "no"}`);
+  console.log(`Final QA: ${report.expectedFinalQaResult}`);
+  console.log(`Complete Build: ${report.expectedCompleteBuildResult}`);
+  console.log(`Visual defects: ${report.expectedVisualDefectResult}`);
+  if (report.applyBlockers.length) {
+    console.log(`Apply blockers: ${report.applyBlockers.join("; ")}`);
+  }
+  if (report.exactApplyCommand) {
+    console.log(`Apply command: ${report.exactApplyCommand}`);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

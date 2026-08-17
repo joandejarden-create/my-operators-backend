@@ -1,0 +1,63 @@
+{
+  "version": "production-census-schema-v114-rooms-keys-provenance-v1",
+  "generated_at": "2026-08-05T19:53:16.646Z",
+  "mode": "dry-run",
+  "status": "production_census_schema_v114_dry_run_pass",
+  "dry_run_pass": true,
+  "base_id_masked": "appCCU…foLk",
+  "table_id": "tbl9aY5ijiuIzzWam",
+  "field_count_before": 108,
+  "expected_field_count_after": 111,
+  "fields_to_add": [
+    {
+      "name": "Rooms Source Type",
+      "type": "singleSelect",
+      "options": [
+        "official_property_page",
+        "official_brand_directory",
+        "official_hotel_website",
+        "official_press_release",
+        "official_development_page",
+        "trusted_secondary_source",
+        "steward_review"
+      ]
+    },
+    {
+      "name": "Rooms Reviewed Date",
+      "type": "date",
+      "options": null
+    },
+    {
+      "name": "Rooms Notes",
+      "type": "multilineText",
+      "options": null
+    }
+  ],
+  "fields_already_existed": [],
+  "rooms_confidence_option_add": {
+    "field": "Rooms Confidence",
+    "add": "Hold",
+    "already_has_hold": false,
+    "existing_choices": [
+      "Exact",
+      "High",
+      "Medium",
+      "Low",
+      "Insufficient",
+      "Unknown"
+    ]
+  },
+  "rename_recommendation": "Optional later rename Rooms Confidence / Rooms Source URL → Rooms / Keys* for naming parity — NOT applied in this task.",
+  "conflicts": [],
+  "census_record_count": 666,
+  "rooms_keys_filled": 0,
+  "env_ok_for_apply": false,
+  "env_flags": {
+    "ALLOW_PRODUCTION_CENSUS_SCHEMA_V114": false,
+    "CONFIRM_SCHEMA_ONLY_NO_RECORD_WRITES": true,
+    "CONFIRM_NO_BRAND_EXPLORER_WRITES": true
+  },
+  "brand_explorer_writes": false,
+  "brand_setup_writes": false,
+  "record_writes": false
+}

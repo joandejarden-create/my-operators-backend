@@ -1,0 +1,42 @@
+{
+  "id": "showcase_company_owned_domains_v1",
+  "version": "1",
+  "notes": [
+    "Explicit fixture-governed company / portfolio owned domains for Brand AI Visibility.",
+    "Never infer ownership from evidence appearance, suffix similarity, or LLM guess.",
+    "Each domain maps to a governed Brand Matrix / Company field tier.",
+    "inheritSubdomains defaults to false — only exact hostname (www-stripped) matches unless explicitly true."
+  ],
+  "companies": [
+    {
+      "companyKey": "marriott",
+      "canonicalCompanyName": "Marriott International",
+      "ownedDomains": [
+        {
+          "domain": "marriott.com",
+          "url": "https://www.marriott.com/",
+          "tier": "B_PARENT_OFFICIAL",
+          "field": "Parent Company Website",
+          "inheritSubdomains": false,
+          "GOVERNED": true
+        },
+        {
+          "domain": "hotel-development.marriott.com",
+          "url": "https://www.hotel-development.marriott.com/",
+          "tier": "C_DEVELOPMENT",
+          "field": "Brand Development URL",
+          "inheritSubdomains": false,
+          "GOVERNED": true
+        },
+        {
+          "domain": "marriottresidences.com",
+          "url": "https://www.marriottresidences.com/",
+          "tier": "C_RESIDENCES",
+          "field": "Branded Residences Source URL",
+          "inheritSubdomains": false,
+          "GOVERNED": true
+        }
+      ]
+    }
+  ]
+}

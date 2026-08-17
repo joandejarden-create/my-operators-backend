@@ -1,0 +1,2315 @@
+{
+  "version": "production-census-v11-post-apply-review-v1",
+  "generated_at": "2026-08-05T09:59:43.080Z",
+  "mode": "read_only",
+  "airtable_writes": false,
+  "schema_mutations": false,
+  "brand_explorer_writes": false,
+  "webhound_used": false,
+  "token_masked": "patEUo…14eb",
+  "base_platform_masked": "appCCU…foLk",
+  "base_mvp_masked": "appvtn…INP6",
+  "freeze_hash": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+  "frozen_artifacts": {
+    "vic": {
+      "file_count": 29,
+      "aggregate_sha256": "013a62f3f739cef81412467ecee3b56e5440be0e8c81d6b55ae9675705270a1e"
+    },
+    "frozen_62": [
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.json",
+        "exists": true,
+        "size": 189579,
+        "mtime_ms": 1785894190880.195,
+        "sha256": "87e2870b719327167d39564b45039227e37b1d3be518705da290c3469e50f8b7"
+      },
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190884.1685,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "docs/data-intelligence/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190885.1675,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-62-active-public-full-baseline.js",
+        "exists": true,
+        "size": 76327,
+        "mtime_ms": 1785915102595.374,
+        "sha256": "7bc5f0d6cca57b7aad0f141f8b56d3528e6fbb634327ce3945b182360966ac7c"
+      }
+    ]
+  },
+  "census_field_count": 95,
+  "status": "production_census_v11_post_apply_review_minor_cleanup_recommended",
+  "executive_summary": {
+    "verdict": "production_census_v11_post_apply_review_minor_cleanup_recommended",
+    "census_master_ok": true,
+    "naming": "Mostly aligned; Last Verified Date vs Last Reviewed Date is the main naming tension",
+    "amenities": "6 amenity flags recommended for later Structured Tags consolidation",
+    "enrichment": "Start with descriptions + amenities + property type / asset context. Do not start with owner/operator until sourcing process is defined.",
+    "brand_explorer": "Must remain untouched; re-check via BE gates"
+  },
+  "naming_conventions_found": {
+    "brand_setup": {
+      "brand_name": "Brand Name",
+      "brand_status": "Brand Status",
+      "parent_company": "Parent Company",
+      "validation_status": "Validation Status",
+      "source_type": "Source Type",
+      "confidence_level": "Confidence Level",
+      "company_validated": "Company Validated",
+      "last_reviewed_date": "Last Reviewed Date",
+      "external_display_status": "External Display Status"
+    },
+    "company_setup": {
+      "company_name": "Company Name",
+      "company_type": "Company Type",
+      "owner_profile_status": "Owner Profile Status",
+      "operator_profile_status": "Operator Profile Status",
+      "developer_profile_status": "Developer Profile Status",
+      "operator_master_company_name": "company_name",
+      "data_confidence_level": "Data Confidence Level"
+    },
+    "legacy_hotel_census": {
+      "name": "name",
+      "rooms": "rooms",
+      "management_company": "Management Company",
+      "owner_company": "Owner Company",
+      "market": "Market",
+      "submarket": "Submarket",
+      "amenities": "Amenities"
+    }
+  },
+  "naming_alignment": [
+    {
+      "census_field": "Property Name",
+      "similar_existing_field": "Property Name / Brand Name / Verified Hotel Name",
+      "existing_table": "Hotel Ownership / Brand Basics / VIC stub",
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "Brand Basics uses Brand Name; Hotel Ownership uses Property Name; Verified Independent uses Verified Hotel Name. Property Name is correct for property master.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Canonical Property Name",
+      "similar_existing_field": "Property Name",
+      "existing_table": "Hotel Ownership",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Property Identity Key",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Family / Source Family",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Country",
+      "similar_existing_field": "Country",
+      "existing_table": "Hotel Ownership",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Closely matches existing naming; keep Census field as-is.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "State / Region",
+      "similar_existing_field": "Region Offered / Region / Verified State",
+      "existing_table": "Brand Basics / Hotel Census / VIC stub",
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "Distinct from Brand Basics Region Offered (commercial regions). State/Region is geo admin for the property.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "City",
+      "similar_existing_field": "city",
+      "existing_table": "Hotel Census",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Closely matches existing naming; keep Census field as-is.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Address",
+      "similar_existing_field": "Company Address",
+      "existing_table": "Company Profile",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Latitude",
+      "similar_existing_field": "Latitude",
+      "existing_table": "Hotel Census",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Closely matches existing naming; keep Census field as-is.",
+      "founder_decision_needed": false,
+      "census_type": "number"
+    },
+    {
+      "census_field": "Longitude",
+      "similar_existing_field": "Longitude",
+      "existing_table": "Hotel Census",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Closely matches existing naming; keep Census field as-is.",
+      "founder_decision_needed": false,
+      "census_type": "number"
+    },
+    {
+      "census_field": "Phone",
+      "similar_existing_field": "Management Phone",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Official Property URL",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "url"
+    },
+    {
+      "census_field": "Source URL",
+      "similar_existing_field": "Brand Website / Branded Residences Source URL",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Matches Source URL usage pattern; Brand Basics uses Brand Website / branded-residences Source URL variants.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "url"
+    },
+    {
+      "census_field": "Source Type",
+      "similar_existing_field": "Source Type",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Closely matches existing naming; keep Census field as-is.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Source Confidence",
+      "similar_existing_field": "Confidence Level",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Brand Setup uses Confidence Level; Census also has Relationship Confidence + Data Confidence Tier. Document roles: Source=evidence quality, Relationship=link certainty, Tier=overall.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Discovery Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "date"
+    },
+    {
+      "census_field": "VIC Freeze Hash",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Data Eligible",
+      "similar_existing_field": "Explorer Hero Data Source",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Identity Confidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Production Use Status",
+      "similar_existing_field": "Brand Status / External Display Status / status",
+      "existing_table": "Brand Basics / Hotel Census",
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "Must not collide with Brand Status or External Display Status. Census-only rendering gate.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Current Brand",
+      "similar_existing_field": "Brand Setup - Brand Footprint",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Brand Family",
+      "similar_existing_field": "Brand",
+      "existing_table": "Brand Setup - Brand Explorer Presentation",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Brand Explorer Slug if mapped",
+      "similar_existing_field": "(code slug / Brand Name)",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "census_specific_name_ok",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "No literal Brand Slug field on Brand Basics (slug is derived in code). Name is verbose but clear; optional later rename to Brand Explorer Slug.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Affiliation Status",
+      "similar_existing_field": "Affiliation",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Affiliation As-Of Date",
+      "similar_existing_field": "Affiliation",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "date"
+    },
+    {
+      "census_field": "Affiliation Start Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "date"
+    },
+    {
+      "census_field": "Prior Brand",
+      "similar_existing_field": "Brand Setup - Brand Footprint",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Future Opening Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Brand Confidence",
+      "similar_existing_field": "Brand",
+      "existing_table": "Brand Setup - Brand Explorer Presentation",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Steward Review Status",
+      "similar_existing_field": "Validation Status / Brand Status",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "Distinct from Validation Status / Brand Status / Ownership Review Status. Steward lane is Census-ops specific.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Hotel Property Brand Affiliations",
+      "similar_existing_field": "Brand Setup - Brand Footprint",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "multipleRecordLinks"
+    },
+    {
+      "census_field": "Hotel Property Source Evidence",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "multipleRecordLinks"
+    },
+    {
+      "census_field": "Hotel Property Steward Review",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "multipleRecordLinks"
+    },
+    {
+      "census_field": "Hotel Description - Source Text",
+      "similar_existing_field": "Hotel Description",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "multilineText"
+    },
+    {
+      "census_field": "Hotel Description - AI Summary",
+      "similar_existing_field": "Hotel Description",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "multilineText"
+    },
+    {
+      "census_field": "Short Property Summary",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "multilineText"
+    },
+    {
+      "census_field": "Property Positioning",
+      "similar_existing_field": "Property Name",
+      "existing_table": "Hotel Ownership",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "multilineText"
+    },
+    {
+      "census_field": "Hotel Class / Segment",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Property Type",
+      "similar_existing_field": "Property Type",
+      "existing_table": "Hotel Census",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Closely matches existing naming; keep Census field as-is.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Asset Context",
+      "similar_existing_field": "Partner Intelligence - Brand Asset Registry",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Market / Submarket",
+      "similar_existing_field": "Market / Submarket / Dealality Market",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Legacy Hotel Census splits Market + Submarket + Dealality Market. Combined field is OK short-term; long-term prefer Dealality Market + corridor Submarket as separate fields.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": "B",
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Amenities - Source Text",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "multilineText"
+    },
+    {
+      "census_field": "Amenities - Structured Tags",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "multilineText"
+    },
+    {
+      "census_field": "F&B Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Meeting Space Flag",
+      "similar_existing_field": "Largest Meeting Space",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Fitness Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Pool Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Resort Amenities Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Extended Stay Amenity Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Parking Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Airport Shuttle Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Spa Flag",
+      "similar_existing_field": "Spa (Y/N)",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Beach / Waterfront Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Branded Residences Flag",
+      "similar_existing_field": "Branded Residences Status",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Mixed-Use Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Rooms / Keys",
+      "similar_existing_field": "rooms",
+      "existing_table": "Hotel Census",
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "Legacy Hotel Census uses rooms; Rooms / Keys is clearer for hospitality. Do not invent values until sourced.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "number"
+    },
+    {
+      "census_field": "Rooms Source URL",
+      "similar_existing_field": "Branded Residences Source URL",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "url"
+    },
+    {
+      "census_field": "Rooms Confidence",
+      "similar_existing_field": "rooms",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Building / Asset Notes",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "multilineText"
+    },
+    {
+      "census_field": "Opening Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "date"
+    },
+    {
+      "census_field": "Opening Date Source URL",
+      "similar_existing_field": "Branded Residences Source URL",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "url"
+    },
+    {
+      "census_field": "Renovation / Conversion Status",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Renovation / Conversion Date",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "date"
+    },
+    {
+      "census_field": "Renovation / Conversion Source URL",
+      "similar_existing_field": "Branded Residences Source URL",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "url"
+    },
+    {
+      "census_field": "Owner Name",
+      "similar_existing_field": "Owner Company / Owner/Operator Name / Company Name",
+      "existing_table": "Hotel Census / Hotel Ownership / Company Profile",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Aligns with Owner Company (legacy Hotel Census) and Owner/Operator Name (Hotel Ownership); distinct from Company Name on Company Profile.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Owner Type",
+      "similar_existing_field": "Case Summary Owner Objective",
+      "existing_table": "Brand Setup - Brand Explorer Presentation",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Owner Source URL",
+      "similar_existing_field": "Branded Residences Source URL",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "url"
+    },
+    {
+      "census_field": "Owner Confidence",
+      "similar_existing_field": "Case Summary Owner Objective",
+      "existing_table": "Brand Setup - Brand Explorer Presentation",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Developer Name",
+      "similar_existing_field": "Developer Profile Status",
+      "existing_table": "Company Profile",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Developer Source URL",
+      "similar_existing_field": "Branded Residences Source URL",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "url"
+    },
+    {
+      "census_field": "Developer Confidence",
+      "similar_existing_field": "Developer Profile Status",
+      "existing_table": "Company Profile",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Ownership Review Status",
+      "similar_existing_field": "Owner Profile Status / Branded Residences Review Status",
+      "existing_table": "Company Profile / Brand Basics",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Parallel to Brand Review Status patterns and Company Profile Owner Profile Status.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Operator / Management Company",
+      "similar_existing_field": "Management Company / company_name",
+      "existing_table": "Hotel Census / Operator Setup - Master",
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "Bridges Management Company (legacy Hotel Census) and Operator company_name (Operator Setup). Slash form is explicit for property-level ops.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Operator Type",
+      "similar_existing_field": "Operator",
+      "existing_table": "Operator Setup - Profile & Positioning",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Management Model",
+      "similar_existing_field": "User Management",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Operator Source URL",
+      "similar_existing_field": "Operator Setup - Operator Basics",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "url"
+    },
+    {
+      "census_field": "Operator Confidence",
+      "similar_existing_field": "Operator",
+      "existing_table": "Operator Setup - Profile & Positioning",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Operator Review Status",
+      "similar_existing_field": "Operator Profile Status",
+      "existing_table": "Company Profile",
+      "classification": "aligned_with_existing_name",
+      "recommendation": "keep",
+      "reason": "Parallel to Operator Profile Status on Company Profile.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Possible Operator Target",
+      "similar_existing_field": "Operator Setup - Operator Basics",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Independent Hotel Flag",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Independent Classification",
+      "similar_existing_field": "brand_soft_independent_narrative",
+      "existing_table": "Operator Setup - Profile & Positioning",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Brand-Unassigned Reason",
+      "similar_existing_field": "Brand Setup - Brand Footprint",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleLineText"
+    },
+    {
+      "census_field": "Possible Soft-Brand Candidate",
+      "similar_existing_field": "Brand Setup - Brand Footprint",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Possible Brand Conversion Candidate",
+      "similar_existing_field": "Brand Setup - Brand Footprint",
+      "existing_table": "Brand Setup - Brand Basics",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Possible Owner Outreach Target",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Possible Financing Target",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Possible Dealality Opportunity",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Data Confidence Tier",
+      "similar_existing_field": "Data Confidence",
+      "existing_table": "Hotel Census",
+      "classification": "possible_duplicate_concept",
+      "recommendation": "add_alias/documentation_only",
+      "reason": "Related concept exists on another table; document difference rather than rename now.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Relationship Confidence",
+      "similar_existing_field": "brand_narrative_relationship",
+      "existing_table": "Operator Setup - Profile & Positioning",
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "Census-specific for ownership/operator relationship certainty; not a Brand Setup duplicate.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Last Verified Date",
+      "similar_existing_field": "Last Reviewed Date",
+      "existing_table": "Brand Setup - Brand Basics / Operator Setup - Master",
+      "classification": "naming_conflict",
+      "recommendation": "rename_later",
+      "reason": "Brand/Operator Setup standard is Last Reviewed Date. Prefer aligning to Last Reviewed Date in v1.1.1 (documentation + optional rename later). Does not block enrichment.",
+      "founder_decision_needed": true,
+      "cleanup_bucket": "C",
+      "census_type": "date"
+    },
+    {
+      "census_field": "Next Review Needed",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "date"
+    },
+    {
+      "census_field": "Enrichment Status",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "Distinct from Validation Status / submission_status. Tracks enrichment lane progress.",
+      "founder_decision_needed": false,
+      "cleanup_bucket": null,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Enrichment Priority",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "singleSelect"
+    },
+    {
+      "census_field": "Human Review Required",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "checkbox"
+    },
+    {
+      "census_field": "Notes for Steward",
+      "similar_existing_field": null,
+      "existing_table": null,
+      "classification": "census_specific_name_ok",
+      "recommendation": "keep",
+      "reason": "No close Brand/Company Setup match; Census-specific field OK.",
+      "founder_decision_needed": false,
+      "census_type": "multilineText"
+    }
+  ],
+  "amenities_review": [
+    {
+      "amenity_field": "Amenities - Source Text",
+      "classification": "keep_as_source_text",
+      "recommendation": "keep",
+      "reason": "Primary amenity model — source text + structured tags.",
+      "current_type": "multilineText"
+    },
+    {
+      "amenity_field": "Amenities - Structured Tags",
+      "classification": "keep_as_source_text",
+      "recommendation": "keep",
+      "reason": "Primary amenity model — source text + structured tags.",
+      "current_type": "multilineText"
+    },
+    {
+      "amenity_field": "F&B Flag",
+      "classification": "keep_as_strategic_flag",
+      "recommendation": "keep",
+      "reason": "High-signal strategic flag useful across BE / OE / Owner lanes.",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Meeting Space Flag",
+      "classification": "keep_as_strategic_flag",
+      "recommendation": "keep",
+      "reason": "High-signal strategic flag useful across BE / OE / Owner lanes.",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Fitness Flag",
+      "classification": "possible_overmodeling",
+      "recommendation": "move_to_structured_tags_later",
+      "reason": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+      "cleanup_bucket": "B",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Pool Flag",
+      "classification": "possible_overmodeling",
+      "recommendation": "move_to_structured_tags_later",
+      "reason": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+      "cleanup_bucket": "B",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Resort Amenities Flag",
+      "classification": "founder_decision_needed",
+      "recommendation": "rename_later",
+      "reason": "Prefer strategic name Resort / Leisure Flag in v1.1.1; keep current flag until then.",
+      "cleanup_bucket": "B",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Extended Stay Amenity Flag",
+      "classification": "founder_decision_needed",
+      "recommendation": "rename_later",
+      "reason": "Prefer Extended Stay Flag naming alignment; Amenity suffix is redundant with Structured Tags model.",
+      "cleanup_bucket": "B",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Parking Flag",
+      "classification": "possible_overmodeling",
+      "recommendation": "move_to_structured_tags_later",
+      "reason": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+      "cleanup_bucket": "B",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Airport Shuttle Flag",
+      "classification": "possible_overmodeling",
+      "recommendation": "move_to_structured_tags_later",
+      "reason": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+      "cleanup_bucket": "B",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Spa Flag",
+      "classification": "possible_overmodeling",
+      "recommendation": "move_to_structured_tags_later",
+      "reason": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+      "cleanup_bucket": "B",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Beach / Waterfront Flag",
+      "classification": "possible_overmodeling",
+      "recommendation": "move_to_structured_tags_later",
+      "reason": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+      "cleanup_bucket": "B",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Branded Residences Flag",
+      "classification": "keep_as_strategic_flag",
+      "recommendation": "keep",
+      "reason": "High-signal strategic flag useful across BE / OE / Owner lanes.",
+      "current_type": "checkbox"
+    },
+    {
+      "amenity_field": "Mixed-Use Flag",
+      "classification": "keep_as_strategic_flag",
+      "recommendation": "keep",
+      "reason": "High-signal strategic flag useful across BE / OE / Owner lanes.",
+      "current_type": "checkbox"
+    }
+  ],
+  "foundation": {
+    "hotel_property_census": 666,
+    "brand_affiliations": 666,
+    "source_evidence": 666,
+    "steward_review": 4,
+    "expected": {
+      "census": 666,
+      "affiliations": 666,
+      "evidence": 666,
+      "steward": 4
+    },
+    "duplicate_property_identity_keys": 0,
+    "duplicate_keys_sample": [],
+    "production_use_status_census_only": 666,
+    "enrichment_not_started": 666,
+    "human_review_true": 4,
+    "descriptions_filled": 0,
+    "amenities_source_filled": 0,
+    "owner_filled": 0,
+    "operator_filled": 0,
+    "rooms_filled": 0,
+    "opening_filled": 0,
+    "zero_zero": 0,
+    "checks": {
+      "census_666": true,
+      "affiliations_666": true,
+      "evidence_666": true,
+      "steward_4": true,
+      "no_duplicates": true,
+      "production_use_all": true,
+      "enrichment_not_started_all": true,
+      "human_review_only_held": true,
+      "enrichment_fields_blank": true,
+      "no_zero_zero": true
+    }
+  },
+  "sample_review": {
+    "IHG": {
+      "family": "IHG",
+      "totals": {
+        "rows": 195,
+        "branded": 186,
+        "soft": 9,
+        "unconfirmed": 0,
+        "held": 0
+      },
+      "samples": {
+        "branded": [
+          {
+            "property_name": "Holiday Inn Tuxtla Gutierrez",
+            "brand": "Holiday Inn",
+            "city": "Tuxtla Gutierrez",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.ihg.com/mexico",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Hotel Indigo Tijuana Downtown",
+            "brand": "Hotel Indigo",
+            "city": "Tijuana",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.ihg.com/mexico",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Staybridge Suites Puebla",
+            "brand": "Staybridge Suites",
+            "city": "Puebla",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.ihg.com/mexico",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Candlewood Suites Queretaro Juriquilla",
+            "brand": "Candlewood Suites",
+            "city": "Juriquilla",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.ihg.com/mexico",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Holiday Inn Resort Monterrey - Santiago",
+            "brand": "Holiday Inn Resort",
+            "city": "Santiago",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.ihg.com/mexico",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          }
+        ],
+        "soft_branded": [
+          {
+            "property_name": "JOIA Paraíso by Iberostar",
+            "brand": "JOIA Iberostar",
+            "city": "Riviera Maya",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.ihg.com/mexico",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "voco Royalty Puebla Downtown",
+            "brand": "voco",
+            "city": "Puebla",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.ihg.com/mexico",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "voco Hermosillo",
+            "brand": "voco",
+            "city": "Hermosillo",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.ihg.com/mexico",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          }
+        ],
+        "brand_unconfirmed": [],
+        "held": []
+      },
+      "issues": []
+    },
+    "Hilton": {
+      "family": "Hilton",
+      "totals": {
+        "rows": 102,
+        "branded": 72,
+        "soft": 26,
+        "unconfirmed": 0,
+        "held": 0
+      },
+      "samples": {
+        "branded": [
+          {
+            "property_name": "DoubleTree by Hilton Celaya",
+            "brand": "DoubleTree by Hilton",
+            "city": "Celaya",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.hilton.com/en/locations/mexico/doubletree-by-hilton/",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Homewood Suites by Hilton Queretaro",
+            "brand": "Homewood Suites by Hilton",
+            "city": "Queretaro",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.hilton.com/en/locations/mexico/homewood-suites/",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Hilton Mexico City Santa Fe",
+            "brand": "Hilton Hotels & Resorts",
+            "city": "Mexico City",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.hilton.com/en/locations/mexico/hilton-hotels/",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Hilton Queretaro",
+            "brand": "Hilton Hotels & Resorts",
+            "city": "Queretaro",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.hilton.com/en/locations/mexico/hilton-hotels/",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Hilton Garden Inn Guadalajara Airport",
+            "brand": "Hilton Garden Inn",
+            "city": "Guadalajara",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.hilton.com/en/locations/mexico/hilton-garden-inn/",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          }
+        ],
+        "soft_branded": [
+          {
+            "property_name": "Mezzanine, an SLH Hotel",
+            "brand": "Small Luxury Hotels of the World",
+            "city": "Tulum",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Tropicana Los Cabos, Tapestry Collection by Hilton",
+            "brand": "Tapestry by Hilton",
+            "city": "San Jose del Cabo",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.hilton.com/en/locations/mexico/tapestry-collection/",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "La Valise San Miguel de Allende, an SLH Hotel",
+            "brand": "Small Luxury Hotels of the World",
+            "city": "San Miguel de Allende",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.hilton.com/en/locations/mexico/small-luxury-hotels-slh/",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          }
+        ],
+        "brand_unconfirmed": [],
+        "held": []
+      },
+      "issues": []
+    },
+    "Choice": {
+      "family": "Choice",
+      "totals": {
+        "rows": 68,
+        "branded": 56,
+        "soft": 12,
+        "unconfirmed": 0,
+        "held": 0
+      },
+      "samples": {
+        "branded": [
+          {
+            "property_name": "Choice property MX086",
+            "brand": "Comfort Inn",
+            "city": "queretaro",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+            "affiliation_status": "Branded",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Choice property MX073",
+            "brand": "Comfort Inn",
+            "city": "veracruz",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+            "affiliation_status": "Branded",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Radisson Hotel Tapatio Guadalajara",
+            "brand": "Radisson",
+            "city": "San Pedro Tlaquepaque",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Comfort Inn Delicias",
+            "brand": "Comfort Inn",
+            "city": "Ciudad Delicias",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Choice property MX183",
+            "brand": "Radisson",
+            "city": "saltillo",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+            "affiliation_status": "Branded",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          }
+        ],
+        "soft_branded": [
+          {
+            "property_name": "Choice property MX153",
+            "brand": "Ascend Hotel Collection",
+            "city": "playa del carmen",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Choice property MX155",
+            "brand": "Ascend Hotel Collection",
+            "city": "san miguel de allende",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "El Cid El Moro Beach Hotel",
+            "brand": "Ascend Hotel Collection",
+            "city": "Mazatlan",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.choicehotels.com/en-uk/mexico/regional-hotels?placeId=ChIJU1NoiDs6BIQREZgJa760ZO0",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          }
+        ],
+        "brand_unconfirmed": [],
+        "held": []
+      },
+      "issues": []
+    },
+    "Marriott": {
+      "family": "Marriott",
+      "totals": {
+        "rows": 301,
+        "branded": 255,
+        "soft": 42,
+        "unconfirmed": 4,
+        "held": 4
+      },
+      "samples": {
+        "branded": [
+          {
+            "property_name": "City Express by Marriott Ciudad Obregón",
+            "brand": "City Express by Marriott",
+            "city": "Unknown",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Branded",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Courtyard by Marriott Villahermosa Tabasco",
+            "brand": "Courtyard by Marriott",
+            "city": "Villahermosa",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "The St. Regis Costa Mujeres Resort, Cancun",
+            "brand": "St. Regis",
+            "city": "Cancun",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "City Express by Marriott Nogales",
+            "brand": "City Express by Marriott",
+            "city": "Unknown",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Branded",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "City Express Junior by Marriott León Centro De Convenciones",
+            "brand": "City Express Junior by Marriott",
+            "city": "León",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Branded",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          }
+        ],
+        "soft_branded": [
+          {
+            "property_name": "Elena de Cobre, a Member of Design Hotels™",
+            "brand": "Design Hotels",
+            "city": "Unknown",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "La Purificadora, Puebla, a Member of Design Hotels™",
+            "brand": "Design Hotels",
+            "city": "Puebla",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "Medium",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          },
+          {
+            "property_name": "Terrestre, a Member of Design Hotels™",
+            "brand": "Design Hotels",
+            "city": "Unknown",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Soft-Branded / Collection",
+            "data_eligible": false,
+            "confidence_tier": "High",
+            "enrichment_priority": "Low",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": false
+          }
+        ],
+        "brand_unconfirmed": [
+          {
+            "property_name": "Gran Hotel de Puebla by HNF",
+            "brand": "Marriott Bonvoy — Brand Unconfirmed",
+            "city": "Puebla",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Brand-Unconfirmed",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "High",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": true
+          },
+          {
+            "property_name": "CASA MAYOR Saltillo, Hotel Hacienda",
+            "brand": "Marriott Bonvoy — Brand Unconfirmed",
+            "city": "Hacienda",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Brand-Unconfirmed",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "High",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": true
+          },
+          {
+            "property_name": "SJ Grand Hotel Monterrey",
+            "brand": "Marriott Bonvoy — Brand Unconfirmed",
+            "city": "Monterrey",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Brand-Unconfirmed",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "High",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": true
+          },
+          {
+            "property_name": "Hotel Guadalajara Country Club by HNF",
+            "brand": "Marriott Bonvoy — Brand Unconfirmed",
+            "city": "Guadalajara",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Brand-Unconfirmed",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "High",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": true
+          }
+        ],
+        "held": [
+          {
+            "property_name": "Gran Hotel de Puebla by HNF",
+            "brand": "Marriott Bonvoy — Brand Unconfirmed",
+            "city": "Puebla",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Brand-Unconfirmed",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "High",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": true
+          },
+          {
+            "property_name": "CASA MAYOR Saltillo, Hotel Hacienda",
+            "brand": "Marriott Bonvoy — Brand Unconfirmed",
+            "city": "Hacienda",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Brand-Unconfirmed",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "High",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": true
+          },
+          {
+            "property_name": "SJ Grand Hotel Monterrey",
+            "brand": "Marriott Bonvoy — Brand Unconfirmed",
+            "city": "Monterrey",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Brand-Unconfirmed",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "High",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": true
+          },
+          {
+            "property_name": "Hotel Guadalajara Country Club by HNF",
+            "brand": "Marriott Bonvoy — Brand Unconfirmed",
+            "city": "Guadalajara",
+            "state_region": null,
+            "country": "Mexico",
+            "source_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap",
+            "affiliation_status": "Brand-Unconfirmed",
+            "data_eligible": true,
+            "confidence_tier": "High",
+            "enrichment_priority": "High",
+            "production_use_status": "Census Only / Not Owner-Facing",
+            "human_review_required": true
+          }
+        ]
+      },
+      "issues": []
+    }
+  },
+  "held_records": [
+    {
+      "property_name": "SJ Grand Hotel Monterrey",
+      "property_identity_key": "ind_marriott_mx_mtyjd",
+      "current_classification": "Brand-Unconfirmed",
+      "reason_held": "marriott_steward_manual_review_required",
+      "steward_review_status": "steward_manual_review_required",
+      "source_family": "Marriott",
+      "source_url": "https://www.marriott.com/en-us/hotels/mtyjd-sj-grand-hotel-monterrey/overview",
+      "recommended_next_action": "needs brand steward review"
+    },
+    {
+      "property_name": "Gran Hotel de Puebla by HNF",
+      "property_identity_key": "ind_marriott_mx_pbcde",
+      "current_classification": "Brand-Unconfirmed",
+      "reason_held": "marriott_steward_exclude_from_brand_completion",
+      "steward_review_status": "exclude_from_brand_completion",
+      "source_family": "Marriott",
+      "source_url": "https://www.marriott.com/en-us/hotels/pbcde-gran-hotel-de-puebla-by-hnf/overview",
+      "recommended_next_action": "exclude from Brand Explorer"
+    },
+    {
+      "property_name": "Hotel Guadalajara Country Club by HNF",
+      "property_identity_key": "ind_marriott_mx_gdlcc",
+      "current_classification": "Brand-Unconfirmed",
+      "reason_held": "marriott_steward_exclude_from_brand_completion",
+      "steward_review_status": "exclude_from_brand_completion",
+      "source_family": "Marriott",
+      "source_url": "https://www.marriott.com/en-us/hotels/gdlcc-hotel-guadalajara-country-club-by-hnf/overview",
+      "recommended_next_action": "exclude from Brand Explorer"
+    },
+    {
+      "property_name": "CASA MAYOR Saltillo, Hotel Hacienda",
+      "property_identity_key": "ind_marriott_mx_slwak",
+      "current_classification": "Brand-Unconfirmed",
+      "reason_held": "marriott_steward_manual_review_required",
+      "steward_review_status": "steward_manual_review_required",
+      "source_family": "Marriott",
+      "source_url": "https://www.marriott.com/en-us/hotels/slwak-casa-mayor-saltillo-hotel-hacienda/overview",
+      "recommended_next_action": "needs brand steward review"
+    }
+  ],
+  "enrichment_readiness": [
+    {
+      "id": "C_property_type_asset_context",
+      "business_value": 5,
+      "source_availability": 4,
+      "risk": 1,
+      "usefulness_be": 4,
+      "usefulness_oe": 5,
+      "usefulness_owner": 4,
+      "composite": 4.33
+    },
+    {
+      "id": "B_amenities",
+      "business_value": 5,
+      "source_availability": 4,
+      "risk": 2,
+      "usefulness_be": 5,
+      "usefulness_oe": 4,
+      "usefulness_owner": 4,
+      "composite": 4.17
+    },
+    {
+      "id": "A_hotel_descriptions",
+      "business_value": 5,
+      "source_availability": 4,
+      "risk": 2,
+      "usefulness_be": 5,
+      "usefulness_oe": 3,
+      "usefulness_owner": 4,
+      "composite": 4
+    },
+    {
+      "id": "G_rooms_keys",
+      "business_value": 4,
+      "source_availability": 3,
+      "risk": 4,
+      "usefulness_be": 3,
+      "usefulness_oe": 4,
+      "usefulness_owner": 4,
+      "composite": 3.17
+    },
+    {
+      "id": "D_independent_hotel_classification",
+      "business_value": 4,
+      "source_availability": 3,
+      "risk": 3,
+      "usefulness_be": 2,
+      "usefulness_oe": 3,
+      "usefulness_owner": 4,
+      "composite": 3
+    },
+    {
+      "id": "F_operator_management",
+      "business_value": 5,
+      "source_availability": 2,
+      "risk": 5,
+      "usefulness_be": 2,
+      "usefulness_oe": 5,
+      "usefulness_owner": 4,
+      "composite": 3
+    },
+    {
+      "id": "E_owner_developer",
+      "business_value": 5,
+      "source_availability": 2,
+      "risk": 5,
+      "usefulness_be": 2,
+      "usefulness_oe": 3,
+      "usefulness_owner": 5,
+      "composite": 2.83
+    },
+    {
+      "id": "H_opening_renovation_dates",
+      "business_value": 3,
+      "source_availability": 2,
+      "risk": 4,
+      "usefulness_be": 3,
+      "usefulness_oe": 3,
+      "usefulness_owner": 3,
+      "composite": 2.5
+    }
+  ],
+  "recommended_first_enrichment_lane": "Start with descriptions + amenities + property type / asset context. Do not start with owner/operator until sourcing process is defined.",
+  "fields_safe_to_enrich_next": [
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary",
+    "Short Property Summary",
+    "Property Positioning",
+    "Amenities - Source Text",
+    "Amenities - Structured Tags",
+    "F&B Flag",
+    "Meeting Space Flag",
+    "Resort Amenities Flag",
+    "Extended Stay Amenity Flag",
+    "Mixed-Use Flag",
+    "Branded Residences Flag",
+    "Property Type",
+    "Asset Context",
+    "Hotel Class / Segment",
+    "Market / Submarket"
+  ],
+  "fields_must_remain_blank_until_sourced": [
+    "Owner Name",
+    "Owner Type",
+    "Owner Source URL",
+    "Developer Name",
+    "Operator / Management Company",
+    "Management Model",
+    "Rooms / Keys",
+    "Opening Date",
+    "Renovation / Conversion Date",
+    "Latitude/Longitude when unknown (never 0,0)"
+  ],
+  "v11_1_cleanup_plan": {
+    "note": "Do not apply in this task",
+    "buckets": {
+      "A_should_fix_before_enrichment": [],
+      "B_can_live_with_for_now": [
+        {
+          "current_field": "Market / Submarket",
+          "issue": "Legacy Hotel Census splits Market + Submarket + Dealality Market. Combined field is OK short-term; long-term prefer Dealality Market + corridor Submarket as separate fields.",
+          "proposed_action": "add_alias/documentation_only",
+          "risk": "low",
+          "requires_data_migration": false,
+          "founder_decision": false,
+          "bucket": "B"
+        },
+        {
+          "current_field": "Fitness Flag",
+          "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+          "proposed_action": "move_to_structured_tags_later",
+          "risk": "low",
+          "requires_data_migration": false,
+          "founder_decision": false,
+          "bucket": "B",
+          "note": "Can live with for now; hide from default views before enrichment UI work"
+        },
+        {
+          "current_field": "Pool Flag",
+          "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+          "proposed_action": "move_to_structured_tags_later",
+          "risk": "low",
+          "requires_data_migration": false,
+          "founder_decision": false,
+          "bucket": "B",
+          "note": "Can live with for now; hide from default views before enrichment UI work"
+        },
+        {
+          "current_field": "Parking Flag",
+          "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+          "proposed_action": "move_to_structured_tags_later",
+          "risk": "low",
+          "requires_data_migration": false,
+          "founder_decision": false,
+          "bucket": "B",
+          "note": "Can live with for now; hide from default views before enrichment UI work"
+        },
+        {
+          "current_field": "Airport Shuttle Flag",
+          "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+          "proposed_action": "move_to_structured_tags_later",
+          "risk": "low",
+          "requires_data_migration": false,
+          "founder_decision": false,
+          "bucket": "B",
+          "note": "Can live with for now; hide from default views before enrichment UI work"
+        },
+        {
+          "current_field": "Spa Flag",
+          "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+          "proposed_action": "move_to_structured_tags_later",
+          "risk": "low",
+          "requires_data_migration": false,
+          "founder_decision": false,
+          "bucket": "B",
+          "note": "Can live with for now; hide from default views before enrichment UI work"
+        },
+        {
+          "current_field": "Beach / Waterfront Flag",
+          "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+          "proposed_action": "move_to_structured_tags_later",
+          "risk": "low",
+          "requires_data_migration": false,
+          "founder_decision": false,
+          "bucket": "B",
+          "note": "Can live with for now; hide from default views before enrichment UI work"
+        }
+      ],
+      "C_founder_decision_needed": [
+        {
+          "current_field": "Last Verified Date",
+          "issue": "Brand/Operator Setup standard is Last Reviewed Date. Prefer aligning to Last Reviewed Date in v1.1.1 (documentation + optional rename later). Does not block enrichment.",
+          "proposed_action": "rename_later",
+          "risk": "medium",
+          "requires_data_migration": true,
+          "founder_decision": true,
+          "bucket": "C"
+        },
+        {
+          "current_field": "Resort Amenities Flag",
+          "issue": "Prefer strategic name Resort / Leisure Flag in v1.1.1; keep current flag until then.",
+          "proposed_action": "rename_later",
+          "risk": "low",
+          "requires_data_migration": true,
+          "founder_decision": true,
+          "bucket": "C"
+        },
+        {
+          "current_field": "Extended Stay Amenity Flag",
+          "issue": "Prefer Extended Stay Flag naming alignment; Amenity suffix is redundant with Structured Tags model.",
+          "proposed_action": "rename_later",
+          "risk": "low",
+          "requires_data_migration": true,
+          "founder_decision": true,
+          "bucket": "C"
+        }
+      ],
+      "D_do_not_change": [
+        {
+          "current_field": "Property Name",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Property Identity Key",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Family / Source Family",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Country",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "State / Region",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "City",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Latitude",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Longitude",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Official Property URL",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Source URL",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Source Type",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Discovery Date",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "VIC Freeze Hash",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Identity Confidence",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Production Use Status",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Affiliation Start Date",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Future Opening Flag",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Steward Review Status",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Hotel Property Source Evidence",
+          "proposed_action": "keep"
+        },
+        {
+          "current_field": "Hotel Property Steward Review",
+          "proposed_action": "keep"
+        }
+      ]
+    },
+    "items": [
+      {
+        "current_field": "Market / Submarket",
+        "issue": "Legacy Hotel Census splits Market + Submarket + Dealality Market. Combined field is OK short-term; long-term prefer Dealality Market + corridor Submarket as separate fields.",
+        "proposed_action": "add_alias/documentation_only",
+        "risk": "low",
+        "requires_data_migration": false,
+        "founder_decision": false,
+        "bucket": "B"
+      },
+      {
+        "current_field": "Last Verified Date",
+        "issue": "Brand/Operator Setup standard is Last Reviewed Date. Prefer aligning to Last Reviewed Date in v1.1.1 (documentation + optional rename later). Does not block enrichment.",
+        "proposed_action": "rename_later",
+        "risk": "medium",
+        "requires_data_migration": true,
+        "founder_decision": true,
+        "bucket": "C"
+      },
+      {
+        "current_field": "Fitness Flag",
+        "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+        "proposed_action": "move_to_structured_tags_later",
+        "risk": "low",
+        "requires_data_migration": false,
+        "founder_decision": false,
+        "bucket": "B",
+        "note": "Can live with for now; hide from default views before enrichment UI work"
+      },
+      {
+        "current_field": "Pool Flag",
+        "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+        "proposed_action": "move_to_structured_tags_later",
+        "risk": "low",
+        "requires_data_migration": false,
+        "founder_decision": false,
+        "bucket": "B",
+        "note": "Can live with for now; hide from default views before enrichment UI work"
+      },
+      {
+        "current_field": "Resort Amenities Flag",
+        "issue": "Prefer strategic name Resort / Leisure Flag in v1.1.1; keep current flag until then.",
+        "proposed_action": "rename_later",
+        "risk": "low",
+        "requires_data_migration": true,
+        "founder_decision": true,
+        "bucket": "C"
+      },
+      {
+        "current_field": "Extended Stay Amenity Flag",
+        "issue": "Prefer Extended Stay Flag naming alignment; Amenity suffix is redundant with Structured Tags model.",
+        "proposed_action": "rename_later",
+        "risk": "low",
+        "requires_data_migration": true,
+        "founder_decision": true,
+        "bucket": "C"
+      },
+      {
+        "current_field": "Parking Flag",
+        "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+        "proposed_action": "move_to_structured_tags_later",
+        "risk": "low",
+        "requires_data_migration": false,
+        "founder_decision": false,
+        "bucket": "B",
+        "note": "Can live with for now; hide from default views before enrichment UI work"
+      },
+      {
+        "current_field": "Airport Shuttle Flag",
+        "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+        "proposed_action": "move_to_structured_tags_later",
+        "risk": "low",
+        "requires_data_migration": false,
+        "founder_decision": false,
+        "bucket": "B",
+        "note": "Can live with for now; hide from default views before enrichment UI work"
+      },
+      {
+        "current_field": "Spa Flag",
+        "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+        "proposed_action": "move_to_structured_tags_later",
+        "risk": "low",
+        "requires_data_migration": false,
+        "founder_decision": false,
+        "bucket": "B",
+        "note": "Can live with for now; hide from default views before enrichment UI work"
+      },
+      {
+        "current_field": "Beach / Waterfront Flag",
+        "issue": "Prefer Amenities - Structured Tags for fitness/pool/parking/shuttle/spa/beach; hide from default views until consolidated.",
+        "proposed_action": "move_to_structured_tags_later",
+        "risk": "low",
+        "requires_data_migration": false,
+        "founder_decision": false,
+        "bucket": "B",
+        "note": "Can live with for now; hide from default views before enrichment UI work"
+      }
+    ]
+  },
+  "brand_explorer_safety": {
+    "gate_results": [
+      {
+        "cmd": "universe+semantic+quiet_pvql+momentum+mandatory",
+        "ok": true,
+        "exit_code": 0
+      }
+    ],
+    "active_universe": 62,
+    "semantic": {
+      "activeCount": 62,
+      "severityTotals": {
+        "critical": 0,
+        "high": 0,
+        "medium": 0,
+        "low": 0
+      },
+      "freezeDecision": "ready_to_freeze_62_semantic_qa_clean"
+    },
+    "pvql": {
+      "overallPass": true,
+      "publicFullProfileCount": 62,
+      "scopedCount": 62,
+      "universeActiveCount": 62,
+      "brandsFilter": null,
+      "hardFails": [],
+      "notPublicFull": []
+    },
+    "overall_pass": true,
+    "momentum_and_mandatory": "PASS (chain exit 0)"
+  },
+  "final_recommendation": "Proceed to descriptions + amenities + property type enrichment; schedule non-blocking v1.1.1 amenity/naming cleanup (hide tag-level amenity flags; decide Last Verified vs Last Reviewed)."
+}

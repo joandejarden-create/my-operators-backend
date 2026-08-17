@@ -1,0 +1,71 @@
+{
+  "tripadvisor_property_match_rate_known": 81,
+  "tripadvisor_property_match_rate_missing": 81,
+  "tripadvisor_property_match_rate_overall": 81,
+  "numberOfRooms_coverage_among_matches": 97.5,
+  "exact_accuracy_pct": 47,
+  "exact_among_matched_pct": 58,
+  "near_match_rate_pct": 7,
+  "conflict_rate_pct": 22,
+  "missing_rooms_on_matched_pct": 6.2,
+  "no_match_rate_pct": 19,
+  "false_match_rate_pct": 4,
+  "room_count_recovery_rate_missing_pct": 79,
+  "website_coverage_among_matches_pct": 98.8,
+  "email_coverage_among_matches_pct": 78.4,
+  "phone_coverage_among_matches_pct": 96.9,
+  "counts": {
+    "known": 100,
+    "missing": 100,
+    "known_matched": 81,
+    "missing_matched": 81,
+    "exact": 47,
+    "near": 7,
+    "conflict": 22,
+    "missing_rooms_field": 5,
+    "no_match": 19,
+    "recovered_rooms": 79,
+    "low_confidence_matches": 4
+  },
+  "cost": {
+    "created_at": "2026-08-11T23:59:40.041Z",
+    "production_writes": false,
+    "pricing_model": "pay-per-event (maxcopell/tripadvisor)",
+    "price_per_result_usd": {
+      "FREE": 0.005,
+      "BRONZE": 0.0029,
+      "SILVER": 0.0025,
+      "GOLD": 0.002,
+      "PLATINUM": 0.0015,
+      "DIAMOND": 0.00125,
+      "low": 0.00125,
+      "mid": 0.0025,
+      "high": 0.005
+    },
+    "billed_result_rows": 285,
+    "unique_pool_items": 264,
+    "notes": [
+      "Includes Search URL batch results + Hotels-g partial + smoke tests",
+      "Excludes failed empty destination free-text queries (0 items)",
+      "Bogota free-text wrong-geography US hotels are NOT in this pool (excluded from datasets folder)",
+      "Compute-unit platform fees may apply on Apify plan; PPE is primary Actor cost",
+      "Primary total_usd uses SILVER PPE (.0025) including wasted wrong-geo Bogotá query items"
+    ],
+    "wasted_wrong_geo_items_not_in_pool": 33,
+    "total_usd_estimate": {
+      "low": 0.3563,
+      "mid": 0.7125,
+      "high": 1.425
+    },
+    "total_usd": 0.795,
+    "actor_start_usd_per_gb_event": 0.00005,
+    "benchmark_runs_approx": 16,
+    "wasted_wrong_geo_items_billed": 33,
+    "total_benchmark_usd_including_waste": {
+      "diamond": 0.3975,
+      "silver": 0.795,
+      "free": 1.59
+    }
+  },
+  "cost_per_successfully_recovered_room_count": 0.0101
+}

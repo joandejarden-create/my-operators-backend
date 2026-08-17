@@ -1,0 +1,38 @@
+{
+  "phase": "PRESENCE_PRODUCT_INTEGRATION_COMPLETE",
+  "CERTIFICATION_STATUS": "PRODUCTION_VALIDATED",
+  "AI_SIGNAL_PRESENCE": "PRODUCTION_VALIDATED",
+  "resolverVersion": "ai_visibility_entity_resolver_v2_1_contextual",
+  "certificationArtifact": "presence-holdout-v3-one-time-score",
+  "clientPublishable": true,
+  "presenceMayPublish": true,
+  "failClosedPublishAllowed": true,
+  "ENABLED": [
+    "AI_PRESENCE",
+    "REGIONAL_PRESENCE",
+    "COMPETITIVE_POSITION_PRESENCE",
+    "QUESTIONS_MISSING",
+    "COMPARABLE_PRESENCE_TRENDS"
+  ],
+  "BLOCKED": [
+    "RECOMMENDATION_SHARE",
+    "FIRST_RECOMMENDATION_RATE",
+    "QUESTIONS_WON",
+    "RECOMMENDED",
+    "FIRST",
+    "NEGATIVE",
+    "COMPARATOR"
+  ],
+  "hardGuards": {
+    "RECOMMENDED_PRODUCTION_ENABLE": 0,
+    "FIRST_RECOMMENDATION_PRODUCTION_ENABLE": 0,
+    "NEGATIVE_PRODUCTION_ENABLE": 0,
+    "COMPARATOR_PRODUCTION_ENABLE": 0,
+    "HOLDOUT_V3_CHANGES": 0,
+    "HOLDOUT_V3_RESCORE": 0,
+    "ENTITY_RESOLVER_CHANGES": 0,
+    "ALIAS_CHANGES": 0,
+    "GROUND_TRUTH_CHANGES": 0
+  },
+  "note": "Client surfaces must not expose Holdout implementation details. Trends return INSUFFICIENT_COMPARABLE_HISTORY when no prior comparable period."
+}

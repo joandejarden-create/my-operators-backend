@@ -1,0 +1,192 @@
+{
+  "actions_completed": [
+    {
+      "pass": 1,
+      "action": "level_2_source_extraction",
+      "updates": 0,
+      "status": "production_census_level_2_adapter_wave_2_partial_source_remaining"
+    },
+    {
+      "pass": 2,
+      "action": "level_2_source_extraction",
+      "updates": 0,
+      "status": "production_census_level_2_adapter_wave_2_partial_source_remaining"
+    },
+    {
+      "pass": 2,
+      "action": "cala_census_completion",
+      "updates": 0,
+      "inserts": 0,
+      "status": "production_census_cala_completion_v1_partial_source_remaining"
+    },
+    {
+      "pass": 3,
+      "action": "level_2_source_extraction",
+      "updates": 0,
+      "status": "production_census_level_2_adapter_wave_2_partial_source_remaining"
+    },
+    {
+      "pass": 3,
+      "action": "cala_census_completion",
+      "updates": 0,
+      "inserts": 0,
+      "status": "production_census_cala_completion_v1_partial_source_remaining"
+    }
+  ],
+  "actions_attempted_source_insufficient": [
+    {
+      "pass": 1,
+      "action": "geo_url_completion",
+      "reason": "no_high_deterministic_proposals"
+    },
+    {
+      "pass": 1,
+      "action": "level_2_source_extraction",
+      "reason": "no_high_proposals_or_source_insufficient"
+    },
+    {
+      "pass": 2,
+      "action": "geo_url_completion",
+      "reason": "no_high_deterministic_proposals"
+    },
+    {
+      "pass": 2,
+      "action": "level_2_source_extraction",
+      "reason": "no_high_proposals_or_source_insufficient"
+    },
+    {
+      "pass": 3,
+      "action": "geo_url_completion",
+      "reason": "no_high_deterministic_proposals"
+    },
+    {
+      "pass": 3,
+      "action": "level_2_source_extraction",
+      "reason": "no_high_proposals_or_source_insufficient"
+    }
+  ],
+  "next_source_adapters_to_build": [],
+  "next_source_families_to_target": [
+    "Accor",
+    "Marriott International",
+    "SLH",
+    "Wyndham Hotels & Resorts",
+    "IHG",
+    "Choice Hotels International",
+    "Preferred Hotels & Resorts",
+    "Hyatt",
+    "Hilton",
+    "Hodelpa",
+    "Bahía Príncipe"
+  ],
+  "next_country_parent_batches": [
+    {
+      "field": "Latitude",
+      "strategy": "mapbox_permanent",
+      "parent_targets": [
+        "Accor",
+        "Marriott International",
+        "SLH",
+        "Wyndham Hotels & Resorts",
+        "IHG",
+        "Choice Hotels International",
+        "Preferred Hotels & Resorts",
+        "Hyatt",
+        "Hilton",
+        "Hodelpa",
+        "Bahía Príncipe"
+      ],
+      "country_targets": [
+        "Mexico",
+        "Colombia",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "expected_yield": 588
+    },
+    {
+      "field": "Longitude",
+      "strategy": "mapbox_permanent",
+      "parent_targets": [
+        "Accor",
+        "Marriott International",
+        "SLH",
+        "Wyndham Hotels & Resorts",
+        "IHG",
+        "Choice Hotels International",
+        "Preferred Hotels & Resorts",
+        "Hyatt",
+        "Hilton",
+        "Hodelpa",
+        "Bahía Príncipe"
+      ],
+      "country_targets": [
+        "Mexico",
+        "Colombia",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "expected_yield": 588
+    },
+    {
+      "field": "Address",
+      "strategy": "official_json_ld",
+      "parent_targets": [
+        "Marriott International",
+        "Hilton",
+        "SLH",
+        "IHG",
+        "Accor"
+      ],
+      "country_targets": [
+        "Colombia",
+        "Mexico",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "expected_yield": 221
+    },
+    {
+      "field": "Phone",
+      "strategy": "official_property_page",
+      "parent_targets": [
+        "Accor",
+        "Marriott International",
+        "SLH",
+        "IHG",
+        "Hilton"
+      ],
+      "country_targets": [
+        "Mexico",
+        "Colombia",
+        "Panama",
+        "Costa Rica",
+        "Dominican Republic"
+      ],
+      "expected_yield": 221
+    },
+    {
+      "field": "Official Property URL",
+      "strategy": "official_parent_directory",
+      "parent_targets": [
+        "Choice Hotels International",
+        "Wyndham Hotels & Resorts",
+        "Preferred Hotels & Resorts"
+      ],
+      "country_targets": [
+        "Costa Rica",
+        "Mexico",
+        "Colombia",
+        "Dominican Republic",
+        "Panama"
+      ],
+      "expected_yield": 47
+    }
+  ],
+  "expected_yield_summary": 1665,
+  "command_to_continue": "ALLOW_CENSUS_AUTOPILOT_APPLY=1 \\\nCONFIRM_WRITE_TO_PRODUCTION_CENSUS=1 \\\nCONFIRM_NO_BRAND_EXPLORER_WRITES=1 \\\nCONFIRM_NO_OWNER_OPERATOR_WRITES=1 \\\nnpm run census:autopilot -- --region CALA --scope official-parent-inventory --mode mission \\\n  --objective full-latam-census-autopilot-v3 \\\n  --census-mode field-completion-only \\\n  --strategy highest-yield-safe \\\n  --run-until-complete \\\n  --max-passes 10 \\\n  --batch-size 100 \\\n  --confirm-safe-writes \\\n  --confirm-write-to-production-census \\\n  --confirm-no-brand-explorer-writes \\\n  --confirm-no-owner-operator \\\n  --confirm-no-date-writes \\\n  --confirm-no-recent-momentum \\\n  --confirm-no-company-validation \\\n  --confirm-webhound-not-production-source \\\n  --enable-production-writes",
+  "founder_gate_between_passes": false
+}

@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-07-23T08:15:00.000Z",
+  "stewardTriagePass": {
+    "newWebsitePropertyIdApplies": 0,
+    "newAmenitiesApplies": 0,
+    "unmatchedClassified": 76,
+    "recoverySkippedReason": "No new official destination pages for remaining island markets (404). Near-misses either PID-claimed (duplicates) or below apply gate (name variants). Six Senses/alliance left stewarded. No live apply."
+  },
+  "cumulative": {
+    "websitePropertyIdApplied": 252,
+    "amenitiesApplied": 241,
+    "unmatchedCensus": 76,
+    "directoryHotels": 304,
+    "calaIhgCensusRows": 328
+  },
+  "countsByBucket": {
+    "pipeline_or_unopened": 45,
+    "name_variant_needs_human": 11,
+    "alliance_not_on_ihg_directory": 10,
+    "census_duplicate_pid_claimed": 7,
+    "missing_from_public_listing": 2,
+    "no_destination_page_market": 1
+  },
+  "topStewardActions": [
+    "Deduplicate strong same-brand claimed PIDs (Grand Cayman GCMSM, Santo Domingo DO SDQEX, Avid Fresnillo ZCLAV, Kimpton Virgilio MEXPL, Navajoa/Navojoa CENNJ).",
+    "Human-confirm unclaimed variants: Kimpton Mas Olas↔SJDTD, Abitta↔SJUCC, Royal Haciendas↔PCMRH, Panama Financial↔PCYEX, Buenavista/Zona Centro↔MEXBU.",
+    "Leave Six Senses / alliance brands stewarded; no third-party code scrape.",
+    "Pipeline Mexico/Colombia/DR/Costa Rica openings: wait for official hoteldetail then re-run extract+sync.",
+    "Fix Marriott Buenos Aires Ezeiza Parent Company / Affiliation (not IHG).",
+    "Island markets without destination pages (St Kitts): monitor hoteldetail sitemap only."
+  ],
+  "commandsRun": [
+    "Probed IHG destinations/{slug}-hotels for belize, st-kitts, saint-lucia, curacao, etc. — all HTTP 404",
+    "node scripts/triage-ihg-census-unmatched-steward.mjs"
+  ],
+  "filesWritten": [
+    "scripts/triage-ihg-census-unmatched-steward.mjs",
+    "reports/ihg-census-unmatched-steward-triage.csv",
+    "reports/ihg-census-unmatched-steward-triage.json",
+    "reports/ihg-census-enrichment-summary.md",
+    "reports/ihg-census-enrichment-steward-triage-summary.json"
+  ]
+}

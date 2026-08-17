@@ -1,0 +1,75 @@
+{
+  "report": "operator-setup-final-readiness-checkpoint",
+  "generatedAt": "2026-06-02",
+  "commits": [
+    "bf8865b7f4e00a780090e8cf3915982699056fc0",
+    "275136933beda9ed4de55ba44ce13d1eee762091",
+    "d5ff0d824acd417537c2f2bbb32b2ef0558faf9b",
+    "1cd90843c2ff19ca5a9dd1b0fb2e683d46fbb5c5"
+  ],
+  "readiness": {
+    "internalQA": "Ready",
+    "externalDemo": "Ready with targeted cleanup",
+    "productionGoLive": "Ready with targeted cleanup"
+  },
+  "executiveInterpretation": {
+    "oasRequestedOperatorMismatch": "data_cohort_issue_not_product_regression",
+    "dealLinkedValidationClosesParityGap": true,
+    "serviceModelsSupportedCanonicalValidated": true,
+    "goLiveStillRequiresBusinessDataQAAndEnvConfirmation": true
+  },
+  "validatedEndToEnd": [
+    "Batch 1+2 source-of-truth hardening and deterministic canonical write behavior",
+    "Batch 3A canonical logo/narrative mappings and brand_conversion_project_count path",
+    "Batch 3B diagnostics/provenance tests with no user-facing/scoring changes",
+    "Staging diagnostics soak determinism and fallback pattern capture",
+    "Batch 3C serviceModelsSupported canonical contract closure",
+    "Deal-linked OAS + score duplicate-run stability using confirmed linked operator"
+  ],
+  "remainingTargetedCleanup": [
+    "Align demo validation operator IDs to actual deal companiesForConsideration cohorts",
+    "Run final business-facing data completeness QA for demo operators",
+    "Execute authenticated OAS route smoke pass in demo/runtime context"
+  ],
+  "deferredNonBlocking": [
+    "Browser-only explorerProfileJson mirror masking diagnostics follow-up",
+    "Legacy/alias cleanup beyond current approved scope",
+    "Batch 4 select/multi-select normalization"
+  ],
+  "doNotTouchYet": [
+    "Airtable schema changes",
+    "Scoring formulas/weights/thresholds/recommendations",
+    "Fallback ordering",
+    "Removal of primaryServiceModel fallback",
+    "Alias/remap removal",
+    "explorerProfileJson behavior removal",
+    "Batch 4 implementation before demo readiness gate"
+  ],
+  "deploymentEnvironmentVariables": {
+    "NODE_ENV": "production",
+    "OPERATOR_SETUP_WRITE_MODE": "canonical",
+    "OPERATOR_SETUP_ALLOW_NON_CANONICAL_PROD": "0",
+    "OPERATOR_EXPLORER_DIAGNOSTIC_ALLOW_MOCKS": "0",
+    "OPERATOR_SETUP_USE_NEW_BASE_WRITER": "1",
+    "OPERATOR_SETUP_NEW_BASE_SHADOW_WRITE": "0",
+    "OPERATOR_SETUP_NEW_BASE_FAIL_OPEN": "0",
+    "OPERATOR_SETUP_CONTRACT_DIAGNOSTICS": "0"
+  },
+  "finalPreDemoQAChecklist": [
+    "My Operator create/update save in canonical mode",
+    "Reload/prefill includes serviceModelsSupported",
+    "Detail readback confirms new_base for demo operators",
+    "Explorer detail shows canonical serviceModelsSupported with output parity",
+    "Non-rec requests remain mock-blocked",
+    "Deal-linked OAS companies validation for exact demo pair",
+    "Operator score breakdown stable across duplicate runs",
+    "No shadow/fail-open behavior in runtime",
+    "Authenticated OAS UI/API smoke pass",
+    "Sparse-data completeness scan for demo operators"
+  ],
+  "recommendations": {
+    "externalDemo": "Proceed after targeted cleanup of deal/operator cohort alignment and final pre-demo QA.",
+    "productionGoLive": "Proceed after final business/data QA pass and deployment env confirmation.",
+    "nextStrategicBatchAfterDemoReadiness": "Batch 3D data reliability + validation harness hardening; then Batch 4 normalization under separate approval."
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "run_id": "cav3_2026-08-08T15-04-05-566Z",
+  "success": true,
+  "circuit": {
+    "tripped": false,
+    "reason": null,
+    "at": null
+  },
+  "fullSummary": {
+    "authorized_total": 150,
+    "pilot_a": {
+      "attempted": 25,
+      "inserted": 25,
+      "updated": 0,
+      "skipped": 0,
+      "blocked": 0,
+      "errors": 0,
+      "fields_written": 556,
+      "rooms_pending": 25,
+      "duplicate_inserts": 0
+    },
+    "pilot_b": {
+      "attempted": 125,
+      "inserted": 90,
+      "updated": 17,
+      "skipped": 18,
+      "blocked": 0,
+      "errors": 0,
+      "fields_written": 2032,
+      "rooms_pending": 125,
+      "duplicate_inserts": 0
+    },
+    "pilot_b_executed": true,
+    "total_inserted": 115,
+    "total_updated": 17,
+    "total_skipped": 18,
+    "total_blocked": 0,
+    "total_fields_written": 2588,
+    "circuit": {
+      "tripped": false,
+      "reason": null,
+      "at": null
+    }
+  },
+  "validation": {
+    "expected_vs_actual_match_rate_pct": 100,
+    "duplicate_inserts": 0,
+    "unique_insert_keys": 115,
+    "unintended_overwrites": 0,
+    "identity_errors": 0,
+    "cvent_leakage": 0,
+    "legacy_leakage": 0,
+    "missing_provenance": 0,
+    "source_rights_violations": 0,
+    "unexpected_field_mutations": 0,
+    "rooms_written": 0
+  },
+  "airtable_verdict": "GOVERNED WRITES PROVEN",
+  "verified_census_verdict": "PRODUCTION MASTER VIABLE",
+  "autopilot_verdict": "READY FOR LARGER GOVERNED WAVES",
+  "rooms_verdict": "PARALLEL VALIDATION PIPELINE",
+  "metric_correction": "duplicate_inserts false positive from per-field tx rows fixed post-run without re-writes"
+}

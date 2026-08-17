@@ -1,0 +1,566 @@
+{
+  "generatedAt": "2026-06-24T11:39:15.615Z",
+  "baseId": "appCCUsuGsE1ifoLk",
+  "tablesFound": [
+    "Travel Infrastructure",
+    "Demand Anchors"
+  ],
+  "tablesMissing": [
+    "Market Development Projects",
+    "Tourism Corridors",
+    "Mixed-Use Zones"
+  ],
+  "allTableNames": [
+    "Hotel Census",
+    "Travel Infrastructure Data",
+    "Clause_Library",
+    "Clause_Variables",
+    "Financial_Term_Library",
+    "Opportunity Radar",
+    "Brand Alias Mapping",
+    "Independent Hotel Source Candidates",
+    "Independent Hotel Source Evidence",
+    "Verified Independent Hotel Census",
+    "Demand Anchors",
+    "Markets",
+    "Demand Categories",
+    "Demand Centers",
+    "Nearby Hotel Supply",
+    "Market Demand Snapshots",
+    "CALA Radar Build Plans",
+    "Scout Opportunity Signals"
+  ],
+  "tables": [
+    {
+      "label": "Travel Infrastructure",
+      "tableName": "Travel Infrastructure Data",
+      "tableId": "tblux5Xs9o50MgpWF",
+      "fieldCount": 36,
+      "fields": [
+        {
+          "name": "Name",
+          "type": "multilineText",
+          "role": "name"
+        },
+        {
+          "name": "Type",
+          "type": "singleSelect",
+          "role": "type"
+        },
+        {
+          "name": "Latitude",
+          "type": "number",
+          "role": "latitude"
+        },
+        {
+          "name": "Longitude",
+          "type": "number",
+          "role": "longitude"
+        },
+        {
+          "name": "City",
+          "type": "singleSelect",
+          "role": "city"
+        },
+        {
+          "name": "Country",
+          "type": "singleSelect",
+          "role": "country"
+        },
+        {
+          "name": "Region",
+          "type": "singleSelect",
+          "role": "market"
+        },
+        {
+          "name": "IATA Code",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "ICAO Code",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "UN/LOCODE",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "Scale Tier",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Infrastructure Role",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Airport Type",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Source URL",
+          "type": "url",
+          "role": "source"
+        },
+        {
+          "name": "Last Verified",
+          "type": "date",
+          "role": "lastVerified"
+        },
+        {
+          "name": "Radar Category",
+          "type": "singleSelect",
+          "role": "type"
+        },
+        {
+          "name": "Point Type",
+          "type": "singleSelect",
+          "role": "type"
+        },
+        {
+          "name": "Point Subtype",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Linked Market",
+          "type": "multipleRecordLinks",
+          "role": "market"
+        },
+        {
+          "name": "Deal Record ID",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "Address / Location",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "Distance From Deal",
+          "type": "number",
+          "role": "other"
+        },
+        {
+          "name": "Estimated Drive Time",
+          "type": "number",
+          "role": "other"
+        },
+        {
+          "name": "Demand Relevance",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Demand Pattern",
+          "type": "multipleSelects",
+          "role": "other"
+        },
+        {
+          "name": "Relevant Hotel Types",
+          "type": "multipleSelects",
+          "role": "other"
+        },
+        {
+          "name": "Hotel Demand Rationale",
+          "type": "multilineText",
+          "role": "notes"
+        },
+        {
+          "name": "Source",
+          "type": "multipleSelects",
+          "role": "source"
+        },
+        {
+          "name": "Source URL / Reference",
+          "type": "url",
+          "role": "source"
+        },
+        {
+          "name": "Data Confidence",
+          "type": "singleSelect",
+          "role": "confidence"
+        },
+        {
+          "name": "Map Layer",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "Map Icon Type",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Visibility",
+          "type": "singleSelect",
+          "role": "status"
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText",
+          "role": "notes"
+        },
+        {
+          "name": "Include On Radar Map",
+          "type": "checkbox",
+          "role": "status"
+        },
+        {
+          "name": "Submarket",
+          "type": "singleSelect",
+          "role": "submarket"
+        }
+      ],
+      "coordinateFields": [
+        "Latitude",
+        "Longitude"
+      ],
+      "geographyFields": [
+        "city:City",
+        "country:Country",
+        "market:Region",
+        "market:Linked Market",
+        "submarket:Submarket"
+      ],
+      "hasLatitude": true,
+      "hasLongitude": true,
+      "hasName": true,
+      "hasType": true,
+      "recommendedMapping": {
+        "overlayType": "travel_infrastructure",
+        "enabledInScoutPhase5A": true,
+        "name": "Name",
+        "category": "Type",
+        "country": "Country",
+        "city": "City",
+        "market": "Region",
+        "submarket": "Submarket",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "notes": "Hotel Demand Rationale",
+        "source": "Source URL",
+        "confidence": "Data Confidence",
+        "lastVerified": "Last Verified",
+        "status": "Visibility"
+      }
+    },
+    {
+      "label": "Demand Anchors",
+      "tableName": "Demand Anchors",
+      "tableId": "tblJRhi2rmeunzJzQ",
+      "fieldCount": 31,
+      "fields": [
+        {
+          "name": "Demand Anchor Name",
+          "type": "singleLineText",
+          "role": "name"
+        },
+        {
+          "name": "Radar Category",
+          "type": "singleSelect",
+          "role": "type"
+        },
+        {
+          "name": "Point Type",
+          "type": "singleSelect",
+          "role": "type"
+        },
+        {
+          "name": "Point Subtype",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "Linked Market",
+          "type": "multipleRecordLinks",
+          "role": "market"
+        },
+        {
+          "name": "Deal Record ID",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "City",
+          "type": "singleLineText",
+          "role": "city"
+        },
+        {
+          "name": "Country",
+          "type": "singleLineText",
+          "role": "country"
+        },
+        {
+          "name": "Region",
+          "type": "singleLineText",
+          "role": "market"
+        },
+        {
+          "name": "Address / Location",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "Latitude",
+          "type": "number",
+          "role": "latitude"
+        },
+        {
+          "name": "Longitude",
+          "type": "number",
+          "role": "longitude"
+        },
+        {
+          "name": "Distance From Deal",
+          "type": "number",
+          "role": "other"
+        },
+        {
+          "name": "Estimated Drive Time",
+          "type": "number",
+          "role": "other"
+        },
+        {
+          "name": "Demand Relevance",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Demand Segment",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Demand Pattern",
+          "type": "multipleSelects",
+          "role": "other"
+        },
+        {
+          "name": "Relevant Hotel Types",
+          "type": "multipleSelects",
+          "role": "other"
+        },
+        {
+          "name": "Hotel Demand Rationale",
+          "type": "multilineText",
+          "role": "notes"
+        },
+        {
+          "name": "Source",
+          "type": "multipleSelects",
+          "role": "source"
+        },
+        {
+          "name": "Source URL / Reference",
+          "type": "url",
+          "role": "source"
+        },
+        {
+          "name": "Data Confidence",
+          "type": "singleSelect",
+          "role": "confidence"
+        },
+        {
+          "name": "Include On Radar Map",
+          "type": "checkbox",
+          "role": "status"
+        },
+        {
+          "name": "Map Layer",
+          "type": "singleLineText",
+          "role": "other"
+        },
+        {
+          "name": "Map Icon Type",
+          "type": "singleSelect",
+          "role": "other"
+        },
+        {
+          "name": "Visibility",
+          "type": "singleSelect",
+          "role": "status"
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText",
+          "role": "notes"
+        },
+        {
+          "name": "Last Verified",
+          "type": "date",
+          "role": "lastVerified"
+        },
+        {
+          "name": "Linked Deals",
+          "type": "multipleRecordLinks",
+          "role": "other"
+        },
+        {
+          "name": "From field: Linked Deals",
+          "type": "multipleRecordLinks",
+          "role": "other"
+        },
+        {
+          "name": "Submarket",
+          "type": "singleSelect",
+          "role": "submarket"
+        }
+      ],
+      "coordinateFields": [
+        "Latitude",
+        "Longitude"
+      ],
+      "geographyFields": [
+        "market:Linked Market",
+        "city:City",
+        "country:Country",
+        "market:Region",
+        "submarket:Submarket"
+      ],
+      "hasLatitude": true,
+      "hasLongitude": true,
+      "hasName": true,
+      "hasType": true,
+      "recommendedMapping": {
+        "overlayType": "demand_anchor",
+        "enabledInScoutPhase5A": true,
+        "name": "Demand Anchor Name",
+        "category": "Radar Category",
+        "country": "Country",
+        "city": "City",
+        "market": "Linked Market",
+        "submarket": "Submarket",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "notes": "Hotel Demand Rationale",
+        "source": "Source",
+        "confidence": "Data Confidence",
+        "lastVerified": "Last Verified",
+        "status": "Include On Radar Map"
+      }
+    }
+  ],
+  "usableCoordinateFields": [
+    {
+      "table": "Travel Infrastructure",
+      "field": "Latitude"
+    },
+    {
+      "table": "Travel Infrastructure",
+      "field": "Longitude"
+    },
+    {
+      "table": "Demand Anchors",
+      "field": "Latitude"
+    },
+    {
+      "table": "Demand Anchors",
+      "field": "Longitude"
+    }
+  ],
+  "usableGeographyFields": [
+    {
+      "table": "Travel Infrastructure",
+      "role": "city",
+      "field": "City"
+    },
+    {
+      "table": "Travel Infrastructure",
+      "role": "country",
+      "field": "Country"
+    },
+    {
+      "table": "Travel Infrastructure",
+      "role": "market",
+      "field": "Region"
+    },
+    {
+      "table": "Travel Infrastructure",
+      "role": "market",
+      "field": "Linked Market"
+    },
+    {
+      "table": "Travel Infrastructure",
+      "role": "submarket",
+      "field": "Submarket"
+    },
+    {
+      "table": "Demand Anchors",
+      "role": "market",
+      "field": "Linked Market"
+    },
+    {
+      "table": "Demand Anchors",
+      "role": "city",
+      "field": "City"
+    },
+    {
+      "table": "Demand Anchors",
+      "role": "country",
+      "field": "Country"
+    },
+    {
+      "table": "Demand Anchors",
+      "role": "market",
+      "field": "Region"
+    },
+    {
+      "table": "Demand Anchors",
+      "role": "submarket",
+      "field": "Submarket"
+    }
+  ],
+  "recommendedOverlayMappings": [
+    {
+      "table": "Travel Infrastructure",
+      "tableName": "Travel Infrastructure Data",
+      "mapping": {
+        "overlayType": "travel_infrastructure",
+        "enabledInScoutPhase5A": true,
+        "name": "Name",
+        "category": "Type",
+        "country": "Country",
+        "city": "City",
+        "market": "Region",
+        "submarket": "Submarket",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "notes": "Hotel Demand Rationale",
+        "source": "Source URL",
+        "confidence": "Data Confidence",
+        "lastVerified": "Last Verified",
+        "status": "Visibility"
+      },
+      "enabledInScoutPhase5A": true
+    },
+    {
+      "table": "Demand Anchors",
+      "tableName": "Demand Anchors",
+      "mapping": {
+        "overlayType": "demand_anchor",
+        "enabledInScoutPhase5A": true,
+        "name": "Demand Anchor Name",
+        "category": "Radar Category",
+        "country": "Country",
+        "city": "City",
+        "market": "Linked Market",
+        "submarket": "Submarket",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "notes": "Hotel Demand Rationale",
+        "source": "Source",
+        "confidence": "Data Confidence",
+        "lastVerified": "Last Verified",
+        "status": "Include On Radar Map"
+      },
+      "enabledInScoutPhase5A": true
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+Build a source-backed dataset of hotel owners/developers in Mexico with EARLY-STAGE or PRE-DECISION hotel opportunities where Dealality could engage BEFORE a material hotel strategy, brand, operator, repositioning, development, or capital decision is completed.
+
+THIS IS NOT a generic hotel-owner lead list.
+THIS IS NOT primarily a search for announced brand signings, announced operator appointments, completed reflags, hotel openings, or other post-decision events.
+
+Core objective: FIND THE OWNER WHILE THE FUTURE OF THE HOTEL IS STILL BEING DECIDED.
+
+Dealality lifecycle (primary acquisition window = early stages):
+OWNER / CAPITAL / SITE / ASSET
+→ EARLY INVESTMENT OR DEVELOPMENT INTENT
+→ HOTEL STRATEGY FORMATION
+→ BRAND / OPERATOR / CAPITAL OPTIONS BEING CONSIDERED
+→ NEGOTIATION
+→ LOI / HMA / FRANCHISE COMMITMENT
+→ PUBLIC ANNOUNCEMENT
+→ OPENING / OPERATION
+
+Optimize for: EARLINESS + OWNER QUALITY + EVIDENCE + CONTACTABILITY + LIKELIHOOD A MATERIAL DECISION MAY STILL BE OPEN.
+
+GEOGRAPHY: Mexico only. Do not force even geographic spread. Prioritize strongest opportunities wherever found (e.g. Mexico City, Los Cabos, BCS, Baja California, Cancun, Riviera Maya, Tulum, Riviera Nayarit, Puerto Vallarta, Guadalajara, Monterrey, Merida/Yucatan, San Miguel de Allende, Oaxaca, emerging resort/mixed-use destinations).
+
+RESEARCH WINDOW: Prioritize signals from 2024-01-01 through today. Older sources may support ownership history, portfolio, behavior, brand/operator/capital relationships, and structure.
+
+ROW GRAIN: ONE ROW = ONE OWNER × ONE ASSET/PROJECT OR OWNER EXPANSION SIGNAL × ONE DISTINCT DEALALITY OPPORTUNITY. Same owner may appear on multiple rows. Do not create company-only rows when a specific project exists. Class 2 may be OWNER × EXPANSION SIGNAL × POTENTIAL FUTURE OPPORTUNITY.
+
+TARGET: 8–12 HIGH-QUALITY Class 1 and Class 2 opportunities. If only 5–7 genuinely strong pre-decision opportunities can be supported, return those rather than stretching. Prefer 6 excellent opportunities with real owner + early signal + ownership evidence + decision-maker + contact path over many superficial rows.
+
+SCHEMA FILL PRIORITY — TWO TIERS (critical for this $5 test):
+Discovery quality beats schema completeness. First-run question: CAN WEBHOUND FIND OWNERS BEFORE THE HOTEL DECISION BECOMES PUBLIC? — not whether a full 118-field company profile can be completed.
+
+TIER 1 — MUST PRIORITIZE for every candidate. Substantially complete these before spending time on broader enrichment:
+- Discovery/Timing: opportunity_id, discovery_class, opportunity_name, owner_developer, project_asset_name, city, state, opportunity_trigger, early_signal_detected, signal_date, dealality_stage, earliness_confidence, why_decision_may_still_be_open, confirmed_facts, research_inferences, evidence_of_pre_decision_status, evidence_we_may_be_too_late, potential_dealality_decision_type, decision_window, why_this_may_be_actionable_now, overall_opportunity_confidence
+- Project: site_asset_description, development_stage, keys, mixed_use, branded_residences, current_or_proposed_brand, brand_status, current_or_proposed_operator, operator_status, construction_status
+- Public/government evidence: public_filing_found, filing_type, government_authority, filing_applicant, filing_date, filing_status, filing_or_permit_number, filing_project_description, filing_named_developer, filing_named_owner, filing_named_spv, public_filing_source_url, what_filing_reveals, what_filing_does_not_prove
+- Ownership: primary_owner_developer, legal_property_owner_or_spv, parent_company, ultimate_controlling_owner, primary_owner_type, ownership_relationship_to_asset, jv_partners, equity_partners, fund_or_investment_vehicle, ownership_percentages, ownership_structure_summary, ownership_confidence
+- Primary contact: primary_contact_name, title, company, role, relationships, why relevant, LinkedIn/profile, verified email/phone, outreach priority, confidence
+- Company contact: website, development/acquisitions email, investment/development contact page, main phone
+- Evidence: primary early-signal source, primary opportunity source, ownership source, contact source, additional sources, latest evidence date, last verified, overall evidence confidence, evidence notes
+
+TIER 2 — ENRICH ONLY AFTER TIER 1 IS STRONG (schema fields remain available): full owner portfolio, key counts, CALA pipeline, historical acquisitions, owner strategy, brand/operator/capital relationship history, ownership_change_history, portfolio economics, secondary contacts, advisors, brokers, architects, introduction pathways, additional financing details.
+DO NOT spend meaningful research time filling Tier 2 fields for one company if doing so would prevent discovering or validating additional strong Class 1 / Class 2 opportunities.
+
+GOVERNMENT TRIANGULATION (especially valuable Class 1 pattern): prioritize opportunities where you can triangulate OWNER/SPV + SITE/ASSET + PUBLIC FILING/PLANNING SIGNAL + HOSPITALITY INTENT + NO PUBLIC EVIDENCE OF FINAL BRAND/OPERATOR COMMITMENT. Keep government/public filing research as a core discovery mechanism.
+
+DISCOVERY CLASS (required):
+CLASS 1 — PRE-DECISION PROJECT (highest): specific site/hotel/development/acquisition/asset where evidence suggests one or more material hotel decisions may still be ahead (land/site with hospitality potential; early mixed-use/branded residences; planning/zoning/entitlement/environmental/building/renovation filings; design-team appointment; master planning; visible feasibility; development financing; seeking partners; pipeline pages with unnamed/unbranded hotels; keys/location without public brand announcement; brand present but other material decision unresolved; recent acquisition before repositioning announced; independent facing redevelopment/conversion with no public affiliation announcement; new ownership where brand/operator may be reevaluated).
+CLASS 2 — PRE-PROJECT OWNER SIGNAL: credible owner preparing for hotel investment/acquisition/development/expansion without a confirmed specific hotel decision (hospitality fund/vehicle; capital raise; acquisition/development mandate; Mexico or new-market entry; hospitality division; hiring hospitality/development/acquisitions executives; JV for hospitality; seeking hotel sites; sector expansion into hospitality; recycling capital into development; unidentified pipeline). These are OWNER RELATIONSHIP opportunities — do not invent a specific hotel decision.
+CLASS 3 — POST-DECISION INTELLIGENCE (lower priority): brand/franchise/HMA/operator announcement, completed reflag, opening, completed repositioning, publicly confirmed final brand/operator. Use to learn behavior/preferences/decision-makers/portfolio and to find NEXT Class 1/2 opportunities. Downgrade completed-decision events to Class 3.
+
+PUBLIC/GOVERNMENT RECORDS: HIGH-PRIORITY early discovery source for Class 1. Search accessible federal/state/municipal/public sources (planning, zoning, entitlements, building/demolition/renovation/change-of-use, master-plan, environmental, tourism/lodging, condo/branded-residence, property/corporate registries, coastal/federal-zone, heritage, incentives, gazettes, agendas/minutes, public hearings, development agencies). Do not assume registries are complete or accessible. Capture filing fields in schema. Follow entity chain: SPV → registered entity → parent → developer → ultimate/controlling owner. Treat filings as evidence of ACTIVITY, not of approval, construction certainty, ownership, final strategy, or brand selection.
+
+TOO-LATE CHECK (required for every Class 1): actively try to disprove that the opportunity is still pre-decision (brand signing/franchise/HMA/operator appointment; brand/operator development announcements; groundbreaking/construction/opening; owner/brand/operator site updates; trade press; investor decks; marketing materials; later-stage filings). Populate Evidence of Pre-Decision Status AND Evidence That May Indicate We Are Too Late. Do NOT claim a decision is open merely because nothing was found. Use cautious language: "No public evidence of a completed brand decision was identified as of [date]." If later evidence shows the material decision completed, downgrade to Class 3.
+
+DEALALITY STAGE values: Owner / Investment Intent; Site / Asset Identified; Early Planning; Feasibility / Concept; Design / Entitlement; Hotel Strategy Formation; Brand / Operator Exploration; Negotiation Appears Underway; Publicly Committed / Post-Decision; Unknown. Also capture Earliness Confidence (High/Medium/Low/Unknown) and Why We Believe Decision May Still Be Open, clearly separating Confirmed Facts vs Research Inferences.
+
+OWNERSHIP: resolve structure where publicly discoverable (legal owner/SPV, registered entity, parent, ultimate parent/controlling owner, beneficial owners if legitimately public, JV/equity/investment partners, fund/vehicle/sponsor, institutional/family/individual/sovereign ownership, disclosed ownership/%/control %, majority/minority/equal JV, effective date, previous owner, sources, confidence). NEVER infer ownership percentages; use "Not publicly disclosed". Do not force percentages to 100%. Distinguish roles: property owner, beneficial/ultimate owner, controlling owner, equity investor, JV partner, fund sponsor, developer, development partner, asset manager, hotel operator, brand/franchisor, brand manager, lender, mezzanine, preferred equity, advisor. Press language ("behind/involved/developing/managing/partnering") is NOT proof of ownership.
+
+OWNER TYPE: classify with standardized types from schema description; primary + secondary where useful.
+
+OWNER PORTFOLIO (bounded, Tier 2 after Tier 1 strong): approximate scale; up to ~10 particularly relevant assets; Mexico/CALA pipeline; other assets with possible decision triggers. Do not reconstruct large global portfolios at expense of discovering more Class 1/2 opportunities.
+
+BEHAVIOR/STRATEGY, BRAND, OPERATOR, CAPITAL: Tier 2 enrichment where supported; distinguish explicitly stated vs historically supported vs probable vs unknown; never estimate financing terms or invent preferred relationships from repeat usage alone.
+
+CONTACTS (HIGH PRIORITY — Tier 1 for primary): for each Class 1/2 identify strongest relevant decision-maker (ownership/investment/hospitality/development/acquisitions/asset management/hotel strategy/brand/operator selection/capital). Classify contact role carefully; do not infer authority from title alone. Capture LinkedIn/profile + verified public business email/phone only. Up to 3 secondary contacts only after Tier 1 is strong. Capture company contact routes. NEVER guess/construct emails or phones; never treat data-broker guesses as verified; unverified contacts must be labeled and not outreach-ready.
+
+RELATIONSHIP PATHWAYS: Tier 2 only if evidence supports; do not invent active personal relationships.
+
+DECISION WINDOW (only if evidence supports): Active / Now; <6 Months; 6–12 Months; 12–24 Months; >24 Months; Unknown. Capture decision type, timing evidence, confidence, why timing matters.
+
+RESEARCH PRIORITY WITHIN $5 (do not sacrifice 1–7 for Tier 2 enrichment):
+1) Discover genuinely early-stage opportunities
+2) Identify real owner/developer
+3) Assess whether still early enough
+4) Too-late check
+5) Resolve ownership/SPV/controlling-owner structure
+6) Strongest relevant decision-maker
+7) Legitimate contact routes
+8) Additional hotel assets/pipeline
+9) Owner behavior
+10) Brand/operator relationships
+11) Capital relationships
+12) Secondary contacts / introduction paths
+
+Fill Tier 1 when evidence exists; else Unknown / Not publicly disclosed / No / empty. Tier 2 may stay sparse. Preserve provenance; prefer primary sources. No Dealality lead score.

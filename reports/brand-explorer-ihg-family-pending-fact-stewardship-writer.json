@@ -1,0 +1,146 @@
+{
+  "writerVersion": "30B",
+  "v30BWriterExists": true,
+  "generatedAt": "2026-07-10T11:48:03.011Z",
+  "mode": "dry-run",
+  "brandsRequested": [
+    "kimpton"
+  ],
+  "protectedBrandsUntouched": [
+    "tribute-portfolio",
+    "curio-collection",
+    "ascend",
+    "radisson",
+    "radisson-blu",
+    "radisson-individuals-by-choice",
+    "tapestry-collection-by-hilton",
+    "autograph-collection",
+    "design-hotels"
+  ],
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-ihg-family-active-profile-repair-writer.md",
+    "reports/brand-explorer-ihg-family-active-profile-repair-writer.json",
+    "reports/brand-explorer-kimpton-context-sort-idempotency-repair-writer.md",
+    "reports/brand-explorer-kimpton-context-sort-idempotency-repair-writer.json",
+    "reports/brand-explorer-complete-build-kimpton.md",
+    "reports/brand-explorer-complete-build-kimpton.json",
+    "reports/brand-explorer-final-qa-auditor.md",
+    "reports/brand-explorer-final-qa-auditor.json",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-visual-display-defect-audit.json",
+    "reports/brand-explorer-radisson-pending-fact-stewardship-writer.md",
+    "reports/brand-explorer-choice-family-pending-fact-stewardship-writer.md",
+    "docs/brand-explorer-presentation-slots.md",
+    "api/lib/partner-intelligence-field-map.js",
+    "lib/partner-intelligence/airtable-facts.js",
+    "lib/partner-intelligence/airtable-source.js",
+    "live Kimpton Partner Facts",
+    "live Kimpton Source Library records",
+    "live Kimpton Brand Explorer Presentation rows"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-ihg-family-pending-fact-stewardship-writer.js",
+    "scripts/brand-explorer-ihg-family-pending-fact-stewardship-writer.mjs",
+    "docs/data-intelligence/brand-explorer-ihg-family-pending-fact-stewardship-writer-v30B.md",
+    "reports/brand-explorer-ihg-family-pending-fact-stewardship-writer.md",
+    "reports/brand-explorer-ihg-family-pending-fact-stewardship-writer.json",
+    "package.json"
+  ],
+  "brandReports": [
+    {
+      "brand": {
+        "slug": "kimpton",
+        "name": "Kimpton Hotels",
+        "recordId": "recCKuXCmGvxHPfb3",
+        "parentCompany": "InterContinental Hotels Group"
+      },
+      "pendingFactSummary": {
+        "totalExplorerFacts": 48,
+        "pendingBefore": 0,
+        "pendingAfterProjected": 0,
+        "approvedBefore": 7
+      },
+      "factDiagnosis": [],
+      "actionsByCategory": {
+        "approve_ready": 0,
+        "reject_archive": 0,
+        "keep_internal": 0,
+        "needs_founder_review": 0,
+        "needs_source_confirmation": 0,
+        "hold_pending": 0
+      },
+      "factsToApprove": [],
+      "factsToReject": [],
+      "factsToHold": [],
+      "applyPatches": [],
+      "residencesConflict": {
+        "projectFitRecordId": "rec2ZtjGsdDF8XYYP",
+        "legacyProjectFitValue": "Case-by-case",
+        "brandBasicsStatus": "No",
+        "brandBasicsReviewStatus": "Not Confirmed",
+        "apiShape": {
+          "status": "No",
+          "notes": null,
+          "sourceUrl": null,
+          "reviewStatus": "Not Confirmed"
+        },
+        "migrationClassification": "conflict_requires_review",
+        "migrationBlockers": [
+          "new_value_conflicts_with_legacy"
+        ],
+        "classification": "hold_for_founder_review",
+        "rationale": "Legacy Project Fit \"Case-by-case\" conflicts with Brand Basics status \"No\" — do not resolve by guessing in v30B.",
+        "remainsBlockerAfterV30B": true,
+        "relatedPendingFactField": null
+      },
+      "applyBlockers": [],
+      "dryRunClean": false,
+      "canApply": false,
+      "allPendingResolved": false,
+      "companyValidatedBefore": {
+        "companyValidated": null,
+        "companyValidationDate": null
+      },
+      "companyValidatedAfter": {
+        "companyValidated": null,
+        "companyValidationDate": null
+      },
+      "companyValidatedUntouched": true,
+      "ihgValidationImplied": false,
+      "presentationRowsModified": false,
+      "airtableModified": false,
+      "applyResults": null,
+      "projectedGovernance": {
+        "pendingFactsAfter": 0,
+        "sourceGovernanceScoreProjected": 100,
+        "governedPlatformReadyProjected": true,
+        "factApprovalNeeded": false
+      },
+      "expectedFinalQaAfterApply": {
+        "overallNumeric": 92,
+        "overallActiveProfileReadiness": "almost_ready",
+        "sourceGovernanceScore": 100
+      },
+      "expectedActiveProfileAfterApply": false,
+      "expectedBlockersRemainingAfterApply": [
+        "Branded residences legacy Case-by-case vs Brand Basics No — founder review required (separate from fact queue)"
+      ],
+      "exactDryRunCommand": "npm run brand-explorer-ihg-family-pending-fact-stewardship-writer -- --brands kimpton --dry-run"
+    }
+  ],
+  "companyValidatedUntouched": true,
+  "summary": {
+    "brandsProcessed": 1,
+    "pendingFactsBefore": 0,
+    "pendingFactsAfterProjected": 0,
+    "factsToApprove": 0,
+    "factsToReject": 0,
+    "factsToHold": 0,
+    "dryRunClean": false,
+    "airtableModified": false
+  },
+  "exactDryRunCommand": "npm run brand-explorer-ihg-family-pending-fact-stewardship-writer -- --brands kimpton --dry-run",
+  "exactApplyCommand": null,
+  "markdown": "# Brand Explorer IHG-Family Pending Fact Stewardship Writer v30B\n\n- Generated: 2026-07-10T11:48:03.011Z\n- Brands: **kimpton**\n- v30B exists: **yes**\n- Mode: **dry-run**\n- Dry-run clean: **no**\n- Airtable modified: **no**\n- Company Validated untouched: **yes**\n\n## Kimpton Hotels (`kimpton`)\n\n### Pending fact summary\n- Pending before: **0**\n- Pending after (projected): **0**\n- Approve: **0**\n- Reject / Internal Only: **0**\n- Hold: **0**\n\n### Residences conflict\n- Legacy Project Fit: **Case-by-case**\n- Brand Basics status: **No**\n- Classification: **hold_for_founder_review**\n- Remains blocker after v30B: **yes**\n- Legacy Project Fit \"Case-by-case\" conflicts with Brand Basics status \"No\" — do not resolve by guessing in v30B.\n\n### Expected after apply\n- Final QA: **~92** (almost_ready)\n- Source governance score: **100**\n\n### Fact actions (sample)\n\n## Exact apply command\n(none — dry-run not clean)"
+}

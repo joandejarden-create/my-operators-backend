@@ -5,6 +5,38 @@ import { fileURLToPath } from "url";
 import { parseMultiValue } from "./third-party-operator-value-utils.js";
 import { mapCaseStudyDetailToNewBaseChildRow } from "./operator-case-study-airtable-map.js";
 import {
+    buildLeadershipPlatformAirtableRows,
+    LEADERSHIP_PLATFORM_TABLE,
+} from "./operator-leadership-platform-map.js";
+import {
+    buildInfrastructurePlatformAirtableRows,
+    buildInfrastructurePlatformPayloadFromIntakeBody,
+    INFRASTRUCTURE_PLATFORM_TABLE,
+    InfrastructurePlatformValidationError,
+    validateInfrastructurePlatformPayload,
+} from "./operator-infrastructure-platform-map.js";
+import {
+    buildEngagementReportingAirtableRows,
+    buildEngagementReportingPayloadFromIntakeBody,
+    ENGAGEMENT_REPORTING_TABLE,
+    EngagementReportingValidationError,
+    validateEngagementReportingPayload,
+} from "./operator-engagement-reporting-map.js";
+import {
+    buildOperatingPlatformAirtableRows,
+    buildOperatingPlatformPayloadFromIntakeBody,
+    OPERATING_PLATFORM_TABLE,
+    OperatingPlatformValidationError,
+    validateOperatingPlatformPayload,
+} from "./operator-operating-platform-map.js";
+import {
+    buildBrandRelationshipsAirtableRows,
+    buildBrandRelationshipsPayloadFromIntakeBody,
+    BRAND_RELATIONSHIPS_TABLE,
+    BrandRelationshipsValidationError,
+    validateBrandRelationshipsPayload,
+} from "./operator-brand-relationships-map.js";
+import {
     buildGovernanceGranularAirtableFields,
     GOVERNANCE_AGGREGATE_INTERNAL_TO_AIRTABLE,
     isGovernanceGranularCheckboxWriteMode,
@@ -34,6 +66,11 @@ const ONE_TO_ONE_TABLES = [
 
 const GOVERNANCE_TABLE = "Operator Setup - Governance, Delivery & Diligence";
 const CHILD_LEADERSHIP = "Operator Setup - Leadership Team Members";
+const CHILD_LEADERSHIP_PLATFORM = LEADERSHIP_PLATFORM_TABLE;
+const CHILD_INFRASTRUCTURE_PLATFORM = INFRASTRUCTURE_PLATFORM_TABLE;
+const CHILD_ENGAGEMENT_REPORTING = ENGAGEMENT_REPORTING_TABLE;
+const CHILD_OPERATING_PLATFORM = OPERATING_PLATFORM_TABLE;
+const CHILD_BRAND_RELATIONSHIPS = BRAND_RELATIONSHIPS_TABLE;
 const CHILD_CASE_STUDIES = "Operator Setup - Case Studies";
 const CHILD_DILIGENCE = "Operator Setup - Diligence QA";
 const BRAND_TABLE_NAME = process.env.AIRTABLE_BRAND_BASICS_TABLE || "Brand Setup - Brand Basics";
@@ -498,6 +535,102 @@ function normalizeLeadershipRowsForAttachments(rows) {
     });
 }
 
+export async function replaceOperatorLeadershipPlatformRows(masterRecordId, body, correlationId) {
+    const rows = buildLeadershipPlatformAirtableRows(body || {});
+    const res = await replaceChildRows(CHILD_LEADERSHIP_PLATFORM, masterRecordId, rows);
+    logStep("leadership_platform_replaced", { ...res }, correlationId);
+    return res;
+}
+
+/**
+ * Replace Infrastructure Platform child rows (raw Airtable field objects or intake body).
+ * @param {string} masterRecordId
+ * @param {object[]|object} rowsOrBody - Airtable row fields[], or { infrastructurePlatform: ... }
+ * @param {string} [correlationId]
+ */
+export async function replaceOperatorInfrastructurePlatformRows(masterRecordId, rowsOrBody, correlationId) {
+    let rows = rowsOrBody;
+    if (rowsOrBody && !Array.isArray(rowsOrBody) && rowsOrBody.infrastructurePlatform) {
+        rows = buildInfrastructurePlatformAirtableRows(rowsOrBody);
+    }
+    if (!Array.isArray(rows)) rows = [];
+    const res = await replaceChildRows(CHILD_INFRASTRUCTURE_PLATFORM, masterRecordId, rows);
+    logStep("infrastructure_platform_replaced", { ...res, rowCount: rows.length }, correlationId);
+    return res;
+}
+
+/**
+ * Replace Engagement & Reporting child rows (raw Airtable field objects or intake body).
+ * @param {string} masterRecordId
+ * @param {object[]|object} rowsOrBody
+ * @param {string} [correlationId]
+ */
+export async function replaceOperatorEngagementReportingRows(masterRecordId, rowsOrBody, correlationId) {
+    let rows = rowsOrBody;
+    if (rowsOrBody && !Array.isArray(rowsOrBody) && rowsOrBody.engagementReporting) {
+        rows = buildEngagementReportingAirtableRows(rowsOrBody);
+    }
+    if (!Array.isArray(rows)) rows = [];
+    const res = await replaceChildRows(CHILD_ENGAGEMENT_REPORTING, masterRecordId, rows);
+    logStep("engagement_reporting_replaced", { ...res, rowCount: rows.length }, correlationId);
+    return res;
+}
+
+/**
+ * Replace Operating Platform child rows (raw Airtable field objects or intake body).
+ * @param {string} masterRecordId
+ * @param {object[]|object} rowsOrBody
+ * @param {string} [correlationId]
+ */
+export async function replaceOperatorOperatingPlatformRows(masterRecordId, rowsOrBody, correlationId) {
+    let rows = rowsOrBody;
+    if (rowsOrBody && !Array.isArray(rowsOrBody)) {
+        if (rowsOrBody.operatingPlatform) {
+            const payload =
+                rowsOrBody.operatingPlatform.pillars != null
+                    ? rowsOrBody.operatingPlatform
+                    : buildOperatingPlatformPayloadFromIntakeBody(rowsOrBody);
+            rows = buildOperatingPlatformAirtableRows({ operatingPlatform: payload });
+        } else if (rowsOrBody.pillars || rowsOrBody.snapshotKpis) {
+            rows = buildOperatingPlatformAirtableRows({ operatingPlatform: rowsOrBody });
+        }
+    }
+    if (!Array.isArray(rows)) rows = [];
+    const res = await replaceChildRows(CHILD_OPERATING_PLATFORM, masterRecordId, rows);
+    logStep("operating_platform_replaced", { ...res, rowCount: rows.length }, correlationId);
+    return res;
+}
+
+/**
+ * Replace Brand & Relationships child rows (raw Airtable field objects or intake body).
+ * @param {string} masterRecordId
+ * @param {object[]|object} rowsOrBody
+ * @param {string} [correlationId]
+ */
+export async function replaceOperatorBrandRelationshipsRows(masterRecordId, rowsOrBody, correlationId) {
+    let rows = rowsOrBody;
+    if (rowsOrBody && !Array.isArray(rowsOrBody)) {
+        if (rowsOrBody.brandRelationships) {
+            const payload =
+                rowsOrBody.brandRelationships.portfolioMix != null ||
+                rowsOrBody.brandRelationships.relationshipDepth != null
+                    ? rowsOrBody.brandRelationships
+                    : buildBrandRelationshipsPayloadFromIntakeBody(rowsOrBody);
+            rows = buildBrandRelationshipsAirtableRows({ brandRelationships: payload });
+        } else if (
+            rowsOrBody.portfolioMix ||
+            rowsOrBody.relationshipDepth ||
+            rowsOrBody.executionCapabilities
+        ) {
+            rows = buildBrandRelationshipsAirtableRows({ brandRelationships: rowsOrBody });
+        }
+    }
+    if (!Array.isArray(rows)) rows = [];
+    const res = await replaceChildRows(CHILD_BRAND_RELATIONSHIPS, masterRecordId, rows);
+    logStep("brand_relationships_replaced", { ...res, rowCount: rows.length }, correlationId);
+    return res;
+}
+
 export async function replaceOperatorLeadershipRows(masterRecordId, rows, correlationId) {
     const res = await replaceChildRows(CHILD_LEADERSHIP, masterRecordId, normalizeLeadershipRowsForAttachments(rows));
     logStep("leadership_replaced", { ...res }, correlationId);
@@ -556,6 +689,88 @@ export async function writeOperatorSetupToNewBase({
         await upsertOperatorOneToOneTable(tableName, masterRecordId, payloads.oneToOne[tableName] || {}, correlationId);
     }
     await replaceOperatorLeadershipRows(masterRecordId, payloads.leadershipRows, correlationId);
+    await replaceOperatorLeadershipPlatformRows(masterRecordId, body, correlationId);
+
+    const infrastructurePlatformPayload = buildInfrastructurePlatformPayloadFromIntakeBody(body);
+    if (!isDraft) {
+        const ipValidation = validateInfrastructurePlatformPayload(infrastructurePlatformPayload);
+        if (!ipValidation.valid) {
+            if (process.env.NODE_ENV !== "production") {
+                logStep(
+                    "infrastructure_platform_validation_failed",
+                    { errors: ipValidation.errors },
+                    correlationId
+                );
+            }
+            throw new InfrastructurePlatformValidationError(ipValidation.errors);
+        }
+    }
+    await replaceOperatorInfrastructurePlatformRows(
+        masterRecordId,
+        { infrastructurePlatform: infrastructurePlatformPayload },
+        correlationId
+    );
+
+    const engagementReportingPayload = buildEngagementReportingPayloadFromIntakeBody(body);
+    if (!isDraft) {
+        const erValidation = validateEngagementReportingPayload(engagementReportingPayload);
+        if (!erValidation.valid) {
+            if (process.env.NODE_ENV !== "production") {
+                logStep(
+                    "engagement_reporting_validation_failed",
+                    { errors: erValidation.errors },
+                    correlationId
+                );
+            }
+            throw new EngagementReportingValidationError(erValidation.errors);
+        }
+    }
+    await replaceOperatorEngagementReportingRows(
+        masterRecordId,
+        { engagementReporting: engagementReportingPayload },
+        correlationId
+    );
+
+    const operatingPlatformPayload = buildOperatingPlatformPayloadFromIntakeBody(body);
+    if (!isDraft) {
+        const opValidation = validateOperatingPlatformPayload(operatingPlatformPayload);
+        if (!opValidation.valid) {
+            if (process.env.NODE_ENV !== "production") {
+                logStep(
+                    "operating_platform_validation_failed",
+                    { errors: opValidation.errors },
+                    correlationId
+                );
+            }
+            throw new OperatingPlatformValidationError(opValidation.errors);
+        }
+    }
+    await replaceOperatorOperatingPlatformRows(
+        masterRecordId,
+        { operatingPlatform: operatingPlatformPayload },
+        correlationId
+    );
+
+    const brandRelationshipsPayload = buildBrandRelationshipsPayloadFromIntakeBody(body);
+    if (!isDraft) {
+        const brValidation = validateBrandRelationshipsPayload(brandRelationshipsPayload);
+        if (!brValidation.valid) {
+            if (process.env.NODE_ENV !== "production") {
+                logStep(
+                    "brand_relationships_validation_failed",
+                    { errors: brValidation.errors },
+                    correlationId
+                );
+            }
+            throw new BrandRelationshipsValidationError(brValidation.errors);
+        }
+    }
+    await replaceOperatorBrandRelationshipsRows(
+        masterRecordId,
+        { brandRelationships: brandRelationshipsPayload },
+        correlationId
+    );
+
     await replaceOperatorCaseStudies(masterRecordId, payloads.caseRows, correlationId);
     await replaceOperatorDiligenceQa(masterRecordId, payloads.diligenceRows, correlationId);
 

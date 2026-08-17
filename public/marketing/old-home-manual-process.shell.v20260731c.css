@@ -1,0 +1,54 @@
+/* Scoped to #about[data-oh-problem="manual-process"] only.
+   Overrides freeform-head `#about,.oh-about { background:#0D1530; padding:100px 1.5rem }`
+   so Manual Process navy (#080F25) is full-bleed edge-to-edge. */
+#about[data-oh-problem="manual-process"],
+section#about[data-oh-problem="manual-process"].oh-problem {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  padding-top: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  background: #080f25 !important;
+  background-color: #080f25 !important;
+  box-sizing: border-box !important;
+}
+#about[data-oh-problem="manual-process"] .oh-problem-shell,
+#about[data-oh-problem="manual-process"] .oh-problem-stage,
+#about[data-oh-problem="manual-process"] .w-embed,
+#about[data-oh-problem="manual-process"] #oh-manual-process-embed {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+#about[data-oh-problem="manual-process"] .oh-problem-stage {
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+}
+#about[data-oh-problem="manual-process"] #dealality-manual-process {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  background: #080f25 !important;
+  background-color: #080f25 !important;
+  box-sizing: border-box !important;
+}
+#dealality-manual-process-host[data-dmp-state="loading"] {
+  min-height: 480px;
+}
+#dealality-manual-process-host[data-dmp-state="error"] {
+  padding: 48px 24px;
+  text-align: center;
+  color: #5b6472;
+  font: 500 15px/1.5 "Inter Tight", system-ui, sans-serif;
+}

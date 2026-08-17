@@ -1,0 +1,208 @@
+{
+  "status": "mexico_vic_be_small_pilot_minor_steward_review_clean_ready_for_staging_apply_test",
+  "generated_at": "2026-08-04T23:27:45.935Z",
+  "baseline": {
+    "status": "mexico_vic_4family_baseline_locked_staging_ready",
+    "freeze_hash_sha256": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3"
+  },
+  "overlay_input_status": "mexico_vic_be_small_pilot_overlay_ready",
+  "constraints": {
+    "airtable_writes": false,
+    "webhound_used": false,
+    "brand_explorer_activation": false,
+    "brand_explorer_records_modified": false,
+    "production_overwrite": false,
+    "frozen_baseline_artifacts_modified": false,
+    "recent_momentum_from_directory_existence": false
+  },
+  "alias_decisions": {
+    "ascend": {
+      "requested_slug": "ascend-hotel-collection",
+      "active_be_slug": "ascend",
+      "active_be_brand_name": "Ascend Hotel Collection",
+      "active_be_record_id": "reclkgOzvAcBheUSo",
+      "brand_status": "Active",
+      "decision": "approved_alias_mapping",
+      "result": "approved_alias_mapping",
+      "rationale": "Requested `ascend-hotel-collection` is not an Active/Live BE54 slug. Live brand is `ascend` (Ascend Hotel Collection). Overlay-only alias approved; do not rename BE records.",
+      "constraints": [
+        "overlay_only_unless_later_staging_patch_approved",
+        "do_not_create_new_be_slug",
+        "do_not_rename_active_be_records"
+      ]
+    },
+    "curio": {
+      "requested_slug": "curio-collection-by-hilton",
+      "active_be_slug": "curio-collection",
+      "active_be_brand_name": "Curio Collection by Hilton",
+      "active_be_record_id": "receQkxgjlezsc1xg",
+      "brand_status": "Active",
+      "decision": "approved_alias_mapping",
+      "result": "approved_alias_mapping",
+      "rationale": "Requested `curio-collection-by-hilton` is not an Active/Live BE54 slug. Live brand is `curio-collection` (Curio Collection by Hilton). Overlay-only alias approved; do not rename BE records.",
+      "constraints": [
+        "overlay_only_unless_later_staging_patch_approved",
+        "do_not_create_new_be_slug",
+        "do_not_rename_active_be_records"
+      ]
+    },
+    "exact": [
+      {
+        "requested_slug": "hotel-indigo",
+        "active_be_slug": "hotel-indigo",
+        "decision": "exact_match_confirmed",
+        "result": "exact_match"
+      },
+      {
+        "requested_slug": "holiday-inn-express",
+        "active_be_slug": "holiday-inn-express",
+        "decision": "exact_match_confirmed",
+        "result": "exact_match"
+      }
+    ]
+  },
+  "property_specific_decisions": [
+    {
+      "property": "El Cid Castilla Beach Hotel",
+      "independent_record_id": "ind_choice_mx_mx164",
+      "be_brand_slug": "ascend",
+      "decision": "approved_soft_brand_distribution_example",
+      "framing": "property_example_soft_brand_distribution_only",
+      "allowed_uses": [
+        "property_example",
+        "geographic_footprint",
+        "portfolio_context",
+        "property_proof"
+      ],
+      "forbidden_claims": [
+        "Choice ownership",
+        "Faranda ownership or management",
+        "direct Ascend/Choice management",
+        "Recent Momentum from directory existence",
+        "rooms / owner / operator / open date unless separately sourced"
+      ],
+      "recent_momentum": false,
+      "notes": "Frame as an Ascend Hotel Collection soft-brand distribution example in Mazatlán. Independent resort identity remains El Cid; Ascend is the collection affiliation evidenced by the official Choice property page."
+    },
+    {
+      "property": "El Cid La Ceiba Beach Hotel",
+      "independent_record_id": "ind_choice_mx_mx169",
+      "be_brand_slug": "ascend",
+      "decision": "approved_soft_brand_distribution_example",
+      "framing": "property_example_soft_brand_distribution_only",
+      "allowed_uses": [
+        "property_example",
+        "geographic_footprint",
+        "portfolio_context",
+        "property_proof"
+      ],
+      "forbidden_claims": [
+        "Choice ownership",
+        "Faranda ownership or management",
+        "direct Ascend/Choice management",
+        "Recent Momentum from directory existence",
+        "rooms / owner / operator / open date unless separately sourced"
+      ],
+      "recent_momentum": false,
+      "notes": "Same handling as El Cid Castilla — Cozumel soft-brand Ascend distribution example only."
+    },
+    {
+      "property": "Amberes 64, an Ascend Collection Hotel",
+      "independent_record_id": "ind_choice_mx_mx228",
+      "be_brand_slug": "ascend",
+      "decision": "approved_property_proof_only",
+      "framing": "property_example_and_property_proof_only",
+      "allowed_uses": [
+        "property_example",
+        "geographic_footprint",
+        "portfolio_context",
+        "property_proof"
+      ],
+      "forbidden_claims": [
+        "Recent Momentum from VIC / directory / property-page existence alone"
+      ],
+      "recent_momentum": false,
+      "recent_momentum_note": "Existing dated Choice press in Ascend fixtures may remain the momentum source if already present. VIC overlay does not add or refresh Recent Momentum for Amberes.",
+      "notes": "Amberes 64 is property proof / Mexico City example only in this pilot."
+    },
+    {
+      "property": "MS Milenium Monterrey, Curio Collection by Hilton",
+      "independent_record_id": "ind_hilton_mx_mtymmqq",
+      "be_brand_slug": "curio-collection",
+      "decision": "approved_city_label_normalization",
+      "source_city_raw": "SanPedro Garza Garcia",
+      "normalized_city_display": "San Pedro Garza García",
+      "state_region": "Nuevo León",
+      "metro_context": "Monterrey metro",
+      "official_source_url_unchanged": "https://www.hilton.com/en/hotels/mtymmqq-ms-milenium-monterrey/",
+      "notes": "Owner-facing and staging patch display must use San Pedro Garza García. Do not change the underlying Hilton source URL. Do not claim a broader location than the source supports.",
+      "allowed_uses": [
+        "property_example",
+        "geographic_footprint",
+        "portfolio_context",
+        "property_proof"
+      ],
+      "recent_momentum": false
+    }
+  ],
+  "owner_facing_copy_review": {
+    "forbidden_term_issues_original": [],
+    "soft_framing_issues": [
+      {
+        "brand": "ascend",
+        "field": "owner_fit_note",
+        "issue": "phrase_under_Ascend_could_imply_ownership_or_management",
+        "action": "revise"
+      },
+      {
+        "brand": "curio-collection",
+        "field": "property_examples",
+        "issue": "milenium_city_should_use_normalized_or_metro_label",
+        "action": "revise"
+      }
+    ],
+    "revised_safe_copy": {
+      "hotel-indigo": {
+        "property_examples": "Mexico examples include Hotel Indigo Guadalajara Expo, Hotel Indigo Playa del Carmen, and Hotel Indigo Guanajuato — each reflecting the brand’s neighborhood-led positioning across distinct Mexican markets.",
+        "geographic_footprint": "Hotel Indigo is present in Mexico across gateway and leisure markets, including Guadalajara, Playa del Carmen, and Guanajuato.",
+        "portfolio_context": "These Mexico properties illustrate how Hotel Indigo can express local character in both urban and leisure settings.",
+        "owner_fit_note": "Owners evaluating Mexico can use these properties as reference points for urban expo-adjacent, coastal lifestyle, and colonial-city Indigo formats.",
+        "revision": "unchanged_pass"
+      },
+      "ascend": {
+        "property_examples": "Mexico examples include Amberes 64 in Mexico City, El Cid Castilla Beach Hotel in Mazatlán, and El Cid La Ceiba Beach Hotel in Cozumel — illustrating Ascend Hotel Collection’s soft-brand distribution across urban boutique and beach resort formats.",
+        "geographic_footprint": "Ascend Hotel Collection is present in Mexico across Mexico City, Mazatlán, and Cozumel.",
+        "portfolio_context": "The Mexico examples show how independent and soft-brand hotels can participate in Ascend Hotel Collection across capital and coastal leisure markets.",
+        "owner_fit_note": "Useful for owners comparing an urban Mexico City boutique example with established beach-resort soft-brand distribution formats in Ascend Hotel Collection — without assuming Choice ownership or direct management.",
+        "revision": "revised_soft_brand_framing"
+      },
+      "curio-collection": {
+        "property_examples": "Mexico examples include Amare Cancun, The Fives Downtown in Playa del Carmen, and MS Milenium in San Pedro Garza García — covering all-inclusive resort, lifestyle downtown, and Monterrey-metro urban Curio expressions.",
+        "geographic_footprint": "Curio Collection by Hilton is present in Mexico across Cancún, Playa del Carmen, and the Monterrey metro (San Pedro Garza García).",
+        "portfolio_context": "These properties show Curio’s flexibility across leisure all-inclusive and urban/lifestyle Mexico markets.",
+        "owner_fit_note": "Owners can compare a Cancún all-inclusive Curio against Playa del Carmen lifestyle and Monterrey-metro urban formats when underwriting Mexico.",
+        "revision": "revised_city_normalization"
+      },
+      "holiday-inn-express": {
+        "property_examples": "A Mexico example is Holiday Inn Express & Suites Querétaro — a practical midscale select-service reference in a major inland commercial market.",
+        "geographic_footprint": "Holiday Inn Express is present in Mexico, including Querétaro.",
+        "portfolio_context": "This property supports Mexico midscale select-service context for owners reviewing Holiday Inn Express in secondary commercial cities.",
+        "owner_fit_note": "Best used as a single-market Mexico reference for select-service midscale positioning — not as a full Mexico portfolio map.",
+        "revision": "unchanged_pass"
+      }
+    },
+    "forbidden_term_issues_revised": [],
+    "pass": true
+  },
+  "remaining_holds": [],
+  "staging_only_apply_test_may_proceed": true,
+  "post_steward_risk_classification": "safe_for_staging_overlay",
+  "normalized_display_overrides": {
+    "ind_hilton_mx_mtymmqq": {
+      "city_display": "San Pedro Garza García",
+      "state_region": "Nuevo León",
+      "metro_context": "Monterrey metro"
+    }
+  },
+  "recommended_next_step": "mexico_vic_be_small_pilot_staging_only_apply_test"
+}

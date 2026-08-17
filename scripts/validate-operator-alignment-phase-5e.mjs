@@ -35,9 +35,10 @@ ok(myDealsSrc.includes("scoreDealStructureFactor"), "my-deals uses structure fac
 ok(!ocs.includes("scoreDealStructureFactor"), "OCS unchanged");
 ok(!bas.includes("normalizeOperatorAlignmentDealInputs"), "BAS unchanged");
 
-const wBefore = myDealsSrc.match(/const OPERATOR_MATCH_WEIGHTS = \{([^}]+)\}/)?.[0] || "";
+const wBefore = fs.readFileSync(path.join(ROOT, "lib/operator-alignment-scoring-weight-config.js"), "utf8");
 ok(wBefore.includes("geographyMarkets: 18"), "geography weight still 18");
 ok(wBefore.includes("dealStructureAssignment: 12"), "structure weight still 12");
+ok(myDealsSrc.includes("operator-alignment-scoring-weight-config"), "my-deals imports weight config");
 
 const deal = normalizeOperatorAlignmentDealInputs(
   { "Project Type": "New Build", "F&B Complexity": "Limited F&B", "Opening Timeline": "Pre-development" },

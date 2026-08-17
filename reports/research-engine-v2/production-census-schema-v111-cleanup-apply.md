@@ -1,0 +1,297 @@
+# Production Census Schema v1.1.1 Cleanup Apply
+
+**Status:** `production_census_schema_v111_cleanup_partial_manual_view_steps_needed`
+**Mode:** apply
+**Generated:** 2026-08-05T10:44:25.815Z
+
+## 1. Executive summary
+
+- Apply executed: true
+- Renames: 3
+- Validation pass: true
+- Views API: false
+- Amenity hide via API: false
+
+## 2. Approved founder decisions applied
+
+```json
+{
+  "A": "renamed Last Verified Date → Last Reviewed Date",
+  "B": "kept Rooms / Keys",
+  "C": "kept Operator / Management Company",
+  "D": "kept Owner Name",
+  "E": "kept Source URL",
+  "F": "kept State / Region",
+  "G": "hide over-modeled amenity flags — manual UI (API unsupported)",
+  "H": "renamed Resort Amenities Flag → Resort / Leisure Flag; Extended Stay Amenity Flag → Extended Stay Flag"
+}
+```
+
+## 3. Fields renamed
+
+```json
+[
+  {
+    "from": "Last Verified Date",
+    "to": "Last Reviewed Date",
+    "field_id": "fldxOmnKSWHBmjigl"
+  },
+  {
+    "from": "Resort Amenities Flag",
+    "to": "Resort / Leisure Flag",
+    "field_id": "fldYIHZ2pMot20LIO"
+  },
+  {
+    "from": "Extended Stay Amenity Flag",
+    "to": "Extended Stay Flag",
+    "field_id": "fldixhIZZLcHDXxDn"
+  }
+]
+```
+
+## 4. Fields kept unchanged
+
+- Rooms / Keys
+- Operator / Management Company
+- Owner Name
+- Source URL
+- State / Region
+
+## 5. Amenity fields hidden / manual instructions
+
+```json
+{
+  "fields": [
+    "Fitness Flag",
+    "Pool Flag",
+    "Parking Flag",
+    "Airport Shuttle Flag",
+    "Spa Flag",
+    "Beach / Waterfront Flag"
+  ],
+  "deleted": false,
+  "hidden_via_api": false,
+  "manual": {
+    "supported_via_api": false,
+    "reason": "Airtable Meta API can read visibleFieldIds but does not expose a supported endpoint to hide fields on existing views.",
+    "ui_steps": [
+      "Open Deal Capture Platform → Hotel Property Census → Grid view",
+      "Hide fields: Fitness Flag, Pool Flag, Parking Flag, Airport Shuttle Flag, Spa Flag, Beach / Waterfront Flag",
+      "Optional: create founder views listed in this report with only recommended columns visible"
+    ]
+  }
+}
+```
+
+## 6. Views created / manual instructions
+
+```json
+{
+  "api_supported": false,
+  "created": [],
+  "failed": [
+    {
+      "name": "Census - Core Identity",
+      "status": 422,
+      "error": {
+        "type": "INVALID_REQUEST_UNKNOWN",
+        "message": "Invalid request: parameter validation failed. Check your request data."
+      },
+      "missing_fields": []
+    },
+    {
+      "name": "Census - Enrichment",
+      "status": 422,
+      "error": {
+        "type": "INVALID_REQUEST_UNKNOWN",
+        "message": "Invalid request: parameter validation failed. Check your request data."
+      },
+      "missing_fields": []
+    },
+    {
+      "name": "Census - Owner Operator",
+      "status": 422,
+      "error": {
+        "type": "INVALID_REQUEST_UNKNOWN",
+        "message": "Invalid request: parameter validation failed. Check your request data."
+      },
+      "missing_fields": []
+    },
+    {
+      "name": "Census - Steward Review",
+      "status": 422,
+      "error": {
+        "type": "INVALID_REQUEST_UNKNOWN",
+        "message": "Invalid request: parameter validation failed. Check your request data."
+      },
+      "missing_fields": []
+    }
+  ],
+  "manual_instructions": [
+    {
+      "name": "Census - Core Identity",
+      "fields": [
+        "Property Name",
+        "Current Brand",
+        "City",
+        "State / Region",
+        "Country",
+        "Affiliation Status",
+        "Production Use Status",
+        "Data Confidence Tier",
+        "Enrichment Status",
+        "Human Review Required"
+      ],
+      "note": "Create manually in Airtable if API view create is unavailable"
+    },
+    {
+      "name": "Census - Enrichment",
+      "fields": [
+        "Property Name",
+        "Hotel Description - Source Text",
+        "Hotel Description - AI Summary",
+        "Amenities - Source Text",
+        "Amenities - Structured Tags",
+        "Property Type",
+        "Asset Context",
+        "Market / Submarket",
+        "Enrichment Status",
+        "Enrichment Priority"
+      ],
+      "note": "Create manually in Airtable if API view create is unavailable"
+    },
+    {
+      "name": "Census - Owner Operator",
+      "fields": [
+        "Property Name",
+        "Owner Name",
+        "Owner Confidence",
+        "Operator / Management Company",
+        "Operator Confidence",
+        "Ownership Review Status",
+        "Operator Review Status"
+      ],
+      "note": "Create manually in Airtable if API view create is unavailable"
+    },
+    {
+      "name": "Census - Steward Review",
+      "fields": [
+        "Property Name",
+        "Human Review Required",
+        "Notes for Steward",
+        "Brand-Unassigned Reason",
+        "Enrichment Priority"
+      ],
+      "note": "Create manually in Airtable if API view create is unavailable"
+    }
+  ],
+  "api_note": "POST /tables/{tableId}/views returned 422 INVALID_REQUEST for all four founder views; create views manually in Airtable UI."
+}
+```
+
+## 7. Census validation
+
+```json
+{
+  "record_count": 666,
+  "field_count": 95,
+  "duplicates": 0,
+  "renames_present": true,
+  "old_names_gone": true,
+  "hide_fields_still_exist": true,
+  "amenity_filled": {
+    "Fitness Flag": 0,
+    "Pool Flag": 0,
+    "Parking Flag": 0,
+    "Airport Shuttle Flag": 0,
+    "Spa Flag": 0,
+    "Beach / Waterfront Flag": 0
+  },
+  "enrichment_not_started": 666,
+  "human_review_true": 4,
+  "production_use_ok": 666,
+  "description_filled": 0,
+  "amenities_filled": 0,
+  "owner_filled": 0,
+  "operator_filled": 0,
+  "rooms_filled": 0,
+  "opening_filled": 0,
+  "zero_zero": 0,
+  "no_fields_deleted": true
+}
+```
+
+## 8. Brand Explorer safety result
+
+```json
+{
+  "gates": [
+    {
+      "label": "active_universe_sot",
+      "command": "npm run brand-explorer-active-universe-source-of-truth -- --dry-run",
+      "ok": true,
+      "exit_code": 0,
+      "stdout_tail": "ary] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\nFetching brand with identifier: rec2DDyPu38C6zDBC\nDecoded identifier: rec2DDyPu38C6zDBC\nFound brand by record ID: Radisson Collection\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-active-universe-source-of-truth.json\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-active-universe-source-of-truth.md\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-active-universe-cohort-diff.md\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-active-universe-missing-brand.md\nWrote C:\\Dev\\deal-capture-proxy\\docs\\data-intelligence\\brand-explorer-active-universe-source-of-truth.md\nActive universe: 62 (reconcilesTo46=false)\nPrior23 missing from active: radisson-collection\nActive missing from prior23: ac-hotels-by-marriott, aloft-hotels, avid-hotels, bunkhouse-hotels, bw-premier-collection, bw-signature-collection, canopy-by-hilton, city-express-by-marriott, courtyard-by-marriott, dazzler-by-wyndham, doubletree-by-hilton, even-hotels, fairmont, hampton-by-hilton, hilton-garden-inn, hilton-hotels-and-resorts, holiday-inn-express, home2-suites-by-hilton, homewood-suites-by-hilton, ibis, mama-shelter, marriott-hotels, mercure, motto-by-hilton, moxy-hotels, novotel, preferred-hotels-and-resorts, pullman, residence-inn-by-marriott, sheraton, so, spark-by-hilton, springhill-suites-by-marriott, studiores, tempo-by-hilton, towneplace-suites-by-marriott, trademark-collection-by-wyndham, tru-by-hilton, voco-hotels, westin\n  [public_full_clean] ac-hotels-by-marriott, aloft-hotels, ascend, autograph-collection, avid-hotels, bunkhouse-hotels, bw-premier-collection, bw-signature-collection, canopy-by-hilton, city-express-by-marriott, comfort-inn-suites, country-inn-suites, courtyard-by-marriott, curio-collection, dazzler-by-wyndham, design-hotels, doubletree-by-hilton, even-hotels, everhome-suites, fairmont, hampton-by-hilton, handwritten-collection, hilton-garden-inn, hilton-hotels-and-resorts, holiday-inn-express, home2-suites-by-hilton, homewood-suites-by-hilton, hotel-indigo, ibis, kimpton, mama-shelter, marriott-hotels, mercure, mgallery-collection, motto-by-hilton, moxy-hotels, novotel, preferred-hotels-and-resorts, pullman, quality-inn, radisson-blu, radisson, radisson-individuals-by-choice, radisson-red, residence-inn-by-marriott, sheraton, small-luxury-hotels-of-the-world, so, spark-by-hilton, springhill-suites-by-marriott, studiores, suburban-studios, tapestry-collection-by-hilton, tempo-by-hilton, towneplace-suites-by-marriott, trademark-collection-by-wyndham, tribute-portfolio, tru-by-hilton, vignette-collection, voco-hotels, westin, woodspring-suites\n"
+    },
+    {
+      "label": "global_active_semantic",
+      "command": "npm run brand-explorer-global-active-semantic-audit -- --dry-run --fresh",
+      "ok": true,
+      "exit_code": 0,
+      "stdout_tail": " - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[semantic-audit] 61/62 westin...\nFetching brand with identifier: recIPuBC50fv13zRR\nDecoded identifier: recIPuBC50fv13zRR\nFound brand by record ID: Westin\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[semantic-audit] 62/62 woodspring-suites...\nFetching brand with identifier: recsOd51NzRPYsMko\nDecoded identifier: recsOd51NzRPYsMko\nResolved legacy seed to record ID: recsOd51NzRPYsMko (WoodSpring Suites)\nFound brand by record ID: WoodSpring Suites\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\nActive count: 62 (expected 62)\nUniverse reconciled: true\nFreeze decision: ready_to_freeze_62_semantic_qa_clean\nBuckets: {\"freeze_safe\":62}\nSeverity: {\"critical\":0,\"high\":0,\"medium\":0,\"low\":0}\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-global-active-semantic-audit-refresh.json\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-global-active-semantic-audit-refresh.md\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-global-active-semantic-audit-refresh-critical.md\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-global-active-semantic-audit-refresh-by-brand.md\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-global-active-semantic-audit-refresh-by-section.md\nWrote C:\\Dev\\deal-capture-proxy\\docs\\data-intelligence\\brand-explorer-global-active-semantic-audit-refresh.md\nReady: global_active_semantic_audit_complete_review_freeze_decision\n"
+    },
+    {
+      "label": "pvql_quiet",
+      "command": "node scripts/brand-explorer-quiet-sequential-pvql.mjs",
+      "ok": true,
+      "exit_code": 0,
+      "stdout_tail": "y & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\nFetching brand with identifier: recWPEvxBQxVVzSq3\nDecoded identifier: recWPEvxBQxVVzSq3\nFound brand by record ID: Radisson Blu by Choice\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\nFetching brand with identifier: recywbx1YQSTCPqW1\nDecoded identifier: recywbx1YQSTCPqW1\nFound brand by record ID: Radisson by Choice\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\nFetching brand with identifier: reclkgOzvAcBheUSo\nDecoded identifier: reclkgOzvAcBheUSo\nResolved legacy seed to record ID: reclkgOzvAcBheUSo (Ascend Hotel Collection)\nFound brand by record ID: Ascend Hotel Collection\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\nPASS active_profile_ready full=true \n{\n  \"overallPass\": true,\n  \"publicFullProfileCount\": 62,\n  \"scopedCount\": 62,\n  \"universeActiveCount\": 62,\n  \"brandsFilter\": null,\n  \"hardFails\": [],\n  \"notPublicFull\": []\n}\nWrote C:\\Dev\\deal-capture-proxy\\reports\\brand-explorer-public-visibility-quality-lock-quiet.json\n"
+    },
+    {
+      "label": "momentum_evidence",
+      "command": "npm run test:brand-explorer-recent-momentum-evidence-quality",
+      "ok": true,
+      "exit_code": 0,
+      "stdout_tail": "\n> top100-projects-scraper@1.0.0 test:brand-explorer-recent-momentum-evidence-quality\n> node scripts/test-brand-explorer-recent-momentum-evidence-quality.mjs\n\nFetching brand with identifier: rec5CNMM4ZUD7ZHlM\nDecoded identifier: rec5CNMM4ZUD7ZHlM\nFound brand by record ID: Dazzler by Wyndham\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[PASS] dazzler-by-wyndham recent-momentum-evidence-quality\nFetching brand with identifier: recob7tgHRryRSbeO\nDecoded identifier: recob7tgHRryRSbeO\nFound brand by record ID: Trademark Collection by Wyndham\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[PASS] trademark-collection-by-wyndham recent-momentum-evidence-quality\nFetching brand with identifier: reccXxMHEh7NNRhIE\nDecoded identifier: reccXxMHEh7NNRhIE\nFound brand by record ID: Tapestry Collection by Hilton\n[Brand Library] Brand Setup - Project Fit found via Basics link \"Brand Setup - Project Fit\"\n[Brand Library] Brand Setup - Fee Structure found via Basics link \"Brand Setup - Fee Structure\"\n[Brand Library] Brand Setup - Sustainability & ESG found via Basics link \"Brand Setup - Sustainability & ESG\"\n[Brand Library] Brand Setup - Operational Support found via Basics link \"Brand Setup - Operational Support\"\n[Brand Library] Brand Setup - Legal Terms found via Basics link \"Brand Setup - Legal Terms\"\n[Brand Library] Brand Setup - Deal Terms found via Basics link \"Brand Setup - Deal Terms\"\n[Brand Library] Brand Setup - Brand Footprint found via Basics link \"Brand Setup - Brand Footprint\"\n[Brand Library] Brand Setup - Brand Standards found via Basics link \"Brand Setup - Brand Standards\"\n[Brand Library] Brand Setup - Loyalty & Commercial found via Basics link \"Brand Setup - Loyalty & Commercial\"\n[Brand Library] Brand Setup - Portfolio & Performance found via Basics link \"Brand Setup - Portfolio & Performance\"\n[PASS] tapestry-collection-by-hilton recent-momentum-evidence-quality\nAll 3 brand(s) passed recent-momentum-evidence-quality.\n"
+    },
+    {
+      "label": "mandatory_release_gates",
+      "command": "npm run test:brand-explorer-mandatory-release-gates",
+      "ok": true,
+      "exit_code": 0,
+      "stdout_tail": "\n> top100-projects-scraper@1.0.0 test:brand-explorer-mandatory-release-gates\n> node scripts/test-brand-explorer-mandatory-release-gates.mjs\n\n[PASS] brand-explorer mandatory release gates (source + auditPass + OS state)\n"
+    }
+  ],
+  "all_pass": true,
+  "active_universe": 62,
+  "semantic": {
+    "critical": 0,
+    "high": 0,
+    "medium": 0
+  },
+  "expected": {
+    "active_universe": 62,
+    "semantic_c_h_m": "0/0/0",
+    "pvql": "PASS",
+    "momentum": "PASS",
+    "mandatory_gates": "PASS"
+  },
+  "summary": {
+    "active_universe": 62,
+    "semantic_c_h_m": "0/0/0",
+    "pvql": "PASS",
+    "momentum": "PASS",
+    "mandatory_gates": "PASS",
+    "all_pass": true
+  }
+}
+```
+
+## 9. Remaining cleanup items
+
+- Manually hide 6 over-modeled amenity flags from Grid view / founder views
+- Manually create 4 founder review views (API view create returned 422)
+
+## 10. Next recommended step
+
+Complete manual hide + view setup if needed, then freeze Census field contract and start descriptions + amenities + property type enrichment.

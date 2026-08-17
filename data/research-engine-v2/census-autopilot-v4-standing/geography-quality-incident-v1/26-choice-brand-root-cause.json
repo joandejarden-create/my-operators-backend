@@ -1,0 +1,45 @@
+{
+  "exact_root_cause": "Choice CALA discovery omitted property-level brand; V2.3 toDiscoveryRecord and V3 pilot-selection/dry-run fell back to brand_family/source family ('Choice'), and writer mapped that into Current Brand. Official Choice property URLs already encoded hotel-level brand slugs (e.g. sleep-inn-hotels) but were ignored.",
+  "choice_hotels_used_as_brand_default": true,
+  "choice_default_value_written": "Choice",
+  "counts": {
+    "A_parent_to_brand_contamination": 70,
+    "B_source_family_default": 70,
+    "C_stale_brand_explorer_mapping": 0,
+    "D_current_historical_confusion": 0,
+    "E_directory_matcher": 0,
+    "F_property_id_mismatch": 0,
+    "G_normalization_alias": 0,
+    "H_writer_mapping": 70,
+    "I_other": 0
+  },
+  "code_path": [
+    {
+      "step": "A",
+      "module": "census-autopilot-choice-cala-discovery-adapter.js",
+      "bug": "row missing brand despite card.brandName available"
+    },
+    {
+      "step": "B",
+      "module": "census-autopilot-v2-3/independent-discovery.js",
+      "bug": "current_brand: row.brand || row.affiliation || family"
+    },
+    {
+      "step": "C",
+      "module": "census-autopilot-v3/pilot-selection.js",
+      "bug": "brand: current_brand || brand_family"
+    },
+    {
+      "step": "D",
+      "module": "census-autopilot-v3/dry-run.js",
+      "bug": "push('Current Brand', pilot.brand || pilot.family)"
+    }
+  ],
+  "fixes_applied_in_repo": [
+    "lib/research-engine-v2/census-autopilot-v3/current-affiliation.js (gate + semantics)",
+    "Choice adapter now sets brand from card.brandName || URL slug",
+    "removed family→Current Brand fallbacks in discovery/selection/dry-run"
+  ],
+  "production_apply": false,
+  "v4_resume": false
+}

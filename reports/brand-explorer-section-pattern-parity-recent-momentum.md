@@ -1,0 +1,24 @@
+# Section Pattern Parity — Recent Momentum
+
+Generated: 2026-07-23T07:44:32.253Z
+
+| Brand | Section | Current Pattern | Expected Pattern | Status | Failure Reason | Proposed Patch | Benchmark Reference |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ascend | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| comfort-inn-suites | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| curio-collection | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| design-hotels | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| everhome-suites | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| hotel-indigo | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| kimpton | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| mgallery-collection | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| radisson-individuals-by-choice | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| small-luxury-hotels-of-the-world | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| tribute-portfolio | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| country-inn-suites | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| quality-inn | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| radisson | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| radisson-blu | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| radisson-red | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| suburban-studios | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |
+| woodspring-suites | recent_momentum | benchmark_card_list | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance | **pass** |  |  | Tribute / Kimpton / Design Hotels named openings with date + geography + owner relevance |

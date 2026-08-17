@@ -1,0 +1,45 @@
+{
+  "publishedAt": "2026-07-31T08:52:03.930Z",
+  "scope": "staging-subdomain-only",
+  "siteId": "68108c29063eeb5d1bd7ae4a",
+  "stagingUrl": "https://mvp-deal-capture.webflow.io/old-home",
+  "publishToWebflowSubdomain": true,
+  "customDomains": [],
+  "productionDomainsUnchanged": {
+    "www.dealality.com": "2026-07-31T07:05:36.978Z",
+    "dealality.com": "2026-07-31T07:05:36.978Z"
+  },
+  "rootHomeUntouched": true,
+  "assets": {
+    "css": "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6c5d6d19799fe674fa34ab_oh-deal-desk-cinematic-v1-phaseB2.css",
+    "js": "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6c5d9aea26d2406669468d_old-home-problem-deal-desk.v1b.js",
+    "hotel": "https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/6a6bde85c014ee4e80e65c24_deal-desk-coastal-hotel-480.jpg"
+  },
+  "animationRootCause": "Phase B set data-deal-desk-motion=1 on init before IntersectionObserver startOnce, so .dpd-field stayed opacity:0 until timeline start; combined with observing tall #about instead of .dpd-stage, the Opportunity card looked like a huge empty static shell.",
+  "fixes": [
+    "Keep motion=0 until startOnce/Replay enableMotion()",
+    "Observe .dpd-stage at ~33% visibility",
+    "Denser Opportunity composition (stage 610px, tighter inactive opacities, non-zero silhouette columns)",
+    "Hotel img absolute CDN URL"
+  ],
+  "measured": {
+    "stageHeightPx": 610,
+    "opportunityCardPx": { "w": 363, "h": 610 },
+    "inactiveOpacitiesOpportunity": {
+      "streams": 0.26,
+      "compare": 0.17,
+      "momentum": 0.17,
+      "outcome": 0.21
+    },
+    "timelineSamplesMs": [
+      { "t": 0, "state": "opportunity" },
+      { "t": 1500, "state": "workstreams" },
+      { "t": 3500, "state": "artifacts" },
+      { "t": 5500, "state": "comparison" },
+      { "t": 8000, "state": "momentum" },
+      { "t": 10000, "state": "outcome" },
+      { "t": 12000, "state": "outcome", "complete": true }
+    ]
+  },
+  "recommendation": "A"
+}

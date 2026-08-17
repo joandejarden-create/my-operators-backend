@@ -1,0 +1,668 @@
+{
+  "phase": "RECOMMENDED_PRODUCTION_VALIDATION_WORKSTREAM_STARTED",
+  "auditedAt": "2026-08-15T17:57:10.602Z",
+  "hardGuards": {
+    "PRESENCE_CHANGES": 0,
+    "PRESENCE_RESCORE": 0,
+    "RECOMMENDED_PRODUCTION_ENABLE": 0,
+    "RECOMMENDATION_SHARE_ENABLE": 0,
+    "FIRST_RECOMMENDATION_WORK": 0,
+    "REGIONALIZATION_PROVIDER_CALLS": 0,
+    "REGIONALIZATION_STAGE2": 0,
+    "GROUND_TRUTH_CHANGES": 0,
+    "NEW_RECOMMENDED_HOLDOUT": 0,
+    "PROVIDER_CALLS": 0,
+    "AIRTABLE_WRITES": 0,
+    "DEPLOYS": 0
+  },
+  "queryOrigin": {
+    "STATUS": "RESEARCH_COMPLETE_NO_PRODUCTIZATION",
+    "PRODUCTION_DIMENSION": "NO",
+    "STAGE_2_CLAUDE": "NOT_PLANNED"
+  },
+  "presence": {
+    "STATUS": "PRODUCTION_VALIDATED",
+    "CHANGED": "NO"
+  },
+  "recommendedBaseline": {
+    "CURRENT_RESOLVER_VERSION": "ai_visibility_entity_resolver_v2_1_contextual",
+    "CURRENT_CLASSIFIER_VERSION": "ai_visibility_recommendation_classifier_v4_1",
+    "CURRENT_EVIDENCE_VERSION": "ai_visibility_recommendation_evidence_v4_1",
+    "CURRENT_RULES": {
+      "recommendedTrueInternalRoles": [
+        "first_recommendation",
+        "ranked_recommendation",
+        "explicit_recommendation"
+      ],
+      "recommendedFalseIncludes": [
+        "associated_option",
+        "comparator",
+        "discussed",
+        "passing_mention",
+        "source_only",
+        "negative_or_qualified",
+        "no_mention"
+      ],
+      "presenceRequired": true,
+      "failClosedIfPresenceFalse": true,
+      "decisionTreeSummary": [
+        "negative cue → negative_or_qualified (not Recommended)",
+        "lead cue / rank position 1 → first_recommendation (Recommended)",
+        "confirmed rank position >1 → ranked_recommendation (Recommended)",
+        "directPositiveCue or sectionPositiveCue → explicit_recommendation (Recommended)",
+        "considerationSetCue / consideration section membership → associated_option (NOT Recommended)",
+        "comparator / source-only / incidental → non-Recommended roles",
+        "default → discussed (NOT Recommended)"
+      ]
+    },
+    "sourceArtifact": "production-signal-taxonomy-study.json#candidateE.benchmarks.v4.1.RECOMMENDED_FLAG",
+    "DEV_N": 290,
+    "TP": 47,
+    "TN": 211,
+    "FP": 1,
+    "FN": 31,
+    "PRECISION": 0.9791666666666666,
+    "RECALL": 0.6025641025641025,
+    "F1": 0.7460317460317459,
+    "PRECISION_PCT": "97.92%",
+    "RECALL_PCT": "60.26%",
+    "F1_PCT": "74.60%",
+    "snapshotCrossCheck": {
+      "DEV_N": 290,
+      "precision": 0.9791666666666666,
+      "recall": 0.6025641025641025,
+      "f1": 0.7460317460317459,
+      "matchesLiveAudit": true
+    }
+  },
+  "errorTaxonomy": {
+    "disagreementN": 32,
+    "expectedDisagreementN": 32,
+    "counts": {
+      "shortlist_wording": 6,
+      "implicit_recommendation": 0,
+      "recommendation_in_table_list": 3,
+      "conditional_recommendation": 0,
+      "qualified_recommendation": 2,
+      "comparator_mistaken_for_recommendation": 0,
+      "descriptive_mention_mistaken_for_recommendation": 0,
+      "negative_recommendation": 0,
+      "parent_sibling_confusion": 0,
+      "recommendation_scope_mismatch": 13,
+      "multi_entity_sentence_ambiguity": 8,
+      "other": 0
+    },
+    "byErrorType": {
+      "FP": 1,
+      "FN": 31
+    },
+    "fnPredRoleHistogram": {
+      "discussed": 25,
+      "passing_mention": 1,
+      "associated_option": 5
+    },
+    "fpHumanRoleHistogram": {
+      "associated_option": 1
+    },
+    "samples": {
+      "FP": [
+        {
+          "caseId": "v2_cand_6ca6d57f",
+          "entity": "Design Hotels",
+          "errorType": "FP",
+          "humanRole": "associated_option",
+          "predRole": "explicit_recommendation",
+          "humanRecommended": false,
+          "predRecommended": true,
+          "category": "shortlist_wording",
+          "snippet": "bution. * **The Leading Hotels of the World (LHW):** Highly selective; typically considered by multi-generational, iconic luxury resort owners in top Mexican destinations. * **Design Hotels (Marriott-affiliated):** A top pick for architecture- and art-focused boutique properties, granting access to Marriott distribution while keeping strong creative independence. *"
+        }
+      ],
+      "FN": [
+        {
+          "caseId": "v2_cand_024fcf9c",
+          "entity": "Preferred Hotels & Resorts",
+          "errorType": "FN",
+          "humanRole": "first_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "multi_entity_sentence_ambiguity",
+          "snippet": "owned by a major chain** but offer sales, marketing, distribution, and representation services — with greater flexibility and lower standardization requirements. --- ### 7. 🏛️ Preferred Hotels & Resorts This is one of the most active consortiums in Mexico. Through their affiliation with Preferred Hotels & Resorts, independent hotels in Mexico can maintain autonomy in their opera"
+        },
+        {
+          "caseId": "v2_cand_035ffe13",
+          "entity": "Small Luxury Hotels of the World",
+          "errorType": "FN",
+          "humanRole": "first_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "recommendation_scope_mismatch",
+          "snippet": "for an engine to help them grow. - **LXR Hotels & Resorts** (Luxury): Hilton maintains LXR Hotels & Resorts for the luxury end, and in 2024, also announced a partnership with **Small Luxury Hotels of the World (SLH)**. --- ### 🟣 Hyatt Hotels Corporation Hyatt has three soft-brand offerings: **The Unbound Collection by Hyatt** (upper-upscale to luxury), **Destination by Hyatt** (up"
+        },
+        {
+          "caseId": "v2_cand_07cbcda0",
+          "entity": "Preferred Hotels & Resorts",
+          "errorType": "FN",
+          "humanRole": "first_recommendation",
+          "predRole": "passing_mention",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "multi_entity_sentence_ambiguity",
+          "snippet": "ioned in the results include affiliations connected to large chains such as **Marriott International** and **Choice Hotels International**, as well as representation groups like **Preferred Hotels & Resorts** and **The Leading Hotels of the World**.[7] For an owner, the appeal is that these models typically provide: - **Brand distribution and reservations support** through global s"
+        },
+        {
+          "caseId": "v2_cand_090e59ac",
+          "entity": "Ascend Hotel Collection",
+          "errorType": "FN",
+          "humanRole": "ranked_recommendation",
+          "predRole": "associated_option",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "shortlist_wording",
+          "snippet": "d” y su “autonomía e independencia”.[1] - **Radisson Individuals**, porque agrupa hoteles que conservan sus “características únicas” y una personalidad boutique distintiva.[3] - **Ascend Hotel Collection** de Choice Hotels, descrita como una *soft brand* para propiedades boutique con flexibilidad de afiliación.[4] - **Vignette Collection** de IHG, que forma parte de su portafolio"
+        },
+        {
+          "caseId": "v2_cand_0a8cfa16",
+          "entity": "DoubleTree by Hilton",
+          "errorType": "FN",
+          "humanRole": "ranked_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "multi_entity_sentence_ambiguity",
+          "snippet": "cognised hotel brands globally and has built a powerful franchise and management platform across all major segments. Its upscale brands include Canopy by Hilton, Curio Collection, DoubleTree by Hilton, Hilton Hotels & Resorts, and Tapestry Collection, while luxury brands include Conrad Hotels & Resorts, LXR Hotels & Resorts, and Waldorf Astoria Hotels & Resorts. For upper-ups"
+        },
+        {
+          "caseId": "v2_cand_1550f44a",
+          "entity": "Preferred Hotels & Resorts",
+          "errorType": "FN",
+          "humanRole": "first_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "recommendation_scope_mismatch",
+          "snippet": "ity For owners who want the **least restrictive** affiliation of all (no hard franchise standards, no PIP mandates), voluntary/independent consortiums are worth considering: - **Preferred Hotels & Resorts** – Considered the most flexible option, Preferred Hotels & Resorts offers five distinct collections to fit different asset classes and provides excellent sales support for MICE"
+        },
+        {
+          "caseId": "v2_cand_198ab403",
+          "entity": "Preferred Hotels & Resorts",
+          "errorType": "FN",
+          "humanRole": "first_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "qualified_recommendation",
+          "snippet": "os que **no desean pertenecer a una gran cadena corporativa** pero necesitan presencia internacional, estándares de calidad certificados y canales de distribución globales: * **Preferred Hotels & Resorts:** Una de las redes independientes más grandes del mundo. Ofrece diferentes colecciones (*Legend, LVX, Lifestyle, Connect*) según el nivel de lujo. Es muy fuerte en América Latina"
+        },
+        {
+          "caseId": "v2_cand_2cad5049",
+          "entity": "Sheraton",
+          "errorType": "FN",
+          "humanRole": "ranked_recommendation",
+          "predRole": "associated_option",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "shortlist_wording",
+          "snippet": "come at a lower price point. --- ## 🔑 Key Upper-Upscale Brands to Consider for Mexico ### **Marriott International** Upper-upscale brands from Marriott include **Westin**, **Sheraton**, **Le Méridien**, and **Renaissance**. - **Westin** – Known for wellness positioning, signature Sleep Experience, and strong resort credentials, well-suited for both urban and"
+        },
+        {
+          "caseId": "v2_cand_3468ce7e",
+          "entity": "Design Hotels",
+          "errorType": "FN",
+          "humanRole": "ranked_recommendation",
+          "predRole": "associated_option",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "shortlist_wording",
+          "snippet": "y cited choices include: - **Preferred Hotels & Resorts** — a collection model that lets independent hotels keep their own identity while affiliating with a larger brand.[20] - **Design Hotels** — typically used for design-led, distinctive properties that want brand recognition without losing a strong local or independent character.[4] - **Leading Hotels of the World**"
+        },
+        {
+          "caseId": "v2_cand_37210b41",
+          "entity": "Preferred Hotels & Resorts",
+          "errorType": "FN",
+          "humanRole": "first_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "recommendation_scope_mismatch",
+          "snippet": "ORCIOS INDEPENDIENTES (máxima preservación de identidad) Para propietarios que desean aún menos injerencia de marca, los consorcios o cadenas voluntarias son la alternativa: - **Preferred Hotels & Resorts**: Es la mayor marca de hoteles independientes del mundo, con más de 700 hoteles en su portafolio en 80 países. - **Small Luxury Hotels of the World (SLH)**: Con 520 hoteles en"
+        },
+        {
+          "caseId": "v2_cand_43f183de",
+          "entity": "Westin",
+          "errorType": "FN",
+          "humanRole": "first_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "recommendation_scope_mismatch",
+          "snippet": "tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros de negocios como de ocio: **Hyatt Regency**, **Westin**, **Sheraton**, **Le Méridien**, **Renaissance**, **InterContinental**, **Hilton**, **Wyndham Grand** y, según el posicionamiento, **Kimpton** o **Hyatt Centric**.[2][4][18] Si"
+        },
+        {
+          "caseId": "v2_cand_53e95635",
+          "entity": "Marriott Hotels",
+          "errorType": "FN",
+          "humanRole": "ranked_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "multi_entity_sentence_ambiguity",
+          "snippet": "branded options in the search results are **Radisson Blu**, **Autograph Collection**, and **25hours Hotel**; broader upper-upscale/luxury-adjacent choices in Europe also include **Marriott Hotels**, **Hilton Hotels & Resorts**, **Sheraton**, **Hyatt Regency**, **InterContinental**, **Sofitel**, **NH Collection**, and **Kempinski**.[1][2][4][6][12][15] The most directly su"
+        },
+        {
+          "caseId": "v2_cand_5bd0176f",
+          "entity": "Curio Collection by Hilton",
+          "errorType": "FN",
+          "humanRole": "ranked_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "recommendation_scope_mismatch",
+          "snippet": "conversión de un activo *mid-size*: - **Hyatt Regency** o **Hyatt Centric** - **Westin** - **Sheraton** - **Le Méridien** - **Renaissance** - **InterContinental** - **Hilton** o **Curio Collection** - **Kimpton** - **Wyndham Grand** o **W** - **Crowne Plaza** si el enfoque es más corporativo y de volumen.[2][4][18] La elección final depende de la mezcla de demanda del dest"
+        },
+        {
+          "caseId": "v2_cand_5dc534cd",
+          "entity": "Sheraton",
+          "errorType": "FN",
+          "humanRole": "ranked_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "recommendation_scope_mismatch",
+          "snippet": "en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros de negocios como de ocio: **Hyatt Regency**, **Westin**, **Sheraton**, **Le Méridien**, **Renaissance**, **InterContinental**, **Hilton**, **Wyndham Grand** y, según el posicionamiento, **Kimpton** o **Hyatt Centric**.[2][4][18] Si el propietario"
+        },
+        {
+          "caseId": "v2_cand_64751348",
+          "entity": "Preferred Hotels & Resorts",
+          "errorType": "FN",
+          "humanRole": "first_recommendation",
+          "predRole": "discussed",
+          "humanRecommended": true,
+          "predRecommended": false,
+          "category": "recommendation_scope_mismatch",
+          "snippet": "Completa) Muchos propietarios en México evalúan alternativas que no implican la entrada a las \"Big 5\" de la franquicia, sino alianzas de representación y mercadotecnia global: * **Preferred Hotels & Resorts** (categorías Legend, L.V.X., Lifestyle, Connect). * **The Leading Hotels of the World (LHW)** (Ultra lujo). * **Small Luxury Hotels of the World (SLH)** (Boutique de lujo; cuenta"
+        }
+      ]
+    },
+    "allDisagreements": [
+      {
+        "caseId": "v2_cand_024fcf9c",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "multi_entity_sentence_ambiguity",
+        "snippet": "owned by a major chain** but offer sales, marketing, distribution, and representation services — with greater flexibility and lower standardization requirements. --- ### 7. 🏛️ Preferred Hotels & Resorts This is one of the most active consortiums in Mexico. Through their affiliation with Preferred Hotels & Resorts, independent hotels in Mexico can maintain autonomy in their opera"
+      },
+      {
+        "caseId": "v2_cand_035ffe13",
+        "entity": "Small Luxury Hotels of the World",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "for an engine to help them grow. - **LXR Hotels & Resorts** (Luxury): Hilton maintains LXR Hotels & Resorts for the luxury end, and in 2024, also announced a partnership with **Small Luxury Hotels of the World (SLH)**. --- ### 🟣 Hyatt Hotels Corporation Hyatt has three soft-brand offerings: **The Unbound Collection by Hyatt** (upper-upscale to luxury), **Destination by Hyatt** (up"
+      },
+      {
+        "caseId": "v2_cand_07cbcda0",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "passing_mention",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "multi_entity_sentence_ambiguity",
+        "snippet": "ioned in the results include affiliations connected to large chains such as **Marriott International** and **Choice Hotels International**, as well as representation groups like **Preferred Hotels & Resorts** and **The Leading Hotels of the World**.[7] For an owner, the appeal is that these models typically provide: - **Brand distribution and reservations support** through global s"
+      },
+      {
+        "caseId": "v2_cand_090e59ac",
+        "entity": "Ascend Hotel Collection",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "associated_option",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "shortlist_wording",
+        "snippet": "d” y su “autonomía e independencia”.[1] - **Radisson Individuals**, porque agrupa hoteles que conservan sus “características únicas” y una personalidad boutique distintiva.[3] - **Ascend Hotel Collection** de Choice Hotels, descrita como una *soft brand* para propiedades boutique con flexibilidad de afiliación.[4] - **Vignette Collection** de IHG, que forma parte de su portafolio"
+      },
+      {
+        "caseId": "v2_cand_0a8cfa16",
+        "entity": "DoubleTree by Hilton",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "multi_entity_sentence_ambiguity",
+        "snippet": "cognised hotel brands globally and has built a powerful franchise and management platform across all major segments. Its upscale brands include Canopy by Hilton, Curio Collection, DoubleTree by Hilton, Hilton Hotels & Resorts, and Tapestry Collection, while luxury brands include Conrad Hotels & Resorts, LXR Hotels & Resorts, and Waldorf Astoria Hotels & Resorts. For upper-ups"
+      },
+      {
+        "caseId": "v2_cand_1550f44a",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "ity For owners who want the **least restrictive** affiliation of all (no hard franchise standards, no PIP mandates), voluntary/independent consortiums are worth considering: - **Preferred Hotels & Resorts** – Considered the most flexible option, Preferred Hotels & Resorts offers five distinct collections to fit different asset classes and provides excellent sales support for MICE"
+      },
+      {
+        "caseId": "v2_cand_198ab403",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "qualified_recommendation",
+        "snippet": "os que **no desean pertenecer a una gran cadena corporativa** pero necesitan presencia internacional, estándares de calidad certificados y canales de distribución globales: * **Preferred Hotels & Resorts:** Una de las redes independientes más grandes del mundo. Ofrece diferentes colecciones (*Legend, LVX, Lifestyle, Connect*) según el nivel de lujo. Es muy fuerte en América Latina"
+      },
+      {
+        "caseId": "v2_cand_2cad5049",
+        "entity": "Sheraton",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "associated_option",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "shortlist_wording",
+        "snippet": "come at a lower price point. --- ## 🔑 Key Upper-Upscale Brands to Consider for Mexico ### **Marriott International** Upper-upscale brands from Marriott include **Westin**, **Sheraton**, **Le Méridien**, and **Renaissance**. - **Westin** – Known for wellness positioning, signature Sleep Experience, and strong resort credentials, well-suited for both urban and"
+      },
+      {
+        "caseId": "v2_cand_3468ce7e",
+        "entity": "Design Hotels",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "associated_option",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "shortlist_wording",
+        "snippet": "y cited choices include: - **Preferred Hotels & Resorts** — a collection model that lets independent hotels keep their own identity while affiliating with a larger brand.[20] - **Design Hotels** — typically used for design-led, distinctive properties that want brand recognition without losing a strong local or independent character.[4] - **Leading Hotels of the World**"
+      },
+      {
+        "caseId": "v2_cand_37210b41",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "ORCIOS INDEPENDIENTES (máxima preservación de identidad) Para propietarios que desean aún menos injerencia de marca, los consorcios o cadenas voluntarias son la alternativa: - **Preferred Hotels & Resorts**: Es la mayor marca de hoteles independientes del mundo, con más de 700 hoteles en su portafolio en 80 países. - **Small Luxury Hotels of the World (SLH)**: Con 520 hoteles en"
+      },
+      {
+        "caseId": "v2_cand_43f183de",
+        "entity": "Westin",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros de negocios como de ocio: **Hyatt Regency**, **Westin**, **Sheraton**, **Le Méridien**, **Renaissance**, **InterContinental**, **Hilton**, **Wyndham Grand** y, según el posicionamiento, **Kimpton** o **Hyatt Centric**.[2][4][18] Si"
+      },
+      {
+        "caseId": "v2_cand_53e95635",
+        "entity": "Marriott Hotels",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "multi_entity_sentence_ambiguity",
+        "snippet": "branded options in the search results are **Radisson Blu**, **Autograph Collection**, and **25hours Hotel**; broader upper-upscale/luxury-adjacent choices in Europe also include **Marriott Hotels**, **Hilton Hotels & Resorts**, **Sheraton**, **Hyatt Regency**, **InterContinental**, **Sofitel**, **NH Collection**, and **Kempinski**.[1][2][4][6][12][15] The most directly su"
+      },
+      {
+        "caseId": "v2_cand_5bd0176f",
+        "entity": "Curio Collection by Hilton",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "conversión de un activo *mid-size*: - **Hyatt Regency** o **Hyatt Centric** - **Westin** - **Sheraton** - **Le Méridien** - **Renaissance** - **InterContinental** - **Hilton** o **Curio Collection** - **Kimpton** - **Wyndham Grand** o **W** - **Crowne Plaza** si el enfoque es más corporativo y de volumen.[2][4][18] La elección final depende de la mezcla de demanda del dest"
+      },
+      {
+        "caseId": "v2_cand_5dc534cd",
+        "entity": "Sheraton",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros de negocios como de ocio: **Hyatt Regency**, **Westin**, **Sheraton**, **Le Méridien**, **Renaissance**, **InterContinental**, **Hilton**, **Wyndham Grand** y, según el posicionamiento, **Kimpton** o **Hyatt Centric**.[2][4][18] Si el propietario"
+      },
+      {
+        "caseId": "v2_cand_64751348",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "Completa) Muchos propietarios en México evalúan alternativas que no implican la entrada a las \"Big 5\" de la franquicia, sino alianzas de representación y mercadotecnia global: * **Preferred Hotels & Resorts** (categorías Legend, L.V.X., Lifestyle, Connect). * **The Leading Hotels of the World (LHW)** (Ultra lujo). * **Small Luxury Hotels of the World (SLH)** (Boutique de lujo; cuenta"
+      },
+      {
+        "caseId": "v2_cand_6c5eef29",
+        "entity": "Hotel Indigo",
+        "errorType": "FN",
+        "humanRole": "explicit_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_in_table_list",
+        "snippet": "ly requires meaningful design, F&B and operating capabilities. ([development.ihg.com](https://development.ihg.com/hotel-brands/kimpton-hotels-restaurants?utm_source=openai)) | | **Hotel Indigo — IHG** | Upper-upscale boutique built explicitly around neighborhood stories, locally inspired design and destination restaurants. | One of the clearest fits when the goal is “lo"
+      },
+      {
+        "caseId": "v2_cand_6ca6d57f",
+        "entity": "Design Hotels",
+        "errorType": "FP",
+        "humanRole": "associated_option",
+        "predRole": "explicit_recommendation",
+        "humanRecommended": false,
+        "predRecommended": true,
+        "category": "shortlist_wording",
+        "snippet": "bution. * **The Leading Hotels of the World (LHW):** Highly selective; typically considered by multi-generational, iconic luxury resort owners in top Mexican destinations. * **Design Hotels (Marriott-affiliated):** A top pick for architecture- and art-focused boutique properties, granting access to Marriott distribution while keeping strong creative independence. *"
+      },
+      {
+        "caseId": "v2_cand_75f7cc02",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "explicit_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "the World (SLH):** Boutique, high-end independent properties (Note: SLH announced a strategic partnership with Hilton to allow Hilton Honors redemptions at SLH properties). * **Preferred Hotels & Resorts:** Features several tiers (Legend, L.V.X., Connect, Preferred Residences) catering to luxury and upscale independents. * **Relais & Châteaux:** Focused heavily on gourmet dining"
+      },
+      {
+        "caseId": "v2_cand_7787c910",
+        "entity": "Autograph Collection",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "multi_entity_sentence_ambiguity",
+        "snippet": "primarily consider **brands with a proven upper-upscale classification and strong European footprint**. The clearest branded options in the search results are **Radisson Blu**, **Autograph Collection**, and **25hours Hotel**; broader upper-upscale/luxury-adjacent choices in Europe also include **Marriott Hotels**, **Hilton Hotels & Resorts**, **Sheraton**, **Hyatt Regency**, *"
+      },
+      {
+        "caseId": "v2_cand_786bec95",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "explicit_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "Collection** (luxury), and the more recently launched **Handwritten Collection** (midscale), broadening Accor's unrivaled brand portfolio across different segments. --- ### 🏨 Preferred Hotels & Resorts / Independent Collections **Preferred Hotels & Resorts** is also active in Mexico, with boutique properties like the Volga in Mexico City's Colonia Cuauhtémoc operating as part o"
+      },
+      {
+        "caseId": "v2_cand_79cb1931",
+        "entity": "Curio Collection by Hilton",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "Al posicionar un hotel en el Caribe y América Latina alrededor de una **experiencia diferenciada** y con **carácter local**, las marcas lifestyle más relevantes a considerar son **Curio Collection by Hilton**, **Tapestry Collection by Hilton**, **Vignette Collection**, **Autograph Collection**, **The Luxury Collection**, **W Hotels**, **EDITION**, **Kimpton**, **Destination by Hyatt*"
+      },
+      {
+        "caseId": "v2_cand_85350e7d",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "multi_entity_sentence_ambiguity",
+        "snippet": "perational constraints. Instead, they choose representation networks that provide global sales, marketing, and distribution without taking over the hotel's operating model. * **Preferred Hotels & Resorts:** Very dominant in Mexico’s luxury and upscale resort sector (divided into Legend, L.V.X., Lifestyle, and Connect collections). It allows total operational independence while off"
+      },
+      {
+        "caseId": "v2_cand_93762692",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "n modelo de franquicia tradicional) Si la flexibilidad deseada incluye **no firmar un contrato de franquicia de largo plazo** ni pagar regalías fijas sobre ingresos brutos: * **Preferred Hotels & Resorts (iPrefer):** * **Perfil:** Colección de hoteles independientes de lujo y clase superior. * **Por qué considerarla:** No es una franquicia; es una red de afiliación y c"
+      },
+      {
+        "caseId": "v2_cand_967d73b3",
+        "entity": "Hotel Indigo",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "associated_option",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "shortlist_wording",
+        "snippet": "afiliación.[4] - **Vignette Collection** de IHG, que forma parte de su portafolio de marcas para conversiones y hoteles con más individualidad dentro de una cadena global.[13] - **Hotel Indigo** y **Kimpton**, también de IHG, que suelen posicionarse como marcas con fuerte componente de diseño e identidad propia.[13] - **The Luxury Collection**, **Design Hotels**, **Smal"
+      },
+      {
+        "caseId": "v2_cand_a16a0bd3",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "explicit_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "multi_entity_sentence_ambiguity",
+        "snippet": "ution and marketing benefits without a full franchise relationship: These include **Leading Hotels of the World**, **Relais & Châteaux**, **Small Luxury Hotels of the World**, **Preferred Hotels & Resorts**, **Design Hotels**, and **Historic Hotels Worldwide**. Under hybrid partnership models, a major chain (e.g., Hilton) signs an exclusive distribution agreement with a boutique"
+      },
+      {
+        "caseId": "v2_cand_b733314b",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_in_table_list",
+        "snippet": "MEMBRESÍAS INDEPENDIENTES Para propietarios que desean **distribución global sin comprometer la identidad** con ninguna gran cadena: | Consorcio | Posicionamiento | |---|---| | **Preferred Hotels & Resorts** | Luxury / Upper-Upscale independiente | | **Small Luxury Hotels of the World (SLH)** | Luxury boutique / Upper-Upscale | | **Global Hotel Alliance (GHA)** | Multi-segmento inde"
+      },
+      {
+        "caseId": "v2_cand_b74cb48a",
+        "entity": "Courtyard by Marriott",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "multi_entity_sentence_ambiguity",
+        "snippet": "owners and developers in Mexico shortlist **Upper-Upscale** hotel brands (the tier sitting directly below ultra-luxury like Four Seasons/St. Regis and above midscale/upscale like Courtyard/Fiesta Inn), choices depend on whether the project is **urban vs. resort**, **European Plan (EP) vs. All-Inclusive (AI)**, or a **ground-up build vs. conversion**. Key brands are"
+      },
+      {
+        "caseId": "v2_cand_c1325b8b",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "de franquicia tradicional**, no cambiar el sistema PMS/operativo y mantener 100% el control del hotel, la mejor alternativa son las alianzas de comercialización y mercadeo: * **Preferred Hotels & Resorts (Especialmente colecciones *Connect* o *Lifestyle*)** * **Por qué considerarla:** Es un club de marcas independientes. No impone manuales de marca de una cadena; evalúa el h"
+      },
+      {
+        "caseId": "v2_cand_c1bc5a0b",
+        "entity": "Preferred Hotels & Resorts",
+        "errorType": "FN",
+        "humanRole": "explicit_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_scope_mismatch",
+        "snippet": "tique luxury properties. *Note:* SLH has a strategic distribution partnership with Hilton, allowing independent hotels to tap into Hilton Honors while remaining independent. * **Preferred Hotels & Resorts:** A global soft-brand alternative offering five distinct collections (Legend, L.V.X., Lifestyle, Connect, Preferred Residences) without chain ownership requirements. --- ### Ke"
+      },
+      {
+        "caseId": "v2_cand_d72d9741",
+        "entity": "Autograph Collection",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "recommendation_in_table_list",
+        "snippet": "exión real con el destino. La tendencia apunta hacia espacios más íntimos, sostenibles y pensados para integrarse con su entorno. --- ## 🔵 GRUPO MARRIOTT INTERNATIONAL ### 1. Autograph Collection La marca más activa en la región en términos de carácter local e identidad de destino. - Autograph Collection ha expandido su portafolio caribeño con propiedades como Donoma Las"
+      },
+      {
+        "caseId": "v2_cand_e69ac0b8",
+        "entity": "Autograph Collection",
+        "errorType": "FN",
+        "humanRole": "first_recommendation",
+        "predRole": "discussed",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "qualified_recommendation",
+        "snippet": "o, personalidad del inmueble y presupuesto de renovación. ## Lista corta recomendada | Prioridad | Marca | Mejor encaje | Consideración principal | |---|---|---|---| | **1** | **Autograph Collection — Marriott** | Hotel distintivo, histórico, lifestyle o resort capaz de sostener ADR alto | Gran plataforma comercial, pero normalmente exige un producto y narrativa muy diferenci"
+      },
+      {
+        "caseId": "v2_cand_ed35e8e8",
+        "entity": "Kimpton Hotels",
+        "errorType": "FN",
+        "humanRole": "ranked_recommendation",
+        "predRole": "associated_option",
+        "humanRecommended": true,
+        "predRecommended": false,
+        "category": "shortlist_wording",
+        "snippet": "**InterContinental**, **Westin**, **Sheraton**, **Le Méridien**, **Renaissance**, **Radisson Blu**, **Barceló Hotels & Resorts**, **Wyndham Grand**, **Hilton Curio Collection**, **Kimpton**, **DoubleTree** y, en algunos casos, **Marriott** y **Tribute Portfolio**.[1][2][4][18] Las opciones más sólidas para este posicionamiento, por su encaje de marca y presencia o"
+      }
+    ]
+  },
+  "recommendedArchitecture": {
+    "SIGNAL": "AI_SIGNAL_RECOMMENDED",
+    "BINARY": "YES",
+    "PRESENCE_REQUIRED": "YES",
+    "OLD_10_CLASS_PRODUCTION_GATE": "NO",
+    "simplificationFirst": "Prefer observable recommendation language + structural context + canonical entity resolution; avoid recreating full human nuance beyond validated reliability.",
+    "definitionGap": {
+      "productDefinitionIncludes": "shortlist membership; option owner should consider; ranked/unranked affirmative options",
+      "currentClassifierMapsConsiderationTo": "associated_option → AI_SIGNAL_RECOMMENDED = false",
+      "severity": "MATERIAL_DEFINITION_GAP",
+      "note": "Product contract for AI_SIGNAL_RECOMMENDED treats shortlist / affirmative option membership as TRUE. Current v4.1 production mapping excludes associated_option / consideration-set cues. Resolve definition before recall remediation."
+    }
+  },
+  "readiness": {
+    "CURRENT_STATUS": "NOT_READY",
+    "PRODUCTION_GATE": {
+      "PRECISION": ">= 98%",
+      "RECALL": ">= 98%"
+    },
+    "recommendationShare": "BLOCKED until Recommended certification",
+    "freshHoldout": "REQUIRED after DEV/Reserve gate; NOT generated this phase"
+  },
+  "nextStep": "RECOMMENDED_SIGNAL_DEFINITION_REVIEW_REQUIRED",
+  "nextStepRationale": "Largest FN cluster maps to associated_option / shortlist-consideration wording that current rules treat as NOT Recommended, while the product binary definition treats affirmative shortlist/option membership as Recommended TRUE. Resolve this contract before classifier remediation."
+}

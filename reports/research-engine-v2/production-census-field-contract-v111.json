@@ -1,0 +1,2226 @@
+{
+  "version": "production-census-field-contract-v111-v1",
+  "contract_id": "production_census_field_contract_v1.1.1",
+  "generated_at": "2026-08-05T12:22:46.161Z",
+  "status": "production_census_field_contract_v111_frozen_radar_fields_missing_v112_needed",
+  "duration_ms": 2608,
+  "read_only": true,
+  "airtable_writes": false,
+  "brand_explorer_writes": false,
+  "token_masked": "patEUo…14eb",
+  "base_id_masked": "appCCU…foLk",
+  "table_id": "tbl9aY5ijiuIzzWam",
+  "validation": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam",
+    "record_count": 666,
+    "field_count": 95,
+    "duplicates": 0,
+    "production_use_ok": 666,
+    "enrichment_not_started": 666,
+    "human_review_true": 4,
+    "description_filled": 0,
+    "amenities_filled": 0,
+    "owner_filled": 0,
+    "operator_filled": 0,
+    "rooms_filled": 0,
+    "opening_filled": 0,
+    "renovation_filled": 0,
+    "affiliation_start_filled": 0,
+    "zero_zero": 0,
+    "renames_present": {
+      "Last Reviewed Date": true,
+      "Resort / Leisure Flag": true,
+      "Extended Stay Flag": true
+    },
+    "old_names_absent": {
+      "Last Verified Date": true,
+      "Resort Amenities Flag": true,
+      "Extended Stay Amenity Flag": true
+    },
+    "views": [
+      {
+        "name": "Grid view",
+        "visible_field_count": 89
+      },
+      {
+        "name": "Census - Core Identity",
+        "visible_field_count": 16
+      },
+      {
+        "name": "Census - Enrichment",
+        "visible_field_count": 25
+      },
+      {
+        "name": "Census - Owner Operator",
+        "visible_field_count": 17
+      },
+      {
+        "name": "Census - Steward Review",
+        "visible_field_count": 14
+      }
+    ],
+    "pass": true
+  },
+  "contract_coverage": {
+    "live_field_count": 95,
+    "contract_entry_count": 95,
+    "unlisted_live_fields": [],
+    "missing_from_live": []
+  },
+  "field_groups": {
+    "A. Core Identity": [
+      {
+        "name": "Property Name",
+        "group": "A. Core Identity",
+        "primary": "contract_required",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Canonical Property Name",
+        "group": "A. Core Identity",
+        "primary": "contract_optional",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Property Identity Key",
+        "group": "A. Core Identity",
+        "primary": "contract_required",
+        "tags": [
+          "internal_only",
+          "source_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Phone",
+        "group": "A. Core Identity",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Official Property URL",
+        "group": "A. Core Identity",
+        "primary": "contract_optional",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Future Opening Flag",
+        "group": "A. Core Identity",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      }
+    ],
+    "B. Geography": [
+      {
+        "name": "Country",
+        "group": "B. Geography",
+        "primary": "contract_required",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "State / Region",
+        "group": "B. Geography",
+        "primary": "contract_required",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "City",
+        "group": "B. Geography",
+        "primary": "contract_required",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Address",
+        "group": "B. Geography",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Latitude",
+        "group": "B. Geography",
+        "primary": "contract_optional",
+        "tags": [
+          "public_safe_if_approved",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Present for many rows; never invent 0,0"
+      },
+      {
+        "name": "Longitude",
+        "group": "B. Geography",
+        "primary": "contract_optional",
+        "tags": [
+          "public_safe_if_approved",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Present for many rows; never invent 0,0"
+      },
+      {
+        "name": "Market / Submarket",
+        "group": "B. Geography",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane — Dealality geography, not STR"
+      }
+    ],
+    "C. Brand / Affiliation": [
+      {
+        "name": "Current Brand",
+        "group": "C. Brand / Affiliation",
+        "primary": "contract_required",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Brand Family",
+        "group": "C. Brand / Affiliation",
+        "primary": "contract_optional",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Brand Explorer Slug if mapped",
+        "group": "C. Brand / Affiliation",
+        "primary": "internal_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Affiliation Status",
+        "group": "C. Brand / Affiliation",
+        "primary": "contract_required",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Affiliation As-Of Date",
+        "group": "C. Brand / Affiliation",
+        "primary": "contract_optional",
+        "tags": [
+          "source_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Affiliation Start Date",
+        "group": "C. Brand / Affiliation",
+        "primary": "contract_optional",
+        "tags": [
+          "source_only",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Blocked in first enrichment lane"
+      },
+      {
+        "name": "Prior Brand",
+        "group": "C. Brand / Affiliation",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Brand Confidence",
+        "group": "C. Brand / Affiliation",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      }
+    ],
+    "D. Source Evidence": [
+      {
+        "name": "Family / Source Family",
+        "group": "D. Source Evidence",
+        "primary": "contract_required",
+        "tags": [
+          "source_only",
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Source URL",
+        "group": "D. Source Evidence",
+        "primary": "contract_required",
+        "tags": [
+          "source_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Source Type",
+        "group": "D. Source Evidence",
+        "primary": "contract_optional",
+        "tags": [
+          "source_only",
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Source Confidence",
+        "group": "D. Source Evidence",
+        "primary": "governance_field",
+        "tags": [
+          "source_only",
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Discovery Date",
+        "group": "D. Source Evidence",
+        "primary": "contract_optional",
+        "tags": [
+          "source_only",
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "VIC Freeze Hash",
+        "group": "D. Source Evidence",
+        "primary": "contract_required",
+        "tags": [
+          "source_only",
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Hotel Property Source Evidence",
+        "group": "D. Source Evidence",
+        "primary": "internal_only",
+        "tags": [],
+        "notes": "Link inverse"
+      }
+    ],
+    "F. Description / Amenities": [
+      {
+        "name": "Hotel Description - Source Text",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "source_only",
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Hotel Description - AI Summary",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane — governed AI only"
+      },
+      {
+        "name": "Short Property Summary",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Not in first lane"
+      },
+      {
+        "name": "Property Positioning",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Not in first lane"
+      },
+      {
+        "name": "Amenities - Source Text",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "source_only",
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Amenities - Structured Tags",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "F&B Flag",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Meeting Space Flag",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Resort / Leisure Flag",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Extended Stay Flag",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Branded Residences Flag",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Mixed-Use Flag",
+        "group": "F. Description / Amenities",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Fitness Flag",
+        "group": "F. Description / Amenities",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet",
+          "internal_only"
+        ],
+        "notes": "Over-modeled — keep hidden; do not populate in first lane"
+      },
+      {
+        "name": "Pool Flag",
+        "group": "F. Description / Amenities",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet",
+          "internal_only"
+        ],
+        "notes": "Over-modeled — keep hidden; do not populate in first lane"
+      },
+      {
+        "name": "Parking Flag",
+        "group": "F. Description / Amenities",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet",
+          "internal_only"
+        ],
+        "notes": "Over-modeled — keep hidden; do not populate in first lane"
+      },
+      {
+        "name": "Airport Shuttle Flag",
+        "group": "F. Description / Amenities",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet",
+          "internal_only"
+        ],
+        "notes": "Over-modeled — keep hidden; do not populate in first lane"
+      },
+      {
+        "name": "Spa Flag",
+        "group": "F. Description / Amenities",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet",
+          "internal_only"
+        ],
+        "notes": "Over-modeled — keep hidden; do not populate in first lane"
+      },
+      {
+        "name": "Beach / Waterfront Flag",
+        "group": "F. Description / Amenities",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet",
+          "internal_only"
+        ],
+        "notes": "Over-modeled — keep hidden; do not populate in first lane"
+      }
+    ],
+    "G. Asset Context": [
+      {
+        "name": "Hotel Class / Segment",
+        "group": "G. Asset Context",
+        "primary": "enrichment_target",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Not in first lane"
+      },
+      {
+        "name": "Property Type",
+        "group": "G. Asset Context",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Asset Context",
+        "group": "G. Asset Context",
+        "primary": "enrichment_target",
+        "tags": [
+          "public_safe_if_approved"
+        ],
+        "notes": "First enrichment lane"
+      },
+      {
+        "name": "Rooms / Keys",
+        "group": "G. Asset Context",
+        "primary": "enrichment_target",
+        "tags": [
+          "source_only",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Blocked in first enrichment lane"
+      },
+      {
+        "name": "Rooms Source URL",
+        "group": "G. Asset Context",
+        "primary": "source_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Rooms Confidence",
+        "group": "G. Asset Context",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Building / Asset Notes",
+        "group": "G. Asset Context",
+        "primary": "enrichment_target",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Opening Date",
+        "group": "G. Asset Context",
+        "primary": "enrichment_target",
+        "tags": [
+          "source_only",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Blocked in first enrichment lane"
+      },
+      {
+        "name": "Opening Date Source URL",
+        "group": "G. Asset Context",
+        "primary": "source_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Renovation / Conversion Status",
+        "group": "G. Asset Context",
+        "primary": "enrichment_target",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Renovation / Conversion Date",
+        "group": "G. Asset Context",
+        "primary": "enrichment_target",
+        "tags": [
+          "source_only",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Blocked in first enrichment lane"
+      },
+      {
+        "name": "Renovation / Conversion Source URL",
+        "group": "G. Asset Context",
+        "primary": "source_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      }
+    ],
+    "H. Owner / Developer": [
+      {
+        "name": "Owner Name",
+        "group": "H. Owner / Developer",
+        "primary": "enrichment_target",
+        "tags": [
+          "source_only",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Blocked in first enrichment lane"
+      },
+      {
+        "name": "Owner Type",
+        "group": "H. Owner / Developer",
+        "primary": "enrichment_target",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Owner Source URL",
+        "group": "H. Owner / Developer",
+        "primary": "source_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Owner Confidence",
+        "group": "H. Owner / Developer",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Developer Name",
+        "group": "H. Owner / Developer",
+        "primary": "enrichment_target",
+        "tags": [
+          "source_only",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Blocked in first enrichment lane"
+      },
+      {
+        "name": "Developer Source URL",
+        "group": "H. Owner / Developer",
+        "primary": "source_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Developer Confidence",
+        "group": "H. Owner / Developer",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Ownership Review Status",
+        "group": "H. Owner / Developer",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      }
+    ],
+    "I. Operator / Management": [
+      {
+        "name": "Operator / Management Company",
+        "group": "I. Operator / Management",
+        "primary": "enrichment_target",
+        "tags": [
+          "source_only",
+          "do_not_use_publicly_yet"
+        ],
+        "notes": "Blocked in first enrichment lane"
+      },
+      {
+        "name": "Operator Type",
+        "group": "I. Operator / Management",
+        "primary": "enrichment_target",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Management Model",
+        "group": "I. Operator / Management",
+        "primary": "enrichment_target",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Operator Source URL",
+        "group": "I. Operator / Management",
+        "primary": "source_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Operator Confidence",
+        "group": "I. Operator / Management",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Operator Review Status",
+        "group": "I. Operator / Management",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Possible Operator Target",
+        "group": "I. Operator / Management",
+        "primary": "internal_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      }
+    ],
+    "J. Independent / Brand-Unconfirmed Handling": [
+      {
+        "name": "Independent Hotel Flag",
+        "group": "J. Independent / Brand-Unconfirmed Handling",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Independent Classification",
+        "group": "J. Independent / Brand-Unconfirmed Handling",
+        "primary": "contract_optional",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Brand-Unassigned Reason",
+        "group": "J. Independent / Brand-Unconfirmed Handling",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Possible Soft-Brand Candidate",
+        "group": "J. Independent / Brand-Unconfirmed Handling",
+        "primary": "internal_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Possible Brand Conversion Candidate",
+        "group": "J. Independent / Brand-Unconfirmed Handling",
+        "primary": "internal_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Possible Owner Outreach Target",
+        "group": "J. Independent / Brand-Unconfirmed Handling",
+        "primary": "internal_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Possible Financing Target",
+        "group": "J. Independent / Brand-Unconfirmed Handling",
+        "primary": "internal_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Possible Dealality Opportunity",
+        "group": "J. Independent / Brand-Unconfirmed Handling",
+        "primary": "internal_only",
+        "tags": [
+          "do_not_use_publicly_yet"
+        ],
+        "notes": ""
+      }
+    ],
+    "K. Enrichment Governance": [
+      {
+        "name": "Data Eligible",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Identity Confidence",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Production Use Status",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "contract_required",
+          "internal_only"
+        ],
+        "notes": "Must remain Census Only / Not Owner-Facing until product approval"
+      },
+      {
+        "name": "Data Confidence Tier",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Relationship Confidence",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Last Reviewed Date",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Next Review Needed",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Enrichment Status",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "contract_required"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Enrichment Priority",
+        "group": "K. Enrichment Governance",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      }
+    ],
+    "L. Steward Review": [
+      {
+        "name": "Steward Review Status",
+        "group": "L. Steward Review",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Human Review Required",
+        "group": "L. Steward Review",
+        "primary": "governance_field",
+        "tags": [
+          "contract_required"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Notes for Steward",
+        "group": "L. Steward Review",
+        "primary": "governance_field",
+        "tags": [
+          "internal_only"
+        ],
+        "notes": ""
+      },
+      {
+        "name": "Hotel Property Brand Affiliations",
+        "group": "L. Steward Review",
+        "primary": "internal_only",
+        "tags": [],
+        "notes": "Link inverse"
+      },
+      {
+        "name": "Hotel Property Steward Review",
+        "group": "L. Steward Review",
+        "primary": "internal_only",
+        "tags": [],
+        "notes": "Link inverse"
+      }
+    ]
+  },
+  "fields_flat": [
+    {
+      "name": "Property Name",
+      "group": "A. Core Identity",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Canonical Property Name",
+      "group": "A. Core Identity",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Property Identity Key",
+      "group": "A. Core Identity",
+      "primary": "contract_required",
+      "tags": [
+        "internal_only",
+        "source_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Phone",
+      "group": "A. Core Identity",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Official Property URL",
+      "group": "A. Core Identity",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Future Opening Flag",
+      "group": "A. Core Identity",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Country",
+      "group": "B. Geography",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "State / Region",
+      "group": "B. Geography",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "City",
+      "group": "B. Geography",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Address",
+      "group": "B. Geography",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Latitude",
+      "group": "B. Geography",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Present for many rows; never invent 0,0"
+    },
+    {
+      "name": "Longitude",
+      "group": "B. Geography",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Present for many rows; never invent 0,0"
+    },
+    {
+      "name": "Market / Submarket",
+      "group": "B. Geography",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane — Dealality geography, not STR"
+    },
+    {
+      "name": "Current Brand",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Brand Family",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_optional",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Brand Explorer Slug if mapped",
+      "group": "C. Brand / Affiliation",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Affiliation Status",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_required",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Affiliation As-Of Date",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_optional",
+      "tags": [
+        "source_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Affiliation Start Date",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_optional",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane"
+    },
+    {
+      "name": "Prior Brand",
+      "group": "C. Brand / Affiliation",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Brand Confidence",
+      "group": "C. Brand / Affiliation",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Family / Source Family",
+      "group": "D. Source Evidence",
+      "primary": "contract_required",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Source URL",
+      "group": "D. Source Evidence",
+      "primary": "contract_required",
+      "tags": [
+        "source_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Source Type",
+      "group": "D. Source Evidence",
+      "primary": "contract_optional",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Source Confidence",
+      "group": "D. Source Evidence",
+      "primary": "governance_field",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Discovery Date",
+      "group": "D. Source Evidence",
+      "primary": "contract_optional",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "VIC Freeze Hash",
+      "group": "D. Source Evidence",
+      "primary": "contract_required",
+      "tags": [
+        "source_only",
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Hotel Property Source Evidence",
+      "group": "D. Source Evidence",
+      "primary": "internal_only",
+      "tags": [],
+      "notes": "Link inverse"
+    },
+    {
+      "name": "Hotel Description - Source Text",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Hotel Description - AI Summary",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane — governed AI only"
+    },
+    {
+      "name": "Short Property Summary",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Not in first lane"
+    },
+    {
+      "name": "Property Positioning",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Not in first lane"
+    },
+    {
+      "name": "Amenities - Source Text",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Amenities - Structured Tags",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "F&B Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Meeting Space Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Resort / Leisure Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Extended Stay Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Branded Residences Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Mixed-Use Flag",
+      "group": "F. Description / Amenities",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Fitness Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane"
+    },
+    {
+      "name": "Pool Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane"
+    },
+    {
+      "name": "Parking Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane"
+    },
+    {
+      "name": "Airport Shuttle Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane"
+    },
+    {
+      "name": "Spa Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane"
+    },
+    {
+      "name": "Beach / Waterfront Flag",
+      "group": "F. Description / Amenities",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet",
+        "internal_only"
+      ],
+      "notes": "Over-modeled — keep hidden; do not populate in first lane"
+    },
+    {
+      "name": "Hotel Class / Segment",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Not in first lane"
+    },
+    {
+      "name": "Property Type",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Asset Context",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "public_safe_if_approved"
+      ],
+      "notes": "First enrichment lane"
+    },
+    {
+      "name": "Rooms / Keys",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane"
+    },
+    {
+      "name": "Rooms Source URL",
+      "group": "G. Asset Context",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Rooms Confidence",
+      "group": "G. Asset Context",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Building / Asset Notes",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Opening Date",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane"
+    },
+    {
+      "name": "Opening Date Source URL",
+      "group": "G. Asset Context",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Renovation / Conversion Status",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Renovation / Conversion Date",
+      "group": "G. Asset Context",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane"
+    },
+    {
+      "name": "Renovation / Conversion Source URL",
+      "group": "G. Asset Context",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Owner Name",
+      "group": "H. Owner / Developer",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane"
+    },
+    {
+      "name": "Owner Type",
+      "group": "H. Owner / Developer",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Owner Source URL",
+      "group": "H. Owner / Developer",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Owner Confidence",
+      "group": "H. Owner / Developer",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Developer Name",
+      "group": "H. Owner / Developer",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane"
+    },
+    {
+      "name": "Developer Source URL",
+      "group": "H. Owner / Developer",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Developer Confidence",
+      "group": "H. Owner / Developer",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Ownership Review Status",
+      "group": "H. Owner / Developer",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Operator / Management Company",
+      "group": "I. Operator / Management",
+      "primary": "enrichment_target",
+      "tags": [
+        "source_only",
+        "do_not_use_publicly_yet"
+      ],
+      "notes": "Blocked in first enrichment lane"
+    },
+    {
+      "name": "Operator Type",
+      "group": "I. Operator / Management",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Management Model",
+      "group": "I. Operator / Management",
+      "primary": "enrichment_target",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Operator Source URL",
+      "group": "I. Operator / Management",
+      "primary": "source_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Operator Confidence",
+      "group": "I. Operator / Management",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Operator Review Status",
+      "group": "I. Operator / Management",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Possible Operator Target",
+      "group": "I. Operator / Management",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Independent Hotel Flag",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Independent Classification",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "contract_optional",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Brand-Unassigned Reason",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Possible Soft-Brand Candidate",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Possible Brand Conversion Candidate",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Possible Owner Outreach Target",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Possible Financing Target",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Possible Dealality Opportunity",
+      "group": "J. Independent / Brand-Unconfirmed Handling",
+      "primary": "internal_only",
+      "tags": [
+        "do_not_use_publicly_yet"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Data Eligible",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Identity Confidence",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Production Use Status",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "contract_required",
+        "internal_only"
+      ],
+      "notes": "Must remain Census Only / Not Owner-Facing until product approval"
+    },
+    {
+      "name": "Data Confidence Tier",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Relationship Confidence",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Last Reviewed Date",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Next Review Needed",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Enrichment Status",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "contract_required"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Enrichment Priority",
+      "group": "K. Enrichment Governance",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Steward Review Status",
+      "group": "L. Steward Review",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Human Review Required",
+      "group": "L. Steward Review",
+      "primary": "governance_field",
+      "tags": [
+        "contract_required"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Notes for Steward",
+      "group": "L. Steward Review",
+      "primary": "governance_field",
+      "tags": [
+        "internal_only"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Hotel Property Brand Affiliations",
+      "group": "L. Steward Review",
+      "primary": "internal_only",
+      "tags": [],
+      "notes": "Link inverse"
+    },
+    {
+      "name": "Hotel Property Steward Review",
+      "group": "L. Steward Review",
+      "primary": "internal_only",
+      "tags": [],
+      "notes": "Link inverse"
+    }
+  ],
+  "required_fields": [
+    "Property Name",
+    "Property Identity Key",
+    "Country",
+    "State / Region",
+    "City",
+    "Current Brand",
+    "Affiliation Status",
+    "Family / Source Family",
+    "Source URL",
+    "VIC Freeze Hash",
+    "Production Use Status",
+    "Enrichment Status",
+    "Human Review Required"
+  ],
+  "optional_fields": [
+    "Canonical Property Name",
+    "Phone",
+    "Official Property URL",
+    "Future Opening Flag",
+    "Address",
+    "Latitude",
+    "Longitude",
+    "Brand Family",
+    "Affiliation As-Of Date",
+    "Affiliation Start Date",
+    "Prior Brand",
+    "Source Type",
+    "Discovery Date",
+    "Fitness Flag",
+    "Pool Flag",
+    "Parking Flag",
+    "Airport Shuttle Flag",
+    "Spa Flag",
+    "Beach / Waterfront Flag",
+    "Independent Hotel Flag",
+    "Independent Classification"
+  ],
+  "enrichment_target_fields": [
+    "Market / Submarket",
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary",
+    "Short Property Summary",
+    "Property Positioning",
+    "Amenities - Source Text",
+    "Amenities - Structured Tags",
+    "F&B Flag",
+    "Meeting Space Flag",
+    "Resort / Leisure Flag",
+    "Extended Stay Flag",
+    "Branded Residences Flag",
+    "Mixed-Use Flag",
+    "Hotel Class / Segment",
+    "Property Type",
+    "Asset Context",
+    "Rooms / Keys",
+    "Building / Asset Notes",
+    "Opening Date",
+    "Renovation / Conversion Status",
+    "Renovation / Conversion Date",
+    "Owner Name",
+    "Owner Type",
+    "Developer Name",
+    "Operator / Management Company",
+    "Operator Type",
+    "Management Model"
+  ],
+  "governance_fields": [
+    "Brand Confidence",
+    "Source Confidence",
+    "Rooms Confidence",
+    "Owner Confidence",
+    "Developer Confidence",
+    "Ownership Review Status",
+    "Operator Confidence",
+    "Operator Review Status",
+    "Brand-Unassigned Reason",
+    "Data Eligible",
+    "Identity Confidence",
+    "Production Use Status",
+    "Data Confidence Tier",
+    "Relationship Confidence",
+    "Last Reviewed Date",
+    "Next Review Needed",
+    "Enrichment Status",
+    "Enrichment Priority",
+    "Steward Review Status",
+    "Human Review Required",
+    "Notes for Steward"
+  ],
+  "source_only_fields": [
+    "Property Identity Key",
+    "Affiliation As-Of Date",
+    "Affiliation Start Date",
+    "Family / Source Family",
+    "Source URL",
+    "Source Type",
+    "Source Confidence",
+    "Discovery Date",
+    "VIC Freeze Hash",
+    "Hotel Description - Source Text",
+    "Amenities - Source Text",
+    "Rooms / Keys",
+    "Rooms Source URL",
+    "Opening Date",
+    "Opening Date Source URL",
+    "Renovation / Conversion Date",
+    "Renovation / Conversion Source URL",
+    "Owner Name",
+    "Owner Source URL",
+    "Developer Name",
+    "Developer Source URL",
+    "Operator / Management Company",
+    "Operator Source URL"
+  ],
+  "internal_only_fields": [
+    "Property Identity Key",
+    "Brand Explorer Slug if mapped",
+    "Brand Confidence",
+    "Family / Source Family",
+    "Source Type",
+    "Source Confidence",
+    "Discovery Date",
+    "VIC Freeze Hash",
+    "Hotel Property Source Evidence",
+    "Fitness Flag",
+    "Pool Flag",
+    "Parking Flag",
+    "Airport Shuttle Flag",
+    "Spa Flag",
+    "Beach / Waterfront Flag",
+    "Rooms Confidence",
+    "Owner Confidence",
+    "Developer Confidence",
+    "Ownership Review Status",
+    "Operator Confidence",
+    "Operator Review Status",
+    "Possible Operator Target",
+    "Brand-Unassigned Reason",
+    "Possible Soft-Brand Candidate",
+    "Possible Brand Conversion Candidate",
+    "Possible Owner Outreach Target",
+    "Possible Financing Target",
+    "Possible Dealality Opportunity",
+    "Data Eligible",
+    "Identity Confidence",
+    "Production Use Status",
+    "Data Confidence Tier",
+    "Relationship Confidence",
+    "Last Reviewed Date",
+    "Next Review Needed",
+    "Enrichment Priority",
+    "Steward Review Status",
+    "Notes for Steward",
+    "Hotel Property Brand Affiliations",
+    "Hotel Property Steward Review"
+  ],
+  "public_safe_if_approved_fields": [
+    "Property Name",
+    "Canonical Property Name",
+    "Official Property URL",
+    "Country",
+    "State / Region",
+    "City",
+    "Latitude",
+    "Longitude",
+    "Market / Submarket",
+    "Current Brand",
+    "Brand Family",
+    "Affiliation Status",
+    "Hotel Description - Source Text",
+    "Hotel Description - AI Summary",
+    "Amenities - Source Text",
+    "Amenities - Structured Tags",
+    "F&B Flag",
+    "Meeting Space Flag",
+    "Resort / Leisure Flag",
+    "Extended Stay Flag",
+    "Branded Residences Flag",
+    "Mixed-Use Flag",
+    "Property Type",
+    "Asset Context"
+  ],
+  "do_not_use_publicly_yet_fields": [
+    "Phone",
+    "Future Opening Flag",
+    "Address",
+    "Latitude",
+    "Longitude",
+    "Brand Explorer Slug if mapped",
+    "Affiliation Start Date",
+    "Prior Brand",
+    "Short Property Summary",
+    "Property Positioning",
+    "Fitness Flag",
+    "Pool Flag",
+    "Parking Flag",
+    "Airport Shuttle Flag",
+    "Spa Flag",
+    "Beach / Waterfront Flag",
+    "Hotel Class / Segment",
+    "Rooms / Keys",
+    "Rooms Source URL",
+    "Building / Asset Notes",
+    "Opening Date",
+    "Opening Date Source URL",
+    "Renovation / Conversion Status",
+    "Renovation / Conversion Date",
+    "Renovation / Conversion Source URL",
+    "Owner Name",
+    "Owner Type",
+    "Owner Source URL",
+    "Developer Name",
+    "Developer Source URL",
+    "Operator / Management Company",
+    "Operator Type",
+    "Management Model",
+    "Operator Source URL",
+    "Possible Operator Target",
+    "Independent Hotel Flag",
+    "Independent Classification",
+    "Possible Soft-Brand Candidate",
+    "Possible Brand Conversion Candidate",
+    "Possible Owner Outreach Target",
+    "Possible Financing Target",
+    "Possible Dealality Opportunity"
+  ],
+  "radar_public_display": {
+    "required_for_radar_integration": [
+      "Radar Display Status",
+      "Radar Display Reason",
+      "Radar Geography Status",
+      "Public Census Eligibility",
+      "Public Display Confidence",
+      "Public Display Review Status"
+    ],
+    "present": [],
+    "missing": [
+      "Radar Display Status",
+      "Radar Display Reason",
+      "Radar Geography Status",
+      "Public Census Eligibility",
+      "Public Display Confidence",
+      "Public Display Review Status"
+    ],
+    "all_present": false,
+    "v112_needed": true,
+    "blocks_first_enrichment": false,
+    "note": "Radar/public display fields are absent. Do not invent them. Schedule schema v1.1.2 before Radar integration. Description/amenity enrichment may proceed under this freeze."
+  },
+  "first_enrichment_lane": {
+    "allowed": [
+      "Hotel Description - Source Text",
+      "Hotel Description - AI Summary",
+      "Amenities - Source Text",
+      "Amenities - Structured Tags",
+      "Property Type",
+      "Asset Context",
+      "Market / Submarket",
+      "Resort / Leisure Flag",
+      "Extended Stay Flag",
+      "F&B Flag",
+      "Meeting Space Flag",
+      "Mixed-Use Flag",
+      "Branded Residences Flag"
+    ],
+    "blocked": [
+      "Owner Name",
+      "Developer Name",
+      "Operator / Management Company",
+      "Rooms / Keys",
+      "Opening Date",
+      "Renovation / Conversion Date",
+      "Affiliation Start Date",
+      "Brand Explorer public fields",
+      "Recent Momentum",
+      "Company Validated",
+      "Brand Verified"
+    ],
+    "overmodeled_amenity_flags_not_in_first_lane": [
+      "Fitness Flag",
+      "Pool Flag",
+      "Parking Flag",
+      "Airport Shuttle Flag",
+      "Spa Flag",
+      "Beach / Waterfront Flag"
+    ],
+    "rules": [
+      "Source-backed writes only — never invent descriptions, amenities, or flags.",
+      "AI Summary only after Source Text exists and governance rules are followed.",
+      "Do not populate over-modeled amenity flags in first lane.",
+      "Do not touch owner / developer / operator / rooms / dates in first lane.",
+      "Do not patch Brand Explorer or change Brand Status.",
+      "Radar fields missing do not block this lane; Radar integration waits for v1.1.2."
+    ]
+  },
+  "steward_rules": {
+    "human_review_required_true_count_expected": 4,
+    "human_review_required_true_count_actual": 4,
+    "steward_view": "Census - Steward Review",
+    "steward_filter": "Human Review Required is checked",
+    "rules": [
+      "Do not clear Human Review Required on held records without steward decision.",
+      "Use Notes for Steward and Brand-Unassigned Reason for hold rationale.",
+      "Enrichment may run on Data Eligible rows with Enrichment Status = Not Started, but held records stay in Steward Review queue.",
+      "Production Use Status must remain Census Only / Not Owner-Facing until explicit product approval.",
+      "Never write Brand Explorer Company Validated / Brand Verified / Recent Momentum from Census enrichment."
+    ]
+  },
+  "applied_renames_frozen": {
+    "Last Verified Date": "Last Reviewed Date",
+    "Resort Amenities Flag": "Resort / Leisure Flag",
+    "Extended Stay Amenity Flag": "Extended Stay Flag"
+  },
+  "kept_unchanged_frozen": [
+    "Rooms / Keys",
+    "Operator / Management Company",
+    "Owner Name",
+    "Source URL",
+    "State / Region"
+  ],
+  "final_recommendation": "Proceed with first enrichment lane (descriptions + amenities + property type/asset context). Schedule schema v1.1.2 for Radar/public display fields before any Radar integration or public Census surfacing.",
+  "brand_explorer_safety": {
+    "gates": [
+      {
+        "label": "active_universe_sot",
+        "ok": true,
+        "exit_code": 0,
+        "command": "npm run brand-explorer-active-universe-source-of-truth -- --dry-run"
+      },
+      {
+        "label": "global_active_semantic",
+        "ok": true,
+        "exit_code": 0,
+        "command": "npm run brand-explorer-global-active-semantic-audit -- --dry-run --fresh"
+      },
+      {
+        "label": "pvql_quiet",
+        "ok": true,
+        "exit_code": 0,
+        "command": "node scripts/brand-explorer-quiet-sequential-pvql.mjs"
+      },
+      {
+        "label": "momentum_evidence",
+        "ok": true,
+        "exit_code": 0,
+        "command": "npm run test:brand-explorer-recent-momentum-evidence-quality"
+      },
+      {
+        "label": "mandatory_release_gates",
+        "ok": true,
+        "exit_code": 0,
+        "command": "npm run test:brand-explorer-mandatory-release-gates"
+      }
+    ],
+    "all_pass": true,
+    "active_universe": 62,
+    "semantic": {
+      "activeCount": 62,
+      "severityTotals": {
+        "critical": 0,
+        "high": 0,
+        "medium": 0,
+        "low": 0
+      },
+      "freezeDecision": "ready_to_freeze_62_semantic_qa_clean"
+    },
+    "summary": {
+      "active_universe": 62,
+      "semantic_c_h_m": "0/0/0",
+      "pvql": "PASS",
+      "momentum": "PASS",
+      "mandatory_gates": "PASS"
+    },
+    "expected": {
+      "active_universe": 62,
+      "semantic_c_h_m": "0/0/0",
+      "pvql": "PASS",
+      "momentum": "PASS",
+      "mandatory_gates": "PASS"
+    }
+  }
+}

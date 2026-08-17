@@ -1,0 +1,253 @@
+{
+  "ok": true,
+  "status": "production_census_autopilot_policy_controller_v1_partial_insert_policy_needed",
+  "objective": "census-autopilot-policy-controller-v1",
+  "version": "census-autopilot-policy-controller-v1",
+  "policy_version": "census-autopilot-approved-policy-v1",
+  "generated_at": "2026-08-07T23:30:58.967Z",
+  "census_mode": "growth",
+  "candidate_only": true,
+  "founder_gate_between_passes": false,
+  "gates": {
+    "ok": true,
+    "blockers": [],
+    "controller_enabled": true,
+    "dataforseo_enabled": true,
+    "validated_writes": true,
+    "candidates_only": true,
+    "address_writes": true,
+    "website_writes": true,
+    "phone_writes": false,
+    "dataforseo_coordinate_writes": false,
+    "mapbox_after_validated_address": true,
+    "secondary_hotel_data": true,
+    "secondary_rooms": true,
+    "secondary_phone": false,
+    "local_inserts": false,
+    "high_confidence_inserts": false,
+    "inserts_enabled": false,
+    "founder_gate_between_passes": false,
+    "never_write_fields": [
+      "Owner",
+      "Owner Name",
+      "Operator",
+      "Operator Name",
+      "Developer",
+      "Opening Date",
+      "Renovation Date",
+      "Affiliation Start Date",
+      "Recent Momentum",
+      "Company Validated",
+      "Company Validation Date",
+      "Brand Verified",
+      "Brand Status",
+      "External Display Status",
+      "Release Status"
+    ],
+    "approved_field_policy": {
+      "Address": {
+        "status": "approved",
+        "confidence_default_dataforseo_local": "Medium",
+        "confidence_official": "High",
+        "sources_approved": [
+          "official_parent_brand",
+          "official_hotel_website",
+          "official_tourism_registry",
+          "dataforseo_local_match_high",
+          "approved_secondary_exact_match"
+        ],
+        "require_street_level": true,
+        "require_clean_identity": true,
+        "reject_duplicate_risk": true,
+        "reject_existing_conflict": true
+      },
+      "Official Property URL": {
+        "status": "approved",
+        "sources_approved": [
+          "brand_official",
+          "parent_official_property_url",
+          "hotel_official_strict"
+        ],
+        "preserve_stronger_brand_url": true,
+        "reject_ota_affiliate_mirror_directory": true,
+        "hotel_website_field_exists": false
+      },
+      "Coordinates": {
+        "status": "approved_via_mapbox_or_official_only",
+        "allow_dataforseo_local_direct": false,
+        "allow_google_local_direct": false,
+        "mapbox_after_validated_address": true,
+        "require_street_level_address": true,
+        "require_address_provenance": true,
+        "reject_city_centroid": true,
+        "reject_zero_zero": true
+      },
+      "Rooms / Keys": {
+        "status": "approved_secondary",
+        "sources_approved": [
+          "official_parent_brand",
+          "official_hotel_website",
+          "official_factsheet_pdf",
+          "official_tourism_registry",
+          "owner_developer",
+          "convention_bureau_destination_authority",
+          "reputable_hospitality_trade",
+          "steward_verified"
+        ],
+        "require_exact_property_match": true,
+        "require_source_url": true,
+        "require_source_type": true,
+        "require_confidence": true,
+        "forbid_meeting_rooms": true,
+        "forbid_ai_estimates": true,
+        "forbid_sitewide_defaults": true
+      },
+      "Market": {
+        "status": "approved",
+        "sources_approved": [
+          "dealality_commercial_market_map",
+          "clean_city_country_mapping",
+          "steward_approved_market_map"
+        ]
+      },
+      "Submarket": {
+        "status": "approved_conditional",
+        "sources_approved": [
+          "approved_submarket_map",
+          "address_source_tokens",
+          "explicit_district_resort_area"
+        ],
+        "hold_without_mapping": true
+      },
+      "Phone": {
+        "status": "held",
+        "reason": "phone_policy_not_approved",
+        "allow_dataforseo_local": false,
+        "allow_google_local": false,
+        "allow_central_reservation": false,
+        "official_source_only": true
+      },
+      "new_hotel_inserts": {
+        "status": "held_queue_only",
+        "auto_insert": false,
+        "require_flags": [
+          "ENABLE_DATAFORSEO_LOCAL_INSERTS",
+          "ENABLE_HIGH_CONFIDENCE_INSERTS"
+        ],
+        "insert_requirements": [
+          "new_hotel_candidate_high",
+          "hotel_category_confirmed",
+          "no_duplicate_risk",
+          "address_or_coordinates_present",
+          "source_provenance_present",
+          "Production Use Status=Census Only / Not Owner-Facing",
+          "Public Display Review Status=Hold",
+          "Radar Display Status=Hold",
+          "Human Review Required=true"
+        ]
+      }
+    },
+    "policy_version": "census-autopilot-approved-policy-v1"
+  },
+  "insert_policy": {
+    "ok": false,
+    "allowed": false,
+    "reason": "high_confidence_inserts_require_explicit_flags",
+    "require": [
+      "ENABLE_DATAFORSEO_LOCAL_INSERTS=1",
+      "ENABLE_HIGH_CONFIDENCE_INSERTS=1"
+    ]
+  },
+  "passes": [
+    "gap_audit",
+    "existing_record_enrichment",
+    "mapbox_coordinates",
+    "rooms_completion",
+    "market_submarket",
+    "new_hotel_discovery",
+    "reaudit"
+  ],
+  "pass_log": [
+    {
+      "pass": 1,
+      "name": "gap_audit",
+      "status": "ok",
+      "summary": "gaps address=621 rooms=1033 coords=786"
+    },
+    {
+      "pass": 2,
+      "name": "existing_record_enrichment",
+      "status": "skipped_candidate_only",
+      "summary": "enrichment skipped"
+    },
+    {
+      "pass": 6,
+      "name": "new_hotel_discovery",
+      "outer": 1,
+      "status": "production_census_dataforseo_local_business_enrichment_v1_partial_policy_decision_needed",
+      "summary": "new_hotels=35 inserts=0 queue_held"
+    },
+    {
+      "pass": 7,
+      "name": "reaudit",
+      "outer": 1,
+      "status": "ok",
+      "summary": "wrote_this_cycle=0"
+    }
+  ],
+  "records_scanned": 1224,
+  "existing_records_updated": 0,
+  "address_writes": 0,
+  "website_writes": 0,
+  "mapbox_coordinate_writes": 0,
+  "rooms_writes": 0,
+  "market_writes": 0,
+  "submarket_writes": 0,
+  "phone_held_by_policy": 19,
+  "coordinate_direct_held": 19,
+  "new_hotel_candidates_found": 35,
+  "inserts": 0,
+  "duplicate_risk_candidates": 9,
+  "gaps_before": {
+    "missing_address": 621,
+    "missing_official_url": 0,
+    "missing_coordinates": 786,
+    "missing_rooms": 1033,
+    "missing_phone": 872,
+    "missing_market": 254,
+    "missing_submarket": 1010
+  },
+  "gaps_after": {
+    "missing_address": 621,
+    "missing_official_url": 0,
+    "missing_coordinates": 786,
+    "missing_rooms": 1033,
+    "missing_phone": 872,
+    "missing_market": 254,
+    "missing_submarket": 1010
+  },
+  "remaining_missing_fields": {
+    "missing_address": 621,
+    "missing_official_url": 0,
+    "missing_coordinates": 786,
+    "missing_rooms": 1033,
+    "missing_phone": 872,
+    "missing_market": 254,
+    "missing_submarket": 1010
+  },
+  "blocker_reasons": [],
+  "estimated_cost_usd": 0.048,
+  "next_backlog": "Continue Autopilot: remaining address=621 rooms=1033 coords=786 market=254; inserts_held=true",
+  "founder_approval_needed": "Only if you want high-confidence inserts enabled (ENABLE_DATAFORSEO_LOCAL_INSERTS + ENABLE_HIGH_CONFIDENCE_INSERTS). Phone and direct DataForSEO coordinates remain held by encoded policy.",
+  "brand_setup_writes": 0,
+  "brand_explorer_writes": 0,
+  "owner_operator_date_writes": 0,
+  "census_writes": 0,
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-07T23-29-11_CALA-census-autopilot-policy-controller-v1",
+  "enable_production_writes": false
+}

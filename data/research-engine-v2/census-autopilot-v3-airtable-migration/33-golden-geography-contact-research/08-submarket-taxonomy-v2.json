@@ -1,0 +1,30 @@
+{
+  "version": "submarket-taxonomy-v2-proposals",
+  "str_used": false,
+  "cvent_used": false,
+  "legacy_used": false,
+  "proposals": [
+    {
+      "id": "prefer_resolved_locality_over_postal",
+      "note": "Use GraphQL/page city over CEP/postal as City input to corridor matcher"
+    },
+    {
+      "id": "mexico_state_vs_destination",
+      "note": "When city=Quintana Roo etc., map via address locality or coords to Riviera Maya corridors"
+    },
+    {
+      "id": "market_level_only_islands",
+      "note": "Barbados/Jamaica secondary cities may be H. NO MEANINGFUL SUBMARKET"
+    },
+    {
+      "id": "brazil_metro_corridor_expansion",
+      "note": "Expand São Paulo / Rio / BH / Curitiba alias + CEP→metro resolution"
+    }
+  ],
+  "from_forensics": {
+    "D. MISSING STATE/REGION": 53,
+    "F. EXISTING MARKET, MISSING SUBMARKET RULE": 38,
+    "E. MISSING COORDINATES": 10,
+    "B. MUNICIPALITY VS DESTINATION MISMATCH": 3
+  }
+}

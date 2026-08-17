@@ -3,6 +3,18 @@
  */
 
 import { resolveDealalityUser } from "../lib/dealality/resolve-user.js";
+import {
+  applyDemoStakeholderActiveWorkspace,
+  canUseDemoFounderNavOverrides,
+  getDemoStakeholderWorkspaces,
+  isDemoStakeholderConstellation,
+  readActiveWorkspaceHeader,
+} from "../lib/dealality/demo-stakeholder-workspace.js";
+import {
+  applyDemoBrandPortfolioContext,
+  readDemoBrandPortfolioHeader,
+} from "../lib/dealality/demo-brand-portfolio-context.js";
+import { resolveWorkspaceOptions } from "../lib/dealality/resolve-workspace-options.js";
 
 export async function requireDealalityUser(req, res, next) {
   if (!req.memberstackMemberId) {
@@ -40,7 +52,7 @@ export async function requireDealalityUser(req, res, next) {
       });
     }
 
-    req.dealalityUser = {
+    const dealalityUser = {
       email: result.email,
       memberstackId: result.memberstackId || req.memberstackMemberId,
       role: result.role,
@@ -68,7 +80,36 @@ export async function requireDealalityUser(req, res, next) {
       operatorDealRequestEligible: result.operatorDealRequestEligible,
       reviewBeforeOutreach: result.reviewBeforeOutreach,
       userRecordId: result.userRecordId,
+      activeWorkspace: result.activeWorkspace || null,
     };
+
+    // Demo Dealality stakeholder switching: header selects Owner/Brand/Operator context.
+    // Non-constellation / non-demo / non-founder-nav users are unchanged.
+    // No query-param impersonation.
+    if (
+      isDemoStakeholderConstellation(dealalityUser) ||
+      dealalityUser.isDemo ||
+      dealalityUser.canAccessDemoWorkspace ||
+      canUseDemoFounderNavOverrides(dealalityUser)
+    ) {
+      dealalityUser.demoStakeholderWorkspaces = getDemoStakeholderWorkspaces(dealalityUser);
+      applyDemoStakeholderActiveWorkspace(
+        dealalityUser,
+        readActiveWorkspaceHeader(req)
+      );
+    }
+
+    // Always attach canonical switcher options (production or demo).
+    dealalityUser.canonicalWorkspaceOptions = resolveWorkspaceOptions(dealalityUser);
+
+    // Demo Brand Portfolio context (showcase) — separate from workspace switch.
+    // Honored only for demo/founder; ignored for production clients.
+    applyDemoBrandPortfolioContext(dealalityUser, readDemoBrandPortfolioHeader(req));
+
+    // Portfolio must never shrink workspace options.
+    dealalityUser.canonicalWorkspaceOptions = resolveWorkspaceOptions(dealalityUser);
+
+    req.dealalityUser = dealalityUser;
     return next();
   } catch (err) {
     console.error("[requireDealalityUser] lookup error:", (err && err.message) || err);

@@ -1,0 +1,77 @@
+{
+  "status": "applied",
+  "hard_rule": "OSM hotel node Address text only when brand+city align; never Nominatim coords; Mapbox for lat/lng",
+  "generated_at": "2026-08-07T19:38:55.870Z",
+  "scanned": 5,
+  "proposal_count": 1,
+  "patched_count": 1,
+  "steward_count": 4,
+  "mapbox_lookups": 1,
+  "airtable_writes": true,
+  "proposals": [
+    {
+      "id": "rec5su7y7H7ZugdIO",
+      "property_name": "Radisson by Choice Monterrey",
+      "identity_key": "ind_choice_mx_mx182",
+      "city": "Monterrey",
+      "country": "Mexico",
+      "osm_display": "Radisson Hotel Monterrey San Jeronimo, 4001, Avenida Insurgentes, San Jerónimo, Monterrey, Nuevo León, 64630, México",
+      "patch": {
+        "Address": "4001 Avenida Insurgentes, San Jerónimo, 64630, Monterrey, Nuevo León, México",
+        "Address Confidence": "Medium",
+        "Address Source URL": "https://www.openstreetmap.org/node/6306232256",
+        "Last Reviewed Date": "2026-08-07",
+        "Latitude": 25.680851,
+        "Longitude": -100.358135,
+        "Coordinate Source Type": "official_address_geocode",
+        "Coordinate Confidence": "High",
+        "Geocode Provider": "Mapbox",
+        "Geocode Method": "permanent_geocoding_osm_address",
+        "Geocode Reviewed Date": "2026-08-07"
+      },
+      "reasons": [
+        "address_from_osm_nominatim_hotel:hotel",
+        "query:Radisson Monterrey, Monterrey, Mexico",
+        "coords_from_mapbox:mapbox_permanent_address_shared_token"
+      ]
+    }
+  ],
+  "steward": [
+    {
+      "id": "rec0qmO7Xj7uyjWLZ",
+      "name": "Comfort Inn & Suites Querétaro",
+      "key": "ind_choice_mx_mx086",
+      "city": "Querétaro",
+      "reasons": [
+        "osm_no_brand_city_hotel_match"
+      ]
+    },
+    {
+      "id": "rec2mY62wnBxrSb3h",
+      "name": "Comfort Inn & Suites Veracruz",
+      "key": "ind_choice_mx_mx073",
+      "city": "Veracruz",
+      "reasons": [
+        "osm_no_brand_city_hotel_match"
+      ]
+    },
+    {
+      "id": "recabSgALHHvys0In",
+      "name": "Comfort Inn & Suites Irapuato",
+      "key": "ind_choice_mx_mx092",
+      "city": "Irapuato",
+      "reasons": [
+        "osm_no_brand_city_hotel_match"
+      ]
+    },
+    {
+      "id": "recoKIP6S1Gh5fSXb",
+      "name": "Ascend Hotel Collection Zacatecas",
+      "key": "ind_choice_mx_mx104",
+      "city": "Zacatecas",
+      "reasons": [
+        "osm_no_brand_city_hotel_match"
+      ]
+    }
+  ]
+}

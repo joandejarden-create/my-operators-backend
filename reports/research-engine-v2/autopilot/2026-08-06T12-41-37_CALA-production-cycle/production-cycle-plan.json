@@ -1,0 +1,38 @@
+{
+  "version": "census-autopilot-production-cycle-v1",
+  "mode": "production-cycle",
+  "region": "CALA",
+  "scope": "active-brand-setup",
+  "strategy": "fastest-safe",
+  "batch_size": 100,
+  "run_until_complete": true,
+  "max_passes": 3,
+  "queue_order": [
+    "source_discovery",
+    "key_field_completion",
+    "address_confirmation",
+    "property_name_cleanup",
+    "description_extraction",
+    "amenities_extraction",
+    "property_type_asset_context",
+    "rooms_keys",
+    "radar_public_readiness",
+    "coordinate_completion"
+  ],
+  "founder_approval": "production-cycle_cli_command",
+  "per_bundle_chatgpt_approval": false,
+  "enable_production_writes": true,
+  "geocode_provider_ready": true,
+  "target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam"
+  },
+  "census_records_before": 907,
+  "notes": [
+    "Applies High-confidence allowlisted updates automatically.",
+    "Inserts clean High discovery candidates; stewards Choice Radisson Individuals member-of / Unknown city.",
+    "Geocode soft-deferred without approved provider — does not stop cycle.",
+    "Stops only on true safety exceptions."
+  ]
+}

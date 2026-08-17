@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-08-16T08:22:57.941Z",
+  "allProviders": {
+    "portfolio": {
+      "OPENAI_SCAFFOLD_REMOVED": true,
+      "qmAggregation": "portfolio_no_entitled_brand_on_any_comparable_provider",
+      "qmValue": 1,
+      "presenceAggregation": "mean_of_brand_cross_provider_averages",
+      "presenceHelper": "Mean of each linked brand’s cross-provider average Presence — not a single combined AI run."
+    },
+    "Autograph|CALA|en": {
+      "ok": true,
+      "OPENAI_SCAFFOLD_REMOVED": true,
+      "qm": 1,
+      "denom": 12,
+      "disagreement": 4,
+      "presence": 0.7916666666666667
+    },
+    "Tribute|CALA|es": {
+      "ok": true,
+      "OPENAI_SCAFFOLD_REMOVED": true,
+      "qm": 1,
+      "denom": 12,
+      "disagreement": 6,
+      "presence": 0.7291666666666667
+    },
+    "AC Hotels|Europe|en": {
+      "ok": true,
+      "OPENAI_SCAFFOLD_REMOVED": true,
+      "qm": 10,
+      "denom": 12,
+      "disagreement": 2,
+      "presence": 0.041666666666666664
+    }
+  },
+  "providerSpecific": {
+    "openai": {
+      "monitored": 12,
+      "present": 11,
+      "missing": 1,
+      "presence": 0.9166666666666666,
+      "arithmeticPass": true,
+      "slotObs": 12
+    },
+    "gemini": {
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "arithmeticPass": true,
+      "slotObs": 12
+    },
+    "perplexity": {
+      "monitored": 12,
+      "present": 7,
+      "missing": 5,
+      "presence": 0.5833333333333334,
+      "arithmeticPass": true,
+      "slotObs": 12
+    },
+    "claude": {
+      "monitored": 12,
+      "present": 10,
+      "missing": 2,
+      "presence": 0.8333333333333334,
+      "arithmeticPass": true,
+      "slotObs": 12
+    }
+  },
+  "isolation": {
+    "SPANISH_IN_ENGLISH": 0,
+    "ENGLISH_IN_SPANISH": 0,
+    "PROVIDER_CROSS_CONTAMINATION": 0
+  },
+  "clientSource": {
+    "REQUEST_GENERATION_GUARD": true,
+    "ABORT_CONTROLLER": true,
+    "CONTEXT_MATCH_BEFORE_APPLY": true
+  },
+  "brandCrossProviderSample": {
+    "denominator": 12,
+    "missingAcrossAll": 1,
+    "disagreement": 4,
+    "presentAcrossAll": 7
+  }
+}

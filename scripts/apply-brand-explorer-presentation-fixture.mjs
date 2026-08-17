@@ -28,6 +28,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 import "../load-env.js";
 import Airtable from "airtable";
+import { sanitizeExternalCopy } from "../lib/external-owner-copy.mjs";
+import {
+  isFlexibilitySlotKey,
+  sanitizeFlexibilityPresentationBody,
+} from "../lib/brand-explorer-flexibility-levels.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -218,12 +223,34 @@ async function deleteRecords(base, ids) {
   }
 }
 
+function sanitizeRowText(value) {
+  return sanitizeExternalCopy(String(value ?? "").trim());
+}
+
+/** Flexibility slots: coerce to one canonical level (never store long prose). */
+function sanitizePresentationBody(slotKey, body, brandNameForRow) {
+  const raw = String(body ?? "").trim();
+  if (!isFlexibilitySlotKey(slotKey)) return sanitizeRowText(raw);
+  const { level, changed, usedFallback, segment } = sanitizeFlexibilityPresentationBody({
+    slotKey,
+    body: raw,
+    brandName: brandNameForRow,
+  });
+  if (changed && process.env.NODE_ENV !== "production") {
+    console.log(
+      `[flex-sanitize] ${slotKey}: ${JSON.stringify(raw.slice(0, 80))} → ${JSON.stringify(level)}` +
+        (usedFallback ? ` (segment fallback: ${segment})` : "")
+    );
+  }
+  return sanitizeRowText(level);
+}
+
 function buildFieldsForRow(brandRecordId, linkField, r, brandNameForRow) {
   const fields = {
     [linkField]: [brandRecordId],
     "Slot Key": r.slotKey,
-    Title: r.title ?? "",
-    Body: r.body ?? "",
+    Title: sanitizeRowText(r.title),
+    Body: sanitizePresentationBody(r.slotKey, r.body, brandNameForRow),
     "Sort Order": typeof r.sort === "number" ? r.sort : Number(r.sort) || 0,
     Active: true,
   };
@@ -234,11 +261,11 @@ function buildFieldsForRow(brandRecordId, linkField, r, brandNameForRow) {
   const csBrand = String(r.caseSummaryBrandRelevance ?? "").trim();
   const csInterp = String(r.caseSummaryInterpretation ?? "").trim();
   const csTags = String(r.caseSummaryTags ?? "").trim();
-  if (csOverview) fields["Case Summary Overview"] = csOverview;
-  if (csOwner) fields["Case Summary Owner Objective"] = csOwner;
-  if (csBrand) fields["Case Summary Brand Relevance"] = csBrand;
-  if (csInterp) fields["Case Summary Interpretation"] = csInterp;
-  if (csTags) fields["Case Summary Tags"] = csTags;
+  if (csOverview) fields["Case Summary Overview"] = sanitizeRowText(csOverview);
+  if (csOwner) fields["Case Summary Owner Objective"] = sanitizeRowText(csOwner);
+  if (csBrand) fields["Case Summary Brand Relevance"] = sanitizeRowText(csBrand);
+  if (csInterp) fields["Case Summary Interpretation"] = sanitizeRowText(csInterp);
+  if (csTags) fields["Case Summary Tags"] = sanitizeRowText(csTags);
   const n = String(brandNameForRow || "").trim();
   if (n) fields["Brand Name"] = n;
   const imageUrl = String(r.imageUrl ?? "").trim();

@@ -1,0 +1,45 @@
+{
+  "phase": "PRESENCE_VALIDATION_POOL_GOVERNANCE_UPDATED",
+  "CURRENT_RESPONSES": 72,
+  "CURRENT_CANDIDATES": 315,
+  "RESPONSE_LEVEL_PARTITIONING": "YES",
+  "CANDIDATE_CAP_PER_RESPONSE": 2,
+  "UNIQUE_RESPONSE_TRACKING": "YES",
+  "PRIMARY_REVIEW_QUEUE_PAIRS": 143,
+  "PRIMARY_UNIQUE_RESPONSES": 72,
+  "PARTITION_VIOLATIONS_REPAIRED": 0,
+  "OPENAI_REQUIRED_BEFORE_FINAL_FREEZE": "YES",
+  "HOLDOUT_V2_FINAL_FREEZE_ALLOWED": "NO",
+  "openaiGate": {
+    "OPENAI_IN_PRODUCTION_CONTRACT": true,
+    "OPENAI_CREDENTIAL_AVAILABLE": false,
+    "OPENAI_FRESH_RESPONSES_IN_POOL": false,
+    "OPENAI_REQUIRED_BEFORE_FINAL_FREEZE": true,
+    "HOLDOUT_V2_FINAL_FREEZE_ALLOWED": "NO",
+    "reason": "OPENAI_API_KEY missing; OpenAI remains in production provider contract — do not substitute another provider"
+  },
+  "metricContract": {
+    "requiredMetrics": [
+      "Accuracy",
+      "Precision",
+      "Recall",
+      "F1",
+      "Specificity",
+      "FalsePositiveRate",
+      "FalseNegativeRate",
+      "CANDIDATE_PAIR_N",
+      "UNIQUE_RESPONSE_N"
+    ],
+    "requiredBreakdowns": [
+      "provider",
+      "language",
+      "geography"
+    ],
+    "forbidCompositeScore": true,
+    "note": "Report metrics independently — no single composite score."
+  },
+  "HUMAN_REVIEW_READY": "YES",
+  "NEXT_ACTION": "CONTINUE_HUMAN_PRESENCE_REVIEW",
+  "HOLDOUT_V2_SCORED": false,
+  "REGENERATED_BATCH": false
+}

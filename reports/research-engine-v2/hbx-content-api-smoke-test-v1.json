@@ -1,0 +1,638 @@
+{
+  "ok": true,
+  "status": "production_census_hbx_content_api_smoke_test_v1_complete",
+  "objective": "hbx-content-api-smoke-test-v1",
+  "version": "hbx-content-api-smoke-test-v1",
+  "client_version": "hbx-content-api-client-v1",
+  "generated_at": "2026-08-09T14:04:58.887Z",
+  "hbx_env": "test",
+  "api_base": "https://api.test.hotelbeds.com",
+  "content_base": "https://api.test.hotelbeds.com/hotel-content-api/1.0",
+  "api_key_fingerprint": "5421…(len=32)",
+  "signature_fingerprint": "671a8348…(len=64)",
+  "auth_success": true,
+  "endpoints": [
+    {
+      "name": "A_status_auth",
+      "method": "GET",
+      "path": "/hotel-api/1.0/status",
+      "status": 200,
+      "ok": true,
+      "elapsed_ms": 1638,
+      "error_code": null
+    },
+    {
+      "name": "B_hotels_sample",
+      "method": "GET",
+      "path": "/hotel-content-api/1.0/hotels?fields=all&language=ENG&from=1&to=10&useSecondaryLanguage=false",
+      "status": 200,
+      "ok": true,
+      "elapsed_ms": 935,
+      "error_code": null
+    },
+    {
+      "name": "C_countries",
+      "method": "GET",
+      "path": "/hotel-content-api/1.0/locations/countries?fields=all&language=ENG&from=1&to=5",
+      "status": 200,
+      "ok": true,
+      "elapsed_ms": 136,
+      "error_code": null,
+      "top_keys": [
+        "from",
+        "to",
+        "total",
+        "auditData",
+        "countries"
+      ]
+    },
+    {
+      "name": "C_destinations",
+      "method": "GET",
+      "path": "/hotel-content-api/1.0/locations/destinations?fields=all&language=ENG&from=1&to=5",
+      "status": 200,
+      "ok": true,
+      "elapsed_ms": 109,
+      "error_code": null,
+      "top_keys": [
+        "from",
+        "to",
+        "total",
+        "auditData",
+        "destinations"
+      ]
+    },
+    {
+      "name": "C_categories",
+      "method": "GET",
+      "path": "/hotel-content-api/1.0/types/categories?fields=all&language=ENG&from=1&to=5",
+      "status": 200,
+      "ok": true,
+      "elapsed_ms": 110,
+      "error_code": null,
+      "top_keys": [
+        "from",
+        "to",
+        "total",
+        "auditData",
+        "categories"
+      ]
+    },
+    {
+      "name": "C_chains",
+      "method": "GET",
+      "path": "/hotel-content-api/1.0/types/chains?fields=all&language=ENG&from=1&to=5",
+      "status": 200,
+      "ok": true,
+      "elapsed_ms": 146,
+      "error_code": null,
+      "top_keys": [
+        "from",
+        "to",
+        "total",
+        "auditData",
+        "chains"
+      ]
+    },
+    {
+      "name": "C_accommodations",
+      "method": "GET",
+      "path": "/hotel-content-api/1.0/types/accommodations?fields=all&language=ENG&from=1&to=5",
+      "status": 403,
+      "ok": false,
+      "elapsed_ms": 132,
+      "error_code": null,
+      "top_keys": [
+        "error"
+      ]
+    },
+    {
+      "name": "C_facilities",
+      "method": "GET",
+      "path": "/hotel-content-api/1.0/types/facilities?fields=all&language=ENG&from=1&to=5",
+      "status": 403,
+      "ok": false,
+      "elapsed_ms": 117,
+      "error_code": null,
+      "top_keys": [
+        "error"
+      ]
+    },
+    {
+      "name": "D_hotel_details",
+      "method": "GET",
+      "path": "/hotel-content-api/1.0/hotels/1/details?fields=all&language=ENG&useSecondaryLanguage=false",
+      "status": 200,
+      "ok": true,
+      "elapsed_ms": 278,
+      "error_code": null,
+      "hotel_code": 1
+    }
+  ],
+  "type_results": {
+    "C_countries": {
+      "ok": true,
+      "status": 200,
+      "top_keys": [
+        "from",
+        "to",
+        "total",
+        "auditData",
+        "countries"
+      ],
+      "count_hint": 5
+    },
+    "C_destinations": {
+      "ok": true,
+      "status": 200,
+      "top_keys": [
+        "from",
+        "to",
+        "total",
+        "auditData",
+        "destinations"
+      ],
+      "count_hint": 5
+    },
+    "C_categories": {
+      "ok": true,
+      "status": 200,
+      "top_keys": [
+        "from",
+        "to",
+        "total",
+        "auditData",
+        "categories"
+      ],
+      "count_hint": 5
+    },
+    "C_chains": {
+      "ok": true,
+      "status": 200,
+      "top_keys": [
+        "from",
+        "to",
+        "total",
+        "auditData",
+        "chains"
+      ],
+      "count_hint": 5
+    },
+    "C_accommodations": {
+      "ok": false,
+      "status": 403,
+      "top_keys": [
+        "error"
+      ],
+      "count_hint": null
+    },
+    "C_facilities": {
+      "ok": false,
+      "status": 403,
+      "top_keys": [
+        "error"
+      ],
+      "count_hint": null
+    }
+  },
+  "sample_hotel_count": 10,
+  "sample_hotel_codes": [
+    1,
+    2,
+    5,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "sample_hotel_names": [
+    "Ohtels Villa Dorada",
+    "htop Jadhe",
+    "HG Lomo Blanco",
+    "Servatur Don Miguel Adults Only",
+    "Servatur Waikiki",
+    "Barcelo Fuerteventura Mar",
+    "Natural Park",
+    "H10 Salou Princess",
+    "Hotel Lloret Santa Rosa by Pierre & Vacances",
+    "Rentalmar Arquus"
+  ],
+  "sample_hotel_top_keys": [
+    "code",
+    "name",
+    "description",
+    "countryCode",
+    "stateCode",
+    "destinationCode",
+    "zoneCode",
+    "coordinates",
+    "categoryCode",
+    "categoryGroupCode",
+    "chainCode",
+    "accommodationTypeCode",
+    "boardCodes",
+    "segmentCodes",
+    "address",
+    "postalCode",
+    "city",
+    "email",
+    "license",
+    "giataCode",
+    "phones",
+    "rooms",
+    "facilities",
+    "terminals",
+    "interestPoints",
+    "images",
+    "wildcards",
+    "web",
+    "lastUpdate",
+    "S2C",
+    "ranking",
+    "country",
+    "state",
+    "destination",
+    "zone",
+    "category",
+    "categoryGroup",
+    "chain",
+    "accommodationType",
+    "boards"
+  ],
+  "hotel_details_tested": true,
+  "hotel_details_code": 1,
+  "hotel_details_ok": true,
+  "field_availability_matrix": [
+    {
+      "field": "Hotelbeds hotel code / ID",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "code",
+      "sample_value": "1",
+      "census_use_recommendation": "write_safe_high",
+      "note": "Stable external identity key for dedupe / source linkage"
+    },
+    {
+      "field": "Hotel name",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "name.content",
+      "sample_value": "Ohtels Villa Dorada",
+      "census_use_recommendation": "write_safe_high",
+      "note": "Canonical display name candidate (normalize before write)"
+    },
+    {
+      "field": "Accommodation type",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "accommodationTypeCode",
+      "sample_value": "H",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "Map to Dealality lodging class; filter non-hotel"
+    },
+    {
+      "field": "Category / star rating",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "categoryCode",
+      "sample_value": "3EST",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "HBX category codes ≠ Dealality brand tier; keep provenance"
+    },
+    {
+      "field": "Chain / brand",
+      "present_in_hbx": true,
+      "present_in_sample_count": 9,
+      "sample_size": 10,
+      "response_path": "chainCode",
+      "sample_value": "OHTEL",
+      "census_use_recommendation": "candidate_only",
+      "note": "Chain codes need Brand Setup mapping before Census Current Brand writes"
+    },
+    {
+      "field": "Country",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "countryCode",
+      "sample_value": "ES",
+      "census_use_recommendation": "write_safe_high",
+      "note": "ISO country for identity + geography"
+    },
+    {
+      "field": "State / Region",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "stateCode",
+      "sample_value": "43",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "Often destination/zone derived; validate vs Dealality State / Region"
+    },
+    {
+      "field": "Destination",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "destinationCode",
+      "sample_value": "SAL",
+      "census_use_recommendation": "candidate_only",
+      "note": "HBX destination ≠ Dealality Market; use as geography hint only"
+    },
+    {
+      "field": "Zone",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "zoneCode",
+      "sample_value": "10",
+      "census_use_recommendation": "candidate_only",
+      "note": "Possible Submarket hint; mapping required"
+    },
+    {
+      "field": "City",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "city.content",
+      "sample_value": "SALOU",
+      "census_use_recommendation": "write_safe_high",
+      "note": "Subject to City semantics + Proper Case"
+    },
+    {
+      "field": "Address",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "address.content",
+      "sample_value": "Carrer Del Vendrell, 11",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "Prefer street-level; Medium until steward/official corroboration"
+    },
+    {
+      "field": "Postal code",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "postalCode",
+      "sample_value": "43840",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "Useful address completeness; not City"
+    },
+    {
+      "field": "Latitude",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "coordinates.latitude",
+      "sample_value": "41.068407",
+      "census_use_recommendation": "license_policy_needed",
+      "note": "Confirm HBX license allows permanent coordinate storage before Census write"
+    },
+    {
+      "field": "Longitude",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "coordinates.longitude",
+      "sample_value": "1.152529",
+      "census_use_recommendation": "license_policy_needed",
+      "note": "Prefer Mapbox-after-validated-address if license unclear"
+    },
+    {
+      "field": "Phone",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "phones",
+      "sample_value": "array(len=4)",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "phones[] includes phoneType values e.g. PHONEHOTEL / PHONEBOOKING / PHONEMANAGEMENT — prefer PHONEHOTEL; reject PHONEBOOKING as central/reservation"
+    },
+    {
+      "field": "Phone (property PHONEHOTEL)",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "phones[phoneType=PHONEHOTEL].phoneNumber",
+      "sample_value": "+34977385511",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "Detected via phones[].phoneType === PHONEHOTEL when present"
+    },
+    {
+      "field": "Email",
+      "present_in_hbx": true,
+      "present_in_sample_count": 9,
+      "sample_size": 10,
+      "response_path": "email",
+      "sample_value": "comercial@ohtels.es",
+      "census_use_recommendation": "candidate_only",
+      "note": "Often reservations@; not a Census required field"
+    },
+    {
+      "field": "Website / web URL",
+      "present_in_hbx": true,
+      "present_in_sample_count": 9,
+      "sample_size": 10,
+      "response_path": "web",
+      "sample_value": "http://www.ohtels.es/",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "Validate hotel-official vs OTA/affiliate before Official Property URL"
+    },
+    {
+      "field": "Description",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "description.content",
+      "sample_value": "This hotel is located about 150 metres from the fine sandy beach. The lively centre of Cambrils is approximately 10 km a",
+      "census_use_recommendation": "license_policy_needed",
+      "note": "Marketing copy — likely internal-only unless license allows storage"
+    },
+    {
+      "field": "Facilities / amenities",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "facilities",
+      "sample_value": "array(len=67)",
+      "census_use_recommendation": "candidate_only",
+      "note": "Useful enrichment; map carefully; not core identity"
+    },
+    {
+      "field": "Images",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "images",
+      "sample_value": "array(len=61)",
+      "census_use_recommendation": "license_policy_needed",
+      "note": "Do not publish/store without content license review"
+    },
+    {
+      "field": "Rooms / room types",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "rooms",
+      "sample_value": "array(len=23)",
+      "census_use_recommendation": "unsupported",
+      "note": "Usually room-type catalog, NOT total keys — do not write to Rooms / Keys from array length"
+    },
+    {
+      "field": "Total rooms / keys",
+      "present_in_hbx": false,
+      "present_in_sample_count": 0,
+      "sample_size": 10,
+      "response_path": null,
+      "sample_value": null,
+      "census_use_recommendation": "unsupported",
+      "note": "Only if explicit total-count field present with property match — never use rooms[] length or giataCode"
+    },
+    {
+      "field": "Segments / tags",
+      "present_in_hbx": true,
+      "present_in_sample_count": 9,
+      "sample_size": 10,
+      "response_path": "segmentCodes",
+      "sample_value": "array(len=3)",
+      "census_use_recommendation": "candidate_only",
+      "note": "Classification aid only"
+    },
+    {
+      "field": "Terminals / interest points",
+      "present_in_hbx": true,
+      "present_in_sample_count": 9,
+      "sample_size": 10,
+      "response_path": "terminals",
+      "sample_value": "array(len=2)",
+      "census_use_recommendation": "candidate_only",
+      "note": "Context only"
+    },
+    {
+      "field": "Last update date",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "lastUpdate",
+      "sample_value": "2026-06-08",
+      "census_use_recommendation": "write_medium_internal",
+      "note": "Provenance / freshness metadata"
+    },
+    {
+      "field": "Active / issues",
+      "present_in_hbx": true,
+      "present_in_sample_count": 10,
+      "sample_size": 10,
+      "response_path": "ranking",
+      "sample_value": "31",
+      "census_use_recommendation": "candidate_only",
+      "note": "Operational flags — review before product exposure"
+    }
+  ],
+  "capabilities": {
+    "has_address": true,
+    "has_coordinates": true,
+    "has_phone": true,
+    "has_website": true,
+    "has_rooms_keys_total": false,
+    "has_room_types_only": true,
+    "has_brand_chain": true,
+    "has_description": true,
+    "has_facilities": true,
+    "has_images": true,
+    "has_property_phone_hotel": true
+  },
+  "write_policy": {
+    "posture": "read_only_discovery_lane_candidate",
+    "summary": "HBX is promising as a discovery/enrichment source. Keep ENABLE_HBX_CENSUS_WRITES=0 until dry-run ingest + license review for coordinates/images/descriptions. Prefer identity + address/city/country as Medium internal; prefer phones[].phoneType=PHONEHOTEL (reject PHONEBOOKING); Mapbox for coords after validated address unless HBX coordinate storage is licensed; Rooms/Keys NOT supported from rooms[] (room-type catalog only — no roomsNumber in sample).",
+    "flags": {
+      "ENABLE_HBX_CENSUS_WRITES": "0",
+      "ENABLE_HBX_INSERTS": "0"
+    },
+    "next_dry_run_scope": [
+      "CALA countries only (filter countryCode)",
+      "from/to pagination batches of 100–500",
+      "dedupe vs Hotel Property Census by name|country + Hotelbeds code key",
+      "candidate review pack only — no apply",
+      "phone filter: PHONEHOTEL only; drop PHONEBOOKING",
+      "license review: coordinates, images, descriptions storage rights",
+      "rooms: do not derive Rooms/Keys from rooms[] length; seek alternate approved sources"
+    ],
+    "capabilities": {
+      "has_address": true,
+      "has_coordinates": true,
+      "has_phone": true,
+      "has_website": true,
+      "has_rooms_keys_total": false,
+      "has_room_types_only": true,
+      "has_brand_chain": true,
+      "has_description": true,
+      "has_facilities": true,
+      "has_images": true,
+      "has_property_phone_hotel": true
+    }
+  },
+  "recommended_census_write_policy": {
+    "posture": "read_only_discovery_lane_candidate",
+    "summary": "HBX is promising as a discovery/enrichment source. Keep ENABLE_HBX_CENSUS_WRITES=0 until dry-run ingest + license review for coordinates/images/descriptions. Prefer identity + address/city/country as Medium internal; prefer phones[].phoneType=PHONEHOTEL (reject PHONEBOOKING); Mapbox for coords after validated address unless HBX coordinate storage is licensed; Rooms/Keys NOT supported from rooms[] (room-type catalog only — no roomsNumber in sample).",
+    "flags": {
+      "ENABLE_HBX_CENSUS_WRITES": "0",
+      "ENABLE_HBX_INSERTS": "0"
+    },
+    "next_dry_run_scope": [
+      "CALA countries only (filter countryCode)",
+      "from/to pagination batches of 100–500",
+      "dedupe vs Hotel Property Census by name|country + Hotelbeds code key",
+      "candidate review pack only — no apply",
+      "phone filter: PHONEHOTEL only; drop PHONEBOOKING",
+      "license review: coordinates, images, descriptions storage rights",
+      "rooms: do not derive Rooms/Keys from rooms[] length; seek alternate approved sources"
+    ],
+    "capabilities": {
+      "has_address": true,
+      "has_coordinates": true,
+      "has_phone": true,
+      "has_website": true,
+      "has_rooms_keys_total": false,
+      "has_room_types_only": true,
+      "has_brand_chain": true,
+      "has_description": true,
+      "has_facilities": true,
+      "has_images": true,
+      "has_property_phone_hotel": true
+    }
+  },
+  "next_dry_run_ingest_scope": [
+    "CALA countries only (filter countryCode)",
+    "from/to pagination batches of 100–500",
+    "dedupe vs Hotel Property Census by name|country + Hotelbeds code key",
+    "candidate review pack only — no apply",
+    "phone filter: PHONEHOTEL only; drop PHONEBOOKING",
+    "license review: coordinates, images, descriptions storage rights",
+    "rooms: do not derive Rooms/Keys from rooms[] length; seek alternate approved sources"
+  ],
+  "airtable_writes": 0,
+  "census_writes": 0,
+  "brand_explorer_writes": 0,
+  "brand_setup_writes": 0,
+  "secrets_logged": false,
+  "flags": {
+    "ENABLE_HBX_CENSUS_WRITES": "0",
+    "ENABLE_HBX_INSERTS": "0"
+  },
+  "future_write_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam",
+    "used_this_run": false
+  },
+  "notes": []
+}

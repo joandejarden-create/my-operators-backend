@@ -1,0 +1,52 @@
+{
+  "CALL_WHY": {
+    "A": "New hotel independent confirmation",
+    "B": "Existing hotel identity confirmation",
+    "C": "Address gap",
+    "D": "Coordinate gap",
+    "E": "Phone gap",
+    "F": "Website gap",
+    "G": "Amenities gap",
+    "H": "Property type/class input",
+    "I": "Contradiction/freshness validation",
+    "J": "Other"
+  },
+  "old_forecast": 14301,
+  "why_old_attribution_approx": {
+    "A_new_confirmation": 14007,
+    "B_existing_identity": 60,
+    "C_address_gap": 179,
+    "D_coordinate_gap": 179,
+    "E_phone_gap": 239,
+    "F_website_gap": 60,
+    "G_amenities_gap": 119,
+    "H_property_type_class": 609,
+    "I_freshness": 257,
+    "J_other": 286
+  },
+  "avoidance_levers": {
+    "skip_insufficient_identity": 30,
+    "skip_identity_conflict_until_review": 278,
+    "skip_probable_duplicate_second_call": 353,
+    "skip_existing_verified_rooms_only_gaps": 657,
+    "official_first_native_strong": 357,
+    "pid_dedupe_vs_per_candidate": 528,
+    "dealality_cache_rerun_savings_pct": 40,
+    "field_specific_not_blanket": 1218
+  },
+  "revised_forecast": {
+    "confirmation_searches": 12047,
+    "existing_gap_searches": 329,
+    "total": 12376,
+    "notes": [
+      "One SerpApi search per unique physical property needing independent confirmation",
+      "Skip Rooms-only gaps (not SerpApi)",
+      "Skip conflicts/insufficient until steward/identity repair",
+      "Official-first for native-strong before SerpApi",
+      "Dealality research cache prevents repeat pays on reconstruction"
+    ]
+  },
+  "searches_saved_vs_old": 1925,
+  "savings_pct": 13.5,
+  "goal": "minimize paid calls while maximizing independent Census completion — not maximize quota use"
+}

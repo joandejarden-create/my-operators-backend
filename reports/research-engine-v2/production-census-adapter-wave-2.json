@@ -1,0 +1,123 @@
+{
+  "run_type": "production_census_adapter_wave_2",
+  "generated_at": "2026-08-06T12:00:00.000Z",
+  "status": "production_census_adapter_wave_2_partial_steward_remaining",
+  "recommendation_source": "C — Add several low-effort adapters together",
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam",
+    "only_write_target": true
+  },
+  "read_only": {
+    "brand_setup": true,
+    "brand_explorer": true,
+    "vic": "evidence_dedupe_only",
+    "old_census_legacy": "blocked",
+    "webhound": "not_invoked_learning_only"
+  },
+  "adapters_built": [
+    {
+      "parent": "Accor",
+      "module": "lib/research-engine-v2/census-autopilot-accor-cala-discovery-adapter.js",
+      "source": "continent_browse_plus_catalog_api",
+      "status": "wired"
+    },
+    {
+      "parent": "Wyndham",
+      "module": "lib/research-engine-v2/census-autopilot-wyndham-cala-discovery-adapter.js",
+      "source": "property_sitemap_plus_jsonld_country_filter",
+      "status": "wired",
+      "note": "CALA via addressCountry metadata; optional seed from reports/wyndham-property-directory-extract.json"
+    },
+    {
+      "parent": "Preferred",
+      "module": "lib/research-engine-v2/census-autopilot-preferred-directory-discovery-adapter.js",
+      "source": "preferredhotels.com/directory __NEXT_DATA__",
+      "status": "wired",
+      "note": "Collections are labels only — brand stays Preferred Hotels & Resorts"
+    }
+  ],
+  "parent_inference": {
+    "module": "lib/research-engine-v2/census-autopilot-parent-inference.js",
+    "brand_setup_writes": false,
+    "routing_only": true,
+    "map": "PARENT_BY_SLUG + slug token heuristic"
+  },
+  "deferred": ["BWH Hotels", "SLH", "Bunkhouse"],
+  "controlled_smokes": {
+    "preferred": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-06T11-29-52_CALA-source-discovery",
+      "discovered": 61,
+      "airtable_writes": false
+    },
+    "accor": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-06T11-31-00_CALA-source-discovery",
+      "discovered": 77,
+      "airtable_writes": false
+    },
+    "wyndham": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-06T11-31-48_CALA-source-discovery",
+      "discovered": 80,
+      "airtable_writes": false
+    },
+    "active_brand_setup": {
+      "run_dir": "reports/research-engine-v2/autopilot/2026-08-06T11-33-18_CALA-source-discovery",
+      "discovered": 561,
+      "existing_matches": 397,
+      "new_candidates": 164,
+      "new_by_family": {
+        "Hilton": 5,
+        "Marriott": 27,
+        "Accor": 49,
+        "Wyndham": 22,
+        "Preferred": 61
+      },
+      "airtable_writes": false
+    }
+  },
+  "production_cycle": {
+    "run_dir": "reports/research-engine-v2/autopilot/2026-08-06T11-34-37_CALA-production-cycle",
+    "records_before": 757,
+    "records_after": 907,
+    "inserts_applied": 150,
+    "inserts_by_family": {
+      "hilton": 5,
+      "marriott": 13,
+      "accor": 49,
+      "wyndham": 22,
+      "preferred": 61
+    },
+    "updates_applied": 113,
+    "update_fields": ["Address", "Asset Context", "Market / Submarket", "Property Type"],
+    "steward_cases": 42,
+    "steward_inserts_remaining": 14,
+    "steward_note": "Marriott missing_or_unknown_city cases remain stewarded",
+    "runtime_ms": 1186692,
+    "brand_explorer_writes": false,
+    "brand_setup_writes": false,
+    "vic_writes": false,
+    "owner_operator_date_writes": false,
+    "webhound_invoked": false
+  },
+  "countries_searched_priority": [
+    "Mexico",
+    "Dominican Republic",
+    "Costa Rica",
+    "Colombia",
+    "Panama"
+  ],
+  "blocked_source_patterns": [
+    "OTA listings",
+    "Accor short continent path 403 patterns",
+    "Wyndham path-keyword CALA guesses (e.g. panama-city-florida)",
+    "Preferred collection names as Brand Setup brands",
+    "owner/operator/developer/dates",
+    "Recent Momentum / Company Validated / Brand Verified"
+  ],
+  "next_adapter_recommendation": "Defer BWH (property pages 403) / SLH / Bunkhouse unless low-effort steward/seed; next value is expanding Accor beyond priority five (Brazil depth) and resolving Marriott missing-city steward queue",
+  "tests": {
+    "test_census_autopilot": "pass",
+    "matrix_supported_parent_country_pairs": 35
+  }
+}

@@ -1,0 +1,3634 @@
+{
+  "ok": true,
+  "version": "census-autopilot-key-field-completion-v1",
+  "status": "production_census_key_field_completion_ready_provider_blocked",
+  "generated_at": "2026-08-07T17:06:09.723Z",
+  "production_target": {
+    "base": "Deal Capture Platform",
+    "table": "Hotel Property Census",
+    "table_id": "tbl9aY5ijiuIzzWam"
+  },
+  "brand_setup_writes": false,
+  "brand_explorer_writes": false,
+  "vic_writes": false,
+  "total_hotel_property_census_records": 1224,
+  "provider_readiness": {
+    "approved_for_geocode_apply": false,
+    "block_reason": null,
+    "recommended": "Set MAPBOX_ACCESS_TOKEN + MAPBOX_PERMANENT_GEOCODING=1 + CENSUS_COORDINATE_COMPLETION_ENABLED=1 + GEOCODING_PROVIDER=mapbox."
+  },
+  "priority_groups": [
+    "core_identity",
+    "source",
+    "address",
+    "state_region",
+    "coordinates",
+    "public_readiness",
+    "classification",
+    "rooms",
+    "content"
+  ],
+  "fields": [
+    {
+      "field": "Property Name",
+      "alias": "Property Name",
+      "group": "core_identity",
+      "priority": 1,
+      "note": null,
+      "complete": 1224,
+      "missing": 0,
+      "by_status": {
+        "complete": 1224,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 100
+    },
+    {
+      "field": "Canonical Property Name",
+      "alias": "Canonical Property Name",
+      "group": "core_identity",
+      "priority": 1,
+      "note": null,
+      "complete": 1045,
+      "missing": 179,
+      "by_status": {
+        "complete": 1045,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 3,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 176,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 176,
+      "source_adapter_gaps": 3,
+      "completion_pct": 85.4
+    },
+    {
+      "field": "Current Brand",
+      "alias": "Brand",
+      "group": "core_identity",
+      "priority": 1,
+      "note": null,
+      "complete": 1224,
+      "missing": 0,
+      "by_status": {
+        "complete": 1224,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 100
+    },
+    {
+      "field": "City",
+      "alias": "City",
+      "group": "core_identity",
+      "priority": 1,
+      "note": null,
+      "complete": 1224,
+      "missing": 0,
+      "by_status": {
+        "complete": 1224,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 100
+    },
+    {
+      "field": "State / Region",
+      "alias": "State / Region",
+      "group": "core_identity",
+      "priority": 1,
+      "note": null,
+      "complete": 1018,
+      "missing": 206,
+      "by_status": {
+        "complete": 1018,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 206,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 206,
+      "source_adapter_gaps": 0,
+      "completion_pct": 83.2
+    },
+    {
+      "field": "Country",
+      "alias": "Country",
+      "group": "core_identity",
+      "priority": 1,
+      "note": null,
+      "complete": 1224,
+      "missing": 0,
+      "by_status": {
+        "complete": 1224,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 100
+    },
+    {
+      "field": "Brand Family",
+      "alias": "Parent Company",
+      "group": "core_identity",
+      "priority": 1,
+      "note": null,
+      "complete": 1210,
+      "missing": 14,
+      "by_status": {
+        "complete": 1210,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 14,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 98.9
+    },
+    {
+      "field": "Source URL",
+      "alias": "Source URL",
+      "group": "source",
+      "priority": 2,
+      "note": null,
+      "complete": 1224,
+      "missing": 0,
+      "by_status": {
+        "complete": 1224,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 100
+    },
+    {
+      "field": "Family / Source Family",
+      "alias": "Source Family",
+      "group": "source",
+      "priority": 2,
+      "note": null,
+      "complete": 1210,
+      "missing": 14,
+      "by_status": {
+        "complete": 1210,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 14,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 14,
+      "completion_pct": 98.9
+    },
+    {
+      "field": "Data Confidence Tier",
+      "alias": "Data Confidence Tier",
+      "group": "governance",
+      "priority": 2,
+      "note": null,
+      "complete": 1106,
+      "missing": 118,
+      "by_status": {
+        "complete": 1106,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 118,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 90.4
+    },
+    {
+      "field": "Identity Confidence",
+      "alias": "Identity Confidence",
+      "group": "governance",
+      "priority": 2,
+      "note": null,
+      "complete": 1224,
+      "missing": 0,
+      "by_status": {
+        "complete": 1224,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 100
+    },
+    {
+      "field": "Source Confidence",
+      "alias": "Data Confidence Tier",
+      "group": "source",
+      "priority": 2,
+      "note": "Schema uses Source Confidence (founder alias: Data Confidence Tier)",
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Production Use Status",
+      "alias": "Production Use Status",
+      "group": "source",
+      "priority": 2,
+      "note": null,
+      "complete": 1224,
+      "missing": 0,
+      "by_status": {
+        "complete": 1224,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 100
+    },
+    {
+      "field": "Address",
+      "alias": "Address",
+      "group": "address",
+      "priority": 3,
+      "note": null,
+      "complete": 400,
+      "missing": 824,
+      "by_status": {
+        "complete": 400,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 824,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 824,
+      "completion_pct": 32.7
+    },
+    {
+      "field": "Address Confidence",
+      "alias": "Address Confidence",
+      "group": "address",
+      "priority": 3,
+      "note": null,
+      "complete": 325,
+      "missing": 899,
+      "by_status": {
+        "complete": 325,
+        "missing_can_autofill": 75,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 824,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 75,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 26.6
+    },
+    {
+      "field": "Address Source URL",
+      "alias": "Address Source URL",
+      "group": "address",
+      "priority": 3,
+      "note": null,
+      "complete": 325,
+      "missing": 899,
+      "by_status": {
+        "complete": 325,
+        "missing_can_autofill": 9,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 890,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 9,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 26.6
+    },
+    {
+      "field": "Phone",
+      "alias": "Phone Number",
+      "group": "contact",
+      "priority": 4,
+      "note": null,
+      "complete": 350,
+      "missing": 874,
+      "by_status": {
+        "complete": 350,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 874,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 28.6
+    },
+    {
+      "field": "Latitude",
+      "alias": "Latitude",
+      "group": "coordinates",
+      "priority": 5,
+      "note": null,
+      "complete": 379,
+      "missing": 845,
+      "by_status": {
+        "complete": 379,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 751,
+        "missing_provider_blocked": 94,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 94,
+      "steward_review": 0,
+      "source_adapter_gaps": 751,
+      "completion_pct": 31
+    },
+    {
+      "field": "Longitude",
+      "alias": "Longitude",
+      "group": "coordinates",
+      "priority": 5,
+      "note": null,
+      "complete": 379,
+      "missing": 845,
+      "by_status": {
+        "complete": 379,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 751,
+        "missing_provider_blocked": 94,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 94,
+      "steward_review": 0,
+      "source_adapter_gaps": 751,
+      "completion_pct": 31
+    },
+    {
+      "field": "Coordinate Source Type",
+      "alias": "Coordinate Source Type",
+      "group": "coordinates",
+      "priority": 5,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 379,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 845,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 379,
+      "provider_blocked": 845,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 0
+    },
+    {
+      "field": "Coordinate Confidence",
+      "alias": "Coordinate Confidence",
+      "group": "coordinates",
+      "priority": 5,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 379,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 845,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 379,
+      "provider_blocked": 845,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 0
+    },
+    {
+      "field": "Geocode Provider",
+      "alias": "Geocode Provider",
+      "group": "coordinates",
+      "priority": 5,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 379,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 845,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 379,
+      "provider_blocked": 845,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 0
+    },
+    {
+      "field": "Geocode Method",
+      "alias": "Geocode Method",
+      "group": "coordinates",
+      "priority": 5,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 379,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 845,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 379,
+      "provider_blocked": 845,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 0
+    },
+    {
+      "field": "Geocode Reviewed Date",
+      "alias": "Geocode Reviewed Date",
+      "group": "coordinates",
+      "priority": 5,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 379,
+        "missing_needs_source_adapter": 0,
+        "missing_provider_blocked": 845,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 379,
+      "provider_blocked": 845,
+      "steward_review": 0,
+      "source_adapter_gaps": 0,
+      "completion_pct": 0
+    },
+    {
+      "field": "Radar Display Status",
+      "alias": "Radar Display Status",
+      "group": "public_readiness",
+      "priority": 6,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Radar Display Reason",
+      "alias": "Radar Display Reason",
+      "group": "public_readiness",
+      "priority": 6,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Radar Geography Status",
+      "alias": "Radar Geography Status",
+      "group": "public_readiness",
+      "priority": 6,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Public Census Eligibility",
+      "alias": "Public Census Eligibility",
+      "group": "public_readiness",
+      "priority": 6,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Public Display Confidence",
+      "alias": "Public Display Confidence",
+      "group": "public_readiness",
+      "priority": 6,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Public Display Review Status",
+      "alias": "Public Display Review Status",
+      "group": "public_readiness",
+      "priority": 6,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Property Type",
+      "alias": "Property Type",
+      "group": "classification",
+      "priority": 7,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Asset Context",
+      "alias": "Asset Context",
+      "group": "classification",
+      "priority": 7,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Market / Submarket",
+      "alias": "Market / Submarket",
+      "group": "classification",
+      "priority": 7,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Rooms / Keys",
+      "alias": "Rooms / Keys",
+      "group": "rooms",
+      "priority": 8,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Rooms Confidence",
+      "alias": "Rooms Confidence",
+      "group": "rooms",
+      "priority": 8,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Rooms Source URL",
+      "alias": "Rooms Source URL",
+      "group": "rooms",
+      "priority": 8,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Rooms Source Type",
+      "alias": "Rooms Source Type",
+      "group": "rooms",
+      "priority": 8,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Rooms Reviewed Date",
+      "alias": "Rooms Reviewed Date",
+      "group": "rooms",
+      "priority": 8,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Hotel Description - Source Text",
+      "alias": "Hotel Description - Source Text",
+      "group": "content",
+      "priority": 9,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Hotel Description - AI Summary",
+      "alias": "Hotel Description - AI Summary",
+      "group": "content",
+      "priority": 9,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Amenities - Source Text",
+      "alias": "Amenities - Source Text",
+      "group": "content",
+      "priority": 9,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    },
+    {
+      "field": "Amenities - Structured Tags",
+      "alias": "Amenities - Structured Tags",
+      "group": "content",
+      "priority": 9,
+      "note": null,
+      "complete": 0,
+      "missing": 1224,
+      "by_status": {
+        "complete": 0,
+        "missing_can_autofill": 0,
+        "missing_needs_source_adapter": 1224,
+        "missing_provider_blocked": 0,
+        "missing_steward_review": 0,
+        "missing_not_supported": 0,
+        "intentionally_blocked": 0
+      },
+      "autofill_opportunities": 0,
+      "provider_blocked": 0,
+      "steward_review": 0,
+      "source_adapter_gaps": 1224,
+      "completion_pct": 0
+    }
+  ],
+  "summary": {
+    "autofill_opportunities": 1979,
+    "provider_blocked_coordinate_records": 94,
+    "source_adapter_gap_records": 1224,
+    "steward_review_gaps": 382,
+    "canonical_property_name": {
+      "total_records": 1224,
+      "complete_clean": 1045,
+      "blank": 3,
+      "dirty": 0,
+      "safe_autofill": 0,
+      "safe_cleanup": 0,
+      "steward": 176,
+      "blocked_or_missing_source": 3,
+      "intentionally_blank": 0
+    }
+  },
+  "samples": {
+    "autofill_opportunities": [
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0DludYoPHYHAYh",
+        "identity_key": "ind_hilton_mx_cywcedt",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0DludYoPHYHAYh",
+        "identity_key": "ind_hilton_mx_cywcedt",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0DludYoPHYHAYh",
+        "identity_key": "ind_hilton_mx_cywcedt",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0DludYoPHYHAYh",
+        "identity_key": "ind_hilton_mx_cywcedt",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0DludYoPHYHAYh",
+        "identity_key": "ind_hilton_mx_cywcedt",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0IqAQQtjvBvstj",
+        "identity_key": "ind_hilton_mx_cunmelx",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0IqAQQtjvBvstj",
+        "identity_key": "ind_hilton_mx_cunmelx",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0IqAQQtjvBvstj",
+        "identity_key": "ind_hilton_mx_cunmelx",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0IqAQQtjvBvstj",
+        "identity_key": "ind_hilton_mx_cunmelx",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0IqAQQtjvBvstj",
+        "identity_key": "ind_hilton_mx_cunmelx",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0RT8bWSesRF8dE",
+        "identity_key": "ind_choice_cr_cr013",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0RT8bWSesRF8dE",
+        "identity_key": "ind_choice_cr_cr013",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0RT8bWSesRF8dE",
+        "identity_key": "ind_choice_cr_cr013",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0RT8bWSesRF8dE",
+        "identity_key": "ind_choice_cr_cr013",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0RT8bWSesRF8dE",
+        "identity_key": "ind_choice_cr_cr013",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0aE97rzRABwJon",
+        "identity_key": "osm_do_way_27956819",
+        "field": "Address Confidence",
+        "reason": "address_present_provenance_gap",
+        "autofill_value": "High",
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0aE97rzRABwJon",
+        "identity_key": "osm_do_way_27956819",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0aE97rzRABwJon",
+        "identity_key": "osm_do_way_27956819",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0aE97rzRABwJon",
+        "identity_key": "osm_do_way_27956819",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0aE97rzRABwJon",
+        "identity_key": "osm_do_way_27956819",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0aE97rzRABwJon",
+        "identity_key": "osm_do_way_27956819",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0kSLXMjjavq3cG",
+        "identity_key": "ind_hilton_mx_qrohwhw",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0kSLXMjjavq3cG",
+        "identity_key": "ind_hilton_mx_qrohwhw",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0kSLXMjjavq3cG",
+        "identity_key": "ind_hilton_mx_qrohwhw",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0kSLXMjjavq3cG",
+        "identity_key": "ind_hilton_mx_qrohwhw",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0kSLXMjjavq3cG",
+        "identity_key": "ind_hilton_mx_qrohwhw",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0qiOiExN4lmbfM",
+        "identity_key": "ind_wyndham_mx_chn-hotel-monterrey-norte",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0qiOiExN4lmbfM",
+        "identity_key": "ind_wyndham_mx_chn-hotel-monterrey-norte",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0qiOiExN4lmbfM",
+        "identity_key": "ind_wyndham_mx_chn-hotel-monterrey-norte",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0qiOiExN4lmbfM",
+        "identity_key": "ind_wyndham_mx_chn-hotel-monterrey-norte",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0qiOiExN4lmbfM",
+        "identity_key": "ind_wyndham_mx_chn-hotel-monterrey-norte",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0zU2ZRAUKqZ6cE",
+        "identity_key": "ind_hilton_mx_mexsahh",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0zU2ZRAUKqZ6cE",
+        "identity_key": "ind_hilton_mx_mexsahh",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0zU2ZRAUKqZ6cE",
+        "identity_key": "ind_hilton_mx_mexsahh",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0zU2ZRAUKqZ6cE",
+        "identity_key": "ind_hilton_mx_mexsahh",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec0zU2ZRAUKqZ6cE",
+        "identity_key": "ind_hilton_mx_mexsahh",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1fjvAKLJPb7AzI",
+        "identity_key": "osm_do_relation_1922795",
+        "field": "Address Confidence",
+        "reason": "address_present_provenance_gap",
+        "autofill_value": "High",
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1fjvAKLJPb7AzI",
+        "identity_key": "osm_do_relation_1922795",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1fjvAKLJPb7AzI",
+        "identity_key": "osm_do_relation_1922795",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1fjvAKLJPb7AzI",
+        "identity_key": "osm_do_relation_1922795",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1fjvAKLJPb7AzI",
+        "identity_key": "osm_do_relation_1922795",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1fjvAKLJPb7AzI",
+        "identity_key": "osm_do_relation_1922795",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1mZD0aglbogvI3",
+        "identity_key": "ind_hilton_mx_upnmtgi",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1mZD0aglbogvI3",
+        "identity_key": "ind_hilton_mx_upnmtgi",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1mZD0aglbogvI3",
+        "identity_key": "ind_hilton_mx_upnmtgi",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1mZD0aglbogvI3",
+        "identity_key": "ind_hilton_mx_upnmtgi",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec1mZD0aglbogvI3",
+        "identity_key": "ind_hilton_mx_upnmtgi",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2esOLiP2qgn70F",
+        "identity_key": "ind_accor_mx_3250",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2esOLiP2qgn70F",
+        "identity_key": "ind_accor_mx_3250",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2esOLiP2qgn70F",
+        "identity_key": "ind_accor_mx_3250",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2esOLiP2qgn70F",
+        "identity_key": "ind_accor_mx_3250",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2esOLiP2qgn70F",
+        "identity_key": "ind_accor_mx_3250",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2gjht94CaFSfNX",
+        "identity_key": "osm_do_node_302771929",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2gjht94CaFSfNX",
+        "identity_key": "osm_do_node_302771929",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2gjht94CaFSfNX",
+        "identity_key": "osm_do_node_302771929",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2gjht94CaFSfNX",
+        "identity_key": "osm_do_node_302771929",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2gjht94CaFSfNX",
+        "identity_key": "osm_do_node_302771929",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2iv5CMBLM2etaa",
+        "identity_key": "ind_hilton_mx_qrojshh",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2iv5CMBLM2etaa",
+        "identity_key": "ind_hilton_mx_qrojshh",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2iv5CMBLM2etaa",
+        "identity_key": "ind_hilton_mx_qrojshh",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2iv5CMBLM2etaa",
+        "identity_key": "ind_hilton_mx_qrojshh",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2iv5CMBLM2etaa",
+        "identity_key": "ind_hilton_mx_qrojshh",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2lIoIR5zP8K3XZ",
+        "identity_key": "osm_do_way_539003044",
+        "field": "Address Confidence",
+        "reason": "address_present_provenance_gap",
+        "autofill_value": "High",
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2lIoIR5zP8K3XZ",
+        "identity_key": "osm_do_way_539003044",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2lIoIR5zP8K3XZ",
+        "identity_key": "osm_do_way_539003044",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2lIoIR5zP8K3XZ",
+        "identity_key": "osm_do_way_539003044",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2lIoIR5zP8K3XZ",
+        "identity_key": "osm_do_way_539003044",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2lIoIR5zP8K3XZ",
+        "identity_key": "osm_do_way_539003044",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2wRckl0EfhiNyY",
+        "identity_key": "osm_do_way_253123206",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2wRckl0EfhiNyY",
+        "identity_key": "osm_do_way_253123206",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2wRckl0EfhiNyY",
+        "identity_key": "osm_do_way_253123206",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2wRckl0EfhiNyY",
+        "identity_key": "osm_do_way_253123206",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec2wRckl0EfhiNyY",
+        "identity_key": "osm_do_way_253123206",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3GpfVNmODtyEoT",
+        "identity_key": "ind_choice_mx_mx165",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3GpfVNmODtyEoT",
+        "identity_key": "ind_choice_mx_mx165",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3GpfVNmODtyEoT",
+        "identity_key": "ind_choice_mx_mx165",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3GpfVNmODtyEoT",
+        "identity_key": "ind_choice_mx_mx165",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3GpfVNmODtyEoT",
+        "identity_key": "ind_choice_mx_mx165",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3MHAXsWlTUz2gY",
+        "identity_key": "ind_hilton_mx_sjdtlup",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3MHAXsWlTUz2gY",
+        "identity_key": "ind_hilton_mx_sjdtlup",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3MHAXsWlTUz2gY",
+        "identity_key": "ind_hilton_mx_sjdtlup",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3MHAXsWlTUz2gY",
+        "identity_key": "ind_hilton_mx_sjdtlup",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3MHAXsWlTUz2gY",
+        "identity_key": "ind_hilton_mx_sjdtlup",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3NdKlsDqp9AWpc",
+        "identity_key": "osm_do_way_142306645",
+        "field": "Address Confidence",
+        "reason": "address_present_provenance_gap",
+        "autofill_value": "High",
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3NdKlsDqp9AWpc",
+        "identity_key": "osm_do_way_142306645",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3NdKlsDqp9AWpc",
+        "identity_key": "osm_do_way_142306645",
+        "field": "Coordinate Confidence",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3NdKlsDqp9AWpc",
+        "identity_key": "osm_do_way_142306645",
+        "field": "Geocode Provider",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3NdKlsDqp9AWpc",
+        "identity_key": "osm_do_way_142306645",
+        "field": "Geocode Method",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3NdKlsDqp9AWpc",
+        "identity_key": "osm_do_way_142306645",
+        "field": "Geocode Reviewed Date",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      },
+      {
+        "record_id": "rec3VtNHyHrW0xDk8",
+        "identity_key": "ind_choice_mx_mx184",
+        "field": "Coordinate Source Type",
+        "reason": "coords_present_provenance_gap",
+        "autofill_value": null,
+        "canonical_status": null
+      }
+    ],
+    "provider_blocked_coordinates": [
+      {
+        "record_id": "rec1SGAKRL8dvYyqu",
+        "identity_key": "ind_choice_co_cb008",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec1SGAKRL8dvYyqu",
+        "identity_key": "ind_choice_co_cb008",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec2CnwDDzuMNJS8p",
+        "identity_key": "ind_preferred_mx_311001",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec2CnwDDzuMNJS8p",
+        "identity_key": "ind_preferred_mx_311001",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec2qzq0V2Hvr2m6l",
+        "identity_key": "ind_marriott_do_pujsm",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec2qzq0V2Hvr2m6l",
+        "identity_key": "ind_marriott_do_pujsm",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec2vPnXJrkRLOAoB",
+        "identity_key": "ind_marriott_do_pujwh",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec2vPnXJrkRLOAoB",
+        "identity_key": "ind_marriott_do_pujwh",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec3N3vaZ7C6AVZDQ",
+        "identity_key": "ind_preferred_mx_5841",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec3N3vaZ7C6AVZDQ",
+        "identity_key": "ind_preferred_mx_5841",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec3c9fCwqOCA9TAO",
+        "identity_key": "ind_choice_co_cb033",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec3c9fCwqOCA9TAO",
+        "identity_key": "ind_choice_co_cb033",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec3mB3ge6kVK6CnF",
+        "identity_key": "ind_hyatt_do_ziva_cap_cana",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec3mB3ge6kVK6CnF",
+        "identity_key": "ind_hyatt_do_ziva_cap_cana",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec3t0vOGGf5LeXDb",
+        "identity_key": "ind_preferred_mx_5866",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec3t0vOGGf5LeXDb",
+        "identity_key": "ind_preferred_mx_5866",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec4oP5nj76kK9D0s",
+        "identity_key": "ind_preferred_mx_1159",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec4oP5nj76kK9D0s",
+        "identity_key": "ind_preferred_mx_1159",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec6pGcGtBpLNH2nn",
+        "identity_key": "ind_accor_co_1871",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec6pGcGtBpLNH2nn",
+        "identity_key": "ind_accor_co_1871",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec81sb3lgZqO0qWv",
+        "identity_key": "ind_preferred_mx_412491",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec81sb3lgZqO0qWv",
+        "identity_key": "ind_preferred_mx_412491",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec8I7p2Ws26O7QgY",
+        "identity_key": "ind_preferred_mx_5881",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec8I7p2Ws26O7QgY",
+        "identity_key": "ind_preferred_mx_5881",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec8qJankNUMwUwUB",
+        "identity_key": "ind_marriott_do_pujfp",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec8qJankNUMwUwUB",
+        "identity_key": "ind_marriott_do_pujfp",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9CkQpW17aFPfyg",
+        "identity_key": "ind_choice_co_cb017",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9CkQpW17aFPfyg",
+        "identity_key": "ind_choice_co_cb017",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9SWuCVBFtet9ij",
+        "identity_key": "ind_preferred_mx_11081",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9SWuCVBFtet9ij",
+        "identity_key": "ind_preferred_mx_11081",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9Tp0WBb2uk6w3u",
+        "identity_key": "ind_choice_co_cb012",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9Tp0WBb2uk6w3u",
+        "identity_key": "ind_choice_co_cb012",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9gW2cGsKupex5d",
+        "identity_key": "ind_marriott_do_sdqcy",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9gW2cGsKupex5d",
+        "identity_key": "ind_marriott_do_sdqcy",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9lAcG99FPYGNEQ",
+        "identity_key": "ind_accor_mx_c383",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "rec9lAcG99FPYGNEQ",
+        "identity_key": "ind_accor_mx_c383",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recAC9Q00238hGRwR",
+        "identity_key": "ind_hyatt_do_dreams_playa_esmeralda",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recAC9Q00238hGRwR",
+        "identity_key": "ind_hyatt_do_dreams_playa_esmeralda",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recBTcbypoH2XL0so",
+        "identity_key": "ind_accor_mx_b802",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recBTcbypoH2XL0so",
+        "identity_key": "ind_accor_mx_b802",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recCEpdskZeUBvQwG",
+        "identity_key": "ind_choice_co_cb014",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recCEpdskZeUBvQwG",
+        "identity_key": "ind_choice_co_cb014",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recCgLAxAEFCOu4mi",
+        "identity_key": "ind_preferred_mx_414974",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recCgLAxAEFCOu4mi",
+        "identity_key": "ind_preferred_mx_414974",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recD0SqXmg3Uc5KqZ",
+        "identity_key": "ind_choice_co_cb019",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recD0SqXmg3Uc5KqZ",
+        "identity_key": "ind_choice_co_cb019",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recEEMP6Z1FZtlw7p",
+        "identity_key": "ind_accor_mx_b9z5",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recEEMP6Z1FZtlw7p",
+        "identity_key": "ind_accor_mx_b9z5",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recES2jfGwId1RJLv",
+        "identity_key": "ind_choice_pa_pn012",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recES2jfGwId1RJLv",
+        "identity_key": "ind_choice_pa_pn012",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recFMdsBas5UqYvmv",
+        "identity_key": "ind_preferred_mx_414337",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recFMdsBas5UqYvmv",
+        "identity_key": "ind_preferred_mx_414337",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recH2spywZTIOoEiA",
+        "identity_key": "ind_preferred_do_413587",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recH2spywZTIOoEiA",
+        "identity_key": "ind_preferred_do_413587",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recHrQIsyUlttR7wo",
+        "identity_key": "ind_marriott_do_pujro",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recHrQIsyUlttR7wo",
+        "identity_key": "ind_marriott_do_pujro",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recHvjyMVmQ1vPXGf",
+        "identity_key": "ind_accor_co_b780",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recHvjyMVmQ1vPXGf",
+        "identity_key": "ind_accor_co_b780",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recILYUn17pa86wi6",
+        "identity_key": "ind_choice_mx_mx094",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recILYUn17pa86wi6",
+        "identity_key": "ind_choice_mx_mx094",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recIal2Y5JJDyDIHI",
+        "identity_key": "ind_choice_co_cb009",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recIal2Y5JJDyDIHI",
+        "identity_key": "ind_choice_co_cb009",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recJJg42XMmEAXc9X",
+        "identity_key": "ind_choice_mx_mx093",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recJJg42XMmEAXc9X",
+        "identity_key": "ind_choice_mx_mx093",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recKZsGU7cTq1IZPp",
+        "identity_key": "ind_preferred_co_414871",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recKZsGU7cTq1IZPp",
+        "identity_key": "ind_preferred_co_414871",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recMNlgAWWzThfj4a",
+        "identity_key": "ind_preferred_mx_413944",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recMNlgAWWzThfj4a",
+        "identity_key": "ind_preferred_mx_413944",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recMdqHaHijrBahhz",
+        "identity_key": "ind_hilton_cr_lirrswa",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recMdqHaHijrBahhz",
+        "identity_key": "ind_hilton_cr_lirrswa",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recMzzHNZjAlaQh7y",
+        "identity_key": "ind_marriott_do_sdqgw",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recMzzHNZjAlaQh7y",
+        "identity_key": "ind_marriott_do_sdqgw",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recN6SdPjp5IvRZtJ",
+        "identity_key": "ind_hilton_mx_cuncici",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recN6SdPjp5IvRZtJ",
+        "identity_key": "ind_hilton_mx_cuncici",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recPPrNXb6LWPT74e",
+        "identity_key": "ind_preferred_mx_1546",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recPPrNXb6LWPT74e",
+        "identity_key": "ind_preferred_mx_1546",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recQoyPT90YimUCxb",
+        "identity_key": "ind_preferred_mx_966",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recQoyPT90YimUCxb",
+        "identity_key": "ind_preferred_mx_966",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recRQ07rVhFKpiXeS",
+        "identity_key": "ind_preferred_mx_413464",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recRQ07rVhFKpiXeS",
+        "identity_key": "ind_preferred_mx_413464",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recST2nLpCY63suUs",
+        "identity_key": "ind_preferred_cr_6181",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recST2nLpCY63suUs",
+        "identity_key": "ind_preferred_cr_6181",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recTY7Ghbr9jvdpiI",
+        "identity_key": "ind_preferred_mx_883",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recTY7Ghbr9jvdpiI",
+        "identity_key": "ind_preferred_mx_883",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recUOyzOXn2Zdp98I",
+        "identity_key": "ind_choice_do_do003",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recUOyzOXn2Zdp98I",
+        "identity_key": "ind_choice_do_do003",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recUSbxC0Q2VZJ0bi",
+        "identity_key": "ind_preferred_co_1479",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recUSbxC0Q2VZJ0bi",
+        "identity_key": "ind_preferred_co_1479",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recUUJjiSrspmV5WC",
+        "identity_key": "ind_accor_mx_b1u9",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recUUJjiSrspmV5WC",
+        "identity_key": "ind_accor_mx_b1u9",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recVr1hEnPhl4O8mR",
+        "identity_key": "ind_choice_mx_mx176",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recVr1hEnPhl4O8mR",
+        "identity_key": "ind_choice_mx_mx176",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recXCr44T5dsTH1fA",
+        "identity_key": "ind_choice_mx_mx095",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recXCr44T5dsTH1fA",
+        "identity_key": "ind_choice_mx_mx095",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recXnLiKt34OURyNW",
+        "identity_key": "ind_preferred_mx_303728",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recXnLiKt34OURyNW",
+        "identity_key": "ind_preferred_mx_303728",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recXqEEF2geBdce1d",
+        "identity_key": "ind_marriott_do_stiri",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recXqEEF2geBdce1d",
+        "identity_key": "ind_marriott_do_stiri",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recYwdabT0eURnQpb",
+        "identity_key": "ind_preferred_mx_1205",
+        "field": "Latitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      },
+      {
+        "record_id": "recYwdabT0eURnQpb",
+        "identity_key": "ind_preferred_mx_1205",
+        "field": "Longitude",
+        "reason": "geocode_provider_or_storage_terms_missing"
+      }
+    ],
+    "source_adapter_gaps": [
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Source Confidence",
+        "reason": "source_field_gap"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Radar Display Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Radar Display Reason",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Radar Geography Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Public Census Eligibility",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Public Display Confidence",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Public Display Review Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Property Type",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Asset Context",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Market / Submarket",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Rooms / Keys",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Rooms Confidence",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Rooms Source URL",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Rooms Source Type",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Rooms Reviewed Date",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Hotel Description - Source Text",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Hotel Description - AI Summary",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Amenities - Source Text",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec01MDiDGhOUizYu",
+        "identity_key": "ind_hilton_do_pujoydt",
+        "field": "Amenities - Structured Tags",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Source Confidence",
+        "reason": "source_field_gap"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Address",
+        "reason": "official_address_adapter_or_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Latitude",
+        "reason": "need_official_coords_or_confirmed_address"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Longitude",
+        "reason": "need_official_coords_or_confirmed_address"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Radar Display Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Radar Display Reason",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Radar Geography Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Public Census Eligibility",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Public Display Confidence",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Public Display Review Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Property Type",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Asset Context",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Market / Submarket",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Rooms / Keys",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Rooms Confidence",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Rooms Source URL",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Rooms Source Type",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Rooms Reviewed Date",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Hotel Description - Source Text",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Hotel Description - AI Summary",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Amenities - Source Text",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Amenities - Structured Tags",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Source Confidence",
+        "reason": "source_field_gap"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Address",
+        "reason": "official_address_adapter_or_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Latitude",
+        "reason": "need_official_coords_or_confirmed_address"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Longitude",
+        "reason": "need_official_coords_or_confirmed_address"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Radar Display Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Radar Display Reason",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Radar Geography Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Public Census Eligibility",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Public Display Confidence",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Public Display Review Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Property Type",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Asset Context",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Market / Submarket",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Rooms / Keys",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Rooms Confidence",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Rooms Source URL",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Rooms Source Type",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Rooms Reviewed Date",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Hotel Description - Source Text",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Hotel Description - AI Summary",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Amenities - Source Text",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Amenities - Structured Tags",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Source Confidence",
+        "reason": "source_field_gap"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Address",
+        "reason": "official_address_adapter_or_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Latitude",
+        "reason": "need_official_coords_or_confirmed_address"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Longitude",
+        "reason": "need_official_coords_or_confirmed_address"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Radar Display Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Radar Display Reason",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Radar Geography Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Public Census Eligibility",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Public Display Confidence",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Public Display Review Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Property Type",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Asset Context",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Market / Submarket",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Rooms / Keys",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Rooms Confidence",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Rooms Source URL",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Rooms Source Type",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Rooms Reviewed Date",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Hotel Description - Source Text",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Hotel Description - AI Summary",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Amenities - Source Text",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec07FR57B9Yt3TCh",
+        "identity_key": "ind_marriott_co_bogjw",
+        "field": "Amenities - Structured Tags",
+        "reason": "content_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Source Confidence",
+        "reason": "source_field_gap"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Radar Display Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Radar Display Reason",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Radar Geography Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Public Census Eligibility",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Public Display Confidence",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Public Display Review Status",
+        "reason": "public_readiness_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Property Type",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Asset Context",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Market / Submarket",
+        "reason": "classification_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Rooms / Keys",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Rooms Confidence",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Rooms Source URL",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Rooms Source Type",
+        "reason": "rooms_enrichment_queue"
+      },
+      {
+        "record_id": "rec09VOvV12ZHJtSM",
+        "identity_key": "ind_accor_co_b201",
+        "field": "Rooms Reviewed Date",
+        "reason": "rooms_enrichment_queue"
+      }
+    ],
+    "steward_review_needs": [
+      {
+        "record_id": "rec02pPY8kVklN6mK",
+        "identity_key": "ind_accor_mx_c4p4",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "Canonical Property Name",
+        "reason": "city_missing_or_unknown"
+      },
+      {
+        "record_id": "rec02wJ8dk7HtjPjx",
+        "identity_key": "ind_marriott_mx_bjxds",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec0IqAQQtjvBvstj",
+        "identity_key": "ind_hilton_mx_cunmelx",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec0P2XU4LWSkAMKm",
+        "identity_key": "ind_hilton_pa_ptyatlx",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec1Snj6DNXcKzOfR",
+        "identity_key": "ind_marriott_mx_gdlar",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec1XdpdiXxT2K18C",
+        "identity_key": "ind_hilton_cr_lirrplx",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec1XdpdiXxT2K18C",
+        "identity_key": "ind_hilton_cr_lirrplx",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec1dTLhN2kHSjyv1",
+        "identity_key": "ind_ihg_cr_sjoap",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec1f0W6zwB9lA50p",
+        "identity_key": "ind_marriott_mx_pbcds",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec1fjvAKLJPb7AzI",
+        "identity_key": "osm_do_relation_1922795",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec1mZD0aglbogvI3",
+        "identity_key": "ind_hilton_mx_upnmtgi",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec1o8iZswZ7NeEFe",
+        "identity_key": "ind_marriott_mx_mxlcy",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec1oiGrJEa7LYgcI",
+        "identity_key": "ind_ihg_mx_qroja",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec1t7GShNGHnNdYy",
+        "identity_key": "ind_ihg_mx_ghprm",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec20YJGeQtCJYfF9",
+        "identity_key": "ind_ihg_mx_mtysa",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec2gjht94CaFSfNX",
+        "identity_key": "osm_do_node_302771929",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec2lIoIR5zP8K3XZ",
+        "identity_key": "osm_do_way_539003044",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec2wRckl0EfhiNyY",
+        "identity_key": "osm_do_way_253123206",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec30eORcGKDSQKhJ",
+        "identity_key": "ind_marriott_mx_pxmtr",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec35J5pknfdYHECD",
+        "identity_key": "ind_choice_mx_mx155",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec3NdKlsDqp9AWpc",
+        "identity_key": "osm_do_way_142306645",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec3QgXCAUGHlVw6c",
+        "identity_key": "ind_marriott_mx_lapbc",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec3QgXCAUGHlVw6c",
+        "identity_key": "ind_marriott_mx_lapbc",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec3VtNHyHrW0xDk8",
+        "identity_key": "ind_choice_mx_mx184",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec3YDnRVUb9TBd5g",
+        "identity_key": "ind_ihg_co_mdeha",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec3bK7fOFBnEsJwM",
+        "identity_key": "ind_accor_mx_c280",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec3iIZHWQ28nkGOW",
+        "identity_key": "ind_accor_pa_9252",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec3iveAi0TN3xNRO",
+        "identity_key": "ind_ihg_co_ctghi",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec49Ilr511CNNF9s",
+        "identity_key": "ind_ihg_mx_vsadg",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec4GtL5puDoZLBNv",
+        "identity_key": "osm_do_way_175357851",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec4RFvhSq1gfL3k1",
+        "identity_key": "ind_ihg_mx_mexpd",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec4UM5tor3ZMOvpp",
+        "identity_key": "ind_marriott_mx_pazxt",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec4WX7MfEUKPZz0H",
+        "identity_key": "ind_choice_mx_mx159",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec55rqVTckL1tlN7",
+        "identity_key": "ind_marriott_mx_bjxak",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec5CCtHKvyBnvC1C",
+        "identity_key": "osm_do_way_310075723",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec5HytFhKHHeQ8Kj",
+        "identity_key": "ind_marriott_mx_midds",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec5b4Cscv9AfHspt",
+        "identity_key": "ind_ihg_mx_midsr",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec5b4Cscv9AfHspt",
+        "identity_key": "ind_ihg_mx_midsr",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec5ipKwCzFMSjwck",
+        "identity_key": "ind_ihg_mx_sjdtd",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec5lQjew5gySpyxx",
+        "identity_key": "ind_ihg_mx_huxhi",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec61aOhNCTEqGAkE",
+        "identity_key": "ind_choice_mx_mx197",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec65MbQi3ofUHfL2",
+        "identity_key": "ind_ihg_cr_sjoha",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec65prcyn44MACE4",
+        "identity_key": "osm_do_way_309228608",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec6pPaRLOnkHYLI9",
+        "identity_key": "ind_marriott_mx_mexfp",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec6trraPa03RhrKl",
+        "identity_key": "ind_marriott_co_mdewt",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec6ztnByQ5yYKq72",
+        "identity_key": "osm_do_way_255788067",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec75djNRYWlkjEtL",
+        "identity_key": "ind_ihg_mx_veroz",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec790ySWnHxW4pCd",
+        "identity_key": "ind_hilton_co_bgahxhx",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec7UGlO9CEWEaidU",
+        "identity_key": "ind_hilton_mx_pbcgigi",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec7YMFm4juCjbp6y",
+        "identity_key": "ind_hilton_mx_zihzigv",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec7eZu4b00SjOEoj",
+        "identity_key": "ind_accor_mx_9367",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec7hWWFWbfTddlEg",
+        "identity_key": "osm_do_way_153864150",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec7uzw6WAJQwjnd8",
+        "identity_key": "osm_do_way_379027094",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec80isZs41AC5dqE",
+        "identity_key": "ind_marriott_mx_mexds",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec82p7iMFXOLgUk5",
+        "identity_key": "ind_hilton_mx_qrosahx",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec8CHh0phndcYdHv",
+        "identity_key": "ind_ihg_mx_mexre",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec8OP2d0vaQxvlmP",
+        "identity_key": "ind_choice_mx_mx056",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec8Syl1lPYKsfUX5",
+        "identity_key": "ind_hilton_cr_sjoacgi",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec8XBNPHAStPoWJM",
+        "identity_key": "osm_do_node_1207422127",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec8aCl84KcJdhl9k",
+        "identity_key": "ind_marriott_mx_cunpa",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec8ohO9PFpp5FWmC",
+        "identity_key": "ind_marriott_mx_cunek",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec8rSwsvFmvAyK0v",
+        "identity_key": "ind_ihg_mx_mexzr",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec9CIiEsuw1S4AhN",
+        "identity_key": "ind_ihg_mx_mexaa",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec9SQXzPOOsjPTqc",
+        "identity_key": "ind_marriott_mx_pbcde",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec9VgXqFtb8cVmBX",
+        "identity_key": "osm_do_node_302771860",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec9Zrzfk7FQBeE4s",
+        "identity_key": "osm_do_way_310436422",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec9cNh7gyRpmSadT",
+        "identity_key": "osm_do_way_471926026",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec9gAZZzQOvgzcBy",
+        "identity_key": "ind_accor_mx_c0d9",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec9gAZZzQOvgzcBy",
+        "identity_key": "ind_accor_mx_c0d9",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec9i1dsU1KdqN9Kj",
+        "identity_key": "ind_hilton_mx_qrolvlx",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "rec9i1dsU1KdqN9Kj",
+        "identity_key": "ind_hilton_mx_qrolvlx",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "rec9t2dO5jv5587EH",
+        "identity_key": "osm_do_way_659053800",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "recA9EJlX8xR7DRZB",
+        "identity_key": "ind_ihg_mx_cennj",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recALDbIJGJItgYBG",
+        "identity_key": "osm_do_way_975017774",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "recAVVYEbtuOwoRXW",
+        "identity_key": "ind_marriott_mx_slpcs",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recAi5d3XxNVipq2K",
+        "identity_key": "ind_ihg_mx_zihha",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recAsOCSrAEx7I137",
+        "identity_key": "osm_do_way_33120922",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "recAymC67NGyq50tR",
+        "identity_key": "ind_marriott_mx_verjt",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recBD32oUc1X93GYg",
+        "identity_key": "osm_do_node_4023347101",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "recBQWBWy34egojZS",
+        "identity_key": "ind_marriott_mx_bjxxs",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recBuxWpORNS1ZLhD",
+        "identity_key": "ind_ihg_mx_pbepb",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recBvkvMZewtONyB2",
+        "identity_key": "ind_hilton_mx_mexpdlx",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "recBvkvMZewtONyB2",
+        "identity_key": "ind_hilton_mx_mexpdlx",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recCBwyTopFYX8wir",
+        "identity_key": "ind_choice_pa_pn018",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recCWs5oRz4Eji2No",
+        "identity_key": "osm_do_node_11035653720",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "recCZ3QNBu2kkksi8",
+        "identity_key": "osm_do_way_272974124",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "recCgLAxAEFCOu4mi",
+        "identity_key": "ind_preferred_mx_414974",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recCjXwlr7eBZu3Pn",
+        "identity_key": "ind_accor_mx_c6k0",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recCksMSQt8WapQAP",
+        "identity_key": "ind_marriott_mx_mttxt",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recClyVxmPwDndCcx",
+        "identity_key": "ind_ihg_mx_tijav",
+        "field": "Canonical Property Name",
+        "reason": "existing_differs_materially"
+      },
+      {
+        "record_id": "recCrOmuncVJsA2qs",
+        "identity_key": "ind_ihg_mx_zclav",
+        "field": "Canonical Property Name",
+        "reason": "existing_differs_materially"
+      },
+      {
+        "record_id": "recCrOmuncVJsA2qs",
+        "identity_key": "ind_ihg_mx_zclav",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recCt09AOeNjepmke",
+        "identity_key": "ind_ihg_mx_culpy",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recDBfvlwLCFz2EPk",
+        "identity_key": "ind_choice_mx_mx079",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recDCTrvy7O6UoR6a",
+        "identity_key": "ind_preferred_pa_415512",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recDVZWiVOf2baoOS",
+        "identity_key": "osm_do_node_373851323",
+        "field": "Canonical Property Name",
+        "reason": "human_review_required"
+      },
+      {
+        "record_id": "recDrnoPDmGlA5Q2g",
+        "identity_key": "ind_hilton_co_eypyohx",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recE5U0zi3vwYpqQq",
+        "identity_key": "ind_hilton_mx_qrosjhx",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      },
+      {
+        "record_id": "recEFqmyBScSfSoFa",
+        "identity_key": "ind_ihg_mx_paztu",
+        "field": "State / Region",
+        "reason": "city_or_state_requires_official_source_or_steward"
+      }
+    ]
+  },
+  "records_scanned": 1224,
+  "recommended_next_production_cycle_action": "Run production-cycle with key_field_completion after source_discovery to apply High autofills, then enrichment queues.",
+  "queue_report": {
+    "high_proposals": 379,
+    "provider_decision_needed_count": 188,
+    "steward_review_count": 382,
+    "source_adapter_needed_count": 25596
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "marker": "DEALALITY_STAYINGAPI_PROVIDER_VALIDATION_COMPLETE",
+  "safety": {
+    "airtable_writes": 0,
+    "census_writes": 0,
+    "brand_explorer_writes": 0,
+    "automatic_merges": 0,
+    "migrations": 0,
+    "secrets_exposed": false,
+    "ENABLE_HOTEL_INTELLIGENCE_AIRTABLE_WRITES": "0"
+  },
+  "existing_status": {
+    "previously_connected": true,
+    "existing_implementation": "lib/research-engine-v2/providers/staying-api/*",
+    "existing_mcp": false,
+    "existing_credentials_configuration": "STAYINGAPI_KEY in .env / .env.example",
+    "previously_used_by_hotel_intelligence_mcp": false,
+    "cursor_mcp_stayingapi": false
+  },
+  "capability_matrix": {
+    "hotel_name": "SUPPORTED",
+    "alternate_name": "UNKNOWN",
+    "address": "SUPPORTED",
+    "city": "SUPPORTED",
+    "state_region": "SUPPORTED",
+    "postal_code": "SUPPORTED",
+    "country": "SUPPORTED",
+    "country_code": "UNKNOWN",
+    "latitude": "SUPPORTED",
+    "longitude": "SUPPORTED",
+    "room_count_total_keys": "NOT_SUPPORTED",
+    "room_types": "SUPPORTED_INDIRECTLY",
+    "brand": "NOT_SUPPORTED",
+    "parent_company": "NOT_SUPPORTED",
+    "star_rating": "SUPPORTED_INDIRECTLY",
+    "website": "SUPPORTED_INDIRECTLY",
+    "phone": "NOT_SUPPORTED",
+    "photos": "SUPPORTED_INDIRECTLY",
+    "description": "UNKNOWN",
+    "amenities": "SUPPORTED",
+    "review_score": "SUPPORTED_INDIRECTLY",
+    "review_count": "UNKNOWN",
+    "booking_com_hotel_id": "SUPPORTED",
+    "availability": "SUPPORTED_INDIRECTLY",
+    "room_rates": "SUPPORTED_INDIRECTLY",
+    "currency": "UNKNOWN",
+    "check_in_out": "SUPPORTED_INDIRECTLY",
+    "property_type": "SUPPORTED",
+    "status": "NOT_SUPPORTED",
+    "STAYINGAPI_TOTAL_PROPERTY_ROOM_COUNT": "NOT_SUPPORTED",
+    "rooms_capability_constant": "NOT_SUPPORTED",
+    "evidence": "Existing field-firewall STAYINGAPI_ROOMS_CAPABILITY=NOT_SUPPORTED; bedrooms/maxOccupancy prohibited from Rooms/Keys"
+  },
+  "room_count_verdict": "STAYINGAPI_NOT_A_ROOM_COUNT_SOURCE",
+  "account": {
+    "ok": true,
+    "plan": {
+      "code": "free",
+      "name": "Free / Sandbox",
+      "status": "active"
+    },
+    "key_env": "live",
+    "credits_available": 225,
+    "rate_limit_rpm": 30
+  },
+  "credits": {
+    "ceiling": 100,
+    "charged": 5,
+    "starting_available": 225,
+    "ending_available": 185
+  },
+  "controlled": {
+    "hotels": 10,
+    "matched": 0,
+    "no_match": 2,
+    "failed": 8,
+    "calls": 10,
+    "avg_latency_ms": 48235
+  },
+  "frozen_400": {
+    "sample_size": 400,
+    "enrich_attempted": 15,
+    "enrich_matched_exact_or_high": 0,
+    "credit_limited": true,
+    "note": "Free-plan credit ceiling (100) prevented full 400 provider calls; identity sample unchanged"
+  },
+  "field_recovery": {
+    "address_line_1": {
+      "present_before": 101,
+      "missing_before": 299,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 299,
+      "recovery_pct_of_missing": 0
+    },
+    "latitude": {
+      "present_before": 49,
+      "missing_before": 351,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 351,
+      "recovery_pct_of_missing": 0
+    },
+    "longitude": {
+      "present_before": 49,
+      "missing_before": 351,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 351,
+      "recovery_pct_of_missing": 0
+    },
+    "room_count": {
+      "present_before": 25,
+      "missing_before": 375,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 375,
+      "recovery_pct_of_missing": 0
+    },
+    "brand_name": {
+      "present_before": 296,
+      "missing_before": 104,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 104,
+      "recovery_pct_of_missing": 0
+    },
+    "parent_company_name": {
+      "present_before": 305,
+      "missing_before": 95,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 95,
+      "recovery_pct_of_missing": 0
+    },
+    "website": {
+      "present_before": 362,
+      "missing_before": 38,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 38,
+      "recovery_pct_of_missing": 0
+    },
+    "phone": {
+      "present_before": 105,
+      "missing_before": 295,
+      "candidate_found": 0,
+      "high_confidence": 0,
+      "conflict": 0,
+      "still_missing": 295,
+      "recovery_pct_of_missing": 0
+    }
+  },
+  "coordinate_recovery": {
+    "sample_missing_coords": 351,
+    "coords_found": 0,
+    "coords_high_confidence": 0,
+    "coords_conflicts": 0,
+    "coords_still_missing": 351,
+    "distance_when_both_present": {
+      "<100m": 0,
+      "100-500m": 0,
+      "500m-2km": 0,
+      ">2km": 0
+    }
+  },
+  "room_count_recovery": {
+    "missing_before": 375,
+    "candidate_found": 0,
+    "high_confidence": 0,
+    "conflicts": 0,
+    "still_missing": 375,
+    "note": "STAYINGAPI_NOT_A_ROOM_COUNT_SOURCE"
+  },
+  "cross_provider_linkage": {
+    "dealality_stayingapi": 0,
+    "dealality_booking": 0,
+    "dealality_hotelbeds": 0,
+    "hotelbeds_stayingapi": 0
+  },
+  "efficiency": {
+    "total_stayingapi_calls": 15,
+    "successful_calls": 4,
+    "failed_calls": 10,
+    "rate_limited_calls": 0,
+    "quota_events": 2,
+    "average_latency_ms": 42852,
+    "hotels_enriched_matched": 0,
+    "calls_per_enriched_hotel": 1,
+    "scale_estimate_calls": {
+      "1000": "~1000 searches (credit-limited on free)",
+      "5956": "~5956 searches (not feasible on free 225 credits)",
+      "10000": "requires paid plan / city-batch strategy",
+      "50000": "requires paid plan + batch orchestration"
+    },
+    "cost": "UNKNOWN (credit units observed; USD pricing not determined)"
+  },
+  "recommendation": "DO_NOT_USE_STAYINGAPI_FOR_CENSUS",
+  "highest_value_next_step": "Do not spend StayingAPI credits on bulk census enrich; prioritize LIVE Hotelbeds / licensed rooms+geo sources for the frozen sample.",
+  "runtime_ms": 687162
+}

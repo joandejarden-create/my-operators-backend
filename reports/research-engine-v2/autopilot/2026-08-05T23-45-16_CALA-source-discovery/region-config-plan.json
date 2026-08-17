@@ -1,0 +1,101 @@
+{
+  "version": "production-census-cala-region-config-v2",
+  "region": "CALA",
+  "country_filter": "Mexico",
+  "radar_countries": [
+    "Antigua and Barbuda",
+    "Argentina",
+    "Aruba",
+    "Bahamas",
+    "Barbados",
+    "Belize",
+    "Bonaire",
+    "Brazil",
+    "British Virgin Islands",
+    "Cayman Islands",
+    "Chile",
+    "Colombia",
+    "Costa Rica",
+    "Cuba",
+    "Curaçao",
+    "Dominica",
+    "Dominican Republic",
+    "Ecuador",
+    "El Salvador",
+    "Grenada",
+    "Guadeloupe",
+    "Guatemala",
+    "Haiti",
+    "Honduras",
+    "Jamaica",
+    "Martinique",
+    "Mexico",
+    "Nicaragua",
+    "Panama",
+    "Peru",
+    "Puerto Rico",
+    "Saint Kitts and Nevis",
+    "Saint Lucia",
+    "Saint Vincent and the Grenadines",
+    "Trinidad and Tobago",
+    "Turks & Caicos",
+    "U.S. Virgin Islands",
+    "Uruguay"
+  ],
+  "countries_in_scope": [
+    "Mexico"
+  ],
+  "ready_countries": [
+    {
+      "country": "Mexico",
+      "ready_families": [
+        "Hilton",
+        "Choice",
+        "Marriott"
+      ],
+      "pending_families": [
+        {
+          "family": "IHG",
+          "readiness": "needs_adapter",
+          "note": "Official IHG destination/hoteldetail extractors exist; not wired into Autopilot discovery yet"
+        }
+      ],
+      "vic_evidence": true,
+      "marriott_readiness": "supported"
+    }
+  ],
+  "needs_adapter_plan": [
+    {
+      "country": "Mexico",
+      "status": "partial_adapters",
+      "ready_families": [
+        "Hilton",
+        "Choice",
+        "Marriott"
+      ],
+      "pending_families": [
+        {
+          "family": "IHG",
+          "readiness": "needs_adapter",
+          "note": "Official IHG destination/hoteldetail extractors exist; not wired into Autopilot discovery yet"
+        }
+      ]
+    }
+  ],
+  "marriott_countries_ready": [
+    {
+      "country": "Mexico",
+      "readiness": "supported",
+      "sitemap_url": "https://www.marriott.com/en-us/hotel-sitemap/mexico-hotel-sitemap"
+    }
+  ],
+  "marriott_priority_countries": [
+    "Mexico",
+    "Dominican Republic",
+    "Costa Rica",
+    "Colombia",
+    "Panama"
+  ],
+  "operating_note": "Autopilot discovery runs ready adapters: Mexico Hilton+Choice; Marriott country hotel-sitemaps (1 countries). HQV is enrichment-only. IHG + non-Mexico Hilton/Choice still need wiring.",
+  "status": "cala_discovery_region_partial_ready"
+}

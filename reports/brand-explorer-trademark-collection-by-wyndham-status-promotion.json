@@ -1,0 +1,55 @@
+{
+  "version": "wyndham-factory-promotion-v1",
+  "stage": "status-promotion",
+  "generatedAt": "2026-07-23T23:57:40.490Z",
+  "apply": true,
+  "applyPerformed": true,
+  "writePerformed": true,
+  "dryRun": false,
+  "flagCheck": {
+    "apply": true,
+    "ok": true,
+    "missing": [],
+    "required": [
+      "--approve-wyndham-brand-status-promotion",
+      "--confirm-brand-status-only",
+      "--confirm-active-target",
+      "--confirm-single-brand",
+      "--confirm-no-company-validation-changes",
+      "--confirm-no-source-library-status-changes",
+      "--confirm-no-registry-approval-changes",
+      "--confirm-no-presentation-writes"
+    ]
+  },
+  "brand": {
+    "slug": "trademark-collection-by-wyndham",
+    "name": "Trademark Collection by Wyndham",
+    "recordId": "recob7tgHRryRSbeO",
+    "currentBrandStatus": "Under Review",
+    "targetBrandStatus": "Active"
+  },
+  "plannedPatch": {
+    "table": "Brand Setup - Brand Basics",
+    "recordId": "recob7tgHRryRSbeO",
+    "from": "Under Review",
+    "to": "Active",
+    "fields": {
+      "Brand Status": "Active"
+    }
+  },
+  "applyResult": {
+    "applied": true,
+    "writePerformed": true,
+    "table": "Brand Setup - Brand Basics",
+    "recordId": "recob7tgHRryRSbeO",
+    "payload": {
+      "Brand Status": "Active"
+    },
+    "response": {
+      "id": "recob7tgHRryRSbeO",
+      "fieldsPatched": [
+        "Brand Status"
+      ]
+    }
+  }
+}

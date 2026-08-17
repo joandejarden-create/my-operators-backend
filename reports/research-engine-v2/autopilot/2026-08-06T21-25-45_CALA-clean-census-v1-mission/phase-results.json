@@ -1,0 +1,115 @@
+[
+  {
+    "phase_id": "phase_1_core_identity",
+    "label": "Core Identity",
+    "updates_applied": 0,
+    "inserts_applied": 0,
+    "steward_cases": 0,
+    "status": "production_census_autopilot_production_cycle_complete",
+    "queues_executed": [
+      "core_identity_quality",
+      "core_identity_source_lookup",
+      "key_field_completion"
+    ],
+    "soft_deferred": [
+      "core_identity_quality",
+      "core_identity_source_lookup"
+    ],
+    "safety_stop": null,
+    "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T21-25-45_CALA-clean-census-v1-mission\\phases\\phase_1_core_identity"
+  },
+  {
+    "phase_id": "phase_2_classification",
+    "label": "Clean Core Classification",
+    "read_only": true,
+    "updates_applied": 0,
+    "inserts_applied": 0,
+    "status": "production_census_autopilot_production_cycle_complete",
+    "queues_executed": [
+      "clean_core_classification"
+    ]
+  },
+  {
+    "phase_id": "phase_3_address",
+    "label": "Address Completion (Clean Core only)",
+    "updates_applied": 0,
+    "inserts_applied": 0,
+    "steward_cases": 0,
+    "status": "production_census_autopilot_production_cycle_complete",
+    "queues_executed": [
+      "address_confirmation"
+    ],
+    "soft_deferred": [
+      "address_confirmation"
+    ],
+    "safety_stop": null,
+    "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T21-25-45_CALA-clean-census-v1-mission\\phases\\phase_3_address"
+  },
+  {
+    "phase_id": "phase_4_coordinates",
+    "label": "Coordinate Completion (Clean Core + High Address)",
+    "updates_applied": 0,
+    "inserts_applied": 0,
+    "steward_cases": 0,
+    "status": "production_census_autopilot_production_cycle_complete",
+    "queues_executed": [
+      "coordinate_completion"
+    ],
+    "soft_deferred": [
+      "coordinate_completion"
+    ],
+    "safety_stop": null,
+    "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T21-25-45_CALA-clean-census-v1-mission\\phases\\phase_4_coordinates"
+  },
+  {
+    "phase_id": "phase_5_contact_size",
+    "label": "Phone + Rooms (Clean Core only)",
+    "updates_applied": 0,
+    "inserts_applied": 0,
+    "steward_cases": 0,
+    "status": "production_census_autopilot_production_cycle_complete",
+    "queues_executed": [
+      "phone_number_enrichment",
+      "rooms_keys"
+    ],
+    "soft_deferred": [
+      "phone_number_enrichment",
+      "rooms_keys"
+    ],
+    "safety_stop": null,
+    "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T21-25-45_CALA-clean-census-v1-mission\\phases\\phase_5_contact_size"
+  },
+  {
+    "phase_id": "phase_6_rich_enrichment",
+    "label": "Rich Enrichment",
+    "updates_applied": 0,
+    "inserts_applied": 0,
+    "steward_cases": 0,
+    "status": "production_census_autopilot_production_cycle_complete",
+    "queues_executed": [
+      "property_type_asset_context",
+      "description_extraction",
+      "amenities_extraction",
+      "radar_public_readiness"
+    ],
+    "soft_deferred": [
+      "property_type_asset_context",
+      "description_extraction",
+      "amenities_extraction",
+      "radar_public_readiness"
+    ],
+    "safety_stop": null,
+    "run_dir": "C:\\Dev\\deal-capture-proxy\\reports\\research-engine-v2\\autopilot\\2026-08-06T21-25-45_CALA-clean-census-v1-mission\\phases\\phase_6_rich_enrichment"
+  },
+  {
+    "phase_id": "phase_7_final_classification",
+    "label": "Final Classification",
+    "read_only": true,
+    "updates_applied": 0,
+    "inserts_applied": 0,
+    "status": "production_census_autopilot_production_cycle_complete",
+    "queues_executed": [
+      "clean_core_classification"
+    ]
+  }
+]

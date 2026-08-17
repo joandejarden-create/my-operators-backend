@@ -1,0 +1,30 @@
+{
+  "staging_migration_ready": true,
+  "production_overwrite_ready": false,
+  "required_steward_review": [
+    "Cross-family steward queue",
+    "Brand Unconfirmed soft-brand rows",
+    "Legacy-only Marriott Mexico challenges",
+    "City inference Medium-confidence rows"
+  ],
+  "fields_safe_to_stage": [
+    "name",
+    "Affiliation",
+    "Parent Company",
+    "country",
+    "Website",
+    "Property ID",
+    "status",
+    "Market"
+  ],
+  "fields_unsafe_without_fp": [
+    "rooms",
+    "Open Date",
+    "Management Company",
+    "owner",
+    "Latitude",
+    "Longitude",
+    "images"
+  ],
+  "posture": "staging migration only — no production overwrite"
+}

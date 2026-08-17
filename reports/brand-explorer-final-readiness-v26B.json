@@ -1,0 +1,100 @@
+{
+  "reportVersion": "v26B",
+  "v26BExists": true,
+  "generatedAt": "2026-07-10T01:02:21.839Z",
+  "mode": "dry-run",
+  "airtableModified": false,
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "brand": {
+    "slug": "tribute-portfolio",
+    "name": "Tribute Portfolio",
+    "recordId": "recCvV0PuZOi8c3hC"
+  },
+  "filesRead": [
+    "AGENTS.md",
+    "reports/brand-explorer-final-qa-auditor.md",
+    "reports/brand-explorer-final-qa-auditor.json",
+    "reports/brand-explorer-complete-build-orchestrator.md",
+    "reports/brand-explorer-complete-build-orchestrator.json",
+    "reports/brand-explorer-source-evidence-visual-completion-writer.md",
+    "reports/brand-explorer-source-evidence-visual-completion-writer.json",
+    "reports/brand-explorer-visual-qa-verification.md",
+    "reports/brand-explorer-visual-display-defect-audit.md",
+    "reports/brand-explorer-required-section-population-contract.md",
+    "api/brand-library.js",
+    "public/js/brand-explorer-atelier-from-api.js",
+    "live Tribute Brand Explorer API response"
+  ],
+  "filesChanged": [
+    "lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js",
+    "lib/partner-intelligence/brand-explorer-visual-qa-verification.js",
+    "lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js",
+    "lib/partner-intelligence/brand-explorer-required-section-population-contract.js",
+    "lib/partner-intelligence/brand-explorer-final-readiness-v26B.js",
+    "scripts/brand-explorer-final-readiness-check.mjs",
+    "docs/data-intelligence/brand-explorer-final-readiness-v26B.md",
+    "reports/brand-explorer-final-readiness-v26B.md",
+    "reports/brand-explorer-final-readiness-v26B.json",
+    "package.json"
+  ],
+  "staleFlagsFound": [
+    "visual_qa: materials.gallery.3 intentionally unpopulated boilerplate",
+    "required_section: hardcoded Required Sections Ready false + suppression guards",
+    "orchestrator: featured_truncation stillBlocking from any Featured-section visual match",
+    "visual_defect: featured thin_copy_vs_reference treated as truncation blocker"
+  ],
+  "staleFlagsRemovedOrReclassified": [
+    "Removed gallery.3 unpopulated gap when live API has title + imageUrl",
+    "Required-section report now derives ready flag and omits suppression/next-writer when 8/8 ready",
+    "featured_truncation only blocks on truncated_copy / critical-high featured defects",
+    "thin_copy_vs_reference on dedicated featured slot reclassified cosmetic/non-blocking (low)",
+    "Complete Build Orchestrator Ready for active profile now uses live Final QA + contract + governance gates",
+    "Visual QA remaining-gap list no longer includes populated gallery.3"
+  ],
+  "finalQa": {
+    "status": "ready",
+    "score": 95,
+    "critical": 0,
+    "high": 0,
+    "visualCompletenessScore": 100
+  },
+  "requiredSection": {
+    "score": 100,
+    "ready": true,
+    "sectionsReady": 8,
+    "sectionsTotal": 8
+  },
+  "visualQa": {
+    "completenessScore": 100,
+    "gallery3Populated": true,
+    "gallery3Title": "Ermita, Cartagena, a Tribute Portfolio Hotel",
+    "gallery3ImageUrlPresent": true,
+    "defectTotal": 1,
+    "critical": 0,
+    "high": 0,
+    "mediaVisible": true
+  },
+  "completeBuild": {
+    "readyForActiveProfile": true,
+    "remainingBlockers": 0,
+    "governedPlatformReady": true,
+    "contractReadinessScore": 100,
+    "finalQaReadiness": "ready"
+  },
+  "activeProfileReady": true,
+  "packagePipeline": {
+    "governedReady": true,
+    "dryRunCommand": "npm run tribute-portfolio-package-pipeline -- --dry-run",
+    "applyCommand": "npm run tribute-portfolio-package-pipeline -- --apply --approve-tribute-portfolio-package-pipeline"
+  },
+  "exactVerificationCommands": [
+    "npm run brand-explorer-final-qa-auditor -- --brand tribute-portfolio --dry-run",
+    "npm run brand-explorer-complete-build -- --brand tribute-portfolio --dry-run --target-quality active-profile",
+    "npm run brand-explorer-visual-display-defect-audit -- --brand tribute-portfolio --dry-run",
+    "npm run brand-explorer-visual-qa-verification -- --brand tribute-portfolio --dry-run",
+    "npm run brand-explorer-required-section-population-contract -- --brand tribute-portfolio --dry-run",
+    "npm run tribute-portfolio-package-pipeline -- --dry-run"
+  ],
+  "markdown": "# Brand Explorer Final Readiness v26B\n\nGenerated: 2026-07-10T01:02:21.839Z\nBrand: **Tribute Portfolio** (`recCvV0PuZOi8c3hC`)\nMode: **dry-run** · Airtable modified: **no**\nCompany Validated untouched: **yes**\nActive-profile ready: **yes**\n\n## Final QA\n- Status: **ready** (95)\n- Critical: 0 · High: 0\n\n## Required Section Contract\n- Score: **100** · Ready: **yes**\n- Sections ready: 8/8\n\n## Visual QA\n- Completeness: **100**\n- Gallery.3 populated: **yes**\n- Defects: 1 (critical 0, high 0)\n\n## Complete Build\n- Ready for active profile: **yes**\n- Remaining blockers: 0\n- Governed platform ready: **yes**\n\n## Stale flags found\n- visual_qa: materials.gallery.3 intentionally unpopulated boilerplate\n- required_section: hardcoded Required Sections Ready false + suppression guards\n- orchestrator: featured_truncation stillBlocking from any Featured-section visual match\n- visual_defect: featured thin_copy_vs_reference treated as truncation blocker\n\n## Stale flags removed or reclassified\n- Removed gallery.3 unpopulated gap when live API has title + imageUrl\n- Required-section report now derives ready flag and omits suppression/next-writer when 8/8 ready\n- featured_truncation only blocks on truncated_copy / critical-high featured defects\n- thin_copy_vs_reference on dedicated featured slot reclassified cosmetic/non-blocking (low)\n- Complete Build Orchestrator Ready for active profile now uses live Final QA + contract + governance gates\n- Visual QA remaining-gap list no longer includes populated gallery.3\n\n## Files read\n- AGENTS.md\n- reports/brand-explorer-final-qa-auditor.md\n- reports/brand-explorer-final-qa-auditor.json\n- reports/brand-explorer-complete-build-orchestrator.md\n- reports/brand-explorer-complete-build-orchestrator.json\n- reports/brand-explorer-source-evidence-visual-completion-writer.md\n- reports/brand-explorer-source-evidence-visual-completion-writer.json\n- reports/brand-explorer-visual-qa-verification.md\n- reports/brand-explorer-visual-display-defect-audit.md\n- reports/brand-explorer-required-section-population-contract.md\n- api/brand-library.js\n- public/js/brand-explorer-atelier-from-api.js\n- live Tribute Brand Explorer API response\n\n## Files changed\n- lib/partner-intelligence/brand-explorer-complete-build-orchestrator.js\n- lib/partner-intelligence/brand-explorer-visual-qa-verification.js\n- lib/partner-intelligence/brand-explorer-visual-display-defect-audit.js\n- lib/partner-intelligence/brand-explorer-required-section-population-contract.js\n- lib/partner-intelligence/brand-explorer-final-readiness-v26B.js\n- scripts/brand-explorer-final-readiness-check.mjs\n- docs/data-intelligence/brand-explorer-final-readiness-v26B.md\n- reports/brand-explorer-final-readiness-v26B.md\n- reports/brand-explorer-final-readiness-v26B.json\n- package.json\n\n## Package pipeline (when ready)\n```bash\nnpm run tribute-portfolio-package-pipeline -- --apply --approve-tribute-portfolio-package-pipeline\n```"
+}

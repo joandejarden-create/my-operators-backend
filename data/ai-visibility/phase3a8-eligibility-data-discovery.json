@@ -1,0 +1,662 @@
+{
+  "generatedAt": "2026-08-13T23:54:09.199Z",
+  "AIRTABLE_WRITES": 0,
+  "LIVE_PROVIDER_CALLS": 0,
+  "discovery": {
+    "Region_Offered": {
+      "name": "Region Offered",
+      "type": "multipleSelects",
+      "choices": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ]
+    },
+    "Branded_Residences_Status": {
+      "name": "Branded Residences Status",
+      "type": "singleSelect",
+      "choices": [
+        "Yes",
+        "Case-by-Case",
+        "No",
+        "Not Confirmed",
+        "Case-by-case"
+      ]
+    },
+    "Brand_Development_Stage": {
+      "name": "Brand Development Stage",
+      "type": "singleSelect",
+      "choices": [
+        "Mature",
+        "Growth",
+        "Startup"
+      ]
+    },
+    "has_New_Build_field": false,
+    "has_Mixed_Use_field": false,
+    "has_Development_Countries": false,
+    "has_Supports_New_Build": false
+  },
+  "fieldCatalogInteresting": [
+    {
+      "name": "Region Offered",
+      "type": "multipleSelects",
+      "choices": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ]
+    },
+    {
+      "name": "Brand Development Stage",
+      "type": "singleSelect",
+      "choices": [
+        "Mature",
+        "Growth",
+        "Startup"
+      ]
+    },
+    {
+      "name": "Brand Setup - Brand Footprint",
+      "type": "multipleRecordLinks"
+    },
+    {
+      "name": "Source Region",
+      "type": "singleSelect",
+      "choices": [
+        "CALA-Specific",
+        "Regional",
+        "Global Reference",
+        "Market-Specific",
+        "Unknown"
+      ]
+    },
+    {
+      "name": "Branded Residences Status",
+      "type": "singleSelect",
+      "choices": [
+        "Yes",
+        "Case-by-Case",
+        "No",
+        "Not Confirmed",
+        "Case-by-case"
+      ]
+    },
+    {
+      "name": "Branded Residences Notes",
+      "type": "multilineText"
+    },
+    {
+      "name": "Branded Residences Source URL",
+      "type": "url"
+    },
+    {
+      "name": "Branded Residences Review Status",
+      "type": "singleSelect",
+      "choices": [
+        "Source-Backed",
+        "Founder-Reviewed",
+        "Needs Review",
+        "Not Confirmed"
+      ]
+    }
+  ],
+  "footprintSample": {
+    "table": "Brand Setup - Brand Footprint",
+    "fields": [
+      "Brand_Footprint_ID",
+      "Record_ID",
+      "Brand",
+      "BrandIDLookup",
+      "User_Record_ID",
+      "Brand Name",
+      "AM Existing Hotel",
+      "AM Existing Rooms",
+      "AM Pipeline Hotel",
+      "AM Pipeline Rooms",
+      "AM Total Distribution Hotel",
+      "AM Total Distribution Rooms",
+      "CALA Existing Hotel",
+      "CALA Existing Rooms",
+      "CALA Pipeline Hotel",
+      "CALA Pipeline Rooms",
+      "CALA Total Distribution Hotel",
+      "CALA Total Distribution Rooms",
+      "EU Existing Hotel",
+      "EU Existing Rooms",
+      "EU Pipeline Hotel",
+      "EU Pipeline Rooms",
+      "EU Total Distribution Hotel",
+      "EU Total Distribution Rooms",
+      "MEA Existing Hotel",
+      "MEA Existing Rooms",
+      "MEA Pipeline Hotel",
+      "MEA Pipeline Rooms",
+      "MEA Total Distribution Hotel",
+      "MEA Total Distribution Rooms",
+      "APAC Existing Hotel",
+      "APAC Existing Rooms",
+      "APAC Pipeline Hotel",
+      "APAC Pipeline Rooms",
+      "APAC Total Distribution Hotel",
+      "APAC Total Distribution Rooms",
+      "Total Existing Hotels",
+      "Total Existing Rooms",
+      "Total Pipeline Hotels",
+      "Total Pipeline Rooms",
+      "Total Distribution Hotels",
+      "Total Distribution Rooms",
+      "AM Managed Hotel",
+      "AM Managed Rooms",
+      "AM Franchised Hotel",
+      "AM Franchised Rooms",
+      "AM Total Distribution Hotels - MF",
+      "AM Total Distribution Rooms - MF",
+      "CALA Managed Hotel",
+      "CALA Managed Rooms",
+      "CALA Franchised Hotel",
+      "CALA Franchised Rooms",
+      "CALA Total Distribution Hotels - MF",
+      "CALA Total Distribution Rooms - MF",
+      "EU Managed Hotel",
+      "EU Managed Rooms",
+      "EU Franchised Hotel",
+      "EU Franchised Rooms",
+      "EU Total Distribution Hotels - MF",
+      "EU Total Distribution Rooms - MF",
+      "MEA Managed Hotel",
+      "MEA Managed Rooms",
+      "MEA Franchised Hotel",
+      "MEA Franchised Rooms",
+      "MEA Total Distribution Hotels - MF",
+      "MEA Total Distribution Rooms - MF",
+      "APAC Managed Hotel",
+      "APAC Managed Rooms",
+      "APAC Franchised Hotel",
+      "APAC Franchised Rooms",
+      "APAC Total Distribution Hotels - MF",
+      "APAC Total Distribution Rooms - MF",
+      "Total Managed Hotels",
+      "Total Managed Rooms",
+      "Total Franchised Hotels",
+      "Total Franchised Rooms",
+      "Total Distribution Hotels - MF",
+      "Total Distribution Rooms - MF",
+      "AM New Build Hotel",
+      "AM New Build Rooms",
+      "AM Conversion Hotel",
+      "AM Conversion Rooms",
+      "AM Total Distribution Hotels - NBC",
+      "AM Total Distribution Rooms - NBC",
+      "CALA New Build Hotel",
+      "CALA New Build Rooms",
+      "CALA Conversion Hotel",
+      "CALA Conversion Rooms",
+      "CALA Total Distribution Hotels - NBC",
+      "CALA Total Distribution Rooms - NBC",
+      "EU New Build Hotel",
+      "EU New Build Rooms",
+      "EU Conversion Hotel",
+      "EU Conversion Rooms",
+      "EU Total Distribution Hotels - NBC",
+      "EU Total Distribution Rooms - NBC",
+      "MEA New Build Hotel",
+      "MEA New Build Rooms",
+      "MEA Conversion Hotel",
+      "MEA Conversion Rooms",
+      "MEA Total Distribution Hotels - NBC",
+      "MEA Total Distribution Rooms - NBC",
+      "APAC New Build Hotel",
+      "APAC New Build Rooms",
+      "APAC Conversion Hotel",
+      "APAC Conversion Rooms",
+      "APAC Total Distribution Hotels - NBC",
+      "APAC Total Distribution Rooms - NBC",
+      "Total New Build Hotel",
+      "Total New Build Rooms",
+      "Total Conversion Hotel",
+      "Total Conversion Rooms",
+      "Total Distribution Hotels - NBC",
+      "Total Distribution Rooms - NBC",
+      "Urban - Existing Systemwide Location",
+      "Suburban - Existing Systemwide Location",
+      "Resort - Existing Systemwide Location",
+      "Airport - Existing Systemwide Location",
+      "Small Metro - Existing Systemwide Location",
+      "Interstate - Existing Systemwide Location",
+      "Number of Exits in Past 24 Months",
+      "Figures as of",
+      "Number of Markets Operated In",
+      "Specific Markets/Cities",
+      "New Build Experience (New build %)",
+      "Conversion Experience (Conversion %)",
+      "Turnaround Experience (%)",
+      "Renovation/Rebrand Experience (%)",
+      "Typical Managed %",
+      "Typical Franchised %",
+      "Typical Loyalty Program Name",
+      "Typical % of Rooms from Loyalty (est.)",
+      "Typical Direct Booking % (est.)",
+      "Typical OTA Reliance % (est.)",
+      "Footprint Data Status",
+      "Footprint Data Source",
+      "Footprint Figures As Of",
+      "Footprint Notes"
+    ],
+    "interesting": [
+      "AM Existing Hotel",
+      "AM Pipeline Hotel",
+      "AM Pipeline Rooms",
+      "AM Total Distribution Hotel",
+      "CALA Existing Hotel",
+      "CALA Pipeline Hotel",
+      "CALA Pipeline Rooms",
+      "CALA Total Distribution Hotel",
+      "EU Existing Hotel",
+      "EU Pipeline Hotel",
+      "EU Pipeline Rooms",
+      "EU Total Distribution Hotel",
+      "MEA Existing Hotel",
+      "MEA Pipeline Hotel",
+      "MEA Pipeline Rooms",
+      "MEA Total Distribution Hotel",
+      "APAC Existing Hotel",
+      "APAC Pipeline Hotel",
+      "APAC Pipeline Rooms",
+      "APAC Total Distribution Hotel",
+      "Total Existing Hotels",
+      "Total Pipeline Hotels",
+      "Total Pipeline Rooms",
+      "Total Distribution Hotels",
+      "AM Managed Hotel",
+      "AM Franchised Hotel",
+      "AM Total Distribution Hotels - MF",
+      "CALA Managed Hotel",
+      "CALA Franchised Hotel",
+      "CALA Total Distribution Hotels - MF",
+      "EU Managed Hotel",
+      "EU Franchised Hotel",
+      "EU Total Distribution Hotels - MF",
+      "MEA Managed Hotel",
+      "MEA Franchised Hotel",
+      "MEA Total Distribution Hotels - MF",
+      "APAC Managed Hotel",
+      "APAC Franchised Hotel",
+      "APAC Total Distribution Hotels - MF",
+      "Total Managed Hotels",
+      "Total Franchised Hotels",
+      "Total Distribution Hotels - MF",
+      "AM New Build Hotel",
+      "AM Conversion Hotel",
+      "AM Total Distribution Hotels - NBC",
+      "CALA New Build Hotel",
+      "CALA Conversion Hotel",
+      "CALA Total Distribution Hotels - NBC",
+      "EU New Build Hotel",
+      "EU Conversion Hotel",
+      "EU Total Distribution Hotels - NBC",
+      "MEA New Build Hotel",
+      "MEA Conversion Hotel",
+      "MEA Total Distribution Hotels - NBC",
+      "APAC New Build Hotel",
+      "APAC Conversion Hotel",
+      "APAC Total Distribution Hotels - NBC",
+      "Total New Build Hotel",
+      "Total Conversion Hotel",
+      "Total Distribution Hotels - NBC",
+      "Number of Markets Operated In",
+      "Specific Markets/Cities"
+    ]
+  },
+  "rows": [
+    {
+      "brandId": "recEJCTDj1zrsjPM6",
+      "brandName": "Autograph Collection",
+      "brandModel": "Collection Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Mature",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recZyCfEJ3xzibyyB"
+      ],
+      "sourceRegion": "Global Reference",
+      "found": true
+    },
+    {
+      "brandId": "recCvV0PuZOi8c3hC",
+      "brandName": "Tribute Portfolio",
+      "brandModel": "Collection Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "No",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recT2QUhiMTj9Wpb1"
+      ],
+      "sourceRegion": null,
+      "found": true
+    },
+    {
+      "brandId": "rec02zPClpWUTCyXM",
+      "brandName": "Design Hotels",
+      "brandModel": "Collection Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Mature",
+      "brandedResidencesStatus": "No",
+      "brandedResidencesNotes": "Design Hotels is a curated member collection—not a Marriott residence licensing flag. Branded residences sit under other Marriott flags (Ritz-Carlton, Autograph, Tribute, etc.), not Design Hotels membership.",
+      "brandedResidencesSourceUrl": "https://marriottresidences.com/",
+      "brandedResidencesReviewStatus": "Source-Backed",
+      "footprintLinkIds": [
+        "rect2EK25AFazYZy1"
+      ],
+      "sourceRegion": "Global Reference",
+      "found": true
+    },
+    {
+      "brandId": "recIPuBC50fv13zRR",
+      "brandName": "Westin",
+      "brandModel": "Hard Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Mature",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recplR46TjKSPTysV"
+      ],
+      "sourceRegion": null,
+      "found": true
+    },
+    {
+      "brandId": "rec9aZp7GHtzUEg0c",
+      "brandName": "AC Hotels by Marriott",
+      "brandModel": "Lifestyle Brand",
+      "chainScale": "Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "No",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recODQrY4iDGtJDe2"
+      ],
+      "sourceRegion": null,
+      "found": true
+    },
+    {
+      "brandId": "receQkxgjlezsc1xg",
+      "brandName": "Curio Collection by Hilton",
+      "brandModel": "Collection Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "No",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "reccAzeVbzeibUnit"
+      ],
+      "sourceRegion": "Global Reference",
+      "found": true
+    },
+    {
+      "brandId": "reccXxMHEh7NNRhIE",
+      "brandName": "Tapestry Collection by Hilton",
+      "brandModel": "Collection Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recuhL6JHp0gIhmoG"
+      ],
+      "sourceRegion": null,
+      "found": true
+    },
+    {
+      "brandId": "recsggfbKlJbjeRP9",
+      "brandName": "Canopy by Hilton",
+      "brandModel": "Lifestyle Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recNe6CK3HsgdiA60"
+      ],
+      "sourceRegion": null,
+      "found": true
+    },
+    {
+      "brandId": "recqiHq3GHKMj8Meo",
+      "brandName": "Tempo by Hilton",
+      "brandModel": "Lifestyle Brand",
+      "chainScale": "Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "No",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recnOxlrbsD2Wg49c"
+      ],
+      "sourceRegion": null,
+      "found": true
+    },
+    {
+      "brandId": "reclkgOzvAcBheUSo",
+      "brandName": "Ascend Hotel Collection",
+      "brandModel": "Collection Brand",
+      "chainScale": "Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Mature",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recJLxxPxarNLozOF"
+      ],
+      "sourceRegion": "CALA-Specific",
+      "found": true
+    },
+    {
+      "brandId": "recRyvM8OmLlDj9G7",
+      "brandName": "Radisson Individuals by Choice",
+      "brandModel": "Collection Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Mature",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recMpiQA0ZiGXuxGP"
+      ],
+      "sourceRegion": "CALA-Specific",
+      "found": true
+    },
+    {
+      "brandId": "recWPEvxBQxVVzSq3",
+      "brandName": "Radisson Blu by Choice",
+      "brandModel": "Hard Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Mature",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recIpo2MyMixOlZX3"
+      ],
+      "sourceRegion": null,
+      "found": true
+    },
+    {
+      "brandId": "recegXrqaPiSLGCIe",
+      "brandName": "Hotel Indigo",
+      "brandModel": "Lifestyle Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recHEMin2xCsQtZGq"
+      ],
+      "sourceRegion": "Global Reference",
+      "found": true
+    },
+    {
+      "brandId": "recCKuXCmGvxHPfb3",
+      "brandName": "Kimpton Hotels",
+      "brandModel": "Lifestyle Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "Case-by-Case",
+      "brandedResidencesNotes": "Confirm current Kimpton / IHG branded residence availability, licensing model, and market applicability directly with IHG before underwriting or presenting a residential component.",
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": "Founder-Reviewed",
+      "footprintLinkIds": [
+        "recghRVipg0mSKi7z"
+      ],
+      "sourceRegion": "Global Reference",
+      "found": true
+    },
+    {
+      "brandId": "recrWCD1LMqu864oU",
+      "brandName": "MGallery Collection",
+      "brandModel": "Collection Brand",
+      "chainScale": "Upper Upscale",
+      "regionOffered": [
+        "North America",
+        "Caribbean & Latin America",
+        "Europe",
+        "Middle East & Africa",
+        "Asia Pacific"
+      ],
+      "brandDevelopmentStage": "Growth",
+      "brandedResidencesStatus": "Case-by-case",
+      "brandedResidencesNotes": null,
+      "brandedResidencesSourceUrl": null,
+      "brandedResidencesReviewStatus": null,
+      "footprintLinkIds": [
+        "recHRsoWj7UmRW7Ue"
+      ],
+      "sourceRegion": "Global Reference",
+      "found": true
+    }
+  ]
+}

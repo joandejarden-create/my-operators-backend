@@ -1,0 +1,359 @@
+{
+  "title": "Operator P1 Profile Governance Fields Setup",
+  "generatedAt": "2026-07-06T08:07:21.274Z",
+  "mode": "apply",
+  "baseId": "appvtnDurnMSjINP6",
+  "scriptName": "setup-operator-validation-fields",
+  "tableSpecs": [
+    {
+      "tableKey": "operatorMaster",
+      "tableName": "Operator Setup - Master"
+    },
+    {
+      "tableKey": "operatorExplorerMaterials",
+      "tableName": "Operator Setup - Explorer Materials"
+    }
+  ],
+  "excludedFromSetupRoots": [
+    "Source URL / File Path",
+    "Source Date"
+  ],
+  "fieldDefCount": 14,
+  "tables": {
+    "operatorMaster": {
+      "found": true,
+      "tableName": "Operator Setup - Master",
+      "tableId": "tbl4YPJ3XhnYLHLsD",
+      "results": [
+        {
+          "field": "Validation Status",
+          "status": "created",
+          "id": "fldjPzojnBDtl9nOE"
+        },
+        {
+          "field": "Usage Permission",
+          "status": "created",
+          "id": "fldJgEouqbWELmDsI"
+        },
+        {
+          "field": "Source Type",
+          "status": "present",
+          "live": "Source Type"
+        },
+        {
+          "field": "Source Region",
+          "status": "created",
+          "id": "fldDU0zlp0I03jo8J"
+        },
+        {
+          "field": "Last Reviewed Date",
+          "status": "created",
+          "id": "fldswv9VfYXs1NKan"
+        },
+        {
+          "field": "Refresh Due Date",
+          "status": "created",
+          "id": "fldim8gujXiAI0ZBo"
+        },
+        {
+          "field": "Confidence Level",
+          "status": "skipped_alias",
+          "live": "Data Confidence Level",
+          "table": "Operator Setup - Master",
+          "reason": "Data Confidence Level exists on Operator Master (OAS/admin semantics). Treat as partial equivalent; map in read paths until unified or options aligned.",
+          "skippedCreate": true
+        },
+        {
+          "field": "Evidence Notes",
+          "status": "created",
+          "id": "fld2SFm3PCaHwdWlb"
+        },
+        {
+          "field": "Missing Data Flags",
+          "status": "created",
+          "id": "fld6gW2wNZXZVjLeB"
+        },
+        {
+          "field": "Company Validated",
+          "status": "created",
+          "id": "fld2ohCAcD8r9sneV"
+        },
+        {
+          "field": "Company Validation Date",
+          "status": "created",
+          "id": "fldIBW51yy1lFradw"
+        },
+        {
+          "field": "Reviewed By",
+          "status": "created",
+          "id": "fldbaBDttBwSVH85I"
+        },
+        {
+          "field": "External Display Status",
+          "status": "created",
+          "id": "fldnGJjgXCtqVukbQ"
+        },
+        {
+          "field": "Internal Notes",
+          "status": "created",
+          "id": "fldiLTtKbrN0V2gXA"
+        }
+      ]
+    },
+    "operatorExplorerMaterials": {
+      "found": true,
+      "tableName": "Operator Setup - Explorer Materials",
+      "tableId": "tbllzayIeyvlRzHdz",
+      "results": [
+        {
+          "field": "Validation Status",
+          "status": "created",
+          "id": "fldJl3Ad7Kr4Jt2Lm"
+        },
+        {
+          "field": "Usage Permission",
+          "status": "created",
+          "id": "fldtPnDXjYgH4nKl5"
+        },
+        {
+          "field": "Source Type",
+          "status": "created",
+          "id": "fld9ZWtN9M6MqUKe5"
+        },
+        {
+          "field": "Source Region",
+          "status": "created",
+          "id": "flds5ipnAgSKbA2Mg"
+        },
+        {
+          "field": "Last Reviewed Date",
+          "status": "created",
+          "id": "fldQwPTXQpak5pgOW"
+        },
+        {
+          "field": "Refresh Due Date",
+          "status": "created",
+          "id": "fldYmO8Tz2kGdEKYE"
+        },
+        {
+          "field": "Confidence Level",
+          "status": "created",
+          "id": "fldiD6W9nDnYTaVdx"
+        },
+        {
+          "field": "Evidence Notes",
+          "status": "created",
+          "id": "fldV4j3bIZVP02UxJ"
+        },
+        {
+          "field": "Missing Data Flags",
+          "status": "created",
+          "id": "flddZ2dA926RQkLw0"
+        },
+        {
+          "field": "Company Validated",
+          "status": "created",
+          "id": "fld9y8X1Zu5j6KiTX"
+        },
+        {
+          "field": "Company Validation Date",
+          "status": "created",
+          "id": "fldO7m8luoZUrUcvE"
+        },
+        {
+          "field": "Reviewed By",
+          "status": "created",
+          "id": "fldMtvNgYfsT7kT43"
+        },
+        {
+          "field": "External Display Status",
+          "status": "created",
+          "id": "fldvbpuX6kCyvojiR"
+        },
+        {
+          "field": "Internal Notes",
+          "status": "created",
+          "id": "fldEPBHhsU3UbEhv1"
+        }
+      ]
+    }
+  },
+  "present": [
+    {
+      "field": "Source Type",
+      "table": "Operator Setup - Master",
+      "live": "Source Type"
+    }
+  ],
+  "aliasPresent": [],
+  "skippedAlias": [
+    {
+      "field": "Confidence Level",
+      "table": "Operator Setup - Master",
+      "live": "Data Confidence Level",
+      "reason": "Data Confidence Level exists on Operator Master (OAS/admin semantics). Treat as partial equivalent; map in read paths until unified or options aligned.",
+      "skippedCreate": true
+    }
+  ],
+  "created": [
+    {
+      "field": "Validation Status",
+      "table": "Operator Setup - Master",
+      "id": "fldjPzojnBDtl9nOE",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Usage Permission",
+      "table": "Operator Setup - Master",
+      "id": "fldJgEouqbWELmDsI",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Source Region",
+      "table": "Operator Setup - Master",
+      "id": "fldDU0zlp0I03jo8J",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Last Reviewed Date",
+      "table": "Operator Setup - Master",
+      "id": "fldswv9VfYXs1NKan",
+      "type": "date"
+    },
+    {
+      "field": "Refresh Due Date",
+      "table": "Operator Setup - Master",
+      "id": "fldim8gujXiAI0ZBo",
+      "type": "date"
+    },
+    {
+      "field": "Evidence Notes",
+      "table": "Operator Setup - Master",
+      "id": "fld2SFm3PCaHwdWlb",
+      "type": "multilineText"
+    },
+    {
+      "field": "Missing Data Flags",
+      "table": "Operator Setup - Master",
+      "id": "fld6gW2wNZXZVjLeB",
+      "type": "multilineText"
+    },
+    {
+      "field": "Company Validated",
+      "table": "Operator Setup - Master",
+      "id": "fld2ohCAcD8r9sneV",
+      "type": "checkbox"
+    },
+    {
+      "field": "Company Validation Date",
+      "table": "Operator Setup - Master",
+      "id": "fldIBW51yy1lFradw",
+      "type": "date"
+    },
+    {
+      "field": "Reviewed By",
+      "table": "Operator Setup - Master",
+      "id": "fldbaBDttBwSVH85I",
+      "type": "singleLineText"
+    },
+    {
+      "field": "External Display Status",
+      "table": "Operator Setup - Master",
+      "id": "fldnGJjgXCtqVukbQ",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Internal Notes",
+      "table": "Operator Setup - Master",
+      "id": "fldiLTtKbrN0V2gXA",
+      "type": "multilineText"
+    },
+    {
+      "field": "Validation Status",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldJl3Ad7Kr4Jt2Lm",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Usage Permission",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldtPnDXjYgH4nKl5",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Source Type",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fld9ZWtN9M6MqUKe5",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Source Region",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "flds5ipnAgSKbA2Mg",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Last Reviewed Date",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldQwPTXQpak5pgOW",
+      "type": "date"
+    },
+    {
+      "field": "Refresh Due Date",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldYmO8Tz2kGdEKYE",
+      "type": "date"
+    },
+    {
+      "field": "Confidence Level",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldiD6W9nDnYTaVdx",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Evidence Notes",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldV4j3bIZVP02UxJ",
+      "type": "multilineText"
+    },
+    {
+      "field": "Missing Data Flags",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "flddZ2dA926RQkLw0",
+      "type": "multilineText"
+    },
+    {
+      "field": "Company Validated",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fld9y8X1Zu5j6KiTX",
+      "type": "checkbox"
+    },
+    {
+      "field": "Company Validation Date",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldO7m8luoZUrUcvE",
+      "type": "date"
+    },
+    {
+      "field": "Reviewed By",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldMtvNgYfsT7kT43",
+      "type": "singleLineText"
+    },
+    {
+      "field": "External Display Status",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldvbpuX6kCyvojiR",
+      "type": "singleSelect"
+    },
+    {
+      "field": "Internal Notes",
+      "table": "Operator Setup - Explorer Materials",
+      "id": "fldEPBHhsU3UbEhv1",
+      "type": "multilineText"
+    }
+  ],
+  "wouldCreate": [],
+  "failed": [],
+  "warnings": []
+}

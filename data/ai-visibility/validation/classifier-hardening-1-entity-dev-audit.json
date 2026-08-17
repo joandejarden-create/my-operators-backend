@@ -1,0 +1,4263 @@
+{
+  "version": "ai_intelligence_classifier_hardening_1_entity_dev_audit_v1",
+  "generatedAt": "2026-08-14T23:19:16.614Z",
+  "HOLDOUT_ACCESSED": false,
+  "HOLDOUT_CASES_INSPECTED": 0,
+  "HOLDOUT_METRICS_RUN": false,
+  "DEV_N": 302,
+  "HOLDOUT_N_SEALED": 93,
+  "baseline": {
+    "ENTITY_PRECISION": 1,
+    "ENTITY_RECALL": 0.5364238410596026,
+    "ENTITY_F1": 0.6982758620689655,
+    "ENTITY_FALSE_NEGATIVES": 140,
+    "RECOMMENDATION_ACCURACY": 0.40066225165562913,
+    "FIRST_RECOMMENDATION_ACCURACY": 0.9006622516556292,
+    "QUESTION_STATUS_ACCURACY": 0.25396825396825395,
+    "subgroupMetrics": {
+      "PROVIDER": {
+        "unspecified": {
+          "CASE_COUNT": 50,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "claude": {
+          "CASE_COUNT": 72,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.18055555555555555,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.1388888888888889,
+          "RECOMMENDATION_PRECISION": 0.1388888888888889,
+          "RECOMMENDATION_RECALL": 0.1388888888888889,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.875
+        },
+        "gemini": {
+          "CASE_COUNT": 77,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.2727272727272727,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.22077922077922077,
+          "RECOMMENDATION_PRECISION": 0.22077922077922077,
+          "RECOMMENDATION_RECALL": 0.22077922077922077,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.8701298701298701
+        },
+        "perplexity": {
+          "CASE_COUNT": 65,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.6923076923076923,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.46153846153846156,
+          "RECOMMENDATION_PRECISION": 0.46153846153846156,
+          "RECOMMENDATION_RECALL": 0.46153846153846156,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.8461538461538461
+        },
+        "openai": {
+          "CASE_COUNT": 38,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.868421052631579,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.3684210526315789,
+          "RECOMMENDATION_PRECISION": 0.3684210526315789,
+          "RECOMMENDATION_RECALL": 0.3684210526315789,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.9736842105263158
+        }
+      },
+      "LANGUAGE": {
+        "unspecified": {
+          "CASE_COUNT": 50,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "es": {
+          "CASE_COUNT": 127,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.4251968503937008,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.28346456692913385,
+          "RECOMMENDATION_PRECISION": 0.28346456692913385,
+          "RECOMMENDATION_RECALL": 0.28346456692913385,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.8976377952755905
+        },
+        "en": {
+          "CASE_COUNT": 125,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.464,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.28,
+          "RECOMMENDATION_PRECISION": 0.28,
+          "RECOMMENDATION_RECALL": 0.28,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.864
+        }
+      },
+      "GEOGRAPHY": {
+        "unspecified": {
+          "CASE_COUNT": 50,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "CALA": {
+          "CASE_COUNT": 84,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.4642857142857143,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.32142857142857145,
+          "RECOMMENDATION_PRECISION": 0.32142857142857145,
+          "RECOMMENDATION_RECALL": 0.32142857142857145,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.9285714285714286
+        },
+        "MEXICO": {
+          "CASE_COUNT": 91,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.4175824175824176,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.25274725274725274,
+          "RECOMMENDATION_PRECISION": 0.25274725274725274,
+          "RECOMMENDATION_RECALL": 0.25274725274725274,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.8571428571428571
+        },
+        "EUROPE": {
+          "CASE_COUNT": 22,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.36363636363636365,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.18181818181818182,
+          "RECOMMENDATION_PRECISION": 0.18181818181818182,
+          "RECOMMENDATION_RECALL": 0.18181818181818182,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.7727272727272727
+        },
+        "GLOBAL": {
+          "CASE_COUNT": 31,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.5161290322580645,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.3225806451612903,
+          "RECOMMENDATION_PRECISION": 0.3225806451612903,
+          "RECOMMENDATION_RECALL": 0.3225806451612903,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.8709677419354839
+        },
+        "NORTH_AMERICA": {
+          "CASE_COUNT": 24,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.4583333333333333,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.2916666666666667,
+          "RECOMMENDATION_PRECISION": 0.2916666666666667,
+          "RECOMMENDATION_RECALL": 0.2916666666666667,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.9166666666666666
+        }
+      },
+      "CASE_TYPE": {
+        "first_recommendation": {
+          "CASE_COUNT": 59,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.6440677966101694,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.5423728813559322,
+          "RECOMMENDATION_PRECISION": 0.5423728813559322,
+          "RECOMMENDATION_RECALL": 0.5423728813559322,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.5423728813559322
+        },
+        "ranked_list": {
+          "CASE_COUNT": 9,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "comparison_only": {
+          "CASE_COUNT": 3,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "association": {
+          "CASE_COUNT": 8,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "discussion_only": {
+          "CASE_COUNT": 5,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "negative_recommendation": {
+          "CASE_COUNT": 6,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "source_only": {
+          "CASE_COUNT": 1,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 1,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 1,
+          "RECOMMENDATION_PRECISION": 1,
+          "RECOMMENDATION_RECALL": 1,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "associated_option": {
+          "CASE_COUNT": 47,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.44680851063829785,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.1702127659574468,
+          "RECOMMENDATION_PRECISION": 0.1702127659574468,
+          "RECOMMENDATION_RECALL": 0.1702127659574468,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "ranked_recommendation": {
+          "CASE_COUNT": 33,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.3333333333333333,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.09090909090909091,
+          "RECOMMENDATION_PRECISION": 0.09090909090909091,
+          "RECOMMENDATION_RECALL": 0.09090909090909091,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.9393939393939394
+        },
+        "discussed": {
+          "CASE_COUNT": 108,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.4351851851851852,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.4166666666666667,
+          "RECOMMENDATION_PRECISION": 0.4166666666666667,
+          "RECOMMENDATION_RECALL": 0.4166666666666667,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "explicit_recommendation": {
+          "CASE_COUNT": 15,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.8,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0,
+          "RECOMMENDATION_PRECISION": 0,
+          "RECOMMENDATION_RECALL": 0,
+          "FIRST_RECOMMENDATION_ACCURACY": 0.9333333333333333
+        },
+        "passing_mention": {
+          "CASE_COUNT": 3,
+          "ENTITY_RESOLUTION_PRECISION": 1,
+          "ENTITY_RESOLUTION_RECALL": 0.3333333333333333,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0.3333333333333333,
+          "RECOMMENDATION_PRECISION": 0.3333333333333333,
+          "RECOMMENDATION_RECALL": 0.3333333333333333,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "negative_or_qualified": {
+          "CASE_COUNT": 1,
+          "ENTITY_RESOLUTION_PRECISION": null,
+          "ENTITY_RESOLUTION_RECALL": 0,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0,
+          "RECOMMENDATION_PRECISION": 0,
+          "RECOMMENDATION_RECALL": 0,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        },
+        "comparator": {
+          "CASE_COUNT": 4,
+          "ENTITY_RESOLUTION_PRECISION": null,
+          "ENTITY_RESOLUTION_RECALL": 0,
+          "RECOMMENDATION_CLASSIFICATION_ACCURACY": 0,
+          "RECOMMENDATION_PRECISION": 0,
+          "RECOMMENDATION_RECALL": 0,
+          "FIRST_RECOMMENDATION_ACCURACY": 1
+        }
+      }
+    }
+  },
+  "clusters": {
+    "CANONICAL_NAME_VARIANT": {
+      "PATTERN": "CANONICAL_NAME_VARIANT",
+      "COUNT": 38,
+      "CASE_IDS": [
+        "v2_cand_0091dfff",
+        "v2_cand_030739d6",
+        "v2_cand_0c720aae",
+        "v2_cand_0e2e5bd2",
+        "v2_cand_14651e14",
+        "v2_cand_202a5fae",
+        "v2_cand_2906f0b5",
+        "v2_cand_29967276",
+        "v2_cand_309ca81e",
+        "v2_cand_350eddb9",
+        "v2_cand_3fcc6422",
+        "v2_cand_415f17f0",
+        "v2_cand_45ad67a6",
+        "v2_cand_4a66d81b",
+        "v2_cand_51d4257a",
+        "v2_cand_535c6050",
+        "v2_cand_594155be",
+        "v2_cand_5bd0176f",
+        "v2_cand_6346e387",
+        "v2_cand_6702a2e1",
+        "v2_cand_6c5eef29",
+        "v2_cand_6ca6d57f",
+        "v2_cand_6e24c43f",
+        "v2_cand_6fb1fc83",
+        "v2_cand_6fb4d85e",
+        "v2_cand_72152a7a",
+        "v2_cand_76f9effc",
+        "v2_cand_7ab10797",
+        "v2_cand_814ce8ee",
+        "v2_cand_82cd21b1",
+        "v2_cand_837edea4",
+        "v2_cand_950dff59",
+        "v2_cand_9ba8bb69",
+        "v2_cand_a25aefe1",
+        "v2_cand_ae7d5331",
+        "v2_cand_bac0264c",
+        "v2_cand_be9ba539",
+        "v2_cand_c02e1b19"
+      ],
+      "PROVIDERS": {
+        "claude": 20,
+        "gemini": 14,
+        "openai": 2,
+        "perplexity": 2
+      },
+      "LANGUAGES": {
+        "es": 14,
+        "en": 24
+      },
+      "EXAMPLE_SURFACE_FORMS": [
+        "hotel",
+        "collection",
+        "collection+hilton",
+        "collection",
+        "and",
+        "hotels+and+resorts",
+        "collection",
+        "collection"
+      ],
+      "CANONICAL_ENTITIES": {
+        "Hotel Indigo": 2,
+        "Curio Collection by Hilton": 9,
+        "Autograph Collection": 8,
+        "Hilton Hotels & Resorts": 4,
+        "Tapestry Collection by Hilton": 3,
+        "Ascend Hotel Collection": 2,
+        "Design Hotels": 5,
+        "Canopy by Hilton": 1,
+        "Kimpton Hotels": 4
+      }
+    },
+    "ENTITY_INDEX_MISSING": {
+      "PATTERN": "ENTITY_INDEX_MISSING",
+      "COUNT": 72,
+      "CASE_IDS": [
+        "v2_cand_024fcf9c",
+        "v2_cand_035ffe13",
+        "v2_cand_07cbcda0",
+        "v2_cand_0a8cfa16",
+        "v2_cand_11ea31be",
+        "v2_cand_141a99e1",
+        "v2_cand_1550f44a",
+        "v2_cand_1674948a",
+        "v2_cand_17d13a6b",
+        "v2_cand_17d64be9",
+        "v2_cand_186c03b8",
+        "v2_cand_198ab403",
+        "v2_cand_198f2e2c",
+        "v2_cand_1a571607",
+        "v2_cand_1c01c709",
+        "v2_cand_1c5b0f67",
+        "v2_cand_25520887",
+        "v2_cand_27ec7204",
+        "v2_cand_2cad5049",
+        "v2_cand_2dd0fd2a",
+        "v2_cand_2dec8d90",
+        "v2_cand_2e0a4ca6",
+        "v2_cand_3515312a",
+        "v2_cand_359453c0",
+        "v2_cand_35a63d8e",
+        "v2_cand_37210b41",
+        "v2_cand_37595e51",
+        "v2_cand_3bea5bb6",
+        "v2_cand_3c28453a",
+        "v2_cand_3df2487f",
+        "v2_cand_41274fe3",
+        "v2_cand_465be86c",
+        "v2_cand_47174009",
+        "v2_cand_4811fa31",
+        "v2_cand_4cf733c7",
+        "v2_cand_4e014498",
+        "v2_cand_52172a1d",
+        "v2_cand_524ac279",
+        "v2_cand_561e556d",
+        "v2_cand_5ae0142a",
+        "v2_cand_5dc534cd",
+        "v2_cand_5f706dd7",
+        "v2_cand_64751348",
+        "v2_cand_6514603c",
+        "v2_cand_6734dbb4",
+        "v2_cand_6e09e77e",
+        "v2_cand_74a241da",
+        "v2_cand_75f7cc02",
+        "v2_cand_786bec95",
+        "v2_cand_7f7be41f",
+        "v2_cand_85350e7d",
+        "v2_cand_859039f8",
+        "v2_cand_8cb9b904",
+        "v2_cand_8d9c220b",
+        "v2_cand_91d3d082",
+        "v2_cand_932a61bf",
+        "v2_cand_93762692",
+        "v2_cand_955a9776",
+        "v2_cand_98c0b04a",
+        "v2_cand_99a483ba",
+        "v2_cand_a07ee6c3",
+        "v2_cand_a16a0bd3",
+        "v2_cand_a503a80b",
+        "v2_cand_adfdf95e",
+        "v2_cand_b3b588a8",
+        "v2_cand_b733314b",
+        "v2_cand_b74cb48a",
+        "v2_cand_bef80ed7",
+        "v2_cand_c01ca917",
+        "v2_cand_c1325b8b",
+        "v2_cand_c133e47a",
+        "v2_cand_c1bc5a0b"
+      ],
+      "PROVIDERS": {
+        "claude": 27,
+        "perplexity": 18,
+        "gemini": 26,
+        "openai": 1
+      },
+      "LANGUAGES": {
+        "en": 35,
+        "es": 37
+      },
+      "EXAMPLE_SURFACE_FORMS": [
+        "hotels+and",
+        "luxury+hotels+the+world",
+        "Preferred Hotels & Resorts",
+        "collection",
+        "hotels+and",
+        "hotels+and",
+        "Sheraton",
+        "playa+hotels+and+resorts"
+      ],
+      "CANONICAL_ENTITIES": {
+        "Preferred Hotels & Resorts": 16,
+        "Small Luxury Hotels of the World": 6,
+        "DoubleTree by Hilton": 2,
+        "Trademark Collection by Wyndham": 2,
+        "Fairmont": 7,
+        "Playa Hotels & Resorts": 10,
+        "Sheraton": 12,
+        "Moxy Hotels": 1,
+        "Vignette Collection": 7,
+        "BW Signature Collection": 1,
+        "Handwritten Collection": 2,
+        "Four Points by Sheraton": 1,
+        "Novotel": 1,
+        "IHG Hotels & Resorts (Managed)": 2,
+        "Grupo Presidente": 1,
+        "Courtyard by Marriott": 1
+      }
+    },
+    "TRUNCATED_EXTRACTION": {
+      "PATTERN": "TRUNCATED_EXTRACTION",
+      "COUNT": 30,
+      "CASE_IDS": [
+        "v2_cand_06314705",
+        "v2_cand_07b250a1",
+        "v2_cand_0ac8f8ef",
+        "v2_cand_160cbb3c",
+        "v2_cand_1756c36a",
+        "v2_cand_17e09529",
+        "v2_cand_1d0e7663",
+        "v2_cand_2930752a",
+        "v2_cand_2acd25a6",
+        "v2_cand_30a8281f",
+        "v2_cand_3278f6ec",
+        "v2_cand_39bb0c9a",
+        "v2_cand_39c4b049",
+        "v2_cand_3b6fce74",
+        "v2_cand_3df244f7",
+        "v2_cand_48fefca2",
+        "v2_cand_529f405a",
+        "v2_cand_5ca6ca72",
+        "v2_cand_63012053",
+        "v2_cand_635d4155",
+        "v2_cand_6cfb89f5",
+        "v2_cand_78a00e14",
+        "v2_cand_809b6d91",
+        "v2_cand_862fe000",
+        "v2_cand_89cb4653",
+        "v2_cand_9293ef46",
+        "v2_cand_a3a809a4",
+        "v2_cand_a76a0d41",
+        "v2_cand_c1076860",
+        "v2_cand_d9246fa5"
+      ],
+      "PROVIDERS": {
+        "gemini": 16,
+        "claude": 12,
+        "openai": 2
+      },
+      "LANGUAGES": {
+        "es": 22,
+        "en": 8
+      },
+      "EXAMPLE_SURFACE_FORMS": [],
+      "CANONICAL_ENTITIES": {
+        "Tribute Portfolio": 14,
+        "Autograph Collection": 6,
+        "Curio Collection by Hilton": 1,
+        "Westin": 5,
+        "Design Hotels": 2,
+        "Kimpton Hotels": 2
+      }
+    }
+  },
+  "topMissedEntities": [
+    [
+      "Preferred Hotels & Resorts",
+      16
+    ],
+    [
+      "Tribute Portfolio",
+      14
+    ],
+    [
+      "Autograph Collection",
+      14
+    ],
+    [
+      "Sheraton",
+      12
+    ],
+    [
+      "Curio Collection by Hilton",
+      10
+    ],
+    [
+      "Playa Hotels & Resorts",
+      10
+    ],
+    [
+      "Fairmont",
+      7
+    ],
+    [
+      "Vignette Collection",
+      7
+    ],
+    [
+      "Design Hotels",
+      7
+    ],
+    [
+      "Small Luxury Hotels of the World",
+      6
+    ],
+    [
+      "Kimpton Hotels",
+      6
+    ],
+    [
+      "Westin",
+      5
+    ],
+    [
+      "Hilton Hotels & Resorts",
+      4
+    ],
+    [
+      "Tapestry Collection by Hilton",
+      3
+    ],
+    [
+      "Hotel Indigo",
+      2
+    ],
+    [
+      "DoubleTree by Hilton",
+      2
+    ],
+    [
+      "Trademark Collection by Wyndham",
+      2
+    ],
+    [
+      "Handwritten Collection",
+      2
+    ],
+    [
+      "Ascend Hotel Collection",
+      2
+    ],
+    [
+      "IHG Hotels & Resorts (Managed)",
+      2
+    ],
+    [
+      "Moxy Hotels",
+      1
+    ],
+    [
+      "BW Signature Collection",
+      1
+    ],
+    [
+      "Four Points by Sheraton",
+      1
+    ],
+    [
+      "Novotel",
+      1
+    ],
+    [
+      "Canopy by Hilton",
+      1
+    ],
+    [
+      "Grupo Presidente",
+      1
+    ],
+    [
+      "Courtyard by Marriott",
+      1
+    ]
+  ],
+  "falseNegatives": [
+    {
+      "CASE_ID": "v2_cand_0091dfff",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Hotel Indigo",
+      "CANONICAL_ID": "recegXrqaPiSLGCIe",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes una visión completa y actualizada de las **principales marcas hoteleras consideradas para proyectos con branded residences en el Caribe y América Latina (CALA)**:\n\n---\n",
+      "CURRENT_ALIAS_SET": [
+        "hotel indigo"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotel"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_024fcf9c",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive guide to the **soft brand and collection hotel affiliations** that a hotel owner in Mexico should consider, organized from global mega-brand collections to ",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_030739d6",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "For an independent **upper-upscale hotel in Mexico**, converting into a branded affiliation typically means balancing **global distribution and loyalty power** with the desire to p",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_035ffe13",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Small Luxury Hotels of the World",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive overview of the collection and soft-brand options most commonly considered by hotel owners pursuing a conversion in Europe, organized by parent company and ",
+      "CURRENT_ALIAS_SET": [
+        "small luxury hotels of the world"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "luxury",
+        "hotels",
+        "the",
+        "world"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_06314705",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "En la región de **Caribe y América Latina (CALA)**, el segmento *Upper-Upscale* (situado justo por debajo de *Luxury* y por encima de *Upscale*) es uno de los más dinámicos e inter",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_07b250a1",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis completo y estructurado de las marcas hoteleras que habitualmente se evalúan cuando un propietario quiere afiliar un hotel **upper-upscale independiente** m",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_07cbcda0",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Preferred Hotels & Resorts",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "An owner looking to **preserve individuality** should consider **soft brands** and **collection brands**—affiliations that let the hotel keep its own name, design, and character wh",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_0a8cfa16",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "DoubleTree by Hilton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question that sits at the intersection of hotel brand strategy, real estate development, and operator selection. Here is a comprehensive overview of the upper-upsca",
+      "CURRENT_ALIAS_SET": [
+        "doubletree by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_0ac8f8ef",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Al evaluar un proyecto de **Branded Residences** (residencias con marca hotelera) en el Caribe y América Latina (CALA), un propietario o desarrollador debe considerar que esta regi",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_0c720aae",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When converting an existing **mid-size (approx. 100–300 rooms) upper-upscale hotel in Mexico**, the strategic choice of brand depends heavily on your property’s physical layout, lo",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection",
+        "hilton"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_0e2e5bd2",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tiene un análisis exhaustivo y estructurado de las principales **soft brands / marcas de colección** que un propietario debería considerar cuando la **flexibilidad de afiliaci",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_11ea31be",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Trademark Collection by Wyndham",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Great, I now have comprehensive information to provide a thorough answer. Here is a breakdown of the collection and soft-brand options commonly considered for hotel conversions in ",
+      "CURRENT_ALIAS_SET": [
+        "trademark collection by wyndham"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_141a99e1",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Fairmont",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes una visión completa y actualizada de las **principales marcas hoteleras consideradas para proyectos con branded residences en el Caribe y América Latina (CALA)**:\n\n---\n",
+      "CURRENT_ALIAS_SET": [
+        "fairmont"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_14651e14",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Hilton Hotels & Resorts",
+      "CANONICAL_ID": "recWubG3rhiS1BaWi",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question that sits at the intersection of hotel brand strategy, real estate development, and operator selection. Here is a comprehensive overview of the upper-upsca",
+      "CURRENT_ALIAS_SET": [
+        "hilton hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_1550f44a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive breakdown of the **soft brands and collection brands** that hotel owners in the **Caribbean and Latin America (CALA)** should seriously consider when **affi",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_160cbb3c",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Convertir un hotel *upper-upscale* (gama alta superior) existente en el Caribe y América Latina (CALA) es una de las estrategias de inversión más atractivas actualmente. Permite ac",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_1674948a",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Si un propietario quiere posicionar un hotel como **upper-upscale en México**, las marcas que más conviene considerar suelen ser las de **Marriott, Hilton, IHG, Hyatt, Accor, Radis",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_1756c36a",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Convertir un hotel *upper-upscale* (gama alta superior) existente en el Caribe y América Latina (CALA) es una de las estrategias de inversión más atractivas actualmente. Permite ac",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_17d13a6b",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Sheraton",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Si un propietario quiere posicionar un hotel como **upper-upscale en México**, las marcas que más conviene considerar suelen ser las de **Marriott, Hilton, IHG, Hyatt, Accor, Radis",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_17d64be9",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un propietario o inversionista en México que busca alejarse del modelo de \"bandera *full-service* convencional\" (como un Marriott, Hilton o Crowne Plaza tradicional) y optar p",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "playa",
+        "hotels",
+        "and",
+        "resorts"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_17e09529",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Westin",
+      "CANONICAL_ID": "recIPuBC50fv13zRR",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Al evaluar un proyecto de **Branded Residences** (residencias con marca hotelera) en el Caribe y América Latina (CALA), un propietario o desarrollador debe considerar que esta regi",
+      "CURRENT_ALIAS_SET": [
+        "westin"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_186c03b8",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Moxy Hotels",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great strategic question. Here is a comprehensive guide to the lifestyle hotel brands an owner should consider when positioning around **differentiated guest experience a",
+      "CURRENT_ALIAS_SET": [
+        "moxy hotels"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_198ab403",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario hotelero en el Caribe y América Latina (región conocida en la industria como **CALA**) busca afiliación para ganar distribución global, tecnología y motores d",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_198f2e2c",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Fairmont",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Fairmont",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "En México, las marcas **habitualmente consideradas** para un hotel con componente de *branded residences* suelen ser, sobre todo, cadenas hoteleras de lujo y *upper-upscale* con pr",
+      "CURRENT_ALIAS_SET": [
+        "fairmont"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_1a571607",
+      "PROVIDER": "openai",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "showcase_upper_upscale_shortlist",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 600,
+      "RESOLVER_INPUT_PREVIEW": "For an **upper-upscale hotel**, owners and developers typically begin with the following global brand universe. Exact chain-scale classifications vary slightly by region and benchm",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_1c01c709",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Fairmont",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Fairmont",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "In Europe, the hotel brands most commonly considered for **branded residences** are **Marriott** brands such as **Ritz-Carlton**, **St. Regis**, **JW Marriott**, **W**, and **EDITI",
+      "CURRENT_ALIAS_SET": [
+        "fairmont"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_1c5b0f67",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Vignette Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Vignette Collection",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Si la prioridad es la **flexibilidad de afiliación** en una conversión hotelera en México, las opciones más relevantes suelen ser las **soft brands** de las grandes cadenas, porque",
+      "CURRENT_ALIAS_SET": [
+        "vignette collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_1d0e7663",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When developing an **upper-upscale hotel positioning strategy in Europe**, hotel owners and asset managers must carefully balance distribution power, local market presence, brand f",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_202a5fae",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Hilton Hotels & Resorts",
+      "CANONICAL_ID": "recWubG3rhiS1BaWi",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When evaluating an **upper-upscale hotel positioning strategy** in North America, property owners and developers are selecting within a highly lucrative segment situated just below",
+      "CURRENT_ALIAS_SET": [
+        "hilton hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and",
+        "resorts"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_25520887",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Fairmont",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "The market for hotel-branded residences has grown rapidly over the past two decades. Developers globally consider specific hotel brands based on target buyer demographics, price pr",
+      "CURRENT_ALIAS_SET": [
+        "fairmont"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_27ec7204",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis completo y estructurado sobre las marcas hoteleras que un propietario/desarrollador debería considerar al evaluar **branded residences** para un proyecto en",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_2906f0b5",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Tapestry Collection by Hilton",
+      "CANONICAL_ID": "reccXxMHEh7NNRhIE",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive breakdown of the **soft brands and collection brands** that hotel owners in the **Caribbean and Latin America (CALA)** should seriously consider when **affi",
+      "CURRENT_ALIAS_SET": [
+        "tapestry collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_2930752a",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Design Hotels",
+      "CANONICAL_ID": "rec02zPClpWUTCyXM",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario hotelero en el Caribe y América Latina (región conocida en la industria como **CALA**) busca afiliación para ganar distribución global, tecnología y motores d",
+      "CURRENT_ALIAS_SET": [
+        "design hotels"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_29967276",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tiene un análisis exhaustivo y estructurado de las principales **soft brands / marcas de colección** que un propietario debería considerar cuando la **flexibilidad de afiliaci",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_2acd25a6",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes una visión completa y estructurada de las principales marcas **soft brand / collection** que los propietarios de hoteles suelen considerar para conversiones en el **Car",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_2cad5049",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Sheraton",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question for hotel owners and investors. Here is a comprehensive overview of the **upper-upscale hotel brands** worth considering when positioning a hotel in Mexico",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_2dd0fd2a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive overview of the hotel brands most commonly considered by owners and developers in Mexico for **design-forward or distinctive-character lifestyle positioning",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_2dec8d90",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "BW Signature Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un propietario de un hotel en el Caribe y América Latina (CALA) donde la **flexibilidad de afiliación** es la máxima prioridad —es decir, adaptar el hotel sin perder su identi",
+      "CURRENT_ALIAS_SET": [
+        "bw signature collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_2e0a4ca6",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Preferred Hotels & Resorts",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario en México busca **afiliación de marca** pero quiere **conservar la identidad propia del hotel**, las opciones que más habitualmente se consideran son las **so",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_309ca81e",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question about **soft brand collections** — a fast-growing segment of the hotel industry that gives owners the best of both worlds: brand affiliation and preserved ",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_30a8281f",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question for hotel owners and investors. Here is a comprehensive overview of the **upper-upscale hotel brands** worth considering when positioning a hotel in Mexico",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_3278f6ec",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario hotelero en el Caribe y América Latina (CALA) busca convertir un hotel independiente (o de otra marca) mediante una **\"soft brand\" o marca de colección**, el ",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_350eddb9",
+      "PROVIDER": "openai",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "showcase_collection_soft_affiliation",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 600,
+      "RESOLVER_INPUT_PREVIEW": "A hotel owner seeking distribution, loyalty, and operating support **without sacrificing the property’s name, design, or local character** should evaluate both soft-brand franchise",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_3515312a",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario o inversionista hotelero en México evalúa convertir un hotel independiente (o existente) bajo el modelo de **\"Soft Brand\" o \"Collection Brand\"**, busca obtene",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "playa",
+        "and",
+        "resorts"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_359453c0",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question about **soft brand collections** — a fast-growing segment of the hotel industry that gives owners the best of both worlds: brand affiliation and preserved ",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_35a63d8e",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Trademark Collection by Wyndham",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Trademark Collection by Wyndham",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un propietario de un hotel en el Caribe y América Latina (CALA) donde la **flexibilidad de afiliación** es la máxima prioridad —es decir, adaptar el hotel sin perder su identi",
+      "CURRENT_ALIAS_SET": [
+        "trademark collection by wyndham"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_37210b41",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un panorama completo y estructurado de las marcas y colecciones hoteleras más consideradas cuando un propietario en el **Caribe y América Latina** busca afiliación de m",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_37595e51",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Small Luxury Hotels of the World",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario o inversionista hotelero en México evalúa convertir un hotel independiente (o existente) bajo el modelo de **\"Soft Brand\" o \"Collection Brand\"**, busca obtene",
+      "CURRENT_ALIAS_SET": [
+        "small luxury hotels of the world"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "luxury"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_39bb0c9a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tiene un análisis exhaustivo y estructurado de las principales **soft brands / marcas de colección** que un propietario debería considerar cuando la **flexibilidad de afiliaci",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_39c4b049",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Westin",
+      "CANONICAL_ID": "recIPuBC50fv13zRR",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When converting an existing upper-upscale hotel asset in North America, owners generally choose between **Soft Brands** (which preserve unique character while providing global dist",
+      "CURRENT_ALIAS_SET": [
+        "westin"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_3b6fce74",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Convertir un hotel *upper-upscale* (gama alta superior) existente en el Caribe y América Latina (CALA) es una de las estrategias de inversión más atractivas actualmente. Permite ac",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_3bea5bb6",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Sheraton",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para una estrategia de posicionamiento **upper-upscale** en el Caribe y América Latina, las marcas hoteleras que más conviene considerar son las que ya operan o encajan claramente ",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_3c28453a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Handwritten Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Great, I now have comprehensive information to provide a thorough answer. Here is a breakdown of the collection and soft-brand options commonly considered for hotel conversions in ",
+      "CURRENT_ALIAS_SET": [
+        "handwritten collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_3df244f7",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Design Hotels",
+      "CANONICAL_ID": "rec02zPClpWUTCyXM",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario hotelero en México busca afiliarse a una marca sin someterse a los prototipos estrictos de una *hard brand* (como Marriott, Hilton o Holiday Inn), la alternat",
+      "CURRENT_ALIAS_SET": [
+        "design hotels"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_3df2487f",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Vignette Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great and highly relevant topic in European hospitality development. Here is a comprehensive overview of the hotel brands most commonly considered by owners looking to af",
+      "CURRENT_ALIAS_SET": [
+        "vignette collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_3fcc6422",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Hilton Hotels & Resorts",
+      "CANONICAL_ID": "recWubG3rhiS1BaWi",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "An owner converting an existing **upper-upscale** hotel in the Caribbean and Latin America should primarily look at brands that are already active in the region and positioned for ",
+      "CURRENT_ALIAS_SET": [
+        "hilton hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hilton",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_41274fe3",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Small Luxury Hotels of the World",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando la **flexibilidad** es la prioridad principal en la conversión de un hotel en México (es decir, minimizar la inversión en el Plan de Mejora de la Propiedad o *PIP*, conserva",
+      "CURRENT_ALIAS_SET": [
+        "small luxury hotels of the world"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_415f17f0",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Tapestry Collection by Hilton",
+      "CANONICAL_ID": "reccXxMHEh7NNRhIE",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive guide to the **soft brand and collection hotel affiliations** that a hotel owner in Mexico should consider, organized from global mega-brand collections to ",
+      "CURRENT_ALIAS_SET": [
+        "tapestry collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_45ad67a6",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un panorama completo y estructurado de las marcas y colecciones hoteleras más consideradas cuando un propietario en el **Caribe y América Latina** busca afiliación de m",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_465be86c",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "En la región de América Latina y el Caribe (CALA), el segmento *lifestyle* y de diseño con carácter distintivo ha tenido un crecimiento acelerado. Los propietarios e inversionistas",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_47174009",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Four Points by Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Four Points by Sheraton",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "For an **upper-upscale positioning strategy in North America**, an owner should typically consider brands from the major chains that are widely recognized or listed in that tier: *",
+      "CURRENT_ALIAS_SET": [
+        "four points by sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_4811fa31",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Fairmont",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Fairmont",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Al evaluar **branded residences** para un proyecto hotelero en México, las marcas hoteleras que más conviene considerar hoy son **Marriott** (especialmente **The Ritz-Carlton**, **",
+      "CURRENT_ALIAS_SET": [
+        "fairmont"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_48fefca2",
+      "PROVIDER": "openai",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "showcase_lifestyle_positioning_strategy",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 600,
+      "RESOLVER_INPUT_PREVIEW": "## Recomendación principal\n\nSi el objetivo es que **el destino y la identidad propia del hotel sean protagonistas**, empezaría por una **marca de colección o “soft brand”** antes q",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_4a66d81b",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Ascend Hotel Collection",
+      "CANONICAL_ID": "reclkgOzvAcBheUSo",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question about **soft brand collections** — a fast-growing segment of the hotel industry that gives owners the best of both worlds: brand affiliation and preserved ",
+      "CURRENT_ALIAS_SET": [
+        "ascend hotel collection",
+        "ascend"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotel",
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_4cf733c7",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "En la región de **Caribe y América Latina (CALA)**, el segmento *Upper-Upscale* (situado justo por debajo de *Luxury* y por encima de *Upscale*) es uno de los más dinámicos e inter",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_4e014498",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Vignette Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Vignette Collection",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "En México, los propietarios suelen considerar **marcas lifestyle con diseño distintivo** como **Grupo Habita**, **Kimpton**, **Hotel Indigo**, **AC Hotels by Marriott**, **Vignette",
+      "CURRENT_ALIAS_SET": [
+        "vignette collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_51d4257a",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Design Hotels",
+      "CANONICAL_ID": "rec02zPClpWUTCyXM",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando la **flexibilidad** es la prioridad principal en la conversión de un hotel en México (es decir, minimizar la inversión en el Plan de Mejora de la Propiedad o *PIP*, conserva",
+      "CURRENT_ALIAS_SET": [
+        "design hotels"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_52172a1d",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Posicionar un hotel en la categoría **Upper-Upscale** en México (según la clasificación oficial de cadenas de *STR / CoStar*) requiere un equilibrio preciso entre estándares de ser",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_524ac279",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Novotel",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Novotel",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When developing an **upper-upscale hotel positioning strategy in Europe**, hotel owners and asset managers must carefully balance distribution power, local market presence, brand f",
+      "CURRENT_ALIAS_SET": [
+        "novotel"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_529f405a",
+      "PROVIDER": "openai",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "showcase_branded_residences_hotel_project",
+      "CANONICAL_ENTITY": "Westin",
+      "CANONICAL_ID": "recIPuBC50fv13zRR",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 600,
+      "RESOLVER_INPUT_PREVIEW": "Para un **hotel con componente de branded residences en el Caribe y América Latina**, el universo de marcas suele concentrarse en lujo y *upper-upscale*. La lista larga habitual se",
+      "CURRENT_ALIAS_SET": [
+        "westin"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_535c6050",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Canopy by Hilton",
+      "CANONICAL_ID": "recsggfbKlJbjeRP9",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un propietario o inversionista en México que busca alejarse del modelo de \"bandera *full-service* convencional\" (como un Marriott, Hilton o Crowne Plaza tradicional) y optar p",
+      "CURRENT_ALIAS_SET": [
+        "canopy by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hilton"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_561e556d",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Sheraton",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes una guía completa y estructurada de las principales marcas hoteleras **upper-upscale** que un propietario debería considerar al posicionar su hotel en este segmento en ",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_594155be",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Design Hotels",
+      "CANONICAL_ID": "rec02zPClpWUTCyXM",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a comprehensive and well-sourced question. Here is a detailed breakdown of the key soft brands and collection brands a hotel owner should consider when **affiliation flexib",
+      "CURRENT_ALIAS_SET": [
+        "design hotels"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "design",
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_5ae0142a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "IHG Hotels & Resorts (Managed)",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great and highly relevant topic. Here is a comprehensive guide to hotel brands that owners and developers should consider when evaluating branded residences as part of a ",
+      "CURRENT_ALIAS_SET": [
+        "ihg hotels and resorts managed"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_5bd0176f",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un hotel **upper-upscale** existente y de tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros ",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hilton"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_5ca6ca72",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When a hotel owner or investor seeks a **soft brand** or **collection brand** for a property conversion, the goal is typically to retain the hotel’s unique identity, character, and",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_5dc534cd",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Sheraton",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un hotel **upper-upscale** existente y de tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros ",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_5f706dd7",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "DoubleTree by Hilton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un propietario que busca convertir un hotel de tamaño medio existente en México al segmento **Upper-Upscale**, la elección de la marca correcta depende de dos factores estraté",
+      "CURRENT_ALIAS_SET": [
+        "doubletree by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_63012053",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great and highly relevant topic in European hospitality development. Here is a comprehensive overview of the hotel brands most commonly considered by owners looking to af",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_6346e387",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Design Hotels",
+      "CANONICAL_ID": "rec02zPClpWUTCyXM",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive overview of the collection and soft-brand options most commonly considered by hotel owners pursuing a conversion in Europe, organized by parent company and ",
+      "CURRENT_ALIAS_SET": [
+        "design hotels"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_635d4155",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Kimpton Hotels",
+      "CANONICAL_ID": "recCKuXCmGvxHPfb3",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When positioning a hotel in North America around a **differentiated guest experience** and **authentic local character**, hotel owners generally choose between three main paths: **",
+      "CURRENT_ALIAS_SET": [
+        "kimpton hotels",
+        "kimpton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_64751348",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario o inversionista hotelero en México evalúa convertir un hotel independiente (o existente) bajo el modelo de **\"Soft Brand\" o \"Collection Brand\"**, busca obtene",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and",
+        "resorts"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_6514603c",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Small Luxury Hotels of the World",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis detallado y estructurado de las marcas que un propietario de un hotel **upper-upscale independiente en México** debería considerar para una conversión o afi",
+      "CURRENT_ALIAS_SET": [
+        "small luxury hotels of the world"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_6702a2e1",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a comprehensive and well-sourced question. Here is a detailed breakdown of the key soft brands and collection brands a hotel owner should consider when **affiliation flexib",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_6734dbb4",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Handwritten Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Handwritten Collection",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "If **affiliation flexibility** is the priority for a hotel conversion in Europe, owners should look first at **soft brands** and **collection brands** that combine lighter standard",
+      "CURRENT_ALIAS_SET": [
+        "handwritten collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_6c5eef29",
+      "PROVIDER": "openai",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "showcase_lifestyle_positioning_strategy",
+      "CANONICAL_ENTITY": "Hotel Indigo",
+      "CANONICAL_ID": "recegXrqaPiSLGCIe",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 600,
+      "RESOLVER_INPUT_PREVIEW": "For an owner prioritizing **differentiated guest experience, design and local character**, the strongest candidates fall into two groups:\n\n1. **Lifestyle “hard brands”**—a defined ",
+      "CURRENT_ALIAS_SET": [
+        "hotel indigo"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotel"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_6ca6d57f",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Design Hotels",
+      "CANONICAL_ID": "rec02zPClpWUTCyXM",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When hotel owners in Mexico consider converting an existing independent hotel, historic property, or boutique resort into a soft-brand collection, the main objective is usually to ",
+      "CURRENT_ALIAS_SET": [
+        "design hotels"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_6cfb89f5",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a comprehensive and well-sourced question. Here is a detailed breakdown of the key soft brands and collection brands a hotel owner should consider when **affiliation flexib",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_6e09e77e",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis completo y estructurado de las marcas hoteleras que habitualmente se evalúan cuando un propietario quiere afiliar un hotel **upper-upscale independiente** m",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_6e24c43f",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive overview of the hotel brands most commonly considered by owners and developers in Mexico for **design-forward or distinctive-character lifestyle positioning",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_6fb1fc83",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Kimpton Hotels",
+      "CANONICAL_ID": "recCKuXCmGvxHPfb3",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes una visión completa y actualizada de las **principales marcas hoteleras consideradas para proyectos con branded residences en el Caribe y América Latina (CALA)**:\n\n---\n",
+      "CURRENT_ALIAS_SET": [
+        "kimpton hotels",
+        "kimpton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_6fb4d85e",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Ascend Hotel Collection",
+      "CANONICAL_ID": "reclkgOzvAcBheUSo",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive guide to the **soft brand and collection hotel affiliations** that a hotel owner in Mexico should consider, organized from global mega-brand collections to ",
+      "CURRENT_ALIAS_SET": [
+        "ascend hotel collection",
+        "ascend"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotel",
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_72152a7a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive breakdown of the **soft brands and collection brands** that hotel owners in the **Caribbean and Latin America (CALA)** should seriously consider when **affi",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_74a241da",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Fairmont",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis completo y estructurado sobre las marcas hoteleras que un propietario/desarrollador debería considerar al evaluar **branded residences** para un proyecto en",
+      "CURRENT_ALIAS_SET": [
+        "fairmont"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_75f7cc02",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When a hotel owner or investor seeks a **soft brand** or **collection brand** for a property conversion, the goal is typically to retain the hotel’s unique identity, character, and",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_76f9effc",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Hilton Hotels & Resorts",
+      "CANONICAL_ID": "recWubG3rhiS1BaWi",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When developing or repositioning a hotel into the **Upper-Upscale** segment (defined by STR as the chain scale directly below Luxury and above Upscale), owners and investors gain a",
+      "CURRENT_ALIAS_SET": [
+        "hilton hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_786bec95",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Great, I now have comprehensive information to provide a thorough answer. Here is a breakdown of the collection and soft-brand options commonly considered for hotel conversions in ",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and",
+        "resorts"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_78a00e14",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis detallado y estructurado de las principales **marcas hoteleras lifestyle** que un propietario debería considerar al posicionar un hotel en el Caribe y Améri",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_7ab10797",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Kimpton Hotels",
+      "CANONICAL_ID": "recCKuXCmGvxHPfb3",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive overview of the hotel brands most commonly considered by owners and developers in Mexico for **design-forward or distinctive-character lifestyle positioning",
+      "CURRENT_ALIAS_SET": [
+        "kimpton hotels",
+        "kimpton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_7f7be41f",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When developing or repositioning a hotel into the **Upper-Upscale** segment (defined by STR as the chain scale directly below Luxury and above Upscale), owners and investors gain a",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_809b6d91",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario hotelero en México busca afiliarse a una marca sin someterse a los prototipos estrictos de una *hard brand* (como Marriott, Hilton o Holiday Inn), la alternat",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_814ce8ee",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive guide to the **soft brand and collection hotel affiliations** that a hotel owner in Mexico should consider, organized from global mega-brand collections to ",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_82cd21b1",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un propietario que busca convertir un hotel de tamaño medio existente en México al segmento **Upper-Upscale**, la elección de la marca correcta depende de dos factores estraté",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_837edea4",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Kimpton Hotels",
+      "CANONICAL_ID": "recCKuXCmGvxHPfb3",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un propietario o inversionista en México que busca alejarse del modelo de \"bandera *full-service* convencional\" (como un Marriott, Hilton o Crowne Plaza tradicional) y optar p",
+      "CURRENT_ALIAS_SET": [
+        "kimpton hotels",
+        "kimpton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_85350e7d",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When hotel owners in Mexico consider converting an existing independent hotel, historic property, or boutique resort into a soft-brand collection, the main objective is usually to ",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and",
+        "resorts"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_859039f8",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Sheraton",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "For an **upper-upscale positioning strategy in North America**, an owner should typically consider brands from the major chains that are widely recognized or listed in that tier: *",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_862fe000",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When hotel owners in Mexico consider converting an existing independent hotel, historic property, or boutique resort into a soft-brand collection, the main objective is usually to ",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_89cb4653",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Westin",
+      "CANONICAL_ID": "recIPuBC50fv13zRR",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis completo y estructurado de las marcas hoteleras que habitualmente se evalúan cuando un propietario quiere afiliar un hotel **upper-upscale independiente** m",
+      "CURRENT_ALIAS_SET": [
+        "westin"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_8cb9b904",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Vignette Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When positioning a hotel in North America around a **differentiated guest experience** and **authentic local character**, hotel owners generally choose between three main paths: **",
+      "CURRENT_ALIAS_SET": [
+        "vignette collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_8d9c220b",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis detallado y estructurado de las principales **marcas hoteleras lifestyle** que un propietario debería considerar al posicionar un hotel en el Caribe y Améri",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_91d3d082",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question that sits at the intersection of hotel brand strategy, real estate development, and operator selection. Here is a comprehensive overview of the upper-upsca",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_9293ef46",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis estructurado y completo sobre las marcas que típicamente conforman la **shortlist upper-upscale** en proyectos hoteleros en México:\n\n---\n\n# 🏨 Marcas Upper-",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_932a61bf",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Vignette Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Vignette Collection",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Hotel owners who want **brand affiliation** but still want to preserve a stronger sense of **individuality** commonly look at **soft brands** and **lifestyle/boutique-style brands*",
+      "CURRENT_ALIAS_SET": [
+        "vignette collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_93762692",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando la **flexibilidad** es la prioridad principal en la conversión de un hotel en México (es decir, minimizar la inversión en el Plan de Mejora de la Propiedad o *PIP*, conserva",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_950dff59",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Design Hotels",
+      "CANONICAL_ID": "rec02zPClpWUTCyXM",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When a hotel owner or investor seeks a **soft brand** or **collection brand** for a property conversion, the goal is typically to retain the hotel’s unique identity, character, and",
+      "CURRENT_ALIAS_SET": [
+        "design hotels"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "design",
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_955a9776",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Small Luxury Hotels of the World",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "For an owner positioning a hotel around **differentiated guest experience** and **local character**, the strongest lifestyle brands to consider are **Hotel Indigo**, **Canopy by Hi",
+      "CURRENT_ALIAS_SET": [
+        "small luxury hotels of the world"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "the"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_98c0b04a",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Vignette Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Vignette Collection",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "For an owner looking to preserve a hotel’s **individuality** in the Caribbean and Latin America, the strongest “soft” or *collection-style* affiliations to consider are **Marriott’",
+      "CURRENT_ALIAS_SET": [
+        "vignette collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_99a483ba",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Small Luxury Hotels of the World",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un panorama completo y estructurado de las marcas y colecciones hoteleras más consideradas cuando un propietario en el **Caribe y América Latina** busca afiliación de m",
+      "CURRENT_ALIAS_SET": [
+        "small luxury hotels of the world"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_9ba8bb69",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes una visión completa y estructurada de las principales marcas **soft brand / collection** que los propietarios de hoteles suelen considerar para conversiones en el **Car",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_a07ee6c3",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "IHG Hotels & Resorts (Managed)",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great question that sits at the intersection of hotel brand strategy, real estate development, and operator selection. Here is a comprehensive overview of the upper-upsca",
+      "CURRENT_ALIAS_SET": [
+        "ihg hotels and resorts managed"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_a16a0bd3",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Here is a comprehensive overview of the collection and soft-brand options most commonly considered by hotel owners pursuing a conversion in Europe, organized by parent company and ",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and",
+        "resorts"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_a25aefe1",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When owners and developers in Mexico shortlist **Upper-Upscale** hotel brands (the tier sitting directly below ultra-luxury like Four Seasons/St. Regis and above midscale/upscale l",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hilton"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_a3a809a4",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Kimpton Hotels",
+      "CANONICAL_ID": "recCKuXCmGvxHPfb3",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis detallado y estructurado de las principales **marcas hoteleras lifestyle** que un propietario debería considerar al posicionar un hotel en el Caribe y Améri",
+      "CURRENT_ALIAS_SET": [
+        "kimpton hotels",
+        "kimpton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_a503a80b",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Grupo Presidente",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Grupo Presidente",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un hotel **upper-upscale** existente y de tamaño medio en México, las marcas que más sentido suelen tener son las que ya operan bien en ese segmento y atraen tanto a viajeros ",
+      "CURRENT_ALIAS_SET": [
+        "grupo presidente"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_a76a0d41",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Tribute Portfolio",
+      "CANONICAL_ID": "recCvV0PuZOi8c3hC",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario hotelero en el Caribe y América Latina (región conocida en la industria como **CALA**) busca afiliación para ganar distribución global, tecnología y motores d",
+      "CURRENT_ALIAS_SET": [
+        "tribute portfolio"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_adfdf95e",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Playa Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Convertir un hotel *upper-upscale* (gama alta superior) existente en el Caribe y América Latina (CALA) es una de las estrategias de inversión más atractivas actualmente. Permite ac",
+      "CURRENT_ALIAS_SET": [
+        "playa hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_ae7d5331",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Kimpton Hotels",
+      "CANONICAL_ID": "recCKuXCmGvxHPfb3",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "This is a great and highly relevant topic. Here is a comprehensive guide to hotel brands that owners and developers should consider when evaluating branded residences as part of a ",
+      "CURRENT_ALIAS_SET": [
+        "kimpton hotels",
+        "kimpton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_b3b588a8",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_ENTITY": "Fairmont",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Al evaluar un proyecto de **Branded Residences** (residencias con marca hotelera) en el Caribe y América Latina (CALA), un propietario o desarrollador debe considerar que esta regi",
+      "CURRENT_ALIAS_SET": [
+        "fairmont"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_b733314b",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis detallado y estructurado de las marcas que un propietario de un hotel **upper-upscale independiente en México** debería considerar para una conversión o afi",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_b74cb48a",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Courtyard by Marriott",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When owners and developers in Mexico shortlist **Upper-Upscale** hotel brands (the tier sitting directly below ultra-luxury like Four Seasons/St. Regis and above midscale/upscale l",
+      "CURRENT_ALIAS_SET": [
+        "courtyard by marriott"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "courtyard",
+        "marriott"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_bac0264c",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Tapestry Collection by Hilton",
+      "CANONICAL_ID": "reccXxMHEh7NNRhIE",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario hotelero en el Caribe y América Latina (CALA) busca convertir un hotel independiente (o de otra marca) mediante una **\"soft brand\" o marca de colección**, el ",
+      "CURRENT_ALIAS_SET": [
+        "tapestry collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_be9ba539",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Cuando un propietario hotelero en el Caribe y América Latina (CALA) busca convertir un hotel independiente (o de otra marca) mediante una **\"soft brand\" o marca de colección**, el ",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_bef80ed7",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "NORTH_AMERICA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When converting an existing upper-upscale hotel asset in North America, owners generally choose between **Soft Brands** (which preserve unique character while providing global dist",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_c01ca917",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Vignette Collection",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When converting an existing **mid-size (approx. 100–300 rooms) upper-upscale hotel in Mexico**, the strategic choice of brand depends heavily on your property’s physical layout, lo",
+      "CURRENT_ALIAS_SET": [
+        "vignette collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_c02e1b19",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_ENTITY": "Curio Collection by Hilton",
+      "CANONICAL_ID": "receQkxgjlezsc1xg",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "En la región de América Latina y el Caribe (CALA), el segmento *lifestyle* y de diseño con carácter distintivo ha tenido un crecimiento acelerado. Los propietarios e inversionistas",
+      "CURRENT_ALIAS_SET": [
+        "curio collection by hilton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "CANONICAL_NAME_VARIANT",
+      "FAILURE_REASONS": [
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "collection"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_c1076860",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_ENTITY": "Westin",
+      "CANONICAL_ID": "recIPuBC50fv13zRR",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis detallado y estructurado de las marcas que un propietario de un hotel **upper-upscale independiente en México** debería considerar para una conversión o afi",
+      "CURRENT_ALIAS_SET": [
+        "westin"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    },
+    {
+      "CASE_ID": "v2_cand_c1325b8b",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Para un propietario de un hotel en el Caribe y América Latina (CALA) donde la **flexibilidad de afiliación** es la máxima prioridad —es decir, adaptar el hotel sin perder su identi",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_c133e47a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Sheraton",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": "Sheraton",
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis estructurado y completo sobre las marcas que típicamente conforman la **shortlist upper-upscale** en proyectos hoteleros en México:\n\n---\n\n# 🏨 Marcas Upper-",
+      "CURRENT_ALIAS_SET": [
+        "sheraton"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "OTHER"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": true,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_c1bc5a0b",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Soft-Brand Affiliation Flexibility",
+      "CANONICAL_ENTITY": "Preferred Hotels & Resorts",
+      "CANONICAL_ID": null,
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "When a hotel owner in Europe wants global distribution, powerful loyalty program access, and marketing power while preserving the hotel’s unique character, history, and operational",
+      "CURRENT_ALIAS_SET": [
+        "preferred hotels and resorts"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": false,
+      "FAILURE_REASON": "ENTITY_INDEX_MISSING",
+      "FAILURE_REASONS": [
+        "ENTITY_INDEX_MISSING",
+        "CANONICAL_NAME_VARIANT"
+      ],
+      "SURFACE_HINTS": [
+        "hotels",
+        "and"
+      ],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": true
+    },
+    {
+      "CASE_ID": "v2_cand_d9246fa5",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_ENTITY": "Autograph Collection",
+      "CANONICAL_ID": "recEJCTDj1zrsjPM6",
+      "EXACT_TEXT_FORM_IN_RESPONSE": null,
+      "RESOLVER_INPUT_TEXT_LENGTH": 1200,
+      "RESOLVER_INPUT_PREVIEW": "Aquí tienes un análisis estructurado y completo sobre las marcas que típicamente conforman la **shortlist upper-upscale** en proyectos hoteleros en México:\n\n---\n\n# 🏨 Marcas Upper-",
+      "CURRENT_ALIAS_SET": [
+        "autograph collection"
+      ],
+      "MATCH_ATTEMPT_RESULT": "MISS",
+      "IN_UNIVERSE": true,
+      "FAILURE_REASON": "TRUNCATED_EXTRACTION",
+      "FAILURE_REASONS": [
+        "TRUNCATED_EXTRACTION"
+      ],
+      "SURFACE_HINTS": [],
+      "FULL_CANONICAL_IN_NORMALIZED_TEXT": false,
+      "ANY_NAME_TOKEN_IN_TEXT": false
+    }
+  ]
+}

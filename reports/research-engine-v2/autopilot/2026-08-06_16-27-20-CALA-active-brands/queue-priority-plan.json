@@ -1,0 +1,351 @@
+{
+  "version": "census-autopilot-fastest-safe-v1",
+  "strategy": "fastest-safe",
+  "generated_at": "2026-08-06T16:27:20.532Z",
+  "formula": "(expected_safe_writes * business_value_weight * extractor_readiness * source_access_success) / (runtime_risk * ambiguity_risk * dependency_penalty)",
+  "future_strategies": [
+    "highest-yield",
+    "highest-confidence",
+    "geography-first",
+    "descriptions-first"
+  ],
+  "ordered_queue_ids": [
+    "clean_core_classification"
+  ],
+  "queues": [
+    {
+      "queue_id": "core_identity_quality",
+      "letter": "A0",
+      "label": "Core identity quality gate",
+      "score": 0.2975,
+      "components": {
+        "expected_safe_writes": 0.5,
+        "business_value_weight": 1,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "description_extraction",
+      "letter": "E",
+      "label": "Description extraction",
+      "score": 0.2945,
+      "components": {
+        "expected_safe_writes": 0.55,
+        "business_value_weight": 0.85,
+        "extractor_readiness": 0.9,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [
+        "IHG description extractor proven in production"
+      ],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "coordinate_completion",
+      "letter": "C",
+      "label": "Coordinate completion (Mapbox Permanent)",
+      "score": 0.2677,
+      "components": {
+        "expected_safe_writes": 0.45,
+        "business_value_weight": 1,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "city_state_normalization",
+      "letter": "A0b",
+      "label": "City / State normalization",
+      "score": 0.2261,
+      "components": {
+        "expected_safe_writes": 0.4,
+        "business_value_weight": 0.95,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "amenities_extraction",
+      "letter": "F",
+      "label": "Amenities extraction",
+      "score": 0.2008,
+      "components": {
+        "expected_safe_writes": 0.45,
+        "business_value_weight": 0.75,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "key_field_completion",
+      "letter": "A1",
+      "label": "Key field completion",
+      "score": 0.1978,
+      "components": {
+        "expected_safe_writes": 0.35,
+        "business_value_weight": 0.95,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "radar_public_readiness",
+      "letter": "D",
+      "label": "Radar / public readiness",
+      "score": 0.1978,
+      "components": {
+        "expected_safe_writes": 0.35,
+        "business_value_weight": 0.95,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "address_confirmation",
+      "letter": "B",
+      "label": "Address confirmation",
+      "score": 0.1785,
+      "components": {
+        "expected_safe_writes": 0.3,
+        "business_value_weight": 1,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "property_name_cleanup",
+      "letter": "A2",
+      "label": "Property Name cleanup",
+      "score": 0.1704,
+      "components": {
+        "expected_safe_writes": 0.35,
+        "business_value_weight": 0.9,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1.1,
+        "dependency_penalty": 1
+      },
+      "reasons": [
+        "official-source name cleanup; marketing/tagline detection"
+      ],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "property_type_asset_context",
+      "letter": "G",
+      "label": "Property type / asset context",
+      "score": 0.1666,
+      "components": {
+        "expected_safe_writes": 0.4,
+        "business_value_weight": 0.7,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "rooms_keys",
+      "letter": "H",
+      "label": "Rooms / Keys",
+      "score": 0.1547,
+      "components": {
+        "expected_safe_writes": 0.5,
+        "business_value_weight": 0.65,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1.25,
+        "dependency_penalty": 1
+      },
+      "reasons": [
+        "rooms extractor ready; mixed-use ambiguity elevates risk"
+      ],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "phone_number_enrichment",
+      "letter": "C1",
+      "label": "Phone number enrichment",
+      "score": 0.1264,
+      "components": {
+        "expected_safe_writes": 0.25,
+        "business_value_weight": 0.85,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "coordinate_resolution",
+      "letter": "C2",
+      "label": "Coordinate resolution (legacy soft-defer)",
+      "score": 0.0595,
+      "components": {
+        "expected_safe_writes": 0.2,
+        "business_value_weight": 0.5,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "core_identity_source_lookup",
+      "letter": "A0c",
+      "label": "Core identity source lookup",
+      "score": 0.0547,
+      "components": {
+        "expected_safe_writes": 0.1,
+        "business_value_weight": 0.92,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "clean_core_classification",
+      "letter": "A0d",
+      "label": "Clean Core classification",
+      "score": 0.0541,
+      "components": {
+        "expected_safe_writes": 0.1,
+        "business_value_weight": 0.91,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "source_discovery",
+      "letter": "A",
+      "label": "Source discovery / record matching",
+      "score": 0.0476,
+      "components": {
+        "expected_safe_writes": 0.2,
+        "business_value_weight": 0.4,
+        "extractor_readiness": 0.85,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [],
+      "status": "scheduled",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    },
+    {
+      "queue_id": "steward_webhound_hard_cases",
+      "letter": "I",
+      "label": "Steward / Webhound hard cases",
+      "score": 0.0014,
+      "components": {
+        "expected_safe_writes": 0.05,
+        "business_value_weight": 0.2,
+        "extractor_readiness": 0.2,
+        "source_access_success": 0.7,
+        "runtime_risk": 1,
+        "ambiguity_risk": 1,
+        "dependency_penalty": 1
+      },
+      "reasons": [
+        "learning-only queue; never production writes"
+      ],
+      "status": "learning_only",
+      "blockers": [],
+      "soft_skip_in_apply": false
+    }
+  ],
+  "why": "Targeted queue run (--queue clean_core_classification); fastest-safe order overridden.",
+  "geocode_soft_deferred": [],
+  "targeted_queue": "clean_core_classification"
+}

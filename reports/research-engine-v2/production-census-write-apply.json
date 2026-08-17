@@ -1,0 +1,125 @@
+{
+  "version": "production-census-write-v1",
+  "generated_at": "2026-08-05T08:23:58.232Z",
+  "mode": "apply",
+  "apply_executed": true,
+  "status": "production_census_write_complete_ready_for_review",
+  "token_masked": "patEUo…14eb",
+  "base_id_masked": "appCCU…foLk",
+  "duration_ms": 178785,
+  "batch_size": 10,
+  "records_created_by_table": {
+    "Hotel Property Census": 666,
+    "Hotel Property Brand Affiliations": 666,
+    "Hotel Property Source Evidence": 666,
+    "Hotel Property Steward Review": 4
+  },
+  "records_updated_by_table": {
+    "Hotel Property Census": 0,
+    "Hotel Property Brand Affiliations": 0,
+    "Hotel Property Source Evidence": 0,
+    "Hotel Property Steward Review": 0
+  },
+  "reconciliation": {
+    "census_freeze_rows": 666,
+    "expected_census": 666,
+    "data_eligible": 580,
+    "expected_eligible": 580,
+    "steward_brand_unconfirmed": 4,
+    "expected_held_unconfirmed": 4,
+    "by_affiliation_status": {
+      "Soft-Branded / Collection": 89,
+      "Branded": 569,
+      "Future / Pipeline": 4,
+      "Brand-Unconfirmed": 4
+    },
+    "zero_zero_coordinates": 0,
+    "bad_production_use_status": 0
+  },
+  "airtable_errors": [],
+  "brand_explorer_snapshot_before": {
+    "table": "Brand Setup - Brand Explorer Presentation",
+    "record_count": 10721,
+    "sample_hash": "7b38cd6ededad934b3775e35ff680d44bb8290fa6578421c3a7d3892a7929dd3"
+  },
+  "brand_explorer_snapshot_after": {
+    "record_count": 10721,
+    "sample_hash": "7b38cd6ededad934b3775e35ff680d44bb8290fa6578421c3a7d3892a7929dd3"
+  },
+  "brand_explorer_untouched": true,
+  "frozen_after": {
+    "vic": {
+      "file_count": 29,
+      "aggregate_sha256": "013a62f3f739cef81412467ecee3b56e5440be0e8c81d6b55ae9675705270a1e"
+    },
+    "frozen_62": [
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.json",
+        "exists": true,
+        "size": 189579,
+        "mtime_ms": 1785894190880.195,
+        "sha256": "87e2870b719327167d39564b45039227e37b1d3be518705da290c3469e50f8b7"
+      },
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190884.1685,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "docs/data-intelligence/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190885.1675,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-62-active-public-full-baseline.js",
+        "exists": true,
+        "size": 76327,
+        "mtime_ms": 1785915102595.374,
+        "sha256": "7bc5f0d6cca57b7aad0f141f8b56d3528e6fbb634327ce3945b182360966ac7c"
+      }
+    ]
+  },
+  "frozen_before": {
+    "vic": {
+      "file_count": 29,
+      "aggregate_sha256": "013a62f3f739cef81412467ecee3b56e5440be0e8c81d6b55ae9675705270a1e"
+    },
+    "frozen_62": [
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.json",
+        "exists": true,
+        "size": 189579,
+        "mtime_ms": 1785894190880.195,
+        "sha256": "87e2870b719327167d39564b45039227e37b1d3be518705da290c3469e50f8b7"
+      },
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190884.1685,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "docs/data-intelligence/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190885.1675,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-62-active-public-full-baseline.js",
+        "exists": true,
+        "size": 76327,
+        "mtime_ms": 1785915102595.374,
+        "sha256": "7bc5f0d6cca57b7aad0f141f8b56d3528e6fbb634327ce3945b182360966ac7c"
+      }
+    ]
+  },
+  "production_use_status": "Census Only / Not Owner-Facing",
+  "freeze_hash": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+  "next_recommended_step": "Run production-census write validation + Brand Explorer regression gates; founder review before any BE patch"
+}

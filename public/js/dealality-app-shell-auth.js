@@ -5,10 +5,26 @@
 (function (global) {
   "use strict";
 
-  /** Same script as Webflow / Memberstack DOM package quick start (creates window.$memberstackDom). */
-  var MS_SCRIPT_SRC = "https://static.memberstack.com/scripts/v1/memberstack.js";
+  /** v2 — same script as dealality.com Webflow; URL also served from /api/auth/memberstack-config. */
+  var MS_SCRIPT_DEFAULT = "https://static.memberstack.com/scripts/v2/memberstack.js";
   var bootPromise = null;
   var shellAppId = "";
+  var shellMemberstackScriptUrl = "";
+  var shellMemberstackConfig = null;
+  var lastBootstrappedJwt = "";
+  var cachedBootstrapResult = null;
+  var bootstrapInFlight = null;
+  var loginPollBootstrapInFlight = null;
+  var loginModalInFlight = false;
+  var userNotFoundWarned = false;
+
+  function clearBootstrapCache() {
+    bootPromise = null;
+    bootstrapInFlight = null;
+    cachedBootstrapResult = null;
+    lastBootstrappedJwt = "";
+    userNotFoundWarned = false;
+  }
 
   function apiBase() {
     var b = (global.DEALALITY_API_BASE || global.DEALALITY_API_BASE_URL || "").trim();
@@ -32,6 +48,36 @@
 
   function getEmbedParent() {
     return global.DealalityEmbedParent || null;
+  }
+
+  function jwtMemberstackId(jwt) {
+    if (!jwt || typeof jwt !== "string") return "";
+    try {
+      var parts = jwt.split(".");
+      if (parts.length < 2) return "";
+      var b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+      var pad = b64.length % 4;
+      if (pad) b64 += "====".slice(pad);
+      var payload = JSON.parse(global.atob(b64));
+      return String(payload.sub || payload.memberId || payload.id || "").trim();
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function isSandboxMemberstackId(memberstackId) {
+    return String(memberstackId || "").indexOf("mem_sb_") === 0;
+  }
+
+  function localhostSandboxLoginNote(config, jwt) {
+    if (!config || !jwt) return null;
+    var id = jwtMemberstackId(jwt);
+    if (!isSandboxMemberstackId(id)) return null;
+    return (
+      config.localhostAuthNote ||
+      "Localhost login uses Test Mode (mem_sb_…). /api/me matches by email; set MEMBERSTACK_TEST_SECRET_KEY in .env, " +
+        "or use ?msToken= from dealality.com for live mem_cmq… ids."
+    );
   }
 
   function publishJwt(jwt) {
@@ -74,6 +120,19 @@
     } catch (_) {}
   }
 
+  function isEmptyMemberstackModalResult(result) {
+    if (result == null) return false;
+    if (typeof result !== "object") return false;
+    if (result.data || result.type) return false;
+    return Object.keys(result).length === 0;
+  }
+
+  function setAuthGateMemberstackModalOpen(isOpen) {
+    var gate = global.document.getElementById("dealalityAppShellAuthGate");
+    if (!gate) return;
+    gate.classList.toggle("is-memberstack-modal-open", Boolean(isOpen));
+  }
+
   function openMemberstackLoginModal(ms) {
     var names = ["LOGIN", "login"];
     var lastErr = null;
@@ -99,9 +158,13 @@
     hideAuthGate();
     publishJwt(jwt);
 
-    bootPromise = null;
-    var result = await bootstrap();
-    return Boolean(result && result.ok);
+    if (jwt !== lastBootstrappedJwt) {
+      bootPromise = null;
+      cachedBootstrapResult = null;
+      userNotFoundWarned = false;
+    }
+    var result = await whenReady();
+    return Boolean(result && result.ok && result.authorized !== false);
   }
 
   function watchForMemberstackLoginWhileModalOpen(ms, onSuccess) {
@@ -123,13 +186,17 @@
     }
 
     function tryComplete() {
-      if (stopped) return;
-      completeShellSessionAfterLogin().then(function (ok) {
-        if (ok) {
-          stop();
-          if (typeof onSuccess === "function") onSuccess();
-        }
-      });
+      if (stopped || loginPollBootstrapInFlight) return;
+      loginPollBootstrapInFlight = completeShellSessionAfterLogin()
+        .then(function (ok) {
+          if (ok) {
+            stop();
+            if (typeof onSuccess === "function") onSuccess();
+          }
+        })
+        .finally(function () {
+          loginPollBootstrapInFlight = null;
+        });
     }
 
     if (ms && typeof ms.onAuthChange === "function") {
@@ -185,14 +252,20 @@
           .catch(reject);
       }
 
+      var scriptSrc = (shellMemberstackScriptUrl || MS_SCRIPT_DEFAULT).trim();
       var existing = global.document && global.document.querySelector("script[data-memberstack-app]");
       if (existing) {
-        waitForClient();
-        return;
+        if (existing.src === scriptSrc) {
+          waitForClient();
+          return;
+        }
+        try {
+          existing.parentNode.removeChild(existing);
+        } catch (_) {}
       }
 
       var script = global.document.createElement("script");
-      script.src = MS_SCRIPT_SRC;
+      script.src = scriptSrc;
       script.async = true;
       script.type = "text/javascript";
       script.setAttribute("data-memberstack-app", appId);
@@ -200,7 +273,7 @@
         waitForClient();
       };
       script.onerror = function () {
-        reject(new Error("Memberstack script failed to load from " + MS_SCRIPT_SRC));
+        reject(new Error("Memberstack script failed to load from " + scriptSrc));
       };
       (global.document.head || global.document.documentElement).appendChild(script);
     });
@@ -233,15 +306,20 @@
       '<button type="button" class="app-shell-auth-btn primary" id="dealalityAppShellLoginBtn">Log in</button>' +
       '<button type="button" class="app-shell-auth-btn" id="dealalityAppShellReloadBtn">Reload after login</button>' +
       "</div>" +
-      '<p class="app-shell-auth-gate-hint">Already logged in elsewhere? Append <code>?msToken=</code> with your <code>eyJ…</code> session token to this URL, or log in here once for localhost.</p>' +
+      '<p class="app-shell-auth-gate-hint">Do not add localhost in Memberstack Application Domains — it is blocked in both Live and Test. Local login still works via Test Mode (<code>mem_sb_…</code>); the server matches your Airtable row by email. For live <code>mem_cmq…</code> ids, log in on <strong>dealality.com</strong> and append <code>?msToken=</code> with your <code>eyJ…</code> token.</p>' +
       "</div>";
     container.parentNode.insertBefore(gate, container);
     return gate;
   }
 
   async function openLoginModal(appId) {
+    if (loginModalInFlight) return;
+    loginModalInFlight = true;
+
+    var auth = getAuthModule();
     var loginBtn = global.document.getElementById("dealalityAppShellLoginBtn");
     var stopWatch = null;
+    var loginSucceeded = false;
     if (loginBtn) {
       loginBtn.disabled = true;
       loginBtn.textContent = "Loading Sign-In…";
@@ -261,28 +339,51 @@
         return;
       }
       setGateStatus("", false);
+      setAuthGateMemberstackModalOpen(true);
       stopWatch = watchForMemberstackLoginWhileModalOpen(ms, function () {
+        loginSucceeded = true;
         setGateStatus("", false);
+        setAuthGateMemberstackModalOpen(false);
       });
+      var modalResult = null;
+      var showedModalOpenError = false;
       try {
-        await openMemberstackLoginModal(ms);
+        modalResult = await openMemberstackLoginModal(ms);
       } catch (_) {
-        /* User may close modal manually; polling/onAuthChange still handles success. */
+        /* User closed the modal or login failed — keep polling briefly for late auth events. */
       }
-      closeMemberstackModal();
-      var ok = await completeShellSessionAfterLogin();
-      if (!ok) {
-        setGateStatus("Sign-in finished — click Reload after login if the modal is still visible.", false);
+
+      if (
+        isEmptyMemberstackModalResult(modalResult) &&
+        auth &&
+        typeof auth.getMemberstackJwtWhenReady === "function"
+      ) {
+        var jwtAfterOpen = await auth.getMemberstackJwtWhenReady(1200);
+        if (!jwtAfterOpen) {
+          showedModalOpenError = true;
+          setGateStatus(
+            "Login window did not stay open. Click Log in again, or use ?msToken= from dealality.com on localhost.",
+            true
+          );
+        }
+      }
+
+      if (!loginSucceeded) {
+        loginSucceeded = await completeShellSessionAfterLogin();
+      }
+      if (!loginSucceeded && !showedModalOpenError) {
+        setGateStatus("Sign in was cancelled or could not complete. Click Log in to try again.", false);
       }
     } catch (err) {
       setGateStatus((err && err.message) || "Could not load Memberstack.", true);
     } finally {
       if (typeof stopWatch === "function") stopWatch();
-      closeMemberstackModal();
+      setAuthGateMemberstackModalOpen(false);
       if (loginBtn) {
         loginBtn.disabled = false;
         loginBtn.textContent = "Log in";
       }
+      loginModalInFlight = false;
     }
   }
 
@@ -366,6 +467,36 @@
     return { ok: true, status: res.status, data: data };
   }
 
+  function warnUserNotFoundOnce(meResult) {
+    if (userNotFoundWarned || !meResult || !meResult.data) return;
+    if (meResult.data.error !== "user_not_found") return;
+    userNotFoundWarned = true;
+    var msId = meResult.data.memberstackId || jwtMemberstackId(lastBootstrappedJwt) || "unknown";
+    var sandboxNote = localhostSandboxLoginNote(shellMemberstackConfig, lastBootstrappedJwt);
+    var msg =
+      "Memberstack signed in, but no Airtable Users row matched (member id " +
+      msId +
+      "). " +
+      (sandboxNote
+        ? sandboxNote
+        : "Set Unique Webflow ID / Slug on the Users row, or log in as a linked account.");
+    if (global.console && global.console.warn) {
+      global.console.warn("[DealalityAppShellAuth]", msg);
+    }
+    dispatch("dealality-shell-auth-error", {
+      ok: false,
+      error: "user_not_found",
+      message: msg,
+      memberstackId: msId,
+      me: meResult,
+    });
+    var gate = global.document.getElementById("dealalityAppShellAuthGate");
+    if (gate) {
+      gate.hidden = false;
+      setGateStatus(msg, true);
+    }
+  }
+
   async function bootstrap() {
     global.DEALALITY_API_BASE = apiBase();
     var auth = getAuthModule();
@@ -386,14 +517,24 @@
       });
     } catch (_) {}
 
+    shellMemberstackConfig = config;
+    shellMemberstackScriptUrl = (config.memberstackScript || MS_SCRIPT_DEFAULT).trim();
     var appId = (config.appId || "").trim();
     shellAppId = appId;
     var jwt = await auth.getMemberstackJwtWhenReady(800);
 
+    if (jwt && jwt === lastBootstrappedJwt && cachedBootstrapResult) {
+      return cachedBootstrapResult;
+    }
+
     if (!jwt && appId) {
       try {
         await loadMemberstackDomScript(appId);
-        jwt = await auth.getMemberstackJwtWhenReady(25000);
+        jwt = await auth.getMemberstackJwtWhenReady(1500);
+        if (!jwt) {
+          showAuthGate(appId);
+          jwt = await auth.getMemberstackJwtWhenReady(25000);
+        }
       } catch (loadErr) {
         dispatch("dealality-shell-auth-error", {
           ok: false,
@@ -420,26 +561,45 @@
     publishJwt(jwt);
     hideAuthGate();
 
+    lastBootstrappedJwt = jwt;
     var meResult = await fetchMe(jwt);
     if (meResult && meResult.ok) {
+      userNotFoundWarned = false;
       updateShellUserFromMe(meResult.data);
+    } else {
+      warnUserNotFoundOnce(meResult);
     }
 
-    var result = { ok: true, jwt: jwt, me: meResult };
+    var result = {
+      ok: true,
+      jwt: jwt,
+      me: meResult,
+      authorized: !!(meResult && meResult.ok),
+    };
+    cachedBootstrapResult = result;
     dispatch("dealality-shell-auth-ready", result);
     return result;
   }
 
   function whenReady() {
+    if (bootstrapInFlight) return bootstrapInFlight;
     if (!bootPromise) {
-      bootPromise = bootstrap();
+      bootstrapInFlight = bootstrap()
+        .then(function (result) {
+          bootPromise = Promise.resolve(result);
+          return result;
+        })
+        .finally(function () {
+          bootstrapInFlight = null;
+        });
+      return bootstrapInFlight;
     }
     return bootPromise;
   }
 
   function resetAndBootstrap() {
-    bootPromise = null;
-    return bootstrap();
+    clearBootstrapCache();
+    return whenReady();
   }
 
   function clearMsTokenFromBrowserUrl() {
@@ -482,7 +642,7 @@
     var embed = getEmbedParent();
     if (embed && typeof embed.clearJwt === "function") embed.clearJwt();
 
-    bootPromise = null;
+    clearBootstrapCache();
     clearMsTokenFromBrowserUrl();
     showAuthGate(shellAppId);
     dispatch("dealality-shell-auth-logout", { ok: true });

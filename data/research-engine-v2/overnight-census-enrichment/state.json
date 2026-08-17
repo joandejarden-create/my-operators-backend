@@ -1,0 +1,309 @@
+{
+  "run_id": "overnight_dfd54698",
+  "version": "overnight-census-enrichment-v1",
+  "started_at": "2026-08-16T23:05:46.541Z",
+  "end_at": "2026-08-17T05:05:46.541Z",
+  "mode": "run",
+  "production_writes": true,
+  "config": {
+    "max_runtime_minutes": 360,
+    "max_external_cost_usd": 50,
+    "plateau_zero_cycles": 2,
+    "cycle_pause_ms": 8000,
+    "cutoff_guard_minutes": 12,
+    "max_cycles": 200
+  },
+  "next_profile_index": 0,
+  "consecutive_zero_by_profile": {
+    "brand_focus": 2,
+    "brand_rooms": 0,
+    "rooms_focus": 2,
+    "fundamentals": 0,
+    "opportunistic_coords": 2
+  },
+  "lane_status": {
+    "brand_rooms": "RETRY_LATER",
+    "brand_focus": "PLATEAUED",
+    "rooms_focus": "PLATEAUED",
+    "fundamentals": "RETRY_LATER",
+    "opportunistic_coords": "PLATEAUED"
+  },
+  "aggregates": {
+    "cycles_completed": 12,
+    "properties_researched": 0,
+    "properties_patched": 12,
+    "fields_written": 34,
+    "current_brand_writes": 12,
+    "rooms_writes": 0,
+    "state_patches": 0,
+    "city_patches": 0,
+    "address_patches": 0,
+    "postal_patches": 0,
+    "coordinates_written": 0,
+    "website_patches": 0,
+    "phone_patches": 0,
+    "brand_conflicts": 0,
+    "brand_mapping_gaps": 306,
+    "rooms_candidates_held": 4084,
+    "rooms_conflicts": 0,
+    "external_requests": 0,
+    "estimated_cost_usd": 0,
+    "mapbox_requests": 0,
+    "mapbox_estimated_cost": 0,
+    "errors": 0,
+    "HBX_ROOMS_ARRAY_WRITES": 0,
+    "HBX_COORDINATE_WRITES": 0,
+    "CVENT_ONLY_ROOM_VALIDATIONS": 0,
+    "BENCHMARK_ROOM_WRITES": 0,
+    "DESTRUCTIVE_OVERWRITES": 0,
+    "WRONG_TABLE_WRITES": 0,
+    "sources_exhausted": [],
+    "sources_plateaued": [
+      "brand_focus",
+      "brand_rooms",
+      "rooms_focus",
+      "fundamentals",
+      "opportunistic_coords"
+    ],
+    "sources_blocked": [],
+    "sources_usage_review": [],
+    "yield_by_cycle": [
+      {
+        "profile": "brand_focus",
+        "useful_writes": 12,
+        "brand_writes": 11,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 31,
+        "properties_patched": 11,
+        "zero_yield": false,
+        "at": "2026-08-16T23:08:32.555Z"
+      },
+      {
+        "profile": "brand_focus",
+        "useful_writes": 2,
+        "brand_writes": 1,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 3,
+        "properties_patched": 1,
+        "zero_yield": false,
+        "at": "2026-08-16T23:11:03.505Z"
+      },
+      {
+        "profile": "brand_focus",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-16T23:13:45.691Z"
+      },
+      {
+        "profile": "brand_focus",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-16T23:16:49.692Z"
+      },
+      {
+        "profile": "brand_rooms",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-16T23:26:15.549Z"
+      },
+      {
+        "profile": "brand_rooms",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-16T23:35:27.510Z"
+      },
+      {
+        "profile": "rooms_focus",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-16T23:39:34.677Z"
+      },
+      {
+        "profile": "fundamentals",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-16T23:47:38.197Z"
+      },
+      {
+        "profile": "opportunistic_coords",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-16T23:51:27.626Z"
+      },
+      {
+        "profile": "rooms_focus",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-16T23:55:40.700Z"
+      },
+      {
+        "profile": "fundamentals",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-17T00:03:49.608Z"
+      },
+      {
+        "profile": "opportunistic_coords",
+        "useful_writes": 0,
+        "brand_writes": 0,
+        "rooms_writes": 0,
+        "coord_writes": 0,
+        "fields_written": 0,
+        "properties_patched": 0,
+        "zero_yield": true,
+        "at": "2026-08-17T00:07:51.292Z"
+      }
+    ],
+    "top_yield_sources": [
+      {
+        "company": "Marriott",
+        "current_brand_writes": 3,
+        "attempted": 9,
+        "yield_pct": 0.7
+      },
+      {
+        "company": "Hilton",
+        "current_brand_writes": 0,
+        "attempted": 0,
+        "yield_pct": 0
+      },
+      {
+        "company": "Choice",
+        "current_brand_writes": 0,
+        "attempted": 0,
+        "yield_pct": 0
+      }
+    ],
+    "low_yield_or_blocked": []
+  },
+  "dashboard_before": {
+    "n": 15575,
+    "current_brand": {
+      "populated": 2120,
+      "missing": 13455,
+      "completeness_pct": 14
+    },
+    "brand_family": {
+      "populated": 2146,
+      "missing": 13429,
+      "completeness_pct": 14
+    },
+    "family_source_family": {
+      "populated": 2539,
+      "missing": 13036,
+      "completeness_pct": 16
+    },
+    "continent": {
+      "populated": 15575,
+      "missing": 0,
+      "completeness_pct": 100
+    },
+    "sub_continent": {
+      "populated": 15575,
+      "missing": 0,
+      "completeness_pct": 100
+    },
+    "state_region": {
+      "populated": 13911,
+      "missing": 1664,
+      "completeness_pct": 89
+    },
+    "city": {
+      "populated": 15285,
+      "missing": 290,
+      "completeness_pct": 98
+    },
+    "address": {
+      "populated": 13273,
+      "missing": 2302,
+      "completeness_pct": 85
+    },
+    "postal_code": {
+      "populated": 5934,
+      "missing": 9641,
+      "completeness_pct": 38
+    },
+    "latitude": {
+      "populated": 10417,
+      "missing": 5158,
+      "completeness_pct": 67
+    },
+    "longitude": {
+      "populated": 10417,
+      "missing": 5158,
+      "completeness_pct": 67
+    },
+    "rooms": {
+      "populated": 2647,
+      "missing": 12928,
+      "completeness_pct": 17
+    },
+    "website": {
+      "populated": 11673,
+      "missing": 3902,
+      "completeness_pct": 75
+    },
+    "phone": {
+      "populated": 14009,
+      "missing": 1566,
+      "completeness_pct": 90
+    }
+  },
+  "last_cycle_report": {
+    "profile": "opportunistic_coords",
+    "status": "master_enrichment_wave_complete",
+    "brand_writes": 0,
+    "rooms_writes": 0
+  },
+  "stop_reason": "all_structured_lanes_plateaued",
+  "current_lane": "Opportunistic Coordinates",
+  "current_source": "opportunistic_coords",
+  "finished_at": "2026-08-17T00:07:51.306Z"
+}

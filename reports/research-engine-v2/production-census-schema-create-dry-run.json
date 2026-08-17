@@ -1,0 +1,183 @@
+{
+  "version": "production-census-schema-create-v1",
+  "generated_at": "2026-08-05T08:13:38.768Z",
+  "mode": "dry-run",
+  "execute": false,
+  "zero_record_writes": true,
+  "allow_env_present": true,
+  "token_masked": "patEUo…14eb",
+  "base_id_masked": "appCCU…foLk",
+  "base_resolution": {
+    "target_role": "platform_alt",
+    "mvp_masked": "appvtn…INP6",
+    "platform_masked": "appCCU…foLk",
+    "sandbox_masked": "appRbW…2ch1",
+    "note": "Creates on Platform (AIRTABLE_BASE_ID_ALT) to isolate from MVP Brand Explorer"
+  },
+  "tables_to_create": [],
+  "fields_to_create": [],
+  "linked_table_dependencies": [
+    {
+      "from_table": "Hotel Property Brand Affiliations",
+      "field": "Hotel Property Census",
+      "to_table": "Hotel Property Census",
+      "create_order": "after_census"
+    },
+    {
+      "from_table": "Hotel Property Source Evidence",
+      "field": "Hotel Property Census",
+      "to_table": "Hotel Property Census",
+      "create_order": "after_census"
+    },
+    {
+      "from_table": "Hotel Property Steward Review",
+      "field": "Hotel Property Census",
+      "to_table": "Hotel Property Census",
+      "create_order": "after_census"
+    }
+  ],
+  "unsupported_field_types": [],
+  "conflicts": [],
+  "forbidden_tables_untouched_plan": [
+    "Hotel Census",
+    "Verified Independent Hotel Census",
+    "Independent Hotel Source Candidates",
+    "Independent Hotel Source Evidence",
+    "Brand Setup - Brand Basics",
+    "Brand Setup - Brand Explorer Presentation"
+  ],
+  "preflight": {
+    "pat": {
+      "ok": true
+    },
+    "mvp_base": {
+      "ok": true,
+      "masked": "appvtn…INP6"
+    },
+    "not_sandbox": {
+      "ok": true
+    },
+    "schema_read": {
+      "ok": true,
+      "table_count": 22
+    },
+    "schema_write": {
+      "ok": true,
+      "status": 422,
+      "detail": "schema write endpoint reachable (validation error on empty body expected)"
+    }
+  },
+  "dry_run_pass": true,
+  "status": "production_census_schema_created_ready_for_census_write_approval",
+  "forbidden_table_snapshots": {
+    "Hotel Census": {
+      "exists": true,
+      "id": "tblgj2qEwxjTcg6q0",
+      "field_count": 105,
+      "field_names_hash": "d945dd5d7697c23cebfbeaf18563ea0d1cbb2abcbc7c2e36c6c6c349d8634c8b"
+    },
+    "Verified Independent Hotel Census": {
+      "exists": true,
+      "id": "tbljBvId1z4cEyE1J",
+      "field_count": 18,
+      "field_names_hash": "9ddadfacd32ad92b4425b3041c0897a303efbea803e21f96b9dfbaf3c4e68603"
+    },
+    "Independent Hotel Source Candidates": {
+      "exists": true,
+      "id": "tblKAUKiku7eMlV0d",
+      "field_count": 24,
+      "field_names_hash": "678fa7ab45271fe17988eafa95c62250c745ef937da87a678bb0c05be495e2ca"
+    },
+    "Independent Hotel Source Evidence": {
+      "exists": true,
+      "id": "tbl4FrVompVBs9mTw",
+      "field_count": 10,
+      "field_names_hash": "67c6b83093a1d5388ed8de711c6cb4ec64f71f13484c3017c92a2d16fe5ec94b"
+    },
+    "Brand Setup - Brand Basics": {
+      "exists": false,
+      "note": "absent on target base (ok if MVP-only table)"
+    },
+    "Brand Setup - Brand Explorer Presentation": {
+      "exists": false,
+      "note": "absent on target base (ok if MVP-only table)"
+    }
+  },
+  "mvp_brand_explorer_snapshot": {
+    "Brand Setup - Brand Basics": {
+      "id": "tbl1x6S7I7JwTcRdV",
+      "field_count": 81,
+      "field_names_hash": "464c1b088660172bcf36e2e7c9dd9b56917b1640a9d1c3f95922365b64004d90"
+    },
+    "Brand Setup - Brand Explorer Presentation": {
+      "id": "tblZyZF4JsRkNeCbU",
+      "field_count": 28,
+      "field_names_hash": "ac5446795cd2bde97a93004d37f26301a372c5579a6d3bf9620e065fac1bf390"
+    }
+  },
+  "frozen_artifacts_before": {
+    "vic": {
+      "file_count": 29,
+      "aggregate_sha256": "013a62f3f739cef81412467ecee3b56e5440be0e8c81d6b55ae9675705270a1e"
+    },
+    "expected_vic_freeze": "c1cb244a95d7311b4ab2cf31d4988685879ef492f4f6420710633267d0effda3",
+    "frozen_62": [
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.json",
+        "exists": true,
+        "size": 189579,
+        "mtime_ms": 1785894190880.195,
+        "sha256": "87e2870b719327167d39564b45039227e37b1d3be518705da290c3469e50f8b7"
+      },
+      {
+        "path": "reports/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190884.1685,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "docs/data-intelligence/brand-explorer-62-active-public-full-baseline.md",
+        "exists": true,
+        "size": 29101,
+        "mtime_ms": 1785894190885.1675,
+        "sha256": "cb05db4571e291b8ea332f82d081d6265290396538536cd8c4ae0f7765a2e56f"
+      },
+      {
+        "path": "lib/partner-intelligence/brand-explorer-62-active-public-full-baseline.js",
+        "exists": true,
+        "size": 76327,
+        "mtime_ms": 1785915102595.374,
+        "sha256": "7bc5f0d6cca57b7aad0f141f8b56d3528e6fbb634327ce3945b182360966ac7c"
+      }
+    ]
+  },
+  "tables_already_present": [
+    {
+      "name": "Hotel Property Census",
+      "id": "tbl9aY5ijiuIzzWam",
+      "field_count": 33,
+      "missing_required_fields": []
+    },
+    {
+      "name": "Hotel Property Brand Affiliations",
+      "id": "tbll7n0xgmYywyrTd",
+      "field_count": 15,
+      "missing_required_fields": []
+    },
+    {
+      "name": "Hotel Property Source Evidence",
+      "id": "tblfhosu44nMbvSbS",
+      "field_count": 10,
+      "missing_required_fields": []
+    },
+    {
+      "name": "Hotel Property Steward Review",
+      "id": "tbluxLjGTuKGRO2iM",
+      "field_count": 15,
+      "missing_required_fields": []
+    }
+  ],
+  "schema_already_created": true,
+  "next_step": "Schema already present — run validate + production-census-and-be-patch-plan; no further schema create"
+}

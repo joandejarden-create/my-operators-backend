@@ -726,8 +726,8 @@
     var meta = [];
     if (brand.parentCompany) meta.push(['Parent', brand.parentCompany]);
     if (brand.hotelChainScale) meta.push(['Chain Scale', brand.hotelChainScale]);
-    if (brand.hotelServiceModel) meta.push(['Service Model', brand.hotelServiceModel]);
-    if (brand.brandModelFormat) meta.push(['Brand Model', brand.brandModelFormat]);
+    if (brand.hotelServiceModel) meta.push(['Service / Operating Model', brand.hotelServiceModel]);
+    if (brand.brandModelFormat) meta.push(['Affiliation Model', brand.brandModelFormat]);
     if (brand.yearBrandLaunched) meta.push(['Launched', brand.yearBrandLaunched]);
     if (brand.brandWebsite) meta.push(['Website', brand.brandWebsite]);
 
@@ -880,19 +880,14 @@
   function presentationIsDemoBrand(brand) {
     if (!brand) return false;
     var id = String(brand.id || '').toLowerCase();
+    // Mock cards (e.g. voco-ihg-mock) — live "Voco Hotels" uses Atelier API, not demo banner.
     if (id.indexOf('mock') !== -1) return true;
     var n = String(brand.name || '').toLowerCase().trim();
-    return (
-      n === 'atelier north' ||
-      n === 'velvet crown' ||
-      n === 'summit house' ||
-      n === 'voco' ||
-      n.indexOf('voco ') === 0
-    );
+    return n === 'atelier north' || n === 'velvet crown' || n === 'summit house';
   }
 
   var PRESENTATION_EXPORT_PDF_CAVEAT =
-    'Working sample for discussion only. Brand positioning and development fit information are illustrative and subject to validation. Economic information is initially informed by publicly available FDD materials where applicable and should not be treated as legal, financial, or franchise advice.';
+    'Working sample for discussion only. Brand positioning and development fit information are illustrative and subject to validation. Economic information is informed by publicly available brand materials where applicable and should not be treated as legal, financial, or franchise advice.';
 
   /** Shown only on Brand Explorer PDF export (?exportPdf=1), not in-app combined view. */
   function presentationExportPdfCaveatHtml() {
@@ -992,18 +987,36 @@
 
     var updatedMeta = isDemo
       ? '<span class="meta-muted">Last updated March 2026</span>'
-      : '<span class="meta-muted">' +
-        escapeHtml(
-          hasVal(brand.explorerHeroDataSource) && String(brand.explorerHeroDataSource).trim()
-            ? String(brand.explorerHeroDataSource).trim()
-            : 'Live Airtable / Brand Setup data'
-        ) +
-        '</span>';
+      : '';
 
-    var verificationText =
-      hasVal(brand.explorerHeroVerification) && String(brand.explorerHeroVerification).trim()
-        ? String(brand.explorerHeroVerification).trim()
-        : 'Verified by brand';
+    // Brand Explorer global requirement: always render AI-Assisted Profile footnote.
+    // Prefer API enrichment (brand.governance.brandExplorerFootnote); synthesize if missing.
+    var governanceForChip = brand.governance || null;
+    if (!isDemo && (!governanceForChip || !String(governanceForChip.displayLabel || '').trim())) {
+      governanceForChip = Object.assign({}, governanceForChip || {}, {
+        displayLabel: 'AI-Assisted Profile',
+        displaySubtitle:
+          'Last Reviewed: Jul 28, 2026 · Source Basis: Company Materials + Public Sources · Region: Not region-specific',
+      });
+    }
+
+    var governanceTrustHtml =
+      typeof window !== 'undefined' &&
+      window.ProfileGovernanceTrustChip &&
+      window.ProfileGovernanceTrustChip.governanceTrustChipHtml
+        ? window.ProfileGovernanceTrustChip.governanceTrustChipHtml(governanceForChip, {
+            badgeClass: 'badge-verified',
+            subtitleClass: 'meta-muted dc-governance-trust-subtitle',
+          })
+        : '';
+
+    var verifiedLineBlock = '';
+    if (governanceTrustHtml) {
+      verifiedLineBlock =
+        '<div class="brand-hero__verified-line">' + governanceTrustHtml + '</div>';
+    } else if (isDemo && updatedMeta) {
+      verifiedLineBlock = '<div class="brand-hero__verified-line">' + updatedMeta + '</div>';
+    }
 
     return (
       '<section class="brand-hero be-combined-presentation-hero" id="' +
@@ -1025,12 +1038,7 @@
       (brand.parentCompany
         ? '<p class="brand-hero__parent">' + escapeHtml(brand.parentCompany) + '</p>'
         : '<p class="brand-hero__parent meta-muted">Parent company not set</p>') +
-      '<div class="brand-hero__verified-line">' +
-      '<span class="badge-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>' +
-      escapeHtml(verificationText) +
-      '</span>' +
-      updatedMeta +
-      '</div>' +
+      verifiedLineBlock +
       '</div>' +
       '<div class="brand-hero__actions">' +
       '<div class="btn-row">' +
@@ -1099,6 +1107,14 @@
 
   function renderFootprint(brand) {
     var fp = brand.footprint || {};
+    var fpSourceNote = '';
+    var showFpMetrics = true;
+    if (typeof BrandExplorerCensusMetrics !== 'undefined' && BrandExplorerCensusMetrics.footprintDisplayModel) {
+      var disp = BrandExplorerCensusMetrics.footprintDisplayModel(brand);
+      showFpMetrics = disp.showVerifiedMetrics !== false;
+      fp = disp.fp || fp;
+      if (disp.sourceNote) fpSourceNote = disp.sourceNote;
+    }
     var parts = [];
     var warn = brand.loadWarnings;
     if (warn && warn.length) {
@@ -1144,10 +1160,22 @@
       ['Total', existingHotels, existingRooms, pipelineHotels, pipelineRooms]
     ]);
 
-    var metricsInner =
-      subsectionHtml('Existing vs. Pipeline (Portfolio)', totalTable) +
-      subsectionHtml('Portfolio Distribution', portfolioDistributionHtml(brand, fp));
-    parts.push(section('Footprint Metrics', '<div class="be-panel">' + metricsInner + '</div>'));
+    if (showFpMetrics) {
+      var metricsInner =
+        subsectionHtml('Existing vs. Pipeline (Portfolio)', totalTable) +
+        subsectionHtml('Portfolio Distribution', portfolioDistributionHtml(brand, fp)) +
+        (fpSourceNote
+          ? '<p class="be-note brand-fp-source-note">' + escapeHtml(fpSourceNote) + '</p>'
+          : '');
+      parts.push(section('Footprint Metrics', '<div class="be-panel">' + metricsInner + '</div>'));
+    } else {
+      parts.push(
+        section(
+          'Footprint Metrics',
+          '<p class="be-note">Portfolio data being verified.</p>'
+        )
+      );
+    }
 
     var loc = fp.locationDistribution;
     if (loc && typeof loc === 'object' && Object.keys(loc).length) {
@@ -1475,10 +1503,14 @@
       if (loading) loading.style.display = 'flex';
       if (root) root.style.display = 'none';
 
-      var url = '/api/brand-library/brand?brandId=' + encodeURIComponent(id);
-      var res = await fetch(url);
-      if (!res.ok) throw new Error('Failed to load brand (' + res.status + ')');
-      var data = await res.json();
+      var fetchBrand =
+        window.BrandExplorerBrandFetch && window.BrandExplorerBrandFetch.fetchBrandDetail;
+      var data = fetchBrand
+        ? await fetchBrand(id)
+        : await fetch('/api/brand-library/brand?brandId=' + encodeURIComponent(id)).then(function (res) {
+            if (!res.ok) throw new Error('Failed to load brand (' + res.status + ')');
+            return res.json();
+          });
       if (!data.success || !data.brand) throw new Error(data.error || 'No brand payload');
 
       var brand = data.brand;

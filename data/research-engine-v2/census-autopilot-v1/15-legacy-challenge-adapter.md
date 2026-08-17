@@ -1,0 +1,52 @@
+# Legacy Challenge Adapter (Quarantined)
+
+## Role
+
+Legacy STR / client-derived Census = **coverage challenge only**.
+
+## Workflow
+
+`LEGACY-ONLY CANDIDATE` → `INDEPENDENT DISCOVERY CHALLENGE` → Lane A/B rediscovery → never direct insert.
+
+Flags: `legacy_used_as_source = false`.
+
+## Mexico overlap summary (prior VIC work)
+
+```json
+{
+  "version": "census-autopilot-v1-legacy-challenge-adapter-summary",
+  "role": "COVERAGE CHALLENGE SOURCE ONLY",
+  "families": [
+    {
+      "family": "IHG",
+      "legacy_only_count": 63,
+      "independent_only": 29,
+      "exact_matches": 151,
+      "challenge_policy": "LEGACY-ONLY → INDEPENDENT DISCOVERY CHALLENGE; never direct insert",
+      "legacy_used_as_source": false,
+      "cvent_used_as_source": false
+    },
+    {
+      "family": "Hilton",
+      "legacy_only_count": 24,
+      "independent_only": 100,
+      "exact_matches": 0,
+      "challenge_policy": "LEGACY-ONLY → INDEPENDENT DISCOVERY CHALLENGE; never direct insert",
+      "legacy_used_as_source": false,
+      "cvent_used_as_source": false
+    },
+    {
+      "family": "Choice",
+      "legacy_only_count": 13,
+      "independent_only": 28,
+      "exact_matches": 29,
+      "challenge_policy": "LEGACY-ONLY → INDEPENDENT DISCOVERY CHALLENGE; never direct insert",
+      "legacy_used_as_source": false,
+      "cvent_used_as_source": false
+    }
+  ],
+  "total_legacy_only": 100
+}
+```
+
+Reuses patterns from `clean-census/legacy-challenges.js`.

@@ -1,0 +1,223 @@
+{
+  "generatedAt": "2026-07-10T13:43:47.962Z",
+  "mode": "dry-run",
+  "orchestratorVersion": "2",
+  "brand": {
+    "slug": "kimpton",
+    "recordId": "recCKuXCmGvxHPfb3",
+    "name": "Kimpton Hotels",
+    "resolution": {
+      "inputTarget": "kimpton",
+      "resolvedBrandName": "Kimpton Hotels",
+      "resolvedRecordId": "recCKuXCmGvxHPfb3",
+      "resolvedSlug": "kimpton",
+      "resolutionSource": "active_registry",
+      "parentCompany": "InterContinental Hotels Group",
+      "parentFamily": null,
+      "wave": null,
+      "ambiguous": false,
+      "error": null,
+      "suggestedMatches": []
+    }
+  },
+  "resolution": {
+    "inputTarget": "kimpton",
+    "resolvedBrandName": "Kimpton Hotels",
+    "resolvedRecordId": "recCKuXCmGvxHPfb3",
+    "resolvedSlug": "kimpton",
+    "resolutionSource": "active_registry",
+    "parentCompany": "InterContinental Hotels Group",
+    "parentFamily": null,
+    "wave": null,
+    "ambiguous": false,
+    "error": null,
+    "suggestedMatches": []
+  },
+  "targetQuality": "active-profile",
+  "halted": false,
+  "haltReason": "",
+  "completedBatches": [],
+  "stageResults": [
+    {
+      "stage": "profile_inspection",
+      "status": "complete",
+      "summary": {
+        "brandName": "Kimpton Hotels",
+        "recordId": "recCKuXCmGvxHPfb3",
+        "companyValidated": null,
+        "companyValidationDate": null
+      }
+    },
+    {
+      "stage": "source_inventory",
+      "status": "complete",
+      "summary": {
+        "sourceCount": 4,
+        "approvedForExplorer": 4
+      }
+    },
+    {
+      "stage": "fact_inventory",
+      "status": "complete",
+      "summary": {
+        "factCount": 48,
+        "approved": 7,
+        "pending": 0
+      }
+    },
+    {
+      "stage": "brand_residences_legacy_migration",
+      "status": "complete",
+      "summary": {
+        "alreadySynced": 1,
+        "migrateFromLegacy": 0,
+        "conflicts": 0,
+        "noDataDefault": 0,
+        "sourceBackedPreserved": 0,
+        "wouldUpdate": 0
+      },
+      "command": "npm run brand-residences-legacy-migration-writer -- --brand kimpton --dry-run",
+      "futureSetupWritesToBrandBasicsOnly": true
+    },
+    {
+      "stage": "required_section_contract",
+      "status": "complete",
+      "summary": {
+        "readinessScore": 100,
+        "ready": true,
+        "sectionsReady": 8,
+        "sectionsTotal": 8,
+        "nextWriters": []
+      },
+      "command": "npm run brand-explorer-required-section-population-contract -- --brand kimpton --dry-run"
+    },
+    {
+      "stage": "visual_defect_audit",
+      "status": "complete",
+      "summary": {
+        "defects": {
+          "total": 0,
+          "critical": 0,
+          "high": 0,
+          "medium": 0,
+          "low": 0,
+          "missingImage": 0,
+          "emptyBullet": 0,
+          "titleOnlyOrThin": 0,
+          "placeholderGeneric": 0,
+          "sortOrder": 0
+        },
+        "comparableToCurio": true,
+        "nextBatch": "none_active_profile_ready"
+      },
+      "command": "npm run brand-explorer-visual-display-defect-audit -- --brand kimpton --dry-run"
+    },
+    {
+      "stage": "brand-explorer-required-section-source-capture-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-required-section-source-capture-package -- --brand recCKuXCmGvxHPfb3 --dry-run"
+    },
+    {
+      "stage": "brand-explorer-evidence-fact-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-evidence-fact-review-package -- --brand recCKuXCmGvxHPfb3 --dry-run"
+    },
+    {
+      "stage": "brand-explorer-openings-momentum-row-review-package",
+      "status": "complete",
+      "exitCode": 0,
+      "command": "npm run brand-explorer-openings-momentum-row-review-package -- --brand recCKuXCmGvxHPfb3 --dry-run"
+    },
+    {
+      "stage": "final_qa_auditor",
+      "status": "complete",
+      "summary": {
+        "requiredSectionReadinessScore": 100,
+        "presentationQualityScore": 98,
+        "brandCarryoverRiskScore": 100,
+        "sourceGovernanceScore": 100,
+        "visualCompletenessScore": 100,
+        "overallNumeric": 100,
+        "overallActiveProfileReadiness": "ready"
+      },
+      "command": "npm run brand-explorer-final-qa-auditor -- --brand kimpton --dry-run"
+    }
+  ],
+  "blockers": [],
+  "tributeExpectedRemaining": [],
+  "stagedApplyCommands": [],
+  "nextRequiredWriter": "none_active_profile_ready",
+  "finalQaScores": {
+    "requiredSectionReadinessScore": 100,
+    "presentationQualityScore": 98,
+    "brandCarryoverRiskScore": 100,
+    "sourceGovernanceScore": 100,
+    "visualCompletenessScore": 100,
+    "overallNumeric": 100,
+    "overallActiveProfileReadiness": "ready"
+  },
+  "contractReadinessScore": 100,
+  "requiredSectionStatus": {
+    "score": 100,
+    "ready": true,
+    "sectionsReady": 8,
+    "sectionsTotal": 8
+  },
+  "visualQaStatus": {
+    "score": 100,
+    "comparableToReference": true,
+    "defectCounts": {
+      "total": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0,
+      "missingImage": 0,
+      "emptyBullet": 0,
+      "titleOnlyOrThin": 0,
+      "placeholderGeneric": 0,
+      "sortOrder": 0
+    },
+    "recommendedNextBatch": "none_active_profile_ready"
+  },
+  "governanceStatus": {
+    "governedPlatformReady": true,
+    "sourceCount": 4,
+    "approvedExplorerSources": 4,
+    "explorerFactCount": 48,
+    "pendingFacts": 0,
+    "sourceEvidenceNeeded": true,
+    "factApprovalNeeded": false,
+    "founderReviewNeeded": false
+  },
+  "governedPlatformReady": true,
+  "readyForActiveProfile": true,
+  "readinessBand": "ready",
+  "companyValidatedUntouched": true,
+  "companyValidatedSnapshot": null,
+  "companyValidationDateSnapshot": null,
+  "exactDryRunCommand": "npm run brand-explorer-complete-build -- --brand kimpton --dry-run --target-quality active-profile",
+  "exactApplyCommand": "npm run brand-explorer-complete-build -- --brand kimpton --apply-approved --approve-brand-explorer-complete-build --target-quality active-profile",
+  "reportBasename": "brand-explorer-complete-build-kimpton",
+  "applySafety": {
+    "safeForApplyApproved": false,
+    "applyBlockReasons": [],
+    "applySkippedReasons": [
+      "No gated apply commands or brand not active-profile ready"
+    ],
+    "applyCommandsEligible": [],
+    "governanceSnapshot": {
+      "companyValidated": null,
+      "governedPlatformReady": true,
+      "sourceEvidenceNeeded": true,
+      "factApprovalNeeded": false,
+      "pendingFacts": 0,
+      "internalFacts": 0,
+      "fddFacts": 0
+    }
+  },
+  "applyExecutionLog": [],
+  "airtableModified": false
+}

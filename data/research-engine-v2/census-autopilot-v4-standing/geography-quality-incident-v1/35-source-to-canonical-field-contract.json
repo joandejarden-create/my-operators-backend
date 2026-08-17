@@ -1,0 +1,187 @@
+{
+  "version": "source-to-canonical-field-contract-v1",
+  "fields": [
+    {
+      "canonical": "Current Brand",
+      "accepted": [
+        "official property brandName",
+        "official property-level affiliation",
+        "verified current affiliation claim",
+        "Choice URL brand slug when in canonical map"
+      ],
+      "prohibited": [
+        "family",
+        "parent company",
+        "adapter name",
+        "source platform",
+        "Brand Explorer assumption"
+      ],
+      "normalization": "alias→canonical hotel brand via registry",
+      "derivation": false,
+      "required_confidence": "High",
+      "rights": "official_directory or official_property_page",
+      "write_class": "CORROBORATED_WRITE only when CURRENT_AFFILIATION_CONFIRMED"
+    },
+    {
+      "canonical": "Brand Family / Parent Company",
+      "accepted": [
+        "parent company mapping",
+        "official parent inventory family"
+      ],
+      "prohibited": [
+        "hotel-level brand as parent unless registry same"
+      ],
+      "normalization": "parent company aliases",
+      "derivation": true,
+      "required_confidence": "High",
+      "rights": "official",
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "canonical": "City",
+      "accepted": [
+        "official locality",
+        "parsed official address locality",
+        "validated known place token"
+      ],
+      "prohibited": [
+        "hotel name marketing subtitle",
+        "SEO title",
+        "Adults Only",
+        "country name",
+        "market label"
+      ],
+      "normalization": "CALA canonical spelling",
+      "derivation": false,
+      "required_confidence": "High",
+      "rights": "official",
+      "write_class": "CORROBORATED_WRITE + semantic VALID"
+    },
+    {
+      "canonical": "Address",
+      "accepted": [
+        "official property address",
+        "official directory structured address"
+      ],
+      "prohibited": [
+        "location marketing label alone",
+        "Cvent",
+        "legacy"
+      ],
+      "normalization": "address normalizer",
+      "derivation": false,
+      "required_confidence": "High",
+      "rights": "official_property_page or official_directory",
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "canonical": "State / Region",
+      "accepted": [
+        "official admin region",
+        "deterministic city→admin",
+        "coords bbox"
+      ],
+      "prohibited": [
+        "city copied as state",
+        "country as state"
+      ],
+      "normalization": "admin level map",
+      "derivation": true,
+      "required_confidence": "High/Medium per resolver",
+      "rights": "dealality_geography",
+      "write_class": "DERIVED_WRITE when eligible"
+    },
+    {
+      "canonical": "Market",
+      "accepted": [
+        "Dealality market resolver"
+      ],
+      "prohibited": [
+        "city as market",
+        "STR market"
+      ],
+      "normalization": "Dealality markets",
+      "derivation": true,
+      "required_confidence": "High",
+      "rights": "dealality_geography",
+      "write_class": "DERIVED_WRITE"
+    },
+    {
+      "canonical": "Submarket",
+      "accepted": [
+        "Dealality corridor match",
+        "NOT_APPLICABLE"
+      ],
+      "prohibited": [
+        "city dump",
+        "blank unexplained"
+      ],
+      "normalization": "corridor labels",
+      "derivation": true,
+      "required_confidence": "High/Medium",
+      "rights": "dealality_geography",
+      "write_class": "DERIVED_WRITE; status MATCHED|NOT_APPLICABLE|UNRESOLVED required"
+    },
+    {
+      "canonical": "Latitude/Longitude",
+      "accepted": [
+        "official coords",
+        "eligible SerpApi per rights"
+      ],
+      "prohibited": [
+        "city centroid invention",
+        "Cvent"
+      ],
+      "normalization": "number",
+      "derivation": false,
+      "required_confidence": "High",
+      "rights": "claim-level",
+      "write_class": "CORROBORATED_WRITE"
+    },
+    {
+      "canonical": "Phone",
+      "accepted": [
+        "property-direct"
+      ],
+      "prohibited": [
+        "central reservations only when schema requires property-direct"
+      ],
+      "normalization": "E.164 where possible",
+      "derivation": false,
+      "required_confidence": "High",
+      "rights": "official",
+      "write_class": "CONDITIONAL"
+    },
+    {
+      "canonical": "Rooms / Keys",
+      "accepted": [
+        "official hotel room inventory"
+      ],
+      "prohibited": [
+        "bedrooms",
+        "meeting rooms",
+        "inferred"
+      ],
+      "normalization": "integer",
+      "derivation": false,
+      "required_confidence": "High",
+      "rights": "first_party / official",
+      "write_class": "STEWARD or High official only"
+    },
+    {
+      "canonical": "Opening Date",
+      "accepted": [
+        "opening date claims"
+      ],
+      "prohibited": [
+        "built year",
+        "renovation year unless policy equates"
+      ],
+      "normalization": "ISO date",
+      "derivation": false,
+      "required_confidence": "High",
+      "rights": "official",
+      "write_class": "STEWARD unless blank+High"
+    }
+  ]
+}

@@ -39,40 +39,66 @@
                 return '';
             }
 
+            function isYesField(fields, key) {
+                return /^yes$/i.test(String(fields[key] == null ? '' : fields[key]).trim());
+            }
+            function isMixedUseSectionVisible(fields) {
+                var V2 = global.DealBriefV2;
+                return V2 ? V2.isMixedUseBriefSection(fields) : (/mixed.?use/i.test(String(fields['Project Type'] || '')) || isYesField(fields, 'Condo Residences?'));
+            }
+            function formatPercentDisplay(val) {
+                if (val == null || val === '') return '';
+                var s = String(val).trim();
+                if (!s) return '';
+                if (/%/.test(s)) return s;
+                var n = Number(s);
+                if (!Number.isNaN(n) && n > 0 && n <= 1) return Math.round(n * 100) + '%';
+                if (!Number.isNaN(n)) return n + '%';
+                return s;
+            }
+
             /* Detail columns: 1 = Executive Summary + Project Info + Property, 2 = Market + Deal, 3 = Strategic */
             var detailSections = [
                 /* Project Information: omit Full Address & Submarket (in Opportunity card) */
                 { title: 'Project Information', col: 1, rows: [
-                    ['Currently branded?', ['Is the hotel currently branded?']],
-                    ['Current brand/operator', ['Parent Company Name', 'Current Brand Affiliation', 'Operator Name Current']],
+                    ['Currently Branded?', ['Is the hotel currently branded?']],
+                    ['Current Brand/Operator', ['Parent Company Name', 'Current Brand Affiliation', 'Operator Name Current']],
                     ['Chain Scale', ['Hotel Chain Scale']],
                     ['Hotel Type', ['Hotel Type', 'Property Type']],
-                    ['Service Model', ['Hotel Service Model']]
+                    ['Service / Operating Model', ['Hotel Service Model']]
                 ]},
                 { title: 'Property Details', col: 1, rows: [
-                    ['Hotel Chain Scale', ['Hotel Chain Scale', 'Chain Scale', 'Preferred Chain Scales']],
+                    ['Chain Scale', ['Hotel Chain Scale', 'Chain Scale', 'Preferred Chain Scales']],
                     ['Property Type', ['Property Type', 'Hotel Type', 'Asset Type']],
-                    ['Hotel Service Model', ['Hotel Service Model', 'Service Model']],
-                    ['Room breakdown', ['Number of Standard Rooms', 'Number of Suites']],
+                    ['Service / Operating Model', ['Hotel Service Model', 'Service Model']],
+                    ['Room Breakdown', ['Number of Standard Rooms', 'Number of Suites']],
                     ['Building Type', ['Building Type']],
                     ['Stories', ['Number of Stories']],
                     ['Meeting Space', ['Meeting Space', 'Meeting Space Unit']],
                     ['F&B Outlets?', ['F&B Outlets?']],
                     ['F&B Concept', ['Outlet Names / Concepts']],
+                    ['F&B Operating Model', ['F&B Operating Model']],
                     ['Parking', ['Parking Amenities?']],
                     ['Additional Amenities', ['Additional Amenities']]
                 ]},
+                { title: 'Mixed-Use & Residences', col: 1, showWhen: isMixedUseSectionVisible, rows: [
+                    ['Condo Residences?', ['Condo Residences?']],
+                    ['Hotel Rental Program?', ['Hotel Rental Program?']],
+                    ['Condo / Residence Units', ['Number of Condo / Residence Units']],
+                    ['Branded Residence Model', ['Branded Residence Program Model']],
+                    ['Condo Rental Program', ['Condo Rental Program Model']],
+                    ['Development Proforma Available?', ['Development Proforma Available?']]
+                ]},
                 { title: 'Market & Ownership', col: 2, rows: [
                     ['Demand Drivers', ['Primary Demand Drivers']],
+                    ['Estimated RevPAR', ['Estimated or Actual RevPAR']],
                     ['Key Competitors', ['Key Competitors']],
-                    ['Regulatory Issues?', ['Regulatory or Permitting Issues?']],
-                    ['Preferred Brands', ['Preferred Brands (up to 4)']],
-                    ['Preferred Chain Scales', ['Preferred Chain Scales']]
+                    ['Regulatory / Permitting Issues?', ['Regulatory or Permitting Issues?']]
                 ]},
                 { title: 'Deal & Capital Structure', col: 2, rows: [
                     ['Ownership Structure', ['Ownership Structure']],
                     ['Preferred Deal Structure', ['Preferred Deal Structure']],
-                    ['PIP/CapEx Status', ['PIP / CapEx Status']],
+                    ['PIP / CapEx Status', ['PIP / CapEx Status']],
                     ['Lease Type', ['Lease Type']],
                     ['Initial Lease Term', ['Initial Lease Term (years)']],
                     ['Lease Start Date', ['Lease Start Date (or Availability)']],
@@ -87,28 +113,28 @@
                     ['Lease Structure Notes', ['Lease Structure Notes']],
                     ['Total Project Cost Range', ['Total Project Cost Range']],
                     ['Equity vs Debt Split', ['Equity vs Debt Split']],
-                    ['PIP Budget (if conversion)', ['PIP Budget Range (if conversion)']],
-                    ['IRR/Yield Goals', ['IRR/Yield Goals']],
+                    ['PIP Budget (If Conversion)', ['PIP Budget Range (if conversion)']],
+                    ['IRR / Yield Goals', ['IRR/Yield Goals']],
                     ['Soft vs Hard Brand', ['Soft vs Hard Brand Preference']],
-                    ['Plan to Self-Manage or Third Party?', ['Plan to Self-Manage or Hire Third Party?']]
+                    ['Self-Manage or Third Party?', ['Plan to Self-Manage or Hire Third Party?']]
                 ]},
                 { title: 'Brand / Operator Review Path', col: 3, rows: [
-                    ['Who receives bids', ['Who should receive bids for this project?']],
-                    ['Preferred brands', ['Preferred Brands (up to 4)']],
-                    ['Preferred chain scales', ['Preferred Chain Scales']],
-                    ['Franchise vs management', ['Franchise vs Management Preference']]
+                    ['Who Receives Bids', ['Who should receive bids for this project?']],
+                    ['Preferred Brands', ['Preferred Brands (up to 4)']],
+                    ['Preferred Chain Scales', ['Preferred Chain Scales']],
+                    ['Franchise vs. Management', ['Franchise vs Management Preference', 'Preferred Deal Structure']]
                 ]},
                 { title: 'Strategic Priorities', col: 3, rows: [
                     ['Top Success Metrics', ['Top 3 Success Metrics']],
                     ['Top Priorities', ['Top Priorities for Project']],
                     ['Top Concerns', ['Top Concerns for this Project']],
-                    ['Deal breakers', ['Top 3 Deal Breakers']],
-                    ['Must-haves from brand/operator', ['Must-haves From Brand or Operator']],
-                    ['Must-haves (other)', ['Must-haves From Brand or Operator Other']],
+                    ['Deal Breakers', ['Top 3 Deal Breakers']],
+                    ['Must-Haves From Brand/Operator', ['Must-haves From Brand or Operator']],
+                    ['Must-Haves (Other)', ['Must-haves From Brand or Operator Other']],
                     ['Planned Hold Period', ['Planned Hold Period']],
                     ['Primary Goal for the Hotel', ['Primary Goal for the Hotel']],
-                    ['Brand Flexibility vs Prestige', ['Brand Flexibility vs Prestige']],
-                    ['Target opening', ['Expected Opening or Rebranding Date', 'Target Opening Date']],
+                    ['Brand Flexibility vs. Prestige', ['Brand Flexibility vs Prestige']],
+                    ['Target Opening', ['Expected Opening or Rebranding Date', 'Target Opening Date']],
                     ['Decision Timeline', ['Decision Timeline for Brand/Operator']],
                     ['Proposal Deadline', ['Proposal Deadline']]
                 ]},
@@ -130,6 +156,7 @@
                 ctx = ctx || {};
                 var V2 = global.DealBriefV2;
                 var ownerDraft = isOwnerDraftMode(ctx);
+                if (typeof section.showWhen === 'function' && !section.showWhen(fields, ctx)) return '';
                 var visible = [];
                 section.rows.forEach(function(r) {
                     var label = r[0], keys = r[1];
@@ -137,25 +164,26 @@
                     if (V2 && !V2.isFieldShownInBrief(airtableKey, fields, ctx.readiness)) return;
                     var val = getField(fields, keys);
                     if (val === 'Franchise + Third-Party Management') val = 'Franchise + 3rd Party Mgmt.';
-                    if (label === 'Current brand/operator') {
-                        var parent = (fields['Parent Company Name'] != null && fields['Parent Company Name'] !== '') ? String(fields['Parent Company Name']).trim() : '';
-                        var brand = (fields['Current Brand Affiliation'] != null && fields['Current Brand Affiliation'] !== '') ? String(fields['Current Brand Affiliation']).trim() : '';
-                        var op = (fields['Operator Name Current'] != null && fields['Operator Name Current'] !== '') ? String(fields['Operator Name Current']).trim() : '';
-                        val = [parent && ('Parent: ' + parent), brand && ('Brand: ' + brand), op && ('Operator: ' + op)].filter(Boolean).join(' · ') || '';
+                    if (label === 'Current Brand/Operator') {
+                        val = (V2 && typeof V2.formatCurrentBrandOperator === 'function')
+                            ? V2.formatCurrentBrandOperator(fields)
+                            : '';
                     }
-                    if (label === 'Room breakdown') {
+                    if (label === 'Room Breakdown') {
                         var std = (fields['Number of Standard Rooms'] != null && fields['Number of Standard Rooms'] !== '') ? String(fields['Number of Standard Rooms']) : '';
                         var suite = (fields['Number of Suites'] != null && fields['Number of Suites'] !== '') ? String(fields['Number of Suites']) : '';
                         val = [std && (std + ' Standard'), suite && (suite + ' Suites')].filter(Boolean).join(', ') || '';
                     }
                     if (label === 'Meeting Space') {
-                        val = (fields['Meeting Space'] != null && fields['Meeting Space'] !== '') ? (String(fields['Meeting Space']) + (fields['Meeting Space Unit'] ? ' ' + formatFieldValue(fields['Meeting Space Unit']) : '')) : '';
+                        var msRaw = fields['Meeting Space'];
+                        if (msRaw == null || msRaw === '' || Number(msRaw) === 0) return;
+                        val = String(msRaw) + (fields['Meeting Space Unit'] ? ' ' + formatFieldValue(fields['Meeting Space Unit']) : '');
                     }
                     if (!hasValue(val)) {
                         if (!ownerDraft) return;
                         val = 'Not provided';
                     }
-                    var displayLabel = V2 ? V2.executiveFieldLabel(airtableKey || label) : label;
+                    var displayLabel = label;
                     visible.push({ label: displayLabel, val: val });
                 });
                 if (visible.length === 0) return '';
@@ -211,10 +239,12 @@
     var dealBidDisplay =
       dealBid === "Both brands and third-party operators" || dealBid === "Both" ? "Both Brands & 3rd Party Ops." : dealBid;
 
-    var execSummaryInCard = getField(fields, ["Company Executive Summary"]);
-    if (!execSummaryInCard) {
-      execSummaryInCard = ownerDraft ? buildOwnerOpportunitySummary() : buildRecipientOpportunitySummary();
-    }
+    var execSummaryInCard =
+      V2 && V2.buildOpportunityCardSummary
+        ? V2.buildOpportunityCardSummary(fields, normalized, ctx.mode)
+        : ownerDraft
+          ? buildOwnerOpportunitySummary()
+          : buildRecipientOpportunitySummary();
     var oppLines = [];
     if (execSummaryInCard) oppLines.push('<div class="card-line">' + esc(execSummaryInCard) + "</div>");
 
@@ -272,7 +302,7 @@
       );
     if (hotelServiceModel)
       propLines.push(
-        '<div class="card-line"><span class="card-label">Service model:</span> <span class="stat">' +
+        '<div class="card-line"><span class="card-label">Service / Operating Model:</span> <span class="stat">' +
           esc(hotelServiceModel) +
           "</span></div>"
       );
@@ -298,9 +328,9 @@
     if (dealStruct) dealLines.push('<div class="card-line"><span class="stat">' + esc(dealStruct) + "</span></div>");
     if (leaseType) dealLines.push('<div class="card-line"><span class="card-label">Lease:</span> ' + esc(leaseType) + "</div>");
     if (isLeaseDeal && leaseTerm)
-      dealLines.push('<div class="card-line"><span class="card-label">Lease term:</span> ' + esc(leaseTerm) + "</div>");
+      dealLines.push('<div class="card-line"><span class="card-label">Lease Term:</span> ' + esc(leaseTerm) + "</div>");
     if (isLeaseDeal && baseRent)
-      dealLines.push('<div class="card-line"><span class="card-label">Base rent:</span> ' + esc(baseRent) + "</div>");
+      dealLines.push('<div class="card-line"><span class="card-label">Base Rent:</span> ' + esc(baseRent) + "</div>");
     if (isLeaseDeal && renewalOpts)
       dealLines.push('<div class="card-line"><span class="card-label">Renewal:</span> ' + esc(renewalOpts) + "</div>");
 
@@ -320,8 +350,15 @@
       else if (s.col === 2) c2 += block;
       else if (s.col === 3) c3 += block;
       else if (s.col === "contact") {
-        contactHtml = block;
-        showContact = !!block;
+        // Owner draft: never embed Main Contact / Company in the document text layer
+        // (clipped print layouts still leave extractable PDF text).
+        if (ownerDraft) {
+          contactHtml = "";
+          showContact = true;
+        } else {
+          contactHtml = block;
+          showContact = !!block;
+        }
       }
     });
 
@@ -366,7 +403,10 @@
     if (showContact) {
       html += '<div class="brochure-section brochure-contact-full" id="contactSectionWrap">';
       html += '<div class="brochure-section-title">Contact &amp; Next Steps</div>';
-      html += '<div class="brochure-contact-row"><div class="brochure-contact-detail" id="detailContact">' + contactHtml + "</div>";
+      html += '<div class="brochure-contact-row">';
+      if (contactHtml) {
+        html += '<div class="brochure-contact-detail" id="detailContact">' + contactHtml + "</div>";
+      }
       html +=
         '<div class="brochure-contact-cta-wrap"><p class="brochure-cta" id="briefContactCta">' +
         esc(contact.cta) +
@@ -403,7 +443,7 @@
       prepDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) +
       (cover && ownerDraft ? " · " + cover.dateSuffix : "");
 
-    var html = '<section class="bas-cover-page bas-book-page-surface bas-avoid-break" aria-label="Cover">';
+    var html = '<section class="bas-cover-page bas-book-page-surface bas-avoid-break dbs-cover-page" aria-label="Cover">';
     html += '<div class="bas-cover-geometric" aria-hidden="true"></div>';
     html += '<p class="bas-cover-confidential">' + esc(cover.confidential || "Confidential") + "</p>";
     html += '<div class="bas-cover-block">';
@@ -415,9 +455,11 @@
     html += '<p class="bas-cover-sub">' + esc(cover.sub || "") + "</p>";
     html += '<p class="bas-cover-date">' + esc(dateLine) + "</p>";
     html += "</div>";
+    html += '<div class="dbs-cover-foot">';
     html += '<p class="bas-cover-disclaimer">' + esc(cover.disclaimer || "") + "</p>";
     html +=
       '<div class="bas-cover-hero"><div class="bas-cover-logo-block"><img src="https://cdn.prod.website-files.com/68108c29063eeb5d1bd7ae4a/69c166836c109719f94e055e_Dealality%20Logo%20(4)%20(1).png" alt="Dealality" class="bas-cover-logo-img" width="140" height="auto"></div></div>';
+    html += "</div>";
     html += "</section>";
     return html;
   }
@@ -425,46 +467,56 @@
   function mergeFieldsFromNormalized(fields, normalized) {
     fields = Object.assign({}, fields || {});
     normalized = normalized || {};
+    function locField(loc, formKey, camelKey) {
+      if (!loc || typeof loc !== "object") return undefined;
+      if (loc[formKey] != null && loc[formKey] !== "") return loc[formKey];
+      if (camelKey && loc[camelKey] != null && loc[camelKey] !== "") return loc[camelKey];
+      return undefined;
+    }
     if (normalized.expandedLocation) {
       var loc = normalized.expandedLocation;
       Object.assign(fields, {
-        "Full Address": loc.fullAddress,
-        "City & State": loc.city,
-        Country: loc.country,
-        "Hotel Type": loc.hotelType,
-        "Hotel Chain Scale": loc.hotelChainScale,
-        "Hotel Submarket & Location": loc.submarket,
-        "Hotel Service Model": loc.hotelServiceModel,
-        "Company Executive Summary": loc.companyExecutiveSummary,
-        "Portfolio Size": loc.portfolioSize,
-        "Ownership/Brand History or Track Record": loc.ownershipTrackRecord,
-        "Total Site Size": loc.totalSiteSize,
-        "Total Site Size Unit": loc.totalSiteSizeUnit,
-        "Max Height Allowed By Zoning": loc.maxHeightAllowedByZoning,
-        "Max Height Allowed By Zoning Unit": loc.maxHeightAllowedByZoningUnit,
-        "Ownership Type": Array.isArray(loc.ownershipType) ? loc.ownershipType.join(", ") : loc.ownershipType,
-        "Current Form of Site Control": loc.currentFormOfSiteControl,
-        "Current Form of Site Control Other Text": loc.currentFormOfSiteControlOtherText,
-        "Zoning Status": loc.zoningStatus,
-        "Zoning Status Other Text": loc.zoningStatusOtherText,
-        "Parking Ratio": loc.parkingRatio,
-        "Access to Transit or Highway": Array.isArray(loc.accessToTransit)
-          ? loc.accessToTransit.join(", ")
-          : loc.accessToTransit,
-        "Access to Transit / Highway Other Text": loc.accessToTransitOtherText,
+        "Full Address": locField(loc, "Full Address", "fullAddress"),
+        "City & State": locField(loc, "City & State", "city"),
+        Country: locField(loc, "Country", "country"),
+        "Hotel Type": locField(loc, "Hotel Type", "hotelType"),
+        "Hotel Chain Scale": locField(loc, "Hotel Chain Scale", "hotelChainScale"),
+        "Hotel Submarket & Location": locField(loc, "Hotel Submarket & Location", "submarket"),
+        "Hotel Service Model": locField(loc, "Hotel Service Model", "hotelServiceModel"),
+        "Company Executive Summary": locField(loc, "Company Executive Summary", "companyExecutiveSummary"),
+        "Portfolio Size": locField(loc, "Portfolio Size", "portfolioSize"),
+        "Ownership/Brand History or Track Record": locField(loc, "Ownership/Brand History or Track Record", "ownershipTrackRecord"),
+        "Total Site Size": locField(loc, "Total Site Size", "totalSiteSize"),
+        "Total Site Size Unit": locField(loc, "Total Site Size Unit", "totalSiteSizeUnit"),
+        "Max Height Allowed By Zoning": locField(loc, "Max Height Allowed By Zoning", "maxHeightAllowedByZoning"),
+        "Max Height Allowed By Zoning Unit": locField(loc, "Max Height Allowed By Zoning Unit", "maxHeightAllowedByZoningUnit"),
+        "Ownership Type": (function () {
+          var v = locField(loc, "Ownership Type", "ownershipType");
+          return Array.isArray(v) ? v.join(", ") : v;
+        })(),
+        "Current Form of Site Control": locField(loc, "Current Form of Site Control", "currentFormOfSiteControl"),
+        "Current Form of Site Control Other Text": locField(loc, "Current Form of Site Control Other Text", "currentFormOfSiteControlOtherText"),
+        "Zoning Status": locField(loc, "Zoning Status", "zoningStatus"),
+        "Zoning Status Other Text": locField(loc, "Zoning Status Other Text", "zoningStatusOtherText"),
+        "Parking Ratio": locField(loc, "Parking Ratio", "parkingRatio"),
+        "Access to Transit or Highway": (function () {
+          var v = locField(loc, "Access to Transit or Highway", "accessToTransit");
+          return Array.isArray(v) ? v.join(", ") : v;
+        })(),
+        "Access to Transit / Highway Other Text": locField(loc, "Access to Transit / Highway Other Text", "accessToTransitOtherText"),
         "Total Number of Rooms/Keys":
-          loc.totalNumberOfRoomsKeys || loc["Total Number of Rooms/Keys"] || fields["Total Number of Rooms/Keys"],
-        "Number of Standard Rooms": loc.numberStandardRooms,
-        "Number of Suites": loc.numberSuites,
-        "Number of Stories": loc.numberStories,
-        "Building Type": loc.buildingType,
-        "Year Built (Years Open as a Hotel)": loc.yearBuilt,
-        "PMS or Tech is in Place": loc.pmsOrTech,
-        "Ceiling Heights": loc.ceilingHeights,
-        "Ceiling Heights Unit": loc.ceilingHeightsUnit,
-        "Column Spacing": loc.columnSpacing,
-        "Column Spacing Unit": loc.columnSpacingUnit,
-        "Existing MEP Capacity (Conversion)": loc.existingMEPCapacity,
+          locField(loc, "Total Number of Rooms/Keys", "totalNumberOfRoomsKeys") || fields["Total Number of Rooms/Keys"],
+        "Number of Standard Rooms": locField(loc, "Number of Standard Rooms", "numberStandardRooms"),
+        "Number of Suites": locField(loc, "Number of Suites", "numberSuites"),
+        "Number of Stories": locField(loc, "Number of Stories", "numberStories") || locField(loc, "# of Stories", "numberStories"),
+        "Building Type": locField(loc, "Building Type", "buildingType"),
+        "Year Built (Years Open as a Hotel)": locField(loc, "Year Built (Years Open as a Hotel)", "yearBuilt"),
+        "PMS or Tech is in Place": locField(loc, "PMS or Tech is in Place", "pmsOrTech"),
+        "Ceiling Heights": locField(loc, "Ceiling Heights", "ceilingHeights"),
+        "Ceiling Heights Unit": locField(loc, "Ceiling Heights Unit", "ceilingHeightsUnit"),
+        "Column Spacing": locField(loc, "Column Spacing", "columnSpacing"),
+        "Column Spacing Unit": locField(loc, "Column Spacing Unit", "columnSpacingUnit"),
+        "Existing MEP Capacity (Conversion)": locField(loc, "Existing MEP Capacity (Conversion)", "existingMEPCapacity"),
       });
     }
     if (!fields["Hotel Chain Scale"] && normalized.hotelChainScale) fields["Hotel Chain Scale"] = normalized.hotelChainScale;

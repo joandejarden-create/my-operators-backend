@@ -1,0 +1,307 @@
+{
+  "generatedAt": "2026-07-02T07:54:24.655Z",
+  "mode": "dry-run",
+  "updateFlag": false,
+  "baseId": "appKZuK006BWIVjNW",
+  "tableName": "Pilot Target List",
+  "tableId": "tblgsKWuI25MWohAP",
+  "fieldCount": 38,
+  "metaApiSupportsViewListing": true,
+  "metaApiSupportsViewCreation": false,
+  "metaApiSupportsViewConfiguration": false,
+  "viewCreationProbe": {
+    "tested": false,
+    "reason": "dry_run"
+  },
+  "existingViews": [
+    {
+      "id": "viwQURUCy5hL7DUCs",
+      "name": "Grid view",
+      "type": "grid"
+    },
+    {
+      "id": "viwm530SJEcqlqvac",
+      "name": "Follow-Up Needed",
+      "type": "grid"
+    },
+    {
+      "id": "viw37u0BOTiS2quqi",
+      "name": "Approved for Send / Mail Merge",
+      "type": "grid"
+    },
+    {
+      "id": "viwJBIUdRkKqrjV9X",
+      "name": "Drafting Queue",
+      "type": "grid"
+    },
+    {
+      "id": "viwoSZExYPJbLVOBW",
+      "name": "Pilot Outreach Pipeline",
+      "type": "grid"
+    }
+  ],
+  "targetViewStatus": [
+    {
+      "name": "Pilot Outreach Pipeline",
+      "exists": true,
+      "viewId": "viwoSZExYPJbLVOBW",
+      "type": "grid"
+    },
+    {
+      "name": "Drafting Queue",
+      "exists": true,
+      "viewId": "viwJBIUdRkKqrjV9X",
+      "type": "grid"
+    },
+    {
+      "name": "Approved for Send / Mail Merge",
+      "exists": true,
+      "viewId": "viw37u0BOTiS2quqi",
+      "type": "grid"
+    },
+    {
+      "name": "Follow-Up Needed",
+      "exists": true,
+      "viewId": "viwm530SJEcqlqvac",
+      "type": "grid"
+    }
+  ],
+  "viewsToCreate": [],
+  "viewsAlreadyPresent": [
+    {
+      "name": "Pilot Outreach Pipeline",
+      "viewId": "viwoSZExYPJbLVOBW",
+      "viewType": "grid"
+    },
+    {
+      "name": "Drafting Queue",
+      "viewId": "viwJBIUdRkKqrjV9X",
+      "viewType": "grid"
+    },
+    {
+      "name": "Approved for Send / Mail Merge",
+      "viewId": "viw37u0BOTiS2quqi",
+      "viewType": "grid"
+    },
+    {
+      "name": "Follow-Up Needed",
+      "viewId": "viwm530SJEcqlqvac",
+      "viewType": "grid"
+    }
+  ],
+  "viewsCreated": [],
+  "viewsUpdated": [],
+  "unsupportedConfigurationItems": [
+    "view_creation_via_meta_api",
+    "filter_formula_via_api",
+    "sort_order_via_api",
+    "visible_field_order_via_api"
+  ],
+  "manualActionsRequired": [
+    "Create each missing grid view in Airtable UI",
+    "Apply filter formula from manual report",
+    "Configure sort order from manual report",
+    "Show/hide and reorder visible fields from manual report"
+  ],
+  "viewConfigs": [
+    {
+      "name": "Pilot Outreach Pipeline",
+      "purpose": "Daily working view for active outreach tracking.",
+      "filterFormula": "AND(\n  NOT({Do Not Contact}),\n  OR(\n    {Outreach Status} = BLANK(),\n    AND(\n      {Outreach Status} != 'Archived',\n      {Outreach Status} != 'Not Interested'\n    )\n  )\n)",
+      "filterNotes": "Includes rows with blank Outreach Status. Excludes Do Not Contact, Archived, and Not Interested.",
+      "sort": [
+        {
+          "field": "Priority",
+          "direction": "asc",
+          "notes": "P1 → P2 → P3 (ascending works alphabetically)"
+        },
+        {
+          "field": "Next Follow-Up Date",
+          "direction": "asc"
+        },
+        {
+          "field": "Company",
+          "direction": "asc"
+        },
+        {
+          "field": "Name",
+          "direction": "asc"
+        }
+      ],
+      "visibleFields": [
+        "Name",
+        "Company",
+        "Role",
+        "Category",
+        "Outreach Segment",
+        "Pilot Region",
+        "Region",
+        "Priority",
+        "Pilot Fit",
+        "Pilot Relevance",
+        "Warm Intro?",
+        "Relationship Strength",
+        "Likely Contribution",
+        "Why They Matter",
+        "Outreach Message Angle",
+        "Outreach Status",
+        "Next Action",
+        "Last Contact Date",
+        "Next Follow-Up Date",
+        "Reply Notes",
+        "Notes"
+      ],
+      "omittedOptionalFields": [
+        "Message Angle"
+      ],
+      "missingRequiredFields": [],
+      "notes": [
+        "Hide Do Not Contact from this view or keep it hidden — filter already excludes checked rows.",
+        "First wave outreach is manual/founder-led; this view does not send email."
+      ]
+    },
+    {
+      "name": "Drafting Queue",
+      "purpose": "Rows where messaging needs to be written, reviewed, or approved.",
+      "filterFormula": "AND(\n  NOT({Do Not Contact}),\n  OR(\n    {Outreach Status} = 'Draft Needed',\n    {Outreach Status} = 'Drafted',\n    {Outreach Status} = 'Needs Review'\n  )\n)",
+      "filterNotes": null,
+      "sort": [
+        {
+          "field": "Priority",
+          "direction": "asc"
+        },
+        {
+          "field": "Outreach Segment",
+          "direction": "asc"
+        },
+        {
+          "field": "Company",
+          "direction": "asc"
+        },
+        {
+          "field": "Name",
+          "direction": "asc"
+        }
+      ],
+      "visibleFields": [
+        "Name",
+        "Company",
+        "Role",
+        "Outreach Segment",
+        "Pilot Region",
+        "Priority",
+        "Pilot Fit",
+        "Why They Matter",
+        "Outreach Message Angle",
+        "Personalization Line",
+        "Email Subject",
+        "Email Draft",
+        "Final Approved Email",
+        "LinkedIn DM Draft",
+        "Follow-Up Draft",
+        "Outreach Status",
+        "Notes"
+      ],
+      "omittedOptionalFields": [],
+      "missingRequiredFields": [],
+      "notes": [
+        "Use Final Approved Email as the send/export copy once reviewed.",
+        "Email Draft is working copy only."
+      ]
+    },
+    {
+      "name": "Approved for Send / Mail Merge",
+      "purpose": "Rows approved for manual sending or CSV export.",
+      "filterFormula": "AND(\n  {Outreach Status} = 'Approved',\n  {Ready for Mail Merge},\n  NOT({Do Not Contact}),\n  LEN(TRIM({Email Subject} & '')) > 0,\n  LEN(TRIM({Final Approved Email} & '')) > 0,\n  OR(\n    {Send Channel} != 'Email',\n    LEN(TRIM({Email} & '')) > 0\n  )\n)",
+      "filterNotes": "Use this view before running export-owner-targets-mail-merge.mjs. Requires Email when Send Channel = Email.",
+      "sort": [
+        {
+          "field": "Mail Merge Batch",
+          "direction": "asc"
+        },
+        {
+          "field": "Send Channel",
+          "direction": "asc"
+        },
+        {
+          "field": "Company",
+          "direction": "asc"
+        },
+        {
+          "field": "Name",
+          "direction": "asc"
+        }
+      ],
+      "visibleFields": [
+        "Name",
+        "Email",
+        "Company",
+        "Role",
+        "Pilot Region",
+        "LinkedIn URL",
+        "Send Channel",
+        "Mail Merge Batch",
+        "Email Subject",
+        "Final Approved Email",
+        "LinkedIn DM Draft",
+        "Ready for Mail Merge",
+        "Outreach Status",
+        "Last Contact Date",
+        "Next Follow-Up Date",
+        "Do Not Contact",
+        "Do Not Contact Reason"
+      ],
+      "omittedOptionalFields": [],
+      "missingRequiredFields": [],
+      "notes": [
+        "Export script: node scripts/export-owner-targets-mail-merge.mjs",
+        "Do Not Contact columns shown for verification — filter excludes checked rows."
+      ]
+    },
+    {
+      "name": "Follow-Up Needed",
+      "purpose": "Rows requiring a follow-up.",
+      "filterFormula": "AND(\n  NOT({Do Not Contact}),\n  OR(\n    {Outreach Status} = 'Follow-Up Needed',\n    IS_BEFORE({Next Follow-Up Date}, TODAY()),\n    IS_SAME({Next Follow-Up Date}, TODAY(), 'day')\n  )\n)",
+      "filterNotes": null,
+      "sort": [
+        {
+          "field": "Next Follow-Up Date",
+          "direction": "asc"
+        },
+        {
+          "field": "Priority",
+          "direction": "asc"
+        },
+        {
+          "field": "Company",
+          "direction": "asc"
+        },
+        {
+          "field": "Name",
+          "direction": "asc"
+        }
+      ],
+      "visibleFields": [
+        "Name",
+        "Email",
+        "Company",
+        "Role",
+        "Pilot Region",
+        "Send Channel",
+        "Outreach Status",
+        "Last Contact Date",
+        "Next Follow-Up Date",
+        "Follow-Up Draft",
+        "Reply Notes",
+        "Notes",
+        "Do Not Contact"
+      ],
+      "omittedOptionalFields": [],
+      "missingRequiredFields": [],
+      "notes": [
+        "Review Follow-Up Draft and Reply Notes before contacting again.",
+        "Manual follow-up only — no automated sending."
+      ]
+    }
+  ]
+}

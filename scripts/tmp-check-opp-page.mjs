@@ -1,0 +1,11 @@
+const r = await fetch("https://www.dealality.com/opportunity-review");
+const t = await r.text();
+console.log("status", r.status, "len", t.length);
+const ids = [...t.matchAll(/id="([^"]+)"/g)].map((m) => m[1]).slice(0, 40);
+console.log("ids", ids);
+console.log("has nav", /id="nav"|class="[^"]*navbar/i.test(t));
+console.log("has dc-opp", t.includes("dc-opp"));
+const title = (t.match(/<title>([^<]+)<\/title>/i) || [])[1];
+console.log("title", title);
+const h1 = (t.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1];
+console.log("h1", h1 && h1.replace(/<[^>]+>/g, "").trim().slice(0, 120));

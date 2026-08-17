@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Operator Fit — Internal Pilot (Owner / Advisor View)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/support-runbook.css">
+  <link rel="stylesheet" href="/css/operator-fit-v2.css">
+  <link rel="stylesheet" href="/css/dealality-wave-loader.css">
+  <style>
+    .pilot-wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .pilot-card { border: 1px solid var(--runbook-border); background: var(--runbook-surface); padding: 16px 18px; margin-bottom: 12px; }
+    .pilot-card h3 { margin: 0 0 6px; color: #fff; font-size: 18px; }
+    .band { font-size: 20px; color: #fff; font-weight: 600; margin: 4px 0 8px; }
+    .pilot-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 12px; color: var(--runbook-muted); }
+    .pilot-label { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--runbook-muted); }
+    .pilot-pill { display: inline-block; padding: 2px 8px; border: 1px solid var(--runbook-border); font-size: 11px; }
+    .pilot-pill.ok { border-color: #14ca74; color: #14ca74; }
+    .pilot-pill.warn { border-color: #fdb52a; color: #fdb52a; }
+    .pilot-pill.unk { border-color: #7e89ac; color: #7e89ac; }
+    .pilot-actions button, .pilot-toolbar button, .pilot-toolbar select, textarea {
+      background: var(--runbook-bg); color: var(--runbook-heading); border: 1px solid var(--runbook-border); padding: 8px 12px; cursor: pointer; font-size: 13px;
+    }
+    .why { color: var(--runbook-text); font-size: 14px; margin: 10px 0; line-height: 1.45; }
+    .vn { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--runbook-border); font-size: 13px; color: #fff; }
+    .compare-row { display: grid; gap: 8px; border-bottom: 1px solid var(--runbook-border); padding: 8px 0; }
+    .compare-row.hi { background: rgba(253,181,42,.06); }
+    details { margin-top: 8px; color: var(--runbook-muted); font-size: 13px; }
+    .toggle { display: inline-flex; gap: 0; border: 1px solid var(--runbook-border); }
+    .toggle button.active { background: #243049; color: #fff; }
+  </style>
+</head>
+<body class="support-page">
+  <div id="supportGateLoading" class="support-page-loading" aria-busy="true"></div>
+  <div id="supportGateDenied" class="support-gate-state" hidden>
+    <h1>Access restricted</h1>
+    <p data-gate-message>Internal/admin only. Owner View is a preview — not live owner access.</p>
+  </div>
+  <div class="support-page-shell" id="supportGateContent" hidden>
+    <div class="pilot-wrap">
+      <h1 style="color:#fff;margin:0 0 6px">Operator Fit — Final Internal Pilot</h1>
+      <p style="color:var(--runbook-muted);margin:0 0 16px;font-size:13px">
+        Scoring frozen · Option C band-first · My Deals unwired · Owner pilot disabled
+      </p>
+      <div class="pilot-toolbar" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px">
+        <label style="color:var(--runbook-muted);font-size:12px">Deal
+          <select id="dealSelect"></select>
+        </label>
+        <div class="toggle" role="group" aria-label="View mode">
+          <button type="button" id="btnOwnerView" class="active">Owner View</button>
+          <button type="button" id="btnAdvisorView">Advisor View</button>
+        </div>
+        <button type="button" id="btnCompare">Compare (differences)</button>
+        <button type="button" id="btnHideScore">Anchoring: hide numbers</button>
+      </div>
+      <div id="accessNote" style="color:var(--runbook-muted);font-size:12px;margin-bottom:12px"></div>
+      <div id="projectSummary"></div>
+      <div id="rankList"></div>
+      <div id="compareBox"></div>
+      <div id="slBox"></div>
+      <p id="gen" style="color:var(--runbook-muted);font-size:12px;margin-top:20px"></p>
+    </div>
+  </div>
+  <script src="/js/dealality-wave-loader.js"></script>
+  <script src="/js/dealality-memberstack-auth.js"></script>
+  <script src="/js/support-admin-gate.js"></script>
+  <script>
+  (function () {
+    if (window.SupportAdminGate) SupportAdminGate.showPageLoading('supportGateLoading', 'Verifying access…');
+    var payload = null;
+    var current = null;
+    var mode = 'owner';
+    var hideNumbers = false;
+
+    function authFetch(url, opts) {
+      return window.DealalityMemberstackAuth.authFetch(url, opts || {});
+    }
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function ownerCard(c) {
+      if (c.underEvaluation && mode === 'owner') {
+        return '<div class="pilot-card"><h3>' + esc(c.operatorName) + '</h3>' +
+          '<span class="pilot-pill warn">Under Evaluation</span>' +
+          '<p class="why">Not shown in the main ranked production list.</p></div>';
+      }
+      var concern = c.primaryConcern ? '<div style="font-size:13px;color:var(--runbook-muted);margin-top:6px"><span class="pilot-label">' + esc(c.primaryConcern.kind) + '</span> ' + esc(c.primaryConcern.text) + '</div>' : '';
+      var unk = (c.primaryUnknowns || []).map(function (u) {
+        return '<div style="font-size:12px;color:#7e89ac;margin-top:4px">' + esc(u.priority) + ': ' + esc(u.text) + '</div>';
+      }).join('');
+      var vn = c.validateNextPrimary ? '<div class="vn"><span class="pilot-label">Validate Next</span><div>' + esc(c.validateNextPrimary.action) + '</div><div style="color:var(--runbook-muted);font-size:12px">' + esc(c.validateNextPrimary.phaseLabel || '') + '</div></div>' : '';
+      var numeric = (mode === 'advisor' || (!hideNumbers && mode === 'advisor')) ? '' : '';
+      var advisorBits = '';
+      if (mode === 'advisor') {
+        var n = c.level2 && c.level2.numericOperatorAlignment;
+        advisorBits = '<div class="pilot-meta" style="margin-top:8px">' +
+          '<span>Numeric ' + esc(n) + '</span>' +
+          '<span>Coverage ' + esc(c.level2 && c.level2.dataCoveragePct) + '%</span>' +
+          '<span>' + esc(c.level2 && c.level2.eligibilityStatus) + '</span>' +
+          '<span>Readiness ' + esc(c.level3 && c.level3.readinessInternal) + '</span></div>';
+      }
+      return '<div class="pilot-card" data-op="' + esc(c.operatorId) + '">' +
+        '<div class="pilot-label">Rank ' + esc(c.rank) + '</div>' +
+        '<h3>' + esc(c.operatorName) + '</h3>' +
+        '<div class="band">' + esc(c.alignmentBand) + '</div>' +
+        '<div class="pilot-meta">' +
+        (c.projectCompatibility ? '<span class="pilot-pill warn">' + esc(c.projectCompatibility) + '</span>' : '') +
+        '<span class="pilot-pill ok">Evidence Strength: ' + esc(c.evidenceStrength) + '</span>' +
+        '</div>' +
+        '<p style="margin:6px 0 0;font-size:12px;color:var(--runbook-muted)">' + esc(c.evidenceStrengthHelper) + '</p>' +
+        '<p class="why">' + esc(c.whyThisOperator) + '</p>' +
+        concern + unk + vn + advisorBits +
+        '<details><summary>More detail</summary>' +
+        (hideNumbers && mode === 'owner' ? '<p>Numeric score hidden (anchoring mode).</p>' :
+          '<p>Operator Alignment (detail): <strong style="color:#fff">' + esc(c.level2 && c.level2.numericOperatorAlignment) + '</strong></p>') +
+        '<p>Strengths: ' + esc(((c.level2 && c.level2.strengths) || []).slice(0,4).join('; ')) + '</p>' +
+        '<p>' + esc(c.level2 && c.level2.brandRelationshipNote) + '</p>' +
+        '</details>' +
+        '<div class="pilot-actions" style="margin-top:10px"><button type="button" data-act="shortlist">Add to Shortlist</button></div>' +
+        '</div>';
+    }
+
+    function render() {
+      var id = document.getElementById('dealSelect').value;
+      current = (payload.cases || []).find(function (c) { return c.id === id; }) || payload.cases[0];
+      if (!current) return;
+      var ov = current.ownerView || {};
+      var av = current.advisorView || {};
+      var nReady = current.productionRankingReadyCount || 0;
+
+      var banner = '';
+      if (ov.zeroUniverse) {
+        banner = '<div class="pilot-card" style="border-color:#fdb52a"><p style="margin:0;color:#fff;font-weight:600">' + esc(ov.zeroUniverse.headline) + '</p><ul style="margin:8px 0 0;padding-left:18px;color:var(--runbook-muted);font-size:13px">' +
+          (ov.zeroUniverse.clarifying || []).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+      } else if (nReady < 5) {
+        banner = '<div class="pilot-card"><p style="margin:0;color:#fff"><strong>' + nReady + '</strong> operators currently meet Dealality’s alignment and evidence requirements for this project.</p></div>';
+      }
+
+      document.getElementById('projectSummary').innerHTML =
+        '<div class="pilot-label">Project</div><strong style="color:#fff">' + esc(current.label) + '</strong>' +
+        '<div style="font-size:13px;color:var(--runbook-muted)">' + esc(current.country) + ' · view: ' + mode + (hideNumbers ? ' · anchoring (numbers hidden on L1)' : '') + '</div>' +
+        banner;
+
+      var list = mode === 'owner'
+        ? (ov.productionCandidates || [])
+        : (av.candidates || ov.productionCandidates || []);
+      var html = '<div class="pilot-label" style="margin:16px 0 8px">Ranked operators</div>';
+      html += list.map(ownerCard).join('') || '<div class="pilot-card" style="color:var(--runbook-muted)">None in production ranked list</div>';
+
+      if (mode === 'owner' && (ov.underEvaluationSeparate || []).length) {
+        html += '<div class="pilot-label" style="margin:20px 0 8px">Under Evaluation (not production ranked)</div>';
+        html += ov.underEvaluationSeparate.map(function (c) {
+          return '<div class="pilot-card"><h3>' + esc(c.operatorName) + '</h3><span class="pilot-pill warn">Under Evaluation</span>' +
+            '<p class="why" style="font-size:13px">Requires further validation before production ranking.</p></div>';
+        }).join('');
+      }
+      if (mode === 'advisor' && (av.researchStage || []).length) {
+        html += '<div class="pilot-label" style="margin:20px 0 8px">Research Stage (advisor)</div>';
+        html += av.researchStage.map(ownerCard).join('');
+      }
+
+      document.getElementById('rankList').innerHTML = html;
+      document.getElementById('rankList').querySelectorAll('button[data-act=shortlist]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var card = btn.closest('[data-op]');
+          var opId = card && card.getAttribute('data-op');
+          var row = list.find(function (x) { return x.operatorId === opId; });
+          if (!row || !current) return;
+          authFetch('/api/support/operator-fit-internal-pilot/' + encodeURIComponent(current.id) + '/shortlist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              dealLabel: current.label,
+              operatorId: row.operatorId,
+              operatorName: row.operatorName,
+              alignment: row.level2 && row.level2.numericOperatorAlignment,
+              confidence: row.evidenceStrength,
+              eligibility: row.projectCompatibility,
+              reasons: row.whyReasons || [],
+              lifecycle: row.underEvaluation ? 'Research Stage' : 'Active / production'
+            })
+          }).then(function () { loadShortlist(); });
+        });
+      });
+
+      document.getElementById('gen').textContent =
+        'Generated ' + (payload.generatedAt || '') + ' · engine ' + (payload.engineVersion || '') +
+        ' · scoring frozen · owner pilot disabled';
+      loadShortlist();
+    }
+
+    function loadShortlist() {
+      if (!current) return;
+      authFetch('/api/support/operator-fit-internal-pilot/' + encodeURIComponent(current.id) + '/shortlist')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var rows = data.shortlist || [];
+          document.getElementById('slBox').innerHTML =
+            '<div class="pilot-label" style="margin-top:16px">Shortlist snapshots</div>' +
+            (rows.length ? rows.map(function (r) {
+              return '<div class="pilot-card"><strong style="color:#fff">' + esc(r.operatorName) + '</strong> · ' + esc(r.status) +
+                '<div class="pilot-meta">At shortlist align ' + esc(r.snapshot && r.snapshot.alignment) + '</div></div>';
+            }).join('') : '<div class="pilot-card" style="color:var(--runbook-muted)">Empty</div>');
+        }).catch(function () {});
+    }
+
+    document.getElementById('btnOwnerView').addEventListener('click', function () {
+      mode = 'owner';
+      document.getElementById('btnOwnerView').classList.add('active');
+      document.getElementById('btnAdvisorView').classList.remove('active');
+      render();
+    });
+    document.getElementById('btnAdvisorView').addEventListener('click', function () {
+      mode = 'advisor';
+      document.getElementById('btnAdvisorView').classList.add('active');
+      document.getElementById('btnOwnerView').classList.remove('active');
+      render();
+    });
+    document.getElementById('btnHideScore').addEventListener('click', function () {
+      hideNumbers = !hideNumbers;
+      this.textContent = hideNumbers ? 'Anchoring: show detail numbers' : 'Anchoring: hide numbers';
+      render();
+    });
+    document.getElementById('btnCompare').addEventListener('click', function () {
+      var cmp = current && current.ownerView && current.ownerView.comparison;
+      if (!cmp) return;
+      var n = (cmp.operators || []).length || 1;
+      var rows = (cmp.rows || []).filter(function (r) { return r.highlight || r.label === 'Alignment'; }).map(function (row) {
+        return '<div class="compare-row hi" style="grid-template-columns:160px repeat(' + n + ',minmax(120px,1fr))">' +
+          '<div class="pilot-label">' + esc(row.label) + '</div>' +
+          row.values.map(function (v) { return '<div style="color:var(--runbook-text);font-size:13px">' + esc(v) + '</div>'; }).join('') +
+          '</div>';
+      }).join('');
+      var trades = (cmp.tradeOffs || []).map(function (t) {
+        return '<p style="color:var(--runbook-muted);font-size:13px"><strong style="color:#fff">' + esc(t.operatorName) + ':</strong> ' + esc(t.statement) + '</p>';
+      }).join('');
+      document.getElementById('compareBox').innerHTML =
+        '<div class="pilot-card"><div class="pilot-label">Where they differ</div>' + rows + trades + '</div>';
+    });
+    document.getElementById('dealSelect').addEventListener('change', render);
+
+    SupportAdminGate.requireInternalRunbook().then(function () {
+      return authFetch('/api/support/operator-fit-internal-pilot/access').then(function (r) { return r.json(); }).then(function (access) {
+        document.getElementById('accessNote').textContent =
+          'Pilot access: ' + (access.allowed ? 'allowed' : 'blocked — ' + (access.reasons || []).join('; ')) +
+          ' · OWNER_FIT_V2=' + (access.globalOwnerEnabled ? 'on' : 'off') + ' · Owner View is preview only';
+        return authFetch('/api/support/operator-fit-internal-pilot/payload?pack=final');
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        payload = data;
+        if (!payload.cases || !payload.cases.length) throw new Error(data.error || 'No final presentation payload');
+        var sel = document.getElementById('dealSelect');
+        sel.innerHTML = payload.cases.map(function (c) {
+          return '<option value="' + esc(c.id) + '">' + esc(c.label) + '</option>';
+        }).join('');
+        render();
+      }).catch(function (err) {
+        document.getElementById('projectSummary').innerHTML =
+          '<div class="pilot-card" style="border-color:#fdb52a;color:#fff">Error: ' + esc(err.message || err) + '</div>';
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

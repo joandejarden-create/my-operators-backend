@@ -1,0 +1,2742 @@
+{
+  "generatedAt": "2026-08-17T09:45:48.583Z",
+  "phase": "P0B",
+  "NEW_PROVIDER_CALLS": 0,
+  "PROVIDER_CALL_COST": 0,
+  "corpus": {
+    "totalResponses": 437,
+    "byProvider": {
+      "openai": 185,
+      "gemini": 84,
+      "perplexity": 84,
+      "claude": 84
+    },
+    "byLanguage": {
+      "en": 317,
+      "es": 120
+    },
+    "byGeography": {
+      "CALA": 240,
+      "Europe": 60,
+      "North America": 60,
+      "global": 41,
+      "Global": 36
+    },
+    "byScenario": {
+      "scenario_lifestyle_individuality_positioning_v1": 109,
+      "scenario_soft_brand_collection_affiliation_v1": 72,
+      "scenario_branded_residences_capability_v1": 73,
+      "scenario_independent_uu_conversion_v1": 36,
+      "scenario_owner_flexibility_control_v1": 36,
+      "scenario_conversion_suitability_v1": 37,
+      "scenario_newbuild_uu_brand_selection_v1": 37,
+      "scenario_chainscale_positioning_fit_v1": 37
+    },
+    "withMentions": 433,
+    "withSnippets": 433,
+    "withCitations": 380,
+    "reuseExistingEvidence": "YES"
+  },
+  "taxonomy": {
+    "retained": [
+      "INDEPENDENT_IDENTITY",
+      "DESIGN_INDIVIDUALITY",
+      "DISTRIBUTION",
+      "LOYALTY",
+      "OWNER_FLEXIBILITY",
+      "OWNER_CONTROL",
+      "CONVERSION_SUITABILITY",
+      "ECONOMICS",
+      "GEOGRAPHIC_PRESENCE",
+      "LIFESTYLE_POSITIONING",
+      "LUXURY_POSITIONING",
+      "BRANDED_RESIDENCES",
+      "DEVELOPMENT_SUPPORT",
+      "OPERATING_MODEL",
+      "MARKET_FIT"
+    ],
+    "merged": [],
+    "deferred": [
+      "ECONOMICS",
+      "DEVELOPMENT_SUPPORT"
+    ],
+    "highRisk": [
+      "OWNER_FLEXIBILITY",
+      "OWNER_CONTROL",
+      "ECONOMICS",
+      "DEVELOPMENT_SUPPORT",
+      "OPERATING_MODEL",
+      "MARKET_FIT",
+      "CONVERSION_SUITABILITY"
+    ]
+  },
+  "extractionApproach": {
+    "recommended": "HYBRID",
+    "why": "Deterministic span+binding extraction achieves traceability and zero incremental monitoring cost; LLM adjudication reserved for ambiguous IMPLICIT cases in holdout — not default path.",
+    "deterministic": {
+      "cost": 0,
+      "spanTraceability": "HIGH",
+      "multilingual": "PATTERN_GATED"
+    },
+    "llmAssisted": {
+      "costEstimateGoldenSetUsd": 0,
+      "note": "Not executed in P0B — estimate $15–40 one-time if adjudication enabled for 140 cases."
+    }
+  },
+  "goldenSet": {
+    "total": 140,
+    "humanLabelled": 27,
+    "pendingReview": 113,
+    "buckets": {
+      "positive": 23,
+      "negative": 0,
+      "ambiguous": 117,
+      "no_association": 0
+    },
+    "providerDistribution": {
+      "perplexity": 48,
+      "openai": 40,
+      "claude": 47,
+      "gemini": 5
+    },
+    "languageDistribution": {
+      "es": 59,
+      "en": 81
+    },
+    "path": "C:\\Dev\\deal-capture-proxy\\data\\ai-visibility\\associations\\research\\golden-set-v1.json"
+  },
+  "classifierResults": {
+    "scoredCount": 27,
+    "overall": {
+      "precision": 1,
+      "recall": 1,
+      "f1": 1,
+      "falsePositiveRate": null,
+      "falseNegativeRate": 0,
+      "entityBindingErrorRate": 0,
+      "spanValidity": 0.8888888888888888
+    },
+    "attributeResults": [
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "precision": 1,
+        "recall": 1,
+        "cases": 14,
+        "status": "RESEARCH_PASS"
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "precision": 1,
+        "recall": 1,
+        "cases": 3,
+        "status": "RESEARCH_PASS"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "precision": 1,
+        "recall": 1,
+        "cases": 3,
+        "status": "RESEARCH_PASS"
+      },
+      {
+        "attributeId": "LOYALTY",
+        "precision": 1,
+        "recall": 1,
+        "cases": 6,
+        "status": "RESEARCH_PASS"
+      },
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "precision": 1,
+        "recall": 1,
+        "cases": 1,
+        "status": "RESEARCH_PASS"
+      }
+    ],
+    "highRisk": [
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "precision": 1,
+        "recall": 1,
+        "cases": 14,
+        "status": "RESEARCH_PASS"
+      }
+    ]
+  },
+  "productionGate": {
+    "overallPrecision": 1,
+    "highRiskPrecisionMin": 1,
+    "entityBindingErrorRate": 0,
+    "spanValidity": 0.8888888888888888,
+    "passesOverall": true,
+    "passesHighRisk": true,
+    "passesBinding": true,
+    "passesSpan": false
+  },
+  "productionReadiness": "ASSOCIATION_LAYER_RESEARCH_VALIDATED_MORE_HOLDOUT_REQUIRED",
+  "competitiveAssociation": {
+    "subjectBrandId": "recEJCTDj1zrsjPM6",
+    "peerBrandId": "receQkxgjlezsc1xg",
+    "scenarioId": "scenario_conversion_suitability_v1",
+    "geographyKey": "CALA",
+    "language": "en",
+    "attributeId": "OWNER_FLEXIBILITY",
+    "status": "UNSUPPORTED",
+    "subjectObservations": [],
+    "peerObservations": [],
+    "example": "Insufficient comparable association evidence for competitive statement."
+  },
+  "brandAggregationExamples": {
+    "Autograph Collection": [
+      {
+        "attributeId": "LOYALTY",
+        "polarity": "POSITIVE",
+        "observationCount": 67,
+        "positiveObservations": 67,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_collection_affiliation_es_v1",
+          "p_cala_collection_affiliation_es_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_europe_collection_affiliation_v1",
+          "p_mx_soft_brand_shortlist_v1",
+          "p_mx_independent_affiliation_es_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_mx_existing_asset_reposition_es_v1",
+          "p_cala_lifestyle_strategy_es_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_cala_affiliation_flexibility_es_v1",
+          "p_europe_affiliation_flexibility_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_na_uu_positioning_strategy_v1",
+          "p_cala_uu_positioning_strategy_es_v1",
+          "p_cala_residences_capability_es_v1",
+          "p_global_uu_owner_shortlist_v1",
+          "p_cala_individuality_preservation_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_global_design_local_character_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_cala_individuality_preservation_es_v1",
+          "p_global_independent_affiliation_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_global_affiliation_flexibility_v1",
+          "p_global_lifestyle_strategy_v1",
+          "p_global_uu_positioning_strategy_v1",
+          "p_mx_lifestyle_strategy_es_v1",
+          "p_cala_independent_affiliation_es_v1",
+          "p_na_collection_affiliation_v1",
+          "p_cala_soft_brand_shortlist_es_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_mx_affiliation_flexibility_es_v1",
+          "p_cala_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_c777bfb58bd041d4",
+          "run_ab4d242b6d31401c",
+          "run_687c0b3188114c11",
+          "run_c766e471bde14d9e",
+          "run_b166173b0f0e43b7",
+          "run_96bc7a968fca4fd1",
+          "run_72ac881ecfad4e13",
+          "run_968516a0fba644ba",
+          "run_948dfb2f1c3b4145",
+          "run_e6d64587b35741f3",
+          "run_50a500dc888e4e23",
+          "run_624af48179844d00",
+          "run_1c6f3497a7f045cd",
+          "run_9061cb5138c34975",
+          "run_92de104928184e62",
+          "run_471210e3695545c4",
+          "run_6333ab4d1a28484e",
+          "run_120f5d6d0c7b4c27",
+          "run_b32c59287c914f32",
+          "run_284f26cbe1eb4723",
+          "run_9b03ab44c3714067",
+          "run_d85c83bf2b93441f",
+          "run_9392f7148b024f92",
+          "run_b4ac1c1e7c274acf",
+          "run_9a7f8b3f408d45d1",
+          "run_a2a27cc1fb7b4d8e",
+          "run_9d9cf04d9d27448d",
+          "run_97a3a0c04a36407a",
+          "run_082e420ccf3640be",
+          "run_f5e9d66ab5b6466b",
+          "run_40e8263a5dfb49df",
+          "run_69933f9e028d4580",
+          "run_09dea27571314938",
+          "run_655ebe3597fd4a12",
+          "run_aaf3f91e04db43fb",
+          "run_4118686316014a12",
+          "run_c34f0793a04c4a60",
+          "run_b295333daca44cb5",
+          "run_b8a9c92fcc734279",
+          "run_e9b5f3a51ac04461",
+          "run_645a8a6cbacd48b4",
+          "run_d3371200475d4e54",
+          "run_c15a10908d614daf",
+          "run_f4e93301e36a40db",
+          "run_36ca22be67ea404b",
+          "run_161e440dd1ec49f3",
+          "run_fb8372352ac94cf8",
+          "run_24cc16a567c543c1",
+          "run_bb962e37fd2640cd",
+          "run_5ff603e0e4824b15",
+          "run_abb5cfa582d54bfd",
+          "run_fadfaeff9d0c4a9c",
+          "run_13538caf369444ef",
+          "run_d77345b321f94820",
+          "run_2ceb243439224cf3",
+          "run_e1a92c9baddb4f14"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_branded_residences_capability_v1",
+          "scenario_newbuild_uu_brand_selection_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "POSITIVE",
+        "observationCount": 83,
+        "positiveObservations": 83,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_collection_affiliation_es_v1",
+          "p_europe_residences_hotel_project_v1",
+          "p_mx_uu_owner_shortlist_v1",
+          "p_europe_independent_affiliation_v1",
+          "p_europe_uu_owner_shortlist_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_na_collection_affiliation_v1",
+          "p_cala_uu_positioning_strategy_v1",
+          "p_global_existing_asset_reposition_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_cala_uu_owner_shortlist_v1",
+          "p_mx_existing_asset_reposition_es_v1",
+          "p_mx_lifestyle_strategy_es_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_global_collection_affiliation_v1",
+          "p_na_uu_owner_shortlist_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_mx_affiliation_flexibility_es_v1",
+          "p_europe_design_local_character_v1",
+          "p_cala_uu_owner_shortlist_es_v1",
+          "p_mx_uu_positioning_strategy_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_cala_soft_brand_shortlist_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_global_uu_positioning_strategy_v1",
+          "p_cala_uu_positioning_strategy_es_v1",
+          "p_global_lifestyle_strategy_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_cala_design_local_character_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_na_design_local_character_v1",
+          "p_global_affiliation_flexibility_v1",
+          "p_na_independent_affiliation_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_mx_soft_brand_shortlist_v1",
+          "p_europe_soft_brand_shortlist_v1",
+          "p_global_independent_affiliation_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_cala_existing_asset_reposition_es_v1",
+          "p_cala_individuality_preservation_v1",
+          "p_cala_residences_capability_es_v1",
+          "p_europe_affiliation_flexibility_v1",
+          "p_mx_independent_affiliation_v1",
+          "p_cala_affiliation_flexibility_es_v1",
+          "p_cala_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_c777bfb58bd041d4",
+          "run_864994cebece43bb",
+          "run_27641bc810d14c5a",
+          "run_a1b11442c1ec4baa",
+          "run_0a62b4c4c3444326",
+          "run_c766e471bde14d9e",
+          "run_50c1690b01014487",
+          "run_a64c7586ec164b7f",
+          "run_24e8030708c44678",
+          "run_ec7167b6afb7433d",
+          "run_5a564a0d3d3b4cfc",
+          "run_948dfb2f1c3b4145",
+          "run_ac636685621e4798",
+          "run_50a500dc888e4e23",
+          "run_0d8a9b16d06a4fa5",
+          "run_b6bc42f4053349fe",
+          "run_624af48179844d00",
+          "run_368e8ce431234a3e",
+          "run_4c3f0c4c65474282",
+          "run_0399d10704bc47c3",
+          "run_6ea0122b982a40ef",
+          "run_bc677ab5ebe44f77",
+          "run_9061cb5138c34975",
+          "run_2290c82013a049d2",
+          "run_6333ab4d1a28484e",
+          "run_582d672dfc9b4c84",
+          "run_b32c59287c914f32",
+          "run_b684b4dd71704a81",
+          "run_73deb70cf5a14d2b",
+          "run_1b1667fe91774c99",
+          "run_d74d4a4e5a844f20",
+          "run_5fef03de6dfd4373",
+          "run_d8b0eea1bd9c4bce",
+          "run_b4ac1c1e7c274acf",
+          "run_850542b08abb4336",
+          "run_97aef39c92ef4cad",
+          "run_cefb15a6dd93476b",
+          "run_83b01b123cdf40d7",
+          "run_960c76caffff4e57",
+          "run_f185bc2bc9a94c3b",
+          "run_18ff1f2d79dd4e91",
+          "run_bfcbc68f9934445c",
+          "run_07bc7bbd35cd49e8",
+          "run_f5e9d66ab5b6466b",
+          "run_9bb1d91205994d7c",
+          "run_1ea1eb0adfb24738",
+          "run_addc9725cee54c01",
+          "run_3957bfba3d754acf",
+          "run_a8200838486a414b",
+          "run_fc88d5adc4ed4012",
+          "run_c15a10908d614daf",
+          "run_908fac989ed04fa2",
+          "run_f4e93301e36a40db",
+          "run_141208a5639240af",
+          "run_76bda643b3474902",
+          "run_36ca22be67ea404b",
+          "run_fb8372352ac94cf8",
+          "run_24cc16a567c543c1",
+          "run_32b7aa9fb4694714",
+          "run_721044c7da0645c4",
+          "run_b311bb7d9017428e",
+          "run_c0f554543def470e",
+          "run_2ceb243439224cf3",
+          "run_e1a92c9baddb4f14"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_branded_residences_capability_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "POSITIVE",
+        "observationCount": 29,
+        "positiveObservations": 29,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_europe_residences_capability_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_mx_soft_brand_shortlist_v1",
+          "p_cala_uu_owner_shortlist_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_na_uu_positioning_strategy_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_global_independent_affiliation_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_global_uu_positioning_strategy_v1",
+          "p_na_independent_affiliation_v1",
+          "p_europe_affiliation_flexibility_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_na_collection_affiliation_v1",
+          "p_mx_independent_affiliation_v1",
+          "p_global_design_local_character_v1"
+        ],
+        "periods": [
+          "run_9ec58afa00aa4643",
+          "run_687c0b3188114c11",
+          "run_c766e471bde14d9e",
+          "run_aae2bc5dc7634b4e",
+          "run_96bc7a968fca4fd1",
+          "run_5a564a0d3d3b4cfc",
+          "run_968516a0fba644ba",
+          "run_624af48179844d00",
+          "run_9061cb5138c34975",
+          "run_120f5d6d0c7b4c27",
+          "run_b4ac1c1e7c274acf",
+          "run_f5e9d66ab5b6466b",
+          "run_40e8263a5dfb49df",
+          "run_aaf3f91e04db43fb",
+          "run_c34f0793a04c4a60",
+          "run_a8200838486a414b",
+          "run_e9b5f3a51ac04461",
+          "run_141208a5639240af",
+          "run_36ca22be67ea404b",
+          "run_24cc16a567c543c1",
+          "run_5ff603e0e4824b15",
+          "run_b311bb7d9017428e",
+          "run_d77345b321f94820"
+        ],
+        "scenarios": [
+          "scenario_branded_residences_capability_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_independent_uu_conversion_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "OPERATING_MODEL",
+        "polarity": "POSITIVE",
+        "observationCount": 2,
+        "positiveObservations": 2,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini"
+        ],
+        "variants": [
+          "p_europe_independent_affiliation_v1",
+          "p_europe_soft_brand_shortlist_v1"
+        ],
+        "periods": [
+          "run_a1b11442c1ec4baa",
+          "run_894404cf10294d6a"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "polarity": "POSITIVE",
+        "observationCount": 12,
+        "positiveObservations": 12,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_existing_asset_reposition_v1",
+          "p_mx_independent_affiliation_v1",
+          "p_na_collection_affiliation_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_mx_uu_positioning_strategy_v1",
+          "p_global_design_local_character_v1",
+          "p_na_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_687c0b3188114c11",
+          "run_0f5311ee994542ba",
+          "run_50c1690b01014487",
+          "run_968516a0fba644ba",
+          "run_13c964410d0a4c15",
+          "run_bc677ab5ebe44f77",
+          "run_1c6f3497a7f045cd",
+          "run_b4ac1c1e7c274acf",
+          "run_94926695d84945fc",
+          "run_0eb5a090ac524162",
+          "run_40e8263a5dfb49df"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "polarity": "POSITIVE",
+        "observationCount": 12,
+        "positiveObservations": 12,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_independent_affiliation_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_na_uu_owner_shortlist_v1",
+          "p_mx_individuality_preservation_v1",
+          "p_europe_uu_owner_shortlist_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_global_independent_affiliation_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_global_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_0f5311ee994542ba",
+          "run_00082a6a98bf4110",
+          "run_219d00a8f1df4f41",
+          "run_377f2d9c46724ec3",
+          "run_f50a4d3442f44a41",
+          "run_2a1465d66436427c",
+          "run_9d9cf04d9d27448d",
+          "run_f5e9d66ab5b6466b",
+          "run_1ea1eb0adfb24738",
+          "run_d1a48b51a1cd4801",
+          "run_69933f9e028d4580",
+          "run_b311bb7d9017428e"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "polarity": "POSITIVE",
+        "observationCount": 4,
+        "positiveObservations": 4,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_europe_lifestyle_strategy_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_na_collection_affiliation_v1",
+          "p_mx_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_c766e471bde14d9e",
+          "run_968516a0fba644ba",
+          "run_232d7062697b4c85",
+          "run_e9b5f3a51ac04461"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 6,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_na_collection_affiliation_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_europe_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_50c1690b01014487",
+          "run_0d8e6d2c2b8b4582",
+          "run_4ec2bb603e1f4198",
+          "run_d1a48b51a1cd4801",
+          "run_40e8263a5dfb49df",
+          "run_09dea27571314938"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "DESIGN_INDIVIDUALITY",
+        "polarity": "POSITIVE",
+        "observationCount": 5,
+        "positiveObservations": 5,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_global_independent_affiliation_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_global_uu_owner_shortlist_v1",
+          "p_na_design_local_character_v1",
+          "p_europe_uu_positioning_strategy_v1"
+        ],
+        "periods": [
+          "run_bac092b929f44bf6",
+          "run_1c6f3497a7f045cd",
+          "run_d85c83bf2b93441f",
+          "run_850542b08abb4336",
+          "run_3957bfba3d754acf"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 17,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_global_independent_affiliation_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_europe_collection_affiliation_v1",
+          "p_na_individuality_preservation_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_mx_uu_owner_shortlist_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_cala_collection_affiliation_v1"
+        ],
+        "periods": [
+          "run_bac092b929f44bf6",
+          "run_4e02d6f4d2cc4530",
+          "run_b488f63be56a4fe3",
+          "run_2e9044b9ae914c96",
+          "run_0d8e6d2c2b8b4582",
+          "run_b1467088f4d54b24",
+          "run_f5e9d66ab5b6466b",
+          "run_40e8263a5dfb49df",
+          "run_221416a55cfd4a2c",
+          "run_e9b5f3a51ac04461",
+          "run_f4e93301e36a40db",
+          "run_fb8372352ac94cf8"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "LOYALTY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 8,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_cala_collection_affiliation_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_cala_uu_positioning_strategy_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_na_design_local_character_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_mx_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_ec7167b6afb7433d",
+          "run_4e02d6f4d2cc4530",
+          "run_16950763678f4c61",
+          "run_1b1667fe91774c99",
+          "run_850542b08abb4336",
+          "run_40e8263a5dfb49df",
+          "run_f4e93301e36a40db",
+          "run_b311bb7d9017428e"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_independent_uu_conversion_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai"
+        ],
+        "variants": [
+          "p_mx_individuality_preservation_v1"
+        ],
+        "periods": [
+          "run_e845e70fbee24447"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "NEGATIVE",
+        "observationCount": 2,
+        "positiveObservations": 0,
+        "negativeObservations": 2,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_cala_uu_positioning_strategy_v1"
+        ],
+        "periods": [
+          "run_16950763678f4c61"
+        ],
+        "scenarios": [
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "descriptor": "EMERGING"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "NEGATIVE",
+        "observationCount": 4,
+        "positiveObservations": 0,
+        "negativeObservations": 4,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_cala_uu_positioning_strategy_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_europe_uu_owner_shortlist_v1",
+          "p_europe_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_16950763678f4c61",
+          "run_b35a5495f2f14501",
+          "run_2a1465d66436427c",
+          "run_d8e8f8518b5e4c57"
+        ],
+        "scenarios": [
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PERIODS"
+      },
+      {
+        "attributeId": "OPERATING_MODEL",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_europe_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_67fafeafe7f544ed"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 25,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_existing_asset_reposition_v1",
+          "p_europe_independent_affiliation_v1",
+          "p_europe_design_local_character_v1",
+          "p_mx_uu_positioning_strategy_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_global_soft_brand_shortlist_v1",
+          "p_cala_soft_brand_shortlist_v1",
+          "p_mx_soft_brand_shortlist_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_global_existing_asset_reposition_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_cala_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_1b1667fe91774c99",
+          "run_d74d4a4e5a844f20",
+          "run_6cac7b75d7e44c8e",
+          "run_94926695d84945fc",
+          "run_9d9cf04d9d27448d",
+          "run_03d713e066fc4a0a",
+          "run_da06208a8e784233",
+          "run_8e816f7385b34668",
+          "run_f185bc2bc9a94c3b",
+          "run_97a3a0c04a36407a",
+          "run_994c4e8d2d274602",
+          "run_8309e12064594cde",
+          "run_4ec2bb603e1f4198",
+          "run_ecdd1aa330b540ea",
+          "run_52c3d66073aa458f",
+          "run_d807e8e9c5ab420b",
+          "run_3957bfba3d754acf",
+          "run_f4e93301e36a40db",
+          "run_18a350933dd54e86"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "MIXED",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_na_uu_owner_shortlist_v1"
+        ],
+        "periods": [
+          "run_377f2d9c46724ec3"
+        ],
+        "scenarios": [
+          "scenario_newbuild_uu_brand_selection_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "polarity": "POSITIVE",
+        "observationCount": 3,
+        "positiveObservations": 3,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_design_local_character_es_v1",
+          "p_europe_soft_brand_shortlist_v1",
+          "p_europe_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_77b5cfcc1e5d4a24",
+          "run_894404cf10294d6a",
+          "run_36ca22be67ea404b"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "DESIGN_INDIVIDUALITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 2,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity"
+        ],
+        "variants": [
+          "p_na_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_0d8e6d2c2b8b4582"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "EMERGING"
+      },
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity"
+        ],
+        "variants": [
+          "p_cala_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_97a3a0c04a36407a"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 3,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_global_existing_asset_reposition_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_cala_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_8309e12064594cde",
+          "run_b1467088f4d54b24",
+          "run_f4e93301e36a40db"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "LUXURY_POSITIONING",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "claude"
+        ],
+        "variants": [
+          "p_europe_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_721044c7da0645c4"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "MARKET_FIT",
+        "polarity": "POSITIVE",
+        "observationCount": 1,
+        "positiveObservations": 1,
+        "negativeObservations": 0,
+        "providers": [
+          "claude"
+        ],
+        "variants": [
+          "p_global_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_18a350933dd54e86"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      }
+    ],
+    "Curio Collection": [
+      {
+        "attributeId": "LOYALTY",
+        "polarity": "POSITIVE",
+        "observationCount": 35,
+        "positiveObservations": 35,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_collection_affiliation_es_v1",
+          "p_cala_collection_affiliation_es_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_europe_collection_affiliation_v1",
+          "p_cala_individuality_preservation_v1",
+          "p_mx_uu_owner_shortlist_v1",
+          "p_global_design_local_character_v1",
+          "p_global_uu_positioning_strategy_v1",
+          "p_na_design_local_character_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_cala_uu_positioning_strategy_es_v1",
+          "p_mx_lifestyle_strategy_es_v1",
+          "p_mx_independent_affiliation_es_v1",
+          "p_cala_independent_affiliation_es_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_na_collection_affiliation_v1",
+          "p_cala_affiliation_flexibility_es_v1",
+          "p_cala_lifestyle_strategy_es_v1"
+        ],
+        "periods": [
+          "run_c777bfb58bd041d4",
+          "run_ab4d242b6d31401c",
+          "run_687c0b3188114c11",
+          "run_ec7167b6afb7433d",
+          "run_968516a0fba644ba",
+          "run_bc677ab5ebe44f77",
+          "run_1c6f3497a7f045cd",
+          "run_9167e8efdc70427f",
+          "run_9392f7148b024f92",
+          "run_5fef03de6dfd4373",
+          "run_a2a27cc1fb7b4d8e",
+          "run_4a29416d03544f2e",
+          "run_850542b08abb4336",
+          "run_d1a48b51a1cd4801",
+          "run_40e8263a5dfb49df",
+          "run_09dea27571314938",
+          "run_4118686316014a12",
+          "run_c34f0793a04c4a60",
+          "run_b295333daca44cb5",
+          "run_b8a9c92fcc734279",
+          "run_645a8a6cbacd48b4",
+          "run_d3371200475d4e54",
+          "run_c15a10908d614daf",
+          "run_24cc16a567c543c1",
+          "run_5ff603e0e4824b15",
+          "run_d77345b321f94820",
+          "run_2ceb243439224cf3",
+          "run_4663c6664c644de1"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_independent_uu_conversion_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "POSITIVE",
+        "observationCount": 78,
+        "positiveObservations": 78,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_collection_affiliation_es_v1",
+          "p_europe_residences_hotel_project_v1",
+          "p_na_independent_affiliation_v1",
+          "p_mx_soft_brand_shortlist_es_v1",
+          "p_cala_collection_affiliation_es_v1",
+          "p_europe_independent_affiliation_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_cala_independent_affiliation_v1",
+          "p_na_collection_affiliation_v1",
+          "p_cala_uu_positioning_strategy_v1",
+          "p_mx_independent_affiliation_es_v1",
+          "p_global_existing_asset_reposition_v1",
+          "p_cala_independent_affiliation_es_v1",
+          "p_cala_uu_owner_shortlist_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_mx_uu_owner_shortlist_es_v1",
+          "p_mx_lifestyle_strategy_es_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_global_collection_affiliation_v1",
+          "p_na_uu_owner_shortlist_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_mx_design_local_character_v1",
+          "p_europe_design_local_character_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_cala_individuality_preservation_es_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_cala_soft_brand_shortlist_v1",
+          "p_cala_design_local_character_v1",
+          "p_europe_affiliation_flexibility_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_na_uu_positioning_strategy_v1",
+          "p_global_uu_positioning_strategy_v1",
+          "p_cala_uu_positioning_strategy_es_v1",
+          "p_global_lifestyle_strategy_v1",
+          "p_cala_existing_asset_reposition_es_v1",
+          "p_na_design_local_character_v1",
+          "p_europe_uu_owner_shortlist_v1",
+          "p_europe_soft_brand_shortlist_v1",
+          "p_cala_affiliation_flexibility_es_v1",
+          "p_global_independent_affiliation_v1",
+          "p_mx_affiliation_flexibility_es_v1",
+          "p_global_uu_owner_shortlist_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_global_affiliation_flexibility_v1",
+          "p_mx_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_c777bfb58bd041d4",
+          "run_864994cebece43bb",
+          "run_6a1690b47f1c4395",
+          "run_3232ac726b854ea0",
+          "run_ab4d242b6d31401c",
+          "run_a1b11442c1ec4baa",
+          "run_687c0b3188114c11",
+          "run_c766e471bde14d9e",
+          "run_c0e88ed186634ad4",
+          "run_50c1690b01014487",
+          "run_a64c7586ec164b7f",
+          "run_72ac881ecfad4e13",
+          "run_24e8030708c44678",
+          "run_b74cae5e209b4a37",
+          "run_5a564a0d3d3b4cfc",
+          "run_968516a0fba644ba",
+          "run_c6ee223cce994b68",
+          "run_ac636685621e4798",
+          "run_50a500dc888e4e23",
+          "run_0d8a9b16d06a4fa5",
+          "run_b6bc42f4053349fe",
+          "run_624af48179844d00",
+          "run_13c964410d0a4c15",
+          "run_cfa475d8477c4f68",
+          "run_4c3f0c4c65474282",
+          "run_bc677ab5ebe44f77",
+          "run_6aa0fc9a3c9a48fd",
+          "run_1c6f3497a7f045cd",
+          "run_9061cb5138c34975",
+          "run_2290c82013a049d2",
+          "run_0b1cb9e33f704ea5",
+          "run_471210e3695545c4",
+          "run_6333ab4d1a28484e",
+          "run_120f5d6d0c7b4c27",
+          "run_582d672dfc9b4c84",
+          "run_b32c59287c914f32",
+          "run_b684b4dd71704a81",
+          "run_73deb70cf5a14d2b",
+          "run_1b1667fe91774c99",
+          "run_b8d3b1cc246a4806",
+          "run_f332ff5b692a4602",
+          "run_850542b08abb4336",
+          "run_d6b2689ea0cd448d",
+          "run_2a1465d66436427c",
+          "run_894404cf10294d6a",
+          "run_30201bda5f254c32",
+          "run_83b01b123cdf40d7",
+          "run_4eaa99f003c343dd",
+          "run_18ff1f2d79dd4e91",
+          "run_bfcbc68f9934445c",
+          "run_b84bca79c0a54133",
+          "run_9bb1d91205994d7c",
+          "run_16ca72a3a9174326",
+          "run_d1a48b51a1cd4801",
+          "run_69933f9e028d4580",
+          "run_addc9725cee54c01",
+          "run_3957bfba3d754acf",
+          "run_a8200838486a414b",
+          "run_b295333daca44cb5",
+          "run_c15a10908d614daf",
+          "run_f4e93301e36a40db",
+          "run_24cc16a567c543c1",
+          "run_32b7aa9fb4694714",
+          "run_721044c7da0645c4",
+          "run_b311bb7d9017428e",
+          "run_2ceb243439224cf3"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_branded_residences_capability_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "LOYALTY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 5,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_na_independent_affiliation_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_global_affiliation_flexibility_v1",
+          "p_europe_independent_affiliation_v1",
+          "p_cala_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_6a1690b47f1c4395",
+          "run_1b1667fe91774c99",
+          "run_69933f9e028d4580",
+          "run_908fac989ed04fa2",
+          "run_f4e93301e36a40db"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 32,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_europe_soft_brand_shortlist_v1",
+          "p_mx_independent_affiliation_v1",
+          "p_mx_soft_brand_shortlist_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_global_lifestyle_strategy_v1",
+          "p_mx_uu_positioning_strategy_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_global_uu_positioning_strategy_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_europe_design_local_character_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_global_soft_brand_shortlist_v1",
+          "p_cala_soft_brand_shortlist_v1",
+          "p_cala_uu_owner_shortlist_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_global_existing_asset_reposition_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_global_independent_affiliation_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_europe_uu_owner_shortlist_v1"
+        ],
+        "periods": [
+          "run_90e7891294b34f61",
+          "run_0f5311ee994542ba",
+          "run_96bc7a968fca4fd1",
+          "run_ec7167b6afb7433d",
+          "run_43690cbe5a894a6b",
+          "run_6ea0122b982a40ef",
+          "run_d1f66a8d7aa748bf",
+          "run_582d672dfc9b4c84",
+          "run_1b1667fe91774c99",
+          "run_6cac7b75d7e44c8e",
+          "run_9d9cf04d9d27448d",
+          "run_03d713e066fc4a0a",
+          "run_da06208a8e784233",
+          "run_8e816f7385b34668",
+          "run_2e1054b4899f4288",
+          "run_960c76caffff4e57",
+          "run_97a3a0c04a36407a",
+          "run_994c4e8d2d274602",
+          "run_8309e12064594cde",
+          "run_ecdd1aa330b540ea",
+          "run_bfcbc68f9934445c",
+          "run_3957bfba3d754acf",
+          "run_eeebe3a97d444a24",
+          "run_f4e93301e36a40db",
+          "run_18a350933dd54e86"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_newbuild_uu_brand_selection_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "POSITIVE",
+        "observationCount": 22,
+        "positiveObservations": 22,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_global_affiliation_flexibility_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_europe_individuality_preservation_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_europe_affiliation_flexibility_v1",
+          "p_europe_collection_affiliation_v1",
+          "p_mx_uu_owner_shortlist_v1",
+          "p_na_uu_owner_shortlist_v1",
+          "p_global_uu_positioning_strategy_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_na_collection_affiliation_v1",
+          "p_global_design_local_character_v1"
+        ],
+        "periods": [
+          "run_eb9bf765374b4cc5",
+          "run_687c0b3188114c11",
+          "run_c766e471bde14d9e",
+          "run_7cd6842cf68b4075",
+          "run_aae2bc5dc7634b4e",
+          "run_ec7167b6afb7433d",
+          "run_8c9d3da6463c45db",
+          "run_bc677ab5ebe44f77",
+          "run_471210e3695545c4",
+          "run_9167e8efdc70427f",
+          "run_5fef03de6dfd4373",
+          "run_b488f63be56a4fe3",
+          "run_477bf63ab21b4849",
+          "run_c34f0793a04c4a60",
+          "run_3957bfba3d754acf",
+          "run_a8200838486a414b",
+          "run_24cc16a567c543c1",
+          "run_5ff603e0e4824b15",
+          "run_d77345b321f94820"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "OPERATING_MODEL",
+        "polarity": "POSITIVE",
+        "observationCount": 2,
+        "positiveObservations": 2,
+        "negativeObservations": 0,
+        "providers": [
+          "openai"
+        ],
+        "variants": [
+          "p_global_affiliation_flexibility_v1",
+          "p_cala_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_eb9bf765374b4cc5",
+          "run_50a500dc888e4e23"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PERIODS"
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "polarity": "POSITIVE",
+        "observationCount": 14,
+        "positiveObservations": 14,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_independent_affiliation_v1",
+          "p_na_collection_affiliation_v1",
+          "p_cala_uu_owner_shortlist_v1",
+          "p_europe_design_local_character_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_mx_uu_positioning_strategy_v1",
+          "p_global_design_local_character_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_cala_design_local_character_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_cala_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_0f5311ee994542ba",
+          "run_50c1690b01014487",
+          "run_5a564a0d3d3b4cfc",
+          "run_4c3f0c4c65474282",
+          "run_bc677ab5ebe44f77",
+          "run_94926695d84945fc",
+          "run_0eb5a090ac524162",
+          "run_4f7c051bcd8f417c",
+          "run_40e8263a5dfb49df",
+          "run_616ad2251bbd46a2",
+          "run_a8200838486a414b",
+          "run_f4e93301e36a40db",
+          "run_e1a92c9baddb4f14"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 3,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_na_collection_affiliation_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_cala_collection_affiliation_v1"
+        ],
+        "periods": [
+          "run_50c1690b01014487",
+          "run_0d8e6d2c2b8b4582",
+          "run_fb8372352ac94cf8"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 17,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_global_independent_affiliation_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_europe_collection_affiliation_v1",
+          "p_na_individuality_preservation_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_cala_individuality_preservation_v1",
+          "p_mx_uu_owner_shortlist_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_cala_collection_affiliation_v1"
+        ],
+        "periods": [
+          "run_bac092b929f44bf6",
+          "run_4e02d6f4d2cc4530",
+          "run_b488f63be56a4fe3",
+          "run_2e9044b9ae914c96",
+          "run_0d8e6d2c2b8b4582",
+          "run_b1467088f4d54b24",
+          "run_f5e9d66ab5b6466b",
+          "run_40e8263a5dfb49df",
+          "run_fc88d5adc4ed4012",
+          "run_221416a55cfd4a2c",
+          "run_e9b5f3a51ac04461",
+          "run_f4e93301e36a40db",
+          "run_fb8372352ac94cf8"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "DESIGN_INDIVIDUALITY",
+        "polarity": "POSITIVE",
+        "observationCount": 6,
+        "positiveObservations": 6,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_europe_individuality_preservation_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_na_design_local_character_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_europe_uu_positioning_strategy_v1"
+        ],
+        "periods": [
+          "run_7cd6842cf68b4075",
+          "run_624af48179844d00",
+          "run_1c6f3497a7f045cd",
+          "run_850542b08abb4336",
+          "run_09dea27571314938",
+          "run_3957bfba3d754acf"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "LUXURY_POSITIONING",
+        "polarity": "MIXED",
+        "observationCount": 2,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai"
+        ],
+        "variants": [
+          "p_na_residences_hotel_project_v1"
+        ],
+        "periods": [
+          "run_b63e27f7372641b8"
+        ],
+        "scenarios": [
+          "scenario_branded_residences_capability_v1"
+        ],
+        "descriptor": "EMERGING"
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "polarity": "POSITIVE",
+        "observationCount": 9,
+        "positiveObservations": 9,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_na_lifestyle_strategy_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_na_uu_owner_shortlist_v1",
+          "p_mx_individuality_preservation_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_mx_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_8c9d3da6463c45db",
+          "run_b684b4dd71704a81",
+          "run_377f2d9c46724ec3",
+          "run_f50a4d3442f44a41",
+          "run_d1a48b51a1cd4801",
+          "run_a2c78f17c14c48a5",
+          "run_96dd3f9cd3f84e5a",
+          "run_b311bb7d9017428e"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_independent_uu_conversion_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "NEGATIVE",
+        "observationCount": 6,
+        "positiveObservations": 0,
+        "negativeObservations": 6,
+        "providers": [
+          "openai",
+          "gemini"
+        ],
+        "variants": [
+          "p_cala_soft_brand_shortlist_v1",
+          "p_cala_uu_positioning_strategy_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_europe_uu_owner_shortlist_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_europe_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_2290c82013a049d2",
+          "run_16950763678f4c61",
+          "run_b35a5495f2f14501",
+          "run_2a1465d66436427c",
+          "run_9d9cf04d9d27448d",
+          "run_d8e8f8518b5e4c57"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "DESIGN_INDIVIDUALITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 4,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "perplexity"
+        ],
+        "variants": [
+          "p_global_uu_positioning_strategy_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_cala_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_582d672dfc9b4c84",
+          "run_0d8e6d2c2b8b4582",
+          "run_4f7c051bcd8f417c"
+        ],
+        "scenarios": [
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "NEGATIVE",
+        "observationCount": 3,
+        "positiveObservations": 0,
+        "negativeObservations": 3,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_cala_uu_positioning_strategy_v1",
+          "p_mx_soft_brand_shortlist_v1"
+        ],
+        "periods": [
+          "run_16950763678f4c61",
+          "run_9cc23e13a49d4e5b"
+        ],
+        "scenarios": [
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PERIODS"
+      },
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "polarity": "POSITIVE",
+        "observationCount": 3,
+        "positiveObservations": 3,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_na_design_local_character_v1",
+          "p_na_collection_affiliation_v1",
+          "p_cala_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_850542b08abb4336",
+          "run_232d7062697b4c85",
+          "run_a8200838486a414b"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "polarity": "POSITIVE",
+        "observationCount": 1,
+        "positiveObservations": 1,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_mx_design_local_character_es_v1"
+        ],
+        "periods": [
+          "run_77b5cfcc1e5d4a24"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "LOYALTY",
+        "polarity": "NEGATIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 1,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_cala_collection_affiliation_v1"
+        ],
+        "periods": [
+          "run_9d9cf04d9d27448d"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "LUXURY_POSITIONING",
+        "polarity": "POSITIVE",
+        "observationCount": 2,
+        "positiveObservations": 2,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_cala_uu_owner_shortlist_v1",
+          "p_europe_uu_owner_shortlist_v1"
+        ],
+        "periods": [
+          "run_2e1054b4899f4288",
+          "run_eeebe3a97d444a24"
+        ],
+        "scenarios": [
+          "scenario_newbuild_uu_brand_selection_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity"
+        ],
+        "variants": [
+          "p_cala_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_97a3a0c04a36407a"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 2,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_global_existing_asset_reposition_v1",
+          "p_cala_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_8309e12064594cde",
+          "run_f4e93301e36a40db"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "MIXED",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "claude"
+        ],
+        "variants": [
+          "p_mx_collection_affiliation_v1"
+        ],
+        "periods": [
+          "run_fadfaeff9d0c4a9c"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "polarity": "MIXED",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "claude"
+        ],
+        "variants": [
+          "p_mx_collection_affiliation_v1"
+        ],
+        "periods": [
+          "run_fadfaeff9d0c4a9c"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      }
+    ],
+    "Tribute Portfolio": [
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "POSITIVE",
+        "observationCount": 60,
+        "positiveObservations": 60,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_collection_affiliation_es_v1",
+          "p_global_lifestyle_strategy_v1",
+          "p_mx_uu_owner_shortlist_v1",
+          "p_europe_independent_affiliation_v1",
+          "p_europe_uu_owner_shortlist_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_na_collection_affiliation_v1",
+          "p_europe_collection_affiliation_v1",
+          "p_cala_uu_positioning_strategy_v1",
+          "p_global_existing_asset_reposition_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_cala_uu_owner_shortlist_v1",
+          "p_mx_existing_asset_reposition_es_v1",
+          "p_mx_lifestyle_strategy_es_v1",
+          "p_global_collection_affiliation_v1",
+          "p_na_uu_owner_shortlist_v1",
+          "p_mx_design_local_character_v1",
+          "p_europe_design_local_character_v1",
+          "p_cala_uu_owner_shortlist_es_v1",
+          "p_mx_uu_positioning_strategy_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_cala_soft_brand_shortlist_v1",
+          "p_cala_design_local_character_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_global_uu_positioning_strategy_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_europe_soft_brand_shortlist_v1",
+          "p_europe_affiliation_flexibility_v1",
+          "p_global_independent_affiliation_v1",
+          "p_global_affiliation_flexibility_v1",
+          "p_cala_existing_asset_reposition_es_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_cala_individuality_preservation_v1",
+          "p_na_independent_affiliation_v1",
+          "p_cala_residences_capability_es_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_cala_affiliation_flexibility_es_v1",
+          "p_cala_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_c777bfb58bd041d4",
+          "run_e300bb01b3a64c43",
+          "run_27641bc810d14c5a",
+          "run_a1b11442c1ec4baa",
+          "run_0a62b4c4c3444326",
+          "run_c766e471bde14d9e",
+          "run_50c1690b01014487",
+          "run_b166173b0f0e43b7",
+          "run_a64c7586ec164b7f",
+          "run_24e8030708c44678",
+          "run_ec7167b6afb7433d",
+          "run_5a564a0d3d3b4cfc",
+          "run_948dfb2f1c3b4145",
+          "run_ac636685621e4798",
+          "run_0d8a9b16d06a4fa5",
+          "run_43690cbe5a894a6b",
+          "run_b6bc42f4053349fe",
+          "run_cfa475d8477c4f68",
+          "run_4c3f0c4c65474282",
+          "run_0399d10704bc47c3",
+          "run_6ea0122b982a40ef",
+          "run_bc677ab5ebe44f77",
+          "run_1c6f3497a7f045cd",
+          "run_2290c82013a049d2",
+          "run_0b1cb9e33f704ea5",
+          "run_6333ab4d1a28484e",
+          "run_d1f66a8d7aa748bf",
+          "run_582d672dfc9b4c84",
+          "run_1b1667fe91774c99",
+          "run_5fef03de6dfd4373",
+          "run_18ff1f2d79dd4e91",
+          "run_7a2f7ef5f7514a0a",
+          "run_f5e9d66ab5b6466b",
+          "run_9bb1d91205994d7c",
+          "run_69933f9e028d4580",
+          "run_addc9725cee54c01",
+          "run_a8200838486a414b",
+          "run_fc88d5adc4ed4012",
+          "run_908fac989ed04fa2",
+          "run_f4e93301e36a40db",
+          "run_141208a5639240af",
+          "run_76bda643b3474902",
+          "run_24cc16a567c543c1",
+          "run_32b7aa9fb4694714",
+          "run_721044c7da0645c4",
+          "run_c0f554543def470e",
+          "run_2ceb243439224cf3",
+          "run_e1a92c9baddb4f14"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_branded_residences_capability_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "LOYALTY",
+        "polarity": "POSITIVE",
+        "observationCount": 36,
+        "positiveObservations": 36,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_cala_collection_affiliation_es_v1",
+          "p_europe_collection_affiliation_v1",
+          "p_mx_soft_brand_shortlist_v1",
+          "p_mx_independent_affiliation_es_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_mx_existing_asset_reposition_es_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_cala_affiliation_flexibility_es_v1",
+          "p_europe_affiliation_flexibility_v1",
+          "p_na_uu_positioning_strategy_v1",
+          "p_cala_individuality_preservation_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_cala_individuality_preservation_es_v1",
+          "p_global_affiliation_flexibility_v1",
+          "p_europe_lifestyle_strategy_v1",
+          "p_global_lifestyle_strategy_v1",
+          "p_mx_collection_affiliation_es_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_cala_independent_affiliation_es_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_mx_soft_brand_shortlist_es_v1",
+          "p_mx_affiliation_flexibility_es_v1"
+        ],
+        "periods": [
+          "run_ab4d242b6d31401c",
+          "run_b166173b0f0e43b7",
+          "run_96bc7a968fca4fd1",
+          "run_72ac881ecfad4e13",
+          "run_968516a0fba644ba",
+          "run_948dfb2f1c3b4145",
+          "run_50a500dc888e4e23",
+          "run_bc677ab5ebe44f77",
+          "run_1c6f3497a7f045cd",
+          "run_92de104928184e62",
+          "run_471210e3695545c4",
+          "run_120f5d6d0c7b4c27",
+          "run_9392f7148b024f92",
+          "run_627eb34a70904852",
+          "run_082e420ccf3640be",
+          "run_69933f9e028d4580",
+          "run_09dea27571314938",
+          "run_655ebe3597fd4a12",
+          "run_aaf3f91e04db43fb",
+          "run_4118686316014a12",
+          "run_e9b5f3a51ac04461",
+          "run_645a8a6cbacd48b4",
+          "run_d3371200475d4e54",
+          "run_36ca22be67ea404b",
+          "run_161e440dd1ec49f3",
+          "run_fb8372352ac94cf8",
+          "run_6c6a479909c947e1",
+          "run_24cc16a567c543c1",
+          "run_bb962e37fd2640cd",
+          "run_fadfaeff9d0c4a9c",
+          "run_13538caf369444ef",
+          "run_2ceb243439224cf3"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "POSITIVE",
+        "observationCount": 17,
+        "positiveObservations": 17,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "claude"
+        ],
+        "variants": [
+          "p_global_affiliation_flexibility_v1",
+          "p_na_collection_affiliation_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_mx_soft_brand_shortlist_v1",
+          "p_cala_uu_owner_shortlist_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_na_uu_positioning_strategy_v1",
+          "p_global_independent_affiliation_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_na_independent_affiliation_v1",
+          "p_europe_affiliation_flexibility_v1",
+          "p_cala_affiliation_flexibility_v1",
+          "p_mx_independent_affiliation_v1",
+          "p_global_design_local_character_v1"
+        ],
+        "periods": [
+          "run_eb9bf765374b4cc5",
+          "run_50c1690b01014487",
+          "run_aae2bc5dc7634b4e",
+          "run_96bc7a968fca4fd1",
+          "run_5a564a0d3d3b4cfc",
+          "run_bc677ab5ebe44f77",
+          "run_120f5d6d0c7b4c27",
+          "run_f5e9d66ab5b6466b",
+          "run_aaf3f91e04db43fb",
+          "run_a8200838486a414b",
+          "run_e9b5f3a51ac04461",
+          "run_141208a5639240af",
+          "run_36ca22be67ea404b",
+          "run_24cc16a567c543c1",
+          "run_b311bb7d9017428e",
+          "run_d77345b321f94820"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "OPERATING_MODEL",
+        "polarity": "POSITIVE",
+        "observationCount": 1,
+        "positiveObservations": 1,
+        "negativeObservations": 0,
+        "providers": [
+          "openai"
+        ],
+        "variants": [
+          "p_global_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_eb9bf765374b4cc5"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "polarity": "POSITIVE",
+        "observationCount": 15,
+        "positiveObservations": 15,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_existing_asset_reposition_v1",
+          "p_global_independent_affiliation_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_cala_collection_affiliation_v1",
+          "p_europe_existing_asset_reposition_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_mx_collection_affiliation_v1",
+          "p_na_existing_asset_reposition_v1",
+          "p_cala_individuality_preservation_v1",
+          "p_europe_uu_positioning_strategy_v1",
+          "p_mx_uu_positioning_strategy_v1",
+          "p_mx_individuality_preservation_v1",
+          "p_global_design_local_character_v1",
+          "p_na_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_687c0b3188114c11",
+          "run_bac092b929f44bf6",
+          "run_aae2bc5dc7634b4e",
+          "run_ec7167b6afb7433d",
+          "run_968516a0fba644ba",
+          "run_13c964410d0a4c15",
+          "run_bc677ab5ebe44f77",
+          "run_1c6f3497a7f045cd",
+          "run_9392f7148b024f92",
+          "run_b684b4dd71704a81",
+          "run_94926695d84945fc",
+          "run_f50a4d3442f44a41",
+          "run_0eb5a090ac524162",
+          "run_40e8263a5dfb49df"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1",
+          "scenario_independent_uu_conversion_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_chainscale_positioning_fit_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "NEGATIVE",
+        "observationCount": 4,
+        "positiveObservations": 0,
+        "negativeObservations": 4,
+        "providers": [
+          "openai",
+          "gemini"
+        ],
+        "variants": [
+          "p_na_collection_affiliation_v1",
+          "p_europe_collection_affiliation_v1",
+          "p_cala_independent_affiliation_v1"
+        ],
+        "periods": [
+          "run_50c1690b01014487",
+          "run_b166173b0f0e43b7",
+          "run_f332ff5b692a4602"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_independent_uu_conversion_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "DISTRIBUTION",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 11,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_global_independent_affiliation_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_mx_affiliation_flexibility_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_mx_uu_owner_shortlist_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_cala_collection_affiliation_v1"
+        ],
+        "periods": [
+          "run_bac092b929f44bf6",
+          "run_4e02d6f4d2cc4530",
+          "run_b1467088f4d54b24",
+          "run_f5e9d66ab5b6466b",
+          "run_40e8263a5dfb49df",
+          "run_221416a55cfd4a2c",
+          "run_e9b5f3a51ac04461",
+          "run_f4e93301e36a40db",
+          "run_fb8372352ac94cf8"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_owner_flexibility_control_v1",
+          "scenario_newbuild_uu_brand_selection_v1",
+          "scenario_conversion_suitability_v1",
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "LOYALTY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 6,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_cala_collection_affiliation_v1",
+          "p_mx_lifestyle_strategy_v1",
+          "p_mx_existing_asset_reposition_v1",
+          "p_na_lifestyle_strategy_v1",
+          "p_cala_lifestyle_strategy_v1",
+          "p_cala_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_ec7167b6afb7433d",
+          "run_4e02d6f4d2cc4530",
+          "run_1b1667fe91774c99",
+          "run_40e8263a5dfb49df",
+          "run_a8200838486a414b",
+          "run_f4e93301e36a40db"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1",
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "polarity": "POSITIVE",
+        "observationCount": 1,
+        "positiveObservations": 1,
+        "negativeObservations": 0,
+        "providers": [
+          "openai"
+        ],
+        "variants": [
+          "p_europe_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_968516a0fba644ba"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "LUXURY_POSITIONING",
+        "polarity": "POSITIVE",
+        "observationCount": 2,
+        "positiveObservations": 2,
+        "negativeObservations": 0,
+        "providers": [
+          "openai"
+        ],
+        "variants": [
+          "p_global_collection_affiliation_v1",
+          "p_europe_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_0d8a9b16d06a4fa5",
+          "run_471210e3695545c4"
+        ],
+        "scenarios": [
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PERIODS"
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 2,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_individuality_preservation_v1",
+          "p_cala_design_local_character_v1"
+        ],
+        "periods": [
+          "run_e845e70fbee24447",
+          "run_616ad2251bbd46a2"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "GEOGRAPHIC_PRESENCE",
+        "polarity": "POSITIVE",
+        "observationCount": 4,
+        "positiveObservations": 4,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_independent_affiliation_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_mx_individuality_preservation_v1",
+          "p_global_collection_affiliation_v1"
+        ],
+        "periods": [
+          "run_00082a6a98bf4110",
+          "run_219d00a8f1df4f41",
+          "run_f50a4d3442f44a41",
+          "run_feed5db3b27e478a"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 7,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini",
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_existing_asset_reposition_v1",
+          "p_global_soft_brand_shortlist_v1",
+          "p_cala_soft_brand_shortlist_v1",
+          "p_na_affiliation_flexibility_v1",
+          "p_na_soft_brand_shortlist_v1",
+          "p_cala_existing_asset_reposition_v1",
+          "p_global_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_1b1667fe91774c99",
+          "run_da06208a8e784233",
+          "run_8e816f7385b34668",
+          "run_994c4e8d2d274602",
+          "run_ecdd1aa330b540ea",
+          "run_f4e93301e36a40db",
+          "run_18a350933dd54e86"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1",
+          "scenario_soft_brand_collection_affiliation_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "STRONGLY_REPEATED"
+      },
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "MIXED",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_na_uu_owner_shortlist_v1"
+        ],
+        "periods": [
+          "run_377f2d9c46724ec3"
+        ],
+        "scenarios": [
+          "scenario_newbuild_uu_brand_selection_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "INDEPENDENT_IDENTITY",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 2,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "perplexity",
+          "claude"
+        ],
+        "variants": [
+          "p_mx_affiliation_flexibility_v1",
+          "p_cala_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_b1467088f4d54b24",
+          "run_f4e93301e36a40db"
+        ],
+        "scenarios": [
+          "scenario_owner_flexibility_control_v1",
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "claude"
+        ],
+        "variants": [
+          "p_na_lifestyle_strategy_v1"
+        ],
+        "periods": [
+          "run_40e8263a5dfb49df"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      },
+      {
+        "attributeId": "OWNER_FLEXIBILITY",
+        "polarity": "POSITIVE",
+        "observationCount": 2,
+        "positiveObservations": 2,
+        "negativeObservations": 0,
+        "providers": [
+          "claude"
+        ],
+        "variants": [
+          "p_europe_uu_positioning_strategy_v1",
+          "p_europe_affiliation_flexibility_v1"
+        ],
+        "periods": [
+          "run_3957bfba3d754acf",
+          "run_36ca22be67ea404b"
+        ],
+        "scenarios": [
+          "scenario_chainscale_positioning_fit_v1",
+          "scenario_owner_flexibility_control_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PERIODS"
+      },
+      {
+        "attributeId": "LUXURY_POSITIONING",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "claude"
+        ],
+        "variants": [
+          "p_europe_existing_asset_reposition_v1"
+        ],
+        "periods": [
+          "run_721044c7da0645c4"
+        ],
+        "scenarios": [
+          "scenario_conversion_suitability_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      }
+    ],
+    "AC Hotels by Marriott": [
+      {
+        "attributeId": "CONVERSION_SUITABILITY",
+        "polarity": "POSITIVE",
+        "observationCount": 2,
+        "positiveObservations": 2,
+        "negativeObservations": 0,
+        "providers": [
+          "openai",
+          "perplexity"
+        ],
+        "variants": [
+          "p_europe_independent_affiliation_v1",
+          "p_europe_soft_brand_shortlist_v1"
+        ],
+        "periods": [
+          "run_a1b11442c1ec4baa",
+          "run_18ff1f2d79dd4e91"
+        ],
+        "scenarios": [
+          "scenario_independent_uu_conversion_v1",
+          "scenario_soft_brand_collection_affiliation_v1"
+        ],
+        "descriptor": "REPEATED_ACROSS_PROVIDERS"
+      },
+      {
+        "attributeId": "LIFESTYLE_POSITIONING",
+        "polarity": "NEUTRAL_DESCRIPTIVE",
+        "observationCount": 1,
+        "positiveObservations": 0,
+        "negativeObservations": 0,
+        "providers": [
+          "gemini"
+        ],
+        "variants": [
+          "p_cala_design_local_character_v1"
+        ],
+        "periods": [
+          "run_d8b0eea1bd9c4bce"
+        ],
+        "scenarios": [
+          "scenario_lifestyle_individuality_positioning_v1"
+        ],
+        "descriptor": "SINGLE_OBSERVATION"
+      }
+    ]
+  },
+  "isolation": {
+    "SPANISH_IN_ENGLISH": 0,
+    "ENGLISH_IN_SPANISH": 0
+  },
+  "certifiedLayer": {
+    "PRESENCE_DIFF": 0,
+    "QM_DIFF": 0,
+    "ALL_PROVIDERS_DIFF": 0,
+    "CITATION_DIFF": 0
+  }
+}

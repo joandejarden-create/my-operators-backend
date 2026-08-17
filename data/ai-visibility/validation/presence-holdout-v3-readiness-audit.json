@@ -1,0 +1,234 @@
+{
+  "phase": "PRESENCE_HOLDOUT_V3_READINESS_AUDIT_COMPLETE",
+  "status": "PRESENCE_HOLDOUT_V3_READINESS_PASS",
+  "nextStep": "READY_FOR_PRESENCE_HOLDOUT_V3_SELECTION_AND_FREEZE",
+  "batchId": "presence_validation_holdout_v3_candidate_batch_v1",
+  "resolver": "ai_visibility_entity_resolver_v2_1_contextual",
+  "pool": {
+    "PAIR_N": 170,
+    "UNIQUE_RESPONSE_N": 86,
+    "PRESENT": 85,
+    "NOT_PRESENT": 85,
+    "INVALID": 0,
+    "DEFERRED": 0,
+    "PRIMARY_N": 170,
+    "FINALIZED_N": 170
+  },
+  "providers": {
+    "OPENAI": {
+      "pairN": 42,
+      "presentN": 21,
+      "notPresentN": 21,
+      "uniqueResponseN": 21
+    },
+    "PERPLEXITY": {
+      "pairN": 42,
+      "presentN": 21,
+      "notPresentN": 21,
+      "uniqueResponseN": 21
+    },
+    "GEMINI": {
+      "pairN": 38,
+      "presentN": 19,
+      "notPresentN": 19,
+      "uniqueResponseN": 20
+    },
+    "CLAUDE": {
+      "pairN": 48,
+      "presentN": 24,
+      "notPresentN": 24,
+      "uniqueResponseN": 24
+    }
+  },
+  "languages": {
+    "ENGLISH": {
+      "pairN": 119,
+      "presentN": 60,
+      "notPresentN": 59,
+      "uniqueResponseN": 60
+    },
+    "SPANISH": {
+      "pairN": 51,
+      "presentN": 25,
+      "notPresentN": 26,
+      "uniqueResponseN": 26
+    }
+  },
+  "geographies": {
+    "GLOBAL": {
+      "pairN": 27,
+      "presentN": 14,
+      "notPresentN": 13,
+      "uniqueResponseN": 14
+    },
+    "CALA": {
+      "pairN": 50,
+      "presentN": 25,
+      "notPresentN": 25,
+      "uniqueResponseN": 25
+    },
+    "EUROPE": {
+      "pairN": 24,
+      "presentN": 12,
+      "notPresentN": 12,
+      "uniqueResponseN": 12
+    },
+    "NORTH_AMERICA": {
+      "pairN": 20,
+      "presentN": 10,
+      "notPresentN": 10,
+      "uniqueResponseN": 10
+    },
+    "MEXICO": {
+      "pairN": 49,
+      "presentN": 24,
+      "notPresentN": 25,
+      "uniqueResponseN": 25
+    }
+  },
+  "integrity": {
+    "UNIQUE_CASE_IDS": 170,
+    "UNIQUE_ENTITY_RESPONSE_PAIRS": 170,
+    "CASE_ID_DUPLICATES": 0,
+    "ENTITY_RESPONSE_DUPLICATES": 0,
+    "NO_DUPLICATE_MANIFEST_ROWS": true,
+    "MAX_PAIRS_PER_RESPONSE": 2,
+    "RESPONSE_LEVEL_GOVERNANCE": "OK",
+    "partitionViolations": 0,
+    "ok": true
+  },
+  "leakage": {
+    "LEAKAGE_CASES": 0,
+    "LEAKAGE_RESPONSES": 0,
+    "hits": [],
+    "ok": true
+  },
+  "labelIntegrity": {
+    "missingHumanLabels": 0,
+    "missingCanonicalEntity": 0,
+    "missingSourceResponse": 0,
+    "malformedResponse": 0,
+    "identityAmbiguityUnresolved": 0,
+    "invalid": 0,
+    "deferred": 0,
+    "duplicateReviewActions": 0,
+    "ok": true
+  },
+  "feasibility": {
+    "ELIGIBLE_PAIR_N": 170,
+    "ELIGIBLE_UNIQUE_RESPONSE_N": 86,
+    "ELIGIBLE_PRESENT": 85,
+    "ELIGIBLE_NOT_PRESENT": 85,
+    "TARGET_60_40_FEASIBLE": "YES",
+    "TARGET_UNIQUE_RESPONSE_80_FEASIBLE": "YES",
+    "PROJECTED_HOLDOUT_PAIR_N": 100,
+    "PROJECTED_UNIQUE_RESPONSE_N": 86,
+    "PROJECTED_PRESENT": 60,
+    "PROJECTED_NOT_PRESENT": 40,
+    "reasonIfBelow80": null,
+    "NEGATIVE_CONTROL_COVERAGE_SUFFICIENT": "YES"
+  },
+  "negativeControls": {
+    "categories": {
+      "parent_present_child_absent": 2,
+      "sibling_present_target_absent": 56,
+      "generic_collection": 9,
+      "geographic_playa": 9,
+      "ordinary_language_false_friend": 0,
+      "similar_name_entity": 0,
+      "short_name_ambiguity": 0,
+      "parent_context_without_target": 0,
+      "no_entity_occurrence": 9,
+      "generic_canopy_common_language": 0,
+      "other": 0
+    },
+    "coveredCategories": 5,
+    "NEGATIVE_CONTROL_COVERAGE_SUFFICIENT": "YES"
+  },
+  "shortNameContextual": {
+    "shortened_brand_names": 7,
+    "parent_context_resolution": 58,
+    "brand_family_lists": 156,
+    "common_language_collisions": 27,
+    "FRESH_RELATIVE_TO_HOLDOUT_V2": "YES"
+  },
+  "proposedAllocation": {
+    "OPENAI": 25,
+    "GEMINI": 20,
+    "PERPLEXITY": 26,
+    "CLAUDE": 29,
+    "ENGLISH": 68,
+    "SPANISH": 32,
+    "GLOBAL": 16,
+    "CALA": 31,
+    "MEXICO": 29,
+    "EUROPE": 12,
+    "NORTH_AMERICA": 12,
+    "TOTAL": 100
+  },
+  "certificationContract": {
+    "PRECISION_THRESHOLD": "98%",
+    "RECALL_THRESHOLD": "98%",
+    "requiredMetrics": [
+      "Accuracy",
+      "Precision",
+      "Recall",
+      "F1",
+      "Specificity",
+      "FalsePositiveRate",
+      "FalseNegativeRate",
+      "CANDIDATE_PAIR_N",
+      "UNIQUE_RESPONSE_N"
+    ],
+    "requiredBreakdowns": [
+      "provider",
+      "language",
+      "geography"
+    ],
+    "forbidCompositeScore": true,
+    "report": [
+      "Accuracy",
+      "Precision",
+      "Recall",
+      "F1",
+      "Specificity",
+      "FPR",
+      "FNR",
+      "Pair N",
+      "Unique Response N",
+      "Provider",
+      "Language",
+      "Geography"
+    ]
+  },
+  "holdoutV2": {
+    "HOLDOUT_V2_STATUS": "SCORED_FAIL",
+    "REUSED": "NO",
+    "MODIFIED": "NO",
+    "RESCORED": "NO",
+    "manifestExists": true,
+    "scoreExists": true,
+    "untouched": true
+  },
+  "regionalization": {
+    "STATUS": "PLANNED_AFTER_PRESENCE_CERTIFICATION",
+    "EXECUTED": "NO"
+  },
+  "hardGuards": {
+    "HUMAN_LABEL_CHANGES": 0,
+    "ENTITY_RESOLVER_CHANGES": 0,
+    "ALIAS_CHANGES": 0,
+    "HOLDOUT_V3_SELECTION": 0,
+    "HOLDOUT_V3_FREEZE": 0,
+    "HOLDOUT_V3_SCORING": 0,
+    "HOLDOUT_V2_CHANGES": 0,
+    "HOLDOUT_V2_RESCORE": 0,
+    "PROVIDER_CALLS": 0,
+    "REGIONALIZATION_EXECUTION": 0,
+    "AIRTABLE_WRITES": 0,
+    "DEPLOYS": 0
+  },
+  "HOLDOUT_V3_SELECTED": false,
+  "HOLDOUT_V3_FROZEN": false,
+  "HOLDOUT_V3_SCORED": false
+}

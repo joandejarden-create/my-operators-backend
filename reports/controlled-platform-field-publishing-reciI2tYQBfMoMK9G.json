@@ -1,0 +1,92 @@
+{
+  "controlledPublishVersion": "v2",
+  "generatedAt": "2026-07-06T15:16:50.597Z",
+  "mode": "dry-run",
+  "entityType": "operator",
+  "targetRecId": "reciI2tYQBfMoMK9G",
+  "entityName": "GHL Hoteles (GHL Holding)",
+  "destinationFieldKey": "specificMarkets",
+  "factId": "reccszsLnWjA5fPnp",
+  "suggestionKey": "reciI2tYQBfMoMK9G:reccszsLnWjA5fPnp:op.markets.regionsSupported",
+  "validation": {
+    "ok": false,
+    "failures": [
+      "not_controlled_publish_candidate",
+      "risk_not_low",
+      "destination_not_blank"
+    ],
+    "gates": {
+      "entityTypeSupported": true,
+      "destinationAllowlisted": true,
+      "factOrSuggestionProvided": true,
+      "suggestionFound": true,
+      "factApproved": true,
+      "sourceExplorerApproved": true,
+      "governanceDisplayAllowed": true,
+      "controlledClassification": false,
+      "riskLow": false,
+      "destinationBlank": false,
+      "notGovernanceField": true,
+      "notCompanyValidated": true,
+      "notIdentityField": true,
+      "notScoringOrFit": true,
+      "factKeyMatches": true,
+      "applyFlagPresent": false,
+      "approvalTokenPresent": false
+    },
+    "plan": null
+  },
+  "suggestion": {
+    "suggestionId": "reciI2tYQBfMoMK9G:reccszsLnWjA5fPnp:op.markets.regionsSupported",
+    "status": "Needs Review",
+    "entityType": "operator",
+    "targetRecId": "reciI2tYQBfMoMK9G",
+    "entityName": "GHL Hoteles (GHL Holding)",
+    "sourceFactId": "reccszsLnWjA5fPnp",
+    "sourceId": "recoOcRjSD3VZb3qt",
+    "factKey": "op.markets.regionsSupported",
+    "displayLabel": "Regions Supported",
+    "approvedValue": "Latin America, Colombia, Peru, Chile, Guatemala",
+    "destinationTable": "Operator Setup - Platform & Markets",
+    "destinationField": "specificMarkets",
+    "destinationFieldType": "longText",
+    "consumptionPath": "prefill.regions",
+    "currentLiveValue": "Latin America, Colombia, Peru, Chile, Guatemala",
+    "liveValuePopulated": true,
+    "proposedValue": "Latin America, Colombia, Peru, Chile, Guatemala",
+    "classification": "suggested_field_update",
+    "publishMode": "suggested_field_update",
+    "riskLevel": "Medium",
+    "riskReasons": [
+      "destination_populated"
+    ],
+    "recommendation": "Compare proposed vs live value; approve only if proposed is clearly better.",
+    "evidenceSummary": {
+      "evidenceText": "Destinations in Latin America",
+      "pageSectionAnchor": "GHL Hoteles (GHL Holding)/website/GHL Hoteles events.html",
+      "confidenceLevel": "High",
+      "extractionType": "Directly Stated"
+    },
+    "sourceSummary": {
+      "sourceId": "recoOcRjSD3VZb3qt",
+      "sourceTitle": "GHL Hoteles events",
+      "sourceUrl": "https://www.ghlhoteles.com/en/events/",
+      "sourceType": "Website Capture",
+      "sourceOrigin": "Public Web",
+      "approvedForExplorerUse": "Yes",
+      "status": "Extracted"
+    },
+    "blockers": [
+      "destination_field_populated"
+    ],
+    "policyNotes": "Regional presence text; validate against select options if normalized later."
+  },
+  "liveDestination": {
+    "recordId": "recbY3IGCh2LZQ3Mi",
+    "rowCount": 1,
+    "previousValue": "Latin America, Colombia, Peru, Chile, Guatemala"
+  },
+  "writeResult": null,
+  "rollback": null,
+  "blocked": true
+}

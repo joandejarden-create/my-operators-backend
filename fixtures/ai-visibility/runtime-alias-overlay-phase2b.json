@@ -1,0 +1,195 @@
+{
+  "overlayId": "ai_visibility_runtime_alias_overlay_phase2b_v1",
+  "version": "1",
+  "source": "ai_visibility_live_observation",
+  "airtableWrites": 0,
+  "notes": [
+    "Temporary runtime aliases for Phase 2B reprocessing only.",
+    "Do not write to Brand Alias Mapping or Operator Aliases until founder approval.",
+    "Bare parent companies (Hilton, Marriott, Hyatt) intentionally excluded.",
+    "Springboard Hospitality left unresolved — ambiguous corporate relationship flagged for founder review.",
+    "Hardening-1 additions: short forms evidenced in Golden Set v2 development false negatives; collision-checked against blocked parents."
+  ],
+  "aliases": [
+    {
+      "alias": "Curio Collection",
+      "canonicalEntityId": "receQkxgjlezsc1xg",
+      "canonicalName": "Curio Collection by Hilton",
+      "entityType": "brand",
+      "source": "ai_visibility_live_observation",
+      "evidenceCount": 7,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Repeated short-form in Phase 2A ranked brand shortlists",
+      "phase2aResponseIds": ["resp_f8533765cdca40ca", "resp_0cffe6d64cb64b33"]
+    },
+    {
+      "alias": "Curio",
+      "canonicalEntityId": "receQkxgjlezsc1xg",
+      "canonicalName": "Curio Collection by Hilton",
+      "entityType": "brand",
+      "source": "ai_visibility_live_observation",
+      "evidenceCount": 5,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Short collection name in ranked lists; longest-match protects Curio Collection first",
+      "phase2aResponseIds": ["resp_f8533765cdca40ca"]
+    },
+    {
+      "alias": "Autograph",
+      "canonicalEntityId": "recEJCTDj1zrsjPM6",
+      "canonicalName": "Autograph Collection",
+      "entityType": "brand",
+      "source": "ai_visibility_live_observation",
+      "evidenceCount": 5,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Repeated short-form for Autograph Collection in Phase 2A answers",
+      "phase2aResponseIds": ["resp_f8533765cdca40ca", "resp_be2ba43fde4342ca"]
+    },
+    {
+      "alias": "Kimpton",
+      "canonicalEntityId": "recCKuXCmGvxHPfb3",
+      "canonicalName": "Kimpton Hotels",
+      "entityType": "brand",
+      "source": "golden_set_v2_dev_hardening_1",
+      "evidenceCount": 6,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Repeated short-form in development FN set; longest-match protects longer Kimpton forms"
+    },
+    {
+      "alias": "Tapestry Collection",
+      "canonicalEntityId": "reccXxMHEh7NNRhIE",
+      "canonicalName": "Tapestry Collection by Hilton",
+      "entityType": "brand",
+      "source": "golden_set_v2_dev_hardening_1",
+      "evidenceCount": 3,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Short collection form without Hilton suffix; not bare Collection"
+    },
+    {
+      "alias": "Tapestry",
+      "canonicalEntityId": "reccXxMHEh7NNRhIE",
+      "canonicalName": "Tapestry Collection by Hilton",
+      "entityType": "brand",
+      "source": "golden_set_v2_dev_hardening_1",
+      "evidenceCount": 3,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Short-form evidenced in soft-brand lists; longest-match prefers Tapestry Collection first"
+    },
+    {
+      "alias": "Preferred Hotels",
+      "canonicalEntityId": "recwl5JOYxlChuCAr",
+      "canonicalName": "Preferred Hotels & Resorts",
+      "entityType": "brand",
+      "source": "golden_set_v2_dev_hardening_1",
+      "evidenceCount": 16,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Two-token short form; bare Preferred rejected as ambiguous"
+    },
+    {
+      "alias": "SLH",
+      "canonicalEntityId": "recjjSnY2opb8P4DG",
+      "canonicalName": "Small Luxury Hotels of the World",
+      "entityType": "brand",
+      "source": "golden_set_v2_dev_hardening_1",
+      "evidenceCount": 6,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Industry-standard abbreviation for Small Luxury Hotels of the World"
+    },
+    {
+      "alias": "Small Luxury Hotels",
+      "canonicalEntityId": "recjjSnY2opb8P4DG",
+      "canonicalName": "Small Luxury Hotels of the World",
+      "entityType": "brand",
+      "source": "golden_set_v2_dev_hardening_1",
+      "evidenceCount": 6,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Truncated official name without of the World"
+    },
+    {
+      "alias": "Vignette",
+      "canonicalEntityId": "recDwzv86TWnz2gGB",
+      "canonicalName": "Vignette Collection",
+      "entityType": "brand",
+      "source": "golden_set_v2_dev_hardening_1",
+      "evidenceCount": 7,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Short collection name; longest-match prefers Vignette Collection"
+    },
+    {
+      "alias": "Courtyard",
+      "canonicalEntityId": "rec6hye5H8zJmAGv3",
+      "canonicalName": "Courtyard by Marriott",
+      "entityType": "brand",
+      "source": "golden_set_v2_dev_hardening_1",
+      "evidenceCount": 4,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Industry short-form and slash forms (Courtyard/Fiesta Inn); longest-match prefers Courtyard by Marriott when present"
+    },
+    {
+      "alias": "GHL Operador",
+      "canonicalEntityId": "reciI2tYQBfMoMK9G",
+      "canonicalName": "GHL Hoteles (GHL Holding)",
+      "entityType": "operator",
+      "source": "ai_visibility_live_observation",
+      "evidenceCount": 2,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Regional operating trade name used in Phase 2A HMA answers",
+      "phase2aResponseIds": ["resp_92357838f08b4fa0"]
+    },
+    {
+      "alias": "Hotel Equities CALA",
+      "canonicalEntityId": "recWPKu5laVZxsvpn",
+      "canonicalName": "Hotel Equities (CALA)",
+      "entityType": "operator",
+      "source": "ai_visibility_live_observation",
+      "evidenceCount": 4,
+      "reviewStatus": "approved_for_runtime_test",
+      "reason": "Decorated regional label without parentheses in Caribbean operator answers",
+      "phase2aResponseIds": ["resp_72fa5d9c6a6d40ff", "resp_f428197c356043ff"]
+    }
+  ],
+  "aliasesRejected": [
+    {
+      "alias": "Preferred",
+      "reason": "Too ambiguous / collision risk",
+      "reviewStatus": "rejected"
+    },
+    {
+      "alias": "Collection",
+      "reason": "Generic hotel terminology",
+      "reviewStatus": "rejected"
+    },
+    {
+      "alias": "Hotels",
+      "reason": "Generic hotel terminology",
+      "reviewStatus": "rejected"
+    },
+    {
+      "alias": "Luxury",
+      "reason": "Generic positioning term",
+      "reviewStatus": "rejected"
+    },
+    {
+      "alias": "Playa",
+      "reason": "Spanish common noun / place-name collision (resort de playa, Playa del Carmen, Playa Mujeres); not safe for Playa Hotels & Resorts",
+      "reviewStatus": "rejected"
+    },
+    {
+      "alias": "IHG",
+      "reason": "Blocked bare parent; must not resolve to IHG Hotels & Resorts (Managed) or child brands",
+      "reviewStatus": "rejected"
+    }
+  ],
+  "founderReviewOnly": [
+    {
+      "alias": "Springboard Hospitality",
+      "proposedCanonicalName": "Hotel Equities (CALA)",
+      "proposedCanonicalEntityId": "recWPKu5laVZxsvpn",
+      "entityType": "operator",
+      "reviewStatus": "founder_review_required",
+      "reason": "Appears affiliated/sub-brand in AI answers; not confirmed as canonical Operator Master alias — keep unresolved until founder approval",
+      "evidenceCount": 2,
+      "action": "do_not_auto_map"
+    }
+  ],
+  "blockedBareParents": ["Hilton", "Marriott", "Hyatt", "IHG", "Accor", "Wyndham"]
+}

@@ -1,0 +1,767 @@
+{
+  "version": "ai_intelligence_residual_entity_ground_truth_audit_v1",
+  "generatedAt": "2026-08-14T23:38:14.111Z",
+  "queueLabel": "Residual Entity Ground-Truth Review",
+  "TOTAL_CASES": 12,
+  "HOLDOUT_ACCESSED": false,
+  "HOLDOUT_CASES_INSPECTED": 0,
+  "HOLDOUT_METRICS_RUN": false,
+  "AUTO_LABEL_CHANGES": 0,
+  "CLASSIFIER_CHANGES": 0,
+  "ALIAS_CHANGES": 0,
+  "ENTITY_RESOLVER_CHANGES": 0,
+  "PLAYA_CASES": {
+    "COUNT": 10,
+    "UNAMBIGUOUS": 0,
+    "AMBIGUOUS_GENERIC": 10,
+    "GROUND_TRUTH_REVIEW_REQUIRED": 10
+  },
+  "IHG_CASES": {
+    "COUNT": 2,
+    "SPECIFIC_REFERENCE": 0,
+    "PARENT_ONLY": 2,
+    "GROUND_TRUTH_REVIEW_REQUIRED": 2
+  },
+  "VALID_RESOLVER_MISSES": 0,
+  "POTENTIAL_GROUND_TRUTH_ERRORS": 12,
+  "POTENTIAL_CANDIDATE_NOMINATION_ERRORS": 12,
+  "HUMAN_REVIEW_REQUIRED": true,
+  "GOVERNANCE_GUIDANCE": {
+    "ENTITY_PRESENT_MEANS": "The specific canonical entity is actually represented in the response.",
+    "ENTITY_PRESENT_DOES_NOT_MEAN": "A generic word happens to overlap with the brand name (e.g. Spanish 'playa').",
+    "PARENT_RULE": "A parent-company mention does NOT automatically imply a specific child brand/operator/managed entity.",
+    "AMENDMENT_RULE": "Labels change only via explicit human KEEP/CORRECT/INVALIDATE/DEFER; original review audit preserved."
+  },
+  "CASE_IDS": [
+    "v2_cand_1674948a",
+    "v2_cand_17d64be9",
+    "v2_cand_27ec7204",
+    "v2_cand_2dd0fd2a",
+    "v2_cand_3515312a",
+    "v2_cand_465be86c",
+    "v2_cand_4cf733c7",
+    "v2_cand_52172a1d",
+    "v2_cand_5ae0142a",
+    "v2_cand_8d9c220b",
+    "v2_cand_a07ee6c3",
+    "v2_cand_adfdf95e"
+  ],
+  "cases": [
+    {
+      "CASE_ID": "v2_cand_1674948a",
+      "SOURCE_CASE_ID": "cand_1674948a",
+      "PROVIDER": "perplexity",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 2872,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente.",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente."
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "first_recommendation",
+        "firstRecommendation": true,
+        "questionStatus": "FIRST_RECOMMENDED",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:27.015Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente.",
+        "EXAMPLE_SURFACES": [
+          "activo**: urbano de negocios, resort de playa, mixed-use o conversión de hotel existente."
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 2872,
+      "FULL_STORED_RESPONSE_PREVIEW": "Si un propietario quiere posicionar un hotel como **upper-upscale en México**, las marcas que más conviene considerar suelen ser las de **Marriott, Hilton, IHG, Hyatt, Accor, Radisson y Wyndham**, además de algunas marcas locales con fuerte presencia nacional. La lista exacta dep"
+    },
+    {
+      "CASE_ID": "v2_cand_17d64be9",
+      "SOURCE_CASE_ID": "cand_17d64be9",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 6427,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "adalajara) como vacacionales/resorts de playa. * *Ejemplos en México:* Thompson Zihuatane",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "adalajara) como vacacionales/resorts de playa. * *Ejemplos en México:* Thompson Zihuatane",
+        "México:* Thompson Zihuatanejo, Thompson Playa del Carmen. * **Mondrian / SLS (Ennismore / Acc",
+        "opolitas de alta densidad o destinos de playa con club de playa e integración de vida nocturna.",
+        "ensidad o destinos de playa con club de playa e integración de vida nocturna. * *Ejemplos",
+        "an Mexico City Condesa, SLS Cancún, SLS Playa Mujeres. * **W Hotels (Marriott International):",
+        " *Enfoque:* Grandes urbes y destinos de playa consolidados. * *Ejemplos en México:* W Mex"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:20.213Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "adalajara) como vacacionales/resorts de playa. * *Ejemplos en México:* Thompson Zihuatane",
+        "EXAMPLE_SURFACES": [
+          "adalajara) como vacacionales/resorts de playa. * *Ejemplos en México:* Thompson Zihuatane",
+          "México:* Thompson Zihuatanejo, Thompson Playa del Carmen. * **Mondrian / SLS (Ennismore / Acc",
+          "opolitas de alta densidad o destinos de playa con club de playa e integración de vida nocturna.",
+          "ensidad o destinos de playa con club de playa e integración de vida nocturna. * *Ejemplos",
+          "an Mexico City Condesa, SLS Cancún, SLS Playa Mujeres. * **W Hotels (Marriott International):",
+          " *Enfoque:* Grandes urbes y destinos de playa consolidados. * *Ejemplos en México:* W Mex"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 6427,
+      "FULL_STORED_RESPONSE_PREVIEW": "Para un propietario o inversionista en México que busca alejarse del modelo de \"bandera *full-service* convencional\" (como un Marriott, Hilton o Crowne Plaza tradicional) y optar por un **posicionamiento *lifestyle*** claro, el mercado mexicano ofrece varias opciones atractivas.\n"
+    },
+    {
+      "CASE_ID": "v2_cand_27ec7204",
+      "SOURCE_CASE_ID": "cand_27ec7204",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 8922,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "ajara. **Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellne",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "ajara. **Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellne",
+        "privadas. **Ideal para:** Destinos de playa exclusivos y proyectos de wellness en costas vírg",
+        "a:** Proyectos en destinos urbanos y de playa con perfil de comprador norteamericano. --- ###",
+        " en México se encuentran en destinos de playa como Los Cabos, la Riviera Nayarit, Acapulco y Ca"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "associated_option",
+        "firstRecommendation": false,
+        "questionStatus": "PRESENT",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:25.019Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "ajara. **Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellne",
+        "EXAMPLE_SURFACES": [
+          "ajara. **Ideal para:** Desarrollos en playa, ciudades capitales, destinos culturales y wellne",
+          "privadas. **Ideal para:** Destinos de playa exclusivos y proyectos de wellness en costas vírg",
+          "a:** Proyectos en destinos urbanos y de playa con perfil de comprador norteamericano. --- ###",
+          " en México se encuentran en destinos de playa como Los Cabos, la Riviera Nayarit, Acapulco y Ca"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 8922,
+      "FULL_STORED_RESPONSE_PREVIEW": "Aquí tienes un análisis completo y estructurado sobre las marcas hoteleras que un propietario/desarrollador debería considerar al evaluar **branded residences** para un proyecto en México:\n\n---\n\n# 🏨 Marcas Hoteleras para Branded Residences en México: Guía para Propietarios\n\n## C"
+    },
+    {
+      "CASE_ID": "v2_cand_2dd0fd2a",
+      "SOURCE_CASE_ID": "cand_2dd0fd2a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 9724,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "## 6. **SLS Hotels** *(Ennismore)* SLS Playa Mujeres made its debut in 2024 as the brand's fir",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "## 6. **SLS Hotels** *(Ennismore)* SLS Playa Mujeres made its debut in 2024 as the brand's fir"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "associated_option",
+        "firstRecommendation": false,
+        "questionStatus": "PRESENT",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:06:55.921Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "## 6. **SLS Hotels** *(Ennismore)* SLS Playa Mujeres made its debut in 2024 as the brand's fir",
+        "EXAMPLE_SURFACES": [
+          "## 6. **SLS Hotels** *(Ennismore)* SLS Playa Mujeres made its debut in 2024 as the brand's fir"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 9724,
+      "FULL_STORED_RESPONSE_PREVIEW": "Here is a comprehensive overview of the hotel brands most commonly considered by owners and developers in Mexico for **design-forward or distinctive-character lifestyle positioning**:\n\n---\n\n## 🏨 Lifestyle & Design-Forward Hotel Brands in Mexico\n\n### 1. **Grupo Habita** *(Homegro"
+    },
+    {
+      "CASE_ID": "v2_cand_3515312a",
+      "SOURCE_CASE_ID": "cand_3515312a",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Collection / Soft Brand",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 6074,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": " peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por lo",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        " peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por lo",
+        " propia. Ideal para resorts icónicos en playa o propiedades históricas/lifestyle en ciudades co",
+        "e ciudad, pueblos mágicos o destinos de playa (ej. San Miguel de Allende, Puebla, Playa del Car",
+        "aya (ej. San Miguel de Allende, Puebla, Playa del Carmen). * **LXR Hotels & Resorts:** Categorí",
+        "s en ciudades secundarias o destinos de playa emergentes. * **Ascend Hotel Collection (Choice H",
+        "ry*, *MGallery* y *SLH*. En destinos de playa (Cancún/Riviera Maya, Los Cabos, Riviera Nayarit)"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "ranked_recommendation",
+        "firstRecommendation": false,
+        "questionStatus": "RECOMMENDED",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:06:48.361Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": " peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por lo",
+        "EXAMPLE_SURFACES": [
+          " peso en turismo boutique, colonial, de playa y *lifestyle*— las marcas más consideradas por lo",
+          " propia. Ideal para resorts icónicos en playa o propiedades históricas/lifestyle en ciudades co",
+          "e ciudad, pueblos mágicos o destinos de playa (ej. San Miguel de Allende, Puebla, Playa del Car",
+          "aya (ej. San Miguel de Allende, Puebla, Playa del Carmen). * **LXR Hotels & Resorts:** Categorí",
+          "s en ciudades secundarias o destinos de playa emergentes. * **Ascend Hotel Collection (Choice H",
+          "ry*, *MGallery* y *SLH*. En destinos de playa (Cancún/Riviera Maya, Los Cabos, Riviera Nayarit)"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 6074,
+      "FULL_STORED_RESPONSE_PREVIEW": "Cuando un propietario o inversionista hotelero en México evalúa convertir un hotel independiente (o existente) bajo el modelo de **\"Soft Brand\" o \"Collection Brand\"**, busca obtener el músculo comercial, el sistema de reservaciones global (CRS) y el programa de lealtad de un gran"
+    },
+    {
+      "CASE_ID": "v2_cand_465be86c",
+      "SOURCE_CASE_ID": "cand_465be86c",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 5881,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "utique de lujo en destinos urbanos y de playa en América Latina. * **Vignette Collection (IHG",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "utique de lujo en destinos urbanos y de playa en América Latina. * **Vignette Collection (IHG",
+        "xico. Ideal para proyectos urbanos o de playa boutique de alta gama. * **Our Habitas:** Una d"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:24.215Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "utique de lujo en destinos urbanos y de playa en América Latina. * **Vignette Collection (IHG",
+        "EXAMPLE_SURFACES": [
+          "utique de lujo en destinos urbanos y de playa en América Latina. * **Vignette Collection (IHG",
+          "xico. Ideal para proyectos urbanos o de playa boutique de alta gama. * **Our Habitas:** Una d"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 5881,
+      "FULL_STORED_RESPONSE_PREVIEW": "En la región de América Latina y el Caribe (CALA), el segmento *lifestyle* y de diseño con carácter distintivo ha tenido un crecimiento acelerado. Los propietarios e inversionistas hoteleros buscan habitualmente marcas que les permitan cobrar una tarifa promedio diaria (*ADR*) má"
+    },
+    {
+      "CASE_ID": "v2_cand_4cf733c7",
+      "SOURCE_CASE_ID": "cand_4cf733c7",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 5355,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "ando terreno rápidamente en destinos de playa e históricos. * **Tribute Portfolio** (*Marriot",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "ando terreno rápidamente en destinos de playa e históricos. * **Tribute Portfolio** (*Marriot",
+        "): Altísima demanda tanto en resorts de playa (Los Cabos, Cancún, Costa Rica) como en ciudades ",
+        "): Gran crecimiento en México y Caribe (Playa del Carmen, Los Cabos, Zihuatanejo). * **Kimpto",
+        " dominante en la región para resorts de playa. * **Grand Fiesta Americana / Live Aqua** (*Gru"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "first_recommendation",
+        "firstRecommendation": true,
+        "questionStatus": "FIRST_RECOMMENDED",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:01.141Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "ando terreno rápidamente en destinos de playa e históricos. * **Tribute Portfolio** (*Marriot",
+        "EXAMPLE_SURFACES": [
+          "ando terreno rápidamente en destinos de playa e históricos. * **Tribute Portfolio** (*Marriot",
+          "): Altísima demanda tanto en resorts de playa (Los Cabos, Cancún, Costa Rica) como en ciudades ",
+          "): Gran crecimiento en México y Caribe (Playa del Carmen, Los Cabos, Zihuatanejo). * **Kimpto",
+          " dominante en la región para resorts de playa. * **Grand Fiesta Americana / Live Aqua** (*Gru"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 5355,
+      "FULL_STORED_RESPONSE_PREVIEW": "En la región de **Caribe y América Latina (CALA)**, el segmento *Upper-Upscale* (situado justo por debajo de *Luxury* y por encima de *Upscale*) es uno de los más dinámicos e interesantes para desarrolladores e inversionistas. Ofrece un equilibrio óptimo entre tarifas promedio al"
+    },
+    {
+      "CASE_ID": "v2_cand_52172a1d",
+      "SOURCE_CASE_ID": "cand_52172a1d",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "MEXICO",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 6152,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "n Miguel de Allende) como en resorts de playa. * **The Unbound Collection by Hyatt:** Enfocada ",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "n Miguel de Allende) como en resorts de playa. * **The Unbound Collection by Hyatt:** Enfocada ",
+        "tar (*wellness*), altamente cotizado en playa y ciudades clave. * *Marriott / Sheraton:* Está",
+        " *Ideal para:* Desarrollos urbanos o de playa enfocados en el segmento *bleisure* (negocios + o",
+        "xcelente posicionamiento en destinos de playa sofisticados (ej. Cabo, Zihuatanejo, Riviera Maya",
+        " para desarrollos tanto urbanos como de playa bajo esquemas todo incluido o plan europeo. --- ",
+        "bicación y Perfil del Inmueble:** * *Playa / Resort:* Thompson, Curio, Autograph, Westin, Gr"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:16.627Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "n Miguel de Allende) como en resorts de playa. * **The Unbound Collection by Hyatt:** Enfocada ",
+        "EXAMPLE_SURFACES": [
+          "n Miguel de Allende) como en resorts de playa. * **The Unbound Collection by Hyatt:** Enfocada ",
+          "tar (*wellness*), altamente cotizado en playa y ciudades clave. * *Marriott / Sheraton:* Está",
+          " *Ideal para:* Desarrollos urbanos o de playa enfocados en el segmento *bleisure* (negocios + o",
+          "xcelente posicionamiento en destinos de playa sofisticados (ej. Cabo, Zihuatanejo, Riviera Maya",
+          " para desarrollos tanto urbanos como de playa bajo esquemas todo incluido o plan europeo. --- ",
+          "bicación y Perfil del Inmueble:** * *Playa / Resort:* Thompson, Curio, Autograph, Westin, Gr"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 6152,
+      "FULL_STORED_RESPONSE_PREVIEW": "Posicionar un hotel en la categoría **Upper-Upscale** en México (según la clasificación oficial de cadenas de *STR / CoStar*) requiere un equilibrio preciso entre estándares de servicio premium, tarifas promedio (ADR) elevadas y una propuesta de valor atractiva tanto para el clie"
+    },
+    {
+      "CASE_ID": "v2_cand_5ae0142a",
+      "SOURCE_CASE_ID": "cand_5ae0142a",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "GLOBAL",
+      "PROMPT_FAMILY": "Branded Residences",
+      "CANONICAL_SUBJECT": "IHG Hotels & Resorts (Managed)",
+      "CANONICAL_ID": "rec7IXYQYpKMYsrDl",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 9383,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "IHG",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "IHG"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "associated_option",
+        "firstRecommendation": false,
+        "questionStatus": "PRESENT",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:03.632Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": null,
+      "IHG_AUDIT": {
+        "SPECIFIC_CANONICAL_REFERENCE": "NO",
+        "PARENT_ONLY_REFERENCE": "YES",
+        "EXACT_TEXT": "IHG",
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "parent_IHG_mention_nominated_as_specific_IHG_Hotels_and_Resorts_Managed; human entityPresent treats parent as managed subject"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 9383,
+      "FULL_STORED_RESPONSE_PREVIEW": "This is a great and highly relevant topic. Here is a comprehensive guide to hotel brands that owners and developers should consider when evaluating branded residences as part of a global hotel project, organized by tier and market position:\n\n---\n\n# 🏨 Hotel Brands to Consider for"
+    },
+    {
+      "CASE_ID": "v2_cand_8d9c220b",
+      "SOURCE_CASE_ID": "cand_8d9c220b",
+      "PROVIDER": "claude",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Lifestyle Positioning",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 10433,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "omo El Mangroove y Punta Islita. - En Playa Panamá, El Mangroove, Autograph Collection, invit",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "omo El Mangroove y Punta Islita. - En Playa Panamá, El Mangroove, Autograph Collection, invit",
+        " Latina. - **Ideal para:** Destinos de playa vibrantes, mercado adulto sofisticado, propiedade",
+        " de IHG. - **Ideal para:** Destinos de playa y ciudades con escena cultural activa; propietari",
+        " Collection by Hilton, en 2,000 pies de playa prístina en República Dominicana; y York Medellín",
+        "daz, servicio con personalidad | ★★★★ | Playa + urbano, adultos | | **Hotel Indigo** | IHG | Id",
+        "ncia con red Hilton | ★★★★ | Resorts de playa distintivos | | **Andaz** | Hyatt | Arte y cultur"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:25.474Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "omo El Mangroove y Punta Islita. - En Playa Panamá, El Mangroove, Autograph Collection, invit",
+        "EXAMPLE_SURFACES": [
+          "omo El Mangroove y Punta Islita. - En Playa Panamá, El Mangroove, Autograph Collection, invit",
+          " Latina. - **Ideal para:** Destinos de playa vibrantes, mercado adulto sofisticado, propiedade",
+          " de IHG. - **Ideal para:** Destinos de playa y ciudades con escena cultural activa; propietari",
+          " Collection by Hilton, en 2,000 pies de playa prístina en República Dominicana; y York Medellín",
+          "daz, servicio con personalidad | ★★★★ | Playa + urbano, adultos | | **Hotel Indigo** | IHG | Id",
+          "ncia con red Hilton | ★★★★ | Resorts de playa distintivos | | **Andaz** | Hyatt | Arte y cultur"
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 10433,
+      "FULL_STORED_RESPONSE_PREVIEW": "Aquí tienes un análisis detallado y estructurado de las principales **marcas hoteleras lifestyle** que un propietario debería considerar al posicionar un hotel en el Caribe y América Latina (CALA) con base en experiencia diferenciada y carácter local:\n\n---\n\n# 🏨 Marcas Hoteleras "
+    },
+    {
+      "CASE_ID": "v2_cand_a07ee6c3",
+      "SOURCE_CASE_ID": "cand_a07ee6c3",
+      "PROVIDER": "claude",
+      "LANGUAGE": "en",
+      "GEOGRAPHY": "EUROPE",
+      "PROMPT_FAMILY": "Upper-Upscale Positioning",
+      "CANONICAL_SUBJECT": "IHG Hotels & Resorts (Managed)",
+      "CANONICAL_ID": "rec7IXYQYpKMYsrDl",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 8083,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "IHG Hotels & Resorts",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "IHG Hotels & Resorts"
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "associated_option",
+        "firstRecommendation": false,
+        "questionStatus": "PRESENT",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:02.514Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": null,
+      "IHG_AUDIT": {
+        "SPECIFIC_CANONICAL_REFERENCE": "NO",
+        "PARENT_ONLY_REFERENCE": "YES",
+        "EXACT_TEXT": "IHG Hotels & Resorts",
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "parent_IHG_mention_nominated_as_specific_IHG_Hotels_and_Resorts_Managed; human entityPresent treats parent as managed subject"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 8083,
+      "FULL_STORED_RESPONSE_PREVIEW": "This is a great question that sits at the intersection of hotel brand strategy, real estate development, and operator selection. Here is a comprehensive overview of the upper-upscale hotel brands most commonly shortlisted by owners and developers in Europe, organized by parent gr"
+    },
+    {
+      "CASE_ID": "v2_cand_adfdf95e",
+      "SOURCE_CASE_ID": "cand_adfdf95e",
+      "PROVIDER": "gemini",
+      "LANGUAGE": "es",
+      "GEOGRAPHY": "CALA",
+      "PROMPT_FAMILY": "Conversion",
+      "CANONICAL_SUBJECT": "Playa Hotels & Resorts",
+      "CANONICAL_ID": "rec3TUHT9Z4AnFp5P",
+      "RESPONSE_SOURCE": "monitoring_store_rawText",
+      "RESPONSE_LENGTH": 8075,
+      "EXACT_SURFACE_TEXT_THAT_CAUSED_HUMAN_LABEL_PRESENT": "tá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Ma",
+      "SURFACE_EVIDENCE_WINDOWS": [
+        "tá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Ma",
+        "bitaciones) tanto en destinos de resort/playa como de negocios. Posee una lealtad de marca altí",
+        "e ubica en el Caribe o en un destino de playa (Riviera Maya, Punta Cana, Costa Rica, Jamaica, e",
+        " Collection*, adaptadas para resorts de playa existentes. --- ### Criterios Clave para Tomar "
+      ],
+      "CURRENT_HUMAN": {
+        "entityPresent": true,
+        "recommendationStatus": "discussed",
+        "firstRecommendation": false,
+        "questionStatus": "DISCUSSION_ONLY",
+        "reviewStatus": "CORRECTED",
+        "reviewer": "joan@dealality (founder — chat-authorized apply 2026-08-15)",
+        "reviewedAt": "2026-08-14T23:07:09.524Z"
+      },
+      "CURRENT_CLASSIFIER": {
+        "entityPresent": false,
+        "recommendationStatus": null,
+        "firstRecommendation": false,
+        "questionStatus": "MISSING"
+      },
+      "PLAYA_AUDIT": {
+        "UNAMBIGUOUS_BRAND_REFERENCE": "NO",
+        "EXACT_TEXT": "tá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Ma",
+        "EXAMPLE_SURFACES": [
+          "tá, Ciudad de México, San José) como de playa. Otorga acceso directo al motor comercial de **Ma",
+          "bitaciones) tanto en destinos de resort/playa como de negocios. Posee una lealtad de marca altí",
+          "e ubica en el Caribe o en un destino de playa (Riviera Maya, Punta Cana, Costa Rica, Jamaica, e",
+          " Collection*, adaptadas para resorts de playa existentes. --- ### Criterios Clave para Tomar "
+        ],
+        "GROUND_TRUTH_REVIEW_REQUIRED": "YES"
+      },
+      "IHG_AUDIT": null,
+      "CANDIDATE_NOMINATION": {
+        "verdict": "CANDIDATE_SUBJECT_OVERREACH",
+        "rootCause": "generic_spanish_playa_or_place_name_nominated_as_Playa_Hotels_and_Resorts; human entityPresent likely inherited subject overreach"
+      },
+      "WHY_FLAGGED": "Classifier Hardening 1 residual entity false negative on DEVELOPMENT set; suspected ground-truth or nomination overreach — not a safe alias gap",
+      "HUMAN_ACTIONS": [
+        "KEEP_CURRENT_HUMAN_LABEL",
+        "CORRECT_HUMAN_LABEL",
+        "INVALIDATE_CANDIDATE_SUBJECT",
+        "DEFER"
+      ],
+      "HUMAN_ACTION_SELECTED": null,
+      "GROUND_TRUTH_REVIEW_REQUIRED": "YES",
+      "FULL_STORED_RESPONSE_LENGTH": 8075,
+      "FULL_STORED_RESPONSE_PREVIEW": "Convertir un hotel *upper-upscale* (gama alta superior) existente en el Caribe y América Latina (CALA) es una de las estrategias de inversión más atractivas actualmente. Permite acelerar el tiempo de salida al mercado (*time-to-market*), optimizar el capital de trabajo frente a l"
+    }
+  ]
+}

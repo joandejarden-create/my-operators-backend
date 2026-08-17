@@ -1,0 +1,375 @@
+{
+  "generated_at": "2026-08-05T22:42:45.260Z",
+  "status": "production_census_source_of_truth_locked_ready_for_autopilot",
+  "productionHotelPropertyCensus": {
+    "baseName": "Deal Capture Platform",
+    "tableName": "Hotel Property Census",
+    "tableId": "tbl9aY5ijiuIzzWam",
+    "role": "production_property_table",
+    "allowedWriteTarget": true,
+    "envBaseResolver": "AIRTABLE_BASE_ID_ALT (Deal Capture Platform)"
+  },
+  "readRules": {
+    "brand_setup_active_control_list": "read_only",
+    "hotel_property_census": "read_and_write_allowlisted_fields",
+    "vic_source_claims": "read_evidence_lineage_only",
+    "supporting_census_evidence_tables": "read_or_explicit_queue_approved_write"
+  },
+  "writeRules": {
+    "allowed": [
+      "Hotel Property Census"
+    ],
+    "forbidden": [
+      "legacy_hotel_census",
+      "vic_source_claims",
+      "candidates_evidence_staging",
+      "brand_setup",
+      "brand_explorer",
+      "company_validated_brand_status"
+    ]
+  },
+  "failClosedCode": "blocked_wrong_census_target",
+  "audit_modules": [
+    {
+      "path": "lib/research-engine-v2/census-autopilot-runner.js",
+      "hits": {
+        "hotel_property_census": 3,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 2,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-planner.js",
+      "hits": {
+        "hotel_property_census": 0,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": false,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-queue-router.js",
+      "hits": {
+        "hotel_property_census": 0,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": false,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-queue-orchestrator.js",
+      "hits": {
+        "hotel_property_census": 0,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 1,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": false,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-apply-guard.js",
+      "hits": {
+        "hotel_property_census": 1,
+        "table_id": 1,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-family-directory-adapters.js",
+      "hits": {
+        "hotel_property_census": 0,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 2,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": false,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-cache-manager.js",
+      "hits": {
+        "hotel_property_census": 0,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": false,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-processing-gates.js",
+      "hits": {
+        "hotel_property_census": 0,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": false,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-brand-census-matcher.js",
+      "hits": {
+        "hotel_property_census": 7,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": false,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-batch-engine.js",
+      "hits": {
+        "hotel_property_census": 0,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": true
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-field-allowlist.js",
+      "hits": {
+        "hotel_property_census": 1,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-approval-bundle-apply.js",
+      "hits": {
+        "hotel_property_census": 1,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": true
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-address-asset-preflight-apply.js",
+      "hits": {
+        "hotel_property_census": 1,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 2,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": true
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-choice-address-resourcing.js",
+      "hits": {
+        "hotel_property_census": 1,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 5,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": true
+    },
+    {
+      "path": "lib/research-engine-v2/census-autopilot-property-name-cleanup-apply.js",
+      "hits": {
+        "hotel_property_census": 1,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 0,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": true
+    },
+    {
+      "path": "lib/research-engine-v2/production-census-source-of-truth.js",
+      "hits": {
+        "hotel_property_census": 6,
+        "table_id": 2,
+        "hotel_census_legacy": 5,
+        "verified_independent": 3,
+        "vic": 6,
+        "legacy_old_staging": 3,
+        "matched_brands_to_census": 1
+      },
+      "ambiguous_lines": [
+        {
+          "line": 143,
+          "text": "\"Matched brands to Census\","
+        }
+      ],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    },
+    {
+      "path": "lib/research-engine-v2/production-census-write.js",
+      "hits": {
+        "hotel_property_census": 13,
+        "table_id": 1,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 33,
+        "legacy_old_staging": 1,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    },
+    {
+      "path": "scripts/census-autopilot.mjs",
+      "hits": {
+        "hotel_property_census": 3,
+        "table_id": 0,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 1,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    },
+    {
+      "path": "docs/data-intelligence/production-census-autopilot-runner.md",
+      "hits": {
+        "hotel_property_census": 4,
+        "table_id": 2,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 1,
+        "legacy_old_staging": 0,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    },
+    {
+      "path": "docs/data-intelligence/production-census-autopilot-operating-model.md",
+      "hits": {
+        "hotel_property_census": 4,
+        "table_id": 1,
+        "hotel_census_legacy": 0,
+        "verified_independent": 0,
+        "vic": 1,
+        "legacy_old_staging": 1,
+        "matched_brands_to_census": 0
+      },
+      "ambiguous_lines": [],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    },
+    {
+      "path": "docs/data-intelligence/production-census-source-of-truth.md",
+      "hits": {
+        "hotel_property_census": 6,
+        "table_id": 2,
+        "hotel_census_legacy": 2,
+        "verified_independent": 2,
+        "vic": 4,
+        "legacy_old_staging": 2,
+        "matched_brands_to_census": 1
+      },
+      "ambiguous_lines": [
+        {
+          "line": 35,
+          "text": "Not: “Matched brands to Census.”"
+        }
+      ],
+      "uses_table_id": true,
+      "write_paths_noted": false
+    }
+  ],
+  "census_queue_registry": {
+    "present": false,
+    "note": "No census-queue-registry.js; routing lives in census-autopilot-queue-router.js + orchestrator"
+  },
+  "residual_risks": [
+    "Module/file names still use census-autopilot-* prefix (acceptable; write target is locked by SoT)",
+    "production-census-write.js can still write supporting tables in non-Autopilot census write path — Autopilot apply paths assert Hotel Property Census only",
+    "Historical run summaries under reports/ may still say vague Census — new runs use precise terminology"
+  ],
+  "locks_applied": [
+    "lib/research-engine-v2/production-census-source-of-truth.js",
+    "apply guard guardProductionCensusWriteTarget + applyPreflight",
+    "batch-engine / memory adapter fail closed",
+    "approval-bundle / address-asset / choice / name-cleanup apply assert SoT",
+    "scripts/census-autopilot.mjs live meta table id check"
+  ]
+}

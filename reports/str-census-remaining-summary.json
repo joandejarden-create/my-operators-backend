@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-05-20T18:24:19.829Z",
+  "totals": {
+    "conflicts": 145,
+    "autoNameVariant": 2,
+    "manualConflicts": 143,
+    "duplicateStrIdInCensus": 93,
+    "noMatch": 172,
+    "nameCityCountry": 2
+  },
+  "recommendedOrder": [
+    "1. Apply AUTO_NAME_VARIANT conflicts (scripts/apply-str-import-remaining.mjs --auto-conflicts)",
+    "2. Apply duplicate winners where score > loser ( --duplicates )",
+    "3. Apply Name+City+Country matches ( --name-city-country )",
+    "4. Manual review LOCATION_MISMATCH / NAME_MISMATCH / tied duplicates",
+    "5. No Match: create census rows or investigate missing STR Number ( --no-match-export only )"
+  ],
+  "developmentCostMarkerSuggestion": {
+    "batch1MatchedByStrId": 1,
+    "batch2RemainingApplied": 2,
+    "notTouched": "empty or 0"
+  }
+}

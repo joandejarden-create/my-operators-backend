@@ -1,0 +1,19 @@
+/* Footer columns right + bottom-align to blurb */
+#footer-grid,#footer-grid-new{display:grid!important;grid-template-columns:minmax(240px,26rem) minmax(2rem,1fr) repeat(3,minmax(9.5rem,11.5rem))!important;gap:0 2rem!important;margin-bottom:5.75rem!important;align-items:end!important;width:100%!important}
+#footer-col-company{grid-column:1!important;position:relative!important;justify-self:start!important;max-width:26rem!important}
+#footer-col-products{grid-column:3!important;justify-self:stretch!important}
+#footer-col-resources{grid-column:4!important;justify-self:stretch!important}
+#footer-col-links{grid-column:5!important;justify-self:stretch!important}
+#footer-blurb{margin:0!important;max-width:26rem!important}
+#footer-social-label{position:absolute!important;left:0!important;top:calc(100% + 1.35rem)!important;margin:0!important;font-size:1.05rem!important;font-weight:700!important;color:#fff!important}
+#footer-social{position:absolute!important;left:0!important;top:calc(100% + 3.05rem)!important;display:flex!important;flex-wrap:wrap!important;gap:.65rem!important;align-items:center!important;margin:0!important}
+@media(max-width:960px){
+#footer-grid,#footer-grid-new{grid-template-columns:1fr 1fr!important;gap:2rem 1.5rem!important;align-items:start!important;margin-bottom:2rem!important}
+#footer-col-company{grid-column:1/-1!important;max-width:none!important}
+#footer-col-products,#footer-col-resources,#footer-col-links{grid-column:auto!important;justify-self:start!important}
+#footer-social-label,#footer-social{position:static!important;top:auto!important;left:auto!important}
+#footer-social-label{margin:1.5rem 0 .85rem!important}
+}
+@media(max-width:560px){
+#footer-grid,#footer-grid-new{grid-template-columns:1fr!important}
+}

@@ -1,0 +1,409 @@
+{
+  "phase": "BRAND_AI_VISIBILITY_PHASE_3B1_MULTI_PROVIDER_ADAPTER_FOUNDATION",
+  "generatedAt": "2026-08-14T09:35:34.409Z",
+  "BUILD_STATUS": "PASS",
+  "LIVE_PROVIDER_CALLS": 0,
+  "dryRun": {
+    "planOk": true,
+    "providers": [
+      "gemini",
+      "perplexity",
+      "claude"
+    ],
+    "GEMINI_BUILDABLE": 84,
+    "PERPLEXITY_BUILDABLE": 84,
+    "CLAUDE_BUILDABLE": 84,
+    "TOTAL_BUILDABLE": 252,
+    "EXPECTED_TOTAL": 252,
+    "FAILURES": [],
+    "byProvider": {
+      "gemini": {
+        "BUILDABLE": 84,
+        "EXPECTED": 84,
+        "FAILURES": [],
+        "MODEL": "gemini-2.5-flash"
+      },
+      "perplexity": {
+        "BUILDABLE": 84,
+        "EXPECTED": 84,
+        "FAILURES": [],
+        "MODEL": "sonar"
+      },
+      "claude": {
+        "BUILDABLE": 84,
+        "EXPECTED": 84,
+        "FAILURES": [],
+        "MODEL": "claude-sonnet-4-6"
+      }
+    },
+    "LIVE_PROVIDER_CALLS": 0
+  },
+  "semanticPromptParity": {
+    "SEMANTIC_PROMPT_PARITY": "YES",
+    "differences": [],
+    "OPENAI": "YES",
+    "GEMINI": "YES",
+    "PERPLEXITY": "YES",
+    "CLAUDE": "YES"
+  },
+  "fingerprintIsolation": {
+    "samplePromptId": "p_mx_existing_asset_reposition_es_v1",
+    "valid": true,
+    "samples": [
+      {
+        "provider": "openai",
+        "fingerprint": "494375ab3ad76d0206eb0f31"
+      },
+      {
+        "provider": "gemini",
+        "fingerprint": "d531440696b82c3b1cc0adab"
+      },
+      {
+        "provider": "perplexity",
+        "fingerprint": "25ec1eac03d2fd582d044bb5"
+      },
+      {
+        "provider": "claude",
+        "fingerprint": "dc779ac6397915e6975fd09e"
+      }
+    ]
+  },
+  "providerCapabilityMatrix": {
+    "openai": {
+      "PROVIDER": "openai",
+      "CURRENT_ADAPTER": "lib/ai-visibility/providers/openai.js",
+      "API_STYLE": "Responses API (POST /v1/responses)",
+      "WEB_SEARCH_CAPABILITY": true,
+      "SEARCH_GROUNDING_MODEL": "gpt-5.6 (web_search tool)",
+      "CITATIONS_AVAILABLE": true,
+      "CITATION_STRUCTURE": "message content annotations type=url_citation (url, title, start_index, end_index)",
+      "SEARCH_RESULTS_AVAILABLE": "partial (web_search_call.action.sources may exceed inline citations)",
+      "USAGE_AVAILABLE": true,
+      "COST_METADATA_AVAILABLE": false,
+      "RESPONSE_ID_AVAILABLE": true,
+      "MODEL_ID_AVAILABLE": true,
+      "LANGUAGE_SUPPORT": "EN/ES and multilingual via model",
+      "TOOL_USE_MODEL": "web_search",
+      "KNOWN_LIMITATIONS": [
+        "Citation rate PARTIAL — inline url_citation may not cover all search sources",
+        "No provider-returned cost metadata",
+        "Web search latency can exceed default 60s timeout"
+      ],
+      "CITATION_CAPABILITY_STATES": [
+        "INLINE_CITATION",
+        "SEARCH_RESULT_METADATA"
+      ]
+    },
+    "gemini": {
+      "PROVIDER": "gemini",
+      "CURRENT_ADAPTER": "lib/ai-visibility/providers/gemini.js",
+      "API_STYLE": "Generative Language API generateContent (REST)",
+      "WEB_SEARCH_CAPABILITY": true,
+      "SEARCH_GROUNDING_MODEL": "gemini-2.5-flash + google_search tool",
+      "CITATIONS_AVAILABLE": true,
+      "CITATION_STRUCTURE": "groundingMetadata.groundingChunks + groundingSupports (segment indices + chunk URIs)",
+      "SEARCH_RESULTS_AVAILABLE": true,
+      "USAGE_AVAILABLE": true,
+      "COST_METADATA_AVAILABLE": false,
+      "RESPONSE_ID_AVAILABLE": false,
+      "MODEL_ID_AVAILABLE": true,
+      "LANGUAGE_SUPPORT": "EN/ES and multilingual via model",
+      "TOOL_USE_MODEL": "google_search",
+      "KNOWN_LIMITATIONS": [
+        "Grounding structure differs from OpenAI url_citation",
+        "No OpenAI-equivalent response ID",
+        "Search queries in groundingMetadata may be absent on some responses"
+      ],
+      "CITATION_CAPABILITY_STATES": [
+        "WEB_GROUNDING_METADATA",
+        "INLINE_CITATION",
+        "SEARCH_RESULT_METADATA"
+      ]
+    },
+    "perplexity": {
+      "PROVIDER": "perplexity",
+      "CURRENT_ADAPTER": "lib/ai-visibility/providers/perplexity.js",
+      "API_STYLE": "Sonar Chat Completions (POST /chat/completions)",
+      "WEB_SEARCH_CAPABILITY": true,
+      "SEARCH_GROUNDING_MODEL": "sonar (native web-grounded chat)",
+      "CITATIONS_AVAILABLE": true,
+      "CITATION_STRUCTURE": "top-level citations[] URL list + search_results[] metadata",
+      "SEARCH_RESULTS_AVAILABLE": true,
+      "USAGE_AVAILABLE": true,
+      "COST_METADATA_AVAILABLE": true,
+      "RESPONSE_ID_AVAILABLE": true,
+      "MODEL_ID_AVAILABLE": true,
+      "LANGUAGE_SUPPORT": "EN/ES and multilingual",
+      "TOOL_USE_MODEL": "native Sonar search (not Agent API)",
+      "KNOWN_LIMITATIONS": [
+        "No inline start/end citation spans",
+        "Agent API rejected for Wave-1 — less representative of consumer recommendation UX",
+        "Citation list is URL-level, not span-level"
+      ],
+      "CITATION_CAPABILITY_STATES": [
+        "TOP_LEVEL_CITATION_LIST",
+        "SEARCH_RESULT_METADATA"
+      ],
+      "RECOMMENDED_EXECUTION_MODE": "sonar",
+      "RECOMMENDED_EXECUTION_MODE_WHY": "Sonar chat completions best represent consumer recommendation/search experience with web-grounded answers, top-level citations, search_results metadata, EN/ES support, and stable API — not Agent API orchestration."
+    },
+    "claude": {
+      "PROVIDER": "claude",
+      "CURRENT_ADAPTER": "lib/ai-visibility/providers/claude.js",
+      "API_STYLE": "Messages API (POST /v1/messages) + server web_search tool",
+      "WEB_SEARCH_CAPABILITY": true,
+      "SEARCH_GROUNDING_MODEL": "claude-sonnet-4-6 + web_search_20260209",
+      "CITATIONS_AVAILABLE": true,
+      "CITATION_STRUCTURE": "web_search_tool_result blocks + citations in text blocks (url, title, cited_text where provided)",
+      "SEARCH_RESULTS_AVAILABLE": true,
+      "USAGE_AVAILABLE": true,
+      "COST_METADATA_AVAILABLE": false,
+      "RESPONSE_ID_AVAILABLE": true,
+      "MODEL_ID_AVAILABLE": true,
+      "LANGUAGE_SUPPORT": "EN/ES and multilingual via model",
+      "TOOL_USE_MODEL": "web_search_20260209 (direct allowed_callers)",
+      "KNOWN_LIMITATIONS": [
+        "Server tool pause/continuation may require multi-turn handling",
+        "Web search bounded by max_uses — no unlimited search loops",
+        "Citation shape varies by tool version"
+      ],
+      "CITATION_CAPABILITY_STATES": [
+        "INLINE_CITATION",
+        "SEARCH_RESULT_METADATA",
+        "WEB_GROUNDING_METADATA"
+      ],
+      "WEB_SEARCH_BOUNDED_POLICY": {
+        "toolType": "web_search_20260209",
+        "maxUses": 5,
+        "allowedCallers": [
+          "direct"
+        ],
+        "pauseContinuation": true,
+        "maxContinuationTurns": 2,
+        "timeoutMs": 180000
+      }
+    }
+  },
+  "controlledValidationPlan": {
+    "CALLS_PER_PROVIDER": 12,
+    "TOTAL_CALLS": 36,
+    "PROMPT_IDS": [
+      "p_global_existing_asset_reposition_v1",
+      "p_mx_existing_asset_reposition_es_v1",
+      "p_cala_collection_affiliation_v1",
+      "p_cala_collection_affiliation_es_v1",
+      "p_global_lifestyle_strategy_v1",
+      "p_mx_lifestyle_strategy_v1",
+      "p_cala_residences_capability_v1",
+      "p_mx_residences_capability_es_v1",
+      "p_europe_uu_positioning_strategy_v1",
+      "p_cala_affiliation_flexibility_es_v1",
+      "p_mx_independent_affiliation_v1",
+      "p_global_soft_brand_shortlist_v1"
+    ],
+    "LANGUAGE_GEO_COVERAGE": [
+      "Global EN",
+      "CALA EN",
+      "CALA ES",
+      "Europe EN",
+      "Mexico EN",
+      "Mexico ES"
+    ],
+    "INTENTS": [
+      "Conversion",
+      "Collection / Soft Brand",
+      "Lifestyle Positioning",
+      "Branded Residences",
+      "Upper-Upscale Positioning",
+      "Soft-Brand Affiliation Flexibility"
+    ],
+    "PROVIDERS": [
+      "gemini",
+      "perplexity",
+      "claude"
+    ],
+    "LIVE_CALLS": 0,
+    "purpose": "adapter/evidence integrity before 252-call expansion"
+  },
+  "rawTextRepair": {
+    "RAW_TEXT_REPAIR_SAFE": false,
+    "FLAGGED_RUN": {
+      "runId": "run_83fe4c10721f4d9b",
+      "fingerprint": "055e743962880bf527279eb8",
+      "repairSafe": false,
+      "promptId": "p_global_design_local_character_v1"
+    },
+    "missingCount": 18,
+    "repairableCount": 16,
+    "notRepairableCount": 2,
+    "partialRepairAvailable": true,
+    "missing": [
+      {
+        "runId": "run_0582f64beae04d07",
+        "fingerprint": "ae1316473634c93f4480cf2e",
+        "responseTextLen": 0,
+        "normalizedTextLen": 8150,
+        "rawTextLen": 8150,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_0d1b7cec88ce45e3",
+        "fingerprint": "e9f97a0f821dc55af2ddd29d",
+        "responseTextLen": 0,
+        "normalizedTextLen": 7877,
+        "rawTextLen": 7877,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_1be6f89290114988",
+        "fingerprint": "ed71cf4696bf2c601838d687",
+        "responseTextLen": 0,
+        "normalizedTextLen": 9777,
+        "rawTextLen": 9777,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_2a6ce474aeb745e2",
+        "fingerprint": "2cd2b7590e082461ea905c00",
+        "responseTextLen": 0,
+        "normalizedTextLen": 5244,
+        "rawTextLen": 5244,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_2b4d6e4f5b1c421c",
+        "fingerprint": "ed71cf4696bf2c601838d687",
+        "responseTextLen": 0,
+        "normalizedTextLen": 9777,
+        "rawTextLen": 9777,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_441c2fc0bb084b2a",
+        "fingerprint": "b102adf5632c7f271e6454d0",
+        "responseTextLen": 0,
+        "normalizedTextLen": 6646,
+        "rawTextLen": 6646,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_6dbe417d4a134278",
+        "fingerprint": "055e743962880bf527279eb8",
+        "responseTextLen": 0,
+        "normalizedTextLen": 0,
+        "rawTextLen": 0,
+        "backfillSource": null,
+        "repairSafe": false
+      },
+      {
+        "runId": "run_826da3d7acbe497e",
+        "fingerprint": "3719c4ae0002b32ed27c1c36",
+        "responseTextLen": 0,
+        "normalizedTextLen": 6335,
+        "rawTextLen": 6335,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_83fe4c10721f4d9b",
+        "fingerprint": "055e743962880bf527279eb8",
+        "responseId": "resp_ff8d0c668dfa4a0d",
+        "responseTextLen": 0,
+        "normalizedTextLen": 0,
+        "rawTextLen": 0,
+        "backfillSource": null,
+        "repairSafe": false
+      },
+      {
+        "runId": "run_86d71ae9329d4528",
+        "fingerprint": "a9dc9cb6e7c6661c964254b8",
+        "responseTextLen": 0,
+        "normalizedTextLen": 6261,
+        "rawTextLen": 6261,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_9db174c62f5f46cd",
+        "fingerprint": "831b0ac0f1bac059ae8b0d76",
+        "responseTextLen": 0,
+        "normalizedTextLen": 10828,
+        "rawTextLen": 10828,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_a000d00da0e34eb5",
+        "fingerprint": "1b5612bdd92d0d971e4aea38",
+        "responseTextLen": 0,
+        "normalizedTextLen": 3713,
+        "rawTextLen": 3713,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_ae09d0b86b224823",
+        "fingerprint": "402d0d144b029951d2928339",
+        "responseTextLen": 0,
+        "normalizedTextLen": 4590,
+        "rawTextLen": 4590,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_dbf2c65c6a414a17",
+        "fingerprint": "ae1316473634c93f4480cf2e",
+        "responseTextLen": 0,
+        "normalizedTextLen": 8150,
+        "rawTextLen": 8150,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_dc448f2edf514ee8",
+        "fingerprint": "2cd2b7590e082461ea905c00",
+        "responseTextLen": 0,
+        "normalizedTextLen": 5244,
+        "rawTextLen": 5244,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_dd084b3bf3d448e4",
+        "fingerprint": "3719c4ae0002b32ed27c1c36",
+        "responseTextLen": 0,
+        "normalizedTextLen": 6335,
+        "rawTextLen": 6335,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_fef372a5807b48fc",
+        "fingerprint": "e9f97a0f821dc55af2ddd29d",
+        "responseTextLen": 0,
+        "normalizedTextLen": 7877,
+        "rawTextLen": 7877,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      },
+      {
+        "runId": "run_ff33daeab2cc46ad",
+        "fingerprint": "18c17ebfdbd7db84cf254bd9",
+        "responseTextLen": 0,
+        "normalizedTextLen": 4620,
+        "rawTextLen": 4620,
+        "backfillSource": "normalized",
+        "repairSafe": true
+      }
+    ],
+    "APPLIED": false,
+    "RUN_ID": "run_83fe4c10721f4d9b",
+    "note": "Flagged run cannot backfill — no text in response, normalized, or raw artifact"
+  }
+}

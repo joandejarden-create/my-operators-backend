@@ -1,0 +1,247 @@
+{
+  "generatedAt": "2026-07-06T19:25:06.524Z",
+  "mode": "dry-run",
+  "baseId": "appvtnDurnMSjINP6",
+  "filters": {
+    "entityType": "brand",
+    "targetRecId": "recWPEvxBQxVVzSq3",
+    "packageKey": null,
+    "onlyEligible": true,
+    "recompute": false
+  },
+  "readinessInput": {
+    "source": "file",
+    "path": "reports/partner-intelligence-publish-readiness.json",
+    "generatedAt": "2026-07-06T19:21:42.877Z"
+  },
+  "summary": {
+    "packagesConsidered": 1,
+    "eligibleInInput": 1,
+    "wouldPublish": 1,
+    "skipped": 0,
+    "recordsModified": 0
+  },
+  "publishMapping": {
+    "writableKeys": [
+      "validationStatus",
+      "usagePermission",
+      "sourceType",
+      "sourceRegion",
+      "lastReviewedDate",
+      "refreshDueDate",
+      "evidenceNotes",
+      "missingDataFlags",
+      "reviewedBy",
+      "externalDisplayStatus",
+      "internalNotes",
+      "confidenceLevel"
+    ],
+    "neverWriteKeys": [
+      "companyValidated",
+      "companyValidationDate"
+    ],
+    "operatorConfidenceColumn": "Data Confidence Level"
+  },
+  "protectionRules": [
+    "Company Validated = true",
+    "Validation Status = Company Validated",
+    "Company Validation Date present",
+    "Usage Permission = Do Not Use",
+    "External Display Status = Do Not Display",
+    "Target Last Reviewed Date newer than PI proposal",
+    "Internal Notes HOLD / DO NOT USE / REVIEW markers",
+    "Validation or confidence downgrade blocked"
+  ],
+  "packages": [
+    {
+      "entityKey": "brand:recWPEvxBQxVVzSq3",
+      "entityType": "brand",
+      "recordId": "recWPEvxBQxVVzSq3",
+      "entityName": "Radisson Blu by Choice",
+      "sourceTable": "Brand Setup - Brand Basics",
+      "eligibleInReport": true,
+      "blockReasons": [],
+      "changeClass": "new",
+      "protection": {
+        "blocked": false,
+        "reasons": [],
+        "currentRaw": {
+          "validationStatus": "Company Published",
+          "usagePermission": "Platform Display Allowed",
+          "sourceType": "Company Website",
+          "sourceRegion": null,
+          "confidenceLevel": "Medium",
+          "lastReviewedDate": "2026-07-06",
+          "refreshDueDate": null,
+          "companyValidated": false,
+          "companyValidationDate": null,
+          "externalDisplayStatus": "Show Trust Label",
+          "evidenceNotes": "PI sources (4): Radisson Blu Choice development brand page; Radisson Blu Choice consumer brand page; Radisson Blu Choice press kit Americas…. Approved facts: 8.",
+          "missingDataFlags": null,
+          "reviewedBy": null,
+          "internalNotes": "PI profile-governance publish 2026-07-06 (brand:recWPEvxBQxVVzSq3).",
+          "_legacyLastUpdatedDate": null,
+          "_legacyHeroVerification": "Source-Backed Draft"
+        },
+        "changeClass": "no_op"
+      },
+      "currentGovernance": {
+        "validationStatus": "Company Published",
+        "usagePermission": "Platform Display Allowed",
+        "sourceType": "Company Website",
+        "sourceRegion": null,
+        "confidenceLevel": "Medium",
+        "lastReviewedDate": "2026-07-06",
+        "refreshDueDate": null,
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "externalDisplayStatus": "Show Trust Label",
+        "evidenceNotes": "PI sources (4): Radisson Blu Choice development brand page; Radisson Blu Choice consumer brand page; Radisson Blu Choice press kit Americas…. Approved facts: 8.",
+        "missingDataFlags": null,
+        "reviewedBy": null,
+        "internalNotes": "PI profile-governance publish 2026-07-06 (brand:recWPEvxBQxVVzSq3).",
+        "_legacyLastUpdatedDate": null,
+        "_legacyHeroVerification": "Source-Backed Draft"
+      },
+      "proposed": {
+        "validationStatus": "Company Published",
+        "usagePermission": "Platform Display Allowed",
+        "sourceType": "Company Website",
+        "sourceRegion": null,
+        "confidenceLevel": "Medium",
+        "lastReviewedDate": "2026-07-06",
+        "refreshDueDate": null,
+        "evidenceNotes": "PI sources (4): Radisson Blu Choice development brand page; Radisson Blu Choice consumer brand page; Radisson Blu Choice press kit Americas…. Approved facts: 8.",
+        "missingDataFlags": null,
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "externalDisplayStatus": "Show Trust Label",
+        "internalNotes": "PI publish readiness audit proposal — not written."
+      },
+      "fieldDiff": {
+        "wouldUpdate": [
+          {
+            "field": "Internal Notes",
+            "liveColumn": "Internal Notes",
+            "apiKey": "internalNotes",
+            "from": "PI profile-governance publish 2026-07-06 (brand:recWPEvxBQxVVzSq3).",
+            "to": "PI publish readiness audit proposal — not written."
+          }
+        ],
+        "unchanged": [
+          {
+            "field": "Validation Status",
+            "liveColumn": "Validation Status",
+            "apiKey": "validationStatus",
+            "value": "Company Published"
+          },
+          {
+            "field": "Usage Permission",
+            "liveColumn": "Usage Permission",
+            "apiKey": "usagePermission",
+            "value": "Platform Display Allowed"
+          },
+          {
+            "field": "Source Type",
+            "liveColumn": "Source Type",
+            "apiKey": "sourceType",
+            "value": "Company Website"
+          },
+          {
+            "field": "Last Reviewed Date",
+            "liveColumn": "Last Reviewed Date",
+            "apiKey": "lastReviewedDate",
+            "value": "2026-07-06"
+          },
+          {
+            "field": "Confidence Level",
+            "liveColumn": "Confidence Level",
+            "apiKey": "confidenceLevel",
+            "value": "Medium"
+          },
+          {
+            "field": "Evidence Notes",
+            "liveColumn": "Evidence Notes",
+            "apiKey": "evidenceNotes",
+            "value": "PI sources (4): Radisson Blu Choice development brand page; Radisson Blu Choice consumer brand page; Radisson Blu Choice press kit Americas…. Approved facts: 8."
+          },
+          {
+            "field": "External Display Status",
+            "liveColumn": "External Display Status",
+            "apiKey": "externalDisplayStatus",
+            "value": "Show Trust Label"
+          }
+        ],
+        "skipped": [
+          {
+            "field": "Company Validated",
+            "apiKey": "companyValidated",
+            "reason": "never_written_by_pi_publish"
+          },
+          {
+            "field": "Company Validation Date",
+            "apiKey": "companyValidationDate",
+            "reason": "never_written_by_pi_publish"
+          }
+        ],
+        "desiredLiveFields": {
+          "Validation Status": "Company Published",
+          "Usage Permission": "Platform Display Allowed",
+          "Source Type": "Company Website",
+          "Last Reviewed Date": "2026-07-06",
+          "Evidence Notes": "PI sources (4): Radisson Blu Choice development brand page; Radisson Blu Choice consumer brand page; Radisson Blu Choice press kit Americas…. Approved facts: 8.",
+          "External Display Status": "Show Trust Label",
+          "Internal Notes": "PI publish readiness audit proposal — not written.",
+          "Confidence Level": "Medium"
+        },
+        "columnMap": {
+          "Validation Status": "Validation Status",
+          "Usage Permission": "Usage Permission",
+          "Source Type": "Source Type",
+          "Last Reviewed Date": "Last Reviewed Date",
+          "Evidence Notes": "Evidence Notes",
+          "External Display Status": "External Display Status",
+          "Internal Notes": "Internal Notes",
+          "Confidence Level": "Confidence Level"
+        },
+        "publishValues": {
+          "validationStatus": "Company Published",
+          "usagePermission": "Platform Display Allowed",
+          "sourceType": "Company Website",
+          "lastReviewedDate": "2026-07-06",
+          "evidenceNotes": "PI sources (4): Radisson Blu Choice development brand page; Radisson Blu Choice consumer brand page; Radisson Blu Choice press kit Americas…. Approved facts: 8.",
+          "externalDisplayStatus": "Show Trust Label",
+          "internalNotes": "PI publish readiness audit proposal — not written.",
+          "confidenceLevel": "Medium"
+        }
+      },
+      "expectedGovernance": {
+        "validationStatus": "Company Published",
+        "usagePermission": "Platform Display Allowed",
+        "sourceType": "Company Website",
+        "sourceRegion": null,
+        "confidenceLevel": "Medium",
+        "sourceBasis": "Company Materials",
+        "lastReviewedDate": "2026-07-06",
+        "refreshDueDate": null,
+        "companyValidated": false,
+        "companyValidationDate": null,
+        "externalDisplayStatus": "Show Trust Label",
+        "displayLabel": "AI-Assisted Profile",
+        "displaySubtitle": "Last Reviewed: Jul 6, 2026 · Source Basis: Company Materials",
+        "internalWarnings": [],
+        "sources": {
+          "canonicalTable": "Brand Setup - Brand Basics"
+        }
+      },
+      "write": {
+        "status": "dry_run",
+        "patch": {
+          "Internal Notes": "PI publish readiness audit proposal — not written."
+        }
+      },
+      "errors": [],
+      "skippedReasons": []
+    }
+  ]
+}
