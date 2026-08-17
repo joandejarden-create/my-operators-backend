@@ -1,11 +1,15 @@
-# TEMPORARY — used only for Dealality Census Worker deploys from this directory.
-# Do not use for deal-capture-radar-backend web deploys (that service keeps startCommand=node server.js in Railway UI).
+# Deal Capture / my-operators-backend — web API (default Railway config for this repo).
+#
+# Census V4 worker uses a SEPARATE config — do not point the web backend at it:
+#   railway.census-v4-worker.toml
+# In Railway → Dealality Census Worker → Settings → set Config file path to that file.
+#
 [build]
 builder = "RAILPACK"
 
 [deploy]
-startCommand = "npm run census:v4-full-build-worker"
+startCommand = "node server.js"
 restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 100
+restartPolicyMaxRetries = 10
 healthcheckPath = ""
 healthcheckTimeout = 30
