@@ -184,6 +184,7 @@
       var grid = document.getElementById(GRID_ID);
       if (!grid) return;
       var original = grid.innerHTML;
+      bindCarousel(grid);
       fetch(HUB_URL, { credentials: "same-origin" })
         .then(function (res) {
           if (!res.ok) throw new Error("insights hub " + res.status);
