@@ -162,12 +162,14 @@
         e.preventDefault();
         go(1);
       }
-      if (prev) {
+      if (prev && prev.getAttribute("data-oh-ins-bound") !== VERSION) {
         prev.addEventListener("click", onPrev);
+        prev.setAttribute("data-oh-ins-bound", VERSION);
         prev.setAttribute("role", "button");
       }
-      if (next) {
+      if (next && next.getAttribute("data-oh-ins-bound") !== VERSION) {
         next.addEventListener("click", onNext);
+        next.setAttribute("data-oh-ins-bound", VERSION);
         next.setAttribute("role", "button");
       }
     }
